@@ -34,6 +34,39 @@ def _localized(value: Any, field: str, errors: list[str]) -> None:
             errors.append(f"{field}.{locale} must be non-empty")
 
 
+def _answer_key(value: Any, field: str, errors: list[str]) -> None:
+    if not isinstance(value, dict):
+        errors.append(f"{field} must be an object")
+        return
+
+    correct = value.get("correct")
+    if not isinstance(correct, str) or not correct.strip():
+        errors.append(f"{field}.correct must be a non-empty option ID")
+
+    options = value.get("options")
+    if not isinstance(options, list) or not options:
+        errors.append(f"{field}.options must be a non-empty array")
+        return
+
+    option_ids: list[str] = []
+    for option_index, option in enumerate(options):
+        option_field = f"{field}.options[{option_index}]"
+        if not isinstance(option, dict):
+            errors.append(f"{option_field} must be an object")
+            continue
+        option_id = option.get("id")
+        if not isinstance(option_id, str) or not option_id.strip():
+            errors.append(f"{option_field}.id must be non-empty")
+        else:
+            if option_id in option_ids:
+                errors.append(f"{option_field}.id is duplicated: {option_id}")
+            option_ids.append(option_id)
+        _localized(option.get("label"), f"{option_field}.label", errors)
+
+    if isinstance(correct, str) and correct.strip() and option_ids.count(correct) != 1:
+        errors.append(f"{field}.correct must match exactly one option ID")
+
+
 def validate_package(data: Any, source: str = "package") -> list[str]:
     errors: list[str] = []
     if not isinstance(data, dict):
@@ -47,7 +80,12 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
         errors.append(f"{source}: schemaVersion must be 1.0")
     if data.get("status") not in {"draft", "review", "publishable"}:
         errors.append(f"{source}: invalid status")
-    if not REQUIRED_LOCALES.issubset(set(data.get("locales", []))):
+    locales = data.get("locales")
+    if not isinstance(locales, list):
+        errors.append(f"{source}: locales must be an array")
+    elif not all(isinstance(locale, str) for locale in locales):
+        errors.append(f"{source}: locales must contain only locale strings")
+    elif not REQUIRED_LOCALES.issubset(set(locales)):
         errors.append(f"{source}: locales must include en, ms, and zh")
 
     activities = data.get("activities", [])
@@ -83,6 +121,7 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
             errors.append(f"{label} must not require a numerical answer")
         _localized(activity.get("prompt"), f"{label}.prompt", errors)
         _localized(activity.get("feedback"), f"{label}.feedback", errors)
+        _answer_key(activity.get("answerKey"), f"{label}.answerKey", errors)
 
         hints = activity.get("hints")
         if not isinstance(hints, list) or not hints:
