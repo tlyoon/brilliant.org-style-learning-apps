@@ -1,0 +1,16 @@
+{
+  "manifestVersion": "1.0",
+  "sourceId": "controlled-source-example",
+  "controlledFilename": "source-file-not-stored-in-git.pdf",
+  "sha256": "replace-with-64-character-sha256",
+  "edition": "replace when known",
+  "chapter": "replace",
+  "subchapter": "replace",
+  "heading": "replace",
+  "pageRange": "replace",
+  "learningBoundary": "replace with instructor-approved scope",
+  "extractedOn": "2026-08-15",
+  "reviewer": "replace",
+  "rightsNote": "Controlled instructor source; source content is not stored in GitHub."
+}
+

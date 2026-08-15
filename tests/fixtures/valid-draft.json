@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "packageId": "fixture-valid-draft",
+  "chapter": "Synthetic chapter",
+  "subchapter": "Synthetic section",
+  "status": "draft",
+  "locales": ["en", "ms", "zh"],
+  "learningObjectives": ["Classify a synthetic conceptual relationship"],
+  "sourceManifest": "synthetic-manifest.json",
+  "activities": []
+}
+

@@ -1,0 +1,35 @@
+name: Feature
+description: Propose a bounded product or engineering change
+title: "[Feature] "
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What learner or instructor outcome should improve?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Permitted scope
+      description: Identify the files and behaviours that may change.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: List observable, testable completion conditions.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safeguards
+    attributes:
+      label: Safeguards
+      options:
+        - label: No copyrighted source text or files will be committed.
+          required: true
+        - label: No student data or credentials will be used.
+          required: true
+

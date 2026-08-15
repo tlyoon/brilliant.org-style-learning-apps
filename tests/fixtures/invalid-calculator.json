@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "packageId": "fixture-invalid-calculator",
+  "chapter": "Synthetic chapter",
+  "subchapter": "Synthetic section",
+  "status": "draft",
+  "locales": ["en", "ms", "zh"],
+  "learningObjectives": ["Identify prohibited content"],
+  "sourceManifest": "synthetic-manifest.json",
+  "activities": [{
+    "id": "invalid-one",
+    "type": "mcq",
+    "difficulty": "easy",
+    "calculatorFree": false,
+    "numericAnswerRequired": true,
+    "objective": "Synthetic test only",
+    "prompt": {"en": "Calculate the numerical value.", "ms": "Hitung nilai berangka.", "zh": "计算数值。"},
+    "answerKey": {"correct": "a"},
+    "hints": [{"en": "Use arithmetic.", "ms": "Gunakan aritmetik.", "zh": "使用算术。"}],
+    "feedback": {"en": "Synthetic.", "ms": "Sintetik.", "zh": "合成测试。"},
+    "provenance": {"sourceLocation": "synthetic", "originalContent": true}
+  }]
+}
+
