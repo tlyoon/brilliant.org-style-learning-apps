@@ -1,0 +1,132 @@
+const DEFAULT_PACKAGE = "../content/examples/conceptual-forces.json";
+const state = { package: null, activityIndex: 0, locale: "en", selected: null, checked: false, hint: false, loading: false };
+let loadGeneration = 0;
+
+const copy = {
+  en: { activity: "Activity", of: "of", check: "Check answer", next: "Next activity", tryAgain: "Try again", restart: "Start again", hint: "Show a hint", complete: "Journey complete", correct: "That reasoning fits.", retry: "Reconsider the relationship and try again." },
+  ms: { activity: "Aktiviti", of: "daripada", check: "Semak jawapan", next: "Aktiviti seterusnya", tryAgain: "Cuba lagi", restart: "Mula semula", hint: "Tunjukkan petunjuk", complete: "Perjalanan selesai", correct: "Penaakulan itu sesuai.", retry: "Pertimbangkan semula hubungan itu dan cuba lagi." },
+  zh: { activity: "活动", of: "/", check: "检查答案", next: "下一个活动", tryAgain: "再试一次", restart: "重新开始", hint: "显示提示", complete: "学习旅程完成", correct: "这个推理是恰当的。", retry: "重新思考其中的关系，然后再试一次。" },
+};
+
+const localized = (value) => typeof value === "string" ? value : value?.[state.locale] ?? value?.en ?? "";
+
+function element(tag, { className, text, attributes } = {}) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  for (const [name, value] of Object.entries(attributes ?? {})) node.setAttribute(name, value);
+  return node;
+}
+
+function resetActivity() {
+  state.selected = null;
+  state.checked = false;
+  state.hint = false;
+}
+
+function renderComplete(root) {
+  const card = element("section", { className: "card" });
+  card.append(
+    element("p", { className: "eyebrow", text: localized(state.package.subchapter) }),
+    element("h1", { text: copy[state.locale].complete }),
+  );
+  const restart = element("button", { className: "action", text: copy[state.locale].restart, attributes: { id: "restart" } });
+  restart.addEventListener("click", () => { state.activityIndex = 0; resetActivity(); render(); });
+  card.append(restart);
+  root.replaceChildren(card);
+}
+
+function render() {
+  const root = document.querySelector("#app");
+  const activities = state.package.activities;
+  if (state.activityIndex >= activities.length) {
+    renderComplete(root);
+    return;
+  }
+
+  const activity = activities[state.activityIndex];
+  const labels = copy[state.locale];
+  const card = element("section", { className: "card" });
+  card.append(element("p", {
+    className: "eyebrow",
+    text: `${labels.activity} ${state.activityIndex + 1} ${labels.of} ${activities.length} · ${activity.difficulty}`,
+  }));
+
+  const progress = element("div", { className: "progress", attributes: { "aria-label": "Progress" } });
+  const progressBar = element("span");
+  progressBar.style.width = `${((state.activityIndex + 1) / activities.length) * 100}%`;
+  progress.append(progressBar);
+  card.append(progress, element("h1", { text: localized(activity.prompt) }));
+
+  const choices = element("div", { className: "choices" });
+  for (const option of activity.answerKey.options) {
+    const button = element("button", {
+      className: "choice",
+      text: localized(option.label),
+      attributes: { "aria-pressed": String(state.selected === option.id) },
+    });
+    button.dataset.value = option.id;
+    button.addEventListener("click", () => { state.selected = option.id; state.checked = false; render(); });
+    choices.append(button);
+  }
+  card.append(choices);
+
+  if (state.hint) card.append(element("div", { className: "feedback", text: localized(activity.hints[0]) }));
+  if (state.checked) {
+    const result = state.selected === activity.answerKey.correct ? labels.correct : labels.retry;
+    card.append(element("div", {
+      className: "feedback",
+      text: `${result} ${localized(activity.feedback)}`,
+      attributes: { role: "status" },
+    }));
+  }
+
+  const actions = element("div", { className: "choices" });
+  const checkLabel = state.checked
+    ? (state.selected === activity.answerKey.correct ? labels.next : labels.tryAgain)
+    : labels.check;
+  const check = element("button", { className: "action", text: checkLabel, attributes: { id: "check" } });
+  check.disabled = state.selected === null;
+  check.addEventListener("click", () => {
+    if (!state.checked) state.checked = true;
+    else if (state.selected === activity.answerKey.correct) { state.activityIndex += 1; resetActivity(); }
+    else resetActivity();
+    render();
+  });
+  const hint = element("button", { className: "action secondary", text: labels.hint, attributes: { id: "hint" } });
+  hint.addEventListener("click", () => { state.hint = true; render(); });
+  actions.append(check, hint);
+  card.append(actions);
+  root.replaceChildren(card);
+}
+
+const localeSelector = document.querySelector("#locale");
+
+async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
+  const generation = ++loadGeneration;
+  state.loading = true;
+  localeSelector.disabled = true;
+  try {
+    const response = await fetch(packageUrl);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const loadedPackage = await response.json();
+    if (generation !== loadGeneration) return;
+    state.package = loadedPackage;
+    state.loading = false;
+    localeSelector.disabled = false;
+    render();
+  } catch (error) {
+    if (generation !== loadGeneration) return;
+    state.package = null;
+    state.loading = false;
+    localeSelector.disabled = false;
+    const message = `Could not load the example package. Start the app through the documented local server. (${error.message})`;
+    document.querySelector("#app").replaceChildren(element("p", { className: "error", text: message }));
+  }
+}
+
+localeSelector.addEventListener("change", (event) => {
+  state.locale = event.target.value;
+  if (!state.loading && state.package) render();
+});
+loadPackage();

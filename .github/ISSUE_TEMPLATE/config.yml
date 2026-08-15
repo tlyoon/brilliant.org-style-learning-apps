@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security or privacy concern
+    url: https://github.com/tlyoon/brilliant.org-style-learning-apps/security
+    about: Do not place personal data, credentials, or sensitive details in a public issue.
+

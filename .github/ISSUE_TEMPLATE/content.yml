@@ -1,0 +1,36 @@
+name: Learning content
+description: Create or revise an original learning package
+title: "[Content] "
+body:
+  - type: input
+    id: subchapter
+    attributes:
+      label: Subchapter identifier
+      placeholder: chapter-1/section-1-1
+    validations:
+      required: true
+  - type: textarea
+    id: outcomes
+    attributes:
+      label: Learning outcomes
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Source locations
+      description: Give filenames, page ranges, headings, and checksums only; do not upload textbook content.
+    validations:
+      required: true
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Content rules
+      options:
+        - label: All activities are original and calculator-free.
+          required: true
+        - label: The required type and difficulty distribution is satisfied.
+          required: true
+        - label: English, Malay, and Simplified Chinese fields are complete.
+          required: true
+

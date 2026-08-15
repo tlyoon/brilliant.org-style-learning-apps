@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0",
+  "packageId": "example-conceptual-forces",
+  "chapter": "Patterns in motion",
+  "subchapter": "Forces and changes in motion",
+  "status": "draft",
+  "locales": ["en", "ms", "zh"],
+  "learningObjectives": [
+    "Predict how balanced and unbalanced forces relate to changes in motion"
+  ],
+  "sourceManifest": "content/source-manifests/source-manifest.example.json",
+  "activities": [
+    {
+      "id": "balanced-motion",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish balanced forces from absence of motion",
+      "prompt": {
+        "en": "A puck glides straight ahead at a steady pace while the forces on it are balanced. Which prediction fits?",
+        "ms": "Sebuah cakera meluncur lurus pada kelajuan tetap sementara daya padanya seimbang. Ramalan manakah yang sesuai?",
+        "zh": "一个圆盘以稳定的快慢直线滑行，同时所受的力彼此平衡。哪项预测合理？"
+      },
+      "answerKey": {
+        "correct": "continue",
+        "options": [
+          {"id": "continue", "label": {"en": "It continues with the same motion.", "ms": "Ia meneruskan gerakan yang sama.", "zh": "它保持相同的运动状态。"}},
+          {"id": "stop", "label": {"en": "It must immediately stop.", "ms": "Ia mesti berhenti serta-merta.", "zh": "它一定会立即停下。"}},
+          {"id": "turn", "label": {"en": "It must turn to one side.", "ms": "Ia mesti membelok ke satu sisi.", "zh": "它一定会转向一侧。"}}
+        ]
+      },
+      "hints": [{"en": "Balanced forces do not require an object to be at rest.", "ms": "Daya seimbang tidak memerlukan objek berada dalam keadaan rehat.", "zh": "力的平衡并不意味着物体必须静止。"}],
+      "feedback": {"en": "Balanced forces are consistent with unchanged motion.", "ms": "Daya seimbang selaras dengan gerakan yang tidak berubah.", "zh": "力平衡与运动状态不变是一致的。"},
+      "misconceptions": ["balanced-means-stationary"],
+      "provenance": {"sourceLocation": "Original public-domain-style example; no textbook source used", "originalContent": true}
+    },
+    {
+      "id": "direction-of-change",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate net-force direction to change in motion",
+      "prompt": {
+        "en": "A cart is already moving east. A net force acts west. Choose the best description of what begins to change.",
+        "ms": "Sebuah troli sedang bergerak ke timur. Daya paduan bertindak ke barat. Pilih huraian terbaik tentang perkara yang mula berubah.",
+        "zh": "一辆小车正向东运动，合力向西。选择对最先发生变化的最佳描述。"
+      },
+      "answerKey": {
+        "correct": "velocity-westward",
+        "options": [
+          {"id": "velocity-westward", "label": {"en": "Its velocity begins changing westward.", "ms": "Halajunya mula berubah ke arah barat.", "zh": "它的速度开始向西变化。"}},
+          {"id": "instant-west", "label": {"en": "Its motion instantly becomes westward.", "ms": "Gerakannya serta-merta menjadi ke arah barat.", "zh": "它的运动立即变为向西。"}},
+          {"id": "no-change", "label": {"en": "Its motion cannot change while it is moving east.", "ms": "Gerakannya tidak boleh berubah semasa bergerak ke timur.", "zh": "只要它向东运动，运动状态就不会改变。"}}
+        ]
+      },
+      "hints": [{"en": "Separate the cart's current motion from the direction in which that motion is changing.", "ms": "Bezakan gerakan semasa troli daripada arah perubahan gerakan itu.", "zh": "把小车当前的运动方向与运动发生变化的方向区分开。"}],
+      "feedback": {"en": "A net force describes the direction of velocity change, not necessarily the current direction of travel.", "ms": "Daya paduan menerangkan arah perubahan halaju, bukan semestinya arah gerakan semasa.", "zh": "合力表示速度变化的方向，不一定是当前运动的方向。"},
+      "misconceptions": ["force-direction-equals-motion-direction"],
+      "provenance": {"sourceLocation": "Original public-domain-style example; no textbook source used", "originalContent": true}
+    },
+    {
+      "id": "interaction-pair",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Identify forces as interactions between different objects",
+      "prompt": {
+        "en": "A swimmer pushes water backward and moves forward. Which statement best describes the interaction pair?",
+        "ms": "Seorang perenang menolak air ke belakang dan bergerak ke hadapan. Pernyataan manakah paling tepat menerangkan pasangan interaksi itu?",
+        "zh": "游泳者向后推水并向前运动。哪项陈述最恰当地描述这对相互作用？"
+      },
+      "answerKey": {
+        "correct": "different-objects",
+        "options": [
+          {"id": "different-objects", "label": {"en": "The swimmer acts on the water, and the water acts on the swimmer.", "ms": "Perenang bertindak pada air, dan air bertindak pada perenang.", "zh": "游泳者作用于水，水也作用于游泳者。"}},
+          {"id": "cancel-swimmer", "label": {"en": "Both forces act on the swimmer and cancel.", "ms": "Kedua-dua daya bertindak pada perenang dan saling membatalkan.", "zh": "两个力都作用在游泳者身上并相互抵消。"}},
+          {"id": "water-only", "label": {"en": "Only the swimmer exerts a force; the water is passive.", "ms": "Hanya perenang mengenakan daya; air adalah pasif.", "zh": "只有游泳者施力，水是被动的。"}}
+        ]
+      },
+      "hints": [{"en": "Name the object receiving each force.", "ms": "Namakan objek yang menerima setiap daya.", "zh": "分别说出每个力作用在哪个物体上。"}],
+      "feedback": {"en": "Interaction-pair forces act on different objects, so they do not cancel on either single object.", "ms": "Daya pasangan interaksi bertindak pada objek yang berbeza, jadi daya itu tidak saling membatalkan pada satu objek.", "zh": "相互作用力作用在不同物体上，因此不会在同一个物体上相互抵消。"},
+      "misconceptions": ["interaction-pair-cancels"],
+      "provenance": {"sourceLocation": "Original public-domain-style example; no textbook source used", "originalContent": true}
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Protect the control layer and automated checks.
+/AGENTS.md @tlyoon
+/docs/CONTEXT_INDEX.md @tlyoon
+/docs/decisions/ @tlyoon
+/content/schema/ @tlyoon
+/.github/workflows/ @tlyoon
+
