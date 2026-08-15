@@ -12,7 +12,7 @@
     "status": {"enum": ["draft", "review", "publishable"]},
     "locales": {"type": "array", "minItems": 3, "uniqueItems": true, "contains": {"const": "en"}, "items": {"enum": ["en", "ms", "zh"]}},
     "learningObjectives": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
-    "sourceManifest": {"type": "string", "minLength": 1},
+    "sourceManifest": {"type": "string", "pattern": "^content/source-manifests/[a-z0-9]+(?:[.-][a-z0-9]+)*\\.json$"},
     "activities": {
       "type": "array",
       "items": {"$ref": "#/$defs/activity"}
@@ -26,9 +26,32 @@
       "properties": {"en": {"type": "string", "minLength": 1}, "ms": {"type": "string", "minLength": 1}, "zh": {"type": "string", "minLength": 1}},
       "additionalProperties": false
     },
+    "option": {
+      "type": "object",
+      "required": ["id", "label"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+        "label": {"$ref": "#/$defs/localized"}
+      },
+      "additionalProperties": false
+    },
+    "answerKey": {
+      "type": "object",
+      "required": ["correct", "options"],
+      "properties": {
+        "correct": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/option"}
+        }
+      },
+      "additionalProperties": false
+    },
     "activity": {
       "type": "object",
-      "required": ["id", "type", "difficulty", "calculatorFree", "numericAnswerRequired", "objective", "prompt", "answerKey", "hints", "feedback", "provenance"],
+      "required": ["id", "type", "difficulty", "calculatorFree", "numericAnswerRequired", "objective", "prompt", "answerKey", "hints", "feedback", "misconceptions", "provenance"],
       "properties": {
         "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
         "type": {"enum": ["mcq", "interactive"]},
@@ -37,10 +60,10 @@
         "numericAnswerRequired": {"const": false},
         "objective": {"type": "string", "minLength": 1},
         "prompt": {"$ref": "#/$defs/localized"},
-        "answerKey": {"type": "object", "minProperties": 1},
+        "answerKey": {"$ref": "#/$defs/answerKey"},
         "hints": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/localized"}},
         "feedback": {"$ref": "#/$defs/localized"},
-        "misconceptions": {"type": "array", "items": {"type": "string"}},
+        "misconceptions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "not": {"enum": ["todo", "tbd", "placeholder", "example", "unknown", "n-a"]}}},
         "accessibilityText": {"$ref": "#/$defs/localized"},
         "provenance": {"type": "object", "required": ["sourceLocation", "originalContent"], "properties": {"sourceLocation": {"type": "string", "minLength": 1}, "originalContent": {"const": true}}, "additionalProperties": false}
       },

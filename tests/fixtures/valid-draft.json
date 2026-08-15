@@ -6,7 +6,7 @@
   "status": "draft",
   "locales": ["en", "ms", "zh"],
   "learningObjectives": ["Classify a synthetic conceptual relationship"],
-  "sourceManifest": "synthetic-manifest.json",
+  "sourceManifest": "content/source-manifests/source-manifest.example.json",
   "activities": []
 }
 

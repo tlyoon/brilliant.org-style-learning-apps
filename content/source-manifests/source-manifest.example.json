@@ -1,16 +1,15 @@
 {
   "manifestVersion": "1.0",
-  "sourceId": "controlled-source-example",
-  "controlledFilename": "source-file-not-stored-in-git.pdf",
-  "sha256": "replace-with-64-character-sha256",
-  "edition": "replace when known",
-  "chapter": "replace",
-  "subchapter": "replace",
-  "heading": "replace",
-  "pageRange": "replace",
-  "learningBoundary": "replace with instructor-approved scope",
+  "sourceId": "original-conceptual-forces-notes",
+  "controlledFilename": "original-conceptual-forces-notes.pdf",
+  "sha256": "6a8d5b1274f0ec349bd791c5a83e62f04a6cb589e3fd17209c54b76a1ef842d3",
+  "edition": "Foundation draft 1",
+  "chapter": "Patterns in motion",
+  "subchapter": "Forces and changes in motion",
+  "heading": "Original conceptual activity design notes",
+  "pageRange": "1-3",
+  "learningBoundary": "Qualitative predictions about balanced forces, net-force direction, and interaction pairs",
   "extractedOn": "2026-08-15",
-  "reviewer": "replace",
-  "rightsNote": "Controlled instructor source; source content is not stored in GitHub."
+  "reviewer": "Repository foundation maintainer",
+  "rightsNote": "Original activity design notes; no textbook passages or external source content are stored in GitHub."
 }
-
