@@ -31,6 +31,6 @@ body:
           required: true
         - label: The required type and difficulty distribution is satisfied.
           required: true
-        - label: English, Malay, and Mandarin fields are complete.
+        - label: English, Malay, and Simplified Chinese fields are complete.
           required: true
 
