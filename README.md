@@ -22,7 +22,7 @@ The repository contains specifications, schemas, validation scripts, tests, proj
 
 ## Run the learner scaffold
 
-Python 3.12 and a modern browser are the only requirements.
+Python 3.12, Node.js for JavaScript checks, and a modern browser are required. Install the pinned validation dependency with `python -m pip install -r requirements-dev.txt`.
 
 1. Run `python scripts/serve.py` from the repository root.
 2. Open `http://127.0.0.1:8000/app/`.

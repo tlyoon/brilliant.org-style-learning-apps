@@ -9,49 +9,94 @@ const copy = {
 
 const localized = (value) => typeof value === "string" ? value : value?.[state.locale] ?? value?.en ?? "";
 
+function element(tag, { className, text, attributes } = {}) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  for (const [name, value] of Object.entries(attributes ?? {})) node.setAttribute(name, value);
+  return node;
+}
+
 function resetActivity() {
   state.selected = null;
   state.checked = false;
   state.hint = false;
 }
 
+function renderComplete(root) {
+  const card = element("section", { className: "card" });
+  card.append(
+    element("p", { className: "eyebrow", text: localized(state.package.subchapter) }),
+    element("h1", { text: copy[state.locale].complete }),
+  );
+  const restart = element("button", { className: "action", text: copy[state.locale].restart, attributes: { id: "restart" } });
+  restart.addEventListener("click", () => { state.activityIndex = 0; resetActivity(); render(); });
+  card.append(restart);
+  root.replaceChildren(card);
+}
+
 function render() {
   const root = document.querySelector("#app");
   const activities = state.package.activities;
   if (state.activityIndex >= activities.length) {
-    root.innerHTML = `<section class="card"><p class="eyebrow">${localized(state.package.subchapter)}</p><h1>${copy[state.locale].complete}</h1><button class="action" id="restart">${copy[state.locale].restart}</button></section>`;
-    document.querySelector("#restart").addEventListener("click", () => { state.activityIndex = 0; resetActivity(); render(); });
+    renderComplete(root);
     return;
   }
 
   const activity = activities[state.activityIndex];
   const labels = copy[state.locale];
-  const options = activity.answerKey.options;
-  const feedback = state.checked
-    ? `<div class="feedback" role="status">${state.selected === activity.answerKey.correct ? labels.correct : labels.retry} ${localized(activity.feedback)}</div>`
-    : "";
-  root.innerHTML = `
-    <section class="card">
-      <p class="eyebrow">${labels.activity} ${state.activityIndex + 1} ${labels.of} ${activities.length} · ${activity.difficulty}</p>
-      <div class="progress" aria-label="Progress"><span style="width:${((state.activityIndex + 1) / activities.length) * 100}%"></span></div>
-      <h1>${localized(activity.prompt)}</h1>
-      <div class="choices">${options.map((option) => `<button class="choice" data-value="${option.id}" aria-pressed="${state.selected === option.id}">${localized(option.label)}</button>`).join("")}</div>
-      ${state.hint ? `<div class="feedback">${localized(activity.hints[0])}</div>` : ""}
-      ${feedback}
-      <div class="choices">
-        <button class="action" id="check" ${state.selected === null ? "disabled" : ""}>${state.checked ? (state.selected === activity.answerKey.correct ? labels.next : labels.tryAgain) : labels.check}</button>
-        <button class="action secondary" id="hint">${labels.hint}</button>
-      </div>
-    </section>`;
+  const card = element("section", { className: "card" });
+  card.append(element("p", {
+    className: "eyebrow",
+    text: `${labels.activity} ${state.activityIndex + 1} ${labels.of} ${activities.length} · ${activity.difficulty}`,
+  }));
 
-  document.querySelectorAll(".choice").forEach((button) => button.addEventListener("click", () => { state.selected = button.dataset.value; state.checked = false; render(); }));
-  document.querySelector("#hint").addEventListener("click", () => { state.hint = true; render(); });
-  document.querySelector("#check").addEventListener("click", () => {
+  const progress = element("div", { className: "progress", attributes: { "aria-label": "Progress" } });
+  const progressBar = element("span");
+  progressBar.style.width = `${((state.activityIndex + 1) / activities.length) * 100}%`;
+  progress.append(progressBar);
+  card.append(progress, element("h1", { text: localized(activity.prompt) }));
+
+  const choices = element("div", { className: "choices" });
+  for (const option of activity.answerKey.options) {
+    const button = element("button", {
+      className: "choice",
+      text: localized(option.label),
+      attributes: { "aria-pressed": String(state.selected === option.id) },
+    });
+    button.dataset.value = option.id;
+    button.addEventListener("click", () => { state.selected = option.id; state.checked = false; render(); });
+    choices.append(button);
+  }
+  card.append(choices);
+
+  if (state.hint) card.append(element("div", { className: "feedback", text: localized(activity.hints[0]) }));
+  if (state.checked) {
+    const result = state.selected === activity.answerKey.correct ? labels.correct : labels.retry;
+    card.append(element("div", {
+      className: "feedback",
+      text: `${result} ${localized(activity.feedback)}`,
+      attributes: { role: "status" },
+    }));
+  }
+
+  const actions = element("div", { className: "choices" });
+  const checkLabel = state.checked
+    ? (state.selected === activity.answerKey.correct ? labels.next : labels.tryAgain)
+    : labels.check;
+  const check = element("button", { className: "action", text: checkLabel, attributes: { id: "check" } });
+  check.disabled = state.selected === null;
+  check.addEventListener("click", () => {
     if (!state.checked) state.checked = true;
     else if (state.selected === activity.answerKey.correct) { state.activityIndex += 1; resetActivity(); }
     else resetActivity();
     render();
   });
+  const hint = element("button", { className: "action secondary", text: labels.hint, attributes: { id: "hint" } });
+  hint.addEventListener("click", () => { state.hint = true; render(); });
+  actions.append(check, hint);
+  card.append(actions);
+  root.replaceChildren(card);
 }
 
 async function start() {
@@ -61,7 +106,8 @@ async function start() {
     state.package = await response.json();
     render();
   } catch (error) {
-    document.querySelector("#app").innerHTML = `<p class="error">Could not load the example package. Start the app through the documented local server. (${error.message})</p>`;
+    const message = `Could not load the example package. Start the app through the documented local server. (${error.message})`;
+    document.querySelector("#app").replaceChildren(element("p", { className: "error", text: message }));
   }
 }
 

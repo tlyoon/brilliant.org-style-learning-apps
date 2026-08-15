@@ -19,6 +19,11 @@ class AppScaffoldTests(unittest.TestCase):
         self.assertIn("content/examples/conceptual-forces.json", javascript)
         self.assertIn("fetch(DEFAULT_PACKAGE)", javascript)
 
+    def test_player_does_not_use_inner_html(self):
+        javascript = (APP / "app.js").read_text(encoding="utf-8")
+        self.assertNotIn("innerHTML", javascript)
+        self.assertIn("textContent", javascript)
+
     def test_example_is_original_conceptual_draft(self):
         package = json.loads(EXAMPLE.read_text(encoding="utf-8"))
         self.assertEqual("draft", package["status"])
