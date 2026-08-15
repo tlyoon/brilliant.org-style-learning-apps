@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate learning packages against the schema and semantic content rules."""
+"""Validate learning packages against structural and semantic content rules."""
 
 from __future__ import annotations
 
@@ -10,13 +10,16 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT = ROOT / "content"
-SCHEMA_PATH = CONTENT / "schema" / "content-package.schema.json"
+MANIFEST_ROOT = CONTENT / "source-manifests"
+PACKAGE_SCHEMA_PATH = CONTENT / "schema" / "content-package.schema.json"
+MANIFEST_SCHEMA_PATH = CONTENT / "schema" / "source-manifest.schema.json"
 TYPES = {"mcq", "interactive"}
 DIFFICULTIES = {"easy", "moderate", "challenging"}
+PLACEHOLDER_PATTERN = re.compile(r"\b(?:todo|tbd|replace|placeholder|examples?|generic|unknown|n/?a)\b", re.I)
 
 NUMERIC_PATTERNS = {
     "en": (
@@ -43,9 +46,12 @@ NUMERIC_PATTERNS = {
     ),
 }
 
-SCHEMA = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
-Draft202012Validator.check_schema(SCHEMA)
-SCHEMA_VALIDATOR = Draft202012Validator(SCHEMA)
+PACKAGE_SCHEMA = json.loads(PACKAGE_SCHEMA_PATH.read_text(encoding="utf-8"))
+MANIFEST_SCHEMA = json.loads(MANIFEST_SCHEMA_PATH.read_text(encoding="utf-8"))
+Draft202012Validator.check_schema(PACKAGE_SCHEMA)
+Draft202012Validator.check_schema(MANIFEST_SCHEMA)
+PACKAGE_VALIDATOR = Draft202012Validator(PACKAGE_SCHEMA)
+MANIFEST_VALIDATOR = Draft202012Validator(MANIFEST_SCHEMA, format_checker=FormatChecker())
 
 
 def _schema_location(source: str, path: Any) -> str:
@@ -55,18 +61,49 @@ def _schema_location(source: str, path: Any) -> str:
     return location
 
 
-def _schema_errors(data: Any, source: str) -> list[str]:
+def _schema_errors(validator: Draft202012Validator, data: Any, source: str) -> list[str]:
     failures = sorted(
-        SCHEMA_VALIDATOR.iter_errors(data),
+        validator.iter_errors(data),
         key=lambda error: tuple(str(part) for part in error.absolute_path),
     )
     return [f"{_schema_location(source, error.absolute_path)}: {error.message}" for error in failures]
 
 
-def validate_package(data: Any, source: str = "package") -> list[str]:
-    errors = _schema_errors(data, source)
+def _manifest_errors(reference: str, source: str) -> list[str]:
+    prefix = "content/source-manifests/"
+    manifest_label = f"{source}.sourceManifest"
+    if not reference.startswith(prefix):
+        return [f"{manifest_label}: must reference a file inside {prefix}"]
+
+    relative_name = reference.removeprefix(prefix)
+    manifest_path = (MANIFEST_ROOT / relative_name).resolve()
+    try:
+        manifest_path.relative_to(MANIFEST_ROOT.resolve())
+    except ValueError:
+        return [f"{manifest_label}: resolves outside the permitted manifest directory"]
+    if not manifest_path.is_file():
+        return [f"{manifest_label}: referenced manifest does not exist: {reference}"]
+
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"{manifest_label}: cannot read a valid JSON manifest: {exc}"]
+
+    errors = _schema_errors(MANIFEST_VALIDATOR, manifest, reference)
     if errors:
         return errors
+    for field, value in manifest.items():
+        if isinstance(value, str) and PLACEHOLDER_PATTERN.search(value):
+            errors.append(f"{reference}.{field}: must contain meaningful provenance, not a placeholder value")
+    return errors
+
+
+def validate_package(data: Any, source: str = "package") -> list[str]:
+    errors = _schema_errors(PACKAGE_VALIDATOR, data, source)
+    if errors:
+        return errors
+
+    errors.extend(_manifest_errors(data["sourceManifest"], source))
 
     seen_activities: set[str] = set()
     distribution: Counter[tuple[str, str]] = Counter()
@@ -105,7 +142,7 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
 
 
 def package_paths() -> list[Path]:
-    excluded = {CONTENT / "schema", CONTENT / "source-manifests", CONTENT / "templates"}
+    excluded = {CONTENT / "schema", MANIFEST_ROOT, CONTENT / "templates"}
     return [path for path in CONTENT.rglob("*.json") if not any(parent in path.parents for parent in excluded)]
 
 

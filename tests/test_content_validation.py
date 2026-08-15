@@ -37,6 +37,7 @@ class ContentValidationTests(unittest.TestCase):
                 ],
             },
             "hints": [copy.deepcopy(localized)], "feedback": copy.deepcopy(localized),
+            "misconceptions": ["confuses-related-concepts"],
             "provenance": {"sourceLocation": "synthetic", "originalContent": True},
         }
 
@@ -184,6 +185,57 @@ class ContentValidationTests(unittest.TestCase):
                 package = json.loads(path.read_text(encoding="utf-8"))
                 self.assertEqual([], validator.validate_package(package, path.name))
 
+    def test_referenced_manifest_must_exist(self):
+        package = self.load("valid-draft.json")
+        package["sourceManifest"] = "content/source-manifests/missing.json"
+        errors = validator.validate_package(package)
+        self.assertTrue(any("referenced manifest does not exist" in error for error in errors))
+
+    def test_referenced_manifest_must_be_valid_json(self):
+        package = self.load("valid-draft.json")
+        package["sourceManifest"] = "content/source-manifests/malformed.json"
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+            manifest_root = Path(directory)
+            (manifest_root / "malformed.json").write_text("{not json", encoding="utf-8")
+            with patch.object(validator, "MANIFEST_ROOT", manifest_root):
+                errors = validator.validate_package(package)
+        self.assertTrue(any("cannot read a valid JSON manifest" in error for error in errors))
+
+    def test_referenced_manifest_requires_complete_meaningful_metadata(self):
+        base_manifest = json.loads(
+            (ROOT / "content" / "source-manifests" / "source-manifest.example.json").read_text(encoding="utf-8")
+        )
+        cases = {
+            "missing": {key: value for key, value in base_manifest.items() if key != "reviewer"},
+            "empty": {**base_manifest, "reviewer": ""},
+            "todo": {**base_manifest, "reviewer": "TODO"},
+            "tbd": {**base_manifest, "edition": "TBD"},
+            "generic-example": {**base_manifest, "heading": "Generic examples"},
+        }
+        for name, manifest in cases.items():
+            with self.subTest(name=name), tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+                manifest_root = Path(directory)
+                (manifest_root / "candidate.json").write_text(json.dumps(manifest), encoding="utf-8")
+                package = self.load("valid-draft.json")
+                package["sourceManifest"] = "content/source-manifests/candidate.json"
+                with patch.object(validator, "MANIFEST_ROOT", manifest_root):
+                    errors = validator.validate_package(package)
+                self.assertNotEqual([], errors)
+
+    def test_valid_referenced_manifest_passes(self):
+        package = self.load("valid-draft.json")
+        self.assertEqual([], validator.validate_package(package))
+
+    def test_misconception_targets_are_required_and_meaningful(self):
+        for value in (None, [], [""], ["   "], ["todo"], ["generic misconception"]):
+            with self.subTest(value=value):
+                package = self.package_with_activity()
+                if value is None:
+                    del package["activities"][0]["misconceptions"]
+                else:
+                    package["activities"][0]["misconceptions"] = value
+                errors = validator.validate_package(package)
+                self.assertTrue(any("misconceptions" in error for error in errors), errors)
 
 if __name__ == "__main__":
     unittest.main()

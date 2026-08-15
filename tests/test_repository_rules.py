@@ -11,6 +11,7 @@ class RepositoryRuleTests(unittest.TestCase):
             "AGENTS.md", "docs/CONTEXT_INDEX.md", "docs/PRODUCT_REQUIREMENTS.md",
             "docs/CONTENT_RULES.md", "docs/LEARNING_DESIGN.md",
             "docs/SECURITY_AND_PRIVACY.md", "content/schema/content-package.schema.json",
+            "content/schema/source-manifest.schema.json",
         ]
         for path in required:
             self.assertTrue((ROOT / path).is_file(), path)

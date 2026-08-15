@@ -17,7 +17,7 @@ class AppScaffoldTests(unittest.TestCase):
     def test_player_loads_external_package(self):
         javascript = (APP / "app.js").read_text(encoding="utf-8")
         self.assertIn("content/examples/conceptual-forces.json", javascript)
-        self.assertIn("fetch(DEFAULT_PACKAGE)", javascript)
+        self.assertIn("loadPackage()", javascript)
 
     def test_player_does_not_use_inner_html(self):
         javascript = (APP / "app.js").read_text(encoding="utf-8")

@@ -6,7 +6,7 @@
   "status": "draft",
   "locales": ["en", "ms", "zh"],
   "learningObjectives": ["Identify prohibited content"],
-  "sourceManifest": "synthetic-manifest.json",
+  "sourceManifest": "content/source-manifests/source-manifest.example.json",
   "activities": [{
     "id": "invalid-one",
     "type": "mcq",

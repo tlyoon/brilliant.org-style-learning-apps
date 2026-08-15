@@ -1,5 +1,6 @@
 const DEFAULT_PACKAGE = "../content/examples/conceptual-forces.json";
-const state = { package: null, activityIndex: 0, locale: "en", selected: null, checked: false, hint: false };
+const state = { package: null, activityIndex: 0, locale: "en", selected: null, checked: false, hint: false, loading: false };
+let loadGeneration = 0;
 
 const copy = {
   en: { activity: "Activity", of: "of", check: "Check answer", next: "Next activity", tryAgain: "Try again", restart: "Start again", hint: "Show a hint", complete: "Journey complete", correct: "That reasoning fits.", retry: "Reconsider the relationship and try again." },
@@ -99,17 +100,33 @@ function render() {
   root.replaceChildren(card);
 }
 
-async function start() {
+const localeSelector = document.querySelector("#locale");
+
+async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
+  const generation = ++loadGeneration;
+  state.loading = true;
+  localeSelector.disabled = true;
   try {
-    const response = await fetch(DEFAULT_PACKAGE);
+    const response = await fetch(packageUrl);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    state.package = await response.json();
+    const loadedPackage = await response.json();
+    if (generation !== loadGeneration) return;
+    state.package = loadedPackage;
+    state.loading = false;
+    localeSelector.disabled = false;
     render();
   } catch (error) {
+    if (generation !== loadGeneration) return;
+    state.package = null;
+    state.loading = false;
+    localeSelector.disabled = false;
     const message = `Could not load the example package. Start the app through the documented local server. (${error.message})`;
     document.querySelector("#app").replaceChildren(element("p", { className: "error", text: message }));
   }
 }
 
-document.querySelector("#locale").addEventListener("change", (event) => { state.locale = event.target.value; render(); });
-start();
+localeSelector.addEventListener("change", (event) => {
+  state.locale = event.target.value;
+  if (!state.loading && state.package) render();
+});
+loadPackage();

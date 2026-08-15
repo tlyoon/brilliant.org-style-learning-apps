@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/source-manifest.schema.json",
+  "title": "Controlled source manifest",
+  "type": "object",
+  "required": ["manifestVersion", "sourceId", "controlledFilename", "sha256", "edition", "chapter", "subchapter", "heading", "pageRange", "learningBoundary", "extractedOn", "reviewer", "rightsNote"],
+  "properties": {
+    "manifestVersion": {"const": "1.0"},
+    "sourceId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "controlledFilename": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "edition": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "chapter": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "subchapter": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "heading": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "pageRange": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "learningBoundary": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "extractedOn": {"type": "string", "format": "date"},
+    "reviewer": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "rightsNote": {"type": "string", "pattern": "^(?=.*\\S).+$"}
+  },
+  "additionalProperties": false
+}
