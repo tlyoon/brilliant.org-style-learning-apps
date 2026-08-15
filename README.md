@@ -36,12 +36,20 @@ Run all local checks before review:
 
 ```text
 python scripts/lint.py
+python -m json.tool content/schema/content-package.schema.json
+python -m json.tool content/schema/source-manifest.schema.json
+python -m json.tool content/templates/subchapter.template.json
+python -m json.tool content/source-manifests/source-manifest.example.json
 python scripts/validate_content.py
-python -m unittest discover -s tests -v
 node --check app/app.js
+node --check tests/test_app_loading.js
+node --check tests/test_app_rendering.js
+node tests/test_app_loading.js
+node tests/test_app_rendering.js
+python -m unittest discover -s tests -v
 ```
 
-The final command uses Node.js only as a development-time JavaScript syntax checker. The application has no runtime package dependencies or build step.
+Node.js is used only for development-time syntax and regression checks. The application has no runtime package dependencies or build step.
 
 Implementation work should use short-lived branches and pull requests. `main` remains the stable baseline.
 
