@@ -6,6 +6,14 @@
   "status": "draft",
   "locales": ["en", "ms", "zh"],
   "learningObjectives": ["Replace with an observable conceptual learning objective"],
+  "prerequisites": [],
+  "misconceptionCatalogue": [],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": ["hint", "retry", "prerequisite-recovery"],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-x/section-x-x/review-record.md",
   "sourceManifest": "content/source-manifests/source-manifest.example.json",
   "activities": []
 }

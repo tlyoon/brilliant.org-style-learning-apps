@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
+SECTION_1_1 = ROOT / "content" / "chapter-1" / "section-1-1" / "package.json"
 SPEC = importlib.util.spec_from_file_location("validate_content", ROOT / "scripts" / "validate_content.py")
 validator = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
@@ -90,17 +91,8 @@ class ContentValidationTests(unittest.TestCase):
         self.assertTrue(any("numericAnswerRequired" in error for error in errors))
 
     def test_publishable_distribution(self):
-        package = self.load("valid-draft.json")
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
         package["status"] = "publishable"
-        package["activities"] = [
-            self.activity(i, atype, difficulty)
-            for i, (atype, difficulty) in enumerate(
-                (atype, difficulty)
-                for atype in ("mcq", "interactive")
-                for difficulty in ("easy", "moderate", "challenging")
-                for _ in range(3)
-            )
-        ]
         self.assertEqual([], validator.validate_package(package))
 
     def test_options_are_required_and_non_empty(self):
@@ -225,6 +217,58 @@ class ContentValidationTests(unittest.TestCase):
     def test_valid_referenced_manifest_passes(self):
         package = self.load("valid-draft.json")
         self.assertEqual([], validator.validate_package(package))
+
+    def test_section_1_1_pack_is_complete_and_valid(self):
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        self.assertEqual([], validator.validate_package(package, "section-1-1"))
+        self.assertEqual("review", package["status"])
+        self.assertEqual(18, len(package["activities"]))
+        distribution = {
+            (activity["type"], activity["difficulty"])
+            for activity in package["activities"]
+        }
+        self.assertEqual(
+            {
+                (activity_type, difficulty)
+                for activity_type in ("mcq", "interactive")
+                for difficulty in ("easy", "moderate", "challenging")
+            },
+            distribution,
+        )
+        for activity_type in ("mcq", "interactive"):
+            for difficulty in ("easy", "moderate", "challenging"):
+                count = sum(
+                    activity["type"] == activity_type and activity["difficulty"] == difficulty
+                    for activity in package["activities"]
+                )
+                self.assertEqual(3, count, (activity_type, difficulty))
+
+    def test_section_1_1_pack_has_review_ready_learning_support(self):
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        catalogue = {item["id"] for item in package["misconceptionCatalogue"]}
+        prerequisites = {item["id"] for item in package["prerequisites"]}
+        self.assertTrue(package["evidencePolicy"]["preserveFirstAttempt"])
+        self.assertTrue(package["evidencePolicy"]["assistedSuccessSeparate"])
+        for activity in package["activities"]:
+            self.assertGreaterEqual(len(activity["hints"]), 2)
+            self.assertEqual({"en", "ms", "zh"}, set(activity["answerLogic"]))
+            self.assertEqual({"en", "ms", "zh"}, set(activity["explanation"]))
+            self.assertEqual({"en", "ms", "zh"}, set(activity["accessibilityText"]))
+            self.assertIn(activity["prerequisiteRecovery"]["prerequisiteId"], prerequisites)
+            self.assertTrue(set(activity["misconceptions"]).issubset(catalogue))
+            if activity["type"] == "interactive":
+                self.assertIn("interactionMode", activity)
+            else:
+                self.assertNotIn("interactionMode", activity)
+
+    def test_review_package_requires_extended_authoring_fields(self):
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        for field in ("prerequisites", "misconceptionCatalogue", "evidencePolicy", "reviewRecord"):
+            with self.subTest(field=field):
+                candidate = copy.deepcopy(package)
+                del candidate[field]
+                errors = validator.validate_package(candidate)
+                self.assertTrue(any(field in error for error in errors), errors)
 
     def test_misconception_targets_are_required_and_meaningful(self):
         for value in (None, [], [""], ["   "], ["todo"], ["generic misconception"]):

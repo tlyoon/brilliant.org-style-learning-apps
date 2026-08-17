@@ -105,6 +105,35 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
 
     errors.extend(_manifest_errors(data["sourceManifest"], source))
 
+    if data["status"] in {"review", "publishable"}:
+        required_review_fields = (
+            "prerequisites", "misconceptionCatalogue", "evidencePolicy", "reviewRecord",
+        )
+        for field in required_review_fields:
+            if field not in data:
+                errors.append(f"{source}.{field}: required for review and publishable packages")
+
+    prerequisite_ids = {item["id"] for item in data.get("prerequisites", [])}
+    misconception_ids = {item["id"] for item in data.get("misconceptionCatalogue", [])}
+    for field, items in (
+        ("prerequisites", data.get("prerequisites", [])),
+        ("misconceptionCatalogue", data.get("misconceptionCatalogue", [])),
+    ):
+        ids = [item["id"] for item in items]
+        if len(ids) != len(set(ids)):
+            errors.append(f"{source}.{field}: IDs must be unique")
+
+    review_record = data.get("reviewRecord")
+    if review_record:
+        review_path = (ROOT / review_record).resolve()
+        try:
+            review_path.relative_to((CONTENT / "chapter-1").resolve())
+        except ValueError:
+            errors.append(f"{source}.reviewRecord: must resolve inside content/chapter-1")
+        else:
+            if not review_path.is_file():
+                errors.append(f"{source}.reviewRecord: referenced file does not exist")
+
     seen_activities: set[str] = set()
     distribution: Counter[tuple[str, str]] = Counter()
     for index, activity in enumerate(data["activities"]):
@@ -124,14 +153,36 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
             if option_id in seen_options:
                 errors.append(f"{label}.answerKey.options[{option_index}].id is duplicated: {option_id}")
             seen_options.add(option_id)
+            option = activity["answerKey"]["options"][option_index]
+            option_misconception = option.get("misconception")
+            if option_misconception and misconception_ids and option_misconception not in misconception_ids:
+                errors.append(f"{label}.answerKey.options[{option_index}].misconception: not in the package catalogue")
         if option_ids.count(activity["answerKey"]["correct"]) != 1:
             errors.append(f"{label}.answerKey.correct must match exactly one option ID")
+
+        if data["status"] in {"review", "publishable"}:
+            for field in ("answerLogic", "explanation", "prerequisiteRecovery", "accessibilityText"):
+                if field not in activity:
+                    errors.append(f"{label}.{field}: required for review and publishable packages")
+            if len(activity["hints"]) < 2:
+                errors.append(f"{label}.hints: at least two progressive hints are required")
+            if activity["type"] == "interactive" and "interactionMode" not in activity:
+                errors.append(f"{label}.interactionMode: required for interactive activities")
+            if activity["type"] == "mcq" and "interactionMode" in activity:
+                errors.append(f"{label}.interactionMode: must not be set for MCQ activities")
+
+        recovery = activity.get("prerequisiteRecovery")
+        if recovery and recovery["prerequisiteId"] not in prerequisite_ids:
+            errors.append(f"{label}.prerequisiteRecovery.prerequisiteId: not declared by package")
+        for misconception in activity["misconceptions"]:
+            if misconception_ids and misconception not in misconception_ids:
+                errors.append(f"{label}.misconceptions: {misconception} is not in the package catalogue")
 
         for locale, prompt in activity["prompt"].items():
             if any(pattern.search(prompt) for pattern in NUMERIC_PATTERNS[locale]):
                 errors.append(f"{label}.prompt.{locale} appears to request calculation or a numerical answer")
 
-    if data["status"] == "publishable":
+    if data["status"] in {"review", "publishable"}:
         if len(data["activities"]) != 18:
             errors.append(f"{source}: publishable packages require exactly 18 activities")
         for activity_type in sorted(TYPES):

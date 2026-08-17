@@ -1,0 +1,403 @@
+{
+  "schemaVersion": "1.0",
+  "packageId": "chapter-1-section-1-1",
+  "chapter": "Physics and Measurement",
+  "subchapter": "Standards of Length, Mass, and Time",
+  "status": "review",
+  "locales": ["en", "ms", "zh"],
+  "learningObjectives": [
+    "Evaluate whether a proposed measurement standard is stable, reproducible, accessible, and location-independent",
+    "Match length, mass, and time to their SI base units and current constant-based definitions",
+    "Distinguish mass from weight and an instant from a time interval",
+    "Interpret SI prefixes as scale labels without numerical conversion",
+    "Classify fundamental and derived quantities",
+    "Reason qualitatively about density using relative mass and volume"
+  ],
+  "prerequisites": [
+    {
+      "id": "compare-properties",
+      "description": {"en": "Compare properties using same, greater, smaller, stable, and changing.", "ms": "Bandingkan sifat menggunakan sama, lebih besar, lebih kecil, stabil dan berubah.", "zh": "用相同、更大、更小、稳定和变化来比较性质。"},
+      "recovery": {"en": "First identify what stays the same and what changes in the two descriptions.", "ms": "Mula-mula kenal pasti perkara yang kekal sama dan perkara yang berubah dalam kedua-dua huraian.", "zh": "先找出两个描述中保持不变和发生变化的部分。"}
+    },
+    {
+      "id": "read-unit-symbols",
+      "description": {"en": "Recognize that a physical quantity and the unit used to report it have different roles.", "ms": "Kenali bahawa kuantiti fizik dan unit yang digunakan untuk melaporkannya mempunyai peranan berbeza.", "zh": "认识到物理量与用来报告它的单位具有不同作用。"},
+      "recovery": {"en": "Ask whether the word names what is measured or the agreed reference used to report it.", "ms": "Tanya sama ada perkataan itu menamakan perkara yang diukur atau rujukan dipersetujui yang digunakan untuk melaporkannya.", "zh": "判断这个词表示被测对象，还是报告测量结果时采用的约定参照。"}
+    },
+    {
+      "id": "ratio-language",
+      "description": {"en": "Interpret more per same amount and same amount in less space qualitatively.", "ms": "Tafsirkan secara kualitatif lebih banyak bagi jumlah yang sama dan jumlah yang sama dalam ruang lebih kecil.", "zh": "定性理解同样大小中含有更多，以及同样多少占据更小空间。"},
+      "recovery": {"en": "Hold one comparison property fixed, then decide how the other property differs.", "ms": "Kekalkan satu sifat perbandingan, kemudian tentukan bagaimana sifat yang satu lagi berbeza.", "zh": "先固定一个比较量，再判断另一个量如何不同。"}
+    }
+  ],
+  "misconceptionCatalogue": [
+    {"id": "standard-can-vary-by-person", "description": {"en": "A personal body dimension can be a universal standard.", "ms": "Ukuran anggota badan seseorang boleh menjadi piawai sejagat.", "zh": "个人身体尺寸可以作为通用标准。"}},
+    {"id": "standard-may-drift", "description": {"en": "A changing reference remains a suitable standard.", "ms": "Rujukan yang berubah masih merupakan piawai yang sesuai.", "zh": "会变化的参照仍可作为合适标准。"}},
+    {"id": "unit-is-quantity", "description": {"en": "A unit and the quantity it reports are the same concept.", "ms": "Unit dan kuantiti yang dilaporkannya ialah konsep yang sama.", "zh": "单位和它所表示的物理量是同一概念。"}},
+    {"id": "artifact-still-defines-kilogram", "description": {"en": "A metal cylinder still defines the kilogram.", "ms": "Silinder logam masih mentakrifkan kilogram.", "zh": "千克仍由一个金属圆柱定义。"}},
+    {"id": "mass-equals-weight", "description": {"en": "Mass and weight are the same physical quantity.", "ms": "Jisim dan berat ialah kuantiti fizik yang sama.", "zh": "质量和重量是同一物理量。"}},
+    {"id": "time-equals-duration", "description": {"en": "A clock reading and an elapsed interval mean the same thing.", "ms": "Bacaan jam dan tempoh berlalu membawa maksud yang sama.", "zh": "时刻读数和经过的时长含义相同。"}},
+    {"id": "prefix-changes-quantity", "description": {"en": "An SI prefix changes the kind of physical quantity.", "ms": "Awalan SI mengubah jenis kuantiti fizik.", "zh": "SI 前缀会改变物理量的种类。"}},
+    {"id": "all-quantities-are-fundamental", "description": {"en": "Every named physical quantity is fundamental.", "ms": "Setiap kuantiti fizik yang dinamakan ialah kuantiti asas.", "zh": "每个有名称的物理量都是基本量。"}},
+    {"id": "same-mass-means-same-volume", "description": {"en": "Equal masses must occupy equal volumes.", "ms": "Jisim yang sama mesti memenuhi isi padu yang sama.", "zh": "质量相同就一定占据相同体积。"}},
+    {"id": "denser-means-more-mass-always", "description": {"en": "A denser sample must always have more total mass.", "ms": "Sampel lebih tumpat mesti sentiasa mempunyai jumlah jisim lebih besar.", "zh": "密度更大的样品总质量一定更大。"}},
+    {"id": "constant-definition-is-local", "description": {"en": "A constant-based definition depends on one laboratory or location.", "ms": "Takrif berasaskan pemalar bergantung pada satu makmal atau lokasi.", "zh": "基于常量的定义依赖某个实验室或地点。"}},
+    {"id": "historical-definition-is-current", "description": {"en": "An older artifact- or Earth-based definition is still current.", "ms": "Takrif lama berasaskan artifak atau Bumi masih berkuat kuasa.", "zh": "旧的实物或地球基准定义仍是现行定义。"}}
+  ],
+  "evidencePolicy": {"preserveFirstAttempt": true, "assistedSignals": ["hint", "retry", "prerequisite-recovery"], "assistedSuccessSeparate": true},
+  "reviewRecord": "content/chapter-1/section-1-1/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-1-section-1-1.json",
+  "activities": [
+    {
+      "id": "mcq-standard-for-every-lab", "type": "mcq", "difficulty": "easy", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Identify a reproducible measurement standard",
+      "prompt": {"en": "Several laboratories need to compare length measurements. Which proposed reference best supports agreement everywhere?", "ms": "Beberapa makmal perlu membandingkan ukuran panjang. Rujukan cadangan manakah paling menyokong persetujuan di semua tempat?", "zh": "多个实验室需要比较长度测量结果。哪一种参照最有利于各地取得一致结果？"},
+      "answerKey": {"correct": "shared-stable", "options": [
+        {"id": "shared-stable", "label": {"en": "A stable reference that every laboratory can reproduce", "ms": "Rujukan stabil yang boleh dihasilkan semula oleh setiap makmal", "zh": "每个实验室都能复现的稳定参照"}},
+        {"id": "researcher-hand", "label": {"en": "The hand span of whichever researcher is present", "ms": "Jengkal tangan penyelidik yang berada di situ", "zh": "当时在场研究人员的手掌跨度"}, "misconception": "standard-can-vary-by-person"},
+        {"id": "soft-strip", "label": {"en": "A soft strip whose length slowly changes", "ms": "Jalur lembut yang panjangnya berubah perlahan-lahan", "zh": "长度会缓慢变化的软条"}, "misconception": "standard-may-drift"}
+      ]},
+      "hints": [
+        {"en": "Consider whether different people would obtain the same reference.", "ms": "Pertimbangkan sama ada orang berbeza akan memperoleh rujukan yang sama.", "zh": "想一想不同的人能否得到相同参照。"},
+        {"en": "A useful standard must remain stable and be reproducible in different places.", "ms": "Piawai yang berguna mesti kekal stabil dan boleh dihasilkan semula di tempat berbeza.", "zh": "有用的标准必须保持稳定，并能在不同地点复现。"}
+      ],
+      "feedback": {"en": "Agreement requires a reference that does not depend on a particular person and does not drift.", "ms": "Persetujuan memerlukan rujukan yang tidak bergantung pada individu tertentu dan tidak berubah.", "zh": "要取得一致结果，参照不能依赖某个人，也不能随时间漂移。"},
+      "answerLogic": {"en": "The shared stable reference satisfies reproducibility and stability; the other choices vary by person or time.", "ms": "Rujukan stabil bersama memenuhi kebolehulangan dan kestabilan; pilihan lain berubah mengikut orang atau masa.", "zh": "共同且稳定的参照满足可复现性和稳定性；其他选择会随人或时间变化。"},
+      "explanation": {"en": "Measurement standards let independent observers attach the same meaning to a reported unit.", "ms": "Piawai pengukuran membolehkan pemerhati bebas memberikan maksud yang sama kepada unit yang dilaporkan.", "zh": "测量标准使彼此独立的观察者对所报告的单位有相同理解。"},
+      "prerequisiteRecovery": {"prerequisiteId": "compare-properties", "prompt": {"en": "Compare which reference stays unchanged when the person or place changes.", "ms": "Bandingkan rujukan yang kekal tidak berubah apabila orang atau tempat berubah.", "zh": "比较当人员或地点改变时，哪一种参照仍保持不变。"}},
+      "misconceptions": ["standard-can-vary-by-person", "standard-may-drift"],
+      "accessibilityText": {"en": "Text-only single-choice activity about stable measurement references.", "ms": "Aktiviti pilihan tunggal berasaskan teks tentang rujukan pengukuran yang stabil.", "zh": "关于稳定测量参照的纯文本单选活动。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 3; original laboratory comparison scenario", "originalContent": true}
+    },
+    {
+      "id": "mcq-base-unit-match", "type": "mcq", "difficulty": "easy", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Match an SI base quantity to its unit",
+      "prompt": {"en": "A student records how long a sample is. Which SI base unit belongs with that quantity?", "ms": "Seorang pelajar merekod panjang suatu sampel. Unit asas SI manakah sepadan dengan kuantiti itu?", "zh": "一名学生记录一个样品有多长。这个物理量对应哪一个 SI 基本单位？"},
+      "answerKey": {"correct": "metre", "options": [
+        {"id": "metre", "label": {"en": "metre", "ms": "meter", "zh": "米"}},
+        {"id": "kilogram", "label": {"en": "kilogram", "ms": "kilogram", "zh": "千克"}, "misconception": "unit-is-quantity"},
+        {"id": "second", "label": {"en": "second", "ms": "saat", "zh": "秒"}, "misconception": "unit-is-quantity"}
+      ]},
+      "hints": [
+        {"en": "First name the physical quantity being measured.", "ms": "Mula-mula namakan kuantiti fizik yang diukur.", "zh": "先说出被测量的物理量。"},
+        {"en": "Length is reported using the SI base unit metre.", "ms": "Panjang dilaporkan menggunakan unit asas SI meter.", "zh": "长度用 SI 基本单位米来表示。"}
+      ],
+      "feedback": {"en": "The metre is the SI base unit of length.", "ms": "Meter ialah unit asas SI bagi panjang.", "zh": "米是长度的 SI 基本单位。"},
+      "answerLogic": {"en": "The phrase how long identifies length, whose SI base unit is the metre.", "ms": "Frasa berapa panjang mengenal pasti panjang, yang unit asas SInya ialah meter.", "zh": "“有多长”表示长度，长度的 SI 基本单位是米。"},
+      "explanation": {"en": "Length, mass, and time are quantities; metre, kilogram, and second are their corresponding SI base units.", "ms": "Panjang, jisim dan masa ialah kuantiti; meter, kilogram dan saat ialah unit asas SI yang sepadan.", "zh": "长度、质量和时间是物理量；米、千克和秒是相应的 SI 基本单位。"},
+      "prerequisiteRecovery": {"prerequisiteId": "read-unit-symbols", "prompt": {"en": "Separate what is measured—length—from the agreed unit used to report it.", "ms": "Bezakan perkara yang diukur—panjang—daripada unit dipersetujui yang digunakan untuk melaporkannya.", "zh": "把被测量的长度与用来报告它的约定单位区分开。"}},
+      "misconceptions": ["unit-is-quantity"],
+      "accessibilityText": {"en": "Text-only single-choice unit-matching activity.", "ms": "Aktiviti padanan unit pilihan tunggal berasaskan teks.", "zh": "纯文本单位匹配单选活动。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 3; original sample-measurement scenario", "originalContent": true}
+    },
+    {
+      "id": "mcq-instant-or-interval", "type": "mcq", "difficulty": "easy", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Distinguish an instant from a duration",
+      "prompt": {"en": "A laboratory note says, “The observation began when the wall clock showed noon.” What does noon describe?", "ms": "Catatan makmal menyatakan, “Pemerhatian bermula apabila jam dinding menunjukkan tengah hari.” Apakah yang diterangkan oleh tengah hari?", "zh": "实验记录写道：“墙上时钟显示正午时，观察开始。”正午描述的是什么？"},
+      "answerKey": {"correct": "instant", "options": [
+        {"id": "instant", "label": {"en": "An instant relative to a reference clock", "ms": "Satu ketika relatif kepada jam rujukan", "zh": "相对于参考时钟的一个时刻"}},
+        {"id": "duration", "label": {"en": "The duration of the observation", "ms": "Tempoh pemerhatian", "zh": "观察持续的时长"}, "misconception": "time-equals-duration"},
+        {"id": "mass", "label": {"en": "A property of the observed sample", "ms": "Sifat sampel yang diperhatikan", "zh": "被观察样品的一种性质"}, "misconception": "unit-is-quantity"}
+      ]},
+      "hints": [
+        {"en": "Ask whether noon says when something happened or how long it lasted.", "ms": "Tanya sama ada tengah hari menyatakan bila sesuatu berlaku atau berapa lama ia berlangsung.", "zh": "判断正午表示事情何时发生，还是持续了多久。"},
+        {"en": "A clock reading identifies an instant; elapsed duration is a time interval.", "ms": "Bacaan jam mengenal pasti satu ketika; tempoh berlalu ialah selang masa.", "zh": "时钟读数标识一个时刻；经过的时长是时间间隔。"}
+      ],
+      "feedback": {"en": "Noon locates the start instant; it does not state the elapsed duration.", "ms": "Tengah hari menentukan ketika mula; ia tidak menyatakan tempoh yang berlalu.", "zh": "正午确定开始时刻，并没有说明经过了多长时间。"},
+      "answerLogic": {"en": "The statement identifies when the event starts, so it describes an instant rather than an interval.", "ms": "Pernyataan itu mengenal pasti bila peristiwa bermula, jadi ia menerangkan satu ketika dan bukannya selang.", "zh": "这句话指出事件何时开始，因此描述的是时刻而不是时间间隔。"},
+      "explanation": {"en": "Time can label an instant relative to a reference, while a time interval describes duration between instants.", "ms": "Masa boleh melabel satu ketika relatif kepada rujukan, manakala selang masa menerangkan tempoh antara dua ketika.", "zh": "时间可以标记相对于参照的时刻，而时间间隔描述两个时刻之间的时长。"},
+      "prerequisiteRecovery": {"prerequisiteId": "compare-properties", "prompt": {"en": "Contrast the question “when?” with the question “for how long?”", "ms": "Bezakan soalan “bila?” dengan soalan “berapa lama?”", "zh": "比较“何时？”和“持续多久？”这两个问题。"}},
+      "misconceptions": ["time-equals-duration", "unit-is-quantity"],
+      "accessibilityText": {"en": "Text-only single-choice activity contrasting an instant and a duration.", "ms": "Aktiviti pilihan tunggal berasaskan teks yang membezakan ketika dan tempoh.", "zh": "对比时刻与时长的纯文本单选活动。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 5; original laboratory-note scenario", "originalContent": true}
+    },
+    {
+      "id": "mcq-current-kilogram", "type": "mcq", "difficulty": "moderate", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Recognize the current constant-based kilogram definition",
+      "prompt": {"en": "A museum displays the former international kilogram cylinder. Which label is scientifically current?", "ms": "Sebuah muzium mempamerkan silinder kilogram antarabangsa yang lama. Label manakah tepat menurut sains semasa?", "zh": "博物馆展出旧的国际千克原器。哪一条说明符合现行科学标准？"},
+      "answerKey": {"correct": "historical-artifact", "options": [
+        {"id": "historical-artifact", "label": {"en": "It is historically important, but the kilogram is now defined through a fixed Planck constant.", "ms": "Ia penting dari segi sejarah, tetapi kilogram kini ditakrifkan melalui pemalar Planck yang ditetapkan.", "zh": "它具有历史意义，但千克现在通过固定的普朗克常量来定义。"}},
+        {"id": "still-definition", "label": {"en": "Its mass still defines every kilogram everywhere.", "ms": "Jisimnya masih mentakrifkan setiap kilogram di mana-mana.", "zh": "它的质量仍定义世界各地的每一个千克。"}, "misconception": "artifact-still-defines-kilogram"},
+        {"id": "local-choice", "label": {"en": "Each laboratory may choose a different object to define the kilogram.", "ms": "Setiap makmal boleh memilih objek berbeza untuk mentakrifkan kilogram.", "zh": "每个实验室都可以选择不同物体来定义千克。"}, "misconception": "standard-can-vary-by-person"}
+      ]},
+      "hints": [
+        {"en": "Separate the historical realization of a unit from its current definition.", "ms": "Bezakan cara sejarah merealisasikan unit daripada takrif semasanya.", "zh": "区分单位过去的实现方式与现行定义。"},
+        {"en": "Since 2019, the kilogram has been defined by fixing the Planck constant.", "ms": "Sejak 2019, kilogram ditakrifkan dengan menetapkan pemalar Planck.", "zh": "自 2019 年起，千克通过固定普朗克常量来定义。"}
+      ],
+      "feedback": {"en": "The cylinder is a historical artifact; the current SI kilogram is constant-based.", "ms": "Silinder itu ialah artifak sejarah; kilogram SI semasa berasaskan pemalar.", "zh": "该圆柱是历史实物；现行 SI 千克以常量为基础。"},
+      "answerLogic": {"en": "Only the historical-artifact label distinguishes the former prototype from the current Planck-constant definition.", "ms": "Hanya label artifak sejarah membezakan prototaip lama daripada takrif semasa berasaskan pemalar Planck.", "zh": "只有“历史实物”说明区分了旧原器和现行的普朗克常量定义。"},
+      "explanation": {"en": "The revised SI removed dependence on a single physical object and ties the kilogram to an invariant of nature.", "ms": "SI yang disemak menghapuskan pergantungan pada satu objek fizikal dan mengaitkan kilogram dengan sifat alam yang tidak berubah.", "zh": "修订后的 SI 不再依赖单一实物，而把千克与自然界的不变量联系起来。"},
+      "prerequisiteRecovery": {"prerequisiteId": "compare-properties", "prompt": {"en": "Compare an object that could change with a fixed property of nature.", "ms": "Bandingkan objek yang boleh berubah dengan sifat alam yang ditetapkan.", "zh": "比较可能变化的实物与固定的自然属性。"}},
+      "misconceptions": ["artifact-still-defines-kilogram", "standard-can-vary-by-person"],
+      "accessibilityText": {"en": "Text-only museum-label activity; no image of the historical cylinder is required.", "ms": "Aktiviti label muzium berasaskan teks; imej silinder sejarah tidak diperlukan.", "zh": "纯文本博物馆标签活动，无需历史圆柱图片。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 4; current definition updated from BIPM SI Brochure 9th edition", "originalContent": true}
+    },
+    {
+      "id": "mcq-derived-quantity", "type": "mcq", "difficulty": "moderate", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Distinguish derived from fundamental quantities",
+      "prompt": {"en": "Which quantity is described by combining a length with a time interval rather than by using one base quantity alone?", "ms": "Kuantiti manakah diterangkan dengan menggabungkan panjang dengan selang masa dan bukannya menggunakan satu kuantiti asas sahaja?", "zh": "哪一个物理量需要把长度与时间间隔组合起来描述，而不是只使用一个基本量？"},
+      "answerKey": {"correct": "speed", "options": [
+        {"id": "speed", "label": {"en": "speed", "ms": "laju", "zh": "速率"}},
+        {"id": "length", "label": {"en": "length", "ms": "panjang", "zh": "长度"}, "misconception": "all-quantities-are-fundamental"},
+        {"id": "time", "label": {"en": "time", "ms": "masa", "zh": "时间"}, "misconception": "all-quantities-are-fundamental"}
+      ]},
+      "hints": [
+        {"en": "A fundamental quantity stands on its own in the selected base set.", "ms": "Kuantiti asas berdiri sendiri dalam set asas yang dipilih.", "zh": "基本量在选定的基本量集合中独立存在。"},
+        {"en": "Speed relates distance traveled to the interval over which travel occurs.", "ms": "Laju mengaitkan jarak yang dilalui dengan selang perjalanan itu berlaku.", "zh": "速率把经过的距离与发生运动的时间间隔联系起来。"}
+      ],
+      "feedback": {"en": "Speed is derived from length and time; length and time are fundamental quantities in mechanics.", "ms": "Laju diterbitkan daripada panjang dan masa; panjang dan masa ialah kuantiti asas dalam mekanik.", "zh": "速率由长度和时间导出；长度和时间是力学中的基本量。"},
+      "answerLogic": {"en": "Speed requires a relationship between two base quantities, so it is derived.", "ms": "Laju memerlukan hubungan antara dua kuantiti asas, maka ia ialah kuantiti terbitan.", "zh": "速率需要两个基本量之间的关系，因此是导出量。"},
+      "explanation": {"en": "Derived quantities are expressed through combinations of base quantities even when they have familiar names of their own.", "ms": "Kuantiti terbitan dinyatakan melalui gabungan kuantiti asas walaupun mempunyai nama tersendiri.", "zh": "导出量通过基本量的组合来表示，即使它们有自己熟悉的名称。"},
+      "prerequisiteRecovery": {"prerequisiteId": "read-unit-symbols", "prompt": {"en": "Identify which choice needs two kinds of measurement to describe it.", "ms": "Kenal pasti pilihan yang memerlukan dua jenis pengukuran untuk menerangkannya.", "zh": "找出需要两种测量来描述的选项。"}},
+      "misconceptions": ["all-quantities-are-fundamental"],
+      "accessibilityText": {"en": "Text-only single-choice classification of physical quantities.", "ms": "Pengelasan pilihan tunggal berasaskan teks bagi kuantiti fizik.", "zh": "物理量分类的纯文本单选活动。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 6; original quantity-classification prompt", "originalContent": true}
+    },
+    {
+      "id": "mcq-mass-not-weight", "type": "mcq", "difficulty": "moderate", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Distinguish mass from weight",
+      "prompt": {"en": "A sealed instrument is moved to a place where gravity is different. Which statement correctly separates mass from weight?", "ms": "Sebuah instrumen tertutup dipindahkan ke tempat yang graviti berbeza. Pernyataan manakah membezakan jisim daripada berat dengan betul?", "zh": "一个密封仪器被移到重力不同的地方。哪一陈述正确区分了质量和重量？"},
+      "answerKey": {"correct": "mass-inherent", "options": [
+        {"id": "mass-inherent", "label": {"en": "Its mass is an inherent property, while its weight can depend on the gravitational environment.", "ms": "Jisimnya ialah sifat sedia ada, manakala beratnya boleh bergantung pada persekitaran graviti.", "zh": "它的质量是内在属性，而重量会取决于重力环境。"}},
+        {"id": "both-identical", "label": {"en": "Mass and weight are two unit names for the same property.", "ms": "Jisim dan berat ialah dua nama unit bagi sifat yang sama.", "zh": "质量和重量只是同一属性的两个单位名称。"}, "misconception": "mass-equals-weight"},
+        {"id": "mass-location", "label": {"en": "Its mass changes whenever the local gravity changes.", "ms": "Jisimnya berubah setiap kali graviti setempat berubah.", "zh": "只要当地重力改变，它的质量就会改变。"}, "misconception": "mass-equals-weight"}
+      ]},
+      "hints": [
+        {"en": "Ask which property belongs to the object itself and which describes a gravitational interaction.", "ms": "Tanya sifat mana yang dimiliki objek itu sendiri dan mana yang menerangkan interaksi graviti.", "zh": "判断哪一种性质属于物体本身，哪一种描述重力相互作用。"},
+        {"en": "Mass is inherent; weight is associated with gravity acting on the object.", "ms": "Jisim ialah sifat sedia ada; berat dikaitkan dengan graviti yang bertindak pada objek.", "zh": "质量是内在属性；重量与重力作用于物体有关。"}
+      ],
+      "feedback": {"en": "Moving the object need not change its mass, but a different gravitational environment can change its weight.", "ms": "Memindahkan objek tidak semestinya mengubah jisimnya, tetapi persekitaran graviti berbeza boleh mengubah beratnya.", "zh": "移动物体不必改变其质量，但不同的重力环境可以改变其重量。"},
+      "answerLogic": {"en": "Only the correct choice treats mass as intrinsic and weight as environment-dependent.", "ms": "Hanya pilihan betul menganggap jisim sebagai sifat dalaman dan berat sebagai bergantung pada persekitaran.", "zh": "只有正确选项把质量视为内在属性，并把重量视为依赖环境。"},
+      "explanation": {"en": "Kilogram is a unit of mass. Weight is a force and is not the same quantity.", "ms": "Kilogram ialah unit jisim. Berat ialah daya dan bukan kuantiti yang sama.", "zh": "千克是质量单位。重量是一种力，并不是同一物理量。"},
+      "prerequisiteRecovery": {"prerequisiteId": "compare-properties", "prompt": {"en": "Separate what belongs to the instrument from what depends on its surroundings.", "ms": "Bezakan perkara yang dimiliki instrumen daripada perkara yang bergantung pada persekitarannya.", "zh": "区分仪器自身具有的性质与依赖周围环境的性质。"}},
+      "misconceptions": ["mass-equals-weight"],
+      "accessibilityText": {"en": "Text-only scenario comparing mass and weight in different environments.", "ms": "Senario berasaskan teks yang membandingkan jisim dan berat dalam persekitaran berbeza.", "zh": "比较不同环境中质量和重量的纯文本情境。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 4; original instrument scenario", "originalContent": true}
+    },
+    {
+      "id": "mcq-universal-definition", "type": "mcq", "difficulty": "challenging", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Evaluate universal measurement definitions",
+      "prompt": {"en": "A future research station must realize the same length unit far from Earth. Which design principle best supports that goal?", "ms": "Sebuah stesen penyelidikan masa hadapan perlu merealisasikan unit panjang yang sama jauh dari Bumi. Prinsip reka bentuk manakah paling menyokong matlamat itu?", "zh": "未来的研究站需要在远离地球处实现相同的长度单位。哪一设计原则最能支持这一目标？"},
+      "answerKey": {"correct": "invariant", "options": [
+        {"id": "invariant", "label": {"en": "Base the definition on a fixed constant of nature that can be realized locally.", "ms": "Asaskan takrif pada pemalar alam yang ditetapkan dan boleh direalisasikan setempat.", "zh": "把定义建立在可在当地实现的固定自然常量上。"}},
+        {"id": "earth-landmark", "label": {"en": "Copy the distance between two landmarks on Earth.", "ms": "Salin jarak antara dua tanda tempat di Bumi.", "zh": "复制地球上两个地标之间的距离。"}, "misconception": "historical-definition-is-current"},
+        {"id": "unique-rod", "label": {"en": "Transport one unique rod and make all results depend on it.", "ms": "Bawa satu batang unik dan jadikan semua keputusan bergantung padanya.", "zh": "运送一根独一无二的标杆，并让所有结果依赖它。"}, "misconception": "constant-definition-is-local"}
+      ]},
+      "hints": [
+        {"en": "The station should not depend on access to Earth or one irreplaceable object.", "ms": "Stesen itu tidak sepatutnya bergantung pada akses ke Bumi atau satu objek yang tidak boleh diganti.", "zh": "研究站不应依赖到达地球或某个不可替代的物体。"},
+        {"en": "A fixed natural constant can support the same definition wherever it can be realized.", "ms": "Pemalar alam yang ditetapkan boleh menyokong takrif yang sama di mana-mana ia boleh direalisasikan.", "zh": "固定自然常量可在任何能实现它的地方支持相同定义。"}
+      ],
+      "feedback": {"en": "Constant-based definitions support reproducibility without tying the unit to a particular artifact or planet.", "ms": "Takrif berasaskan pemalar menyokong kebolehulangan tanpa mengikat unit kepada artifak atau planet tertentu.", "zh": "基于常量的定义能实现可复现性，而不把单位绑定到特定实物或行星。"},
+      "answerLogic": {"en": "The invariant design is the only option that remains independent of a unique Earth-based reference.", "ms": "Reka bentuk berasaskan sifat tidak berubah ialah satu-satunya pilihan yang bebas daripada rujukan unik berasaskan Bumi.", "zh": "只有基于不变量的设计不依赖独一的地球参照。"},
+      "explanation": {"en": "The current SI uses defining constants so units can be realized consistently in different places.", "ms": "SI semasa menggunakan pemalar pentakrif supaya unit boleh direalisasikan secara konsisten di tempat berbeza.", "zh": "现行 SI 使用定义常量，使单位能在不同地点一致实现。"},
+      "prerequisiteRecovery": {"prerequisiteId": "compare-properties", "prompt": {"en": "Compare which reference is available without bringing one special object from Earth.", "ms": "Bandingkan rujukan yang tersedia tanpa membawa satu objek khas dari Bumi.", "zh": "比较哪一种参照无需从地球带来某个特殊物体。"}},
+      "misconceptions": ["historical-definition-is-current", "constant-definition-is-local"],
+      "accessibilityText": {"en": "Text-only future-station design scenario.", "ms": "Senario reka bentuk stesen masa hadapan berasaskan teks.", "zh": "纯文本未来研究站设计情境。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook pages 3-5; original off-world research scenario", "originalContent": true}
+    },
+    {
+      "id": "mcq-density-same-volume", "type": "mcq", "difficulty": "challenging", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Reason qualitatively about density with equal volumes",
+      "prompt": {"en": "Two sealed blocks occupy the same volume. Block A has more mass than Block B. Which comparison follows?", "ms": "Dua blok tertutup memenuhi isi padu yang sama. Blok A mempunyai jisim lebih besar daripada Blok B. Perbandingan manakah berikutan?", "zh": "两个密封块占据相同体积。A 块的质量比 B 块大。由此可得出哪一比较？"},
+      "answerKey": {"correct": "a-denser", "options": [
+        {"id": "a-denser", "label": {"en": "Block A is denser.", "ms": "Blok A lebih tumpat.", "zh": "A 块密度更大。"}},
+        {"id": "same-density", "label": {"en": "They must have the same density because their volumes match.", "ms": "Kedua-duanya mesti mempunyai ketumpatan sama kerana isi padunya sepadan.", "zh": "因为体积相同，所以它们密度一定相同。"}, "misconception": "same-mass-means-same-volume"},
+        {"id": "b-denser", "label": {"en": "Block B is denser because it has less mass.", "ms": "Blok B lebih tumpat kerana jisimnya lebih kecil.", "zh": "B 块质量更小，所以密度更大。"}, "misconception": "denser-means-more-mass-always"}
+      ]},
+      "hints": [
+        {"en": "Hold the shared volume fixed and compare how much mass is in that space.", "ms": "Kekalkan isi padu yang sama dan bandingkan jumlah jisim dalam ruang itu.", "zh": "固定相同体积，比较其中包含的质量多少。"},
+        {"en": "More mass in the same volume means greater density.", "ms": "Jisim lebih besar dalam isi padu yang sama bermaksud ketumpatan lebih tinggi.", "zh": "相同体积中质量更多意味着密度更大。"}
+      ],
+      "feedback": {"en": "With volume held equal, the block containing more mass is denser.", "ms": "Apabila isi padu sama, blok yang mengandungi lebih banyak jisim adalah lebih tumpat.", "zh": "在体积相同时，包含更多质量的块密度更大。"},
+      "answerLogic": {"en": "Density compares mass with volume; equal volume makes the mass comparison decisive.", "ms": "Ketumpatan membandingkan jisim dengan isi padu; isi padu sama menjadikan perbandingan jisim penentu.", "zh": "密度比较质量与体积；体积相同使质量比较成为决定因素。"},
+      "explanation": {"en": "Qualitative density reasoning can hold one property fixed and compare the other without calculation.", "ms": "Penaakulan ketumpatan secara kualitatif boleh mengekalkan satu sifat dan membandingkan sifat lain tanpa pengiraan.", "zh": "定性密度推理可以固定一个量，再比较另一个量，而无需计算。"},
+      "prerequisiteRecovery": {"prerequisiteId": "ratio-language", "prompt": {"en": "Picture equal-sized containers and compare which contains more mass.", "ms": "Bayangkan bekas bersaiz sama dan bandingkan bekas yang mengandungi lebih banyak jisim.", "zh": "想象大小相同的容器，比较哪一个包含更多质量。"}},
+      "misconceptions": ["same-mass-means-same-volume", "denser-means-more-mass-always"],
+      "accessibilityText": {"en": "Text-only comparison of two equal-volume blocks; no diagram is required.", "ms": "Perbandingan berasaskan teks bagi dua blok berisi padu sama; rajah tidak diperlukan.", "zh": "两个等体积块的纯文本比较，无需图示。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 6; original equal-volume block scenario", "originalContent": true}
+    },
+    {
+      "id": "mcq-prefix-role", "type": "mcq", "difficulty": "challenging", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Interpret an SI prefix without conversion arithmetic",
+      "prompt": {"en": "A report replaces metre with a prefixed metre unit to describe a much smaller length. What has changed?", "ms": "Sebuah laporan menggantikan meter dengan unit meter berawalan untuk menerangkan panjang yang jauh lebih kecil. Apakah yang berubah?", "zh": "一份报告用带前缀的米单位描述小得多的长度。发生了什么变化？"},
+      "answerKey": {"correct": "scale-label", "options": [
+        {"id": "scale-label", "label": {"en": "The scale used to express the same kind of quantity", "ms": "Skala yang digunakan untuk menyatakan jenis kuantiti yang sama", "zh": "表达同一种物理量所用的尺度"}},
+        {"id": "new-quantity", "label": {"en": "Length has become a different physical quantity.", "ms": "Panjang telah menjadi kuantiti fizik yang berbeza.", "zh": "长度变成了另一种物理量。"}, "misconception": "prefix-changes-quantity"},
+        {"id": "new-standard-system", "label": {"en": "The report has left SI and invented a local standard.", "ms": "Laporan itu telah meninggalkan SI dan mencipta piawai setempat.", "zh": "报告已经离开 SI，并发明了本地标准。"}, "misconception": "unit-is-quantity"}
+      ]},
+      "hints": [
+        {"en": "The base unit remains the metre family of units.", "ms": "Unit asas kekal dalam keluarga unit meter.", "zh": "基本单位仍属于米这一单位体系。"},
+        {"en": "An SI prefix indicates scale; it does not change length into another quantity.", "ms": "Awalan SI menunjukkan skala; ia tidak mengubah panjang menjadi kuantiti lain.", "zh": "SI 前缀表示尺度，不会把长度变成另一种物理量。"}
+      ],
+      "feedback": {"en": "A prefix changes the unit scale used for expression, while the measured quantity remains length.", "ms": "Awalan mengubah skala unit yang digunakan untuk penyataan, manakala kuantiti yang diukur kekal sebagai panjang.", "zh": "前缀改变表达时使用的单位尺度，而被测物理量仍是长度。"},
+      "answerLogic": {"en": "Only the scale-label choice preserves both the physical quantity and the SI unit family.", "ms": "Hanya pilihan label skala mengekalkan kuantiti fizik dan keluarga unit SI.", "zh": "只有尺度标签选项同时保留了物理量和 SI 单位体系。"},
+      "explanation": {"en": "Prefixes provide convenient names for different scales of an SI unit without creating new physical quantities.", "ms": "Awalan menyediakan nama mudah untuk skala berbeza bagi unit SI tanpa mencipta kuantiti fizik baharu.", "zh": "前缀为 SI 单位的不同尺度提供方便名称，而不会创造新的物理量。"},
+      "prerequisiteRecovery": {"prerequisiteId": "read-unit-symbols", "prompt": {"en": "Separate the quantity being measured from the scale of the unit name.", "ms": "Bezakan kuantiti yang diukur daripada skala nama unit.", "zh": "区分被测物理量与单位名称所表示的尺度。"}},
+      "misconceptions": ["prefix-changes-quantity", "unit-is-quantity"],
+      "accessibilityText": {"en": "Text-only conceptual activity about the role of SI prefixes.", "ms": "Aktiviti konsep berasaskan teks tentang peranan awalan SI.", "zh": "关于 SI 前缀作用的纯文本概念活动。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook pages 5-6; original reporting scenario", "originalContent": true}
+    },
+    {
+      "id": "interactive-sort-reference-quality", "type": "interactive", "interactionMode": "classification", "difficulty": "easy", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Classify a proposed reference by stability",
+      "prompt": {"en": "Place the proposed reference in the best category: a mark on a flexible ribbon that stretches with use.", "ms": "Letakkan rujukan cadangan dalam kategori terbaik: tanda pada reben fleksibel yang meregang apabila digunakan.", "zh": "把这个拟议参照归入最合适的类别：柔性带上的标记会在使用中拉伸。"},
+      "answerKey": {"correct": "unsuitable-changing", "options": [
+        {"id": "suitable-stable", "label": {"en": "Suitable: stable over time", "ms": "Sesuai: stabil sepanjang masa", "zh": "合适：随时间稳定"}, "misconception": "standard-may-drift"},
+        {"id": "unsuitable-changing", "label": {"en": "Unsuitable: changes with use", "ms": "Tidak sesuai: berubah apabila digunakan", "zh": "不合适：会随使用而变化"}},
+        {"id": "suitable-personal", "label": {"en": "Suitable because one person can keep it", "ms": "Sesuai kerana seorang boleh menyimpannya", "zh": "合适，因为可由一个人保管"}, "misconception": "standard-can-vary-by-person"}
+      ]},
+      "hints": [{"en": "Focus on whether repeated use preserves the reference.", "ms": "Fokus pada sama ada penggunaan berulang mengekalkan rujukan.", "zh": "关注重复使用是否能保持参照不变。"}, {"en": "A stretching ribbon does not preserve one fixed length.", "ms": "Reben yang meregang tidak mengekalkan satu panjang tetap.", "zh": "会拉伸的带子不能保持固定长度。"}],
+      "feedback": {"en": "A reference that changes with use cannot support consistent measurements.", "ms": "Rujukan yang berubah apabila digunakan tidak dapat menyokong pengukuran konsisten.", "zh": "会随使用变化的参照无法支持一致测量。"},
+      "answerLogic": {"en": "Stretching changes the marked separation, so the reference is unsuitable.", "ms": "Regangan mengubah jarak bertanda, jadi rujukan itu tidak sesuai.", "zh": "拉伸会改变标记间距，因此该参照不合适。"},
+      "explanation": {"en": "Stability over time is a basic requirement for a measurement standard.", "ms": "Kestabilan sepanjang masa ialah keperluan asas bagi piawai pengukuran.", "zh": "随时间保持稳定是测量标准的基本要求。"},
+      "prerequisiteRecovery": {"prerequisiteId": "compare-properties", "prompt": {"en": "Compare the ribbon before and after repeated use.", "ms": "Bandingkan reben sebelum dan selepas penggunaan berulang.", "zh": "比较柔性带重复使用前后的状态。"}},
+      "misconceptions": ["standard-may-drift", "standard-can-vary-by-person"],
+      "accessibilityText": {"en": "Keyboard-operable text classification with three labeled categories; no dragging is required.", "ms": "Pengelasan teks boleh dikendalikan papan kekunci dengan tiga kategori berlabel; seretan tidak diperlukan.", "zh": "可用键盘操作的三类别文本分类，无需拖动。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 3; original flexible-ribbon scenario", "originalContent": true}
+    },
+    {
+      "id": "interactive-match-quantity-role", "type": "interactive", "interactionMode": "matching", "difficulty": "easy", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Match a measurement description to a base quantity",
+      "prompt": {"en": "Match “how much an object resists a change in motion” to the intended base quantity.", "ms": "Padankan “sejauh mana objek menentang perubahan gerakan” dengan kuantiti asas yang dimaksudkan.", "zh": "把“物体抵抗运动状态改变的程度”与相应基本量匹配。"},
+      "answerKey": {"correct": "mass", "options": [
+        {"id": "mass", "label": {"en": "mass", "ms": "jisim", "zh": "质量"}},
+        {"id": "length", "label": {"en": "length", "ms": "panjang", "zh": "长度"}, "misconception": "unit-is-quantity"},
+        {"id": "time", "label": {"en": "time", "ms": "masa", "zh": "时间"}, "misconception": "unit-is-quantity"}
+      ]},
+      "hints": [{"en": "The description concerns an inherent property of the object.", "ms": "Huraian itu berkaitan sifat sedia ada objek.", "zh": "该描述涉及物体的内在属性。"}, {"en": "Resistance to changing motion is associated with mass.", "ms": "Rintangan terhadap perubahan gerakan dikaitkan dengan jisim.", "zh": "对运动状态改变的抵抗与质量有关。"}],
+      "feedback": {"en": "Mass is associated with an object's resistance to changes in motion.", "ms": "Jisim dikaitkan dengan rintangan objek terhadap perubahan gerakan.", "zh": "质量与物体抵抗运动状态改变有关。"},
+      "answerLogic": {"en": "The defining clue is resistance to changing motion, which identifies mass.", "ms": "Petunjuk penentu ialah rintangan terhadap perubahan gerakan, yang mengenal pasti jisim.", "zh": "关键线索是抵抗运动状态改变，这标识质量。"},
+      "explanation": {"en": "Mass is distinct from the length of an object and from when or how long an event occurs.", "ms": "Jisim berbeza daripada panjang objek dan daripada bila atau berapa lama sesuatu peristiwa berlaku.", "zh": "质量不同于物体长度，也不同于事件发生的时刻或持续时长。"},
+      "prerequisiteRecovery": {"prerequisiteId": "read-unit-symbols", "prompt": {"en": "Choose the property named by the description, not a unit symbol.", "ms": "Pilih sifat yang dinamakan oleh huraian, bukan simbol unit.", "zh": "选择描述所指的性质，而不是单位符号。"}},
+      "misconceptions": ["unit-is-quantity"],
+      "accessibilityText": {"en": "Keyboard-operable text matching activity with one description and three quantity labels.", "ms": "Aktiviti padanan teks boleh dikendalikan papan kekunci dengan satu huraian dan tiga label kuantiti.", "zh": "可用键盘操作的文本匹配活动，含一个描述和三个物理量标签。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 4; original matching prompt", "originalContent": true}
+    },
+    {
+      "id": "interactive-time-card", "type": "interactive", "interactionMode": "classification", "difficulty": "easy", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Classify a statement as an instant or interval",
+      "prompt": {"en": "Classify this lab card: “The detector remained active throughout the observation.”", "ms": "Kelaskan kad makmal ini: “Pengesan kekal aktif sepanjang pemerhatian.”", "zh": "给这张实验卡分类：“探测器在整个观察期间保持工作。”"},
+      "answerKey": {"correct": "interval", "options": [
+        {"id": "instant", "label": {"en": "Instant", "ms": "Ketika", "zh": "时刻"}, "misconception": "time-equals-duration"},
+        {"id": "interval", "label": {"en": "Time interval", "ms": "Selang masa", "zh": "时间间隔"}},
+        {"id": "neither-unit", "label": {"en": "A unit rather than a time description", "ms": "Unit dan bukannya huraian masa", "zh": "这是单位而不是时间描述"}, "misconception": "unit-is-quantity"}
+      ]},
+      "hints": [{"en": "The word throughout points to an extended duration.", "ms": "Perkataan sepanjang merujuk kepada tempoh yang berlanjutan.", "zh": "“整个期间”指向一段持续时长。"}, {"en": "A duration between a beginning and an end is a time interval.", "ms": "Tempoh antara permulaan dan akhir ialah selang masa.", "zh": "从开始到结束的一段时长是时间间隔。"}],
+      "feedback": {"en": "The statement describes duration, so it belongs in the time-interval category.", "ms": "Pernyataan itu menerangkan tempoh, jadi ia tergolong dalam kategori selang masa.", "zh": "该陈述描述持续时长，因此属于时间间隔。"},
+      "answerLogic": {"en": "Remaining active throughout an observation spans more than one instant.", "ms": "Kekal aktif sepanjang pemerhatian merangkumi lebih daripada satu ketika.", "zh": "在整个观察期间保持工作跨越了不止一个时刻。"},
+      "explanation": {"en": "An instant locates an event; an interval covers duration from one instant to another.", "ms": "Satu ketika menentukan kedudukan masa peristiwa; selang merangkumi tempoh dari satu ketika ke ketika lain.", "zh": "时刻定位事件；时间间隔涵盖从一个时刻到另一个时刻的时长。"},
+      "prerequisiteRecovery": {"prerequisiteId": "compare-properties", "prompt": {"en": "Ask whether the card answers “when?” or “for how long?”", "ms": "Tanya sama ada kad itu menjawab “bila?” atau “berapa lama?”", "zh": "判断这张卡回答的是“何时？”还是“持续多久？”"}},
+      "misconceptions": ["time-equals-duration", "unit-is-quantity"],
+      "accessibilityText": {"en": "Keyboard-operable text classification; categories are read aloud as instant, time interval, and unit.", "ms": "Pengelasan teks boleh dikendalikan papan kekunci; kategori dibaca sebagai ketika, selang masa dan unit.", "zh": "可用键盘操作的文本分类；类别朗读为时刻、时间间隔和单位。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 5; original detector scenario", "originalContent": true}
+    },
+    {
+      "id": "interactive-sort-fundamental-derived", "type": "interactive", "interactionMode": "classification", "difficulty": "moderate", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Classify density as a derived quantity",
+      "prompt": {"en": "Place density in the correct category for mechanics.", "ms": "Letakkan ketumpatan dalam kategori yang betul bagi mekanik.", "zh": "把密度归入力学中的正确类别。"},
+      "answerKey": {"correct": "derived", "options": [
+        {"id": "fundamental", "label": {"en": "Fundamental quantity", "ms": "Kuantiti asas", "zh": "基本量"}, "misconception": "all-quantities-are-fundamental"},
+        {"id": "derived", "label": {"en": "Derived quantity", "ms": "Kuantiti terbitan", "zh": "导出量"}},
+        {"id": "unit", "label": {"en": "Unit rather than quantity", "ms": "Unit dan bukannya kuantiti", "zh": "单位而不是物理量"}, "misconception": "unit-is-quantity"}
+      ]},
+      "hints": [{"en": "Density compares mass with volume.", "ms": "Ketumpatan membandingkan jisim dengan isi padu.", "zh": "密度比较质量与体积。"}, {"en": "A quantity built from mass and lengths is derived from base quantities.", "ms": "Kuantiti yang dibina daripada jisim dan panjang diterbitkan daripada kuantiti asas.", "zh": "由质量和长度构成的量是从基本量导出的。"}],
+      "feedback": {"en": "Density combines mass and volume, so it is derived.", "ms": "Ketumpatan menggabungkan jisim dan isi padu, jadi ia ialah kuantiti terbitan.", "zh": "密度组合质量和体积，因此是导出量。"},
+      "answerLogic": {"en": "Because volume itself comes from lengths, density depends on mass and length rather than standing alone as a base quantity.", "ms": "Oleh sebab isi padu sendiri berasal daripada panjang, ketumpatan bergantung pada jisim dan panjang dan bukan kuantiti asas tersendiri.", "zh": "体积本身由长度导出，因此密度依赖质量和长度，而不是独立的基本量。"},
+      "explanation": {"en": "Length, mass, and time form the base set used here; combinations of them are derived quantities.", "ms": "Panjang, jisim dan masa membentuk set asas yang digunakan di sini; gabungannya ialah kuantiti terbitan.", "zh": "这里使用长度、质量和时间作为基本量集合；它们的组合是导出量。"},
+      "prerequisiteRecovery": {"prerequisiteId": "ratio-language", "prompt": {"en": "Notice that density compares two other properties rather than naming only one.", "ms": "Perhatikan bahawa ketumpatan membandingkan dua sifat lain dan bukan menamakan satu sahaja.", "zh": "注意密度是在比较另外两个性质，而不是只表示一个性质。"}},
+      "misconceptions": ["all-quantities-are-fundamental", "unit-is-quantity"],
+      "accessibilityText": {"en": "Keyboard-operable classification of density with three text categories.", "ms": "Pengelasan ketumpatan boleh dikendalikan papan kekunci dengan tiga kategori teks.", "zh": "可用键盘操作的密度分类，含三个文本类别。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 6; original classification interaction", "originalContent": true}
+    },
+    {
+      "id": "interactive-current-or-historical", "type": "interactive", "interactionMode": "classification", "difficulty": "moderate", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Classify a unit definition as current or historical",
+      "prompt": {"en": "Classify this statement: “The kilogram is defined by the mass of one designated metal object.”", "ms": "Kelaskan pernyataan ini: “Kilogram ditakrifkan oleh jisim satu objek logam yang ditetapkan.”", "zh": "给这句话分类：“千克由一个指定金属物体的质量定义。”"},
+      "answerKey": {"correct": "historical", "options": [
+        {"id": "current", "label": {"en": "Current SI definition", "ms": "Takrif SI semasa", "zh": "现行 SI 定义"}, "misconception": "artifact-still-defines-kilogram"},
+        {"id": "historical", "label": {"en": "Historical definition", "ms": "Takrif sejarah", "zh": "历史定义"}},
+        {"id": "local-option", "label": {"en": "A valid local alternative to SI", "ms": "Alternatif setempat yang sah kepada SI", "zh": "SI 的有效本地替代定义"}, "misconception": "standard-can-vary-by-person"}
+      ]},
+      "hints": [{"en": "Ask whether today's SI depends on one physical artifact.", "ms": "Tanya sama ada SI hari ini bergantung pada satu artifak fizikal.", "zh": "想一想现行 SI 是否依赖某个实物。"}, {"en": "The current kilogram is defined through a fixed value of the Planck constant.", "ms": "Kilogram semasa ditakrifkan melalui nilai tetap pemalar Planck.", "zh": "现行千克通过普朗克常量的固定值定义。"}],
+      "feedback": {"en": "The artifact-based statement describes the former definition, not the current SI.", "ms": "Pernyataan berasaskan artifak menerangkan takrif lama, bukan SI semasa.", "zh": "基于实物的陈述描述的是旧定义，而不是现行 SI。"},
+      "answerLogic": {"en": "A designated metal object's mass was formerly used, but the revised SI is constant-based.", "ms": "Jisim objek logam yang ditetapkan pernah digunakan, tetapi SI yang disemak berasaskan pemalar.", "zh": "过去曾使用指定金属物体的质量，但修订后的 SI 以常量为基础。"},
+      "explanation": {"en": "Historical context remains useful, but learner-facing claims must distinguish former and current definitions.", "ms": "Konteks sejarah masih berguna, tetapi kenyataan untuk pelajar mesti membezakan takrif lama dan semasa.", "zh": "历史背景仍有价值，但面向学习者的陈述必须区分旧定义和现行定义。"},
+      "prerequisiteRecovery": {"prerequisiteId": "compare-properties", "prompt": {"en": "Compare one changeable object with a fixed constant of nature.", "ms": "Bandingkan satu objek yang boleh berubah dengan pemalar alam yang ditetapkan.", "zh": "比较一个可能变化的物体与固定自然常量。"}},
+      "misconceptions": ["artifact-still-defines-kilogram", "standard-can-vary-by-person"],
+      "accessibilityText": {"en": "Keyboard-operable current-versus-historical text classification.", "ms": "Pengelasan teks semasa berbanding sejarah boleh dikendalikan papan kekunci.", "zh": "可用键盘操作的现行与历史文本分类。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 4; current status checked against BIPM and NIST", "originalContent": true}
+    },
+    {
+      "id": "interactive-prefix-family", "type": "interactive", "interactionMode": "matching", "difficulty": "moderate", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Match a prefixed unit to its physical quantity",
+      "prompt": {"en": "Match a prefixed metre unit to the physical quantity it still reports.", "ms": "Padankan unit meter berawalan dengan kuantiti fizik yang masih dilaporkannya.", "zh": "把带前缀的米单位与它仍然表示的物理量匹配。"},
+      "answerKey": {"correct": "length", "options": [
+        {"id": "length", "label": {"en": "length", "ms": "panjang", "zh": "长度"}},
+        {"id": "mass", "label": {"en": "mass", "ms": "jisim", "zh": "质量"}, "misconception": "prefix-changes-quantity"},
+        {"id": "time", "label": {"en": "time", "ms": "masa", "zh": "时间"}, "misconception": "unit-is-quantity"}
+      ]},
+      "hints": [{"en": "Ignore the scale prefix for a moment and look at the base unit name.", "ms": "Abaikan awalan skala seketika dan lihat nama unit asas.", "zh": "先暂时忽略尺度前缀，查看基本单位名称。"}, {"en": "Every metre-based prefixed unit reports length.", "ms": "Setiap unit berawalan berasaskan meter melaporkan panjang.", "zh": "所有以米为基础的带前缀单位都表示长度。"}],
+      "feedback": {"en": "The prefix changes scale, while metre still identifies length.", "ms": "Awalan mengubah skala, manakala meter masih mengenal pasti panjang.", "zh": "前缀改变尺度，而米仍表示长度。"},
+      "answerLogic": {"en": "The base unit determines the quantity; the prefix only modifies scale.", "ms": "Unit asas menentukan kuantiti; awalan hanya mengubah skala.", "zh": "基本单位决定物理量；前缀只改变尺度。"},
+      "explanation": {"en": "Scale and physical-quantity type are separate ideas in SI notation.", "ms": "Skala dan jenis kuantiti fizik ialah idea berasingan dalam notasi SI.", "zh": "在 SI 表示法中，尺度和物理量种类是不同概念。"},
+      "prerequisiteRecovery": {"prerequisiteId": "read-unit-symbols", "prompt": {"en": "Find the base unit inside the prefixed unit name.", "ms": "Cari unit asas dalam nama unit berawalan.", "zh": "在带前缀的单位名称中找出基本单位。"}},
+      "misconceptions": ["prefix-changes-quantity", "unit-is-quantity"],
+      "accessibilityText": {"en": "Keyboard-operable text matching; the prefixed unit is spoken as a complete unit name.", "ms": "Padanan teks boleh dikendalikan papan kekunci; unit berawalan dibaca sebagai nama unit lengkap.", "zh": "可用键盘操作的文本匹配；带前缀单位按完整名称朗读。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook pages 5-6; original prefix-role interaction", "originalContent": true}
+    },
+    {
+      "id": "interactive-density-equal-mass", "type": "interactive", "interactionMode": "ordering", "difficulty": "challenging", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Reason qualitatively about density with equal masses",
+      "prompt": {"en": "Two samples have the same mass. The denser sample occupies less space. Choose the correct volume ordering.", "ms": "Dua sampel mempunyai jisim yang sama. Sampel lebih tumpat memenuhi ruang lebih kecil. Pilih susunan isi padu yang betul.", "zh": "两个样品质量相同。密度更大的样品占据更小空间。选择正确的体积顺序。"},
+      "answerKey": {"correct": "dense-smaller", "options": [
+        {"id": "dense-smaller", "label": {"en": "Denser sample: smaller volume; less-dense sample: larger volume", "ms": "Sampel lebih tumpat: isi padu lebih kecil; sampel kurang tumpat: isi padu lebih besar", "zh": "密度较大样品：体积较小；密度较小样品：体积较大"}},
+        {"id": "equal-volumes", "label": {"en": "Both must have the same volume because their masses match.", "ms": "Kedua-duanya mesti mempunyai isi padu sama kerana jisimnya sepadan.", "zh": "因为质量相同，所以两者体积一定相同。"}, "misconception": "same-mass-means-same-volume"},
+        {"id": "dense-larger", "label": {"en": "Denser sample: larger volume; less-dense sample: smaller volume", "ms": "Sampel lebih tumpat: isi padu lebih besar; sampel kurang tumpat: isi padu lebih kecil", "zh": "密度较大样品：体积较大；密度较小样品：体积较小"}, "misconception": "denser-means-more-mass-always"}
+      ]},
+      "hints": [{"en": "Hold mass fixed and compare how tightly that mass is packed into space.", "ms": "Kekalkan jisim dan bandingkan betapa rapat jisim itu memenuhi ruang.", "zh": "固定质量，比较这些质量在空间中聚集得有多紧密。"}, {"en": "The same mass packed into less volume has greater density.", "ms": "Jisim yang sama dalam isi padu lebih kecil mempunyai ketumpatan lebih tinggi.", "zh": "相同质量占据更小体积时，密度更大。"}],
+      "feedback": {"en": "For equal masses, greater density corresponds to smaller occupied volume.", "ms": "Bagi jisim sama, ketumpatan lebih tinggi sepadan dengan isi padu yang lebih kecil.", "zh": "在质量相同时，密度更大对应占据体积更小。"},
+      "answerLogic": {"en": "Equal mass removes mass as the difference, so the denser sample must pack that mass into less volume.", "ms": "Jisim sama menyingkirkan jisim sebagai perbezaan, jadi sampel lebih tumpat mesti memuatkan jisim itu dalam isi padu lebih kecil.", "zh": "质量相同排除了质量差异，因此密度更大的样品必须把同样质量容纳在更小体积中。"},
+      "explanation": {"en": "Density comparisons depend on both mass and volume; total mass alone does not settle density unless volume is also considered.", "ms": "Perbandingan ketumpatan bergantung pada jisim dan isi padu; jumlah jisim sahaja tidak menentukan ketumpatan tanpa mempertimbangkan isi padu.", "zh": "密度比较同时取决于质量和体积；若不考虑体积，仅凭总质量不能判断密度。"},
+      "prerequisiteRecovery": {"prerequisiteId": "ratio-language", "prompt": {"en": "Imagine fitting the same amount into a smaller or larger container.", "ms": "Bayangkan memasukkan jumlah yang sama ke dalam bekas lebih kecil atau lebih besar.", "zh": "想象把同样多少的物质放入较小或较大的容器。"}},
+      "misconceptions": ["same-mass-means-same-volume", "denser-means-more-mass-always"],
+      "accessibilityText": {"en": "Keyboard-operable ordering using two fully stated text relationships; spatial dragging is optional.", "ms": "Susunan boleh dikendalikan papan kekunci menggunakan dua hubungan teks lengkap; seretan ruang adalah pilihan.", "zh": "可用键盘操作的顺序活动，使用完整文本关系；空间拖动为可选。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 6; original equal-mass sample scenario", "originalContent": true}
+    },
+    {
+      "id": "interactive-definition-chain", "type": "interactive", "interactionMode": "matching", "difficulty": "challenging", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Connect current SI base units with defining constants",
+      "prompt": {"en": "Complete the current-SI match for the kilogram.", "ms": "Lengkapkan padanan SI semasa bagi kilogram.", "zh": "完成现行 SI 中千克的匹配。"},
+      "answerKey": {"correct": "planck", "options": [
+        {"id": "planck", "label": {"en": "fixed Planck constant", "ms": "pemalar Planck yang ditetapkan", "zh": "固定的普朗克常量"}},
+        {"id": "metal-cylinder", "label": {"en": "mass of one designated metal cylinder", "ms": "jisim satu silinder logam yang ditetapkan", "zh": "一个指定金属圆柱的质量"}, "misconception": "artifact-still-defines-kilogram"},
+        {"id": "earth-size", "label": {"en": "a selected dimension of Earth", "ms": "satu ukuran Bumi yang dipilih", "zh": "地球的某个选定尺寸"}, "misconception": "historical-definition-is-current"}
+      ]},
+      "hints": [{"en": "The current definition is not tied to a physical artifact.", "ms": "Takrif semasa tidak terikat pada artifak fizikal.", "zh": "现行定义不依赖实物。"}, {"en": "The revised SI fixes the value of the Planck constant to define the kilogram.", "ms": "SI yang disemak menetapkan nilai pemalar Planck untuk mentakrifkan kilogram.", "zh": "修订后的 SI 通过固定普朗克常量的值来定义千克。"}],
+      "feedback": {"en": "The kilogram is linked to the fixed Planck constant in the current SI.", "ms": "Kilogram dikaitkan dengan pemalar Planck yang ditetapkan dalam SI semasa.", "zh": "现行 SI 中，千克与固定的普朗克常量相联系。"},
+      "answerLogic": {"en": "The Planck-constant match is current; the object- and Earth-based choices represent obsolete approaches.", "ms": "Padanan pemalar Planck ialah semasa; pilihan berasaskan objek dan Bumi mewakili pendekatan lapuk.", "zh": "普朗克常量匹配是现行定义；基于实物和地球的选项代表已过时的方法。"},
+      "explanation": {"en": "Current SI definitions use fixed constants of nature to support stable, reproducible realization.", "ms": "Takrif SI semasa menggunakan pemalar alam yang ditetapkan untuk menyokong realisasi stabil dan boleh diulang.", "zh": "现行 SI 定义使用固定自然常量，以支持稳定且可复现的实现。"},
+      "prerequisiteRecovery": {"prerequisiteId": "compare-properties", "prompt": {"en": "Choose the reference that is a fixed natural constant rather than a unique object or place.", "ms": "Pilih rujukan yang merupakan pemalar alam tetap dan bukan objek atau tempat unik.", "zh": "选择固定自然常量，而不是独一实物或地点。"}},
+      "misconceptions": ["artifact-still-defines-kilogram", "historical-definition-is-current"],
+      "accessibilityText": {"en": "Keyboard-operable text matching between kilogram and three possible references.", "ms": "Padanan teks boleh dikendalikan papan kekunci antara kilogram dengan tiga rujukan yang mungkin.", "zh": "可用键盘操作的文本匹配，在千克与三个可能参照之间选择。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 4; current definition checked against BIPM SI Brochure 9th edition", "originalContent": true}
+    },
+    {
+      "id": "interactive-diagnose-disagreement", "type": "interactive", "interactionMode": "selection", "difficulty": "challenging", "calculatorFree": true, "numericAnswerRequired": false,
+      "objective": "Diagnose disagreement caused by an unsuitable standard",
+      "prompt": {"en": "Two teams follow the same procedure but use different researchers' footsteps as their length reference. Their reports disagree. Select the best diagnosis.", "ms": "Dua pasukan mengikuti prosedur yang sama tetapi menggunakan langkah kaki penyelidik berbeza sebagai rujukan panjang. Laporan mereka tidak sepadan. Pilih diagnosis terbaik.", "zh": "两个团队采用相同程序，却用不同研究人员的步幅作为长度参照，报告结果不一致。选择最佳诊断。"},
+      "answerKey": {"correct": "reference-varies", "options": [
+        {"id": "reference-varies", "label": {"en": "The reference varies between people, so the reported units do not share one stable meaning.", "ms": "Rujukan berbeza antara individu, jadi unit yang dilaporkan tidak berkongsi satu maksud stabil.", "zh": "参照因人而异，因此所报告的单位没有共同且稳定的含义。"}},
+        {"id": "all-standards-valid", "label": {"en": "Any repeatable action is automatically a universal standard.", "ms": "Sebarang tindakan yang boleh diulang secara automatik menjadi piawai sejagat.", "zh": "任何可重复动作都会自动成为通用标准。"}, "misconception": "standard-can-vary-by-person"},
+        {"id": "length-changed-kind", "label": {"en": "The physical quantity changed from length into time.", "ms": "Kuantiti fizik berubah daripada panjang kepada masa.", "zh": "物理量从长度变成了时间。"}, "misconception": "unit-is-quantity"}
+      ]},
+      "hints": [{"en": "The procedure is shared, but inspect whether the reference itself is shared.", "ms": "Prosedur dikongsi, tetapi periksa sama ada rujukan itu sendiri dikongsi.", "zh": "程序相同，但要检查参照本身是否相同。"}, {"en": "Different people's footsteps need not represent the same length.", "ms": "Langkah kaki orang berbeza tidak semestinya mewakili panjang yang sama.", "zh": "不同人的步幅不一定代表相同长度。"}],
+      "feedback": {"en": "A person-dependent reference prevents the teams from attaching the same meaning to one reported unit.", "ms": "Rujukan bergantung pada individu menghalang pasukan daripada memberikan maksud yang sama kepada satu unit yang dilaporkan.", "zh": "依赖个人的参照使两个团队无法让同一报告单位具有相同含义。"},
+      "answerLogic": {"en": "The disagreement is explained by variation in the reference, not by a change in the physical quantity.", "ms": "Ketidakpadanan dijelaskan oleh perbezaan rujukan, bukan perubahan kuantiti fizik.", "zh": "不一致源于参照变化，而不是物理量种类改变。"},
+      "explanation": {"en": "Reproducibility requires different observers to realize the same standard, not merely repeat similar actions.", "ms": "Kebolehulangan memerlukan pemerhati berbeza merealisasikan piawai yang sama, bukan sekadar mengulangi tindakan serupa.", "zh": "可复现性要求不同观察者实现同一标准，而不只是重复相似动作。"},
+      "prerequisiteRecovery": {"prerequisiteId": "compare-properties", "prompt": {"en": "Compare what is identical in the teams' work with what varies from person to person.", "ms": "Bandingkan perkara yang sama dalam kerja pasukan dengan perkara yang berubah antara individu.", "zh": "比较两个团队工作中相同的部分与因人而异的部分。"}},
+      "misconceptions": ["standard-can-vary-by-person", "unit-is-quantity"],
+      "accessibilityText": {"en": "Keyboard-operable text diagnosis activity; all causal choices are fully stated.", "ms": "Aktiviti diagnosis teks boleh dikendalikan papan kekunci; semua pilihan sebab dinyatakan sepenuhnya.", "zh": "可用键盘操作的文本诊断活动；所有因果选项均完整表述。"},
+      "provenance": {"sourceLocation": "Section 1.1, textbook page 3; original field-team scenario", "originalContent": true}
+    }
+  ]
+}
