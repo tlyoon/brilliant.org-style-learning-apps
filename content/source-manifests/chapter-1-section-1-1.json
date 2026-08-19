@@ -1,0 +1,16 @@
+{
+  "manifestVersion": "1.0",
+  "sourceId": "cengage-2019-physics-section-1-1",
+  "driveFileId": "1R-uAi5uIimYMb4CbQO18zzexaWnS7M5Y",
+  "controlledFilename": "source.pdf",
+  "sha256": "a9727afee30282deeb22f34ce67323e168ab6a3b6a2893f2754f27f683ab28b9",
+  "edition": "Cengage 2019 excerpt; edition identifier is not shown within the supplied section",
+  "chapter": "Physics and Measurement",
+  "subchapter": "1.1 Standards of Length, Mass, and Time",
+  "heading": "1.1 Standards of Length, Mass, and Time",
+  "pageRange": "Textbook pages 3-6; ends immediately before 1.2 Modeling and Alternative Representations",
+  "learningBoundary": "Conceptual meaning and purpose of measurement standards; SI base quantities and units for length, mass, and time; current constant-based definitions of the metre, kilogram, and second; distinction between mass and weight and between an instant and a duration; SI prefixes as scale labels without conversion arithmetic; fundamental and derived quantities; qualitative density reasoning. Excludes Section 1.2 and all numerical calculation or conversion exercises.",
+  "extractedOn": "2026-08-17",
+  "reviewer": "Repository content author; current-SI facts cross-checked against BIPM SI Brochure 9th edition v4.01 and NIST SI base-unit definitions",
+  "rightsNote": "Instructor-authorized source data in Google Drive, file ID 1R-uAi5uIimYMb4CbQO18zzexaWnS7M5Y. Permitted use is limited to defining the learning boundary, checking scientific concepts, and recording source-location provenance. The PDF, figures, passages, tables, and substantially reproduced questions must not be stored in Git or reused in learner activities. Activities are original transformations, and current BIPM/NIST standards supersede obsolete textbook definitions."
+}

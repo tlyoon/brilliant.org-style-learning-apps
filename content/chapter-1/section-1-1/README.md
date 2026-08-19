@@ -1,13 +1,12 @@
 # Section 1.1 implementation pack
 
-Planned contents:
+This directory contains the first complete content pack for “Standards of Length, Mass, and Time”:
 
-- approved objectives and prerequisite map
-- misconception catalogue
-- 18 original calculator-free activities with required distribution
-- aligned English, Malay, and Mandarin text
-- answer logic, hints, feedback, and accessibility text
-- source-location provenance and reviewer record
+- `learning-design.md` defines the boundary, objectives, prerequisites, misconceptions, and evidence intent.
+- `package.json` contains 18 original calculator-free activities in English, Malay, and Simplified Chinese.
+- `review-record.md` records completed checks and the human sign-offs required before publication.
 
-The implementation issue must define the source boundary and acceptance criteria before content is added.
+The controlled source is represented only by `content/source-manifests/chapter-1-section-1-1.json`. The source PDF, figures, tables, passages, and textbook questions are not stored in this repository.
+
+The package is intentionally in `review` state. It must not become `publishable` until every qualified review in `review-record.md` is complete.
 

@@ -7,6 +7,7 @@
   "properties": {
     "manifestVersion": {"const": "1.0"},
     "sourceId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "driveFileId": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$"},
     "controlledFilename": {"type": "string", "pattern": "^(?=.*\\S).+$"},
     "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
     "edition": {"type": "string", "pattern": "^(?=.*\\S).+$"},

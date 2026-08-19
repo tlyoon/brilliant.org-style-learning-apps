@@ -5,13 +5,17 @@
   "type": "object",
   "required": ["schemaVersion", "packageId", "chapter", "subchapter", "status", "locales", "learningObjectives", "sourceManifest", "activities"],
   "properties": {
-    "schemaVersion": {"const": "1.0"},
+    "schemaVersion": {"const": "1.1"},
     "packageId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
     "chapter": {"type": "string", "minLength": 1},
     "subchapter": {"type": "string", "minLength": 1},
     "status": {"enum": ["draft", "review", "publishable"]},
     "locales": {"type": "array", "minItems": 3, "uniqueItems": true, "contains": {"const": "en"}, "items": {"enum": ["en", "ms", "zh"]}},
     "learningObjectives": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "prerequisites": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/prerequisite"}},
+    "misconceptionCatalogue": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/misconception"}},
+    "evidencePolicy": {"$ref": "#/$defs/evidencePolicy"},
+    "reviewRecord": {"type": "string", "pattern": "^content/chapter-[a-z0-9-]+/section-[a-z0-9-]+/[a-z0-9-]+\\.md$"},
     "sourceManifest": {"type": "string", "pattern": "^content/source-manifests/[a-z0-9]+(?:[.-][a-z0-9]+)*\\.json$"},
     "activities": {
       "type": "array",
@@ -26,12 +30,42 @@
       "properties": {"en": {"type": "string", "minLength": 1}, "ms": {"type": "string", "minLength": 1}, "zh": {"type": "string", "minLength": 1}},
       "additionalProperties": false
     },
+    "prerequisite": {
+      "type": "object",
+      "required": ["id", "description", "recovery"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "description": {"$ref": "#/$defs/localized"},
+        "recovery": {"$ref": "#/$defs/localized"}
+      },
+      "additionalProperties": false
+    },
+    "misconception": {
+      "type": "object",
+      "required": ["id", "description"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "description": {"$ref": "#/$defs/localized"}
+      },
+      "additionalProperties": false
+    },
+    "evidencePolicy": {
+      "type": "object",
+      "required": ["preserveFirstAttempt", "assistedSignals", "assistedSuccessSeparate"],
+      "properties": {
+        "preserveFirstAttempt": {"const": true},
+        "assistedSignals": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["hint", "retry", "prerequisite-recovery"]}},
+        "assistedSuccessSeparate": {"const": true}
+      },
+      "additionalProperties": false
+    },
     "option": {
       "type": "object",
       "required": ["id", "label"],
       "properties": {
         "id": {"type": "string", "pattern": "^(?=.*\\S).+$"},
-        "label": {"$ref": "#/$defs/localized"}
+        "label": {"$ref": "#/$defs/localized"},
+        "misconception": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
       },
       "additionalProperties": false
     },
@@ -49,9 +83,114 @@
       },
       "additionalProperties": false
     },
+    "interactionItem": {
+      "type": "object",
+      "required": ["id", "label"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "label": {"$ref": "#/$defs/localized"},
+        "misconception": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+      },
+      "additionalProperties": false
+    },
+    "interactionTarget": {
+      "type": "object",
+      "required": ["id", "label"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "label": {"$ref": "#/$defs/localized"}
+      },
+      "additionalProperties": false
+    },
+    "interactionPlacement": {
+      "type": "object",
+      "required": ["itemId", "targetId"],
+      "properties": {
+        "itemId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "targetId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+      },
+      "additionalProperties": false
+    },
+    "diagnosticCondition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "itemId", "targetId"],
+          "properties": {
+            "kind": {"const": "placement"},
+            "itemId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+            "targetId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind", "firstItemId", "secondItemId"],
+          "properties": {
+            "kind": {"const": "precedes"},
+            "firstItemId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+            "secondItemId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind", "itemId", "selected"],
+          "properties": {
+            "kind": {"const": "selection"},
+            "itemId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+            "selected": {"type": "boolean"}
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "diagnosticRule": {
+      "type": "object",
+      "required": ["misconception", "condition"],
+      "properties": {
+        "misconception": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "condition": {"$ref": "#/$defs/diagnosticCondition"}
+      },
+      "additionalProperties": false
+    },
+    "interaction": {
+      "type": "object",
+      "required": ["items"],
+      "properties": {
+        "items": {
+          "type": "array",
+          "minItems": 3,
+          "items": {"$ref": "#/$defs/interactionItem"}
+        },
+        "targets": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"$ref": "#/$defs/interactionTarget"}
+        },
+        "placements": {
+          "type": "array",
+          "minItems": 3,
+          "items": {"$ref": "#/$defs/interactionPlacement"}
+        },
+        "correctOrder": {
+          "type": "array",
+          "minItems": 3,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+        },
+        "correctSelections": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+        }
+      },
+      "additionalProperties": false
+    },
     "activity": {
       "type": "object",
-      "required": ["id", "type", "difficulty", "calculatorFree", "numericAnswerRequired", "objective", "prompt", "answerKey", "hints", "feedback", "misconceptions", "provenance"],
+      "required": ["id", "type", "difficulty", "calculatorFree", "numericAnswerRequired", "objective", "prompt", "hints", "feedback", "misconceptions", "provenance"],
       "properties": {
         "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
         "type": {"enum": ["mcq", "interactive"]},
@@ -63,11 +202,74 @@
         "answerKey": {"$ref": "#/$defs/answerKey"},
         "hints": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/localized"}},
         "feedback": {"$ref": "#/$defs/localized"},
+        "answerLogic": {"$ref": "#/$defs/localized"},
+        "explanation": {"$ref": "#/$defs/localized"},
+        "interactionMode": {"enum": ["classification", "ordering", "matching", "selection"]},
+        "interaction": {"$ref": "#/$defs/interaction"},
+        "diagnosticRules": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/diagnosticRule"}},
+        "prerequisiteRecovery": {
+          "type": "object",
+          "required": ["prerequisiteId", "prompt"],
+          "properties": {
+            "prerequisiteId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+            "prompt": {"$ref": "#/$defs/localized"}
+          },
+          "additionalProperties": false
+        },
         "misconceptions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "not": {"enum": ["todo", "tbd", "placeholder", "example", "unknown", "n-a"]}}},
         "accessibilityText": {"$ref": "#/$defs/localized"},
         "provenance": {"type": "object", "required": ["sourceLocation", "originalContent"], "properties": {"sourceLocation": {"type": "string", "minLength": 1}, "originalContent": {"const": true}}, "additionalProperties": false}
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {"properties": {"type": {"const": "mcq"}}, "required": ["type"]},
+          "then": {
+            "required": ["answerKey"],
+            "not": {"anyOf": [{"required": ["interactionMode"]}, {"required": ["interaction"]}]}
+          }
+        },
+        {
+          "if": {"properties": {"type": {"const": "interactive"}}, "required": ["type"]},
+          "then": {
+            "required": ["interactionMode", "interaction", "diagnosticRules"],
+            "not": {"required": ["answerKey"]}
+          }
+        },
+        {
+          "if": {"properties": {"interactionMode": {"enum": ["classification", "matching"]}}, "required": ["interactionMode"]},
+          "then": {
+            "properties": {
+              "interaction": {
+                "required": ["items", "targets", "placements"],
+                "not": {"anyOf": [{"required": ["correctOrder"]}, {"required": ["correctSelections"]}]}
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"interactionMode": {"const": "ordering"}}, "required": ["interactionMode"]},
+          "then": {
+            "properties": {
+              "interaction": {
+                "required": ["items", "correctOrder"],
+                "not": {"anyOf": [{"required": ["targets"]}, {"required": ["placements"]}, {"required": ["correctSelections"]}]}
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"interactionMode": {"const": "selection"}}, "required": ["interactionMode"]},
+          "then": {
+            "properties": {
+              "interaction": {
+                "required": ["items", "correctSelections"],
+                "not": {"anyOf": [{"required": ["targets"]}, {"required": ["placements"]}, {"required": ["correctOrder"]}]}
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }
