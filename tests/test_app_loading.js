@@ -100,7 +100,7 @@ function flush() {
   assert.equal(heading.textContent, "newer zh prompt");
 
   requests.get("older.json")({ ok: true, json: async () => packageNamed("older") });
-  requests.get("../content/examples/conceptual-forces.json")({ ok: true, json: async () => packageNamed("initial") });
+  requests.get("../content/chapter-1/section-1-1/package.json")({ ok: true, json: async () => packageNamed("initial") });
   await flush();
   await flush();
 
