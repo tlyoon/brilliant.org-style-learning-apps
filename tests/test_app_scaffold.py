@@ -5,6 +5,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 APP = ROOT / "app"
 EXAMPLE = ROOT / "content" / "examples" / "conceptual-forces.json"
+SECTION_1_1 = ROOT / "content" / "chapter-1" / "section-1-1" / "package.json"
 
 
 class AppScaffoldTests(unittest.TestCase):
@@ -16,8 +17,16 @@ class AppScaffoldTests(unittest.TestCase):
 
     def test_player_loads_external_package(self):
         javascript = (APP / "app.js").read_text(encoding="utf-8")
-        self.assertIn("content/examples/conceptual-forces.json", javascript)
+        self.assertIn("content/chapter-1/section-1-1/package.json", javascript)
         self.assertIn("loadPackage()", javascript)
+
+    def test_entrypoint_identifies_the_review_prototype(self):
+        html = (APP / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Review prototype", html)
+
+    def test_default_package_remains_in_review(self):
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        self.assertEqual("review", package["status"])
 
     def test_player_does_not_use_inner_html(self):
         javascript = (APP / "app.js").read_text(encoding="utf-8")

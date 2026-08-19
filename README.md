@@ -28,7 +28,7 @@ Python 3.12, Node.js for JavaScript checks, and a modern browser are required. I
 2. Open `http://127.0.0.1:8000/app/`.
 3. Stop the server with Ctrl+C.
 
-The scaffold reads `content/examples/conceptual-forces.json`. To try another subchapter, create a schema-compatible draft package and change `DEFAULT_PACKAGE` in `app/app.js`. Learner-facing strings must include English (`en`), Malay (`ms`), and Simplified Chinese (`zh`). Draft examples may contain fewer activities; publishable packages must contain the required 18-activity distribution.
+The scaffold opens the reviewed Section 1.1 package at `content/chapter-1/section-1-1/package.json`. It is visibly labelled as a review prototype and remains in `review` status pending its required human sign-offs. To try another subchapter, create a schema-compatible draft package and change `DEFAULT_PACKAGE` in `app/app.js`. Learner-facing strings must include English (`en`), Malay (`ms`), and Simplified Chinese (`zh`). Draft examples may contain fewer activities; publishable packages must contain the required 18-activity distribution.
 
 Content package schema 1.1 distinguishes MCQs from genuine interactions. MCQs use `answerKey`; interactive activities use `interactionMode`, mode-specific `interaction` response data, and `diagnosticRules` that connect recognizable incorrect responses to declared misconceptions. The learner scaffold renders classification, matching, ordering, and multiple-selection modes with native keyboard-operable controls.
 
@@ -54,6 +54,10 @@ python -m unittest discover -s tests -v
 ```
 
 Node.js is used only for development-time syntax and regression checks. The application has no runtime package dependencies or build step.
+
+## Public review-prototype bundle
+
+`python scripts/build_public_release.py <empty-output-directory>` creates the small static bundle intended for the separate public GitHub Pages repository. It contains only the root entry page, learner-app assets, the Section 1.1 package, and `.nojekyll`; it excludes repository history, tests, specifications, review records, source manifests, and development scripts. The build does not alter the package's `review` status or create any learner accounts, analytics, or data collection.
 
 Implementation work should use short-lived branches and pull requests. `main` remains the stable baseline.
 
