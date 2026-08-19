@@ -24,6 +24,15 @@ h1 { margin: .5rem 0; font-size: clamp(1.8rem, 6vw, 3rem); line-height: 1.05; }
 .progress { width: 100%; height: .6rem; margin: 1.25rem 0 2rem; overflow: hidden; border-radius: 1rem; background: #e8eee9; }
 .progress span { display: block; height: 100%; background: var(--accent); transition: width .2s; }
 .choices { display: grid; gap: .75rem; margin: 1.5rem 0; }
+.interaction-groups, .ordering { display: grid; gap: 1rem; margin: 1.5rem 0; }
+.interaction-group, .order-row { padding: 1rem; border: 1px solid var(--line); border-radius: .8rem; }
+.interaction-item { margin: 0 0 .75rem; font-weight: 700; }
+.target-choices { display: flex; flex-wrap: wrap; gap: .5rem; }
+.target-choice { flex: 1 1 10rem; }
+.order-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1rem; }
+.order-controls { display: flex; flex-wrap: wrap; gap: .5rem; }
+.order-control { border: 1px solid var(--accent); border-radius: .6rem; padding: .6rem .8rem; color: var(--accent); cursor: pointer; }
+.order-control:disabled { cursor: not-allowed; opacity: .4; }
 .choice, .action { border: 1px solid var(--line); border-radius: .8rem; padding: .9rem 1rem; background: white; color: inherit; cursor: pointer; text-align: left; }
 .choice:hover, .choice:focus-visible { border-color: var(--accent); background: var(--accent-soft); }
 .choice[aria-pressed="true"] { border: 2px solid var(--accent); background: var(--accent-soft); }
@@ -36,6 +45,7 @@ h1 { margin: .5rem 0; font-size: clamp(1.8rem, 6vw, 3rem); line-height: 1.05; }
 @media (max-width: 32rem) {
   .topbar { align-items: flex-start; }
   .card { border-radius: 1rem; }
+  .order-row { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

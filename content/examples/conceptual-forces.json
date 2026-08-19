@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "packageId": "example-conceptual-forces",
   "chapter": "Patterns in motion",
   "subchapter": "Forces and changes in motion",
@@ -37,7 +37,7 @@
     },
     {
       "id": "direction-of-change",
-      "type": "interactive",
+      "type": "mcq",
       "difficulty": "moderate",
       "calculatorFree": true,
       "numericAnswerRequired": false,

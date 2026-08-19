@@ -33,6 +33,11 @@ Each activity names a recovery route to one of these prerequisites. Recovery app
 - `all-quantities-are-fundamental`: area, speed, volume, and density are base quantities.
 - `same-mass-means-same-volume`: objects with the same mass must occupy the same volume.
 - `denser-means-more-mass-always`: the denser material must have more total mass regardless of sample size.
+- `same-volume-means-same-density`: objects with the same volume must have the same density regardless of mass.
+- `less-mass-means-greater-density`: less mass in the same volume means greater density.
+- `base-units-interchangeable`: metre, kilogram, and second may be interchanged among base quantities.
+- `greater-volume-means-greater-density`: for equal masses, occupying more volume means greater density.
+- `defining-constant-mismatch`: current SI defining constants may be matched to base units interchangeably.
 - `constant-definition-is-local`: constant-based SI definitions depend on a particular laboratory or location.
 - `historical-definition-is-current`: an older artifact- or Earth-based definition remains the current SI definition.
 

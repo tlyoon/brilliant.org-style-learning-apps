@@ -7,8 +7,10 @@
 3. Every question must be solvable without arithmetic, a calculator, or a numerical response.
 4. Use qualitative comparisons, ordering, classification, diagram interaction, misconception diagnosis, and conceptual prediction.
 5. Every publishable subchapter has exactly 18 activities with the required type/difficulty distribution.
+   Interactive activities must require learners to manipulate and resolve multiple items through classification, matching, ordering, or multiple selection; a single-choice answer key is an MCQ, not an interactive activity.
 6. English (`en`), Malay (`ms`), and Simplified Chinese (`zh`) learner-facing fields must be complete and semantically aligned.
 7. Each activity declares learning objective, misconception targets, hints, feedback, answer logic, provenance, and accessibility text where media is used.
+   Each interactive activity also declares machine-readable diagnostic rules for recognizable incorrect response patterns.
 8. Generated variants must preserve the same concept, difficulty, answer logic, and calculator-free status.
 
 ## Prohibited patterns

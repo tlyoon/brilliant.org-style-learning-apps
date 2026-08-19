@@ -168,8 +168,47 @@ class ContentValidationTests(unittest.TestCase):
                 errors = validator.validate_package(package)
                 self.assertTrue(any(f"prompt.{locale}" in error for error in errors), errors)
 
+    def test_numerical_requests_are_rejected_in_interaction_labels(self):
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        interactive = next(activity for activity in package["activities"] if activity["type"] == "interactive")
+        prohibited = {
+            "en": "Calculate the numerical value.",
+            "ms": "Kirakan nilai berangka.",
+            "zh": "计算这个数值。",
+        }
+        for locale, label in prohibited.items():
+            with self.subTest(locale=locale):
+                candidate = copy.deepcopy(package)
+                changed = next(activity for activity in candidate["activities"] if activity["id"] == interactive["id"])
+                changed["interaction"]["items"][0]["label"][locale] = label
+                errors = validator.validate_package(candidate)
+                self.assertTrue(
+                    any(f"interaction.items[0].label.{locale}" in error for error in errors),
+                    errors,
+                )
+
     def test_valid_conceptual_multilingual_prompts_pass(self):
         self.assertEqual([], validator.validate_package(self.package_with_activity()))
+
+    def test_valid_draft_interactive_does_not_require_review_catalogue(self):
+        package = self.package_with_activity()
+        activity = package["activities"][0]
+        activity["type"] = "interactive"
+        activity.pop("answerKey")
+        activity["interactionMode"] = "selection"
+        activity["interaction"] = {
+            "items": [
+                {"id": "a", "label": copy.deepcopy(activity["prompt"])},
+                {"id": "b", "label": copy.deepcopy(activity["feedback"])},
+                {"id": "c", "label": copy.deepcopy(activity["hints"][0])},
+            ],
+            "correctSelections": ["a", "c"],
+        }
+        activity["diagnosticRules"] = [{
+            "misconception": "confuses-related-concepts",
+            "condition": {"kind": "selection", "itemId": "b", "selected": True},
+        }]
+        self.assertEqual([], validator.validate_package(package))
 
     def test_all_example_packages_remain_valid(self):
         for path in (ROOT / "content" / "examples").glob("*.json"):
@@ -258,8 +297,69 @@ class ContentValidationTests(unittest.TestCase):
             self.assertTrue(set(activity["misconceptions"]).issubset(catalogue))
             if activity["type"] == "interactive":
                 self.assertIn("interactionMode", activity)
+                self.assertIn("interaction", activity)
+                self.assertNotIn("answerKey", activity)
+                self.assertGreaterEqual(len(activity["interaction"]["items"]), 3)
             else:
                 self.assertNotIn("interactionMode", activity)
+                self.assertIn("answerKey", activity)
+                self.assertNotIn("interaction", activity)
+
+    def test_review_rejects_single_choice_disguised_as_interactive(self):
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        interactive = next(activity for activity in package["activities"] if activity["type"] == "interactive")
+        del interactive["interaction"]
+        del interactive["interactionMode"]
+        interactive["answerKey"] = copy.deepcopy(package["activities"][0]["answerKey"])
+        errors = validator.validate_package(package)
+        self.assertTrue(any("interaction" in error for error in errors), errors)
+
+    def test_interaction_solution_references_are_complete(self):
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        classification = next(
+            activity for activity in package["activities"]
+            if activity.get("interactionMode") == "classification"
+        )
+        classification["interaction"]["placements"][0]["targetId"] = "missing-target"
+        errors = validator.validate_package(package)
+        self.assertTrue(any("targetId must reference a declared target" in error for error in errors), errors)
+
+    def test_schema_enforces_mode_specific_interaction_shapes(self):
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        cases = {
+            "classification": ("correctOrder", ["shared-light-procedure", "personal-hand-span", "stretching-ribbon"]),
+            "ordering": ("targets", [{"id": "extra", "label": {"en": "extra", "ms": "tambahan", "zh": "额外"}}]),
+            "selection": ("placements", [
+                {"itemId": "person-dependent", "targetId": "missing"},
+                {"itemId": "reference-drifts", "targetId": "missing"},
+                {"itemId": "shared-label-not-size", "targetId": "missing"},
+            ]),
+        }
+        for mode, (field, value) in cases.items():
+            with self.subTest(mode=mode):
+                candidate = copy.deepcopy(package)
+                activity = next(item for item in candidate["activities"] if item.get("interactionMode") == mode)
+                activity["interaction"][field] = value
+                errors = validator.validate_package(candidate)
+                self.assertTrue(any("interaction" in error for error in errors), errors)
+
+    def test_diagnostic_rules_must_reference_incorrect_responses(self):
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        classification = next(
+            activity for activity in package["activities"]
+            if activity.get("interactionMode") == "classification"
+        )
+        classification["diagnosticRules"][0]["condition"] = {
+            "kind": "placement", "itemId": "personal-hand-span", "targetId": "unsuitable",
+        }
+        errors = validator.validate_package(package)
+        self.assertTrue(any("must describe an incorrect placement" in error for error in errors), errors)
+
+    def test_schema_version_marks_interaction_contract(self):
+        package = self.load("valid-draft.json")
+        package["schemaVersion"] = "1.0"
+        errors = validator.validate_package(package)
+        self.assertTrue(any("schemaVersion" in error and "1.1" in error for error in errors), errors)
 
     def test_review_package_requires_extended_authoring_fields(self):
         package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))

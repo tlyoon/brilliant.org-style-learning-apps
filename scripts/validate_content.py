@@ -34,16 +34,19 @@ NUMERIC_PATTERNS = {
         re.compile(r"\bkirakan\b", re.I),
         re.compile(r"\bnilai berangka\b", re.I),
         re.compile(r"\bjawapan berangka\b", re.I),
-        re.compile(r"\bberapa\b", re.I),
         re.compile(r"\btempat perpuluhan\b", re.I),
     ),
     "zh": (
         re.compile(r"计算"),
         re.compile(r"数值"),
         re.compile(r"数字答案"),
-        re.compile(r"多少"),
         re.compile(r"小数位"),
     ),
+}
+NEGATED_NUMERIC_PATTERNS = {
+    "en": re.compile(r"\b(?:without calculating|do not calculate|no calculation is needed)\b", re.I),
+    "ms": re.compile(r"\b(?:tanpa pengiraan|jangan hitung|jangan kirakan)\b", re.I),
+    "zh": re.compile(r"(?:无需|不用|不必)计算"),
 }
 
 PACKAGE_SCHEMA = json.loads(PACKAGE_SCHEMA_PATH.read_text(encoding="utf-8"))
@@ -98,6 +101,34 @@ def _manifest_errors(reference: str, source: str) -> list[str]:
     return errors
 
 
+def _learner_text(activity: dict[str, Any]) -> list[tuple[str, dict[str, str]]]:
+    fields: list[tuple[str, dict[str, str]]] = [("prompt", activity["prompt"])]
+    fields.extend((f"hints[{index}]", hint) for index, hint in enumerate(activity["hints"]))
+    for field in ("feedback", "answerLogic", "explanation", "accessibilityText"):
+        if field in activity:
+            fields.append((field, activity[field]))
+    recovery = activity.get("prerequisiteRecovery")
+    if recovery:
+        fields.append(("prerequisiteRecovery.prompt", recovery["prompt"]))
+    answer_key = activity.get("answerKey")
+    if answer_key:
+        fields.extend(
+            (f"answerKey.options[{index}].label", option["label"])
+            for index, option in enumerate(answer_key["options"])
+        )
+    interaction = activity.get("interaction")
+    if interaction:
+        fields.extend(
+            (f"interaction.items[{index}].label", item["label"])
+            for index, item in enumerate(interaction["items"])
+        )
+        fields.extend(
+            (f"interaction.targets[{index}].label", target["label"])
+            for index, target in enumerate(interaction.get("targets", []))
+        )
+    return fields
+
+
 def validate_package(data: Any, source: str = "package") -> list[str]:
     errors = _schema_errors(PACKAGE_VALIDATOR, data, source)
     if errors:
@@ -147,18 +178,106 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
         difficulty = activity["difficulty"]
         distribution[(activity_type, difficulty)] += 1
 
-        option_ids = [option["id"] for option in activity["answerKey"]["options"]]
-        seen_options: set[str] = set()
-        for option_index, option_id in enumerate(option_ids):
-            if option_id in seen_options:
-                errors.append(f"{label}.answerKey.options[{option_index}].id is duplicated: {option_id}")
-            seen_options.add(option_id)
-            option = activity["answerKey"]["options"][option_index]
-            option_misconception = option.get("misconception")
-            if option_misconception and misconception_ids and option_misconception not in misconception_ids:
-                errors.append(f"{label}.answerKey.options[{option_index}].misconception: not in the package catalogue")
-        if option_ids.count(activity["answerKey"]["correct"]) != 1:
-            errors.append(f"{label}.answerKey.correct must match exactly one option ID")
+        if activity_type == "mcq":
+            option_ids = [option["id"] for option in activity["answerKey"]["options"]]
+            seen_options: set[str] = set()
+            for option_index, option_id in enumerate(option_ids):
+                if option_id in seen_options:
+                    errors.append(f"{label}.answerKey.options[{option_index}].id is duplicated: {option_id}")
+                seen_options.add(option_id)
+                option = activity["answerKey"]["options"][option_index]
+                option_misconception = option.get("misconception")
+                if option_misconception and misconception_ids and option_misconception not in misconception_ids:
+                    errors.append(f"{label}.answerKey.options[{option_index}].misconception: not in the package catalogue")
+            if option_ids.count(activity["answerKey"]["correct"]) != 1:
+                errors.append(f"{label}.answerKey.correct must match exactly one option ID")
+        elif "interaction" in activity:
+            interaction = activity["interaction"]
+            items = interaction["items"]
+            item_ids = [item["id"] for item in items]
+            if len(item_ids) != len(set(item_ids)):
+                errors.append(f"{label}.interaction.items: IDs must be unique")
+            for item_index, item in enumerate(items):
+                item_misconception = item.get("misconception")
+                if item_misconception and misconception_ids and item_misconception not in misconception_ids:
+                    errors.append(f"{label}.interaction.items[{item_index}].misconception: not in the package catalogue")
+
+            mode = activity["interactionMode"]
+            response_fields = {
+                "classification": {"targets", "placements"},
+                "matching": {"targets", "placements"},
+                "ordering": {"correctOrder"},
+                "selection": {"correctSelections"},
+            }
+            present_fields = set(interaction) - {"items"}
+            if present_fields != response_fields[mode]:
+                expected = ", ".join(sorted(response_fields[mode]))
+                errors.append(f"{label}.interaction: {mode} mode requires only {expected}")
+            elif mode in {"classification", "matching"}:
+                target_ids = [target["id"] for target in interaction["targets"]]
+                if len(target_ids) != len(set(target_ids)):
+                    errors.append(f"{label}.interaction.targets: IDs must be unique")
+                placed_items = [placement["itemId"] for placement in interaction["placements"]]
+                placed_targets = [placement["targetId"] for placement in interaction["placements"]]
+                if Counter(placed_items) != Counter(item_ids):
+                    errors.append(f"{label}.interaction.placements: must place every item exactly once")
+                if any(target_id not in target_ids for target_id in placed_targets):
+                    errors.append(f"{label}.interaction.placements: targetId must reference a declared target")
+                if mode == "matching" and set(placed_targets) != set(target_ids):
+                    errors.append(f"{label}.interaction.placements: matching must use every target at least once")
+            elif mode == "ordering":
+                if Counter(interaction["correctOrder"]) != Counter(item_ids):
+                    errors.append(f"{label}.interaction.correctOrder: must order every item exactly once")
+            else:
+                selections = interaction["correctSelections"]
+                if any(item_id not in item_ids for item_id in selections):
+                    errors.append(f"{label}.interaction.correctSelections: must reference declared items")
+                if len(selections) >= len(item_ids):
+                    errors.append(f"{label}.interaction.correctSelections: must leave at least one item unselected")
+
+            rules = activity["diagnosticRules"]
+            rule_misconceptions = {rule["misconception"] for rule in rules}
+            if set(activity["misconceptions"]) != rule_misconceptions:
+                errors.append(f"{label}.diagnosticRules: must cover every activity misconception and no others")
+            correct_placements = {
+                placement["itemId"]: placement["targetId"]
+                for placement in interaction.get("placements", [])
+            }
+            correct_order = interaction.get("correctOrder", [])
+            correct_selections = set(interaction.get("correctSelections", []))
+            for rule_index, rule in enumerate(rules):
+                rule_label = f"{label}.diagnosticRules[{rule_index}]"
+                if misconception_ids and rule["misconception"] not in misconception_ids:
+                    errors.append(f"{rule_label}.misconception: not in the package catalogue")
+                condition = rule["condition"]
+                kind = condition["kind"]
+                if mode in {"classification", "matching"}:
+                    if kind != "placement":
+                        errors.append(f"{rule_label}.condition: {mode} diagnostics require placement conditions")
+                        continue
+                    if condition["itemId"] not in item_ids or condition["targetId"] not in target_ids:
+                        errors.append(f"{rule_label}.condition: must reference declared items and targets")
+                    elif correct_placements.get(condition["itemId"]) == condition["targetId"]:
+                        errors.append(f"{rule_label}.condition: must describe an incorrect placement")
+                elif mode == "ordering":
+                    if kind != "precedes":
+                        errors.append(f"{rule_label}.condition: ordering diagnostics require precedes conditions")
+                        continue
+                    first = condition["firstItemId"]
+                    second = condition["secondItemId"]
+                    if first not in item_ids or second not in item_ids or first == second:
+                        errors.append(f"{rule_label}.condition: must reference two distinct declared items")
+                    elif correct_order.index(first) < correct_order.index(second):
+                        errors.append(f"{rule_label}.condition: must describe an incorrect ordering relationship")
+                else:
+                    if kind != "selection":
+                        errors.append(f"{rule_label}.condition: selection diagnostics require selection conditions")
+                        continue
+                    item_id = condition["itemId"]
+                    if item_id not in item_ids:
+                        errors.append(f"{rule_label}.condition: must reference a declared item")
+                    elif condition["selected"] == (item_id in correct_selections):
+                        errors.append(f"{rule_label}.condition: must describe an incorrect selection state")
 
         if data["status"] in {"review", "publishable"}:
             for field in ("answerLogic", "explanation", "prerequisiteRecovery", "accessibilityText"):
@@ -168,6 +287,8 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
                 errors.append(f"{label}.hints: at least two progressive hints are required")
             if activity["type"] == "interactive" and "interactionMode" not in activity:
                 errors.append(f"{label}.interactionMode: required for interactive activities")
+            if activity["type"] == "interactive" and "interaction" not in activity:
+                errors.append(f"{label}.interaction: genuine interaction data is required for review and publishable packages")
             if activity["type"] == "mcq" and "interactionMode" in activity:
                 errors.append(f"{label}.interactionMode: must not be set for MCQ activities")
 
@@ -178,9 +299,13 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
             if misconception_ids and misconception not in misconception_ids:
                 errors.append(f"{label}.misconceptions: {misconception} is not in the package catalogue")
 
-        for locale, prompt in activity["prompt"].items():
-            if any(pattern.search(prompt) for pattern in NUMERIC_PATTERNS[locale]):
-                errors.append(f"{label}.prompt.{locale} appears to request calculation or a numerical answer")
+        for field, localized in _learner_text(activity):
+            for locale, text in localized.items():
+                if (
+                    any(pattern.search(text) for pattern in NUMERIC_PATTERNS[locale])
+                    and not NEGATED_NUMERIC_PATTERNS[locale].search(text)
+                ):
+                    errors.append(f"{label}.{field}.{locale} appears to request calculation or a numerical answer")
 
     if data["status"] in {"review", "publishable"}:
         if len(data["activities"]) != 18:
