@@ -1,4 +1,4 @@
-const DEFAULT_PACKAGE = "../content/chapter-1/section-1-1/package.json";
+const DEFAULT_PACKAGE = document.querySelector("#app").dataset.packageUrl || "../content/chapter-1/section-1-1/package.json";
 const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false };
 let loadGeneration = 0;
 

@@ -28,6 +28,9 @@ def build(output: Path) -> None:
     source_index = (ROOT / "app" / "index.html").read_text(encoding="utf-8")
     public_index = source_index.replace('href="styles.css"', 'href="app/styles.css"').replace(
         'src="app.js"', 'src="app/app.js"'
+    ).replace(
+        'data-package-url="../content/chapter-1/section-1-1/package.json"',
+        'data-package-url="./content/chapter-1/section-1-1/package.json"',
     )
     (output / "index.html").write_text(public_index, encoding="utf-8")
     (output / ".nojekyll").touch()
