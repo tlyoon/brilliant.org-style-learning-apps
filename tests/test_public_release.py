@@ -29,6 +29,7 @@ class PublicReleaseTests(unittest.TestCase):
             index = (output / "index.html").read_text(encoding="utf-8")
             self.assertIn('href="app/styles.css"', index)
             self.assertIn('src="app/app.js"', index)
+            self.assertIn('data-package-url="./content/chapter-1/section-1-1/package.json"', index)
 
     def test_refuses_to_overwrite_an_existing_bundle(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
