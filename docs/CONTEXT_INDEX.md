@@ -30,3 +30,5 @@ Repository Foundation v1, approved 15 August 2026. The first implementation targ
 
 Shared conversations and imported files are provenance, not authoritative specifications. Record accepted changes here and in a decision record.
 
+Accepted automation baseline: Decision 0006 uses one PDF per fresh Gem conversation plus a central lease/heartbeat coordinator for multi-PC generation. Gem Knowledge is not part of the generation workflow.
+

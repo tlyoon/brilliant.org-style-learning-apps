@@ -1,0 +1,70 @@
+[placeholders]
+sourcepath = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc&usp=drive_fs"
+gemini-gem = "https://gemini.google.com/gem/1dZR01a7xJ9pveqo55MwzfuPV2i_tUQvJ?usp=sharing"
+loginname = "tlyoon@gmail.com"
+# Used only to preview/validate the templates during configuration loading.
+pdf_subchapter_path = "8.1"
+target_filename = "source.pdf"
+target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"
+
+[gemini]
+gem_edit_url = ""
+gem_name = "app content generator"
+browser_mode = "controlled"
+chrome_profile_dir = "C:\\Users\\tlyoon\\AppData\\Local\\BrilliantContentGenerator\\chrome-profile"
+
+[google_drive]
+drive_oauth_client_file = "C:\\Users\\tlyoon\\AppData\\Local\\BrilliantContentGenerator\\credentials\\drive-oauth-client.json"
+drive_token_file = "C:\\Users\\tlyoon\\AppData\\Local\\BrilliantContentGenerator\\credentials\\drive-oauth-token.json"
+drive_api_timeout_seconds = 60
+max_drive_folders = 10000
+
+[automation]
+selection_mode = "distributed"
+coordinator_url = "https://script.google.com/macros/s/REPLACE_WITH_DEPLOYMENT_ID/exec"
+coordinator_token_env = "BRILLIANT_COORDINATOR_TOKEN"
+coordinator_timeout_seconds = 30
+lease_seconds = 3600
+heartbeat_seconds = 300
+max_job_attempts = 3
+
+[repository]
+repo_root = "C:\\Users\\tlyoon\\Projects\\brilliant.org-style-learning-apps"
+
+[run]
+# These values are materialized from the claimed subchapter folder, for example 8.1.
+package_id = "chapter-{chapter_number}-section-{section_slug}"
+chapter = "Chapter {chapter_number}"
+subchapter = "Section {subchapter_id}"
+chapter_dir = "chapter-{chapter_number}"
+section_dir = "section-{section_slug}"
+learning_boundary = "Concepts contained in the complete controlled source PDF for Section {subchapter_id}."
+source_id = "serway-section-{section_slug}"
+edition = "Replace with the controlled Serway edition/version"
+heading = "Section {subchapter_id}"
+page_range = "Complete controlled source PDF"
+reviewer = "Replace with responsible instructor or content owner"
+rights_note = "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
+
+[limits]
+max_repair_attempts = 4
+ui_timeout_seconds = 30
+login_timeout_seconds = 300
+response_timeout_seconds = 600
+log_level = "INFO"
+
+[git]
+git_publish = true
+git_remote = "origin"
+git_base_branch = "main"
+git_branch_prefix = "automation"
+git_create_draft_pr = true
+git_run_full_tests = true
+
+[models]
+model_preference_patterns = [
+  "\\bpro\\b|most capable|highest capability|advanced reasoning",
+  "advanced|reasoning|high capability",
+  "\\bflash\\b|fast",
+]
+allow_unknown_model_fallback = true
