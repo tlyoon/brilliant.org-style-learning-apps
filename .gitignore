@@ -4,10 +4,15 @@
 !.env.example
 *.pem
 *.key
+*oauth-client*.json
+*oauth-token*.json
+credentials.json
+token.json
 
 # Python
 __pycache__/
 *.py[cod]
+*.egg-info/
 .pytest_cache/
 .venv/
 venv/
@@ -34,4 +39,5 @@ student-data/
 source-pdfs/
 *.pdf
 *.zip
-
+generator*.local.toml
+generator-runs/

@@ -158,9 +158,9 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
     if review_record:
         review_path = (ROOT / review_record).resolve()
         try:
-            review_path.relative_to((CONTENT / "chapter-1").resolve())
+            review_path.relative_to(CONTENT.resolve())
         except ValueError:
-            errors.append(f"{source}.reviewRecord: must resolve inside content/chapter-1")
+            errors.append(f"{source}.reviewRecord: must resolve inside content")
         else:
             if not review_path.is_file():
                 errors.append(f"{source}.reviewRecord: referenced file does not exist")

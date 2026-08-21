@@ -61,3 +61,6 @@ Node.js is used only for development-time syntax and regression checks. The appl
 
 Implementation work should use short-lived branches and pull requests. `main` remains the stable baseline.
 
+## Automated draft generator
+
+`app_generator/` contains an isolated Python 3.12/Google Drive/Selenium workflow for generating one repository-compatible draft per controlled PDF. Each job attaches its PDF to a fresh Gemini Gem conversation; Gem Knowledge is not modified. Distributed workers use a central lease/heartbeat coordinator, validate and repair the generated package, and can push a unique branch plus draft PR. They never merge, deploy, or mark content publishable. See `app_generator/README.md`, `config/generator.example.toml`, and `config/generator.distributed.example.toml`.

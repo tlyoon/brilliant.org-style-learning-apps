@@ -370,6 +370,18 @@ class ContentValidationTests(unittest.TestCase):
                 errors = validator.validate_package(candidate)
                 self.assertTrue(any(field in error for error in errors), errors)
 
+    def test_review_record_may_resolve_inside_any_chapter(self):
+        package = self.load("valid-draft.json")
+        package["reviewRecord"] = "content/chapter-8/section-8-1/review-record.md"
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+            content_root = Path(directory) / "content"
+            record = content_root / "chapter-8" / "section-8-1" / "review-record.md"
+            record.parent.mkdir(parents=True)
+            record.write_text("# Synthetic review record\n", encoding="utf-8")
+            with patch.object(validator, "ROOT", Path(directory)), patch.object(validator, "CONTENT", content_root):
+                errors = validator.validate_package(package)
+        self.assertEqual([], errors)
+
     def test_misconception_targets_are_required_and_meaningful(self):
         for value in (None, [], [""], ["   "], ["todo"], ["generic misconception"]):
             with self.subTest(value=value):
