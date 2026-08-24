@@ -90,6 +90,15 @@ def _toml_string(value: str) -> str:
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
+def _strip_matching_quotes(value: str) -> str:
+    """Remove one pair of quotes commonly included when a URL is pasted."""
+
+    candidate = value.strip()
+    if len(candidate) >= 2 and candidate[0] == candidate[-1] and candidate[0] in {"'", '"'}:
+        return candidate[1:-1].strip()
+    return candidate
+
+
 def _write_initial_settings(
     path: Path,
     *,
@@ -98,6 +107,7 @@ def _write_initial_settings(
     branch: str,
 ) -> None:
     state = _state_root()
+    projects_folder_url = _strip_matching_quotes(projects_folder_url)
     content = "\n".join(
         (
             "# Machine-local, non-secret workstation synchronization settings.",
@@ -154,7 +164,7 @@ def load_settings(path: Path, *, repo_root: Path = ROOT) -> SyncSettings:
         raise WorkstationSyncError(f"Unsafe Git remote name: {remote!r}")
     if not BRANCH.fullmatch(branch) or ".." in branch or branch.endswith("/"):
         raise WorkstationSyncError(f"Unsafe Git branch name: {branch!r}")
-    projects_folder_url = str(drive.get("projects_folder_url", "")).strip()
+    projects_folder_url = _strip_matching_quotes(str(drive.get("projects_folder_url", "")))
     login_name = str(drive.get("login_name", "")).strip()
     shared_name = str(drive.get("shared_config_name", "generator.shared.toml")).strip()
     if not projects_folder_url or not login_name:
