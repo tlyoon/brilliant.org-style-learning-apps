@@ -1,0 +1,2365 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-8-section-8-1",
+  "chapter": "Chapter 8",
+  "subchapter": "Section 8.1",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Identify a system, its boundary, and whether it is nonisolated based on boundary energy transfers.",
+    "Differentiate the six energy transfer mechanisms: work, heat, waves, matter transfer, electricity, and radiation.",
+    "Distinguish between forms of stored energy within a system and transfer mechanisms crossing its boundary.",
+    "Apply the conservation of energy equation by setting inactive transfer and storage terms to zero for given scenarios.",
+    "Differentiate internal system energy processes from external energy transfers crossing the defined system boundary."
+  ],
+  "prerequisites": [
+    {
+      "id": "work-concept",
+      "description": {
+        "en": "Understanding work as energy transfer resulting from an external force acting through a displacement.",
+        "ms": "Memahami kerja sebagai pemindahan tenaga akibat daya luar yang bertindak melalui suatu sesaran.",
+        "zh": "理解功是外力作用并通过位移导致的能量传递方式。"
+      },
+      "recovery": {
+        "en": "Review how an external force acting on an object over a displacement transfers energy via work.",
+        "ms": "Ulang kaji bagaimana daya luar yang bertindak ke atas suatu objek merentasi sesaran memindahkan tenaga melalui kerja.",
+        "zh": "复习外力在物体发生位移时如何通过做功传递能量。"
+      }
+    },
+    {
+      "id": "kinetic-and-potential-energy",
+      "description": {
+        "en": "Familiarity with kinetic energy of motion and potential energy associated with system configuration.",
+        "ms": "Keakraban dengan tenaga kinetik gerakan dan tenaga keupayaan yang berkaitan dengan konfigurasi sistem.",
+        "zh": "熟悉与运动相关的动能以及与系统构型相关的势能。"
+      },
+      "recovery": {
+        "en": "Review definitions of kinetic energy and gravitational or elastic potential energy.",
+        "ms": "Ulang kaji takrifan tenaga kinetik serta tenaga keupayaan graviti dan kenyal.",
+        "zh": "复习动能以及重力势能或弹性势能的定义。"
+      }
+    },
+    {
+      "id": "system-and-environment",
+      "description": {
+        "en": "Ability to define a system boundary separating the chosen system from its surroundings.",
+        "ms": "Keupayaan untuk mentakrifkan sempadan sistem yang memisahkan sistem daripada persekitarannya.",
+        "zh": "能够明确划定将所选系统与其周围环境区分开的系统边界。"
+      },
+      "recovery": {
+        "en": "Practice identifying what objects belong inside the system and what constitutes the external environment.",
+        "ms": "Latih mengenal pasti objek yang berada di dalam sistem berbanding apa yang membentuk persekitaran luaran.",
+        "zh": "练习识别哪些物体属于系统内部，哪些构成了外部环境。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "heat-as-stored-energy",
+      "description": {
+        "en": "Believing that heat is a substance or form of energy stored inside an object rather than an energy transfer mechanism driven by temperature difference.",
+        "ms": "Percaya bahawa haba ialah bentuk tenaga yang tersimpan di dalam objek dan bukannya mekanisme pemindahan tenaga yang didorong oleh perbezaan suhu.",
+        "zh": "认为热量是储存在物体内部的能量形式，而不是由温度差驱动的能量传递机制。"
+      }
+    },
+    {
+      "id": "internal-events-as-transfers",
+      "description": {
+        "en": "Mistaking energy conversions between components inside a system for external energy crossing the system boundary.",
+        "ms": "Menyalah anggap penukaran tenaga antara komponen di dalam sistem sebagai tenaga luar yang merentasi sempadan sistem.",
+        "zh": "误将系统内部组件之间的能量转换视为穿过系统边界的外部能量传递。"
+      }
+    },
+    {
+      "id": "all-transfers-require-matter",
+      "description": {
+        "en": "Assuming that energy cannot transfer across a vacuum, overlooking electromagnetic radiation and work done by field forces.",
+        "ms": "Menganggap bahawa tenaga tidak boleh merentasi vakum, mengabaikan sinaran elektromagnet dan kerja oleh daya medan.",
+        "zh": "假设能量无法穿过真空传递，忽略了电磁辐射以及场力做功不需要边界处存在介质。"
+      }
+    },
+    {
+      "id": "isolated-vs-nonisolated-confusion",
+      "description": {
+        "en": "Assuming that energy conservation only applies when no energy crosses the boundary, failing to recognize that nonisolated systems obey energy conservation through boundary transfers.",
+        "ms": "Menganggap bahawa keabadian tenaga hanya terpakai jika tiada tenaga merentasi sempadan, tanpa menyedari bahawa sistem tak terpencil mematuhi keabadian tenaga apabila mengambil kira pemindahan sempadan.",
+        "zh": "认为能量守恒定律仅在没有能量跨越边界时才适用，未能认识到非孤立系统在计入所有边界传递后同样守恒。"
+      }
+    },
+    {
+      "id": "energy-storage-vs-transfer-confusion",
+      "description": {
+        "en": "Categorizing work, electrical transmission, or radiation as forms of stored energy rather than mechanisms of energy entering or leaving a system.",
+        "ms": "Mengkategorikan kerja, penghantaran elektrik, atau sinaran sebagai tenaga tersimpan dan bukannya kaedah pemindahan tenaga merentasi sempadan.",
+        "zh": "将做功、电传输或辐射归类为储存的能量，而不是能量进出系统的传递机制。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-8/section-8-1/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-8-section-8-1.json",
+  "activities": [
+    {
+      "id": "mcq-easy-1",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Identify a system, its boundary, and whether it is nonisolated based on boundary energy transfers.",
+      "prompt": {
+        "en": "A student pushes a storage box across a rough floor, causing it to speed up. If the box alone is chosen as the system, which statement correctly classifies the system and provides the proper physical justification?",
+        "ms": "Seorang murid menolak sebuah kotak simpanan merentasi lantai kasar, menyebabkan kelajuannya bertambah. Jika kotak itu sahaja dipilih sebagai sistem, pernyataan manakah yang mengelaskan sistem tersebut dengan betul berserta justifikasi fizikal yang wajar?",
+        "zh": "一名学生在粗糙地面上推一个储物箱，使其速度加快。如果仅选择该储物箱作为系统，下列哪个陈述正确地对该系统进行了分类并给出了合理的物理依据？"
+      },
+      "hints": [
+        {
+          "en": "Consider whether energy crosses the defined boundary between the box and its external environment while it is being pushed.",
+          "ms": "Pertimbangkan sama ada tenaga merentasi sempadan yang ditakrifkan antara kotak dan persekitaran luar semasa ia ditolak.",
+          "zh": "考虑在箱子被推动时，是否有能量跨越了箱子与其外部环境之间确定的边界。"
+        },
+        {
+          "en": "A system is defined as nonisolated whenever energy enters or leaves across its boundary through interactions such as work done by an external force.",
+          "ms": "Sesuatu sistem ditakrifkan sebagai tak terpencil apabila tenaga masuk atau keluar merentasi sempadannya melalui interaksi seperti kerja yang dilakukan oleh daya luar.",
+          "zh": "当能量通过外力做功等相互作用进出系统边界时，该系统就被定义为非孤立系统。"
+        }
+      ],
+      "feedback": {
+        "en": "A system is nonisolated if energy crosses its boundary through an interaction with the surrounding environment, such as external work.",
+        "ms": "Sesuatu sistem adalah tak terpencil jika tenaga merentasi sempadannya melalui interaksi dengan persekitaran sekeliling, seperti kerja luar.",
+        "zh": "如果能量通过与周围环境的相互作用（如外力做功）跨越其边界，则该系统为非孤立系统。"
+      },
+      "answerLogic": {
+        "en": "The applied pushing force from the student is an external force acting through a displacement, doing work and transferring energy across the box boundary. Because energy crosses the boundary of the system, the box alone is a nonisolated system.",
+        "ms": "Daya tolakan daripada murid ialah daya luar yang bertindak melalui suatu sesaran, melakukan kerja dan memindahkan tenaga merentasi sempadan kotak. Oleh sebab tenaga merentasi sempadan sistem, kotak itu sahaja ialah sistem tak terpencil.",
+        "zh": "学生施加的推力是外力，通过位移做功，将能量穿过箱子边界传递进去。由于能量跨越了系统边界，因此仅以箱子为系统属于非孤立系统。"
+      },
+      "explanation": {
+        "en": "When a single object is chosen as the system and an external agent acts on it to change its energy, energy crosses the system boundary. In this scenario, the external force does work on the box, which makes the box a nonisolated system governed by the conservation of energy principle with boundary transfer.",
+        "ms": "Apabila satu objek tunggal dipilih sebagai sistem dan agen luar bertindak ke atasnya untuk mengubah tenaganya, tenaga merentasi sempadan sistem. Dalam senario ini, daya luar melakukan kerja ke atas kotak, menjadikan kotak itu sistem tak terpencil yang mematuhi prinsip keabadian tenaga dengan pemindahan sempadan.",
+        "zh": "当选择单个物体作为系统且外部施力物对其作用以改变其能量时，能量跨越了系统边界。在此情境中，外力对箱子做功，使得箱子成为一个包含边界传递的能量守恒原理所适用的非孤立系统。"
+      },
+      "misconceptions": [
+        "isolated-vs-nonisolated-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "system-and-environment",
+        "prompt": {
+          "en": "Review the concept of system boundaries and distinguish between internal components and external environmental agents applying forces.",
+          "ms": "Ulang kaji konsep sempadan sistem dan bezakan antara komponen dalaman dengan agen persekitaran luar yang mengenakan daya.",
+          "zh": "复习系统边界的概念，区分内部组件与施加外力的外部环境物体。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four options asking to classify a pushed box system and justify the classification based on energy boundary transfer.",
+        "ms": "Soalan pelbagai pilihan dengan empat pilihan yang meminta untuk mengelaskan sistem kotak yang ditolak dan menjustifikasikan pengelasan berdasarkan pemindahan tenaga sempadan.",
+        "zh": "包含四个选项的单选题，要求对受推力的箱子系统进行分类，并根据边界能量传递给出分类依据。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-nonisolated-boundary",
+        "options": [
+          {
+            "id": "opt-nonisolated-boundary",
+            "label": {
+              "en": "It is a nonisolated system because energy crosses its boundary through an external interaction.",
+              "ms": "Ia ialah sistem tak terpencil kerana tenaga merentasi sempadannya melalui interaksi luar.",
+              "zh": "它是一个非孤立系统，因为能量通过外部相互作用跨越了其边界。"
+            }
+          },
+          {
+            "id": "opt-isolated-conserved",
+            "label": {
+              "en": "It is an isolated system because the total energy of the universe is always conserved.",
+              "ms": "Ia ialah sistem terpencil kerana jumlah tenaga di alam semesta sentiasa abadi.",
+              "zh": "它是一个孤立系统，因为宇宙的总能量始终守恒。"
+            },
+            "misconception": "isolated-vs-nonisolated-confusion"
+          },
+          {
+            "id": "opt-isolated-matter",
+            "label": {
+              "en": "It is an isolated system because no solid matter enters or leaves the box.",
+              "ms": "Ia ialah sistem terpencil kerana tiada jirim pepejal yang masuk atau keluar dari kotak.",
+              "zh": "它是一个孤立系统，因为没有实体物质进入或离开箱子。"
+            }
+          },
+          {
+            "id": "opt-nonisolated-only-heat",
+            "label": {
+              "en": "It is a nonisolated system only if thermal energy transfer by heat occurs at the surfaces.",
+              "ms": "Ia ialah sistem tak terpencil hanya jika pemindahan tenaga terma melalui haba berlaku pada permukaan.",
+              "zh": "只有当表面发生通过热量的热能传递时，它才是一个非孤立系统。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-easy-2",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate the six energy transfer mechanisms: work, heat, waves, matter transfer, electricity, and radiation.",
+      "prompt": {
+        "en": "When the bowl of a cold metal spoon is placed into a hot cup of tea, the handle outside the cup gradually warms up. Which energy transfer mechanism is responsible for transferring energy from the tea to the spoon handle, and how is it defined in physics?",
+        "ms": "Apabila bahagian mangkuk sudu logam sejuk dimasukkan ke dalam secawan teh panas, pemegang di luar cawan beransur-ansur menjadi suam. Mekanisme pemindahan tenaga manakah yang bertanggungjawab memindahkan tenaga daripada teh ke pemegang sudu, dan bagaimanakah ia ditakrifkan dalam fizik?",
+        "zh": "当一把冰冷金属勺的勺头部放入一杯热茶中时，杯子外面的勺柄逐渐变热。哪种能量传递机制负责将能量从茶传递到勺柄，它在物理学中是如何定义的？"
+      },
+      "hints": [
+        {
+          "en": "Recall that in physics, this specific mechanism is driven solely by a difference in temperature between adjacent regions or bodies.",
+          "ms": "Ingat kembali bahawa dalam fizik, mekanisme khusus ini didorong semata-mata oleh perbezaan suhu antara kawasan atau jasad yang bersebelahan.",
+          "zh": "回想一下，在物理学中，这种特定的机制完全是由相邻区域或物体之间的温度差所驱动的。"
+        },
+        {
+          "en": "Distinguish between a mechanism of transferring energy across a boundary and the thermal internal energy stored within the material.",
+          "ms": "Bezakan antara mekanisme pemindahan tenaga merentasi sempadan dengan tenaga dalaman terma yang disimpan di dalam bahan.",
+          "zh": "区分跨越边界传递能量的机制与材料内部储存的热内能。"
+        }
+      ],
+      "feedback": {
+        "en": "Heat is defined strictly as an energy transfer mechanism driven by a temperature difference, not as a substance or form of stored energy.",
+        "ms": "Haba ditakrifkan secara khusus sebagai mekanisme pemindahan tenaga yang didorong oleh perbezaan suhu, bukan sebagai bahan atau bentuk tenaga tersimpan.",
+        "zh": "热量严格定义为由温度差驱动的能量传递机制，而不是储存在物体内部的物质或能量形式。"
+      },
+      "answerLogic": {
+        "en": "Energy transfers from the high-temperature tea to the cooler spoon handle via microscopic particle collisions without macroscopic work or bulk matter entering the spoon metal. In physics, energy transfer driven by a temperature difference is heat.",
+        "ms": "Tenaga berpindah daripada teh bersuhu tinggi ke pemegang sudu yang lebih sejuk melalui perlanggaran zarah mikroskopik tanpa kerja makroskopik atau jirim pukal memasuki logam sudu. Dalam fizik, pemindahan tenaga yang didorong oleh perbezaan suhu ialah haba.",
+        "zh": "能量通过微观粒子的碰撞从高温茶水传递到较冷的勺柄，没有宏观做功，也没有大块物质进入勺子金属中。在物理学中，由温度差驱动的能量传递即为热量。"
+      },
+      "explanation": {
+        "en": "Heat is the mechanism of energy transfer driven by a temperature difference across a boundary or between regions. It is incorrect in physics to describe heat as a stored quantity inside an object; rather, heat describes energy in transit that alters the internal energy of the system.",
+        "ms": "Haba ialah mekanisme pemindahan tenaga yang didorong oleh perbezaan suhu merentasi sempadan atau antara kawasan. Adalah tidak tepat dalam fizik untuk menggambarkan haba sebagai kuantiti yang disimpan di dalam objek; sebaliknya, haba menggambarkan tenaga dalam peralihan yang mengubah tenaga dalaman sistem.",
+        "zh": "热量是由跨越边界或区域之间的温度差所驱动的能量传递机制。在物理学中，将热量描述为物体内部储存的量是不正确的；相反，热量描述的是改变系统内能的传递过程中的能量。"
+      },
+      "misconceptions": [
+        "heat-as-stored-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "system-and-environment",
+        "prompt": {
+          "en": "Review the distinction between energy crossing a system boundary due to temperature differences and energy stored internally within the system particles.",
+          "ms": "Ulang kaji perbezaan antara tenaga yang merentasi sempadan sistem disebabkan oleh perbezaan suhu dengan tenaga yang disimpan secara dalaman di dalam zarah sistem.",
+          "zh": "复习由于温度差跨越系统边界传递的能量与系统粒子内部储存的能量之间的区别。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question presenting a warm spoon handle in hot tea and asking to identify the energy transfer mechanism and its physical definition.",
+        "ms": "Soalan pelbagai pilihan yang membentangkan pemegang sudu suam dalam teh panas dan meminta untuk mengenal pasti mekanisme pemindahan tenaga serta takrifan fizikalnya.",
+        "zh": "包含四个选项的单选题，给出热茶中温热勺柄的情景，要求识别能量传递机制及其物理定义。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-heat-temp-diff",
+        "options": [
+          {
+            "id": "opt-heat-temp-diff",
+            "label": {
+              "en": "Heat, which is energy transfer driven by a temperature difference between a system and its environment.",
+              "ms": "Haba, iaitu pemindahan tenaga yang didorong oleh perbezaan suhu antara sistem dan persekitarannya.",
+              "zh": "热量，即由系统与其环境之间的温度差所驱动的能量传递。"
+            }
+          },
+          {
+            "id": "opt-heat-stored-substance",
+            "label": {
+              "en": "Heat, which is a specialized form of energy stored permanently inside hot materials.",
+              "ms": "Haba, iaitu satu bentuk tenaga khusus yang disimpan secara kekal di dalam bahan panas.",
+              "zh": "热量，即永久储存在热物体内部的一种特殊能量形式。"
+            },
+            "misconception": "heat-as-stored-energy"
+          },
+          {
+            "id": "opt-matter-transfer",
+            "label": {
+              "en": "Matter transfer, because hot liquid particles physically travel into the solid spoon handle.",
+              "ms": "Pemindahan jirim, kerana zarah cecair panas bergerak secara fizikal ke dalam pemegang sudu pepejal.",
+              "zh": "物质转移，因为热液体粒子在物理上移动进入了固体勺柄中。"
+            }
+          },
+          {
+            "id": "opt-work-mechanical",
+            "label": {
+              "en": "Work, because microscopic particle collisions displace the entire spoon across the table.",
+              "ms": "Kerja, kerana perlanggaran zarah mikroskopik menyesarkan keseluruhan sudu merentasi meja.",
+              "zh": "做功，因为微观粒子的碰撞使整个勺子在桌面上发生了宏观位移。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-easy-3",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between forms of stored energy within a system and transfer mechanisms crossing its boundary.",
+      "prompt": {
+        "en": "The conservation of energy framework distinguishes between forms of energy stored within a system and mechanisms of energy transfer crossing the boundary. Which of the following lists contains only mechanisms of energy transfer?",
+        "ms": "Rangka kerja keabadian tenaga membezakan antara bentuk tenaga yang disimpan di dalam sistem dengan mekanisme pemindahan tenaga yang merentasi sempadan. Senarai berikut yang manakah mengandungi mekanisme pemindahan tenaga sahaja?",
+        "zh": "能量守恒框架区分了储存在系统内部的能量形式和跨越系统边界的能量传递机制。下列哪个列表仅包含能量传递机制？"
+      },
+      "hints": [
+        {
+          "en": "Look for options where none of the items describe energy stored in motion, configuration, or microscopic atomic motion within a system.",
+          "ms": "Cari pilihan yang tiada satu pun itemnya menerangkan tenaga tersimpan dalam gerakan, konfigurasi, atau gerakan atom mikroskopik di dalam sistem.",
+          "zh": "寻找其中没有任何一项描述系统内部储存于运动、构型或微观原子运动中的能量的选项。"
+        },
+        {
+          "en": "Remember that kinetic energy, potential energy, and internal energy represent stored forms, whereas work, heat, waves, electricity, matter transfer, and radiation represent transfers.",
+          "ms": "Ingat bahawa tenaga kinetik, tenaga keupayaan, dan tenaga dalaman mewakili bentuk tersimpan, manakala kerja, haba, gelombang, elektrik, pemindahan jirim, dan sinaran mewakili pemindahan.",
+          "zh": "记住，动能、势能和内能代表储存形式，而做功、热量、机械波、电传输、物质转移和辐射代表传递机制。"
+        }
+      ],
+      "feedback": {
+        "en": "Work, mechanical waves, electrical transmission, electromagnetic radiation, heat, and matter transfer are transfer mechanisms; kinetic, potential, and internal energies are stored forms.",
+        "ms": "Kerja, gelombang mekanik, penghantaran elektrik, sinaran elektromagnet, haba, dan pemindahan jirim ialah mekanisme pemindahan; tenaga kinetik, keupayaan, dan dalaman ialah bentuk tersimpan.",
+        "zh": "做功、机械波、电传输、电磁辐射、热量和物质转移是传递机制；动能、势能和内能是储存形式。"
+      },
+      "answerLogic": {
+        "en": "In the conservation of energy formulation, stored forms appear inside the system energy change (kinetic, potential, internal), while transfers crossing the boundary appear on the transfer side (work, heat, mechanical waves, matter transfer, electrical transmission, electromagnetic radiation).",
+        "ms": "Dalam rumus keabadian tenaga, bentuk tersimpan muncul di dalam perubahan tenaga sistem (kinetik, keupayaan, dalaman), manakala pemindahan yang merentasi sempadan muncul pada bahagian pemindahan (kerja, haba, gelombang mekanik, pemindahan jirim, penghantaran elektrik, sinaran elektromagnet).",
+        "zh": "在能量守恒公式中，储存形式出现在系统能量变化中（动能、势能、内能），而跨越边界的传递则出现在传递项中（做功、热量、机械波、物质转移、电传输、电磁辐射）。"
+      },
+      "explanation": {
+        "en": "Energy can be stored inside a system in three primary ways: kinetic energy, potential energy, and internal energy. In contrast, work, mechanical waves, electrical transmission, electromagnetic radiation, heat, and matter transfer describe ways energy moves across the boundary between the system and its environment.",
+        "ms": "Tenaga boleh disimpan di dalam sistem melalui tiga cara utama: tenaga kinetik, tenaga keupayaan, dan tenaga dalaman. Sebaliknya, kerja, gelombang mekanik, penghantaran elektrik, sinaran elektromagnet, haba, dan pemindahan jirim menerangkan cara tenaga merentasi sempadan antara sistem dan persekitarannya.",
+        "zh": "能量可以通过三种主要方式储存在系统内部：动能、势能和内能。相比之下，做功、机械波、电传输、电磁辐射、热量和物质转移描述了能量跨越系统与环境边界的流动方式。"
+      },
+      "misconceptions": [
+        "energy-storage-vs-transfer-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-and-potential-energy",
+        "prompt": {
+          "en": "Review how kinetic energy and potential energy describe states of storage within a system rather than boundary transfer processes.",
+          "ms": "Ulang kaji bagaimana tenaga kinetik dan tenaga keupayaan menerangkan keadaan penyimpanan di dalam sistem dan bukannya proses pemindahan sempadan.",
+          "zh": "复习动能和势能如何描述系统内部的储存状态，而不是边界传递过程。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four lists asking to identify the list that contains exclusively energy transfer mechanisms crossing a system boundary.",
+        "ms": "Soalan pelbagai pilihan dengan empat senarai yang meminta untuk mengenal pasti senarai yang mengandungi mekanisme pemindahan tenaga semata-mata yang merentasi sempadan sistem.",
+        "zh": "包含四个列表的单选题，要求选出仅包含跨越系统边界的能量传递机制的列表。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-transfer-only",
+        "options": [
+          {
+            "id": "opt-transfer-only",
+            "label": {
+              "en": "Work, mechanical waves, electrical transmission, and electromagnetic radiation",
+              "ms": "Kerja, gelombang mekanik, penghantaran elektrik, dan sinaran elektromagnet",
+              "zh": "做功、机械波、电传输和电磁辐射"
+            }
+          },
+          {
+            "id": "opt-storage-mix",
+            "label": {
+              "en": "Kinetic energy, potential energy, internal energy, and work",
+              "ms": "Tenaga kinetik, tenaga keupayaan, tenaga dalaman, dan kerja",
+              "zh": "动能、势能、内能和做功"
+            },
+            "misconception": "energy-storage-vs-transfer-confusion"
+          },
+          {
+            "id": "opt-storage-only",
+            "label": {
+              "en": "Kinetic energy, gravitational potential energy, and internal energy",
+              "ms": "Tenaga kinetik, tenaga keupayaan graviti, dan tenaga dalaman",
+              "zh": "动能、重力势能和内能"
+            }
+          },
+          {
+            "id": "opt-transfer-storage-mix",
+            "label": {
+              "en": "Heat, matter transfer, kinetic energy, and electromagnetic radiation",
+              "ms": "Haba, pemindahan jirim, tenaga kinetik, dan sinaran elektromagnet",
+              "zh": "热量、物质转移、动能和电磁辐射"
+            },
+            "misconception": "energy-storage-vs-transfer-confusion"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-mod-1",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate the six energy transfer mechanisms: work, heat, waves, matter transfer, electricity, and radiation.",
+      "prompt": {
+        "en": "A scientific satellite orbits Earth in the vacuum of outer space where no surrounding air or molecules are present. Which energy transfer mechanisms can still transfer energy across the boundary between the satellite and its external environment\n?",
+        "ms": "Sebuah satelit saintifik mengorbit Bumi dalam vakum di angkasa lepas di mana tiada udara atau molekul di sekelilingnya. Mekanisme pemindahan tenaga manakah yang masih boleh memindahkan tenaga merentasi sempadan antara satelit dan persekitaran luarannya\n?",
+        "zh": "一颗科学卫星在没有周围空气或分子的外太空真空中绕地球运行。哪些能量传递机制仍然可以跨越卫星与其外部环境之间的边界传递能量\n？"
+      },
+      "hints": [
+        {
+          "en": "Consider which energy transfer mechanisms do not require atoms or molecules of the environment to be present at the system boundary\n.",
+          "ms": "Pertimbangkan mekanisme pemindahan tenaga yang tidak memerlukan atom atau molekul persekitaran berada pada sempadan sistem\n.",
+          "zh": "考虑哪些能量传递机制不需要环境中的原子或分子存在于系统边界处\n。"
+        },
+        {
+          "en": "Electromagnetic waves can travel freely through a vacuum, and field forces like gravity can exert forces across empty space\n.",
+          "ms": "Gelombang elektromagnet boleh merambat secara bebas melalui vakum, dan daya medan seperti graviti boleh mengenakan daya merentasi ruang kosong\n.",
+          "zh": "电磁波可以在真空中自由传播，而重力等场力也可以跨越空无一物的空间施加作用力\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Electromagnetic radiation and work done by field forces are the only mechanisms that do not require molecules of the environment at the system boundary\n.",
+        "ms": "Sinaran elektromagnet dan kerja yang dilakukan oleh daya medan adalah satu-satunya mekanisme yang tidak memerlukan molekul persekitaran pada sempadan sistem\n.",
+        "zh": "电磁辐射和场力做功是仅有的不需要环境分子存在于系统边界处的传递机制\n。"
+      },
+      "answerLogic": {
+        "en": "In a vacuum, mechanisms requiring physical material contact or particle collisions (heat, mechanical waves, matter transfer, electrical conduction) cannot operate\n. Only electromagnetic radiation (such as sunlight) and work done by external field forces (such as gravity) can cross the boundary\n.",
+        "ms": "Dalam vakum, mekanisme yang memerlukan sentuhan bahan fizikal atau perlanggaran zarah (haba, gelombang mekanik, pemindahan jirim, konduksi elektrik) tidak boleh beroperasi\n. Hanya sinaran elektromagnet (seperti cahaya matahari) dan kerja yang dilakukan oleh daya medan luar (seperti graviti) yang boleh merentasi sempadan\n.",
+        "zh": "在真空中，需要物理物质接触或粒子碰撞的机制（热量、机械波、物质转移、电导传导）均无法运作\n。只有电磁辐射（如太阳光）和外场力（如引力）所做的功才能跨越边界\n。"
+      },
+      "explanation": {
+        "en": "Most energy transfer mechanisms—such as mechanical waves, heat via conduction or convection, matter transfer, and electrical transmission—require matter or mobile charges at the system boundary\n. However, electromagnetic radiation travels through vacuum, and gravitational field forces can do work without boundary molecules\n. Therefore, systems in space exchange energy via radiation and field work\n.",
+        "ms": "Kebanyakan mekanisme pemindahan tenaga—seperti gelombang mekanik, haba melalui konduksi atau perolakan, pemindahan jirim, dan penghantaran elektrik—memerlukan jirim atau cas mudah alih pada sempadan sistem\n. Walau bagaimanapun, sinaran elektromagnet merambat melalui vakum, dan daya medan graviti boleh melakukan kerja tanpa molekul sempadan\n. Oleh itu, sistem di angkasa lepas bertukar tenaga melalui sinaran dan kerja medan\n.",
+        "zh": "大多数能量传递机制——如机械波、通过传导或对流的热量、物质转移和电传输——都需要系统边界处存在物质或可移动电荷\n。然而，电磁辐射可在真空中传播，引力场力也可以在没有边界分子的情况下做功\n。因此，太空中的系统通过辐射和场力做功来进行能量交换\n。"
+      },
+      "misconceptions": [
+        "all-transfers-require-matter"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-concept",
+        "prompt": {
+          "en": "Review how gravitational forces can perform work on an object across a distance without direct mechanical contact.",
+          "ms": "Ulang kaji bagaimana daya graviti boleh melakukan kerja ke atas suatu objek merentasi jarak tanpa sentuhan mekanik secara langsung.",
+          "zh": "复习引力如何在没有直接机械接触的情况下远距离对物体做功。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking which energy transfer mechanisms operate across the vacuum of space between a satellite and its surroundings.",
+        "ms": "Soalan pelbagai pilihan yang bertanyakan mekanisme pemindahan tenaga manakah yang beroperasi merentasi vakum angkasa lepas antara satelit dan persekitarannya.",
+        "zh": "单选题，询问哪些能量传递机制可以在卫星与其周围环境之间的太空真空中运作。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-radiation-field-work",
+        "options": [
+          {
+            "id": "opt-radiation-field-work",
+            "label": {
+              "en": "Electromagnetic radiation and work done by field forces",
+              "ms": "Sinaran elektromagnet dan kerja yang dilakukan oleh daya medan",
+              "zh": "电磁辐射以及场力所做的功"
+            }
+          },
+          {
+            "id": "opt-all-transfers-need-matter",
+            "label": {
+              "en": "No mechanisms can transfer energy because all transfers require contact with boundary molecules",
+              "ms": "Tiada mekanisme boleh memindahkan tenaga kerana semua pemindahan memerlukan sentuhan dengan molekul sempadan",
+              "zh": "没有任何机制可以传递能量，因为所有传递都需要与边界分子接触"
+            },
+            "misconception": "all-transfers-require-matter"
+          },
+          {
+            "id": "opt-mechanical-waves-heat",
+            "label": {
+              "en": "Mechanical waves and heat transfer by molecular collisions",
+              "ms": "Gelombang mekanik dan pemindahan haba melalui perlanggaran molekul",
+              "zh": "机械波以及通过分子碰撞进行的热量传递"
+            }
+          },
+          {
+            "id": "opt-matter-electrical-gas",
+            "label": {
+              "en": "Matter transfer and electrical transmission through ambient gases",
+              "ms": "Pemindahan jirim dan penghantaran elektrik melalui gas ambien",
+              "zh": "物质转移以及通过周围气体的电传输"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-mod-2",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate internal system energy processes from external energy transfers crossing the defined system boundary.",
+      "prompt": {
+        "en": "A cordless power drill containing an internal rechargeable battery and an electric motor is used to drill a hole in a wooden board\n. The chosen system consists of the drill, its motor, and its battery\n. Which of the following describes an internal energy conversion rather than an energy transfer crossing the system boundary\n?",
+        "ms": "Sebuah gerudi elektrik tanpa kord yang mengandungi bateri boleh dicas semula dan motor elektrik digunakan untuk menggerudi lubang pada papan kayu\n. Sistem yang dipilih terdiri daripada gerudi, motor, dan baterinya\n. Antara berikut, yang manakah menerangkan penukaran tenaga dalaman dan bukannya pemindahan tenaga yang merentasi sempadan sistem\n?",
+        "zh": "一把包含内置充电电池和电动机的无绳电钻用于在木板上钻孔\n。所选系统包括电钻、其电机及其电池\n。下列哪一项描述的是系统内部的能量转换，而不是跨越系统边界的能量传递\n？"
+      },
+      "hints": [
+        {
+          "en": "Check which components are located inside the system boundary and which entities are part of the external environment\n.",
+          "ms": "Periksa komponen manakah yang terletak di dalam sempadan sistem dan entiti manakah yang merupakan sebahagian daripada persekitaran luar\n.",
+          "zh": "检查哪些组件位于系统边界内部，哪些实体属于外部环境\n。"
+        },
+        {
+          "en": "An energy transfer term in the conservation equation must cross the boundary between the system and its surroundings\n.",
+          "ms": "Istilah pemindahan tenaga dalam persamaan keabadian mesti merentasi sempadan antara sistem dan persekitarannya\n.",
+          "zh": "能量守恒方程中的能量传递项必须跨越系统与其周围环境之间的边界\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Energy transformations occurring entirely between components inside the system boundary are internal processes, not boundary transfers\n.",
+        "ms": "Penukaran tenaga yang berlaku sepenuhnya antara komponen di dalam sempadan sistem ialah proses dalaman, bukan pemindahan sempadan\n.",
+        "zh": "完全发生在系统边界内部各组件之间的能量转换属于内部过程，而不是边界传递\n。"
+      },
+      "answerLogic": {
+        "en": "Because the battery and the motor are both inside the defined system, the electric current passing between them does not cross the system boundary and is an internal process\n. Cutting wood (work), heating the air (heat), and emitting sound (mechanical waves) all cross the boundary into the surroundings\n.",
+        "ms": "Oleh sebab bateri dan motor kedua-duanya berada di dalam sistem yang ditakrifkan, arus elektrik yang mengalir antara kedua-duanya tidak merentasi sempadan sistem dan merupakan proses dalaman\n. Memotong kayu (kerja), memanaskan udara (haba), dan memancarkan bunyi (gelombang mekanik) semuanya merentasi sempadan ke persekitaran\n.",
+        "zh": "因为电池和电机都在确定的系统内部，所以它们之间流过的电流没有跨越系统边界，属于内部过程\n。切割木材（做功）、加热空气（热量）和发出声音（机械波）都跨越边界进入了周围环境\n。"
+      },
+      "explanation": {
+        "en": "In the conservation of energy equation, only energy crossing the defined system boundary is recorded as transfer terms on the right-hand side\n. Internal processes—such as chemical energy in the battery converting to electrical energy and then mechanical rotation in the motor—change the stored energy distribution within the system without crossing the outer boundary\n.",
+        "ms": "Dalam persamaan keabadian tenaga, hanya tenaga yang merentasi sempadan sistem yang ditakrifkan dicatatkan sebagai istilah pemindahan pada bahagian kanan\n. Proses dalaman—seperti tenaga kimia dalam bateri bertukar kepada tenaga elektrik dan kemudian putaran mekanik dalam motor—mengubah taburan tenaga tersimpan di dalam sistem tanpa merentasi sempadan luar\n.",
+        "zh": "在能量守恒方程中，只有跨越所划定系统边界的能量才会作为传递项记录在右侧\n。内部过程——例如电池中的化学能转换为电能进而驱动电机机械旋转——改变了系统内部储存能量的分布，而没有跨越外部边界\n。"
+      },
+      "misconceptions": [
+        "internal-events-as-transfers"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "system-and-environment",
+        "prompt": {
+          "en": "Review the concept of system boundaries to distinguish between interactions occurring entirely inside a system and transfers crossing into the environment.",
+          "ms": "Ulang kaji konsep sempadan sistem untuk membezakan antara interaksi yang berlaku sepenuhnya di dalam sistem dengan pemindahan yang merentasi persekitaran.",
+          "zh": "复习系统边界的概念，以区分完全发生在系统内部的相互作用与跨越进入环境的传递。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking to identify which process is an internal energy conversion for a battery-powered drill system.",
+        "ms": "Soalan pelbagai pilihan yang meminta untuk mengenal pasti proses manakah yang merupakan penukaran tenaga dalaman bagi sistem gerudi berkuasa bateri.",
+        "zh": "单选题，要求识别在电池供电的电钻系统中哪项过程属于内部能量转换。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-battery-to-motor",
+        "options": [
+          {
+            "id": "opt-battery-to-motor",
+            "label": {
+              "en": "Electric current delivering energy from the internal battery to turn the internal motor",
+              "ms": "Arus elektrik yang menghantar tenaga daripada bateri dalaman untuk memutarkan motor dalaman",
+              "zh": "电流将能量从内部电池传递以驱动内部电机旋转"
+            }
+          },
+          {
+            "id": "opt-work-on-wood",
+            "label": {
+              "en": "The drill bit doing mechanical work on the external wooden board",
+              "ms": "Mata gerudi melakukan kerja mekanik ke atas papan kayu luaran",
+              "zh": "钻头对外部木板做机械功"
+            },
+            "misconception": "internal-events-as-transfers"
+          },
+          {
+            "id": "opt-heat-to-room",
+            "label": {
+              "en": "Thermal energy transferring from the warm drill casing to the cooler workshop air by heat",
+              "ms": "Tenaga terma berpindah daripada perumah gerudi yang panas ke udara bengkel yang lebih sejuk melalui haba",
+              "zh": "热能通过热量从温热的电钻外壳传递到较冷的车间空气中"
+            }
+          },
+          {
+            "id": "opt-sound-waves",
+            "label": {
+              "en": "Acoustic energy radiating from the drill into the surrounding room as mechanical waves",
+              "ms": "Tenaga akustik memancar daripada gerudi ke dalam bilik sekeliling sebagai gelombang mekanik",
+              "zh": "声能作为机械波从电钻辐射到周围房间中"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-mod-3",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the conservation of energy equation by setting inactive transfer and storage terms to zero for given scenarios.",
+      "prompt": {
+        "en": "An incandescent light bulb is turned on\n. Energy enters the stationary filament by electrical transmission, raising its internal energy and temperature, and leaves the bulb into the room as electromagnetic radiation\n. No work is done and no matter crosses the bulb envelope\n. Which reduced equation correctly represents the conservation of energy for the bulb system\n?",
+        "ms": "Sebuah mentol lampu pijar dihidupkan\n. Tenaga memasuki filamen pegun melalui penghantaran elektrik, meningkatkan tenaga dalaman dan suhunya, dan meninggalkan mentol ke dalam bilik sebagai sinaran elektromagnet\n. Tiada kerja dilakukan dan tiada jirim merentasi sampul mentol\n. Persamaan terturun manakah yang mewakili keabadian tenaga dengan betul bagi sistem mentol tersebut\n?",
+        "zh": "一个白炽灯泡被接通电源\n。能量通过电传输进入静止的灯丝，提高其内能和温度，并作为电磁辐射离开灯泡进入房间\n。没有做功，也没有物质穿过灯泡外壳\n。下列哪个简化方程正确表示了该灯泡系统的能量守恒\n？"
+      },
+      "hints": [
+        {
+          "en": "Identify which storage terms change (kinetic, potential, or internal) and which transfer terms cross the boundary\n.",
+          "ms": "Kenal pasti istilah penyimpanan manakah yang berubah (kinetik, keupayaan, atau dalaman) dan istilah pemindahan manakah yang merentasi sempadan\n.",
+          "zh": "识别哪些储存项发生了改变（动能、势能或内能），以及哪些传递项跨越了边界\n。"
+        },
+        {
+          "en": "The bulb remains at rest with increasing temperature (Delta E_int), while electricity (T_ET) enters and light radiation (T_ER) leaves\n.",
+          "ms": "Mentol kekal pegun dengan suhu yang meningkat (Delta E_int), manakala elektrik (T_ET) masuk dan sinaran cahaya (T_ER) keluar\n.",
+          "zh": "灯泡保持静止且温度升高（Delta E_int），同时电传输（T_ET）进入且光辐射（T_ER）离开\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Setting inactive terms to zero leaves Delta E_int on the storage side and T_ET plus T_ER on the transfer side\n.",
+        "ms": "Menetapkan istilah tidak aktif kepada sifar meninggalkan Delta E_int pada bahagian penyimpanan dan T_ET serta T_ER pada bahagian pemindahan\n.",
+        "zh": "将未激活的项设为零后，储存端保留 Delta E_int，传递端保留 T_ET 和 T_ER\n。"
+      },
+      "answerLogic": {
+        "en": "Because the bulb is stationary, Delta K = 0 and Delta U = 0, leaving Delta E_int\n. For boundary transfers, W = 0, Q = 0, T_MW = 0, and T_MT = 0, while T_ET and T_ER are active\n. This reduces the general equation directly to Delta E_int = T_ET + T_ER\n.",
+        "ms": "Oleh sebab mentol adalah pegun, Delta K = 0 dan Delta U = 0, meninggalkan Delta E_int\n. Bagi pemindahan sempadan, W = 0, Q = 0, T_MW = 0, dan T_MT = 0, manakala T_ET dan T_ER adalah aktif\n. Ini menurunkan persamaan umum terus kepada Delta E_int = T_ET + T_ER\n.",
+        "zh": "因为灯泡静止，所以 Delta K = 0 且 Delta U = 0，剩下 Delta E_int\n。对于边界传递，W = 0，Q = 0，T_MW = 0 且 T_MT = 0，而 T_ET 和 T_ER 处于活动状态\n。这将通式直接简化为 Delta E_int = T_ET + T_ER\n。"
+      },
+      "explanation": {
+        "en": "The general conservation of energy equation Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER is adapted by eliminating non-applicable terms\n. For a stationary light bulb with warming filament, macroscopic kinetic and potential energy changes are zero, leaving Delta E_int equal to the net boundary transfers T_ET and T_ER\n.",
+        "ms": "Persamaan umum keabadian tenaga Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER disesuaikan dengan menghapuskan istilah yang tidak berkaitan\n. Bagi mentol pegun dengan filamen yang semakin panas, perubahan tenaga kinetik dan keupayaan makroskopik adalah sifar, meninggalkan Delta E_int sama dengan pemindahan sempadan bersih T_ET dan T_ER\n.",
+        "zh": "能量守恒通用方程 Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER 通过消除不适用的项来进行化简\n。对于灯丝变热的静止灯泡，宏观动能和势能变化为零，剩下 Delta E_int 等于净边界传递 T_ET 与 T_ER 之和\n。"
+      },
+      "misconceptions": [
+        "isolated-vs-nonisolated-confusion",
+        "energy-storage-vs-transfer-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-concept",
+        "prompt": {
+          "en": "Review how to determine whether mechanical work is zero when system boundaries do not undergo physical displacement under contact forces.",
+          "ms": "Ulang kaji cara menentukan sama ada kerja mekanik adalah sifar apabila sempadan sistem tidak mengalami sesaran fizikal di bawah daya sentuhan.",
+          "zh": "复习在接触力作用下系统边界未发生物理位移时，如何确定机械功为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking to select the correct reduced energy conservation equation for an incandescent light bulb.",
+        "ms": "Soalan pelbagai pilihan yang meminta untuk memilih persamaan keabadian tenaga terturun yang betul bagi mentol lampu pijar.",
+        "zh": "单选题，要求选择白炽灯泡系统的正确简化能量守恒方程。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-eint-tet-ter",
+        "options": [
+          {
+            "id": "opt-eint-tet-ter",
+            "label": {
+              "en": "Delta E_int = T_ET + T_ER",
+              "ms": "Delta E_int = T_ET + T_ER",
+              "zh": "Delta E_int = T_ET + T_ER"
+            }
+          },
+          {
+            "id": "opt-k-u-tet-ter",
+            "label": {
+              "en": "Delta K + Delta U = T_ET + T_ER",
+              "ms": "Delta K + Delta U = T_ET + T_ER",
+              "zh": "Delta K + Delta U = T_ET + T_ER"
+            },
+            "misconception": "energy-storage-vs-transfer-confusion"
+          },
+          {
+            "id": "opt-isolated-zero",
+            "label": {
+              "en": "Delta K + Delta U + Delta E_int = 0",
+              "ms": "Delta K + Delta U + Delta E_int = 0",
+              "zh": "Delta K + Delta U + Delta E_int = 0"
+            },
+            "misconception": "isolated-vs-nonisolated-confusion"
+          },
+          {
+            "id": "opt-eint-w-q",
+            "label": {
+              "en": "Delta E_int = W + Q",
+              "ms": "Delta E_int = W + Q",
+              "zh": "Delta E_int = W + Q"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-chal-1",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate internal system energy processes from external energy transfers crossing the defined system boundary.",
+      "prompt": {
+        "en": "A self-contained scientific probe rests in a vacuum chamber on thermally insulated supports. When activated, an onboard battery powers an internal electric motor that spins an internal reaction flywheel up to high rotational speed. Taking the entire probe (including battery, motor, chassis, and flywheel) as the system, which statement correctly classifies the system and its energy interactions?",
+        "ms": "Sebuah kuar saintifik serba lengkap terletak di dalam kebuk vakum di atas sokongan berpenebat haba. Apabila dihidupkan, bateri di dalam kuar membekalkan kuasa kepada motor elektrik dalaman yang memutarkan roda tenaga tindak balas dalaman sehingga mencapai kelajuan putaran tinggi. Mengambil seluruh kuar (termasuk bateri, motor, casis dan roda tenaga) sebagai sistem, pernyataan manakah yang mengelaskan sistem dan interaksi tenaganya dengan betul?",
+        "zh": "一个自给式科学探测器放置在真空室中热绝缘的支架上。启动后，其车载电池为内置电动机供电，驱动内部反作用飞轮加速至高转速旋转。若将整个探测器（包括电池、电机、机体和飞轮）选定为系统，下列关于该系统及其能量相互作用的描述中，哪一项是正确的？"
+      },
+      "hints": [
+        {
+          "en": "Identify the defined system boundary: are the battery, electric motor, and flywheel all located inside the boundary, or is energy entering from an external source outside the probe?",
+          "ms": "Kenal pasti sempadan sistem yang ditakrifkan: adakah bateri, motor elektrik, dan roda tenaga semuanya terletak di dalam sempadan, atau adakah tenaga masuk daripada punca luar di luar kuar?",
+          "zh": "明确所划定的系统边界：电池、电机和飞轮是全部位于边界内部，还是有能量从探测器外部的源头进入？"
+        },
+        {
+          "en": "Recall that an isolated system has no net energy crossing its boundary (total transfer equals zero), even though energy can convert between internal chemical, electrical, and kinetic forms inside the system.",
+          "ms": "Ingat kembali bahawa sistem terpencil tidak mempunyai tenaga bersih yang merentasi sempadannya (jumlah pemindahan bersamaan sifar), walaupun tenaga boleh bertukar antara bentuk kimia, elektrik, dan kinetik di dalam sistem.",
+          "zh": "请记住，孤立系统的边界没有净能量跨越（总传递量为零），尽管系统内部的化学能、电能和动能之间可以相互转化。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Because the chosen system contains the battery, motor, and flywheel, all energy conversions happen entirely within the system boundary. With no energy crossing the boundary from the environment, the probe is an isolated system.",
+        "ms": "Tepat! Oleh sebab sistem yang dipilih mengandungi bateri, motor, dan roda tenaga, semua penukaran tenaga berlaku sepenuhnya di dalam sempadan sistem. Tanpa tenaga yang merentasi sempadan dari persekitaran, kuar tersebut ialah sistem terpencil.",
+        "zh": "正确！由于所选系统包含了电池、电机和飞轮，所有能量转换都完全发生在系统边界之内。由于没有任何能量从外部环境跨越边界，该探测器是一个孤立系统。"
+      },
+      "answerLogic": {
+        "en": "The system boundary encompasses the entire probe. Interactions between the battery, motor, and flywheel are internal processes. Because the probe rests on insulated supports in a vacuum, no work, heat, matter, or radiation crosses the boundary (Sigma T = 0). Thus, the system is isolated, and its gain in kinetic energy is balanced by a decrease in internal chemical potential energy.",
+        "ms": "Sempadan sistem merangkumi keseluruhan kuar. Interaksi antara bateri, motor, dan roda tenaga adalah proses dalaman. Oleh sebab kuar terletak di atas sokongan berpenebat di dalam vakum, tiada kerja, haba, jirim, atau sinaran yang merentasi sempadan (Sigma T = 0). Oleh itu, sistem ini adalah terpencil, dan peningkatan tenaga kinetiknya diimbangi oleh pengurangan tenaga keupayaan kimia dalaman.",
+        "zh": "系统边界包围了整个探测器。电池、电机和飞轮之间的相互作用属于内部过程。由于探测器放置在真空中的绝热支架上，没有做功、热量、物质或辐射跨越边界（Sigma T = 0）。因此，该系统是孤立系统，其动能的增加与内部化学势能的减少完全平衡。"
+      },
+      "explanation": {
+        "en": "Whether a system is isolated or nonisolated depends strictly on whether energy crosses the defined boundary. When all interacting components are inside the system, electrical flows and mechanical drives are internal energy transformations, not boundary transfers. Energy conservation applies to all systems, and in an isolated system, the total energy remains constant while converting between internal forms.",
+        "ms": "Sama ada sistem itu terpencil atau tak terpencil bergantung sepenuhnya pada sama ada tenaga merentasi sempadan yang ditakrifkan. Apabila semua komponen yang berinteraksi berada di dalam sistem, aliran elektrik dan pacuan mekanikal ialah penukaran tenaga dalaman, bukan pemindahan sempadan. Keabadian tenaga terpakai pada semua sistem, dan dalam sistem terpencil, jumlah tenaga kekal malar semasa bertukar antara bentuk dalaman.",
+        "zh": "一个系统是孤立系统还是非孤立系统，严格取决于是否有能量跨越所划定的边界。当所有相互作用的部件都在系统内部时，电流流动和机械驱动都属于内部能量转化，而不是跨越边界的传递。能量守恒定律适用于所有系统；在孤立系统中，总能量保持不变，仅在内部不同形式之间转化。"
+      },
+      "misconceptions": [
+        "internal-events-as-transfers",
+        "isolated-vs-nonisolated-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "system-and-environment",
+        "prompt": {
+          "en": "Review how defining a system boundary determines whether an interaction is an internal conversion or an external energy transfer.",
+          "ms": "Ulang kaji bagaimana penetapan sempadan sistem menentukan sama ada sesuatu interaksi ialah penukaran dalaman atau pemindahan tenaga luaran.",
+          "zh": "复习划定系统边界如何决定相互作用属于内部转化还是外部能量传递。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking to classify a self-contained battery-powered probe spinning an internal flywheel in an insulated vacuum as an isolated or nonisolated system.",
+        "ms": "Soalan aneka pilihan yang meminta untuk mengelaskan kuar berkuasa bateri serba lengkap yang memutarkan roda tenaga dalaman dalam vakum berpenebat sebagai sistem terpencil atau tak terpencil.",
+        "zh": "一道多项选择题，要求判断在绝热真空中旋转内部飞轮的自给式电池动力探测器属于孤立系统还是非孤立系统。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-1",
+        "options": [
+          {
+            "id": "opt-1",
+            "label": {
+              "en": "The probe is an isolated system because no energy crosses its outer boundary; the increase in kinetic energy comes entirely from the decrease in internal chemical potential energy.",
+              "ms": "Kuar tersebut ialah sistem terpencil kerana tiada tenaga yang merentasi sempadan luarannya; peningkatan tenaga kinetik datang sepenuhnya daripada pengurangan tenaga keupayaan kimia dalaman.",
+              "zh": "该探测器是一个孤立系统，因为没有能量跨越其外边界；动能的增加完全来自于内部化学势能的减少。"
+            }
+          },
+          {
+            "id": "opt-2",
+            "label": {
+              "en": "The probe is a nonisolated system because the motor transfers energy to the flywheel via electrical transmission across the system boundary.",
+              "ms": "Kuar tersebut ialah sistem tak terpencil kerana motor memindahkan tenaga ke roda tenaga melalui penghantaran elektrik merentasi sempadan sistem.",
+              "zh": "该探测器是一个非孤立系统，因为电动机通过电传输将能量跨越系统边界传递到飞轮中。"
+            },
+            "misconception": "internal-events-as-transfers"
+          },
+          {
+            "id": "opt-3",
+            "label": {
+              "en": "The probe is a nonisolated system because its kinetic energy increases, and energy is only conserved when each separate form of energy in a system remains constant.",
+              "ms": "Kuar tersebut ialah sistem tak terpencil kerana tenaga kinetiknya meningkat, dan tenaga hanya diabadikan jika setiap bentuk tenaga yang berasingan dalam sistem kekal malar.",
+              "zh": "该探测器是一个非孤立系统，因为其动能增加了，而只有当系统中每种单独形式的能量都保持恒定时能量才守恒。"
+            },
+            "misconception": "isolated-vs-nonisolated-confusion"
+          },
+          {
+            "id": "opt-4",
+            "label": {
+              "en": "The probe is a nonisolated system because the internal forces exerted by the motor perform external boundary work on the environment.",
+              "ms": "Kuar tersebut ialah sistem tak terpencil kerana daya dalaman yang dikenakan oleh motor melakukan kerja sempadan luar ke atas persekitaran.",
+              "zh": "该探测器是一个非孤立系统，因为电机施加的内力对外部环境做了边界外功。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-chal-2",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the conservation of energy equation by setting inactive transfer and storage terms to zero for given scenarios.",
+      "prompt": {
+        "en": "A rigid electric kettle containing water rests on a stationary kitchen counter. It is plugged in and turned on for 30 seconds. During this time, the water warms up without boiling, and a small amount of thermal energy escapes through the kettle walls into the cooler room air. Treating the kettle, internal heating element, and water together as the system, which reduced form of the conservation of energy equation correctly models this situation?",
+        "ms": "Sebuah cerek elektrik tegar yang mengandungi air terletak di atas kaunter dapur yang pegun. Cerek tersebut disambungkan ke punca elektrik dan dihidupkan selama 30 saat. Dalam tempoh ini, air menjadi panas tanpa mendidih, dan sejumlah kecil tenaga terma terbebas melalui dinding cerek ke udara bilik yang lebih sejuk. Menganggap cerek, elemen pemanas dalaman, dan air bersama-sama sebagai sistem, bentuk persamaan keabadian tenaga yang diringkaskan manakah yang memodelkan situasi ini dengan betul?",
+        "zh": "一个装有水的刚性电水壶放置在静止的厨房台面上。插上电源并启动 30 秒。在此期间，水变热但未沸腾，少量热能通过壶壁散失到较冷的室内空气中。将水壶、内部加热元件和水作为一个整体选定为系统，下列哪一个简化形式的能量守恒方程能够正确描述该过程？"
+      },
+      "hints": [
+        {
+          "en": "Evaluate the state of motion and position of the kettle system: does the kettle as a whole change its elevation or macroscopic speed?",
+          "ms": "Nilaikan keadaan gerakan dan kedudukan sistem cerek: adakah cerek secara keseluruhan berubah ketinggian atau kelajuan makroskopiknya?",
+          "zh": "评估水壶系统的运动状态和位置：水壶整体是否改变了高度或宏观运动速度？"
+        },
+        {
+          "en": "Remember that heat Q is a boundary transfer mechanism driven by temperature difference, not a stored form of energy inside the kettle, and the heating element is inside the system boundary.",
+          "ms": "Ingat bahawa haba Q ialah mekanisme pemindahan sempadan yang didorong oleh perbezaan suhu, bukan bentuk tenaga tersimpan di dalam cerek, dan elemen pemanas berada di dalam sempadan sistem.",
+          "zh": "请记住，热量 Q 是由温差驱动的跨边界传递机制，而不是储存在水壶内部的能量形式，且加热元件位于系统边界内部。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Because the kettle does not move macroscopically, Delta K = 0 and Delta U = 0. The incoming electric current represents electrical transmission (T_ET), while thermal energy escaping to the room represents heat transfer (Q), leading to Delta E_int = Q + T_ET.",
+        "ms": "Tepat! Oleh sebab cerek tidak bergerak secara makroskopik, Delta K = 0 dan Delta U = 0. Arus elektrik yang masuk mewakili penghantaran elektrik (T_ET), manakala tenaga terma yang terbebas ke bilik mewakili pemindahan haba (Q), menghasilkan Delta E_int = Q + T_ET.",
+        "zh": "正确！由于水壶没有发生宏观移动，Delta K = 0 且 Delta U = 0。流入的电流代表电传输（T_ET），散失到房间的热能代表热量传递（Q），因此得到 Delta E_int = Q + T_ET。"
+      },
+      "answerLogic": {
+        "en": "Starting from the full conservation of energy equation Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER: the system remains stationary at a fixed height, so Delta K = 0 and Delta U = 0. No mechanical work (W = 0), mechanical waves (T_MW = 0), matter transfer (T_MT = 0), or significant radiation (T_ER = 0) cross the boundary. The only active transfer terms are electrical transmission in (T_ET) and heat out (Q), leaving Delta E_int = Q + T_ET.",
+        "ms": "Bermula daripada persamaan keabadian tenaga penuh Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER: sistem kekal pegun pada ketinggian tetap, jadi Delta K = 0 dan Delta U = 0. Tiada kerja mekanikal (W = 0), gelombang mekanikal (T_MW = 0), pemindahan jirim (T_MT = 0), atau sinaran ketara (T_ER = 0) merentasi sempadan. Satu-satunya sebutan pemindahan aktif ialah penghantaran elektrik masuk (T_ET) dan haba keluar (Q), meninggalkan Delta E_int = Q + T_ET.",
+        "zh": "从完整的能量守恒方程 Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER 出发：系统保持静止且高度不变，因此 Delta K = 0 且 Delta U = 0。没有机械做功（W = 0）、机械波（T_MW = 0）、物质传递（T_MT = 0）或显著辐射（T_ER = 0）跨越边界。唯一活跃的传递项是进入的电传输（T_ET）和散出的热量（Q），因此简化为 Delta E_int = Q + T_ET。"
+      },
+      "explanation": {
+        "en": "In the conservation of energy equation, the left side tracks changes in stored forms of energy (kinetic, potential, internal), while the right side accounts for energy crossing the system boundary via transfer mechanisms. Heat is not a stored substance or form of energy, so there is no 'Delta Q' storage term. Furthermore, collisions between the internal heater and water molecules are internal thermal processes rather than boundary work W.",
+        "ms": "Dalam persamaan keabadian tenaga, bahagian kiri menjejaki perubahan dalam bentuk tenaga tersimpan (kinetik, keupayaan, dalaman), manakala bahagian kanan mengambil kira tenaga yang merentasi sempadan sistem melalui mekanisme pemindahan. Haba bukanlah bahan atau bentuk tenaga tersimpan, jadi tiada sebutan penyimpanan 'Delta Q'. Tambahan pula, perlanggaran antara pemanas dalaman dan molekul air ialah proses terma dalaman dan bukannya kerja sempadan W.",
+        "zh": "在能量守恒方程中，等式左侧记录储存能量形式的变化（动能、势能、内能），等式右侧记录通过各种传递机制跨越系统边界的能量。热量不是储存的物质或能量形式，因此不存在“Delta Q”储存项。此外，内部加热器与水分子之间的碰撞属于内部热过程，而不是边界做功 W。"
+      },
+      "misconceptions": [
+        "heat-as-stored-energy",
+        "internal-events-as-transfers"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-and-potential-energy",
+        "prompt": {
+          "en": "Review how macroscopic kinetic and potential energy differ from the microscopic internal energy of a system.",
+          "ms": "Ulang kaji bagaimana tenaga kinetik dan keupayaan makroskopik berbeza daripada tenaga dalaman mikroskopik sesuatu sistem.",
+          "zh": "复习宏观动能和势能与系统微观内能之间的区别。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking to select the correct simplified energy conservation equation for an electric kettle heating water on a stationary counter.",
+        "ms": "Soalan aneka pilihan yang meminta untuk memilih persamaan keabadian tenaga yang dipermudahkan dengan betul bagi cerek elektrik yang memanaskan air di atas kaunter pegun.",
+        "zh": "一道多项选择题，要求为一个在静止台面上加热水的电水壶选择正确的简化能量守恒方程。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-1",
+        "options": [
+          {
+            "id": "opt-1",
+            "label": {
+              "en": "Delta E_int = Q + T_ET",
+              "ms": "Delta E_int = Q + T_ET",
+              "zh": "Delta E_int = Q + T_ET"
+            }
+          },
+          {
+            "id": "opt-2",
+            "label": {
+              "en": "Delta Q = T_ET",
+              "ms": "Delta Q = T_ET",
+              "zh": "Delta Q = T_ET"
+            },
+            "misconception": "heat-as-stored-energy"
+          },
+          {
+            "id": "opt-3",
+            "label": {
+              "en": "Delta E_int = W + Q + T_ET",
+              "ms": "Delta E_int = W + Q + T_ET",
+              "zh": "Delta E_int = W + Q + T_ET"
+            },
+            "misconception": "internal-events-as-transfers"
+          },
+          {
+            "id": "opt-4",
+            "label": {
+              "en": "Delta K + Delta E_int = T_ET",
+              "ms": "Delta K + Delta E_int = T_ET",
+              "zh": "Delta K + Delta E_int = T_ET"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-chal-3",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate the six energy transfer mechanisms: work, heat, waves, matter transfer, electricity, and radiation.",
+      "prompt": {
+        "en": "An uncrewed scientific probe travels through deep space, completely surrounded by a vacuum with no surrounding gas or physical contact with other objects. Which statement correctly identifies which energy transfer mechanisms can cross the probe's boundary in this environment and why?",
+        "ms": "Sebuah kuar saintifik tanpa pemandu bergerak merentasi angkasa lepas, dikelilingi sepenuhnya oleh vakum tanpa sebarang gas persekitaran atau sentuhan fizikal dengan objek lain. Pernyataan manakah yang mengenal pasti dengan betul mekanisme pemindahan tenaga yang boleh merentasi sempadan kuar dalam persekitaran ini dan sebabnya?",
+        "zh": "一颗无人科学探测器在深空中飞行，完全被真空包围，周围没有气体，也没有与其他物体的物理接触。下列关于在此环境下哪些能量传递机制能够跨越探测器边界及其原因的描述中，哪一项是正确的？"
+      },
+      "hints": [
+        {
+          "en": "Consider which of the six transfer mechanisms (work, heat, mechanical waves, matter transfer, electrical transmission, electromagnetic radiation) require physical matter or contact at the system boundary.",
+          "ms": "Pertimbangkan yang mana antara enam mekanisme pemindahan (kerja, haba, gelombang mekanikal, pemindahan jirim, penghantaran elektrik, sinaran elektromagnet) memerlukan jirim fizikal atau sentuhan pada sempadan sistem.",
+          "zh": "思考六种传递机制（做功、热量、机械波、物质传递、电传输、电磁辐射）中，哪些在系统边界处必须依赖物理物质或直接接触。"
+        },
+        {
+          "en": "Notice that electromagnetic waves propagate across empty space, and non-contact field forces (such as gravity) can exert forces through a displacement across a vacuum.",
+          "ms": "Perhatikan bahawa gelombang elektromagnet merambat merentasi ruang kosong, dan daya medan bukan sentuhan (seperti graviti) boleh mengenakan daya melalui suatu sesaran merentasi vakum.",
+          "zh": "注意，电磁波可以在空无一物的太空中传播，而非接触场力（如引力）也可以跨越真空在位移上施加力。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Electromagnetic radiation and work done by field forces are the only transfer mechanisms that do not require particles of a material medium at the system boundary, allowing energy to cross a vacuum.",
+        "ms": "Tepat! Sinaran elektromagnet dan kerja yang dilakukan oleh daya medan adalah satu-satunya mekanisme pemindahan yang tidak memerlukan zarah medium bahan pada sempadan sistem, membolehkan tenaga merentasi vakum.",
+        "zh": "正确！电磁辐射和场力做功是仅有的两种在系统边界处不需要物质介质粒子的传递机制，因此能够跨越真空传递能量。"
+      },
+      "answerLogic": {
+        "en": "Four of the transfer mechanisms require matter at the boundary: heat conduction/convection involves molecular collisions/motion, mechanical waves require an elastic medium, electrical transmission requires charge carriers, and matter transfer involves physical mass flow. In contrast, electromagnetic radiation travels freely through a vacuum, and work can be performed across empty space by long-range field forces (such as gravitational or electric fields) acting through a displacement.",
+        "ms": "Empat daripada mekanisme pemindahan memerlukan jirim pada sempadan: kekonduksian/perolakan haba melibatkan perlanggaran/gerakan molekul, gelombang mekanikal memerlukan medium kenyal, penghantaran elektrik memerlukan pembawa cas, dan pemindahan jirim melibatkan aliran jisim fizikal. Sebaliknya, sinaran elektromagnet merambat secara bebas melalui vakum, dan kerja boleh dilakukan merentasi ruang kosong oleh daya medan jarak jauh (seperti medan graviti atau elektrik) yang bertindak melalui sesaran.",
+        "zh": "有四种传递机制在边界处需要物质：热传导/对流涉及分子碰撞或流动，机械波需要弹性介质，电传输需要电荷载流子，物质传递涉及物理质量的流动。相比之下，电磁辐射可以在真空中自由传播，而长程场力（如重力场或电场）也可以在真空中通过位移对物体做功。"
+      },
+      "explanation": {
+        "en": "The six transfer mechanisms describe the distinct physical ways energy enters or leaves a system. Systems bounded by a vacuum cannot exchange energy through mechanisms that require atomic or molecular interactions at the boundary (heat, mechanical waves, electrical conduction, matter transfer). Only electromagnetic radiation and work performed by field forces can transfer energy across a vacuum. Additionally, work and radiation are boundary transfer processes, never forms of stored energy.",
+        "ms": "Enam mekanisme pemindahan menerangkan cara fizikal yang berbeza untuk tenaga masuk atau keluar dari sesuatu sistem. Sistem yang dikelilingi oleh vakum tidak boleh bertukar tenaga melalui mekanisme yang memerlukan interaksi atom atau molekul pada sempadan (haba, gelombang mekanikal, kekonduksian elektrik, pemindahan jirim). Hanya sinaran elektromagnet dan kerja yang dilakukan oleh daya medan boleh memindahkan tenaga merentasi vakum. Selain itu, kerja dan sinaran ialah proses pemindahan sempadan, bukannya bentuk tenaga tersimpan.",
+        "zh": "六种能量传递机制描述了能量进出系统的不同物理途径。被真空包围的系统无法通过在边界处需要原子或分子相互作用的机制（热量、机械波、电传导、物质传递）来交换能量。只有电磁辐射和场力做功能够跨越真空传递能量。此外，做功和辐射是边界传递过程，绝不是储存的能量形式。"
+      },
+      "misconceptions": [
+        "all-transfers-require-matter",
+        "energy-storage-vs-transfer-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-concept",
+        "prompt": {
+          "en": "Review how field forces can act on an object over a displacement without requiring a material medium.",
+          "ms": "Ulang kaji bagaimana daya medan boleh bertindak ke atas suatu objek merentasi sesaran tanpa memerlukan medium bahan.",
+          "zh": "复习场力如何在不需要物质介质的情况下在位移上对物体做功。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking to identify which energy transfer mechanisms can operate across a vacuum boundary for a probe in deep space.",
+        "ms": "Soalan aneka pilihan yang meminta untuk mengenal pasti mekanisme pemindahan tenaga yang boleh beroperasi merentasi sempadan vakum bagi kuar di angkasa lepas.",
+        "zh": "一道多项选择题，要求识别深空中探测器有哪些能够跨越真空边界运行的能量传递机制。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-1",
+        "options": [
+          {
+            "id": "opt-1",
+            "label": {
+              "en": "Only electromagnetic radiation and work done by field forces can cross the boundary, because these mechanisms do not require a material medium at the boundary.",
+              "ms": "Hanya sinaran elektromagnet dan kerja yang dilakukan oleh daya medan boleh merentasi sempadan, kerana mekanisme ini tidak memerlukan medium bahan pada sempadan.",
+              "zh": "只有电磁辐射和场力做功能够跨越边界，因为这两种机制在边界处不需要物质介质。"
+            }
+          },
+          {
+            "id": "opt-2",
+            "label": {
+              "en": "No energy can cross the boundary because all energy transfer mechanisms strictly require a physical material medium to carry energy.",
+              "ms": "Tiada tenaga boleh merentasi sempadan kerana semua mekanisme pemindahan tenaga memerlukan medium bahan fizikal untuk membawa tenaga.",
+              "zh": "没有能量可以跨越边界，因为所有能量传递机制都严格要求物理物质介质来承载能量。"
+            },
+            "misconception": "all-transfers-require-matter"
+          },
+          {
+            "id": "opt-3",
+            "label": {
+              "en": "Energy crosses the boundary when the probe expends its internal storage of work and stored radiation into empty space.",
+              "ms": "Tenaga merentasi sempadan apabila kuar menghabiskan simpanan dalaman kerja dan sinaran tersimpannya ke dalam ruang kosong.",
+              "zh": "当探测器将其内部储存的做功和储存的辐射消耗并释放到空无一物的空间时，能量跨越边界。"
+            },
+            "misconception": "energy-storage-vs-transfer-confusion"
+          },
+          {
+            "id": "opt-4",
+            "label": {
+              "en": "Energy can cross the boundary via heat conduction and mechanical waves as long as the probe hull is sufficiently hot.",
+              "ms": "Tenaga boleh merentasi sempadan melalui kekonduksian haba dan gelombang mekanikal asalkan badan kuar cukup panas.",
+              "zh": "只要探测器外壳足够热，能量就可以通过热传导和机械波跨越边界。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "int-easy-1",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between forms of stored energy within a system and transfer mechanisms crossing its boundary.",
+      "prompt": {
+        "en": "Classify each energy term according to whether it represents a form of energy stored within a system or a transfer mechanism crossing the system boundary.",
+        "ms": "Kelaskan setiap sebutan tenaga mengikut sama ada ia mewakili bentuk tenaga yang tersimpan di dalam sistem atau mekanisme pemindahan yang merentasi sempadan sistem.",
+        "zh": "将下列每个能量术语分类为“储存在系统内部的能量形式”或“跨越系统边界的能量传递机制”。"
+      },
+      "hints": [
+        {
+          "en": "Consider whether the quantity characterizes the physical state of the system itself (such as motion, height, or temperature) or represents a process by which energy moves across the boundary from the environment.",
+          "ms": "Pertimbangkan sama ada kuantiti tersebut mencirikan keadaan fizikal sistem itu sendiri (seperti gerakan, ketinggian, atau suhu) atau mewakili proses di mana tenaga bergerak merentasi sempadan daripada persekitaran.",
+          "zh": "思考该量是表征系统本身的物理状态（如运动、高度或温度），还是代表能量从环境跨越边界进出系统的物理过程。"
+        },
+        {
+          "en": "Remember that heat and work describe ways energy enters or leaves a system; they are not substances or energies possessed or stored inside an object.",
+          "ms": "Ingat bahawa haba dan kerja menggambarkan cara tenaga masuk atau keluar dari sesuatu sistem; ia bukan bahan atau tenaga yang dimiliki atau tersimpan di dalam objek.",
+          "zh": "请记住，热量和做功描述的是能量进出系统的方式；它们不是物体内部所拥有或储存的物质或能量形态。"
+        }
+      ],
+      "feedback": {
+        "en": "Well done! Kinetic, gravitational potential, and internal energies are state properties that store energy inside a system, whereas work, heat, and electrical transmission are mechanisms that transfer energy across the system boundary.",
+        "ms": "Syabas! Tenaga kinetik, keupayaan graviti, dan dalaman ialah sifat keadaan yang menyimpan tenaga di dalam sistem, manakala kerja, haba, dan penghantaran elektrik ialah mekanisme yang memindahkan tenaga merentasi sempadan sistem.",
+        "zh": "太棒了！动能、重力势能和内能是表征系统内部能量储存的状态量，而做功、热量和电传输则是跨越系统边界传递能量的机制。"
+      },
+      "answerLogic": {
+        "en": "In the conservation of energy framework (Delta E_system = Sigma T), the left-hand terms (Delta K, Delta U, Delta E_int) track changes in energy stored within the system. The right-hand terms (W, Q, T_ET, etc.) represent mechanisms by which energy crosses the system boundary.",
+        "ms": "Dalam rangka kerja keabadian tenaga (Delta E_system = Sigma T), sebutan di sebelah kiri (Delta K, Delta U, Delta E_int) menjejaki perubahan dalam tenaga yang tersimpan di dalam sistem. Sebutan di sebelah kanan (W, Q, T_ET, dll.) mewakili mekanisme di mana tenaga merentasi sempadan sistem.",
+        "zh": "在能量守恒框架（Delta E_system = Sigma T）中，等式左侧各项（Delta K, Delta U, Delta E_int）记录系统内部储存能量的变化；等式右侧各项（W, Q, T_ET 等）代表能量跨越系统边界的传递机制。"
+      },
+      "explanation": {
+        "en": "Energy can reside within a system in stored forms such as macroscopic kinetic energy, configuration potential energy, or microscopic internal energy. In contrast, work, heat, and electrical transmission are boundary phenomena that exist only during an interaction where energy is actively transferred between the system and its surroundings.",
+        "ms": "Tenaga boleh berada di dalam sistem dalam bentuk tersimpan seperti tenaga kinetik makroskopik, tenaga keupayaan konfigurasi, atau tenaga dalaman mikroskopik. Sebaliknya, kerja, haba, dan penghantaran elektrik ialah fenomena sempadan yang hanya wujud semasa interaksi apabila tenaga dipindahkan secara aktif antara sistem dan persekitarannya.",
+        "zh": "能量可以以宏观动能、构型势能或微观内能等储存形式存在于系统内部。相比之下，做功、热量和电传输属于边界现象，仅在系统与外界环境发生相互作用、能量正在被传递时才存在。"
+      },
+      "misconceptions": [
+        "energy-storage-vs-transfer-confusion",
+        "heat-as-stored-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-and-potential-energy",
+        "prompt": {
+          "en": "Review the definitions of kinetic energy, potential energy, and internal energy as forms of energy possessed by a system.",
+          "ms": "Ulang kaji takrifan tenaga kinetik, tenaga keupayaan, dan tenaga dalaman sebagai bentuk tenaga yang dimiliki oleh sesuatu sistem.",
+          "zh": "复习作为系统所具有的能量形式的动能、势能和内能的定义。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classification interaction where six energy terms must be placed into two categories: Stored Energy within System or Boundary Transfer Mechanism.",
+        "ms": "Interaksi pengelasan di mana enam sebutan tenaga mesti diletakkan ke dalam dua kategori: Tenaga Tersimpan di dalam Sistem atau Mekanisme Pemindahan Sempadan.",
+        "zh": "分类互动题：需要将六个能量术语分别归入“系统内储存的能量”或“边界传递机制”两个类别中。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-storage",
+            "label": {
+              "en": "Stored Energy Form (Inside System)",
+              "ms": "Bentuk Tenaga Tersimpan (Di Dalam Sistem)",
+              "zh": "储存的能量形式（系统内部）"
+            }
+          },
+          {
+            "id": "target-transfer",
+            "label": {
+              "en": "Boundary Transfer Mechanism (Crossing Boundary)",
+              "ms": "Mekanisme Pemindahan Sempadan (Merentasi Sempadan)",
+              "zh": "边界传递机制（跨越边界）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-1",
+            "label": {
+              "en": "Kinetic energy of moving system components",
+              "ms": "Tenaga kinetik komponen sistem yang bergerak",
+              "zh": "系统运动部件的动能"
+            }
+          },
+          {
+            "id": "item-2",
+            "label": {
+              "en": "Gravitational potential energy of the system configuration",
+              "ms": "Tenaga keupayaan graviti konfigurasi sistem",
+              "zh": "系统构型的重力势能"
+            }
+          },
+          {
+            "id": "item-3",
+            "label": {
+              "en": "Internal thermal energy of atomic vibrations",
+              "ms": "Tenaga terma dalaman daripada getaran atom",
+              "zh": "原子热振动的微观内能"
+            }
+          },
+          {
+            "id": "item-4",
+            "label": {
+              "en": "Work done by an external force on the system",
+              "ms": "Kerja yang dilakukan oleh daya luar ke atas sistem",
+              "zh": "外力对系统所做的功"
+            }
+          },
+          {
+            "id": "item-5",
+            "label": {
+              "en": "Heat transferred due to a temperature difference",
+              "ms": "Haba yang dipindahkan akibat perbezaan suhu",
+              "zh": "因温差而传递的热量"
+            }
+          },
+          {
+            "id": "item-6",
+            "label": {
+              "en": "Electrical transmission via electric current",
+              "ms": "Penghantaran elektrik melalui arus elektrik",
+              "zh": "通过电流进行的电传输"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-1",
+            "targetId": "target-storage"
+          },
+          {
+            "itemId": "item-2",
+            "targetId": "target-storage"
+          },
+          {
+            "itemId": "item-3",
+            "targetId": "target-storage"
+          },
+          {
+            "itemId": "item-4",
+            "targetId": "target-transfer"
+          },
+          {
+            "itemId": "item-5",
+            "targetId": "target-transfer"
+          },
+          {
+            "itemId": "item-6",
+            "targetId": "target-transfer"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "heat-as-stored-energy",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-5",
+            "targetId": "target-storage"
+          }
+        },
+        {
+          "misconception": "energy-storage-vs-transfer-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-6",
+            "targetId": "target-storage"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-easy-2",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate the six energy transfer mechanisms: work, heat, waves, matter transfer, electricity, and radiation.",
+      "prompt": {
+        "en": "Match each physical scenario with the primary energy transfer mechanism crossing the specified system boundary.",
+        "ms": "Padankan setiap senario fizikal dengan mekanisme pemindahan tenaga utama yang merentasi sempadan sistem yang dinyatakan.",
+        "zh": "将每个物理情境与其跨越指定系统边界的主要能量传递机制进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Identify the physical agent crossing the boundary in each case: is it an electric current, electromagnetic waves, temperature-driven microscopic collisions, or an applied force through a displacement?",
+          "ms": "Kenal pasti agen fizikal yang merentasi sempadan dalam setiap kes: adakah ia arus elektrik, gelombang elektromagnet, perlanggaran mikroskopik didorong suhu, atau daya yang dikenakan merentasi sesaran?",
+          "zh": "识别每种情况下跨越边界的物理作用：是电流、电磁波、温差驱动的微观碰撞，还是在位移上施加的外力？"
+        },
+        {
+          "en": "Note that thermal energy moving directly into an object because it is colder than its surroundings represents heat, while energy carried by light represents electromagnetic radiation.",
+          "ms": "Perhatikan bahawa tenaga terma yang bergerak terus ke dalam objek kerana ia lebih sejuk daripada persekitaran mewakili haba, manakala tenaga yang dibawa oleh cahaya mewakili sinaran elektromagnet.",
+          "zh": "注意，由于物体比周围环境冷而直接流入的热能代表热量传递，而由光携带的能量则代表电磁辐射。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Each scenario represents a distinct boundary mechanism: electrical transmission delivers current to the phone, electromagnetic radiation transmits solar energy through space, heat conducts into the cool spoon, and work transfers energy via mechanical force.",
+        "ms": "Tepat! Setiap senario mewakili mekanisme sempadan yang berbeza: penghantaran elektrik menyalurkan arus ke telefon, sinaran elektromagnet memindahkan tenaga suria merentasi angkasa, haba mengalir ke dalam sudu sejuk, dan kerja memindahkan tenaga melalui daya mekanikal.",
+        "zh": "正确！每个情境都代表了一种独特的边界机制：电传输通过电流为手机供电，电磁辐射穿过太空传递太阳能，热量传导进入较冷的勺子，做功则通过机械力传递能量。"
+      },
+      "answerLogic": {
+        "en": "Electric currents delivering power through wires correspond to electrical transmission (T_ET). Sunlight propagating through the vacuum of space corresponds to electromagnetic radiation (T_ER). Thermal conduction driven by temperature difference corresponds to heat (Q). An applied force displacing an object corresponds to work (W).",
+        "ms": "Arus elektrik yang menyalurkan kuasa melalui wayar sepadan dengan penghantaran elektrik (T_ET). Cahaya matahari yang merambat melalui vakum angkasa sepadan dengan sinaran elektromagnet (T_ER). Kekonduksian terma yang didorong oleh perbezaan suhu sepadan dengan haba (Q). Daya yang dikenakan menggerakkan objek sepadan dengan kerja (W).",
+        "zh": "通过导线输送电力的电流对应于电传输（T_ET）。穿过太空真空传播的太阳光对应于电磁辐射（T_ER）。由温度差驱动的热传导对应于热量（Q）。施加外力使物体发生位移对应于做功（W）。"
+      },
+      "explanation": {
+        "en": "The six transfer mechanisms describe the distinct physical ways energy can cross a system boundary: Work (force through displacement), Heat (temperature difference), Mechanical waves (acoustic/seismic disturbances in a medium), Matter transfer (mass carrying energy), Electrical transmission (charges in a circuit), and Electromagnetic radiation (waves such as light and microwaves).",
+        "ms": "Enam mekanisme pemindahan menerangkan cara fizikal yang berbeza untuk tenaga merentasi sempadan sistem: Kerja (daya melalui sesaran), Haba (perbezaan suhu), Gelombang mekanikal (gangguan akustik/seismik dalam medium), Pemindahan jirim (jisim membawa tenaga), Penghantaran elektrik (cas dalam litar), dan Sinaran elektromagnet (gelombang seperti cahaya dan gelombang mikro).",
+        "zh": "六种能量传递机制描述了能量跨越系统边界的不同物理方式：做功（力经过位移）、热量（温差驱动）、机械波（介质中的声波/地震扰动）、物质传递（质量携带能量）、电传输（电路中的电荷流动）以及电磁辐射（如光波和微波）。"
+      },
+      "misconceptions": [
+        "energy-storage-vs-transfer-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "system-and-environment",
+        "prompt": {
+          "en": "Review how defining the system boundary helps identify the specific interaction mechanism crossing between the system and its environment.",
+          "ms": "Ulang kaji bagaimana penetapan sempadan sistem membantu mengenal pasti mekanisme interaksi khusus yang merentasi antara sistem dan persekitarannya.",
+          "zh": "复习划定系统边界如何帮助识别系统与外部环境之间跨越边界的具体相互作用机制。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching interaction pairing four physical scenarios with their corresponding energy transfer mechanisms: Electrical Transmission, Electromagnetic Radiation, Heat, and Work.",
+        "ms": "Interaksi pemadanan yang memasangkan empat senario fizikal dengan mekanisme pemindahan tenaga yang sepadan: Penghantaran Elektrik, Sinaran Elektromagnet, Haba, dan Kerja.",
+        "zh": "匹配互动题：将四个物理情境与其对应的能量传递机制（电传输、电磁辐射、热量、做功）进行配对。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-electricity",
+            "label": {
+              "en": "Electrical Transmission (T_ET)",
+              "ms": "Penghantaran Elektrik (T_ET)",
+              "zh": "电传输 (T_ET)"
+            }
+          },
+          {
+            "id": "target-radiation",
+            "label": {
+              "en": "Electromagnetic Radiation (T_ER)",
+              "ms": "Sinaran Elektromagnet (T_ER)",
+              "zh": "电磁辐射 (T_ER)"
+            }
+          },
+          {
+            "id": "target-heat",
+            "label": {
+              "en": "Heat (Q)",
+              "ms": "Haba (Q)",
+              "zh": "热量 (Q)"
+            }
+          },
+          {
+            "id": "target-work",
+            "label": {
+              "en": "Work (W)",
+              "ms": "Kerja (W)",
+              "zh": "做功 (W)"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-1",
+            "label": {
+              "en": "Energy entering a charging smartphone through a wall plug and cable",
+              "ms": "Tenaga masuk ke dalam telefon pintar yang sedang dicas melalui palam dinding dan kabel",
+              "zh": "能量通过墙上插座和充电线进入正在充电的智能手机"
+            }
+          },
+          {
+            "id": "item-2",
+            "label": {
+              "en": "Energy traveling from the Sun across the vacuum of space to warm the Earth",
+              "ms": "Tenaga bergerak dari Matahari merentasi vakum angkasa untuk memanaskan Bumi",
+              "zh": "能量从太阳穿过太空真空传递以温暖地球"
+            }
+          },
+          {
+            "id": "item-3",
+            "label": {
+              "en": "Energy conducting into a cold metal spoon immersed in hot soup solely due to temperature difference",
+              "ms": "Tenaga mengalir ke dalam sudu logam sejuk yang direndam dalam sup panas semata-mata kerana perbezaan suhu",
+              "zh": "仅由于温差，能量传导进入浸在热汤中的冷金属汤匙"
+            }
+          },
+          {
+            "id": "item-4",
+            "label": {
+              "en": "Energy transferred to a heavy box by a person pushing it across a room through a displacement",
+              "ms": "Tenaga dipindahkan ke kotak berat oleh seseorang yang menolaknya merentasi bilik melalui sesaran",
+              "zh": "人推着重箱子穿过房间产生位移，能量被传递给箱子"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-1",
+            "targetId": "target-electricity"
+          },
+          {
+            "itemId": "item-2",
+            "targetId": "target-radiation"
+          },
+          {
+            "itemId": "item-3",
+            "targetId": "target-heat"
+          },
+          {
+            "itemId": "item-4",
+            "targetId": "target-work"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "energy-storage-vs-transfer-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-1",
+            "targetId": "target-work"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-easy-3",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Identify a system, its boundary, and whether it is nonisolated based on boundary energy transfers.",
+      "prompt": {
+        "en": "Select all of the systems below that are classified as NONISOLATED systems during the described process because energy crosses their defined boundaries.",
+        "ms": "Pilih semua sistem di bawah yang dikelaskan sebagai sistem TAK TERPENCIL semasa proses yang diterangkan kerana tenaga merentasi sempadan yang ditakrifkan.",
+        "zh": "选择下列所有在所述过程中因能量跨越其划定边界而被归类为“非孤立系统”的系统。"
+      },
+      "hints": [
+        {
+          "en": "Check whether each system exchanges energy with its environment through work, heat, matter, electricity, waves, or radiation during the process.",
+          "ms": "Semak sama ada setiap sistem bertukar tenaga dengan persekitarannya melalui kerja, haba, jirim, elektrik, gelombang, atau sinaran semasa proses tersebut.",
+          "zh": "检查每个系统在过程中是否通过做功、热量、物质、电、波或辐射与外界环境交换能量。"
+        },
+        {
+          "en": "A system surrounded by completely rigid, perfectly insulating, and impervious walls with no incoming or outgoing fields or currents has zero boundary transfers and is isolated.",
+          "ms": "Sistem yang dikelilingi oleh dinding tegar sempurna, berpenebat sempurna, dan tidak telap tanpa medan atau arus masuk atau keluar mempunyai sifar pemindahan sempadan dan adalah terpencil.",
+          "zh": "被完全刚性、完全绝热且不渗透的壁包围，且没有进出场或电流的系统，其边界传递为零，属于孤立系统。"
+        }
+      ],
+      "feedback": {
+        "en": "Excellent! The recharging phone, cooling coffee, and illuminated solar panel all experience energy crossing their boundaries from/to the environment, making them nonisolated systems. The perfectly sealed and insulated container allows no energy across its boundary, making it isolated.",
+        "ms": "Cemerlang! Telefon yang dicas, kopi yang menyejuk, dan panel suria yang disinari semuanya mengalami tenaga merentasi sempadannya dari/ke persekitaran, menjadikannya sistem tak terpencil. Bekas yang tertutup rapat dan berpenebat sempurna tidak membenarkan tenaga merentasi sempadannya, menjadikannya terpencil.",
+        "zh": "太棒了！正在充电的手机、正在冷却的咖啡和被光照的太阳能电池板都有能量跨越其边界进出外部环境，因此都是非孤立系统。完全密封且绝热的容器不允许任何能量跨越边界，因此是孤立系统。"
+      },
+      "answerLogic": {
+        "en": "A nonisolated system is defined by having a non-zero net energy transfer across its boundary (Sigma T != 0). The phone takes in electrical energy (T_ET), the coffee loses heat (Q) and radiation (T_ER), and the solar panel absorbs radiation (T_ER) and outputs electricity (T_ET). In contrast, the perfectly insulated and rigid sealed container has Sigma T = 0, which defines an isolated system.",
+        "ms": "Sistem tak terpencil ditakrifkan dengan mempunyai pemindahan tenaga bersih bukan sifar merentasi sempadannya (Sigma T != 0). Telefon menerima tenaga elektrik (T_ET), kopi kehilangan haba (Q) dan sinaran (T_ER), dan panel suria menyerap sinaran (T_ER) serta mengeluarkan elektrik (T_ET). Sebaliknya, bekas yang berpenebat sempurna dan tegar tertutup mempunyai Sigma T = 0, yang mentakrifkan sistem terpencil.",
+        "zh": "非孤立系统的定义是其边界处存在非零的净能量传递（Sigma T != 0）。手机接收电能（T_ET），咖啡散失热量（Q）和辐射（T_ER），太阳能板吸收辐射（T_ER）并输出电能（T_ET）。相比之下，完全绝热刚性密封容器的 Sigma T = 0，符合孤立系统的定义。"
+      },
+      "explanation": {
+        "en": "The distinction between isolated and nonisolated systems depends solely on whether energy crosses the system boundary during the time interval. Internal transformations (such as chemical reactions inside an insulated vessel) do not make a system nonisolated unless energy actually enters or leaves across the boundary.",
+        "ms": "Perbezaan antara sistem terpencil dan tak terpencil bergantung semata-mata pada sama ada tenaga merentasi sempadan sistem dalam selang masa tersebut. Penukaran dalaman (seperti tindak balas kimia di dalam bekas berpenebat) tidak menjadikan sistem tak terpencil melainkan tenaga benar-benar masuk atau keluar merentasi sempadan.",
+        "zh": "孤立系统与非孤立系统的区别完全取决于在所考察的时间间隔内是否有能量跨越系统边界。内部能量转换（例如绝热容器内的化学反应）不会使系统变成非孤立系统，除非能量实际跨越边界进出。"
+      },
+      "misconceptions": [
+        "isolated-vs-nonisolated-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "system-and-environment",
+        "prompt": {
+          "en": "Review the criteria for distinguishing an isolated system (zero energy transfer across boundary) from a nonisolated system.",
+          "ms": "Ulang kaji kriteria untuk membezakan sistem terpencil (sifar pemindahan tenaga merentasi sempadan) daripada sistem tak terpencil.",
+          "zh": "复习区分孤立系统（跨边界能量传递为零）与非孤立系统的判定标准。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multi-select interaction where learners must select all nonisolated systems from a list of four physical descriptions.",
+        "ms": "Interaksi pelbagai pilihan di mana pelajar mesti memilih semua sistem tak terpencil daripada senarai empat penerangan fizikal.",
+        "zh": "多项选择互动题：要求学习者从四个物理描述列表中选出所有非孤立系统。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-1",
+            "label": {
+              "en": "A smartphone plugged into a wall outlet and charging its battery",
+              "ms": "Telefon pintar yang disambungkan ke soket dinding dan sedang mengecas baterinya",
+              "zh": "插在墙壁插座上正在给电池充电的智能手机"
+            }
+          },
+          {
+            "id": "item-2",
+            "label": {
+              "en": "A hot cup of coffee cooling down on an open table in a room",
+              "ms": "Secawan kopi panas yang menyejuk di atas meja terbuka di dalam bilik",
+              "zh": "房间内敞口桌面上正在冷却的热咖啡"
+            }
+          },
+          {
+            "id": "item-3",
+            "label": {
+              "en": "A completely sealed, perfectly rigid, and thermally insulated container enclosing an internal chemical reaction",
+              "ms": "Bekas yang tertutup rapat, tegar sempurna, dan berpenebat haba yang mengandungi tindak balas kimia dalaman",
+              "zh": "完全密封、刚性且绝热的容器，内部发生化学反应"
+            }
+          },
+          {
+            "id": "item-4",
+            "label": {
+              "en": "A solar panel exposed to sunlight operating an external lamp",
+              "ms": "Panel suria yang terdedah kepada cahaya matahari dan mengendalikan lampu luar",
+              "zh": "暴露在阳光下并驱动外部灯具的太阳能电池板"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-1",
+          "item-2",
+          "item-4"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "isolated-vs-nonisolated-confusion",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-3",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-mod-1",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate the six energy transfer mechanisms: work, heat, waves, matter transfer, electricity, and radiation.",
+      "prompt": {
+        "en": "Classify each energy transfer process based on whether it can transfer energy across a vacuum or strictly requires a material medium at the system boundary.",
+        "ms": "Kelaskan setiap proses pemindahan tenaga berdasarkan sama ada ia boleh memindahkan tenaga merentasi vakum atau memerlukan medium bahan pada sempadan sistem.",
+        "zh": "根据每种能量传递过程是能够跨越真空传递能量，还是严格要求在系统边界处存在物质介质，对其进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Consider which mechanisms depend on atomic or molecular contact, bulk fluid movement, or mobile charge carriers, versus those that operate via oscillating electromagnetic fields or long-range fundamental force fields.",
+          "ms": "Pertimbangkan mekanisme yang bergantung pada sentuhan atom atau molekul, pergerakan bendalir pukal, atau pembawa cas bebas, berbanding mekanisme yang beroperasi melalui medan elektromagnet berayun atau medan daya asas jarak jauh.",
+          "zh": "思考哪些机制依赖原子或分子接触、流体宏观流动或可移动电荷载流子，哪些机制则通过振荡电磁场或长程基本力场运作。"
+        },
+        {
+          "en": "Electromagnetic waves (such as light and thermal radiation) and work performed by non-contact field forces (such as gravitational or electric fields) are the only mechanisms capable of transferring energy through empty space.",
+          "ms": "Gelombang elektromagnet (seperti cahaya dan sinaran terma) serta kerja yang dilakukan oleh daya medan tanpa sentuhan (seperti medan graviti atau elektrik) adalah satu-satunya mekanisme yang berupaya memindahkan tenaga melalui ruang kosong.",
+          "zh": "电磁波（如可见光和热辐射）以及非接触场力（如重力场或电场）所做的功，是仅有的能够在真空无介质空间中传递能量的机制。"
+        }
+      ],
+      "feedback": {
+        "en": "Excellent! Electromagnetic radiation and work done by long-range field forces can cross a vacuum without requiring molecules at the boundary. In contrast, mechanical waves, matter transfer, heat conduction/convection, and electrical transmission require physical particles or charge carriers at the boundary.",
+        "ms": "Cemerlang! Sinaran elektromagnet dan kerja yang dilakukan oleh daya medan jarak jauh boleh merentasi vakum tanpa memerlukan molekul pada sempadan. Sebaliknya, gelombang mekanikal, pemindahan jirim, kekonduksian/perolakan haba, dan penghantaran elektrik memerlukan zarah fizikal atau pembawa cas pada sempadan.",
+        "zh": "太棒了！电磁辐射和长程场力做功可以在系统边界无需分子存在的情况下跨越真空传递能量。相比之下，机械波、物质传递、热传导/对流和电传输都需要在边界处存在物理粒子或电荷载流子。"
+      },
+      "answerLogic": {
+        "en": "Mechanisms crossing a vacuum require no material medium at the boundary: electromagnetic radiation propagates via electromagnetic field oscillations, and work can be performed across space by gravitational or electrostatic field forces. The remaining four mechanisms (mechanical waves, matter transfer, heat, and electrical transmission) strictly require particles, fluids, or conductors crossing or contacting the system boundary.",
+        "ms": "Mekanisme yang merentasi vakum tidak memerlukan medium bahan pada sempadan: sinaran elektromagnet merambat melalui ayunan medan elektromagnet, dan kerja boleh dilakukan merentasi ruang oleh daya medan graviti atau elektrostatik. Empat mekanisme lain (gelombang mekanikal, pemindahan jirim, haba, dan penghantaran elektrik) memerlukan zarah, bendalir, atau konduktor yang merentasi atau menyentuh sempadan sistem.",
+        "zh": "能够跨越真空的机制在边界处无需物质介质：电磁辐射通过电磁场振荡传播，而引力场或静电场力可以跨越真空对物体做功。其余四种机制（机械波、物质传递、热量和电传输）则严格要求在系统边界处存在物理粒子、流体或导电介质。"
+      },
+      "explanation": {
+        "en": "A common misconception is that all energy transfer processes need a tangible material substance. However, electromagnetic waves travel through a vacuum at the speed of light, and field forces can do work on an object over a displacement across empty space. Boundary mechanisms requiring a medium at the interface include heat (particle collisions), mechanical waves (elastic medium vibrations), electrical transmission (charge flow), and matter transfer (bulk mass transport).",
+        "ms": "Salah tanggapan umum ialah semua proses pemindahan tenaga memerlukan bahan ketara. Walau bagaimanapun, gelombang elektromagnet bergerak melalui vakum pada kelajuan cahaya, dan daya medan boleh melakukan kerja ke atas objek merentasi sesaran dalam ruang kosong. Mekanisme sempadan yang memerlukan medium pada antara muka termasuk haba (perlanggaran zarah), gelombang mekanikal (getaran medium kenyal), penghantaran elektrik (aliran cas), dan pemindahan jirim (pengangkutan jisim pukal).",
+        "zh": "常见的错误观念是认为所有能量传递过程都需要有形的物质介质。然而，电磁波在真空中以光速传播，场力也可以在没有介质的空间中通过位移对物体做功。必须在界面处依赖介质的边界机制包括热量（粒子碰撞）、机械波（弹性介质振动）、电传输（电荷流动）和物质传递（质量的宏观转移）。"
+      },
+      "misconceptions": [
+        "all-transfers-require-matter"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-concept",
+        "prompt": {
+          "en": "Review how field forces (like gravity) exert forces across a distance to transfer energy via work without needing a physical connection.",
+          "ms": "Ulang kaji bagaimana daya medan (seperti graviti) mengenakan daya merentasi jarak untuk memindahkan tenaga melalui kerja tanpa memerlukan sambungan fizikal.",
+          "zh": "复习场力（如引力）如何在没有物理连接的情况下远距离施力并通过做功传递能量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classification interaction where six transfer processes must be sorted into two categories: Can Transfer Energy Across a Vacuum or Requires a Material Medium at the Boundary.",
+        "ms": "Interaksi pengelasan di mana enam proses pemindahan mesti diisih kepada dua kategori: Boleh Memindahkan Tenaga Merentasi Vakum atau Memerlukan Medium Bahan pada Sempadan.",
+        "zh": "分类互动题：需要将六种能量传递过程归入“可跨越真空传递能量”或“在边界处需要物质介质”两个类别中。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-vacuum",
+            "label": {
+              "en": "Can Transfer Energy Across a Vacuum (No Medium Required)",
+              "ms": "Boleh Memindahkan Tenaga Merentasi Vakum (Tiada Medium Diperlukan)",
+              "zh": "可跨越真空传递能量（无需介质）"
+            }
+          },
+          {
+            "id": "target-medium",
+            "label": {
+              "en": "Requires a Material Medium or Physical Contact at Boundary",
+              "ms": "Memerlukan Medium Bahan atau Sentuhan Fizikal pada Sempadan",
+              "zh": "在边界处需要物质介质或物理接触"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-1",
+            "label": {
+              "en": "Electromagnetic radiation from an infrared heating lamp",
+              "ms": "Sinaran elektromagnet daripada lampu pemanas inframerah",
+              "zh": "红外加热灯发出的电磁辐射"
+            }
+          },
+          {
+            "id": "item-2",
+            "label": {
+              "en": "Work done on an orbiting satellite by a gravitational field force",
+              "ms": "Kerja yang dilakukan ke atas satelit yang mengorbit oleh daya medan graviti",
+              "zh": "引力场力对轨道卫星所做的功"
+            }
+          },
+          {
+            "id": "item-3",
+            "label": {
+              "en": "Mechanical sound waves emanating from an acoustic loudspeaker",
+              "ms": "Gelombang bunyi mekanikal yang terpancar daripada pembesar suara akustik",
+              "zh": "声学扬声器发出的机械声波"
+            }
+          },
+          {
+            "id": "item-4",
+            "label": {
+              "en": "Matter transfer of warm air circulating from a central heating furnace",
+              "ms": "Pemindahan jirim udara panas yang beredar dari relau pemanasan pusat",
+              "zh": "中央供暖锅炉循环流出的热空气物质传递"
+            }
+          },
+          {
+            "id": "item-5",
+            "label": {
+              "en": "Heat conduction through direct contact between solids of different temperatures",
+              "ms": "Kekonduksian haba melalui sentuhan langsung antara pepejal berlainan suhu",
+              "zh": "不同温度固体直接接触发生的热传导"
+            }
+          },
+          {
+            "id": "item-6",
+            "label": {
+              "en": "Electrical transmission through a copper wiring circuit",
+              "ms": "Penghantaran elektrik melalui litar pendawaian kuprum",
+              "zh": "通过铜导线电路进行的电传输"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-1",
+            "targetId": "target-vacuum"
+          },
+          {
+            "itemId": "item-2",
+            "targetId": "target-vacuum"
+          },
+          {
+            "itemId": "item-3",
+            "targetId": "target-medium"
+          },
+          {
+            "itemId": "item-4",
+            "targetId": "target-medium"
+          },
+          {
+            "itemId": "item-5",
+            "targetId": "target-medium"
+          },
+          {
+            "itemId": "item-6",
+            "targetId": "target-medium"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "all-transfers-require-matter",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-1",
+            "targetId": "target-medium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-mod-2",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the conservation of energy equation by setting inactive transfer and storage terms to zero for given scenarios.",
+      "prompt": {
+        "en": "Match each physical scenario with its correct reduced form of the conservation of energy equation by eliminating inactive terms.",
+        "ms": "Padankan setiap senario fizikal dengan bentuk persamaan keabadian tenaga yang diringkaskan dengan betul dengan menghapuskan sebutan tak aktif.",
+        "zh": "通过消除不适用的非活跃项，将每个物理情境与其正确的简化能量守恒方程进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Analyze which forms of energy inside the system change and which specific transfer mechanisms cross the system boundary during the interval.",
+          "ms": "Analisis bentuk tenaga di dalam sistem yang berubah dan mekanisme pemindahan khusus yang merentasi sempadan sistem dalam selang masa tersebut.",
+          "zh": "分析在所考察的时间段内，系统内部有哪些形式的能量发生了变化，以及有哪些具体的传递机制跨越了系统边界。"
+        },
+        {
+          "en": "When a system includes both interacting bodies (such as a falling object and Earth) and experiences no external transfers, all boundary transfer terms equal zero, yielding an isolated system equation.",
+          "ms": "Apabila sistem merangkumi kedua-dua jasad yang berinteraksi (seperti objek jatuh dan Bumi) serta tidak mengalami pemindahan luar, semua sebutan pemindahan sempadan bersamaan sifar, menghasilkan persamaan sistem terpencil.",
+          "zh": "当系统同时包含相互作用的两个物体（例如下落物体与地球）且没有外部传递时，所有边界传递项均为零，得到孤立系统的能量方程。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Each physical scenario maps to a unique reduced energy equation by retaining only the non-zero internal storage changes and active boundary transfer mechanisms.",
+        "ms": "Tepat! Setiap senario fizikal dipadankan dengan persamaan tenaga ringkas yang unik dengan hanya mengekalkan perubahan storan dalaman bukan sifar dan mekanisme pemindahan sempadan yang aktif.",
+        "zh": "正确！每个物理情境都对应一个独特的简化能量方程，只保留了非零的内部储存变化和活跃的边界传递机制。"
+      },
+      "answerLogic": {
+        "en": "1. Single particle accelerated horizontally: Delta K = W (work-kinetic energy theorem). 2. Incandescent filament glowing from electric current: Delta E_int = T_ET + T_ER (electrical input balances internal thermal change and radiation loss). 3. Gas compressed by piston while heated: Delta E_int = W + Q (first law of thermodynamics). 4. Falling object in object-Earth system with no external forces: Delta K + Delta U = 0 (isolated mechanical system).",
+        "ms": "1. Zarah tunggal dipecutkan secara mendatar: Delta K = W (teorem kerja-tenaga kinetik). 2. Filamen pijar bercahaya daripada arus elektrik: Delta E_int = T_ET + T_ER (input elektrik mengimbangi perubahan haba dalaman dan kehilangan sinaran). 3. Gas dimampatkan oleh omboh sambil dipanaskan: Delta E_int = W + Q (hukum pertama termodinamik). 4. Objek jatuh dalam sistem objek-Bumi tanpa daya luar: Delta K + Delta U = 0 (sistem mekanikal terpencil).",
+        "zh": "1. 单个粒子沿水平方向加速：Delta K = W（动能定理）。2. 通电发光的白炽灯丝：Delta E_int = T_ET + T_ER（电能输入平衡内部内能变化与辐射输出）。3. 气体被活塞压缩同时受热：Delta E_int = W + Q（热力学第一定律）。4. 在无外力作用的物体-地球系统中自由下落的物体：Delta K + Delta U = 0（孤立机械能系统）。"
+      },
+      "explanation": {
+        "en": "The general conservation of energy equation Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER simplifies for any specific process by setting non-participating terms to zero. When a system boundary contains all interacting agents, the right side is zero (isolated system). When energy crosses the boundary via electricity or work, the corresponding boundary transfer terms appear on the right side.",
+        "ms": "Persamaan keabadian tenaga am Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER dipermudahkan bagi sebarang proses khusus dengan menetapkan sebutan yang tidak terlibat kepada sifar. Apabila sempadan sistem mengandungi semua agen yang berinteraksi, bahagian kanan adalah sifar (sistem terpencil). Apabila tenaga merentasi sempadan melalui elektrik atau kerja, sebutan pemindahan sempadan yang sepadan muncul di bahagian kanan.",
+        "zh": "通用的能量守恒方程 Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER 可以通过将未参与的项置零来简化以适应任何具体过程。当系统边界包含了所有相互作用的物体时，等式右侧为零（孤立系统）。当能量通过电流或做功跨越边界时，相应的边界传递项出现在等式右侧。"
+      },
+      "misconceptions": [
+        "isolated-vs-nonisolated-confusion",
+        "energy-storage-vs-transfer-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-concept",
+        "prompt": {
+          "en": "Review how the work-kinetic energy theorem represents a specialized reduced case of the nonisolated system energy conservation equation.",
+          "ms": "Ulang kaji bagaimana teorem kerja-tenaga kinetik mewakili kes ringkas khusus bagi persamaan keabadian tenaga sistem tak terpencil.",
+          "zh": "复习动能定理如何作为非孤立系统能量守恒方程的一个特例简化形式。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching interaction pairing four physics scenarios with their corresponding reduced conservation of energy equations.",
+        "ms": "Interaksi pemadanan yang memasangkan empat senario fizik dengan persamaan keabadian tenaga ringkas yang sepadan.",
+        "zh": "匹配互动题：将四个物理情境与其对应的简化能量守恒方程进行配对。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-work-ke",
+            "label": {
+              "en": "Delta K = W",
+              "ms": "Delta K = W",
+              "zh": "Delta K = W"
+            }
+          },
+          {
+            "id": "target-elec-rad",
+            "label": {
+              "en": "Delta E_int = T_ET + T_ER",
+              "ms": "Delta E_int = T_ET + T_ER",
+              "zh": "Delta E_int = T_ET + T_ER"
+            }
+          },
+          {
+            "id": "target-work-heat",
+            "label": {
+              "en": "Delta E_int = W + Q",
+              "ms": "Delta E_int = W + Q",
+              "zh": "Delta E_int = W + Q"
+            }
+          },
+          {
+            "id": "target-isolated-mech",
+            "label": {
+              "en": "Delta K + Delta U = 0",
+              "ms": "Delta K + Delta U = 0",
+              "zh": "Delta K + Delta U = 0"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-1",
+            "label": {
+              "en": "A single particle pulled horizontally along a frictionless surface by an external cord, increasing its speed",
+              "ms": "Zarah tunggal ditarik secara mendatar di sepanjang permukaan tanpa geseran oleh tali luar, meningkatkan kelajuannya",
+              "zh": "单个粒子在无摩擦表面上被外部细绳水平拉动并加速"
+            }
+          },
+          {
+            "id": "item-2",
+            "label": {
+              "en": "An operating incandescent lamp filament that absorbs electric current and emits light while warming up",
+              "ms": "Filamen lampu pijar yang sedang beroperasi menyerap arus elektrik dan memancarkan cahaya sambil memanas",
+              "zh": "工作中吸收电流并在升温过程中发光的白炽灯丝"
+            }
+          },
+          {
+            "id": "item-3",
+            "label": {
+              "en": "A gas sealed in a movable cylinder being compressed by a piston while simultaneously heated by a flame",
+              "ms": "Gas yang tertutup dalam silinder boleh alih dimampatkan oleh omboh sambil dipanaskan serentak oleh nyalaan",
+              "zh": "封闭在可活动气缸中的气体在被活塞压缩的同时受到火焰加热"
+            }
+          },
+          {
+            "id": "item-4",
+            "label": {
+              "en": "A rock falling in a vacuum where the system is defined to include BOTH the rock and the Earth",
+              "ms": "Batu jatuh dalam vakum di mana sistem ditakrifkan untuk merangkumi KEDUA-DUA batu dan Bumi",
+              "zh": "在真空中下落的岩石，其中系统被定义为同时包含岩石和地球两者"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-1",
+            "targetId": "target-work-ke"
+          },
+          {
+            "itemId": "item-2",
+            "targetId": "target-elec-rad"
+          },
+          {
+            "itemId": "item-3",
+            "targetId": "target-work-heat"
+          },
+          {
+            "itemId": "item-4",
+            "targetId": "target-isolated-mech"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "isolated-vs-nonisolated-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-4",
+            "targetId": "target-work-ke"
+          }
+        },
+        {
+          "misconception": "energy-storage-vs-transfer-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-2",
+            "targetId": "target-work-heat"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-mod-3",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate internal system energy processes from external energy transfers crossing the defined system boundary.",
+      "prompt": {
+        "en": "Consider a system defined as an entire quadcopter drone (including its battery, electronic speed controllers, motors, and carbon-fiber frame) hovering in a large room. Select all processes that represent TRUE external energy transfers crossing the drone's system boundary into or out of the room environment.",
+        "ms": "Pertimbangkan sistem yang ditakrifkan sebagai keseluruhan dron kuadkopter (termasuk bateri, pengawal kelajuan elektronik, motor, dan bingkai gentian karbon) yang terapung di dalam bilik yang besar. Pilih semua proses yang mewakili pemindahan tenaga luaran SEBENAR yang merentasi sempadan sistem dron ke dalam atau ke luar persekitaran bilik.",
+        "zh": "考虑一个被定义为整架四旋翼无人机（包括其电池、电子调速器、电机和碳纤维机架）的大房间内悬停系统。选择所有代表真正跨越无人机系统边界进出房间环境的外部能量传递过程。"
+      },
+      "hints": [
+        {
+          "en": "Distinguish between energy transformations occurring strictly between components inside the drone versus energy actively crossing the boundary between the drone and the surrounding air/room.",
+          "ms": "Bezakan antara penukaran tenaga yang berlaku secara eksklusif antara komponen di dalam dron berbanding tenaga yang merentasi sempadan secara aktif antara dron dan udara/bilik persekitaran.",
+          "zh": "区分仅在无人机内部各组件之间发生的能量转换，与在无人机和周围空气/房间之间实际跨越边界传递的能量。"
+        },
+        {
+          "en": "Energy traveling as sound waves into the room air or heat radiating from warm electronics into the ambient surroundings crosses the system boundary. Energy moving through wires between the onboard battery and onboard motors stays inside the system boundary.",
+          "ms": "Tenaga yang bergerak sebagai gelombang bunyi ke dalam udara bilik atau haba yang menyinar daripada elektronik panas ke persekitaran merentasi sempadan sistem. Tenaga yang bergerak melalui wayar antara bateri dalaman dan motor dalaman kekal di dalam sempadan sistem.",
+          "zh": "作为声波传入房间空气的能量，或从发热电子元件辐射到周围环境的热量，都跨越了系统边界；而在机载电池和机载电机之间通过导线流动的能量则完全保留在系统边界内部。"
+        }
+      ],
+      "feedback": {
+        "en": "Great job! Acoustic sound waves leaving into the room air and thermal energy radiating/conducting into the cooler ambient air cross the drone's outer boundary. Current flowing from the battery to the motor and motor torque spinning the rotor shaft are internal interactions within the system.",
+        "ms": "Syabas! Gelombang bunyi akustik yang keluar ke udara bilik dan tenaga terma yang menyinar/mengalir ke udara persekitaran yang lebih sejuk merentasi sempadan luaran dron. Arus yang mengalir dari bateri ke motor dan tork motor yang memutarkan aci pemutar ialah interaksi dalaman di dalam sistem.",
+        "zh": "太棒了！传入房间空气的声波以及辐射/传导到周围较冷空气中的热能都跨越了无人机的外边界。而从电池流向电机的电流以及电机扭矩旋转转子轴都属于系统内部的相互作用。"
+      },
+      "answerLogic": {
+        "en": "The system includes the battery, controllers, motors, and frame. Therefore, electrical currents from the battery to the motors and mechanical forces exerted by the motor on the rotor shafts are internal energy conversions. In contrast, acoustic vibrations radiated into the room air (mechanical waves, T_MW) and heat/radiation dissipated into the room air (Q and T_ER) cross the system boundary from the drone to the environment.",
+        "ms": "Sistem ini merangkumi bateri, pengawal, motor, dan bingkai. Oleh itu, arus elektrik dari bateri ke motor dan daya mekanikal yang dikenakan oleh motor pada aci pemutar ialah penukaran tenaga dalaman. Sebaliknya, getaran akustik yang dipancarkan ke udara bilik (gelombang mekanikal, T_MW) dan haba/sinaran yang dilesapkan ke dalam udara bilik (Q dan T_ER) merentasi sempadan sistem dari dron ke persekitaran.",
+        "zh": "该系统包括电池、调速器、电机和机架。因此，从电池流向电机的电流以及电机施加在转子轴上的机械力都属于内部能量转化。相比之下，向房间空气辐射的声学振动（机械波 T_MW）以及耗散到房间空气中的热量/辐射（Q 和 T_ER）均跨越了从无人机到环境的系统边界。"
+      },
+      "explanation": {
+        "en": "An energy transfer mechanism requires energy to cross the chosen system boundary. When internal components interact (such as an onboard battery powering an onboard motor), energy is transformed between internal chemical, electrical, and rotational kinetic states without crossing the boundary. Only interactions between the system and external entities (such as sound waves in the room air and heat dissipated to the ambient atmosphere) constitute external boundary transfers.",
+        "ms": "Mekanisme pemindahan tenaga memerlukan tenaga merentasi sempadan sistem yang dipilih. Apabila komponen dalaman berinteraksi (seperti bateri dalaman yang menjanakuasakan motor dalaman), tenaga ditukarkan antara keadaan kimia dalaman, elektrik, dan kinetik putaran tanpa merentasi sempadan. Hanya interaksi antara sistem dan entiti luar (seperti gelombang bunyi di udara bilik dan haba yang dilesapkan ke atmosfera persekitaran) membentuk pemindahan sempadan luaran.",
+        "zh": "能量传递机制要求能量跨越所选定的系统边界。当内部组件相互作用时（例如机载电池为机载电机供电），能量在内部化学能、电能和旋转动能状态之间转换，并未跨越边界。只有系统与外部实体之间的相互作用（如房间空气中的声波和散发到周围大气中的热量）才构成外部边界传递。"
+      },
+      "misconceptions": [
+        "internal-events-as-transfers"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "system-and-environment",
+        "prompt": {
+          "en": "Review how defining the system boundary determines which energy flows are internal conversions versus external transfers.",
+          "ms": "Ulang kaji bagaimana penentuan sempadan sistem menetapkan aliran tenaga yang mana merupakan penukaran dalaman berbanding pemindahan luaran.",
+          "zh": "复习划定系统边界如何决定哪些能量流动属于内部转化，哪些属于外部传递。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multi-selection interaction asking to identify all true external boundary energy transfers from a list of internal and external processes for a hovering quadcopter drone system.",
+        "ms": "Interaksi pelbagai pilihan yang meminta untuk mengenal pasti semua pemindahan tenaga sempadan luaran sebenar daripada senarai proses dalaman dan luaran bagi sistem dron kuadkopter yang terapung.",
+        "zh": "多项选择互动题：要求从悬停四旋翼无人机系统的内部和外部过程列表中，选出所有真正的外部边界能量传递。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-1",
+            "label": {
+              "en": "Acoustic sound waves emitted by the spinning propellers propagating outward through the room air",
+              "ms": "Gelombang bunyi akustik yang dipancarkan oleh bilah pemutar yang berputar merambat keluar melalui udara bilik",
+              "zh": "旋转螺旋桨发出的声波向外穿过房间空气传播"
+            }
+          },
+          {
+            "id": "item-2",
+            "label": {
+              "en": "Electric current flowing through internal wiring from the battery to the drone motor coils",
+              "ms": "Arus elektrik yang mengalir melalui pendawaian dalaman daripada bateri ke gegelung motor dron",
+              "zh": "电流通过内部导线从电池流向无人机电机线圈"
+            }
+          },
+          {
+            "id": "item-3",
+            "label": {
+              "en": "Thermal energy conducted and radiated away from warm motor surfaces into the cooler room air",
+              "ms": "Tenaga terma yang dialirkan dan disinarkan keluar daripada permukaan motor yang panas ke udara bilik yang lebih sejuk",
+              "zh": "热能从发热的电机表面传导和辐射散失到较冷的房间空气中"
+            }
+          },
+          {
+            "id": "item-4",
+            "label": {
+              "en": "Mechanical work exerted by the internal motor shaft to spin the attached rotor hub",
+              "ms": "Kerja mekanikal yang dikenakan oleh aci motor dalaman untuk memutarkan hab pemutar yang dipasang",
+              "zh": "内部电机轴施加机械做功以旋转相连的转子轮毂"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-1",
+          "item-3"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "internal-events-as-transfers",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-2",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-chal-1",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate internal system energy processes from external energy transfers crossing the defined system boundary.",
+      "prompt": {
+        "en": "An electric hybrid vehicle travels along a flat highway. The system is defined as the complete vehicle (including its battery, internal electric motor, internal combustion engine, drive shafts, wheels, chassis, and passengers). Classify each of the following energy events according to whether it represents an internal energy transformation occurring entirely within the system, or an external energy transfer mechanism crossing the vehicle's system boundary.",
+        "ms": "Sebuah kenderaan hibrid elektrik bergerak di sepanjang lebuh raya yang rata. Sistem ini ditakrifkan sebagai keseluruhan kenderaan (termasuk bateri, motor elektrik dalaman, enjin pembakaran dalaman, aci pemacu, roda, casis dan penumpang). Kelaskan setiap peristiwa tenaga berikut mengikut sama ada ia mewakili penukaran tenaga dalaman yang berlaku sepenuhnya di dalam sistem, atau mekanisme pemindahan tenaga luaran yang merentasi sempadan sistem kenderaan.",
+        "zh": "一辆油电混合动力汽车在平坦的高速公路上行驶。系统被定义为整辆汽车（包括其电池、内置电动机、内燃机、传动轴、车轮、底盘和乘客）。将下列各项能量过程分类为“完全在系统内部发生的内部能量转换”或“跨越汽车系统边界的外部能量传递机制”。"
+      },
+      "hints": [
+        {
+          "en": "Determine the exact boundary of the system: ask whether both the source and the recipient of the energy interaction are located inside the car, or if energy is exchanged with the outside road, air, or surroundings.",
+          "ms": "Tentukan sempadan tepat sistem: tanya sama ada kedua-dua punca dan penerima interaksi tenaga berada di dalam kereta, atau jika tenaga ditukarkan dengan jalan raya, udara, atau persekitaran luar.",
+          "zh": "确定系统的确切边界：判断能量相互作用的始端和终端是否都位于车内，还是能量正在与外部道路、空气或周围环境发生交换。"
+        },
+        {
+          "en": "Currents moving through wires between the onboard battery and motor, or fuel igniting in the cylinders, are internal energy transformations. Energy escaping as sound waves or heat dissipated into ambient air crosses the outer boundary.",
+          "ms": "Arus yang bergerak melalui wayar antara bateri dalaman dan motor, atau bahan api yang menyala dalam silinder, ialah penukaran tenaga dalaman. Tenaga yang keluar sebagai gelombang bunyi atau haba yang dilesapkan ke udara persekitaran merentasi sempadan luar.",
+          "zh": "在机载电池与电机之间通过导线流动的电流，或者气缸内燃油的点火燃烧，均属于内部能量转换。而作为声波散逸或耗散到周围空气中的热量则跨越了外边界。"
+        }
+      ],
+      "feedback": {
+        "en": "Outstanding! Electrical current between the battery and motor, fuel combustion, and regenerative braking are internal conversions between chemical, internal, electrical, and kinetic energies. Air drag work, radiator heat dissipation, and acoustic tire noise are external transfers crossing the vehicle boundary into the environment.",
+        "ms": "Cemerlang! Arus elektrik antara bateri dan motor, pembakaran bahan api, dan pembrekan regeneratif ialah penukaran dalaman antara tenaga kimia, dalaman, elektrik, dan kinetik. Kerja seretan udara, lesapan haba radiator, dan bunyi tayar akustik ialah pemindahan luaran yang merentasi sempadan kenderaan ke persekitaran.",
+        "zh": "太棒了！电池与电机之间的电流、燃油燃烧以及再生制动属于化学能、内能、电能和动能之间的内部转化。而空气阻力做功、散热器散失热量以及轮胎发出的声波，则是跨越汽车边界进入环境的外部传递。"
+      },
+      "answerLogic": {
+        "en": "Because the system boundary is chosen around the entire vehicle, interactions occurring strictly among internal components (battery cables, engine cylinders, regenerative drivetrain) do not cross the boundary and represent internal energy conversions. Conversely, mechanical work done against external air resistance (W), thermal energy conducting/radiating into ambient air (Q/T_ER), and acoustic waves radiated into the atmosphere (T_MW) cross the system boundary into the surroundings.",
+        "ms": "Oleh sebab sempadan sistem dipilih di sekeliling keseluruhan kenderaan, interaksi yang berlaku secara eksklusif antara komponen dalaman (kabel bateri, silinder enjin, rangkaian pemacu regeneratif) tidak merentasi sempadan dan mewakili penukaran tenaga dalaman. Sebaliknya, kerja mekanikal yang dilakukan terhadap rintangan udara luar (W), tenaga terma yang dialirkan/disinarkan ke udara persekitaran (Q/T_ER), dan gelombang akustik yang dipancarkan ke atmosfera (T_MW) merentasi sempadan sistem ke persekitaran.",
+        "zh": "由于系统边界包围了整辆汽车，仅在内部组件之间发生的相互作用（电池电缆、发动机气缸、再生传动系统）没有跨越边界，属于内部能量转换。相反，克服外部空气阻力所做的机械功（W）、传导/辐射到周围空气中的热能（Q/T_ER）以及向大气辐射的声波（T_MW），均跨越了系统边界进入周围环境。"
+      },
+      "explanation": {
+        "en": "Energy transfer mechanisms (W, Q, T_MW, T_MT, T_ET, T_ER) exist only when energy crosses the boundary between a system and its environment. Internal interactions redistribute or transform stored energy among components inside the system boundary (such as chemical potential, microscopic thermal, and kinetic energies) without changing the total energy of the system unless accompanied by boundary transfers.",
+        "ms": "Mekanisme pemindahan tenaga (W, Q, T_MW, T_MT, T_ET, T_ER) hanya wujud apabila tenaga merentasi sempadan antara sesuatu sistem dan persekitarannya. Interaksi dalaman mengagihkan semula atau menukarkan tenaga tersimpan antara komponen di dalam sempadan sistem (seperti keupayaan kimia, terma mikroskopik, dan tenaga kinetik) tanpa mengubah jumlah tenaga sistem melainkan disertai dengan pemindahan sempadan.",
+        "zh": "能量传递机制（W、Q、T_MW、T_MT、T_ET、T_ER）仅在能量跨越系统与环境之间的边界时才存在。系统内部的相互作用在系统边界内的各个部件之间重新分配或转换储存的能量（如化学势能、微观内能和动能），除非伴随有边界传递，否则不会改变系统的总能量。"
+      },
+      "misconceptions": [
+        "internal-events-as-transfers",
+        "isolated-vs-nonisolated-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "system-and-environment",
+        "prompt": {
+          "en": "Review how defining the system boundary determines whether an interaction is classified as an internal energy conversion or an external boundary transfer.",
+          "ms": "Ulang kaji bagaimana penentuan sempadan sistem menetapkan sama ada sesuatu interaksi dikelaskan sebagai penukaran tenaga dalaman atau pemindahan sempadan luaran.",
+          "zh": "复习划定系统边界如何决定相互作用是被归类为内部能量转换还是外部边界传递。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classification interaction where six energy events for an electric hybrid car must be sorted into Internal Energy Transformation (Within Boundary) or External Energy Transfer Mechanism (Crosses Boundary).",
+        "ms": "Interaksi pengelasan di mana enam peristiwa tenaga bagi kereta hibrid elektrik mesti diisih kepada Penukaran Tenaga Dalaman (Di Dalam Sempadan) atau Mekanisme Pemindahan Tenaga Luaran (Merentasi Sempadan).",
+        "zh": "分类互动题：需要将一辆混合动力汽车的六项能量过程归入“内部能量转化（边界内部）”或“外部能量传递机制（跨越边界）”两类。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-internal",
+            "label": {
+              "en": "Internal Energy Transformation (Within Boundary)",
+              "ms": "Penukaran Tenaga Dalaman (Di Dalam Sempadan)",
+              "zh": "内部能量转化（边界内部）"
+            }
+          },
+          {
+            "id": "target-external",
+            "label": {
+              "en": "External Energy Transfer Mechanism (Crosses Boundary)",
+              "ms": "Mekanisme Pemindahan Tenaga Luaran (Merentasi Sempadan)",
+              "zh": "外部能量传递机制（跨越边界）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-1",
+            "label": {
+              "en": "High-voltage electric current flowing through internal cables from the battery pack to the drive motor",
+              "ms": "Arus elektrik voltan tinggi mengalir melalui kabel dalaman daripada pek bateri ke motor pemacu",
+              "zh": "高压电流通过内部电缆从电池组流向驱动电机"
+            }
+          },
+          {
+            "id": "item-2",
+            "label": {
+              "en": "Mechanical work done on the surrounding air by the car body due to aerodynamic drag forces",
+              "ms": "Kerja mekanikal yang dilakukan ke atas udara persekitaran oleh badan kereta akibat daya seretan aerodinamik",
+              "zh": "车身因空气动力学阻力对周围空气所做的机械功"
+            }
+          },
+          {
+            "id": "item-3",
+            "label": {
+              "en": "Thermal energy radiated and conducted from the vehicle radiator into the cooler ambient air",
+              "ms": "Tenaga terma yang disinarkan dan dialirkan daripada radiator kenderaan ke udara persekitaran yang lebih sejuk",
+              "zh": "热能从车辆散热器辐射并传导到周围较冷的空气中"
+            }
+          },
+          {
+            "id": "item-4",
+            "label": {
+              "en": "Rotational kinetic energy converted back into chemical potential energy in the battery during regenerative braking",
+              "ms": "Tenaga kinetik putaran ditukarkan kembali kepada tenaga keupayaan kimia dalam bateri semasa membrek secara regeneratif",
+              "zh": "再生制动过程中旋转动能转化回电池中的化学势能"
+            }
+          },
+          {
+            "id": "item-5",
+            "label": {
+              "en": "Acoustic mechanical waves generated by tire-road contact radiating outward into the atmosphere",
+              "ms": "Gelombang mekanikal akustik yang dihasilkan oleh sentuhan tayar-jalan terpancar keluar ke atmosfera",
+              "zh": "轮胎与路面接触产生的声学机械波向外辐射到大气中"
+            }
+          },
+          {
+            "id": "item-6",
+            "label": {
+              "en": "Chemical potential energy of petrol converting into high-temperature thermal energy in engine combustion chambers",
+              "ms": "Tenaga keupayaan kimia petrol bertukar kepada tenaga terma suhu tinggi dalam kebuk pembakaran enjin",
+              "zh": "汽油的化学势能在发动机燃烧室内转化为高温内能"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-1",
+            "targetId": "target-internal"
+          },
+          {
+            "itemId": "item-2",
+            "targetId": "target-external"
+          },
+          {
+            "itemId": "item-3",
+            "targetId": "target-external"
+          },
+          {
+            "itemId": "item-4",
+            "targetId": "target-internal"
+          },
+          {
+            "itemId": "item-5",
+            "targetId": "target-external"
+          },
+          {
+            "itemId": "item-6",
+            "targetId": "target-internal"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "internal-events-as-transfers",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-1",
+            "targetId": "target-external"
+          }
+        },
+        {
+          "misconception": "isolated-vs-nonisolated-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-2",
+            "targetId": "target-internal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-chal-2",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the conservation of energy equation by setting inactive transfer and storage terms to zero for given scenarios.",
+      "prompt": {
+        "en": "Match each physical scenario with its precise reduced conservation of energy equation, obtained by eliminating all inactive storage and boundary transfer terms.",
+        "ms": "Padankan setiap senario fizikal dengan persamaan keabadian tenaga ringkas yang tepat, diperoleh dengan menghapuskan semua sebutan storan dan pemindahan sempadan yang tak aktif.",
+        "zh": "通过消除所有未发生作用的储能项和边界传递项，将每个物理情境与其精确的简化能量守恒方程进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Analyze which forms of energy inside the chosen system change (macroscopic motion Delta K, position/configuration Delta U, internal thermal Delta E_int) and which transfer mechanisms cross the system boundary (W, Q, T_MW, T_MT, T_ET, T_ER).",
+          "ms": "Analisis bentuk tenaga di dalam sistem terpilih yang berubah (gerakan makroskopik Delta K, kedudukan/konfigurasi Delta U, terma dalaman Delta E_int) dan mekanisme pemindahan yang merentasi sempadan sistem (W, Q, T_MW, T_MT, T_ET, T_ER).",
+          "zh": "分析所选系统内部发生变化的能量形式（宏观运动 Delta K、位置/构型 Delta U、微观内能 Delta E_int）以及跨越系统边界的传递机制（W、Q、T_MW、T_MT、T_ET、T_ER）。"
+        },
+        {
+          "en": "Remember that internal events like electric ignition sparks or chemical reactions inside a motor are internal conversions, not external electrical transmissions crossing the outer system boundary.",
+          "ms": "Ingat bahawa peristiwa dalaman seperti percikan pencucuhan elektrik atau tindak balas kimia di dalam motor ialah penukaran dalaman, bukan penghantaran elektrik luar yang merentasi sempadan sistem luar.",
+          "zh": "请记住，发动机内部的点火电火花或化学反应属于内部转化，而不是跨越系统外边界的外部电传输。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Each scenario is accurately matched to its reduced energy conservation equation by identifying the active internal storage changes and boundary transfer mechanisms.",
+        "ms": "Tepat! Setiap senario dipadankan dengan tepat pada persamaan keabadian tenaga ringkasnya dengan mengenal pasti perubahan storan dalaman dan mekanisme pemindahan sempadan yang aktif.",
+        "zh": "正确！通过准确识别活跃的内部储能变化和边界传递机制，每个情境都与其简化的能量守恒方程完美匹配。"
+      },
+      "answerLogic": {
+        "en": "1. Stationary water container on a hotplate: Delta K = 0, Delta U = 0, with only heat conduction in (Q), giving Delta E_int = Q. 2. Gasoline lawn mower: fuel added (T_MT), blades rotate (Delta K), potential energy of fuel added (Delta U), engine heats (Delta E_int), work done on grass (W), heat dissipated (Q), and sound emitted (T_MW), giving Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT. 3. Mug of tea in microwave: stationary (Delta K = 0, Delta U = 0), takes in microwave radiation (T_ER) and loses heat (Q), giving Delta E_int = Q + T_ER. 4. Operating TV set: stationary (Delta K = 0, Delta U = 0), warms up (Delta E_int), takes in electricity (T_ET), sheds heat (Q), emits sound (T_MW) and light (T_ER), giving Delta E_int = Q + T_MW + T_ET + T_ER.",
+        "ms": "1. Bekas air pegun di atas plat panas: Delta K = 0, Delta U = 0, hanya dengan kekonduksian haba masuk (Q), memberikan Delta E_int = Q. 2. Mesin pemotong rumput petrol: bahan api ditambah (T_MT), bilah berputar (Delta K), tenaga keupayaan bahan api ditambah (Delta U), enjin memanas (Delta E_int), kerja dilakukan ke atas rumput (W), haba dilesapkan (Q), dan bunyi dipancarkan (T_MW), memberikan Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT. 3. Cawan teh dalam ketuhar gelombang mikro: pegun (Delta K = 0, Delta U = 0), menyerap sinaran gelombang mikro (T_ER) dan kehilangan haba (Q), memberikan Delta E_int = Q + T_ER. 4. Set TV beroperasi: pegun (Delta K = 0, Delta U = 0), memanas (Delta E_int), menerima elektrik (T_ET), melepaskan haba (Q), memancarkan bunyi (T_MW) dan cahaya (T_ER), memberikan Delta E_int = Q + T_MW + T_ET + T_ER.",
+        "zh": "1. 电热板上的静止水容器：Delta K = 0，Delta U = 0，仅有热传导流入（Q），得到 Delta E_int = Q。2. 汽油割草机：加入燃油（T_MT），刀片旋转（Delta K），燃油势能增加（Delta U），发动机升温（Delta E_int），对草地做功（W），散失热量（Q），发出声音（T_MW），得到 Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT。3. 微波炉中的茶杯：静止（Delta K = 0，Delta U = 0），吸收微波辐射（T_ER）并散失热量（Q），得到 Delta E_int = Q + T_ER。4. 工作中的电视机：静止（Delta K = 0，Delta U = 0），机身升温（Delta E_int），输入电能（T_ET），散失热量（Q），发出声音（T_MW）和光（T_ER），得到 Delta E_int = Q + T_MW + T_ET + T_ER。"
+      },
+      "explanation": {
+        "en": "The general nonisolated system energy equation Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER provides the universal starting framework for any classical system. By identifying the specific system boundaries and the initial and final states, terms that do not participate in the physical process are set to zero. Heat is never an energy storage term, and internal electrical operations within an engine do not constitute boundary electrical transmission.",
+        "ms": "Persamaan tenaga sistem tak terpencil am Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER menyediakan rangka kerja permulaan sejagat bagi sebarang sistem klasik. Dengan mengenal pasti sempadan sistem tertentu serta keadaan awal dan akhir, sebutan yang tidak mengambil bahagian dalam proses fizikal ditetapkan kepada sifar. Haba bukan sebutan storan tenaga, dan operasi elektrik dalaman di dalam enjin bukan penghantaran elektrik sempadan.",
+        "zh": "通用的非孤立系统能量方程 Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER 为分析任何经典物理系统提供了通用框架。通过明确系统边界和初末状态，未参与该物理过程的项被置零。热量绝不是能量储存项，发动机内部的电路运行也不构成跨越边界的电传输。"
+      },
+      "misconceptions": [
+        "heat-as-stored-energy",
+        "internal-events-as-transfers"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-and-potential-energy",
+        "prompt": {
+          "en": "Review how macroscopic mechanical energy terms (Delta K, Delta U) differ from microscopic internal energy (Delta E_int) and boundary transfer mechanisms.",
+          "ms": "Ulang kaji bagaimana sebutan tenaga mekanikal makroskopik (Delta K, Delta U) berbeza daripada tenaga dalaman mikroskopik (Delta E_int) dan mekanisme pemindahan sempadan.",
+          "zh": "复习宏观机械能项（Delta K、Delta U）与微观内能（Delta E_int）及边界传递机制之间的区别。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching interaction pairing four complex physical scenarios with their corresponding reduced conservation of energy equations.",
+        "ms": "Interaksi pemadanan yang memasangkan empat senario fizikal kompleks dengan persamaan keabadian tenaga ringkas yang sepadan.",
+        "zh": "匹配互动题：将四个复杂的物理情境与其对应的简化能量守恒方程进行配对。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-eq-1",
+            "label": {
+              "en": "Delta E_int = Q",
+              "ms": "Delta E_int = Q",
+              "zh": "Delta E_int = Q"
+            }
+          },
+          {
+            "id": "target-eq-2",
+            "label": {
+              "en": "Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT",
+              "ms": "Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT",
+              "zh": "Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT"
+            }
+          },
+          {
+            "id": "target-eq-3",
+            "label": {
+              "en": "Delta E_int = Q + T_ER",
+              "ms": "Delta E_int = Q + T_ER",
+              "zh": "Delta E_int = Q + T_ER"
+            }
+          },
+          {
+            "id": "target-eq-4",
+            "label": {
+              "en": "Delta E_int = Q + T_MW + T_ET + T_ER",
+              "ms": "Delta E_int = Q + T_MW + T_ET + T_ER",
+              "zh": "Delta E_int = Q + T_MW + T_ET + T_ER"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-1",
+            "label": {
+              "en": "A rigid, non-moving container of water placed on an electric hotplate and slowly warmed by heat conduction (no phase change)",
+              "ms": "Bekas air yang tegar dan tidak bergerak diletakkan di atas plat panas elektrik dan dipanaskan perlahan-lahan melalui kekonduksian haba (tiada perubahan fasa)",
+              "zh": "放置在电热板上的刚性静止水容器，通过热传导缓慢受热（无相变）"
+            }
+          },
+          {
+            "id": "item-2",
+            "label": {
+              "en": "A gasoline lawn mower operating to cut grass: fuel is poured in, blades spin, engine block heats up, sound is emitted, and mechanical force cuts the grass",
+              "ms": "Mesin pemotong rumput petrol beroperasi memotong rumput: bahan api diisi, bilah berputar, blok enjin memanas, bunyi dipancarkan, dan daya mekanikal memotong rumput",
+              "zh": "一台割草机在割草：加入汽油燃料，刀片旋转，发动机机体升温，发出轰鸣声，机械力割断草叶"
+            }
+          },
+          {
+            "id": "item-3",
+            "label": {
+              "en": "A stationary mug of tea being heated inside a microwave oven while simultaneously losing a small amount of heat to the oven cavity air",
+              "ms": "Secawan teh pegun dipanaskan di dalam ketuhar gelombang mikro sambil serentak kehilangan sedikit haba ke udara rongga ketuhar",
+              "zh": "微波炉内加热的一杯静止茶水，同时向炉腔空气散失少量热量"
+            }
+          },
+          {
+            "id": "item-4",
+            "label": {
+              "en": "A television set operating on a shelf: drawing power via electrical wiring while warming up and emitting sound and light",
+              "ms": "Sebuah set televisyen beroperasi di atas rak: menggunakan kuasa melalui pendawaian elektrik sambil memanas serta memancarkan bunyi dan cahaya",
+              "zh": "放置在架子上工作的电视机：通过电线输入电能，机身升温并发出声音和光线"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-1",
+            "targetId": "target-eq-1"
+          },
+          {
+            "itemId": "item-2",
+            "targetId": "target-eq-2"
+          },
+          {
+            "itemId": "item-3",
+            "targetId": "target-eq-3"
+          },
+          {
+            "itemId": "item-4",
+            "targetId": "target-eq-4"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "heat-as-stored-energy",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-3",
+            "targetId": "target-eq-1"
+          }
+        },
+        {
+          "misconception": "internal-events-as-transfers",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-2",
+            "targetId": "target-eq-4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-chal-3",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the conservation of energy equation by setting inactive transfer and storage terms to zero for given scenarios.",
+      "prompt": {
+        "en": "Arrange the standard methodological steps in the correct logical sequence for systematically reducing and applying the general conservation of energy equation (Delta E_system = Sigma T) to analyze a physical scenario.",
+        "ms": "Susun langkah-langkah metodologi piawai mengikut urutan logik yang betul untuk meringkaskan dan menggunakan persamaan keabadian tenaga am (Delta E_system = Sigma T) secara sistematik bagi menganalisis senario fizikal.",
+        "zh": "按照正确的逻辑顺序排列标准方法论步骤，以便系统地简化并应用通用能量守恒方程（Delta E_system = Sigma T）来分析物理情境。"
+      },
+      "hints": [
+        {
+          "en": "Think about what must be established first: can you know which forces or transfers cross a boundary before you have defined where the boundary is and which objects are inside the system?",
+          "ms": "Fikirkan perkara yang mesti ditetapkan terlebih dahulu: bolehkah anda mengetahui daya atau pemindahan yang merentasi sempadan sebelum anda mentakrifkan di mana sempadan itu berada dan objek yang berada di dalam sistem?",
+          "zh": "思考首先必须明确什么：在确定系统边界位于何处以及哪些物体属于系统内部之前，能否判定哪些力或能量传递跨越了边界？"
+        },
+        {
+          "en": "After defining the system and specifying the start and end of the time interval, determine the initial and final states of the system to identify storage changes, then evaluate boundary transfers to eliminate inactive terms in the general equation.",
+          "ms": "Selepas mentakrifkan sistem dan menentukan permulaan serta akhir selang masa, tentukan keadaan awal dan akhir sistem untuk mengenal pasti perubahan storan, kemudian nilaikan pemindahan sempadan untuk menghapuskan sebutan tak aktif dalam persamaan am.",
+          "zh": "在定义系统并确定时间间隔的始末之后，确定系统的初末状态以识别内部储能变化，然后评估边界传递项，消除通用方程中的非活跃项。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct sequence! The analysis begins by defining the system boundary, setting the time interval, identifying the initial/final states for energy storage changes, and finally evaluating boundary transfers to eliminate inactive terms in the general equation.",
+        "ms": "Urutan yang betul! Analisis bermula dengan mentakrifkan sempadan sistem, menetapkan selang masa, mengenal pasti keadaan awal/akhir bagi perubahan storan tenaga, dan akhirnya menilai pemindahan sempadan untuk menghapuskan sebutan tak aktif dalam persamaan am.",
+        "zh": "正确的顺序！分析始于划定系统边界，接着确定时间间隔，识别决定内部储能变化的初末状态，最后评估跨越边界的传递项以消除通用方程中的非活跃项。"
+      },
+      "answerLogic": {
+        "en": "According to the analysis model procedure for nonisolated systems: 1. Define the system boundary to differentiate internal components from the environment. 2. Identify the beginning and end of the time interval of interest. 3. Identify initial and final configurations (speeds, elevations, spring extensions, temperatures) to establish storage changes (Delta K, Delta U, Delta E_int). 4. Inspect the boundary for active transfer mechanisms (W, Q, T_MW, T_MT, T_ET, T_ER) and set all inactive terms to zero in the expanded energy equation.",
+        "ms": "Menurut prosedur model analisis bagi sistem tak terpencil: 1. Mentakrifkan sempadan sistem untuk membezakan komponen dalaman daripada persekitaran. 2. Mengenal pasti permulaan dan akhir selang masa yang diminati. 3. Mengenal pasti konfigurasi awal dan akhir (kelajuan, ketinggian, regangan spring, suhu) untuk menetapkan perubahan storan (Delta K, Delta U, Delta E_int). 4. Memeriksa sempadan bagi mekanisme pemindahan aktif (W, Q, T_MW, T_MT, T_ET, T_ER) dan menetapkan semua sebutan tak aktif kepada sifar dalam persamaan tenaga yang diperluaskan.",
+        "zh": "根据非孤立系统的分析模型步骤：1. 明确定义系统边界，以区分系统内部组件与外部环境。2. 确定所关注时间间隔的起始和终止时刻。3. 确定系统的初末构型（速度、高度、弹簧伸长量、温度等），以确立内部储能变化（Delta K、Delta U、Delta E_int）。4. 检查边界处活跃的传递机制（W、Q、T_MW、T_MT、T_ET、T_ER），并将展开的能量守恒方程中所有未发生作用的项置零。"
+      },
+      "explanation": {
+        "en": "A rigorous physics analysis requires defining what constitutes the system before assessing boundary transfers. Energy transfers cannot be identified without a defined boundary, and changes in internal energy storage cannot be evaluated without knowing the time interval and boundary configurations. Once these are defined, the general conservation equation Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER reduces cleanly to the specific governing equation.",
+        "ms": "Analisis fizik yang teliti memerlukan penentuan perkara yang membentuk sistem sebelum menilai pemindahan sempadan. Pemindahan tenaga tidak dapat dikenal pasti tanpa sempadan yang ditakrifkan, dan perubahan dalam storan tenaga dalaman tidak dapat dinilai tanpa mengetahui selang masa dan konfigurasi sempadan. Setelah ini ditakrifkan, persamaan keabadian am Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER diringkaskan dengan jelas kepada persamaan khusus yang berkaitan.",
+        "zh": "严谨的物理分析要求在评估边界传递之前首先界定系统的组成。没有确定的边界就无法识别跨边界的能量传递，而不知道时间间隔和状态构型就无法评估内部储能的变化。一旦这些得以确立，通用的能量守恒方程 Delta K + Delta U + Delta E_int = W + Q + T_MW + T_MT + T_ET + T_ER 就能清晰地简化为适应该情境的具体方程。"
+      },
+      "misconceptions": [
+        "energy-storage-vs-transfer-confusion",
+        "isolated-vs-nonisolated-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-concept",
+        "prompt": {
+          "en": "Review the systematic steps of problem analysis: defining system boundaries, time intervals, and external forces.",
+          "ms": "Ulang kaji langkah-langkah sistematik dalam analisis masalah: mentakrifkan sempadan sistem, selang masa, dan daya luar.",
+          "zh": "复习问题分析的系统步骤：划定系统边界、确定时间间隔以及分析外力。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Ordering interaction where four sequential methodology steps for applying the conservation of energy equation must be arranged from first step to final step.",
+        "ms": "Interaksi susunan di mana empat langkah metodologi berurutan untuk menggunakan persamaan keabadian tenaga mesti disusun dari langkah pertama hingga langkah terakhir.",
+        "zh": "排序互动题：需要将应用能量守恒方程的四个连续方法论步骤从第一步到最后一步按正确顺序排列。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.1",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-step-1",
+            "label": {
+              "en": "Identify the system to be analyzed and clearly establish the physical boundary separating it from the environment.",
+              "ms": "Kenal pasti sistem yang hendak dianalisis dan tetapkan dengan jelas sempadan fizikal yang memisahkannya daripada persekitaran.",
+              "zh": "确定要分析的系统，并明确建立将其与外部环境区分开的物理边界。"
+            }
+          },
+          {
+            "id": "item-step-2",
+            "label": {
+              "en": "Establish the specific initial and final instants that define the time interval of interest.",
+              "ms": "Tetapkan ketika awal dan akhir tertentu yang mentakrifkan selang masa yang diminati.",
+              "zh": "明确界定所关注时间间隔的起始和终止时刻。"
+            }
+          },
+          {
+            "id": "item-step-3",
+            "label": {
+              "en": "Identify initial and final states (motion, elevation, temperature) to determine which internal energy storage terms (Delta K, Delta U, Delta E_int) change.",
+              "ms": "Kenal pasti keadaan awal dan akhir (gerakan, ketinggian, suhu) untuk menentukan sebutan storan tenaga dalaman (Delta K, Delta U, Delta E_int) yang berubah.",
+              "zh": "确定系统的初态和末态（运动状态、高度、温度等），以判定哪些内部储能项（Delta K、Delta U、Delta E_int）发生变化。"
+            }
+          },
+          {
+            "id": "item-step-4",
+            "label": {
+              "en": "Examine all interactions crossing the boundary during the interval and set all inactive transfer terms (W, Q, T_MW, T_MT, T_ET, T_ER) to zero to obtain the reduced equation.",
+              "ms": "Periksa semua interaksi yang merentasi sempadan dalam selang masa tersebut dan tetapkan semua sebutan pemindahan tak aktif (W, Q, T_MW, T_MT, T_ET, T_ER) kepada sifar untuk memperoleh persamaan ringkas.",
+              "zh": "考察该时间段内跨越边界的所有相互作用，将所有未发生作用的传递项（W、Q、T_MW、T_MT、T_ET、T_ER）置零，从而得到简化的能量方程。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-step-1",
+          "item-step-2",
+          "item-step-3",
+          "item-step-4"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "energy-storage-vs-transfer-confusion",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-step-4",
+            "secondItemId": "item-step-1"
+          }
+        },
+        {
+          "misconception": "isolated-vs-nonisolated-confusion",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-step-4",
+            "secondItemId": "item-step-2"
+          }
+        }
+      ]
+    }
+  ]
+}
