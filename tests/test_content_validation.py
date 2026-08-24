@@ -355,6 +355,16 @@ class ContentValidationTests(unittest.TestCase):
         errors = validator.validate_package(package)
         self.assertTrue(any("must describe an incorrect placement" in error for error in errors), errors)
 
+    def test_ordering_diagnostic_with_item_missing_from_solution_reports_error(self):
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        ordering = next(
+            activity for activity in package["activities"]
+            if activity.get("interactionMode") == "ordering"
+        )
+        ordering["interaction"]["correctOrder"] = []
+        errors = validator.validate_package(package)
+        self.assertTrue(any("correctOrder" in error for error in errors), errors)
+
     def test_schema_version_marks_interaction_contract(self):
         package = self.load("valid-draft.json")
         package["schemaVersion"] = "1.0"

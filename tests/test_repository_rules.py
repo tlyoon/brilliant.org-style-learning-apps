@@ -28,7 +28,13 @@ class RepositoryRuleTests(unittest.TestCase):
 
     def test_sensitive_artifacts_are_ignored(self):
         ignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
-        for rule in (".env", "*.pdf", "student-data/", "source-pdfs/"):
+        for rule in (
+            ".env",
+            "*.pdf",
+            "student-data/",
+            "source-pdfs/",
+            "generator*.local*.toml",
+        ):
             self.assertIn(rule, ignore)
 
 

@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from collections import Counter
 from copy import deepcopy
+import json
+from functools import lru_cache
+from pathlib import Path
 from typing import Any, Iterable
+
+from jsonschema import Draft202012Validator
 
 from app_generator.config import GeneratorConfig
 from app_generator.errors import ResponseContractError
@@ -17,7 +22,99 @@ EXPECTED = Counter(
 )
 
 
-def validate_plan(plan: dict[str, Any]) -> list[dict[str, Any]]:
+@lru_cache(maxsize=1)
+def _activity_validator() -> Draft202012Validator:
+    schema_path = Path(__file__).resolve().parents[2] / "content" / "schema" / "content-package.schema.json"
+    package_schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    activity_schema = {
+        "$schema": package_schema["$schema"],
+        "$ref": "#/$defs/activity",
+        "$defs": package_schema["$defs"],
+    }
+    return Draft202012Validator(activity_schema)
+
+
+def validate_activity_batch(
+    batch: Any,
+    planned: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    if not isinstance(batch, dict) or set(batch) != {"activities"}:
+        raise ResponseContractError("Activity batch must contain exactly one activities key")
+    activities = batch["activities"]
+    if not isinstance(activities, list) or len(activities) != len(planned):
+        raise ResponseContractError(
+            f"Activity batch must contain exactly {len(planned)} activities"
+        )
+    planned_by_id = {item["id"]: item for item in planned}
+    if len(planned_by_id) != len(planned):
+        raise ResponseContractError("Activity batch plan contains duplicate IDs")
+    generated_ids = [item.get("id") if isinstance(item, dict) else None for item in activities]
+    if set(generated_ids) != set(planned_by_id) or len(generated_ids) != len(set(generated_ids)):
+        raise ResponseContractError("Generated activity IDs differ from the requested batch plan")
+    validator = _activity_validator()
+    for activity in activities:
+        interaction = activity.get("interaction") if isinstance(activity, dict) else None
+        if isinstance(interaction, dict):
+            for field in ("correctOrder", "correctSelections"):
+                values = interaction.get(field)
+                if (
+                    isinstance(values, list)
+                    and values
+                    and all(
+                        isinstance(value, dict)
+                        and set(value) == {"itemId"}
+                        and isinstance(value["itemId"], str)
+                        and value["itemId"]
+                        for value in values
+                    )
+                ):
+                    interaction[field] = [value["itemId"] for value in values]
+        plan = planned_by_id[activity["id"]]
+        for field in ("type", "difficulty", "objective"):
+            if activity.get(field) != plan[field]:
+                raise ResponseContractError(
+                    f"Activity {activity['id']} changed its planned {field}"
+                )
+        if set(activity.get("misconceptions", [])) != set(plan["misconceptions"]):
+            raise ResponseContractError(
+                f"Activity {activity['id']} changed its planned misconceptions"
+            )
+        recovery = activity.get("prerequisiteRecovery")
+        if not isinstance(recovery, dict) or recovery.get("prerequisiteId") != plan["prerequisiteId"]:
+            raise ResponseContractError(
+                f"Activity {activity['id']} changed its planned prerequisite"
+            )
+        expected_mode = plan["interactionMode"]
+        if expected_mode is None:
+            if "interactionMode" in activity:
+                raise ResponseContractError(
+                    f"MCQ {activity['id']} must omit interactionMode"
+                )
+        elif activity.get("interactionMode") != expected_mode:
+            raise ResponseContractError(
+                f"Activity {activity['id']} changed its planned interaction mode"
+            )
+        failures = sorted(
+            validator.iter_errors(activity),
+            key=lambda error: tuple(map(str, error.absolute_path)),
+        )
+        if failures:
+            error = failures[0]
+            location = "".join(
+                f"[{part}]" if isinstance(part, int) else f".{part}"
+                for part in error.absolute_path
+            )
+            raise ResponseContractError(
+                f"Activity {activity['id']}{location} violates schema-1.1: {error.message}"
+            )
+    return activities
+
+
+def validate_plan(
+    plan: dict[str, Any],
+    *,
+    fallback_prerequisite_id: str | None = None,
+) -> list[dict[str, Any]]:
     activities = plan.get("activities")
     if not isinstance(activities, list) or len(activities) != 18:
         raise ResponseContractError("Activity plan must contain exactly 18 activities")
@@ -29,6 +126,24 @@ def validate_plan(plan: dict[str, Any]) -> list[dict[str, Any]]:
     for index, activity in enumerate(activities):
         if not isinstance(activity, dict) or not required.issubset(activity):
             raise ResponseContractError(f"Activity plan item {index} is missing required fields")
+        misconceptions = activity["misconceptions"]
+        if not isinstance(misconceptions, list) or not misconceptions:
+            raise ResponseContractError(f"Activity plan item {index} must reference misconceptions")
+        normalized_misconceptions = [
+            item.get("id") if isinstance(item, dict) else item
+            for item in misconceptions
+        ]
+        if any(not isinstance(item, str) or not item for item in normalized_misconceptions):
+            raise ResponseContractError(f"Activity plan item {index} has an invalid misconception reference")
+        activity["misconceptions"] = normalized_misconceptions
+        prerequisite = activity["prerequisiteId"]
+        if isinstance(prerequisite, dict):
+            prerequisite = prerequisite.get("id")
+        if prerequisite is None:
+            prerequisite = fallback_prerequisite_id
+        if not isinstance(prerequisite, str) or not prerequisite:
+            raise ResponseContractError(f"Activity plan item {index} has an invalid prerequisite reference")
+        activity["prerequisiteId"] = prerequisite
         ids.append(activity["id"])
         distribution[(activity["type"], activity["difficulty"])] += 1
         mode = activity["interactionMode"]
