@@ -64,3 +64,5 @@ Implementation work should use short-lived branches and pull requests. `main` re
 ## Automated draft generator
 
 `app_generator/` contains an isolated Python 3.12/Google Drive/Selenium workflow for generating one repository-compatible draft per controlled PDF. Each job attaches its PDF to a fresh Gemini Gem conversation; Gem Knowledge is not modified. Distributed workers use a central lease/heartbeat coordinator, validate and repair the generated package, and can push a unique branch plus draft PR. They never merge, deploy, or mark content publishable. See `app_generator/README.md`, `config/generator.example.toml`, and `config/generator.distributed.example.toml`.
+
+For an existing Windows checkout on another authorized PC, `sync-workstation.cmd` provides a guarded one-click Git sync, environment bootstrap, private-Drive configuration download, and validation flow. See `docs/WORKSTATION_SYNC.md`. OAuth clients, tokens, Chrome profiles, source PDFs, and run data are never distributed by this mechanism.
