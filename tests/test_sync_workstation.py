@@ -7,9 +7,26 @@ from scripts.sync_workstation import _write_initial_settings, load_settings
 
 
 DRIVE_URL = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc&usp=drive_fs"
+PROJECTS_URL = "https://drive.google.com/drive/folders/1OLsE45GrA3veNeyVi7usO5-utS8gYC0X"
 
 
 class WorkstationSyncTests(unittest.TestCase):
+    def test_batch_entrypoint_supplies_editable_first_run_defaults(self):
+        entrypoint = Path(__file__).resolve().parents[1] / "sync-workstation.cmd"
+        content = entrypoint.read_text(encoding="utf-8")
+
+        self.assertIn(
+            f'set "BRILLIANT_SYNC_PROJECTS_FOLDER_URL={PROJECTS_URL}"',
+            content,
+        )
+        self.assertIn('set "BRILLIANT_SYNC_LOGIN_NAME=tlyoon@gmail.com"', content)
+        self.assertIn('set "BRILLIANT_SYNC_BRANCH=main"', content)
+        command = next(line for line in content.splitlines() if line.startswith("python scripts\\sync_workstation.py"))
+        self.assertIn('--projects-folder "%BRILLIANT_SYNC_PROJECTS_FOLDER_URL%"', command)
+        self.assertIn('--login-name "%BRILLIANT_SYNC_LOGIN_NAME%"', command)
+        self.assertIn('--branch "%BRILLIANT_SYNC_BRANCH%"', command)
+        self.assertTrue(command.endswith(" %*"), "explicit arguments must override the defaults")
+
     def test_initial_settings_remove_quotes_pasted_around_drive_url(self):
         with tempfile.TemporaryDirectory() as directory:
             settings_path = Path(directory) / "workstation-sync.toml"
