@@ -59,6 +59,8 @@ Node.js is used only for development-time syntax and regression checks. The appl
 
 `python scripts/build_public_release.py <empty-output-directory>` creates the small static bundle intended for the separate public GitHub Pages repository. It contains only the root entry page, learner-app assets, the Section 1.1 package, and `.nojekyll`; it excludes repository history, tests, specifications, review records, source manifests, and development scripts. The build does not alter the package's `review` status or create any learner accounts, analytics, or data collection.
 
+`python scripts/build_section_8_1_public_release.py <empty-output-directory>` creates the separate dual-version Section 8.1 public review bundle approved by Decision 0007. It exposes Version 1 and Version 2 routes, preserves both packages as drafts, and excludes the same internal and controlled materials.
+
 Implementation work should use short-lived branches and pull requests. `main` remains the stable baseline.
 
 ## Automated draft generator

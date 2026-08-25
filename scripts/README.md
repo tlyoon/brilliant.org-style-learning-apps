@@ -4,3 +4,5 @@
 
 `lint.py` checks repository text files for UTF-8 encoding, tabs, trailing whitespace, valid JSON, and valid Python syntax. CI also uses `node --check` for the browser JavaScript.
 
+`build_section_8_1_public_release.py` builds the minimal dual-version Section 8.1 static review site. Version 1 is read from its immutable introducing Git commit, Version 2 is read from the current validated package, and no manifests, review records, source files, run diagnostics, or development material are copied.
+

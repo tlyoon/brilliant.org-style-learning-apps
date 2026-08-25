@@ -32,3 +32,5 @@ Shared conversations and imported files are provenance, not authoritative specif
 
 Accepted automation baseline: Decision 0006 uses one PDF per fresh Gem conversation plus a central lease/heartbeat coordinator for multi-PC generation. Gem Knowledge is not part of the generation workflow.
 
+Accepted public-review baseline: Decision 0007 permits the two Section 8.1 draft packages to be deployed together in a separate minimal public GitHub Pages repository with explicit draft labelling and no publication sign-offs.
+
