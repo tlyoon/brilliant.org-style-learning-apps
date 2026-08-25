@@ -16,7 +16,7 @@ from app_generator.coordinator.client import CoordinatorClient, JobLease
 from app_generator.coordinator.heartbeat import LeaseGuard
 from app_generator.errors import NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, ValidationFailure
 from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts, write_json_atomic
-from app_generator.gemini.client import GeminiClient
+from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
 from app_generator.generation.documents import render_learning_design, render_review_record, render_section_readme
 from app_generator.generation.protocol import GenerationProtocol
 from app_generator.locking import WorkerLock
@@ -268,7 +268,63 @@ def run_generation(
                     temporary_source = None
                     store.transition(RunPhase.TEMPORARY_SOURCE_REMOVED)
 
-                protocol = GenerationProtocol(client, context)
+                def restart_gemini_session() -> GeminiClient:
+                    nonlocal browser, temporary_source
+                    if lease_guard is not None:
+                        lease_guard.ensure_owned()
+                    if browser is not None:
+                        browser.close()
+                        browser = None
+                    store.transition(RunPhase.GEMINI_SESSION_RESTARTING)
+
+                    recovery_source = sources[0].path
+                    session_ready = False
+                    try:
+                        if drive_source is not None:
+                            assert drive_client is not None
+                            temporary_source = drive_client.download_file(
+                                drive_source,
+                                context.sources / drive_source.filename,
+                            )
+                            store.transition(RunPhase.SOURCE_DOWNLOADED)
+                            recovery_sources = inspect_sources((temporary_source,))
+                            if [item.metadata() for item in recovery_sources] != current_source_metadata:
+                                raise SourceSetMismatch(
+                                    "The controlled source changed before Gemini session recovery"
+                                )
+                            recovery_source = temporary_source
+
+                        browser = chrome_factory(active_config)
+                        driver = browser.start()
+                        store.transition(RunPhase.CHROME_STARTED)
+                        replacement = client_factory(driver, active_config)
+                        replacement.open_editor_and_verify_account()
+                        store.transition(RunPhase.GOOGLE_ACCOUNT_VERIFIED)
+                        replacement.configure_gem()
+                        store.transition(RunPhase.GEM_CONFIG_CHECKED)
+                        replacement.open_conversation_select_model_and_attach(recovery_source)
+                        store.transition(
+                            RunPhase.MODEL_SELECTED,
+                            actual_model=replacement.actual_model,
+                        )
+                        store.transition(RunPhase.SOURCE_ATTACHED)
+                        session_ready = True
+                        return replacement
+                    finally:
+                        if temporary_source is not None:
+                            _remove_temporary_source(temporary_source, context.sources)
+                            temporary_source = None
+                            store.transition(RunPhase.TEMPORARY_SOURCE_REMOVED)
+                        if session_ready:
+                            store.transition(RunPhase.GENERATING)
+
+                resilient_client = RecoveringGeminiClient(
+                    client,
+                    restart_gemini_session,
+                    max_restarts=active_config.max_gemini_session_restarts,
+                    diagnostics_dir=context.diagnostics,
+                )
+                protocol = GenerationProtocol(resilient_client, context)
                 store.transition(RunPhase.GENERATING)
                 run_metadata = {
                     "packageId": active_config.package_id,
@@ -286,7 +342,10 @@ def run_generation(
                     run_metadata=run_metadata,
                     source_location=source_location,
                 )
-                store.transition(RunPhase.PACKAGE_ASSEMBLED, actual_model=client.actual_model)
+                store.transition(
+                    RunPhase.PACKAGE_ASSEMBLED,
+                    actual_model=resilient_client.actual_model,
+                )
                 package_relative = _stage_complete_artifacts(context, active_config, package, manifest)
 
                 for attempt in range(active_config.max_repair_attempts + 1):
@@ -313,7 +372,10 @@ def run_generation(
                 final_errors = _candidate_errors(active_config, context, package, manifest, package_relative)
                 if final_errors:
                     raise ValidationFailure("Semantic repair introduced deterministic validation failures", final_errors)
-                store.transition(RunPhase.SEMANTIC_REVIEW_COMPLETED, actual_model=client.actual_model)
+                store.transition(
+                    RunPhase.SEMANTIC_REVIEW_COMPLETED,
+                    actual_model=resilient_client.actual_model,
+                )
 
                 installed = install_new_artifacts(
                     active_config.repo_root,

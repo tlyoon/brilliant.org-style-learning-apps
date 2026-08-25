@@ -1,9 +1,13 @@
 import unittest
 from unittest.mock import patch
 
-from app_generator.errors import UiContractError
+from app_generator.errors import TransientGeminiError, UiContractError
 from app_generator.gemini import selectors
-from app_generator.gemini.conversation import GemConversationPage, _complete_json_frame
+from app_generator.gemini.conversation import (
+    GemConversationPage,
+    _complete_json_frame,
+    _is_transient_gemini_error,
+)
 
 
 class GeneratorConversationTests(unittest.TestCase):
@@ -60,6 +64,10 @@ class GeneratorConversationTests(unittest.TestCase):
     def test_model_response_selectors_do_not_include_bare_message_content(self):
         self.assertNotIn(("css selector", "message-content"), selectors.MODEL_RESPONSES)
         self.assertIn(("css selector", "model-response message-content"), selectors.MODEL_RESPONSES)
+
+    def test_send_selectors_exclude_page_wide_send_feedback_control(self):
+        self.assertNotIn(("css selector", 'button[aria-label*="Send"]'), selectors.SEND_BUTTON)
+        self.assertIn(("css selector", 'button[aria-label="Send message"]'), selectors.SEND_BUTTON)
 
     def test_introductory_model_content_does_not_mark_conversation_stale(self):
         driver = self.Driver()
@@ -243,7 +251,35 @@ class GeneratorConversationTests(unittest.TestCase):
             ),
             patch("app_generator.gemini.conversation.time.sleep"),
         ):
-            self.assertFalse(page._confirm_prompt_submitted(composer, send, set()))
+            with self.assertRaisesRegex(UiContractError, "did not acknowledge prompt submission"):
+                page._confirm_prompt_submitted(composer, send, set())
+
+        self.assertIn(("arguments[0].click()", send), driver.executed_scripts)
+        self.assertEqual(1, len(composer.sent_keys))
+
+    def test_user_message_rerender_does_not_acknowledge_populated_composer(self):
+        driver = self.Driver()
+        driver.response_complete = False
+        composer = self.Element(value="prompt remains in composer")
+        send = self.Element()
+        before = {("old-node", "existing user message")}
+        replacement = {("replacement-node", "existing user message")}
+
+        with (
+            patch("app_generator.gemini.conversation.find_first", return_value=send),
+            patch(
+                "app_generator.gemini.conversation._direct_element_signature",
+                return_value=replacement,
+            ),
+            patch(
+                "app_generator.gemini.conversation.time.monotonic",
+                side_effect=[0, 0, 4, 4, 8, 8, 8, 9],
+            ),
+            patch("app_generator.gemini.conversation.time.sleep"),
+        ):
+            self.assertFalse(
+                self.page(driver)._confirm_prompt_submitted(composer, send, before)
+            )
 
         self.assertIn(("arguments[0].click()", send), driver.executed_scripts)
         self.assertEqual(1, len(composer.sent_keys))
@@ -454,6 +490,48 @@ class GeneratorConversationTests(unittest.TestCase):
         ):
             with self.assertRaisesRegex(Exception, "stabilized without complete parseable JSON"):
                 self.page(driver).ask("prompt")
+
+    def test_ask_fails_immediately_on_transient_gemini_service_message(self):
+        driver = self.Driver()
+        composer = self.Element()
+        send = self.Element()
+        response = self.Element(element_id="transient-error-response")
+        rendered = "I seem to be encountering an error. Can I try something else for you?"
+        with (
+            patch(
+                "app_generator.gemini.conversation.find_first",
+                side_effect=[composer, send],
+            ),
+            patch(
+                "app_generator.gemini.conversation.find_all",
+                side_effect=[[], [response]],
+            ),
+            patch("app_generator.gemini.conversation.replace_element_text"),
+            patch("app_generator.gemini.conversation.element_text", return_value=rendered),
+            patch(
+                "app_generator.gemini.conversation.time.monotonic",
+                side_effect=[0, 0],
+            ),
+            patch("app_generator.gemini.conversation.time.sleep"),
+        ):
+            with self.assertRaisesRegex(TransientGeminiError, "transient service error"):
+                self.page(driver).ask("prompt")
+
+        self.assertIn(
+            ("arguments[0].scrollIntoView({block: 'center'});", response),
+            driver.executed_scripts,
+        )
+
+    def test_transient_error_phrase_family_covers_observed_gemini_variants(self):
+        messages = (
+            "I encountered an error doing what you asked. Could you try again?",
+            "I seem to be encountering an error. Can I try something else for you?",
+            "I'm having a hard time fulfilling your request. Can I help you with something else instead?",
+            "I’m having a hard time fulfilling your request. Can I help with something else?",
+        )
+        for message in messages:
+            with self.subTest(message=message):
+                self.assertTrue(_is_transient_gemini_error(message))
 
     def test_non_json_stability_survives_dom_element_replacement(self):
         driver = self.Driver()

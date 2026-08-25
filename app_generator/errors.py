@@ -87,6 +87,10 @@ class ResponseContractError(GeneratorError):
     code = "RESPONSE_CONTRACT_ERROR"
 
 
+class TransientGeminiError(GeneratorError):
+    code = "GEMINI_TRANSIENT_ERROR"
+
+
 class ValidationFailure(GeneratorError):
     code = "VALIDATION_FAILED"
 

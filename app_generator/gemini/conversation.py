@@ -8,11 +8,17 @@ from pathlib import Path
 from typing import Any
 
 from app_generator.browser.common import element_text, find_all, find_first, replace_element_text
-from app_generator.errors import ResponseContractError, UiContractError
+from app_generator.errors import ResponseContractError, TransientGeminiError, UiContractError
 from app_generator.gemini import selectors
 from app_generator.gemini.models import ModelOption
 
 NON_JSON_STABLE_POLLS = 60
+TRANSIENT_ERROR_PHRASES = (
+    "i seem to be encountering an error",
+    "i encountered an error doing what you asked",
+    "having a hard time fulfilling your request",
+    "something went wrong while generating",
+)
 
 
 def _response_text(driver: Any, element: Any) -> str:
@@ -59,6 +65,11 @@ def _complete_json_frame(text: str) -> str | None:
     return f"BEGIN_JSON\n{text[start:end]}\nEND_JSON"
 
 
+def _is_transient_gemini_error(text: str) -> bool:
+    normalized = " ".join(text.casefold().split())
+    return any(phrase in normalized for phrase in TRANSIENT_ERROR_PHRASES)
+
+
 def _visible_signal(driver: Any, locators: tuple[tuple[str, str], ...]) -> bool:
     for by, selector in locators:
         try:
@@ -103,17 +114,23 @@ def _direct_element_signature(driver: Any, locators: tuple[tuple[str, str], ...]
 
 def _composer_is_empty(driver: Any, composer: Any) -> bool:
     try:
-        value = composer.get_attribute("value")
-        if value is not None:
-            return not str(value).strip()
+        rendered = driver.execute_script(
+            """
+            const element = arguments[0];
+            if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
+                return element.value || '';
+            }
+            return element.innerText || element.textContent || '';
+            """,
+            composer,
+        )
+        if rendered is not None:
+            return not str(rendered).strip()
     except Exception:
         pass
     try:
-        rendered = driver.execute_script(
-            "return (arguments[0].innerText || arguments[0].textContent || '').trim()",
-            composer,
-        )
-        return not str(rendered or "").strip()
+        value = composer.get_attribute("value")
+        return value is not None and not str(value).strip()
     except Exception:
         return False
 
@@ -228,14 +245,20 @@ class GemConversationPage:
 
         def acknowledged() -> bool:
             nonlocal saw_generation_active
-            active, _ = _generation_signals(self.driver)
+            active, response_complete = _generation_signals(self.driver)
             saw_generation_active = saw_generation_active or active
             if active:
                 return True
-            if _composer_is_empty(self.driver, composer):
-                return True
             current_user_messages = _direct_element_signature(self.driver, selectors.USER_MESSAGES)
-            return bool(current_user_messages - before_user_messages)
+            user_message_changed = bool(current_user_messages - before_user_messages)
+            # Gemini can replace an existing Angular user-message node without
+            # submitting the composer. A changed WebElement identity is only
+            # acknowledgement when the prompt also left the composer. The
+            # completed-response signal covers fast responses whose user node
+            # is not exposed by the current UI variant.
+            return _composer_is_empty(self.driver, composer) and (
+                user_message_changed or response_complete
+            )
 
         def wait_for_acknowledgement(seconds: float) -> bool:
             if acknowledged():
@@ -341,6 +364,17 @@ class GemConversationPage:
                     else not key.startswith("position:") or candidate not in before_texts
                 )
                 if candidate and changed:
+                    if _is_transient_gemini_error(candidate):
+                        try:
+                            self.driver.execute_script(
+                                "arguments[0].scrollIntoView({block: 'center'});",
+                                response,
+                            )
+                        except Exception:
+                            pass
+                        raise TransientGeminiError(
+                            "Gemini displayed a transient service error while generating the current stage"
+                        )
                     current_by_key[key] = candidate
             observed_count = max(observed_count, len(current_by_key))
             longest_observed = max(

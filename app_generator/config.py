@@ -40,6 +40,7 @@ DEFAULTS: dict[str, Any] = {
     "ui_timeout_seconds": 30,
     "login_timeout_seconds": 300,
     "response_timeout_seconds": 600,
+    "max_gemini_session_restarts": 2,
     "drive_api_timeout_seconds": 60,
     "max_drive_folders": 10000,
     "log_level": "INFO",
@@ -115,6 +116,7 @@ class GeneratorConfig:
     ui_timeout_seconds: int
     login_timeout_seconds: int
     response_timeout_seconds: int
+    max_gemini_session_restarts: int
     log_level: str
     model_preference_patterns: tuple[str, ...]
     allow_unknown_model_fallback: bool
@@ -207,6 +209,7 @@ def _coerce_env(key: str, value: str) -> Any:
         "ui_timeout_seconds",
         "login_timeout_seconds",
         "response_timeout_seconds",
+        "max_gemini_session_restarts",
         "drive_api_timeout_seconds",
         "max_drive_folders",
         "coordinator_timeout_seconds",
@@ -366,6 +369,9 @@ def load_config(
     max_repair_attempts = int(values["max_repair_attempts"])
     if max_repair_attempts < 0:
         raise ConfigurationError("max_repair_attempts must be zero or greater")
+    max_gemini_session_restarts = int(values["max_gemini_session_restarts"])
+    if max_gemini_session_restarts < 0:
+        raise ConfigurationError("max_gemini_session_restarts must be zero or greater")
     for pattern in values["model_preference_patterns"]:
         try:
             re.compile(str(pattern), re.I)
@@ -459,6 +465,7 @@ def load_config(
         ui_timeout_seconds=int(values["ui_timeout_seconds"]),
         login_timeout_seconds=int(values["login_timeout_seconds"]),
         response_timeout_seconds=int(values["response_timeout_seconds"]),
+        max_gemini_session_restarts=max_gemini_session_restarts,
         log_level=str(values["log_level"]).upper(),
         model_preference_patterns=tuple(str(item) for item in values["model_preference_patterns"]),
         allow_unknown_model_fallback=bool(values["allow_unknown_model_fallback"]),
