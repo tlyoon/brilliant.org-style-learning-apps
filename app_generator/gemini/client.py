@@ -8,6 +8,7 @@ from typing import Any
 
 from app_generator.browser.account import GoogleAccountVerifier
 from app_generator.config import GeneratorConfig
+from app_generator.errors import UiContractError
 from app_generator.gemini.conversation import GemConversationPage
 from app_generator.gemini.editor import GemEditorPage
 from app_generator.gemini.models import ModelFailure, ModelOption, classify_model_failure, rank_models
@@ -42,14 +43,29 @@ class GeminiClient:
 
     def open_conversation_select_model_and_attach(self, source_path: Path) -> str:
         self.conversation.open_new()
-        discovered = self.conversation.discover_models()
-        self.ranked_models = rank_models(
-            discovered,
-            self.config.model_preference_patterns,
-            allow_unknown_fallback=self.config.allow_unknown_model_fallback,
-        )
+        model_selected_in_ui = False
+        try:
+            discovered = self.conversation.discover_models()
+            self.ranked_models = rank_models(
+                discovered,
+                self.config.model_preference_patterns,
+                allow_unknown_fallback=self.config.allow_unknown_model_fallback,
+            )
+            model_selected_in_ui = True
+        except UiContractError as exc:
+            if not self.config.allow_unknown_model_fallback:
+                raise
+            self.ranked_models = [
+                ModelOption(
+                    "Gem default (model selector unavailable)",
+                    "Gemini did not expose a model picker; using the Gem's current/default model.",
+                    selected=True,
+                )
+            ]
+            LOGGER.warning("Gemini model picker unavailable; using the Gem default model: %s", exc)
         self.model_index = 0
-        self.conversation.select_model(self.actual_model)
+        if model_selected_in_ui:
+            self.conversation.select_model(self.actual_model)
         self.conversation.attach_pdf(source_path)
         LOGGER.info("Selected Gemini model and attached claimed source", extra={"model": self.actual_model})
         return self.actual_model

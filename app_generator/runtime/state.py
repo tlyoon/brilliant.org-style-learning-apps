@@ -102,9 +102,18 @@ class StateStore:
         self._save()
 
     def resume(self) -> None:
-        if self.state.phase != RunPhase.FAILED:
+        if (
+            self.state.phase == RunPhase.CONFIG_LOADED
+            and self.state.history
+            and self.state.history[-1].get("to") == "RESUMED"
+        ):
+            # A prior resume may have reached CONFIG_LOADED before an older
+            # runtime discovered that the worker lock was unavailable. Treat
+            # that narrowly identified pre-work state as an idempotent resume.
+            return
+        if self.state.phase == RunPhase.COMPLETE:
             raise GeneratorError(
-                f"Only FAILED runs may resume generation; current state is {self.state.phase}"
+                "Completed runs cannot resume generation"
             )
         previous = self.state.phase
         self.state.phase = RunPhase.CONFIG_LOADED

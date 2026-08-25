@@ -67,3 +67,19 @@ class RunContext:
     def load_stage(self, name: str) -> object | None:
         path = self.batches / f"{name}.json"
         return json.loads(path.read_text(encoding="utf-8")) if path.is_file() else None
+
+    def discard_stage(self, name: str) -> None:
+        """Remove only a parsed generated-stage cache after contract rejection."""
+
+        if not SAFE_STAGE.fullmatch(name):
+            raise ValueError(f"Unsafe stage name: {name}")
+        try:
+            (self.batches / f"{name}.json").unlink()
+        except FileNotFoundError:
+            pass
+
+    def discard_parsed_stages(self) -> None:
+        """Remove generated parsed caches while retaining raw responses."""
+
+        for path in self.batches.glob("*.json"):
+            path.unlink()

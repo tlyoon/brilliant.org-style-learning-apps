@@ -267,6 +267,10 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
                     second = condition["secondItemId"]
                     if first not in item_ids or second not in item_ids or first == second:
                         errors.append(f"{rule_label}.condition: must reference two distinct declared items")
+                    elif first not in correct_order or second not in correct_order:
+                        errors.append(
+                            f"{rule_label}.condition: referenced items must also appear in correctOrder"
+                        )
                     elif correct_order.index(first) < correct_order.index(second):
                         errors.append(f"{rule_label}.condition: must describe an incorrect ordering relationship")
                 else:
