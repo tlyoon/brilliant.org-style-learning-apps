@@ -80,8 +80,15 @@ COMPOSER = (
     ("css selector", 'textarea[placeholder*="Ask"]'),
 )
 SEND_BUTTON = (
-    ("css selector", 'button[aria-label*="Send"]'),
-    ("xpath", '//button[contains(translate(@aria-label, "SEND", "send"), "send")]'),
+    ("css selector", 'button[aria-label="Send message"]'),
+    ("css selector", 'button[aria-label^="Send message"]'),
+    ("css selector", 'button[aria-label="Submit"]'),
+    ("css selector", 'button[data-test-id*="send"]'),
+    ("css selector", "button.send-button"),
+    (
+        "xpath",
+        '//button[.//mat-icon[normalize-space()="send" or normalize-space()="arrow_upward"]]',
+    ),
 )
 GENERATION_ACTIVE = (
     ("css selector", 'button[aria-label*="Stop response"]'),

@@ -76,6 +76,11 @@ At runtime Selenium:
 6. attaches the claimed local PDF to that conversation;
 7. submits staged, machine-readable generation and repair prompts.
 
+If Gemini displays a recognized transient service-error response, the generator captures a screenshot in the
+external run `diagnostics` directory, closes the failed controlled browser, launches a fresh Gem conversation,
+reattaches a verified copy of the same controlled PDF, removes that temporary copy, and retries only the current
+uncached stage. `max_gemini_session_restarts` bounds this recovery loop; its default is two relaunches per run.
+
 The browser uses a dedicated persistent Chrome profile. An ordinary user-opened Chrome tab is not adopted. Optional attach mode requires Chrome to have been explicitly launched with remote debugging and a separate non-default profile.
 
 Gemini has no stable public web-UI automation contract. Accessible selectors are centralized in `gemini/selectors.py`, and a live controlled smoke run remains necessary after major Gemini UI changes or model-menu changes.

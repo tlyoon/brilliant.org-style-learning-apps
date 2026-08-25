@@ -54,6 +54,7 @@ class GeneratorConfigTests(unittest.TestCase):
             self.assertEqual("cli@example.com", config.login_name)
             self.assertEqual("DEBUG", config.log_level)
             self.assertEqual(4, config.max_repair_attempts)
+            self.assertEqual(2, config.max_gemini_session_restarts)
 
     def test_current_manifest_contract_rejects_multiple_sources(self):
         with tempfile.TemporaryDirectory() as directory:

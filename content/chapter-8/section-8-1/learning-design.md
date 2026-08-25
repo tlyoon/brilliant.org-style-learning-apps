@@ -6,25 +6,26 @@ Concepts contained in the complete controlled source PDF for Section 8.1; exclud
 
 ## Learning objectives
 
-1. Identify a system, its boundary, and whether it is nonisolated based on boundary energy transfers.
-2. Differentiate the six energy transfer mechanisms: work, heat, waves, matter transfer, electricity, and radiation.
-3. Distinguish between forms of stored energy within a system and transfer mechanisms crossing its boundary.
-4. Apply the conservation of energy equation by setting inactive transfer and storage terms to zero for given scenarios.
-5. Differentiate internal system energy processes from external energy transfers crossing the defined system boundary.
+1. Identify a nonisolated system as one where energy crosses the system boundary via interactions with the environment.
+2. Distinguish among kinetic, potential, and internal energy as forms of energy stored within a system.
+3. Classify the six mechanisms of energy transfer across a system boundary.
+4. Apply the conservation of energy principle Delta E_system = Sigma T to analyze energy balance in nonisolated systems.
+5. Reduce the general nonisolated system energy equation to terms relevant to a specific physical scenario.
+6. Distinguish energy transfers crossing a system boundary from internal energy transformations within a system.
 
 ## Prerequisites
 
-- `work-concept`: Understanding work as energy transfer resulting from an external force acting through a displacement.
-- `kinetic-and-potential-energy`: Familiarity with kinetic energy of motion and potential energy associated with system configuration.
-- `system-and-environment`: Ability to define a system boundary separating the chosen system from its surroundings.
+- `work-definition`: Understanding work as energy transferred by a force acting over a displacement.
+- `energy-storage-forms`: Familiarity with kinetic energy of motion, potential energy of configuration, and internal energy.
+- `system-and-boundary`: Ability to define a system boundary and distinguish system contents from the external environment.
 
 ## Misconception catalogue
 
-- `heat-as-stored-energy`: Believing that heat is a substance or form of energy stored inside an object rather than an energy transfer mechanism driven by temperature difference.
-- `internal-events-as-transfers`: Mistaking energy conversions between components inside a system for external energy crossing the system boundary.
-- `all-transfers-require-matter`: Assuming that energy cannot transfer across a vacuum, overlooking electromagnetic radiation and work done by field forces.
-- `isolated-vs-nonisolated-confusion`: Assuming that energy conservation only applies when no energy crosses the boundary, failing to recognize that nonisolated systems obey energy conservation through boundary transfers.
-- `energy-storage-vs-transfer-confusion`: Categorizing work, electrical transmission, or radiation as forms of stored energy rather than mechanisms of energy entering or leaving a system.
+- `heat-as-stored-energy`: Believing heat is a form of energy stored inside an object rather than an energy transfer mechanism driven by temperature difference.
+- `internal-process-as-transfer`: Treating energy conversions that occur entirely within a system's boundary as external energy transfers crossing into or out of the system.
+- `all-physical-quantities-conserved`: Assuming physical quantities such as force or velocity obey conservation principles similar to energy.
+- `medium-required-for-all-transfers`: Believing energy cannot cross a system boundary through a vacuum, overlooking electromagnetic radiation and work by field forces.
+- `work-as-sole-transfer-mechanism`: Assuming mechanical work is the only way energy can enter or leave a nonisolated system, ignoring heat, waves, radiation, matter transfer, and electrical transmission.
 
 ## Evidence intent
 

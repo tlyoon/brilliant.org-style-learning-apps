@@ -55,6 +55,8 @@ max_repair_attempts = 4
 ui_timeout_seconds = 30
 login_timeout_seconds = 300
 response_timeout_seconds = 600
+# Relaunch a fresh browser/Gem conversation after an explicit transient Gemini service error.
+max_gemini_session_restarts = 2
 log_level = "INFO"
 
 [git]
