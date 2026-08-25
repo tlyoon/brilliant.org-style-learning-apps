@@ -16,9 +16,22 @@ class GeneratorRuntimeTests(unittest.TestCase):
             store.fail(RuntimeError("test"))
             store.resume()
             self.assertEqual(RunPhase.CONFIG_LOADED, store.state.phase)
+            history_length = len(store.state.history)
+            store.resume()
+            self.assertEqual(history_length, len(store.state.history))
             store.transition(RunPhase.COMPLETE)
             with self.assertRaises(GeneratorError):
                 store.resume()
+
+    def test_exclusively_locked_interrupted_phase_can_resume(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store = StateStore(Path(directory) / "state.json", "run-interrupted")
+            store.transition(RunPhase.CONFIG_LOADED)
+            store.transition(RunPhase.WORKER_LOCK_ACQUIRED)
+            store.transition(RunPhase.GENERATING)
+            store.resume()
+            self.assertEqual(RunPhase.CONFIG_LOADED, store.state.phase)
+            self.assertEqual("RESUMED", store.state.history[-1]["to"])
 
     def test_artifact_install_refuses_overwrite_and_rolls_back_failed_verification(self):
         with tempfile.TemporaryDirectory() as directory:

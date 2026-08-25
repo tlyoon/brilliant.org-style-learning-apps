@@ -63,15 +63,25 @@ class GemEditorPage:
                 raise UiContractError(f"Gem editor opened, but the {label} field was not found") from exc
             current = element_text(element)
             if is_placeholder(current):
-                replace_element_text(element, desired)
+                replace_element_text(self.driver, element, desired)
                 changed = True
             elif current.strip() != desired.strip():
                 LOGGER.warning("Preserving meaningful existing Gem %s content", label)
         if changed:
             button = find_first(self.driver, selectors.SAVE_BUTTON, self.timeout, clickable=True)
+            editor_url = self.url
+            url_before_update = str(getattr(self.driver, "current_url", editor_url))
             button.click()
-            time.sleep(2)
-            self.driver.refresh()
+            # Update returns to the Gem conversation. Wait for that navigation
+            # to finish before reopening the editor; otherwise the late redirect
+            # can win a race with driver.get(editor_url).
+            redirect_deadline = time.monotonic() + min(self.timeout, 10)
+            while time.monotonic() < redirect_deadline:
+                if str(getattr(self.driver, "current_url", "")) != url_before_update:
+                    break
+                time.sleep(0.25)
+            self.driver.get(editor_url)
+            find_first(self.driver, selectors.NAME_FIELD, self.timeout)
             for label, (locators, desired) in fields.items():
                 actual = element_text(find_first(self.driver, locators, self.timeout))
                 if actual.strip() != desired.strip():

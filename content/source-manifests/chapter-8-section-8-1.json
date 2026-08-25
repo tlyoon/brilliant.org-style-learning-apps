@@ -1,0 +1,16 @@
+{
+  "manifestVersion": "1.0",
+  "sourceId": "serway-section-8-1",
+  "controlledFilename": "source.pdf",
+  "sha256": "607e849beaaef8ef58d7443202d63333b2f3cd21924d3db24a1319cd6d18a39f",
+  "edition": "Edition not yet identified for this configuration validation run",
+  "chapter": "Chapter 8",
+  "subchapter": "Section 8.1",
+  "heading": "Section 8.1",
+  "pageRange": "Complete controlled source PDF",
+  "learningBoundary": "Concepts contained in the complete controlled source PDF for Section 8.1; excludes material from other sections and concepts not supported by this PDF.",
+  "extractedOn": "2026-08-24",
+  "reviewer": "Qualified reviewer not yet assigned",
+  "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git.",
+  "driveFileId": "1vOKGXvhGR1JXfv2pWwwaUY2sAJsjasQx"
+}

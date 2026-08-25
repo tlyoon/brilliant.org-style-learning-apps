@@ -138,12 +138,12 @@ def run_generation(
     configure_logging(context.logs / "run.jsonl", config.log_level)
     store = context.store
     original_source_metadata = list(store.state.source_metadata)
-    if resume_run_id:
-        store.resume()
-    else:
-        store.transition(RunPhase.CONFIG_LOADED)
 
     with WorkerLock(config.state_dir, config.gem_url):
+        if resume_run_id:
+            store.resume()
+        else:
+            store.transition(RunPhase.CONFIG_LOADED)
         store.transition(RunPhase.WORKER_LOCK_ACQUIRED)
         temporary_source: Path | None = None
         browser: ChromeSession | None = None

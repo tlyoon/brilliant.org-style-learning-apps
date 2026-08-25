@@ -3,7 +3,7 @@ import tomllib
 import unittest
 from pathlib import Path
 
-from scripts.sync_workstation import _write_initial_settings, load_settings
+from scripts.sync_workstation import _write_initial_settings, load_settings, render_shared_config
 
 
 DRIVE_URL = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc&usp=drive_fs"
@@ -11,6 +11,21 @@ PROJECTS_URL = "https://drive.google.com/drive/folders/1OLsE45GrA3veNeyVi7usO5-u
 
 
 class WorkstationSyncTests(unittest.TestCase):
+    def test_shared_example_is_accepted_by_the_synchronizer(self):
+        root = Path(__file__).resolve().parents[1]
+        source = root / "config" / "generator.shared.example.toml"
+
+        with tempfile.TemporaryDirectory() as directory:
+            rendered = render_shared_config(
+                source.read_bytes(),
+                repo_root=root,
+                state_root=Path(directory),
+            )
+
+        payload = tomllib.loads(rendered)
+        self.assertEqual(root.resolve(), Path(payload["repository"]["repo_root"]).resolve())
+        self.assertEqual("8.1", payload["placeholders"]["pdf_subchapter_path"])
+
     def test_batch_entrypoint_supplies_editable_first_run_defaults(self):
         entrypoint = Path(__file__).resolve().parents[1] / "sync-workstation.cmd"
         content = entrypoint.read_text(encoding="utf-8")

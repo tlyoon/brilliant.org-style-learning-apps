@@ -44,6 +44,18 @@ def parse_json_response(raw: str) -> Any:
     try:
         parsed = json.loads(text)
     except json.JSONDecodeError as exc:
-        raise ResponseContractError(f"Response is not complete valid JSON: {exc}") from exc
+        if "Invalid control character" not in exc.msg:
+            raise ResponseContractError(f"Response is not complete valid JSON: {exc}") from exc
+        # Gemini's rendered code block can contain literal line breaks or
+        # other control characters inside an otherwise complete JSON string.
+        # Accept only this narrowly identified defect. The parsed value is
+        # subsequently serialized by Python, which escapes those characters
+        # into standards-compliant repository JSON.
+        try:
+            parsed = json.loads(text, strict=False)
+        except json.JSONDecodeError as relaxed_exc:
+            raise ResponseContractError(
+                f"Response is not complete valid JSON: {relaxed_exc}"
+            ) from relaxed_exc
     _reject_surrogates(parsed)
     return parsed
