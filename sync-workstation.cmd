@@ -2,9 +2,8 @@
 setlocal
 cd /d "%~dp0"
 
-rem Fresh-workstation defaults. Edit these values when reusing this script for another project,
-rem or define the matching BRILLIANT_SYNC_* environment variables before running it.
-if not defined BRILLIANT_SYNC_PROJECTS_FOLDER_URL set "BRILLIANT_SYNC_PROJECTS_FOLDER_URL=https://drive.google.com/drive/folders/1OLsE45GrA3veNeyVi7usO5-utS8gYC0X"
+rem Fresh-workstation defaults. Shared generator settings come from
+rem config\generator.shared.toml after the repository is synchronized.
 if not defined BRILLIANT_SYNC_LOGIN_NAME set "BRILLIANT_SYNC_LOGIN_NAME=tlyoon@gmail.com"
 if not defined BRILLIANT_SYNC_BRANCH set "BRILLIANT_SYNC_BRANCH=main"
 
@@ -14,7 +13,7 @@ if errorlevel 1 (
   pause
   exit /b 2
 )
-python scripts\sync_workstation.py --projects-folder "%BRILLIANT_SYNC_PROJECTS_FOLDER_URL%" --login-name "%BRILLIANT_SYNC_LOGIN_NAME%" --branch "%BRILLIANT_SYNC_BRANCH%" %*
+python scripts\sync_workstation.py --login-name "%BRILLIANT_SYNC_LOGIN_NAME%" --branch "%BRILLIANT_SYNC_BRANCH%" %*
 set "SYNC_EXIT=%ERRORLEVEL%"
 echo.
 if not "%SYNC_EXIT%"=="0" echo Workstation synchronization failed with exit code %SYNC_EXIT%.
