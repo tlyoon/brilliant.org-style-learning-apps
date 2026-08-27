@@ -17,6 +17,7 @@ from scripts.sync_workstation import (
     install_project_config,
     load_settings,
     render_project_config,
+    _parser,
 )
 
 
@@ -46,6 +47,10 @@ def _settings(root: Path, *, login_name: str = "person@example.com") -> SyncSett
 
 
 class WorkstationSyncTests(unittest.TestCase):
+    def test_initialization_only_flag_is_available(self):
+        args = _parser().parse_args(["--init-settings-only"])
+        self.assertTrue(args.init_settings_only)
+
     def test_tracked_project_config_is_accepted_by_the_synchronizer(self):
         root = Path(__file__).resolve().parents[1]
         source = root / PROJECT_CONFIG_RELATIVE_PATH

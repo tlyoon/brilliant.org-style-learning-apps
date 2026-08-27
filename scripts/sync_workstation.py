@@ -481,6 +481,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--branch")
     parser.add_argument("--post-sync", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument(
+        "--init-settings-only",
+        action="store_true",
+        help="Create or verify project-derived workstation settings without fetching Git or running checks.",
+    )
+    parser.add_argument(
         "--run-generator",
         action="store_true",
         help="After synchronization and checks, explicitly start the live Gemini generation run.",
@@ -527,6 +532,9 @@ def main(argv: list[str] | None = None) -> int:
             identity=identity,
             default_login_name=default_login,
         )
+        if args.init_settings_only:
+            print(f"Workstation settings ready: {settings_path}")
+            return 0
         settings = load_settings(settings_path, project_name=identity.name)
         if not args.post_sync:
             commit = sync_repository(settings)

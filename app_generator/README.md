@@ -119,6 +119,19 @@ It never pushes directly to `main`, merges the PR, marks content publishable, or
 
 ## First controlled run
 
+For a recycled project, preview the five core configuration changes before applying them:
+
+```powershell
+python scripts\configure_project.py `
+  --project-name "NewPhysicsProject" `
+  --source-root-url "https://drive.google.com/open?id=FOLDER_ID" `
+  --gem-url "https://gemini.google.com/gem/GEM_ID" `
+  --login-name "authorized@example.com" `
+  --gem-name "physics content generator"
+```
+
+The command prints a unified diff and writes nothing. After review, repeat it with `--apply`; application requires a clean Git worktree and atomically edits only `config/project.toml`. Commit that change on a branch and merge it through a pull request.
+
 From the repository root in PowerShell:
 
 ```powershell
