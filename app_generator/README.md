@@ -2,6 +2,8 @@
 
 This Python 3.12 package turns one controlled Google Drive `source.pdf` into one repository-compatible subchapter draft. It supports a safe first validation run for a named subchapter and a distributed mode in which several Windows PCs claim different PDFs from the same Drive tree.
 
+The generator is project-recyclable through `config/project.toml`. See `docs/GENERIC_PROJECT_SETUP.md` for the clean-branch, dry-run configuration, workstation, coordinator, and controlled-first-run sequence.
+
 The generator never adds a source PDF, OAuth credential, browser profile, coordinator token, or Gemini response transcript to Git. Generated content remains `draft` until the repository's qualified human reviews are complete.
 
 ## Implemented architecture
