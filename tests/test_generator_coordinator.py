@@ -31,6 +31,7 @@ class FakeSession:
 class GeneratorCoordinatorTests(unittest.TestCase):
     def config(self):
         return SimpleNamespace(
+            project_name="ExampleProject",
             coordinator_token_env="TEST_COORDINATOR_TOKEN",
             coordinator_url="https://script.google.com/macros/s/test/exec",
             coordinator_timeout_seconds=10,
@@ -63,6 +64,7 @@ class GeneratorCoordinatorTests(unittest.TestCase):
         self.assertEqual(source.job_key, lease.job_key)
         self.assertEqual("claim", session.request["json"]["action"])
         self.assertEqual("secret", session.request["json"]["token"])
+        self.assertEqual("ExampleProject", session.request["json"]["project_name"])
         self.assertEqual(source.file_id, session.request["json"]["candidates"][0]["drive_file_id"])
 
 

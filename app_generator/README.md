@@ -48,7 +48,7 @@ The current source-manifest schema represents exactly one controlled file, so th
 
 The pilot coordinator consists of a private Google Sheet and the Apps Script in `coordinator/apps-script/Code.gs`. Apps Script `LockService` protects the short claim/update transaction; it does not serialize Gemini generation.
 
-Each ledger row records:
+Each request and ledger row carries the configured `project_name`, so one deployed coordinator cannot accidentally accept a worker configured for another project. Each ledger row records:
 
 - Drive file ID and source version;
 - subchapter and relative path;
@@ -58,7 +58,7 @@ Each ledger row records:
 
 Workers renew their lease in the background. If a PC stops, its lease eventually expires and a later worker can reclaim the job. A worker that cannot prove ownership stops before commit or push.
 
-Follow `coordinator/apps-script/README.md` to create the private ledger and deploy the coordinator. Keep the worker token in Apps Script Properties and the matching project-derived coordinator environment variable on each PC; never place a token value in TOML or Git.
+Follow `coordinator/apps-script/README.md` to create the private ledger and deploy the coordinator. `initializeCoordinator` generates `WORKER_TOKEN` using Apps Script cryptographic digest utilities and never overwrites an existing token. Keep it in Apps Script Properties and the matching project-derived coordinator environment variable on each PC; never place a token value in TOML or Git.
 
 ## Gemini behavior
 

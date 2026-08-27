@@ -37,6 +37,7 @@ class CoordinatorClient:
                 raise CoordinatorError("The requests package is required for distributed coordination") from exc
             session = requests.Session()
         self.url = config.coordinator_url
+        self.project_name = config.project_name
         self.token = token
         self.timeout = config.coordinator_timeout_seconds
         self.worker_id = config.worker_id
@@ -45,7 +46,12 @@ class CoordinatorClient:
         self.session = session
 
     def _post(self, action: str, **payload: Any) -> dict[str, Any]:
-        request = {"action": action, "token": self.token, **payload}
+        request = {
+            "action": action,
+            "token": self.token,
+            "project_name": self.project_name,
+            **payload,
+        }
         try:
             response = self.session.post(self.url, json=request, timeout=self.timeout)
             response.raise_for_status()

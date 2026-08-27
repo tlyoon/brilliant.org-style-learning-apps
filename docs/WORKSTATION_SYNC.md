@@ -79,4 +79,4 @@ That option uploads the controlled source to Gemini and starts generation after 
 
 ## Genericization phase status
 
-Phase 5 confirms arbitrary Drive grouping/chapter folder names and templates all section-derived repository metadata. `config/project.toml` supplies all project-specific URLs, account assertions, paths, source metadata, and token names. Secret values remain external.
+Phase 6 scopes coordinator requests and ledger rows by project and generates the Apps Script worker token during coordinator initialization. `config/project.toml` supplies all project-specific URLs, account assertions, paths, source metadata, and token names. Secret values remain external.
