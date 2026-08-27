@@ -1,4 +1,5 @@
 import hashlib
+from dataclasses import replace
 import tempfile
 import tomllib
 import unittest
@@ -16,8 +17,11 @@ from scripts.sync_workstation import (
     _write_initial_settings,
     install_project_config,
     load_settings,
+    prepare_environment,
     render_project_config,
+    run_checks,
     _parser,
+    _venv_python,
 )
 
 
@@ -50,6 +54,81 @@ class WorkstationSyncTests(unittest.TestCase):
     def test_initialization_only_flag_is_available(self):
         args = _parser().parse_args(["--init-settings-only"])
         self.assertTrue(args.init_settings_only)
+
+    def test_quick_mode_is_available_and_excludes_live_generation(self):
+        args = _parser().parse_args(["--quick"])
+        self.assertTrue(args.quick)
+        self.assertFalse(args.run_generator)
+
+        with self.assertRaises(SystemExit):
+            _parser().parse_args(["--quick", "--run-generator"])
+
+    def test_environment_installation_uses_dependency_fingerprint_cache(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for relative in (
+                "pyproject.toml",
+                "requirements-generator.txt",
+                "requirements-dev.txt",
+            ):
+                (root / relative).write_text(relative + "\n", encoding="utf-8")
+            python = _venv_python(root)
+            python.parent.mkdir(parents=True)
+            python.write_text("", encoding="utf-8")
+            settings = _settings(root)
+            calls = []
+
+            def fake_command(arguments, cwd):
+                calls.append(arguments)
+                if len(arguments) >= 3 and arguments[1] == "-c" and "sys.version_info" in arguments[2]:
+                    return "3.12"
+                return ""
+
+            with patch("scripts.sync_workstation._command", side_effect=fake_command):
+                prepare_environment(settings)
+                prepare_environment(settings)
+                (root / "requirements-generator.txt").write_text(
+                    "changed dependency\n",
+                    encoding="utf-8",
+                )
+                prepare_environment(settings)
+
+        pip_calls = [
+            arguments
+            for arguments in calls
+            if arguments[1:4] == ["-m", "pip", "install"]
+        ]
+        self.assertEqual(2, len(pip_calls))
+
+    def test_live_generation_forces_tests_and_doctor(self):
+        with tempfile.TemporaryDirectory() as directory:
+            settings = replace(
+                _settings(Path(directory)),
+                run_tests=False,
+                run_doctor=False,
+            )
+            with (
+                patch("scripts.sync_workstation._command") as command,
+                patch("scripts.sync_workstation.shutil.which", return_value="node"),
+            ):
+                run_checks(settings, Path("python"), run_generator=True)
+
+        commands = [call.args[0] for call in command.call_args_list]
+        self.assertIn(["python", "scripts/lint.py"], commands)
+        self.assertTrue(
+            any(
+                arguments[:3] == ["python", "-m", "app_generator"]
+                and "doctor" in arguments
+                for arguments in commands
+            )
+        )
+        self.assertTrue(
+            any(
+                arguments[:3] == ["python", "-m", "app_generator"]
+                and "run" in arguments
+                for arguments in commands
+            )
+        )
 
     def test_tracked_project_config_is_accepted_by_the_synchronizer(self):
         root = Path(__file__).resolve().parents[1]
