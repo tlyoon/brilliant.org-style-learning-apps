@@ -22,6 +22,9 @@ browser_mode = "controlled"
 drive_api_timeout_seconds = 60
 max_drive_folders = 10000
 
+[source_tree]
+source_id_prefix = "serway"
+
 [automation]
 selection_mode = "specific"
 coordinator_url = ""
@@ -43,16 +46,16 @@ chrome_profile_dir = "${STATE_ROOT}/chrome-profile"
 state_dir = "${STATE_ROOT}/runs"
 
 [run]
-package_id = "chapter-8-section-8-1"
-chapter = "Replace with chapter title"
-subchapter = "8.1 Replace with subchapter title"
-chapter_dir = "chapter-8"
-section_dir = "section-8-1"
-learning_boundary = "Describe exactly what is included and excluded."
-source_id = "serway-section-8-1"
+package_id = "chapter-{chapter_number}-section-{section_slug}"
+chapter = "Chapter {chapter_number}"
+subchapter = "{subchapter_id} Replace with subchapter title"
+chapter_dir = "chapter-{chapter_number}"
+section_dir = "section-{section_slug}"
+learning_boundary = "Describe exactly what section {subchapter_id} includes and excludes."
+source_id = "{source_id_prefix}-section-{section_slug}"
 edition = "Replace with the controlled edition/version"
-heading = "8.1 Replace with the controlled heading"
-page_range = "Replace with the controlled page range"
+heading = "{subchapter_id} Replace with the controlled heading"
+page_range = "Complete controlled PDF for section {subchapter_id}"
 reviewer = "Replace with responsible instructor or content owner"
 rights_note = "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
 

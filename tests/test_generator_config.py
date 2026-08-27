@@ -22,6 +22,8 @@ class GeneratorConfigTests(unittest.TestCase):
             'pdf_subchapter_path = "8.1"\n'
             'target_filename = "source.pdf"\n'
             'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
+            "[source_tree]\n"
+            'source_id_prefix = "example"\n'
             "[gemini]\n"
             'gem_url = "https://gemini.google.com/gem/test"\n'
             'gem_edit_url = "https://gemini.google.com/gem/test/edit"\n'
@@ -75,6 +77,7 @@ class GeneratorConfigTests(unittest.TestCase):
         for key in (
             "gem_url", "gem_name", "login_name", "chrome_profile_dir", "state_dir",
             "sourcepath", "pdf_subchapter_path", "target_filename", "target_file",
+            "source_id_prefix",
             "drive_oauth_client_file", "drive_token_file", "coordinator_token_env",
         ):
             self.assertNotIn(key, DEFAULTS)
@@ -112,6 +115,8 @@ class GeneratorConfigTests(unittest.TestCase):
                 'pdf_subchapter_path = "8.1"\n'
                 'target_filename = "source.pdf"\n'
                 'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
+                "[source_tree]\n"
+                'source_id_prefix = "remote"\n'
                 "[gemini]\n"
                 'gem_name = "remote generator"\n'
                 "[paths]\n"
@@ -171,6 +176,8 @@ class GeneratorConfigTests(unittest.TestCase):
                 'pdf_subchapter_path = "8.1"\n'
                 'target_filename = "source.pdf"\n'
                 'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
+                "[source_tree]\n"
+                'source_id_prefix = "distributed"\n'
                 "[gemini]\n"
                 'gem_url = "https://gemini.google.com/gem/test"\n'
                 'gem_name = "generator"\n'
@@ -195,7 +202,7 @@ class GeneratorConfigTests(unittest.TestCase):
                 'chapter_dir = "chapter-{chapter_number}"\n'
                 'section_dir = "section-{section_slug}"\n'
                 'learning_boundary = "Controlled {subchapter_id}"\n'
-                'source_id = "serway-section-{section_slug}"\n'
+                'source_id = "{source_id_prefix}-section-{section_slug}"\n'
                 'edition = "Edition"\n'
                 'heading = "Section {subchapter_id}"\n'
                 'page_range = "Complete PDF"\n'
@@ -208,6 +215,7 @@ class GeneratorConfigTests(unittest.TestCase):
             self.assertEqual("chapter-12-section-12-3", selected.package_id)
             self.assertEqual("section-12-3", selected.section_dir)
             self.assertEqual("Section 12.3", selected.subchapter)
+            self.assertEqual("distributed-section-12-3", selected.source_id)
 
 
 if __name__ == "__main__":

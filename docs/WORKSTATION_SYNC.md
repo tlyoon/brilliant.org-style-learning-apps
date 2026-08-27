@@ -79,4 +79,4 @@ That option uploads the controlled source to Gemini and starts generation after 
 
 ## Genericization phase status
 
-Phase 4 adds dry-run-first project configuration and initialization-only workstation setup. `config/project.toml` supplies all project-specific URLs, account assertions, paths, source metadata, and token names. Secret values remain external.
+Phase 5 confirms arbitrary Drive grouping/chapter folder names and templates all section-derived repository metadata. `config/project.toml` supplies all project-specific URLs, account assertions, paths, source metadata, and token names. Secret values remain external.

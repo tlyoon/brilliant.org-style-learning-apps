@@ -99,6 +99,24 @@ class GeneratorGoogleDriveTests(unittest.TestCase):
         self.assertEqual(["8.1", "18.1"], [source.subchapter_id for source in sources])
         self.assertNotEqual(sources[0].job_key, sources[1].job_key)
 
+    def test_group_and_chapter_folder_names_are_not_project_specific(self):
+        tree = {
+            "root-folder-id": (DriveItem("group-id-value", "AnyBook_15_17", FOLDER_MIME),),
+            "group-id-value": (DriveItem("chapter-id-value", "15", FOLDER_MIME),),
+            "chapter-id-value": (DriveItem("section-id-value", "15.1", FOLDER_MIME),),
+            "section-id-value": (
+                DriveItem("pdf-id-value", "source.pdf", PDF_MIME, 14, True, "version"),
+            ),
+        }
+        source = discover_drive_sources(
+            FakeDriveClient(tree),
+            sourcepath="root-folder-id",
+            target_filename="source.pdf",
+            max_folders=100,
+        )[0]
+        self.assertEqual("15.1", source.subchapter_id)
+        self.assertEqual("AnyBook_15_17/15/15.1/source.pdf", source.relative_path)
+
     def test_duplicate_and_missing_sources_stop_safely(self):
         with self.assertRaises(SourceAmbiguous):
             resolve_drive_source(

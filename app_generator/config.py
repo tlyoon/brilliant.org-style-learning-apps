@@ -74,6 +74,7 @@ class GeneratorConfig:
     repo_root: Path
     source_files: tuple[Path, ...]
     sourcepath: str
+    source_id_prefix: str
     pdf_subchapter_path: str
     target_filename: str
     target_file: str
@@ -250,6 +251,7 @@ def _run_template_values(values: Mapping[str, Any], subchapter_id: str) -> dict[
         "section_number": match.group("section"),
         "subchapter_id": subchapter_id.strip(),
         "section_slug": subchapter_id.strip().replace(".", "-"),
+        "source_id_prefix": str(_required(values, "source_id_prefix")).strip(),
     }
     fields = (
         "package_id", "chapter", "subchapter", "chapter_dir", "section_dir",
@@ -302,6 +304,7 @@ def load_config(
     for required_key in (
         "gem_url", "gem_name", "login_name", "chrome_profile_dir", "state_dir",
         "sourcepath", "pdf_subchapter_path", "target_filename", "target_file",
+        "source_id_prefix",
         "drive_oauth_client_file", "drive_token_file", "coordinator_token_env",
     ):
         _required(values, required_key)
@@ -342,6 +345,10 @@ def load_config(
         )
     except (KeyError, ValueError) as exc:
         raise ConfigurationError(f"target_file contains an invalid placeholder: {exc}") from exc
+
+    source_id_prefix = str(_required(values, "source_id_prefix")).strip().casefold()
+    if not PACKAGE_ID.fullmatch(source_id_prefix):
+        raise ConfigurationError("source_id_prefix must be lowercase kebab-case")
 
     rendered = _run_template_values(values, pdf_subchapter_path.split("/")[-1])
     _validate_output_identifiers(rendered["package_id"], rendered["chapter_dir"], rendered["section_dir"])
@@ -437,6 +444,7 @@ def load_config(
         repo_root=repo_root,
         source_files=source_files,
         sourcepath=sourcepath,
+        source_id_prefix=source_id_prefix,
         pdf_subchapter_path=pdf_subchapter_path,
         target_filename=target_filename,
         target_file=target_file,
