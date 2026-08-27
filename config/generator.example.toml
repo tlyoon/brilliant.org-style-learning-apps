@@ -1,3 +1,4 @@
+# DEPRECATED: migration example only; config/project.toml is the sole active project authority.
 [placeholders]
 sourcepath = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc&usp=drive_fs"
 gemini-gem = "https://gemini.google.com/gem/1dZR01a7xJ9pveqo55MwzfuPV2i_tUQvJ?usp=sharing"

@@ -117,7 +117,9 @@ When `git_publish = true`, the worker:
 
 It never pushes directly to `main`, merges the PR, marks content publishable, or deploys GitHub Pages. After the PR has been reviewed and merged, mark the ledger job complete with `coordinator-complete`.
 
-## First controlled run
+## First controlled run (legacy manual flow)
+
+The supported synchronized workflow reads `config/project.toml`. The following manual-copy flow is retained temporarily for migration compatibility and will be retired in a later genericization phase.
 
 From the repository root in PowerShell:
 
@@ -148,7 +150,9 @@ python -m app_generator run --config .\generator.local.toml
 
 `doctor` verifies configuration, Drive authorization, PDF discovery/download, checksum, and manifest compatibility. It does not submit the PDF to Gemini. The first `run` initializes the Gem if necessary and exercises the live UI.
 
-## Enable distributed workers
+## Enable distributed workers (legacy manual flow)
+
+The active project authority remains `config/project.toml`; the distributed example below is temporary migration material.
 
 First merge the generator implementation into `main` and deploy the coordinator. On every worker PC:
 

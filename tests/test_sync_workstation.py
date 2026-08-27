@@ -108,7 +108,7 @@ class WorkstationSyncTests(unittest.TestCase):
                 payload = tomllib.load(handle)
             self.assertEqual("person@example.com", payload["drive"]["login_name"])
             self.assertNotIn("projects_folder_url", payload["drive"])
-            self.assertNotIn("project_config_name", payload["drive"])
+            self.assertNotIn("shared_config_name", payload["drive"])
 
     def test_load_settings_tolerates_obsolete_projects_fields(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -122,7 +122,7 @@ class WorkstationSyncTests(unittest.TestCase):
                         'branch = "main"',
                         "[drive]",
                         'projects_folder_url = "https://drive.google.com/drive/folders/legacy"',
-                        'project_config_name = "generator.shared.toml"',
+                        'shared_config_name = "generator.shared.toml"',
                         'login_name = "person@example.com"',
                         "[output]",
                         'generated_config_file = "generator.shared.local.toml"',
@@ -186,7 +186,7 @@ class WorkstationSyncTests(unittest.TestCase):
                 installed_payload["workstation"]["drive_token_file"],
             )
 
-    def test_install_rejects_machine_and_shared_account_mismatch(self):
+    def test_install_rejects_machine_and_project_account_mismatch(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             source = root / PROJECT_CONFIG_RELATIVE_PATH
