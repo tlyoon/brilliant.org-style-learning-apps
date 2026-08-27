@@ -2,10 +2,8 @@
 setlocal
 cd /d "%~dp0"
 
-rem Fresh-workstation defaults. Shared generator settings come from
-rem config\project.toml after the repository is synchronized.
-if not defined BRILLIANT_SYNC_LOGIN_NAME set "BRILLIANT_SYNC_LOGIN_NAME=tlyoon@gmail.com"
-if not defined BRILLIANT_SYNC_BRANCH set "BRILLIANT_SYNC_BRANCH=main"
+rem Project identity, account, branch, and machine-local paths are derived by
+rem scripts\sync_workstation.py from config\project.toml and local settings.
 
 python -c "import sys; raise SystemExit(0 if sys.version_info[:2] == (3, 12) else 1)" >nul 2>nul
 if errorlevel 1 (
@@ -13,7 +11,7 @@ if errorlevel 1 (
   pause
   exit /b 2
 )
-python scripts\sync_workstation.py --login-name "%BRILLIANT_SYNC_LOGIN_NAME%" --branch "%BRILLIANT_SYNC_BRANCH%" %*
+python scripts\sync_workstation.py %*
 set "SYNC_EXIT=%ERRORLEVEL%"
 echo.
 if not "%SYNC_EXIT%"=="0" echo Workstation synchronization failed with exit code %SYNC_EXIT%.

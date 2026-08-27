@@ -25,12 +25,16 @@ GEM_URL = "https://gemini.google.com/gem/1dZR01a7xJ9pveqo55MwzfuPV2i_tUQvJ?usp=s
 
 
 def _settings(root: Path, *, login_name: str = "person@example.com") -> SyncSettings:
-    credential_root = root.parent / "workstation-credentials"
+    state_root = root.parent / "BrilliantContentGenerator"
+    credential_root = state_root / "credentials"
     return SyncSettings(
         settings_path=root.parent / "workstation-sync.toml",
         repo_root=root,
         remote="origin",
         branch="main",
+        project_name="BrilliantContentGenerator",
+        env_prefix="BRILLIANT_CONTENT_GENERATOR",
+        state_root=state_root,
         project_config_file=root / PROJECT_CONFIG_RELATIVE_PATH,
         login_name=login_name,
         oauth_client_file=credential_root / "drive-oauth-client.json",
@@ -63,6 +67,17 @@ class WorkstationSyncTests(unittest.TestCase):
         self.assertEqual("8.1", payload["placeholders"]["pdf_subchapter_path"])
         self.assertEqual("tlyoon@gmail.com", config.login_name)
         self.assertEqual(SOURCE_URL, config.sourcepath)
+        self.assertEqual(
+            "BRILLIANT_CONTENT_GENERATOR_COORDINATOR_TOKEN",
+            config.coordinator_token_env,
+        )
+        self.assertEqual(Path(directory).resolve() / "runs", config.state_dir)
+
+    def test_legacy_shared_example_is_not_the_active_project_config(self):
+        root = Path(__file__).resolve().parents[1]
+        source = root / "config" / "generator.shared.example.toml"
+        self.assertTrue(source.is_file())
+        self.assertNotEqual(source.resolve(), (root / PROJECT_CONFIG_RELATIVE_PATH).resolve())
 
     def test_project_name_is_present_in_the_active_configuration(self):
         root = Path(__file__).resolve().parents[1]
@@ -76,6 +91,7 @@ class WorkstationSyncTests(unittest.TestCase):
             b'[project]\nproject_name = "not valid"\n'
             b'[placeholders]\nloginname = "person@example.com"\n'
             b'[repository]\nrepo_root = "${REPO_ROOT}"\n'
+            b'[paths]\nstate_root = "${STATE_ROOT}"\n'
         )
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(WorkstationSyncError, "project.project_name"):
@@ -87,12 +103,9 @@ class WorkstationSyncTests(unittest.TestCase):
 
         self.assertNotIn("BRILLIANT_SYNC_PROJECTS_FOLDER_URL", content)
         self.assertNotIn("--projects-folder", content)
-        self.assertIn('set "BRILLIANT_SYNC_LOGIN_NAME=tlyoon@gmail.com"', content)
-        self.assertIn('set "BRILLIANT_SYNC_BRANCH=main"', content)
+        self.assertNotIn("BRILLIANT_SYNC_", content)
         command = next(line for line in content.splitlines() if line.startswith("python scripts\\sync_workstation.py"))
-        self.assertIn('--login-name "%BRILLIANT_SYNC_LOGIN_NAME%"', command)
-        self.assertIn('--branch "%BRILLIANT_SYNC_BRANCH%"', command)
-        self.assertTrue(command.endswith(" %*"), "explicit arguments must override the defaults")
+        self.assertEqual("python scripts\\sync_workstation.py %*", command)
 
     def test_initial_settings_do_not_reference_projects_folder(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -102,11 +115,13 @@ class WorkstationSyncTests(unittest.TestCase):
                 settings_path,
                 login_name="person@example.com",
                 branch="main",
+                project_name="ExampleProject",
             )
 
             with settings_path.open("rb") as handle:
                 payload = tomllib.load(handle)
             self.assertEqual("person@example.com", payload["drive"]["login_name"])
+            self.assertEqual("ExampleProject", payload["project"]["project_name"])
             self.assertNotIn("projects_folder_url", payload["drive"])
             self.assertNotIn("shared_config_name", payload["drive"])
 
@@ -131,10 +146,30 @@ class WorkstationSyncTests(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            settings = load_settings(settings_path, repo_root=root)
+            settings = load_settings(
+                settings_path,
+                repo_root=root,
+                project_name="BrilliantContentGenerator",
+            )
 
             self.assertEqual(root / PROJECT_CONFIG_RELATIVE_PATH, settings.project_config_file)
             self.assertEqual("person@example.com", settings.login_name)
+
+    def test_load_settings_rejects_another_projects_settings_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            settings_path = root / "workstation-sync.toml"
+            settings_path.write_text(
+                '[project]\nproject_name = "AnotherProject"\n'
+                '[drive]\nlogin_name = "person@example.com"\n',
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(WorkstationSyncError, "belong to"):
+                load_settings(
+                    settings_path,
+                    repo_root=root,
+                    project_name="BrilliantContentGenerator",
+                )
 
     def test_read_project_config_rejects_missing_file(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -159,16 +194,29 @@ class WorkstationSyncTests(unittest.TestCase):
             source = root / PROJECT_CONFIG_RELATIVE_PATH
             source.parent.mkdir(parents=True)
             raw = (
-                b'[project]\nproject_name = "ExampleProject"\n'
+                b'[project]\nproject_name = "BrilliantContentGenerator"\n'
                 b'[placeholders]\nloginname = "person@example.com"\n'
                 b'[repository]\nrepo_root = "${REPO_ROOT}"\n'
+                b'[paths]\n'
+                b'state_root = "${STATE_ROOT}"\n'
+                b'workstation_settings = "${STATE_ROOT}/workstation-sync.toml"\n'
+                b'drive_oauth_client_file = "${STATE_ROOT}/credentials/drive-oauth-client.json"\n'
+                b'drive_token_file = "${STATE_ROOT}/credentials/drive-oauth-token.json"\n'
+                b'chrome_profile_dir = "${STATE_ROOT}/chrome-profile"\n'
+                b'state_dir = "${STATE_ROOT}/runs"\n'
             )
             source.write_bytes(raw)
             settings = _settings(root)
 
             with patch(
                 "app_generator.config.load_config",
-                return_value=SimpleNamespace(login_name="person@example.com"),
+                return_value=SimpleNamespace(
+                    login_name="person@example.com",
+                    drive_oauth_client_file=settings.oauth_client_file,
+                    drive_token_file=settings.oauth_token_file,
+                    chrome_profile_dir=settings.state_root / "chrome-profile",
+                    state_dir=settings.state_root / "runs",
+                ),
             ):
                 digest = install_project_config(settings)
 
@@ -178,12 +226,12 @@ class WorkstationSyncTests(unittest.TestCase):
             self.assertIn(root.resolve().as_posix(), installed)
             installed_payload = tomllib.loads(installed)
             self.assertEqual(
-                str(settings.oauth_client_file),
-                installed_payload["workstation"]["drive_oauth_client_file"],
+                settings.oauth_client_file.as_posix(),
+                installed_payload["paths"]["drive_oauth_client_file"],
             )
             self.assertEqual(
-                str(settings.oauth_token_file),
-                installed_payload["workstation"]["drive_token_file"],
+                settings.oauth_token_file.as_posix(),
+                installed_payload["paths"]["drive_token_file"],
             )
 
     def test_install_rejects_machine_and_project_account_mismatch(self):
@@ -192,9 +240,15 @@ class WorkstationSyncTests(unittest.TestCase):
             source = root / PROJECT_CONFIG_RELATIVE_PATH
             source.parent.mkdir(parents=True)
             source.write_text(
-                '[project]\nproject_name = "ExampleProject"\n'
+                '[project]\nproject_name = "BrilliantContentGenerator"\n'
                 '[placeholders]\nloginname = "person@example.com"\n'
-                '[repository]\nrepo_root = "${REPO_ROOT}"\n',
+                '[repository]\nrepo_root = "${REPO_ROOT}"\n'
+                '[paths]\nstate_root = "${STATE_ROOT}"\n'
+                'workstation_settings = "${STATE_ROOT}/workstation-sync.toml"\n'
+                'drive_oauth_client_file = "${STATE_ROOT}/credentials/drive-oauth-client.json"\n'
+                'drive_token_file = "${STATE_ROOT}/credentials/drive-oauth-token.json"\n'
+                'chrome_profile_dir = "${STATE_ROOT}/chrome-profile"\n'
+                'state_dir = "${STATE_ROOT}/runs"\n',
                 encoding="utf-8",
             )
             settings = _settings(root)
@@ -215,15 +269,13 @@ class WorkstationSyncTests(unittest.TestCase):
         keys = {key for table in payload.values() for key in table}
 
         for forbidden in (
-            "drive_oauth_client_file",
-            "drive_token_file",
-            "chrome_profile_dir",
             "debugger_address",
-            "state_dir",
             "worker_id",
             "source_files",
         ):
             self.assertNotIn(forbidden, keys)
+        for value in payload["paths"].values():
+            self.assertTrue(str(value).startswith("${STATE_ROOT}"))
 
 
 if __name__ == "__main__":
