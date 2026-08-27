@@ -1,6 +1,6 @@
 const JOB_SHEET = 'Jobs';
 const HEADERS = [
-  'job_key', 'drive_file_id', 'source_version', 'subchapter_id', 'relative_path',
+  'project_name', 'job_key', 'drive_file_id', 'source_version', 'subchapter_id', 'relative_path',
   'status', 'worker_id', 'lease_expires_at', 'heartbeat_at', 'attempt_count',
   'branch', 'pr_url', 'error_code', 'error_message', 'updated_at'
 ];
@@ -9,6 +9,7 @@ function doPost(e) {
   try {
     const request = JSON.parse(e.postData.contents || '{}');
     requireToken_(request.token);
+    requireProject_(request.project_name);
     const result = dispatch_(request);
     return json_({ok: true, ...result});
   } catch (error) {
@@ -19,7 +20,7 @@ function doPost(e) {
 
 function dispatch_(request) {
   switch (request.action) {
-    case 'health': return withLock_(() => health_());
+    case 'health': return withLock_(() => health_(request));
     case 'claim': return withLock_(() => claim_(request));
     case 'heartbeat': return withLock_(() => heartbeat_(request));
     case 'review_pending': return withLock_(() => updateStatus_(request, 'review_pending'));
@@ -29,16 +30,40 @@ function dispatch_(request) {
   }
 }
 
-function health_() {
+function health_(request) {
   sheet_();
-  return {status: 'ok'};
+  return {status: 'ok', project_name: request.project_name};
 }
 
 function requireToken_(provided) {
-  const expected = PropertiesService.getScriptProperties().getProperty('BRILLIANT_WORKER_TOKEN');
+  const expected = PropertiesService.getScriptProperties().getProperty('WORKER_TOKEN');
   if (!expected || provided !== expected) {
     throw coded_('UNAUTHORIZED', 'Coordinator token is missing or invalid');
   }
+}
+
+function requireProject_(provided) {
+  const expected = PropertiesService.getScriptProperties().getProperty('PROJECT_NAME');
+  if (!expected || provided !== expected) {
+    throw coded_('WRONG_PROJECT', 'Coordinator project name is missing or does not match');
+  }
+}
+
+function initializeCoordinator() {
+  const properties = PropertiesService.getScriptProperties();
+  const projectName = properties.getProperty('PROJECT_NAME');
+  const spreadsheetId = properties.getProperty('JOB_SPREADSHEET_ID');
+  if (!projectName) throw coded_('NOT_CONFIGURED', 'Set PROJECT_NAME before initialization');
+  if (!spreadsheetId) throw coded_('NOT_CONFIGURED', 'Set JOB_SPREADSHEET_ID before initialization');
+  let created = false;
+  if (!properties.getProperty('WORKER_TOKEN')) {
+    const material = [Utilities.getUuid(), Utilities.getUuid(), Utilities.getUuid()].join(':');
+    const digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, material);
+    properties.setProperty('WORKER_TOKEN', Utilities.base64EncodeWebSafe(digest));
+    created = true;
+  }
+  sheet_();
+  return {project_name: projectName, worker_token_created: created};
 }
 
 function withLock_(callback) {
@@ -81,6 +106,10 @@ function row_(value) {
   return HEADERS.map(header => value[header] === undefined ? '' : value[header]);
 }
 
+function scopedKey_(projectName, jobKey) {
+  return String(projectName) + ':' + String(jobKey);
+}
+
 function claim_(request) {
   if (!request.worker_id || !Array.isArray(request.candidates)) {
     throw coded_('INVALID_REQUEST', 'claim requires worker_id and candidates');
@@ -88,23 +117,27 @@ function claim_(request) {
   const sheet = sheet_();
   const now = new Date();
   const byKey = {};
-  rows_(sheet).forEach((row, index) => byKey[String(row[0])] = {index: index + 2, value: object_(row)});
+  rows_(sheet).forEach((row, index) => {
+    const value = object_(row);
+    byKey[scopedKey_(value.project_name, value.job_key)] = {index: index + 2, value: value};
+  });
 
   request.candidates.forEach(candidate => {
     if (!candidate.job_key || !candidate.drive_file_id || !candidate.subchapter_id) return;
-    if (!byKey[candidate.job_key]) {
+    const key = scopedKey_(request.project_name, candidate.job_key);
+    if (!byKey[key]) {
       const value = {
-        ...candidate, status: 'queued', worker_id: '', lease_expires_at: '', heartbeat_at: '',
+        project_name: request.project_name, ...candidate, status: 'queued', worker_id: '', lease_expires_at: '', heartbeat_at: '',
         attempt_count: 0, branch: '', pr_url: '', error_code: '', error_message: '',
         updated_at: now.toISOString()
       };
       sheet.appendRow(row_(value));
-      byKey[candidate.job_key] = {index: sheet.getLastRow(), value: value};
+      byKey[key] = {index: sheet.getLastRow(), value: value};
     }
   });
 
   for (const candidate of request.candidates) {
-    const stored = byKey[candidate.job_key];
+    const stored = byKey[scopedKey_(request.project_name, candidate.job_key)];
     if (!stored) continue;
     const value = stored.value;
     const expired = value.status === 'leased' && value.lease_expires_at && new Date(value.lease_expires_at) <= now;
@@ -129,7 +162,11 @@ function claim_(request) {
 function owned_(request) {
   const sheet = sheet_();
   const rows = rows_(sheet);
-  const index = rows.findIndex(row => String(row[0]) === String(request.job_key));
+  const index = rows.findIndex(row => {
+    const value = object_(row);
+    return String(value.project_name) === String(request.project_name) &&
+      String(value.job_key) === String(request.job_key);
+  });
   if (index < 0) throw coded_('LEASE_LOST', 'Job no longer exists');
   const value = object_(rows[index]);
   if (String(value.worker_id) !== String(request.worker_id) || value.status !== 'leased') {
@@ -180,7 +217,11 @@ function fail_(request) {
 function complete_(request) {
   const sheet = sheet_();
   const rows = rows_(sheet);
-  const index = rows.findIndex(row => String(row[0]) === String(request.job_key));
+  const index = rows.findIndex(row => {
+    const value = object_(row);
+    return String(value.project_name) === String(request.project_name) &&
+      String(value.job_key) === String(request.job_key);
+  });
   if (index < 0) throw coded_('NOT_FOUND', 'Job no longer exists');
   const value = object_(rows[index]);
   if (value.status !== 'review_pending' && value.status !== 'completed') {
