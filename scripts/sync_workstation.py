@@ -30,6 +30,13 @@ BRANCH = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]*$")
 REMOTE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 MAX_PROJECT_CONFIG_BYTES = 256 * 1024
 PROJECT_CONFIG_RELATIVE_PATH = Path("config") / "project.toml"
+INSTALL_FINGERPRINT_FILES = (
+    Path("pyproject.toml"),
+    Path("requirements-generator.txt"),
+    Path("requirements-dev.txt"),
+)
+INSTALL_FINGERPRINT_VERSION = b"workstation-sync-install-v1\0"
+INSTALL_STAMP_NAME = ".workstation-install.sha256"
 MANAGED_CONFIG_HEADER = (
     "# Managed by scripts/sync_workstation.py; edit config/project.toml through Git.\n"
 )
@@ -297,6 +304,24 @@ def _venv_python(repo_root: Path) -> Path:
     return repo_root / ".venv" / "bin" / "python"
 
 
+def _installation_fingerprint(repo_root: Path) -> str:
+    digest = hashlib.sha256()
+    digest.update(INSTALL_FINGERPRINT_VERSION)
+    for relative in INSTALL_FINGERPRINT_FILES:
+        path = repo_root / relative
+        if not path.is_file():
+            raise WorkstationSyncError(f"Dependency manifest is missing: {relative.as_posix()}")
+        try:
+            content = path.read_bytes()
+        except OSError as exc:
+            raise WorkstationSyncError(f"Could not read dependency manifest {path}: {exc}") from exc
+        digest.update(relative.as_posix().encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(content)
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
 def prepare_environment(settings: SyncSettings) -> Path:
     python = _venv_python(settings.repo_root)
     if not python.is_file():
@@ -310,8 +335,45 @@ def prepare_environment(settings: SyncSettings) -> Path:
     ).strip()
     if version != "3.12":
         raise WorkstationSyncError(f"Existing .venv uses Python {version}; Python 3.12 is required")
+
+    fingerprint = _installation_fingerprint(settings.repo_root)
+    stamp = settings.repo_root / ".venv" / INSTALL_STAMP_NAME
+    try:
+        installed_fingerprint = stamp.read_text(encoding="utf-8").strip()
+    except FileNotFoundError:
+        installed_fingerprint = ""
+    except OSError as exc:
+        raise WorkstationSyncError(f"Could not read installation fingerprint {stamp}: {exc}") from exc
+
+    if installed_fingerprint == fingerprint:
+        try:
+            _command(
+                [
+                    str(python),
+                    "-c",
+                    "import app_generator, google.auth, google_auth_oauthlib, jsonschema, requests, selenium",
+                ],
+                settings.repo_root,
+            )
+        except WorkstationSyncError:
+            print("Cached package verification failed; reinstalling the synchronized package...")
+        else:
+            print("Synchronized package installation is current; skipping pip install.")
+            return python
+
     print("Installing the synchronized package into .venv...")
     _command([str(python), "-m", "pip", "install", "-e", "."], settings.repo_root)
+    temporary = stamp.with_name(stamp.name + ".part")
+    try:
+        temporary.write_text(fingerprint + "\n", encoding="utf-8", newline="\n")
+        os.replace(temporary, stamp)
+    except OSError as exc:
+        raise WorkstationSyncError(f"Could not write installation fingerprint {stamp}: {exc}") from exc
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
     return python
 
 
@@ -448,7 +510,11 @@ def install_project_config(settings: SyncSettings) -> str:
 
 
 def run_checks(settings: SyncSettings, python: Path, *, run_generator: bool) -> None:
-    if settings.run_tests:
+    run_tests = settings.run_tests or run_generator
+    run_doctor = settings.run_doctor or run_generator
+    if run_generator and (not settings.run_tests or not settings.run_doctor):
+        print("Live generation requires repository tests and doctor; forcing both checks.")
+    if run_tests:
         print("Running repository validation tests...")
         commands = (
             [str(python), "scripts/lint.py"],
@@ -461,7 +527,7 @@ def run_checks(settings: SyncSettings, python: Path, *, run_generator: bool) -> 
         if not node:
             raise WorkstationSyncError("Node.js is required for the JavaScript syntax check")
         _command([node, "--check", "app/app.js"], settings.repo_root)
-    if settings.run_doctor:
+    if run_doctor:
         print("Running generator doctor (Drive and provenance checks; no Gemini upload)...")
         _command(
             [str(python), "-m", "app_generator", "doctor", "--config", str(settings.generated_config_file)],
@@ -487,10 +553,16 @@ def _parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Create or verify project-derived workstation settings without fetching Git or running checks.",
     )
-    parser.add_argument(
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--quick",
+        action="store_true",
+        help="Synchronize and render local configuration without repository tests or Drive doctor.",
+    )
+    mode.add_argument(
         "--run-generator",
         action="store_true",
-        help="After synchronization and checks, explicitly start the live Gemini generation run.",
+        help="Synchronize, force all checks, and explicitly start the live Gemini generation run.",
     )
     return parser
 
@@ -546,6 +618,8 @@ def main(argv: list[str] | None = None) -> int:
                 str(python), str(settings.repo_root / "scripts" / "sync_workstation.py"),
                 "--settings", str(settings.settings_path), "--post-sync",
             ]
+            if args.quick:
+                command.append("--quick")
             if args.run_generator:
                 command.append("--run-generator")
             return subprocess.run(command, cwd=settings.repo_root, check=False).returncode
@@ -555,7 +629,10 @@ def main(argv: list[str] | None = None) -> int:
             f"Installed {project_name} as {settings.generated_config_file.name} "
             f"(sha256={digest})."
         )
-        run_checks(settings, Path(sys.executable), run_generator=args.run_generator)
+        if args.quick:
+            print("Quick synchronization complete; repository tests and Drive doctor were skipped.")
+        else:
+            run_checks(settings, Path(sys.executable), run_generator=args.run_generator)
         print("Workstation synchronization and configured checks completed successfully.")
         return 0
     except WorkstationSyncError as exc:
