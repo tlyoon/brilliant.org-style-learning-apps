@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import warnings
 from dataclasses import dataclass
 from typing import Any, Iterable
 
@@ -26,6 +27,15 @@ class JobLease:
 class CoordinatorClient:
     def __init__(self, config: GeneratorConfig, *, session: Any | None = None) -> None:
         token = os.environ.get(config.coordinator_token_env, "").strip()
+        if not token and config.project_name == "BrilliantContentGenerator":
+            token = os.environ.get("BRILLIANT_COORDINATOR_TOKEN", "").strip()
+            if token:
+                warnings.warn(
+                    "BRILLIANT_COORDINATOR_TOKEN is deprecated; use "
+                    f"{config.coordinator_token_env}",
+                    DeprecationWarning,
+                    stacklevel=2,
+                )
         if not token:
             raise CoordinatorError(
                 f"Distributed mode requires the {config.coordinator_token_env} environment variable"

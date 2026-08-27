@@ -1,5 +1,6 @@
 import os
 import unittest
+import warnings
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -66,6 +67,16 @@ class GeneratorCoordinatorTests(unittest.TestCase):
         self.assertEqual("secret", session.request["json"]["token"])
         self.assertEqual("ExampleProject", session.request["json"]["project_name"])
         self.assertEqual(source.file_id, session.request["json"]["candidates"][0]["drive_file_id"])
+
+    def test_default_project_can_read_legacy_token_during_migration(self):
+        config = self.config()
+        config.project_name = "BrilliantContentGenerator"
+        with patch.dict(os.environ, {"BRILLIANT_COORDINATOR_TOKEN": "legacy"}, clear=True):
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                client = CoordinatorClient(config, session=FakeSession({"ok": True}))
+        self.assertEqual("legacy", client.token)
+        self.assertTrue(any("deprecated" in str(item.message) for item in caught))
 
 
 if __name__ == "__main__":

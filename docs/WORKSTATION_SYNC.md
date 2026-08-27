@@ -79,4 +79,4 @@ That option uploads the controlled source to Gemini and starts generation after 
 
 ## Genericization phase status
 
-Phase 6 scopes coordinator requests and ledger rows by project and generates the Apps Script worker token during coordinator initialization. `config/project.toml` supplies all project-specific URLs, account assertions, paths, source metadata, and token names. Secret values remain external.
+Phase 7 provides bounded migration for the default project's old environment names, workstation settings, generated filename, Apps Script property, and exact legacy ledger header. These fallbacks do not apply to renamed projects and are scheduled for removal after 31 December 2026. Secret values remain external.
