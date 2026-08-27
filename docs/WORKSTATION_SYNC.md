@@ -1,6 +1,6 @@
 # One-click workstation synchronization
 
-`sync-workstation.cmd` safely updates an existing Windows checkout, prepares its Python environment, renders the repository-tracked generator configuration for that PC, and validates the workstation.
+`sync-workstation.cmd` safely updates an existing Windows checkout, prepares its Python environment, renders the repository-tracked generator configuration for that PC, and validates the workstation. A separate `--quick` mode provides a fast routine update without weakening the checks required for live generation.
 
 ## Configuration authority
 
@@ -56,6 +56,24 @@ The first run saves the effective machine-local values outside the repository in
 
 Later runs require only a double-click. To change the branch or expected Google account, edit that machine-local, non-secret file.
 
+## Routine quick synchronization
+
+After the first full validation succeeds, use quick mode for ordinary updates from an already configured PC:
+
+```powershell
+.\sync-workstation.cmd --quick
+```
+
+Quick mode still refuses a dirty or diverged worktree, fast-forwards from the configured Git branch, validates and renders `config/project.toml`, and verifies the installed Python environment. It skips the full repository test suite and Drive `doctor`.
+
+Package installation is protected by a fingerprint of `pyproject.toml`, `requirements-generator.txt`, and `requirements-dev.txt`. If that fingerprint is unchanged and the required imports succeed, the synchronizer reuses `.venv` instead of running `pip install -e .`. A changed dependency manifest or failed import verification automatically triggers installation.
+
+Use the default command when generator, configuration, synchronization, or dependency changes need full validation:
+
+```powershell
+.\sync-workstation.cmd
+```
+
 ## Safety and behavior
 
 The synchronizer:
@@ -63,11 +81,11 @@ The synchronizer:
 1. refuses a dirty worktree;
 2. fetches the configured remote and switches to the configured branch;
 3. fast-forwards only and refuses local-only or diverged commits;
-4. creates or updates `.venv` with Python 3.12 and installs the repository package;
+4. creates or verifies `.venv` with Python 3.12 and installs the repository package only when its dependency fingerprint is absent, changed, or fails import verification;
 5. reads `config/project.toml` from the synchronized checkout;
 6. validates it, derives `${PROJECT_ENV_PREFIX}` and `${STATE_ROOT}` from `project_name`, renders all approved tokens, and atomically writes the ignored `project.local.toml`;
 7. verifies that the project and machine-local expected Google accounts agree;
-8. runs lint, content validation, unit tests, the JavaScript syntax check, and generator `doctor`.
+8. in full mode, runs lint, content validation, unit tests, the JavaScript syntax check, and generator `doctor`; quick mode skips this step, while live generation forces it.
 
 `doctor` verifies Drive authorization, source discovery/download, checksums, and provenance, but does not upload a PDF to Gemini. A live run must be explicitly requested from a terminal:
 
@@ -75,7 +93,7 @@ The synchronizer:
 .\sync-workstation.cmd --run-generator
 ```
 
-That option uploads the controlled source to Gemini and starts generation after all checks pass. Leave `git_publish = false` in the project configuration until automated publishing and the distributed coordinator are intentionally enabled.
+That option always forces repository tests and Drive `doctor`, even when the machine-local `run_tests` or `run_doctor` setting is `false`. It uploads the controlled source to Gemini and starts generation only after those checks pass. `--quick` and `--run-generator` are mutually exclusive. Leave `git_publish = false` in the project configuration until automated publishing and the distributed coordinator are intentionally enabled.
 
 ## Genericization phase status
 
