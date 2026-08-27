@@ -12,30 +12,18 @@ from typing import Any, Mapping
 from urllib.parse import urlparse
 
 from app_generator.errors import ConfigurationError, RepositoryCompatibilityError
+from app_generator.project import ProjectIdentityError, environment_prefix, validate_project_name
 
-ENV_PREFIX = "BRILLIANT_GENERATOR_"
 PACKAGE_ID = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 CONTENT_DIR = re.compile(r"^(?:chapter|section)-[a-z0-9-]+$")
 SUBCHAPTER_ID = re.compile(r"^(?P<chapter>[1-9][0-9]*)\.(?P<section>[1-9][0-9]*)$")
 BRANCH_PREFIX = re.compile(r"^[a-z0-9][a-z0-9._/-]*$")
 
 
-def _state_root() -> Path:
-    base = os.environ.get("LOCALAPPDATA")
-    if base:
-        return Path(base) / "BrilliantContentGenerator"
-    return Path.home() / ".local" / "state" / "brilliant-content-generator"
-
-
 DEFAULTS: dict[str, Any] = {
-    "gem_url": "https://gemini.google.com/gem/1dZR01a7xJ9pveqo55MwzfuPV2i_tUQvJ?usp=sharing",
     "gem_edit_url": "",
-    "gem_name": "app content generator",
-    "login_name": "tlyoon@gmail.com",
     "browser_mode": "controlled",
     "debugger_address": "",
-    "chrome_profile_dir": str(_state_root() / "chrome-profile"),
-    "state_dir": str(_state_root() / "runs"),
     "max_repair_attempts": 4,
     "ui_timeout_seconds": 30,
     "login_timeout_seconds": 300,
@@ -44,16 +32,9 @@ DEFAULTS: dict[str, Any] = {
     "drive_api_timeout_seconds": 60,
     "max_drive_folders": 10000,
     "log_level": "INFO",
-    "sourcepath": "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc&usp=drive_fs",
-    "pdf_subchapter_path": "8.1",
-    "target_filename": "source.pdf",
-    "target_file": "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}",
-    "drive_oauth_client_file": str(_state_root() / "credentials" / "drive-oauth-client.json"),
-    "drive_token_file": str(_state_root() / "credentials" / "drive-oauth-token.json"),
     "selection_mode": "specific",
     "worker_id": socket.gethostname().casefold(),
     "coordinator_url": "",
-    "coordinator_token_env": "BRILLIANT_COORDINATOR_TOKEN",
     "coordinator_timeout_seconds": 30,
     "lease_seconds": 3600,
     "heartbeat_seconds": 300,
@@ -80,6 +61,8 @@ ALIASES = {
 
 @dataclass(frozen=True)
 class GeneratorConfig:
+    project_name: str
+    env_prefix: str
     gem_url: str
     gem_edit_url: str
     gem_name: str
@@ -303,13 +286,25 @@ def load_config(
         raise ConfigurationError(f"Configuration file does not exist: {config_path}")
     with config_path.open("rb") as handle:
         file_values = _normalize_aliases(_flatten(tomllib.load(handle)))
+    try:
+        project_name = validate_project_name(_required(file_values, "project_name"))
+        env_prefix = f"{environment_prefix(project_name)}_GENERATOR_"
+    except ProjectIdentityError as exc:
+        raise ConfigurationError(str(exc)) from exc
     values = {**DEFAULTS, **file_values}
     env = environ if environ is not None else os.environ
     for name, raw in env.items():
-        if name.startswith(ENV_PREFIX):
-            key = name.removeprefix(ENV_PREFIX).lower()
+        if name.startswith(env_prefix):
+            key = name.removeprefix(env_prefix).lower()
             values[key] = _coerce_env(key, raw)
     values.update({key: value for key, value in (cli_overrides or {}).items() if value is not None})
+
+    for required_key in (
+        "gem_url", "gem_name", "login_name", "chrome_profile_dir", "state_dir",
+        "sourcepath", "pdf_subchapter_path", "target_filename", "target_file",
+        "drive_oauth_client_file", "drive_token_file", "coordinator_token_env",
+    ):
+        _required(values, required_key)
 
     repo_root = Path(_required(values, "repo_root")).expanduser().resolve()
     raw_sources = values.get("source_files", [])
@@ -425,6 +420,8 @@ def load_config(
         raise ConfigurationError("git_branch_prefix is not a safe Git branch prefix")
 
     return GeneratorConfig(
+        project_name=project_name,
+        env_prefix=env_prefix,
         gem_url=_validate_gemini_url(str(values["gem_url"]), "gem_url"),
         gem_edit_url=(
             _validate_gemini_url(str(values["gem_edit_url"]), "gem_edit_url")

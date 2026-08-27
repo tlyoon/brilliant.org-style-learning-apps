@@ -41,4 +41,5 @@ source-pdfs/
 *.zip
 generator*.local.toml
 generator*.local*.toml
+project.local*.toml
 generator-runs/

@@ -3,7 +3,7 @@ requires = ["setuptools==80.9.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "brilliant-content-generator"
+name = "learning-app-content-generator"
 version = "0.3.0"
 description = "Generate validated learning-content drafts from leased Google Drive PDFs via Gemini Gem conversations."
 requires-python = ">=3.12,<3.13"
@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
-brilliant-content-generator = "app_generator.cli:main"
+learning-app-content-generator = "app_generator.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["app_generator*"]

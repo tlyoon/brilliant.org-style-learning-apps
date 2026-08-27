@@ -15,7 +15,13 @@ class RepositoryRuleTests(unittest.TestCase):
         ]
         for path in required:
             self.assertTrue((ROOT / path).is_file(), path)
-        self.assertFalse((ROOT / "config" / "generator.shared.toml").exists())
+        for legacy in (
+            "config/generator.shared.toml",
+            "config/generator.shared.example.toml",
+            "config/generator.example.toml",
+            "config/generator.distributed.example.toml",
+        ):
+            self.assertFalse((ROOT / legacy).exists(), legacy)
 
     def test_no_legacy_course_name(self):
         pattern = re.compile(r"zca[ _-]?101", re.I)
@@ -35,6 +41,7 @@ class RepositoryRuleTests(unittest.TestCase):
             "student-data/",
             "source-pdfs/",
             "generator*.local*.toml",
+            "project.local*.toml",
         ):
             self.assertIn(rule, ignore)
 

@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from app_generator.config import load_config
+from app_generator.config import DEFAULTS, load_config
 from app_generator.errors import ConfigurationError, RepositoryCompatibilityError
 
 
@@ -15,11 +15,25 @@ class GeneratorConfigTests(unittest.TestCase):
         config = root / "generator.toml"
         quoted_sources = ", ".join(json.dumps(str(path)) for path in source_files)
         config.write_text(
+            "[project]\n"
+            'project_name = "ExampleProject"\n'
+            "[placeholders]\n"
+            'sourcepath = "https://drive.google.com/open?id=test-root"\n'
+            'pdf_subchapter_path = "8.1"\n'
+            'target_filename = "source.pdf"\n'
+            'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
             "[gemini]\n"
             'gem_url = "https://gemini.google.com/gem/test"\n'
             'gem_edit_url = "https://gemini.google.com/gem/test/edit"\n'
             'gem_name = "app content generator"\n'
             'login_name = "file@example.com"\n'
+            "[paths]\n"
+            f"chrome_profile_dir = {json.dumps(str(root / 'state' / 'chrome-profile'))}\n"
+            f"state_dir = {json.dumps(str(root / 'state' / 'runs'))}\n"
+            f"drive_oauth_client_file = {json.dumps(str(root / 'state' / 'credentials' / 'client.json'))}\n"
+            f"drive_token_file = {json.dumps(str(root / 'state' / 'credentials' / 'token.json'))}\n"
+            "[automation]\n"
+            'coordinator_token_env = "EXAMPLE_PROJECT_COORDINATOR_TOKEN"\n'
             "[repository]\n"
             f"repo_root = {json.dumps(str(repo))}\n"
             "[run]\n"
@@ -49,12 +63,28 @@ class GeneratorConfigTests(unittest.TestCase):
             config = load_config(
                 path,
                 cli_overrides={"login_name": "cli@example.com"},
-                environ={"BRILLIANT_GENERATOR_LOGIN_NAME": "env@example.com", "BRILLIANT_GENERATOR_LOG_LEVEL": "debug"},
+                environ={"EXAMPLE_PROJECT_GENERATOR_LOGIN_NAME": "env@example.com", "EXAMPLE_PROJECT_GENERATOR_LOG_LEVEL": "debug"},
             )
             self.assertEqual("cli@example.com", config.login_name)
             self.assertEqual("DEBUG", config.log_level)
             self.assertEqual(4, config.max_repair_attempts)
             self.assertEqual(2, config.max_gemini_session_restarts)
+            self.assertEqual("EXAMPLE_PROJECT_GENERATOR_", config.env_prefix)
+
+    def test_project_specific_values_have_no_python_defaults(self):
+        for key in (
+            "gem_url", "gem_name", "login_name", "chrome_profile_dir", "state_dir",
+            "sourcepath", "pdf_subchapter_path", "target_filename", "target_file",
+            "drive_oauth_client_file", "drive_token_file", "coordinator_token_env",
+        ):
+            self.assertNotIn(key, DEFAULTS)
+
+    def test_missing_project_identity_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "config.toml"
+            path.write_text("[repository]\nrepo_root = \".\"\n", encoding="utf-8")
+            with self.assertRaisesRegex(ConfigurationError, "project_name"):
+                load_config(path, environ={})
 
     def test_current_manifest_contract_rejects_multiple_sources(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -73,6 +103,8 @@ class GeneratorConfigTests(unittest.TestCase):
             (repo / "AGENTS.md").write_text("# test\n", encoding="utf-8")
             config_path = root / "remote.toml"
             config_path.write_text(
+                "[project]\n"
+                'project_name = "RemoteProject"\n'
                 "[placeholders]\n"
                 'sourcepath = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc"\n'
                 'gemini-gem = "https://gemini.google.com/gem/remote"\n'
@@ -80,6 +112,15 @@ class GeneratorConfigTests(unittest.TestCase):
                 'pdf_subchapter_path = "8.1"\n'
                 'target_filename = "source.pdf"\n'
                 'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
+                "[gemini]\n"
+                'gem_name = "remote generator"\n'
+                "[paths]\n"
+                f"chrome_profile_dir = {json.dumps(str(root / 'state' / 'chrome-profile'))}\n"
+                f"state_dir = {json.dumps(str(root / 'state' / 'runs'))}\n"
+                f"drive_oauth_client_file = {json.dumps(str(root / 'state' / 'credentials' / 'client.json'))}\n"
+                f"drive_token_file = {json.dumps(str(root / 'state' / 'credentials' / 'token.json'))}\n"
+                "[automation]\n"
+                'coordinator_token_env = "REMOTE_PROJECT_COORDINATOR_TOKEN"\n'
                 "[repository]\n"
                 f"repo_root = {json.dumps(str(repo))}\n"
                 "[run]\n"
@@ -112,7 +153,7 @@ class GeneratorConfigTests(unittest.TestCase):
             with self.assertRaises(ConfigurationError):
                 load_config(
                     path,
-                    environ={"BRILLIANT_GENERATOR_STATE_DIR": str(root / "repo" / "generator-runs")},
+                    environ={"EXAMPLE_PROJECT_GENERATOR_STATE_DIR": str(root / "repo" / "generator-runs")},
                 )
 
     def test_distributed_templates_materialize_for_a_claimed_subchapter(self):
@@ -123,11 +164,28 @@ class GeneratorConfigTests(unittest.TestCase):
             (repo / "AGENTS.md").write_text("# test\n", encoding="utf-8")
             path = root / "distributed.toml"
             path.write_text(
+                "[project]\n"
+                'project_name = "DistributedProject"\n'
+                "[placeholders]\n"
+                'sourcepath = "https://drive.google.com/open?id=test-root"\n'
+                'pdf_subchapter_path = "8.1"\n'
+                'target_filename = "source.pdf"\n'
+                'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
+                "[gemini]\n"
+                'gem_url = "https://gemini.google.com/gem/test"\n'
+                'gem_name = "generator"\n'
+                'login_name = "person@example.com"\n'
+                "[paths]\n"
+                f"chrome_profile_dir = {json.dumps(str(root / 'state' / 'chrome-profile'))}\n"
+                f"state_dir = {json.dumps(str(root / 'state' / 'runs'))}\n"
+                f"drive_oauth_client_file = {json.dumps(str(root / 'state' / 'credentials' / 'client.json'))}\n"
+                f"drive_token_file = {json.dumps(str(root / 'state' / 'credentials' / 'token.json'))}\n"
                 "[repository]\n"
                 f"repo_root = {json.dumps(str(repo))}\n"
                 "[automation]\n"
                 'selection_mode = "distributed"\n'
                 'coordinator_url = "https://script.google.com/macros/s/test/exec"\n'
+                'coordinator_token_env = "DISTRIBUTED_PROJECT_COORDINATOR_TOKEN"\n'
                 "[git]\n"
                 "git_publish = true\n"
                 "[run]\n"
