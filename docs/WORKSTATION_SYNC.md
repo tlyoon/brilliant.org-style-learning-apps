@@ -4,21 +4,21 @@
 
 ## Configuration authority
 
-The active shared configuration is:
+The active project configuration is:
 
 ```text
-config/generator.shared.toml
+config/project.toml
 ```
 
-It is versioned with the generator code and reaches every authorized PC through the normal Git pull. Changes to shared generator behavior therefore use the same branch, pull-request review, and rollback history as the code that consumes them.
+It is versioned with the generator code and reaches every authorized PC through the normal Git pull. Changes to project generator behavior therefore use the same branch, pull-request review, and rollback history as the code that consumes them.
 
-`config/generator.shared.example.toml` remains a reusable template. It is not the active workstation configuration.
+The legacy `config/generator*.example.toml` files remain temporarily for migration compatibility. They are not active configuration authorities and will be retired in a later genericization phase.
 
-The tracked file contains only approved, non-secret, machine-independent settings. It retains `${REPO_ROOT}` exactly. The synchronizer accepts only an explicit allow-list of generator fields and refuses unknown fields, oversized files, symbolic links, invalid TOML, or an invalid repository-root token.
+The tracked file starts with `[project]` and a validated `project_name`. It contains only approved, non-secret, machine-independent settings. It retains `${REPO_ROOT}` exactly. The synchronizer accepts only an explicit allow-list of generator fields and refuses unknown fields, oversized files, symbolic links, invalid TOML, or an invalid repository-root token.
 
 ## Security boundary
 
-Never place any of these items in Git or in the tracked shared configuration:
+Never place any of these items in Git or in the tracked project configuration:
 
 - Google OAuth client JSON or OAuth token JSON;
 - Google, GitHub, or coordinator token values;
@@ -32,7 +32,7 @@ Each PC must provision its own Google Desktop-app OAuth client outside the repos
 %LOCALAPPDATA%\BrilliantContentGenerator\credentials\drive-oauth-client.json
 ```
 
-The first generator `doctor` run opens Google's read-only Drive authorization flow and writes that PC's OAuth token beside the client file. Google Drive remains the controlled source-PDF service; it is no longer used to distribute `generator.shared.toml`. Git and GitHub authentication also remain local to each PC.
+The first generator `doctor` run opens Google's read-only Drive authorization flow and writes that PC's OAuth token beside the client file. Google Drive remains the controlled source-PDF service; it is not used to distribute `project.toml`. Git and GitHub authentication also remain local to each PC.
 
 ## First run on each PC
 
@@ -56,9 +56,9 @@ The synchronizer:
 2. fetches the configured remote and switches to the configured branch;
 3. fast-forwards only and refuses local-only or diverged commits;
 4. creates or updates `.venv` with Python 3.12 and installs the repository package;
-5. reads `config/generator.shared.toml` from the synchronized checkout;
+5. reads `config/project.toml` from the synchronized checkout;
 6. validates it, renders `${REPO_ROOT}`, adds that PC's OAuth paths from `workstation-sync.toml`, and atomically writes the ignored `generator.shared.local.toml`;
-7. verifies that the shared and machine-local expected Google accounts agree;
+7. verifies that the project and machine-local expected Google accounts agree;
 8. runs lint, content validation, unit tests, the JavaScript syntax check, and generator `doctor`.
 
 `doctor` verifies Drive authorization, source discovery/download, checksums, and provenance, but does not upload a PDF to Gemini. A live run must be explicitly requested from a terminal:
@@ -67,10 +67,15 @@ The synchronizer:
 .\sync-workstation.cmd --run-generator
 ```
 
-That option uploads the controlled source to Gemini and starts generation after all checks pass. Leave `git_publish = false` in the shared configuration until automated publishing and the distributed coordinator are intentionally enabled.
+That option uploads the controlled source to Gemini and starts generation after all checks pass. Leave `git_publish = false` in the project configuration until automated publishing and the distributed coordinator are intentionally enabled.
 
 ## Migration from the Drive Projects folder
 
 Existing `workstation-sync.toml` files may still contain `projects_folder_url` and `shared_config_name`. The synchronizer ignores those obsolete fields so already configured PCs continue to work after pulling this change.
 
 Validate the new flow on one PC and then a second PC. After every active PC has successfully installed the tracked configuration, the old Drive `Projects/generator.shared.toml` copy may be removed manually. This code change does not delete or modify any Drive file.
+
+
+## Genericization phase status
+
+Phase 1 establishes `config/project.toml` as the single active editable project authority and validates its project identity and allowed fields. Machine paths are still based on the current application defaults in this phase. Deriving those paths and environment-variable names from `project.project_name` is reserved for Phase 2.

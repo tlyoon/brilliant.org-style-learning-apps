@@ -1,5 +1,9 @@
-# Repository-tracked shared generator configuration.
-# Keep credentials, tokens, Chrome profiles, source PDFs, and run data outside Git.
+# Repository-tracked project configuration.
+# This is the sole active editable authority for non-secret project settings.
+# Keep credentials, token values, Chrome profiles, source PDFs, and run data outside Git.
+
+[project]
+project_name = "BrilliantContentGenerator"
 
 [placeholders]
 sourcepath = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc&usp=drive_fs"

@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0"
 
 rem Fresh-workstation defaults. Shared generator settings come from
-rem config\generator.shared.toml after the repository is synchronized.
+rem config\project.toml after the repository is synchronized.
 if not defined BRILLIANT_SYNC_LOGIN_NAME set "BRILLIANT_SYNC_LOGIN_NAME=tlyoon@gmail.com"
 if not defined BRILLIANT_SYNC_BRANCH set "BRILLIANT_SYNC_BRANCH=main"
 
