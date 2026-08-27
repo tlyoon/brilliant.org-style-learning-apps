@@ -17,3 +17,5 @@ This Apps Script web application serializes only the short job-claim/update oper
    ```
 
 Every request carries `project_name`; the coordinator rejects another project, and every ledger key is scoped by project. Do not place the token, spreadsheet ID, OAuth files, or Gemini session material in Git. The Apps Script uses `LockService` only while it atomically claims or updates a row. A time-limited lease and heartbeat recover jobs abandoned by a failed worker.
+
+For an existing default-project deployment, `initializeCoordinator` recognizes only the exact legacy `BRILLIANT_WORKER_TOKEN` property and exact pre-project ledger header. It copies the token to `WORKER_TOKEN` and adds the configured `PROJECT_NAME` column without changing job states. This compatibility is scheduled for removal after 31 December 2026; verify the generic properties and new header before then.

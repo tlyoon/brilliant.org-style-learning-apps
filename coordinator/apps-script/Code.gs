@@ -4,6 +4,7 @@ const HEADERS = [
   'status', 'worker_id', 'lease_expires_at', 'heartbeat_at', 'attempt_count',
   'branch', 'pr_url', 'error_code', 'error_message', 'updated_at'
 ];
+const LEGACY_HEADERS = HEADERS.slice(1);
 
 function doPost(e) {
   try {
@@ -56,14 +57,25 @@ function initializeCoordinator() {
   if (!projectName) throw coded_('NOT_CONFIGURED', 'Set PROJECT_NAME before initialization');
   if (!spreadsheetId) throw coded_('NOT_CONFIGURED', 'Set JOB_SPREADSHEET_ID before initialization');
   let created = false;
+  let migrated = false;
   if (!properties.getProperty('WORKER_TOKEN')) {
-    const material = [Utilities.getUuid(), Utilities.getUuid(), Utilities.getUuid()].join(':');
-    const digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, material);
-    properties.setProperty('WORKER_TOKEN', Utilities.base64EncodeWebSafe(digest));
-    created = true;
+    const legacy = properties.getProperty('BRILLIANT_WORKER_TOKEN');
+    if (legacy) {
+      properties.setProperty('WORKER_TOKEN', legacy);
+      migrated = true;
+    } else {
+      const material = [Utilities.getUuid(), Utilities.getUuid(), Utilities.getUuid()].join(':');
+      const digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, material);
+      properties.setProperty('WORKER_TOKEN', Utilities.base64EncodeWebSafe(digest));
+      created = true;
+    }
   }
   sheet_();
-  return {project_name: projectName, worker_token_created: created};
+  return {
+    project_name: projectName,
+    worker_token_created: created,
+    legacy_worker_token_migrated: migrated
+  };
 }
 
 function withLock_(callback) {
@@ -84,11 +96,27 @@ function sheet_() {
   let sheet = book.getSheetByName(JOB_SHEET);
   if (!sheet) sheet = book.insertSheet(JOB_SHEET);
   if (sheet.getLastRow() === 0) sheet.appendRow(HEADERS);
+  const legacyActual = sheet.getRange(1, 1, 1, LEGACY_HEADERS.length).getValues()[0];
+  if (sheet.getLastColumn() === LEGACY_HEADERS.length &&
+      legacyActual.join('|') === LEGACY_HEADERS.join('|')) {
+    migrateLegacySheet_(sheet);
+  }
   const actual = sheet.getRange(1, 1, 1, HEADERS.length).getValues()[0];
   if (actual.join('|') !== HEADERS.join('|')) {
     throw coded_('INVALID_LEDGER', 'Jobs sheet headers do not match the coordinator contract');
   }
   return sheet;
+}
+
+function migrateLegacySheet_(sheet) {
+  const projectName = PropertiesService.getScriptProperties().getProperty('PROJECT_NAME');
+  if (!projectName) throw coded_('NOT_CONFIGURED', 'PROJECT_NAME is required for ledger migration');
+  sheet.insertColumnBefore(1);
+  sheet.getRange(1, 1).setValue('project_name');
+  if (sheet.getLastRow() > 1) {
+    const values = Array(sheet.getLastRow() - 1).fill([projectName]);
+    sheet.getRange(2, 1, values.length, 1).setValues(values);
+  }
 }
 
 function rows_(sheet) {

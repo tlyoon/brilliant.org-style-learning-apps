@@ -1,6 +1,7 @@
 import json
 import tempfile
 import unittest
+import warnings
 from pathlib import Path
 
 from app_generator.config import DEFAULTS, load_config
@@ -81,6 +82,34 @@ class GeneratorConfigTests(unittest.TestCase):
             "drive_oauth_client_file", "drive_token_file", "coordinator_token_env",
         ):
             self.assertNotIn(key, DEFAULTS)
+
+    def test_default_project_accepts_bounded_legacy_environment_prefix(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.pdf"
+            source.write_bytes(b"synthetic")
+            path = self.make_config(root, [source])
+            text = path.read_text(encoding="utf-8").replace("ExampleProject", "BrilliantContentGenerator")
+            path.write_text(text, encoding="utf-8")
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                config = load_config(
+                    path,
+                    environ={"BRILLIANT_GENERATOR_LOG_LEVEL": "debug"},
+                )
+            self.assertEqual("DEBUG", config.log_level)
+            self.assertTrue(any("deprecated" in str(item.message) for item in caught))
+
+    def test_legacy_environment_prefix_is_not_accepted_for_another_project(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.pdf"
+            source.write_bytes(b"synthetic")
+            config = load_config(
+                self.make_config(root, [source]),
+                environ={"BRILLIANT_GENERATOR_LOG_LEVEL": "debug"},
+            )
+            self.assertEqual("INFO", config.log_level)
 
     def test_missing_project_identity_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:

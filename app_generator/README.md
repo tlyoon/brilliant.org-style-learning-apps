@@ -213,6 +213,8 @@ Precedence is:
 
 Project-specific URLs, account assertions, paths, token names, and source metadata have no application defaults; they must come from `config/project.toml` (or a higher-precedence explicit override).
 
+For the default project only, the old `BRILLIANT_GENERATOR_*` override prefix and `BRILLIANT_COORDINATOR_TOKEN` remain readable with deprecation warnings through 31 December 2026. Renamed projects never consume those legacy variables. Run `sync-workstation.cmd` to regenerate `project.local.toml` and migrate to the project-derived names.
+
 Google passwords, MFA values, cookies, OAuth files, the coordinator token, source PDFs, and run directories must remain outside the repository. `login_name` is an account assertion, not an authentication secret.
 
 ## Validation

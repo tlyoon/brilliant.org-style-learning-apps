@@ -13,7 +13,7 @@ class CoordinatorAppsScriptTests(unittest.TestCase):
         code = self.code()
         self.assertIn("'PROJECT_NAME'", code)
         self.assertIn("'WORKER_TOKEN'", code)
-        self.assertNotIn("BRILLIANT_WORKER_TOKEN", code)
+        self.assertEqual(1, code.count("BRILLIANT_WORKER_TOKEN"))
         self.assertIn("'project_name', 'job_key'", code)
         self.assertIn("requireProject_(request.project_name)", code)
 
@@ -23,6 +23,13 @@ class CoordinatorAppsScriptTests(unittest.TestCase):
         self.assertIn("if (!properties.getProperty('WORKER_TOKEN'))", code)
         self.assertIn("Utilities.computeDigest", code)
         self.assertIn("Utilities.base64EncodeWebSafe", code)
+
+    def test_exact_legacy_property_and_ledger_are_migrated(self):
+        code = self.code()
+        self.assertIn("'BRILLIANT_WORKER_TOKEN'", code)
+        self.assertIn("const LEGACY_HEADERS = HEADERS.slice(1)", code)
+        self.assertIn("function migrateLegacySheet_(sheet)", code)
+        self.assertIn("sheet.insertColumnBefore(1)", code)
 
 
 if __name__ == "__main__":

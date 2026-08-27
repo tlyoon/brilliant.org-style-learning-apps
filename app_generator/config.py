@@ -6,6 +6,7 @@ import os
 import re
 import socket
 import tomllib
+import warnings
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Mapping
@@ -298,6 +299,20 @@ def load_config(
     for name, raw in env.items():
         if name.startswith(env_prefix):
             key = name.removeprefix(env_prefix).lower()
+            values[key] = _coerce_env(key, raw)
+    if project_name == "BrilliantContentGenerator":
+        legacy_prefix = "BRILLIANT_GENERATOR_"
+        for name, raw in env.items():
+            if not name.startswith(legacy_prefix):
+                continue
+            key = name.removeprefix(legacy_prefix).lower()
+            if f"{env_prefix}{name.removeprefix(legacy_prefix)}" in env:
+                continue
+            warnings.warn(
+                f"{name} is deprecated; use {env_prefix}{name.removeprefix(legacy_prefix)}",
+                DeprecationWarning,
+                stacklevel=2,
+            )
             values[key] = _coerce_env(key, raw)
     values.update({key: value for key, value in (cli_overrides or {}).items() if value is not None})
 
