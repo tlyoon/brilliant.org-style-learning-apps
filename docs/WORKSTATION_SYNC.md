@@ -12,9 +12,11 @@ config/project.toml
 
 It is versioned with the generator code and reaches every authorized PC through the normal Git pull. Changes to project generator behavior therefore use the same branch, pull-request review, and rollback history as the code that consumes them.
 
-The legacy `config/generator*.example.toml` files remain temporarily for migration compatibility. They are not active configuration authorities and will be retired in a later genericization phase.
+The `[project]` table supplies the canonical `project_name`. The synchronizer derives the environment namespace and all default local paths from that name. For example, `BrilliantContentGenerator` becomes `BRILLIANT_CONTENT_GENERATOR` for environment-variable names and `%LOCALAPPDATA%\BrilliantContentGenerator` for local state.
 
-The tracked file starts with `[project]` and a validated `project_name`. It contains only approved, non-secret, machine-independent settings. It retains `${REPO_ROOT}` exactly. The synchronizer accepts only an explicit allow-list of generator fields and refuses unknown fields, oversized files, symbolic links, invalid TOML, or an invalid repository-root token.
+The legacy `config/generator*.example.toml` files are examples only. They are not active workstation configuration.
+
+The tracked file contains only approved, non-secret, machine-independent settings. It retains `${REPO_ROOT}` exactly. The synchronizer accepts only an explicit allow-list of generator fields and refuses unknown fields, oversized files, symbolic links, invalid TOML, or an invalid repository-root token.
 
 ## Security boundary
 
@@ -26,19 +28,19 @@ Never place any of these items in Git or in the tracked project configuration:
 - Chrome profiles;
 - controlled source PDFs or generator run directories.
 
-Each PC must provision its own Google Desktop-app OAuth client outside the repository. By default, place the newly issued file at:
+Each PC must provision its own Google Desktop-app OAuth client outside the repository. Its default path is derived from `project_name`:
 
 ```text
 %LOCALAPPDATA%\BrilliantContentGenerator\credentials\drive-oauth-client.json
 ```
 
-The first generator `doctor` run opens Google's read-only Drive authorization flow and writes that PC's OAuth token beside the client file. Google Drive remains the controlled source-PDF service; it is not used to distribute `project.toml`. Git and GitHub authentication also remain local to each PC.
+The first generator `doctor` run opens Google's read-only Drive authorization flow and writes that PC's OAuth token beside the client file. Google Drive remains the controlled source-PDF service; it is not used to distribute configuration. Git and GitHub authentication also remain local to each PC.
 
 ## First run on each PC
 
 Prerequisites are Python 3.12, Git, current Chrome, Node.js, network access, and an existing repository checkout. For the private GitHub repository, authenticate Git locally before running the synchronizer.
 
-Double-click `sync-workstation.cmd`. Its editable defaults provide the expected Google account and `main` branch. To use different values, edit the defaults in the batch file or define the corresponding `BRILLIANT_SYNC_*` environment variables before running it.
+Double-click `sync-workstation.cmd`. The expected Google account comes from `config/project.toml`, and a new workstation defaults to the `main` branch. Command-line options can override either value during initialization.
 
 The first run saves the effective machine-local values outside the repository in:
 
@@ -57,7 +59,7 @@ The synchronizer:
 3. fast-forwards only and refuses local-only or diverged commits;
 4. creates or updates `.venv` with Python 3.12 and installs the repository package;
 5. reads `config/project.toml` from the synchronized checkout;
-6. validates it, renders `${REPO_ROOT}`, adds that PC's OAuth paths from `workstation-sync.toml`, and atomically writes the ignored `generator.shared.local.toml`;
+6. validates it, derives `${PROJECT_ENV_PREFIX}` and `${STATE_ROOT}` from `project_name`, renders all approved tokens, and atomically writes the ignored local generator configuration;
 7. verifies that the project and machine-local expected Google accounts agree;
 8. runs lint, content validation, unit tests, the JavaScript syntax check, and generator `doctor`.
 
@@ -71,11 +73,10 @@ That option uploads the controlled source to Gemini and starts generation after 
 
 ## Migration from the Drive Projects folder
 
-Existing `workstation-sync.toml` files may still contain `projects_folder_url` and `shared_config_name`. The synchronizer ignores those obsolete fields so already configured PCs continue to work after pulling this change.
+Existing `workstation-sync.toml` files may still contain `projects_folder_url` and `shared_config_name`. The synchronizer ignores those obsolete fields so already configured PCs continue to work. Settings files without a `[project]` table are accepted for the matching repository and gain the project-derived defaults at runtime.
 
-Validate the new flow on one PC and then a second PC. After every active PC has successfully installed the tracked configuration, the old Drive `Projects/generator.shared.toml` copy may be removed manually. This code change does not delete or modify any Drive file.
-
+Validate the new flow on one PC and then a second PC. The old Drive `Projects/generator.shared.toml` copy is not used. This code change does not delete or modify any Drive file.
 
 ## Genericization phase status
 
-Phase 1 establishes `config/project.toml` as the single active editable project authority and validates its project identity and allowed fields. Machine paths are still based on the current application defaults in this phase. Deriving those paths and environment-variable names from `project.project_name` is reserved for Phase 2.
+Phase 2 derives the environment-variable namespace and every default machine-local path from `project.project_name`. Secret values remain external. Removing remaining duplicate defaults and legacy configuration authorities is reserved for Phase 3.

@@ -15,11 +15,19 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
+from app_generator.project import (
+    ProjectIdentity,
+    ProjectIdentityError,
+    identity_from_payload,
+    load_project_identity,
+    state_root_for,
+    validate_project_name,
+)
+
 
 ROOT = Path(__file__).resolve().parents[1]
 BRANCH = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]*$")
 REMOTE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
-PROJECT_NAME = re.compile(r"^[A-Za-z][A-Za-z0-9._-]{0,63}$")
 MAX_PROJECT_CONFIG_BYTES = 256 * 1024
 PROJECT_CONFIG_RELATIVE_PATH = Path("config") / "project.toml"
 MANAGED_CONFIG_HEADER = (
@@ -39,6 +47,10 @@ ALLOWED_PROJECT_KEYS = {
         "max_job_attempts",
     },
     "repository": {"repo_root"},
+    "paths": {
+        "state_root", "workstation_settings", "drive_oauth_client_file",
+        "drive_token_file", "chrome_profile_dir", "state_dir",
+    },
     "run": {
         "package_id", "chapter", "subchapter", "chapter_dir", "section_dir",
         "learning_boundary", "source_id", "edition", "heading", "page_range",
@@ -66,6 +78,9 @@ class SyncSettings:
     repo_root: Path
     remote: str
     branch: str
+    project_name: str
+    env_prefix: str
+    state_root: Path
     project_config_file: Path
     login_name: str
     oauth_client_file: Path
@@ -78,15 +93,12 @@ class SyncSettings:
 CommandRunner = Callable[[list[str], Path], str]
 
 
-def _state_root() -> Path:
-    local = os.environ.get("LOCALAPPDATA")
-    if local:
-        return Path(local) / "BrilliantContentGenerator"
-    return Path.home() / ".local" / "state" / "brilliant-content-generator"
+def _state_root(project_name: str) -> Path:
+    return state_root_for(project_name)
 
 
-def _default_settings_path() -> Path:
-    return _state_root() / "workstation-sync.toml"
+def _default_settings_path(project_name: str) -> Path:
+    return _state_root(project_name) / "workstation-sync.toml"
 
 
 def _toml_string(value: str) -> str:
@@ -98,11 +110,15 @@ def _write_initial_settings(
     *,
     login_name: str,
     branch: str,
+    project_name: str,
 ) -> None:
-    state = _state_root()
+    state = _state_root(project_name)
     content = "\n".join(
         (
             "# Machine-local, non-secret workstation synchronization settings.",
+            "[project]",
+            f"project_name = {_toml_string(project_name)}",
+            "",
             "[repository]",
             'remote = "origin"',
             f"branch = {_toml_string(branch)}",
@@ -138,12 +154,23 @@ def _expand_path(value: str) -> Path:
     return Path(os.path.expandvars(value)).expanduser().resolve()
 
 
-def load_settings(path: Path, *, repo_root: Path = ROOT) -> SyncSettings:
+def load_settings(
+    path: Path,
+    *,
+    repo_root: Path = ROOT,
+    project_name: str,
+) -> SyncSettings:
     try:
         with path.open("rb") as handle:
             payload = tomllib.load(handle)
     except (OSError, tomllib.TOMLDecodeError) as exc:
         raise WorkstationSyncError(f"Could not read workstation settings {path}: {exc}") from exc
+    settings_project = _read_table(payload, "project")
+    recorded_name = str(settings_project.get("project_name", project_name)).strip()
+    if recorded_name != project_name:
+        raise WorkstationSyncError(
+            f"Workstation settings belong to {recorded_name!r}, not {project_name!r}"
+        )
     repository = _read_table(payload, "repository")
     drive = _read_table(payload, "drive")
     output = _read_table(payload, "output")
@@ -157,7 +184,12 @@ def load_settings(path: Path, *, repo_root: Path = ROOT) -> SyncSettings:
     login_name = str(drive.get("login_name", "")).strip()
     if not login_name:
         raise WorkstationSyncError("Drive login_name is required")
-    state = _state_root()
+    identity = ProjectIdentity(
+        name=validate_project_name(project_name),
+        env_prefix=identity_from_payload({"project": {"project_name": project_name}}).env_prefix,
+        state_root=_state_root(project_name),
+    )
+    state = identity.state_root
     oauth_client = _expand_path(
         str(drive.get("oauth_client_file", state / "credentials" / "drive-oauth-client.json"))
     )
@@ -177,13 +209,16 @@ def load_settings(path: Path, *, repo_root: Path = ROOT) -> SyncSettings:
     generated = (repo_root / output_name).resolve()
     if generated.parent != repo_root.resolve():
         raise WorkstationSyncError("The generated configuration must remain in the repository root")
-    shared_config = (repo_root / PROJECT_CONFIG_RELATIVE_PATH).resolve()
+    project_config = (repo_root / PROJECT_CONFIG_RELATIVE_PATH).resolve()
     return SyncSettings(
         settings_path=path.resolve(),
         repo_root=repo_root.resolve(),
         remote=remote,
         branch=branch,
-        project_config_file=shared_config,
+        project_name=identity.name,
+        env_prefix=identity.env_prefix,
+        state_root=identity.state_root.resolve(),
+        project_config_file=project_config,
         login_name=login_name,
         oauth_client_file=oauth_client,
         oauth_token_file=oauth_token,
@@ -276,7 +311,7 @@ def prepare_environment(settings: SyncSettings) -> Path:
 
 
 def _validate_project_tables(payload: Mapping[str, Any]) -> None:
-    required = {"project", "placeholders", "repository"}
+    required = {"project", "placeholders", "repository", "paths"}
     missing_sections = required - set(payload)
     if missing_sections:
         raise WorkstationSyncError(
@@ -296,12 +331,10 @@ def _validate_project_tables(payload: Mapping[str, Any]) -> None:
         if unknown:
             names = ", ".join(f"{section}.{name}" for name in sorted(unknown))
             raise WorkstationSyncError(f"Project configuration contains disallowed key(s): {names}")
-    project = _read_table(payload, "project")
-    project_name = str(project.get("project_name", "")).strip()
-    if not PROJECT_NAME.fullmatch(project_name):
-        raise WorkstationSyncError(
-            "project.project_name must start with a letter and contain only letters, digits, '.', '_' or '-'"
-        )
+    try:
+        validate_project_name(_read_table(payload, "project").get("project_name", ""))
+    except ProjectIdentityError as exc:
+        raise WorkstationSyncError(str(exc)) from exc
 
 
 def render_project_config(raw: bytes, *, repo_root: Path, state_root: Path) -> str:
@@ -311,10 +344,18 @@ def render_project_config(raw: bytes, *, repo_root: Path, state_root: Path) -> s
         text = raw.decode("utf-8")
     except UnicodeDecodeError as exc:
         raise WorkstationSyncError("Project configuration is not valid UTF-8") from exc
-    replacements = {
-        "${REPO_ROOT}": repo_root.resolve().as_posix(),
-        "${STATE_ROOT}": state_root.resolve().as_posix(),
-    }
+    try:
+        unrendered = tomllib.loads(text)
+        _validate_project_tables(unrendered)
+        parsed_identity = identity_from_payload(unrendered)
+    except (tomllib.TOMLDecodeError, ProjectIdentityError) as exc:
+        raise WorkstationSyncError(f"Repository project configuration is invalid: {exc}") from exc
+    identity = ProjectIdentity(
+        name=parsed_identity.name,
+        env_prefix=parsed_identity.env_prefix,
+        state_root=state_root,
+    )
+    replacements = identity.tokens(repo_root=repo_root)
     for token, value in replacements.items():
         text = text.replace(token, value)
     remaining = sorted(set(re.findall(r"\$\{[A-Z0-9_]+\}", text)))
@@ -363,15 +404,10 @@ def _read_project_config(settings: SyncSettings) -> bytes:
 
 def install_project_config(settings: SyncSettings) -> str:
     raw = _read_project_config(settings)
-    rendered = render_project_config(raw, repo_root=settings.repo_root, state_root=_state_root())
-    rendered += "\n".join(
-        (
-            "",
-            "[workstation]",
-            f"drive_oauth_client_file = {_toml_string(str(settings.oauth_client_file))}",
-            f"drive_token_file = {_toml_string(str(settings.oauth_token_file))}",
-            "",
-        )
+    rendered = render_project_config(
+        raw,
+        repo_root=settings.repo_root,
+        state_root=settings.state_root,
     )
     temporary = settings.generated_config_file.with_name(settings.generated_config_file.name + ".part")
     from app_generator.config import load_config
@@ -383,6 +419,14 @@ def install_project_config(settings: SyncSettings) -> str:
                 f"Project configuration expects {config.login_name}, but workstation settings expect "
                 f"{settings.login_name}"
             )
+        if config.drive_oauth_client_file != settings.oauth_client_file:
+            raise WorkstationSyncError("Rendered OAuth client path does not match the project-derived path")
+        if config.drive_token_file != settings.oauth_token_file:
+            raise WorkstationSyncError("Rendered OAuth token path does not match the project-derived path")
+        if config.chrome_profile_dir != settings.state_root / "chrome-profile":
+            raise WorkstationSyncError("Rendered Chrome profile path does not match the project-derived path")
+        if config.state_dir != settings.state_root / "runs":
+            raise WorkstationSyncError("Rendered run-state path does not match the project-derived path")
         os.replace(temporary, settings.generated_config_file)
     except WorkstationSyncError:
         raise
@@ -427,7 +471,7 @@ def run_checks(settings: SyncSettings, python: Path, *, run_generator: bool) -> 
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--settings", type=Path, default=_default_settings_path())
+    parser.add_argument("--settings", type=Path)
     parser.add_argument("--projects-folder", help=argparse.SUPPRESS)
     parser.add_argument("--login-name")
     parser.add_argument("--branch")
@@ -440,11 +484,16 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _ensure_settings(args: argparse.Namespace) -> Path:
-    path = args.settings.expanduser().resolve()
+def _ensure_settings(
+    args: argparse.Namespace,
+    *,
+    identity: ProjectIdentity,
+    default_login_name: str,
+) -> Path:
+    path = (args.settings or identity.settings_path).expanduser().resolve()
     if path.is_file():
         return path
-    login = (args.login_name or input("Authorized Google account email: ")).strip()
+    login = (args.login_name or default_login_name).strip()
     branch = (args.branch or input("Git branch to synchronize [main]: ").strip() or "main").strip()
     if not login:
         raise WorkstationSyncError("Google account email is required")
@@ -452,6 +501,7 @@ def _ensure_settings(args: argparse.Namespace) -> Path:
         path,
         login_name=login,
         branch=branch,
+        project_name=identity.name,
     )
     print(f"Created machine-local settings: {path}")
     return path
@@ -460,8 +510,20 @@ def _ensure_settings(args: argparse.Namespace) -> Path:
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
-        settings_path = _ensure_settings(args)
-        settings = load_settings(settings_path)
+        project_path = ROOT / PROJECT_CONFIG_RELATIVE_PATH
+        try:
+            identity = load_project_identity(project_path)
+            with project_path.open("rb") as handle:
+                project_payload = tomllib.load(handle)
+            default_login = str(_read_table(project_payload, "placeholders").get("loginname", "")).strip()
+        except (ProjectIdentityError, OSError, tomllib.TOMLDecodeError) as exc:
+            raise WorkstationSyncError(str(exc)) from exc
+        settings_path = _ensure_settings(
+            args,
+            identity=identity,
+            default_login_name=default_login,
+        )
+        settings = load_settings(settings_path, project_name=identity.name)
         if not args.post_sync:
             commit = sync_repository(settings)
             print(f"Repository synchronized at {commit[:12]} ({settings.remote}/{settings.branch}).")
@@ -474,9 +536,9 @@ def main(argv: list[str] | None = None) -> int:
                 command.append("--run-generator")
             return subprocess.run(command, cwd=settings.repo_root, check=False).returncode
         digest = install_project_config(settings)
-        project_path = settings.project_config_file.relative_to(settings.repo_root).as_posix()
+        project_name = settings.project_config_file.relative_to(settings.repo_root).as_posix()
         print(
-            f"Installed {project_path} as {settings.generated_config_file.name} "
+            f"Installed {project_name} as {settings.generated_config_file.name} "
             f"(sha256={digest})."
         )
         run_checks(settings, Path(sys.executable), run_generator=args.run_generator)
