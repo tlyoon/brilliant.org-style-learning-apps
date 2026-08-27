@@ -347,6 +347,7 @@ def render_project_config(raw: bytes, *, repo_root: Path, state_root: Path) -> s
         raise WorkstationSyncError("Project configuration exceeds the 256 KiB size limit")
     try:
         text = raw.decode("utf-8")
+        text = text.replace("\r\n", "\n").replace("\r", "\n")
     except UnicodeDecodeError as exc:
         raise WorkstationSyncError("Project configuration is not valid UTF-8") from exc
     try:
@@ -417,7 +418,7 @@ def install_project_config(settings: SyncSettings) -> str:
     temporary = settings.generated_config_file.with_name(settings.generated_config_file.name + ".part")
     from app_generator.config import load_config
     try:
-        temporary.write_text(rendered, encoding="utf-8")
+        temporary.write_text(rendered, encoding="utf-8", newline="\n")
         config = load_config(temporary)
         if config.login_name.casefold() != settings.login_name.casefold():
             raise WorkstationSyncError(
