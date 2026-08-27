@@ -42,6 +42,12 @@ Prerequisites are Python 3.12, Git, current Chrome, Node.js, network access, and
 
 Double-click `sync-workstation.cmd`. The expected Google account comes from `config/project.toml`, and a new workstation defaults to the `main` branch. Command-line options can override either value during initialization.
 
+To create only the machine-local settings first, without fetching Git or running `doctor`:
+
+```powershell
+python scripts\sync_workstation.py --init-settings-only
+```
+
 The first run saves the effective machine-local values outside the repository in:
 
 ```text
@@ -73,4 +79,4 @@ That option uploads the controlled source to Gemini and starts generation after 
 
 ## Genericization phase status
 
-Phase 3 removes legacy configuration examples and project-specific application defaults. `config/project.toml` supplies all project-specific URLs, account assertions, paths, source metadata, and token names. Secret values remain external.
+Phase 4 adds dry-run-first project configuration and initialization-only workstation setup. `config/project.toml` supplies all project-specific URLs, account assertions, paths, source metadata, and token names. Secret values remain external.
