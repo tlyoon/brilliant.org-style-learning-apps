@@ -56,7 +56,7 @@ Each ledger row records:
 
 Workers renew their lease in the background. If a PC stops, its lease eventually expires and a later worker can reclaim the job. A worker that cannot prove ownership stops before commit or push.
 
-Follow `coordinator/apps-script/README.md` to create the private ledger and deploy the coordinator. Keep `BRILLIANT_WORKER_TOKEN` in Apps Script Properties and the matching `BRILLIANT_COORDINATOR_TOKEN` environment variable on each PC; never place it in TOML or Git.
+Follow `coordinator/apps-script/README.md` to create the private ledger and deploy the coordinator. Keep the worker token in Apps Script Properties and the matching project-derived coordinator environment variable on each PC; never place a token value in TOML or Git.
 
 ## Gemini behavior
 
@@ -117,9 +117,7 @@ When `git_publish = true`, the worker:
 
 It never pushes directly to `main`, merges the PR, marks content publishable, or deploys GitHub Pages. After the PR has been reviewed and merged, mark the ledger job complete with `coordinator-complete`.
 
-## First controlled run (legacy manual flow)
-
-The supported synchronized workflow reads `config/project.toml`. The following manual-copy flow is retained temporarily for migration compatibility and will be retired in a later genericization phase.
+## First controlled run
 
 From the repository root in PowerShell:
 
@@ -128,12 +126,12 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -e .
-Copy-Item config\generator.example.toml generator.local.toml
+.\sync-workstation.cmd
 ```
 
 Before running, create a Google Cloud **Desktop app** OAuth client with the Drive API enabled. Save its JSON at the `drive_oauth_client_file` path outside the repository. The first Drive authorization opens a browser and stores a read-only token outside Git.
 
-Edit `generator.local.toml` and replace all controlled metadata placeholders. Keep:
+Edit the sole tracked authority, `config/project.toml`, through a reviewed branch and pull request. For a controlled first run, keep:
 
 ```toml
 selection_mode = "specific"
@@ -144,15 +142,13 @@ git_publish = false
 Then run:
 
 ```powershell
-python -m app_generator doctor --config .\generator.local.toml
-python -m app_generator run --config .\generator.local.toml
+python -m app_generator doctor --config .\project.local.toml
+python -m app_generator run --config .\project.local.toml
 ```
 
 `doctor` verifies configuration, Drive authorization, PDF discovery/download, checksum, and manifest compatibility. It does not submit the PDF to Gemini. The first `run` initializes the Gem if necessary and exercises the live UI.
 
-## Enable distributed workers (legacy manual flow)
-
-The active project authority remains `config/project.toml`; the distributed example below is temporary migration material.
+## Enable distributed workers
 
 First merge the generator implementation into `main` and deploy the coordinator. On every worker PC:
 
@@ -161,11 +157,11 @@ git switch main
 git pull --ff-only
 .\.venv\Scripts\Activate.ps1
 python -m pip install -e .
-Copy-Item config\generator.distributed.example.toml generator.distributed.local.toml
-$env:BRILLIANT_COORDINATOR_TOKEN = "your-coordinator-token"
+.\sync-workstation.cmd
+$env:BRILLIANT_CONTENT_GENERATOR_COORDINATOR_TOKEN = "your-coordinator-token"
 ```
 
-Edit the distributed local TOML:
+Edit `config/project.toml` through a reviewed pull request:
 
 - set the deployed Apps Script `/exec` URL;
 - set the local repository and dedicated Chrome-profile paths;
@@ -176,8 +172,8 @@ Edit the distributed local TOML:
 Validate and claim one job:
 
 ```powershell
-python -m app_generator doctor --config .\generator.distributed.local.toml
-python -m app_generator run --config .\generator.distributed.local.toml
+python -m app_generator doctor --config .\project.local.toml
+python -m app_generator run --config .\project.local.toml
 ```
 
 Start only one process per local checkout. Other PCs may run concurrently from their own clones and Chrome profiles.
@@ -186,7 +182,7 @@ After a PR is reviewed and merged:
 
 ```powershell
 python -m app_generator coordinator-complete `
-  --config .\generator.distributed.local.toml `
+  --config .\project.local.toml `
   --job-key "<job-key-from-the-ledger>" `
   --pr-url "<merged-pr-url>"
 ```
@@ -196,9 +192,11 @@ python -m app_generator coordinator-complete `
 Precedence is:
 
 1. command-line option;
-2. `BRILLIANT_GENERATOR_*` environment variable;
+2. `<PROJECT_ENV_PREFIX>_GENERATOR_*` environment variable derived from `project.project_name`;
 3. TOML;
-4. application default.
+4. generic application default.
+
+Project-specific URLs, account assertions, paths, token names, and source metadata have no application defaults; they must come from `config/project.toml` (or a higher-precedence explicit override).
 
 Google passwords, MFA values, cookies, OAuth files, the coordinator token, source PDFs, and run directories must remain outside the repository. `login_name` is an account assertion, not an authentication secret.
 

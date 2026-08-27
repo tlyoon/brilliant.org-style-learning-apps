@@ -129,7 +129,7 @@ def _write_initial_settings(
             f"oauth_token_file = {_toml_string(str(state / 'credentials' / 'drive-oauth-token.json'))}",
             "",
             "[output]",
-            'generated_config_file = "generator.shared.local.toml"',
+            'generated_config_file = "project.local.toml"',
             "",
             "[checks]",
             "run_tests = true",
@@ -203,9 +203,13 @@ def load_settings(
             pass
         else:
             raise WorkstationSyncError("OAuth client and token paths must remain outside the repository")
-    output_name = str(output.get("generated_config_file", "generator.shared.local.toml")).strip()
-    if Path(output_name).name != output_name or not re.fullmatch(r"generator.*\.local.*\.toml", output_name):
-        raise WorkstationSyncError("generated_config_file must be an ignored generator*.local*.toml basename")
+    output_name = str(output.get("generated_config_file", "project.local.toml")).strip()
+    if Path(output_name).name != output_name or not re.fullmatch(
+        r"(?:project|generator.*)\.local.*\.toml", output_name
+    ):
+        raise WorkstationSyncError(
+            "generated_config_file must be an ignored project.local*.toml basename"
+        )
     generated = (repo_root / output_name).resolve()
     if generated.parent != repo_root.resolve():
         raise WorkstationSyncError("The generated configuration must remain in the repository root")

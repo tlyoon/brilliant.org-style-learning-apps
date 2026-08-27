@@ -31,10 +31,10 @@ Configure this PC's user-level Codex permissions as follows.
    network_access = true
    ```
 
-5. If this repository's Brilliant Content Generator is present, determine the
+5. If this repository's learning-app content generator is present, determine the
    current Windows user's local run-artifact directory and add that absolute
    directory to `sandbox_workspace_write.writable_roots`. The expected location
-   is under `%LOCALAPPDATA%\BrilliantContentGenerator\runs`. Do not copy a
+   is under the project-derived `paths.state_dir` rendered from `config/project.toml`. Do not copy a
    username or absolute path from another PC.
 
 6. Remove any existing rule that broadly allows `pattern=["git", "push"]`,

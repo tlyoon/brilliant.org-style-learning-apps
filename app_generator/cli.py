@@ -38,7 +38,7 @@ def _add_config_arguments(command: argparse.ArgumentParser) -> None:
 
 
 def _parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="brilliant-content-generator")
+    parser = argparse.ArgumentParser(prog="learning-app-content-generator")
     subparsers = parser.add_subparsers(dest="command", required=True)
     for name in ("doctor", "run"):
         command = subparsers.add_parser(name)
@@ -71,7 +71,7 @@ def _load(args: argparse.Namespace) -> GeneratorConfig:
 def doctor(config: GeneratorConfig) -> int:
     drive_source = None
     effective_config = config
-    with tempfile.TemporaryDirectory(prefix="brilliant-generator-doctor-") as directory:
+    with tempfile.TemporaryDirectory(prefix="content-generator-doctor-") as directory:
         if config.uses_google_drive:
             authorization = authorize_google_drive(config)
             drive_client = DriveRestClient(authorization.session, config.drive_api_timeout_seconds)

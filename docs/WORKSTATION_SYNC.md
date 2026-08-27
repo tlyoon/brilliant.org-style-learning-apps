@@ -14,7 +14,7 @@ It is versioned with the generator code and reaches every authorized PC through 
 
 The `[project]` table supplies the canonical `project_name`. The synchronizer derives the environment namespace and all default local paths from that name. For example, `BrilliantContentGenerator` becomes `BRILLIANT_CONTENT_GENERATOR` for environment-variable names and `%LOCALAPPDATA%\BrilliantContentGenerator` for local state.
 
-The legacy `config/generator*.example.toml` files are examples only. They are not active workstation configuration.
+Legacy generator example TOMLs have been removed. `config/project.toml` is the only tracked runtime configuration authority.
 
 The tracked file contains only approved, non-secret, machine-independent settings. It retains `${REPO_ROOT}` exactly. The synchronizer accepts only an explicit allow-list of generator fields and refuses unknown fields, oversized files, symbolic links, invalid TOML, or an invalid repository-root token.
 
@@ -59,7 +59,7 @@ The synchronizer:
 3. fast-forwards only and refuses local-only or diverged commits;
 4. creates or updates `.venv` with Python 3.12 and installs the repository package;
 5. reads `config/project.toml` from the synchronized checkout;
-6. validates it, derives `${PROJECT_ENV_PREFIX}` and `${STATE_ROOT}` from `project_name`, renders all approved tokens, and atomically writes the ignored local generator configuration;
+6. validates it, derives `${PROJECT_ENV_PREFIX}` and `${STATE_ROOT}` from `project_name`, renders all approved tokens, and atomically writes the ignored `project.local.toml`;
 7. verifies that the project and machine-local expected Google accounts agree;
 8. runs lint, content validation, unit tests, the JavaScript syntax check, and generator `doctor`.
 
@@ -71,12 +71,6 @@ The synchronizer:
 
 That option uploads the controlled source to Gemini and starts generation after all checks pass. Leave `git_publish = false` in the project configuration until automated publishing and the distributed coordinator are intentionally enabled.
 
-## Migration from the Drive Projects folder
-
-Existing `workstation-sync.toml` files may still contain `projects_folder_url` and `shared_config_name`. The synchronizer ignores those obsolete fields so already configured PCs continue to work. Settings files without a `[project]` table are accepted for the matching repository and gain the project-derived defaults at runtime.
-
-Validate the new flow on one PC and then a second PC. The old Drive `Projects/generator.shared.toml` copy is not used. This code change does not delete or modify any Drive file.
-
 ## Genericization phase status
 
-Phase 2 derives the environment-variable namespace and every default machine-local path from `project.project_name`. Secret values remain external. Removing remaining duplicate defaults and legacy configuration authorities is reserved for Phase 3.
+Phase 3 removes legacy configuration examples and project-specific application defaults. `config/project.toml` supplies all project-specific URLs, account assertions, paths, source metadata, and token names. Secret values remain external.

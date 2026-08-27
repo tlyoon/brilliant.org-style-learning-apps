@@ -39,7 +39,7 @@ def _settings(root: Path, *, login_name: str = "person@example.com") -> SyncSett
         login_name=login_name,
         oauth_client_file=credential_root / "drive-oauth-client.json",
         oauth_token_file=credential_root / "drive-oauth-token.json",
-        generated_config_file=root / "generator.shared.local.toml",
+        generated_config_file=root / "project.local.toml",
         run_tests=True,
         run_doctor=True,
     )
@@ -56,7 +56,7 @@ class WorkstationSyncTests(unittest.TestCase):
                 repo_root=root,
                 state_root=Path(directory),
             )
-            rendered_path = Path(directory) / "generator.shared.local.toml"
+            rendered_path = Path(directory) / "project.local.toml"
             rendered_path.write_text(rendered, encoding="utf-8")
             config = load_generator_config(rendered_path)
 
@@ -72,12 +72,6 @@ class WorkstationSyncTests(unittest.TestCase):
             config.coordinator_token_env,
         )
         self.assertEqual(Path(directory).resolve() / "runs", config.state_dir)
-
-    def test_legacy_shared_example_is_not_the_active_project_config(self):
-        root = Path(__file__).resolve().parents[1]
-        source = root / "config" / "generator.shared.example.toml"
-        self.assertTrue(source.is_file())
-        self.assertNotEqual(source.resolve(), (root / PROJECT_CONFIG_RELATIVE_PATH).resolve())
 
     def test_project_name_is_present_in_the_active_configuration(self):
         root = Path(__file__).resolve().parents[1]
@@ -140,7 +134,7 @@ class WorkstationSyncTests(unittest.TestCase):
                         'shared_config_name = "generator.shared.toml"',
                         'login_name = "person@example.com"',
                         "[output]",
-                        'generated_config_file = "generator.shared.local.toml"',
+                        'generated_config_file = "project.local.toml"',
                     )
                 ),
                 encoding="utf-8",

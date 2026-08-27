@@ -37,7 +37,7 @@ def main() -> int:
         config = load_config(args.config)
         if config.selection_mode != "specific":
             raise ResponseContractError("Live smoke testing requires selection_mode='specific'")
-        with tempfile.TemporaryDirectory(prefix="brilliant-gemini-smoke-") as directory:
+        with tempfile.TemporaryDirectory(prefix="content-generator-gemini-smoke-") as directory:
             if config.uses_google_drive:
                 authorization = authorize_google_drive(config)
                 drive = DriveRestClient(authorization.session, config.drive_api_timeout_seconds)
