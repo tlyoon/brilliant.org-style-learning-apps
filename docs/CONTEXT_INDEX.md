@@ -32,6 +32,6 @@ Shared conversations and imported files are provenance, not authoritative specif
 
 Accepted automation baseline: Decision 0006 uses one PDF per fresh Gem conversation plus a central lease/heartbeat coordinator for multi-PC generation. Gem Knowledge is not part of the generation workflow.
 
-Accepted workstation-configuration baseline: Decisions 0009 through 0012 establish `config/project.toml` as the single active tracked authority, derive environment-variable names and machine-local paths from `project.project_name`, prohibit duplicated project-specific defaults, and provide guarded initialization commands. Google Drive remains the controlled source-PDF service, not a configuration-distribution service.
+Accepted workstation-configuration baseline: Decisions 0009 through 0013 establish `config/project.toml` as the single active tracked authority, derive environment-variable names and local paths from `project.project_name`, prohibit duplicated project defaults, provide guarded initialization, and template section-derived metadata for generic Drive trees. Google Drive remains the controlled source-PDF service, not a configuration-distribution service.
 
 Accepted public-review baseline: Decision 0007 permits the two Section 8.1 draft packages to be deployed together in a separate minimal public GitHub Pages repository with explicit draft labelling and no publication sign-offs.

@@ -31,7 +31,9 @@ The Drive scanner recursively finds files matching this structure:
 .../<subchapter-id>/source.pdf
 ```
 
-The immediate parent directory must look like `8.1`. Jobs are sorted numerically by chapter and subchapter. A job identity combines the stable Drive file ID with the Drive MD5/version/modified-time value, so replacing a PDF creates a new source version.
+The immediate parent directory must look like `8.1`. All ancestors are project-defined, so paths such as `AnyBook_15_17/15/15.1/source.pdf` work without code changes. Jobs are sorted numerically by chapter and subchapter. A job identity combines the stable Drive file ID with the Drive MD5/version/modified-time value, so replacing a PDF creates a new source version.
+
+The `[run]` values in `config/project.toml` are templates. The generator materializes `{chapter_number}`, `{section_number}`, `{subchapter_id}`, `{section_slug}`, and `{source_id_prefix}` after resolving or claiming a PDF. The project configurator derives `source_id_prefix` from the project name; it can then be edited explicitly in the single project file when a textbook-specific source label is preferred.
 
 Two selection modes are provided:
 

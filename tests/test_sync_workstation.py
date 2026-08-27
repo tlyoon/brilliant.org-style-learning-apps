@@ -77,6 +77,11 @@ class WorkstationSyncTests(unittest.TestCase):
             config.coordinator_token_env,
         )
         self.assertEqual(Path(directory).resolve() / "runs", config.state_dir)
+        recycled = config.for_subchapter("15.1")
+        self.assertEqual("chapter-15-section-15-1", recycled.package_id)
+        self.assertEqual("chapter-15", recycled.chapter_dir)
+        self.assertEqual("section-15-1", recycled.section_dir)
+        self.assertEqual("serway-section-15-1", recycled.source_id)
 
     def test_project_name_is_present_in_the_active_configuration(self):
         root = Path(__file__).resolve().parents[1]

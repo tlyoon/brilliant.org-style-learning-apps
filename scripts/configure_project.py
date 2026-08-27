@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Mapping
 from urllib.parse import urlparse
 
-from app_generator.project import ProjectIdentityError, validate_project_name
+from app_generator.project import ProjectIdentityError, environment_prefix, validate_project_name
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +23,7 @@ EDITABLE_VALUES = {
     ("placeholders", "gemini-gem"): "gem_url",
     ("placeholders", "loginname"): "login_name",
     ("gemini", "gem_name"): "gem_name",
+    ("source_tree", "source_id_prefix"): "source_id_prefix",
 }
 
 
@@ -54,6 +55,7 @@ def validated_values(values: Mapping[str, str]) -> dict[str, str]:
         raise ProjectConfigurationError("gem_name is required")
     return {
         "project_name": project_name,
+        "source_id_prefix": environment_prefix(project_name).casefold().replace("_", "-"),
         "source_root_url": _validate_https_url(
             values.get("source_root_url", ""), hostname="drive.google.com", label="source_root_url"
         ),

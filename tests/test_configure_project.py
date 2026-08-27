@@ -16,6 +16,8 @@ gemini-gem = "https://gemini.google.com/gem/old"
 loginname = "old@example.com"
 [gemini]
 gem_name = "old gem"
+[source_tree]
+source_id_prefix = "old"
 [repository]
 repo_root = "${REPO_ROOT}"
 [paths]
@@ -39,6 +41,7 @@ state_root = "${STATE_ROOT}"
         self.assertEqual(self.values()["gem_url"], payload["placeholders"]["gemini-gem"])
         self.assertEqual("${STATE_ROOT}", payload["paths"]["state_root"])
         self.assertEqual("${REPO_ROOT}", payload["repository"]["repo_root"])
+        self.assertEqual("new-physics-project", payload["source_tree"]["source_id_prefix"])
 
     def test_invalid_hosts_are_rejected(self):
         values = self.values()
