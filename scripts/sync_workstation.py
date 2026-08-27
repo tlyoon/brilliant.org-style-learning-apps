@@ -13,7 +13,6 @@ import sys
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
-from types import SimpleNamespace
 from typing import Any, Callable, Mapping
 
 
@@ -21,7 +20,10 @@ ROOT = Path(__file__).resolve().parents[1]
 BRANCH = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]*$")
 REMOTE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 MAX_SHARED_CONFIG_BYTES = 256 * 1024
-MANAGED_CONFIG_HEADER = "# Managed by scripts/sync_workstation.py; edit the shared template instead.\n"
+SHARED_CONFIG_RELATIVE_PATH = Path("config") / "generator.shared.toml"
+MANAGED_CONFIG_HEADER = (
+    "# Managed by scripts/sync_workstation.py; edit config/generator.shared.toml through Git.\n"
+)
 ALLOWED_SHARED_KEYS = {
     "placeholders": {
         "sourcepath", "gemini-gem", "loginname", "pdf_subchapter_path",
@@ -42,7 +44,7 @@ ALLOWED_SHARED_KEYS = {
     },
     "limits": {
         "max_repair_attempts", "ui_timeout_seconds", "login_timeout_seconds",
-        "response_timeout_seconds", "log_level",
+        "response_timeout_seconds", "max_gemini_session_restarts", "log_level",
     },
     "git": {
         "git_publish", "git_remote", "git_base_branch", "git_branch_prefix",
@@ -62,8 +64,7 @@ class SyncSettings:
     repo_root: Path
     remote: str
     branch: str
-    projects_folder_url: str
-    shared_config_name: str
+    shared_config_file: Path
     login_name: str
     oauth_client_file: Path
     oauth_token_file: Path
@@ -90,24 +91,13 @@ def _toml_string(value: str) -> str:
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
-def _strip_matching_quotes(value: str) -> str:
-    """Remove one pair of quotes commonly included when a URL is pasted."""
-
-    candidate = value.strip()
-    if len(candidate) >= 2 and candidate[0] == candidate[-1] and candidate[0] in {"'", '"'}:
-        return candidate[1:-1].strip()
-    return candidate
-
-
 def _write_initial_settings(
     path: Path,
     *,
-    projects_folder_url: str,
     login_name: str,
     branch: str,
 ) -> None:
     state = _state_root()
-    projects_folder_url = _strip_matching_quotes(projects_folder_url)
     content = "\n".join(
         (
             "# Machine-local, non-secret workstation synchronization settings.",
@@ -116,8 +106,6 @@ def _write_initial_settings(
             f"branch = {_toml_string(branch)}",
             "",
             "[drive]",
-            f"projects_folder_url = {_toml_string(projects_folder_url)}",
-            'shared_config_name = "generator.shared.toml"',
             f"login_name = {_toml_string(login_name)}",
             f"oauth_client_file = {_toml_string(str(state / 'credentials' / 'drive-oauth-client.json'))}",
             f"oauth_token_file = {_toml_string(str(state / 'credentials' / 'drive-oauth-token.json'))}",
@@ -164,13 +152,9 @@ def load_settings(path: Path, *, repo_root: Path = ROOT) -> SyncSettings:
         raise WorkstationSyncError(f"Unsafe Git remote name: {remote!r}")
     if not BRANCH.fullmatch(branch) or ".." in branch or branch.endswith("/"):
         raise WorkstationSyncError(f"Unsafe Git branch name: {branch!r}")
-    projects_folder_url = _strip_matching_quotes(str(drive.get("projects_folder_url", "")))
     login_name = str(drive.get("login_name", "")).strip()
-    shared_name = str(drive.get("shared_config_name", "generator.shared.toml")).strip()
-    if not projects_folder_url or not login_name:
-        raise WorkstationSyncError("Drive projects_folder_url and login_name are required")
-    if Path(shared_name).name != shared_name or not shared_name.casefold().endswith(".toml"):
-        raise WorkstationSyncError("shared_config_name must be a TOML basename")
+    if not login_name:
+        raise WorkstationSyncError("Drive login_name is required")
     state = _state_root()
     oauth_client = _expand_path(
         str(drive.get("oauth_client_file", state / "credentials" / "drive-oauth-client.json"))
@@ -191,13 +175,13 @@ def load_settings(path: Path, *, repo_root: Path = ROOT) -> SyncSettings:
     generated = (repo_root / output_name).resolve()
     if generated.parent != repo_root.resolve():
         raise WorkstationSyncError("The generated configuration must remain in the repository root")
+    shared_config = (repo_root / SHARED_CONFIG_RELATIVE_PATH).resolve()
     return SyncSettings(
         settings_path=path.resolve(),
         repo_root=repo_root.resolve(),
         remote=remote,
         branch=branch,
-        projects_folder_url=projects_folder_url,
-        shared_config_name=shared_name,
+        shared_config_file=shared_config,
         login_name=login_name,
         oauth_client_file=oauth_client,
         oauth_token_file=oauth_token,
@@ -323,7 +307,7 @@ def render_shared_config(raw: bytes, *, repo_root: Path, state_root: Path) -> st
     try:
         payload = tomllib.loads(text)
     except tomllib.TOMLDecodeError as exc:
-        raise WorkstationSyncError(f"Downloaded shared configuration is invalid TOML: {exc}") from exc
+        raise WorkstationSyncError(f"Repository shared configuration is invalid TOML: {exc}") from exc
     _validate_shared_tables(payload)
     if "repository" not in payload:
         raise WorkstationSyncError("Shared configuration must contain a [repository] table")
@@ -336,85 +320,58 @@ def render_shared_config(raw: bytes, *, repo_root: Path, state_root: Path) -> st
     return MANAGED_CONFIG_HEADER + text.rstrip() + "\n"
 
 
-def _download_shared_config(settings: SyncSettings) -> tuple[bytes, str]:
-    if not settings.oauth_client_file.is_file():
+def _read_shared_config(settings: SyncSettings) -> bytes:
+    path = settings.shared_config_file
+    expected = (settings.repo_root / SHARED_CONFIG_RELATIVE_PATH).resolve()
+    if path.resolve() != expected:
         raise WorkstationSyncError(
-            "The locally provisioned Drive OAuth client is missing: "
-            f"{settings.oauth_client_file}. Do not place or retrieve it through the shared Drive folder."
+            f"Shared configuration must be the tracked repository file {SHARED_CONFIG_RELATIVE_PATH.as_posix()}"
         )
-    from app_generator.sources.google_drive import DRIVE_FILES_URL, FOLDER_MIME, DriveRestClient, extract_drive_folder_id
-    from app_generator.sources.google_drive_auth import authorize_google_drive
-
-    auth_config = SimpleNamespace(
-        drive_oauth_client_file=settings.oauth_client_file,
-        drive_token_file=settings.oauth_token_file,
-        drive_api_timeout_seconds=60,
-        login_name=settings.login_name,
-    )
-    try:
-        authorization = authorize_google_drive(auth_config)
-        client = DriveRestClient(authorization.session, 60)
-        folder_id = extract_drive_folder_id(settings.projects_folder_url)
-        folder = client.get_item(folder_id)
-        children = client.list_children(folder_id)
-    except Exception as exc:
-        raise WorkstationSyncError(f"Could not authorize or inspect the Projects folder: {exc}") from exc
-    if folder.mime_type != FOLDER_MIME:
-        raise WorkstationSyncError("The configured Projects Drive item is not a folder")
-    matches = [item for item in children if item.name == settings.shared_config_name]
-    if len(matches) != 1:
+    if path.is_symlink() or not path.is_file():
         raise WorkstationSyncError(
-            f"Expected exactly one {settings.shared_config_name!r} in Projects; found {len(matches)}"
+            f"Tracked shared configuration is missing or not a regular file: {path}"
         )
-    item = matches[0]
-    if item.mime_type == FOLDER_MIME or item.can_download is False:
-        raise WorkstationSyncError("The shared configuration is not a downloadable regular file")
-    if item.size_bytes is not None and item.size_bytes > MAX_SHARED_CONFIG_BYTES:
-        raise WorkstationSyncError("The shared configuration exceeds the 256 KiB size limit")
     try:
-        response = authorization.session.get(
-            f"{DRIVE_FILES_URL}/{item.file_id}",
-            params={"alt": "media", "supportsAllDrives": "true"},
-            timeout=60,
-            stream=True,
-        )
-        response.raise_for_status()
-        chunks: list[bytes] = []
-        downloaded = 0
-        for chunk in response.iter_content(chunk_size=64 * 1024):
-            if not chunk:
-                continue
-            downloaded += len(chunk)
-            if downloaded > MAX_SHARED_CONFIG_BYTES:
-                raise WorkstationSyncError("The shared configuration exceeds the 256 KiB size limit")
-            chunks.append(bytes(chunk))
-        raw = b"".join(chunks)
+        size = path.stat().st_size
+        if size > MAX_SHARED_CONFIG_BYTES:
+            raise WorkstationSyncError("Shared configuration exceeds the 256 KiB size limit")
+        raw = path.read_bytes()
     except WorkstationSyncError:
         raise
-    except Exception as exc:
-        raise WorkstationSyncError(f"Could not download the shared configuration: {exc}") from exc
-    if item.size_bytes is not None and len(raw) != item.size_bytes:
-        raise WorkstationSyncError("Shared configuration byte count does not match Drive metadata")
-    return raw, authorization.email
+    except OSError as exc:
+        raise WorkstationSyncError(f"Could not read tracked shared configuration {path}: {exc}") from exc
+    if len(raw) != size:
+        raise WorkstationSyncError("Shared configuration changed while it was being read")
+    return raw
 
 
 def install_shared_config(settings: SyncSettings) -> str:
-    raw, authorized_email = _download_shared_config(settings)
+    raw = _read_shared_config(settings)
     rendered = render_shared_config(raw, repo_root=settings.repo_root, state_root=_state_root())
+    rendered += "\n".join(
+        (
+            "",
+            "[workstation]",
+            f"drive_oauth_client_file = {_toml_string(str(settings.oauth_client_file))}",
+            f"drive_token_file = {_toml_string(str(settings.oauth_token_file))}",
+            "",
+        )
+    )
     temporary = settings.generated_config_file.with_name(settings.generated_config_file.name + ".part")
     from app_generator.config import load_config
     try:
         temporary.write_text(rendered, encoding="utf-8")
         config = load_config(temporary)
-        if config.login_name.casefold() != authorized_email.casefold():
+        if config.login_name.casefold() != settings.login_name.casefold():
             raise WorkstationSyncError(
-                f"Shared configuration expects {config.login_name}, but Drive is authorized as {authorized_email}"
+                f"Shared configuration expects {config.login_name}, but workstation settings expect "
+                f"{settings.login_name}"
             )
         os.replace(temporary, settings.generated_config_file)
     except WorkstationSyncError:
         raise
     except Exception as exc:
-        raise WorkstationSyncError(f"Downloaded generator configuration is not usable: {exc}") from exc
+        raise WorkstationSyncError(f"Repository generator configuration is not usable: {exc}") from exc
     finally:
         try:
             temporary.unlink()
@@ -455,7 +412,7 @@ def run_checks(settings: SyncSettings, python: Path, *, run_generator: bool) -> 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--settings", type=Path, default=_default_settings_path())
-    parser.add_argument("--projects-folder")
+    parser.add_argument("--projects-folder", help=argparse.SUPPRESS)
     parser.add_argument("--login-name")
     parser.add_argument("--branch")
     parser.add_argument("--post-sync", action="store_true", help=argparse.SUPPRESS)
@@ -471,14 +428,12 @@ def _ensure_settings(args: argparse.Namespace) -> Path:
     path = args.settings.expanduser().resolve()
     if path.is_file():
         return path
-    projects = (args.projects_folder or input("Google Drive Projects folder URL: ")).strip()
     login = (args.login_name or input("Authorized Google account email: ")).strip()
     branch = (args.branch or input("Git branch to synchronize [main]: ").strip() or "main").strip()
-    if not projects or not login:
-        raise WorkstationSyncError("Projects folder URL and Google account email are required")
+    if not login:
+        raise WorkstationSyncError("Google account email is required")
     _write_initial_settings(
         path,
-        projects_folder_url=projects,
         login_name=login,
         branch=branch,
     )
@@ -503,8 +458,9 @@ def main(argv: list[str] | None = None) -> int:
                 command.append("--run-generator")
             return subprocess.run(command, cwd=settings.repo_root, check=False).returncode
         digest = install_shared_config(settings)
+        shared_name = settings.shared_config_file.relative_to(settings.repo_root).as_posix()
         print(
-            f"Installed {settings.shared_config_name} as {settings.generated_config_file.name} "
+            f"Installed {shared_name} as {settings.generated_config_file.name} "
             f"(sha256={digest})."
         )
         run_checks(settings, Path(sys.executable), run_generator=args.run_generator)

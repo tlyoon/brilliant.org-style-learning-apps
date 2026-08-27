@@ -1,10 +1,10 @@
-# Use this as a reusable template for config/generator.shared.toml.
-# The tracked active file must contain only non-secret, machine-independent settings.
+# Repository-tracked shared generator configuration.
+# Keep credentials, tokens, Chrome profiles, source PDFs, and run data outside Git.
 
 [placeholders]
-sourcepath = "https://drive.google.com/open?id=REPLACE_WITH_CONTROLLED_SOURCE_FOLDER_ID"
-gemini-gem = "https://gemini.google.com/gem/REPLACE_WITH_GEM_ID"
-loginname = "replace-with-authorized-account@example.com"
+sourcepath = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc&usp=drive_fs"
+gemini-gem = "https://gemini.google.com/gem/1dZR01a7xJ9pveqo55MwzfuPV2i_tUQvJ?usp=sharing"
+loginname = "tlyoon@gmail.com"
 pdf_subchapter_path = "8.1"
 target_filename = "source.pdf"
 target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"
