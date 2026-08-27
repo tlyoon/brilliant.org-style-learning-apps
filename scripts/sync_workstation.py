@@ -19,12 +19,14 @@ from typing import Any, Callable, Mapping
 ROOT = Path(__file__).resolve().parents[1]
 BRANCH = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]*$")
 REMOTE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
-MAX_SHARED_CONFIG_BYTES = 256 * 1024
-SHARED_CONFIG_RELATIVE_PATH = Path("config") / "generator.shared.toml"
+PROJECT_NAME = re.compile(r"^[A-Za-z][A-Za-z0-9._-]{0,63}$")
+MAX_PROJECT_CONFIG_BYTES = 256 * 1024
+PROJECT_CONFIG_RELATIVE_PATH = Path("config") / "project.toml"
 MANAGED_CONFIG_HEADER = (
-    "# Managed by scripts/sync_workstation.py; edit config/generator.shared.toml through Git.\n"
+    "# Managed by scripts/sync_workstation.py; edit config/project.toml through Git.\n"
 )
-ALLOWED_SHARED_KEYS = {
+ALLOWED_PROJECT_KEYS = {
+    "project": {"project_name"},
     "placeholders": {
         "sourcepath", "gemini-gem", "loginname", "pdf_subchapter_path",
         "target_filename", "target_file",
@@ -64,7 +66,7 @@ class SyncSettings:
     repo_root: Path
     remote: str
     branch: str
-    shared_config_file: Path
+    project_config_file: Path
     login_name: str
     oauth_client_file: Path
     oauth_token_file: Path
@@ -175,13 +177,13 @@ def load_settings(path: Path, *, repo_root: Path = ROOT) -> SyncSettings:
     generated = (repo_root / output_name).resolve()
     if generated.parent != repo_root.resolve():
         raise WorkstationSyncError("The generated configuration must remain in the repository root")
-    shared_config = (repo_root / SHARED_CONFIG_RELATIVE_PATH).resolve()
+    shared_config = (repo_root / PROJECT_CONFIG_RELATIVE_PATH).resolve()
     return SyncSettings(
         settings_path=path.resolve(),
         repo_root=repo_root.resolve(),
         remote=remote,
         branch=branch,
-        shared_config_file=shared_config,
+        project_config_file=shared_config,
         login_name=login_name,
         oauth_client_file=oauth_client,
         oauth_token_file=oauth_token,
@@ -273,28 +275,42 @@ def prepare_environment(settings: SyncSettings) -> Path:
     return python
 
 
-def _validate_shared_tables(payload: Mapping[str, Any]) -> None:
-    unknown_sections = set(payload) - set(ALLOWED_SHARED_KEYS)
+def _validate_project_tables(payload: Mapping[str, Any]) -> None:
+    required = {"project", "placeholders", "repository"}
+    missing_sections = required - set(payload)
+    if missing_sections:
+        raise WorkstationSyncError(
+            "Project configuration is missing required section(s): "
+            + ", ".join(sorted(missing_sections))
+        )
+    unknown_sections = set(payload) - set(ALLOWED_PROJECT_KEYS)
     if unknown_sections:
         raise WorkstationSyncError(
-            "Shared configuration contains unsupported section(s): " + ", ".join(sorted(unknown_sections))
+            "Project configuration contains unsupported section(s): "
+            + ", ".join(sorted(unknown_sections))
         )
     for section, raw in payload.items():
         if not isinstance(raw, Mapping):
-            raise WorkstationSyncError(f"Shared configuration [{section}] must be a TOML table")
-        unknown = set(raw) - ALLOWED_SHARED_KEYS[section]
+            raise WorkstationSyncError(f"Project configuration [{section}] must be a TOML table")
+        unknown = set(raw) - ALLOWED_PROJECT_KEYS[section]
         if unknown:
             names = ", ".join(f"{section}.{name}" for name in sorted(unknown))
-            raise WorkstationSyncError(f"Shared configuration contains disallowed key(s): {names}")
+            raise WorkstationSyncError(f"Project configuration contains disallowed key(s): {names}")
+    project = _read_table(payload, "project")
+    project_name = str(project.get("project_name", "")).strip()
+    if not PROJECT_NAME.fullmatch(project_name):
+        raise WorkstationSyncError(
+            "project.project_name must start with a letter and contain only letters, digits, '.', '_' or '-'"
+        )
 
 
-def render_shared_config(raw: bytes, *, repo_root: Path, state_root: Path) -> str:
-    if len(raw) > MAX_SHARED_CONFIG_BYTES:
-        raise WorkstationSyncError("Shared configuration exceeds the 256 KiB size limit")
+def render_project_config(raw: bytes, *, repo_root: Path, state_root: Path) -> str:
+    if len(raw) > MAX_PROJECT_CONFIG_BYTES:
+        raise WorkstationSyncError("Project configuration exceeds the 256 KiB size limit")
     try:
         text = raw.decode("utf-8")
     except UnicodeDecodeError as exc:
-        raise WorkstationSyncError("Shared configuration is not valid UTF-8") from exc
+        raise WorkstationSyncError("Project configuration is not valid UTF-8") from exc
     replacements = {
         "${REPO_ROOT}": repo_root.resolve().as_posix(),
         "${STATE_ROOT}": state_root.resolve().as_posix(),
@@ -303,51 +319,51 @@ def render_shared_config(raw: bytes, *, repo_root: Path, state_root: Path) -> st
         text = text.replace(token, value)
     remaining = sorted(set(re.findall(r"\$\{[A-Z0-9_]+\}", text)))
     if remaining:
-        raise WorkstationSyncError("Unknown shared configuration token(s): " + ", ".join(remaining))
+        raise WorkstationSyncError("Unknown project configuration token(s): " + ", ".join(remaining))
     try:
         payload = tomllib.loads(text)
     except tomllib.TOMLDecodeError as exc:
-        raise WorkstationSyncError(f"Repository shared configuration is invalid TOML: {exc}") from exc
-    _validate_shared_tables(payload)
+        raise WorkstationSyncError(f"Repository project configuration is invalid TOML: {exc}") from exc
+    _validate_project_tables(payload)
     if "repository" not in payload:
-        raise WorkstationSyncError("Shared configuration must contain a [repository] table")
+        raise WorkstationSyncError("Project configuration must contain a [repository] table")
     repository = _read_table(payload, "repository")
     if "repo_root" not in repository:
-        raise WorkstationSyncError("Shared configuration must contain repository.repo_root")
+        raise WorkstationSyncError("Project configuration must contain repository.repo_root")
     configured_root = Path(str(repository["repo_root"])).resolve()
     if configured_root != repo_root.resolve():
-        raise WorkstationSyncError("Shared configuration must set repository.repo_root to ${REPO_ROOT}")
+        raise WorkstationSyncError("Project configuration must set repository.repo_root to ${REPO_ROOT}")
     return MANAGED_CONFIG_HEADER + text.rstrip() + "\n"
 
 
-def _read_shared_config(settings: SyncSettings) -> bytes:
-    path = settings.shared_config_file
-    expected = (settings.repo_root / SHARED_CONFIG_RELATIVE_PATH).resolve()
+def _read_project_config(settings: SyncSettings) -> bytes:
+    path = settings.project_config_file
+    expected = (settings.repo_root / PROJECT_CONFIG_RELATIVE_PATH).resolve()
     if path.resolve() != expected:
         raise WorkstationSyncError(
-            f"Shared configuration must be the tracked repository file {SHARED_CONFIG_RELATIVE_PATH.as_posix()}"
+            f"Project configuration must be the tracked repository file {PROJECT_CONFIG_RELATIVE_PATH.as_posix()}"
         )
     if path.is_symlink() or not path.is_file():
         raise WorkstationSyncError(
-            f"Tracked shared configuration is missing or not a regular file: {path}"
+            f"Tracked project configuration is missing or not a regular file: {path}"
         )
     try:
         size = path.stat().st_size
-        if size > MAX_SHARED_CONFIG_BYTES:
-            raise WorkstationSyncError("Shared configuration exceeds the 256 KiB size limit")
+        if size > MAX_PROJECT_CONFIG_BYTES:
+            raise WorkstationSyncError("Project configuration exceeds the 256 KiB size limit")
         raw = path.read_bytes()
     except WorkstationSyncError:
         raise
     except OSError as exc:
-        raise WorkstationSyncError(f"Could not read tracked shared configuration {path}: {exc}") from exc
+        raise WorkstationSyncError(f"Could not read tracked project configuration {path}: {exc}") from exc
     if len(raw) != size:
-        raise WorkstationSyncError("Shared configuration changed while it was being read")
+        raise WorkstationSyncError("Project configuration changed while it was being read")
     return raw
 
 
-def install_shared_config(settings: SyncSettings) -> str:
-    raw = _read_shared_config(settings)
-    rendered = render_shared_config(raw, repo_root=settings.repo_root, state_root=_state_root())
+def install_project_config(settings: SyncSettings) -> str:
+    raw = _read_project_config(settings)
+    rendered = render_project_config(raw, repo_root=settings.repo_root, state_root=_state_root())
     rendered += "\n".join(
         (
             "",
@@ -364,7 +380,7 @@ def install_shared_config(settings: SyncSettings) -> str:
         config = load_config(temporary)
         if config.login_name.casefold() != settings.login_name.casefold():
             raise WorkstationSyncError(
-                f"Shared configuration expects {config.login_name}, but workstation settings expect "
+                f"Project configuration expects {config.login_name}, but workstation settings expect "
                 f"{settings.login_name}"
             )
         os.replace(temporary, settings.generated_config_file)
@@ -457,10 +473,10 @@ def main(argv: list[str] | None = None) -> int:
             if args.run_generator:
                 command.append("--run-generator")
             return subprocess.run(command, cwd=settings.repo_root, check=False).returncode
-        digest = install_shared_config(settings)
-        shared_name = settings.shared_config_file.relative_to(settings.repo_root).as_posix()
+        digest = install_project_config(settings)
+        project_path = settings.project_config_file.relative_to(settings.repo_root).as_posix()
         print(
-            f"Installed {shared_name} as {settings.generated_config_file.name} "
+            f"Installed {project_path} as {settings.generated_config_file.name} "
             f"(sha256={digest})."
         )
         run_checks(settings, Path(sys.executable), run_generator=args.run_generator)

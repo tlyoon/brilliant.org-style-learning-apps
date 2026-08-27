@@ -11,10 +11,11 @@ class RepositoryRuleTests(unittest.TestCase):
             "AGENTS.md", "docs/CONTEXT_INDEX.md", "docs/PRODUCT_REQUIREMENTS.md",
             "docs/CONTENT_RULES.md", "docs/LEARNING_DESIGN.md",
             "docs/SECURITY_AND_PRIVACY.md", "content/schema/content-package.schema.json",
-            "content/schema/source-manifest.schema.json",
+            "content/schema/source-manifest.schema.json", "config/project.toml",
         ]
         for path in required:
             self.assertTrue((ROOT / path).is_file(), path)
+        self.assertFalse((ROOT / "config" / "generator.shared.toml").exists())
 
     def test_no_legacy_course_name(self):
         pattern = re.compile(r"zca[ _-]?101", re.I)

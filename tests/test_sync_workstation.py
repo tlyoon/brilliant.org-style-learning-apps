@@ -8,15 +8,15 @@ from unittest.mock import patch
 
 from app_generator.config import load_config as load_generator_config
 from scripts.sync_workstation import (
-    MAX_SHARED_CONFIG_BYTES,
-    SHARED_CONFIG_RELATIVE_PATH,
+    MAX_PROJECT_CONFIG_BYTES,
+    PROJECT_CONFIG_RELATIVE_PATH,
     SyncSettings,
     WorkstationSyncError,
-    _read_shared_config,
+    _read_project_config,
     _write_initial_settings,
-    install_shared_config,
+    install_project_config,
     load_settings,
-    render_shared_config,
+    render_project_config,
 )
 
 
@@ -31,7 +31,7 @@ def _settings(root: Path, *, login_name: str = "person@example.com") -> SyncSett
         repo_root=root,
         remote="origin",
         branch="main",
-        shared_config_file=root / SHARED_CONFIG_RELATIVE_PATH,
+        project_config_file=root / PROJECT_CONFIG_RELATIVE_PATH,
         login_name=login_name,
         oauth_client_file=credential_root / "drive-oauth-client.json",
         oauth_token_file=credential_root / "drive-oauth-token.json",
@@ -42,12 +42,12 @@ def _settings(root: Path, *, login_name: str = "person@example.com") -> SyncSett
 
 
 class WorkstationSyncTests(unittest.TestCase):
-    def test_tracked_shared_config_is_accepted_by_the_synchronizer(self):
+    def test_tracked_project_config_is_accepted_by_the_synchronizer(self):
         root = Path(__file__).resolve().parents[1]
-        source = root / SHARED_CONFIG_RELATIVE_PATH
+        source = root / PROJECT_CONFIG_RELATIVE_PATH
 
         with tempfile.TemporaryDirectory() as directory:
-            rendered = render_shared_config(
+            rendered = render_project_config(
                 source.read_bytes(),
                 repo_root=root,
                 state_root=Path(directory),
@@ -64,18 +64,22 @@ class WorkstationSyncTests(unittest.TestCase):
         self.assertEqual("tlyoon@gmail.com", config.login_name)
         self.assertEqual(SOURCE_URL, config.sourcepath)
 
-    def test_shared_example_remains_a_valid_reusable_template(self):
+    def test_project_name_is_present_in_the_active_configuration(self):
         root = Path(__file__).resolve().parents[1]
-        source = root / "config" / "generator.shared.example.toml"
+        with (root / PROJECT_CONFIG_RELATIVE_PATH).open("rb") as handle:
+            payload = tomllib.load(handle)
 
+        self.assertEqual("BrilliantContentGenerator", payload["project"]["project_name"])
+
+    def test_project_configuration_rejects_invalid_project_name(self):
+        raw = (
+            b'[project]\nproject_name = "not valid"\n'
+            b'[placeholders]\nloginname = "person@example.com"\n'
+            b'[repository]\nrepo_root = "${REPO_ROOT}"\n'
+        )
         with tempfile.TemporaryDirectory() as directory:
-            rendered = render_shared_config(
-                source.read_bytes(),
-                repo_root=root,
-                state_root=Path(directory),
-            )
-
-        self.assertIn("max_gemini_session_restarts = 2", rendered)
+            with self.assertRaisesRegex(WorkstationSyncError, "project.project_name"):
+                render_project_config(raw, repo_root=Path(directory), state_root=Path(directory))
 
     def test_batch_entrypoint_has_no_projects_folder_dependency(self):
         entrypoint = Path(__file__).resolve().parents[1] / "sync-workstation.cmd"
@@ -129,32 +133,33 @@ class WorkstationSyncTests(unittest.TestCase):
 
             settings = load_settings(settings_path, repo_root=root)
 
-            self.assertEqual(root / SHARED_CONFIG_RELATIVE_PATH, settings.shared_config_file)
+            self.assertEqual(root / PROJECT_CONFIG_RELATIVE_PATH, settings.project_config_file)
             self.assertEqual("person@example.com", settings.login_name)
 
-    def test_read_shared_config_rejects_missing_file(self):
+    def test_read_project_config_rejects_missing_file(self):
         with tempfile.TemporaryDirectory() as directory:
             settings = _settings(Path(directory))
 
             with self.assertRaisesRegex(WorkstationSyncError, "missing or not a regular file"):
-                _read_shared_config(settings)
+                _read_project_config(settings)
 
-    def test_read_shared_config_rejects_oversized_file(self):
+    def test_read_project_config_rejects_oversized_file(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            source = root / SHARED_CONFIG_RELATIVE_PATH
+            source = root / PROJECT_CONFIG_RELATIVE_PATH
             source.parent.mkdir(parents=True)
-            source.write_bytes(b"x" * (MAX_SHARED_CONFIG_BYTES + 1))
+            source.write_bytes(b"x" * (MAX_PROJECT_CONFIG_BYTES + 1))
 
             with self.assertRaisesRegex(WorkstationSyncError, "256 KiB"):
-                _read_shared_config(_settings(root))
+                _read_project_config(_settings(root))
 
     def test_install_uses_tracked_config_and_writes_managed_local_copy(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            source = root / SHARED_CONFIG_RELATIVE_PATH
+            source = root / PROJECT_CONFIG_RELATIVE_PATH
             source.parent.mkdir(parents=True)
             raw = (
+                b'[project]\nproject_name = "ExampleProject"\n'
                 b'[placeholders]\nloginname = "person@example.com"\n'
                 b'[repository]\nrepo_root = "${REPO_ROOT}"\n'
             )
@@ -165,7 +170,7 @@ class WorkstationSyncTests(unittest.TestCase):
                 "app_generator.config.load_config",
                 return_value=SimpleNamespace(login_name="person@example.com"),
             ):
-                digest = install_shared_config(settings)
+                digest = install_project_config(settings)
 
             self.assertEqual(hashlib.sha256(raw).hexdigest(), digest)
             installed = settings.generated_config_file.read_text(encoding="utf-8")
@@ -181,12 +186,14 @@ class WorkstationSyncTests(unittest.TestCase):
                 installed_payload["workstation"]["drive_token_file"],
             )
 
-    def test_install_rejects_machine_and_shared_account_mismatch(self):
+    def test_install_rejects_machine_and_project_account_mismatch(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            source = root / SHARED_CONFIG_RELATIVE_PATH
+            source = root / PROJECT_CONFIG_RELATIVE_PATH
             source.parent.mkdir(parents=True)
             source.write_text(
+                '[project]\nproject_name = "ExampleProject"\n'
+                '[placeholders]\nloginname = "person@example.com"\n'
                 '[repository]\nrepo_root = "${REPO_ROOT}"\n',
                 encoding="utf-8",
             )
@@ -197,13 +204,13 @@ class WorkstationSyncTests(unittest.TestCase):
                 return_value=SimpleNamespace(login_name="different@example.com"),
             ):
                 with self.assertRaisesRegex(WorkstationSyncError, "workstation settings expect"):
-                    install_shared_config(settings)
+                    install_project_config(settings)
 
             self.assertFalse(settings.generated_config_file.exists())
 
     def test_tracked_config_excludes_machine_local_and_secret_fields(self):
         root = Path(__file__).resolve().parents[1]
-        with (root / SHARED_CONFIG_RELATIVE_PATH).open("rb") as handle:
+        with (root / PROJECT_CONFIG_RELATIVE_PATH).open("rb") as handle:
             payload = tomllib.load(handle)
         keys = {key for table in payload.values() for key in table}
 
