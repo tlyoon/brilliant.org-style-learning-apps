@@ -83,6 +83,25 @@ class WorkstationSyncTests(unittest.TestCase):
         self.assertEqual("section-15-1", recycled.section_dir)
         self.assertEqual("serway-section-15-1", recycled.source_id)
 
+
+    def test_crlf_project_config_is_normalized_before_rendering(self):
+        root = Path(__file__).resolve().parents[1]
+        source = root / PROJECT_CONFIG_RELATIVE_PATH
+        raw = source.read_bytes()
+        raw = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+        raw = raw.replace(b"\n", b"\r\n")
+
+        with tempfile.TemporaryDirectory() as directory:
+            rendered = render_project_config(
+                raw,
+                repo_root=root,
+                state_root=Path(directory),
+            )
+
+        self.assertNotIn("\r", rendered)
+        payload = tomllib.loads(rendered)
+        self.assertEqual("BrilliantContentGenerator", payload["project"]["project_name"])
+
     def test_project_name_is_present_in_the_active_configuration(self):
         root = Path(__file__).resolve().parents[1]
         with (root / PROJECT_CONFIG_RELATIVE_PATH).open("rb") as handle:
