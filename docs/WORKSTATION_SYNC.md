@@ -79,4 +79,4 @@ That option uploads the controlled source to Gemini and starts generation after 
 
 ## Genericization phase status
 
-Phase 7 provides bounded migration for the default project's old environment names, workstation settings, generated filename, Apps Script property, and exact legacy ledger header. These fallbacks do not apply to renamed projects and are scheduled for removal after 31 December 2026. Secret values remain external.
+Phase 8 adds a two-project materialization test proving distinct environment namespaces, local state, OAuth paths, Chrome profiles, coordinator variables, Drive roots, Gems, and source IDs. The reusable setup is documented in `docs/GENERIC_PROJECT_SETUP.md`.
