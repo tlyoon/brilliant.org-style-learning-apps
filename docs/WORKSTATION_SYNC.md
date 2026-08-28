@@ -85,7 +85,7 @@ The synchronizer:
 5. reads `config/project.toml` from the synchronized checkout;
 6. validates it, derives `${PROJECT_ENV_PREFIX}` and `${STATE_ROOT}` from `project_name`, renders all approved tokens, and atomically writes the ignored `project.local.toml`;
 7. verifies that the project and machine-local expected Google accounts agree;
-8. in full mode, runs lint, content validation, unit tests, the JavaScript syntax check, and generator `doctor`; quick mode skips this step, while live generation forces it.
+8. in full mode, runs lint, content validation, unit tests, the JavaScript syntax check, and generator `doctor`; quick mode skips this step. A successful full check is recorded outside the repository for the exact checkout and configuration.
 
 `doctor` verifies Drive authorization, source discovery/download, checksums, and provenance, but does not upload a PDF to Gemini. A live run must be explicitly requested from a terminal:
 
@@ -93,7 +93,7 @@ The synchronizer:
 .\sync-workstation.cmd --run-generator
 ```
 
-That option always forces repository tests and Drive `doctor`, even when the machine-local `run_tests` or `run_doctor` setting is `false`. It uploads the controlled source to Gemini and starts generation only after those checks pass. `--quick` and `--run-generator` are mutually exclusive. Leave `git_publish = false` in the project configuration until automated publishing and the distributed coordinator are intentionally enabled.
+When the same checkout has already completed a successful full synchronization, that option reuses the recorded repository validation and skips the duplicate pre-run test suite and `doctor`. The live run still authenticates Drive, resolves and downloads the selected PDF, and validates its checksum and provenance before uploading it to Gemini. If the Git revision, dependency manifests, tracked project configuration, or checkout path changed—or no successful full check was recorded—`--run-generator` automatically runs the full tests and `doctor` first. `--quick` does not create this validation record. `--quick` and `--run-generator` are mutually exclusive. Leave `git_publish = false` in the project configuration until automated publishing and the distributed coordinator are intentionally enabled.
 
 ## Genericization phase status
 
