@@ -14,7 +14,7 @@ target_filename = "source.pdf"
 target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"
 
 [gemini]
-gem_edit_url = ""
+gem_edit_url = "https://gemini.google.com/gems/edit/815996ef2eef"
 gem_name = "app content generator"
 browser_mode = "controlled"
 
