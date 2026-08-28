@@ -37,6 +37,8 @@ INSTALL_FINGERPRINT_FILES = (
 )
 INSTALL_FINGERPRINT_VERSION = b"workstation-sync-install-v1\0"
 INSTALL_STAMP_NAME = ".workstation-install.sha256"
+VALIDATION_FINGERPRINT_VERSION = b"workstation-sync-validation-v1\0"
+VALIDATION_STAMP_NAME = "workstation-validation.sha256"
 MANAGED_CONFIG_HEADER = (
     "# Managed by scripts/sync_workstation.py; edit config/project.toml through Git.\n"
 )
@@ -322,6 +324,57 @@ def _installation_fingerprint(repo_root: Path) -> str:
     return digest.hexdigest()
 
 
+def _validation_fingerprint(settings: SyncSettings) -> str:
+    digest = hashlib.sha256()
+    digest.update(VALIDATION_FINGERPRINT_VERSION)
+    digest.update(os.path.normcase(str(settings.repo_root)).encode("utf-8"))
+    digest.update(b"\0")
+    commit = _command(["git", "rev-parse", "HEAD"], settings.repo_root).strip()
+    if not re.fullmatch(r"[0-9a-fA-F]{40,64}", commit):
+        raise WorkstationSyncError("Git returned an unexpected commit ID")
+    digest.update(commit.lower().encode("ascii"))
+    digest.update(b"\0")
+    digest.update(_installation_fingerprint(settings.repo_root).encode("ascii"))
+    digest.update(b"\0")
+    digest.update(_read_project_config(settings))
+    return digest.hexdigest()
+
+
+def _validation_stamp_path(settings: SyncSettings) -> Path:
+    return settings.state_root / VALIDATION_STAMP_NAME
+
+
+def has_current_validation(settings: SyncSettings) -> bool:
+    stamp = _validation_stamp_path(settings)
+    try:
+        recorded = stamp.read_text(encoding="utf-8").strip()
+    except FileNotFoundError:
+        return False
+    except OSError as exc:
+        raise WorkstationSyncError(f"Could not read workstation validation stamp {stamp}: {exc}") from exc
+    return recorded == _validation_fingerprint(settings)
+
+
+def record_current_validation(settings: SyncSettings) -> None:
+    stamp = _validation_stamp_path(settings)
+    temporary = stamp.with_name(stamp.name + ".part")
+    try:
+        stamp.parent.mkdir(parents=True, exist_ok=True)
+        temporary.write_text(
+            _validation_fingerprint(settings) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        os.replace(temporary, stamp)
+    except OSError as exc:
+        raise WorkstationSyncError(f"Could not write workstation validation stamp {stamp}: {exc}") from exc
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
+
+
 def prepare_environment(settings: SyncSettings) -> Path:
     python = _venv_python(settings.repo_root)
     if not python.is_file():
@@ -509,10 +562,21 @@ def install_project_config(settings: SyncSettings) -> str:
     return digest
 
 
-def run_checks(settings: SyncSettings, python: Path, *, run_generator: bool) -> None:
-    run_tests = settings.run_tests or run_generator
-    run_doctor = settings.run_doctor or run_generator
-    if run_generator and (not settings.run_tests or not settings.run_doctor):
+def run_checks(
+    settings: SyncSettings,
+    python: Path,
+    *,
+    run_generator: bool,
+    reuse_validation: bool = False,
+) -> None:
+    run_tests = not reuse_validation and (settings.run_tests or run_generator)
+    run_doctor = not reuse_validation and (settings.run_doctor or run_generator)
+    if reuse_validation:
+        print(
+            "Reusing successful checks for this synchronized revision; "
+            "the live run will verify the selected Drive source and provenance."
+        )
+    elif run_generator and (not settings.run_tests or not settings.run_doctor):
         print("Live generation requires repository tests and doctor; forcing both checks.")
     if run_tests:
         print("Running repository validation tests...")
@@ -533,6 +597,8 @@ def run_checks(settings: SyncSettings, python: Path, *, run_generator: bool) -> 
             [str(python), "-m", "app_generator", "doctor", "--config", str(settings.generated_config_file)],
             settings.repo_root,
         )
+    if run_tests and run_doctor:
+        record_current_validation(settings)
     if run_generator:
         print("Starting the explicitly requested live Gemini generation run...")
         _command(
@@ -562,7 +628,10 @@ def _parser() -> argparse.ArgumentParser:
     mode.add_argument(
         "--run-generator",
         action="store_true",
-        help="Synchronize, force all checks, and explicitly start the live Gemini generation run.",
+        help=(
+            "Synchronize and explicitly start the live Gemini generation run, reusing a successful "
+            "full validation of the same checkout when available."
+        ),
     )
     return parser
 
@@ -632,7 +701,13 @@ def main(argv: list[str] | None = None) -> int:
         if args.quick:
             print("Quick synchronization complete; repository tests and Drive doctor were skipped.")
         else:
-            run_checks(settings, Path(sys.executable), run_generator=args.run_generator)
+            reuse_validation = args.run_generator and has_current_validation(settings)
+            run_checks(
+                settings,
+                Path(sys.executable),
+                run_generator=args.run_generator,
+                reuse_validation=reuse_validation,
+            )
         print("Workstation synchronization and configured checks completed successfully.")
         return 0
     except WorkstationSyncError as exc:
