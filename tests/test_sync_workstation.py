@@ -206,8 +206,12 @@ class WorkstationSyncTests(unittest.TestCase):
         self.assertNotIn("BRILLIANT_SYNC_PROJECTS_FOLDER_URL", content)
         self.assertNotIn("--projects-folder", content)
         self.assertNotIn("BRILLIANT_SYNC_", content)
-        command = next(line for line in content.splitlines() if line.startswith("python scripts\\sync_workstation.py"))
-        self.assertEqual("python scripts\\sync_workstation.py %*", command)
+        command = next(
+            line
+            for line in content.splitlines()
+            if line.startswith("python -m scripts.sync_workstation")
+        )
+        self.assertEqual("python -m scripts.sync_workstation %*", command)
 
     def test_initial_settings_do_not_reference_projects_folder(self):
         with tempfile.TemporaryDirectory() as directory:
