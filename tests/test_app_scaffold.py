@@ -15,16 +15,18 @@ class AppScaffoldTests(unittest.TestCase):
         self.assertIn('aria-live="polite"', html)
         self.assertIn('aria-label="Language"', html)
 
-    def test_player_loads_external_package(self):
+    def test_player_requires_an_explicit_external_package(self):
         javascript = (APP / "app.js").read_text(encoding="utf-8")
-        self.assertIn("content/chapter-1/section-1-1/package.json", javascript)
+        self.assertNotIn("content/chapter-1/section-1-1/package.json", javascript)
+        self.assertIn("data-package-url", javascript)
         self.assertIn("loadPackage()", javascript)
 
     def test_entrypoint_identifies_the_review_prototype(self):
         html = (APP / "index.html").read_text(encoding="utf-8")
         self.assertIn("Review prototype", html)
+        self.assertNotIn("Section 1.1", html)
 
-    def test_default_package_remains_in_review(self):
+    def test_existing_section_one_package_remains_in_review(self):
         package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
         self.assertEqual("review", package["status"])
 
