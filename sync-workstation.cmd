@@ -2,8 +2,8 @@
 setlocal
 cd /d "%~dp0"
 
-rem Project identity, account, branch, and machine-local paths are derived by
-rem scripts\sync_workstation.py from config\project.toml and local settings.
+rem Project identity, account, subject/source settings, branch, and machine-local
+rem paths are resolved from config\configure_project.toml plus local settings.
 
 python -c "import sys; raise SystemExit(0 if sys.version_info[:2] == (3, 12) else 1)" >nul 2>nul
 if errorlevel 1 (
@@ -11,7 +11,7 @@ if errorlevel 1 (
   pause
   exit /b 2
 )
-python -m scripts.sync_workstation %*
+python -m scripts.sync_configured_workstation %*
 set "SYNC_EXIT=%ERRORLEVEL%"
 echo.
 if not "%SYNC_EXIT%"=="0" echo Workstation synchronization failed with exit code %SYNC_EXIT%.
