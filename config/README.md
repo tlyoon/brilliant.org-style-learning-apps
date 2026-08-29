@@ -2,6 +2,14 @@
 
 `configure_project.toml` is the normal tracked authority for non-secret values that can change when this repository is reused for another subject, textbook, source tree, Gemini Gem, or deployment policy.
 
+The `config/` directory also owns the project-specific Gemini Gem text:
+
+- `configure_project.toml` → Gem **Name** through `gemini.gem_name`;
+- `gem_description.txt` → Gem **Description**;
+- `gem_instructions.md` → Gem **Instructions**.
+
+Before every live generation, the generator opens the configured Gem editor under the configured Google account and compares all three editable fields with these authoritative values. It changes only fields that differ, saves once when any value changed, reopens the editor, and verifies all three persisted. If all three already match, no Save/Update is issued.
+
 ## Project-dependent values
 
 Review these when creating a new project:
@@ -13,6 +21,7 @@ Review these when creating a new project:
 - `placeholders.pdf_subchapter_path` — controlled default source selector
 - `placeholders.target_filename` and `target_file` — source-tree naming/pattern
 - `gemini.gem_edit_url` and `gem_name`
+- `gem_description.txt` and `gem_instructions.md`
 - coordinator URL/policy when distributed execution is used
 - run metadata/provenance wording such as edition, reviewer and rights note
 - Git publishing/PR/merge policy
