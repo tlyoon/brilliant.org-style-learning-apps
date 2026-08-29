@@ -27,6 +27,10 @@ max_drive_folders = 10000
 [source_tree]
 source_id_prefix = "${PROJECT_SLUG}"
 
+[compatibility]
+# Current project only. Set to an empty string for a newly recycled project.
+legacy_environment_prefix = "BRILLIANT_GENERATOR_"
+
 [automation]
 selection_mode = "specific"
 coordinator_url = ""
