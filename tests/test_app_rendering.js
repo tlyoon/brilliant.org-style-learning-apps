@@ -60,6 +60,7 @@ function find(root, predicate) {
 }
 
 const app = new FakeElement("section");
+app.dataset.packageUrl = "test-package.json";
 const locale = new FakeElement("select");
 const malicious = {
   prompt: '<script>globalThis.__packageCodeExecuted = true</script>',
