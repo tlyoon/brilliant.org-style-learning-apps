@@ -39,6 +39,16 @@ class GeneratorPublishingTests(unittest.TestCase):
             commands = [item[0] for item in publisher.commands]
             self.assertIn(["git", "pull", "--ff-only", "origin", "main"], commands)
             self.assertEqual("automation/section-8-1-abcdef0123", branch)
+            self.assertIn(
+                [
+                    "git",
+                    "show-ref",
+                    "--verify",
+                    "--quiet",
+                    "refs/heads/automation/section-8-1-abcdef0123",
+                ],
+                commands,
+            )
             self.assertIn(["git", "switch", "-c", branch], commands)
 
     def test_auto_merge_uses_normal_github_merge_and_verifies_completion(self):
