@@ -1,7 +1,5 @@
-import tempfile
 import tomllib
 import unittest
-from pathlib import Path
 
 from scripts.configure_project import ProjectConfigurationError, render_project_configuration
 
@@ -18,6 +16,8 @@ loginname = "old@example.com"
 gem_name = "old gem"
 [source_tree]
 source_id_prefix = "${PROJECT_SLUG}"
+[compatibility]
+legacy_environment_prefix = "OLD_GENERATOR_"
 [repository]
 repo_root = "${REPO_ROOT}"
 [paths]
@@ -42,6 +42,7 @@ state_root = "${STATE_ROOT}"
         self.assertEqual("${STATE_ROOT}", payload["paths"]["state_root"])
         self.assertEqual("${REPO_ROOT}", payload["repository"]["repo_root"])
         self.assertEqual("${PROJECT_SLUG}", payload["source_tree"]["source_id_prefix"])
+        self.assertEqual("", payload["compatibility"]["legacy_environment_prefix"])
 
     def test_invalid_hosts_are_rejected(self):
         values = self.values()
