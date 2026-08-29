@@ -3,7 +3,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.build_section_8_1_public_release import build, version_one_package
+from scripts.build_section_8_1_public_release import (
+    build,
+    section_eight_three_package,
+    version_one_package,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,8 +30,10 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
                 "app/styles.css",
                 "v1/index.html",
                 "v2/index.html",
+                "section-8-3/index.html",
                 "content/v1/package.json",
                 "content/v2/package.json",
+                "content/section-8-3/package.json",
             }, actual_files)
 
     def test_both_draft_versions_are_distinct_and_complete(self):
@@ -60,6 +66,21 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
                 (output / "content/v2/package.json").read_bytes(),
             )
 
+    def test_section_eight_three_uses_the_current_draft_package(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory) / "release"
+            build(output)
+            deployed = json.loads(
+                (output / "content/section-8-3/package.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                section_eight_three_package(),
+                (output / "content/section-8-3/package.json").read_bytes(),
+            )
+            self.assertEqual("chapter-8-section-8-3", deployed["packageId"])
+            self.assertEqual("draft", deployed["status"])
+            self.assertEqual(18, len(deployed["activities"]))
+
     def test_landing_and_version_pages_keep_draft_review_labelling(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
@@ -67,11 +88,18 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
             landing = (output / "index.html").read_text(encoding="utf-8")
             self.assertIn('href="v1/"', landing)
             self.assertIn('href="v2/"', landing)
-            self.assertIn("neither version is approved for publication", landing)
+            self.assertIn('href="section-8-3/"', landing)
+            self.assertIn("none are approved for publication", landing)
             for version in ("v1", "v2"):
                 page = (output / version / "index.html").read_text(encoding="utf-8")
                 self.assertIn("Draft review prototype", page)
                 self.assertIn(f'data-package-url="../content/{version}/package.json"', page)
+            section_eight_three = (output / "section-8-3/index.html").read_text(encoding="utf-8")
+            self.assertIn("Draft review prototype", section_eight_three)
+            self.assertIn(
+                'data-package-url="../content/section-8-3/package.json"',
+                section_eight_three,
+            )
 
     def test_refuses_to_overwrite_an_existing_bundle(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
