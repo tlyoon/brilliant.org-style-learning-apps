@@ -375,6 +375,20 @@ def record_current_validation(settings: SyncSettings) -> None:
             pass
 
 
+def _ensure_pip(python: Path, repo_root: Path) -> None:
+    try:
+        _command([str(python), "-m", "pip", "--version"], repo_root)
+    except WorkstationSyncError:
+        print("pip is unavailable; bootstrapping pip with ensurepip...")
+        try:
+            _command([str(python), "-m", "ensurepip", "--upgrade"], repo_root)
+        except WorkstationSyncError as exc:
+            raise WorkstationSyncError(
+                "pip is unavailable and automatic bootstrapping failed; "
+                "install pip in the Python 3.12 environment and retry."
+            ) from exc
+
+
 def prepare_environment(settings: SyncSettings) -> Path:
     python = _venv_python(settings.repo_root)
     if not python.is_file():
@@ -415,6 +429,7 @@ def prepare_environment(settings: SyncSettings) -> Path:
             return python
 
     print("Installing the synchronized package into .venv...")
+    _ensure_pip(python, settings.repo_root)
     _command([str(python), "-m", "pip", "install", "-e", "."], settings.repo_root)
     temporary = stamp.with_name(stamp.name + ".part")
     try:

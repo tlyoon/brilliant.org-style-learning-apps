@@ -102,6 +102,36 @@ class WorkstationSyncTests(unittest.TestCase):
         ]
         self.assertEqual(2, len(pip_calls))
 
+    def test_missing_pip_is_bootstrapped_before_installation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for relative in (
+                "pyproject.toml",
+                "requirements-generator.txt",
+                "requirements-dev.txt",
+            ):
+                (root / relative).write_text(relative + "\n", encoding="utf-8")
+            python = _venv_python(root)
+            python.parent.mkdir(parents=True)
+            python.write_text("", encoding="utf-8")
+            settings = _settings(root)
+            calls = []
+
+            def fake_command(arguments, cwd):
+                calls.append(arguments)
+                if len(arguments) >= 3 and arguments[1] == "-c" and "sys.version_info" in arguments[2]:
+                    return "3.12"
+                if arguments[1:4] == ["-m", "pip", "--version"]:
+                    raise WorkstationSyncError("pip is not installed")
+                return ""
+
+            with patch("scripts.sync_workstation._command", side_effect=fake_command):
+                prepare_environment(settings)
+
+        ensurepip_index = calls.index([str(python), "-m", "ensurepip", "--upgrade"])
+        install_index = calls.index([str(python), "-m", "pip", "install", "-e", "."])
+        self.assertLess(ensurepip_index, install_index)
+
     def test_live_generation_forces_tests_and_doctor(self):
         with tempfile.TemporaryDirectory() as directory:
             settings = replace(
