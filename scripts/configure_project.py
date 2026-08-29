@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Safely configure the single tracked project authority."""
+"""Safely configure the dedicated tracked project authority."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from app_generator.project import ProjectIdentityError, environment_prefix, vali
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CONFIG = ROOT / "config" / "project.toml"
+DEFAULT_CONFIG = ROOT / "config" / "configure_project.toml"
 EDITABLE_VALUES = {
     ("project", "project_name"): "project_name",
     ("placeholders", "sourcepath"): "source_root_url",
@@ -146,7 +146,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--apply",
         action="store_true",
-        help="Atomically update config/project.toml after verifying a clean Git worktree.",
+        help="Atomically update config/configure_project.toml after verifying a clean Git worktree.",
     )
     return parser
 
