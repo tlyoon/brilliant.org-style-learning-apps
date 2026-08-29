@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the minimal dual-version Section 8.1 public review site."""
+"""Build the minimal Section 8.1 and Section 8.3 public review site."""
 
 from __future__ import annotations
 
@@ -14,14 +14,16 @@ ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_PATH = Path("content/chapter-8/section-8-1/package.json")
 VERSION_ONE_COMMIT = "38b6b59d4d5c0fc408406721c445baf78c00980d"
 EXPECTED_PACKAGE_ID = "chapter-8-section-8-1"
+SECTION_EIGHT_THREE_PACKAGE_PATH = Path("content/chapter-8/section-8-3/package.json")
+SECTION_EIGHT_THREE_PACKAGE_ID = "chapter-8-section-8-3"
 
 
-def _validate_public_package(payload: bytes, label: str) -> None:
+def _validate_public_package(payload: bytes, label: str, expected_package_id: str) -> None:
     try:
         package = json.loads(payload.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ValueError(f"{label} is not valid UTF-8 JSON: {exc}") from exc
-    if package.get("packageId") != EXPECTED_PACKAGE_ID:
+    if package.get("packageId") != expected_package_id:
         raise ValueError(f"{label} has an unexpected packageId")
     if package.get("status") != "draft":
         raise ValueError(f"{label} must remain explicitly labelled as draft")
@@ -38,7 +40,7 @@ def version_one_package() -> bytes:
         check=True,
         capture_output=True,
     )
-    _validate_public_package(result.stdout, "Section 8.1 Version 1")
+    _validate_public_package(result.stdout, "Section 8.1 Version 1", EXPECTED_PACKAGE_ID)
     return result.stdout
 
 
@@ -46,7 +48,19 @@ def version_two_package() -> bytes:
     """Read the current regenerated Section 8.1 draft."""
 
     payload = (ROOT / PACKAGE_PATH).read_bytes()
-    _validate_public_package(payload, "Section 8.1 Version 2")
+    _validate_public_package(payload, "Section 8.1 Version 2", EXPECTED_PACKAGE_ID)
+    return payload
+
+
+def section_eight_three_package() -> bytes:
+    """Read the current generated Section 8.3 draft."""
+
+    payload = (ROOT / SECTION_EIGHT_THREE_PACKAGE_PATH).read_bytes()
+    _validate_public_package(
+        payload,
+        "Section 8.3",
+        SECTION_EIGHT_THREE_PACKAGE_ID,
+    )
     return payload
 
 
@@ -83,6 +97,39 @@ def _version_page(version: str, label: str, package_url: str) -> str:
 """
 
 
+def _section_eight_three_page() -> str:
+    return """<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Section 8.3 Situations Involving Kinetic Friction Review Prototype</title>
+    <link rel="stylesheet" href="../app/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="../">Section 8.3 — Situations Involving Kinetic Friction</a>
+        <label>Language
+          <select id="locale" aria-label="Language">
+            <option value="en">English</option>
+            <option value="ms">Bahasa Melayu</option>
+            <option value="zh">简体中文</option>
+          </select>
+        </label>
+      </header>
+      <p class="prototype-notice" role="note">Draft review prototype — not approved for publication.</p>
+      <section id="app" aria-live="polite" data-package-url="../content/section-8-3/package.json">
+        <p>Loading Section 8.3…</p>
+      </section>
+    </main>
+    <script type="module" src="../app/app.js"></script>
+  </body>
+</html>
+"""
+
+
 def _landing_page() -> str:
     return """<!doctype html>
 <html lang="en">
@@ -90,7 +137,7 @@ def _landing_page() -> str:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Section 8.1 Dual-Version Review Prototype</title>
+    <title>Chapter 8 Learning Review Prototypes</title>
     <link rel="stylesheet" href="app/styles.css">
     <style>
       .version-grid { display: grid; gap: 1rem; margin: 1rem 0 3rem; }
@@ -100,9 +147,9 @@ def _landing_page() -> str:
   </head>
   <body>
     <main class="shell">
-      <header class="topbar"><span class="brand">Section 8.1 Learning</span></header>
-      <p class="prototype-notice" role="note">Public draft review prototypes — neither version is approved for publication.</p>
-      <h1>Choose a Section 8.1 version</h1>
+      <header class="topbar"><span class="brand">Chapter 8 Learning</span></header>
+      <p class="prototype-notice" role="note">Public draft review prototypes — none are approved for publication.</p>
+      <h1>Choose a learning prototype</h1>
       <div class="version-grid">
         <section class="card">
           <p class="eyebrow">Version 1</p>
@@ -115,6 +162,12 @@ def _landing_page() -> str:
           <h2>Regenerated draft</h2>
           <p>Open the later validated 18-activity package.</p>
           <a class="action version-link" href="v2/">Open Version 2</a>
+        </section>
+        <section class="card">
+          <p class="eyebrow">Section 8.3</p>
+          <h2>Situations Involving Kinetic Friction</h2>
+          <p>Open the generated, structurally validated 18-activity draft.</p>
+          <a class="action version-link" href="section-8-3/">Open Section 8.3</a>
         </section>
       </div>
       <p class="privacy-note">This static review site has no accounts, analytics, audio capture, or student-data storage.</p>
@@ -134,6 +187,7 @@ def build(output: Path) -> None:
     packages = {
         Path("content/v1/package.json"): version_one_package(),
         Path("content/v2/package.json"): version_two_package(),
+        Path("content/section-8-3/package.json"): section_eight_three_package(),
     }
     files = {
         Path("index.html"): _landing_page().encode("utf-8"),
@@ -143,6 +197,7 @@ def build(output: Path) -> None:
         Path("v2/index.html"): _version_page(
             "Version 2", "Version 2", "../content/v2/package.json"
         ).encode("utf-8"),
+        Path("section-8-3/index.html"): _section_eight_three_page().encode("utf-8"),
         **packages,
     }
     for relative, payload in files.items():

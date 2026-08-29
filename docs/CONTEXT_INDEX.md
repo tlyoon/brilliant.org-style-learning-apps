@@ -37,3 +37,5 @@ Accepted reusable-generator baseline: Decisions 0009 through 0016 establish `con
 Accepted source-derived automation baseline: Decision 0017 derives exact section titles and scope from validated PDF analysis, records truthful automated-draft provenance without manual metadata prompts, and permits explicitly configured private-repository auto-merge while preserving draft status, branch protection, human-review gates, and the deployment prohibition.
 
 Accepted public-review baseline: Decision 0007 permits the two Section 8.1 draft packages to be deployed together in a separate minimal public GitHub Pages repository with explicit draft labelling and no publication sign-offs.
+
+Accepted Chapter 8 public-review extension: Decision 0018 permits the generated Section 8.3 draft to join the existing minimal public GitHub Pages review repository while retaining draft labelling, excluding internal artifacts, and preserving all human-review gates.
