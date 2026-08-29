@@ -16,8 +16,10 @@ from scripts.sync_workstation import (
     _read_project_config,
     _write_initial_settings,
     install_project_config,
+    has_current_validation,
     load_settings,
     prepare_environment,
+    record_current_validation,
     render_project_config,
     run_checks,
     _parser,
@@ -110,6 +112,7 @@ class WorkstationSyncTests(unittest.TestCase):
             with (
                 patch("scripts.sync_workstation._command") as command,
                 patch("scripts.sync_workstation.shutil.which", return_value="node"),
+                patch("scripts.sync_workstation.record_current_validation"),
             ):
                 run_checks(settings, Path("python"), run_generator=True)
 
@@ -129,6 +132,59 @@ class WorkstationSyncTests(unittest.TestCase):
                 for arguments in commands
             )
         )
+
+    def test_live_generation_reuses_successful_checks_for_current_revision(self):
+        with tempfile.TemporaryDirectory() as directory:
+            settings = _settings(Path(directory))
+            with patch("scripts.sync_workstation._command") as command:
+                run_checks(
+                    settings,
+                    Path("python"),
+                    run_generator=True,
+                    reuse_validation=True,
+                )
+
+        commands = [call.args[0] for call in command.call_args_list]
+        self.assertEqual(
+            [
+                [
+                    "python",
+                    "-m",
+                    "app_generator",
+                    "run",
+                    "--config",
+                    str(settings.generated_config_file),
+                ]
+            ],
+            commands,
+        )
+
+    def test_validation_stamp_matches_only_current_checkout_state(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for relative in (
+                "pyproject.toml",
+                "requirements-generator.txt",
+                "requirements-dev.txt",
+            ):
+                (root / relative).write_text(relative + "\n", encoding="utf-8")
+            source = root / PROJECT_CONFIG_RELATIVE_PATH
+            source.parent.mkdir(parents=True)
+            source.write_text(
+                '[project]\nproject_name = "BrilliantContentGenerator"\n',
+                encoding="utf-8",
+            )
+            settings = replace(_settings(root), state_root=root / "state")
+
+            with patch("scripts.sync_workstation._command", return_value="a" * 40):
+                self.assertFalse(has_current_validation(settings))
+                record_current_validation(settings)
+                self.assertTrue(has_current_validation(settings))
+                source.write_text(
+                    '[project]\nproject_name = "ChangedProject"\n',
+                    encoding="utf-8",
+                )
+                self.assertFalse(has_current_validation(settings))
 
     def test_tracked_project_config_is_accepted_by_the_synchronizer(self):
         root = Path(__file__).resolve().parents[1]
@@ -206,8 +262,12 @@ class WorkstationSyncTests(unittest.TestCase):
         self.assertNotIn("BRILLIANT_SYNC_PROJECTS_FOLDER_URL", content)
         self.assertNotIn("--projects-folder", content)
         self.assertNotIn("BRILLIANT_SYNC_", content)
-        command = next(line for line in content.splitlines() if line.startswith("python scripts\\sync_workstation.py"))
-        self.assertEqual("python scripts\\sync_workstation.py %*", command)
+        command = next(
+            line
+            for line in content.splitlines()
+            if line.startswith("python -m scripts.sync_workstation")
+        )
+        self.assertEqual("python -m scripts.sync_workstation %*", command)
 
     def test_initial_settings_do_not_reference_projects_folder(self):
         with tempfile.TemporaryDirectory() as directory:

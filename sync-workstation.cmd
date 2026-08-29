@@ -11,7 +11,7 @@ if errorlevel 1 (
   pause
   exit /b 2
 )
-python scripts\sync_workstation.py %*
+python -m scripts.sync_workstation %*
 set "SYNC_EXIT=%ERRORLEVEL%"
 echo.
 if not "%SYNC_EXIT%"=="0" echo Workstation synchronization failed with exit code %SYNC_EXIT%.
