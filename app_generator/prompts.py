@@ -115,7 +115,7 @@ def activity_batch_prompt(
 
 def semantic_audit_prompt(activities: list[dict[str, Any]]) -> str:
     return _contract(
-        "Audit these activities without rewriting them. Check science, English, Malay, Simplified Chinese, answer logic, "
+        "Audit these activities without rewriting them. Check subject-matter correctness, English, Malay, Simplified Chinese, answer logic, "
         "diagnostic correctness, difficulty, originality risk, accessibility, and duplication. Return "
         "{\"findings\": [{\"activityId\": str, \"severity\": \"blocker\"|\"warning\", \"code\": str, \"message\": str}]}. "
         "Use an empty findings array when no issue is found.\n\nACTIVITIES:\n"
@@ -172,7 +172,7 @@ def repair_activity_prompt(activity: dict[str, Any], errors: list[str]) -> str:
         "correct fields. Never remove or rename an existing option, item, or target ID. You may add the minimum new "
         "item or target only when the stated validation error is mathematically impossible to repair with the existing "
         "cardinality. For ordering mode, correctOrder must contain every item ID exactly once; if a finding says an "
-        "item is scientifically invalid, rewrite that item's localized labels into a valid step while keeping its ID, "
+        "item is subject-matter invalid, rewrite that item's localized labels into a valid step while keeping its ID, "
         "then include it in correctOrder. For classification and matching, placements must contain every item ID "
         "exactly once and reference only declared targets; matching must use every target ID at least once. For "
         "selection, correctSelections must contain only declared item-ID strings and must leave at least one item "
