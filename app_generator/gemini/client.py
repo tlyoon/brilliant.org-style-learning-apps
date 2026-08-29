@@ -13,7 +13,6 @@ from app_generator.errors import TransientGeminiError, UiContractError
 from app_generator.gemini.conversation import GemConversationPage
 from app_generator.gemini.editor import GemEditorPage
 from app_generator.gemini.models import ModelFailure, ModelOption, classify_model_failure, rank_models
-from app_generator.prompts import gem_description, gem_instructions
 
 LOGGER = logging.getLogger("app_generator.gemini")
 
@@ -39,8 +38,20 @@ class GeminiClient:
         self.editor.enter_editor()
 
     def configure_gem(self) -> None:
-        self.editor.verify_identity(self.config.gem_name)
-        self.editor.initialize_configuration(gem_description(), gem_instructions())
+        config_dir = self.config.repo_root / "config"
+        description_path = config_dir / "gem_description.txt"
+        instructions_path = config_dir / "gem_instructions.md"
+        try:
+            description = description_path.read_text(encoding="utf-8").strip()
+            instructions = instructions_path.read_text(encoding="utf-8").strip()
+        except OSError as exc:
+            raise UiContractError(
+                "Project Gem configuration is incomplete; expected config/gem_description.txt "
+                "and config/gem_instructions.md"
+            ) from exc
+        if not description or not instructions:
+            raise UiContractError("Project Gem Description and Instructions must both be non-empty")
+        self.editor.synchronize_configuration(self.config.gem_name, description, instructions)
 
     def open_conversation_select_model_and_attach(self, source_path: Path) -> str:
         self.conversation.open_new()
