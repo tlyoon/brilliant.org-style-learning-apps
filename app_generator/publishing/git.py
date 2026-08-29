@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import subprocess
 import sys
@@ -19,6 +20,7 @@ class PublishResult:
     branch: str
     commit: str
     pr_url: str
+    merged: bool
 
 
 class GitPublisher:
@@ -110,6 +112,16 @@ class GitPublisher:
             last_error = output
         raise GitPublishError(f"Branch was pushed, but the draft pull request could not be created: {last_error}")
 
+    def _merge_pr(self, pr_url: str) -> None:
+        self._run(["gh", "pr", "merge", pr_url, "--merge"])
+        payload = self._run(["gh", "pr", "view", pr_url, "--json", "state,mergedAt"])
+        try:
+            status = json.loads(payload)
+        except json.JSONDecodeError as exc:
+            raise GitPublishError("GitHub returned an invalid merge-verification response") from exc
+        if status.get("state") != "MERGED" or not status.get("mergedAt"):
+            raise GitPublishError("GitHub did not confirm that the generated-content pull request merged")
+
     def publish(
         self,
         *,
@@ -136,4 +148,8 @@ class GitPublisher:
             "qualified physics, instructional, language, accessibility, and provenance review."
         )
         pr_url = self._create_pr(branch, title, body)
-        return PublishResult(branch=branch, commit=commit, pr_url=pr_url)
+        merged = False
+        if self.config.git_auto_merge:
+            self._merge_pr(pr_url)
+            merged = True
+        return PublishResult(branch=branch, commit=commit, pr_url=pr_url, merged=merged)

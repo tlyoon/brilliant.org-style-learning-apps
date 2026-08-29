@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter
 from collections.abc import Callable
 from copy import deepcopy
+import re
 from typing import Any, Protocol
 
 from app_generator.generation.assembler import assemble_package, validate_activity_batch, validate_plan
@@ -64,18 +65,62 @@ class GenerationProtocol:
     @staticmethod
     def _valid_source_analysis(document: Any) -> bool:
         if not isinstance(document, dict) or set(document) != {
-            "learningObjectives", "prerequisites", "misconceptionCatalogue", "scopeNotes",
+            "sectionTitle", "learningObjectives", "prerequisites", "misconceptionCatalogue", "scopeNotes",
         }:
             return False
-        if not all(
-            isinstance(document.get(key), list) and bool(document[key])
-            for key in ("learningObjectives", "prerequisites", "misconceptionCatalogue")
+        section_title = document.get("sectionTitle")
+        if (
+            not isinstance(section_title, str)
+            or not section_title.strip()
+            or re.fullmatch(r"(?:section\s+)?[1-9][0-9]*(?:\.[1-9][0-9]*)?", section_title.strip(), re.I)
+        ):
+            return False
+        objectives = document.get("learningObjectives")
+        if not isinstance(objectives, list) or not objectives or not all(
+            isinstance(item, str) and bool(item.strip()) for item in objectives
+        ):
+            return False
+        localized_keys = {"en", "ms", "zh"}
+
+        def valid_localized(value: Any) -> bool:
+            return (
+                isinstance(value, dict)
+                and set(value) == localized_keys
+                and all(isinstance(item, str) and bool(item.strip()) for item in value.values())
+            )
+
+        def valid_id(value: Any) -> bool:
+            return isinstance(value, str) and re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", value) is not None
+
+        prerequisites = document.get("prerequisites")
+        if not isinstance(prerequisites, list) or not prerequisites or not all(
+            isinstance(item, dict)
+            and set(item) == {"id", "description", "recovery"}
+            and valid_id(item.get("id"))
+            and valid_localized(item.get("description"))
+            and valid_localized(item.get("recovery"))
+            for item in prerequisites
+        ):
+            return False
+        misconceptions = document.get("misconceptionCatalogue")
+        if not isinstance(misconceptions, list) or not misconceptions or not all(
+            isinstance(item, dict)
+            and set(item) == {"id", "description"}
+            and valid_id(item.get("id"))
+            and valid_localized(item.get("description"))
+            for item in misconceptions
         ):
             return False
         scope = document.get("scopeNotes")
-        return isinstance(scope, dict) and all(
-            isinstance(scope.get(key), list) and bool(scope[key])
-            for key in ("includedConcepts", "excludedConcepts")
+        return (
+            isinstance(scope, dict)
+            and set(scope) == {"includedConcepts", "excludedConcepts"}
+            and all(
+                isinstance(scope.get(key), list)
+                and bool(scope[key])
+                and all(isinstance(item, str) and bool(item.strip()) for item in scope[key])
+                for key in ("includedConcepts", "excludedConcepts")
+            )
         )
 
     def _source_analysis(self, run_metadata: dict[str, Any]) -> dict[str, Any]:

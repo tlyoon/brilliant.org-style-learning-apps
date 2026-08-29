@@ -46,6 +46,7 @@ DEFAULTS: dict[str, Any] = {
     "git_branch_prefix": "automation",
     "git_create_draft_pr": True,
     "git_run_full_tests": True,
+    "git_auto_merge": False,
     "model_preference_patterns": [
         r"\bpro\b|most capable|highest capability|advanced reasoning",
         r"advanced|reasoning|high capability",
@@ -119,6 +120,7 @@ class GeneratorConfig:
     git_branch_prefix: str
     git_create_draft_pr: bool
     git_run_full_tests: bool
+    git_auto_merge: bool
 
     @property
     def output_dir(self) -> Path:
@@ -203,7 +205,10 @@ def _coerce_env(key: str, value: str) -> Any:
         "max_job_attempts",
     }:
         return int(value)
-    if key in {"allow_unknown_model_fallback", "git_publish", "git_create_draft_pr", "git_run_full_tests"}:
+    if key in {
+        "allow_unknown_model_fallback", "git_publish", "git_create_draft_pr", "git_run_full_tests",
+        "git_auto_merge",
+    }:
         return value.strip().casefold() in {"1", "true", "yes", "on"}
     if key in {"source_files", "model_preference_patterns"}:
         return [item for item in value.split(os.pathsep) if item]
@@ -440,6 +445,11 @@ def load_config(
     branch_prefix = str(values["git_branch_prefix"]).strip().strip("/")
     if not BRANCH_PREFIX.fullmatch(branch_prefix) or ".." in branch_prefix:
         raise ConfigurationError("git_branch_prefix is not a safe Git branch prefix")
+    git_auto_merge = bool(values["git_auto_merge"])
+    if git_auto_merge and not bool(values["git_publish"]):
+        raise ConfigurationError("git_auto_merge requires git_publish=true")
+    if git_auto_merge and bool(values["git_create_draft_pr"]):
+        raise ConfigurationError("git_auto_merge requires git_create_draft_pr=false")
 
     return GeneratorConfig(
         project_name=project_name,
@@ -503,4 +513,5 @@ def load_config(
         git_branch_prefix=branch_prefix,
         git_create_draft_pr=bool(values["git_create_draft_pr"]),
         git_run_full_tests=bool(values["git_run_full_tests"]),
+        git_auto_merge=git_auto_merge,
     )

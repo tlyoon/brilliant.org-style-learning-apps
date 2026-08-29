@@ -18,6 +18,7 @@ from app_generator.errors import NoAvailableJob, RepairLimitExceeded, SourceSetM
 from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts, write_json_atomic
 from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
 from app_generator.generation.documents import render_learning_design, render_review_record, render_section_readme
+from app_generator.generation.metadata import apply_source_metadata, materialize_source_metadata
 from app_generator.generation.protocol import GenerationProtocol
 from app_generator.locking import WorkerLock
 from app_generator.logging_setup import configure_logging
@@ -235,23 +236,6 @@ def run_generation(
                     )
                     store.transition(RunPhase.GIT_BRANCH_PREPARED, branch=branch)
 
-                manifest = (
-                    load_existing_manifest(active_config.existing_source_manifest, sources[0], active_config)
-                    if active_config.existing_source_manifest
-                    else build_manifest(
-                        active_config,
-                        sources,
-                        drive_file_id=drive_source.file_id if drive_source else None,
-                    )
-                )
-                manifest_errors = validate_manifest(active_config.repo_root, manifest)
-                if manifest_errors:
-                    raise ValidationFailure(
-                        "Source manifest is incompatible with the current repository schema",
-                        manifest_errors,
-                    )
-                store.transition(RunPhase.SOURCE_MANIFEST_READY)
-
                 browser = chrome_factory(active_config)
                 driver = browser.start()
                 store.transition(RunPhase.CHROME_STARTED)
@@ -329,19 +313,39 @@ def run_generation(
                 run_metadata = {
                     "packageId": active_config.package_id,
                     "chapter": active_config.chapter,
-                    "subchapter": active_config.subchapter,
-                    "learningBoundary": active_config.learning_boundary,
+                    "subchapterId": active_config.pdf_subchapter_path,
+                    "learningBoundary": (
+                        "The complete controlled PDF defines the included concepts; concepts not supported "
+                        "by that PDF are excluded."
+                    ),
                     "sourceFilenames": [source.controlled_filename for source in sources],
-                    "heading": active_config.heading,
                     "pageRange": active_config.page_range,
                     "attachmentMode": "fresh-conversation",
                 }
-                source_location = f"{active_config.heading}; {active_config.page_range}"
-                package, _, _ = protocol.generate(
+                source_location = f"Section {active_config.pdf_subchapter_path}; {active_config.page_range}"
+                package, analysis, _ = protocol.generate(
                     config=active_config,
                     run_metadata=run_metadata,
                     source_location=source_location,
                 )
+                active_config = materialize_source_metadata(active_config, analysis)
+                package = apply_source_metadata(package, active_config)
+                manifest = (
+                    load_existing_manifest(active_config.existing_source_manifest, sources[0], active_config)
+                    if active_config.existing_source_manifest
+                    else build_manifest(
+                        active_config,
+                        sources,
+                        drive_file_id=drive_source.file_id if drive_source else None,
+                    )
+                )
+                manifest_errors = validate_manifest(active_config.repo_root, manifest)
+                if manifest_errors:
+                    raise ValidationFailure(
+                        "Source manifest is incompatible with the current repository schema",
+                        manifest_errors,
+                    )
+                store.transition(RunPhase.SOURCE_MANIFEST_READY)
                 store.transition(
                     RunPhase.PACKAGE_ASSEMBLED,
                     actual_model=resilient_client.actual_model,
@@ -398,10 +402,11 @@ def run_generation(
                         ensure_lease=ensure_lease,
                     )
                     store.transition(
-                        RunPhase.GIT_PUBLISHED,
+                        RunPhase.GIT_MERGED if published.merged else RunPhase.GIT_PUBLISHED,
                         branch=published.branch,
                         commit=published.commit,
                         pr_url=published.pr_url,
+                        merged=published.merged,
                     )
                 if coordinator is not None and lease is not None:
                     assert lease_guard is not None

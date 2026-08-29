@@ -66,12 +66,67 @@ class GeneratorProtocolTests(unittest.TestCase):
         }
         self.assertFalse(GenerationProtocol._valid_source_analysis(wrong))
         valid = {
+            "sectionTitle": "Conceptual Energy Transfers",
             "learningObjectives": ["Objective"],
-            "prerequisites": [{"id": "prerequisite"}],
-            "misconceptionCatalogue": [{"id": "misconception"}],
+            "prerequisites": [{
+                "id": "prerequisite",
+                "description": {"en": "Description", "ms": "Huraian", "zh": "Description"},
+                "recovery": {"en": "Review", "ms": "Ulang kaji", "zh": "Review"},
+            }],
+            "misconceptionCatalogue": [{
+                "id": "misconception",
+                "description": {"en": "Description", "ms": "Huraian", "zh": "Description"},
+            }],
             "scopeNotes": {"includedConcepts": ["included"], "excludedConcepts": ["excluded"]},
         }
         self.assertTrue(GenerationProtocol._valid_source_analysis(valid))
+
+    def test_source_analysis_contract_rejects_prerequisite_without_recovery(self):
+        analysis = {
+            "sectionTitle": "Conceptual Energy Transfers",
+            "learningObjectives": ["Objective"],
+            "prerequisites": [{
+                "id": "prerequisite",
+                "description": {"en": "Description", "ms": "Huraian", "zh": "Description"},
+            }],
+            "misconceptionCatalogue": [{
+                "id": "misconception",
+                "description": {"en": "Description", "ms": "Huraian", "zh": "Description"},
+            }],
+            "scopeNotes": {"includedConcepts": ["included"], "excludedConcepts": ["excluded"]},
+        }
+        self.assertFalse(GenerationProtocol._valid_source_analysis(analysis))
+
+    def test_invalid_cached_source_analysis_discards_dependent_parsed_stages(self):
+        invalid = {
+            "sectionTitle": "Conceptual Energy Transfers",
+            "learningObjectives": ["Objective"],
+            "prerequisites": [{
+                "id": "prerequisite",
+                "description": {"en": "Description", "ms": "Huraian", "zh": "Description"},
+            }],
+            "misconceptionCatalogue": [{
+                "id": "misconception",
+                "description": {"en": "Description", "ms": "Huraian", "zh": "Description"},
+            }],
+            "scopeNotes": {"includedConcepts": ["included"], "excludedConcepts": ["excluded"]},
+        }
+        corrected = {
+            **invalid,
+            "prerequisites": [{
+                **invalid["prerequisites"][0],
+                "recovery": {"en": "Review", "ms": "Ulang kaji", "zh": "Review"},
+            }],
+        }
+        response = "BEGIN_JSON\n" + json.dumps(corrected) + "\nEND_JSON"
+        with tempfile.TemporaryDirectory() as directory:
+            context = RunContext.create(Path(directory))
+            context.save_stage("source-analysis", invalid)
+            context.save_stage("activity-plan", {"activities": []})
+            protocol = GenerationProtocol(self.Conversation([response]), context)
+
+            self.assertEqual(corrected, protocol._source_analysis({}))
+            self.assertIsNone(context.load_stage("activity-plan"))
 
     def test_source_analysis_removes_fields_outside_package_schema(self):
         analysis = {
