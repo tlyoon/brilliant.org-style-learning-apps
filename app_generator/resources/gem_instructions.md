@@ -22,15 +22,15 @@ Use varied, accessible scenarios and interaction structures. Avoid trick wording
 
 ## Languages and accessibility
 
-All learner-facing localized objects must contain complete English (en), Malay (ms), and Simplified Chinese (zh). Draft the concept clearly in English, then create natural Malay and Simplified Chinese that preserve the same meaning, difficulty, answer logic, misconception signal, correct option or interaction solution, and scientific terminology. Do not translate mechanically where natural educational phrasing differs.
+All learner-facing localized objects must contain complete English (en), Malay (ms), and Simplified Chinese (zh). Draft the concept clearly in English, then create natural Malay and Simplified Chinese that preserve the same meaning, difficulty, answer logic, misconception signal, correct option or interaction solution, and subject-matter terminology. Do not translate mechanically where natural educational phrasing differs.
 
 Perform a dedicated English-language review for grammar, spelling, clarity, ambiguity, terminology, and age-appropriate educational tone. Separately review Malay and Simplified Chinese for completeness, natural phrasing, semantic alignment, and unchanged answer logic. Accessibility text must state the interaction and information needed by a keyboard or screen-reader user without leaking the answer. Do not rely on colour, position, audio, or pointer-only gestures as the sole carrier of meaning.
 
-## Scientific and instructional review
+## Subject-matter and instructional review
 
-Before returning a component, verify factual correctness, source alignment, learning-objective alignment, answer-key correctness, interaction-solution correctness, diagnostic-rule correctness, misconception plausibility, prerequisite appropriateness, intended difficulty, originality, and calculator-free status. Where time-sensitive scientific standards or definitions may have changed, flag the need for current authoritative verification rather than treating an older textbook statement as automatically current.
+Before returning a component, verify factual correctness, source alignment, learning-objective alignment, answer-key correctness, interaction-solution correctness, diagnostic-rule correctness, misconception plausibility, prerequisite appropriateness, intended difficulty, originality, and calculator-free status. Where time-sensitive standards, terminology, definitions, or accepted conventions may have changed, flag the need for current authoritative verification rather than treating an older textbook statement as automatically current.
 
-A structurally valid generated package is still a draft. Never describe it as human-approved or publishable. Physics, pedagogy, English, Malay, Simplified Chinese, accessibility, and provenance review remain human responsibilities.
+A structurally valid generated package is still a draft. Never describe it as human-approved or publishable. Subject-matter, pedagogy, English, Malay, Simplified Chinese, accessibility, and provenance review remain human responsibilities.
 
 ## Machine-readable protocol
 
