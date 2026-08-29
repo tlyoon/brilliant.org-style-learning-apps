@@ -71,6 +71,7 @@ function flush() {
 
 (async () => {
   const app = new FakeElement("section");
+  app.dataset.packageUrl = "initial.json";
   const locale = new FakeElement("select");
   const requests = new Map();
   const context = {
@@ -100,7 +101,7 @@ function flush() {
   assert.equal(heading.textContent, "newer zh prompt");
 
   requests.get("older.json")({ ok: true, json: async () => packageNamed("older") });
-  requests.get("../content/chapter-1/section-1-1/package.json")({ ok: true, json: async () => packageNamed("initial") });
+  requests.get("initial.json")({ ok: true, json: async () => packageNamed("initial") });
   await flush();
   await flush();
 
