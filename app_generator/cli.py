@@ -24,8 +24,16 @@ from app_generator.sources.manifest import build_manifest, load_existing_manifes
 from app_generator.validation.schema_validation import validate_manifest
 
 
+DEFAULT_CONFIG = Path("project.local.toml")
+
+
 def _add_config_arguments(command: argparse.ArgumentParser) -> None:
-    command.add_argument("--config", type=Path, required=True)
+    command.add_argument(
+        "--config",
+        type=Path,
+        default=DEFAULT_CONFIG,
+        help="configuration file (default: .\\project.local.toml)",
+    )
     command.add_argument("--repo-root", type=Path)
     command.add_argument("--gem-url")
     command.add_argument("--gem-edit-url")
