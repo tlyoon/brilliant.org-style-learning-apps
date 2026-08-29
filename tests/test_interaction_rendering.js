@@ -95,6 +95,7 @@ function moveDown(app, itemLabel) {
 }
 
 const app = new FakeElement("section");
+app.dataset.packageUrl = "interaction-test.json";
 const locale = new FakeElement("select");
 const context = {
   console,
