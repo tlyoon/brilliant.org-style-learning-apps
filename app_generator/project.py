@@ -28,6 +28,10 @@ class ProjectIdentity:
     state_root: Path
 
     @property
+    def slug(self) -> str:
+        return project_slug(self.name)
+
+    @property
     def settings_path(self) -> Path:
         return self.state_root / "workstation-sync.toml"
 
@@ -50,6 +54,7 @@ class ProjectIdentity:
     def tokens(self, *, repo_root: Path) -> dict[str, str]:
         return {
             "${PROJECT_NAME}": self.name,
+            "${PROJECT_SLUG}": self.slug,
             "${PROJECT_ENV_PREFIX}": self.env_prefix,
             "${STATE_ROOT}": self.state_root.resolve().as_posix(),
             "${REPO_ROOT}": repo_root.resolve().as_posix(),
@@ -75,6 +80,17 @@ def environment_prefix(project_name: str) -> str:
     if not prefix or not prefix[0].isalpha():
         raise ProjectIdentityError("project.project_name cannot produce a safe environment prefix")
     return prefix
+
+
+def project_slug(project_name: str) -> str:
+    """Convert a project name to a lowercase kebab-case identifier prefix."""
+
+    name = validate_project_name(project_name)
+    separated = _CAMEL_BOUNDARY.sub("-", name)
+    slug = _NON_ALPHANUMERIC.sub("-", separated).strip("-").casefold()
+    if not slug:
+        raise ProjectIdentityError("project.project_name cannot produce a safe project slug")
+    return slug
 
 
 def state_root_for(
