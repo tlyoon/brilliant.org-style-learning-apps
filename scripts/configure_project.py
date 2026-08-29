@@ -23,6 +23,7 @@ EDITABLE_VALUES = {
     ("placeholders", "gemini-gem"): "gem_url",
     ("placeholders", "loginname"): "login_name",
     ("gemini", "gem_name"): "gem_name",
+    ("compatibility", "legacy_environment_prefix"): "legacy_environment_prefix",
 }
 
 
@@ -62,6 +63,7 @@ def validated_values(values: Mapping[str, str]) -> dict[str, str]:
         ),
         "login_name": login_name,
         "gem_name": gem_name,
+        "legacy_environment_prefix": "",
     }
 
 
