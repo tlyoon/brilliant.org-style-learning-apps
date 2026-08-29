@@ -18,6 +18,10 @@ def main(argv: list[str] | None = None) -> int:
     core.MANAGED_CONFIG_HEADER = (
         "# Managed by scripts/sync_workstation.py; edit config/configure_project.toml through Git.\n"
     )
+    core.ALLOWED_PROJECT_KEYS = {
+        **core.ALLOWED_PROJECT_KEYS,
+        "compatibility": {"legacy_environment_prefix"},
+    }
     return core.main(argv)
 
 
