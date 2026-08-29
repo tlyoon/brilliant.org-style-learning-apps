@@ -70,7 +70,7 @@ ALLOWED_PROJECT_KEYS = {
     },
     "git": {
         "git_publish", "git_remote", "git_base_branch", "git_branch_prefix",
-        "git_create_draft_pr", "git_run_full_tests",
+        "git_create_draft_pr", "git_run_full_tests", "git_auto_merge",
     },
     "models": {"model_preference_patterns", "allow_unknown_model_fallback"},
 }

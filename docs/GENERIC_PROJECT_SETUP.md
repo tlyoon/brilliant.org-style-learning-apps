@@ -27,7 +27,7 @@ python scripts\configure_project.py `
 
 Review the unified diff. Repeat with `--apply`; the command refuses a dirty worktree and atomically changes only the approved keys in `config/project.toml`.
 
-Then edit the remaining controlled metadata in that same file, especially edition, reviewer, rights note, learning boundary, and any desired source ID prefix. Keep token values, credentials, PDFs, browser data, and run data out of Git.
+Then review the remaining controlled project metadata in that same file, especially rights note and any desired source ID prefix. Section title and learning boundary are derived from validated PDF analysis; an unidentified edition and automated-draft actor are recorded without blocking generation. Keep token values, credentials, PDFs, browser data, and run data out of Git.
 
 ## 3. Review and merge configuration
 

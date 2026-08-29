@@ -14,8 +14,8 @@ target_filename = "source.pdf"
 target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"
 
 [gemini]
-gem_edit_url = ""
-gem_name = "app content generator"
+gem_edit_url = "https://gemini.google.com/gems/edit/815996ef2eef"
+gem_name = "app content generator (tlyoon@gmail.com)"
 browser_mode = "controlled"
 
 [google_drive]
@@ -48,15 +48,15 @@ state_dir = "${STATE_ROOT}/runs"
 [run]
 package_id = "chapter-{chapter_number}-section-{section_slug}"
 chapter = "Chapter {chapter_number}"
-subchapter = "{subchapter_id} Replace with subchapter title"
+subchapter = "{subchapter_id}"
 chapter_dir = "chapter-{chapter_number}"
 section_dir = "section-{section_slug}"
-learning_boundary = "Describe exactly what section {subchapter_id} includes and excludes."
+learning_boundary = "The complete controlled PDF for section {subchapter_id} defines the included concepts; unsupported concepts are excluded."
 source_id = "{source_id_prefix}-section-{section_slug}"
-edition = "Replace with the controlled edition/version"
-heading = "{subchapter_id} Replace with the controlled heading"
+edition = "Edition not identified in the controlled PDF"
+heading = "{subchapter_id}"
 page_range = "Complete controlled PDF for section {subchapter_id}"
-reviewer = "Replace with responsible instructor or content owner"
+reviewer = "Automated draft generation; qualified human review required"
 rights_note = "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
 
 [limits]
@@ -68,12 +68,13 @@ max_gemini_session_restarts = 2
 log_level = "INFO"
 
 [git]
-git_publish = false
+git_publish = true
 git_remote = "origin"
 git_base_branch = "main"
 git_branch_prefix = "automation"
-git_create_draft_pr = true
+git_create_draft_pr = false
 git_run_full_tests = true
+git_auto_merge = true
 
 [models]
 model_preference_patterns = [

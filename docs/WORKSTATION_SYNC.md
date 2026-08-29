@@ -93,7 +93,7 @@ The synchronizer:
 .\sync-workstation.cmd --run-generator
 ```
 
-That option always forces repository tests and Drive `doctor`, even when the machine-local `run_tests` or `run_doctor` setting is `false`. It uploads the controlled source to Gemini and starts generation only after those checks pass. `--quick` and `--run-generator` are mutually exclusive. Leave `git_publish = false` in the project configuration until automated publishing and the distributed coordinator are intentionally enabled.
+That option always forces repository tests and Drive `doctor`, even when the machine-local `run_tests` or `run_doctor` setting is `false`. It uploads the controlled source to Gemini and starts generation only after those checks pass. `--quick` and `--run-generator` are mutually exclusive. Leave `git_publish = false` and `git_auto_merge = false` until repository handoff is intentionally enabled. Auto-merge additionally requires a non-draft PR, honors GitHub branch protection, and leaves the package itself in `draft` status.
 
 ## Genericization phase status
 

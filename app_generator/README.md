@@ -37,6 +37,8 @@ The immediate parent directory must look like `8.1`. All ancestors are project-d
 
 The `[run]` values in `config/project.toml` are templates. The generator materializes `{chapter_number}`, `{section_number}`, `{subchapter_id}`, `{section_slug}`, and `{source_id_prefix}` after resolving or claiming a PDF. The project configurator derives `source_id_prefix` from the project name; it can then be edited explicitly in the single project file when a textbook-specific source label is preferred.
 
+The validated source-analysis stage supplies the exact printed section title and included/excluded scope notes. Python uses those values to materialize the final section label, learning boundary, and source-location references. Jobs do not prompt for per-section title, edition, reviewer, or learning-boundary values; unidentified edition metadata and the automated-draft actor are recorded truthfully while qualified human review remains pending.
+
 Two selection modes are provided:
 
 | Mode | Purpose |
@@ -119,7 +121,7 @@ When `git_publish = true`, the worker:
 8. opens a draft PR with GitHub CLI;
 9. marks the coordinator job `review_pending`.
 
-It never pushes directly to `main`, merges the PR, marks content publishable, or deploys GitHub Pages. After the PR has been reviewed and merged, mark the ledger job complete with `coordinator-complete`.
+It never pushes directly to `main`, marks content publishable, or deploys GitHub Pages. By default it stops at a draft PR. Decision 0017 permits `git_auto_merge = true` only with Git publishing enabled and draft-PR creation disabled; that path requests a normal GitHub PR merge, verifies the merged state, honors branch protection, and leaves the package in `draft` status. After a distributed PR has been merged, mark the ledger job complete with `coordinator-complete`.
 
 ## First controlled run
 

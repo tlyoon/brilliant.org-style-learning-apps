@@ -74,6 +74,32 @@ class GeneratorConfigTests(unittest.TestCase):
             self.assertEqual(2, config.max_gemini_session_restarts)
             self.assertEqual("EXAMPLE_PROJECT_GENERATOR_", config.env_prefix)
 
+    def test_auto_merge_requires_publishing_and_a_non_draft_pr(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.pdf"
+            source.write_bytes(b"synthetic")
+            path = self.make_config(root, [source])
+            original = path.read_text(encoding="utf-8")
+            path.write_text(original + "[git]\ngit_auto_merge = true\n", encoding="utf-8")
+            with self.assertRaisesRegex(ConfigurationError, "git_publish=true"):
+                load_config(path, environ={})
+            path.write_text(
+                original
+                + "[git]\ngit_publish = true\ngit_auto_merge = true\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ConfigurationError, "git_create_draft_pr=false"):
+                load_config(path, environ={})
+            path.write_text(
+                original
+                + "[git]\ngit_publish = true\ngit_create_draft_pr = false\n"
+                + "git_auto_merge = true\n",
+                encoding="utf-8",
+            )
+            config = load_config(path, environ={})
+            self.assertTrue(config.git_auto_merge)
+
     def test_project_specific_values_have_no_python_defaults(self):
         for key in (
             "gem_url", "gem_name", "login_name", "chrome_profile_dir", "state_dir",
