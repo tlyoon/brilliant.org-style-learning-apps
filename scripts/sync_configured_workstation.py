@@ -11,9 +11,9 @@ from scripts import sync_workstation as core
 CONFIGURE_PROJECT_RELATIVE_PATH = Path("config") / "configure_project.toml"
 
 
-def main(argv: list[str] | None = None) -> int:
-    # Keep the mature synchronization implementation in one place while making
-    # the user-facing entrypoint read the dedicated project-specific authority.
+def configure_core() -> None:
+    """Point the hardened synchronizer at the dedicated project configuration authority."""
+
     core.PROJECT_CONFIG_RELATIVE_PATH = CONFIGURE_PROJECT_RELATIVE_PATH
     core.MANAGED_CONFIG_HEADER = (
         "# Managed by scripts/sync_workstation.py; edit config/configure_project.toml through Git.\n"
@@ -22,6 +22,12 @@ def main(argv: list[str] | None = None) -> int:
         **core.ALLOWED_PROJECT_KEYS,
         "compatibility": {"legacy_environment_prefix"},
     }
+
+
+def main(argv: list[str] | None = None) -> int:
+    # Keep the mature synchronization implementation in one place while making
+    # the user-facing entrypoint read the dedicated project-specific authority.
+    configure_core()
     return core.main(argv)
 
 
