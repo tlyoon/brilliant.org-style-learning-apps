@@ -25,7 +25,7 @@ drive_api_timeout_seconds = 60
 max_drive_folders = 10000
 
 [source_tree]
-source_id_prefix = "serway"
+source_id_prefix = "${PROJECT_SLUG}"
 
 [automation]
 selection_mode = "specific"
