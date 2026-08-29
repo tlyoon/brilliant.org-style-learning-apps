@@ -62,7 +62,12 @@ class GitPublisher:
         branch = f"{self.config.git_branch_prefix}/section-{slug}-{job_key[:10]}"
         if not re.fullmatch(r"[A-Za-z0-9._/-]+", branch) or ".." in branch:
             raise GitPublishError(f"Generated unsafe branch name: {branch}")
-        local_exists = bool(self._run(["git", "show-ref", "--verify", f"refs/heads/{branch}"], check=False))
+        local_exists = bool(
+            self._run(
+                ["git", "show-ref", "--verify", "--quiet", f"refs/heads/{branch}"],
+                check=False,
+            )
+        )
         remote_exists = bool(
             self._run(["git", "ls-remote", "--heads", remote, f"refs/heads/{branch}"], check=False)
         )
