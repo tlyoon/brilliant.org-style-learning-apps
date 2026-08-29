@@ -1,0 +1,16 @@
+{
+  "manifestVersion": "1.0",
+  "sourceId": "serway-section-8-3",
+  "controlledFilename": "source.pdf",
+  "sha256": "7b3374e6edc77fb5abf4e2d73da3ce173bea366820c8337600a8e89906912f9d",
+  "edition": "Edition not identified in the controlled PDF",
+  "chapter": "Chapter 8",
+  "subchapter": "8.3 Situations Involving Kinetic Friction",
+  "heading": "8.3 Situations Involving Kinetic Friction",
+  "pageRange": "Complete controlled PDF for section 8.3",
+  "learningBoundary": "Includes concepts supported by the controlled PDF for 8.3 Situations Involving Kinetic Friction: Microscopic model of kinetic friction and point-of-application displacement differences; Limitations of the particle work-kinetic energy theorem for sliding deformable interfaces; Transformation of kinetic energy into system internal energy through friction; Energy conservation formulation for nonisolated systems with friction dissipation; Effect of applied pulling angle on normal force, kinetic friction, and final kinetic energy; Horizontal spring-mass motion with kinetic friction retarding forces. Excludes: Gravitational potential energy changes on rough inclines (covered in Section 8.4); General potential energy functions and conservative force gradient definitions; Static friction thresholds, impending motion, and rolling without slipping; Fluid drag forces and terminal velocity dynamics.",
+  "extractedOn": "2026-08-29",
+  "reviewer": "Automated draft generation; qualified human review required",
+  "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git.",
+  "driveFileId": "1SGvomckzw5XwEMKTFAhRibVI1Hv7U4nO"
+}
