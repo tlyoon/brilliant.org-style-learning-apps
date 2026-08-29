@@ -24,11 +24,38 @@ def configure_core() -> None:
     }
 
 
+def _configured_subprocess_run(original_run):
+    """Keep the post-sync subprocess on this configured wrapper."""
+
+    def run(arguments, *args, **kwargs):
+        rewritten = arguments
+        if (
+            isinstance(arguments, list)
+            and len(arguments) >= 2
+            and Path(str(arguments[1])).name == "sync_workstation.py"
+            and "--post-sync" in arguments
+        ):
+            rewritten = [
+                arguments[0],
+                "-m",
+                "scripts.sync_configured_workstation",
+                *arguments[2:],
+            ]
+        return original_run(rewritten, *args, **kwargs)
+
+    return run
+
+
 def main(argv: list[str] | None = None) -> int:
     # Keep the mature synchronization implementation in one place while making
-    # the user-facing entrypoint read the dedicated project-specific authority.
+    # both the initial and post-sync phases read the dedicated project authority.
     configure_core()
-    return core.main(argv)
+    original_run = core.subprocess.run
+    core.subprocess.run = _configured_subprocess_run(original_run)
+    try:
+        return core.main(argv)
+    finally:
+        core.subprocess.run = original_run
 
 
 if __name__ == "__main__":
