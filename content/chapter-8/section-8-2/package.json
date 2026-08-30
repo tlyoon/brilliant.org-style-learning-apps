@@ -1,0 +1,2148 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-8-section-8-2",
+  "chapter": "Chapter 8",
+  "subchapter": "8.2 Analysis Model: Isolated System (Energy)",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Identify whether a chosen system is isolated or nonisolated based on energy transfers across its boundary.",
+    "Apply conservation of mechanical energy to isolated systems where only conservative forces act.",
+    "Differentiate between energy transfer across a boundary and energy transformation within an isolated system.",
+    "Relate kinetic, gravitational potential, and elastic potential energies in multi-component isolated systems.",
+    "Account for internal energy changes when nonconservative forces act within an isolated system.",
+    "Analyze how choosing different system boundaries alters whether interactions are internal potential energy or external work."
+  ],
+  "prerequisites": [
+    {
+      "id": "prereq-kinetic-energy",
+      "description": {
+        "en": "Understanding kinetic energy as energy associated with the state of motion of an object.",
+        "ms": "Memahami tenaga kinetik sebagai tenaga yang berkaitan dengan keadaan gerakan sesuatu objek.",
+        "zh": "理解动能是与物体运动状态相关的能量。"
+      },
+      "recovery": {
+        "en": "Review how mass and speed determine an object's kinetic energy.",
+        "ms": "Ulang kaji bagaimana jisim dan kelajuan menentukan tenaga kinetik sesuatu objek.",
+        "zh": "复习质量和速度如何决定物体的动能。"
+      }
+    },
+    {
+      "id": "prereq-potential-energy",
+      "description": {
+        "en": "Understanding potential energy as stored energy dependent on the spatial configuration of interacting members.",
+        "ms": "Memahami tenaga keupayaan sebagai tenaga tersimpan yang bergantung pada konfigurasi ruang ahli yang berinteraksi.",
+        "zh": "理解势能是取决于相互作用成员空间构型的存储能量。"
+      },
+      "recovery": {
+        "en": "Review how changes in position or deformation store energy in gravitational and elastic systems.",
+        "ms": "Ulang kaji bagaimana perubahan kedudukan atau ubah bentuk menyimpan tenaga dalam sistem graviti dan kenyal.",
+        "zh": "复习位置变化或形变如何在重力与弹性系统中存储能量。"
+      }
+    },
+    {
+      "id": "prereq-work-energy-relation",
+      "description": {
+        "en": "Understanding work as an energy transfer across a system boundary caused by a force acting through a displacement.",
+        "ms": "Memahami kerja sebagai pemindahan tenaga merentasi sempadan sistem akibat daya yang bertindak melalui sesaran.",
+        "zh": "理解功是由于力在位移上作用而跨越系统边界传递能量的机制。"
+      },
+      "recovery": {
+        "en": "Review how external forces change a system's energy when their points of application move.",
+        "ms": "Ulang kaji bagaimana daya luar mengubah tenaga sistem apabila titik tindakannya bergerak.",
+        "zh": "复习外力在其作用点移动时如何改变系统能量。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "misc-single-object-potential-energy",
+      "description": {
+        "en": "Believing that a single particle can possess potential energy on its own without including interacting objects in the system.",
+        "ms": "Beranggapan bahawa satu zarah tunggal boleh memiliki tenaga keupayaan dengan sendirinya tanpa memasukkan objek yang berinteraksi ke dalam sistem.",
+        "zh": "认为单个粒子本身可以单独拥有势能，而无需将相互作用的物体包含在系统中。"
+      }
+    },
+    {
+      "id": "misc-conserved-means-individual-energies-constant",
+      "description": {
+        "en": "Believing that no internal forces can do work inside an isolated system to transform energy among kinetic, potential, and internal forms.",
+        "ms": "Percaya bahawa tiada daya dalaman boleh melakukan kerja di dalam sistem terpencil untuk mengubah tenaga antara bentuk kinetik, keupayaan, dan dalaman.",
+        "zh": "认为孤立系统内部不存在内力做功来在动能、势能和内能之间转换能量。"
+      }
+    },
+    {
+      "id": "misc-mechanical-energy-always-conserved",
+      "description": {
+        "en": "Assuming mechanical energy is conserved even when nonconservative forces act internally to convert mechanical energy into internal energy.",
+        "ms": "Menganggap tenaga mekanik sentiasa abadi walaupun daya bukan abadi bertindak secara dalaman untuk menukarkan tenaga mekanik kepada tenaga dalaman.",
+        "zh": "认为即使系统内部存在非保守力将机械能转化为内能，机械能也始终守恒。"
+      }
+    },
+    {
+      "id": "misc-path-dependence-in-conservative-systems",
+      "description": {
+        "en": "Believing that the final speed of an object in a conservative isolated system depends on the trajectory path rather than the endpoint configurations.",
+        "ms": "Beranggapan bahawa kelajuan akhir objek dalam sistem terpencil yang abadi bergantung pada bentuk trajektori dan bukannya konfigurasi titik akhir.",
+        "zh": "认为保守孤立系统中物体的最终速度取决于运动轨迹路径，而不是端点构型。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-8/section-8-2/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-8-section-8-2.json",
+  "activities": [
+    {
+      "id": "mcq-easy-isolated-system-definition",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Identify whether a chosen system is isolated or nonisolated based on energy transfers across its boundary.",
+      "prompt": {
+        "en": "Which condition defines a system as an isolated system for energy?",
+        "ms": "Apakah syarat yang mentakrifkan sesuatu sistem sebagai sistem terpencil bagi tenaga?",
+        "zh": "哪项条件将一个系统定义为能量意义上的孤立系统？"
+      },
+      "hints": [
+        {
+          "en": "Consider whether energy is permitted to cross the system boundary in an isolated system.",
+          "ms": "Pertimbangkan sama ada tenaga dibenarkan merentasi sempadan sistem dalam sistem terpencil.",
+          "zh": "考虑在孤立系统中是否允许能量跨越系统边界。"
+        },
+        {
+          "en": "An isolated system can undergo internal transformations among kinetic, potential, and internal energies, but its boundary prevents any energy transfer to or from the environment.",
+          "ms": "Sistem terpencil boleh mengalami perubahan dalaman antara tenaga kinetik, keupayaan, dan dalaman, tetapi sempadannya menghalang sebarang pemindahan tenaga ke atau dari persekitaran.",
+          "zh": "孤立系统可以在动能、势能和内能之间进行内部转化，但其边界阻止了与环境之间的任何能量传递。"
+        }
+      ],
+      "feedback": {
+        "en": "An isolated system is defined by zero energy transfer across its boundary. Within the system, energy can still be transformed from one form to another.",
+        "ms": "Sistem terpencil ditakrifkan oleh pemindahan tenaga sifar merentasi sempadannya. Di dalam sistem, tenaga masih boleh ditukarkan dari satu bentuk ke bentuk yang lain.",
+        "zh": "孤立系统定义为跨越其边界的能量传递为零。在系统内部，能量仍然可以从一种形式转化为另一种形式。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because the definition of an isolated system for energy is that no energy crosses its boundary. Option B is incorrect because internal forces can do work and transform energy between different forms while total energy remains constant. Option C describes a steady-state nonisolated system. Option D is irrelevant to the definition of system isolation.",
+        "ms": "Pilihan A adalah betul kerana takrif sistem terpencil bagi tenaga ialah tiada tenaga merentasi sempadannya. Pilihan B tidak betul kerana daya dalaman boleh melakukan kerja dan menukar tenaga antara bentuk yang berbeza sementara jumlah tenaga kekal malar. Pilihan C menerangkan sistem bukan terpencil keadaan mantap. Pilihan D tidak relevan dengan takrif pemencilan sistem.",
+        "zh": "选项A正确，因为能量孤立系统的定义是没有能量跨越其边界。选项B错误，因为内力可以做功并在不同形式之间转化能量，而总能量保持恒定。选项C描述的是稳态非孤立系统。选项D与系统孤立的定义无关。"
+      },
+      "explanation": {
+        "en": "In physics, a system is categorized as isolated for energy when no energy enters or leaves across its chosen boundary through work, heat, or radiation\n. Although the total energy of an isolated system is strictly conserved, internal forces can perform work to convert energy between kinetic, potential, and internal forms\n.",
+        "ms": "Dalam fizik, sistem dikategorikan sebagai terpencil bagi tenaga apabila tiada tenaga masuk atau keluar merentasi sempadan pilihannya melalui kerja, haba, atau sinaran\n. Walaupun jumlah tenaga sistem terpencil adalah abadi secara mutlak, daya dalaman boleh melakukan kerja untuk menukar tenaga antara bentuk kinetik, keupayaan, dan dalaman\n.",
+        "zh": "在物理学中，当没有能量通过做功、热量或辐射进出选定的边界时，该系统被归类为能量孤立系统\n。尽管孤立系统的总能量严格守恒，但内力可以做功以在动能、势能和内能形式之间进行转换\n。"
+      },
+      "misconceptions": [
+        "misc-conserved-means-individual-energies-constant"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-work-energy-relation",
+        "prompt": {
+          "en": "Recall that work represents a transfer of energy across a system boundary by a force acting over a displacement. If no such transfers occur across the boundary, the system is isolated.",
+          "ms": "Ingat kembali bahawa kerja mewakili pemindahan tenaga merentasi sempadan sistem oleh daya yang bertindak melalui sesaran. Jika tiada pemindahan sedemikian berlaku merentasi sempadan, sistem tersebut adalah terpencil.",
+          "zh": "回忆做功代表力在位移上作用而跨越系统边界传递能量。如果没有此类传递跨越边界，则系统是孤立的。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking for the defining condition of an isolated system for energy, with four conceptual options.",
+        "ms": "Soalan aneka pilihan yang bertanyakan syarat pentakrifan sistem terpencil bagi tenaga, dengan empat pilihan konsep.",
+        "zh": "关于能量孤立系统定义条件的多选题，包含四个概念选项。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-iso-def-correct",
+        "options": [
+          {
+            "id": "opt-iso-def-correct",
+            "label": {
+              "en": "No energy crosses the boundary of the system by any transfer mechanism.",
+              "ms": "Tiada tenaga yang merentasi sempadan sistem melalui sebarang mekanisme pemindahan.",
+              "zh": "没有任何能量通过任何传递机制跨越系统边界。"
+            }
+          },
+          {
+            "id": "opt-iso-def-const-each",
+            "label": {
+              "en": "Every individual form of energy inside the system remains constant, preventing any internal forces from doing work.",
+              "ms": "Setiap bentuk tenaga individu di dalam sistem kekal malar, menghalang sebarang daya dalaman daripada melakukan kerja.",
+              "zh": "系统内部的每种独立能量形式都保持恒定，阻止任何内力做功。"
+            },
+            "misconception": "misc-conserved-means-individual-energies-constant"
+          },
+          {
+            "id": "opt-iso-def-equal-transfers",
+            "label": {
+              "en": "Energy continuously enters and leaves across the boundary at equal rates so the net change is zero.",
+              "ms": "Tenaga secara berterusan masuk dan keluar merentasi sempadan pada kadar yang sama supaya perubahan bersih adalah sifar.",
+              "zh": "能量以相等的速率持续进出边界，使得净变化为零。"
+            }
+          },
+          {
+            "id": "opt-iso-def-single-particle",
+            "label": {
+              "en": "The system contains only one single particle that cannot interact with any other objects.",
+              "ms": "Sistem ini hanya mengandungi satu zarah tunggal yang tidak boleh berinteraksi dengan mana-mana objek lain.",
+              "zh": "系统仅包含单个粒子，无法与任何其他物体相互作用。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-easy-free-fall-potential-energy",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply conservation of mechanical energy to isolated systems where only conservative forces act.",
+      "prompt": {
+        "en": "A book is released from rest and falls toward the ground. To model this situation as an isolated system in which mechanical energy is conserved via gravitational potential energy, what must the system include?",
+        "ms": "Sebuah buku dilepaskan dari keadaan rehat dan jatuh ke tanah. Untuk memodelkan situasi ini sebagai sistem terpencil di mana tenaga mekanik diabadikan melalui tenaga keupayaan graviti, apakah yang mesti disertakan dalam sistem tersebut?",
+        "zh": "一本书从静止释放并落向地面。为了将此情景建模为一个通过重力势能守恒机械能的孤立系统，该系统必须包含什么？"
+      },
+      "hints": [
+        {
+          "en": "Think about which interacting objects are required for gravitational potential energy to exist in a system.",
+          "ms": "Fikirkan tentang objek berinteraksi yang manakah diperlukan untuk tenaga keupayaan graviti wujud dalam sesuatu sistem.",
+          "zh": "思考系统中存在重力势能需要哪些相互作用的物体。"
+        },
+        {
+          "en": "Potential energy belongs to a system of two or more interacting bodies. If the Earth is outside the system, gravity is an external force doing work on a nonisolated system.",
+          "ms": "Tenaga keupayaan kepunyaan sistem yang mempunyai dua atau lebih jasad yang berinteraksi. Jika Bumi berada di luar sistem, graviti ialah daya luar yang melakukan kerja pada sistem bukan terpencil.",
+          "zh": "势能属于由两个或多个相互作用物体组成的系统。如果地球在系统之外，重力就是对非孤立系统做功的外力。"
+        }
+      ],
+      "feedback": {
+        "en": "Potential energy requires at least two interacting objects. By defining the system as the book and the Earth, gravity becomes an internal conservative force and mechanical energy is conserved.",
+        "ms": "Tenaga keupayaan memerlukan sekurang-kurangnya dua objek yang berinteraksi. Dengan mentakrifkan sistem sebagai buku dan Bumi, graviti menjadi daya abadi dalaman dan tenaga mekanik diabadikan.",
+        "zh": "势能需要至少两个相互作用的物体。通过将系统定义为书和地球，重力成为内部保守力，机械能得以守恒。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because gravitational potential energy is a property of the book-Earth system, and internal gravitational forces do internal work converting potential energy into kinetic energy without energy crossing the system boundary. Option B represents the misconception that a single object can possess potential energy. Option C and Option D do not define a valid isolated conservative system.",
+        "ms": "Pilihan A adalah betul kerana tenaga keupayaan graviti ialah sifat sistem buku-Bumi, dan daya graviti dalaman melakukan kerja dalaman menukar tenaga keupayaan kepada tenaga kinetik tanpa tenaga merentasi sempadan sistem. Pilihan B mewakili salah faham bahawa satu objek tunggal boleh memiliki tenaga keupayaan. Pilihan C dan Pilihan D tidak mentakrifkan sistem abadi terpencil yang sah.",
+        "zh": "选项A正确，因为重力势能是书-地球系统的性质，内部重力做内功将势能转化为动能，而没有能量跨越系统边界。选项B代表了单个物体可以拥有势能的错误观念。选项C和选项D没有定义有效的孤立保守系统。"
+      },
+      "explanation": {
+        "en": "A single particle can possess kinetic energy, but potential energy is an energy of configuration belonging to a system of interacting parts\n. When the system is chosen as the book plus the Earth, the gravitational force is internal\n. In the absence of air resistance, no energy crosses the boundary, and mechanical energy (kinetic plus gravitational potential) is conserved\n.",
+        "ms": "Satu zarah tunggal boleh memiliki tenaga kinetik, tetapi tenaga keupayaan ialah tenaga konfigurasi milik sistem bahagian yang berinteraksi\n. Apabila sistem dipilih sebagai buku ditambah Bumi, daya graviti adalah bersifat dalaman\n. Dengan ketiadaan rintangan udara, tiada tenaga merentasi sempadan, dan tenaga mekanik (kinetik ditambah keupayaan graviti) adalah abadi\n.",
+        "zh": "单个粒子可以拥有动能，但势能是属于相互作用部件系统的构型能量\n。当系统被选为书加上地球时，重力是内力\n。在没有空气阻力的情况下，没有能量跨越边界，机械能（动能加重力势能）守恒\n。"
+      },
+      "misconceptions": [
+        "misc-single-object-potential-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-potential-energy",
+        "prompt": {
+          "en": "Review potential energy: it is stored energy that depends on the relative positions of interacting objects in a system, not a property of an isolated single particle.",
+          "ms": "Ulang kaji tenaga keupayaan: ia adalah tenaga tersimpan yang bergantung pada kedudukan relatif objek yang berinteraksi dalam sistem, bukan sifat satu zarah tunggal yang terpencil.",
+          "zh": "复习势能：它是取决于系统中相互作用物体的相对位置的存储能量，而不是单个孤立粒子的属性。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking what components must be chosen as the system for a falling book to conserve mechanical energy using potential energy.",
+        "ms": "Soalan aneka pilihan yang bertanyakan komponen apakah yang mesti dipilih sebagai sistem untuk buku yang jatuh bagi mengabadikan tenaga mekanik menggunakan tenaga keupayaan.",
+        "zh": "多选题，询问为了利用势能使下落的书机械能守恒，必须将哪些组分选为系统。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-fall-both-objects",
+        "options": [
+          {
+            "id": "opt-fall-both-objects",
+            "label": {
+              "en": "Both the book and the Earth together, making gravitational attraction an internal force.",
+              "ms": "Kedua-dua buku dan Bumi bersama-sama, menjadikan tarikan graviti sebagai daya dalaman.",
+              "zh": "书和地球二者一起，使重力吸引成为系统内力。"
+            }
+          },
+          {
+            "id": "opt-fall-book-alone",
+            "label": {
+              "en": "Only the book, because a single falling object independently stores its own gravitational potential energy.",
+              "ms": "Hanya buku itu sahaja, kerana satu objek yang jatuh menyimpan tenaga keupayaan gravitinya sendiri secara bebas.",
+              "zh": "仅书本身，因为单个下落物体可以独立存储其自身的重力势能。"
+            },
+            "misconception": "misc-single-object-potential-energy"
+          },
+          {
+            "id": "opt-fall-air-only",
+            "label": {
+              "en": "Only the surrounding air, because air resistance is the primary agent determining the potential energy.",
+              "ms": "Hanya udara di sekelilingnya, kerana rintangan udara adalah agen utama yang menentukan tenaga keupayaan.",
+              "zh": "仅周围的空气，因为空气阻力是决定势能的主要因素。"
+            }
+          },
+          {
+            "id": "opt-fall-coord-only",
+            "label": {
+              "en": "The book and the initial release height coordinate, excluding the Earth as an object.",
+              "ms": "Buku dan koordinat ketinggian pelepasan awal, tidak termasuk Bumi sebagai objek.",
+              "zh": "书和初始释放高度坐标，不包括作为物体的地球。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-easy-transformation-vs-transfer",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate between energy transfer across a boundary and energy transformation within an isolated system.",
+      "prompt": {
+        "en": "As an object falls freely within an isolated object-Earth system (neglecting air resistance), what is happening in terms of energy transfer and energy transformation?",
+        "ms": "Semasa suatu objek jatuh bebas di dalam sistem objek-Bumi yang terpencil (mengabaikan rintangan udara), apakah yang berlaku dari segi pemindahan tenaga dan perubahan tenaga?",
+        "zh": "当一个物体在孤立的物体-地球系统中自由下落时（忽略空气阻力），在能量传递和能量转化方面发生了什么？"
+      },
+      "hints": [
+        {
+          "en": "Distinguish between energy crossing the outer boundary (transfer) and energy changing form between components inside the system (transformation).",
+          "ms": "Bezakan antara tenaga yang merentasi sempadan luar (pemindahan) dan tenaga yang berubah bentuk antara komponen di dalam sistem (perubahan).",
+          "zh": "区分跨越外边界的能量（传递）与系统内部各组分之间改变形式的能量（转化）。"
+        },
+        {
+          "en": "Because the system is isolated, the sum of energies is constant, meaning a decrease in gravitational potential energy corresponds to an equal increase in kinetic energy inside the boundary.",
+          "ms": "Kerana sistem ini terpencil, jumlah tenaga adalah malar, bermakna pengurangan dalam tenaga keupayaan graviti sepadan dengan peningkatan yang sama dalam tenaga kinetik di dalam sempadan.",
+          "zh": "因为系统是孤立的，能量总和恒定，这意味着重力势能的减少对应于边界内部动能的等量增加。"
+        }
+      ],
+      "feedback": {
+        "en": "In an isolated system, no energy crosses the boundary (no energy transfer), but internal conservative forces perform work to transform energy from potential to kinetic form.",
+        "ms": "Dalam sistem terpencil, tiada tenaga merentasi sempadan (tiada pemindahan tenaga), tetapi daya abadi dalaman melakukan kerja untuk mengubah tenaga daripada bentuk keupayaan kepada kinetik.",
+        "zh": "在孤立系统中，没有能量跨越边界（无能量传递），但内部保守力做功将能量从势能形式转化为动能形式。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because the system is isolated (no transfer across the boundary) and the internal gravitational force transforms gravitational potential energy into kinetic energy. Option B reflects the misconception that energy conservation forbids internal energy transformations. Option C describes the nonisolated single-object model, not the isolated system model. Option D incorrectly claims energy is lost across the boundary.",
+        "ms": "Pilihan A adalah betul kerana sistem ini terpencil (tiada pemindahan merentasi sempadan) dan daya graviti dalaman mengubah tenaga keupayaan graviti kepada tenaga kinetik. Pilihan B mencerminkan salah faham bahawa keabadian tenaga melarang perubahan tenaga dalaman. Pilihan C menerangkan model objek tunggal bukan terpencil, bukan model sistem terpencil. Pilihan D secara salah mendakwa tenaga hilang merentasi sempadan.",
+        "zh": "选项A正确，因为系统是孤立的（跨边界无传递），且内部重力将重力势能转化为动能。选项B反映了认为能量守恒禁止内部能量转化的错误观念。选项C描述的是非孤立的单物体模型，而不是孤立系统模型。选项D错误地声称能量跨边界损失。"
+      },
+      "explanation": {
+        "en": "Energy transfer refers to mechanisms such as work, heat, or radiation that move energy across the boundary separating a system from its environment\n. Energy transformation refers to changes from one energy type to another inside the system boundary\n. In an isolated object-Earth system with no friction, energy transfer is zero, while internal transformation between gravitational potential energy and kinetic energy maintains a constant total mechanical energy\n.",
+        "ms": "Pemindahan tenaga merujuk kepada mekanisme seperti kerja, haba, atau sinaran yang menggerakkan tenaga merentasi sempadan yang memisahkan sesuatu sistem daripada persekitarannya\n. Perubahan tenaga merujuk kepada pertukaran daripada satu jenis tenaga kepada jenis tenaga yang lain di dalam sempadan sistem\n. Dalam sistem objek-Bumi terpencil tanpa geseran, pemindahan tenaga adalah sifar, manakala perubahan dalaman antara tenaga keupayaan graviti dan tenaga kinetik mengekalkan jumlah tenaga mekanik yang malar\n.",
+        "zh": "能量传递是指做功、热量或辐射等将能量跨越分隔系统与其环境的边界进行移动的机制\n。能量转化是指在系统边界内部从一种能量类型转变为另一种能量类型\n。在没有摩擦的孤立物体-地球系统中，能量传递为零，而重力势能与动能之间的内部转化保持了恒定的总机械能\n。"
+      },
+      "misconceptions": [
+        "misc-conserved-means-individual-energies-constant"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-work-energy-relation",
+        "prompt": {
+          "en": "Recall that work involves a force acting across a boundary to transfer energy in or out. Without boundary-crossing forces, total energy stays inside and simply converts between types.",
+          "ms": "Ingat kembali bahawa kerja melibatkan daya yang bertindak merentasi sempadan untuk memindahkan tenaga masuk atau keluar. Tanpa daya yang merentasi sempadan, jumlah tenaga kekal di dalam dan hanya bertukar antara jenis.",
+          "zh": "回忆做功涉及跨越边界作用的力以传递能量进出。在没有跨边界力的情况下，总能量保留在内部并仅在类型之间转化。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question comparing energy transfer across a boundary with internal energy transformation for a falling object in an isolated system.",
+        "ms": "Soalan aneka pilihan yang membandingkan pemindahan tenaga merentasi sempadan dengan perubahan tenaga dalaman untuk objek yang jatuh dalam sistem terpencil.",
+        "zh": "多选题，比较孤立系统中下落物体的跨边界能量传递与内部能量转化。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-trans-internal-only",
+        "options": [
+          {
+            "id": "opt-trans-internal-only",
+            "label": {
+              "en": "Energy is transformed internally from gravitational potential energy to kinetic energy, with zero energy transferred across the system boundary.",
+              "ms": "Tenaga diubah secara dalaman daripada tenaga keupayaan graviti kepada tenaga kinetik, dengan sifar tenaga dipindahkan merentasi sempadan sistem.",
+              "zh": "能量在内部从重力势能转化为动能，跨越系统边界的能量传递为零。"
+            }
+          },
+          {
+            "id": "opt-trans-no-change-allowed",
+            "label": {
+              "en": "No energy transformation occurs because conservation of energy requires each form of energy to stay constant without internal forces acting.",
+              "ms": "Tiada perubahan tenaga berlaku kerana keabadian tenaga memerlukan setiap bentuk tenaga kekal malar tanpa tindakan daya dalaman.",
+              "zh": "没有发生能量转化，因为能量守恒要求每种能量形式在没有内力作用的情况下保持恒定。"
+            },
+            "misconception": "misc-conserved-means-individual-energies-constant"
+          },
+          {
+            "id": "opt-trans-external-gravity-work",
+            "label": {
+              "en": "Energy is transferred across the boundary from the environment into the system by the external work of gravity.",
+              "ms": "Tenaga dipindahkan merentasi sempadan dari persekitaran ke dalam sistem melalui kerja luar graviti.",
+              "zh": "能量通过重力的外力做功从环境跨越边界传递到系统中。"
+            }
+          },
+          {
+            "id": "opt-trans-kinetic-lost-outside",
+            "label": {
+              "en": "Kinetic energy is transferred across the boundary to the surroundings while potential energy remains trapped inside.",
+              "ms": "Tenaga kinetik dipindahkan merentasi sempadan ke persekitaran manakala tenaga keupayaan kekal terperangkap di dalam.",
+              "zh": "动能跨越边界传递到周围环境，而势能则保留在内部。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-mod-path-independence-gravity",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply conservation of mechanical energy to isolated systems where only conservative forces act.",
+      "prompt": {
+        "en": "Three identical stones are thrown from the edge of a high cliff with the same initial speed: Stone 1 is thrown horizontally, Stone 2 upward at an angle, and Stone 3 downward at an angle. Neglecting air resistance, how do their speeds compare just before they hit the ground below?",
+        "ms": "Tiga biji batu yang serupa dilemparkan dari tepi tebing tinggi dengan kelajuan awal yang sama: Batu 1 dilemparkan secara mendatar, Batu 2 ke atas pada suatu sudut, dan Batu 3 ke bawah pada suatu sudut. Mengabaikan rintangan udara, bagaimanakah kelajuan mereka dibandingkan sejurus sebelum menghempas tanah di bawah?",
+        "zh": "从高悬崖边缘以相同的初速度投出三块完全相同的石头：石头 1 水平抛出，石头 2 斜向上抛出，石头 3 斜向下抛出。忽略空气阻力，它们在即将落地前的速度大小关系如何？"
+      },
+      "hints": [
+        {
+          "en": "Consider the stone-Earth system as isolated. What determines the total initial mechanical energy of each stone-Earth system?",
+          "ms": "Pertimbangkan sistem batu-Bumi sebagai sistem terpencil. Apakah yang menentukan jumlah tenaga mekanik awal bagi setiap sistem batu-Bumi?",
+          "zh": "将石头-地球系统视为孤立系统。是什么决定了每个石头-地球系统的总初始机械能？"
+        },
+        {
+          "en": "Mechanical energy depends only on speed and vertical position, not on the direction of motion. Because all three stones start at the same height with identical speeds and end at the same final height, their final kinetic energies must be identical.",
+          "ms": "Tenaga mekanik hanya bergantung pada kelajuan dan kedudukan menegak, bukan pada arah gerakan. Kerana ketiga-tiga batu bermula pada ketinggian yang sama dengan kelajuan yang serupa dan berakhir pada ketinggian akhir yang sama, tenaga kinetik akhir mereka mestilah sama.",
+          "zh": "机械能仅取决于速度大小和竖直位置，而与运动方向无关。因为这三块石头都在相同高度以相同的速度出发，并在相同的最终高度着地，所以它们的最终动能必然相同。"
+        }
+      ],
+      "feedback": {
+        "en": "All three stones strike the ground with the same speed. In an isolated system with conservative forces, the change in kinetic energy depends solely on the change in vertical height, independent of the path taken.",
+        "ms": "Ketiga-tiga batu menghempas tanah dengan kelajuan yang sama. Dalam sistem terpencil dengan daya abadi, perubahan tenaga kinetik hanya bergantung pada perubahan ketinggian menegak, bebas daripada laluan yang diambil.",
+        "zh": "所有三块石头落地时的速度都相同。在仅受保守力作用的孤立系统中，动能的变化仅取决于竖直高度的变化，与所经历的运动路径无关。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because mechanical energy is conserved in the isolated stone-Earth system. Each stone begins with the exact same initial kinetic energy (due to equal launch speeds) and initial gravitational potential energy (due to equal release heights). Upon reaching the ground, all three experience identical changes in potential energy, resulting in identical final kinetic energies and identical speeds regardless of launch angle or trajectory. Option B incorrectly assumes that trajectory length or path directness alters conservative energy conversion. Option C incorrectly assumes peak height adds extra total energy. Option D mistakenly separates horizontal kinetic energy as non-convertible.",
+        "ms": "Pilihan A adalah betul kerana tenaga mekanik diabadikan dalam sistem batu-Bumi yang terpencil. Setiap batu bermula dengan tenaga kinetik awal yang sama (kerana kelajuan pelancaran yang sama) dan tenaga keupayaan graviti awal yang sama (kerana ketinggian pelepasan yang sama). Apabila tiba di tanah, ketiga-tiganya mengalami perubahan tenaga keupayaan yang serupa, menghasilkan tenaga kinetik akhir dan kelajuan akhir yang sama tanpa mengira sudut pelancaran atau trajektori. Pilihan B secara salah menganggap bahawa panjang trajektori atau kelurusan laluan mengubah penukaran tenaga abadi. Pilihan C secara salah menganggap ketinggian puncak menambah jumlah tenaga tambahan. Pilihan D tersilap menganggap tenaga kinetik mendatar tidak boleh ditukar.",
+        "zh": "选项 A 正确，因为在孤立的石头-地球系统中机械能守恒。由于初速度相同且释放高度相同，每块石头具有相同的初始动能和初始重力势能。到达地面时，三者经历相同的势能减少量，因此无论抛射角度或轨迹如何，最终动能和落地速度都必然相同。选项 B 错误地认为轨迹长度或路径直线性会改变保守能量转换。选项 C 错误地认为最高点高度会增加额外的总能量。选项 D 错误地认为水平动能不可转化。"
+      },
+      "explanation": {
+        "en": "For an isolated object-Earth system where only the conservative gravitational force acts, mechanical energy is conserved: initial mechanical energy equals final mechanical energy\n. Since kinetic energy depends on the scalar magnitude of velocity (speed) rather than direction, identical initial speeds at the same height yield identical initial mechanical energies\n. Because all three stones land at the same final elevation, they end with identical kinetic energies and therefore strike the ground at the same speed\n.",
+        "ms": "Bagi sistem objek-Bumi terpencil di mana hanya daya graviti abadi bertindak, tenaga mekanik adalah abadi: tenaga mekanik awal sama dengan tenaga mekanik akhir\n. Memandangkan tenaga kinetik bergantung pada magnitud skalar halaju (kelajuan) dan bukannya arah, kelajuan awal yang sama pada ketinggian yang sama menghasilkan tenaga mekanik awal yang sama\n. Kerana ketiga-tiga batu mendarat pada ketinggian akhir yang sama, mereka berakhir dengan tenaga kinetik yang sama dan oleh itu menghempas tanah dengan kelajuan yang sama\n.",
+        "zh": "对于仅受保守重力作用的孤立物体-地球系统，机械能守恒：初始机械能等于最终机械能\n。由于动能取决于速度的标量大小（速率）而非方向，因此在相同高度具有相同的初速度意味着具有相同的初始机械能\n。因为所有三块石头都在相同的最终高度着地，它们最终的动能相同，因此以相同的速度落地\n。"
+      },
+      "misconceptions": [
+        "misc-path-dependence-in-conservative-systems"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-kinetic-energy",
+        "prompt": {
+          "en": "Remember that kinetic energy is a scalar quantity depending only on an object's mass and the magnitude of its speed, completely independent of its directional angle.",
+          "ms": "Ingat bahawa tenaga kinetik ialah kuantiti skalar yang hanya bergantung pada jisim objek dan magnitud kelajuannya, bebas sepenuhnya daripada sudut arahnya.",
+          "zh": "请记住，动能是一个标量，仅取决于物体的质量和速度的大小，完全独立于运动的方向角。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question comparing the final landing speeds of three stones launched from the same height with identical speeds at different launch angles.",
+        "ms": "Soalan aneka pilihan yang membandingkan kelajuan pendaratan akhir bagi tiga batu yang dilancarkan dari ketinggian yang sama dengan kelajuan yang serupa pada sudut pelancaran berbeza.",
+        "zh": "多选题，比较三块在相同高度以相同初速度但不同角度抛出的石头落地时的最终速度。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-speeds-all-equal",
+        "options": [
+          {
+            "id": "opt-speeds-all-equal",
+            "label": {
+              "en": "All three stones strike the ground with the same speed because each undergoes the exact same change in gravitational potential energy.",
+              "ms": "Ketiga-tiga batu menghempas tanah dengan kelajuan yang sama kerana setiap satu mengalami perubahan tenaga keupayaan graviti yang serupa.",
+              "zh": "所有三块石头都以相同的速度落地，因为每块石头经历的重力势能变化完全相同。"
+            }
+          },
+          {
+            "id": "opt-speeds-downward-fastest",
+            "label": {
+              "en": "Stone 3 strikes with the greatest speed because it travels the shortest and most direct path to the ground.",
+              "ms": "Batu 3 menghempas dengan kelajuan paling tinggi kerana ia melalui laluan terpendek dan paling terus ke tanah.",
+              "zh": "石头 3 以最大的速度着地，因为它走的是通往地面最短且最直接的路径。"
+            },
+            "misconception": "misc-path-dependence-in-conservative-systems"
+          },
+          {
+            "id": "opt-speeds-upward-fastest",
+            "label": {
+              "en": "Stone 2 strikes with the greatest speed because it reaches a higher altitude and gains extra energy from rising.",
+              "ms": "Batu 2 menghempas dengan kelajuan paling tinggi kerana ia mencapai altitud lebih tinggi dan memperoleh tenaga tambahan daripada kenaikannya.",
+              "zh": "石头 2 以最大的速度着地，因为它达到了更高的高度并在上升过程中获得了额外的能量。"
+            }
+          },
+          {
+            "id": "opt-speeds-horizontal-slowest",
+            "label": {
+              "en": "Stone 1 strikes with the lowest speed because horizontal motion does not allow gravitational energy conversion.",
+              "ms": "Batu 1 menghempas dengan kelajuan paling rendah kerana gerakan mendatar tidak membenarkan penukaran tenaga graviti.",
+              "zh": "石头 1 以最低的速度着地，因为水平运动不允许进行重力能量转换。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-mod-boundary-choice-single-vs-system",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze how choosing different system boundaries alters whether interactions are internal potential energy or external work.",
+      "prompt": {
+        "en": "A physicist analyzes a falling apple using two different system models: Model A defines the system as {apple + Earth}, while Model B defines the system as {apple only}. How does the role of gravity differ between these two models?",
+        "ms": "Seorang ahli fizik menganalisis sebiji epal yang jatuh menggunakan dua model sistem yang berbeza: Model A mentakrifkan sistem sebagai {epal + Bumi}, manakala Model B mentakrifkan sistem sebagai {epal sahaja}. Bagaimanakah peranan graviti berbeza antara kedua-dua model ini?",
+        "zh": "一位物理学家使用两种不同的系统模型分析一个正在下落的苹果：模型 A 将系统定义为{苹果 + 地球}，而模型 B 将系统定义为{仅苹果}。在这两个模型中，重力的作用有何不同？"
+      },
+      "hints": [
+        {
+          "en": "Identify whether the Earth is inside or outside the chosen system boundary in each model.",
+          "ms": "Kenal pasti sama ada Bumi berada di dalam atau di luar sempadan sistem yang dipilih dalam setiap model.",
+          "zh": "识别在每个模型中地球是位于所选系统边界之内还是之外。"
+        },
+        {
+          "en": "When both interacting objects are inside the boundary, the gravitational interaction is internal and represented by potential energy. When only one object is inside, gravity acts across the boundary as an external force doing work.",
+          "ms": "Apabila kedua-dua objek yang berinteraksi berada di dalam sempadan, interaksi graviti adalah bersifat dalaman dan diwakili oleh tenaga keupayaan. Apabila hanya satu objek berada di dalam, graviti bertindak merentasi sempadan sebagai daya luar yang melakukan kerja.",
+          "zh": "当相互作用的两个物体都在边界内时，重力相互作用是内部的并由势能表示。当只有一个物体在边界内时，重力作为跨越边界的外力做功。"
+        }
+      ],
+      "feedback": {
+        "en": "In Model A, gravity is an internal conservative force transforming potential energy within an isolated system. In Model B, gravity is an external force doing work across the boundary of a nonisolated system.",
+        "ms": "Dalam Model A, graviti ialah daya abadi dalaman yang menukarkan tenaga keupayaan di dalam sistem terpencil. Dalam Model B, graviti ialah daya luar yang melakukan kerja merentasi sempadan sistem bukan terpencil.",
+        "zh": "在模型 A 中，重力是孤立系统内转化势能的内部保守力。在模型 B 中，重力是跨越非孤立系统边界做功的外力。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because potential energy is defined only for a system of multiple interacting objects (Model A, isolated system where Delta K + Delta U = 0), whereas a single particle cannot possess potential energy on its own and experiences gravity as an external force doing work (Model B, nonisolated system where Delta K = W). Option B represents the misconception that a single object can possess potential energy on its own. Option C and Option D mischaracterize the conservation equations and boundary classifications.",
+        "ms": "Pilihan A adalah betul kerana tenaga keupayaan ditakrifkan hanya untuk sistem berbilang objek yang berinteraksi (Model A, sistem terpencil di mana Delta K + Delta U = 0), manakala satu zarah tunggal tidak boleh memiliki tenaga keupayaan dengan sendirinya dan mengalami graviti sebagai daya luar yang melakukan kerja (Model B, sistem bukan terpencil di mana Delta K = W). Pilihan B mewakili salah faham bahawa objek tunggal boleh memiliki tenaga keupayaan dengan sendirinya. Pilihan C dan Pilihan D salah mencirikan persamaan keabadian dan pengelasan sempadan.",
+        "zh": "选项 A 正确，因为势能仅针对由多个相互作用物体组成的系统定义（模型 A 为孤立系统，满足 Delta K + Delta U = 0），而单个粒子不能独自拥有势能，重力对其表现为做功的外力（模型 B 为非孤立系统，满足 Delta K = W）。选项 B 代表了单个物体可以独自拥有势能的错误观念。选项 C 和选项 D 错误描述了守恒方程和边界分类。"
+      },
+      "explanation": {
+        "en": "The choice of system boundary determines whether an interaction is treated as internal potential energy or external work\n. For the {apple + Earth} system, the system is isolated, gravity is an internal conservative force, and energy transforms between gravitational potential energy and kinetic energy with Delta K + Delta U = 0\n. For the {apple only} system, the Earth is in the environment, so gravity is an external force transferring energy across the boundary via work with Delta K = W\n. Both models describe the exact same physical motion and speed for the falling apple\n.",
+        "ms": "Pilihan sempadan sistem menentukan sama ada sesuatu interaksi dianggap sebagai tenaga keupayaan dalaman atau kerja luar\n. Bagi sistem {epal + Bumi}, sistem ini adalah terpencil, graviti ialah daya abadi dalaman, dan tenaga bertukar antara tenaga keupayaan graviti dan tenaga kinetik dengan Delta K + Delta U = 0\n. Bagi sistem {epal sahaja}, Bumi berada di persekitaran, jadi graviti ialah daya luar yang memindahkan tenaga merentasi sempadan melalui kerja dengan Delta K = W\n. Kedua-dua model menghuraikan gerakan dan kelajuan fizikal yang sama tepat untuk epal yang jatuh\n.",
+        "zh": "系统边界的选择决定了相互作用是被视为内部势能还是外部做功\n。对于{苹果 + 地球}系统，该系统是孤立的，重力是内部保守力，能量在重力势能和动能之间转化，满足 Delta K + Delta U = 0\n。对于{仅苹果}系统，地球属于外部环境，因此重力是跨越边界通过做功传递能量的外力，满足 Delta K = W\n。无论采用哪种系统模型，对下落苹果的物理状态与速度演化的描述结论完全一致\n。"
+      },
+      "misconceptions": [
+        "misc-single-object-potential-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-work-energy-relation",
+        "prompt": {
+          "en": "Recall that when an external agent applies a force across a boundary over a displacement, work transfers energy into or out of the system.",
+          "ms": "Ingat kembali bahawa apabila agen luar mengenakan daya merentasi sempadan melalui suatu sesaran, kerja memindahkan tenaga ke dalam atau ke luar sistem.",
+          "zh": "回忆当外部施力物在位移上跨越边界施加力时，做功会将能量传递进出系统。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question comparing how gravity is modeled in a two-body isolated system versus a single-body nonisolated system.",
+        "ms": "Soalan aneka pilihan yang membandingkan bagaimana graviti dimodelkan dalam sistem terpencil dua jasad berbanding sistem bukan terpencil jasad tunggal.",
+        "zh": "多选题，比较重力在双物体孤立系统模型与单物体非孤立系统模型中的不同描述方式。"
+      },
+      "provenance": {
+        "sourceLocation": "Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-boundary-internal-vs-external",
+        "options": [
+          {
+            "id": "opt-boundary-internal-vs-external",
+            "label": {
+              "en": "In Model A, gravity is an internal force transforming system potential energy; in Model B, gravity is an external force doing work across the boundary.",
+              "ms": "Dalam Model A, graviti ialah daya dalaman yang menukarkan tenaga keupayaan sistem; dalam Model B, graviti ialah daya luar yang melakukan kerja merentasi sempadan.",
+              "zh": "在模型 A 中，重力是转化系统势能的内部力；在模型 B 中，重力是跨越边界做功的外力。"
+            }
+          },
+          {
+            "id": "opt-boundary-single-has-pot",
+            "label": {
+              "en": "In both models, the apple independently possesses its own gravitational potential energy without needing interaction with the Earth.",
+              "ms": "Dalam kedua-dua model, epal secara bebas memiliki tenaga keupayaan gravitinya sendiri tanpa memerlukan interaksi dengan Bumi.",
+              "zh": "在两个模型中，苹果都可以独立拥有其自身的重力势能，而不需要与地球相互作用。"
+            },
+            "misconception": "misc-single-object-potential-energy"
+          },
+          {
+            "id": "opt-boundary-model-a-work",
+            "label": {
+              "en": "In Model A, gravity does external work on the system, while in Model B, gravity does no work because the Earth is absent.",
+              "ms": "Dalam Model A, graviti melakukan kerja luar pada sistem, manakala dalam Model B, graviti tidak melakukan kerja kerana ketiadaan Bumi.",
+              "zh": "在模型 A 中，重力对系统做外功；而在模型 B 中，由于没有地球，重力不做功。"
+            }
+          },
+          {
+            "id": "opt-boundary-model-b-isolated",
+            "label": {
+              "en": "Model B is an isolated system because only one object is present, whereas Model A is nonisolated due to having multiple objects.",
+              "ms": "Model B ialah sistem terpencil kerana hanya satu objek yang wujud, manakala Model A bukan terpencil kerana mempunyai pelbagai objek.",
+              "zh": "模型 B 是孤立系统因为只存在一个物体，而模型 A 是非孤立系统因为包含多个物体。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-mod-internal-energy-nonconservative",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Account for internal energy changes when nonconservative forces act within an isolated system.",
+      "prompt": {
+        "en": "A heavy box slides across a rough floor inside a sealed, thermally insulated room and eventually slides to a stop due to kinetic friction. Defining the system as {box + floor + air + room walls}, which statement accurately describes the energy changes of this isolated system?",
+        "ms": "Sebuah kotak berat menggelongsor di atas lantai kasar di dalam bilik yang bertutup dan berpenebat haba, lalu akhirnya berhenti disebabkan oleh geseran kinetik. Mentakrifkan sistem sebagai {kotak + lantai + udara + dinding bilik}, pernyataan manakah yang menerangkan dengan tepat perubahan tenaga bagi sistem terpencil ini?",
+        "zh": "一个沉重的箱子在密封且绝热的房间内的粗糙地板上滑动，并最终因动摩擦力而停下。将系统定义为{箱子 + 地板 + 空气 + 房间墙壁}，哪项陈述准确描述了这个孤立系统的能量变化？"
+      },
+      "hints": [
+        {
+          "en": "Check whether any energy leaves or enters across the outer insulated walls of the room.",
+          "ms": "Periksa sama ada terdapat sebarang tenaga yang keluar atau masuk merentasi dinding bilik yang berpenebat di bahagian luar.",
+          "zh": "检查是否有任何能量进出房间外部绝热的墙壁。"
+        },
+        {
+          "en": "Differentiate between mechanical energy (kinetic plus potential) and total system energy (which also includes internal thermal energy).",
+          "ms": "Bezakan antara tenaga mekanik (kinetik ditambah keupayaan) dan jumlah tenaga sistem (yang juga merangkumi tenaga haba dalaman).",
+          "zh": "区分机械能（动能加势能）与系统总能量（还包括内部热能）。"
+        }
+      ],
+      "feedback": {
+        "en": "Total system energy is conserved because no energy crosses the boundary. However, mechanical energy is not conserved because friction converts kinetic energy into internal thermal energy.",
+        "ms": "Jumlah tenaga sistem adalah abadi kerana tiada tenaga merentasi sempadan. Walau bagaimanapun, tenaga mekanik tidak abadi kerana geseran menukarkan tenaga kinetik kepada tenaga haba dalaman.",
+        "zh": "由于没有能量跨越边界，系统总能量守恒。然而机械能不守恒，因为摩擦力将动能转化为了内部热能。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because the system is isolated (no energy crosses the boundary, so Delta E_system = 0), but friction is an internal nonconservative force that transforms mechanical kinetic energy into internal thermal energy, meaning mechanical energy decreases (Delta E_mech < 0). Option B represents the misconception that mechanical energy is automatically conserved in every isolated system regardless of internal friction. Option C incorrectly assumes that total energy is destroyed. Option D incorrectly asserts that internal energy remains unchanged.",
+        "ms": "Pilihan A adalah betul kerana sistem ini terpencil (tiada tenaga merentasi sempadan, jadi Delta E_system = 0), tetapi geseran ialah daya bukan abadi dalaman yang menukarkan tenaga kinetik mekanik kepada tenaga haba dalaman, bermakna tenaga mekanik berkurangan (Delta E_mech < 0). Pilihan B mewakili salah faham bahawa tenaga mekanik secara automatik diabadikan dalam setiap sistem terpencil tanpa mengira geseran dalaman. Pilihan C secara salah menganggap bahawa jumlah tenaga dimusnahkan. Pilihan D secara salah menyatakan bahawa tenaga dalaman kekal tidak berubah.",
+        "zh": "选项 A 正确，因为该系统是孤立的（没有能量跨越边界，因此 Delta E_system = 0），但摩擦力是一种内部非保守力，它将机械动能转化为内部热能，这意味着机械能减少（Delta E_mech < 0）。选项 B 代表了认为在任何孤立系统中无论内部摩擦力如何机械能都会自动守恒的错误观念。选项 C 错误地认为总能量被消灭了。选项 D 错误地声称内能保持不变。"
+      },
+      "explanation": {
+        "en": "In an isolated system where nonconservative forces like kinetic friction act internally, the total energy of the system remains constant (Delta E_system = 0)\n. However, mechanical energy is not conserved because the internal friction force transforms macroscopic kinetic energy into microscopic internal thermal energy (Delta K + Delta E_int = 0)\n.",
+        "ms": "Dalam sistem terpencil di mana daya bukan abadi seperti geseran kinetik bertindak secara dalaman, jumlah tenaga sistem kekal malar (Delta E_system = 0)\n. Walau bagaimanapun, tenaga mekanik tidak abadi kerana daya geseran dalaman menukarkan tenaga kinetik makroskopik kepada tenaga haba dalaman mikroskopik (Delta K + Delta E_int = 0)\n.",
+        "zh": "在内部存在动摩擦力等非保守力作用的孤立系统中，系统的总能量保持恒定（Delta E_system = 0）\n。然而，机械能并不守恒，因为内部摩擦力将宏观动能转化为了微观内部热能（Delta K + Delta E_int = 0）\n。"
+      },
+      "misconceptions": [
+        "misc-mechanical-energy-always-conserved"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-kinetic-energy",
+        "prompt": {
+          "en": "Review kinetic energy: when an object slows down to a stop, its kinetic energy decreases to zero, requiring that energy to appear in another form if the system is isolated.",
+          "ms": "Ulang kaji tenaga kinetik: apabila sesuatu objek menyahpecut sehingga berhenti, tenaga kinetiknya berkurangan kepada sifar, memerlukan tenaga tersebut muncul dalam bentuk lain jika sistem itu terpencil.",
+          "zh": "复习动能：当一个物体减速至停止时，其动能减为零；如果系统是孤立的，则该能量必须以另一种形式出现。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking how mechanical energy and total system energy change when a sliding box stops due to internal friction in an isolated room.",
+        "ms": "Soalan aneka pilihan yang bertanyakan bagaimana tenaga mekanik dan jumlah tenaga sistem berubah apabila kotak yang menggelongsor berhenti disebabkan oleh geseran dalaman di dalam bilik terpencil.",
+        "zh": "多选题，询问当滑动的箱子在绝热孤立房间内因内部摩擦停止时，机械能和系统总能量如何变化。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-mech-decreases-total-constant",
+        "options": [
+          {
+            "id": "opt-mech-decreases-total-constant",
+            "label": {
+              "en": "The total system energy remains constant, but mechanical energy decreases as kinetic energy transforms into internal thermal energy.",
+              "ms": "Jumlah tenaga sistem kekal malar, tetapi tenaga mekanik berkurangan apabila tenaga kinetik bertukar menjadi tenaga haba dalaman.",
+              "zh": "系统总能量保持恒定，但随着动能转化为内部热能，机械能减少。"
+            }
+          },
+          {
+            "id": "opt-mech-always-conserved",
+            "label": {
+              "en": "Both mechanical energy and total energy remain strictly conserved because the system is isolated from the external environment.",
+              "ms": "Kedua-dua tenaga mekanik dan jumlah tenaga kekal abadi secara mutlak kerana sistem ini terpencil daripada persekitaran luar.",
+              "zh": "由于系统与外部环境隔离，机械能和总能量都保持严格守恒。"
+            },
+            "misconception": "misc-mechanical-energy-always-conserved"
+          },
+          {
+            "id": "opt-total-decreases-lost",
+            "label": {
+              "en": "Total system energy decreases to zero because friction permanently destroys the initial energy of the moving box.",
+              "ms": "Jumlah tenaga sistem berkurangan kepada sifar kerana geseran memusnahkan secara kekal tenaga awal kotak yang bergerak.",
+              "zh": "系统总能量减少为零，因为摩擦力永久消灭了运动箱子的初始能量。"
+            }
+          },
+          {
+            "id": "opt-potential-gained",
+            "label": {
+              "en": "Mechanical energy remains constant because kinetic energy is directly converted into gravitational potential energy of the floor.",
+              "ms": "Tenaga mekanik kekal malar kerana tenaga kinetik ditukarkan secara langsung kepada tenaga keupayaan graviti lantai.",
+              "zh": "机械能保持恒定，因为动能直接转化为了地板的重力势能。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-chal-spring-gravity-tradeoff",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate kinetic, gravitational potential, and elastic potential energies in multi-component isolated systems.",
+      "prompt": {
+        "en": "A vertical spring launcher fires a ball upward into the air. Modeling the ball, spring, and Earth together as an isolated system with negligible friction and air resistance, which statement correctly describes the energy distribution from initial spring compression to the peak of the ball's flight?",
+        "ms": "Pelancar spring menegak melancarkan sebiji bola ke atas ke udara. Memodelkan bola, spring, dan Bumi bersama-sama sebagai sistem terpencil dengan geseran dan rintangan udara yang boleh diabaikan, pernyataan manakah yang menerangkan dengan betul taburan tenaga daripada mampatan awal spring sehingga ke puncak penerbangan bola?",
+        "zh": "一个竖直弹簧发射器将小球向上发射到空中。将小球、弹簧和地球一起建模为忽略摩擦和空气阻力的孤立系统，哪项陈述正确描述了从弹簧初始压缩到小球到达最高点的能量分布？"
+      },
+      "hints": [
+        {
+          "en": "Identify all forms of potential energy present in this multi-body system at the lowest compressed point, the uncompressed release point, and the apex.",
+          "ms": "Kenal pasti semua bentuk tenaga keupayaan yang wujud dalam sistem berbilang jasad ini pada titik termampat terendah, titik pelepasan tidak termampat, dan puncak.",
+          "zh": "识别在这个多体系统中，处于最低压缩点、未压缩释放点和最高顶点时所存在的所有形式的势能。"
+        },
+        {
+          "en": "At the moment of release, the total mechanical energy is stored as elastic and gravitational potential energy. At the highest point, where speed is momentarily zero, all energy transforms back into gravitational potential energy.",
+          "ms": "Pada saat pelepasan, jumlah tenaga mekanik disimpan sebagai tenaga keupayaan kenyal dan graviti. Pada titik tertinggi, di mana kelajuan adalah sifar seketika, semua tenaga bertukar kembali kepada tenaga keupayaan graviti.",
+          "zh": "在释放瞬间，总机械能以弹性势能和重力势能的形式存储。在速度瞬时为零的最高点，所有能量均转化回重力势能。"
+        }
+      ],
+      "feedback": {
+        "en": "The total mechanical energy remains constant throughout the motion. Elastic potential energy and initial gravitational potential energy convert into kinetic and gravitational potential energy during launch, ending as pure gravitational potential energy at the peak.",
+        "ms": "Jumlah tenaga mekanik kekal malar sepanjang gerakan. Tenaga keupayaan kenyal dan tenaga keupayaan graviti awal bertukar kepada tenaga kinetik dan keupayaan graviti semasa pelancaran, berakhir sebagai tenaga keupayaan graviti tulen di puncak.",
+        "zh": "在整个运动过程中，总机械能保持恒定。弹性势能和初始重力势能在发射过程中转化为动能和重力势能，并在最高顶点最终全部体现为重力势能。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because in the isolated system comprising ball, spring, and Earth, total mechanical energy is conserved: Delta K + Delta U_g + Delta U_s = 0. Potential energy belongs to the configurations of the system (spring compression and ball-Earth separation). Option B represents the misconception that a single object owns the potential energy independently. Option C represents the misconception that conservation requires each separate form of energy to stay constant. Option D incorrectly ignores the continuous change in gravitational potential energy during spring decompression.",
+        "ms": "Pilihan A adalah betul kerana dalam sistem terpencil yang terdiri daripada bola, spring, dan Bumi, jumlah tenaga mekanik adalah abadi: Delta K + Delta U_g + Delta U_s = 0. Tenaga keupayaan adalah kepunyaan konfigurasi sistem (mampatan spring dan pemisahan bola-Bumi). Pilihan B mewakili salah faham bahawa satu objek memiliki tenaga keupayaan secara bebas. Pilihan C mewakili salah faham bahawa keabadian memerlukan setiap bentuk tenaga yang berasingan kekal malar. Pilihan D secara salah mengabaikan perubahan berterusan dalam tenaga keupayaan graviti semasa penyahmampatan spring.",
+        "zh": "选项 A 正确，因为在由小球、弹簧和地球组成的孤立系统中，总机械能守恒：Delta K + Delta U_g + Delta U_s = 0。势能属于系统的构型（弹簧压缩量和球-地间距）。选项 B 代表了单个物体独立拥有势能的错误观念。选项 C 代表了认为守恒要求每种独立能量形式保持不变的错误观念。选项 D 错误地忽略了弹簧释放伸长过程中重力势能的连续变化。"
+      },
+      "explanation": {
+        "en": "In a multi-component isolated system involving both gravity and elasticity, the total mechanical energy is conserved\n. The sum of kinetic energy, gravitational potential energy, and elastic potential energy remains constant at every instant\n. As the spring expands, elastic potential energy decreases while both kinetic energy and gravitational potential energy increase, until the projectile leaves the spring and reaches its maximum height where all mechanical energy is stored purely as gravitational potential energy\n.",
+        "ms": "Dalam sistem terpencil berbilang komponen yang melibatkan kedua-dua graviti dan kekenyalan, jumlah tenaga mekanik adalah abadi\n. Jumlah tenaga kinetik, tenaga keupayaan graviti, dan tenaga keupayaan kenyal kekal malar pada setiap ketika\n. Apabila spring mengembang, tenaga keupayaan kenyal berkurangan manakala kedua-dua tenaga kinetik dan tenaga keupayaan graviti meningkat, sehingga projektil meninggalkan spring dan mencapai ketinggian maksimumnya di mana semua tenaga mekanik disimpan semata-mata sebagai tenaga keupayaan graviti\n.",
+        "zh": "在同时涉及重力和弹性的多组分孤立系统中，总机械能守恒\n。动能、重力势能与弹性势能的总和在每一瞬间均保持恒定\n。当弹簧伸展时，弹性势能减小，动能和重力势能均增加，直到抛射体脱离弹簧并到达最大高度，此时所有机械能纯粹以重力势能的形式存储\n。"
+      },
+      "misconceptions": [
+        "misc-conserved-means-individual-energies-constant",
+        "misc-single-object-potential-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-potential-energy",
+        "prompt": {
+          "en": "Remember that potential energy arises from interactions among parts of a system: elastic potential energy is stored in a deformed spring, while gravitational potential energy is stored in the relative position of an object and the Earth.",
+          "ms": "Ingat bahawa tenaga keupayaan timbul daripada interaksi antara bahagian sistem: tenaga keupayaan kenyal disimpan dalam spring yang berubah bentuk, manakala tenaga keupayaan graviti disimpan dalam kedudukan relatif sesuatu objek dan Bumi.",
+          "zh": "请记住，势能产生于系统各部分之间的相互作用：弹性势能存储在形变的弹簧中，而重力势能存储在物体与地球的相对位置中。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice conceptual question analyzing the continuous exchange between elastic potential, gravitational potential, and kinetic energies in a vertical spring launcher system.",
+        "ms": "Soalan konsep aneka pilihan yang menganalisis pertukaran berterusan antara tenaga keupayaan kenyal, keupayaan graviti, dan tenaga kinetik dalam sistem pelancar spring menegak.",
+        "zh": "多选题概念题，分析竖直弹簧发射器系统中弹性势能、重力势能与动能之间的连续转换。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-spring-total-conserved-tradeoff",
+        "options": [
+          {
+            "id": "opt-spring-total-conserved-tradeoff",
+            "label": {
+              "en": "The sum of kinetic, elastic potential, and gravitational potential energies remains constant, exchanging continuously between compressed and peak states.",
+              "ms": "Jumlah tenaga kinetik, keupayaan kenyal, dan keupayaan graviti kekal malar, bertukar secara berterusan antara keadaan mampat dan keadaan puncak.",
+              "zh": "动能、弹性势能与重力势能的总和保持恒定，并在压缩状态与最高顶点状态之间持续相互转化。"
+            }
+          },
+          {
+            "id": "opt-spring-ball-owns-pot",
+            "label": {
+              "en": "The flying ball individually possesses both the elastic and gravitational potential energy without needing the spring or the Earth in the system.",
+              "ms": "Bola yang terbang secara individu memiliki kedua-dua tenaga keupayaan kenyal dan graviti tanpa memerlukan spring atau Bumi dalam sistem.",
+              "zh": "飞行的小球单独拥有弹性势能和重力势能，系统中无需包含弹簧或地球。"
+            },
+            "misconception": "misc-single-object-potential-energy"
+          },
+          {
+            "id": "opt-spring-individual-constant",
+            "label": {
+              "en": "Energy conservation requires kinetic energy, gravitational potential energy, and elastic potential energy to remain separately unchanged at each instant.",
+              "ms": "Keabadian tenaga memerlukan tenaga kinetik, tenaga keupayaan graviti, dan tenaga keupayaan kenyal untuk kekal tidak berubah secara berasingan pada setiap ketika.",
+              "zh": "能量守恒要求动能、重力势能和弹性势能在每一瞬间各自保持独立不变。"
+            },
+            "misconception": "misc-conserved-means-individual-energies-constant"
+          },
+          {
+            "id": "opt-spring-no-grav-during-push",
+            "label": {
+              "en": "Gravitational potential energy remains zero until the ball completely separates from the spring, converting only elastic energy directly to kinetic energy.",
+              "ms": "Tenaga keupayaan graviti kekal sifar sehingga bola terpisah sepenuhnya daripada spring, menukarkan hanya tenaga kenyal secara langsung kepada tenaga kinetik.",
+              "zh": "在小球完全脱离弹簧之前重力势能保持为零，仅将弹性势能直接转化为动能。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-chal-pendulum-tension-isolation",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Identify whether a chosen system is isolated or nonisolated based on energy transfers across its boundary.",
+      "prompt": {
+        "en": "An acrobat swings downward along a circular arc supported by a taut cable attached to a fixed pivot. If we define the system as {acrobat + Earth}, with the cable regarded as part of the external environment, why can this system still be accurately analyzed as an isolated system for energy (neglecting air resistance)?",
+        "ms": "Seorang akrobat berayun ke bawah mengikut lengkok bulatan yang disokong oleh kabel tegang yang dipasang pada pangsi tetap. Jika kita mentakrifkan sistem sebagai {akrobat + Bumi}, dengan kabel dianggap sebagai sebahagian daripada persekitaran luar, mengapakah sistem ini masih boleh dianalisis dengan tepat sebagai sistem terpencil bagi tenaga (mengabaikan rintangan udara)?",
+        "zh": "一名杂技演员在固定枢轴上的张紧线缆拉持下拉着圆弧向下摆动。如果我们将系统定义为{杂技演员 + 地球}，将线缆视为外部环境的一部分，为什么该系统仍可被准确分析为能量孤立系统（忽略空气阻力）？"
+      },
+      "hints": [
+        {
+          "en": "Consider the direction of the tension force exerted by the external cable relative to the acrobat's instantaneous direction of motion.",
+          "ms": "Pertimbangkan arah daya tegangan yang dikenakan oleh kabel luar berbanding dengan arah gerakan seketika akrobat.",
+          "zh": "考虑外部线缆施加的张力方向相对于杂技演员瞬时运动方向的关系。"
+        },
+        {
+          "en": "Work across a boundary requires a force with a non-zero component along the displacement. Since the cable tension is always perpendicular to the displacement along the circular arc, the work done by the cable is zero.",
+          "ms": "Kerja merentasi sempadan memerlukan daya dengan komponen bukan sifar sepanjang sesaran. Memandangkan tegangan kabel sentiasa berserenjang dengan sesaran sepanjang lengkok bulatan, kerja yang dilakukan oleh kabel adalah sifar.",
+          "zh": "跨越边界做功需要力在位移方向上具有非零分量。由于线缆张力始终与沿圆弧的瞬时位移垂直，因此线缆所做的功为零。"
+        }
+      ],
+      "feedback": {
+        "en": "Even though an external force (cable tension) acts on the system, it is always perpendicular to the displacement and does zero work. With no energy crossing the boundary, the system is isolated for energy.",
+        "ms": "Walaupun daya luar (tegangan kabel) bertindak pada sistem, ia sentiasa berserenjang dengan sesaran dan melakukan kerja sifar. Tanpa tenaga yang merentasi sempadan, sistem ini adalah terpencil bagi tenaga.",
+        "zh": "尽管存在作用于系统的外力（线缆张力），但由于它始终与位移垂直，所做的功为零。由于没有能量跨越边界，该系统在能量上是孤立的。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because the external tension force is perpendicular to each displacement element (F_dot_dr = 0), so work done across the boundary is zero (W = 0). Thus, no energy enters or leaves across the boundary, fulfilling the definition of an isolated system for energy where Delta E_mech = 0. Option B incorrectly claims tension transforms into internal heat. Option C represents the misconception that forces cannot do internal work to transform energy in an isolated system. Option D incorrectly asserts that the system is nonisolated with work done.",
+        "ms": "Pilihan A adalah betul kerana daya tegangan luar adalah berserenjang dengan setiap elemen sesaran (F_dot_dr = 0), jadi kerja yang dilakukan merentasi sempadan adalah sifar (W = 0). Oleh itu, tiada tenaga masuk atau keluar merentasi sempadan, memenuhi takrif sistem terpencil bagi tenaga di mana Delta E_mech = 0. Pilihan B secara salah mendakwa tegangan bertukar menjadi haba dalaman. Pilihan C mewakili salah faham bahawa daya tidak boleh melakukan kerja dalaman untuk menukar tenaga dalam sistem terpencil. Pilihan D secara salah menyatakan bahawa sistem tersebut adalah bukan terpencil dengan kerja dilakukan.",
+        "zh": "选项 A 正确，因为外部张力始终垂直于每个微元位移（F_dot_dr = 0），因此跨越边界所做的功为零（W = 0）。因此没有能量进出边界，满足能量孤立系统的定义，其中 Delta E_mech = 0。选项 B 错误地声称张力转化为内部热量。选项 C 代表了认为在孤立系统中力不能做内功转化能量的错误观念。选项 D 错误地断言该系统是非孤立的且存在做功。"
+      },
+      "explanation": {
+        "en": "An energy transfer across a system boundary via work requires the dot product of the external force and the displacement to be non-zero\n. Because the cable remains taut along the radius of circular motion, the tension force is perpendicular to the instantaneous velocity and displacement at every point (F perpendicular to dr)\n. Therefore, the external cable does zero work on the acrobat-Earth system (W = 0)\n. With no energy transfer mechanisms crossing the boundary, the acrobat-Earth system is isolated for energy and conserves mechanical energy\n.",
+        "ms": "Pemindahan tenaga merentasi sempadan sistem melalui kerja memerlukan hasil darab bintik antara daya luar dan sesaran menjadi bukan sifar\n. Kerana kabel kekal tegang sepanjang jejari gerakan membulat, daya tegangan adalah berserenjang dengan halaju dan sesaran seketika pada setiap titik (F berserenjang dengan dr)\n. Oleh itu, kabel luar melakukan kerja sifar ke atas sistem akrobat-Bumi (W = 0)\n. Tanpa mekanisme pemindahan tenaga yang merentasi sempadan, sistem akrobat-Bumi adalah terpencil bagi tenaga dan mengabadikan tenaga mekanik\n.",
+        "zh": "通过做功跨越系统边界传递能量需要外力与位移的点积不为零\n。因为线缆始终沿圆周运动的半径保持张紧，所以在每个点张力都垂直于瞬时速度和位移（F 垂直于 dr）\n。因此，外部线缆对杂技演员-地球系统做的功为零（W = 0）\n。由于没有任何能量传递机制跨越边界，杂技演员-地球系统在能量上是孤立的，机械能守恒\n。"
+      },
+      "misconceptions": [
+        "misc-conserved-means-individual-energies-constant"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-work-energy-relation",
+        "prompt": {
+          "en": "Review work: when an applied force is strictly perpendicular to the direction of motion at all times, the work done by that force is exactly zero.",
+          "ms": "Ulang kaji kerja: apabila daya yang dikenakan adalah berserenjang tepat dengan arah gerakan pada setiap masa, kerja yang dilakukan oleh daya tersebut adalah sifar tepat.",
+          "zh": "复习做功：当作用力在所有时刻均严格垂直于运动方向时，该力所做的功恰好为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice conceptual question explaining why a swinging object supported by an external taut cable can be modeled as an isolated energy system.",
+        "ms": "Soalan konsep aneka pilihan yang menerangkan sebab objek yang berayun yang disokong oleh kabel tegang luar boleh dimodelkan sebagai sistem tenaga terpencil.",
+        "zh": "多选题概念题，解释为什么由外部张紧线缆拉持的摆动物体可以被建模为能量孤立系统。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-pendulum-tension-perpendicular",
+        "options": [
+          {
+            "id": "opt-pendulum-tension-perpendicular",
+            "label": {
+              "en": "The tension force from the cable is always perpendicular to the displacement of the acrobat, resulting in zero work done across the boundary.",
+              "ms": "Daya tegangan daripada kabel sentiasa berserenjang dengan sesaran akrobat, menghasilkan kerja sifar yang dilakukan merentasi sempadan.",
+              "zh": "来自线缆的张力始终垂直于杂技演员的位移，导致跨越边界所做的功为零。"
+            }
+          },
+          {
+            "id": "opt-pendulum-no-internal-work-allowed",
+            "label": {
+              "en": "The system is isolated because gravity cannot perform any internal work, keeping both potential and kinetic energies constant individually.",
+              "ms": "Sistem ini terpencil kerana graviti tidak boleh melakukan sebarang kerja dalaman, mengekalkan kedua-dua tenaga keupayaan dan kinetik malar secara individu.",
+              "zh": "系统是孤立的，因为重力不能做任何内功，从而使势能和动能各自单独保持不变。"
+            },
+            "misconception": "misc-conserved-means-individual-energies-constant"
+          },
+          {
+            "id": "opt-pendulum-tension-internal-heat",
+            "label": {
+              "en": "The tension force acts across the boundary but converts completely into internal thermal energy inside the cable.",
+              "ms": "Daya tegangan bertindak merentasi sempadan tetapi bertukar sepenuhnya kepada tenaga haba dalaman di dalam kabel.",
+              "zh": "张力跨越边界作用，但完全转化为线缆内部的热能。"
+            }
+          },
+          {
+            "id": "opt-pendulum-nonisolated-due-to-speed",
+            "label": {
+              "en": "The system is nonisolated because the changing speed proves that energy is continuously injected into the system by the cable.",
+              "ms": "Sistem ini bukan terpencil kerana kelajuan yang berubah membuktikan bahawa tenaga disuntik secara berterusan ke dalam sistem oleh kabel.",
+              "zh": "该系统是非孤立的，因为变化的速度证明线缆正在持续向系统注入能量。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-chal-sliding-block-thermal-total",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Account for internal energy changes when nonconservative forces act within an isolated system.",
+      "prompt": {
+        "en": "A block slides down a rough incline at a constant speed inside a perfectly rigid, thermally sealed and insulated container. Defining the isolated system as {block + incline + Earth + container air}, what is the correct energy transformation taking place?",
+        "ms": "Sebuah blok menggelongsor menuruni satah condong yang kasar pada kelajuan malar di dalam bekas tegar yang kedap dan berpenebat haba sempurna. Mentakrifkan sistem terpencil sebagai {blok + satah condong + Bumi + udara bekas}, apakah perubahan tenaga betul yang berlaku?",
+        "zh": "一个滑块在一个完全刚性、热密封且绝热的容器内的粗糙斜面上以恒定速度滑下。将孤立系统定义为{滑块 + 斜面 + 地球 + 容器内空气}，正在发生的正确能量转化是什么？"
+      },
+      "hints": [
+        {
+          "en": "Since the speed is constant, the kinetic energy does not change. What is happening to the gravitational potential energy of the block-Earth system?",
+          "ms": "Memandangkan kelajuan adalah malar, tenaga kinetik tidak berubah. Apakah yang berlaku kepada tenaga keupayaan graviti bagi sistem blok-Bumi?",
+          "zh": "由于速度恒定，动能没有变化。滑块-地球系统的重力势能发生了什么变化？"
+        },
+        {
+          "en": "Consider whether mechanical energy is conserved when kinetic friction acts internally, and where the lost gravitational potential energy goes in an isolated container.",
+          "ms": "Pertimbangkan sama ada tenaga mekanik diabadikan apabila geseran kinetik bertindak secara dalaman, dan ke mana hilangnya tenaga keupayaan graviti dalam bekas terpencil.",
+          "zh": "考虑当动摩擦力在内部起作用时机械能是否守恒，以及在孤立容器中减少的重力势能去向了哪里。"
+        }
+      ],
+      "feedback": {
+        "en": "The total system energy is conserved because no energy crosses the insulated boundary. However, mechanical energy is not conserved: gravitational potential energy is converted entirely into internal thermal energy by internal friction.",
+        "ms": "Jumlah tenaga sistem adalah abadi kerana tiada tenaga merentasi sempadan berpenebat. Walau bagaimanapun, tenaga mekanik tidak abadi: tenaga keupayaan graviti ditukarkan sepenuhnya kepada tenaga haba dalaman oleh geseran dalaman.",
+        "zh": "由于没有能量跨越绝热边界，系统总能量守恒。然而机械能不守恒：重力势能通过内部摩擦力完全转化为了内部热能。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because the system is isolated (Delta E_system = 0), but friction is an internal nonconservative force. Since kinetic energy is constant (Delta K = 0) and gravitational potential energy decreases (Delta U_g < 0), mechanical energy decreases (Delta E_mech < 0) and is converted into internal thermal energy (Delta E_int = -Delta U_g > 0). Option B represents the misconception that mechanical energy is always conserved in every isolated system. Option C incorrectly assumes that total energy decreases across an insulated boundary. Option D incorrectly suggests mechanical energy is stored as elastic potential energy.",
+        "ms": "Pilihan A adalah betul kerana sistem ini terpencil (Delta E_system = 0), tetapi geseran ialah daya bukan abadi dalaman. Memandangkan tenaga kinetik adalah malar (Delta K = 0) dan tenaga keupayaan graviti berkurangan (Delta U_g < 0), tenaga mekanik berkurangan (Delta E_mech < 0) dan ditukarkan kepada tenaga haba dalaman (Delta E_int = -Delta U_g > 0). Pilihan B mewakili salah faham bahawa tenaga mekanik sentiasa abadi dalam setiap sistem terpencil. Pilihan C secara salah menganggap bahawa jumlah tenaga berkurangan merentasi sempadan berpenebat. Pilihan D secara salah mencadangkan tenaga mekanik disimpan sebagai tenaga keupayaan kenyal.",
+        "zh": "选项 A 正确，因为系统是孤立的（Delta E_system = 0），但摩擦力是内部非保守力。由于动能恒定（Delta K = 0）且重力势能减小（Delta U_g < 0），机械能减少（Delta E_mech < 0）并转化为内部热能（Delta E_int = -Delta U_g > 0）。选项 B 代表了认为在任何孤立系统中机械能都必然守恒的错误观念。选项 C 错误地认为总能量会跨越绝热边界减少。选项 D 错误地认为机械能存储为了弹性势能。"
+      },
+      "explanation": {
+        "en": "In the most general isolated system model for energy, total energy is conserved (Delta E_system = Delta K + Delta U + Delta E_int = 0)\n. When nonconservative forces such as kinetic friction act internally between objects inside the system, mechanical energy is transformed into internal energy (thermal energy)\n. Here, because the block moves at constant speed, Delta K = 0, meaning the decrease in gravitational potential energy exactly equals the increase in internal energy of the system\n.",
+        "ms": "Dalam model sistem terpencil yang paling umum bagi tenaga, jumlah tenaga adalah abadi (Delta E_system = Delta K + Delta U + Delta E_int = 0)\n. Apabila daya bukan abadi seperti geseran kinetik bertindak secara dalaman antara objek di dalam sistem, tenaga mekanik diubah menjadi tenaga dalaman (tenaga haba)\n. Di sini, kerana blok bergerak pada kelajuan malar, Delta K = 0, bermakna pengurangan tenaga keupayaan graviti sama tepat dengan peningkatan tenaga dalaman sistem\n.",
+        "zh": "在最通用的能量孤立系统模型中，总能量守恒（Delta E_system = Delta K + Delta U + Delta E_int = 0）\n。当系统内部物体之间存在动摩擦力等非保守力相互作用时，机械能会转化为内能（热能）\n。在此情景中，由于滑块匀速运动，Delta K = 0，这意味着重力势能的减少量恰好等于系统内能的增加量\n。"
+      },
+      "misconceptions": [
+        "misc-mechanical-energy-always-conserved"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-work-energy-relation",
+        "prompt": {
+          "en": "Review nonconservative forces: internal friction forces do not store reversible potential energy, but instead convert mechanical energy into microscopic internal thermal energy.",
+          "ms": "Ulang kaji daya bukan abadi: daya geseran dalaman tidak menyimpan tenaga keupayaan berbalik, sebaliknya menukarkan tenaga mekanik kepada tenaga haba dalaman mikroskopik.",
+          "zh": "复习非保守力：内部摩擦力不会存储可逆的势能，而是将机械能转化为微观内部热能。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question examining the transformation of gravitational potential energy into internal thermal energy for a block sliding at constant speed down a rough incline inside an isolated container.",
+        "ms": "Soalan aneka pilihan yang meneliti perubahan tenaga keupayaan graviti kepada tenaga haba dalaman untuk blok yang menggelongsor pada kelajuan malar menuruni satah condong kasar di dalam bekas terpencil.",
+        "zh": "多选题，考察在孤立容器内以恒定速度沿粗糙斜面下滑的滑块如何将重力势能转化为内部热能。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-thermal-pot-to-internal",
+        "options": [
+          {
+            "id": "opt-thermal-pot-to-internal",
+            "label": {
+              "en": "Total system energy is conserved, but mechanical energy decreases as gravitational potential energy is converted entirely into internal thermal energy.",
+              "ms": "Jumlah tenaga sistem adalah abadi, tetapi tenaga mekanik berkurangan apabila tenaga keupayaan graviti ditukarkan sepenuhnya kepada tenaga haba dalaman.",
+              "zh": "系统总能量守恒，但随着重力势能完全转化为内部热能，机械能减少。"
+            }
+          },
+          {
+            "id": "opt-thermal-mech-always-conserved",
+            "label": {
+              "en": "Mechanical energy is strictly conserved because the container is thermally isolated and no forces act from outside.",
+              "ms": "Tenaga mekanik adalah abadi secara mutlak kerana bekas tersebut berpenebat haba dan tiada daya bertindak dari luar.",
+              "zh": "机械能严格守恒，因为容器是绝热的且没有来自外部的力作用。"
+            },
+            "misconception": "misc-mechanical-energy-always-conserved"
+          },
+          {
+            "id": "opt-thermal-total-lost-friction",
+            "label": {
+              "en": "Total system energy decreases continuously because friction destroys energy without generating any thermal storage.",
+              "ms": "Jumlah tenaga sistem berkurangan secara berterusan kerana geseran memusnahkan tenaga tanpa menghasilkan sebarang penyimpanan haba.",
+              "zh": "系统总能量持续减少，因为摩擦力消灭了能量而没有产生任何热能存储。"
+            }
+          },
+          {
+            "id": "opt-thermal-pot-to-elastic",
+            "label": {
+              "en": "Mechanical energy remains constant because lost gravitational potential energy is stored as elastic potential energy in the incline surface.",
+              "ms": "Tenaga mekanik kekal malar kerana tenaga keupayaan graviti yang hilang disimpan sebagai tenaga keupayaan kenyal di permukaan satah condong.",
+              "zh": "机械能保持恒定，因为损失的重力势能作为弹性势能存储在斜面表面中。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "interactive-easy-classify-energy-processes",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Differentiate between energy transfer across a boundary and energy transformation within an isolated system.",
+      "prompt": {
+        "en": "Classify each physical process as either an internal energy transformation within an isolated system or an energy transfer crossing a system boundary.",
+        "ms": "Kelaskan setiap proses fizikal sama ada sebagai perubahan tenaga dalaman dalam sistem terpencil atau pemindahan tenaga yang merentasi sempadan sistem.",
+        "zh": "将每个物理过程分类为孤立系统内的内部能量转化或跨越系统边界的能量传递。"
+      },
+      "hints": [
+        {
+          "en": "Consider whether the interaction occurs entirely between parts inside the system boundary or involves an agent in the external environment.",
+          "ms": "Pertimbangkan sama ada interaksi berlaku sepenuhnya antara bahagian di dalam sempadan sistem atau melibatkan agen dalam persekitaran luar.",
+          "zh": "考虑相互作用是完全发生在系统边界内部的各部件之间，还是涉及外部环境中的施力物。"
+        },
+        {
+          "en": "If energy changes from one form to another (such as potential to kinetic) while remaining entirely within the defined boundary, it is an internal transformation. If an external force or heat flow acts across the boundary, it is an energy transfer.",
+          "ms": "Jika tenaga berubah dari satu bentuk ke bentuk lain (seperti keupayaan kepada kinetik) sambil kekal sepenuhnya di dalam sempadan yang ditakrifkan, ia adalah perubahan dalaman. Jika daya luar atau aliran haba bertindak merentasi sempadan, ia adalah pemindahan tenaga.",
+          "zh": "如果能量从一种形式转变为另一种形式（例如势能转化为动能）并完全保留在定义的边界内，则属于内部转化。如果外力或热流跨越边界起作用，则属于能量传递。"
+        }
+      ],
+      "feedback": {
+        "en": "Energy transformation converts energy between kinetic, potential, or internal forms inside a boundary, whereas energy transfer moves energy across the boundary via external work, heat, or radiation.",
+        "ms": "Perubahan tenaga menukarkan tenaga antara bentuk kinetik, keupayaan, atau dalaman di dalam sempadan, manakala pemindahan tenaga menggerakkan tenaga merentasi sempadan melalui kerja luar, haba, atau sinaran.",
+        "zh": "能量转化是在边界内部将能量在动能、势能或内能形式之间进行转换，而能量传递则是通过外部做功、热量或辐射将能量跨越边界转移。"
+      },
+      "answerLogic": {
+        "en": "Gravitational potential converting to kinetic in a falling book-Earth system and elastic potential converting to kinetic in a popgun-projectile system are internal transformations within isolated systems. A hand lifting a box from outside and heat leaving hot tea to the room air represent energy transfers crossing system boundaries. Misclassifying internal conversion as a boundary transfer reflects the misconception that energy conservation forbids internal energy changes.",
+        "ms": "Tenaga keupayaan graviti yang bertukar kepada kinetik dalam sistem buku-Bumi yang jatuh dan keupayaan kenyal yang bertukar kepada kinetik dalam sistem senapang-projektil adalah perubahan dalaman dalam sistem terpencil. Tangan yang mengangkat kotak dari luar dan haba yang keluar dari teh panas ke udara bilik mewakili pemindahan tenaga yang merentasi sempadan sistem. Salah mengelaskan penukaran dalaman sebagai pemindahan sempadan mencerminkan salah faham bahawa keabadian tenaga melarang perubahan tenaga dalaman.",
+        "zh": "下落的书-地球系统中重力势能转化为动能以及弹簧枪-发射体系统中弹性势能转化为动能属于孤立系统内的内部转化。手从外部举起箱子以及热量从热茶散失到室内空气中代表跨越系统边界的能量传递。将内部转换错误归类为边界传递反映了认为能量守恒禁止内部能量变化的错误观念。"
+      },
+      "explanation": {
+        "en": "In an isolated system, no energy crosses the boundary, but internal conservative forces perform work to transform energy from one type to another (such as potential energy into kinetic energy)\n. Energy transfer mechanisms like external work, heat, and electromagnetic radiation occur only when energy crosses the boundary of a nonisolated system\n.",
+        "ms": "Dalam sistem terpencil, tiada tenaga merentasi sempadan, tetapi daya abadi dalaman melakukan kerja untuk mengubah tenaga daripada satu jenis kepada jenis yang lain (seperti tenaga keupayaan kepada tenaga kinetik)\n. Mekanisme pemindahan tenaga seperti kerja luar, haba, dan sinaran elektromagnet hanya berlaku apabila tenaga merentasi sempadan sistem bukan terpencil\n.",
+        "zh": "在孤立系统中，没有能量跨越边界，但内部保守力做功将能量从一种类型转化为另一种类型（例如势能转化为动能）\n。外部做功、热量和电磁辐射等能量传递机制仅在能量跨越非孤立系统的边界时发生\n。"
+      },
+      "misconceptions": [
+        "misc-conserved-means-individual-energies-constant"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-work-energy-relation",
+        "prompt": {
+          "en": "Remember that energy transfer occurs when an external influence acts across a system boundary, whereas energy transformation occurs between components inside the system.",
+          "ms": "Ingat bahawa pemindahan tenaga berlaku apabila pengaruh luar bertindak merentasi sempadan sistem, manakala perubahan tenaga berlaku antara komponen di dalam sistem.",
+          "zh": "请记住，当外部作用跨越系统边界起作用时发生能量传递，而能量转化发生在系统内部各组件之间。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classification activity where four energy processes must be sorted into either internal transformation within an isolated system or boundary energy transfer.",
+        "ms": "Aktiviti pengelasan di mana empat proses tenaga mesti diisih kepada sama ada perubahan dalaman dalam sistem terpencil atau pemindahan tenaga sempadan.",
+        "zh": "分类活动，需要将四个能量过程归类为孤立系统内的内部转化或边界能量传递。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-internal-transform",
+            "label": {
+              "en": "Internal Energy Transformation (Within System)",
+              "ms": "Perubahan Tenaga Dalaman (Di Dalam Sistem)",
+              "zh": "内部能量转化（系统内部）"
+            }
+          },
+          {
+            "id": "target-boundary-transfer",
+            "label": {
+              "en": "Energy Transfer (Crossing System Boundary)",
+              "ms": "Pemindahan Tenaga (Merentasi Sempadan Sistem)",
+              "zh": "能量传递（跨越系统边界）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-trans-grav-to-kin",
+            "label": {
+              "en": "Gravitational potential energy converting into kinetic energy as a dropped ball falls inside an isolated ball-Earth system",
+              "ms": "Tenaga keupayaan graviti bertukar kepada tenaga kinetik apabila bola yang dilepaskan jatuh di dalam sistem bola-Bumi terpencil",
+              "zh": "在孤立的小球-地球系统内，下落的小球将重力势能转化为动能"
+            }
+          },
+          {
+            "id": "item-trans-elastic-to-kin",
+            "label": {
+              "en": "Elastic potential energy transforming into kinetic energy as a compressed spring releases a projectile inside an isolated popgun system",
+              "ms": "Tenaga keupayaan kenyal bertukar kepada tenaga kinetik apabila spring yang termampat melepaskan projektil di dalam sistem senapang mainan terpencil",
+              "zh": "在孤立的弹簧枪系统内，压缩弹簧释放发射体将弹性势能转化为动能"
+            }
+          },
+          {
+            "id": "item-trans-hand-lifting",
+            "label": {
+              "en": "An external hand doing work to lift a book upward into the air from outside the book-only system",
+              "ms": "Tangan luar melakukan kerja untuk mengangkat buku ke atas ke udara dari luar sistem buku sahaja",
+              "zh": "外部的手从仅包含书的系统外部做功将书向上举起到空中"
+            }
+          },
+          {
+            "id": "item-trans-heat-cooling",
+            "label": {
+              "en": "Energy transferring out of a hot cup of tea into the cooler surrounding room air by heat",
+              "ms": "Tenaga berpindah keluar dari cawan teh panas ke udara bilik sekeliling yang lebih sejuk melalui haba",
+              "zh": "能量通过热量从热茶杯传递到周围较冷的室内空气中"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-trans-grav-to-kin",
+            "targetId": "target-internal-transform"
+          },
+          {
+            "itemId": "item-trans-elastic-to-kin",
+            "targetId": "target-internal-transform"
+          },
+          {
+            "itemId": "item-trans-hand-lifting",
+            "targetId": "target-boundary-transfer"
+          },
+          {
+            "itemId": "item-trans-heat-cooling",
+            "targetId": "target-boundary-transfer"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-conserved-means-individual-energies-constant",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-trans-grav-to-kin",
+            "targetId": "target-boundary-transfer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-easy-match-system-descriptions",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Identify whether a chosen system is isolated or nonisolated based on energy transfers across its boundary.",
+      "prompt": {
+        "en": "Match each physical scenario and system boundary definition to its appropriate energy analysis model.",
+        "ms": "Padankan setiap senario fizikal dan takrifan sempadan sistem kepada model analisis tenaga yang sesuai.",
+        "zh": "将每个物理情景和系统边界定义与其适当的能量分析模型进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Determine whether external forces or interactions cross the chosen system boundary to do work or transfer heat.",
+          "ms": "Tentukan sama ada daya atau interaksi luar merentasi sempadan sistem yang dipilih untuk melakukan kerja atau memindahkan haba.",
+          "zh": "确定是否有外力或外部相互作用跨越所选系统边界做功或传递热量。"
+        },
+        {
+          "en": "A single particle falling under gravity experiences gravity as an external force doing work (nonisolated). If the Earth is included with the object, gravitational forces become internal and the system is isolated.",
+          "ms": "Zarah tunggal yang jatuh di bawah graviti mengalami graviti sebagai daya luar yang melakukan kerja (bukan terpencil). Jika Bumi disertakan bersama objek, daya graviti menjadi dalaman dan sistem adalah terpencil.",
+          "zh": "在重力作用下下落的单个粒子将重力体验为做外功（非孤立）。如果将地球与物体一起包含在内，重力成为内力，系统是孤立的。"
+        }
+      ],
+      "feedback": {
+        "en": "Including all interacting bodies inside the boundary eliminates external energy transfers, creating an isolated system. Excluding interacting bodies turns interactions into boundary-crossing work, requiring a nonisolated model.",
+        "ms": "Memasukkan semua jasad yang berinteraksi di dalam sempadan menghapuskan pemindahan tenaga luar, mencipta sistem terpencil. Mengecualikan jasad yang berinteraksi menukarkan interaksi menjadi kerja merentasi sempadan, memerlukan model bukan terpencil.",
+        "zh": "将所有相互作用的物体包含在边界内可以消除外部能量传递，从而构成孤立系统。排除相互作用的物体会将相互作用转变为跨边界做功，需要使用非孤立模型。"
+      },
+      "answerLogic": {
+        "en": "A falling rock with Earth included and an oscillating block with spring and rigid support included have no energy crossing their boundaries, making them isolated systems. A falling rock defined as rock-only has external gravitational work crossing its boundary, making it a nonisolated system. Incorrectly classifying the single-rock system as isolated stems from the misconception that a single object can possess gravitational potential energy independently.",
+        "ms": "Batu yang jatuh dengan Bumi disertakan dan blok berayun dengan spring serta sokongan tegar disertakan tidak mempunyai tenaga yang merentasi sempadan mereka, menjadikan mereka sistem terpencil. Batu yang jatuh yang ditakrifkan sebagai batu sahaja mempunyai kerja graviti luar yang merentasi sempadannya, menjadikannya sistem bukan terpencil. Kesilapan mengelaskan sistem batu tunggal sebagai terpencil berpunca daripada salah faham bahawa objek tunggal boleh memiliki tenaga keupayaan graviti secara bebas.",
+        "zh": "包含地球的下落下落石头系统以及包含弹簧和刚性支架的振荡滑块系统没有能量跨越边界，因此是孤立系统。定义为仅包含石头的下落石头系统有外部重力做功跨越边界，因此是非孤立系统。将单石头系统错误分类为孤立系统源于认为单个物体可以独立拥有重力势能的错误观念。"
+      },
+      "explanation": {
+        "en": "Choosing system boundaries determines whether energy crosses the boundary\n. When the system is {object + Earth}, gravitational attraction is an internal force, no energy crosses the boundary, and we apply the isolated system model (Delta K + Delta U = 0)\n. When the system is {object only}, gravity is an external force doing work across the boundary, requiring the nonisolated system model (Delta K = W)\n.",
+        "ms": "Memilih sempadan sistem menentukan sama ada tenaga merentasi sempadan\n. Apabila sistem ialah {objek + Bumi}, tarikan graviti ialah daya dalaman, tiada tenaga merentasi sempadan, dan kita menggunakan model sistem terpencil (Delta K + Delta U = 0)\n. Apabila sistem ialah {objek sahaja}, graviti ialah daya luar yang melakukan kerja merentasi sempadan, memerlukan model sistem bukan terpencil (Delta K = W)\n.",
+        "zh": "选择系统边界决定了能量是否跨越边界\n。当系统为{物体 + 地球}时，重力吸引是内力，没有能量跨越边界，我们应用孤立系统模型（Delta K + Delta U = 0）\n。当系统为{仅物体}时，重力是跨越边界做功的外力，需要使用非孤立系统模型（Delta K = W）\n。"
+      },
+      "misconceptions": [
+        "misc-single-object-potential-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-potential-energy",
+        "prompt": {
+          "en": "Review potential energy: potential energy is a shared property of two or more interacting bodies, not a property that belongs to an isolated single particle.",
+          "ms": "Ulang kaji tenaga keupayaan: tenaga keupayaan ialah sifat bersama dua atau lebih jasad yang berinteraksi, bukan sifat kepunyaan satu zarah tunggal yang terpencil.",
+          "zh": "复习势能：势能是两个或多个相互作用物体的共有属性，而不是属于单个孤立粒子的属性。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching interaction pairing three physical system configurations with either the Isolated System Model or Nonisolated System Model.",
+        "ms": "Interaksi pemadanan yang memasangkan tiga konfigurasi sistem fizikal dengan sama ada Model Sistem Terpencil atau Model Sistem Bukan Terpencil.",
+        "zh": "匹配交互活动，将三个物理系统构型与孤立系统模型或非孤立系统模型进行配对。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-model-isolated",
+            "label": {
+              "en": "Isolated System Model (Zero Energy Transfer Across Boundary)",
+              "ms": "Model Sistem Terpencil (Pemindahan Tenaga Sifar Merentasi Sempadan)",
+              "zh": "孤立系统模型（跨越边界的能量传递为零）"
+            }
+          },
+          {
+            "id": "target-model-nonisolated",
+            "label": {
+              "en": "Nonisolated System Model (Energy Transferred Across Boundary)",
+              "ms": "Model Sistem Bukan Terpencil (Tenaga Dipindahkan Merentasi Sempadan)",
+              "zh": "非孤立系统模型（能量跨越边界发生传递）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-sys-falling-rock-earth",
+            "label": {
+              "en": "A rock falling in free fall where the system is defined as {rock + Earth}",
+              "ms": "Sebiji batu yang jatuh secara jatuh bebas di mana sistem ditakrifkan sebagai {batu + Bumi}",
+              "zh": "自由下落中的石头，其中系统被定义为{石头 + 地球}"
+            }
+          },
+          {
+            "id": "item-sys-single-rock-falling",
+            "label": {
+              "en": "A rock falling in free fall where the system is defined as {rock only}",
+              "ms": "Sebiji batu yang jatuh secara jatuh bebas di mana sistem ditakrifkan sebagai {batu sahaja}",
+              "zh": "自由下落中的石头，其中系统被定义为{仅石头}"
+            }
+          },
+          {
+            "id": "item-sys-block-spring-rigid",
+            "label": {
+              "en": "A frictionless horizontal mass-spring oscillator where the system is defined as {block + spring + rigid wall}",
+              "ms": "Pengayun jisim-spring mendatar tanpa geseran di mana sistem ditakrifkan sebagai {blok + spring + dinding tegar}",
+              "zh": "无摩擦的水平质量-弹簧振子，其中系统被定义为{滑块 + 弹簧 + 刚性墙}"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-sys-falling-rock-earth",
+            "targetId": "target-model-isolated"
+          },
+          {
+            "itemId": "item-sys-single-rock-falling",
+            "targetId": "target-model-nonisolated"
+          },
+          {
+            "itemId": "item-sys-block-spring-rigid",
+            "targetId": "target-model-isolated"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-single-object-potential-energy",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-sys-single-rock-falling",
+            "targetId": "target-model-isolated"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-easy-select-isolated-criteria",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply conservation of mechanical energy to isolated systems where only conservative forces act.",
+      "prompt": {
+        "en": "Select all conditions that must be simultaneously satisfied for the mechanical energy of a system to remain strictly constant.",
+        "ms": "Pilih semua syarat yang mesti dipenuhi secara serentak untuk membolehkan tenaga mekanik sesuatu sistem kekal malar secara mutlak.",
+        "zh": "选择系统机械能保持严格恒定所必须同时满足的所有条件。"
+      },
+      "hints": [
+        {
+          "en": "Consider what must be true about energy crossing the system boundary as well as the types of forces acting internally.",
+          "ms": "Pertimbangkan apa yang mesti benar tentang tenaga yang merentasi sempadan sistem serta jenis daya yang bertindak secara dalaman.",
+          "zh": "考虑关于跨越系统边界的能量以及系统内部作用的力类型必须满足什么条件。"
+        },
+        {
+          "en": "Being isolated ensures total energy is constant, but mechanical energy specifically requires that no nonconservative forces (like kinetic friction) act internally to produce internal thermal energy.",
+          "ms": "Keadaan terpencil memastikan jumlah tenaga adalah malar, tetapi tenaga mekanik secara khusus memerlukan tiada daya bukan abadi (seperti geseran kinetik) bertindak secara dalaman untuk menghasilkan tenaga haba dalaman.",
+          "zh": "孤立确保了总能量恒定，但机械能守恒特别要求系统内部不存在非保守力（如动摩擦力）产生内部热能。"
+        }
+      ],
+      "feedback": {
+        "en": "Mechanical energy conservation requires two essential conditions: zero energy transfer across the system boundary (an isolated system) and zero internal nonconservative forces doing work within the system.",
+        "ms": "Keabadian tenaga mekanik memerlukan dua syarat penting: pemindahan tenaga sifar merentasi sempadan sistem (sistem terpencil) dan tiada daya bukan abadi dalaman yang melakukan kerja di dalam sistem.",
+        "zh": "机械能守恒需要两个基本条件：跨越系统边界的能量传递为零（孤立系统）以及系统内部没有非保守力做功。"
+      },
+      "answerLogic": {
+        "en": "Both 'no energy transfer across the boundary' and 'only conservative forces acting internally' are required for mechanical energy conservation (Delta E_mech = 0). Selecting the statement that mechanical energy is conserved in every isolated system regardless of friction indicates the misconception that mechanical energy is always conserved whenever a system is isolated.",
+        "ms": "Kedua-dua 'tiada pemindahan tenaga merentasi sempadan' dan 'hanya daya abadi bertindak secara dalaman' diperlukan untuk keabadian tenaga mekanik (Delta E_mech = 0). Memilih pernyataan bahawa tenaga mekanik diabadikan dalam setiap sistem terpencil tanpa mengira geseran menunjukkan salah faham bahawa tenaga mekanik sentiasa abadi setiap kali sesuatu sistem itu terpencil.",
+        "zh": "“没有能量跨越边界传递”和“内部仅有保守力作用”是机械能守恒（Delta E_mech = 0）所必需的两个条件。选择认为任何孤立系统中无论是否存在摩擦机械能都守恒的选项，表明存在只要系统孤立机械能就必然守恒的错误观念。"
+      },
+      "explanation": {
+        "en": "Conservation of mechanical energy (Delta E_mech = Delta K + Delta U = 0) is valid only for an isolated system in which no nonconservative forces act\n. If nonconservative forces such as friction act internally, total energy remains conserved (Delta E_system = 0), but mechanical energy is transformed into internal thermal energy\n.",
+        "ms": "Keabadian tenaga mekanik (Delta E_mech = Delta K + Delta U = 0) sah hanya untuk sistem terpencil di mana tiada daya bukan abadi bertindak\n. Jika daya bukan abadi seperti geseran bertindak secara dalaman, jumlah tenaga kekal abadi (Delta E_system = 0), tetapi tenaga mekanik ditukarkan kepada tenaga haba dalaman\n.",
+        "zh": "机械能守恒（Delta E_mech = Delta K + Delta U = 0）仅对没有非保守力作用的孤立系统有效\n。如果系统内部存在摩擦等非保守力作用，总能量保持守恒（Delta E_system = 0），但机械能会转化为内部热能\n。"
+      },
+      "misconceptions": [
+        "misc-mechanical-energy-always-conserved"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-work-energy-relation",
+        "prompt": {
+          "en": "Review work and conservative forces: conservative forces allow mechanical energy to convert back and forth without dissipation, whereas nonconservative forces convert mechanical energy into internal thermal energy.",
+          "ms": "Ulang kaji kerja dan daya abadi: daya abadi membenarkan tenaga mekanik bertukar berulang-alik tanpa pelesapan, manakala daya bukan abadi menukarkan tenaga mekanik kepada tenaga haba dalaman.",
+          "zh": "复习做功与保守力：保守力允许机械能来回转化而无耗散，而非保守力则将机械能转化为内部热能。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multi-select interaction where the user selects the required conditions for mechanical energy to be conserved from a list of statements.",
+        "ms": "Interaksi pelbagai pilihan di mana pengguna memilih syarat yang diperlukan untuk tenaga mekanik diabadikan daripada senarai pernyataan.",
+        "zh": "多项选择交互活动，用户从陈述列表中选择机械能守恒所需的必要条件。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-crit-no-boundary-transfer",
+            "label": {
+              "en": "No energy crosses the system boundary by work, heat, or radiation (the system is isolated).",
+              "ms": "Tiada tenaga merentasi sempadan sistem melalui kerja, haba, atau sinaran (sistem adalah terpencil).",
+              "zh": "没有能量通过做功、热量或辐射跨越系统边界（系统是孤立的）。"
+            }
+          },
+          {
+            "id": "item-crit-conservative-only",
+            "label": {
+              "en": "No nonconservative forces act within the system to convert mechanical energy into internal energy.",
+              "ms": "Tiada daya bukan abadi bertindak di dalam sistem untuk menukarkan tenaga mekanik kepada tenaga dalaman.",
+              "zh": "系统内部没有非保守力作用将机械能转化为内能。"
+            }
+          },
+          {
+            "id": "item-crit-any-isolated-conserves-mech",
+            "label": {
+              "en": "Mechanical energy is conserved in any system that is isolated, even if sliding friction warms surfaces internally.",
+              "ms": "Tenaga mekanik diabadikan dalam mana-mana sistem yang terpencil, walaupun geseran gelongsor memanaskan permukaan secara dalaman.",
+              "zh": "任何孤立系统中的机械能都守恒，即使滑动摩擦在内部使表面发热。"
+            },
+            "misconception": "misc-mechanical-energy-always-conserved"
+          },
+          {
+            "id": "item-crit-single-particle-only",
+            "label": {
+              "en": "The system must consist of only a single isolated particle with no other interacting objects.",
+              "ms": "Sistem ini mesti terdiri daripada hanya satu zarah terpencil tunggal tanpa objek berinteraksi yang lain.",
+              "zh": "系统必须仅由单个孤立粒子组成，且没有其他相互作用的物体。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-crit-no-boundary-transfer",
+          "item-crit-conservative-only"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-mechanical-energy-always-conserved",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-crit-any-isolated-conserves-mech",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-mod-order-energy-states-fall",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply conservation of mechanical energy to isolated systems where only conservative forces act.",
+      "prompt": {
+        "en": "Arrange the stages of a falling object in order of INCREASING kinetic energy (from lowest kinetic energy to highest kinetic energy) in an isolated object-Earth system with negligible friction.",
+        "ms": "Susun peringkat objek yang jatuh mengikut urutan peningkatan tenaga kinetik (daripada paling rendah kepada paling tinggi) dalam sistem objek-Bumi terpencil dengan geseran yang boleh diabaikan.",
+        "zh": "在可忽略摩擦的孤立物体-地球系统中，按动能递增（从最低动能到最高动能）的顺序排列下落物体的各个阶段。"
+      },
+      "hints": [
+        {
+          "en": "Consider how gravitational potential energy transforms into kinetic energy as the vertical elevation decreases.",
+          "ms": "Pertimbangkan bagaimana tenaga keupayaan graviti bertukar kepada tenaga kinetik apabila ketinggian menegak berkurangan.",
+          "zh": "考虑随着竖直高度降低，重力势能如何转化为动能。"
+        },
+        {
+          "en": "Because gravity is a conservative force, the kinetic energy gained depends strictly on the vertical drop in elevation, independent of the path trajectory.",
+          "ms": "Kerana graviti ialah daya abadi, tenaga kinetik yang diperoleh bergantung sepenuhnya pada penurunan ketinggian menegak, bebas daripada trajektori laluan.",
+          "zh": "由于重力是保守力，获得的动能严格取决于竖直高度的下降量，而与运动路径轨迹无关。"
+        }
+      ],
+      "feedback": {
+        "en": "In a conservative isolated system, kinetic energy increases directly as gravitational potential energy decreases with vertical height drop, regardless of whether the path is straight or curved.",
+        "ms": "Dalam sistem terpencil yang abadi, tenaga kinetik meningkat secara langsung apabila tenaga keupayaan graviti berkurangan dengan penurunan ketinggian menegak, tanpa mengira sama ada laluan itu lurus atau melengkung.",
+        "zh": "在保守孤立系统中，无论路径是直线还是曲线，动能都会随着竖直高度下降导致重力势能减少而直接增加。"
+      },
+      "answerLogic": {
+        "en": "Kinetic energy depends solely on the vertical distance fallen (h - y). At height h, K = 0 (lowest). At height 3h/4, K = 0.25 mgh. At height h/4, K = 0.75 mgh. At ground level (y = 0), K = mgh (highest). Placing the curved path at 3h/4 after the vertical drop at h/4 diagnoses the misconception that longer path trajectories generate greater kinetic energy.",
+        "ms": "Tenaga kinetik bergantung semata-mata pada jarak menegak yang dilalui (h - y). Pada ketinggian h, K = 0 (paling rendah). Pada ketinggian 3h/4, K = 0.25 mgh. Pada ketinggian h/4, K = 0.75 mgh. Pada paras tanah (y = 0), K = mgh (paling tinggi). Meletakkan laluan melengkung pada 3h/4 selepas kejatuhan menegak pada h/4 mendiagnosis salah faham bahawa trajektori laluan yang lebih panjang menghasilkan tenaga kinetik yang lebih besar.",
+        "zh": "动能仅取决于下落的竖直距离 (h - y)。在高度 h 处，K = 0（最低）。在高度 3h/4 处，K = 0.25 mgh。在高度 h/4 处，K = 0.75 mgh。在地面高度 (y = 0) 处，K = mgh（最高）。将 3h/4 处的弯曲路径置于 h/4 处的竖直下落之后，诊断出认为较长路径轨迹会产生更大动能的错误观念。"
+      },
+      "explanation": {
+        "en": "For an isolated object-Earth system with conservative forces, mechanical energy is conserved: Delta K + Delta U_g = 0\n. The kinetic energy gained equals the decrease in gravitational potential energy, Delta K = -Delta U_g = mg(h - y)\n. Because gravity is a conservative force, this energy transformation depends strictly on vertical elevation change and is completely path-independent\n.",
+        "ms": "Bagi sistem objek-Bumi terpencil dengan daya abadi, tenaga mekanik adalah abadi: Delta K + Delta U_g = 0\n. Tenaga kinetik yang diperoleh sama dengan pengurangan dalam tenaga keupayaan graviti, Delta K = -Delta U_g = mg(h - y)\n. Kerana graviti ialah daya abadi, perubahan tenaga ini bergantung sepenuhnya pada perubahan ketinggian menegak dan bebas sepenuhnya daripada laluan\n.",
+        "zh": "对于具有保守力的孤立物体-地球系统，机械能守恒：Delta K + Delta U_g = 0\n。获得的动能等于重力势能的减少量，Delta K = -Delta U_g = mg(h - y)\n。由于重力是保守力，这种能量转化严格取决于竖直高度变化，并且完全与路径无关\n。"
+      },
+      "misconceptions": [
+        "misc-path-dependence-in-conservative-systems"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-kinetic-energy",
+        "prompt": {
+          "en": "Review kinetic energy: kinetic energy depends on speed, which increases as potential energy is converted during vertical descent.",
+          "ms": "Ulang kaji tenaga kinetik: tenaga kinetik bergantung pada kelajuan, yang meningkat apabila tenaga keupayaan ditukar semasa penurunan menegak.",
+          "zh": "复习动能：动能取决于速度，在竖直下降过程中随着势能的转化而增加。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Ordering activity where four stages of a falling object must be sorted from lowest kinetic energy to highest kinetic energy.",
+        "ms": "Aktiviti menyusun di mana empat peringkat objek yang jatuh mesti diisih daripada tenaga kinetik paling rendah kepada tenaga kinetik paling tinggi.",
+        "zh": "排序活动，必须将下落物体的四个阶段从最低动能到最高动能进行排序。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-order-release",
+            "label": {
+              "en": "At the release point at initial height h with zero speed",
+              "ms": "Pada titik pelepasan pada ketinggian awal h dengan kelajuan sifar",
+              "zh": "在初始高度 h 的释放点，速度为零"
+            }
+          },
+          {
+            "id": "item-order-high-mid",
+            "label": {
+              "en": "At height 3h/4 after descending along a curved frictionless track",
+              "ms": "Pada ketinggian 3h/4 selepas menuruni landasan melengkung tanpa geseran",
+              "zh": "沿无摩擦弯曲轨道下降后处于 3h/4 高度处"
+            }
+          },
+          {
+            "id": "item-order-low-mid",
+            "label": {
+              "en": "At height h/4 after descending along a steep straight vertical path",
+              "ms": "Pada ketinggian h/4 selepas menuruni laluan menegak lurus yang curam",
+              "zh": "沿陡峭竖直直线路径下降后处于 h/4 高度处"
+            }
+          },
+          {
+            "id": "item-order-impact",
+            "label": {
+              "en": "At ground level (height 0) just before striking the ground",
+              "ms": "Pada paras tanah (ketinggian 0) sejurus sebelum menghempas tanah",
+              "zh": "在地面高度（高度 0）即将落地前"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-order-release",
+          "item-order-high-mid",
+          "item-order-low-mid",
+          "item-order-impact"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-path-dependence-in-conservative-systems",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-order-low-mid",
+            "secondItemId": "item-order-high-mid"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-mod-classify-boundary-effects",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze how choosing different system boundaries alters whether interactions are internal potential energy or external work.",
+      "prompt": {
+        "en": "Classify how each physical interaction is categorized based on the specified system boundary definition.",
+        "ms": "Kelaskan bagaimana setiap interaksi fizikal dikategorikan berdasarkan takrifan sempadan sistem yang ditentukan.",
+        "zh": "根据指定的系统边界定义，对每个物理相互作用的归类方式进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Determine whether both interacting objects are located inside the defined system boundary or if one object is in the external environment.",
+          "ms": "Tentukan sama ada kedua-dua objek yang berinteraksi terletak di dalam sempadan sistem yang ditakrifkan atau jika satu objek berada di persekitaran luar.",
+          "zh": "确定相互作用的两个物体是否都位于定义的系统边界内部，或者其中一个物体位于外部环境中。"
+        },
+        {
+          "en": "When both interacting objects are inside the boundary, their interaction is represented by internal potential energy. When an interacting object is outside the boundary, its force acts as external work crossing the boundary.",
+          "ms": "Apabila kedua-dua objek yang berinteraksi berada di dalam sempadan, interaksi mereka diwakili oleh tenaga keupayaan dalaman. Apabila objek yang berinteraksi berada di luar sempadan, dayanya bertindak sebagai kerja luar yang merentasi sempadan.",
+          "zh": "当相互作用的两个物体都在边界内时，它们的相互作用由内部势能表示。当相互作用的物体在边界外时，其作用力表现为跨越边界的外力做功。"
+        }
+      ],
+      "feedback": {
+        "en": "Interactions between members inside the system boundary store and transform internal potential energy. Forces exerted by objects in the environment across the boundary perform external work.",
+        "ms": "Interaksi antara ahli di dalam sempadan sistem menyimpan dan mengubah tenaga keupayaan dalaman. Daya yang dikenakan oleh objek dalam persekitaran merentasi sempadan melakukan kerja luar.",
+        "zh": "系统边界内部成员之间的相互作用存储并转化内部势能。环境中物体跨越边界施加的力则做外功。"
+      },
+      "answerLogic": {
+        "en": "Including both interacting bodies inside the boundary ({ball + Earth} or {glider + spring + support}) makes the interaction an internal conservative force with potential energy transformation. Excluding an interacting body ({ball only} or {glider only}) turns the interaction into an external force performing work across the boundary. Placing {ball only} under internal potential energy diagnoses the misconception that a single object can possess potential energy on its own.",
+        "ms": "Memasukkan kedua-dua jasad yang berinteraksi di dalam sempadan ({bola + Bumi} atau {peluncur + spring + sokongan}) menjadikan interaksi tersebut sebagai daya abadi dalaman dengan perubahan tenaga keupayaan. Mengecualikan jasad yang berinteraksi ({bola sahaja} atau {peluncur sahaja}) menukarkan interaksi tersebut kepada daya luar yang melakukan kerja merentasi sempadan. Meletakkan {bola sahaja} di bawah tenaga keupayaan dalaman mendiagnosis salah faham bahawa objek tunggal boleh memiliki tenaga keupayaan dengan sendirinya.",
+        "zh": "将相互作用的两个物体都包含在边界内（{小球 + 地球}或{滑块 + 弹簧 + 支架}）会使该相互作用成为具有势能转化的内部保守力。排除相互作用的物体（{仅小球}或{仅滑块}）会将该相互作用转化为跨越边界做功的外力。将{仅小球}置于内部势能之下，诊断出认为单个物体本身可以拥有势能的错误观念。"
+      },
+      "explanation": {
+        "en": "Potential energy is a shared configuration property of a system with two or more interacting parts\n. When the system boundary includes all interacting bodies, no work is done across the boundary and energy transforms between kinetic and potential forms (isolated system)\n. When a single object is chosen as the system, interactions from other bodies act across the boundary as external work (nonisolated system)\n.",
+        "ms": "Tenaga keupayaan ialah sifat konfigurasi bersama bagi sistem dengan dua atau lebih bahagian yang berinteraksi\n. Apabila sempadan sistem merangkumi semua jasad yang berinteraksi, tiada kerja dilakukan merentasi sempadan dan tenaga berubah antara bentuk kinetik dan keupayaan (sistem terpencil)\n. Apabila objek tunggal dipilih sebagai sistem, interaksi daripada jasad lain bertindak merentasi sempadan sebagai kerja luar (sistem bukan terpencil)\n.",
+        "zh": "势能是具有两个或多个相互作用部件系统的共享构型属性\n。当系统边界包含所有相互作用的物体时，没有功跨越边界，能量在动能和势能形式之间转化（孤立系统）\n。当选择单个物体作为系统时，来自其他物体的相互作用作为外力做功跨越边界（非孤立系统）\n。"
+      },
+      "misconceptions": [
+        "misc-single-object-potential-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-work-energy-relation",
+        "prompt": {
+          "en": "Review work across boundaries: forces originating from the external environment transfer energy into or out of a system via work.",
+          "ms": "Ulang kaji kerja merentasi sempadan: daya yang berasal dari persekitaran luar memindahkan tenaga ke dalam atau ke luar sistem melalui kerja.",
+          "zh": "复习跨边界做功：源自外部环境的力通过做功将能量传入或传出系统。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classification activity sorting four physical interactions into either Internal Potential Energy Transformation or External Work Across Boundary based on system definitions.",
+        "ms": "Aktiviti pengelasan yang mengisih empat interaksi fizikal kepada sama ada Perubahan Tenaga Keupayaan Dalaman atau Kerja Luar Merentasi Sempadan berdasarkan takrifan sistem.",
+        "zh": "分类活动，根据系统定义将四个物理相互作用归类为内部势能转化或跨越边界的外力做功。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-internal-potential",
+            "label": {
+              "en": "Internal Potential Energy Transformation (Isolated System)",
+              "ms": "Perubahan Tenaga Keupayaan Dalaman (Sistem Terpencil)",
+              "zh": "内部势能转化（孤立系统）"
+            }
+          },
+          {
+            "id": "target-external-work",
+            "label": {
+              "en": "External Work Across Boundary (Nonisolated System)",
+              "ms": "Kerja Luar Merentasi Sempadan (Sistem Bukan Terpencil)",
+              "zh": "跨越边界的外力做功（非孤立系统）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-bound-ball-earth",
+            "label": {
+              "en": "Gravitational interaction when the system is defined as {falling ball + Earth}",
+              "ms": "Interaksi graviti apabila sistem ditakrifkan sebagai {bola jatuh + Bumi}",
+              "zh": "当系统定义为{下落的小球 + 地球}时的重力相互作用"
+            }
+          },
+          {
+            "id": "item-bound-ball-only",
+            "label": {
+              "en": "Gravitational interaction when the system is defined as {falling ball only}",
+              "ms": "Interaksi graviti apabila sistem ditakrifkan sebagai {bola jatuh sahaja}",
+              "zh": "当系统定义为{仅下落的小球}时的重力相互作用"
+            }
+          },
+          {
+            "id": "item-bound-mass-spring-support",
+            "label": {
+              "en": "Spring interaction when the system is defined as {glider + spring + rigid support}",
+              "ms": "Interaksi spring apabila sistem ditakrifkan sebagai {peluncur + spring + sokongan tegar}",
+              "zh": "当系统定义为{滑块 + 弹簧 + 刚性支架}时的弹簧相互作用"
+            }
+          },
+          {
+            "id": "item-bound-mass-only",
+            "label": {
+              "en": "Spring interaction when the system is defined as {glider only}",
+              "ms": "Interaksi spring apabila sistem ditakrifkan sebagai {peluncur sahaja}",
+              "zh": "当系统定义为{仅滑块}时的弹簧相互作用"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-bound-ball-earth",
+            "targetId": "target-internal-potential"
+          },
+          {
+            "itemId": "item-bound-ball-only",
+            "targetId": "target-external-work"
+          },
+          {
+            "itemId": "item-bound-mass-spring-support",
+            "targetId": "target-internal-potential"
+          },
+          {
+            "itemId": "item-bound-mass-only",
+            "targetId": "target-external-work"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-single-object-potential-energy",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-bound-ball-only",
+            "targetId": "target-internal-potential"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-mod-match-force-transformations",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Account for internal energy changes when nonconservative forces act within an isolated system.",
+      "prompt": {
+        "en": "Match each internal force acting within an isolated system to its effect on the mechanical energy and internal thermal energy of the system.",
+        "ms": "Padankan setiap daya dalaman yang bertindak di dalam sistem terpencil kepada kesannya terhadap tenaga mekanik dan tenaga haba dalaman sistem.",
+        "zh": "将孤立系统内作用的每个内部力与其对系统机械能和内部热能的影响进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Identify whether the internal force is conservative (like gravity or ideal springs) or nonconservative (like friction).",
+          "ms": "Kenal pasti sama ada daya dalaman adalah abadi (seperti graviti atau spring ideal) atau bukan abadi (seperti geseran).",
+          "zh": "确定该内力是保守力（如重力或理想弹簧）还是非保守力（如摩擦力）。"
+        },
+        {
+          "en": "Conservative internal forces allow mechanical energy to convert back and forth without loss. Nonconservative internal forces transform mechanical energy into internal thermal energy.",
+          "ms": "Daya abadi dalaman membenarkan tenaga mekanik bertukar berulang-alik tanpa kehilangan. Daya bukan abadi dalaman menukarkan tenaga mekanik kepada tenaga haba dalaman.",
+          "zh": "保守内力使机械能可以来回转化而无损失。非保守内力将机械能转化为内部热能。"
+        }
+      ],
+      "feedback": {
+        "en": "Conservative forces conserve mechanical energy by transforming energy between kinetic and potential forms. Nonconservative forces like kinetic friction transform mechanical energy into internal thermal energy.",
+        "ms": "Daya abadi mengabadikan tenaga mekanik dengan mengubah tenaga antara bentuk kinetik dan keupayaan. Daya bukan abadi seperti geseran kinetik menukarkan tenaga mekanik kepada tenaga haba dalaman.",
+        "zh": "保守力通过在动能和势能形式之间转化来保持机械能守恒。动摩擦力等非保守力则将机械能转化为内部热能。"
+      },
+      "answerLogic": {
+        "en": "Internal gravity and spring forces are conservative, keeping mechanical energy conserved (Delta E_mech = 0). Internal kinetic friction is nonconservative, converting mechanical energy into internal thermal energy (Delta E_mech < 0, Delta E_int > 0). Matching internal friction to mechanical energy conservation diagnoses the misconception that mechanical energy is conserved in every isolated system regardless of friction.",
+        "ms": "Daya graviti dalaman dan daya spring adalah abadi, mengekalkan tenaga mekanik abadi (Delta E_mech = 0). Geseran kinetik dalaman adalah bukan abadi, menukarkan tenaga mekanik kepada tenaga haba dalaman (Delta E_mech < 0, Delta E_int > 0). Memadankan geseran dalaman kepada keabadian tenaga mekanik mendiagnosis salah faham bahawa tenaga mekanik diabadikan dalam setiap sistem terpencil tanpa mengira geseran.",
+        "zh": "内部重力和弹簧力是保守力，使机械能守恒（Delta E_mech = 0）。内部动摩擦力是非保守力，将机械能转化为内部热能（Delta E_mech < 0，Delta E_int > 0）。将内部摩擦力与机械能守恒相匹配，诊断出认为任何孤立系统中无论摩擦力如何机械能都会守恒的错误观念。"
+      },
+      "explanation": {
+        "en": "In an isolated system, total energy is always conserved (Delta E_system = 0)\n. When only conservative forces act internally, mechanical energy is conserved (Delta E_mech = Delta K + Delta U = 0)\n. When nonconservative forces like kinetic friction act internally, mechanical energy is not conserved because it transforms into microscopic internal thermal energy (Delta K + Delta U + Delta E_int = 0)\n.",
+        "ms": "Dalam sistem terpencil, jumlah tenaga sentiasa abadi (Delta E_system = 0)\n. Apabila hanya daya abadi bertindak secara dalaman, tenaga mekanik adalah abadi (Delta E_mech = Delta K + Delta U = 0)\n. Apabila daya bukan abadi seperti geseran kinetik bertindak secara dalaman, tenaga mekanik tidak abadi kerana ia bertukar menjadi tenaga haba dalaman mikroskopik (Delta K + Delta U + Delta E_int = 0)\n.",
+        "zh": "在孤立系统中，总能量始终守恒（Delta E_system = 0）\n。当内部仅有保守力作用时，机械能守恒（Delta E_mech = Delta K + Delta U = 0）\n。当内部存在动摩擦力等非保守力作用时，机械能不守恒，因为它转化为了微观内部热能（Delta K + Delta U + Delta E_int = 0）\n。"
+      },
+      "misconceptions": [
+        "misc-mechanical-energy-always-conserved"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-potential-energy",
+        "prompt": {
+          "en": "Review potential energy: potential energy is associated only with conservative forces that allow reversible energy storage without thermal dissipation.",
+          "ms": "Ulang kaji tenaga keupayaan: tenaga keupayaan hanya dikaitkan dengan daya abadi yang membenarkan penyimpanan tenaga boleh balik tanpa pelesapan haba.",
+          "zh": "复习势能：势能仅与允许可逆能量存储而无热耗散的保守力相关。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching activity pairing three internal forces in an isolated system with whether they conserve mechanical energy or convert mechanical energy to internal thermal energy.",
+        "ms": "Aktiviti pemadanan yang memasangkan tiga daya dalaman dalam sistem terpencil dengan sama ada mereka mengabadikan tenaga mekanik atau menukarkan tenaga mekanik kepada tenaga haba dalaman.",
+        "zh": "匹配活动，将孤立系统中的三个内部力与它们是守恒机械能还是将机械能转化为内部热能进行配对。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-conserves-mech",
+            "label": {
+              "en": "Conserves Mechanical Energy (Transforms between Kinetic and Potential Energy)",
+              "ms": "Mengabadikan Tenaga Mekanik (Berubah antara Tenaga Kinetik dan Keupayaan)",
+              "zh": "机械能守恒（在动能与势能之间转化）"
+            }
+          },
+          {
+            "id": "target-converts-thermal",
+            "label": {
+              "en": "Does Not Conserve Mechanical Energy (Transforms Mechanical Energy to Internal Thermal Energy)",
+              "ms": "Tidak Mengabadikan Tenaga Mekanik (Menukarkan Tenaga Mekanik kepada Tenaga Haba Dalaman)",
+              "zh": "机械能不守恒（将机械能转化为内部热能）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-force-internal-gravity",
+            "label": {
+              "en": "Internal gravitational force acting between a falling book and the Earth in an isolated system",
+              "ms": "Daya graviti dalaman yang bertindak antara buku yang jatuh dan Bumi dalam sistem terpencil",
+              "zh": "孤立系统中下落的书与地球之间作用的内部重力"
+            }
+          },
+          {
+            "id": "item-force-internal-spring",
+            "label": {
+              "en": "Internal spring force acting between a compressed spring and an attached mass in an isolated system",
+              "ms": "Daya spring dalaman yang bertindak antara spring yang termampat dan jisim bersambung dalam sistem terpencil",
+              "zh": "孤立系统中压缩弹簧与相连质量块之间作用的内部弹力"
+            }
+          },
+          {
+            "id": "item-force-internal-friction",
+            "label": {
+              "en": "Internal kinetic friction force acting between a sliding block and a rough table surface in an isolated system",
+              "ms": "Daya geseran kinetik dalaman yang bertindak antara blok gelongsor dan permukaan meja kasar dalam sistem terpencil",
+              "zh": "孤立系统中滑动木块与粗糙桌面之间作用的内部动摩擦力"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-force-internal-gravity",
+            "targetId": "target-conserves-mech"
+          },
+          {
+            "itemId": "item-force-internal-spring",
+            "targetId": "target-conserves-mech"
+          },
+          {
+            "itemId": "item-force-internal-friction",
+            "targetId": "target-converts-thermal"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-mechanical-energy-always-conserved",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-force-internal-friction",
+            "targetId": "target-conserves-mech"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-chal-order-popgun-trajectory",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate kinetic, gravitational potential, and elastic potential energies in multi-component isolated systems.",
+      "prompt": {
+        "en": "Order the physical configurations of a vertical spring-loaded popgun firing a projectile (modeled as an isolated system of projectile, spring, and Earth) from the initial compressed state to the maximum apex height.",
+        "ms": "Susun konfigurasi fizikal senapang mainan spring menegak yang melancarkan projektil (dimodelkan sebagai sistem terpencil projektil, spring, dan Bumi) daripada keadaan termampat awal sehingga ketinggian puncak maksimum.",
+        "zh": "将竖直弹簧发射枪发射抛射体（建模为抛射体、弹簧和地球组成的孤立系统）的物理构型按从初始压缩状态到最大顶点高度的顺序进行排列。"
+      },
+      "hints": [
+        {
+          "en": "Track how elastic potential energy in the compressed spring transforms first into kinetic energy and gravitational potential energy, and finally completely into gravitational potential energy.",
+          "ms": "Jejaki bagaimana tenaga keupayaan kenyal dalam spring termampat bertukar dahulu kepada tenaga kinetik dan tenaga keupayaan graviti, dan akhirnya sepenuhnya kepada tenaga keupayaan graviti.",
+          "zh": "追踪压缩弹簧中的弹性势能如何先转化为动能和重力势能，并在最后完全转化为重力势能。"
+        },
+        {
+          "en": "At the start, the compressed spring holds maximum elastic potential energy. As the spring extends to its relaxed equilibrium length, elastic potential energy becomes zero and speed is high. As the projectile rises freely, kinetic energy converts into gravitational potential energy until speed momentarily becomes zero at the apex.",
+          "ms": "Pada permulaan, spring termampat memegang tenaga keupayaan kenyal maksimum. Apabila spring memanjang ke panjang keseimbangan kendurnya, tenaga keupayaan kenyal menjadi sifar dan kelajuan adalah tinggi. Apabila projektil naik secara bebas, tenaga kinetik bertukar kepada tenaga keupayaan graviti sehingga kelajuan menjadi sifar seketika di puncak.",
+          "zh": "在开始时，压缩弹簧具有最大弹性势能。当弹簧伸展到其松弛平衡位置时，弹性势能变为零且速度很高。随着抛射体自由上升，动能转化为重力势能，直到在顶点速度瞬时为零。"
+        }
+      ],
+      "feedback": {
+        "en": "In this multi-component isolated system, total mechanical energy is conserved throughout the entire launch: maximum elastic potential energy converts to kinetic energy at spring release, which then converts completely into gravitational potential energy at the peak.",
+        "ms": "Dalam sistem terpencil berbilang komponen ini, jumlah tenaga mekanik adalah abadi sepanjang keseluruhan pelancaran: tenaga keupayaan kenyal maksimum bertukar kepada tenaga kinetik semasa pelepasan spring, yang kemudiannya bertukar sepenuhnya kepada tenaga keupayaan graviti di puncak.",
+        "zh": "在这个多组分孤立系统中，总机械能在整个发射过程中守恒：最大弹性势能在弹簧释放时转化为动能，随后在最高顶点完全转化为重力势能。"
+      },
+      "answerLogic": {
+        "en": "The sequence follows the physical trajectory: (1) Spring fully compressed with projectile at rest at the lowest point (maximum elastic potential energy, minimum gravitational potential energy, K = 0); (2) Projectile passing the relaxed spring equilibrium position (elastic potential energy reaches zero, kinetic energy is high); (3) Projectile ascending freely through mid-air (kinetic energy converting into gravitational potential energy); (4) Projectile at its highest apex (kinetic energy momentarily zero, gravitational potential energy is maximum). Placing ascending flight before passing the spring equilibrium indicates a misconception regarding the sequential transformation of potential and kinetic energies.",
+        "ms": "Urutan mengikuti trajektori fizikal: (1) Spring termampat sepenuhnya dengan projektil rehat pada titik terendah (tenaga keupayaan kenyal maksimum, tenaga keupayaan graviti minimum, K = 0); (2) Projektil melepasi kedudukan keseimbangan spring kendur (tenaga keupayaan kenyal mencapai sifar, tenaga kinetik tinggi); (3) Projektil naik secara bebas di udara (tenaga kinetik bertukar kepada tenaga keupayaan graviti); (4) Projektil pada puncak tertinggi (tenaga kinetik sifar seketika, tenaga keupayaan graviti maksimum). Meletakkan penerbangan menaik sebelum melepasi keseimbangan spring menunjukkan salah faham tentang perubahan berurutan tenaga keupayaan dan kinetik.",
+        "zh": "该序列遵循物理运动轨迹：(1) 弹簧完全压缩且抛射体在最低点静止（最大弹性势能，最小重力势能，K = 0）；(2) 抛射体经过弹簧松弛平衡位置（弹性势能归零，动能处于高位）；(3) 抛射体在空中自由上升（动能转化为重力势能）；(4) 抛射体处于最高顶点（动能瞬时为零，重力势能最大）。将上升飞行置于经过弹簧平衡位置之前，表明对势能与动能的顺序转化存在误解。"
+      },
+      "explanation": {
+        "en": "In an isolated system containing both elastic and gravitational interactions, total mechanical energy is conserved: Delta K + Delta U_g + Delta U_s = 0\n. When loaded, energy is stored predominantly as elastic potential energy in the spring\n. As the spring relaxes to its equilibrium position, this elastic energy is converted into kinetic energy and some gravitational potential energy\n. After separation from the spring, the projectile continues upward, transforming its remaining kinetic energy entirely into gravitational potential energy until it reaches maximum height\n.",
+        "ms": "Dalam sistem terpencil yang mengandungi kedua-dua interaksi kenyal dan graviti, jumlah tenaga mekanik adalah abadi: Delta K + Delta U_g + Delta U_s = 0\n. Apabila dimuatkan, tenaga disimpan terutamanya sebagai tenaga keupayaan kenyal dalam spring\n. Apabila spring mengendur ke kedudukan keseimbangannya, tenaga kenyal ini ditukarkan kepada tenaga kinetik dan sedikit tenaga keupayaan graviti\n. Selepas terpisah daripada spring, projektil terus bergerak ke atas, mengubah baki tenaga kinetiknya sepenuhnya kepada tenaga keupayaan graviti sehingga mencapai ketinggian maksimum\n.",
+        "zh": "在包含弹性和重力相互作用的孤立系统中，总机械能守恒：Delta K + Delta U_g + Delta U_s = 0\n。装填时，能量主要作为弹性势能储存在弹簧中\n。当弹簧松弛到其平衡位置时，该弹性势能转化为动能和部分重力势能\n。脱离弹簧后，抛射体继续向上运动，将其剩余的动能完全转化为重力势能，直到达到最大高度\n。"
+      },
+      "misconceptions": [
+        "misc-conserved-means-individual-energies-constant"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-potential-energy",
+        "prompt": {
+          "en": "Review elastic and gravitational potential energies: elastic potential energy is stored in compressed springs, while gravitational potential energy increases as an object rises.",
+          "ms": "Ulang kaji tenaga keupayaan kenyal dan graviti: tenaga keupayaan kenyal disimpan dalam spring termampat, manakala tenaga keupayaan graviti meningkat apabila objek naik.",
+          "zh": "复习弹性势能和重力势能：弹性势能存储在压缩弹簧中，而重力势能随着物体上升而增加。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Ordering activity where four stages of a vertical spring-loaded launcher firing a ball must be arranged from initial compression to maximum height.",
+        "ms": "Aktiviti menyusun di mana empat peringkat pelancar spring menegak melancarkan bola mesti disusun dari mampatan awal hingga ketinggian maksimum.",
+        "zh": "排序活动，必须将竖直弹簧发射器发射小球的四个阶段从初始压缩排列到最大高度。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-popgun-compressed",
+            "label": {
+              "en": "Spring is fully compressed with projectile held at rest at the lowest launch position.",
+              "ms": "Spring termampat sepenuhnya dengan projektil berada dalam keadaan rehat pada kedudukan pelancaran terendah.",
+              "zh": "弹簧完全压缩，抛射体在最低发射位置保持静止。"
+            }
+          },
+          {
+            "id": "item-popgun-equilibrium",
+            "label": {
+              "en": "Projectile reaches the uncompressed spring equilibrium point where elastic potential energy becomes zero.",
+              "ms": "Projektil mencapai titik keseimbangan spring tidak termampat di mana tenaga keupayaan kenyal menjadi sifar.",
+              "zh": "抛射体到达未压缩的弹簧平衡点，此时弹性势能归零。"
+            }
+          },
+          {
+            "id": "item-popgun-rising",
+            "label": {
+              "en": "Projectile rises freely through mid-air as kinetic energy converts continuously into gravitational potential energy.",
+              "ms": "Projektil naik secara bebas di udara apabila tenaga kinetik bertukar secara berterusan kepada tenaga keupayaan graviti.",
+              "zh": "抛射体在空中自由上升，动能持续转化为重力势能。"
+            }
+          },
+          {
+            "id": "item-popgun-apex",
+            "label": {
+              "en": "Projectile reaches its highest vertical apex where speed is momentarily zero and gravitational potential energy is maximum.",
+              "ms": "Projektil mencapai puncak menegak tertinggi di mana kelajuan adalah sifar seketika dan tenaga keupayaan graviti adalah maksimum.",
+              "zh": "抛射体达到最高竖直顶点，此时速度瞬时为零，重力势能达到最大值。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-popgun-compressed",
+          "item-popgun-equilibrium",
+          "item-popgun-rising",
+          "item-popgun-apex"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-conserved-means-individual-energies-constant",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-popgun-rising",
+            "secondItemId": "item-popgun-equilibrium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-chal-select-conserved-conditions",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Identify whether a chosen system is isolated or nonisolated based on energy transfers across its boundary.",
+      "prompt": {
+        "en": "Select all statements that correctly evaluate system isolation and energy conservation conditions for mechanical systems.",
+        "ms": "Pilih semua pernyataan yang menilai dengan betul pemencilan sistem dan syarat keabadian tenaga bagi sistem mekanik.",
+        "zh": "选择所有正确评估机械系统孤立性和能量守恒条件的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Examine whether perpendicular forces do work across a system boundary, and determine whether potential energy requires more than a single isolated particle.",
+          "ms": "Periksa sama ada daya berserenjang melakukan kerja merentasi sempadan sistem, dan tentukan sama ada tenaga keupayaan memerlukan lebih daripada satu zarah terpencil tunggal.",
+          "zh": "检查垂直力是否会跨越系统边界做功，并确定势能是否需要多于单个孤立粒子。"
+        },
+        {
+          "en": "Remember that an isolated system with internal friction conserves total energy but does not conserve mechanical energy. An external force perpendicular to displacement does zero work, keeping the system isolated for energy.",
+          "ms": "Ingat bahawa sistem terpencil dengan geseran dalaman mengabadikan jumlah tenaga tetapi tidak mengabadikan tenaga mekanik. Daya luar yang berserenjang dengan sesaran melakukan kerja sifar, mengekalkan sistem terpencil bagi tenaga.",
+          "zh": "请记住，具有内部摩擦的孤立系统总能量守恒，但机械能不守恒。垂直于位移的外力做功为零，使系统在能量上保持孤立。"
+        }
+      ],
+      "feedback": {
+        "en": "A system remains isolated for energy if external forces do zero work (such as forces perpendicular to displacement). Total energy is conserved in isolated systems, but mechanical energy decreases whenever internal nonconservative forces convert mechanical energy into thermal energy.",
+        "ms": "Sistem kekal terpencil bagi tenaga jika daya luar melakukan kerja sifar (seperti daya berserenjang dengan sesaran). Jumlah tenaga adalah abadi dalam sistem terpencil, tetapi tenaga mekanik berkurangan setiap kali daya bukan abadi dalaman menukarkan tenaga mekanik kepada tenaga haba.",
+        "zh": "如果外力做功为零（例如垂直于位移的力），系统在能量上保持孤立。孤立系统中总能量守恒，但每当内部非保守力将机械能转化为热能时，机械能就会减少。"
+      },
+      "answerLogic": {
+        "en": "Statement 1 is correct because perpendicular external forces do zero work, meaning zero energy crosses the boundary. Statement 2 is correct because internal friction converts mechanical energy into internal thermal energy while total system energy remains constant. Statement 3 is incorrect because internal nonconservative forces dissipate mechanical energy into internal energy (diagnosing misc-mechanical-energy-always-conserved). Statement 4 is incorrect because potential energy cannot belong to a single particle alone (diagnosing misc-single-object-potential-energy).",
+        "ms": "Pernyataan 1 adalah betul kerana daya luar yang berserenjang melakukan kerja sifar, bermakna sifar tenaga merentasi sempadan. Pernyataan 2 adalah betul kerana geseran dalaman menukarkan tenaga mekanik kepada tenaga haba dalaman manakala jumlah tenaga sistem kekal malar. Pernyataan 3 tidak betul kerana daya bukan abadi dalaman melesapkan tenaga mekanik kepada tenaga dalaman (mendiagnosis misc-mechanical-energy-always-conserved). Pernyataan 4 tidak betul kerana tenaga keupayaan tidak boleh dimiliki oleh satu zarah tunggal sahaja (mendiagnosis misc-single-object-potential-energy).",
+        "zh": "陈述 1 正确，因为垂直外力做功为零，意味着零能量跨越边界。陈述 2 正确，因为内部摩擦将机械能转化为内部热能，而系统总能量保持恒定。陈述 3 错误，因为内部非保守力将机械能耗散为内能（诊断出 misc-mechanical-energy-always-conserved）。陈述 4 错误，因为势能不能单独属于单个粒子（诊断出 misc-single-object-potential-energy）。"
+      },
+      "explanation": {
+        "en": "An external force perpendicular to displacement (such as cable tension supporting a swinging pendulum) does zero work (W = 0), so no energy transfers across the boundary and the system is isolated for energy\n. In an isolated system with internal nonconservative forces, total energy is conserved (Delta E_system = 0), but mechanical energy is transformed into internal energy (Delta E_mech < 0)\n. Potential energy is an energy of configuration requiring two or more interacting objects, so a single particle cannot possess potential energy on its own\n.",
+        "ms": "Daya luar yang berserenjang dengan sesaran (seperti tegangan kabel yang menyokong bandul yang berayun) melakukan kerja sifar (W = 0), jadi tiada tenaga berpindah merentasi sempadan dan sistem adalah terpencil bagi tenaga\n. Dalam sistem terpencil dengan daya bukan abadi dalaman, jumlah tenaga adalah abadi (Delta E_system = 0), tetapi tenaga mekanik ditukarkan kepada tenaga dalaman (Delta E_mech < 0)\n. Tenaga keupayaan ialah tenaga konfigurasi yang memerlukan dua atau lebih objek yang berinteraksi, jadi satu zarah tunggal tidak boleh memiliki tenaga keupayaan dengan sendirinya\n.",
+        "zh": "垂直于位移的外力（例如拉持摆动单摆的线缆张力）做功为零（W = 0），因此没有能量跨越边界传递，系统在能量上是孤立的\n。在具有内部非保守力的孤立系统中，总能量守恒（Delta E_system = 0），但机械能转化为内能（Delta E_mech < 0）\n。势能是需要两个或多个相互作用物体的构型能量，因此单个粒子本身不能拥有势能\n。"
+      },
+      "misconceptions": [
+        "misc-mechanical-energy-always-conserved",
+        "misc-single-object-potential-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-work-energy-relation",
+        "prompt": {
+          "en": "Review work and system boundaries: work across a boundary requires an applied force having a non-zero component along the displacement direction.",
+          "ms": "Ulang kaji kerja dan sempadan sistem: kerja merentasi sempadan memerlukan daya yang dikenakan mempunyai komponen bukan sifar sepanjang arah sesaran.",
+          "zh": "复习做功与系统边界：跨越边界做功要求施加的力在位移方向上具有非零分量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multi-selection activity where learners select valid statements regarding system isolation, perpendicular forces, internal friction, and potential energy definition.",
+        "ms": "Aktiviti pelbagai pilihan di mana pelajar memilih pernyataan yang sah mengenai pemencilan sistem, daya berserenjang, geseran dalaman, dan takrifan tenaga keupayaan.",
+        "zh": "多选活动，学习者选择关于系统孤立性、垂直力、内部摩擦以及势能定义的正确陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-select-perp-force-isolated",
+            "label": {
+              "en": "An external force acting on a system does zero work if it is always perpendicular to displacement, keeping the system isolated for energy.",
+              "ms": "Daya luar yang bertindak ke atas sesuatu sistem melakukan kerja sifar jika ia sentiasa berserenjang dengan sesaran, mengekalkan sistem terpencil bagi tenaga.",
+              "zh": "如果作用在系统上的外力始终垂直于位移，则其做功为零，使系统在能量上保持孤立。"
+            }
+          },
+          {
+            "id": "item-select-internal-friction-total-conserved",
+            "label": {
+              "en": "An isolated system containing internal sliding friction conserves total energy, even though mechanical energy decreases into internal thermal energy.",
+              "ms": "Sistem terpencil yang mengandungi geseran gelongsor dalaman mengabadikan jumlah tenaga, walaupun tenaga mekanik berkurangan menjadi tenaga haba dalaman.",
+              "zh": "包含内部滑动摩擦的孤立系统总能量守恒，即使机械能减少并转化为内部热能。"
+            }
+          },
+          {
+            "id": "item-select-all-isolated-mech-conserved",
+            "label": {
+              "en": "Mechanical energy is strictly conserved in every isolated system, regardless of whether internal nonconservative friction acts between surfaces.",
+              "ms": "Tenaga mekanik adalah abadi secara mutlak dalam setiap sistem terpencil, tanpa mengira sama ada geseran bukan abadi dalaman bertindak antara permukaan.",
+              "zh": "在任何孤立系统中机械能都严格守恒，无论表面之间是否存在内部非保守摩擦力作用。"
+            },
+            "misconception": "misc-mechanical-energy-always-conserved"
+          },
+          {
+            "id": "item-select-single-particle-potential",
+            "label": {
+              "en": "A single falling particle on its own constitutes an isolated system that independently stores gravitational potential energy.",
+              "ms": "Satu zarah jatuh tunggal dengan sendirinya membentuk sistem terpencil yang menyimpan tenaga keupayaan graviti secara bebas.",
+              "zh": "单个下落的粒子本身构成一个独立存储重力势能的孤立系统。"
+            },
+            "misconception": "misc-single-object-potential-energy"
+          }
+        ],
+        "correctSelections": [
+          "item-select-perp-force-isolated",
+          "item-select-internal-friction-total-conserved"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-mechanical-energy-always-conserved",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-select-all-isolated-mech-conserved",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "misc-single-object-potential-energy",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-select-single-particle-potential",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-chal-match-multi-energy-scenarios",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate kinetic, gravitational potential, and elastic potential energies in multi-component isolated systems.",
+      "prompt": {
+        "en": "Match each physical scenario in an isolated system to the predominant energy transformation taking place.",
+        "ms": "Padankan setiap senario fizikal dalam sistem terpencil kepada perubahan tenaga utama yang berlaku.",
+        "zh": "将孤立系统中的每个物理情景与其正在发生的主要能量转化进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Identify which forms of energy (kinetic, gravitational potential, elastic potential, or internal thermal) are changing in each scenario.",
+          "ms": "Kenal pasti bentuk tenaga yang manakah (kinetik, keupayaan graviti, keupayaan kenyal, atau haba dalaman) yang berubah dalam setiap senario.",
+          "zh": "识别在每个情景中哪些形式的能量（动能、重力势能、弹性势能或内部热能）正在发生变化。"
+        },
+        {
+          "en": "For conservative gravitational motion, the conversion to kinetic energy depends only on vertical displacement and is independent of track curvature.",
+          "ms": "Bagi gerakan graviti abadi, penukaran kepada tenaga kinetik hanya bergantung pada sesaran menegak dan bebas daripada kelengkungan landasan.",
+          "zh": "对于保守重力运动，向动能的转化仅取决于竖直位移，而与轨道曲率无关。"
+        }
+      ],
+      "feedback": {
+        "en": "In isolated systems, conservative forces enable path-independent potential-to-kinetic energy exchange, while nonconservative forces convert mechanical energy into internal thermal energy.",
+        "ms": "Dalam sistem terpencil, daya abadi membolehkan pertukaran tenaga keupayaan kepada kinetik tanpa bergantung pada laluan, manakala daya bukan abadi menukarkan tenaga mekanik kepada tenaga haba dalaman.",
+        "zh": "在孤立系统中，保守力实现与路径无关的势能-动能转换，而非保守力则将机械能转化为内部热能。"
+      },
+      "answerLogic": {
+        "en": "Scenario 1 involves a projectile launched by a spring, which is a simultaneous transformation involving elastic potential, gravitational potential, and kinetic energy. Scenario 2 involves a skier gliding down frictionless curved and straight hills with equal vertical drop reaching the same speed, which exemplifies path-independent conservative conversion between gravitational potential and kinetic energy. Scenario 3 involves a block sliding to a stop on a rough floor inside an insulated room, which is a transformation of mechanical energy into internal thermal energy. Placing the frictionless skier under thermal dissipation diagnoses the misconception that path length alters conservative mechanical energy conversion.",
+        "ms": "Senario 1 melibatkan projektil yang dilancarkan oleh spring, yang merupakan perubahan serentak yang melibatkan tenaga keupayaan kenyal, keupayaan graviti, dan tenaga kinetik. Senario 2 melibatkan pemain ski yang meluncur menuruni bukit melengkung dan lurus tanpa geseran dengan penurunan menegak yang sama mencapai kelajuan yang sama, yang menunjukkan penukaran abadi bebas laluan antara tenaga keupayaan graviti dan kinetik. Senario 3 melibatkan blok yang menggelongsor sehingga berhenti di atas lantai kasar di dalam bilik berpenebat, yang merupakan perubahan tenaga mekanik kepada tenaga haba dalaman. Meletakkan pemain ski tanpa geseran di bawah pelesapan haba mendiagnosis salah faham bahawa panjang laluan mengubah penukaran tenaga mekanik abadi.",
+        "zh": "情景 1 涉及由弹簧发射的抛射体，属于涉及弹性势能、重力势能和动能的同时转化。情景 2 涉及滑雪者沿具有相同竖直落差的无摩擦弯曲和直线山坡滑下并达到相同速度，体现了重力势能与动能之间与路径无关的保守转化。情景 3 涉及滑块在绝热房间内的粗糙地板上滑行直至停止，属于机械能转化为内部热能。将无摩擦滑雪者归入热耗散，诊断出认为路径长度会改变保守机械能转化的错误观念。"
+      },
+      "explanation": {
+        "en": "In isolated systems, mechanical energy exchange governed by conservative forces like gravity is strictly path-independent (the final kinetic energy depends solely on initial and final elevation coordinates)\n. Systems containing springs and gravity exchange energy simultaneously across elastic, gravitational, and kinetic stores\n. When nonconservative forces like kinetic friction act internally, mechanical energy is converted irreversibly into microscopic internal thermal energy while total energy remains constant\n.",
+        "ms": "Dalam sistem terpencil, pertukaran tenaga mekanik yang dikawal oleh daya abadi seperti graviti adalah bebas sepenuhnya daripada laluan (tenaga kinetik akhir hanya bergantung pada koordinat ketinggian awal dan akhir)\n. Sistem yang mengandungi spring dan graviti bertukar tenaga secara serentak merentasi simpanan kenyal, graviti, dan kinetik\n. Apabila daya bukan abadi seperti geseran kinetik bertindak secara dalaman, tenaga mekanik ditukarkan secara tidak berbalik kepada tenaga haba dalaman mikroskopik manakala jumlah tenaga kekal malar\n.",
+        "zh": "在孤立系统中，由重力等保守力控制的机械能交换严格与路径无关（最终动能仅取决于初始和最终高度坐标）\n。包含弹簧和重力的系统在弹性、重力和动能存储之间同时交换能量\n。当内部存在动摩擦等非保守力作用时，机械能不可逆地转化为微观内部热能，而总能量保持恒定\n。"
+      },
+      "misconceptions": [
+        "misc-path-dependence-in-conservative-systems",
+        "misc-conserved-means-individual-energies-constant"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-kinetic-energy",
+        "prompt": {
+          "en": "Review kinetic energy: kinetic energy depends only on speed, and in conservative systems the speed gained depends on vertical height drop rather than path shape.",
+          "ms": "Ulang kaji tenaga kinetik: tenaga kinetik hanya bergantung pada kelajuan, dan dalam sistem abadi kelajuan yang diperoleh bergantung pada penurunan ketinggian menegak dan bukannya bentuk laluan.",
+          "zh": "复习动能：动能仅取决于速度，在保守系统中获得的速度取决于竖直高度降而不是路径形状。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching activity pairing three physical scenarios with their corresponding energy transformation categories.",
+        "ms": "Aktiviti pemadanan yang memasangkan tiga senario fizikal dengan kategori perubahan tenaga yang sepadan.",
+        "zh": "匹配活动，将三个物理情景与其对应的能量转化类别进行配对。"
+      },
+      "provenance": {
+        "sourceLocation": "8.2 Analysis Model: Isolated System (Energy); Complete controlled PDF for section 8.2",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-multi-potential-tradeoff",
+            "label": {
+              "en": "Multi-potential transformation between elastic, gravitational, and kinetic energies",
+              "ms": "Perubahan pelbagai keupayaan antara tenaga kenyal, graviti, dan kinetik",
+              "zh": "弹性势能、重力势能与动能之间的多重势能转化"
+            }
+          },
+          {
+            "id": "target-conservative-path-indep",
+            "label": {
+              "en": "Path-independent conservative conversion between gravitational potential and kinetic energy",
+              "ms": "Penukaran abadi bebas laluan antara tenaga keupayaan graviti dan tenaga kinetik",
+              "zh": "重力势能与动能之间与路径无关的保守转化"
+            }
+          },
+          {
+            "id": "target-nonconservative-thermal",
+            "label": {
+              "en": "Transformation of mechanical energy into internal thermal energy by internal friction",
+              "ms": "Perubahan tenaga mekanik kepada tenaga haba dalaman oleh geseran dalaman",
+              "zh": "通过内部摩擦将机械能转化为内部热能"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-match-popgun-launch",
+            "label": {
+              "en": "A vertical popgun firing a projectile upward as its compressed spring expands and projectile gains height",
+              "ms": "Senapang mainan menegak melancarkan projektil ke atas apabila spring termampatnya mengembang dan projektil memperoleh ketinggian",
+              "zh": "竖直弹簧枪向上发射抛射体，压缩弹簧伸展且抛射体升高"
+            }
+          },
+          {
+            "id": "item-match-skier-curves",
+            "label": {
+              "en": "A skier sliding down frictionless tracks of varying curvature and achieving identical speed for equal vertical descent",
+              "ms": "Pemain ski meluncur menuruni landasan tanpa geseran dengan pelbagai kelengkungan dan mencapai kelajuan yang serupa untuk penurunan menegak yang sama",
+              "zh": "滑雪者沿不同曲率的无摩擦雪道滑下，在相同的竖直落差下获得完全相同的速度"
+            }
+          },
+          {
+            "id": "item-match-sliding-box-floor",
+            "label": {
+              "en": "A heavy crate sliding to rest across a rough floor inside a closed, insulated container",
+              "ms": "Peti berat yang menggelongsor sehingga berhenti di atas lantai kasar di dalam bekas tertutup dan berpenebat",
+              "zh": "沉重的板条箱在封闭绝热容器内的粗糙地板上滑行直至停止"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-match-popgun-launch",
+            "targetId": "target-multi-potential-tradeoff"
+          },
+          {
+            "itemId": "item-match-skier-curves",
+            "targetId": "target-conservative-path-indep"
+          },
+          {
+            "itemId": "item-match-sliding-box-floor",
+            "targetId": "target-nonconservative-thermal"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-path-dependence-in-conservative-systems",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-match-skier-curves",
+            "targetId": "target-nonconservative-thermal"
+          }
+        },
+        {
+          "misconception": "misc-conserved-means-individual-energies-constant",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-match-popgun-launch",
+            "targetId": "target-nonconservative-thermal"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-const DEFAULT_PACKAGE = document.querySelector("#app").dataset.packageUrl || "../content/chapter-1/section-1-1/package.json";
+const DEFAULT_PACKAGE = document.querySelector("#app").dataset.packageUrl || "";
 const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false };
 let loadGeneration = 0;
 
@@ -219,6 +219,14 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
   const generation = ++loadGeneration;
   state.loading = true;
   localeSelector.disabled = true;
+  if (!packageUrl) {
+    state.package = null;
+    state.loading = false;
+    localeSelector.disabled = false;
+    const message = "No learning package was selected. Supply data-package-url in the host page or call loadPackage(packageUrl).";
+    document.querySelector("#app").replaceChildren(element("p", { className: "error", text: message }));
+    return;
+  }
   try {
     const response = await fetch(packageUrl);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -233,7 +241,7 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
     state.package = null;
     state.loading = false;
     localeSelector.disabled = false;
-    const message = `Could not load the Section 1.1 package. Start the app through the documented local server. (${error.message})`;
+    const message = `Could not load the selected learning package. Start the app through the documented local server. (${error.message})`;
     document.querySelector("#app").replaceChildren(element("p", { className: "error", text: message }));
   }
 }

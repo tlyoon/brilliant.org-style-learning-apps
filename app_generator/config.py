@@ -53,6 +53,7 @@ DEFAULTS: dict[str, Any] = {
         r"\bflash\b|fast",
     ],
     "allow_unknown_model_fallback": True,
+    "legacy_environment_prefix": "",
 }
 
 ALIASES = {
@@ -305,16 +306,19 @@ def load_config(
         if name.startswith(env_prefix):
             key = name.removeprefix(env_prefix).lower()
             values[key] = _coerce_env(key, raw)
-    if project_name == "BrilliantContentGenerator":
-        legacy_prefix = "BRILLIANT_GENERATOR_"
+    legacy_prefix = str(values.get("legacy_environment_prefix", "")).strip()
+    if legacy_prefix:
+        if not re.fullmatch(r"[A-Z_][A-Z0-9_]*", legacy_prefix):
+            raise ConfigurationError("legacy_environment_prefix must be an uppercase environment-variable prefix")
         for name, raw in env.items():
             if not name.startswith(legacy_prefix):
                 continue
-            key = name.removeprefix(legacy_prefix).lower()
-            if f"{env_prefix}{name.removeprefix(legacy_prefix)}" in env:
+            suffix = name.removeprefix(legacy_prefix)
+            key = suffix.lower()
+            if f"{env_prefix}{suffix}" in env:
                 continue
             warnings.warn(
-                f"{name} is deprecated; use {env_prefix}{name.removeprefix(legacy_prefix)}",
+                f"{name} is deprecated; use {env_prefix}{suffix}",
                 DeprecationWarning,
                 stacklevel=2,
             )

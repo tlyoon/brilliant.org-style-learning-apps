@@ -4,7 +4,7 @@ A reusable foundation for interactive, concept-first learning packages generated
 
 ## Pilot
 
-The first pilot covers six subchapters of an undergraduate physics chapter. Each publishable subchapter contains 18 calculator-free activities:
+The first pilot uses undergraduate physics source material, but the generator/runtime are intended to be reusable across subjects and textbook projects. Under the current learning-app contract, each complete subchapter contains 18 calculator-free activities:
 
 - 9 multiple-choice questions and 9 interactive activities
 - 3 easy, 3 moderate, and 3 challenging activities of each type
@@ -17,8 +17,9 @@ The repository contains specifications, schemas, validation scripts, tests, proj
 
 1. Read `AGENTS.md`.
 2. Read `docs/CONTEXT_INDEX.md` for the authoritative-document order.
-3. Run `python scripts/validate_content.py`.
-4. Run `python -m unittest discover -s tests -v`.
+3. Read `config/README.md` for the project/configuration boundary.
+4. Run `python scripts/validate_content.py`.
+5. Run `python -m unittest discover -s tests -v`.
 
 ## Run the learner scaffold
 
@@ -26,9 +27,10 @@ Python 3.12, Node.js for JavaScript checks, and a modern browser are required. I
 
 1. Run `python scripts/serve.py` from the repository root.
 2. Open `http://127.0.0.1:8000/app/`.
-3. Stop the server with Ctrl+C.
+3. Supply the package URL through the host page's `data-package-url` or call `loadPackage(packageUrl)` from an embedding/release page.
+4. Stop the server with Ctrl+C.
 
-The scaffold opens the reviewed Section 1.1 package at `content/chapter-1/section-1-1/package.json`. It is visibly labelled as a review prototype and remains in `review` status pending its required human sign-offs. To try another subchapter, create a schema-compatible draft package and change `DEFAULT_PACKAGE` in `app/app.js`. Learner-facing strings must include English (`en`), Malay (`ms`), and Simplified Chinese (`zh`). Draft examples may contain fewer activities; publishable packages must contain the required 18-activity distribution.
+The learner scaffold is project-neutral and no longer silently selects Section 1.1. Generated/release pages select the package explicitly. Learner-facing strings currently follow the application contract of English (`en`), Malay (`ms`), and Simplified Chinese (`zh`). Draft examples may contain fewer activities; complete review/publishable packages must contain the required 18-activity distribution.
 
 Content package schema 1.1 distinguishes MCQs from genuine interactions. MCQs use `answerKey`; interactive activities use `interactionMode`, mode-specific `interaction` response data, and `diagnosticRules` that connect recognizable incorrect responses to declared misconceptions. The learner scaffold renders classification, matching, ordering, and multiple-selection modes with native keyboard-operable controls.
 
@@ -57,14 +59,20 @@ Node.js is used only for development-time syntax and regression checks. The appl
 
 ## Public review-prototype bundle
 
-`python scripts/build_public_release.py <empty-output-directory>` creates the small static bundle intended for the separate public GitHub Pages repository. It contains only the root entry page, learner-app assets, the Section 1.1 package, and `.nojekyll`; it excludes repository history, tests, specifications, review records, source manifests, and development scripts. The build does not alter the package's `review` status or create any learner accounts, analytics, or data collection.
+The generic builder requires an explicit package instead of embedding a textbook section:
 
-`python scripts/build_section_8_1_public_release.py <empty-output-directory>` creates the separate Chapter 8 public review bundle approved by Decisions 0007 and 0018. It preserves both Section 8.1 versions, adds Section 8.3, keeps every package in draft status, and excludes internal and controlled materials.
+```text
+python scripts/build_public_release.py content/<chapter>/<section>/package.json <empty-output-directory>
+```
+
+It creates a small static bundle containing only the root entry page, learner-app assets, the selected package (normalized to `content/package.json`), and `.nojekyll`. It excludes repository history, tests, specifications, review records, source manifests, and development scripts.
+
+`scripts/build_section_8_1_public_release.py` remains an explicitly named historical/specialized comparison builder for the existing Chapter 8 review site. It is not used by the generic generator or learner runtime and must not be treated as a project default.
 
 Implementation work should use short-lived branches and pull requests. `main` remains the stable baseline.
 
 ## Automated draft generator
 
-`app_generator/` contains an isolated Python 3.12/Google Drive/Selenium workflow for generating one repository-compatible draft per controlled PDF. Each job attaches its PDF to a fresh Gemini Gem conversation; Gem Knowledge is not modified. Distributed workers use a central lease/heartbeat coordinator, validate and repair the generated package, and can push a unique branch plus draft PR. They never merge, deploy, or mark content publishable. See `app_generator/README.md` and the sole active project authority, `config/project.toml`.
+`app_generator/` contains an isolated Python 3.12/Google Drive/Selenium workflow for generating one repository-compatible draft per controlled PDF. Each job attaches its PDF to a fresh Gemini Gem conversation; Gem Knowledge is not modified. Distributed workers can use a central lease/heartbeat coordinator, validate and repair the generated package, and hand work to Git according to the configured publishing policy. Generated content remains draft until qualified review.
 
-For an existing Windows checkout on another authorized PC, `sync-workstation.cmd` provides a guarded one-click Git sync, environment bootstrap, rendering of the tracked `config/project.toml`, and validation flow. See `docs/WORKSTATION_SYNC.md`. To configure another textbook and prove separation between projects, see `docs/GENERIC_PROJECT_SETUP.md`. OAuth clients, tokens, Chrome profiles, source PDFs, and run data remain outside Git and are never distributed by this mechanism.
+The normal tracked project-specific authority is `config/configure_project.toml`. `sync-workstation.cmd` derives project slug/environment namespace, checkout path, state root, OAuth/token locations, Chrome profile, coordinator token environment name, and run-state paths to produce machine-local `project.local.toml`. See `config/README.md`, `docs/WORKSTATION_SYNC.md`, and `docs/GENERIC_PROJECT_SETUP.md`. Credentials, source PDFs, browser profiles, tokens, and run data remain outside Git.

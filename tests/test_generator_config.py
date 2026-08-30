@@ -25,6 +25,8 @@ class GeneratorConfigTests(unittest.TestCase):
             'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
             "[source_tree]\n"
             'source_id_prefix = "example"\n'
+            "[compatibility]\n"
+            'legacy_environment_prefix = ""\n'
             "[gemini]\n"
             'gem_url = "https://gemini.google.com/gem/test"\n'
             'gem_edit_url = "https://gemini.google.com/gem/test/edit"\n'
@@ -109,31 +111,34 @@ class GeneratorConfigTests(unittest.TestCase):
         ):
             self.assertNotIn(key, DEFAULTS)
 
-    def test_default_project_accepts_bounded_legacy_environment_prefix(self):
+    def test_configured_legacy_environment_prefix_is_bounded(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             source = root / "source.pdf"
             source.write_bytes(b"synthetic")
             path = self.make_config(root, [source])
-            text = path.read_text(encoding="utf-8").replace("ExampleProject", "BrilliantContentGenerator")
+            text = path.read_text(encoding="utf-8").replace(
+                'legacy_environment_prefix = ""',
+                'legacy_environment_prefix = "OLD_GENERATOR_"',
+            )
             path.write_text(text, encoding="utf-8")
             with warnings.catch_warnings(record=True) as caught:
                 warnings.simplefilter("always")
                 config = load_config(
                     path,
-                    environ={"BRILLIANT_GENERATOR_LOG_LEVEL": "debug"},
+                    environ={"OLD_GENERATOR_LOG_LEVEL": "debug"},
                 )
             self.assertEqual("DEBUG", config.log_level)
             self.assertTrue(any("deprecated" in str(item.message) for item in caught))
 
-    def test_legacy_environment_prefix_is_not_accepted_for_another_project(self):
+    def test_unconfigured_legacy_environment_prefix_is_ignored(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             source = root / "source.pdf"
             source.write_bytes(b"synthetic")
             config = load_config(
                 self.make_config(root, [source]),
-                environ={"BRILLIANT_GENERATOR_LOG_LEVEL": "debug"},
+                environ={"OLD_GENERATOR_LOG_LEVEL": "debug"},
             )
             self.assertEqual("INFO", config.log_level)
 
@@ -164,9 +169,9 @@ class GeneratorConfigTests(unittest.TestCase):
                 "[project]\n"
                 'project_name = "RemoteProject"\n'
                 "[placeholders]\n"
-                'sourcepath = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc"\n'
+                'sourcepath = "https://drive.google.com/open?id=synthetic-folder-id"\n'
                 'gemini-gem = "https://gemini.google.com/gem/remote"\n'
-                'loginname = "tlyoon@gmail.com"\n'
+                'loginname = "learner@example.com"\n'
                 'pdf_subchapter_path = "8.1"\n'
                 'target_filename = "source.pdf"\n'
                 'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
@@ -201,7 +206,7 @@ class GeneratorConfigTests(unittest.TestCase):
             config = load_config(config_path, environ={})
             self.assertTrue(config.uses_google_drive)
             self.assertEqual("https://gemini.google.com/gem/remote", config.gem_url)
-            self.assertEqual("tlyoon@gmail.com", config.login_name)
+            self.assertEqual("learner@example.com", config.login_name)
             self.assertIn("/**/8.1/source.pdf", config.target_locator)
 
     def test_run_state_cannot_be_stored_inside_repository(self):

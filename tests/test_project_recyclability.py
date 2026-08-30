@@ -4,15 +4,28 @@ from pathlib import Path
 
 from app_generator.config import load_config
 from scripts.configure_project import render_project_configuration
-from scripts.sync_workstation import PROJECT_CONFIG_RELATIVE_PATH, render_project_config
+from scripts import sync_configured_workstation as configured_sync
 
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class ProjectRecyclabilityTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls._project_config_relative_path = configured_sync.core.PROJECT_CONFIG_RELATIVE_PATH
+        cls._managed_config_header = configured_sync.core.MANAGED_CONFIG_HEADER
+        cls._allowed_project_keys = configured_sync.core.ALLOWED_PROJECT_KEYS
+        configured_sync.configure_core()
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        configured_sync.core.PROJECT_CONFIG_RELATIVE_PATH = cls._project_config_relative_path
+        configured_sync.core.MANAGED_CONFIG_HEADER = cls._managed_config_header
+        configured_sync.core.ALLOWED_PROJECT_KEYS = cls._allowed_project_keys
+
     def materialize(self, project_name: str, folder_id: str, state_root: Path):
-        source = (ROOT / PROJECT_CONFIG_RELATIVE_PATH).read_text(encoding="utf-8")
+        source = (ROOT / configured_sync.CONFIGURE_PROJECT_RELATIVE_PATH).read_text(encoding="utf-8")
         configured = render_project_configuration(
             source,
             {
@@ -23,7 +36,7 @@ class ProjectRecyclabilityTests(unittest.TestCase):
                 "gem_name": f"{project_name} generator",
             },
         )
-        rendered = render_project_config(
+        rendered = configured_sync.core.render_project_config(
             configured.encode("utf-8"),
             repo_root=ROOT,
             state_root=state_root,
@@ -57,7 +70,10 @@ class ProjectRecyclabilityTests(unittest.TestCase):
             "tlyoon@gmail.com",
         )
         runtime_files = tuple((ROOT / "app_generator").rglob("*.py"))
-        runtime_files += (ROOT / "scripts" / "sync_workstation.py",)
+        runtime_files += (
+            ROOT / "scripts" / "sync_workstation.py",
+            ROOT / "scripts" / "sync_configured_workstation.py",
+        )
         for path in runtime_files:
             text = path.read_text(encoding="utf-8")
             for value in forbidden:

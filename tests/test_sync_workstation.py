@@ -295,9 +295,9 @@ class WorkstationSyncTests(unittest.TestCase):
         command = next(
             line
             for line in content.splitlines()
-            if line.startswith("python -m scripts.sync_workstation")
+            if line.startswith("python -m scripts.sync_configured_workstation")
         )
-        self.assertEqual("python -m scripts.sync_workstation %*", command)
+        self.assertEqual("python -m scripts.sync_configured_workstation %*", command)
 
     def test_initial_settings_do_not_reference_projects_folder(self):
         with tempfile.TemporaryDirectory() as directory:

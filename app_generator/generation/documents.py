@@ -56,7 +56,7 @@ Structurally validated automated draft. The package remains `draft`, not `review
 
 | Domain | Status | Reviewer requirement |
 |---|---|---|
-| Physics/content | Pending | Qualified subject-matter reviewer |
+| Subject matter/content | Pending | Qualified subject-matter reviewer |
 | Instructional design and difficulty | Pending | Instructor or learning designer |
 | English | Pending | Instructor/editor |
 | Malay | Pending | Competent Malay-language reviewer |
