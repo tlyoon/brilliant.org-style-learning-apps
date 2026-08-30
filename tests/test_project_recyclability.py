@@ -4,39 +4,49 @@ from pathlib import Path
 
 from app_generator.config import load_config
 from scripts.configure_project import render_project_configuration
-from scripts import sync_configured_workstation as configured_sync
+from scripts import sync_workstation
 
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class ProjectRecyclabilityTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls._project_config_relative_path = configured_sync.core.PROJECT_CONFIG_RELATIVE_PATH
-        cls._managed_config_header = configured_sync.core.MANAGED_CONFIG_HEADER
-        cls._allowed_project_keys = configured_sync.core.ALLOWED_PROJECT_KEYS
-        configured_sync.configure_core()
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        configured_sync.core.PROJECT_CONFIG_RELATIVE_PATH = cls._project_config_relative_path
-        configured_sync.core.MANAGED_CONFIG_HEADER = cls._managed_config_header
-        configured_sync.core.ALLOWED_PROJECT_KEYS = cls._allowed_project_keys
+    def test_recycled_authority_contains_no_previous_service_identity(self):
+        source = (ROOT / sync_workstation.PROJECT_CONFIG_RELATIVE_PATH).read_text(encoding="utf-8")
+        rendered = render_project_configuration(
+            source,
+            {
+                "project_name": "CleanProject",
+                "source_root_url": "https://drive.google.com/open?id=clean-folder",
+                "gem_url": "https://gemini.google.com/gem/clean-project",
+                "login_name": "clean@example.com",
+                "gem_name": "Clean Project generator",
+            },
+        )
+        for previous_value in (
+            "BrilliantContentGenerator",
+            "1BqdcGJR3usQvItCNMC997fkcXaScNYqc",
+            "1dZR01a7xJ9pveqo55MwzfuPV2i_tUQvJ",
+            "815996ef2eef",
+            "tlyoon@gmail.com",
+            "BRILLIANT_GENERATOR_",
+        ):
+            self.assertNotIn(previous_value, rendered)
 
     def materialize(self, project_name: str, folder_id: str, state_root: Path):
-        source = (ROOT / configured_sync.CONFIGURE_PROJECT_RELATIVE_PATH).read_text(encoding="utf-8")
+        source = (ROOT / sync_workstation.PROJECT_CONFIG_RELATIVE_PATH).read_text(encoding="utf-8")
         configured = render_project_configuration(
             source,
             {
                 "project_name": project_name,
                 "source_root_url": f"https://drive.google.com/open?id={folder_id}",
                 "gem_url": f"https://gemini.google.com/gem/{project_name.casefold()}",
+                "gem_edit_url": f"https://gemini.google.com/gems/edit/{project_name.casefold()}",
                 "login_name": f"{project_name.casefold()}@example.com",
                 "gem_name": f"{project_name} generator",
             },
         )
-        rendered = configured_sync.core.render_project_config(
+        rendered = sync_workstation.render_project_config(
             configured.encode("utf-8"),
             repo_root=ROOT,
             state_root=state_root,
@@ -60,6 +70,11 @@ class ProjectRecyclabilityTests(unittest.TestCase):
         self.assertEqual("BETA_MECHANICS_COORDINATOR_TOKEN", beta.coordinator_token_env)
         self.assertNotEqual(alpha.sourcepath, beta.sourcepath)
         self.assertNotEqual(alpha.gem_url, beta.gem_url)
+        self.assertNotEqual(alpha.gem_edit_url, beta.gem_edit_url)
+        self.assertFalse(alpha.git_publish)
+        self.assertFalse(alpha.git_auto_merge)
+        self.assertFalse(beta.git_publish)
+        self.assertFalse(beta.git_auto_merge)
         self.assertEqual("alpha-physics-section-15-1", alpha.for_subchapter("15.1").source_id)
         self.assertEqual("beta-mechanics-section-15-1", beta.for_subchapter("15.1").source_id)
 
@@ -71,8 +86,8 @@ class ProjectRecyclabilityTests(unittest.TestCase):
         )
         runtime_files = tuple((ROOT / "app_generator").rglob("*.py"))
         runtime_files += (
+            ROOT / "scripts" / "configure_project.py",
             ROOT / "scripts" / "sync_workstation.py",
-            ROOT / "scripts" / "sync_configured_workstation.py",
         )
         for path in runtime_files:
             text = path.read_text(encoding="utf-8")

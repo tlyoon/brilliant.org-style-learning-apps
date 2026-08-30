@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the minimal Section 8.1 and Section 8.3 public review site."""
+"""Build the current project's Section 8.1 and Section 8.3 comparison site."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import subprocess
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 PACKAGE_PATH = Path("content/chapter-8/section-8-1/package.json")
 VERSION_ONE_COMMIT = "38b6b59d4d5c0fc408406721c445baf78c00980d"
 EXPECTED_PACKAGE_ID = "chapter-8-section-8-1"

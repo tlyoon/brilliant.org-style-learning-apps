@@ -22,6 +22,17 @@ class RepositoryRuleTests(unittest.TestCase):
             "config/generator.distributed.example.toml",
         ):
             self.assertFalse((ROOT / legacy).exists(), legacy)
+        self.assertFalse((ROOT / "config/configure_project.toml").exists())
+
+    def test_project_configuration_has_one_tracked_authority(self):
+        authorities = sorted((ROOT / "config").glob("*project*.toml"))
+        self.assertEqual([ROOT / "config" / "project.toml"], authorities)
+
+    def test_current_project_release_builder_is_outside_generic_scripts(self):
+        self.assertFalse((ROOT / "scripts" / "build_section_8_1_public_release.py").exists())
+        self.assertTrue(
+            (ROOT / "project_extensions" / "brilliant_content_generator" / "build_public_review.py").is_file()
+        )
 
     def test_no_legacy_course_name(self):
         pattern = re.compile(r"zca[ _-]?101", re.I)

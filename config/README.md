@@ -1,10 +1,10 @@
 # Project configuration boundary
 
-`configure_project.toml` is the normal tracked authority for non-secret values that can change when this repository is reused for another subject, textbook, source tree, Gemini Gem, or deployment policy.
+`project.toml` is the sole tracked authority for non-secret values that can change when this repository is reused for another subject, textbook, source tree, Gemini Gem, or deployment policy.
 
 The `config/` directory also owns the project-specific Gemini Gem text:
 
-- `configure_project.toml` → Gem **Name** through `gemini.gem_name`;
+- `project.toml` → Gem **Name** through `gemini.gem_name`;
 - `gem_description.txt` → Gem **Description**;
 - `gem_instructions.md` → Gem **Instructions**.
 
@@ -52,6 +52,6 @@ The following are application contracts rather than textbook identity and theref
 
 If the product itself later changes one of these contracts, make a versioned schema/design change rather than silently changing a textbook project file.
 
-## Compatibility file
+## Compatibility values
 
-`project.toml` is retained temporarily for older tooling/tests during migration. Normal workstation operation enters through `sync-workstation.cmd`, which selects `configure_project.toml`. New project work should not add project-dependent values to Python modules or to `project.toml`.
+The optional `[compatibility]` table holds only bounded migration names for the existing default project. `scripts/configure_project.py` clears those names when recycling the repository. Do not create another tracked project TOML or add project-dependent defaults to Python modules.

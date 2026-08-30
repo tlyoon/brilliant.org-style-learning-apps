@@ -66,7 +66,7 @@ Follow `coordinator/apps-script/README.md` to create the private ledger and depl
 
 ## Gemini behavior
 
-The fixed Description is in `app_generator/resources/gem_description.txt`; the fixed Instructions are in `app_generator/resources/gem_instructions.md`. Display them with:
+Live generation converges the Gem to the project-authoritative `config/gem_description.txt` and `config/gem_instructions.md`. The packaged files under `app_generator/resources/` are reusable baseline material for the installed command. Display that packaged baseline with:
 
 ```powershell
 python -m app_generator show-gem-config
@@ -184,7 +184,7 @@ Edit `config/project.toml` through a reviewed pull request:
 
 - set the deployed Apps Script `/exec` URL;
 - set the local repository and dedicated Chrome-profile paths;
-- set the controlled Serway edition, reviewer, and rights note;
+- review the controlled source edition, reviewer, and rights note;
 - keep the templated chapter/subchapter fields;
 - confirm `git_publish = true`.
 

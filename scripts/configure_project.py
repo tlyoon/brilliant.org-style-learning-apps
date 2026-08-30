@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Safely configure the dedicated tracked project authority."""
+"""Safely configure the sole tracked project authority."""
 
 from __future__ import annotations
 
@@ -16,14 +16,17 @@ from app_generator.project import ProjectIdentityError, validate_project_name
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CONFIG = ROOT / "config" / "configure_project.toml"
+DEFAULT_CONFIG = ROOT / "config" / "project.toml"
 EDITABLE_VALUES = {
     ("project", "project_name"): "project_name",
     ("placeholders", "sourcepath"): "source_root_url",
     ("placeholders", "gemini-gem"): "gem_url",
     ("placeholders", "loginname"): "login_name",
+    ("gemini", "gem_edit_url"): "gem_edit_url",
     ("gemini", "gem_name"): "gem_name",
     ("compatibility", "legacy_environment_prefix"): "legacy_environment_prefix",
+    ("git", "git_publish"): "git_publish",
+    ("git", "git_auto_merge"): "git_auto_merge",
 }
 
 
@@ -35,6 +38,12 @@ def _toml_string(value: str) -> str:
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
+def _toml_value(value: object) -> str:
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    return _toml_string(str(value))
+
+
 def _validate_https_url(value: str, *, hostname: str, label: str) -> str:
     parsed = urlparse(value.strip())
     if parsed.scheme != "https" or parsed.hostname != hostname:
@@ -42,7 +51,7 @@ def _validate_https_url(value: str, *, hostname: str, label: str) -> str:
     return value.strip()
 
 
-def validated_values(values: Mapping[str, str]) -> dict[str, str]:
+def validated_values(values: Mapping[str, str]) -> dict[str, object]:
     try:
         project_name = validate_project_name(values["project_name"])
     except (KeyError, ProjectIdentityError) as exc:
@@ -53,6 +62,12 @@ def validated_values(values: Mapping[str, str]) -> dict[str, str]:
         raise ProjectConfigurationError("login_name must be a non-empty account email")
     if not gem_name:
         raise ProjectConfigurationError("gem_name is required")
+    raw_edit_url = values.get("gem_edit_url", "").strip()
+    gem_edit_url = (
+        _validate_https_url(raw_edit_url, hostname="gemini.google.com", label="gem_edit_url")
+        if raw_edit_url
+        else ""
+    )
     return {
         "project_name": project_name,
         "source_root_url": _validate_https_url(
@@ -62,8 +77,11 @@ def validated_values(values: Mapping[str, str]) -> dict[str, str]:
             values.get("gem_url", ""), hostname="gemini.google.com", label="gem_url"
         ),
         "login_name": login_name,
+        "gem_edit_url": gem_edit_url,
         "gem_name": gem_name,
         "legacy_environment_prefix": "",
+        "git_publish": False,
+        "git_auto_merge": False,
     }
 
 
@@ -96,7 +114,7 @@ def render_project_configuration(text: str, values: Mapping[str, str]) -> str:
             marker = (section, key)
             if marker in replaced:
                 raise ProjectConfigurationError(f"Duplicate configuration key: {section}.{key}")
-            line = f"{key} = {_toml_string(requested[value_name])}"
+            line = f"{key} = {_toml_value(requested[value_name])}"
             replaced.add(marker)
         output.append(line)
     missing = set(EDITABLE_VALUES) - replaced
@@ -141,12 +159,17 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--project-name", required=True)
     parser.add_argument("--source-root-url", required=True)
     parser.add_argument("--gem-url", required=True)
+    parser.add_argument(
+        "--gem-edit-url",
+        default="",
+        help="Optional owned Gem editor URL. Omit it to discover the editor safely from --gem-url.",
+    )
     parser.add_argument("--login-name", required=True)
     parser.add_argument("--gem-name", required=True)
     parser.add_argument(
         "--apply",
         action="store_true",
-        help="Atomically update config/configure_project.toml after verifying a clean Git worktree.",
+        help="Atomically update config/project.toml after verifying a clean Git worktree.",
     )
     return parser
 
@@ -162,6 +185,7 @@ def main(argv: list[str] | None = None) -> int:
                 "project_name": args.project_name,
                 "source_root_url": args.source_root_url,
                 "gem_url": args.gem_url,
+                "gem_edit_url": args.gem_edit_url,
                 "login_name": args.login_name,
                 "gem_name": args.gem_name,
             },

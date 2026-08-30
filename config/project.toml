@@ -1,4 +1,4 @@
-# Repository-tracked project configuration.
+# Project-specific, non-secret configuration authority.
 # This is the sole active editable authority for non-secret project settings.
 # Keep credentials, token values, Chrome profiles, source PDFs, and run data outside Git.
 
@@ -23,7 +23,11 @@ drive_api_timeout_seconds = 60
 max_drive_folders = 10000
 
 [source_tree]
-source_id_prefix = "serway"
+source_id_prefix = "${PROJECT_SLUG}"
+
+[compatibility]
+# Current project only. The project configurator clears this for recycled projects.
+legacy_environment_prefix = "BRILLIANT_GENERATOR_"
 
 [automation]
 selection_mode = "specific"

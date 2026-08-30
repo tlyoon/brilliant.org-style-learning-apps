@@ -51,6 +51,7 @@ ALLOWED_PROJECT_KEYS = {
     "gemini": {"gem_edit_url", "gem_name", "browser_mode"},
     "google_drive": {"drive_api_timeout_seconds", "max_drive_folders"},
     "source_tree": {"source_id_prefix"},
+    "compatibility": {"legacy_environment_prefix"},
     "automation": {
         "selection_mode", "coordinator_url", "coordinator_token_env",
         "coordinator_timeout_seconds", "lease_seconds", "heartbeat_seconds",
