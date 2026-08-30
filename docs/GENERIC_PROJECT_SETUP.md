@@ -1,5 +1,7 @@
 # Recycle the generator for another textbook project
 
+For the complete beginner-facing path from one controlled PDF through generation, review, static bundling, and optional GitHub Pages deployment, start with `docs/PDF_TO_APP_QUICKSTART.md`. This document is the specialist reference for **recycling the repository for another project**.
+
 The normal tracked project authority is `config/configure_project.toml`. A recycled project should use its own project identity, Drive source root, Gemini Gem/account, coordinator deployment where needed, OAuth client, Chrome profile, and run state. Machine-local values are materialized by `sync-workstation.cmd` rather than copied between PCs.
 
 ## 1. Create a project branch
