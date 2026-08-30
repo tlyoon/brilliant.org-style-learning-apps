@@ -67,7 +67,7 @@ python scripts/build_public_release.py content/<chapter>/<section>/package.json 
 
 It creates a small static bundle containing only the root entry page, learner-app assets, the selected package (normalized to `content/package.json`), and `.nojekyll`. It excludes repository history, tests, specifications, review records, source manifests, and development scripts.
 
-`scripts/build_section_8_1_public_release.py` remains an explicitly named historical/specialized comparison builder for the existing Chapter 8 review site. It is not used by the generic generator or learner runtime and must not be treated as a project default.
+`project_extensions/brilliant_content_generator/build_public_review.py` remains the historical comparison builder for the existing Chapter 8 review site. It is not used by the generic generator or learner runtime and must not be treated as a project default.
 
 Implementation work should use short-lived branches and pull requests. `main` remains the stable baseline.
 
@@ -75,4 +75,4 @@ Implementation work should use short-lived branches and pull requests. `main` re
 
 `app_generator/` contains an isolated Python 3.12/Google Drive/Selenium workflow for generating one repository-compatible draft per controlled PDF. Each job attaches its PDF to a fresh Gemini Gem conversation; Gem Knowledge is not modified. Distributed workers can use a central lease/heartbeat coordinator, validate and repair the generated package, and hand work to Git according to the configured publishing policy. Generated content remains draft until qualified review.
 
-The normal tracked project-specific authority is `config/configure_project.toml`. `sync-workstation.cmd` derives project slug/environment namespace, checkout path, state root, OAuth/token locations, Chrome profile, coordinator token environment name, and run-state paths to produce machine-local `project.local.toml`. See `config/README.md`, `docs/WORKSTATION_SYNC.md`, and `docs/GENERIC_PROJECT_SETUP.md`. Credentials, source PDFs, browser profiles, tokens, and run data remain outside Git.
+The sole tracked project-specific authority is `config/project.toml`. `sync-workstation.cmd` derives project slug/environment namespace, checkout path, state root, OAuth/token locations, Chrome profile, coordinator token environment name, and run-state paths to produce machine-local `project.local.toml`. See `config/README.md`, `docs/WORKSTATION_SYNC.md`, and `docs/GENERIC_PROJECT_SETUP.md`. Credentials, source PDFs, browser profiles, tokens, and run data remain outside Git.

@@ -1,6 +1,6 @@
 # Recycle the generator for another textbook project
 
-The normal tracked project authority is `config/configure_project.toml`. A recycled project should use its own project identity, Drive source root, Gemini Gem/account, coordinator deployment where needed, OAuth client, Chrome profile, and run state. Machine-local values are materialized by `sync-workstation.cmd` rather than copied between PCs.
+The sole tracked project authority is `config/project.toml`. A recycled project should use its own project identity, Drive source root, Gemini Gem/account, coordinator deployment where needed, OAuth client, Chrome profile, and run state. Machine-local values are materialized by `sync-workstation.cmd` rather than copied between PCs.
 
 ## 1. Create a project branch
 
@@ -21,13 +21,16 @@ python scripts\configure_project.py `
   --project-name "NewLearningProject" `
   --source-root-url "https://drive.google.com/open?id=SOURCE_FOLDER_ID" `
   --gem-url "https://gemini.google.com/gem/GEM_ID" `
+  --gem-edit-url "https://gemini.google.com/gems/edit/EDIT_ID" `
   --login-name "authorized@example.com" `
   --gem-name "subject content generator"
 ```
 
-Review the unified diff. Repeat with `--apply`; the command refuses a dirty worktree and atomically changes only the approved identity/source/Gem keys in `config/configure_project.toml`.
+Review the unified diff. Repeat with `--apply`; the command refuses a dirty worktree and atomically changes only approved values in `config/project.toml`. Omit `--gem-edit-url` to clear any previous project's editor URL and let the owned Gem's Edit control be discovered from `--gem-url`.
 
-Then review the remaining project-dependent values in that file: default subchapter selector, source filename/pattern, Gem edit URL, coordinator policy, edition/provenance wording, Git handoff policy, and any project-specific model-selection preference. Keep `${PROJECT_SLUG}`, `${PROJECT_ENV_PREFIX}`, `${REPO_ROOT}`, and `${STATE_ROOT}` tokenized so workstation sync derives them automatically.
+For every recycled project, the configurator also clears the legacy environment prefix and resets `git_publish` and `git_auto_merge` to `false`. This prevents a first controlled generation from publishing or merging into a repository until those policies are deliberately enabled in a later reviewed change.
+
+Then review the remaining project-dependent values in that file: default subchapter selector, source filename/pattern, coordinator policy, edition/provenance wording, Git handoff policy, and any project-specific model-selection preference. Keep `${PROJECT_SLUG}`, `${PROJECT_ENV_PREFIX}`, `${REPO_ROOT}`, and `${STATE_ROOT}` tokenized so workstation sync derives them automatically.
 
 Section title and the effective learning boundary are derived from validated PDF analysis; unidentified edition metadata and the automated-draft actor are recorded truthfully without blocking generation. Keep token values, credentials, PDFs, browser data, and run data out of Git.
 
@@ -38,7 +41,7 @@ python scripts\lint.py
 python scripts\validate_content.py
 python -m unittest discover -s tests -v
 git diff --check
-git add config\configure_project.toml
+git add config\project.toml
 git commit -m "Configure new textbook project"
 git push -u origin config/new-textbook-project
 ```
@@ -50,7 +53,7 @@ Open and merge a pull request. Every PC then receives the same non-secret projec
 After pulling `main`:
 
 ```powershell
-python -m scripts.sync_configured_workstation --init-settings-only
+python -m scripts.sync_workstation --init-settings-only
 ```
 
 Provision the Google Desktop OAuth client at the derived path shown below, then run `sync-workstation.cmd`.

@@ -246,7 +246,7 @@ class WorkstationSyncTests(unittest.TestCase):
         self.assertEqual("chapter-15-section-15-1", recycled.package_id)
         self.assertEqual("chapter-15", recycled.chapter_dir)
         self.assertEqual("section-15-1", recycled.section_dir)
-        self.assertEqual("serway-section-15-1", recycled.source_id)
+        self.assertEqual("brilliant-content-generator-section-15-1", recycled.source_id)
 
 
     def test_crlf_project_config_is_normalized_before_rendering(self):
@@ -295,9 +295,9 @@ class WorkstationSyncTests(unittest.TestCase):
         command = next(
             line
             for line in content.splitlines()
-            if line.startswith("python -m scripts.sync_configured_workstation")
+            if line.startswith("python -m scripts.sync_workstation")
         )
-        self.assertEqual("python -m scripts.sync_configured_workstation %*", command)
+        self.assertEqual("python -m scripts.sync_workstation %*", command)
 
     def test_initial_settings_do_not_reference_projects_folder(self):
         with tempfile.TemporaryDirectory() as directory:

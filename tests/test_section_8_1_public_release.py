@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.build_section_8_1_public_release import (
+from project_extensions.brilliant_content_generator.build_public_review import (
     build,
     section_eight_three_package,
     version_one_package,

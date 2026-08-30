@@ -34,6 +34,8 @@ Accepted automation baseline: Decision 0006 uses one PDF per fresh Gem conversat
 
 Accepted reusable-generator baseline: Decisions 0009 through 0016 establish `config/project.toml` as the single tracked authority, derive environment names and local paths from project identity, prohibit duplicated defaults, provide guarded initialization, template generic source metadata, scope coordinator state by project, bound exact legacy compatibility, and require two-project isolation tests. Google Drive remains the controlled source-PDF service, not a configuration-distribution service.
 
+Accepted turnkey-recycling correction: Decision 0019 restores `config/project.toml` as the only tracked authority, removes the transitional duplicate/wrapper, clears stale Gem-editor and legacy settings during project initialization, resets publishing and auto-merge for recycled projects, and expands two-project isolation coverage.
+
 Accepted source-derived automation baseline: Decision 0017 derives exact section titles and scope from validated PDF analysis, records truthful automated-draft provenance without manual metadata prompts, and permits explicitly configured private-repository auto-merge while preserving draft status, branch protection, human-review gates, and the deployment prohibition.
 
 Accepted public-review baseline: Decision 0007 permits the two Section 8.1 draft packages to be deployed together in a separate minimal public GitHub Pages repository with explicit draft labelling and no publication sign-offs.

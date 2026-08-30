@@ -66,7 +66,7 @@ Follow `coordinator/apps-script/README.md` to create the private ledger and depl
 
 ## Gemini behavior
 
-The fixed Description is in `app_generator/resources/gem_description.txt`; the fixed Instructions are in `app_generator/resources/gem_instructions.md`. Display them with:
+Live generation converges the Gem to the project-authoritative `config/gem_description.txt` and `config/gem_instructions.md`. The packaged files under `app_generator/resources/` are reusable baseline material for the installed command. Display that packaged baseline with:
 
 ```powershell
 python -m app_generator show-gem-config
@@ -82,10 +82,11 @@ At runtime Selenium:
 6. attaches the claimed local PDF to that conversation;
 7. submits staged, machine-readable generation and repair prompts.
 
-If Gemini displays a recognized transient service-error response, the generator captures a screenshot in the
-external run `diagnostics` directory, closes the failed controlled browser, launches a fresh Gem conversation,
-reattaches a verified copy of the same controlled PDF, removes that temporary copy, and retries only the current
-uncached stage. `max_gemini_session_restarts` bounds this recovery loop; its default is two relaunches per run.
+If Gemini displays a recognized transient service error or returns an incomplete/non-JSON response, the generator
+captures a screenshot in the external run `diagnostics` directory, closes the failed controlled browser, launches
+a fresh Gem conversation, reattaches a verified copy of the same controlled PDF, removes that temporary copy, and
+retries only the current uncached stage. `max_gemini_session_restarts` bounds this recovery loop; its default is
+three relaunches per run (four total attempts including the initial attempt).
 
 The browser uses a dedicated persistent Chrome profile. An ordinary user-opened Chrome tab is not adopted. Optional attach mode requires Chrome to have been explicitly launched with remote debugging and a separate non-default profile.
 
@@ -184,7 +185,7 @@ Edit `config/project.toml` through a reviewed pull request:
 
 - set the deployed Apps Script `/exec` URL;
 - set the local repository and dedicated Chrome-profile paths;
-- set the controlled Serway edition, reviewer, and rights note;
+- review the controlled source edition, reviewer, and rights note;
 - keep the templated chapter/subchapter fields;
 - confirm `git_publish = true`.
 

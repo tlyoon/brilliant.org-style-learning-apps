@@ -29,7 +29,7 @@ DEFAULTS: dict[str, Any] = {
     "ui_timeout_seconds": 30,
     "login_timeout_seconds": 300,
     "response_timeout_seconds": 600,
-    "max_gemini_session_restarts": 2,
+    "max_gemini_session_restarts": 3,
     "drive_api_timeout_seconds": 60,
     "max_drive_folders": 10000,
     "log_level": "INFO",
