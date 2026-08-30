@@ -38,7 +38,7 @@ class ConfiguredWorkstationSyncTests(unittest.TestCase):
         run = configured_sync._configured_subprocess_run(original_run)
         run([
             "python",
-            r"C:\repo\scripts\sync_workstation.py",
+            str(Path("scripts") / "sync_workstation.py"),
             "--settings",
             r"C:\state\workstation-sync.toml",
             "--post-sync",
