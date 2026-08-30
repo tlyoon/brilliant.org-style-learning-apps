@@ -1,0 +1,2193 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-8-section-8-5",
+  "chapter": "Chapter 8",
+  "subchapter": "8.5 Power",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Define instantaneous and average power as the time rate of energy transfer or work performed.",
+    "Relate instantaneous mechanical power to the scalar dot product of force and velocity vectors.",
+    "Distinguish power units like watts and horsepower from energy units like kilowatt-hours and joules.",
+    "Analyze the mechanical power required for objects in uniform motion versus accelerating motion."
+  ],
+  "prerequisites": [
+    {
+      "id": "work-definition",
+      "description": {
+        "en": "Understanding work as an energy transfer mechanism resulting from a force acting through a displacement.",
+        "ms": "Memahami kerja sebagai mekanisme pemindahan tenaga yang terhasil daripada daya yang bertindak melalui sesaran.",
+        "zh": "理解功是力在位移上作用所产生的能量传递机制。"
+      },
+      "recovery": {
+        "en": "Review the definition of mechanical work as the scalar product of force and displacement vectors.",
+        "ms": "Ulang kaji takrifan kerja mekanikal sebagai hasil darab skalar bagi vektor daya dan sesaran.",
+        "zh": "复习机械功的定义，即力和位移矢量的标量点积。"
+      }
+    },
+    {
+      "id": "newtons-second-law",
+      "description": {
+        "en": "Applying net force equations to objects moving at constant velocity versus accelerating.",
+        "ms": "Mengaplikasikan persamaan daya paduan kepada objek yang bergerak dengan halaju malar berbanding yang memecut.",
+        "zh": "将合外力方程应用于匀速运动与加速运动的物体。"
+      },
+      "recovery": {
+        "en": "Review free-body diagrams and force balance along the direction of motion for zero and non-zero acceleration.",
+        "ms": "Ulang kaji rajah jasad bebas dan keseimbangan daya sepanjang arah gerakan untuk pecutan sifar dan bukan sifar.",
+        "zh": "复习受力分析图以及沿运动方向在加速度为零和非零时的受力平衡。"
+      }
+    },
+    {
+      "id": "vector-dot-product",
+      "description": {
+        "en": "Calculating the scalar product of two vectors using magnitudes and the cosine of the included angle.",
+        "ms": "Mengira hasil darab skalar dua vektor menggunakan magnitud dan kosinus sudut yang tercangkum.",
+        "zh": "利用矢量的模和夹角的余弦值计算两个矢量的标量积。"
+      },
+      "recovery": {
+        "en": "Review how the dot product evaluates alignment between two vectors such as force and velocity.",
+        "ms": "Ulang kaji bagaimana hasil darab bintik menilai keselarian antara dua vektor seperti daya dan halaju.",
+        "zh": "复习如何通过点积评估两个矢量（如力和速度）之间的平行分量。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "power-energy-conflation",
+      "description": {
+        "en": "Believing higher power automatically means more total work is done, ignoring the duration of the transfer.",
+        "ms": "Mempercayai bahawa kuasa yang lebih tinggi secara automatik bermakna lebih banyak jumlah kerja dilakukan, tanpa mengambil kira tempoh pemindahan.",
+        "zh": "误以为功率越大必然意味着完成的总功越多，而忽略了能量传递所用的时间。"
+      }
+    },
+    {
+      "id": "kwh-is-power-unit",
+      "description": {
+        "en": "Assuming the kilowatt-hour measures power because 'watt' is in the name, rather than energy (power multiplied by time).",
+        "ms": "Mengandaikan kilowatt-jam mengukur kuasa kerana terdapat perkataan 'watt' dalam namanya, bukannya tenaga (kuasa didarabkan dengan masa).",
+        "zh": "因名称中含有“瓦”而误将千瓦·时当作功率单位，而非能量单位（功率乘以时间）。"
+      }
+    },
+    {
+      "id": "watts-per-second-confusion",
+      "description": {
+        "en": "Treating power as needing an explicit per-second division when the watt is already defined as one joule per second.",
+        "ms": "Menganggap kuasa memerlukan pembahagian sesaat yang nyata sedangkan watt sudah ditakrifkan sebagai satu joule per saat.",
+        "zh": "误认为功率还需要额外除以秒，而忽略了瓦特本身已经定义为焦耳每秒。"
+      }
+    },
+    {
+      "id": "constant-force-constant-power",
+      "description": {
+        "en": "Assuming power delivered by a constant force on an accelerating object remains constant instead of scaling with instantaneous speed.",
+        "ms": "Mengandaikan kuasa yang dibekalkan oleh daya malar pada objek yang memecut kekal malar bukannya bertambah mengikut laju seketika.",
+        "zh": "误以为恒力作用在加速物体上时输出功率保持不变，而实际上功率随瞬时速率线性增大。"
+      }
+    },
+    {
+      "id": "symbol-work-watt-confusion",
+      "description": {
+        "en": "Confusing the algebraic quantity symbol for work with the SI unit symbol for power.",
+        "ms": "Mengelirukan simbol kuantiti algebra bagi kerja dengan simbol unit SI bagi kuasa.",
+        "zh": "混淆代表功的代数物理量符号与代表功率的国际标准单位符号。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-8/section-8-5/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-8-section-8-5.json",
+  "activities": [
+    {
+      "id": "mcq-power-vs-work-duration",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define instantaneous and average power as the time rate of energy transfer or work performed.",
+      "prompt": {
+        "en": "Two lifting cranes each raise an identical cargo container through the same vertical height, performing the same amount of mechanical work. Crane A completes the lift in half the time taken by Crane B. How does the average power delivered by Crane A compare to that of Crane B\n?",
+        "ms": "Dua kren pengangkat masing-masing menaikkan sebuah kontena kargo yang serupa pada ketinggian menegak yang sama, melakukan jumlah kerja mekanikal yang sama. Kren A menyelesaikan angkatan tersebut dalam separuh masa yang diambil oleh Kren B. Bagaimanakah kuasa purata yang dibekalkan oleh Kren A berbanding dengan Kren B\n?",
+        "zh": "两台起重机各自将相同的集装箱提升相同的高度，完成相同数量的机械功。起重机 A 完成提升所需的时间是起重机 B 的一半。起重机 A 提供的平均功率与起重机 B 相比如何\n？"
+      },
+      "hints": [
+        {
+          "en": "Average power is defined as the work done divided by the time interval required to do that work\n.",
+          "ms": "Kuasa purata ditakrifkan sebagai kerja yang dilakukan dibahagikan dengan selang masa yang diperlukan untuk melakukan kerja tersebut\n.",
+          "zh": "平均功率定义为所做的功除以完成该功所需的时间间隔\n。"
+        },
+        {
+          "en": "When the total work is identical, a shorter duration means energy is being transferred at a higher rate\n.",
+          "ms": "Apabila jumlah kerja adalah serupa, tempoh yang lebih singkat bermakna tenaga sedang dipindahkan pada kadar yang lebih tinggi\n.",
+          "zh": "当完成的总功相同时，较短的持续时间意味着能量以更高的速率传递\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Because average power equals work divided by time, completing the same work in a shorter time interval requires higher average power\n.",
+        "ms": "Oleh kerana kuasa purata bersamaan dengan kerja dibahagikan dengan masa, menyelesaikan kerja yang sama dalam selang masa yang lebih singkat memerlukan kuasa purata yang lebih tinggi\n.",
+        "zh": "因为平均功率等于功除以时间，所以在更短的时间间隔内完成相同的功需要更高的平均功率\n。"
+      },
+      "answerLogic": {
+        "en": "Average power is inversely proportional to the elapsed time for a fixed quantity of work\n. Crane A completes the task in less time, so its average power output is greater\n.",
+        "ms": "Kuasa purata adalah berkadar songsang dengan masa yang berlalu untuk kuantiti kerja yang tetap\n. Kren A menyelesaikan tugas dalam masa yang lebih singkat, jadi output kuasa puratanya lebih besar\n.",
+        "zh": "对于固定数量的功，平均功率与所经历的时间成反比\n。起重机 A 用更少的时间完成任务，因此其平均功率输出更高\n。"
+      },
+      "explanation": {
+        "en": "Power represents the time rate of energy transfer\n. Doing work rapidly requires more power than doing the same work slowly, even though the total energy transferred is identical\n.",
+        "ms": "Kuasa mewakili kadar masa pemindahan tenaga\n. Melakukan kerja dengan pantas memerlukan lebih banyak kuasa berbanding melakukan kerja yang sama secara perlahan, walaupun jumlah tenaga yang dipindahkan adalah serupa\n.",
+        "zh": "功率表示能量传递的时间快慢\n。快速做功比缓慢做相同的功需要更大的功率，尽管传递的总能量是完全相同的\n。"
+      },
+      "misconceptions": [
+        "power-energy-conflation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Recall that mechanical work measures the total energy transferred by a force acting over a displacement, regardless of time.",
+          "ms": "Ingat kembali bahawa kerja mekanikal mengukur jumlah tenaga yang dipindahkan oleh daya yang bertindak sepanjang sesaran, tanpa mengira masa.",
+          "zh": "回想机械功衡量力作用于位移上所传递的总能量，与耗费的时间无关。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A conceptual multiple-choice question asking to compare the average power of two cranes doing equal work in different durations. Four options are presented.",
+        "ms": "Soalan aneka pilihan konseptual yang meminta untuk membandingkan kuasa purata dua kren yang melakukan kerja yang sama dalam tempoh masa yang berbeza. Empat pilihan jawapan disediakan.",
+        "zh": "一道概念性多选题，要求比较两台在不同时间内完成相同功的起重机的平均功率。提供四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-crane-a-higher",
+        "options": [
+          {
+            "id": "opt-crane-a-higher",
+            "label": {
+              "en": "Crane A delivers a higher average power because it transfers the same amount of energy in less time\n.",
+              "ms": "Kren A membekalkan kuasa purata yang lebih tinggi kerana ia memindahkan jumlah tenaga yang sama dalam masa yang lebih singkat\n.",
+              "zh": "起重机 A 提供更高的平均功率，因为它在更短的时间内传递了相同数量的能量\n。"
+            }
+          },
+          {
+            "id": "opt-equal-power",
+            "label": {
+              "en": "Crane A and Crane B deliver equal average power because both perform the same total amount of work.",
+              "ms": "Kren A dan Kren B membekalkan kuasa purata yang sama kerana kedua-duanya melakukan jumlah kerja keseluruhan yang sama.",
+              "zh": "起重机 A 和起重机 B 提供相同的平均功率，因为两台起重机完成的总功相同。"
+            },
+            "misconception": "power-energy-conflation"
+          },
+          {
+            "id": "opt-crane-b-higher",
+            "label": {
+              "en": "Crane B delivers a higher average power because its motor must sustain the applied force for a longer duration.",
+              "ms": "Kren B membekalkan kuasa purata yang lebih tinggi kerana motornya perlu mengekalkan daya yang dikenakan untuk tempoh masa yang lebih lama.",
+              "zh": "起重机 B 提供更高的平均功率，因为它的电动机必须在更长的时间内维持所施加的力。"
+            }
+          },
+          {
+            "id": "opt-cannot-compare",
+            "label": {
+              "en": "The average power cannot be compared because power depends only on the distance lifted and not on the time elapsed.",
+              "ms": "Kuasa purata tidak boleh dibandingkan kerana kuasa hanya bergantung pada jarak yang diangkat dan bukan pada masa yang berlalu.",
+              "zh": "无法比较平均功率，因为功率仅取决于提升的距离，而与所用的时间无关。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-units-kwh-distinction",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish power units like watts and horsepower from energy units like kilowatt-hours and joules.",
+      "prompt": {
+        "en": "A monthly electric utility statement bills a household for consumption measured in kilowatt-hours (kWh)\n. Which physical quantity is being measured and purchased\n?",
+        "ms": "Penyata utiliti elektrik bulanan mengebilkan isi rumah untuk penggunaan yang diukur dalam kilowatt-jam (kWh)\n. Kuantiti fizikal manakah yang sedang diukur dan dibeli\n?",
+        "zh": "每月的电力账单根据以千瓦·时（kWh）计量的消耗量向家庭收费\n。这里测量和购买的物理量是什么\n？"
+      },
+      "hints": [
+        {
+          "en": "Recall that power is the rate of energy transfer, so multiplying power by time gives total energy\n.",
+          "ms": "Ingat kembali bahawa kuasa ialah kadar pemindahan tenaga, jadi mendarabkan kuasa dengan masa menghasilkan jumlah tenaga\n.",
+          "zh": "回想功率是能量传递的速率，因此功率乘以时间等于总能量\n。"
+        },
+        {
+          "en": "A kilowatt is a unit of power and an hour is a unit of time; their product represents an amount of energy rather than power\n.",
+          "ms": "Kilowatt ialah unit kuasa dan jam ialah unit masa; hasil darab kedua-duanya mewakili jumlah tenaga dan bukannya kuasa\n.",
+          "zh": "千瓦是功率单位，小时是时间单位；二者的乘积表示能量的大小而不是功率\n。"
+        }
+      ],
+      "feedback": {
+        "en": "A kilowatt-hour is a unit of energy, defined as the energy transferred in one hour at a constant power of one kilowatt\n.",
+        "ms": "Kilowatt-jam ialah unit tenaga, yang ditakrifkan sebagai tenaga yang dipindahkan dalam satu jam pada kuasa malar satu kilowatt\n.",
+        "zh": "千瓦·时是一个能量单位，定义为以一千瓦的恒定功率在一小时内传递的能量\n。"
+      },
+      "answerLogic": {
+        "en": "Because energy equals power multiplied by time interval, units of power multiplied by time (such as kW · h) measure energy\n.",
+        "ms": "Oleh kerana tenaga bersamaan dengan kuasa didarabkan dengan selang masa, unit kuasa yang didarabkan dengan masa (seperti kW · j) mengukur tenaga\n.",
+        "zh": "因为能量等于功率乘以时间间隔，所以功率单位乘以时间单位（例如 kW · h）测量的是能量\n。"
+      },
+      "explanation": {
+        "en": "Electric utility companies sell energy transferred into homes\n. The kilowatt-hour represents a large quantity of energy equal to 3.60 million joules, not a rate of energy delivery\n.",
+        "ms": "Syarikat utiliti elektrik menjual tenaga yang dipindahkan ke dalam rumah\n. Kilowatt-jam mewakili kuantiti tenaga yang besar bersamaan dengan 3.60 juta joule, bukannya kadar pembekalan tenaga\n.",
+        "zh": "电力公司出售的是输送到家庭中的能量\n。千瓦·时代表相当于 360 万焦耳的巨大能量，而不是能量传递的速率\n。"
+      },
+      "misconceptions": [
+        "kwh-is-power-unit"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review how energy is transferred by work or other mechanisms over time, where energy has units of joules.",
+          "ms": "Ulang kaji bagaimana tenaga dipindahkan melalui kerja atau mekanisme lain mengikut masa, dengan tenaga mempunyai unit joule.",
+          "zh": "复习能量如何随时间通过做功或其他机制传递，其中能量的单位是焦耳。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-choice conceptual question asking what physical quantity is represented by the unit kilowatt-hour. Four choices are listed.",
+        "ms": "Soalan konseptual aneka pilihan yang bertanyakan kuantiti fizikal yang diwakili oleh unit kilowatt-jam. Empat pilihan disenaraikan.",
+        "zh": "一道多选题概念题，询问千瓦·时这一单位代表什么物理量。列出了四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-total-energy",
+        "options": [
+          {
+            "id": "opt-total-energy",
+            "label": {
+              "en": "Total energy transferred, because a unit of power multiplied by a unit of time yields energy\n.",
+              "ms": "Jumlah tenaga yang dipindahkan, kerana unit kuasa didarab dengan unit masa menghasilkan tenaga\n.",
+              "zh": "传递的总能量，因为功率单位乘以时间单位得到能量\n。"
+            }
+          },
+          {
+            "id": "opt-instantaneous-power",
+            "label": {
+              "en": "Instantaneous power, because the unit name contains kilowatt.",
+              "ms": "Kuasa seketika, kerana nama unit tersebut mengandungi kilowatt.",
+              "zh": "瞬时功率，因为该单位名称中包含千瓦。"
+            },
+            "misconception": "kwh-is-power-unit"
+          },
+          {
+            "id": "opt-net-force",
+            "label": {
+              "en": "Net electrical force, because the bill measures the continuous push on charges.",
+              "ms": "Daya elektrik bersih, kerana bil tersebut mengukur tolakan berterusan ke atas cas.",
+              "zh": "净电力，因为账单衡量的是对电荷的持续推动力。"
+            }
+          },
+          {
+            "id": "opt-rate-of-power-change",
+            "label": {
+              "en": "The rate of power change, indicating how rapidly power usage increases each hour.",
+              "ms": "Kadar perubahan kuasa, yang menunjukkan betapa pantasnya penggunaan kuasa meningkat setiap jam.",
+              "zh": "功率变化率，表示每小时用电功率增加的快慢。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-watts-unit-meaning",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish power units like watts and horsepower from energy units like kilowatt-hours and joules.",
+      "prompt": {
+        "en": "An electric motor is rated with an output specification of 500 W\n. Which statement correctly identifies the physical meaning and definition of the watt\n?",
+        "ms": "Sebuah motor elektrik mempunyai spesifikasi output berkadar 500 W\n. Pernyataan manakah yang mengenal pasti maksud fizikal dan takrifan bagi watt dengan betul\n?",
+        "zh": "一台电动机的额定输出规格为 500 W\n。下列哪个陈述正确指出了瓦特的物理意义和定义\n？"
+      },
+      "hints": [
+        {
+          "en": "Power is defined as energy transfer per unit time, so its SI unit combines joules and seconds\n.",
+          "ms": "Kuasa ditakrifkan sebagai pemindahan tenaga per unit masa, jadi unit SI nya menggabungkan joule dan saat\n.",
+          "zh": "功率定义为单位时间内的能量传递，因此其国际单位由焦耳和秒组合而成\n。"
+        },
+        {
+          "en": "The watt already represents one joule per second; phrasing power as 'watts per second' is redundant and physically incorrect\n.",
+          "ms": "Watt sudah sedia mewakili satu joule sesaat; menyatakan kuasa sebagai 'watt sesaat' adalah lewah dan salah dari segi fizikal\n.",
+          "zh": "瓦特本身就已经代表每秒一焦耳；将功率表述为“瓦每秒”在物理上是不正确的\n。"
+        }
+      ],
+      "feedback": {
+        "en": "One watt is defined precisely as one joule per second (1 W = 1 J/s), representing the rate of energy transfer\n.",
+        "ms": "Satu watt ditakrifkan secara tepat sebagai satu joule sesaat (1 W = 1 J/s), yang mewakili kadar pemindahan tenaga\n.",
+        "zh": "一瓦特精确定义为每秒一焦耳（1 W = 1 J/s），表示能量传递的速率\n。"
+      },
+      "answerLogic": {
+        "en": "The SI unit of power is the watt, which is equivalent to joules per second (J/s)\n. It already expresses a rate per unit time\n.",
+        "ms": "Unit SI bagi kuasa ialah watt, yang bersamaan dengan joule sesaat (J/s)\n. Ia sudah sedia menyatakan kadar per unit masa\n.",
+        "zh": "功率的国际单位制单位是瓦特，等价于焦耳每秒（J/s）\n。它本身就已经表示单位时间内的速率\n。"
+      },
+      "explanation": {
+        "en": "Power is the rate of energy transfer dE/dt\n. The symbol W denotes the unit watt, which equals 1 J/s\n. This must not be confused with the algebraic symbol W used for mechanical work\n.",
+        "ms": "Kuasa ialah kadar pemindahan tenaga dE/dt\n. Simbol W menandakan unit watt, yang bersamaan dengan 1 J/s\n. Ini tidak boleh dikelirukan dengan simbol algebra W yang digunakan untuk kerja mekanikal\n.",
+        "zh": "功率是能量传递的速率 dE/dt\n。符号 W 表示单位瓦特，等于 1 J/s\n。切勿将其与代表机械功的代数符号 W 混淆\n。"
+      },
+      "misconceptions": [
+        "watts-per-second-confusion",
+        "symbol-work-watt-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the definition of the joule as the unit of energy and work, and how dividing work by time yields power.",
+          "ms": "Ulang kaji takrifan joule sebagai unit tenaga dan kerja, dan bagaimana membahagikan kerja dengan masa menghasilkan kuasa.",
+          "zh": "复习焦耳作为能量和功的单位的定义，以及将功除以时间如何得到功率。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-choice question testing the definition and unit equivalences of the watt. Four answer options are provided.",
+        "ms": "Soalan aneka pilihan yang menguji takrifan dan kesetaraan unit bagi watt. Empat pilihan jawapan disediakan.",
+        "zh": "一道测试瓦特的定义及单位等价关系的多选题。提供了四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-joules-per-second",
+        "options": [
+          {
+            "id": "opt-joules-per-second",
+            "label": {
+              "en": "One watt equals one joule of energy transferred per second (1 W = 1 J/s)\n.",
+              "ms": "Satu watt bersamaan dengan satu joule tenaga yang dipindahkan sesaat (1 W = 1 J/s)\n.",
+              "zh": "一瓦特等于每秒传递一焦耳的能量（1 W = 1 J/s）\n。"
+            }
+          },
+          {
+            "id": "opt-watts-per-second",
+            "label": {
+              "en": "One watt is a base amount of energy that must be delivered at a rate of watts per second.",
+              "ms": "Satu watt ialah jumlah asas tenaga yang mesti dibekalkan pada kadar watt sesaat.",
+              "zh": "一瓦特是基础能量值，必须以瓦每秒的速率来传递。"
+            },
+            "misconception": "watts-per-second-confusion"
+          },
+          {
+            "id": "opt-work-variable-match",
+            "label": {
+              "en": "The unit symbol W represents the exact same physical concept as the italic variable W for work.",
+              "ms": "Simbol unit W mewakili konsep fizikal yang sama tepat dengan pemboleh ubah condong W untuk kerja.",
+              "zh": "单位符号 W 与代表功的斜体变量符号 W 表示完全相同的物理概念。"
+            },
+            "misconception": "symbol-work-watt-confusion"
+          },
+          {
+            "id": "opt-static-energy-amount",
+            "label": {
+              "en": "One watt represents the total fixed energy stored within a system at any given instant.",
+              "ms": "Satu watt mewakili jumlah tenaga tetap yang tersimpan di dalam sistem pada mana-mana ketika.",
+              "zh": "一瓦特代表系统在任意给定时刻所储存的固定总能量。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-dot-product-orientation",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate instantaneous mechanical power to the scalar dot product of force and velocity vectors.",
+      "prompt": {
+        "en": "A pulling force of constant magnitude F is applied to a crate moving along a level floor with an instantaneous velocity v\n. In Configuration 1, the force is directed parallel to the velocity vector\n. In Configuration 2, the same magnitude force is directed at an acute angle above the horizontal velocity vector\n. How does the instantaneous mechanical power delivered to the crate compare between the two configurations\n?",
+        "ms": "Satu daya tarikan dengan magnitud malar F dikenakan pada sebuah peti yang bergerak di sepanjang lantai mendatar dengan halaju seketika v\n. Dalam Konfigurasi 1, daya diarahkan selari dengan vektor halaju\n. Dalam Konfigurasi 2, daya dengan magnitud yang sama diarahkan pada suatu sudut tirus di atas vektor halaju mendatar\n. Bagaimanakah kuasa mekanikal seketika yang dibekalkan kepada peti itu berbanding antara kedua-dua konfigurasi tersebut\n?",
+        "zh": "一个大小恒为 F 的拉力作用在一个沿水平地面运动的板条箱上，板条箱的瞬时速度为 v\n。在配置 1 中，拉力的方向与速度矢量平行\n。在配置 2 中，相同大小的拉力与水平速度矢量成一锐角斜向上方\n。在这两种配置下，传递给板条箱的瞬时机械功率相比如何\n？"
+      },
+      "hints": [
+        {
+          "en": "Instantaneous mechanical power is expressed mathematically as the scalar dot product of the applied force vector and the velocity vector\n.",
+          "ms": "Kuasa mekanikal seketika diungkapkan secara matematik sebagai hasil darab bintik skalar bagi vektor daya yang dikenakan dan vektor halaju\n.",
+          "zh": "瞬时机械功率在数学上表示为所施加的力矢量与速度矢量的标量点积\n。"
+        },
+        {
+          "en": "The scalar product depends on the cosine of the angle between the two vectors, which reaches its maximum value when the vectors point in the exact same direction\n.",
+          "ms": "Hasil darab skalar bergantung pada kosinus sudut antara dua vektor tersebut, yang mencapai nilai maksimum apabila vektor-vektor tersebut menunjuk ke arah yang sama tepat\n.",
+          "zh": "标量积取决于两个矢量夹角的余弦值，当两个矢量指向完全相同的方向时取最大值\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Because instantaneous power is the dot product of force and velocity, aligning the force directly along the direction of motion produces greater power than applying it at an angle\n.",
+        "ms": "Oleh kerana kuasa seketika ialah hasil darab bintik bagi daya dan halaju, menjajarkan daya secara terus sepanjang arah gerakan menghasilkan kuasa yang lebih besar berbanding mengenakannya pada suatu sudut\n.",
+        "zh": "因为瞬时功率是力与速度的点积，所以让力的方向与运动方向完全一致会比斜向施力产生更大的功率\n。"
+      },
+      "answerLogic": {
+        "en": "Instantaneous power equals the magnitude of force times the magnitude of velocity times the cosine of the included angle\n. In Configuration 1 the angle is zero (cosine equals 1), whereas in Configuration 2 the angle is greater than zero (cosine is less than 1), resulting in less power delivered in Configuration 2\n.",
+        "ms": "Kuasa seketika bersamaan dengan magnitud daya didarab dengan magnitud halaju didarab dengan kosinus sudut tercangkum\n. Dalam Konfigurasi 1 sudutnya ialah sifar (kosinus bersamaan 1), manakala dalam Konfigurasi 2 sudutnya lebih besar daripada sifar (kosinus kurang daripada 1), menghasilkan kuasa yang dibekalkan lebih kecil dalam Konfigurasi 2\n.",
+        "zh": "瞬时功率等于力的大小乘以速度的大小再乘以夹角的余弦值\n。在配置 1 中夹角为零（余弦值为 1），而在配置 2 中夹角大于零（余弦值小于 1），因此配置 2 传递的功率较小\n。"
+      },
+      "explanation": {
+        "en": "Only the component of force parallel to the instantaneous velocity does work and transfers mechanical power\n. When the force is tilted away from the velocity vector, this parallel component decreases, decreasing the rate of energy transfer\n.",
+        "ms": "Hanya komponen daya yang selari dengan halaju seketika yang melakukan kerja dan memindahkan kuasa mekanikal\n. Apabila daya dicondongkan menjauhi vektor halaju, komponen selari ini berkurangan, lalu mengurangkan kadar pemindahan tenaga\n.",
+        "zh": "只有平行于瞬时速度的力分量才会做功并传递机械功率\n。当力偏离速度矢量倾斜时，该平行分量减小，从而降低了能量传递的速率\n。"
+      },
+      "misconceptions": [
+        "power-energy-conflation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-dot-product",
+        "prompt": {
+          "en": "Review how the scalar dot product between two vectors accounts for the angle between them and determines the magnitude of parallel alignment.",
+          "ms": "Ulang kaji bagaimana hasil darab bintik skalar antara dua vektor mengambil kira sudut antara keduanya dan menentukan magnitud penjajaran selari.",
+          "zh": "复习两个矢量之间的标量点积如何考虑二者之间的夹角，并确定平行对齐分量的大小。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A conceptual multiple-choice question comparing the instantaneous power delivered by a force parallel to motion versus a force angled above motion. Four choices are given.",
+        "ms": "Soalan aneka pilihan konseptual yang membandingkan kuasa seketika yang dibekalkan oleh daya yang selari dengan gerakan berbanding daya yang bersudut di atas arah gerakan. Empat pilihan disediakan.",
+        "zh": "一道概念性多选题，比较平行于运动方向的力与斜向上方的力所传递的瞬时功率。提供了四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-config-1-greater",
+        "options": [
+          {
+            "id": "opt-config-1-greater",
+            "label": {
+              "en": "Configuration 1 delivers greater instantaneous power because the scalar dot product between force and velocity is maximized when they are parallel\n.",
+              "ms": "Konfigurasi 1 membekalkan kuasa seketika yang lebih besar kerana hasil darab bintik skalar antara daya dan halaju dimaksimumkan apabila kedua-duanya selari\n.",
+              "zh": "配置 1 提供更大的瞬时功率，因为当力和速度平行时，它们之间的标量点积达到最大值\n。"
+            }
+          },
+          {
+            "id": "opt-equal-magnitudes",
+            "label": {
+              "en": "Both configurations deliver equal instantaneous power because power depends solely on the magnitudes of the total force and speed regardless of direction.",
+              "ms": "Kedua-dua konfigurasi membekalkan kuasa seketika yang sama kerana kuasa hanya bergantung pada magnitud jumlah daya dan laju tanpa mengira arah.",
+              "zh": "两种配置提供相同的瞬时功率，因为功率仅取决于总力和速率的大小，而与方向无关。"
+            },
+            "misconception": "power-energy-conflation"
+          },
+          {
+            "id": "opt-config-2-greater",
+            "label": {
+              "en": "Configuration 2 delivers greater instantaneous power because tilting the force allows energy to transfer simultaneously in two spatial dimensions.",
+              "ms": "Konfigurasi 2 membekalkan kuasa seketika yang lebih besar kerana mencondongkan daya membolehkan tenaga dipindahkan secara serentak dalam dua dimensi ruang.",
+              "zh": "配置 2 提供更大的瞬时功率，因为倾斜施力可以使能量同时在两个空间维度上传递。"
+            }
+          },
+          {
+            "id": "opt-config-1-zero",
+            "label": {
+              "en": "Configuration 1 delivers zero power because instantaneous power requires a force perpendicular to the displacement.",
+              "ms": "Konfigurasi 1 membekalkan kuasa sifar kerana kuasa seketika memerlukan daya yang berserenjang dengan sesaran.",
+              "zh": "配置 1 传递的功率为零，因为瞬时功率需要一个垂直于位移的力。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-constant-force-speed-variation",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze the mechanical power required for objects in uniform motion versus accelerating motion.",
+      "prompt": {
+        "en": "A constant horizontal net force acts on a cart starting from rest on a frictionless surface, causing the cart to accelerate continuously in a straight line\n. As the cart gains speed, how does the instantaneous power delivered by this constant force change over time\n?",
+        "ms": "Satu daya paduan mendatar yang malar bertindak ke atas sebuah troli yang bermula dari keadaan rehat di atas permukaan tanpa geseran, menyebabkan troli tersebut memecut secara berterusan dalam garis lurus\n. Apabila laju troli semakin bertambah, bagaimanakah kuasa seketika yang dibekalkan oleh daya malar ini berubah mengikut masa\n?",
+        "zh": "一个恒定的水平合力作用在一辆从光滑水平面上由静止启动的小车上，使小车沿直线持续加速\n。随着小车速率不断增大，该恒力所传递的瞬时功率随时间如何变化\n？"
+      },
+      "hints": [
+        {
+          "en": "Consider the relationship for instantaneous power as the product of force and instantaneous speed along the line of motion\n.",
+          "ms": "Pertimbangkan hubungan untuk kuasa seketika sebagai hasil darab daya dan laju seketika di sepanjang garis gerakan\n.",
+          "zh": "考虑瞬时功率公式，即沿运动方向的力与瞬时速率的乘积\n。"
+        },
+        {
+          "en": "While the applied force remains unchanged, the instantaneous velocity of the accelerating cart increases steadily with time\n.",
+          "ms": "Walaupun daya yang dikenakan kekal tidak berubah, halaju seketika bagi troli yang memecut meningkat secara berterusan dengan masa\n.",
+          "zh": "虽然施加的力保持不变，但加速运动的小车的瞬时速度随时间稳定增加\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Because instantaneous power is proportional to speed for a given force, the power output of a constant force increases as the object accelerates\n.",
+        "ms": "Oleh kerana kuasa seketika adalah berkadar terus dengan laju untuk daya yang diberikan, output kuasa bagi daya malar meningkat apabila objek memecut\n.",
+        "zh": "因为在力恒定时瞬时功率与速率成正比，所以随着物体加速，恒力的输出功率会不断增大\n。"
+      },
+      "answerLogic": {
+        "en": "Instantaneous power is given by the product of force and velocity\n. For an accelerating body under a constant force, speed increases with time, which means the instantaneous power delivered must also increase over time\n.",
+        "ms": "Kuasa seketika diberikan oleh hasil darab daya dan halaju\n. Bagi jasad yang memecut di bawah daya malar, laju meningkat mengikut masa, yang bermaksud kuasa seketika yang dibekalkan juga mesti meningkat mengikut masa\n.",
+        "zh": "瞬时功率由力与速度的乘积给出\n。对于在恒力作用下加速的物体，其速率随时间增加，这意味着传递的瞬时功率也必须随时间增大\n。"
+      },
+      "explanation": {
+        "en": "A constant force does not deliver constant power to an accelerating object\n. As the object moves faster, the force acts through a greater displacement during each successive second, resulting in a higher rate of work and increasing instantaneous power\n.",
+        "ms": "Daya yang malar tidak membekalkan kuasa yang malar kepada objek yang memecut\n. Apabila objek bergerak lebih pantas, daya bertindak melalui sesaran yang lebih besar dalam setiap saat yang berikutnya, menghasilkan kadar kerja yang lebih tinggi dan kuasa seketika yang semakin meningkat\n.",
+        "zh": "恒力作用于加速物体时并不输出恒定功率\n。随着物体运动得越来越快，力在每随后的一秒内所作用的位移都更大，从而产生更高的做功速率和不断增大的瞬时功率\n。"
+      },
+      "misconceptions": [
+        "constant-force-constant-power"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law",
+        "prompt": {
+          "en": "Review Newton's second law to recall how a constant net force produces constant acceleration, causing velocity to increase continuously.",
+          "ms": "Ulang kaji hukum gerakan Newton kedua untuk mengingat kembali bagaimana daya paduan yang malar menghasilkan pecutan malar, menyebabkan halaju meningkat secara berterusan.",
+          "zh": "复习牛顿第二定律，回想恒定合力如何产生恒定加速度，从而导致速度持续增加。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-choice conceptual question asking how the instantaneous power of a constant force changes as an object accelerates from rest. Four options are provided.",
+        "ms": "Soalan aneka pilihan konseptual yang bertanyakan bagaimana kuasa seketika bagi daya malar berubah apabila suatu objek memecut dari keadaan rehat. Empat pilihan disediakan.",
+        "zh": "一道概念性多选题，询问当物体由静止加速时，恒力所提供的瞬时功率如何变化。提供了四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-power-increases",
+        "options": [
+          {
+            "id": "opt-power-increases",
+            "label": {
+              "en": "The instantaneous power increases continuously because power is proportional to instantaneous speed\n.",
+              "ms": "Kuasa seketika meningkat secara berterusan kerana kuasa adalah berkadar terus dengan laju seketika\n.",
+              "zh": "瞬时功率持续增大，因为功率与瞬时速率成正比\n。"
+            }
+          },
+          {
+            "id": "opt-power-constant",
+            "label": {
+              "en": "The instantaneous power remains constant at all times because the applied force is unchanging.",
+              "ms": "Kuasa seketika kekal malar pada setiap masa kerana daya yang dikenakan tidak berubah.",
+              "zh": "瞬时功率始终保持不变，因为施加的力是恒定不变的。"
+            },
+            "misconception": "constant-force-constant-power"
+          },
+          {
+            "id": "opt-power-decreases",
+            "label": {
+              "en": "The instantaneous power decreases over time because inertia makes transferring energy progressively harder as speed increases.",
+              "ms": "Kuasa seketika berkurangan mengikut masa kerana inersia menjadikan pemindahan tenaga semakin sukar apabila laju meningkat.",
+              "zh": "瞬时功率随时间减小，因为惯性使得随着速率增大传递能量变得越来越困难。"
+            }
+          },
+          {
+            "id": "opt-power-zero-until-end",
+            "label": {
+              "en": "The instantaneous power stays at zero during the acceleration and only appears once the cart reaches a steady final velocity.",
+              "ms": "Kuasa seketika kekal pada nilai sifar semasa pecutan dan hanya wujud setelah troli mencapai halaju akhir yang mantap.",
+              "zh": "在加速期间瞬时功率保持为零，只有当小车达到稳定的最终速度时才会出现功率。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-average-vs-instantaneous-power",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define instantaneous and average power as the time rate of energy transfer or work performed.",
+      "prompt": {
+        "en": "A vehicle accelerates with constant acceleration from rest to a high speed under a constant forward driving force\n. How does the instantaneous power delivered by the engine at the final instant compare to the average power delivered over the entire acceleration interval\n?",
+        "ms": "Sebuah kenderaan memecut dengan pecutan malar dari keadaan rehat ke suatu laju yang tinggi di bawah daya pemanduan ke hadapan yang malar\n. Bagaimanakah kuasa seketika yang dibekalkan oleh enjin pada ketika terakhir berbanding dengan kuasa purata yang dibekalkan sepanjang seluruh selang masa pecutan itu\n?",
+        "zh": "一辆汽车在恒定前向驱动力作用下以恒定加速度由静止加速到高速\n。在加速结束的最终时刻发动机传递的瞬时功率与在整个加速时间间隔内传递的平均功率相比如何\n？"
+      },
+      "hints": [
+        {
+          "en": "Instantaneous power depends on the speed at that specific moment, while average power depends on total work divided by the full time duration\n.",
+          "ms": "Kuasa seketika bergantung pada laju pada detik khusus itu, manakala kuasa purata bergantung pada jumlah kerja dibahagikan dengan keseluruhan tempoh masa\n.",
+          "zh": "瞬时功率取决于特定时刻的速率，而平均功率取决于总功除以整个时间段\n。"
+        },
+        {
+          "en": "During uniform acceleration from rest, the final speed is greater than the average speed across the whole interval\n.",
+          "ms": "Semasa pecutan seragam dari keadaan rehat, laju akhir adalah lebih besar daripada laju purata sepanjang seluruh selang masa tersebut\n.",
+          "zh": "在由静止开始的匀加速运动中，最终速率大于整个时间段内的平均速率\n。"
+        }
+      ],
+      "feedback": {
+        "en": "The instantaneous power at the final instant is greater than the average power because the vehicle reaches its highest speed at the end of the interval\n.",
+        "ms": "Kuasa seketika pada ketika terakhir adalah lebih besar daripada kuasa purata kerana kenderaan mencapai laju tertingginya pada penghujung selang masa tersebut\n.",
+        "zh": "最终时刻的瞬时功率大于平均功率，因为汽车在时间间隔的末尾达到了最高速率\n。"
+      },
+      "answerLogic": {
+        "en": "Average power reflects the average rate of work over the entire interval (corresponding to average speed), whereas the final instantaneous power reflects the rate of work at the peak speed, making final instantaneous power greater than average power\n.",
+        "ms": "Kuasa purata mencerminkan kadar kerja purata sepanjang seluruh selang masa (sepadan dengan laju purata), manakala kuasa seketika akhir mencerminkan kadar kerja pada laju puncak, menjadikan kuasa seketika akhir lebih besar daripada kuasa purata\n.",
+        "zh": "平均功率反映了整个时间间隔内的平均做功速率（对应平均速率），而最终瞬时功率反映了峰值速率时的做功速率，因此最终瞬时功率大于平均功率\n。"
+      },
+      "explanation": {
+        "en": "Instantaneous power represents the rate of energy transfer dE/dt at an exact instant\n. Because speed increases continuously from zero to maximum, the instantaneous rate of energy transfer is highest at the end of the run and exceeds the time-averaged rate of energy transfer\n.",
+        "ms": "Kuasa seketika mewakili kadar pemindahan tenaga dE/dt pada satu ketika yang tepat\n. Oleh kerana laju meningkat secara berterusan dari sifar ke maksimum, kadar pemindahan tenaga seketika adalah paling tinggi pada akhir larian dan melebihi kadar pemindahan tenaga purata masa\n.",
+        "zh": "瞬时功率代表在某一精确时刻的能量传递速率 dE/dt\n。因为速率从零持续增加到最大值，所以在运动末尾的瞬时能量传递速率最高，并超过了时间平均的能量传递速率\n。"
+      },
+      "misconceptions": [
+        "power-energy-conflation",
+        "constant-force-constant-power"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the definition of average power as total work divided by total time interval, contrasting it with instantaneous rates.",
+          "ms": "Ulang kaji takrifan kuasa purata sebagai jumlah kerja dibahagikan dengan jumlah selang masa, membezakannya daripada kadar seketika.",
+          "zh": "复习平均功率的定义，即总功除以总时间间隔，并将其与瞬时速率进行对比。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A conceptual multiple-choice question comparing the instantaneous power at the end of an acceleration interval to the average power across the interval. Four choices are listed.",
+        "ms": "Soalan aneka pilihan konseptual yang membandingkan kuasa seketika pada akhir selang masa pecutan dengan kuasa purata sepanjang selang tersebut. Empat pilihan disenaraikan.",
+        "zh": "一道概念性多选题，比较加速区间末尾的瞬时功率与整个区间内的平均功率。列出了四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-instant-greater-than-avg",
+        "options": [
+          {
+            "id": "opt-instant-greater-than-avg",
+            "label": {
+              "en": "The final instantaneous power is greater than the average power because the instantaneous speed at the end exceeds the average speed across the interval\n.",
+              "ms": "Kuasa seketika akhir adalah lebih besar daripada kuasa purata kerana laju seketika pada penghujungnya melebihi laju purata sepanjang selang masa tersebut\n.",
+              "zh": "最终瞬时功率大于平均功率，因为末尾的瞬时速率超过了整个时间段内的平均速率\n。"
+            }
+          },
+          {
+            "id": "opt-equal-due-to-constant-force",
+            "label": {
+              "en": "The final instantaneous power equals the average power because a constant driving force delivers energy at a steady, unchanging rate throughout the motion.",
+              "ms": "Kuasa seketika akhir bersamaan dengan kuasa purata kerana daya pemanduan yang malar membekalkan tenaga pada kadar yang mantap dan tidak berubah sepanjang gerakan.",
+              "zh": "最终瞬时功率等于平均功率，因为恒定的驱动力在整个运动过程中以稳定不变的速率传递能量。"
+            },
+            "misconception": "constant-force-constant-power"
+          },
+          {
+            "id": "opt-instant-less-than-avg",
+            "label": {
+              "en": "The final instantaneous power is less than the average power because average power accounts for all accumulated work while instantaneous power does not.",
+              "ms": "Kuasa seketika akhir adalah lebih kecil daripada kuasa purata kerana kuasa purata mengambil kira semua kerja terkumpul manakala kuasa seketika tidak.",
+              "zh": "最终瞬时功率小于平均功率，因为平均功率考虑了所有累积的功，而瞬时功率则没有。"
+            },
+            "misconception": "power-energy-conflation"
+          },
+          {
+            "id": "opt-zero-average-power",
+            "label": {
+              "en": "The average power is always zero for accelerating systems, making instantaneous power uniquely positive.",
+              "ms": "Kuasa purata sentiasa sifar bagi sistem yang memecut, menjadikan kuasa seketika sahaja yang bernilai positif.",
+              "zh": "对于加速系统，平均功率始终为零，使得唯有瞬时功率为正值。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-accelerating-vs-steady-climb",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze the mechanical power required for objects in uniform motion versus accelerating motion.",
+      "prompt": {
+        "en": "An elevator cab moves upward past a specific floor at an instantaneous upward speed v\n. In Scenario 1, the cab ascends at constant speed (zero acceleration)\n. In Scenario 2, the motor is accelerating the cab upward with a positive acceleration at the exact instant it passes the floor at the same speed v\n. Retarding friction forces are identical in both cases\n. How does the instantaneous power delivered by the hoisting cable in Scenario 2 compare to Scenario 1 at that moment\n?",
+        "ms": "Sebuah kabin lif bergerak ke atas melepasi suatu tingkat tertentu pada laju seketika ke atas v\n. Dalam Senario 1, kabin naik pada laju malar (pecutan sifar)\n. Dalam Senario 2, motor sedang memecutkan kabin ke atas dengan pecutan positif pada ketika tepat ia melepasi tingkat tersebut pada laju v yang sama\n. Daya geseran yang menentang gerakan adalah serupa dalam kedua-dua keadaan\n. Bagaimanakah kuasa seketika yang dibekalkan oleh kabel penarik dalam Senario 2 berbanding dengan Senario 1 pada ketika itu\n?",
+        "zh": "一部电梯轿厢以向上的瞬时速率 v 向上经过某特定楼层\n。在情景 1 中，轿厢以恒定速率上升（加速度为零）\n。在情景 2 中，当轿厢以相同的速率 v 经过该楼层的瞬间，电动机正使其以正加速度向上加速\n。两种情况下阻碍运动的摩擦力完全相同\n。在那一瞬间，情景 2 中提升缆绳所提供的瞬时功率与情景 1 相比如何\n？"
+      },
+      "hints": [
+        {
+          "en": "Apply Newton's second law along the vertical direction to determine the cable tension required in both scenarios\n.",
+          "ms": "Gunakan hukum gerakan Newton kedua sepanjang arah menegak untuk menentukan tegangan kabel yang diperlukan dalam kedua-dua senario\n.",
+          "zh": "沿竖直方向应用牛顿第二定律，以确定两种情景下所需的缆绳拉力\n。"
+        },
+        {
+          "en": "Accelerating upward requires a larger upward force to both overcome gravity and friction and provide net upward acceleration, while the instantaneous speed is identical\n.",
+          "ms": "Memecut ke atas memerlukan daya ke atas yang lebih besar untuk mengatasi graviti dan geseran serta menyediakan pecutan paduan ke atas, manakala laju seketika adalah serupa\n.",
+          "zh": "向上加速需要更大的向上拉力，既要克服重力和摩擦力，又要提供向上的净加速度，而此时的瞬时速率是相同的\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Because upward acceleration requires greater cable tension and instantaneous power equals force multiplied by speed, Scenario 2 requires greater instantaneous power\n.",
+        "ms": "Oleh kerana pecutan ke atas memerlukan tegangan kabel yang lebih besar dan kuasa seketika bersamaan dengan daya didarab dengan laju, Senario 2 memerlukan kuasa seketika yang lebih besar\n.",
+        "zh": "因为向上加速需要更大的缆绳拉力，且瞬时功率等于力乘以速率，所以情景 2 需要更大的瞬时功率\n。"
+      },
+      "answerLogic": {
+        "en": "For constant speed, cable tension equals gravity plus friction\n. For upward acceleration, cable tension must additionally supply the mass times acceleration term, increasing the upward force\n. At the same speed v, the product of force and speed is greater in Scenario 2\n.",
+        "ms": "Untuk laju malar, tegangan kabel bersamaan dengan graviti ditambah geseran\n. Untuk pecutan ke atas, tegangan kabel mesti membekalkan tambahan sebutan jisim didarab dengan pecutan, yang meningkatkan daya ke atas\n. Pada laju v yang sama, hasil darab daya dan laju adalah lebih besar dalam Senario 2\n.",
+        "zh": "在匀速运动时，缆绳拉力等于重力加上摩擦力\n。在向上加速时，缆绳拉力还必须额外提供质量乘以加速度的项，从而增大了向上的拉力\n。在相同的速率 v 下，情景 2 中的力与速率的乘积更大\n。"
+      },
+      "explanation": {
+        "en": "Instantaneous power depends on both the applied force and the instantaneous velocity (P = F · v)\n. Even at identical speeds, an accelerating system demands a greater force from the motor according to Newton's second law, resulting in higher instantaneous power delivery\n.",
+        "ms": "Kuasa seketika bergantung pada kedua-dua daya yang dikenakan dan halaju seketika (P = F · v)\n. Walaupun pada laju yang serupa, sistem yang memecut memerlukan daya yang lebih besar daripada motor mengikut hukum gerakan Newton kedua, menghasilkan pembekalan kuasa seketika yang lebih tinggi\n.",
+        "zh": "瞬时功率取决于施加的力和瞬时速度（P = F · v）\n。即使在相同速率下，根据牛顿第二定律，加速系统也需要电动机提供更大的力，从而导致更高的瞬时功率输出\n。"
+      },
+      "misconceptions": [
+        "constant-force-constant-power"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law",
+        "prompt": {
+          "en": "Review how to sum vertical forces for a particle in equilibrium (zero acceleration) versus a particle under a net upward force.",
+          "ms": "Ulang kaji cara menjumlahkan daya menegak bagi zarah dalam keseimbangan (pecutan sifar) berbanding zarah di bawah daya paduan ke atas.",
+          "zh": "复习如何对处于平衡状态（零加速度）的质点与受向上净外力作用的质点进行竖直方向的受力求和。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A conceptual multiple-choice question comparing the instantaneous power required to hoist an elevator cab at constant speed versus accelerating upward at the same speed. Four options are provided.",
+        "ms": "Soalan aneka pilihan konseptual yang membandingkan kuasa seketika yang diperlukan untuk mengangkat kabin lif pada laju malar berbanding memecut ke atas pada laju yang sama. Empat pilihan disediakan.",
+        "zh": "一道概念性多选题，比较以恒定速率提升电梯轿厢与在相同速率下向上加速提升轿厢所需的瞬时功率。提供了四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-scenario-2-greater",
+        "options": [
+          {
+            "id": "opt-scenario-2-greater",
+            "label": {
+              "en": "Scenario 2 requires greater instantaneous power because the motor must exert a larger upward force to accelerate the mass while at speed v\n.",
+              "ms": "Senario 2 memerlukan kuasa seketika yang lebih besar kerana motor mesti mengenakan daya ke atas yang lebih besar untuk memecutkan jisim semasa berada pada laju v\n.",
+              "zh": "情景 2 需要更大的瞬时功率，因为在速率为 v 时，电动机必须施加更大的向上的力来使质量加速\n。"
+            }
+          },
+          {
+            "id": "opt-equal-at-same-speed",
+            "label": {
+              "en": "Both scenarios require identical instantaneous power because instantaneous power depends exclusively on speed and is independent of acceleration.",
+              "ms": "Kedua-dua senario memerlukan kuasa seketika yang serupa kerana kuasa seketika bergantung secara eksklusif pada laju dan tidak bergantung pada pecutan.",
+              "zh": "两种情景需要相同的瞬时功率，因为瞬时功率仅取决于速率，与加速度无关。"
+            },
+            "misconception": "constant-force-constant-power"
+          },
+          {
+            "id": "opt-scenario-1-greater",
+            "label": {
+              "en": "Scenario 1 requires greater instantaneous power because steady motion requires continuous energy input whereas acceleration stores energy in inertia.",
+              "ms": "Senario 1 memerlukan kuasa seketika yang lebih besar kerana gerakan mantap memerlukan input tenaga berterusan manakala pecutan menyimpan tenaga dalam inersia.",
+              "zh": "情景 1 需要更大的瞬时功率，因为平稳运动需要持续的能量输入，而加速则将能量储存在惯性中。"
+            }
+          },
+          {
+            "id": "opt-zero-in-scenario-1",
+            "label": {
+              "en": "Scenario 1 requires zero instantaneous power because no net force acts on an object moving at constant velocity.",
+              "ms": "Senario 1 memerlukan kuasa seketika sifar kerana tiada daya paduan yang bertindak ke atas objek yang bergerak dengan halaju malar.",
+              "zh": "情景 1 需要的瞬时功率为零，因为没有合外力作用在匀速运动的物体上。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-variable-angle-power-trends",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate instantaneous mechanical power to the scalar dot product of force and velocity vectors.",
+      "prompt": {
+        "en": "A sled moves horizontally across level ice with a constant velocity vector v\n. An external rope exerts a constant-magnitude tension force F on the sled\n. The direction of this rope force is rotated continuously from pointing directly forward along v, to pointing vertically upward perpendicular to v, and finally to pointing directly backward opposite to v\n. How does the instantaneous power delivered by the rope force vary throughout this rotation\n?",
+        "ms": "Sebuah kereta luncur bergerak secara mendatar merentasi ais rata dengan vektor halaju malar v\n. Seutas tali luaran mengenakan daya tegangan bermagnitud malar F ke atas kereta luncur itu\n. Arah daya tali ini diputarkan secara berterusan daripada menghadap terus ke hadapan sepanjang v, kepada menghadap menegak ke atas berserenjang dengan v, dan akhirnya menghadap terus ke belakang bertentangan dengan v\n. Bagaimanakah kuasa seketika yang dibekalkan oleh daya tali berubah sepanjang putaran ini\n?",
+        "zh": "一架雪橇以恒定的速度矢量 v 沿水平冰面运动\n。一根外部绳索对雪橇施加一个大小恒定的拉力 F\n。该绳索拉力的方向连续旋转：从直接向前沿着 v 方向，旋转到竖直向上垂直于 v 方向，最后旋转到直接向后与 v 方向相反\n。在整个旋转过程中，绳索拉力所传递的瞬时功率如何变化\n？"
+      },
+      "hints": [
+        {
+          "en": "Express instantaneous power as the scalar product of force and velocity, considering the cosine of the angle between them\n.",
+          "ms": "Ungkapkan kuasa seketika sebagai hasil darab skalar bagi daya dan halaju, dengan mempertimbangkan kosinus sudut antara kedua-duanya\n.",
+          "zh": "将瞬时功率表示为力和速度的标量积，并考虑二者夹角的余弦值\n。"
+        },
+        {
+          "en": "Consider what happens to the scalar product when the angle is 0 degrees, 90 degrees, and 180 degrees\n.",
+          "ms": "Pertimbangkan apa yang berlaku kepada hasil darab skalar apabila sudut ialah 0 darjah, 90 darjah, dan 180 darjah\n.",
+          "zh": "考虑当夹角分别为 0 度、90 度和 180 度时标量积的变化情况\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Instantaneous power smoothly decreases from a positive maximum, reaches zero when perpendicular, and becomes negative when opposing velocity\n.",
+        "ms": "Kuasa seketika berkurangan secara lancar daripada maksimum positif, mencapai sifar apabila berserenjang, dan menjadi negatif apabila menentang halaju\n.",
+        "zh": "瞬时功率从正最大值平滑减小，在垂直时达到零，并在与速度反向时变为负值\n。"
+      },
+      "answerLogic": {
+        "en": "The scalar dot product P = F · v = F v cos(theta) is maximum and positive at theta = 0 degrees, equals zero at theta = 90 degrees, and reaches a negative maximum at theta = 180 degrees\n.",
+        "ms": "Hasil darab bintik skalar P = F · v = F v kos(teta) adalah maksimum dan positif pada teta = 0 darjah, bersamaan sifar pada teta = 90 darjah, dan mencapai maksimum negatif pada teta = 180 darjah\n.",
+        "zh": "标量点积 P = F · v = F v cos(theta) 在 theta = 0 度时为正最大值，在 theta = 90 度时等于零，在 theta = 180 度时达到负最大值\n。"
+      },
+      "explanation": {
+        "en": "Power is a scalar defined by the dot product of force and velocity\n. When the force assists motion, power is positive (transferring energy to the particle); when perpendicular, no work is done and power is zero; when opposing motion, power is negative (removing energy)\n.",
+        "ms": "Kuasa ialah skalar yang ditakrifkan oleh hasil darab bintik bagi daya dan halaju\n. Apabila daya membantu gerakan, kuasa adalah positif (memindahkan tenaga kepada zarah); apabila berserenjang, tiada kerja dilakukan dan kuasa adalah sifar; apabila menentang gerakan, kuasa adalah negatif (mengeluarkan tenaga)\n.",
+        "zh": "功率是由力和速度的点积定义的标量\n。当力促进运动时，功率为正（向质点传递能量）；当力垂直于运动时，不做功且功率为零；当力阻碍运动时，功率为负（从质点移除能量）\n。"
+      },
+      "misconceptions": [
+        "power-energy-conflation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-dot-product",
+        "prompt": {
+          "en": "Review how the sign and magnitude of the scalar product change as the angle between two vectors ranges from 0 to 180 degrees.",
+          "ms": "Ulang kaji bagaimana tanda dan magnitud hasil darab skalar berubah apabila sudut antara dua vektor berada dalam julat 0 hingga 180 darjah.",
+          "zh": "复习当两个矢量的夹角在 0 到 180 度之间变化时，标量积的符号和大小如何改变。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A conceptual multiple-choice question asking how instantaneous power varies as a constant force rotates from forward to perpendicular to backward relative to motion. Four options are provided.",
+        "ms": "Soalan aneka pilihan konseptual yang bertanyakan bagaimana kuasa seketika berubah apabila daya malar diputarkan daripada ke hadapan kepada berserenjang kepada ke belakang relatif kepada arah gerakan. Empat pilihan disediakan.",
+        "zh": "一道概念性多选题，询问当恒力相对于运动方向从向前旋转到垂直再到向后时，瞬时功率如何变化。提供了四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-positive-to-zero-to-negative",
+        "options": [
+          {
+            "id": "opt-positive-to-zero-to-negative",
+            "label": {
+              "en": "Power begins at a positive maximum, decreases smoothly to zero when perpendicular, and becomes negative as the force points backward\n.",
+              "ms": "Kuasa bermula pada nilai maksimum positif, berkurangan secara lancar kepada sifar apabila berserenjang, dan menjadi negatif apabila daya menghadap ke belakang\n.",
+              "zh": "功率从正最大值开始，在垂直时平滑减小到零，当力向后时变为负值\n。"
+            }
+          },
+          {
+            "id": "opt-constant-positive",
+            "label": {
+              "en": "Power remains constant and positive at all angles because the magnitudes of force and velocity are constant.",
+              "ms": "Kuasa kekal malar dan positif pada semua sudut kerana magnitud daya dan halaju adalah malar.",
+              "zh": "在所有角度下功率均保持恒定且为正，因为力和速度的大小均恒定不变。"
+            },
+            "misconception": "power-energy-conflation"
+          },
+          {
+            "id": "opt-always-zero",
+            "label": {
+              "en": "Power is zero at all points along the rotation because a rotating force cannot transfer energy to an object with constant velocity.",
+              "ms": "Kuasa adalah sifar pada semua titik sepanjang putaran kerana daya yang berputar tidak boleh memindahkan tenaga kepada objek dengan halaju malar.",
+              "zh": "在旋转过程中的所有点功率均为零，因为旋转的力不能向匀速运动的物体传递能量。"
+            }
+          },
+          {
+            "id": "opt-positive-throughout",
+            "label": {
+              "en": "Power remains strictly positive at all times because power is defined only as an absolute rate of energy transfer.",
+              "ms": "Kuasa kekal bernilai positif secara mutlak pada setiap masa kerana kuasa ditakrifkan hanya sebagai kadar mutlak pemindahan tenaga.",
+              "zh": "功率在所有时刻均严格为正，因为功率仅被定义为能量传递的绝对速率。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-energy-rate-budget-comparison",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish power units like watts and horsepower from energy units like kilowatt-hours and joules.",
+      "prompt": {
+        "en": "A factory operates two machines: Machine Alpha has a very high power rating (many kilowatts) but operates for only a few seconds each day\n. Machine Beta has a very low power rating (a fraction of a kilowatt) but runs continuously 24 hours every day\n. How do the instantaneous rate of energy transfer and the total daily energy transferred (in kilowatt-hours) compare between the two machines\n?",
+        "ms": "Sebuah kilang mengendalikan dua mesin: Mesin Alpha mempunyai penarafan kuasa yang sangat tinggi (banyak kilowatt) tetapi beroperasi selama beberapa saat sahaja setiap hari\n. Mesin Beta mempunyai penarafan kuasa yang sangat rendah (sebahagian kecil daripada satu kilowatt) tetapi beroperasi secara berterusan selama 24 jam setiap hari\n. Bagaimanakah kadar seketika pemindahan tenaga dan jumlah tenaga harian yang dipindahkan (dalam kilowatt-jam) berbanding antara kedua-dua mesin tersebut\n?",
+        "zh": "一家工厂运行两台机器：机器 Alpha 的额定功率非常高（很多千瓦），但每天只运行几秒钟\n。机器 Beta 的额定功率非常低（只有零点几千瓦），但每天 24 小时连续运行\n。这两台机器的瞬时能量传递速率与每日传递的总能量（以千瓦·时计）相比如何\n？"
+      },
+      "hints": [
+        {
+          "en": "Power measures the rate of energy transfer per unit time, while kilowatt-hours measure the total energy transferred over a duration\n.",
+          "ms": "Kuasa mengukur kadar pemindahan tenaga per unit masa, manakala kilowatt-jam mengukur jumlah tenaga yang dipindahkan sepanjang suatu tempoh\n.",
+          "zh": "功率衡量单位时间内的能量传递速率，而千瓦·时衡量在一段时间内传递的总能量\n。"
+        },
+        {
+          "en": "Total energy equals power multiplied by operating time; a small power over a very long duration can exceed a large power over a brief duration\n.",
+          "ms": "Jumlah tenaga bersamaan dengan kuasa didarab dengan masa operasi; kuasa kecil dalam tempoh yang sangat lama boleh melebihi kuasa besar dalam tempoh yang singkat\n.",
+          "zh": "总能量等于功率乘以运行时间；在极长时间内消耗的小功率所累积的总能量完全可以超过短暂时间内消耗的大功率\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Machine Alpha has a higher rate of energy transfer, but Machine Beta can consume more total energy (kWh) because of its prolonged operating duration\n.",
+        "ms": "Mesin Alpha mempunyai kadar pemindahan tenaga yang lebih tinggi, tetapi Mesin Beta boleh menggunakan lebih banyak jumlah tenaga (kWh) kerana tempoh operasinya yang berpanjangan\n.",
+        "zh": "机器 Alpha 具有更高的能量传递速率，但机器 Beta 由于运行时间很长，可以消耗更多的总能量（kWh）\n。"
+      },
+      "answerLogic": {
+        "en": "Instantaneous power reflects the immediate rate of energy delivery (higher for Alpha)\n. Energy in kilowatt-hours is the time integral/product of power and duration, which allows continuous low-power operation by Beta to accumulate a larger total energy\n.",
+        "ms": "Kuasa seketika mencerminkan kadar pembekalan tenaga serta-merta (lebih tinggi untuk Alpha)\n. Tenaga dalam kilowatt-jam ialah kamiran masa/hasil darab kuasa dan tempoh, yang membolehkan operasi kuasa rendah berterusan oleh Beta mengumpul jumlah tenaga yang lebih besar\n.",
+        "zh": "瞬时功率反映即时的能量输送速率（Alpha 更高）\n。以千瓦·时计量的能量是功率与持续时间的积分/乘积，这使得 Beta 持续的低功率运行能够累积更大的总能量\n。"
+      },
+      "explanation": {
+        "en": "Power (watts/kilowatts) is a rate, whereas kilowatt-hour is a unit of total energy transferred\n. A high power does not imply large total energy consumption if the operating duration is extremely short\n.",
+        "ms": "Kuasa (watt/kilowatt) ialah suatu kadar, manakala kilowatt-jam ialah unit jumlah tenaga yang dipindahkan\n. Kuasa yang tinggi tidak membayangkan penggunaan jumlah tenaga yang besar jika tempoh operasi adalah sangat singkat\n.",
+        "zh": "功率（瓦特/千瓦）是一个速率，而千瓦·时是传递的总能量的单位\n。如果运行时间极短，高功率并不意味着巨大的总能耗\n。"
+      },
+      "misconceptions": [
+        "power-energy-conflation",
+        "kwh-is-power-unit"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the distinction between the rate of doing work (power) and the cumulative energy transferred over a finite time interval.",
+          "ms": "Ulang kaji perbezaan antara kadar melakukan kerja (kuasa) dan tenaga terkumpul yang dipindahkan sepanjang selang masa terhingga.",
+          "zh": "复习做功速率（功率）与在有限时间间隔内传递的累积能量之间的区别。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A conceptual multiple-choice question comparing the instantaneous power and total kilowatt-hour energy usage of a high-power short-duration machine versus a low-power continuous machine. Four options are provided.",
+        "ms": "Soalan aneka pilihan konseptual yang membandingkan kuasa seketika dan jumlah penggunaan tenaga kilowatt-jam bagi mesin berkuasa tinggi dalam tempoh singkat berbanding mesin berkuasa rendah yang berterusan. Empat pilihan disediakan.",
+        "zh": "一道概念性多选题，比较高功率短时间运行的机器与低功率持续运行的机器的瞬时功率及总千瓦·时能耗。提供了四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-alpha-higher-rate-beta-higher-energy",
+        "options": [
+          {
+            "id": "opt-alpha-higher-rate-beta-higher-energy",
+            "label": {
+              "en": "Machine Alpha transfers energy at a higher rate, but Machine Beta can transfer a larger total energy in kilowatt-hours due to its prolonged duration\n.",
+              "ms": "Mesin Alpha memindahkan tenaga pada kadar yang lebih tinggi, tetapi Mesin Beta boleh memindahkan jumlah tenaga yang lebih besar dalam kilowatt-jam disebabkan tempohnya yang berpanjangan\n.",
+              "zh": "机器 Alpha 以更高的速率传递能量，但机器 Beta 由于运行时间较长，可以传递更多以千瓦·时计量的总能量\n。"
+            }
+          },
+          {
+            "id": "opt-alpha-greater-in-both",
+            "label": {
+              "en": "Machine Alpha transfers both a higher rate of energy and a greater total energy in kilowatt-hours because power rating alone determines total energy.",
+              "ms": "Mesin Alpha memindahkan kedua-dua kadar tenaga yang lebih tinggi dan jumlah tenaga yang lebih besar dalam kilowatt-jam kerana penarafan kuasa sahaja menentukan jumlah tenaga.",
+              "zh": "机器 Alpha 的能量传递速率和以千瓦·时计量的总能量均更大，因为仅额定功率就决定了总能量。"
+            },
+            "misconception": "power-energy-conflation"
+          },
+          {
+            "id": "opt-kwh-measures-instant-power",
+            "label": {
+              "en": "Machine Alpha must use more kilowatt-hours because the kilowatt-hour is a direct measure of peak instantaneous power rather than cumulative energy.",
+              "ms": "Mesin Alpha mesti menggunakan lebih banyak kilowatt-jam kerana kilowatt-jam ialah ukuran langsung bagi kuasa seketika puncak dan bukannya tenaga kumulatif.",
+              "zh": "机器 Alpha 必然消耗更多的千瓦·时，因为千瓦·时是峰值瞬时功率的直接量度，而不是累积能量的量度。"
+            },
+            "misconception": "kwh-is-power-unit"
+          },
+          {
+            "id": "opt-both-identical",
+            "label": {
+              "en": "Both machines transfer energy at the same rate and use identical kilowatt-hours because all machines draw standardized energy quantities.",
+              "ms": "Kedua-dua mesin memindahkan tenaga pada kadar yang sama dan menggunakan kilowatt-jam yang serupa kerana semua mesin menggunakan kuantiti tenaga yang diseragamkan.",
+              "zh": "两台机器以相同的速率传递能量并使用相同的千瓦·时，因为所有机器消耗的能量数量都是标准化的。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "interactive-classify-units-quantity",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish power units like watts and horsepower from energy units like kilowatt-hours and joules.",
+      "prompt": {
+        "en": "Classify each unit or symbol based on whether it represents a quantity of Energy/Work or a rate of Power\n.",
+        "ms": "Kelaskan setiap unit atau simbol berdasarkan sama ada ia mewakili kuantiti Tenaga/Kerja atau kadar Kuasa\n.",
+        "zh": "根据每个单位或符号代表的是能量/功的量还是功率的速率来进行分类\n。"
+      },
+      "hints": [
+        {
+          "en": "Power is defined as energy transferred per unit time (such as joules per second), while energy represents the total capacity to do work\n.",
+          "ms": "Kuasa ditakrifkan sebagai tenaga yang dipindahkan per unit masa (seperti joule sesaat), manakala tenaga mewakili jumlah keupayaan untuk melakukan kerja\n.",
+          "zh": "功率定义为单位时间内传递的能量（如焦耳每秒），而能量表示做功的总容量\n。"
+        },
+        {
+          "en": "Multiplying a power unit by a time unit (such as kilowatt times hour) yields an energy unit\n.",
+          "ms": "Mendarabkan unit kuasa dengan unit masa (seperti kilowatt didarab jam) menghasilkan unit tenaga\n.",
+          "zh": "将功率单位乘以时间单位（例如千瓦乘以小时）会得到能量单位\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Units like watts and horsepower measure power (rate of energy transfer), whereas joules, kilowatt-hours, and algebraic work variables measure energy\n.",
+        "ms": "Unit seperti watt dan kuasa kuda mengukur kuasa (kadar pemindahan tenaga), manakala joule, kilowatt-jam, dan pemboleh ubah algebra kerja mengukur tenaga\n.",
+        "zh": "瓦特和马力等单位测量功率（能量传递速率），而焦耳、千瓦·时以及代数功变量则测量能量\n。"
+      },
+      "answerLogic": {
+        "en": "The watt (J/s) and horsepower (746 W) measure time rates of energy transfer (Power)\n. The joule, kilowatt-hour (power times time), and algebraic variable W for work represent Energy quantities\n.",
+        "ms": "Watt (J/s) dan kuasa kuda (746 W) mengukur kadar masa pemindahan tenaga (Kuasa)\n. Joule, kilowatt-jam (kuasa didarab masa), dan pemboleh ubah algebra W untuk kerja mewakili kuantiti Tenaga\n.",
+        "zh": "瓦特（J/s）和马力（746 W）测量能量传递的时间快慢（功率）\n。焦耳、千瓦·时（功率乘以时间）以及代表功的代数变量 W 则代表能量物理量\n。"
+      },
+      "explanation": {
+        "en": "A kilowatt-hour is a commercial energy unit equal to 3.60 million joules, not a unit of power\n. The italic symbol W represents the variable for work (measured in joules), which must not be confused with the unit watt (W)\n.",
+        "ms": "Kilowatt-jam ialah unit tenaga komersial bersamaan dengan 3.60 juta joule, bukannya unit kuasa\n. Simbol condong W mewakili pemboleh ubah untuk kerja (diukur dalam joule), yang tidak boleh dikelirukan dengan unit watt (W)\n.",
+        "zh": "千瓦·时是商业能量单位，等于 360 万焦耳，不是功率单位\n。斜体符号 W 代表功变量（以焦耳为单位），切勿将其与功率单位瓦特（W）混淆\n。"
+      },
+      "misconceptions": [
+        "kwh-is-power-unit",
+        "symbol-work-watt-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the fundamental definitions of work and energy in joules, and how rates of energy change are measured in watts.",
+          "ms": "Ulang kaji takrifan asas kerja dan tenaga dalam joule, serta cara kadar perubahan tenaga diukur dalam watt.",
+          "zh": "复习以焦耳为单位的功和能量的基本定义，以及如何以瓦特来衡量能量变化率。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A classification activity where five items (Watt, Kilowatt-hour, Horsepower, Joule, and Italic variable W for work) must be categorized into either Energy and Work Units or Power Units.",
+        "ms": "Aktiviti pengelasan yang mana lima item (Watt, Kilowatt-jam, Kuasa Kuda, Joule, dan Pemboleh ubah condong W untuk kerja) mesti dikategorikan sama ada ke dalam Unit Tenaga dan Kerja atau Unit Kuasa.",
+        "zh": "一个分类活动，必须将五个项目（瓦特、千瓦·时、马力、焦耳以及代表功的斜体变量 W）分类为“能量与功单位”或“功率单位”。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-energy",
+            "label": {
+              "en": "Energy / Work Quantity",
+              "ms": "Kuantiti Tenaga / Kerja",
+              "zh": "能量 / 功 物理量"
+            }
+          },
+          {
+            "id": "target-power",
+            "label": {
+              "en": "Power / Rate of Energy Transfer",
+              "ms": "Kuasa / Kadar Pemindahan Tenaga",
+              "zh": "功率 / 能量传递速率"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-watt",
+            "label": {
+              "en": "Watt (1 W = 1 J/s)",
+              "ms": "Watt (1 W = 1 J/s)",
+              "zh": "瓦特 (1 W = 1 J/s)"
+            }
+          },
+          {
+            "id": "item-kwh",
+            "label": {
+              "en": "Kilowatt-hour (kWh)",
+              "ms": "Kilowatt-jam (kWh)",
+              "zh": "千瓦·时 (kWh)"
+            },
+            "misconception": "kwh-is-power-unit"
+          },
+          {
+            "id": "item-hp",
+            "label": {
+              "en": "Horsepower (1 hp = 746 W)",
+              "ms": "Kuasa kuda (1 hp = 746 W)",
+              "zh": "马力 (1 hp = 746 W)"
+            }
+          },
+          {
+            "id": "item-joule",
+            "label": {
+              "en": "Joule (1 J = 1 kg·m²/s²)",
+              "ms": "Joule (1 J = 1 kg·m²/s²)",
+              "zh": "焦耳 (1 J = 1 kg·m²/s²)"
+            }
+          },
+          {
+            "id": "item-work-symbol",
+            "label": {
+              "en": "Italic variable W (Work done by a force)",
+              "ms": "Pemboleh ubah condong W (Kerja dilakukan oleh daya)",
+              "zh": "斜体变量 W（力所做的功）"
+            },
+            "misconception": "symbol-work-watt-confusion"
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-watt",
+            "targetId": "target-power"
+          },
+          {
+            "itemId": "item-kwh",
+            "targetId": "target-energy"
+          },
+          {
+            "itemId": "item-hp",
+            "targetId": "target-power"
+          },
+          {
+            "itemId": "item-joule",
+            "targetId": "target-energy"
+          },
+          {
+            "itemId": "item-work-symbol",
+            "targetId": "target-energy"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "kwh-is-power-unit",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-kwh",
+            "targetId": "target-power"
+          }
+        },
+        {
+          "misconception": "symbol-work-watt-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-work-symbol",
+            "targetId": "target-power"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-order-power-rates",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define instantaneous and average power as the time rate of energy transfer or work performed.",
+      "prompt": {
+        "en": "Arrange the following motor lifting processes in order from the LOWEST average power output to the HIGHEST average power output\n.",
+        "ms": "Susun proses pengangkatan motor berikut mengikut urutan daripada output kuasa purata PALING RENDAH kepada output kuasa purata PALING TINGGI\n.",
+        "zh": "将以下电动机提升过程按平均功率输出从“最低”到“最高”排序\n。"
+      },
+      "hints": [
+        {
+          "en": "Average power is determined by the total work done divided by the time duration taken (P_avg = W / Delta t)\n.",
+          "ms": "Kuasa purata ditentukan oleh jumlah kerja yang dilakukan dibahagikan dengan tempoh masa yang diambil (P_purata = W / Delta t)\n.",
+          "zh": "平均功率由完成的总功除以所用时间确定（P_avg = W / Delta t）\n。"
+        },
+        {
+          "en": "Performing a set amount of work in a shorter time interval requires a higher average power\n.",
+          "ms": "Melakukan sejumlah kerja yang ditetapkan dalam selang masa yang lebih singkat memerlukan kuasa purata yang lebih tinggi\n.",
+          "zh": "在更短的时间间隔内完成固定量的功需要更高的平均功率\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Lifting energy E over 4t has the lowest power, followed by E over 2t, then E over t, and finally 2E over t has the highest power\n.",
+        "ms": "Mengangkat tenaga E sepanjang 4t mempunyai kuasa paling rendah, diikuti oleh E sepanjang 2t, kemudian E sepanjang t, dan akhirnya 2E sepanjang t mempunyai kuasa tertinggi\n.",
+        "zh": "在 4t 时间内提升能量 E 的功率最低，其次是在 2t 内提升 E，然后是在 t 内提升 E，最后在 t 内提升 2E 的功率最高\n。"
+      },
+      "answerLogic": {
+        "en": "Comparing rates: Process A delivers E/(4t) = 0.25 rate; Process B delivers E/(2t) = 0.5 rate; Process C delivers E/t = 1.0 rate; Process D delivers 2E/t = 2.0 rate\n. Thus the correct ascending order is A, B, C, D\n.",
+        "ms": "Membandingkan kadar: Proses A membekalkan kadar E/(4t) = 0.25; Proses B membekalkan kadar E/(2t) = 0.5; Proses C membekalkan kadar E/t = 1.0; Proses D membekalkan kadar 2E/t = 2.0\n. Oleh itu, susunan menaik yang betul ialah A, B, C, D\n.",
+        "zh": "比较速率：过程 A 提供 E/(4t) = 0.25 倍速率；过程 B 提供 E/(2t) = 0.5 倍速率；过程 C 提供 E/t = 1.0 倍速率；过程 D 提供 2E/t = 2.0 倍速率\n。因此正确的升序是 A、B、C、D\n。"
+      },
+      "explanation": {
+        "en": "Power measures the time rate of doing work, not just the total energy transferred\n. Even when two tasks transfer the same energy E, the task completed in the shortest time demands the highest power output\n.",
+        "ms": "Kuasa mengukur kadar masa melakukan kerja, bukan sekadar jumlah tenaga yang dipindahkan\n. Walaupun dua tugas memindahkan tenaga E yang sama, tugas yang diselesaikan dalam masa tersingkat memerlukan output kuasa tertinggi\n.",
+        "zh": "功率衡量做功的时间快慢，而不仅仅是传递的总能量\n。即使两个任务传递相同的能量 E，在最短时间内完成的任务也需要最高的功率输出\n。"
+      },
+      "misconceptions": [
+        "power-energy-conflation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the definition of average power as mechanical work divided by elapsed time.",
+          "ms": "Ulang kaji takrifan kuasa purata sebagai kerja mekanikal dibahagikan dengan masa yang berlalu.",
+          "zh": "复习平均功率的定义，即机械功除以经历的时间。"
+        }
+      },
+      "accessibilityText": {
+        "en": "An ordering activity requiring four lifting operations to be sorted from lowest average power to highest average power based on work performed and time taken.",
+        "ms": "Aktiviti susunan yang memerlukan empat operasi pengangkatan disusun daripada kuasa purata paling rendah kepada kuasa purata paling tinggi berdasarkan kerja yang dilakukan dan masa yang diambil.",
+        "zh": "一个排序活动，要求根据所做的功和所用的时间，将四个提升操作从最低平均功率到最高平均功率进行排序。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-process-a",
+            "label": {
+              "en": "Process A: Transfers energy E over a long duration of 4 time units",
+              "ms": "Proses A: Memindahkan tenaga E dalam tempoh masa yang lama iaitu 4 unit masa",
+              "zh": "过程 A：在 4 个时间单位的较长时间内传递能量 E"
+            }
+          },
+          {
+            "id": "item-process-b",
+            "label": {
+              "en": "Process B: Transfers energy E over a duration of 2 time units",
+              "ms": "Proses B: Memindahkan tenaga E dalam tempoh masa 2 unit masa",
+              "zh": "过程 B：在 2 个时间单位的时间内传递能量 E"
+            }
+          },
+          {
+            "id": "item-process-c",
+            "label": {
+              "en": "Process C: Transfers energy E rapidly over 1 time unit",
+              "ms": "Proses C: Memindahkan tenaga E dengan pantas dalam 1 unit masa",
+              "zh": "过程 C：在 1 个时间单位内快速传递能量 E"
+            }
+          },
+          {
+            "id": "item-process-d",
+            "label": {
+              "en": "Process D: Transfers energy 2E rapidly over 1 time unit",
+              "ms": "Proses D: Memindahkan tenaga 2E dengan pantas dalam 1 unit masa",
+              "zh": "过程 D：在 1 个时间单位内快速传递能量 2E"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-process-a",
+          "item-process-b",
+          "item-process-c",
+          "item-process-d"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "power-energy-conflation",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-process-c",
+            "secondItemId": "item-process-a"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-match-physical-quantities",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish power units like watts and horsepower from energy units like kilowatt-hours and joules.",
+      "prompt": {
+        "en": "Match each physical definition or expression to the physical concept it correctly describes\n.",
+        "ms": "Padankan setiap takrifan atau ungkapan fizikal dengan konsep fizikal yang diterangkannya dengan betul\n.",
+        "zh": "将每个物理定义或表达式与它正确描述的物理概念进行匹配\n。"
+      },
+      "hints": [
+        {
+          "en": "Look for expressions that describe a rate per unit time (Power) versus cumulative work or capacity (Energy)\n.",
+          "ms": "Cari ungkapan yang menerangkan kadar per unit masa (Kuasa) berbanding kerja kumulatif atau keupayaan (Tenaga)\n.",
+          "zh": "寻找描述单位时间速率（功率）与累积做功或容量（能量）的表达式\n。"
+        },
+        {
+          "en": "Remember that the watt is already 1 J/s, and a kilowatt-hour represents power multiplied by time (an amount of energy)\n.",
+          "ms": "Ingat bahawa watt sudah sedia merupakan 1 J/s, dan kilowatt-jam mewakili kuasa didarabkan dengan masa (jumlah tenaga)\n.",
+          "zh": "记住瓦特本身已经是 1 J/s，而千瓦·时代表功率乘以时间（能量的量）\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Expressions of time rate of energy transfer match Power, while total work and kilowatt-hour products match Energy\n.",
+        "ms": "Ungkapan kadar masa pemindahan tenaga sepadan dengan Kuasa, manakala jumlah kerja dan hasil darab kilowatt-jam sepadan dengan Tenaga\n.",
+        "zh": "能量传递的时间快慢表达式与“功率”匹配，而总功及千瓦·时乘积则与“能量”匹配\n。"
+      },
+      "answerLogic": {
+        "en": "Definitions expressing dE/dt, J/s (watt), or 746 W (horsepower) describe Power\n. Definitions expressing force times displacement (work W) or 1 kW sustained for 1 h (3.60 MJ) describe Energy\n.",
+        "ms": "Takrifan yang menyatakan dE/dt, J/s (watt), atau 746 W (kuasa kuda) menerangkan Kuasa\n. Takrifan yang menyatakan daya didarab sesaran (kerja W) atau 1 kW yang dikekalkan selama 1 j (3.60 MJ) menerangkan Tenaga\n.",
+        "zh": "表示 dE/dt、J/s（瓦特）或 746 W（马力）的定义描述的是“功率”\n。表示力乘以位移（功 W）或 1 kW 维持 1 小时（3.60 MJ）的定义描述的是“能量”\n。"
+      },
+      "explanation": {
+        "en": "Power is defined as the time rate of energy transfer P = dE/dt (measured in watts)\n. Work and electrical consumption measured in kilowatt-hours are forms of energy (measured in joules)\n.",
+        "ms": "Kuasa ditakrifkan sebagai kadar masa pemindahan tenaga P = dE/dt (diukur dalam watt)\n. Kerja dan penggunaan elektrik yang diukur dalam kilowatt-jam adalah bentuk tenaga (diukur dalam joule)\n.",
+        "zh": "功率定义为能量传递的时间快慢 P = dE/dt（以瓦特为单位）\n。以千瓦·时计量的功和用电量是能量的形式（以焦耳为单位）\n。"
+      },
+      "misconceptions": [
+        "watts-per-second-confusion",
+        "symbol-work-watt-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review how energy transferred over time defines the instantaneous rate called power.",
+          "ms": "Ulang kaji bagaimana tenaga yang dipindahkan mengikut masa mentakrifkan kadar seketika yang dipanggil kuasa.",
+          "zh": "复习随时间传递的能量如何定义称为功率的瞬时速率。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A matching activity connecting four physical definitions to either the concept of Power or the concept of Energy.",
+        "ms": "Aktiviti pemadanan yang menghubungkan empat takrifan fizikal sama ada dengan konsep Kuasa atau konsep Tenaga.",
+        "zh": "一个匹配活动，将四个物理定义分别与“功率”概念或“能量”概念相连接。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-power-concept",
+            "label": {
+              "en": "Power (Rate of Energy Transfer)",
+              "ms": "Kuasa (Kadar Pemindahan Tenaga)",
+              "zh": "功率（能量传递速率）"
+            }
+          },
+          {
+            "id": "target-energy-concept",
+            "label": {
+              "en": "Energy (Quantity of Work or Storage)",
+              "ms": "Tenaga (Kuantiti Kerja atau Simpanan)",
+              "zh": "能量（功或储存的量）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-watt-def",
+            "label": {
+              "en": "One joule of energy transferred per second (1 J/s)\n",
+              "ms": "Satu joule tenaga yang dipindahkan sesaat (1 J/s)\n",
+              "zh": "每秒传递一焦耳的能量 (1 J/s)\n"
+            },
+            "misconception": "watts-per-second-confusion"
+          },
+          {
+            "id": "item-work-symbol-def",
+            "label": {
+              "en": "The algebraic quantity W representing force integrated along a path\n",
+              "ms": "Kuantiti algebra W yang mewakili daya dikamirkan sepanjang lintasan\n",
+              "zh": "代表沿路径对力进行积分的代数量 W\n"
+            },
+            "misconception": "symbol-work-watt-confusion"
+          },
+          {
+            "id": "item-kwh-def",
+            "label": {
+              "en": "Energy transferred in 1 hour at a constant rate of 1 kW (3.60 million joules)\n",
+              "ms": "Tenaga yang dipindahkan dalam 1 jam pada kadar malar 1 kW (3.60 juta joule)\n",
+              "zh": "以 1 kW 的恒定速率在 1 小时内传递的能量（360 万焦耳）\n"
+            }
+          },
+          {
+            "id": "item-hp-def",
+            "label": {
+              "en": "The rate of 746 joules per second delivered by an engine (Horsepower)\n",
+              "ms": "Kadar 746 joule sesaat yang dibekalkan oleh enjin (Kuasa kuda)\n",
+              "zh": "发动机每秒提供 746 焦耳的速率（马力）\n"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-watt-def",
+            "targetId": "target-power-concept"
+          },
+          {
+            "itemId": "item-work-symbol-def",
+            "targetId": "target-energy-concept"
+          },
+          {
+            "itemId": "item-kwh-def",
+            "targetId": "target-energy-concept"
+          },
+          {
+            "itemId": "item-hp-def",
+            "targetId": "target-power-concept"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "watts-per-second-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-watt-def",
+            "targetId": "target-energy-concept"
+          }
+        },
+        {
+          "misconception": "symbol-work-watt-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-work-symbol-def",
+            "targetId": "target-power-concept"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-classify-motion-power-demands",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze the mechanical power required for objects in uniform motion versus accelerating motion.",
+      "prompt": {
+        "en": "Classify each mechanical scenario based on whether the instantaneous power delivered by the primary applied force is constant over time or increasing over time\n.",
+        "ms": "Kelaskan setiap senario mekanikal berdasarkan sama ada kuasa seketika yang dibekalkan oleh daya utama yang dikenakan adalah malar mengikut masa atau meningkat mengikut masa\n.",
+        "zh": "根据主要施加力所传递的瞬时功率随时间是保持恒定还是持续增大，对以下各个机械情景进行分类\n。"
+      },
+      "hints": [
+        {
+          "en": "Instantaneous power delivered by a force along the direction of motion is given by the product of the force magnitude and the instantaneous speed (P = F v)\n.",
+          "ms": "Kuasa seketika yang dibekalkan oleh suatu daya sepanjang arah gerakan diberikan oleh hasil darab magnitud daya dan laju seketika (P = F v)\n.",
+          "zh": "沿运动方向的力所传递的瞬时功率由力的大小与瞬时速率的乘积给出（P = F v）\n。"
+        },
+        {
+          "en": "If an object is accelerating under a constant force, its speed continuously increases, which causes the instantaneous power to increase over time\n.",
+          "ms": "Jika suatu objek memecut di bawah tindakan daya malar, lajunya meningkat secara berterusan, yang menyebabkan kuasa seketika meningkat mengikut masa\n.",
+          "zh": "如果物体在恒力作用下加速，其速率会持续增加，这会导致瞬时功率随时间不断增大\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Scenarios with steady velocity under a constant force exhibit constant power, whereas scenarios with continuous acceleration under a constant force exhibit increasing power\n.",
+        "ms": "Senario dengan halaju mantap di bawah daya malar menunjukkan kuasa yang malar, manakala senario dengan pecutan berterusan di bawah daya malar menunjukkan kuasa yang meningkat\n.",
+        "zh": "在恒力作用下匀速运动的情景表现为恒定功率，而在恒力作用下持续加速的情景表现为功率随时间增大\n。"
+      },
+      "answerLogic": {
+        "en": "Because instantaneous power is P = F v, maintaining constant speed v with a constant force F results in constant instantaneous power\n. When a constant force accelerates an object, v grows with time, producing an increasing power requirement\n.",
+        "ms": "Oleh kerana kuasa seketika ialah P = F v, mengekalkan laju malar v dengan daya malar F menghasilkan kuasa seketika yang malar\n. Apabila daya malar memecutkan objek, v bertambah mengikut masa, menghasilkan keperluan kuasa yang semakin meningkat\n.",
+        "zh": "因为瞬时功率为 P = F v，所以在恒力 F 下保持恒定速率 v 会产生恒定的瞬时功率\n。当恒力使物体加速时，v 随时间增大，从而产生不断增加的功率需求\n。"
+      },
+      "explanation": {
+        "en": "A constant force does not mean constant power when speed changes\n. For an accelerating elevator or rocket sled, the engine or cable does more work per unit time during later seconds as the object traverses greater distances each second\n.",
+        "ms": "Daya yang malar tidak bermakna kuasa yang malar apabila laju berubah\n. Bagi lif atau kereta luncur roket yang memecut, enjin atau kabel melakukan lebih banyak kerja per unit masa pada saat-saat berikutnya apabila objek merentasi jarak yang lebih besar setiap saat\n.",
+        "zh": "当速率改变时，恒力并不意味着恒定功率\n。对于加速上升的电梯或火箭滑车，随着物体每秒通过的距离越来越大，发动机或缆绳在后续的每秒内完成的功也越来越多\n。"
+      },
+      "misconceptions": [
+        "constant-force-constant-power"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law",
+        "prompt": {
+          "en": "Review how constant net force produces continuous acceleration and increases speed linearly over time according to Newton's second law.",
+          "ms": "Ulang kaji bagaimana daya paduan yang malar menghasilkan pecutan berterusan dan meningkatkan laju secara linear mengikut masa mengikut hukum gerakan Newton kedua.",
+          "zh": "复习根据牛顿第二定律，恒定合外力如何产生持续加速度并使速率随时间线性增加。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A classification activity where four physical motion scenarios must be sorted into either Constant Instantaneous Power or Increasing Instantaneous Power.",
+        "ms": "Aktiviti pengelasan yang mana empat senario gerakan fizikal mesti diisih sama ada ke dalam Kuasa Seketika Malar atau Kuasa Seketika Meningkat.",
+        "zh": "一个分类活动，必须将四个物理运动情景归类为“恒定瞬时功率”或“增大瞬时功率”。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-constant-power",
+            "label": {
+              "en": "Constant Instantaneous Power Over Time",
+              "ms": "Kuasa Seketika Malar Mengikut Masa",
+              "zh": "随时间保持恒定的瞬时功率"
+            }
+          },
+          {
+            "id": "target-increasing-power",
+            "label": {
+              "en": "Increasing Instantaneous Power Over Time",
+              "ms": "Kuasa Seketika Meningkat Mengikut Masa",
+              "zh": "随时间持续增大的瞬时功率"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-terminal-crate",
+            "label": {
+              "en": "A crate pulled across a rough floor at a constant terminal velocity by a steady horizontal tension\n",
+              "ms": "Sebuah peti ditarik merentasi lantai kasar pada halaju terminal malar oleh tegangan mendatar yang mantap\n",
+              "zh": "在稳定的水平拉力作用下以恒定终极速度在粗糙地面上拖动的板条箱\n"
+            }
+          },
+          {
+            "id": "item-conveyor-gravel",
+            "label": {
+              "en": "A motorized conveyor belt hauling gravel upward at a steady, unchanging speed against gravity\n",
+              "ms": "Tali sawat bermotor mengangkut batu kerikil ke atas pada laju yang mantap dan tidak berubah menentang graviti\n",
+              "zh": "电动传送带以稳定不变的速率克服重力向上运送碎石\n"
+            }
+          },
+          {
+            "id": "item-accelerating-elevator",
+            "label": {
+              "en": "An elevator car ascending with constant positive upward acceleration under a constant cable tension\n",
+              "ms": "Sebuah kabin lif naik dengan pecutan ke atas positif yang malar di bawah tegangan kabel yang malar\n",
+              "zh": "在恒定缆绳拉力作用下以恒定正加速度向上加速上升的电梯轿厢\n"
+            },
+            "misconception": "constant-force-constant-power"
+          },
+          {
+            "id": "item-thrust-sled",
+            "label": {
+              "en": "A rocket sled accelerating continuously from rest along a frictionless horizontal track under constant thrust\n",
+              "ms": "Sebuah kereta luncur roket memecut secara berterusan dari keadaan rehat di sepanjang landasan mendatar tanpa geseran di bawah tujahan malar\n",
+              "zh": "在恒定推力作用下沿光滑水平轨道由静止持续加速的火箭滑车\n"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-terminal-crate",
+            "targetId": "target-constant-power"
+          },
+          {
+            "itemId": "item-conveyor-gravel",
+            "targetId": "target-constant-power"
+          },
+          {
+            "itemId": "item-accelerating-elevator",
+            "targetId": "target-increasing-power"
+          },
+          {
+            "itemId": "item-thrust-sled",
+            "targetId": "target-increasing-power"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "constant-force-constant-power",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-accelerating-elevator",
+            "targetId": "target-constant-power"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-select-power-statements",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define instantaneous and average power as the time rate of energy transfer or work performed.",
+      "prompt": {
+        "en": "Select all scientifically valid statements regarding mechanical power, energy transfer rates, and work\n.",
+        "ms": "Pilih semua pernyataan yang sah dari segi saintifik mengenai kuasa mekanikal, kadar pemindahan tenaga, dan kerja\n.",
+        "zh": "选择所有关于机械功率、能量传递速率和功的科学有效陈述\n。"
+      },
+      "hints": [
+        {
+          "en": "Power is defined specifically as the time rate of energy transfer (dE/dt or W / Delta t), not as the total quantity of energy transferred\n.",
+          "ms": "Kuasa ditakrifkan secara khusus sebagai kadar masa pemindahan tenaga (dE/dt atau W / Delta t), bukan sebagai jumlah kuantiti tenaga yang dipindahkan\n.",
+          "zh": "功率具体定义为能量传递的时间快慢（dE/dt 或 W / Delta t），而不是传递的能量总量\n。"
+        },
+        {
+          "en": "Be careful to distinguish units that represent energy (like kilowatt-hours) from units that represent power (like watts)\n.",
+          "ms": "Berhati-hati membezakan unit yang mewakili tenaga (seperti kilowatt-jam) daripada unit yang mewakili kuasa (seperti watt)\n.",
+          "zh": "注意区分代表能量的单位（如千瓦·时）与代表功率的单位（如瓦特）\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Instantaneous power is the rate dE/dt, and completing work in double the time halves average power\n. High power does not mean more total work without knowing duration, and kWh is a unit of energy\n.",
+        "ms": "Kuasa seketika ialah kadar dE/dt, dan menyelesaikan kerja dalam masa dua kali ganda mengurangkan kuasa purata kepada separuh\n. Kuasa tinggi tidak bermakna lebih banyak kerja keseluruhan tanpa mengetahui tempoh masa, dan kWh ialah unit tenaga\n.",
+        "zh": "瞬时功率是速率 dE/dt，且用两倍时间完成做功会使平均功率减半\n。在不知道持续时间的情况下，高功率并不意味着更多的总功，且 kWh 是能量单位\n。"
+      },
+      "answerLogic": {
+        "en": "Statements correctly expressing instantaneous power as dE/dt and average power as inversely proportional to elapsed time are correct\n. Statements asserting power alone determines total work or calling the kilowatt-hour a power unit are false\n.",
+        "ms": "Pernyataan yang menyatakan dengan betul bahawa kuasa seketika sebagai dE/dt dan kuasa purata adalah berkadar songsang dengan masa yang berlalu adalah betul\n. Pernyataan yang mendakwa kuasa sahaja menentukan jumlah kerja atau memanggil kilowatt-jam sebagai unit kuasa adalah salah\n.",
+        "zh": "正确将瞬时功率表述为 dE/dt 以及将平均功率表述为与所用时间成反比的陈述是正确的\n。断言仅凭功率就能决定总功或称千瓦·时为功率单位的陈述是错误的\n。"
+      },
+      "explanation": {
+        "en": "Power is defined as P = dE/dt\n. For a fixed quantity of work W, average power is P_avg = W / Delta t, so doubling Delta t halves P_avg\n. A kilowatt-hour equals 3.60 million joules of energy, not power\n.",
+        "ms": "Kuasa ditakrifkan sebagai P = dE/dt\n. Untuk kuantiti kerja W yang tetap, kuasa purata ialah P_purata = W / Delta t, jadi menggandakan Delta t mengurangkan separuh P_purata\n. Satu kilowatt-jam bersamaan dengan 3.60 juta joule tenaga, bukannya kuasa\n.",
+        "zh": "功率定义为 P = dE/dt\n。对于固定量的功 W，平均功率为 P_avg = W / Delta t，因此将 Delta t 增加一倍会使 P_avg 减半\n。一千瓦·时等于 360 万焦耳的能量，而不是功率\n。"
+      },
+      "misconceptions": [
+        "power-energy-conflation",
+        "kwh-is-power-unit"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the definition of work and energy transfer across system boundaries, and how dividing work by time yields the rate of energy transfer.",
+          "ms": "Ulang kaji takrifan kerja dan pemindahan tenaga merentasi sempadan sistem, dan bagaimana membahagikan kerja dengan masa menghasilkan kadar pemindahan tenaga.",
+          "zh": "复习功和跨系统边界能量传递的定义，以及将功除以时间如何得到能量传递速率。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multi-selection activity with four statements about power and energy transfer. Two correct statements must be selected.",
+        "ms": "Aktiviti pelbagai pilihan dengan empat pernyataan tentang kuasa dan pemindahan tenaga. Dua pernyataan yang betul mesti dipilih.",
+        "zh": "一个包含四个关于功率和能量传递陈述的多选活动。必须选择两个正确的陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-rate-def",
+            "label": {
+              "en": "Instantaneous power is defined as the time rate of energy transfer dE/dt across a system boundary\n.",
+              "ms": "Kuasa seketika ditakrifkan sebagai kadar masa pemindahan tenaga dE/dt merentasi sempadan sistem\n.",
+              "zh": "瞬时功率定义为跨系统边界能量传递的时间快慢 dE/dt\n。"
+            }
+          },
+          {
+            "id": "item-work-time",
+            "label": {
+              "en": "For a fixed amount of mechanical work, doubling the time taken to complete the task reduces the average power by half\n.",
+              "ms": "Untuk jumlah kerja mekanikal yang tetap, menggandakan masa yang diambil untuk menyelesaikan tugas mengurangkan kuasa purata sebanyak separuh\n.",
+              "zh": "对于固定量的机械功，将完成任务所用的时间增加一倍会使平均功率减半\n。"
+            }
+          },
+          {
+            "id": "item-power-equals-work",
+            "label": {
+              "en": "A machine operating at higher power always accomplishes more total work than a lower-power machine regardless of the duration operated.",
+              "ms": "Mesin yang beroperasi pada kuasa yang lebih tinggi sentiasa melakukan lebih banyak jumlah kerja berbanding mesin berkuasa lebih rendah tanpa mengira tempoh operasi.",
+              "zh": "无论运行时间长短，以更高功率运行的机器所完成的总功总是多于低功率机器。"
+            },
+            "misconception": "power-energy-conflation"
+          },
+          {
+            "id": "item-kwh-power",
+            "label": {
+              "en": "The kilowatt-hour is an SI unit of instantaneous power used by utility providers to rate motor output.",
+              "ms": "Kilowatt-jam ialah unit SI bagi kuasa seketika yang digunakan oleh pembekal utiliti untuk menarafkan output motor.",
+              "zh": "千瓦·时是电力供应商用于评估电动机输出的瞬时功率国际单位。"
+            },
+            "misconception": "kwh-is-power-unit"
+          }
+        ],
+        "correctSelections": [
+          "item-rate-def",
+          "item-work-time"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "power-energy-conflation",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-power-equals-work",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "kwh-is-power-unit",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-kwh-power",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-order-dot-product-power",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate instantaneous mechanical power to the scalar dot product of force and velocity vectors.",
+      "prompt": {
+        "en": "Arrange the following situations for a constant applied force magnitude F acting on a particle moving at speed v in order from LOWEST (most negative) instantaneous power to HIGHEST (most positive) instantaneous power\n.",
+        "ms": "Susun situasi berikut bagi daya yang dikenakan bermagnitud malar F yang bertindak ke atas zarah yang bergerak pada laju v mengikut urutan daripada kuasa seketika PALING RENDAH (paling negatif) kepada kuasa seketika PALING TINGGI (paling positif)\n.",
+        "zh": "对于大小恒为 F 的外力作用在以速率 v 运动的质点上的以下情况，按瞬时功率从“最低（最负）”到“最高（最正）”排序\n。"
+      },
+      "hints": [
+        {
+          "en": "Instantaneous power is expressed by the scalar dot product P = F · v = F v cos(theta), where theta is the angle between force and velocity vectors\n.",
+          "ms": "Kuasa seketika dinyatakan oleh hasil darab bintik skalar P = F · v = F v kos(teta), dengan teta ialah sudut antara vektor daya dan vektor halaju\n.",
+          "zh": "瞬时功率表示为标量点积 P = F · v = F v cos(theta)，其中 theta 是力和速度矢量之间的夹角\n。"
+        },
+        {
+          "en": "Forces opposing motion (theta = 180 deg) give negative power, perpendicular forces (theta = 90 deg) give zero power, and aligned forces (theta = 0 deg) give maximum positive power\n.",
+          "ms": "Daya yang menentang gerakan (teta = 180 darjah) memberikan kuasa negatif, daya berserenjang (teta = 90 darjah) memberikan kuasa sifar, dan daya yang dijajarkan (teta = 0 darjah) memberikan kuasa positif maksimum\n.",
+          "zh": "阻碍运动的力（theta = 180 度）产生负功率，垂直的力（theta = 90 度）产生零功率，同向对齐的力（theta = 0 度）产生最大正功率\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Power is lowest when opposing motion (cos 180 deg = -1), zero when perpendicular (cos 90 deg = 0), intermediate at acute angles (cos 60 deg = 0.5), and highest when parallel (cos 0 deg = 1)\n.",
+        "ms": "Kuasa adalah paling rendah apabila menentang gerakan (kos 180 darjah = -1), sifar apabila berserenjang (kos 90 darjah = 0), perantaraan pada sudut tirus (kos 60 darjah = 0.5), dan paling tinggi apabila selari (kos 0 darjah = 1)\n.",
+        "zh": "反向阻碍运动时功率最低（cos 180 度 = -1），垂直时为零（cos 90 度 = 0），锐角时居中（cos 60 度 = 0.5），平行同向时最高（cos 0 度 = 1）\n。"
+      },
+      "answerLogic": {
+        "en": "Evaluating the dot product relation P = F v cos(theta): Opposing yields -Fv; Perpendicular yields 0; Acute angle 60 deg yields +0.5 Fv; Parallel yields +Fv\n. The correct ascending order is Opposing, Perpendicular, Acute angle, Parallel\n.",
+        "ms": "Berdasarkan hubungan hasil darab bintik P = F v kos(teta): Menentang menghasilkan -Fv; Berserenjang menghasilkan 0; Sudut tirus 60 darjah menghasilkan +0.5 Fv; Selari menghasilkan +Fv\n. Susunan menaik yang betul ialah Menentang, Berserenjang, Sudut tirus, Selari\n.",
+        "zh": "根据点积关系 P = F v cos(theta)：反向取负极大值 -Fv，垂直取零值 0，锐角取正值 +0.5 Fv，平行同向取正极大值 +Fv\n。按瞬时功率由小到大排列的正确升序为反向、垂直、锐角、平行\n。"
+      },
+      "explanation": {
+        "en": "Power is a scalar quantity derived from the vector dot product of force and velocity\n. Directional alignment governs whether power is negative (removing mechanical energy), zero (no energy transferred), or positive (adding mechanical energy)\n.",
+        "ms": "Kuasa ialah kuantiti skalar yang diperoleh daripada hasil darab bintik vektor bagi daya dan halaju\n. Penjajaran arah menentukan sama ada kuasa adalah negatif (mengeluarkan tenaga mekanikal), sifar (tiada tenaga dipindahkan), atau positif (menambah tenaga mekanikal)\n.",
+        "zh": "功率是由力和速度的矢量点积导出的标量\n。方向对齐情况决定了功率是负值（移除机械能）、零（无能量传递）还是正值（增加机械能）\n。"
+      },
+      "misconceptions": [
+        "power-energy-conflation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-dot-product",
+        "prompt": {
+          "en": "Review the definition of the dot product between two vectors as the product of their magnitudes and the cosine of the angle between them.",
+          "ms": "Ulang kaji takrifan hasil darab bintik antara dua vektor sebagai hasil darab magnitud kedua-duanya dan kosinus sudut antara keduanya.",
+          "zh": "复习两个矢量之间的点积定义，即两矢量的模与它们夹角余弦值的乘积。"
+        }
+      },
+      "accessibilityText": {
+        "en": "An ordering activity requiring four directional orientations of an applied force relative to velocity to be arranged from lowest (most negative) power to highest (most positive) power.",
+        "ms": "Aktiviti susunan yang memerlukan empat orientasi arah bagi daya yang dikenakan relatif kepada halaju disusun daripada kuasa paling rendah (paling negatif) kepada kuasa paling tinggi (paling positif).",
+        "zh": "一个排序活动，要求将外力相对于速度的四个方向取向按从最低（最负）功率到最高（最正）功率进行排序。"
+      },
+      "provenance": {
+        "sourceLocation": "Section 8.5; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-opposing",
+            "label": {
+              "en": "Force directed directly opposite to velocity (angle of 180 degrees)\n",
+              "ms": "Daya diarahkan bertentangan secara langsung dengan halaju (sudut 180 darjah)\n",
+              "zh": "力与速度方向直接相反（夹角为 180 度）\n"
+            }
+          },
+          {
+            "id": "item-perpendicular",
+            "label": {
+              "en": "Force directed perpendicular to velocity (angle of 90 degrees)\n",
+              "ms": "Daya diarahkan berserenjang dengan halaju (sudut 90 darjah)\n",
+              "zh": "力垂直于速度方向（夹角为 90 度）\n"
+            }
+          },
+          {
+            "id": "item-acute-angle",
+            "label": {
+              "en": "Force directed at an acute angle of 60 degrees relative to velocity\n",
+              "ms": "Daya diarahkan pada sudut tirus 60 darjah relatif kepada halaju\n",
+              "zh": "力与速度方向成 60 度锐角\n"
+            }
+          },
+          {
+            "id": "item-parallel",
+            "label": {
+              "en": "Force directed parallel and in the exact same direction as velocity (angle of 0 degrees)\n",
+              "ms": "Daya diarahkan selari dan pada arah yang sama tepat dengan halaju (sudut 0 darjah)\n",
+              "zh": "力与速度平行且指向完全相同的方向（夹角为 0 度）\n"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-opposing",
+          "item-perpendicular",
+          "item-acute-angle",
+          "item-parallel"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "power-energy-conflation",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-perpendicular",
+            "secondItemId": "item-opposing"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-match-elevator-loading-regimes",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze the mechanical power required for objects in uniform motion versus accelerating motion.",
+      "prompt": {
+        "en": "Match each physical dynamic state of an ascending elevator car (mass M, friction f, instantaneous upward speed v) to its corresponding cable tension force and instantaneous motor power output\n.",
+        "ms": "Padankan setiap keadaan dinamik fizikal sebuah kabin lif yang sedang naik (jisim M, geseran f, laju seketika ke atas v) dengan daya tegangan kabel dan output kuasa motor seketika yang sepadan\n.",
+        "zh": "将向上运行的电梯轿厢（质量为 M，摩擦力为 f，向上的瞬时速率为 v）的每种物理动力学状态与其对应的缆绳拉力及电动机瞬时功率输出进行匹配\n。"
+      },
+      "hints": [
+        {
+          "en": "Apply Newton's second law along the vertical axis (T - f - Mg = M a) to solve for cable tension T under different acceleration conditions\n.",
+          "ms": "Gunakan hukum gerakan Newton kedua sepanjang paksi menegak (T - f - Mg = M a) untuk mencari tegangan kabel T di bawah keadaan pecutan yang berbeza\n.",
+          "zh": "沿竖直轴应用牛顿第二定律（T - f - Mg = M a），以求解不同加速度条件下的缆绳拉力 T\n。"
+        },
+        {
+          "en": "Instantaneous power delivered by the cable is the product of tension and speed (P = T v); a larger required tension directly yields a higher power demand at speed v\n.",
+          "ms": "Kuasa seketika yang dibekalkan oleh kabel ialah hasil darab tegangan dan laju (P = T v); tegangan yang lebih besar secara langsung menghasilkan keperluan kuasa yang lebih tinggi pada laju v\n.",
+          "zh": "缆绳提供的瞬时功率是拉力与速率的乘积（P = T v）；在速率为 v 时，所需的拉力越大，直接对应越高的功率需求\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Upward acceleration requires tension T = M(g + a) + f, producing the highest instantaneous power [M(g + a) + f]v, whereas steady ascent requires T = Mg + f and power (Mg + f)v\n.",
+        "ms": "Pecutan ke atas memerlukan tegangan T = M(g + a) + f, menghasilkan kuasa seketika tertinggi [M(g + a) + f]v, manakala kenaikan mantap memerlukan T = Mg + f dan kuasa (Mg + f)v\n.",
+        "zh": "向上加速需要拉力 T = M(g + a) + f，产生最高的瞬时功率 [M(g + a) + f]v，而匀速上升需要 T = Mg + f 及功率 (Mg + f)v\n。"
+      },
+      "answerLogic": {
+        "en": "For constant velocity (a = 0), equilibrium gives T = Mg + f and P = (Mg + f)v\n. For positive upward acceleration (+a), net upward force gives T = M(g + a) + f and P = [M(g + a) + f]v\n. For upward motion slowing down (-a), T = M(g - a) + f and P = [M(g - a) + f]v\n.",
+        "ms": "Untuk halaju malar (a = 0), keseimbangan memberikan T = Mg + f dan P = (Mg + f)v\n. Untuk pecutan ke atas positif (+a), daya paduan ke atas memberikan T = M(g + a) + f dan P = [M(g + a) + f]v\n. Untuk gerakan ke atas yang semakin perlahan (-a), T = M(g - a) + f dan P = [M(g - a) + f]v\n.",
+        "zh": "对于匀速运动（a = 0），受力平衡给出 T = Mg + f 和 P = (Mg + f)v\n。对于向上的正加速度（+a），向上净力给出 T = M(g + a) + f 和 P = [M(g + a) + f]v\n。对于向上减速运动（-a），给出 T = M(g - a) + f 和 P = [M(g - a) + f]v\n。"
+      },
+      "explanation": {
+        "en": "Because instantaneous power is P = T v, any additional upward acceleration increases the cable tension required by Newton's second law, which proportionally increases the rate of energy transfer demanded from the motor at any given speed v\n.",
+        "ms": "Oleh kerana kuasa seketika ialah P = T v, sebarang pecutan tambahan ke atas meningkatkan tegangan kabel yang diperlukan oleh hukum gerakan Newton kedua, yang meningkatkan kadar pemindahan tenaga yang diminta daripada motor pada mana-mana laju v yang diberikan secara berkadar\n.",
+        "zh": "因为瞬时功率为 P = T v，根据牛顿第二定律，任何额外的向上加速度都会增大所需的缆绳拉力，从而在给定的瞬时速率 v 下成比例地增加电动机所需的能量传递速率\n。"
+      },
+      "misconceptions": [
+        "constant-force-constant-power"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law",
+        "prompt": {
+          "en": "Review how to write vertical force equations for an elevator car under zero acceleration versus non-zero upward acceleration.",
+          "ms": "Ulang kaji cara menulis persamaan daya menegak untuk kabin lif di bawah pecutan sifar berbanding pecutan ke atas bukan sifar.",
+          "zh": "复习如何为处于零加速度与非零向上加速度下的电梯轿厢列出竖直方向受力方程。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A matching activity pairing three operational motion states of an elevator with four statements describing the required cable tension and instantaneous power formulas.",
+        "ms": "Aktiviti pemadanan yang memadankan tiga keadaan gerakan operasi sebuah lif dengan empat pernyataan yang menerangkan formula tegangan kabel dan kuasa seketika yang diperlukan.",
+        "zh": "一个匹配活动，将电梯的三种运行状态与描述所需缆绳拉力和瞬时功率公式的四个陈述进行配对。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-steady-climb",
+            "label": {
+              "en": "Ascending at Constant Speed (a = 0)",
+              "ms": "Naik pada Laju Malar (a = 0)",
+              "zh": "以恒定速率上升 (a = 0)"
+            }
+          },
+          {
+            "id": "target-accelerating-climb",
+            "label": {
+              "en": "Ascending with Upward Acceleration (+a)",
+              "ms": "Naik dengan Pecutan ke Atas (+a)",
+              "zh": "以向上的加速度上升 (+a)"
+            }
+          },
+          {
+            "id": "target-decelerating-climb",
+            "label": {
+              "en": "Ascending while Slowing Down (-a)",
+              "ms": "Naik semasa Semakin Perlahan (-a)",
+              "zh": "向上运动但正在减速 (-a)"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-tension-steady",
+            "label": {
+              "en": "Cable tension equals Mg + f; motor delivers power P = (Mg + f)v\n",
+              "ms": "Tegangan kabel bersamaan Mg + f; motor membekalkan kuasa P = (Mg + f)v\n",
+              "zh": "缆绳拉力等于 Mg + f；电动机输出功率 P = (Mg + f)v\n"
+            }
+          },
+          {
+            "id": "item-power-accel",
+            "label": {
+              "en": "Cable tension equals M(g + a) + f; motor delivers peak power P = [M(g + a) + f]v\n",
+              "ms": "Tegangan kabel bersamaan M(g + a) + f; motor membekalkan kuasa puncak P = [M(g + a) + f]v\n",
+              "zh": "缆绳拉力等于 M(g + a) + f；电动机输出峰值功率 P = [M(g + a) + f]v\n"
+            },
+            "misconception": "constant-force-constant-power"
+          },
+          {
+            "id": "item-power-decel",
+            "label": {
+              "en": "Cable tension equals M(g - a) + f; motor delivers reduced power P = [M(g - a) + f]v\n",
+              "ms": "Tegangan kabel bersamaan M(g - a) + f; motor membekalkan kuasa berkurang P = [M(g - a) + f]v\n",
+              "zh": "缆绳拉力等于 M(g - a) + f；电动机输出降低的功率 P = [M(g - a) + f]v\n"
+            }
+          },
+          {
+            "id": "item-net-force-accel",
+            "label": {
+              "en": "Motor force must supply additional net force Ma over static gravity and friction demands\n",
+              "ms": "Daya motor mesti membekalkan daya paduan tambahan Ma melebihi keperluan statik graviti dan geseran\n",
+              "zh": "电动机的力必须在重力和摩擦力需求之外额外提供净力 Ma\n"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-tension-steady",
+            "targetId": "target-steady-climb"
+          },
+          {
+            "itemId": "item-power-accel",
+            "targetId": "target-accelerating-climb"
+          },
+          {
+            "itemId": "item-power-decel",
+            "targetId": "target-decelerating-climb"
+          },
+          {
+            "itemId": "item-net-force-accel",
+            "targetId": "target-accelerating-climb"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "constant-force-constant-power",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-power-accel",
+            "targetId": "target-steady-climb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-select-vector-alignment-conditions",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate instantaneous mechanical power to the scalar dot product of force and velocity vectors.",
+      "prompt": {
+        "en": "Select all scientifically valid physical statements describing the scalar dot product relation for instantaneous power P = F · v\n.",
+        "ms": "Pilih semua pernyataan fizikal yang sah dari segi saintifik yang menerangkan hubungan hasil darab bintik skalar bagi kuasa seketika P = F · v\n.",
+        "zh": "选择所有描述瞬时功率标量点积关系 P = F · v 的科学有效物理陈述\n。"
+      },
+      "hints": [
+        {
+          "en": "Recall the vector formula P = F · v = F v cos(theta), where theta is the angle between the force and velocity vectors\n.",
+          "ms": "Ingat kembali formula vektor P = F · v = F v kos(teta), dengan teta ialah sudut antara vektor daya dan halaju\n.",
+          "zh": "回想矢量公式 P = F · v = F v cos(theta)，其中 theta 是力和速度矢量之间的夹角\n。"
+        },
+        {
+          "en": "Consider the sign and value of cos(theta) when theta is 0 degrees, 90 degrees, and obtuse (between 90 and 180 degrees)\n.",
+          "ms": "Pertimbangkan tanda dan nilai kos(teta) apabila teta ialah 0 darjah, 90 darjah, dan cakah (antara 90 dan 180 darjah)\n.",
+          "zh": "考虑当 theta 分别为 0 度、90 度以及钝角（90 度至 180 度之间）时 cos(theta) 的符号与取值\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Power is zero when force is perpendicular to velocity, negative when obtuse, and maximized when parallel\n. Power is not always positive\n.",
+        "ms": "Kuasa adalah sifar apabila daya berserenjang dengan halaju, negatif apabila cakah, dan dimaksimumkan apabila selari\n. Kuasa bukan sentiasa positif\n.",
+        "zh": "当力垂直于速度时功率为零，夹角为钝角时功率为负，平行同向时功率最大\n。功率并不总是正值\n。"
+      },
+      "answerLogic": {
+        "en": "Perpendicular force yields cos(90 deg) = 0 and P = 0\n. Obtuse angles yield cos(theta) < 0 and P < 0 (removing mechanical energy)\n. Parallel alignment yields cos(0 deg) = 1 (maximum positive power)\n. The claim that power is always positive is false\n.",
+        "ms": "Daya berserenjang menghasilkan kos(90 darjah) = 0 dan P = 0\n. Sudut cakah menghasilkan kos(teta) < 0 dan P < 0 (mengeluarkan tenaga mekanikal)\n. Penjajaran selari menghasilkan kos(0 darjah) = 1 (kuasa positif maksimum)\n. Dakwaan bahawa kuasa sentiasa positif adalah salah\n.",
+        "zh": "垂直力给出 cos(90 度) = 0 及 P = 0\n。钝角给出 cos(theta) < 0 及 P < 0（移除机械能）\n。平行同向给出 cos(0 度) = 1（最大正功率）\n。认为功率始终为正的断言是错误的\n。"
+      },
+      "explanation": {
+        "en": "Instantaneous power is the scalar dot product P = F · v\n. The angle between force and velocity dictates the sign and magnitude of energy transfer: positive when adding kinetic energy, zero when changing only direction without doing work, and negative when dissipating or removing kinetic energy\n.",
+        "ms": "Kuasa seketika ialah hasil darab bintik skalar P = F · v\n. Sudut antara daya dan halaju menentukan tanda dan magnitud pemindahan tenaga: positif apabila menambah tenaga kinetik, sifar apabila menukar arah sahaja tanpa melakukan kerja, dan negatif apabila menghilangkan atau mengeluarkan tenaga kinetik\n.",
+        "zh": "瞬时功率是标量点积 P = F · v\n。力和速度之间的夹角决定了能量传递的符号和大小：增加动能时为正，仅改变方向而不做功时为零，耗散或移除动能时为负\n。"
+      },
+      "misconceptions": [
+        "power-energy-conflation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-dot-product",
+        "prompt": {
+          "en": "Review how the sign of the scalar product depends on the cosine of the angle between two vectors.",
+          "ms": "Ulang kaji bagaimana tanda hasil darab skalar bergantung pada kosinus sudut antara dua vektor.",
+          "zh": "复习标量积的符号如何取决于两个矢量夹角的余弦值。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multi-selection activity presenting four statements about the vector dot product for power. Exactly three valid statements must be chosen.",
+        "ms": "Aktiviti pelbagai pilihan yang membentangkan empat pernyataan tentang hasil darab bintik vektor untuk kuasa. Tepat tiga pernyataan yang sah mesti dipilih.",
+        "zh": "一个多选活动，呈现了关于功率矢量点积的四个陈述。必须选出恰好三个有效陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-perpendicular-zero",
+            "label": {
+              "en": "When the applied force is perpendicular to velocity, instantaneous power is identically zero because no work is done on the particle\n.",
+              "ms": "Apabila daya yang dikenakan berserenjang dengan halaju, kuasa seketika adalah sifar sepenuhnya kerana tiada kerja dilakukan ke atas zarah\n.",
+              "zh": "当施加的力垂直于速度时，瞬时功率严格为零，因为没有对质点做功\n。"
+            }
+          },
+          {
+            "id": "item-obtuse-negative",
+            "label": {
+              "en": "When the angle between force and velocity is obtuse (such as kinetic friction opposing motion), instantaneous power is negative\n.",
+              "ms": "Apabila sudut antara daya dan halaju adalah cakah (seperti geseran kinetik yang menentang gerakan), kuasa seketika adalah negatif\n.",
+              "zh": "当力和速度之间的夹角为钝角时（例如阻碍运动的动摩擦力），瞬时功率为负\n。"
+            }
+          },
+          {
+            "id": "item-parallel-max",
+            "label": {
+              "en": "For given magnitudes of force and velocity, instantaneous power reaches its positive maximum when force and velocity are parallel\n.",
+              "ms": "Untuk magnitud daya dan halaju yang diberikan, kuasa seketika mencapai nilai maksimum positifnya apabila daya dan halaju adalah selari\n.",
+              "zh": "对于给定的力和速度大小，当力和速度平行同向时，瞬时功率达到其正的最大值\n。"
+            }
+          },
+          {
+            "id": "item-power-always-positive",
+            "label": {
+              "en": "Instantaneous mechanical power is an absolute scalar quantity that must remain strictly positive regardless of vector orientations.",
+              "ms": "Kuasa mekanikal seketika ialah kuantiti skalar mutlak yang mesti kekal positif secara ketat tanpa mengira orientasi vektor.",
+              "zh": "瞬时机械功率是一个绝对标量，无论矢量取向如何都必须严格保持为正。"
+            },
+            "misconception": "power-energy-conflation"
+          }
+        ],
+        "correctSelections": [
+          "item-perpendicular-zero",
+          "item-obtuse-negative",
+          "item-parallel-max"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "power-energy-conflation",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-power-always-positive",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-order-accelerating-power-instants",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze the mechanical power required for objects in uniform motion versus accelerating motion.",
+      "prompt": {
+        "en": "An elevator car accelerates uniformly upward from rest under a constant cable tension force\n. Arrange the following moments in order from LOWEST instantaneous power delivered by the cable to HIGHEST instantaneous power delivered by the cable\n.",
+        "ms": "Sebuah kabin lif memecut secara seragam ke atas dari keadaan rehat di bawah daya tegangan kabel yang malar\n. Susun detik-detik berikut mengikut urutan daripada kuasa seketika PALING RENDAH yang dibekalkan oleh kabel kepada kuasa seketika PALING TINGGI yang dibekalkan oleh kabel\n.",
+        "zh": "一部电梯轿厢在恒定的缆绳拉力作用下由静止开始向上做匀加速运动\n。将以下时刻按缆绳所提供的瞬时功率从“最低”到“最高”排序\n。"
+      },
+      "hints": [
+        {
+          "en": "Under constant cable tension, the instantaneous power delivered is proportional to the instantaneous speed (P = T v)\n.",
+          "ms": "Di bawah tegangan kabel yang malar, kuasa seketika yang dibekalkan adalah berkadar terus dengan laju seketika (P = T v)\n.",
+          "zh": "在恒定缆绳拉力下，所提供的瞬时功率与瞬时速率成正比（P = T v）\n。"
+        },
+        {
+          "en": "As time progresses during uniform acceleration, the upward speed increases continuously from zero to its maximum value\n.",
+          "ms": "Apabila masa berlalu semasa pecutan seragam, laju ke atas meningkat secara berterusan daripada sifar kepada nilai maksimumnya\n.",
+          "zh": "随着匀加速运动时间的推移，向上的速率从零持续增加到其最大值\n。"
+        }
+      ],
+      "feedback": {
+        "en": "Power is zero at release from rest, increases at one-quarter speed, grows further at half speed, and reaches its peak at full speed\n.",
+        "ms": "Kuasa adalah sifar semasa dilepaskan dari keadaan rehat, meningkat pada satu perempat laju, bertambah lagi pada separuh laju, dan mencapai puncaknya pada laju penuh\n.",
+        "zh": "由静止释放时功率为零，在四分之一速率时增大，在半速时进一步增大，在全速时达到峰值\n。"
+      },
+      "answerLogic": {
+        "en": "With constant tension T, instantaneous power scales directly with speed v\n. Speed ranks: 0 (Instant 1) < 0.25 v_max (Instant 2) < 0.50 v_max (Instant 3) < v_max (Instant 4)\n. The correct order from lowest to highest power is 1, 2, 3, 4\n.",
+        "ms": "Dengan tegangan T yang malar, kuasa seketika berskala terus dengan laju v\n. Kedudukan laju: 0 (Detik 1) < 0.25 v_maks (Detik 2) < 0.50 v_maks (Detik 3) < v_maks (Detik 4)\n. Susunan yang betul daripada kuasa terendah kepada tertinggi ialah 1, 2, 3, 4\n.",
+        "zh": "在恒定拉力 T 下，瞬时功率直接与速率 v 成正比\n。速率排序为：0（时刻 1）< 0.25 v_max（时刻 2）< 0.50 v_max（时刻 3）< v_max（时刻 4）\n。功率从低到高的正确顺序为 1、2、3、4\n。"
+      },
+      "explanation": {
+        "en": "Even when the hoisting force is constant throughout acceleration, power is not constant\n. Instantaneous power is P = T v, which starts at zero when stationary and reaches its maximum at the instant of maximum velocity\n.",
+        "ms": "Walaupun daya pengangkat adalah malar sepanjang pecutan, kuasa adalah tidak malar\n. Kuasa seketika ialah P = T v, yang bermula pada sifar apabila pegun dan mencapai nilai maksimumnya pada ketika halaju maksimum\n.",
+        "zh": "即使在整个加速过程中提升力恒定不变，功率也不是恒定的\n。瞬时功率为 P = T v，静止时从零开始，并在达到最大速度的瞬间达到最大值\n。"
+      },
+      "misconceptions": [
+        "constant-force-constant-power"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law",
+        "prompt": {
+          "en": "Review how constant acceleration causes velocity to increase linearly with time from an initial resting state.",
+          "ms": "Ulang kaji bagaimana pecutan malar menyebabkan halaju meningkat secara linear dengan masa dari keadaan rehat awal.",
+          "zh": "复习恒定加速度如何使速度从初始静止状态随时间线性增加。"
+        }
+      },
+      "accessibilityText": {
+        "en": "An ordering activity requiring four time milestones during an elevator car's acceleration phase to be arranged from lowest instantaneous power to highest instantaneous power.",
+        "ms": "Aktiviti susunan yang memerlukan empat pencapaian masa semasa fasa pecutan kabin lif disusun daripada kuasa seketika paling rendah kepada kuasa seketika paling tinggi.",
+        "zh": "一个排序活动，要求将电梯轿厢加速阶段的四个时间节点按瞬时功率从最低到最高进行排序。"
+      },
+      "provenance": {
+        "sourceLocation": "8.5 Power; Complete controlled PDF for section 8.5",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-instant-start",
+            "label": {
+              "en": "Instant 1: The exact moment of release from rest (instantaneous speed is zero)\n",
+              "ms": "Detik 1: Ketika tepat dilepaskan dari keadaan rehat (laju seketika ialah sifar)\n",
+              "zh": "时刻 1：由静止释放的精确瞬间（瞬时速率为零）\n"
+            }
+          },
+          {
+            "id": "item-instant-quarter",
+            "label": {
+              "en": "Instant 2: When the car reaches one-quarter of its maximum operating speed\n",
+              "ms": "Detik 2: Apabila kabin mencapai satu perempat daripada laju operasi maksimumnya\n",
+              "zh": "时刻 2：当轿厢达到其最大运行速率的四分之一时\n"
+            }
+          },
+          {
+            "id": "item-instant-half",
+            "label": {
+              "en": "Instant 3: When the car reaches half of its maximum operating speed\n",
+              "ms": "Detik 3: Apabila kabin mencapai separuh daripada laju operasi maksimumnya\n",
+              "zh": "时刻 3：当轿厢达到其最大运行速率的一半时\n"
+            }
+          },
+          {
+            "id": "item-instant-full",
+            "label": {
+              "en": "Instant 4: The moment the car reaches its full maximum speed at the end of acceleration\n",
+              "ms": "Detik 4: Ketika kabin mencapai laju maksimum penuhnya pada akhir pecutan\n",
+              "zh": "时刻 4：在加速结束时轿厢达到其全部最大速率的瞬间\n"
+            },
+            "misconception": "constant-force-constant-power"
+          }
+        ],
+        "correctOrder": [
+          "item-instant-start",
+          "item-instant-quarter",
+          "item-instant-half",
+          "item-instant-full"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "constant-force-constant-power",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-instant-full",
+            "secondItemId": "item-instant-start"
+          }
+        }
+      ]
+    }
+  ]
+}

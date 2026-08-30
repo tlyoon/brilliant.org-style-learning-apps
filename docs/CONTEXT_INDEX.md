@@ -39,3 +39,5 @@ Accepted source-derived automation baseline: Decision 0017 derives exact section
 Accepted public-review baseline: Decision 0007 permits the two Section 8.1 draft packages to be deployed together in a separate minimal public GitHub Pages repository with explicit draft labelling and no publication sign-offs.
 
 Accepted Chapter 8 public-review extension: Decision 0018 permits the generated Section 8.3 draft to join the existing minimal public GitHub Pages review repository while retaining draft labelling, excluding internal artifacts, and preserving all human-review gates.
+
+Accepted Section 8.5 public-review extension: Decision 0020 permits the generated Section 8.5 draft to join the same minimal public GitHub Pages review repository under the same draft labelling, data-exclusion, and human-review constraints.

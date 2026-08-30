@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the minimal Section 8.1 and Section 8.3 public review site."""
+"""Build the minimal Chapter 8 public review site."""
 
 from __future__ import annotations
 
@@ -16,6 +16,8 @@ VERSION_ONE_COMMIT = "38b6b59d4d5c0fc408406721c445baf78c00980d"
 EXPECTED_PACKAGE_ID = "chapter-8-section-8-1"
 SECTION_EIGHT_THREE_PACKAGE_PATH = Path("content/chapter-8/section-8-3/package.json")
 SECTION_EIGHT_THREE_PACKAGE_ID = "chapter-8-section-8-3"
+SECTION_EIGHT_FIVE_PACKAGE_PATH = Path("content/chapter-8/section-8-5/package.json")
+SECTION_EIGHT_FIVE_PACKAGE_ID = "chapter-8-section-8-5"
 
 
 def _validate_public_package(payload: bytes, label: str, expected_package_id: str) -> None:
@@ -60,6 +62,18 @@ def section_eight_three_package() -> bytes:
         payload,
         "Section 8.3",
         SECTION_EIGHT_THREE_PACKAGE_ID,
+    )
+    return payload
+
+
+def section_eight_five_package() -> bytes:
+    """Read the current generated Section 8.5 draft."""
+
+    payload = (ROOT / SECTION_EIGHT_FIVE_PACKAGE_PATH).read_bytes()
+    _validate_public_package(
+        payload,
+        "Section 8.5",
+        SECTION_EIGHT_FIVE_PACKAGE_ID,
     )
     return payload
 
@@ -130,6 +144,39 @@ def _section_eight_three_page() -> str:
 """
 
 
+def _section_eight_five_page() -> str:
+    return """<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Section 8.5 Power Review Prototype</title>
+    <link rel="stylesheet" href="../app/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="../">Section 8.5 - Power</a>
+        <label>Language
+          <select id="locale" aria-label="Language">
+            <option value="en">English</option>
+            <option value="ms">Bahasa Melayu</option>
+            <option value="zh">Simplified Chinese</option>
+          </select>
+        </label>
+      </header>
+      <p class="prototype-notice" role="note">Draft review prototype - not approved for publication.</p>
+      <section id="app" aria-live="polite" data-package-url="../content/section-8-5/package.json">
+        <p>Loading Section 8.5...</p>
+      </section>
+    </main>
+    <script type="module" src="../app/app.js"></script>
+  </body>
+</html>
+"""
+
+
 def _landing_page() -> str:
     return """<!doctype html>
 <html lang="en">
@@ -169,6 +216,12 @@ def _landing_page() -> str:
           <p>Open the generated, structurally validated 18-activity draft.</p>
           <a class="action version-link" href="section-8-3/">Open Section 8.3</a>
         </section>
+        <section class="card">
+          <p class="eyebrow">Section 8.5</p>
+          <h2>Power</h2>
+          <p>Open the generated, structurally validated 18-activity draft.</p>
+          <a class="action version-link" href="section-8-5/">Open Section 8.5</a>
+        </section>
       </div>
       <p class="privacy-note">This static review site has no accounts, analytics, audio capture, or student-data storage.</p>
     </main>
@@ -188,6 +241,7 @@ def build(output: Path) -> None:
         Path("content/v1/package.json"): version_one_package(),
         Path("content/v2/package.json"): version_two_package(),
         Path("content/section-8-3/package.json"): section_eight_three_package(),
+        Path("content/section-8-5/package.json"): section_eight_five_package(),
     }
     files = {
         Path("index.html"): _landing_page().encode("utf-8"),
@@ -198,6 +252,7 @@ def build(output: Path) -> None:
             "Version 2", "Version 2", "../content/v2/package.json"
         ).encode("utf-8"),
         Path("section-8-3/index.html"): _section_eight_three_page().encode("utf-8"),
+        Path("section-8-5/index.html"): _section_eight_five_page().encode("utf-8"),
         **packages,
     }
     for relative, payload in files.items():
