@@ -1,0 +1,16 @@
+{
+  "manifestVersion": "1.0",
+  "sourceId": "brilliant-content-generator-section-8-5",
+  "controlledFilename": "source.pdf",
+  "sha256": "22052c9a2f303c6c20e290be99db787a0d217fa6163ebd55fe577913de448131",
+  "edition": "Edition not identified in the controlled PDF",
+  "chapter": "Chapter 8",
+  "subchapter": "8.5 Power",
+  "heading": "8.5 Power",
+  "pageRange": "Complete controlled PDF for section 8.5",
+  "learningBoundary": "Includes concepts supported by the controlled PDF for 8.5 Power: Definition of instantaneous power as the time rate of energy transfer dE/dt; Definition and calculation of average power as work divided by elapsed time; Mechanical power formula P = F · v for a force acting on a moving particle; SI and customary units of power (watt, horsepower) and energy equivalence of the kilowatt-hour; Analysis of power output under uniform velocity versus uniform upward acceleration. Excludes: Rotational power and torque-angular velocity relationships; Electrical circuit power formulations involving potential difference and current; Thermodynamic cycle power and heat engine rate efficiencies; Variable-force path line integrals requiring numerical calculus.",
+  "extractedOn": "2026-08-30",
+  "reviewer": "Automated draft generation; qualified human review required",
+  "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git.",
+  "driveFileId": "1j-WcYpYZSu5fzF5eyeu6kLlRsVnIZAy_"
+}
