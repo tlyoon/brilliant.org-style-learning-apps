@@ -13,7 +13,16 @@ ROOT = Path(__file__).resolve().parents[1]
 class ProjectRecyclabilityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        cls._project_config_relative_path = configured_sync.core.PROJECT_CONFIG_RELATIVE_PATH
+        cls._managed_config_header = configured_sync.core.MANAGED_CONFIG_HEADER
+        cls._allowed_project_keys = configured_sync.core.ALLOWED_PROJECT_KEYS
         configured_sync.configure_core()
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        configured_sync.core.PROJECT_CONFIG_RELATIVE_PATH = cls._project_config_relative_path
+        configured_sync.core.MANAGED_CONFIG_HEADER = cls._managed_config_header
+        configured_sync.core.ALLOWED_PROJECT_KEYS = cls._allowed_project_keys
 
     def materialize(self, project_name: str, folder_id: str, state_root: Path):
         source = (ROOT / configured_sync.CONFIGURE_PROJECT_RELATIVE_PATH).read_text(encoding="utf-8")
