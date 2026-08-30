@@ -5,6 +5,17 @@ from scripts import sync_configured_workstation as configured_sync
 
 
 class ConfiguredWorkstationSyncTests(unittest.TestCase):
+    def setUp(self):
+        self._project_config_relative_path = configured_sync.core.PROJECT_CONFIG_RELATIVE_PATH
+        self._managed_config_header = configured_sync.core.MANAGED_CONFIG_HEADER
+        self._allowed_project_keys = configured_sync.core.ALLOWED_PROJECT_KEYS
+        self.addCleanup(self._restore_core_globals)
+
+    def _restore_core_globals(self):
+        configured_sync.core.PROJECT_CONFIG_RELATIVE_PATH = self._project_config_relative_path
+        configured_sync.core.MANAGED_CONFIG_HEADER = self._managed_config_header
+        configured_sync.core.ALLOWED_PROJECT_KEYS = self._allowed_project_keys
+
     def test_configure_core_selects_dedicated_project_authority(self):
         configured_sync.configure_core()
         self.assertEqual(
