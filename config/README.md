@@ -1,5 +1,7 @@
 # Project configuration boundary
 
+For the complete normal workflow from a controlled subchapter PDF through generation, review, static bundling, and optional GitHub Pages deployment, start with `docs/PDF_TO_APP_QUICKSTART.md`. This document is the field/reference guide for project configuration.
+
 `configure_project.toml` is the normal tracked authority for non-secret values that can change when this repository is reused for another subject, textbook, source tree, Gemini Gem, or deployment policy.
 
 The `config/` directory also owns the project-specific Gemini Gem text:

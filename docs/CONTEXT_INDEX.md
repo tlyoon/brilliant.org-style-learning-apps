@@ -13,10 +13,15 @@ When documents conflict, use this order:
 7. `docs/ARCHITECTURE.md` and `docs/AI_WORKFLOW.md` — technical design.
 8. `docs/DEVELOPMENT_ROADMAP.md`, issues, and pull requests — delivery planning.
 
+`docs/PDF_TO_APP_QUICKSTART.md` is the canonical operational walkthrough for the normal end-to-end workflow. It summarizes the approved rules above; it does not override them.
+
 ## Task routing
 
 | Task | Read first |
 |---|---|
+| First end-to-end PDF → draft → review app workflow | `docs/PDF_TO_APP_QUICKSTART.md` |
+| Recycle repository for another textbook/project | `docs/GENERIC_PROJECT_SETUP.md`, then `config/README.md` |
+| Workstation setup/sync troubleshooting | `docs/WORKSTATION_SYNC.md` |
 | Product change | Product requirements and decision records |
 | Learning content | Content rules, learning design, schema, source-ingestion policy |
 | AI tutor | AI workflow, learning design, security/privacy |

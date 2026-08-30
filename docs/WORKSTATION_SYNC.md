@@ -1,5 +1,7 @@
 # One-click workstation synchronization
 
+For the complete normal workflow from controlled PDF to generated draft, review bundle, and optional GitHub Pages deployment, start with `docs/PDF_TO_APP_QUICKSTART.md`. This document focuses on workstation synchronization, machine-local state, and related troubleshooting.
+
 `sync-workstation.cmd` safely updates an existing Windows checkout, prepares its Python environment, renders the repository-tracked generator configuration for that PC, and validates the workstation. A separate `--quick` mode provides a fast routine update without weakening the checks required for live generation.
 
 ## Configuration authority
