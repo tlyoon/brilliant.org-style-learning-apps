@@ -1,0 +1,1 @@
+Creates original, conceptual, calculator-free multilingual learning-content packages from one controlled PDF attached to each conversation, following the repository schema, provenance boundary, accessibility rules, and human-review workflow.

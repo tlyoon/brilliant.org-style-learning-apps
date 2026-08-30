@@ -1,0 +1,16 @@
+{
+  "manifestVersion": "1.0",
+  "sourceId": "brilliant-content-generator-section-8-2",
+  "controlledFilename": "source.pdf",
+  "sha256": "f72422b7113d11a7adfe55c0fc9e7a85b2470bda84cd32b0add5f847f8f52fd1",
+  "edition": "Edition not identified in the controlled PDF",
+  "chapter": "Chapter 8",
+  "subchapter": "8.2 Analysis Model: Isolated System (Energy)",
+  "heading": "8.2 Analysis Model: Isolated System (Energy)",
+  "pageRange": "Complete controlled PDF for section 8.2",
+  "learningBoundary": "Includes concepts supported by the controlled PDF for 8.2 Analysis Model: Isolated System (Energy): Definition and criteria for an isolated system for energy with zero energy transfers across the boundary; Conservation of mechanical energy where kinetic and potential energies transform with constant sum; General conservation of energy for isolated systems containing internal energy transformations; Interplay between gravitational potential energy, elastic potential energy, and kinetic energy; Comparison between isolated multi-object systems and nonisolated single-object systems under external forces; Path independence of energy changes when conservative forces transform mechanical energy. Excludes: Microscopic models of sliding kinetic friction and spot-welded contact mechanics; Thermodynamic cycles and macroscopic heat engine formulations; Electromagnetic radiation transfer and quantum photoelectric effect analysis; Time-dependent power ratings and dissipation rate equations.",
+  "extractedOn": "2026-08-30",
+  "reviewer": "Automated draft generation; qualified human review required",
+  "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git.",
+  "driveFileId": "1atqtoZbgdWEohEg8pgrAFwubaAMCSGIz"
+}
