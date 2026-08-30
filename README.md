@@ -15,11 +15,17 @@ The repository contains specifications, schemas, validation scripts, tests, proj
 
 ## Start here
 
-1. Read `AGENTS.md`.
+For the complete normal workflow from one controlled subchapter PDF to a generated draft, reviewed static bundle, and optional GitHub Pages deployment, use **`docs/PDF_TO_APP_QUICKSTART.md`**.
+
+Then use the specialist references only when needed:
+
+1. Read `AGENTS.md` for durable operational/safety rules.
 2. Read `docs/CONTEXT_INDEX.md` for the authoritative-document order.
 3. Read `config/README.md` for the project/configuration boundary.
-4. Run `python scripts/validate_content.py`.
-5. Run `python -m unittest discover -s tests -v`.
+4. Read `docs/GENERIC_PROJECT_SETUP.md` when recycling the repository for another textbook/project.
+5. Read `docs/WORKSTATION_SYNC.md` for workstation internals and troubleshooting.
+
+For a quick repository health check, run `python scripts/validate_content.py` and `python -m unittest discover -s tests -v`.
 
 ## Run the learner scaffold
 
