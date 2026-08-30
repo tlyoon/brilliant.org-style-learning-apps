@@ -3,7 +3,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
 
-from app_generator.errors import TransientGeminiError, UiContractError
+from app_generator.errors import ResponseContractError, TransientGeminiError, UiContractError
 from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
 
 
@@ -86,6 +86,51 @@ class GeneratorGeminiClientTests(unittest.TestCase):
         self.assertEqual(1, recovering.restart_count)
         first.driver.save_screenshot.assert_called_once()
         replacement.driver.save_screenshot.assert_called_once()
+
+    def test_response_contract_error_relaunches_and_retries_the_same_prompt(self):
+        first = Mock()
+        first.ask.side_effect = ResponseContractError("incomplete JSON")
+        first.driver.save_screenshot.return_value = True
+        replacement = Mock()
+        replacement.ask.return_value = 'BEGIN_JSON\n{"ok": true}\nEND_JSON'
+        restart = Mock(return_value=replacement)
+
+        recovering = RecoveringGeminiClient(
+            first,
+            restart,
+            max_restarts=3,
+            diagnostics_dir=Path("diagnostics"),
+        )
+        with self.assertLogs("app_generator.gemini", level="WARNING") as logs:
+            response = recovering.ask("same prompt")
+
+        self.assertIn('"ok": true', response)
+        self.assertEqual(1, recovering.restart_count)
+        restart.assert_called_once_with()
+        replacement.ask.assert_called_once_with("same prompt")
+        self.assertTrue(any("RESPONSE_CONTRACT_ERROR (1/3)" in entry for entry in logs.output))
+
+    def test_response_contract_error_stops_after_three_relaunches(self):
+        clients = [Mock() for _ in range(4)]
+        for client in clients:
+            client.ask.side_effect = ResponseContractError("incomplete JSON")
+            client.driver.save_screenshot.return_value = True
+        replacements = iter(clients[1:])
+
+        recovering = RecoveringGeminiClient(
+            clients[0],
+            lambda: next(replacements),
+            max_restarts=3,
+            diagnostics_dir=Path("diagnostics"),
+        )
+        with self.assertLogs("app_generator.gemini", level="WARNING"):
+            with self.assertRaises(ResponseContractError):
+                recovering.ask("same prompt")
+
+        self.assertEqual(3, recovering.restart_count)
+        for client in clients:
+            client.ask.assert_called_once_with("same prompt")
+            client.driver.save_screenshot.assert_called_once()
 
 
 if __name__ == "__main__":

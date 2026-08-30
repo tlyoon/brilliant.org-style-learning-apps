@@ -73,7 +73,7 @@ class GeneratorConfigTests(unittest.TestCase):
             self.assertEqual("cli@example.com", config.login_name)
             self.assertEqual("DEBUG", config.log_level)
             self.assertEqual(4, config.max_repair_attempts)
-            self.assertEqual(2, config.max_gemini_session_restarts)
+            self.assertEqual(3, config.max_gemini_session_restarts)
             self.assertEqual("EXAMPLE_PROJECT_GENERATOR_", config.env_prefix)
 
     def test_auto_merge_requires_publishing_and_a_non_draft_pr(self):

@@ -9,7 +9,7 @@ from typing import Any, Callable
 
 from app_generator.browser.account import GoogleAccountVerifier
 from app_generator.config import GeneratorConfig
-from app_generator.errors import TransientGeminiError, UiContractError
+from app_generator.errors import ResponseContractError, TransientGeminiError, UiContractError
 from app_generator.gemini.conversation import GemConversationPage
 from app_generator.gemini.editor import GemEditorPage
 from app_generator.gemini.models import ModelFailure, ModelOption, classify_model_failure, rank_models
@@ -115,7 +115,7 @@ class GeminiClient:
 
 
 class RecoveringGeminiClient:
-    """Retry only explicit transient Gemini failures in a fresh browser session."""
+    """Retry recoverable Gemini response failures in a fresh browser session."""
 
     def __init__(
         self,
@@ -135,34 +135,35 @@ class RecoveringGeminiClient:
     def actual_model(self) -> str:
         return self.client.actual_model
 
-    def _capture_transient_error(self) -> None:
+    def _capture_recoverable_error(self) -> None:
         timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
         path = self.diagnostics_dir / (
-            f"gemini-transient-error-{timestamp}-restart-{self.restart_count + 1:02d}.png"
+            f"gemini-recoverable-error-{timestamp}-restart-{self.restart_count + 1:02d}.png"
         )
         try:
             self.diagnostics_dir.mkdir(parents=True, exist_ok=True)
             if not self.client.driver.save_screenshot(str(path)):
                 raise RuntimeError("Chrome did not confirm screenshot creation")
-            LOGGER.warning("Captured transient Gemini failure screenshot: %s", path)
+            LOGGER.warning("Captured recoverable Gemini failure screenshot: %s", path)
         except Exception as exc:
-            LOGGER.warning("Could not capture transient Gemini failure screenshot: %s", exc)
+            LOGGER.warning("Could not capture recoverable Gemini failure screenshot: %s", exc)
 
     def ask(self, prompt: str) -> str:
         while True:
             try:
                 return self.client.ask(prompt)
-            except TransientGeminiError:
-                self._capture_transient_error()
+            except (ResponseContractError, TransientGeminiError) as exc:
+                self._capture_recoverable_error()
                 if self.restart_count >= self.max_restarts:
                     LOGGER.error(
-                        "Gemini transient-error restart limit reached after %d relaunches",
+                        "Gemini recovery restart limit reached after %d relaunches",
                         self.restart_count,
                     )
                     raise
                 self.restart_count += 1
                 LOGGER.warning(
-                    "Relaunching Gemini after transient service error (%d/%d)",
+                    "Relaunching Gemini after %s (%d/%d)",
+                    exc.code,
                     self.restart_count,
                     self.max_restarts,
                 )
