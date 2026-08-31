@@ -13,6 +13,7 @@ from app_generator.coordinator.client import CoordinatorClient
 from app_generator.errors import GeneratorError, NoAvailableJob
 from app_generator.prompts import gem_description, gem_instructions
 from app_generator.runtime.orchestrator import run_generation
+from app_generator.runtime.auto import inspect_auto_queue, run_continuous_auto
 from app_generator.sources.google_drive import (
     DriveRestClient,
     discover_drive_sources,
@@ -42,7 +43,7 @@ def _add_config_arguments(command: argparse.ArgumentParser) -> None:
     command.add_argument("--sourcepath")
     command.add_argument("--pdf-subchapter-path")
     command.add_argument("--drive-oauth-client-file", type=Path)
-    command.add_argument("--selection-mode", choices=("specific", "distributed"))
+    command.add_argument("--selection-mode", choices=("specific", "auto", "distributed"))
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -77,6 +78,25 @@ def _load(args: argparse.Namespace) -> GeneratorConfig:
 
 
 def doctor(config: GeneratorConfig) -> int:
+    if config.selection_mode == "auto":
+        snapshot = inspect_auto_queue(config)
+        print(
+            "Auto queue: "
+            f"total={snapshot.total}, generated={snapshot.generated}, review_pending={snapshot.review_pending}, "
+            f"completed={snapshot.completed}, interrupted={snapshot.interrupted}, fresh={snapshot.queued}, "
+            f"leased={snapshot.leased}, failed={snapshot.failed}"
+        )
+        if snapshot.next_subchapter_id:
+            print(f"Next non-claiming candidate preview: {snapshot.next_subchapter_id}")
+        elif snapshot.leased:
+            print("No job is currently claimable; remaining work is leased by another worker.")
+        elif snapshot.failed:
+            print("No job is currently claimable; terminal failures require intervention.")
+        else:
+            print("No job is currently claimable; all discovered sources are globally successful.")
+        print("Auto doctor does not claim a job or exercise the Gemini UI.")
+        return 0
+
     drive_source = None
     effective_config = config
     with tempfile.TemporaryDirectory(prefix="content-generator-doctor-") as directory:
@@ -158,14 +178,25 @@ def main(argv: list[str] | None = None) -> int:
             CoordinatorClient(config).mark_completed(args.job_key, pr_url=args.pr_url)
             print(f"Coordinator job {args.job_key} marked completed.")
             return 0
+        def report_context(context):
+            print(f"Run {context.run_id} completed.")
+            for path in context.store.state.installed_paths:
+                print(f"Generated: {path}")
+            if context.store.state.pr_url:
+                print(f"Draft pull request: {context.store.state.pr_url}")
+            print("Status: structurally validated draft awaiting qualified content review; not approved for publication.")
+
+        if config.selection_mode == "auto":
+            if args.resume:
+                raise GeneratorError("--resume is not supported with continuous auto mode")
+            return run_continuous_auto(config, on_completed=report_context)
+
         context = run_generation(config, resume_run_id=args.resume)
-        print(f"Run {context.run_id} completed.")
-        for path in context.store.state.installed_paths:
-            print(f"Generated: {path}")
-        if context.store.state.pr_url:
-            print(f"Draft pull request: {context.store.state.pr_url}")
-        print("Status: structurally validated draft awaiting qualified content review; not approved for publication.")
+        report_context(context)
         return 0
+    except KeyboardInterrupt:
+        print("AUTO_INTERRUPTED: worker stopped by user; any active auto lease was returned to the coordinator.", file=sys.stderr)
+        return 130
     except GeneratorError as exc:
         print(f"{exc.code}: {exc}", file=sys.stderr)
         if exc.detail:
