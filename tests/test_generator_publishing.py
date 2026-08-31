@@ -39,12 +39,13 @@ class GeneratorPublishingTests(unittest.TestCase):
             commands = [item[0] for item in publisher.commands]
             self.assertIn(["git", "pull", "--ff-only", "origin", "main"], commands)
             self.assertEqual("automation/section-8-1-abcdef0123", branch)
+            # show-ref must emit the matching ref so branch existence can actually be
+            # detected; --quiet would always produce an empty output string.
             self.assertIn(
                 [
                     "git",
                     "show-ref",
                     "--verify",
-                    "--quiet",
                     "refs/heads/automation/section-8-1-abcdef0123",
                 ],
                 commands,
