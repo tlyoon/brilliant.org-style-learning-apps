@@ -26,8 +26,8 @@ class RecordingCheckpoint:
 
 
 class ContinuousAutoTests(unittest.TestCase):
-    def config(self):
-        return SimpleNamespace(heartbeat_seconds=300)
+    def config(self, *, git_publish=True):
+        return SimpleNamespace(heartbeat_seconds=300, git_publish=git_publish)
 
     def snapshot(self, **overrides):
         values = dict(
@@ -44,6 +44,17 @@ class ContinuousAutoTests(unittest.TestCase):
         )
         values.update(overrides)
         return QueueSnapshot(**values)
+
+    def test_auto_mode_requires_durable_git_publication(self):
+        calls = []
+        with self.assertRaisesRegex(AutoModeBlockedError, "git_publish=true"):
+            run_continuous_auto(
+                self.config(git_publish=False),
+                run_once=lambda config: calls.append("run"),
+                snapshotter=lambda config: self.snapshot(),
+                sleeper=lambda seconds: None,
+            )
+        self.assertEqual([], calls)
 
     def test_worker_continues_after_recoverable_interruption_then_finishes(self):
         calls = []
