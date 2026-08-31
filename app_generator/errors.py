@@ -35,6 +35,19 @@ class LeaseLostError(CoordinatorError):
     code = "LEASE_LOST"
 
 
+class AutoJobExecutionError(GeneratorError):
+    code = "AUTO_JOB_EXECUTION_FAILED"
+
+    def __init__(self, message: str, *, status: str, original_code: str) -> None:
+        super().__init__(message, detail=f"coordinator_status={status}; original_code={original_code}")
+        self.status = status
+        self.original_code = original_code
+
+
+class AutoModeBlockedError(GeneratorError):
+    code = "AUTO_MODE_BLOCKED"
+
+
 class BrowserError(GeneratorError):
     code = "BROWSER_ERROR"
 
