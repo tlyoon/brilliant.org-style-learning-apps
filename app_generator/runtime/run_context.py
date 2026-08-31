@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
@@ -13,6 +13,12 @@ from app_generator.filesystem.outputs import write_json_atomic, write_text_atomi
 from app_generator.runtime.state import StateStore
 
 SAFE_STAGE = re.compile(r"^[a-z0-9-]+$")
+
+
+class CheckpointPort:
+    def save(self, name: str, document: object) -> None: ...
+    def delete(self, name: str) -> None: ...
+    def clear(self) -> None: ...
 
 
 @dataclass(frozen=True)
@@ -27,6 +33,7 @@ class RunContext:
     diagnostics: Path
     sources: Path
     store: StateStore
+    checkpoint: CheckpointPort | None = None
 
     @classmethod
     def create(cls, state_root: Path, run_id: str | None = None) -> "RunContext":
@@ -52,10 +59,21 @@ class RunContext:
             store,
         )
 
+    def with_checkpoint(self, checkpoint: CheckpointPort) -> "RunContext":
+        return replace(self, checkpoint=checkpoint)
+
+    def restore_stages(self, stages: dict[str, object]) -> None:
+        for name, document in stages.items():
+            if not SAFE_STAGE.fullmatch(name):
+                raise ValueError(f"Unsafe restored stage name: {name}")
+            write_json_atomic(self.batches / f"{name}.json", document)
+
     def save_stage(self, name: str, document: object, raw_response: str | None = None) -> None:
         if not SAFE_STAGE.fullmatch(name):
             raise ValueError(f"Unsafe stage name: {name}")
         write_json_atomic(self.batches / f"{name}.json", document)
+        if self.checkpoint is not None:
+            self.checkpoint.save(name, document)
         if raw_response is not None:
             write_text_atomic(self.batches / f"{name}.response.txt", raw_response)
 
@@ -77,9 +95,13 @@ class RunContext:
             (self.batches / f"{name}.json").unlink()
         except FileNotFoundError:
             pass
+        if self.checkpoint is not None:
+            self.checkpoint.delete(name)
 
     def discard_parsed_stages(self) -> None:
         """Remove generated parsed caches while retaining raw responses."""
 
         for path in self.batches.glob("*.json"):
             path.unlink()
+        if self.checkpoint is not None:
+            self.checkpoint.clear()
