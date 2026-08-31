@@ -14,7 +14,25 @@ from app_generator.sources.google_drive import DriveRestClient, discover_drive_s
 from app_generator.sources.google_drive_auth import authorize_google_drive
 
 
+def _require_durable_publication(config: GeneratorConfig) -> None:
+    """Require every successful auto job to have a shared Git handoff.
+
+    Auto workers coordinate globally. Marking a job generated when its artifacts exist
+    only in one worker's checkout would make that local filesystem an accidental source
+    of truth and could cause every other worker to skip content it cannot retrieve.
+    Requiring Git publication keeps the coordinator's generated state aligned with a
+    durable remote branch/PR (or merged result).
+    """
+
+    if not config.git_publish:
+        raise AutoModeBlockedError(
+            "Continuous auto mode requires git_publish=true so every successful job is "
+            "durably handed off through Git before the coordinator marks it generated."
+        )
+
+
 def inspect_auto_queue(config: GeneratorConfig) -> QueueSnapshot:
+    _require_durable_publication(config)
     authorization = authorize_google_drive(config)
     drive_client = DriveRestClient(authorization.session, config.drive_api_timeout_seconds)
     inventory = discover_drive_sources(
@@ -43,12 +61,14 @@ def run_continuous_auto(
 ) -> int:
     """Run coordinated jobs until every discovered source has a successful global state.
 
-    Recoverable/terminal per-job failures do not stop the worker immediately: the
-    coordinator priority rules allow another interrupted job or a fresh job to run.
-    The worker exits non-zero only when no runnable work remains and terminal failures
-    still block global completion.
+    Every successful job must first be published through Git so the coordinator's
+    generated state never depends on one worker's local checkout. Recoverable/terminal
+    per-job failures do not stop the worker immediately: the coordinator priority rules
+    allow another interrupted job or a fresh job to run. The worker exits non-zero only
+    when no runnable work remains and terminal failures still block global completion.
     """
 
+    _require_durable_publication(config)
     poll_seconds = max(5, min(60, config.heartbeat_seconds // 10 or 5))
     while True:
         try:
