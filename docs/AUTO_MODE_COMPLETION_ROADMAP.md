@@ -1,6 +1,6 @@
 # `--selection-mode auto` completion roadmap
 
-This document records the remaining productionization phases after the initial continuous multi-PC coordinator/recovery implementation.
+This document records the productionization phases for continuous multi-PC automatic generation.
 
 ## Phase 1 — Continuous coordinated generation and recovery
 
@@ -20,7 +20,7 @@ The Phase-1 worker:
 
 ## Phase 2 — Durable shared publication
 
-Implemented on `feature/auto-durable-publication` on top of Phase 1.
+Implemented by `feature/auto-durable-publication` / PR #44 on top of Phase 1.
 
 ### Production invariant
 
@@ -32,9 +32,9 @@ Therefore continuous auto mode requires:
 git_publish = true
 ```
 
-The existing one-job orchestrator publishes validated artifacts through the configured Git remote before the auto coordinator marks the lease `generated`. The durable handoff can be an open PR/remote branch or a merged result according to the configured Git policy.
+The one-job orchestrator publishes validated artifacts through the configured Git remote before the auto coordinator marks the lease `generated`. The durable handoff can be an open PR/remote branch or a merged result according to the configured Git policy.
 
-If `git_publish=false`, both auto doctor and auto execution fail early with `AUTO_MODE_BLOCKED`; no Drive job is claimed and no Gemini generation starts.
+If `git_publish=false`, auto configuration/execution fails early; no Drive job is claimed and no Gemini generation starts.
 
 This keeps the authoritative roles separated:
 
@@ -48,18 +48,51 @@ Local PC            transient execution state only
 
 ## Phase 3 — Turnkey unattended operation and retry hardening
 
-Phase 3 is the final planned productionization phase. It should complete the operational contract by addressing the crash windows around Git handoff and making auto mode a first-class persistent operating mode.
+Implemented by `feature/auto-turnkey-hardening` on top of Phase 2.
 
-Planned Phase-3 requirements:
+Phase 3 completes the intended auto-mode production contract:
 
-1. Allow `selection_mode = "auto"` as a validated persistent project configuration instead of requiring the CLI-only compatibility wrapper.
-2. Make deterministic Git job branches idempotent across retries:
-   - safely discard a stale local job branch that contains no job commit;
-   - detect a previously pushed deterministic job branch for the same `job_key`;
-   - recover/create the corresponding PR rather than regenerating the source;
-   - reconcile the coordinator to `generated` after the remote handoff is confirmed.
-3. Preserve the existing lease boundary while recovering publication so two workers cannot both finalize the same job.
-4. Improve startup/exit diagnostics for unattended workers and make the supported launch command explicit.
-5. Add regression tests for persistent-auto configuration and the Git publication recovery cases.
+1. `selection_mode = "auto"` is a validated persistent project configuration. The CLI compatibility shim that temporarily loaded auto as specific mode is removed.
+2. Auto mode validates the same coordinated-operation prerequisites as distributed mode: a Google Apps Script coordinator URL, Google Drive discovery, and `git_publish=true`.
+3. Before auto doctor trusts a locally visible generated package, the publisher synchronizes the configured Git base. This makes the synchronized Git base—not an arbitrary worker filesystem—the basis for existing generated content.
+4. Deterministic job branches are retry-safe:
+   - an empty stale local job branch is deleted safely and generation may restart;
+   - a local job branch with an existing job commit is treated as recoverable rather than overwritten;
+   - a previously pushed deterministic remote branch is treated as recoverable rather than regenerated;
+   - an existing open PR is reused, a closed unmerged PR can be reopened, and an already merged PR is recognized.
+5. Recovery runs under an exact coordinator lease. Two workers may discover the same stale handoff, but only one can claim and finalize it.
+6. A recoverable Git handoff is validated against the expected generated artifact paths, published/reopened/merged according to policy, checkpoint storage is cleared, and the coordinator is marked `generated` without opening Gemini.
+7. Publication failures clean only the known generated paths so a failed pre-commit publication does not unnecessarily leave the worker checkout dirty.
+8. Worker diagnostics now explicitly report `AUTO_START`, `AUTO_RECOVERED`, `AUTO_IDLE`, and `AUTO_COMPLETE` states.
+9. Regression tests cover persistent auto configuration, startup reconciliation behavior, empty stale-branch cleanup, and remote Git handoff recovery.
 
-Phase 3 must build on the durable-publication invariant from Phase 2: a successful global `generated` state is never local-only.
+## Final operating form
+
+Once the complete stack is merged and the coordinator is deployed, a project may make auto mode persistent:
+
+```toml
+[automation]
+selection_mode = "auto"
+coordinator_url = "https://script.google.com/macros/s/.../exec"
+
+[git]
+git_publish = true
+```
+
+The project-derived coordinator token remains machine-local and must be available in the configured coordinator-token environment variable.
+
+With persistent auto mode configured, the normal commands are:
+
+```powershell
+python -m app_generator doctor
+python -m app_generator run
+```
+
+The explicit override remains available when desired:
+
+```powershell
+python -m app_generator doctor --selection-mode auto
+python -m app_generator run --selection-mode auto
+```
+
+Auto workers are expected to start from a clean repository. They synchronize the configured Git base before coordinated work and use GitHub as the durable generated-content handoff.
