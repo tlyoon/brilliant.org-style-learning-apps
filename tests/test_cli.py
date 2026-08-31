@@ -18,6 +18,10 @@ class CliParserTests(unittest.TestCase):
 
         self.assertEqual(args.config, config)
 
+    def test_auto_selection_mode_is_exposed(self):
+        args = _parser().parse_args(["run", "--selection-mode", "auto"])
+        self.assertEqual("auto", args.selection_mode)
+
 
 if __name__ == "__main__":
     unittest.main()
