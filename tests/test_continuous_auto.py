@@ -27,7 +27,11 @@ class RecordingCheckpoint:
 
 class ContinuousAutoTests(unittest.TestCase):
     def config(self, *, git_publish=True):
-        return SimpleNamespace(heartbeat_seconds=300, git_publish=git_publish)
+        return SimpleNamespace(
+            heartbeat_seconds=300,
+            git_publish=git_publish,
+            worker_id="test-worker",
+        )
 
     def snapshot(self, **overrides):
         values = dict(
@@ -52,12 +56,14 @@ class ContinuousAutoTests(unittest.TestCase):
                 self.config(git_publish=False),
                 run_once=lambda config: calls.append("run"),
                 snapshotter=lambda config: self.snapshot(),
+                reconciler=lambda config: 0,
                 sleeper=lambda seconds: None,
             )
         self.assertEqual([], calls)
 
     def test_worker_continues_after_recoverable_interruption_then_finishes(self):
         calls = []
+        reconciles = []
         completed = object()
 
         def run_once(config):
@@ -73,12 +79,14 @@ class ContinuousAutoTests(unittest.TestCase):
             self.config(),
             run_once=run_once,
             snapshotter=lambda config: self.snapshot(),
+            reconciler=lambda config: reconciles.append("reconcile") or 0,
             on_completed=seen.append,
             sleeper=lambda seconds: self.fail("should not sleep"),
         )
         self.assertEqual(0, result)
         self.assertEqual([completed], seen)
         self.assertEqual(3, len(calls))
+        self.assertEqual(["reconcile", "reconcile"], reconciles)
 
     def test_worker_waits_when_only_remaining_work_is_leased(self):
         attempts = {"run": 0, "snapshot": 0}
@@ -98,6 +106,7 @@ class ContinuousAutoTests(unittest.TestCase):
             self.config(),
             run_once=run_once,
             snapshotter=snapshotter,
+            reconciler=lambda config: 0,
             sleeper=sleeps.append,
         )
         self.assertEqual(0, result)
@@ -110,6 +119,7 @@ class ContinuousAutoTests(unittest.TestCase):
                 self.config(),
                 run_once=lambda config: (_ for _ in ()).throw(NoAvailableJob("none")),
                 snapshotter=lambda config: self.snapshot(total=1, generated=0, failed=1),
+                reconciler=lambda config: 0,
                 sleeper=lambda seconds: None,
             )
 
