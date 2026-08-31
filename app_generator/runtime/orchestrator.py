@@ -14,7 +14,8 @@ from app_generator.browser.chrome import ChromeSession
 from app_generator.config import GeneratorConfig
 from app_generator.coordinator.client import CoordinatorClient, JobLease
 from app_generator.coordinator.heartbeat import LeaseGuard
-from app_generator.errors import NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, ValidationFailure
+from app_generator.coordinator.checkpoints import CoordinatorCheckpointStore
+from app_generator.errors import AutoJobExecutionError, NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, ValidationFailure
 from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts, write_json_atomic
 from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
 from app_generator.generation.documents import render_learning_design, render_review_record, render_section_readme
@@ -130,7 +131,7 @@ def run_generation(
     coordinator_factory: Callable[[GeneratorConfig], CoordinatorClient] = CoordinatorClient,
     publisher_factory: Callable[[GeneratorConfig], GitPublisher] = GitPublisher,
 ) -> RunContext:
-    if resume_run_id and (config.selection_mode == "distributed" or config.git_publish):
+    if resume_run_id and (config.selection_mode in {"auto", "distributed"} or config.git_publish):
         raise ValidationFailure(
             "Automatic resume is disabled for leased or Git-published runs",
             ["Inspect the recorded job branch and coordinator row, then retry or release it deliberately."],
@@ -162,17 +163,28 @@ def run_generation(
                 authorization = drive_authorizer(config)
                 store.transition(RunPhase.DRIVE_AUTHENTICATED)
                 drive_client = drive_client_factory(authorization.session, config.drive_api_timeout_seconds)
-                if config.selection_mode == "distributed":
+                if config.selection_mode in {"auto", "distributed"}:
                     inventory = discover_drive_sources(
                         drive_client,
                         sourcepath=config.sourcepath,
                         target_filename=config.target_filename,
                         max_folders=config.max_drive_folders,
                     )
-                    inventory = _unprocessed_sources(config, inventory)
                     store.transition(RunPhase.DRIVE_INVENTORIED)
                     coordinator = coordinator_factory(config)
-                    lease = coordinator.claim(inventory)
+                    if config.selection_mode == "auto":
+                        local_completed = {
+                            source.job_key
+                            for source in inventory
+                            if config.for_subchapter(source.subchapter_id).package_path.exists()
+                        }
+                        lease = coordinator.claim_auto(
+                            inventory,
+                            local_completed_job_keys=local_completed,
+                        )
+                    else:
+                        inventory = _unprocessed_sources(config, inventory)
+                        lease = coordinator.claim(inventory)
                     drive_source = next(
                         (source for source in inventory if source.file_id == lease.drive_file_id),
                         None,
@@ -192,6 +204,16 @@ def run_generation(
                         config.heartbeat_seconds,
                         config.lease_seconds,
                     )
+                    if config.selection_mode == "auto":
+                        checkpoint_store = CoordinatorCheckpointStore(coordinator, lease)
+                        restored = checkpoint_store.restore_into(context)
+                        context = context.with_checkpoint(checkpoint_store)
+                        store = context.store
+                        if restored:
+                            LOGGER.info(
+                                "Restored durable generation checkpoints",
+                                extra={"run_id": context.run_id, "stage_count": restored, "job_key": lease.job_key},
+                            )
                 else:
                     drive_source = resolve_drive_source(
                         drive_client,
@@ -411,12 +433,16 @@ def run_generation(
                 if coordinator is not None and lease is not None:
                     assert lease_guard is not None
                     lease_guard.ensure_owned()
-                    coordinator.mark_review_pending(
-                        lease_guard.lease,
-                        branch=store.state.branch or "",
-                        pr_url=store.state.pr_url or "",
-                    )
-                    store.transition(RunPhase.REVIEW_PENDING)
+                    if config.selection_mode == "auto":
+                        coordinator.checkpoint_clear(lease_guard.lease)
+                        coordinator.mark_generated(lease_guard.lease)
+                    else:
+                        coordinator.mark_review_pending(
+                            lease_guard.lease,
+                            branch=store.state.branch or "",
+                            pr_url=store.state.pr_url or "",
+                        )
+                        store.transition(RunPhase.REVIEW_PENDING)
                 store.transition(RunPhase.COMPLETE)
                 return context
         except BaseException as exc:
@@ -424,9 +450,10 @@ def run_generation(
                 "Generation run failed",
                 extra={"run_id": context.run_id, "error_code": getattr(exc, "code", exc.__class__.__name__)},
             )
+            coordinator_status = ""
             if coordinator is not None and lease is not None:
                 try:
-                    coordinator.mark_failed(
+                    coordinator_status = coordinator.mark_failed(
                         lease_guard.lease if lease_guard is not None else lease,
                         error_code=str(getattr(exc, "code", exc.__class__.__name__)),
                         error_message=str(exc),
@@ -434,6 +461,12 @@ def run_generation(
                 except BaseException:
                     LOGGER.exception("Could not return the failed job to the coordinator")
             store.fail(exc)
+            if config.selection_mode == "auto" and lease is not None and not isinstance(exc, (AutoJobExecutionError, KeyboardInterrupt)):
+                raise AutoJobExecutionError(
+                    str(exc),
+                    status=coordinator_status or "unknown",
+                    original_code=str(getattr(exc, "code", exc.__class__.__name__)),
+                ) from exc
             raise
         finally:
             _remove_temporary_source(temporary_source, context.sources)
