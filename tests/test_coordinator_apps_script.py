@@ -31,6 +31,17 @@ class CoordinatorAppsScriptTests(unittest.TestCase):
         self.assertIn("function migrateLegacySheet_(sheet)", code)
         self.assertIn("sheet.insertColumnBefore(1)", code)
 
+    def test_auto_mode_has_interrupted_priority_and_checkpoint_contract(self):
+        code = self.code()
+        self.assertIn("value.status = 'interrupted'", code)
+        self.assertIn("value.status === 'interrupted'", code)
+        self.assertIn("String(value.worker_id) !== String(workerId)", code)
+        self.assertIn("case 'snapshot'", code)
+        self.assertIn("case 'generated'", code)
+        self.assertIn("case 'checkpoint_save'", code)
+        self.assertIn("'CHECKPOINT_FOLDER_ID'", code)
+        self.assertIn("LockService.getScriptLock()", code)
+
 
 if __name__ == "__main__":
     unittest.main()
