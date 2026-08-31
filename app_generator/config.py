@@ -417,21 +417,23 @@ def load_config(
         raise ConfigurationError("Drive timeout and folder limit must be positive integers")
 
     selection_mode = str(values["selection_mode"]).strip().casefold()
-    if selection_mode not in {"specific", "distributed"}:
-        raise ConfigurationError("selection_mode must be specific or distributed")
+    if selection_mode not in {"specific", "auto", "distributed"}:
+        raise ConfigurationError("selection_mode must be specific, auto, or distributed")
     coordinator_url = str(values.get("coordinator_url", "")).strip()
-    if selection_mode == "distributed":
+    if selection_mode in {"auto", "distributed"}:
         parsed_coordinator = urlparse(coordinator_url)
         if parsed_coordinator.scheme != "https" or parsed_coordinator.hostname not in {
             "script.google.com", "script.googleusercontent.com",
         }:
             raise ConfigurationError(
-                "Distributed mode requires an HTTPS Google Apps Script coordinator_url"
+                f"{selection_mode.capitalize()} mode requires an HTTPS Google Apps Script coordinator_url"
             )
         if source_files:
-            raise ConfigurationError("Distributed mode discovers its source jobs from Google Drive")
+            raise ConfigurationError(f"{selection_mode.capitalize()} mode discovers its source jobs from Google Drive")
         if not bool(values["git_publish"]):
-            raise ConfigurationError("Distributed mode requires git_publish=true so a claimed job is durably handed off")
+            raise ConfigurationError(
+                f"{selection_mode.capitalize()} mode requires git_publish=true so a claimed job is durably handed off"
+            )
     coordinator_timeout_seconds = int(values["coordinator_timeout_seconds"])
     lease_seconds = int(values["lease_seconds"])
     heartbeat_seconds = int(values["heartbeat_seconds"])
