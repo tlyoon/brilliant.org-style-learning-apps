@@ -6,7 +6,6 @@ import argparse
 import shutil
 import sys
 import tempfile
-from dataclasses import replace
 from pathlib import Path
 
 from app_generator.config import GeneratorConfig, load_config
@@ -75,13 +74,7 @@ def _load(args: argparse.Namespace) -> GeneratorConfig:
         "drive_oauth_client_file": getattr(args, "drive_oauth_client_file", None),
         "selection_mode": getattr(args, "selection_mode", None),
     }
-    requested_auto = overrides.get("selection_mode") == "auto"
-    if requested_auto:
-        # Load through the existing specific-mode validator, then opt into the
-        # experimental auto worker without changing the stable config contract.
-        overrides["selection_mode"] = "specific"
-    config = load_config(args.config, cli_overrides=overrides)
-    return replace(config, selection_mode="auto") if requested_auto else config
+    return load_config(args.config, cli_overrides=overrides)
 
 
 def doctor(config: GeneratorConfig) -> int:
@@ -101,7 +94,7 @@ def doctor(config: GeneratorConfig) -> int:
             print("No job is currently claimable; terminal failures require intervention.")
         else:
             print("No job is currently claimable; all discovered sources are globally successful.")
-        print("Auto doctor does not claim a job or exercise the Gemini UI.")
+        print("Auto doctor does not claim a generation job or exercise the Gemini UI.")
         return 0
 
     drive_source = None
