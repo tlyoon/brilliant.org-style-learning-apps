@@ -10,11 +10,8 @@ from pathlib import Path
 
 from app_generator.config import GeneratorConfig, load_config
 from app_generator.coordinator.client import CoordinatorClient
-from app_generator.coordinator.managed import (
-    bootstrap_managed_coordinator,
-    ensure_managed_coordinator,
-    managed_status,
-)
+from app_generator.coordinator.managed import bootstrap_managed_coordinator, managed_status
+from app_generator.coordinator.verified import ensure_coordinator_ready
 from app_generator.errors import GeneratorError, NoAvailableJob
 from app_generator.prompts import gem_description, gem_instructions
 from app_generator.runtime.orchestrator import run_generation
@@ -112,8 +109,7 @@ def doctor(config: GeneratorConfig) -> int:
             authorization = authorize_google_drive(config)
             drive_client = DriveRestClient(authorization.session, config.drive_api_timeout_seconds)
             if config.selection_mode == "distributed":
-                config = ensure_managed_coordinator(config)
-                CoordinatorClient(config).health()
+                config = ensure_coordinator_ready(config)
                 inventory = discover_drive_sources(
                     drive_client,
                     sourcepath=config.sourcepath,
@@ -185,17 +181,20 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Managed coordinator: {managed_status(config)}")
             return 0
         if args.command == "coordinator-bootstrap":
-            ready = bootstrap_managed_coordinator(config)
+            # Bootstrap stores the privileged refreshable Google token in GitHub Actions;
+            # the live-health gate then verifies the deployed runtime before reporting success.
+            bootstrap_managed_coordinator(config)
+            ready = ensure_coordinator_ready(config)
             print(f"Managed coordinator bootstrap completed: {ready.coordinator_url}")
             return 0
         if args.command == "coordinator-ensure":
-            ready = ensure_managed_coordinator(config)
+            ready = ensure_coordinator_ready(config)
             print(f"Managed coordinator ready: {ready.coordinator_url}")
             return 0
         if args.command == "doctor":
             return doctor(config)
         if args.command == "coordinator-complete":
-            config = ensure_managed_coordinator(config)
+            config = ensure_coordinator_ready(config)
             CoordinatorClient(config).mark_completed(args.job_key, pr_url=args.pr_url)
             print(f"Coordinator job {args.job_key} marked completed.")
             return 0
@@ -212,7 +211,7 @@ def main(argv: list[str] | None = None) -> int:
                 raise GeneratorError("--resume is not supported with continuous auto mode")
             return run_continuous_auto(config, on_completed=report_context)
         if config.selection_mode == "distributed":
-            config = ensure_managed_coordinator(config)
+            config = ensure_coordinator_ready(config)
 
         context = run_generation(config, resume_run_id=args.resume)
         report_context(context)
