@@ -37,7 +37,7 @@ DEFAULTS: dict[str, Any] = {
     "selection_mode": "specific",
     "worker_id": socket.gethostname().casefold(),
     "coordinator_url": "",
-    "coordinator_management": "external",
+    "coordinator_management": "github_actions",
     "coordinator_workflow": "ensure-coordinator.yml",
     "coordinator_ensure_timeout_seconds": 600,
     "coordinator_timeout_seconds": 30,
@@ -427,13 +427,17 @@ def load_config(
     selection_mode = str(values["selection_mode"]).strip().casefold()
     if selection_mode not in {"specific", "auto", "distributed"}:
         raise ConfigurationError("selection_mode must be specific, auto, or distributed")
-    coordinator_management = str(values.get("coordinator_management", "external")).strip().casefold()
+    coordinator_management = str(values.get("coordinator_management", "github_actions")).strip().casefold()
     if coordinator_management not in {"external", "github_actions"}:
         raise ConfigurationError("coordinator_management must be external or github_actions")
     coordinator_workflow = str(values.get("coordinator_workflow", "ensure-coordinator.yml")).strip()
     if not WORKFLOW_FILE.fullmatch(coordinator_workflow):
         raise ConfigurationError("coordinator_workflow must be a workflow basename such as ensure-coordinator.yml")
     coordinator_url = str(values.get("coordinator_url", "")).strip()
+    # Backward compatibility: an explicit URL is authoritative and remains external,
+    # while an empty URL means the repository-managed GitHub Actions deployment is used.
+    if coordinator_url:
+        coordinator_management = "external"
     if selection_mode in {"auto", "distributed"}:
         if coordinator_management == "external" or coordinator_url:
             parsed_coordinator = urlparse(coordinator_url)
