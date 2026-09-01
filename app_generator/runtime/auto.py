@@ -8,6 +8,7 @@ from pathlib import Path
 
 from app_generator.config import GeneratorConfig
 from app_generator.coordinator.client import CoordinatorClient, JobLease, QueueSnapshot
+from app_generator.coordinator.managed import ensure_managed_coordinator
 from app_generator.errors import AutoJobExecutionError, AutoModeBlockedError, NoAvailableJob
 from app_generator.publishing.git import GitPublisher
 from app_generator.runtime.orchestrator import run_generation
@@ -62,6 +63,7 @@ def inspect_auto_queue(config: GeneratorConfig) -> QueueSnapshot:
     """Inspect auto state without claiming a generation or recovery lease."""
 
     _require_durable_publication(config)
+    config = ensure_managed_coordinator(config)
     publisher = GitPublisher(config)
     publisher.sync_base()
     inventory = _drive_inventory(config)
@@ -80,6 +82,7 @@ def reconcile_auto_publications(config: GeneratorConfig) -> int:
     """
 
     _require_durable_publication(config)
+    config = ensure_managed_coordinator(config)
     publisher = GitPublisher(config)
     publisher.sync_base()
     inventory = _drive_inventory(config)
@@ -168,6 +171,7 @@ def run_continuous_auto(
     """Run coordinated jobs until every discovered source has a successful global state."""
 
     _require_durable_publication(config)
+    config = ensure_managed_coordinator(config)
     poll_seconds = max(5, min(60, config.heartbeat_seconds // 10 or 5))
     print(
         f"AUTO_START: worker={config.worker_id}; persistent continuous mode is active. "
