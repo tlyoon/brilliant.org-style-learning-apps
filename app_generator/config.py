@@ -19,6 +19,7 @@ PACKAGE_ID = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 CONTENT_DIR = re.compile(r"^(?:chapter|section)-[a-z0-9-]+$")
 SUBCHAPTER_ID = re.compile(r"^(?P<chapter>[1-9][0-9]*)\.(?P<section>[1-9][0-9]*)$")
 BRANCH_PREFIX = re.compile(r"^[a-z0-9][a-z0-9._/-]*$")
+WORKFLOW_FILE = re.compile(r"^[A-Za-z0-9._-]+\.ya?ml$")
 
 
 DEFAULTS: dict[str, Any] = {
@@ -36,6 +37,9 @@ DEFAULTS: dict[str, Any] = {
     "selection_mode": "specific",
     "worker_id": socket.gethostname().casefold(),
     "coordinator_url": "",
+    "coordinator_management": "external",
+    "coordinator_workflow": "ensure-coordinator.yml",
+    "coordinator_ensure_timeout_seconds": 600,
     "coordinator_timeout_seconds": 30,
     "lease_seconds": 3600,
     "heartbeat_seconds": 300,
@@ -110,6 +114,9 @@ class GeneratorConfig:
     selection_mode: str
     worker_id: str
     coordinator_url: str
+    coordinator_management: str
+    coordinator_workflow: str
+    coordinator_ensure_timeout_seconds: int
     coordinator_token_env: str
     coordinator_timeout_seconds: int
     lease_seconds: int
@@ -200,6 +207,7 @@ def _coerce_env(key: str, value: str) -> Any:
         "max_gemini_session_restarts",
         "drive_api_timeout_seconds",
         "max_drive_folders",
+        "coordinator_ensure_timeout_seconds",
         "coordinator_timeout_seconds",
         "lease_seconds",
         "heartbeat_seconds",
@@ -419,27 +427,41 @@ def load_config(
     selection_mode = str(values["selection_mode"]).strip().casefold()
     if selection_mode not in {"specific", "auto", "distributed"}:
         raise ConfigurationError("selection_mode must be specific, auto, or distributed")
+    coordinator_management = str(values.get("coordinator_management", "external")).strip().casefold()
+    if coordinator_management not in {"external", "github_actions"}:
+        raise ConfigurationError("coordinator_management must be external or github_actions")
+    coordinator_workflow = str(values.get("coordinator_workflow", "ensure-coordinator.yml")).strip()
+    if not WORKFLOW_FILE.fullmatch(coordinator_workflow):
+        raise ConfigurationError("coordinator_workflow must be a workflow basename such as ensure-coordinator.yml")
     coordinator_url = str(values.get("coordinator_url", "")).strip()
     if selection_mode in {"auto", "distributed"}:
-        parsed_coordinator = urlparse(coordinator_url)
-        if parsed_coordinator.scheme != "https" or parsed_coordinator.hostname not in {
-            "script.google.com", "script.googleusercontent.com",
-        }:
-            raise ConfigurationError(
-                f"{selection_mode.capitalize()} mode requires an HTTPS Google Apps Script coordinator_url"
-            )
+        if coordinator_management == "external" or coordinator_url:
+            parsed_coordinator = urlparse(coordinator_url)
+            if parsed_coordinator.scheme != "https" or parsed_coordinator.hostname not in {
+                "script.google.com", "script.googleusercontent.com",
+            }:
+                raise ConfigurationError(
+                    f"{selection_mode.capitalize()} mode with an external coordinator requires an HTTPS Google Apps Script coordinator_url"
+                )
         if source_files:
             raise ConfigurationError(f"{selection_mode.capitalize()} mode discovers its source jobs from Google Drive")
         if not bool(values["git_publish"]):
             raise ConfigurationError(
                 f"{selection_mode.capitalize()} mode requires git_publish=true so a claimed job is durably handed off"
             )
+    coordinator_ensure_timeout_seconds = int(values["coordinator_ensure_timeout_seconds"])
     coordinator_timeout_seconds = int(values["coordinator_timeout_seconds"])
     lease_seconds = int(values["lease_seconds"])
     heartbeat_seconds = int(values["heartbeat_seconds"])
     max_job_attempts = int(values["max_job_attempts"])
-    if min(coordinator_timeout_seconds, lease_seconds, heartbeat_seconds, max_job_attempts) < 1:
-        raise ConfigurationError("Coordinator timeout, lease, heartbeat, and attempt values must be positive")
+    if min(
+        coordinator_ensure_timeout_seconds,
+        coordinator_timeout_seconds,
+        lease_seconds,
+        heartbeat_seconds,
+        max_job_attempts,
+    ) < 1:
+        raise ConfigurationError("Coordinator ensure/timeout, lease, heartbeat, and attempt values must be positive")
     if heartbeat_seconds * 2 >= lease_seconds:
         raise ConfigurationError("heartbeat_seconds must be less than half of lease_seconds")
     worker_id = re.sub(r"[^a-z0-9._-]+", "-", str(values["worker_id"]).strip().casefold()).strip("-")
@@ -508,6 +530,9 @@ def load_config(
         selection_mode=selection_mode,
         worker_id=worker_id,
         coordinator_url=coordinator_url,
+        coordinator_management=coordinator_management,
+        coordinator_workflow=coordinator_workflow,
+        coordinator_ensure_timeout_seconds=coordinator_ensure_timeout_seconds,
         coordinator_token_env=coordinator_token_env,
         coordinator_timeout_seconds=coordinator_timeout_seconds,
         lease_seconds=lease_seconds,
