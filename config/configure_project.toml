@@ -33,6 +33,12 @@ legacy_environment_prefix = "BRILLIANT_GENERATOR_"
 
 [automation]
 selection_mode = "specific"
+# Managed mode lets the repository own Apps Script deployment. The worker discovers
+# the private runtime URL/token from Drive and triggers the serialized GitHub Action
+# only when the required coordinator protocol is missing or outdated.
+coordinator_management = "github_actions"
+coordinator_workflow = "ensure-coordinator.yml"
+coordinator_ensure_timeout_seconds = 600
 coordinator_url = ""
 coordinator_token_env = "${PROJECT_ENV_PREFIX}_COORDINATOR_TOKEN"
 coordinator_timeout_seconds = 30
