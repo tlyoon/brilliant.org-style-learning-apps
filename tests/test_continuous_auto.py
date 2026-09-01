@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from app_generator.coordinator.client import QueueSnapshot
 from app_generator.errors import AutoJobExecutionError, AutoModeBlockedError, NoAvailableJob
@@ -26,6 +27,16 @@ class RecordingCheckpoint:
 
 
 class ContinuousAutoTests(unittest.TestCase):
+    def setUp(self):
+        # These tests isolate the continuous queue loop. Managed coordinator live-health
+        # behavior has dedicated coverage in test_managed_coordinator.py.
+        patcher = patch(
+            "app_generator.runtime.auto.ensure_coordinator_ready",
+            side_effect=lambda config: config,
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def config(self, *, git_publish=True):
         return SimpleNamespace(
             heartbeat_seconds=300,
