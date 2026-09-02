@@ -115,6 +115,12 @@ An explicit valid Apps Script URL remains backward-compatible external coordinat
 
 ### One-time bootstrap
 
+Before the first bootstrap, enable both the Google Drive API and Apps Script API in the
+Google Cloud project that owns the Desktop OAuth client. For the configured administrator
+account, also turn on **Google Apps Script API** at
+`https://script.google.com/home/usersettings`. Newly enabled access may take a few minutes
+to propagate.
+
 Check:
 
 ```powershell

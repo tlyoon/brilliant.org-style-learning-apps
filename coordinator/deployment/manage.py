@@ -373,7 +373,7 @@ def _ensure_deployment(
             deployment = _json_response(
                 session.post(
                     f"{SCRIPT_API}/{script_id}/deployments",
-                    json={"deploymentConfig": config},
+                    json=config,
                     timeout=60,
                 ),
                 "create Apps Script deployment",
