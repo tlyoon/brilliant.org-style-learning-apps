@@ -326,6 +326,15 @@ def _deployment_config(script_id: str, version_number: int, project_name: str) -
     }
 
 
+def _web_app_url(deployment: dict[str, Any]) -> str:
+    for entry in deployment.get("entryPoints", []) or []:
+        if isinstance(entry, dict) and str(entry.get("entryPointType", "")) == "WEB_APP":
+            url = str(entry.get("webApp", {}).get("url", ""))
+            if url:
+                return url
+    return ""
+
+
 def _ensure_deployment(
     session: AuthorizedSession,
     *,
@@ -343,7 +352,9 @@ def _ensure_deployment(
             timeout=60,
         )
         if response.status_code < 400:
-            deployment = response.json()
+            candidate = response.json()
+            if isinstance(candidate, dict) and _web_app_url(candidate):
+                deployment = candidate
     if deployment is None:
         payload = _json_response(
             session.get(f"{SCRIPT_API}/{script_id}/deployments", timeout=60),
@@ -351,16 +362,21 @@ def _ensure_deployment(
         )
         deployments = payload.get("deployments", [])
         if isinstance(deployments, list):
-            matching = [
+            web_apps = [
                 item
                 for item in deployments
-                if isinstance(item, dict)
-                and str(item.get("deploymentConfig", {}).get("description", "")) == config["description"]
+                if isinstance(item, dict) and _web_app_url(item)
             ]
-            if len(matching) > 1:
-                raise RuntimeError("Multiple managed Apps Script deployments match this project")
-            if matching:
-                deployment_id = str(matching[0].get("deploymentId", ""))
+            matching = [
+                item
+                for item in web_apps
+                if str(item.get("deploymentConfig", {}).get("description", "")) == config["description"]
+            ]
+            candidates = matching or web_apps
+            if len(candidates) > 1:
+                raise RuntimeError("Multiple Apps Script web-app deployments match this project")
+            if candidates:
+                deployment_id = str(candidates[0].get("deploymentId", ""))
                 deployment = _json_response(
                     session.put(
                         f"{SCRIPT_API}/{script_id}/deployments/{deployment_id}",
@@ -381,14 +397,12 @@ def _ensure_deployment(
     deployment_id = str(deployment.get("deploymentId", ""))
     if not deployment_id:
         raise RuntimeError("Apps Script deployment response omitted deploymentId")
-    url = ""
-    for entry in deployment.get("entryPoints", []) or []:
-        if isinstance(entry, dict) and str(entry.get("entryPointType", "")) == "WEB_APP":
-            url = str(entry.get("webApp", {}).get("url", ""))
-            if url:
-                break
+    url = _web_app_url(deployment)
     if not url:
-        url = f"https://script.google.com/macros/s/{deployment_id}/exec"
+        raise RuntimeError(
+            "Apps Script deployment has no WEB_APP entry point; authorize the script and create one web-app "
+            "deployment in the Apps Script editor, then retry"
+        )
     return deployment_id, url
 
 

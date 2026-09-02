@@ -136,6 +136,13 @@ python -m app_generator coordinator-bootstrap --config .\<generated-local-config
 
 Bootstrap obtains the additional Google administration authorization, verifies the configured account, stores the refreshable administrator credential in a private GitHub Actions secret, triggers the serialized deployment, and waits for live health.
 
+If the first deployment reports that it has no `WEB_APP` entry point, open the generated
+Apps Script project as the configured administrator, run `initializeCoordinator` once and
+approve its Drive/Sheets scopes, then create one **Web app** deployment with **Execute as:
+Me** and **Who has access: Anyone**. Rerun bootstrap; the deployer adopts the sole web-app
+entry point and records its real URL. This is an administrator-only first-project recovery,
+not a worker-PC setup step.
+
 Other worker PCs do not repeat bootstrap. Verify readiness with:
 
 ```powershell
