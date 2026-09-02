@@ -81,6 +81,23 @@ class CoordinatorDeploymentTests(unittest.TestCase):
 
         request.assert_called_once_with(url, json={}, timeout=60)
 
+    def test_explicit_web_app_url_is_validated_and_used_without_api_mutation(self):
+        url = "https://script.google.com/macros/s/manual-deployment/exec"
+
+        class Session:
+            def __getattr__(self, name):
+                raise AssertionError(f"Apps Script API must not be called: {name}")
+
+        with patch("coordinator.deployment.manage._web_app_is_reachable", return_value=True):
+            deployment_id, resolved_url = _ensure_deployment(
+                Session(), script_id="script-id", version_number=8,
+                project_name="ManagedProject", web_app_url_override=url,
+            )
+
+        self.assertEqual("manual-deployment", deployment_id)
+        self.assertEqual(url, resolved_url)
+
+
     def test_inaccessible_preferred_adopts_reachable_web_app_without_updating_it(self):
         get_calls = []
         web_app_url = "https://script.google.com/macros/s/web-deployment/exec"

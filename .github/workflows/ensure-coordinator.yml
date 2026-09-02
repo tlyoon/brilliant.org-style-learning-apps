@@ -7,6 +7,11 @@ on:
         description: Tracked project.project_name to provision/update
         required: true
         type: string
+      web_app_url:
+        description: Optional administrator-published /exec URL for first-project recovery
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -31,7 +36,10 @@ jobs:
       - name: Provision or upgrade managed coordinator
         env:
           COORDINATOR_ADMIN_TOKEN_JSON: ${{ secrets.COORDINATOR_ADMIN_TOKEN_JSON }}
+          MANAGED_PROJECT_NAME: ${{ inputs.project_name }}
+          MANAGED_WEB_APP_URL: ${{ inputs.web_app_url }}
         run: >-
           python coordinator/deployment/manage.py ensure
           --repo-root .
-          --project-name "${{ inputs.project_name }}"
+          --project-name "$MANAGED_PROJECT_NAME"
+          --web-app-url "$MANAGED_WEB_APP_URL"

@@ -143,6 +143,14 @@ Me** and **Who has access: Anyone**. Rerun bootstrap; the deployer adopts the so
 entry point and records its real URL. This is an administrator-only first-project recovery,
 not a worker-PC setup step.
 
+If Google does not expose that UI-published URL through its deployment API, dispatch the managed
+workflow once with the exact non-secret `/exec` URL, then verify readiness:
+
+```powershell
+gh workflow run ensure-coordinator.yml --ref <base-branch> -f project_name=<project_name> -f web_app_url=<web-app-url>
+python -m app_generator coordinator-ensure --config .\<generated-local-config>.toml
+```
+
 Other worker PCs do not repeat bootstrap. Verify readiness with:
 
 ```powershell

@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import secrets
 import sys
 import tomllib
@@ -352,6 +353,20 @@ def _web_app_is_reachable(deployment: dict[str, Any]) -> bool:
         and payload.get("code") == "UNAUTHORIZED"
     )
 
+def _deployment_from_web_app_url(url: str) -> dict[str, Any]:
+    normalized = url.strip()
+    match = re.fullmatch(
+        r"https://script\.google\.com/macros/s/([A-Za-z0-9_-]+)/exec",
+        normalized,
+    )
+    if not match:
+        raise RuntimeError("Web-app URL override must be an exact script.google.com /exec URL")
+    return {
+        "deploymentId": match.group(1),
+        "entryPoints": [{"entryPointType": "WEB_APP", "webApp": {"url": normalized}}],
+    }
+
+
 
 def _ensure_deployment(
     session: AuthorizedSession,
@@ -359,8 +374,15 @@ def _ensure_deployment(
     script_id: str,
     version_number: int,
     project_name: str,
+    web_app_url_override: str = "",
     preferred_id: str = "",
 ) -> tuple[str, str]:
+    if web_app_url_override:
+        deployment = _deployment_from_web_app_url(web_app_url_override)
+        if not _web_app_is_reachable(deployment):
+            raise RuntimeError("Web-app URL override is not a reachable coordinator endpoint")
+        return str(deployment["deploymentId"]), _web_app_url(deployment)
+
     config = _deployment_config(script_id, version_number, project_name)
     deployment: dict[str, Any] | None = None
     if preferred_id:
@@ -415,7 +437,7 @@ def _ensure_deployment(
     return deployment_id, url
 
 
-def ensure(repo_root: Path, project_name: str) -> dict[str, Any]:
+def ensure(repo_root: Path, project_name: str, web_app_url_override: str = "") -> dict[str, Any]:
     tracked = _tracked_project_name(repo_root)
     if project_name != tracked:
         raise RuntimeError(
@@ -460,6 +482,7 @@ def ensure(repo_root: Path, project_name: str) -> dict[str, Any]:
         version_number=version_number,
         project_name=project_name,
         preferred_id=str(existing.get("deployment_id", "")),
+        web_app_url_override=web_app_url_override,
     )
     runtime = {
         "managed_by": MANAGED_BY,
@@ -488,12 +511,13 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("command", choices=("ensure",))
     parser.add_argument("--repo-root", type=Path, default=REPO_ROOT)
     parser.add_argument("--project-name", required=True)
+    parser.add_argument("--web-app-url", default="")
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
-    runtime = ensure(args.repo_root.resolve(), args.project_name)
+    runtime = ensure(args.repo_root.resolve(), args.project_name, args.web_app_url)
     # Deliberately omit the worker token from logs.
     print(
         "Managed coordinator ready: "
