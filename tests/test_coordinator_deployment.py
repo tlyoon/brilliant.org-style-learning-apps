@@ -44,12 +44,13 @@ class CoordinatorDeploymentTests(unittest.TestCase):
                     }
                 )
 
-        deployment_id, url = _ensure_deployment(
-            Session(),
-            script_id="script-id",
-            version_number=7,
-            project_name="ManagedProject",
-        )
+        with patch("coordinator.deployment.manage._web_app_is_reachable", return_value=True):
+            deployment_id, url = _ensure_deployment(
+                Session(),
+                script_id="script-id",
+                version_number=7,
+                project_name="ManagedProject",
+            )
 
         self.assertEqual("deployment-id", deployment_id)
         self.assertEqual("https://script.google.com/macros/s/deployment-id/exec", url)
@@ -72,13 +73,16 @@ class CoordinatorDeploymentTests(unittest.TestCase):
                 {"entryPointType": "WEB_APP", "webApp": {"url": url}}
             ]
         }
-        with patch("coordinator.deployment.manage.requests.post", return_value=Response()) as request:
+        with patch(
+            "coordinator.deployment.manage.requests.post",
+            return_value=Response(),
+        ) as request:
             self.assertTrue(_web_app_is_reachable(deployment))
 
         request.assert_called_once_with(url, json={}, timeout=60)
 
-    def test_inaccessible_preferred_deployment_adopts_the_only_reachable_web_app(self):
-        put_calls = []
+    def test_inaccessible_preferred_adopts_reachable_web_app_without_updating_it(self):
+        get_calls = []
         web_app_url = "https://script.google.com/macros/s/web-deployment/exec"
 
         class Response:
@@ -96,16 +100,24 @@ class CoordinatorDeploymentTests(unittest.TestCase):
 
         class Session:
             def put(self, url, *, json, timeout):
-                put_calls.append((url, json, timeout))
-                deployment_id = url.rsplit("/", 1)[-1]
-                payload = {"deploymentId": deployment_id}
-                if deployment_id == "web-deployment":
-                    payload["entryPoints"] = [
-                        {"entryPointType": "WEB_APP", "webApp": {"url": web_app_url}}
-                    ]
-                return Response(payload)
+                raise AssertionError("reachable web-app deployments must not be updated")
 
             def get(self, url, *, timeout):
+                get_calls.append(url)
+                if url.endswith("/non-web-deployment"):
+                    return Response(
+                        {
+                            "deploymentId": "non-web-deployment",
+                            "entryPoints": [
+                                {
+                                    "entryPointType": "WEB_APP",
+                                    "webApp": {
+                                        "url": "https://script.google.com/macros/s/inaccessible/exec"
+                                    },
+                                }
+                            ],
+                        }
+                    )
                 return Response(
                     {
                         "deployments": [
@@ -126,14 +138,17 @@ class CoordinatorDeploymentTests(unittest.TestCase):
             side_effect=lambda deployment: deployment.get("deploymentId") == "web-deployment",
         ):
             deployment_id, url = _ensure_deployment(
-                Session(), script_id="script-id", version_number=8,
-                project_name="ManagedProject", preferred_id="non-web-deployment",
+                Session(),
+                script_id="script-id",
+                version_number=8,
+                project_name="ManagedProject",
+                preferred_id="non-web-deployment",
             )
 
         self.assertEqual("web-deployment", deployment_id)
         self.assertEqual(web_app_url, url)
-        self.assertEqual(2, len(put_calls))
-        self.assertIn("deploymentConfig", put_calls[1][1])
+        self.assertEqual(2, len(get_calls))
+        self.assertTrue(get_calls[0].endswith("/non-web-deployment"))
 
 
 if __name__ == "__main__":

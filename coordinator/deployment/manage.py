@@ -364,9 +364,8 @@ def _ensure_deployment(
     config = _deployment_config(script_id, version_number, project_name)
     deployment: dict[str, Any] | None = None
     if preferred_id:
-        response = session.put(
+        response = session.get(
             f"{SCRIPT_API}/{script_id}/deployments/{preferred_id}",
-            json={"deploymentConfig": config},
             timeout=60,
         )
         if response.status_code < 400:
@@ -394,15 +393,7 @@ def _ensure_deployment(
             if len(candidates) > 1:
                 raise RuntimeError("Multiple Apps Script web-app deployments match this project")
             if candidates:
-                deployment_id = str(candidates[0].get("deploymentId", ""))
-                deployment = _json_response(
-                    session.put(
-                        f"{SCRIPT_API}/{script_id}/deployments/{deployment_id}",
-                        json={"deploymentConfig": config},
-                        timeout=60,
-                    ),
-                    "update Apps Script deployment",
-                )
+                deployment = candidates[0]
         if deployment is None:
             deployment = _json_response(
                 session.post(
@@ -416,10 +407,10 @@ def _ensure_deployment(
     if not deployment_id:
         raise RuntimeError("Apps Script deployment response omitted deploymentId")
     url = _web_app_url(deployment)
-    if not url:
+    if not url or not _web_app_is_reachable(deployment):
         raise RuntimeError(
-            "Apps Script deployment has no WEB_APP entry point; authorize the script and create one web-app "
-            "deployment in the Apps Script editor, then retry"
+            "Apps Script deployment has no reachable WEB_APP entry point; authorize the script and create "
+            "one web-app deployment in the Apps Script editor, then retry"
         )
     return deployment_id, url
 
