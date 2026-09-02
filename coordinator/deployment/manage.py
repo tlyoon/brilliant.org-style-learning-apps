@@ -16,6 +16,7 @@ import tomllib
 from pathlib import Path
 from typing import Any
 
+import requests
 from google.auth.transport.requests import AuthorizedSession, Request
 from google.oauth2.credentials import Credentials
 
@@ -335,6 +336,23 @@ def _web_app_url(deployment: dict[str, Any]) -> str:
     return ""
 
 
+def _web_app_is_reachable(deployment: dict[str, Any]) -> bool:
+    url = _web_app_url(deployment)
+    if not url.startswith("https://script.google.com/macros/s/"):
+        return False
+    try:
+        response = requests.post(url, json={}, timeout=60)
+        response.raise_for_status()
+        payload = response.json()
+    except Exception:
+        return False
+    return (
+        isinstance(payload, dict)
+        and payload.get("ok") is False
+        and payload.get("code") == "UNAUTHORIZED"
+    )
+
+
 def _ensure_deployment(
     session: AuthorizedSession,
     *,
@@ -353,7 +371,7 @@ def _ensure_deployment(
         )
         if response.status_code < 400:
             candidate = response.json()
-            if isinstance(candidate, dict) and _web_app_url(candidate):
+            if isinstance(candidate, dict) and _web_app_is_reachable(candidate):
                 deployment = candidate
     if deployment is None:
         payload = _json_response(
@@ -362,17 +380,17 @@ def _ensure_deployment(
         )
         deployments = payload.get("deployments", [])
         if isinstance(deployments, list):
-            web_apps = [
+            reachable_web_apps = [
                 item
                 for item in deployments
-                if isinstance(item, dict) and _web_app_url(item)
+                if isinstance(item, dict) and _web_app_is_reachable(item)
             ]
             matching = [
                 item
-                for item in web_apps
+                for item in reachable_web_apps
                 if str(item.get("deploymentConfig", {}).get("description", "")) == config["description"]
             ]
-            candidates = matching or web_apps
+            candidates = matching or reachable_web_apps
             if len(candidates) > 1:
                 raise RuntimeError("Multiple Apps Script web-app deployments match this project")
             if candidates:

@@ -1,7 +1,8 @@
 import unittest
+from unittest.mock import patch
 
 from app_generator.coordinator.managed import ADMIN_SCOPES
-from coordinator.deployment.manage import _ensure_deployment
+from coordinator.deployment.manage import _ensure_deployment, _web_app_is_reachable
 
 
 class CoordinatorDeploymentTests(unittest.TestCase):
@@ -56,7 +57,27 @@ class CoordinatorDeploymentTests(unittest.TestCase):
         self.assertEqual(7, calls[0][1]["versionNumber"])
         self.assertNotIn("deploymentConfig", calls[0][1])
 
-    def test_non_web_preferred_deployment_adopts_the_only_web_app(self):
+    def test_reachability_probe_sends_no_credentials(self):
+        url = "https://script.google.com/macros/s/deployment-id/exec"
+
+        class Response:
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {"ok": False, "code": "UNAUTHORIZED"}
+
+        deployment = {
+            "entryPoints": [
+                {"entryPointType": "WEB_APP", "webApp": {"url": url}}
+            ]
+        }
+        with patch("coordinator.deployment.manage.requests.post", return_value=Response()) as request:
+            self.assertTrue(_web_app_is_reachable(deployment))
+
+        request.assert_called_once_with(url, json={}, timeout=60)
+
+    def test_inaccessible_preferred_deployment_adopts_the_only_reachable_web_app(self):
         put_calls = []
         web_app_url = "https://script.google.com/macros/s/web-deployment/exec"
 
@@ -100,13 +121,14 @@ class CoordinatorDeploymentTests(unittest.TestCase):
                     }
                 )
 
-        deployment_id, url = _ensure_deployment(
-            Session(),
-            script_id="script-id",
-            version_number=8,
-            project_name="ManagedProject",
-            preferred_id="non-web-deployment",
-        )
+        with patch(
+            "coordinator.deployment.manage._web_app_is_reachable",
+            side_effect=lambda deployment: deployment.get("deploymentId") == "web-deployment",
+        ):
+            deployment_id, url = _ensure_deployment(
+                Session(), script_id="script-id", version_number=8,
+                project_name="ManagedProject", preferred_id="non-web-deployment",
+            )
 
         self.assertEqual("web-deployment", deployment_id)
         self.assertEqual(web_app_url, url)
