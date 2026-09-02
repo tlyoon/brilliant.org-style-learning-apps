@@ -1,22 +1,32 @@
 # Recycle the generator for another textbook project
 
-For the complete beginner-facing path from one controlled PDF through generation, review, static bundling, and optional GitHub Pages deployment, start with `docs/PDF_TO_APP_QUICKSTART.md`. This document is the specialist reference for **recycling the repository for another project**.
+Use `docs/PDF_TO_APP_QUICKSTART.md` for the complete normal workflow. This file is the specialist guide for turning the repository into a new project without leaking state or credentials from another project.
 
-The normal tracked project authority is `config/configure_project.toml`. A recycled project should use its own project identity, Drive source root, Gemini Gem/account, coordinator deployment where needed, OAuth client, Chrome profile, and run state. Machine-local values are materialized by `sync-workstation.cmd` rather than copied between PCs.
+Operational documentation is versioned with the code; see `docs/DOCUMENTATION_MAINTENANCE.md`.
 
-## 1. Create a project branch
-
-Start from a clean, current `main` branch:
+## 1. Start from current `main`
 
 ```powershell
 git switch main
-git pull --ff-only
+git fetch origin
+git status -sb
+```
+
+If behind:
+
+```powershell
+git pull --ff-only origin main
+```
+
+Create a configuration branch:
+
+```powershell
 git switch -c config/new-textbook-project
 ```
 
-## 2. Preview and apply the core identity
+## 2. Create a new project identity
 
-Run the configurator without `--apply` first:
+Preview:
 
 ```powershell
 python scripts\configure_project.py `
@@ -27,71 +37,196 @@ python scripts\configure_project.py `
   --gem-name "subject content generator"
 ```
 
-Review the unified diff. Repeat with `--apply`; the command refuses a dirty worktree and atomically changes only the approved identity/source/Gem keys in `config/configure_project.toml`.
+Review the diff, then repeat with `--apply` when correct.
 
-Then review the remaining project-dependent values in that file: default subchapter selector, source filename/pattern, Gem edit URL, coordinator policy, edition/provenance wording, Git handoff policy, and any project-specific model-selection preference. Keep `${PROJECT_SLUG}`, `${PROJECT_ENV_PREFIX}`, `${REPO_ROOT}`, and `${STATE_ROOT}` tokenized so workstation sync derives them automatically.
+The tracked project authority is:
 
-Section title and the effective learning boundary are derived from validated PDF analysis; unidentified edition metadata and the automated-draft actor are recorded truthfully without blocking generation. Keep token values, credentials, PDFs, browser data, and run data out of Git.
+```text
+config/configure_project.toml
+```
 
-## 3. Review and merge configuration
+Review at minimum:
+
+- `project.project_name`;
+- Drive source root and controlled source naming;
+- Gemini Gem URL/editor/name/account;
+- default subchapter selector;
+- provenance/rights wording;
+- automation mode and coordinator policy;
+- Git publication/PR/merge policy;
+- model preference policy.
+
+Keep `${PROJECT_SLUG}`, `${PROJECT_ENV_PREFIX}`, `${REPO_ROOT}`, and `${STATE_ROOT}` tokenized.
+
+## 3. Understand project isolation
+
+The project name determines the Windows state root:
+
+```text
+%LOCALAPPDATA%\<project_name>
+```
+
+For example:
+
+```text
+BrilliantContentGenerator
+        ↓
+%LOCALAPPDATA%\BrilliantContentGenerator
+
+something_else
+        ↓
+%LOCALAPPDATA%\something_else
+```
+
+Derived machine-local locations include:
+
+| Item | Location |
+|---|---|
+| Workstation settings | `%LOCALAPPDATA%\<project_name>\workstation-sync.toml` |
+| OAuth client | `%LOCALAPPDATA%\<project_name>\credentials\drive-oauth-client.json` |
+| OAuth token | `%LOCALAPPDATA%\<project_name>\credentials\drive-oauth-token.json` |
+| Chrome profile | `%LOCALAPPDATA%\<project_name>\chrome-profile` |
+| Run state | `%LOCALAPPDATA%\<project_name>\runs` |
+| Generator env prefix | `<PROJECT_ENV_PREFIX>_GENERATOR_*` |
+| Coordinator token env | `<PROJECT_ENV_PREFIX>_COORDINATOR_TOKEN` |
+
+Do not make one project depend on another project's state directory.
+
+### Reusing the Google Cloud OAuth client
+
+The same Google Cloud **Desktop app OAuth client JSON contents** may be securely copied into multiple trusted project/PC credential directories when those projects intentionally use the same Google OAuth client.
+
+Recommended:
+
+```text
+%LOCALAPPDATA%\ProjectA\credentials\drive-oauth-client.json
+%LOCALAPPDATA%\ProjectB\credentials\drive-oauth-client.json
+```
+
+Both files may contain the same downloaded client definition, but each project/PC should normally maintain its own generated `drive-oauth-token.json`.
+
+Do not point Project B at `%LOCALAPPDATA%\ProjectA\...`; independent paths make projects removable and recyclable without hidden coupling.
+
+## 4. Validate and merge the project configuration
 
 ```powershell
 python scripts\lint.py
 python scripts\validate_content.py
 python -m unittest discover -s tests -v
 git diff --check
-git add config\configure_project.toml
-git commit -m "Configure new textbook project"
-git push -u origin config/new-textbook-project
 ```
 
-Open and merge a pull request. Every PC then receives the same non-secret project authority through Git.
+Commit the project configuration and related project-owned Gem text, push the branch, and merge it through review. Every PC should receive the same non-secret project authority through Git rather than copied local files.
 
-## 4. Initialize each workstation
+## 5. Initialize each workstation
 
-After pulling `main`:
+After the new project configuration reaches the intended branch/main:
 
 ```powershell
 python -m scripts.sync_configured_workstation --init-settings-only
 ```
 
-Provision the Google Desktop OAuth client at the derived path shown below, then run `sync-workstation.cmd`.
-
-| Derived item | Formula |
-|---|---|
-| Project slug | derived from `<project_name>` as lowercase kebab-case |
-| Environment prefix | derived from `<project_name>` as uppercase underscore form |
-| State root | `%LOCALAPPDATA%\<project_name>` |
-| Workstation settings | `<state root>\workstation-sync.toml` |
-| OAuth client | `<state root>\credentials\drive-oauth-client.json` |
-| OAuth token | `<state root>\credentials\drive-oauth-token.json` |
-| Chrome profile | `<state root>\chrome-profile` |
-| Runs | `<state root>\runs` |
-| Generator overrides | `<PROJECT_ENV_PREFIX>_GENERATOR_*` |
-| Coordinator token | `<PROJECT_ENV_PREFIX>_COORDINATOR_TOKEN` |
-
-The synchronizer writes ignored `project.local.toml`; generation commands use that file by default.
-
-## 5. Configure distributed coordination
-
-Deploy a separate coordinator for the project when distributed mode is needed. Set the coordinator's project identity and job spreadsheet, initialize its worker token, and place that token in the project-derived coordinator environment variable on authorized PCs. The coordinator scopes ledger work by project.
-
-## 6. Validate before live generation
+Place the Google Desktop OAuth client JSON at the new project's derived credential path, then run:
 
 ```powershell
-python -m app_generator doctor
-python -m app_generator run --pdf-subchapter-path 8.2
+.\sync-workstation.cmd
 ```
 
-Start with one specific-mode PDF. Enable distributed selection and Git publication only after that controlled run succeeds.
+The synchronizer prints the exact generated local config filename. A default new workstation normally uses `project.local.toml`; an existing/customized machine may use another allowed name such as `generator.shared.local.toml`.
+
+For direct CLI commands, pass `--config` whenever the printed filename is not `project.local.toml`.
+
+## 6. Validate one specific source first
+
+Example:
+
+```powershell
+$py = (Resolve-Path ".\.venv\Scripts\python.exe").Path
+$config = ".\<generated-local-config>.toml"
+
+& $py -m app_generator doctor --config $config --selection-mode specific --pdf-subchapter-path 8.2
+& $py -m app_generator run --config $config --selection-mode specific --pdf-subchapter-path 8.2
+```
+
+A new project can initially keep:
+
+```toml
+git_publish = false
+git_auto_merge = false
+```
+
+for a controlled specific-mode validation.
+
+## 7. Enable repository-managed coordination for auto/distributed work
+
+Current `main` supports repository-managed coordinator infrastructure.
+
+For managed mode leave:
+
+```toml
+[automation]
+coordinator_url = ""
+```
+
+An empty URL selects the managed GitHub Actions/Google Apps Script lifecycle. An explicit valid Apps Script URL selects backward-compatible external coordinator mode.
+
+Continuous `auto` and `distributed` modes require:
+
+```toml
+[git]
+git_publish = true
+```
+
+because a globally successful job must have durable generated artifacts, not files stranded on one PC.
+
+After the new project configuration is merged and synchronized, use one trusted administrator PC:
+
+```powershell
+gh auth status
+& $py -m app_generator coordinator-status --config $config
+```
+
+If the managed coordinator is missing, bootstrap it once for that **project identity**:
+
+```powershell
+& $py -m app_generator coordinator-bootstrap --config $config
+```
+
+This may request additional Google Apps Script/Drive administration consent and stores the refreshable administrator credential in the repository's private GitHub Actions secret. Ordinary worker PCs do not repeat the bootstrap.
+
+Verify worker readiness with:
+
+```powershell
+& $py -m app_generator coordinator-ensure --config $config
+```
+
+Each recycled `project_name` has a distinct managed-coordinator identity/metadata scope even if several projects use the same Google account or OAuth Desktop client.
+
+## 8. Start continuous auto mode
+
+Preview without claiming work:
+
+```powershell
+& $py -m app_generator doctor --config $config --selection-mode auto
+```
+
+Run:
+
+```powershell
+& $py -m app_generator run --config $config --selection-mode auto
+```
+
+Multiple PCs may run the same project concurrently after synchronization and coordinator readiness. Leases prevent double-claiming; recoverable interrupted work is prioritized according to coordinator policy; checkpoints and Git handoff make recovery cross-PC capable.
 
 ## Intentional application contracts
 
-These are not textbook identity variables and remain generic/versioned code or schema contracts:
+These remain generic/versioned application behavior rather than textbook identity:
 
-- Section folders currently use numeric `chapter.section`, such as `15.1`.
-- Each package currently uses exactly one PDF.
-- The current package contract uses 18 activities with the defined type/difficulty distribution.
-- The current learner contract uses English, Malay and Simplified Chinese and calculator-free conceptual activities.
-- Gemini web automation depends on the authenticated Chrome UI and may require selector maintenance.
-- Generated work remains draft and requires qualified human review.
+- one controlled PDF per generated package;
+- numeric `chapter.section` source folders;
+- the current activity/type/difficulty contract;
+- English/Malay/Simplified-Chinese learner contract;
+- calculator-free conceptual-activity policy;
+- deterministic validation/provenance rules;
+- source PDFs and credentials outside Git;
+- generated content remains draft until qualified human review.
