@@ -1,102 +1,186 @@
 # One-click workstation synchronization
 
-For the complete normal workflow from controlled PDF to generated draft, review bundle, and optional GitHub Pages deployment, start with `docs/PDF_TO_APP_QUICKSTART.md`. This document focuses on workstation synchronization, machine-local state, and related troubleshooting.
+Start with `docs/PDF_TO_APP_QUICKSTART.md` for the complete current workflow. This document focuses on synchronization, machine-local state, generated configuration, and troubleshooting.
 
-`sync-workstation.cmd` safely updates an existing Windows checkout, prepares its Python environment, renders the repository-tracked generator configuration for that PC, and validates the workstation. A separate `--quick` mode provides a fast routine update without weakening the checks required for live generation.
+Operational documentation is versioned with the code. Read this file from the same `main` revision that you are running; see `docs/DOCUMENTATION_MAINTENANCE.md`.
 
 ## Configuration authority
 
-The active project-specific configuration is:
+The tracked project authority is:
 
 ```text
 config/configure_project.toml
 ```
 
-It is versioned with the generator code and reaches every authorized PC through the normal Git pull. When this code package is recycled for another subject or textbook, change the non-secret project-dependent values in this file (or another explicitly documented file under `config/`) rather than editing Python source.
-
-The `[project]` table supplies the canonical `project_name`. The synchronizer derives the environment namespace and all default local paths from that name. For example, `MyLearningProject` becomes `MY_LEARNING_PROJECT` for environment-variable names and `%LOCALAPPDATA%\MyLearningProject` for local state.
-
-`config/configure_project.toml` is the normal user-facing project authority. `config/project.toml` is retained for compatibility with older tooling/tests during migration and is not selected by `sync-workstation.cmd`.
-
-The tracked project file contains only approved, non-secret, machine-independent settings. It retains `${REPO_ROOT}`, `${STATE_ROOT}`, and `${PROJECT_ENV_PREFIX}` tokens where values should be materialized per workstation. The synchronizer accepts only an explicit allow-list of generator fields and refuses unknown fields, oversized files, symbolic links, invalid TOML, or an invalid repository-root token.
-
-## Security boundary
-
-Never place any of these items in Git or in the tracked project configuration:
-
-- Google OAuth client JSON or OAuth token JSON;
-- Google, GitHub, or coordinator token values;
-- passwords, cookies, or `.env` files;
-- Chrome profiles;
-- controlled source PDFs or generator run directories.
-
-Each PC must provision its own Google Desktop-app OAuth client outside the repository. Its default path is derived from `project_name`:
+Its `[project].project_name` determines the environment namespace and default Windows state root. For example:
 
 ```text
-%LOCALAPPDATA%\<project_name>\credentials\drive-oauth-client.json
+project_name = "BrilliantContentGenerator"
+        ↓
+%LOCALAPPDATA%\BrilliantContentGenerator
 ```
 
-The first generator `doctor` run opens Google's read-only Drive authorization flow and writes that PC's OAuth token beside the client file. Google Drive remains the controlled source-PDF service; it is not used to distribute machine-local configuration. Git and GitHub authentication also remain local to each PC.
+A recycled project such as `something_else` gets:
+
+```text
+%LOCALAPPDATA%\something_else
+```
+
+Machine-local paths remain tokenized in the tracked project file and are materialized per PC.
+
+## Machine-local security boundary
+
+Never place these in Git:
+
+- Google OAuth client/token JSON;
+- coordinator or GitHub token values;
+- passwords, cookies, or `.env` files;
+- Chrome profiles;
+- controlled PDFs;
+- run directories or raw Gemini responses.
+
+The project-derived state root normally contains:
+
+```text
+%LOCALAPPDATA%\<project_name>\workstation-sync.toml
+%LOCALAPPDATA%\<project_name>\credentials\drive-oauth-client.json
+%LOCALAPPDATA%\<project_name>\credentials\drive-oauth-token.json
+%LOCALAPPDATA%\<project_name>\chrome-profile\
+%LOCALAPPDATA%\<project_name>\runs\
+```
+
+The same Google Cloud Desktop OAuth client JSON may be securely copied into multiple trusted PCs/project-scoped credential directories when appropriate. Keep each project's path independent and let each PC/project maintain its own generated OAuth token.
 
 ## First run on each PC
 
-Prerequisites are Python 3.12, Git, current Chrome, Node.js, network access, and an existing repository checkout. Authenticate Git locally before running the synchronizer when the repository requires it.
+Prerequisites: Python 3.12, Git, Node.js, current Chrome, and network access. GitHub CLI is also required for repository-managed coordinator bootstrap and convenient GitHub operations.
 
-Double-click `sync-workstation.cmd`. The expected Google account comes from `config/configure_project.toml`, and a new workstation defaults to the `main` branch. Command-line options can override initialization values where supported.
+A new checkout should first be confirmed current:
 
-To create only the machine-local settings first, without fetching Git or running `doctor`, run the same configured sync module used by the batch entrypoint:
+```powershell
+git switch main
+git fetch origin
+git status -sb
+```
+
+If behind:
+
+```powershell
+git pull --ff-only origin main
+```
+
+Initialize only workstation settings if desired:
 
 ```powershell
 python -m scripts.sync_configured_workstation --init-settings-only
 ```
 
-The first run saves the effective machine-local values outside the repository in:
-
-```text
-%LOCALAPPDATA%\<project_name>\workstation-sync.toml
-```
-
-Later runs require only a double-click. To change the branch or machine-local expected Google account, edit that machine-local, non-secret file.
-
-## Routine quick synchronization
-
-After the first full validation succeeds, use quick mode for ordinary updates from an already configured PC:
-
-```powershell
-.\sync-workstation.cmd --quick
-```
-
-Quick mode still refuses a dirty or diverged worktree, fast-forwards from the configured Git branch, validates and renders `config/configure_project.toml`, and verifies the installed Python environment. It skips the full repository test suite and Drive `doctor`.
-
-Package installation is protected by a fingerprint of `pyproject.toml`, `requirements-generator.txt`, and `requirements-dev.txt`. If that fingerprint is unchanged and the required imports succeed, the synchronizer reuses `.venv` instead of running `pip install -e .`. A changed dependency manifest or failed import verification automatically triggers installation.
-
-Use the default command when generator, configuration, synchronization, or dependency changes need full validation:
+Then run:
 
 ```powershell
 .\sync-workstation.cmd
 ```
 
-## Safety and behavior
+The synchronizer creates/verifies `.venv`, installs dependencies when needed, renders the project configuration for that PC, and in full mode runs repository tests and generator doctor.
+
+## Generated local configuration filename
+
+The workstation settings contain:
+
+```toml
+[output]
+generated_config_file = "project.local.toml"
+```
+
+for a newly initialized default workstation. Older or deliberately customized machine-local settings may use another allowed ignored name, for example:
+
+```text
+generator.shared.local.toml
+```
+
+The synchronizer prints the exact result:
+
+```text
+Installed config/configure_project.toml as <generated-local-config>.toml (...)
+```
+
+That printed filename is authoritative for direct CLI commands on that PC.
+
+If it is `project.local.toml`, the CLI default works:
+
+```powershell
+& .\.venv\Scripts\python.exe -m app_generator doctor
+```
+
+If it is another name, pass it explicitly:
+
+```powershell
+& .\.venv\Scripts\python.exe -m app_generator doctor --config .\generator.shared.local.toml
+```
+
+Do not copy a generated local config filename from another PC and assume it is correct locally.
+
+## Routine synchronization
+
+For a normal full validation:
+
+```powershell
+.\sync-workstation.cmd
+```
+
+After a successful full validation, routine code/config refresh can use:
+
+```powershell
+.\sync-workstation.cmd --quick
+```
+
+Quick mode still fetches the configured remote, refuses dirty/diverged state, fast-forwards only, validates/renders the tracked project config, and verifies the Python environment. It skips the full test suite and Drive doctor.
+
+The synchronizer itself safely performs the Git fetch/fast-forward operation, but `git fetch origin` plus `git status -sb` remains a useful non-destructive manual check of whether a PC is current.
+
+## Safety behavior
 
 The synchronizer:
 
 1. refuses a dirty worktree;
-2. fetches the configured remote and switches to the configured branch;
-3. fast-forwards only and refuses local-only or diverged commits;
-4. creates or verifies `.venv` with Python 3.12 and installs the repository package only when its dependency fingerprint is absent, changed, or fails import verification;
-5. reads `config/configure_project.toml` from the synchronized checkout;
-6. validates it, derives `${PROJECT_ENV_PREFIX}`, `${STATE_ROOT}`, and `${REPO_ROOT}` from the project identity and workstation, and atomically writes the ignored `project.local.toml`;
-7. verifies that the project and machine-local expected Google accounts agree;
-8. in full mode, runs lint, content validation, unit tests, the JavaScript syntax check, and generator `doctor`; quick mode skips this step. A successful full check is recorded outside the repository for the exact checkout and configuration.
+2. fetches the configured remote and branch;
+3. refuses local-only/diverged commits and fast-forwards only;
+4. creates/verifies Python 3.12 `.venv`;
+5. caches package installation using dependency fingerprints;
+6. reads `config/configure_project.toml` from the synchronized checkout;
+7. derives `${PROJECT_ENV_PREFIX}`, `${STATE_ROOT}`, and `${REPO_ROOT}`;
+8. writes the configured ignored local TOML atomically;
+9. verifies project/workstation Google account consistency;
+10. in full mode runs lint, content validation, unit tests, JavaScript syntax checks, and generator doctor.
 
-`doctor` verifies Drive authorization, source discovery/download, checksums, and provenance, but does not upload a PDF to Gemini. A live run must be explicitly requested from a terminal:
+`doctor` does not upload to Gemini.
+
+## Live run shortcut
+
+An explicit live run can be requested with:
 
 ```powershell
 .\sync-workstation.cmd --run-generator
 ```
 
-When the same checkout has already completed a successful full synchronization, that option reuses the recorded repository validation and skips the duplicate pre-run test suite and `doctor`. The live run still authenticates Drive, resolves and downloads the selected PDF, and validates its checksum and provenance before uploading it to Gemini. If the Git revision, dependency manifests, tracked project configuration, or checkout path changed—or no successful full check was recorded—`--run-generator` automatically runs the full tests and `doctor` first. `--quick` does not create this validation record. `--quick` and `--run-generator` are mutually exclusive. Leave `git_publish = false` and `git_auto_merge = false` until repository handoff is intentionally enabled. Auto-merge additionally requires a non-draft PR, honors GitHub branch protection, and leaves the package itself in `draft` status.
+It reuses a successful validation stamp only when the synchronized revision/configuration/dependency/checkout identity is unchanged. Otherwise it reruns the required checks before live generation.
+
+For controlled operator work, direct CLI commands with the printed generated config filename are clearer, especially when selecting `specific` versus `auto` mode.
+
+## Managed coordinator on worker PCs
+
+The coordinator is project-wide, not PC-specific. For repository-managed mode, one trusted administrator PC performs `coordinator-bootstrap` once. Ordinary worker PCs only need their normal Drive authorization and synchronized repository.
+
+Check status using the local generated config:
+
+```powershell
+& .\.venv\Scripts\python.exe -m app_generator coordinator-status --config .\<generated-local-config>.toml
+```
+
+If the project is already bootstrapped, do not bootstrap again on every PC.
 
 ## Reusing the package for another project
 
-For a different subject/textbook, edit `config/configure_project.toml` through a branch/PR. At minimum review the project identity, Drive source root, Gemini Gem/account, default subchapter, source filename/pattern, source ID prefix, edition/provenance wording, coordinator settings, and Git publishing policy. Machine-local paths and environment namespaces should remain tokenized so `sync-workstation.cmd` derives them automatically on each PC.
+Change `project_name` and other project-dependent values through `config/configure_project.toml` on a reviewed branch. The new project automatically receives its own `%LOCALAPPDATA%\<project_name>` state root, OAuth/token paths, Chrome profile, run state, environment namespace, and managed-coordinator project identity.
+
+See `docs/GENERIC_PROJECT_SETUP.md` for the full recycling procedure.

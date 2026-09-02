@@ -1,35 +1,22 @@
 # PDF textbook section to live review app: Windows quickstart
 
-This is the canonical beginner-facing path for taking one controlled textbook subchapter PDF through generation, human review, static bundling, and optional GitHub Pages deployment.
+This is the canonical beginner-facing installation and operating guide for the current `main` branch. It covers one controlled `source.pdf`, workstation setup, Google authentication, specific generation, managed continuous-auto mode, review, and optional static deployment.
 
-Use this guide for the normal happy path. Specialist references remain available for deeper details:
+**Documentation freshness rule:** use this file from the same `main` revision that you are running. Operational changes must update the relevant documentation in the same PR; see `docs/DOCUMENTATION_MAINTENANCE.md`.
 
-- `docs/GENERIC_PROJECT_SETUP.md` — recycling the repository for another textbook/project;
+Specialist references:
+
 - `docs/WORKSTATION_SYNC.md` — workstation synchronization and machine-local state;
-- `app_generator/README.md` — generator internals, distributed workers, recovery, and Git handoff;
-- `config/README.md` — project configuration field reference.
+- `docs/GENERIC_PROJECT_SETUP.md` — recycling the repository for another textbook/project;
+- `docs/CONTINUOUS_AUTO_TESTING.md` — continuous auto-mode and multi-PC verification;
+- `app_generator/README.md` — generator technical reference;
+- `config/README.md` — configuration field reference.
 
-The workflow is deliberately split into distinct gates:
+Generation does **not** mean that content is approved, publishable, merged, or publicly deployed.
 
-```text
-controlled source.pdf
-        ↓
-generated draft package
-        ↓
-qualified human review
-        ↓
-static review bundle
-        ↓
-optional GitHub Pages deployment
-```
+## 1. Supported source layout
 
-Generation does **not** by itself mean that content is approved, merged, publishable, or publicly deployed.
-
-## 1. Understand the supported input
-
-The current generator processes **one PDF per subchapter**. It does not automatically split or process one complete textbook PDF.
-
-A supported Google Drive source tree looks like:
+The generator processes one PDF per subchapter. A supported Google Drive tree looks like:
 
 ```text
 Textbook-or-source-root/
@@ -42,34 +29,22 @@ Textbook-or-source-root/
         └── source.pdf
 ```
 
-The immediate parent directory must be a numeric subchapter identifier such as `8.5`, and the controlled file is normally named `source.pdf`.
+The immediate parent folder must look like `8.5`; the controlled filename is normally `source.pdf`.
 
-**Expected result:** you can identify one specific subchapter, such as `8.5`, whose Drive folder contains exactly one controlled `source.pdf`.
+Never commit source PDFs, OAuth files, tokens, browser profiles, cookies, raw Gemini responses, or generator run directories to Git.
 
-### Safety boundary
+## 2. Install prerequisites on each Windows PC
 
-Never commit or copy these into Git:
-
-- source PDFs;
-- Google OAuth client or token JSON files;
-- passwords, cookies, `.env` files, or coordinator token values;
-- Chrome profiles;
-- generator run directories or raw Gemini response transcripts.
-
-Generated repository artifacts contain source provenance and checksums, not the source PDF itself.
-
-## 2. Install the workstation prerequisites
-
-Install on Windows:
+Install:
 
 - Python 3.12;
 - Git;
 - Node.js;
 - current Google Chrome;
-- GitHub CLI (`gh`) if you want command-line PR/repository operations;
-- VS Code or another editor of your choice.
+- GitHub CLI (`gh`) for managed coordinator bootstrap and GitHub operations;
+- VS Code or another editor if desired.
 
-Confirm the main tools from PowerShell:
+Check:
 
 ```powershell
 py -3.12 --version
@@ -78,52 +53,60 @@ node --version
 gh --version
 ```
 
-**Expected result:** Python reports 3.12 and Git/Node are available. `gh` is optional for generation but useful for PR and Pages steps.
-
-## 3. Clone and prepare the repository
-
-Use a normal local development folder rather than storing Git metadata or virtual environments in a cloud-synchronized folder when possible.
+For GitHub operations also check:
 
 ```powershell
-cd $HOME\Projects
-git clone https://github.com/tlyoon/brilliant.org-style-learning-apps.git
-cd brilliant.org-style-learning-apps
-py -3.12 -m venv .venv
-$py = (Resolve-Path ".\.venv\Scripts\python.exe").Path
-& $py -m pip install --upgrade pip
-& $py -m pip install -r requirements-dev.txt
+gh auth status
 ```
 
-Confirm the checkout is clean:
+## 3. Clone or refresh the repository
+
+For a new PC:
 
 ```powershell
+cd <projects-folder>
+git clone https://github.com/tlyoon/brilliant.org-style-learning-apps.git
+cd brilliant.org-style-learning-apps
+git fetch origin
 git status -sb
 ```
 
-**Expected result:** the checkout is on `main`, the working tree is clean, and `.venv` can import the development dependencies.
+A freshly cloned current checkout normally shows:
 
-## 4. Configure the project for the textbook/source collection
+```text
+## main...origin/main
+```
 
-On the current `main` branch, the normal tracked project authority is:
+For an existing PC:
+
+```powershell
+git switch main
+git fetch origin
+git status -sb
+```
+
+If it shows `[behind N]`, update safely:
+
+```powershell
+git pull --ff-only origin main
+```
+
+`git fetch origin` updates the PC's knowledge of GitHub without changing working files. `git pull --ff-only origin main` updates local `main` only when a clean fast-forward is possible.
+
+## 4. Understand the tracked project authority
+
+The normal tracked project authority is:
 
 ```text
 config/configure_project.toml
 ```
 
-Do not place machine-local paths or secrets in that file.
+It contains non-secret project identity, Drive source root, Gemini Gem/account, automation policy, project-derived path templates, and Git handoff policy.
 
-For a new textbook/project, start from current `main` and create a configuration branch:
-
-```powershell
-git switch main
-git pull --ff-only
-git switch -c config/new-textbook-project
-```
-
-Preview the core project changes first:
+For a new recycled project, preview the configurator:
 
 ```powershell
-& $py scripts\configure_project.py `
+python scripts\configure_project.py `
   --project-name "NewLearningProject" `
   --source-root-url "https://drive.google.com/open?id=SOURCE_FOLDER_ID" `
   --gem-url "https://gemini.google.com/gem/GEM_ID" `
@@ -131,55 +114,32 @@ Preview the core project changes first:
   --gem-name "subject content generator"
 ```
 
-Review the printed diff. If correct, repeat with `--apply`:
+Review the diff, then repeat with `--apply` when correct. Validate and merge that configuration through the normal PR workflow before distributing it to other PCs.
 
-```powershell
-& $py scripts\configure_project.py `
-  --project-name "NewLearningProject" `
-  --source-root-url "https://drive.google.com/open?id=SOURCE_FOLDER_ID" `
-  --gem-url "https://gemini.google.com/gem/GEM_ID" `
-  --login-name "authorized@example.com" `
-  --gem-name "subject content generator" `
-  --apply
-```
+For a conservative first **specific-mode** project test, `git_publish = false` and `git_auto_merge = false` are valid. Continuous `auto` and `distributed` modes require durable Git publication and therefore require `git_publish = true`.
 
-Then review `config/configure_project.toml`, `config/gem_description.txt`, and `config/gem_instructions.md`. In particular, confirm the Drive root, Gemini Gem/editor values, expected account, default subchapter selector, source filename/pattern, provenance wording, and Git policy.
+## 5. Project name determines the machine-local state root
 
-For the first controlled run, keep Git publication disabled unless you deliberately want the generator to create/push branches:
-
-```toml
-git_publish = false
-git_auto_merge = false
-```
-
-Validate the configuration change:
-
-```powershell
-& $py scripts\lint.py
-& $py scripts\validate_content.py
-& $py -m unittest discover -s tests -v
-git diff --check
-```
-
-Commit the project configuration through your normal PR workflow before distributing it to other PCs.
-
-**Expected result:** the repository contains one reviewed, non-secret project configuration that every workstation can receive through Git.
-
-## 5. Initialize machine-local workstation settings
-
-After the project configuration is available on your working branch or `main`, initialize the local settings:
-
-```powershell
-& $py -m scripts.sync_configured_workstation --init-settings-only
-```
-
-The project name determines the default machine-local state root:
+On Windows, the project name determines the default local state root:
 
 ```text
 %LOCALAPPDATA%\<project_name>\
 ```
 
-Important derived locations include:
+For the current project:
+
+```toml
+[project]
+project_name = "BrilliantContentGenerator"
+```
+
+so the default state root is:
+
+```text
+C:\Users\<user>\AppData\Local\BrilliantContentGenerator\
+```
+
+Important derived locations are:
 
 ```text
 %LOCALAPPDATA%\<project_name>\workstation-sync.toml
@@ -189,59 +149,174 @@ Important derived locations include:
 %LOCALAPPDATA%\<project_name>\runs\
 ```
 
-Create a Google Cloud **Desktop app** OAuth client with the Google Drive API enabled and save the downloaded client JSON as:
+A different project name, for example `something_else`, gets its own state root:
+
+```text
+%LOCALAPPDATA%\something_else\
+```
+
+### Google Cloud OAuth client JSON
+
+Create/download a Google Cloud **Desktop app** OAuth client with the Drive API enabled. Place a secure copy at:
 
 ```text
 %LOCALAPPDATA%\<project_name>\credentials\drive-oauth-client.json
 ```
 
-Do not add that file to the repository.
+The same Google Cloud Desktop OAuth client JSON contents may be securely copied into multiple trusted PCs and multiple project-scoped credential directories when those projects intentionally use the same Google OAuth client. Keep each project's path independent rather than making one project point into another project's state directory.
 
-Run the normal workstation synchronizer:
+Each PC/project should normally maintain its own generated `drive-oauth-token.json`. Do not copy OAuth token files into Git or a shared project checkout.
+
+## 6. Initialize and synchronize a workstation
+
+To initialize only the machine-local settings:
+
+```powershell
+python -m scripts.sync_configured_workstation --init-settings-only
+```
+
+Then run the normal synchronizer:
 
 ```powershell
 .\sync-workstation.cmd
 ```
 
-For later routine updates, after one full validation has succeeded, use:
+A successful first run may create `.venv`, install dependencies, render the local generator configuration, run repository tests, and run generator doctor.
+
+Watch the line:
+
+```text
+Installed config/configure_project.toml as <generated-local-config>.toml (...)
+```
+
+**Use the filename printed by `sync-workstation.cmd` as the authority for direct CLI commands on that PC.** The default new setting is normally `project.local.toml`, but existing machine-local workstation settings may deliberately use another allowed ignored filename such as `generator.shared.local.toml`.
+
+Set a PowerShell variable after sync. Example:
+
+```powershell
+$config = ".\generator.shared.local.toml"   # replace with the filename printed on your PC
+$py = (Resolve-Path ".\.venv\Scripts\python.exe").Path
+```
+
+If the printed file is `project.local.toml`, direct CLI commands can omit `--config`; otherwise pass it explicitly.
+
+For routine synchronization after a successful full check:
 
 ```powershell
 .\sync-workstation.cmd --quick
 ```
 
-**Expected result:** ignored `project.local.toml` is materialized for this PC, dependencies are usable, and machine-local credentials/state remain outside Git.
-
-## 6. Run doctor before uploading anything to Gemini
-
-Run:
+Use the full command again after generator/configuration/dependency changes:
 
 ```powershell
-& $py -m app_generator doctor
+.\sync-workstation.cmd
 ```
 
-`doctor` checks configuration, Drive authorization, PDF discovery/download, checksum, and provenance compatibility. It does **not** upload the PDF to Gemini.
+## 7. Run a non-uploading doctor check
 
-The first Drive authorization may open a browser for the configured Google account.
-
-**Expected result:** doctor identifies the requested Drive source and reports a valid controlled PDF without modifying Gemini.
-
-## 7. Generate one selected subchapter
-
-Start with one explicit subchapter in specific mode. Example:
+With an explicit local config variable:
 
 ```powershell
-& $py -m app_generator run --pdf-subchapter-path 8.5
+& $py -m app_generator doctor --config $config
 ```
 
-The live run uses the configured Gemini Gem/account, converges the project-owned editable Gem fields as implemented by the current generator, opens a fresh conversation, attaches the selected PDF, generates the package, validates/repairs it, and installs the repository artifacts.
+For a specific section:
 
-A successful run prints the generated paths and keeps the package in `draft` status.
+```powershell
+& $py -m app_generator doctor --config $config --selection-mode specific --pdf-subchapter-path 8.5
+```
 
-**Expected result:** the target section appears under `content/chapter-8/section-8-5/` (or the corresponding chapter/section for your source).
+Doctor checks configuration, Drive authorization, PDF discovery/download, checksum, and provenance. It does not upload a PDF to Gemini.
 
-## 8. Inspect the generated artifacts
+The first Drive authorization on a PC may open a Google browser consent flow and create that PC/project's `drive-oauth-token.json`.
 
-For a generated Section 8.5, expect:
+## 8. Generate one selected subchapter
+
+Start with a controlled specific-mode run when validating a new project:
+
+```powershell
+& $py -m app_generator run --config $config --selection-mode specific --pdf-subchapter-path 8.5
+```
+
+The generator opens the configured Gem/account, reconciles project-owned Gem fields, opens a fresh conversation, uploads the controlled PDF, generates/repairs the package, validates it, and installs the generated artifacts.
+
+A successful package remains a structurally validated **draft** awaiting qualified human review.
+
+## 9. Managed coordinator: one-time project bootstrap
+
+Continuous `auto` and `distributed` modes use a coordinator. Current `main` supports repository-managed coordinator infrastructure.
+
+In `config/configure_project.toml`:
+
+```toml
+[automation]
+coordinator_url = ""
+```
+
+an empty URL selects repository-managed infrastructure. An explicit valid Google Apps Script URL remains backward-compatible **external** coordinator mode.
+
+Check current managed status:
+
+```powershell
+& $py -m app_generator coordinator-status --config $config
+```
+
+If it reports a current version and URL, do not bootstrap again.
+
+If it reports, for example:
+
+```text
+Managed coordinator: missing (required v2)
+```
+
+perform the **one-time project-wide bootstrap on one trusted administrator PC**:
+
+```powershell
+gh auth status
+& $py -m app_generator coordinator-bootstrap --config $config
+```
+
+The bootstrap may open Google consent for additional Apps Script/Drive administration scopes. It verifies the configured Google account, stores the refreshable administrator credential in the private GitHub Actions secret used by this repository, requests the serialized managed deployment, and waits for a live health check.
+
+Ordinary worker PCs do **not** repeat `coordinator-bootstrap` and do not need the administrator token locally. They discover the private managed runtime through their normal Drive authorization.
+
+Any worker can verify readiness with:
+
+```powershell
+& $py -m app_generator coordinator-ensure --config $config
+```
+
+## 10. Continuous multi-PC auto mode
+
+Auto mode requires:
+
+- Google Drive source discovery;
+- a healthy managed or explicit external coordinator;
+- `git_publish = true` so generated artifacts become durable/shared;
+- a clean/synchronized Git checkout;
+- working GitHub/Git credentials appropriate to the configured publication policy.
+
+Preview the queue without claiming a generation job:
+
+```powershell
+& $py -m app_generator doctor --config $config --selection-mode auto
+```
+
+Start a continuous worker:
+
+```powershell
+& $py -m app_generator run --config $config --selection-mode auto
+```
+
+The worker repeatedly claims globally eligible jobs, prioritizes recoverable interrupted work according to coordinator policy, renews leases, uses durable checkpoints, publishes validated artifacts through Git, and continues until the global source inventory is successful. If remaining work is currently leased by other PCs, it waits/polls instead of falsely declaring completion.
+
+Use `Ctrl+C` to stop a worker. The current CLI reports interruption and returns an active auto lease safely when possible; abandoned leases also become recoverable through expiry.
+
+See `docs/CONTINUOUS_AUTO_TESTING.md` for a two-PC recovery/concurrency verification procedure.
+
+## 11. Generated repository artifacts
+
+For Section 8.5, expect:
 
 ```text
 content/chapter-8/section-8-5/
@@ -254,23 +329,9 @@ content/source-manifests/
 └── chapter-8-section-8-5.json
 ```
 
-Purpose of each file:
+The five artifacts serve learner content, learning-design rationale, review status, section provenance/status, and controlled-source identity/checksum. No source PDF should enter Git.
 
-| File | Purpose |
-|---|---|
-| `package.json` | learner-facing structured content consumed by the app |
-| `learning-design.md` | concept coverage, prerequisite, misconception, and pedagogy notes |
-| `review-record.md` | review checklist/status and required human sign-offs |
-| section `README.md` | section-level provenance/status summary |
-| source manifest | controlled source identity, location, checksum, and provenance metadata |
-
-Only the selected `package.json` is copied into the generic public static bundle; internal review records and source manifests stay out of that bundle.
-
-**Expected result:** all five artifacts exist, the package is still marked `draft`, and no PDF has entered Git.
-
-## 9. Validate the generated draft before committing it
-
-Run the repository checks:
+Validate:
 
 ```powershell
 & $py scripts\lint.py
@@ -283,17 +344,9 @@ node tests\test_interaction_rendering.js
 git diff --check
 ```
 
-Then inspect the working tree:
+## 12. Review, PR, and human approval
 
-```powershell
-git status -sb
-```
-
-**Expected result:** all deterministic checks pass and only the intended generated artifacts are uncommitted/changed.
-
-## 10. Commit the draft and use a pull request
-
-If Git publication was disabled for the controlled run, create a normal short-lived branch and commit only the generated artifacts:
+If a specific-mode run did not publish automatically, create a short-lived content branch, add only intended artifacts, validate, push, and open a PR:
 
 ```powershell
 git switch -c content/section-8-5-draft
@@ -301,31 +354,14 @@ git add content/chapter-8/section-8-5 content/source-manifests/chapter-8-section
 git diff --cached --check
 git commit -m "Add Section 8.5 generated draft"
 git push -u origin content/section-8-5-draft
-```
-
-Open a PR with GitHub or:
-
-```powershell
 gh pr create --base main --fill
 ```
 
-Do not interpret a green CI result as scientific/pedagogical approval. The generated package remains a draft until the required qualified reviews are complete.
+Green CI is not subject/pedagogical approval. Complete the required qualified reviews recorded in `review-record.md` before treating content as approved.
 
-**Expected result:** the generated draft is reviewable in a PR and `main` remains unchanged until the PR is deliberately merged.
+## 13. Build and preview a minimal static review app
 
-## 11. Perform human review before treating content as approved
-
-Use the section `review-record.md` and repository content rules. The automated generator does not replace qualified review of subject correctness, instructional quality, English/Malay/Simplified-Chinese quality, accessibility, and provenance.
-
-If corrections are needed, edit/regenerate on the same review branch, rerun validation, and update the PR.
-
-**Expected result:** reviewers can distinguish a structurally valid generated draft from content that has actually received the required human sign-offs.
-
-## 12. Build a minimal static review app
-
-The generic builder requires one explicit package and an empty output directory.
-
-Example:
+Build one selected package into an empty directory:
 
 ```powershell
 $release = "..\section-8-5-release"
@@ -335,138 +371,72 @@ New-Item -ItemType Directory -Path $release
   $release
 ```
 
-If the output directory already contains files, choose a new empty directory; the builder intentionally refuses to overwrite a non-empty bundle.
-
-The bundle contains only:
-
-```text
-index.html
-.nojekyll
-app/app.js
-app/styles.css
-content/package.json
-```
-
-It excludes Git history, tests, source PDFs, review records, source manifests, development scripts, credentials, and run diagnostics.
-
-**Expected result:** the release directory is a self-contained static review app with one explicitly selected package.
-
-## 13. Preview the static bundle locally
-
-Serve the release directory:
+Preview:
 
 ```powershell
 & $py -m http.server 8001 --directory $release
 ```
 
-Open:
+Open `http://127.0.0.1:8001/`. The bundle contains the learner app and selected package, not PDFs, credentials, review records, source manifests, or development files.
 
-```text
-http://127.0.0.1:8001/
-```
+For public review deployment, prefer a separate minimal GitHub Pages repository and verify the built bundle locally before pushing it.
 
-Verify at minimum:
+## 14. Routine multi-PC operating pattern
 
-- the page loads without console errors;
-- the intended section/package title appears;
-- the package status is still `draft` when appropriate;
-- the expected activity count and language controls are present;
-- navigation/interactions work.
-
-Stop the local server with Ctrl+C.
-
-**Expected result:** the exact static bundle intended for deployment works locally before any public upload.
-
-## 14. Deploy the review bundle to GitHub Pages
-
-For draft/review material, prefer a **separate minimal Pages repository** rather than exposing the development repository. This keeps internal specifications, source manifests, tests, and review records out of the public site.
-
-### A. First deployment to a new Pages repository
-
-Create a clean deployment folder and copy the built bundle into it:
-
-```powershell
-$pages = "..\section-8-5-pages"
-New-Item -ItemType Directory -Path $pages
-Copy-Item -Path "$release\*" -Destination $pages -Recurse -Force
-Set-Location $pages
-git init -b main
-git add .
-git commit -m "Publish Section 8.5 draft review app"
-```
-
-If GitHub CLI is authenticated, create and push a repository using your chosen owner/repository name:
-
-```powershell
-gh repo create OWNER/REVIEW_REPO --public --source=. --remote=origin --push
-```
-
-In GitHub, open **Settings → Pages**, choose **Deploy from a branch**, select `main` and `/(root)`, then save.
-
-GitHub will show the resulting Pages URL, normally:
-
-```text
-https://OWNER.github.io/REVIEW_REPO/
-```
-
-### B. Add another section without breaking existing routes
-
-Build each new section into its own empty staging directory, then place that bundle in a new subdirectory of the existing Pages repository. For example:
-
-```powershell
-$nextRelease = "..\section-8-6-release"
-New-Item -ItemType Directory -Path $nextRelease
-& $py scripts\build_public_release.py `
-  content/chapter-8/section-8-6/package.json `
-  $nextRelease
-
-Set-Location "..\REVIEW_REPO"
-git pull --ff-only
-New-Item -ItemType Directory -Path ".\section-8-6"
-Copy-Item -Path "$nextRelease\*" -Destination ".\section-8-6" -Recurse -Force
-git add section-8-6
-git commit -m "Add Section 8.6 draft review app"
-git push
-```
-
-The existing routes remain untouched. The new route becomes approximately:
-
-```text
-https://OWNER.github.io/REVIEW_REPO/section-8-6/
-```
-
-Do not delete or replace existing section directories merely to add a new route.
-
-### C. Verify the deployed site
-
-Open the live URL and verify the same properties checked locally: correct section/package, draft labelling, expected activity count, language controls, and interactive behavior.
-
-**Expected result:** only the static review bundle is public, while source PDFs, credentials, manifests, review records, and development files remain private to their intended locations.
-
-## 15. Normal repeat workflow for the next subchapter
-
-Once the workstation/project is configured, the common repeat cycle is much shorter:
+On every worker PC before use:
 
 ```powershell
 git switch main
-git pull --ff-only
-.\sync-workstation.cmd --quick
-& $py -m app_generator doctor
-& $py -m app_generator run --pdf-subchapter-path <chapter.section>
-& $py scripts\validate_content.py
-& $py -m unittest discover -s tests -v
+git fetch origin
+git status -sb
 ```
 
-Then repeat the review → PR → human review → static bundle → preview → optional deployment gates.
+If behind:
 
-## Troubleshooting and deeper references
+```powershell
+git pull --ff-only origin main
+```
 
-Use:
+Then:
 
-- `docs/WORKSTATION_SYNC.md` for dirty/diverged checkout, dependency caching, first-run settings, and validation stamps;
-- `app_generator/README.md` for Drive ambiguity, Selenium/Gemini UI issues, distributed worker leases, recovery, and Git handoff;
-- `config/README.md` for the project fields and machine-local token boundary;
-- `docs/GENERIC_PROJECT_SETUP.md` when recycling the repository for a different textbook/project;
-- `docs/SECURITY_AND_PRIVACY.md` for data-handling constraints.
+```powershell
+.\sync-workstation.cmd --quick
+```
 
-If the repository's tracked project-authority filename changes in the future, update this quickstart and its documentation acceptance test in the same pull request rather than allowing the normal workflow to become ambiguous again.
+Use the generated local config filename printed by synchronization for all direct commands. Do not assume a filename copied from another PC.
+
+For specific mode:
+
+```powershell
+& $py -m app_generator doctor --config $config --selection-mode specific --pdf-subchapter-path <chapter.section>
+& $py -m app_generator run --config $config --selection-mode specific --pdf-subchapter-path <chapter.section>
+```
+
+For continuous auto mode after project-wide coordinator bootstrap:
+
+```powershell
+& $py -m app_generator doctor --config $config --selection-mode auto
+& $py -m app_generator run --config $config --selection-mode auto
+```
+
+## 15. Common troubleshooting
+
+### `Configuration file does not exist: project.local.toml`
+
+Your workstation may use a different allowed generated config filename. Read the latest `sync-workstation.cmd` output and rerun with:
+
+```powershell
+& $py -m app_generator <command> --config .\<printed-generated-config>.toml
+```
+
+### `Managed coordinator: missing`
+
+If this project has never been bootstrapped, run `coordinator-bootstrap` once on a trusted administrator PC. If it was already bootstrapped, check the worker's Drive authorization/account and run `coordinator-ensure`.
+
+### Dirty or diverged Git checkout
+
+Do not reset blindly. Inspect `git status -sb`; commit/stash/remove intended local changes before synchronization. The workstation synchronizer intentionally refuses to overwrite local-only work.
+
+### Documentation uncertainty
+
+Refresh `main` and read the docs from that same checkout. `docs/DOCUMENTATION_MAINTENANCE.md` defines the same-PR documentation rule and CI gate.

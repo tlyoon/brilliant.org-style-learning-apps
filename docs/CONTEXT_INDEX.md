@@ -5,44 +5,75 @@
 When documents conflict, use this order:
 
 1. `AGENTS.md` — durable operational and safety rules.
-2. `docs/decisions/` — approved product decisions; later accepted records supersede earlier ones.
-3. `docs/PRODUCT_REQUIREMENTS.md` — product scope and acceptance boundaries.
-4. `docs/CONTENT_RULES.md` and `content/schema/content-package.schema.json` — learning-package rules.
-5. `docs/LEARNING_DESIGN.md` — pedagogy, mastery, progression, and feedback.
-6. `docs/SECURITY_AND_PRIVACY.md` — data handling and access requirements.
-7. `docs/ARCHITECTURE.md` and `docs/AI_WORKFLOW.md` — technical design.
-8. `docs/DEVELOPMENT_ROADMAP.md`, issues, and pull requests — delivery planning.
+2. Current code/schema/configuration on the same `main` revision.
+3. `docs/decisions/` — approved product decisions; later accepted records supersede earlier ones, but unmerged proposal branches do not override current `main` behavior.
+4. `docs/PRODUCT_REQUIREMENTS.md` — product scope and acceptance boundaries.
+5. `docs/CONTENT_RULES.md` and `content/schema/content-package.schema.json` — learning-package rules.
+6. `docs/LEARNING_DESIGN.md` — pedagogy, mastery, progression, and feedback.
+7. `docs/SECURITY_AND_PRIVACY.md` — data handling and access requirements.
+8. `docs/ARCHITECTURE.md` and `docs/AI_WORKFLOW.md` — technical design.
+9. `docs/DEVELOPMENT_ROADMAP.md`, issues, and pull requests — delivery planning/provenance.
 
-`docs/PDF_TO_APP_QUICKSTART.md` is the canonical operational walkthrough for the normal end-to-end workflow. It summarizes the approved rules above; it does not override them.
+`docs/PDF_TO_APP_QUICKSTART.md` is the canonical current operational walkthrough. `docs/DOCUMENTATION_MAINTENANCE.md` requires operator-visible changes to update canonical documentation in the same PR and adds a CI documentation-impact gate.
+
+Historical roadmaps, old branch-testing instructions, chat transcripts, and copied notes are not substitutes for the documentation shipped with the current `main` revision.
 
 ## Task routing
 
 | Task | Read first |
 |---|---|
-| First end-to-end PDF → draft → review app workflow | `docs/PDF_TO_APP_QUICKSTART.md` |
+| Install/setup and first PDF → draft workflow | `docs/PDF_TO_APP_QUICKSTART.md` |
+| Verify documentation freshness policy | `docs/DOCUMENTATION_MAINTENANCE.md` |
 | Recycle repository for another textbook/project | `docs/GENERIC_PROJECT_SETUP.md`, then `config/README.md` |
 | Workstation setup/sync troubleshooting | `docs/WORKSTATION_SYNC.md` |
+| Continuous auto / multi-PC verification | `docs/CONTINUOUS_AUTO_TESTING.md`, then `app_generator/README.md` |
+| Generator CLI/config/coordinator details | `app_generator/README.md`, `config/README.md` |
 | Product change | Product requirements and decision records |
 | Learning content | Content rules, learning design, schema, source-ingestion policy |
 | AI tutor | AI workflow, learning design, security/privacy |
 | Application code | Architecture, product requirements, test plan |
-| Analytics or reporting | Security/privacy, learning design, decision record 0004 |
-| Release planning | Development roadmap, test plan, current milestone issue |
+| Analytics/reporting | Security/privacy, learning design, relevant decisions |
+| Release planning | Development roadmap, test plan, current milestone/PR |
 
-## Current approved baseline
+## Current operational baseline on `main`
 
-Repository Foundation v1, approved 15 August 2026. The first implementation target is the Section 1.1 implementation pack, followed by a clickable prototype and a functional vertical slice.
+The current tracked project authority is:
 
-Shared conversations and imported files are provenance, not authoritative specifications. Record accepted changes here and in a decision record.
+```text
+config/configure_project.toml
+```
 
-Accepted automation baseline: Decision 0006 uses one PDF per fresh Gem conversation plus a central lease/heartbeat coordinator for multi-PC generation. Gem Knowledge is not part of the generation workflow.
+`config/project.toml` remains a compatibility artifact during migration and is **not** the normal authority selected by `sync-workstation.cmd` on current `main`.
 
-Accepted reusable-generator baseline: Decisions 0009 through 0016 establish `config/project.toml` as the single tracked authority, derive environment names and local paths from project identity, prohibit duplicated defaults, provide guarded initialization, template generic source metadata, scope coordinator state by project, bound exact legacy compatibility, and require two-project isolation tests. Google Drive remains the controlled source-PDF service, not a configuration-distribution service.
+Current workstation behavior derives the environment namespace and local state root from `project.project_name`, normally:
 
-Accepted source-derived automation baseline: Decision 0017 derives exact section titles and scope from validated PDF analysis, records truthful automated-draft provenance without manual metadata prompts, and permits explicitly configured private-repository auto-merge while preserving draft status, branch protection, human-review gates, and the deployment prohibition.
+```text
+%LOCALAPPDATA%\<project_name>
+```
 
-Accepted public-review baseline: Decision 0007 permits the two Section 8.1 draft packages to be deployed together in a separate minimal public GitHub Pages repository with explicit draft labelling and no publication sign-offs.
+The synchronizer renders an ignored local TOML whose exact filename comes from machine-local `workstation-sync.toml`; direct CLI commands must pass `--config` when that filename differs from the CLI default `project.local.toml`.
 
-Accepted Chapter 8 public-review extension: Decision 0018 permits the generated Section 8.3 draft to join the existing minimal public GitHub Pages review repository while retaining draft labelling, excluding internal artifacts, and preserving all human-review gates.
+Current generator selection modes are:
 
-Accepted Section 8.5 public-review extension: Decision 0020 permits the generated Section 8.5 draft to join the same minimal public GitHub Pages review repository under the same draft labelling, data-exclusion, and human-review constraints.
+```text
+specific
+auto
+distributed
+```
+
+Continuous `auto` mode provides multi-PC coordinated generation/recovery and requires durable Git publication.
+
+Current managed-coordinator baseline (PR #46) uses repository-managed infrastructure when `automation.coordinator_url` is empty. One trusted administrator PC performs the project-wide `coordinator-bootstrap`; ordinary workers discover/ensure the managed runtime through normal Drive authorization and do not manually deploy Apps Script per PC.
+
+## Historical decision/provenance notes
+
+Earlier decisions and PRs remain useful provenance, but interpret them against current `main`:
+
+- one-PDF-per-fresh-Gem-conversation and central lease/heartbeat coordination remain active design principles;
+- project-derived path/environment isolation remains active;
+- source-derived section title/scope and truthful automated-draft provenance remain active;
+- generated material remains draft pending qualified human review;
+- public review deployment remains separate from generation/approval;
+- any historical statement that `config/project.toml` is the current user-facing authority is superseded by the actual current-main configuration path above unless/until a future explicitly merged migration changes it.
+
+Shared conversations and imported files are provenance, not authoritative specifications. Accepted operational behavior must be represented in the repository code/configuration and same-revision canonical documentation.

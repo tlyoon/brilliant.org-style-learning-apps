@@ -1,93 +1,92 @@
 # Automated learning-content generator
 
-This Python 3.12 package turns one controlled Google Drive `source.pdf` into one repository-compatible subchapter draft. It supports a safe specific-subchapter run and a distributed mode in which several Windows PCs claim different PDFs from the same Drive tree.
+This Python 3.12 package turns one controlled Google Drive `source.pdf` into one repository-compatible subchapter draft. It supports controlled specific-subchapter generation and coordinated multi-PC operation, including continuous `auto` mode.
 
-For the complete beginner-facing workflow from controlled PDF → generated draft → human review → static review bundle → optional GitHub Pages deployment, use `docs/PDF_TO_APP_QUICKSTART.md`.
+For the current installation/operating procedure, start with `docs/PDF_TO_APP_QUICKSTART.md`. Documentation is versioned with the code; `docs/DOCUMENTATION_MAINTENANCE.md` defines the same-PR update rule.
 
-This document is the technical generator reference. Project recycling details live in `docs/GENERIC_PROJECT_SETUP.md`; workstation internals live in `docs/WORKSTATION_SYNC.md`; configuration fields live in `config/README.md`.
+Generated content remains `draft` until qualified human review is complete. Source PDFs, credentials, browser profiles, coordinator tokens, and raw Gemini responses never belong in Git.
 
-The generator never adds a source PDF, OAuth credential, browser profile, coordinator token, or raw Gemini response transcript to Git. Generated content remains `draft` until the repository's qualified human reviews are complete.
+## Project authority and machine-local configuration
 
-## Implemented architecture
-
-```mermaid
-flowchart TD
-    A["Drive source inventory"] --> B["Specific selection or lease coordinator"]
-    B --> C["One worker PC"]
-    C --> D["Configured Gem + fresh conversation + PDF attachment"]
-    D --> E["Generate, validate and repair"]
-    E --> F["Repository draft artifacts"]
-    F --> G["Optional Git branch + PR handoff"]
-```
-
-Python owns stable IDs, staged generation, strict JSON parsing, deterministic schema/content validation, targeted repair, file writing, tests, and optional Git/PR handoff. Gemini supplies source-bounded content generation inside a fresh conversation for each controlled PDF.
-
-## Current project authority
-
-The normal tracked project authority on `main` is:
+The tracked project authority is:
 
 ```text
 config/configure_project.toml
 ```
 
-The project-specific Gem text is also tracked under `config/`:
+Project-owned Gemini text is:
 
 ```text
 config/gem_description.txt
 config/gem_instructions.md
 ```
 
-Machine-local material is rendered into ignored `project.local.toml` by `sync-workstation.cmd`; OAuth files, Chrome profile, run state, tokens, and PDFs remain outside Git.
+`sync-workstation.cmd` renders a machine-local ignored TOML into the repository root. A default new workstation normally uses `project.local.toml`, but the filename is machine-local configuration and may be another allowed name such as `generator.shared.local.toml`.
 
-`config/project.toml` exists only as a compatibility file during the current migration and is not the normal user-facing authority selected by `sync-workstation.cmd`.
+The synchronization output is authoritative:
 
-## Source identity and job selection
+```text
+Installed config/configure_project.toml as <generated-local-config>.toml (...)
+```
 
-The Drive scanner recursively finds files matching:
+Direct CLI commands must use `--config <that-file>` when it is not the default `project.local.toml`.
+
+## Project-derived state
+
+The Windows state root is derived from `project.project_name`:
+
+```text
+%LOCALAPPDATA%\<project_name>
+```
+
+It contains workstation settings plus project-scoped credential/token paths, Chrome profile, and run state. Changing `project_name` for a recycled project creates a separate state root and environment namespace.
+
+The Google Cloud Desktop OAuth client JSON may be securely copied into multiple trusted project/PC credential directories if those projects intentionally use the same OAuth client. Each project/PC should normally keep its own generated Drive OAuth token.
+
+## Source identity
+
+The Drive scanner recursively finds:
 
 ```text
 .../<subchapter-id>/source.pdf
 ```
 
-The immediate parent directory must look like `8.1`. Ancestor folder names are project-defined. Jobs are sorted numerically by chapter and subchapter. A job identity combines the stable Drive file ID with the available Drive version/MD5/modified-time identity, so replacing a PDF creates a new source version.
+where the immediate parent looks like `8.1`. Jobs are ordered numerically by chapter/section and tied to stable Drive file/version identity. Replacing a source PDF therefore creates a new source version.
 
-The run templates in `config/configure_project.toml` materialize values such as `{chapter_number}`, `{subchapter_id}`, `{section_slug}`, and `{source_id_prefix}` after a PDF is resolved or claimed. Validated source analysis supplies the printed section title and effective scope used in the final package metadata.
+The current source-manifest contract represents one controlled PDF per package.
 
-Two selection modes are supported:
+## Selection modes
+
+Three modes are supported:
 
 | Mode | Purpose |
 |---|---|
-| `specific` | Controlled run for an explicit subchapter such as `8.5`; no central claim is made. |
-| `distributed` | Discover all eligible sources and atomically claim the next available job through the coordinator. |
+| `specific` | Generate an explicitly selected subchapter; no central job claim is required. |
+| `auto` | Continuously discover, claim, recover, publish, and continue through globally eligible Drive jobs until the source inventory is successful. |
+| `distributed` | Claim coordinated jobs one at a time for advanced/external orchestration. |
 
-The current source-manifest contract represents exactly one controlled source file, so one package is generated from one PDF.
+CLI examples using an explicit local config:
 
-## Gemini configuration and live behavior
+```powershell
+python -m app_generator doctor --config .\<generated-local-config>.toml --selection-mode specific --pdf-subchapter-path 8.5
+python -m app_generator run --config .\<generated-local-config>.toml --selection-mode specific --pdf-subchapter-path 8.5
+python -m app_generator doctor --config .\<generated-local-config>.toml --selection-mode auto
+python -m app_generator run --config .\<generated-local-config>.toml --selection-mode auto
+```
 
-Before a live generation, the client reads the authoritative Gem values from the repository:
+## Gemini behavior
 
-- Name from `config/configure_project.toml` (`gemini.gem_name`);
+Before live generation, the client reads the authoritative Gem values:
+
+- Name from `config/configure_project.toml`;
 - Description from `config/gem_description.txt`;
 - Instructions from `config/gem_instructions.md`.
 
-The Gem editor is opened under the configured Google account. The generator compares the editable fields, replaces only values that differ, saves once when necessary, reopens the editor, and verifies persistence before continuing. If all values already match, no Save/Update is issued.
+The Gem editor is opened under the configured Google account. The generator compares fields, changes only values that differ, saves only when needed, reopens, and verifies persistence. A fresh Gem conversation is then used for each controlled PDF.
 
-The live conversation flow then:
+## Generated artifacts
 
-1. opens a fresh Gem conversation;
-2. discovers visible model choices when Gemini exposes a model picker;
-3. ranks/selects the configured preferred model when possible;
-4. falls back to the Gem's current/default model only when policy allows and the picker is unavailable;
-5. attaches exactly one verified local copy of the controlled PDF;
-6. submits staged machine-readable generation and repair prompts.
-
-Gem Knowledge is not part of the generation workflow. The browser uses a dedicated persistent Chrome profile. An ordinary user-opened Chrome tab is not silently adopted.
-
-Gemini has no stable public web-UI automation contract. Accessible selectors are centralized in the Gemini browser code, and controlled live validation remains necessary after substantial Gemini UI changes.
-
-## Generated artifacts and review status
-
-For a generated subchapter, the package writes:
+Each successful section writes:
 
 ```text
 content/chapter-*/section-*/README.md
@@ -97,57 +96,80 @@ content/chapter-*/section-*/review-record.md
 content/source-manifests/<package-id>.json
 ```
 
-Files are staged, parsed, validated against the repository schema/content rules, and installed atomically. Existing section artifacts are not silently overwritten.
+Artifacts are staged and validated before installation. Existing section artifacts are not silently overwritten.
 
-The package is structurally validated but written with `status: "draft"`. Automated generation/review does not replace qualified subject, instructional, English, Malay, Simplified Chinese, accessibility, and provenance review.
+## Repository-managed coordinator
 
-## Multi-PC coordinator
+Current `main` supports a managed coordinator lifecycle for `auto` and `distributed` modes.
 
-Distributed mode can use the private Google Sheet + Apps Script coordinator under `coordinator/apps-script/`.
+An empty configured URL:
 
-Each request is scoped by project identity and records stable source identity, subchapter, status, worker/lease information, attempts, branch/PR information, and bounded errors. `LockService` protects the short claim/update transaction; it does not serialize the long Gemini generation step.
+```toml
+[automation]
+coordinator_url = ""
+```
 
-Workers renew leases in the background. If a worker stops and its lease expires, another authorized worker can reclaim the job. A worker that cannot prove ownership must stop before publishing Git changes.
+selects repository-managed infrastructure. The runtime consists of a private Google Sheet/Apps Script deployment plus private Drive metadata/checkpoint storage managed through the repository's serialized GitHub Actions deployment workflow.
 
-Keep the coordinator token in Apps Script Properties and the project-derived local environment variable; never place its value in TOML or Git.
+An explicit valid Apps Script URL remains backward-compatible external coordinator mode.
+
+### One-time bootstrap
+
+Check:
+
+```powershell
+python -m app_generator coordinator-status --config .\<generated-local-config>.toml
+```
+
+If managed infrastructure is missing, one trusted administrator PC runs:
+
+```powershell
+gh auth status
+python -m app_generator coordinator-bootstrap --config .\<generated-local-config>.toml
+```
+
+Bootstrap obtains the additional Google administration authorization, verifies the configured account, stores the refreshable administrator credential in a private GitHub Actions secret, triggers the serialized deployment, and waits for live health.
+
+Other worker PCs do not repeat bootstrap. Verify readiness with:
+
+```powershell
+python -m app_generator coordinator-ensure --config .\<generated-local-config>.toml
+```
+
+Workers discover managed runtime metadata with their ordinary Drive authorization; they do not need the administrator OAuth token locally.
+
+## Continuous auto-mode contract
+
+Auto mode requires Google Drive discovery, a healthy managed/external coordinator, and `git_publish=true` so a job is not marked globally successful while its artifacts exist only on one PC.
+
+The continuous worker:
+
+1. synchronizes/reconciles durable Git state;
+2. inspects the globally coordinated source inventory;
+3. atomically claims an eligible lease;
+4. prioritizes recoverable interrupted work according to coordinator policy;
+5. restores source-version-bound parsed-stage checkpoints when available;
+6. generates/repairs/validates remaining stages;
+7. publishes validated artifacts through the configured Git handoff;
+8. marks the coordinated job generated only after durable publication;
+9. claims another job;
+10. waits when remaining work is leased elsewhere and exits successfully only when global work is successful.
+
+`Ctrl+C` stops the worker; active leases are returned safely when possible and expired leases remain recoverable.
+
+See `docs/CONTINUOUS_AUTO_TESTING.md` for a two-PC verification procedure.
 
 ## Git handoff
 
-When `git_publish = true`, the worker can:
+When `git_publish=true`, the worker requires a clean/non-diverged checkout and uses deterministic/recoverable job branches. It can reuse valid pushed handoffs/open PRs, recognize merged results, and recover under an exact coordinator lease instead of rerunning Gemini unnecessarily.
 
-1. refuse a dirty/diverged checkout;
-2. fast-forward the configured base branch;
-3. create a unique job branch;
-4. generate and validate the five artifacts;
-5. run repository checks;
-6. stage only the generated paths and run `git diff --cached --check`;
-7. commit and push the job branch;
-8. open a PR according to the configured policy;
-9. update coordinator status when distributed mode is used.
+`auto` and `distributed` modes require durable publication. Specific mode can be operated conservatively with Git publication disabled.
 
-The generator does not deploy GitHub Pages. Git handoff and public deployment are separate gates. For the conservative first-run workflow, keep:
-
-```toml
-git_publish = false
-git_auto_merge = false
-```
-
-and follow `docs/PDF_TO_APP_QUICKSTART.md` for the manual PR/review path.
-
-## Configuration precedence and secrets
-
-Generator setting precedence is:
-
-1. command-line option;
-2. project-derived `<PROJECT_ENV_PREFIX>_GENERATOR_*` environment variable;
-3. rendered TOML (`project.local.toml` for normal workstation use);
-4. generic application default.
-
-Google passwords, MFA values, cookies, OAuth files, coordinator token values, source PDFs, Chrome profile, and run directories must remain outside the repository. `login_name` is an account assertion, not an authentication secret.
+Generation, human approval, merge, and public deployment remain separate gates.
 
 ## Validation
 
-Ordinary deterministic checks do not call Drive, Gemini, Apps Script, GitHub, or Chrome. From the repository root run:
+Deterministic repository checks include:
 
 ```powershell
 python scripts\lint.py
@@ -157,21 +179,11 @@ node --check app\app.js
 node tests\test_app_loading.js
 node tests\test_app_rendering.js
 node tests\test_interaction_rendering.js
+python scripts\check_documentation_impact.py
 ```
 
-Use:
-
-```powershell
-python -m app_generator doctor
-```
-
-for Drive/config/provenance validation without Gemini upload, and an explicit `app_generator run` only when a controlled live upload is intended.
+`doctor` exercises configuration/Drive/provenance and coordinated queue inspection where relevant, but does not upload a PDF to Gemini.
 
 ## Failure handling
 
-- Drive ambiguity, missing PDFs, wrong accounts, blocked downloads, dirty Git state, UI-contract changes, invalid responses, lease loss, or failed validation stop the run.
-- Transient Gemini failures are bounded and captured in the external diagnostics/run area.
-- Failed distributed jobs can return to a retryable coordinator state until the configured attempt limit is reached.
-- A failed worker does not broad-delete Drive files, Gemini Knowledge, repository files, branches, or coordinator rows.
-- If a failure occurs after a branch was pushed, inspect the branch and coordinator state before retrying.
-- Gemini upload quotas and Activity storage are external service limits; do not assume a local cleanup action immediately deletes uploaded content from Google's service.
+Drive ambiguity, wrong accounts, bad downloads, dirty/diverged Git, invalid generated content, lease loss, coordinator health failure, or unsafe publication stop the affected operation. Auto mode preserves recoverable state/checkpoints where possible and does not claim global success when terminal failures remain.
