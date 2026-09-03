@@ -194,6 +194,30 @@ If the managed coordinator is missing, bootstrap it once for that **project iden
 
 This may request additional Google Apps Script/Drive administration consent and stores the refreshable administrator credential in the repository's private GitHub Actions secret. Ordinary worker PCs do not repeat the bootstrap.
 
+A newly recycled `project_name` requires its own one-time bootstrap even when it reuses the same
+Google Cloud project, OAuth Desktop client, and administrator account. A second PC joining an
+already bootstrapped project does not repeat bootstrap.
+
+### First-project web-app recovery
+
+If bootstrap reports no reachable `WEB_APP` entry point:
+
+1. Open only the exact Apps Script editor URL printed by the failure. Do not choose a project by
+   display title because older projects may have the same name.
+2. Reload the editor, run `initializeCoordinator`, and wait for **Execution completed**.
+3. Create one **Web app** deployment with **Execute as: Me** and
+   **Who has access: Anyone**.
+4. Copy its complete `/exec` URL and register it:
+
+```powershell
+gh workflow run ensure-coordinator.yml --ref main -f project_name=<project_name> -f web_app_url=<web-app-url>
+& $py -m app_generator coordinator-ensure --config $config
+```
+
+The workflow verifies that the deployment belongs to the expected generated script before writing
+runtime metadata. If Google has not finished propagating a new deployment, wait briefly and rerun
+the same command; do not create or archive another deployment just to retry.
+
 Verify worker readiness with:
 
 ```powershell

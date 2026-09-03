@@ -367,6 +367,32 @@ def _deployment_from_web_app_url(url: str) -> dict[str, Any]:
     }
 
 
+def _script_editor_url(script_id: str) -> str:
+    return f"https://script.google.com/home/projects/{script_id}/edit"
+
+
+def _verify_deployment_belongs_to_script(
+    session: AuthorizedSession,
+    *,
+    script_id: str,
+    deployment_id: str,
+) -> None:
+    response = session.get(
+        f"{SCRIPT_API}/{script_id}/deployments/{deployment_id}",
+        timeout=60,
+    )
+    if response.status_code >= 400:
+        raise RuntimeError(
+            "Web-app URL override is not an active deployment of the managed Apps Script project. "
+            f"Create the web app from {_script_editor_url(script_id)}"
+        )
+    payload = _json_response(response, "verify Apps Script deployment ownership")
+    if str(payload.get("deploymentId", "")) != deployment_id:
+        raise RuntimeError(
+            "Apps Script returned a different deployment while verifying the web-app URL. "
+            f"Create the web app from {_script_editor_url(script_id)}"
+        )
+
 
 def _ensure_deployment(
     session: AuthorizedSession,
@@ -379,9 +405,15 @@ def _ensure_deployment(
 ) -> tuple[str, str]:
     if web_app_url_override:
         deployment = _deployment_from_web_app_url(web_app_url_override)
+        deployment_id = str(deployment["deploymentId"])
+        _verify_deployment_belongs_to_script(
+            session,
+            script_id=script_id,
+            deployment_id=deployment_id,
+        )
         if not _web_app_is_reachable(deployment):
             raise RuntimeError("Web-app URL override is not a reachable coordinator endpoint")
-        return str(deployment["deploymentId"]), _web_app_url(deployment)
+        return deployment_id, _web_app_url(deployment)
 
     config = _deployment_config(script_id, version_number, project_name)
     deployment: dict[str, Any] | None = None
@@ -432,7 +464,7 @@ def _ensure_deployment(
     if not url or not _web_app_is_reachable(deployment):
         raise RuntimeError(
             "Apps Script deployment has no reachable WEB_APP entry point; authorize the script and create "
-            "one web-app deployment in the Apps Script editor, then retry"
+            f"one web-app deployment from {_script_editor_url(script_id)}, then retry"
         )
     return deployment_id, url
 

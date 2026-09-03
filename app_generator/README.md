@@ -143,13 +143,22 @@ Me** and **Who has access: Anyone**. Rerun bootstrap; the deployer adopts the so
 entry point and records its real URL. This is an administrator-only first-project recovery,
 not a worker-PC setup step.
 
+The failure message includes the exact generated Apps Script editor URL. Open that URL; do not
+choose a project by its display title because older projects can have the same name. The supplied
+web-app deployment must belong to that exact script project.
+
 If Google does not expose that UI-published URL through its deployment API, dispatch the managed
 workflow once with the exact non-secret `/exec` URL, then verify readiness:
 
 ```powershell
-gh workflow run ensure-coordinator.yml --ref <base-branch> -f project_name=<project_name> -f web_app_url=<web-app-url>
+gh workflow run ensure-coordinator.yml --ref main -f project_name=<project_name> -f web_app_url=<web-app-url>
 python -m app_generator coordinator-ensure --config .\<generated-local-config>.toml
 ```
+
+The workflow verifies that the deployment ID belongs to the expected managed script before it
+records runtime metadata. If a newly published URL is temporarily reported as unreachable, wait
+briefly for Google deployment propagation and rerun the same workflow command. Do not create or
+archive another deployment merely to retry validation.
 
 Other worker PCs do not repeat bootstrap. Verify readiness with:
 
