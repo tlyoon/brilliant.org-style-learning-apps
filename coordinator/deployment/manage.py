@@ -10,12 +10,14 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import secrets
 import sys
 import tomllib
 from pathlib import Path
 from typing import Any
 
+import requests
 from google.auth.transport.requests import AuthorizedSession, Request
 from google.oauth2.credentials import Credentials
 
@@ -326,24 +328,72 @@ def _deployment_config(script_id: str, version_number: int, project_name: str) -
     }
 
 
+def _web_app_url(deployment: dict[str, Any]) -> str:
+    for entry in deployment.get("entryPoints", []) or []:
+        if isinstance(entry, dict) and str(entry.get("entryPointType", "")) == "WEB_APP":
+            url = str(entry.get("webApp", {}).get("url", ""))
+            if url:
+                return url
+    return ""
+
+
+def _web_app_is_reachable(deployment: dict[str, Any]) -> bool:
+    url = _web_app_url(deployment)
+    if not url.startswith("https://script.google.com/macros/s/"):
+        return False
+    try:
+        response = requests.post(url, json={}, timeout=60)
+        response.raise_for_status()
+        payload = response.json()
+    except Exception:
+        return False
+    return (
+        isinstance(payload, dict)
+        and payload.get("ok") is False
+        and payload.get("code") == "UNAUTHORIZED"
+    )
+
+def _deployment_from_web_app_url(url: str) -> dict[str, Any]:
+    normalized = url.strip()
+    match = re.fullmatch(
+        r"https://script\.google\.com/macros/s/([A-Za-z0-9_-]+)/exec",
+        normalized,
+    )
+    if not match:
+        raise RuntimeError("Web-app URL override must be an exact script.google.com /exec URL")
+    return {
+        "deploymentId": match.group(1),
+        "entryPoints": [{"entryPointType": "WEB_APP", "webApp": {"url": normalized}}],
+    }
+
+
+
 def _ensure_deployment(
     session: AuthorizedSession,
     *,
     script_id: str,
     version_number: int,
     project_name: str,
+    web_app_url_override: str = "",
     preferred_id: str = "",
 ) -> tuple[str, str]:
+    if web_app_url_override:
+        deployment = _deployment_from_web_app_url(web_app_url_override)
+        if not _web_app_is_reachable(deployment):
+            raise RuntimeError("Web-app URL override is not a reachable coordinator endpoint")
+        return str(deployment["deploymentId"]), _web_app_url(deployment)
+
     config = _deployment_config(script_id, version_number, project_name)
     deployment: dict[str, Any] | None = None
     if preferred_id:
-        response = session.put(
+        response = session.get(
             f"{SCRIPT_API}/{script_id}/deployments/{preferred_id}",
-            json={"deploymentConfig": config},
             timeout=60,
         )
         if response.status_code < 400:
-            deployment = response.json()
+            candidate = response.json()
+            if isinstance(candidate, dict) and _web_app_is_reachable(candidate):
+                deployment = candidate
     if deployment is None:
         payload = _json_response(
             session.get(f"{SCRIPT_API}/{script_id}/deployments", timeout=60),
@@ -351,29 +401,26 @@ def _ensure_deployment(
         )
         deployments = payload.get("deployments", [])
         if isinstance(deployments, list):
-            matching = [
+            reachable_web_apps = [
                 item
                 for item in deployments
-                if isinstance(item, dict)
-                and str(item.get("deploymentConfig", {}).get("description", "")) == config["description"]
+                if isinstance(item, dict) and _web_app_is_reachable(item)
             ]
-            if len(matching) > 1:
-                raise RuntimeError("Multiple managed Apps Script deployments match this project")
-            if matching:
-                deployment_id = str(matching[0].get("deploymentId", ""))
-                deployment = _json_response(
-                    session.put(
-                        f"{SCRIPT_API}/{script_id}/deployments/{deployment_id}",
-                        json={"deploymentConfig": config},
-                        timeout=60,
-                    ),
-                    "update Apps Script deployment",
-                )
+            matching = [
+                item
+                for item in reachable_web_apps
+                if str(item.get("deploymentConfig", {}).get("description", "")) == config["description"]
+            ]
+            candidates = matching or reachable_web_apps
+            if len(candidates) > 1:
+                raise RuntimeError("Multiple Apps Script web-app deployments match this project")
+            if candidates:
+                deployment = candidates[0]
         if deployment is None:
             deployment = _json_response(
                 session.post(
                     f"{SCRIPT_API}/{script_id}/deployments",
-                    json={"deploymentConfig": config},
+                    json=config,
                     timeout=60,
                 ),
                 "create Apps Script deployment",
@@ -381,18 +428,16 @@ def _ensure_deployment(
     deployment_id = str(deployment.get("deploymentId", ""))
     if not deployment_id:
         raise RuntimeError("Apps Script deployment response omitted deploymentId")
-    url = ""
-    for entry in deployment.get("entryPoints", []) or []:
-        if isinstance(entry, dict) and str(entry.get("entryPointType", "")) == "WEB_APP":
-            url = str(entry.get("webApp", {}).get("url", ""))
-            if url:
-                break
-    if not url:
-        url = f"https://script.google.com/macros/s/{deployment_id}/exec"
+    url = _web_app_url(deployment)
+    if not url or not _web_app_is_reachable(deployment):
+        raise RuntimeError(
+            "Apps Script deployment has no reachable WEB_APP entry point; authorize the script and create "
+            "one web-app deployment in the Apps Script editor, then retry"
+        )
     return deployment_id, url
 
 
-def ensure(repo_root: Path, project_name: str) -> dict[str, Any]:
+def ensure(repo_root: Path, project_name: str, web_app_url_override: str = "") -> dict[str, Any]:
     tracked = _tracked_project_name(repo_root)
     if project_name != tracked:
         raise RuntimeError(
@@ -437,6 +482,7 @@ def ensure(repo_root: Path, project_name: str) -> dict[str, Any]:
         version_number=version_number,
         project_name=project_name,
         preferred_id=str(existing.get("deployment_id", "")),
+        web_app_url_override=web_app_url_override,
     )
     runtime = {
         "managed_by": MANAGED_BY,
@@ -465,12 +511,13 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("command", choices=("ensure",))
     parser.add_argument("--repo-root", type=Path, default=REPO_ROOT)
     parser.add_argument("--project-name", required=True)
+    parser.add_argument("--web-app-url", default="")
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
-    runtime = ensure(args.repo_root.resolve(), args.project_name)
+    runtime = ensure(args.repo_root.resolve(), args.project_name, args.web_app_url)
     # Deliberately omit the worker token from logs.
     print(
         "Managed coordinator ready: "

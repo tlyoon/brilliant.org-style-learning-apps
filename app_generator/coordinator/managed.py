@@ -28,6 +28,7 @@ from app_generator.sources.google_drive import DRIVE_FILES_URL
 from app_generator.sources.google_drive_auth import authorize_google_drive
 
 ADMIN_SCOPES = (
+    "openid",
     "https://www.googleapis.com/auth/script.projects",
     "https://www.googleapis.com/auth/script.deployments",
     "https://www.googleapis.com/auth/drive.file",
