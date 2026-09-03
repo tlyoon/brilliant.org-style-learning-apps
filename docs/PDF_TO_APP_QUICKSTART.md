@@ -278,6 +278,30 @@ gh auth status
 
 The bootstrap may open Google consent for additional Apps Script/Drive administration scopes. It verifies the configured Google account, stores the refreshable administrator credential in the private GitHub Actions secret used by this repository, requests the serialized managed deployment, and waits for a live health check.
 
+### First-project web-app recovery
+
+If bootstrap reports that no reachable `WEB_APP` entry point exists, complete this once on the
+trusted administrator PC:
+
+1. Open the exact Apps Script editor URL printed by the failure. Do not select a script by display
+   title; an older project can have the same name.
+2. Reload the editor, select `initializeCoordinator`, click **Run**, and wait for
+   **Execution completed**.
+3. Click **Deploy > New deployment**, select **Web app**, set **Execute as: Me** and
+   **Who has access: Anyone**, then click **Deploy**.
+4. Copy the complete URL ending in `/exec`.
+5. Register that URL and recheck live health:
+
+```powershell
+gh workflow run ensure-coordinator.yml --ref main -f project_name=<project_name> -f web_app_url=<web-app-url>
+& $py -m app_generator coordinator-ensure --config $config
+```
+
+The recovery workflow rejects a deployment that does not belong to the generated managed script.
+If a newly published URL is initially reported as unreachable, wait briefly for Google deployment
+propagation and rerun the same command. Do not create or archive another deployment merely to
+retry validation.
+
 Ordinary worker PCs do **not** repeat `coordinator-bootstrap` and do not need the administrator token locally. They discover the private managed runtime through their normal Drive authorization.
 
 Any worker can verify readiness with:

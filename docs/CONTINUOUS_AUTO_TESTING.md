@@ -41,6 +41,22 @@ gh auth status
 
 The bootstrap may open Google consent for Apps Script/Drive administration scopes. It stores the refreshable administrator credential in the repository's private GitHub Actions secret, requests the serialized deployment, and waits for live health.
 
+### First-project web-app recovery
+
+If bootstrap reports no reachable `WEB_APP`, use the exact Apps Script editor URL in the error.
+Do not select a similarly named older script project. In that exact project, reload the editor,
+run `initializeCoordinator`, and create one **Web app** deployment with **Execute as: Me** and
+**Who has access: Anyone**. Register its complete `/exec` URL:
+
+```powershell
+gh workflow run ensure-coordinator.yml --ref main -f project_name=<project_name> -f web_app_url=<web-app-url>
+& $py -m app_generator coordinator-ensure --config $config
+```
+
+The workflow rejects URLs from another Apps Script project. If a new deployment is briefly
+unreachable while Google propagates it, wait and rerun the same command rather than creating or
+archiving another deployment. This recovery is once per project identity, not once per PC.
+
 Other worker PCs do not repeat bootstrap. Verify readiness with:
 
 ```powershell

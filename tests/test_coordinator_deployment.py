@@ -83,8 +83,23 @@ class CoordinatorDeploymentTests(unittest.TestCase):
 
     def test_explicit_web_app_url_is_validated_and_used_without_api_mutation(self):
         url = "https://script.google.com/macros/s/manual-deployment/exec"
+        get_calls = []
+
+        class Response:
+            status_code = 200
+            text = ""
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {"deploymentId": "manual-deployment"}
 
         class Session:
+            def get(self, request_url, *, timeout):
+                get_calls.append((request_url, timeout))
+                return Response()
+
             def __getattr__(self, name):
                 raise AssertionError(f"Apps Script API must not be called: {name}")
 
@@ -96,7 +111,47 @@ class CoordinatorDeploymentTests(unittest.TestCase):
 
         self.assertEqual("manual-deployment", deployment_id)
         self.assertEqual(url, resolved_url)
+        self.assertEqual(
+            [
+                (
+                    "https://script.googleapis.com/v1/projects/"
+                    "script-id/deployments/manual-deployment",
+                    60,
+                )
+            ],
+            get_calls,
+        )
 
+    def test_explicit_web_app_url_from_another_script_is_rejected_before_probe(self):
+        class Response:
+            status_code = 404
+            text = "not found"
+
+        class Session:
+            def get(self, request_url, *, timeout):
+                return Response()
+
+            def __getattr__(self, name):
+                raise AssertionError(f"Apps Script API must not be called: {name}")
+
+        with patch("coordinator.deployment.manage._web_app_is_reachable") as reachable:
+            with self.assertRaises(RuntimeError) as raised:
+                _ensure_deployment(
+                    Session(),
+                    script_id="expected-script-id",
+                    version_number=8,
+                    project_name="ManagedProject",
+                    web_app_url_override=(
+                        "https://script.google.com/macros/s/"
+                        "other-project-deployment/exec"
+                    ),
+                )
+
+        self.assertIn(
+            "https://script.google.com/home/projects/expected-script-id/edit",
+            str(raised.exception),
+        )
+        reachable.assert_not_called()
 
     def test_inaccessible_preferred_adopts_reachable_web_app_without_updating_it(self):
         get_calls = []
