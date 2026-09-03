@@ -97,8 +97,8 @@ class GitHandoffRecoveryTests(unittest.TestCase):
         def handler(args, check):
             if args[:3] == ["git", "ls-remote", "--heads"]:
                 return ""
-            if args[:3] == ["git", "show-ref", "--verify"]:
-                return f"deadbeef refs/heads/{expected_branch}"
+            if args[:4] == ["git", "rev-parse", "--verify", "--quiet"]:
+                return "deadbeef"
             if args[:3] == ["git", "rev-list", "--count"]:
                 return "0"
             return ""

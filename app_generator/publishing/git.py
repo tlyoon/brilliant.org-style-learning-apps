@@ -71,7 +71,13 @@ class GitPublisher:
     def _local_branch_exists(self, branch: str) -> bool:
         return bool(
             self._run(
-                ["git", "show-ref", "--verify", f"refs/heads/{branch}"],
+                [
+                    "git",
+                    "rev-parse",
+                    "--verify",
+                    "--quiet",
+                    f"refs/heads/{branch}",
+                ],
                 check=False,
             ).strip()
         )
