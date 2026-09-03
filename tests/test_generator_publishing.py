@@ -1,3 +1,4 @@
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -39,18 +40,49 @@ class GeneratorPublishingTests(unittest.TestCase):
             commands = [item[0] for item in publisher.commands]
             self.assertIn(["git", "pull", "--ff-only", "origin", "main"], commands)
             self.assertEqual("automation/section-8-1-abcdef0123", branch)
-            # show-ref must emit the matching ref so branch existence can actually be
-            # detected; --quiet would always produce an empty output string.
             self.assertIn(
                 [
                     "git",
-                    "show-ref",
+                    "rev-parse",
                     "--verify",
+                    "--quiet",
                     "refs/heads/automation/section-8-1-abcdef0123",
                 ],
                 commands,
             )
             self.assertIn(["git", "switch", "-c", branch], commands)
+
+    def test_missing_local_branch_is_not_treated_as_existing_git_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory)
+
+            def git(*args: str) -> None:
+                subprocess.run(
+                    ["git", *args],
+                    cwd=repo,
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                )
+
+            git("init", "--initial-branch=main")
+            git(
+                "-c",
+                "user.name=Test",
+                "-c",
+                "user.email=test@example.com",
+                "commit",
+                "--allow-empty",
+                "-m",
+                "initial",
+            )
+            publisher = GitPublisher(SimpleNamespace(repo_root=repo))
+            branch = "automation/section-1-2-deadbeef00"
+
+            self.assertFalse(publisher._local_branch_exists(branch))
+            git("branch", branch)
+            self.assertTrue(publisher._local_branch_exists(branch))
 
     def test_auto_merge_uses_normal_github_merge_and_verifies_completion(self):
         with tempfile.TemporaryDirectory() as directory:
