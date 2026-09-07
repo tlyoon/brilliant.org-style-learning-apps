@@ -22,6 +22,17 @@ class CliParserTests(unittest.TestCase):
         args = _parser().parse_args(["run", "--selection-mode", "auto"])
         self.assertEqual("auto", args.selection_mode)
 
+    def test_auto_can_accept_explicit_target_subchapter(self):
+        args = _parser().parse_args([
+            "run",
+            "--selection-mode",
+            "auto",
+            "--pdf-subchapter-path",
+            "8.6",
+        ])
+        self.assertEqual("auto", args.selection_mode)
+        self.assertEqual("8.6", args.pdf_subchapter_path)
+
 
 if __name__ == "__main__":
     unittest.main()
