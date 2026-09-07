@@ -479,6 +479,12 @@ Your workstation may use a different allowed generated config filename. Read the
 
 If this project has never been bootstrapped, run `coordinator-bootstrap` once on a trusted administrator PC. If it was already bootstrapped, check the worker's Drive authorization/account and run `coordinator-ensure`.
 
+### Transient GitHub connection resets
+
+Automated Git synchronization/publication retries recognized transient transport failures such as `Recv failure: Connection was reset`, temporary connection/DNS failures, timeouts, and selected 502/503/504 responses. The generator retries with bounded backoff (2, 5, then 10 seconds after the first attempt). Authentication failures, dirty/diverged repositories, non-fast-forward updates, and other deterministic Git errors still fail immediately.
+
+If all transient attempts are exhausted, the run stops safely with a `GIT_PUBLISH_FAILED` error. Resolve the network path and rerun; auto mode does not treat the job as successfully generated when durable Git publication could not be established.
+
 ### Dirty or diverged Git checkout
 
 Do not reset blindly. Inspect `git status -sb`; commit/stash/remove intended local changes before synchronization. The workstation synchronizer intentionally refuses to overwrite local-only work.
