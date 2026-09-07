@@ -117,6 +117,33 @@ Expected behavior:
 - validated artifacts are handed off durably through Git before the job is globally marked generated;
 - PC B then continues to the next globally eligible job.
 
+## Targeted auto test
+
+Targeted auto mode is for an operator-selected section that still needs coordinator protection. For example, on PC A:
+
+```powershell
+& $py -m app_generator doctor --config $config --selection-mode auto --pdf-subchapter-path 8.6
+& $py -m app_generator run --config $config --selection-mode auto --pdf-subchapter-path 8.6
+```
+
+At the same time, PC B may run unrestricted auto mode:
+
+```powershell
+& $py -m app_generator run --config $config --selection-mode auto
+```
+
+Expected behavior:
+
+- PC A offers only section 8.6 to the coordinator and never falls through to another section;
+- if PC A leases 8.6 first, PC B must select another eligible job;
+- if PC B already owns 8.6, PC A waits for 8.6 rather than claiming a different job;
+- compatible interrupted checkpoints for 8.6 remain recoverable;
+- if 8.6 is already globally successful, PC A exits successfully without generation;
+- after PC A successfully completes 8.6, targeted auto exits instead of continuing to 8.7;
+- a missing or terminally failed target is reported instead of silently substituting another section.
+
+Use targeted auto rather than ordinary `specific` mode whenever another coordinated worker may be active on the same project, because ordinary specific mode does not reserve the section in the coordinator.
+
 ## Concurrency test
 
 Run auto mode simultaneously on PC A and PC B:

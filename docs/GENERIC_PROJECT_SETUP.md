@@ -242,6 +242,21 @@ Run:
 
 Multiple PCs may run the same project concurrently after synchronization and coordinator readiness. Leases prevent double-claiming; recoverable interrupted work is prioritized according to coordinator policy; checkpoints and Git handoff make recovery cross-PC capable.
 
+### Operator-selected section with coordinator protection
+
+For a new or recycled project, use targeted auto when you want to choose one exact section while retaining the same multi-PC lease/checkpoint protection:
+
+```powershell
+& $py -m app_generator doctor --config $config --selection-mode auto --pdf-subchapter-path 8.6
+& $py -m app_generator run --config $config --selection-mode auto --pdf-subchapter-path 8.6
+```
+
+This does not create a second coordinator and requires no additional Google Cloud setup. It uses the already bootstrapped coordinator for the project identity, restricts the candidate inventory to the requested section, waits if another worker owns that target, and exits after the target is globally successful.
+
+The `pdf_subchapter_path` value stored in the project TOML remains a default project value. Unrestricted auto remains unrestricted unless the operator explicitly supplies `--pdf-subchapter-path` on the auto command line.
+
+Prefer targeted auto over ordinary `specific` mode whenever another coordinated worker may be active on the same project, because ordinary specific mode does not acquire a coordinator lease.
+
 ## Intentional application contracts
 
 These remain generic/versioned application behavior rather than textbook identity:

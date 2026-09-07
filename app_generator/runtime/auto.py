@@ -13,6 +13,7 @@ from app_generator.errors import AutoJobExecutionError, AutoModeBlockedError, No
 from app_generator.publishing.git import GitPublisher
 from app_generator.runtime.orchestrator import run_generation
 from app_generator.runtime.run_context import RunContext
+from app_generator.runtime.targeting import restrict_inventory_to_subchapter
 from app_generator.sources.google_drive import DriveRestClient, ResolvedDriveSource, discover_drive_sources
 from app_generator.sources.google_drive_auth import authorize_google_drive
 
@@ -38,15 +39,20 @@ def _expected_paths(config: GeneratorConfig) -> tuple[Path, ...]:
     )
 
 
-def _drive_inventory(config: GeneratorConfig) -> tuple[ResolvedDriveSource, ...]:
+def _drive_inventory(
+    config: GeneratorConfig,
+    *,
+    target_subchapter_id: str | None = None,
+) -> tuple[ResolvedDriveSource, ...]:
     authorization = authorize_google_drive(config)
     drive_client = DriveRestClient(authorization.session, config.drive_api_timeout_seconds)
-    return discover_drive_sources(
+    inventory = discover_drive_sources(
         drive_client,
         sourcepath=config.sourcepath,
         target_filename=config.target_filename,
         max_folders=config.max_drive_folders,
     )
+    return restrict_inventory_to_subchapter(inventory, target_subchapter_id)
 
 
 def _base_completed(config: GeneratorConfig, inventory: tuple[ResolvedDriveSource, ...]) -> set[str]:
@@ -59,20 +65,28 @@ def _base_completed(config: GeneratorConfig, inventory: tuple[ResolvedDriveSourc
     }
 
 
-def inspect_auto_queue(config: GeneratorConfig) -> QueueSnapshot:
+def inspect_auto_queue(
+    config: GeneratorConfig,
+    *,
+    target_subchapter_id: str | None = None,
+) -> QueueSnapshot:
     """Inspect auto state without claiming a generation or recovery lease."""
 
     _require_durable_publication(config)
     config = ensure_coordinator_ready(config)
     publisher = GitPublisher(config)
     publisher.sync_base()
-    inventory = _drive_inventory(config)
+    inventory = _drive_inventory(config, target_subchapter_id=target_subchapter_id)
     local_completed = _base_completed(config, inventory)
     coordinator = CoordinatorClient(config)
     return coordinator.snapshot_auto(inventory, local_completed_job_keys=local_completed)
 
 
-def reconcile_auto_publications(config: GeneratorConfig) -> int:
+def reconcile_auto_publications(
+    config: GeneratorConfig,
+    *,
+    target_subchapter_id: str | None = None,
+) -> int:
     """Recover exact deterministic Git handoffs left by an interrupted worker.
 
     Reconciliation claims the exact source job before changing coordinator state. This
@@ -84,7 +98,7 @@ def reconcile_auto_publications(config: GeneratorConfig) -> int:
     config = ensure_coordinator_ready(config)
     publisher = GitPublisher(config)
     publisher.sync_base()
-    inventory = _drive_inventory(config)
+    inventory = _drive_inventory(config, target_subchapter_id=target_subchapter_id)
     local_completed = _base_completed(config, inventory)
     coordinator = CoordinatorClient(config)
     # Seed rows, reconcile expired leases, and mark only content visible in the freshly
@@ -160,52 +174,95 @@ def reconcile_auto_publications(config: GeneratorConfig) -> int:
 def run_continuous_auto(
     config: GeneratorConfig,
     *,
+    target_subchapter_id: str | None = None,
     on_completed: Callable[[RunContext], None] | None = None,
-    run_once: Callable[[GeneratorConfig], RunContext] = run_generation,
-    snapshotter: Callable[[GeneratorConfig], QueueSnapshot] = inspect_auto_queue,
-    reconciler: Callable[[GeneratorConfig], int] = reconcile_auto_publications,
+    run_once: Callable[..., RunContext] = run_generation,
+    snapshotter: Callable[..., QueueSnapshot] = inspect_auto_queue,
+    reconciler: Callable[..., int] = reconcile_auto_publications,
     sleeper: Callable[[float], None] = time.sleep,
 ) -> int:
-    """Run coordinated jobs until every discovered source has a successful global state."""
+    """Run coordinated jobs globally, or only one explicitly targeted subchapter."""
 
     _require_durable_publication(config)
     config = ensure_coordinator_ready(config)
     poll_seconds = max(5, min(60, config.heartbeat_seconds // 10 or 5))
-    print(
-        f"AUTO_START: worker={config.worker_id}; persistent continuous mode is active. "
-        "Press Ctrl+C for a coordinated stop."
-    )
-    reconciler(config)
+    if target_subchapter_id:
+        print(
+            f"AUTO_TARGET_START: worker={config.worker_id}; target={target_subchapter_id}. "
+            "Coordinator leasing remains active; this worker will not fall through to another section."
+        )
+    else:
+        print(
+            f"AUTO_START: worker={config.worker_id}; persistent continuous mode is active. "
+            "Press Ctrl+C for a coordinated stop."
+        )
+    if target_subchapter_id:
+        reconciler(config, target_subchapter_id=target_subchapter_id)
+    else:
+        reconciler(config)
     while True:
         try:
-            context = run_once(config)
+            context = (
+                run_once(config, auto_target_subchapter_id=target_subchapter_id)
+                if target_subchapter_id
+                else run_once(config)
+            )
             if on_completed is not None:
                 on_completed(context)
+            if target_subchapter_id:
+                print(
+                    f"AUTO_TARGET_COMPLETE: section {target_subchapter_id} is globally successful; "
+                    "targeted auto mode is exiting."
+                )
+                return 0
             continue
         except AutoJobExecutionError as exc:
             print(
                 f"AUTO_JOB_{exc.status.upper()}: {exc}. "
                 "The worker will reconcile durable Git handoffs and re-inspect the shared queue."
             )
-            reconciler(config)
+            if target_subchapter_id:
+                reconciler(config, target_subchapter_id=target_subchapter_id)
+            else:
+                reconciler(config)
             continue
         except NoAvailableJob:
-            snapshot = snapshotter(config)
+            snapshot = (
+                snapshotter(config, target_subchapter_id=target_subchapter_id)
+                if target_subchapter_id
+                else snapshotter(config)
+            )
             if snapshot.failed and snapshot.unfinished == 0:
+                scope = (
+                    f"Target section {target_subchapter_id}"
+                    if target_subchapter_id
+                    else "Auto mode"
+                )
                 raise AutoModeBlockedError(
-                    f"Auto mode is blocked by {snapshot.failed} terminally failed job(s); "
-                    "all remaining discovered jobs require intervention."
+                    f"{scope} is blocked by {snapshot.failed} terminally failed job(s); "
+                    "intervention is required."
                 )
             if snapshot.unfinished == 0:
-                print(
-                    f"AUTO_COMPLETE: all {snapshot.total} discovered source job(s) are globally successful."
-                )
+                if target_subchapter_id:
+                    print(
+                        f"AUTO_TARGET_COMPLETE: section {target_subchapter_id} is already globally successful."
+                    )
+                else:
+                    print(
+                        f"AUTO_COMPLETE: all {snapshot.total} discovered source job(s) are globally successful."
+                    )
                 return 0
             if snapshot.leased and snapshot.queued + snapshot.interrupted == 0:
-                print(
-                    f"AUTO_IDLE: {snapshot.leased} remaining job(s) are leased by other workers; "
-                    f"checking again in {poll_seconds}s."
-                )
+                if target_subchapter_id:
+                    print(
+                        f"AUTO_TARGET_WAIT: section {target_subchapter_id} is leased by another worker; "
+                        f"checking again in {poll_seconds}s."
+                    )
+                else:
+                    print(
+                        f"AUTO_IDLE: {snapshot.leased} remaining job(s) are leased by other workers; "
+                        f"checking again in {poll_seconds}s."
+                    )
                 sleeper(float(poll_seconds))
                 continue
             # A queue snapshot can race with another worker's claim/release. Re-enter

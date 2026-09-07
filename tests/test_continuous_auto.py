@@ -134,6 +134,66 @@ class ContinuousAutoTests(unittest.TestCase):
                 sleeper=lambda seconds: None,
             )
 
+    def test_targeted_auto_runs_only_requested_section_and_exits(self):
+        calls = []
+        reconciles = []
+        completed = object()
+
+        def run_once(config, *, auto_target_subchapter_id=None):
+            calls.append(auto_target_subchapter_id)
+            return completed
+
+        def reconciler(config, *, target_subchapter_id=None):
+            reconciles.append(target_subchapter_id)
+            return 0
+
+        seen = []
+        result = run_continuous_auto(
+            self.config(),
+            target_subchapter_id="8.6",
+            run_once=run_once,
+            snapshotter=lambda config, **kwargs: self.fail("snapshot should not be needed"),
+            reconciler=reconciler,
+            on_completed=seen.append,
+            sleeper=lambda seconds: self.fail("should not sleep"),
+        )
+
+        self.assertEqual(0, result)
+        self.assertEqual(["8.6"], calls)
+        self.assertEqual(["8.6"], reconciles)
+        self.assertEqual([completed], seen)
+
+    def test_targeted_auto_waits_when_target_is_leased_then_exits_when_complete(self):
+        attempts = {"run": 0, "snapshot": 0}
+        sleeps = []
+        seen_targets = []
+
+        def run_once(config, *, auto_target_subchapter_id=None):
+            attempts["run"] += 1
+            seen_targets.append(auto_target_subchapter_id)
+            raise NoAvailableJob("target unavailable")
+
+        def snapshotter(config, *, target_subchapter_id=None):
+            attempts["snapshot"] += 1
+            seen_targets.append(target_subchapter_id)
+            if attempts["snapshot"] == 1:
+                return self.snapshot(total=1, generated=0, leased=1)
+            return self.snapshot(total=1, generated=1)
+
+        result = run_continuous_auto(
+            self.config(),
+            target_subchapter_id="8.6",
+            run_once=run_once,
+            snapshotter=snapshotter,
+            reconciler=lambda config, **kwargs: 0,
+            sleeper=sleeps.append,
+        )
+
+        self.assertEqual(0, result)
+        self.assertEqual([30.0], sleeps)
+        self.assertEqual(2, attempts["run"])
+        self.assertTrue(all(target == "8.6" for target in seen_targets))
+
     def test_run_context_shares_only_parsed_stage_documents(self):
         with tempfile.TemporaryDirectory() as directory:
             checkpoint = RecordingCheckpoint()
