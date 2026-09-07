@@ -237,3 +237,5 @@ python scripts\check_documentation_impact.py
 ## Failure handling
 
 Drive ambiguity, wrong accounts, bad downloads, dirty/diverged Git, invalid generated content, lease loss, coordinator health failure, or unsafe publication stop the affected operation. Auto mode preserves recoverable state/checkpoints where possible and does not claim global success when terminal failures remain.
+
+Network-facing Git synchronization/publication operations use bounded retries for recognized transient transport failures such as connection resets, temporary DNS/connectivity failures, timeouts, selected HTTP 502/503/504 responses, and common curl/TLS transport errors. Retry backoff is 2, 5, then 10 seconds after the initial attempt. Deterministic failures such as authentication errors, dirty worktrees, non-fast-forward updates, invalid refs, or merge conflicts still fail immediately. Read-only GitHub CLI checks may use the same transient retry path; non-idempotent PR actions retain their existing explicit reconciliation behavior rather than being blindly retried.
