@@ -177,7 +177,6 @@ class GitPublisher:
                 "--base", self.config.git_base_branch, "--limit", "1",
                 "--json", "url,state,mergedAt,headRefOid",
             ],
-            check=False,
         ).strip()
         if not output.startswith("["):
             return {}
@@ -240,7 +239,7 @@ class GitPublisher:
             return info
         if info and str(info.get("state", "")).upper() == "CLOSED":
             url = str(info.get("url", ""))
-            output = self._run_remote(["gh", "pr", "reopen", url], check=False)
+            output = self._run_remote(["gh", "pr", "reopen", url], check=False, retry=False)
             reopened = self._pr_for_branch(branch)
             if str(reopened.get("state", "")).upper() == "OPEN":
                 return reopened
@@ -252,7 +251,7 @@ class GitPublisher:
         return {"url": url, "state": "OPEN", "mergedAt": None}
 
     def _merge_pr(self, pr_url: str) -> None:
-        self._run_remote(["gh", "pr", "merge", pr_url, "--merge"])
+        self._run(["gh", "pr", "merge", pr_url, "--merge"])
         payload = self._run_remote(["gh", "pr", "view", pr_url, "--json", "state,mergedAt"])
         try:
             status = json.loads(payload)
