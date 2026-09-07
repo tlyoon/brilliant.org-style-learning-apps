@@ -139,6 +139,7 @@ Expected behavior:
 - if PC B already owns 8.6, PC A waits for 8.6 rather than claiming a different job;
 - compatible interrupted checkpoints for 8.6 remain recoverable;
 - if 8.6 is already globally successful, PC A exits successfully without generation;
+- normal no-job/complete queue control does not emit an `ERROR: Generation run failed` traceback before the final auto status;
 - after PC A successfully completes 8.6, targeted auto exits instead of continuing to 8.7;
 - a missing or terminally failed target is reported instead of silently substituting another section.
 
