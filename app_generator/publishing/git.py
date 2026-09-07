@@ -94,28 +94,27 @@ class GitPublisher:
         """Run a network-facing Git/GitHub command with bounded transient retries."""
 
         delays = _REMOTE_RETRY_DELAYS if retry else (0,)
-        last_output = ""
         for attempt, delay in enumerate(delays, start=1):
             if delay:
                 time.sleep(delay)
-            returncode, output = self._execute(arguments)
-            if returncode == 0:
+            try:
+                output = self._run(arguments, check=check)
+            except GitPublishError as exc:
+                transient = self._is_transient_remote_error(str(exc))
+                if transient and attempt < len(delays):
+                    continue
+                if transient and attempt > 1:
+                    raise GitPublishError(
+                        f"{exc} (after {attempt} transient-network attempts)"
+                    ) from exc
+                raise
+            if check:
                 return output
-            last_output = output
             transient = self._is_transient_remote_error(output)
             if transient and attempt < len(delays):
                 continue
-            if check:
-                suffix = (
-                    f" after {attempt} transient-network attempt(s)"
-                    if transient and attempt > 1
-                    else ""
-                )
-                raise GitPublishError(
-                    f"Command failed{suffix} ({' '.join(arguments)}): {output}"
-                )
             return output
-        return last_output
+        raise AssertionError("Remote retry loop exhausted unexpectedly")
 
     def sync_base(self) -> None:
         if self._run(["git", "status", "--porcelain"]):
