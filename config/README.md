@@ -91,9 +91,24 @@ distributed
 
 - `specific` selects one explicit subchapter and does not require a central job claim;
 - `auto` continuously claims/recover/publishes jobs until the globally coordinated inventory is successful;
+- `auto` plus an **explicit CLI** `--pdf-subchapter-path <chapter.section>` becomes targeted auto: only that section is offered to the coordinator, normal lease/checkpoint/publication semantics are retained, and the worker exits after that target succeeds;
 - `distributed` provides coordinated one-job selection for advanced/external orchestration.
 
+The tracked `placeholders.pdf_subchapter_path` value is a default project value and does **not** silently restrict ordinary auto mode. Auto targeting is activated only when the operator explicitly supplies `--pdf-subchapter-path` on an auto command.
+
 `auto` and `distributed` require Google Drive discovery and `git_publish=true`.
+
+### Auto command forms
+
+```powershell
+# unrestricted continuous queue
+python -m app_generator run --config <local-config> --selection-mode auto
+
+# one coordinator-protected target
+python -m app_generator run --config <local-config> --selection-mode auto --pdf-subchapter-path 8.6
+```
+
+Targeted auto uses the same project coordinator; it does not require a second coordinator or additional Google Cloud configuration. If the target is leased elsewhere it waits, if already globally successful it exits successfully, and it never substitutes another section.
 
 ## Managed versus external coordinator
 
