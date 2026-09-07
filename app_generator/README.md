@@ -62,7 +62,7 @@ Three modes are supported:
 | Mode | Purpose |
 |---|---|
 | `specific` | Generate an explicitly selected subchapter; no central job claim is required. |
-| `auto` | Continuously discover, claim, recover, publish, and continue through globally eligible Drive jobs until the source inventory is successful. |
+| `auto` | Continuously discover, claim, recover, publish, and continue through globally eligible Drive jobs until the source inventory is successful. When the operator explicitly adds `--pdf-subchapter-path`, auto becomes coordinator-protected targeted auto for only that section. |
 | `distributed` | Claim coordinated jobs one at a time for advanced/external orchestration. |
 
 CLI examples using an explicit local config:
@@ -72,7 +72,25 @@ python -m app_generator doctor --config .\<generated-local-config>.toml --select
 python -m app_generator run --config .\<generated-local-config>.toml --selection-mode specific --pdf-subchapter-path 8.5
 python -m app_generator doctor --config .\<generated-local-config>.toml --selection-mode auto
 python -m app_generator run --config .\<generated-local-config>.toml --selection-mode auto
+python -m app_generator doctor --config .\<generated-local-config>.toml --selection-mode auto --pdf-subchapter-path 8.6
+python -m app_generator run --config .\<generated-local-config>.toml --selection-mode auto --pdf-subchapter-path 8.6
 ```
+
+### Targeted auto semantics
+
+Targeted auto is activated only when the operator explicitly supplies `--pdf-subchapter-path` together with `--selection-mode auto`. The tracked/configured default `placeholders.pdf_subchapter_path` remains useful for specific-mode defaults and does **not** silently pin ordinary auto mode.
+
+For a target such as `8.6`, the runtime filters Drive inventory to that exact section before queue preview, durable-handoff reconciliation, and coordinator claim. The worker:
+
+- acquires the normal coordinator lease for 8.6;
+- waits if another worker currently owns 8.6;
+- never substitutes 8.7 or another section;
+- can restore compatible interrupted checkpoints for 8.6;
+- exits successfully without generation when 8.6 is already globally successful;
+- reports a missing/terminally failed target instead of falling through;
+- exits after 8.6 succeeds rather than continuing through the global queue.
+
+This is the preferred operator-selected mode when other coordinated workers may be running concurrently. Ordinary `specific` mode remains intentionally uncoordinated.
 
 ## Gemini behavior
 
@@ -184,6 +202,8 @@ The continuous worker:
 8. marks the coordinated job generated only after durable publication;
 9. claims another job;
 10. waits when remaining work is leased elsewhere and exits successfully only when global work is successful.
+
+When `target_subchapter_id` is supplied through the explicit auto CLI target, the same lease/checkpoint/publication contract applies to the filtered one-section inventory, and the worker exits after that target succeeds.
 
 `Ctrl+C` stops the worker; active leases are returned safely when possible and expired leases remain recoverable.
 
