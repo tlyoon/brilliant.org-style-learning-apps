@@ -15,6 +15,36 @@ from app_generator.config import GeneratorConfig
 from app_generator.errors import GitPublishError
 
 
+_REMOTE_RETRY_DELAYS = (0, 2, 5, 10)
+_TRANSIENT_REMOTE_ERROR_MARKERS = (
+    "recv failure",
+    "connection was reset",
+    "failed to connect",
+    "could not resolve host",
+    "operation timed out",
+    "connection timed out",
+    "network is unreachable",
+    "temporary failure in name resolution",
+    "tls connect error",
+    "ssl connect error",
+    "http/2 stream",
+    "stream error in the http/2 framing layer",
+    "the remote end hung up unexpectedly",
+    "rpc failed; curl 6",
+    "rpc failed; curl 28",
+    "rpc failed; curl 56",
+    "returned error: 502",
+    "returned error: 503",
+    "returned error: 504",
+    "http 502",
+    "http 503",
+    "http 504",
+    "502 bad gateway",
+    "503 service unavailable",
+    "504 gateway timeout",
+)
+
+
 @dataclass(frozen=True)
 class PublishResult:
     branch: str
@@ -28,7 +58,7 @@ class GitPublisher:
         self.config = config
         self.repo = config.repo_root
 
-    def _run(self, arguments: list[str], *, check: bool = True) -> str:
+    def _execute(self, arguments: list[str]) -> tuple[int, str]:
         try:
             result = subprocess.run(
                 arguments,
@@ -41,9 +71,51 @@ class GitPublisher:
         except OSError as exc:
             raise GitPublishError(f"Could not execute {arguments[0]}: {exc}") from exc
         output = (result.stdout + "\n" + result.stderr).strip()
-        if check and result.returncode:
+        return result.returncode, output
+
+    def _run(self, arguments: list[str], *, check: bool = True) -> str:
+        returncode, output = self._execute(arguments)
+        if check and returncode:
             raise GitPublishError(f"Command failed ({' '.join(arguments)}): {output}")
         return output
+
+    @staticmethod
+    def _is_transient_remote_error(output: str) -> bool:
+        normalized = output.lower()
+        return any(marker in normalized for marker in _TRANSIENT_REMOTE_ERROR_MARKERS)
+
+    def _run_remote(
+        self,
+        arguments: list[str],
+        *,
+        check: bool = True,
+        retry: bool = True,
+    ) -> str:
+        """Run a network-facing Git/GitHub command with bounded transient retries."""
+
+        delays = _REMOTE_RETRY_DELAYS if retry else (0,)
+        last_output = ""
+        for attempt, delay in enumerate(delays, start=1):
+            if delay:
+                time.sleep(delay)
+            returncode, output = self._execute(arguments)
+            if returncode == 0:
+                return output
+            last_output = output
+            transient = self._is_transient_remote_error(output)
+            if transient and attempt < len(delays):
+                continue
+            if check:
+                suffix = (
+                    f" after {attempt} transient-network attempt(s)"
+                    if transient and attempt > 1
+                    else ""
+                )
+                raise GitPublishError(
+                    f"Command failed{suffix} ({' '.join(arguments)}): {output}"
+                )
+            return output
+        return last_output
 
     def sync_base(self) -> None:
         if self._run(["git", "status", "--porcelain"]):
@@ -52,14 +124,14 @@ class GitPublisher:
             )
         remote = self.config.git_remote
         base = self.config.git_base_branch
-        self._run(["git", "fetch", remote, "--prune"])
+        self._run_remote(["git", "fetch", remote, "--prune"])
         self._run(["git", "switch", base])
-        self._run(["git", "pull", "--ff-only", remote, base])
+        self._run_remote(["git", "pull", "--ff-only", remote, base])
 
     def refresh_remote(self) -> None:
         """Refresh remote refs without changing the current branch."""
 
-        self._run(["git", "fetch", self.config.git_remote, "--prune"])
+        self._run_remote(["git", "fetch", self.config.git_remote, "--prune"])
 
     def job_branch(self, *, subchapter_id: str, job_key: str) -> str:
         slug = subchapter_id.replace(".", "-")
@@ -84,9 +156,8 @@ class GitPublisher:
 
     def _remote_branch_exists(self, branch: str) -> bool:
         return bool(
-            self._run(
+            self._run_remote(
                 ["git", "ls-remote", "--heads", self.config.git_remote, f"refs/heads/{branch}"],
-                check=False,
             ).strip()
         )
 
@@ -100,7 +171,7 @@ class GitPublisher:
             raise GitPublishError(f"Git returned an invalid ahead count for {branch}: {output!r}") from exc
 
     def _pr_for_branch(self, branch: str) -> dict[str, object]:
-        output = self._run(
+        output = self._run_remote(
             [
                 "gh", "pr", "list", "--state", "all", "--head", branch,
                 "--base", self.config.git_base_branch, "--limit", "1",
@@ -151,7 +222,7 @@ class GitPublisher:
         for delay in (0, 2, 5):
             if delay:
                 time.sleep(delay)
-            output = self._run(arguments, check=False)
+            output = self._run_remote(arguments, check=False, retry=False)
             url = next((line.strip() for line in output.splitlines() if line.strip().startswith("https://")), "")
             if url:
                 return url
@@ -169,7 +240,7 @@ class GitPublisher:
             return info
         if info and str(info.get("state", "")).upper() == "CLOSED":
             url = str(info.get("url", ""))
-            output = self._run(["gh", "pr", "reopen", url], check=False)
+            output = self._run_remote(["gh", "pr", "reopen", url], check=False)
             reopened = self._pr_for_branch(branch)
             if str(reopened.get("state", "")).upper() == "OPEN":
                 return reopened
@@ -181,8 +252,8 @@ class GitPublisher:
         return {"url": url, "state": "OPEN", "mergedAt": None}
 
     def _merge_pr(self, pr_url: str) -> None:
-        self._run(["gh", "pr", "merge", pr_url, "--merge"])
-        payload = self._run(["gh", "pr", "view", pr_url, "--json", "state,mergedAt"])
+        self._run_remote(["gh", "pr", "merge", pr_url, "--merge"])
+        payload = self._run_remote(["gh", "pr", "view", pr_url, "--json", "state,mergedAt"])
         try:
             status = json.loads(payload)
         except json.JSONDecodeError as exc:
@@ -274,7 +345,7 @@ class GitPublisher:
         remote = self.config.git_remote
         if self._remote_branch_exists(branch):
             ensure_lease()
-            self._run([
+            self._run_remote([
                 "git", "fetch", remote,
                 f"refs/heads/{branch}:refs/remotes/{remote}/{branch}",
             ])
@@ -294,7 +365,7 @@ class GitPublisher:
             if self.config.git_run_full_tests:
                 self._run_full_tests()
             ensure_lease()
-            self._run(["git", "push", "--set-upstream", remote, branch])
+            self._run_remote(["git", "push", "--set-upstream", remote, branch])
             commit = self._run(["git", "rev-parse", "HEAD"]).splitlines()[0].strip()
             pr_url, merged = self._finalize_pr(branch, subchapter=subchapter, package_id=package_id)
             return PublishResult(branch=branch, commit=commit, pr_url=pr_url, merged=merged)
@@ -353,7 +424,7 @@ class GitPublisher:
             self._run(["git", "commit", "-m", title])
             commit = self._run(["git", "rev-parse", "HEAD"]).splitlines()[0].strip()
             ensure_lease()
-            self._run(["git", "push", "--set-upstream", self.config.git_remote, branch])
+            self._run_remote(["git", "push", "--set-upstream", self.config.git_remote, branch])
             pr_url, merged = self._finalize_pr(branch, subchapter=subchapter, package_id=package_id)
             return PublishResult(branch=branch, commit=commit, pr_url=pr_url, merged=merged)
         except BaseException:
