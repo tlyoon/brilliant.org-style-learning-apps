@@ -26,6 +26,10 @@ class RecordingPublisher(GitPublisher):
 class MergePublisher(RecordingPublisher):
     def _run(self, arguments, *, check=True):
         self.commands.append((arguments, check))
+        return ""
+
+    def _run_remote(self, arguments, *, check=True, retry=True):
+        self.commands.append((arguments, check))
         if arguments[:3] == ["gh", "pr", "view"]:
             return '{"state":"MERGED","mergedAt":"2026-08-29T00:00:00Z"}'
         return ""
