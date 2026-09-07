@@ -82,9 +82,18 @@ def _load(args: argparse.Namespace) -> GeneratorConfig:
     return load_config(args.config, cli_overrides=overrides)
 
 
-def doctor(config: GeneratorConfig) -> int:
+def doctor(
+    config: GeneratorConfig,
+    *,
+    auto_target_subchapter_id: str | None = None,
+) -> int:
     if config.selection_mode == "auto":
-        snapshot = inspect_auto_queue(config)
+        snapshot = inspect_auto_queue(
+            config,
+            target_subchapter_id=auto_target_subchapter_id,
+        )
+        if auto_target_subchapter_id:
+            print(f"Auto target: {auto_target_subchapter_id} (coordinator-leased; no fallback section)")
         print(
             "Auto queue: "
             f"total={snapshot.total}, generated={snapshot.generated}, review_pending={snapshot.review_pending}, "
@@ -177,6 +186,11 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     try:
         config = _load(args)
+        auto_target_subchapter_id = (
+            getattr(args, "pdf_subchapter_path", None)
+            if config.selection_mode == "auto"
+            else None
+        )
         if args.command == "coordinator-status":
             print(f"Managed coordinator: {managed_status(config)}")
             return 0
@@ -192,7 +206,10 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Managed coordinator ready: {ready.coordinator_url}")
             return 0
         if args.command == "doctor":
-            return doctor(config)
+            return doctor(
+                config,
+                auto_target_subchapter_id=auto_target_subchapter_id,
+            )
         if args.command == "coordinator-complete":
             config = ensure_coordinator_ready(config)
             CoordinatorClient(config).mark_completed(args.job_key, pr_url=args.pr_url)
@@ -209,7 +226,11 @@ def main(argv: list[str] | None = None) -> int:
         if config.selection_mode == "auto":
             if args.resume:
                 raise GeneratorError("--resume is not supported with continuous auto mode")
-            return run_continuous_auto(config, on_completed=report_context)
+            return run_continuous_auto(
+                config,
+                target_subchapter_id=auto_target_subchapter_id,
+                on_completed=report_context,
+            )
         if config.selection_mode == "distributed":
             config = ensure_coordinator_ready(config)
 
