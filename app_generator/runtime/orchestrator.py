@@ -121,6 +121,28 @@ def _local_job_key(config: GeneratorConfig, source_path: Path) -> str:
     return hashlib.sha256(material).hexdigest()
 
 
+def _log_generation_exception(
+    config: GeneratorConfig,
+    context: RunContext,
+    exc: BaseException,
+    *,
+    lease: JobLease | None,
+) -> None:
+    """Log expected auto queue exhaustion without an alarming traceback."""
+
+    details = {
+        "run_id": context.run_id,
+        "error_code": getattr(exc, "code", exc.__class__.__name__),
+    }
+    if config.selection_mode == "auto" and isinstance(exc, NoAvailableJob) and lease is None:
+        LOGGER.info(
+            "No auto source job is currently claimable",
+            extra=details,
+        )
+        return
+    LOGGER.exception("Generation run failed", extra=details)
+
+
 def run_generation(
     config: GeneratorConfig,
     *,
@@ -453,9 +475,11 @@ def run_generation(
                 store.transition(RunPhase.COMPLETE)
                 return context
         except BaseException as exc:
-            LOGGER.exception(
-                "Generation run failed",
-                extra={"run_id": context.run_id, "error_code": getattr(exc, "code", exc.__class__.__name__)},
+            _log_generation_exception(
+                config,
+                context,
+                exc,
+                lease=lease,
             )
             coordinator_status = ""
             if coordinator is not None and lease is not None:

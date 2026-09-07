@@ -345,6 +345,8 @@ To generate exactly one section while retaining coordinator protection, add an e
 
 This is different from `specific` mode. Targeted auto mode restricts the candidate inventory to the requested section **and still acquires a coordinator lease**. If another worker already owns that section, the targeted worker waits and does not fall through to another section. If the section is already globally successful, it exits successfully. If the target is terminally failed, it reports the blocked state. After the requested section succeeds, the targeted worker exits instead of continuing to the next section.
 
+Expected queue-control outcomes such as an already globally successful target are reported cleanly (for example, `AUTO_TARGET_COMPLETE`) without a generation-failure traceback. Genuine generation, lease, validation, or publication failures still retain error diagnostics.
+
 This form is recommended when a human wants to choose the exact section while other PCs may also be running auto mode.
 
 Use `Ctrl+C` to stop a worker. The current CLI reports interruption and returns an active auto lease safely when possible; abandoned leases also become recoverable through expiry.

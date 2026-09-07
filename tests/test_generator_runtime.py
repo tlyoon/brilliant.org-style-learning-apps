@@ -1,9 +1,12 @@
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
-from app_generator.errors import GeneratorError
+from app_generator.errors import GeneratorError, NoAvailableJob
 from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts
+from app_generator.runtime.orchestrator import _log_generation_exception
 from app_generator.runtime.state import RunPhase, StateStore
 
 
@@ -32,6 +35,35 @@ class GeneratorRuntimeTests(unittest.TestCase):
             store.resume()
             self.assertEqual(RunPhase.CONFIG_LOADED, store.state.phase)
             self.assertEqual("RESUMED", store.state.history[-1]["to"])
+
+    def test_auto_no_available_job_before_lease_logs_info_without_traceback(self):
+        config = SimpleNamespace(selection_mode="auto")
+        context = SimpleNamespace(run_id="run-no-job")
+        with patch("app_generator.runtime.orchestrator.LOGGER") as logger:
+            _log_generation_exception(
+                config,
+                context,
+                NoAvailableJob("No queued source job is currently available"),
+                lease=None,
+            )
+
+        logger.info.assert_called_once()
+        logger.exception.assert_not_called()
+
+    def test_no_available_job_after_lease_still_logs_as_failure(self):
+        config = SimpleNamespace(selection_mode="auto")
+        context = SimpleNamespace(run_id="run-leased")
+        lease = SimpleNamespace(job_key="job-8-5")
+        with patch("app_generator.runtime.orchestrator.LOGGER") as logger:
+            _log_generation_exception(
+                config,
+                context,
+                NoAvailableJob("unexpected leased-stage no-job"),
+                lease=lease,
+            )
+
+        logger.exception.assert_called_once()
+        logger.info.assert_not_called()
 
     def test_artifact_install_refuses_overwrite_and_rolls_back_failed_verification(self):
         with tempfile.TemporaryDirectory() as directory:
