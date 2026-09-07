@@ -196,10 +196,17 @@ def run_continuous_auto(
             f"AUTO_START: worker={config.worker_id}; persistent continuous mode is active. "
             "Press Ctrl+C for a coordinated stop."
         )
-    reconciler(config, target_subchapter_id=target_subchapter_id)
+    if target_subchapter_id:
+        reconciler(config, target_subchapter_id=target_subchapter_id)
+    else:
+        reconciler(config)
     while True:
         try:
-            context = run_once(config, auto_target_subchapter_id=target_subchapter_id)
+            context = (
+                run_once(config, auto_target_subchapter_id=target_subchapter_id)
+                if target_subchapter_id
+                else run_once(config)
+            )
             if on_completed is not None:
                 on_completed(context)
             if target_subchapter_id:
@@ -214,10 +221,17 @@ def run_continuous_auto(
                 f"AUTO_JOB_{exc.status.upper()}: {exc}. "
                 "The worker will reconcile durable Git handoffs and re-inspect the shared queue."
             )
-            reconciler(config, target_subchapter_id=target_subchapter_id)
+            if target_subchapter_id:
+                reconciler(config, target_subchapter_id=target_subchapter_id)
+            else:
+                reconciler(config)
             continue
         except NoAvailableJob:
-            snapshot = snapshotter(config, target_subchapter_id=target_subchapter_id)
+            snapshot = (
+                snapshotter(config, target_subchapter_id=target_subchapter_id)
+                if target_subchapter_id
+                else snapshotter(config)
+            )
             if snapshot.failed and snapshot.unfinished == 0:
                 scope = (
                     f"Target section {target_subchapter_id}"
