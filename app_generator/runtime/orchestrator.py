@@ -26,6 +26,7 @@ from app_generator.logging_setup import configure_logging
 from app_generator.publishing.git import GitPublisher
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.state import RunPhase
+from app_generator.runtime.targeting import restrict_inventory_to_subchapter
 from app_generator.sources.google_drive import (
     DriveRestClient,
     ResolvedDriveSource,
@@ -124,6 +125,7 @@ def run_generation(
     config: GeneratorConfig,
     *,
     resume_run_id: str | None = None,
+    auto_target_subchapter_id: str | None = None,
     chrome_factory: Callable[[GeneratorConfig], ChromeSession] = ChromeSession,
     client_factory: Callable[[object, GeneratorConfig], GeminiClient] = GeminiClient,
     drive_authorizer: Callable[[GeneratorConfig], DriveAuthorization] = authorize_google_drive,
@@ -170,6 +172,11 @@ def run_generation(
                         target_filename=config.target_filename,
                         max_folders=config.max_drive_folders,
                     )
+                    if config.selection_mode == "auto":
+                        inventory = restrict_inventory_to_subchapter(
+                            inventory,
+                            auto_target_subchapter_id,
+                        )
                     store.transition(RunPhase.DRIVE_INVENTORIED)
                     coordinator = coordinator_factory(config)
                     if config.selection_mode == "auto":
