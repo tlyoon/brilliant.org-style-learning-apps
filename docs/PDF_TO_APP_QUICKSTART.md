@@ -334,6 +334,19 @@ Start a continuous worker:
 
 The worker repeatedly claims globally eligible jobs, prioritizes recoverable interrupted work according to coordinator policy, renews leases, uses durable checkpoints, publishes validated artifacts through Git, and continues until the global source inventory is successful. If remaining work is currently leased by other PCs, it waits/polls instead of falsely declaring completion.
 
+### Targeted auto mode
+
+To generate exactly one section while retaining coordinator protection, add an explicit subchapter path:
+
+```powershell
+& $py -m app_generator doctor --config $config --selection-mode auto --pdf-subchapter-path 8.6
+& $py -m app_generator run --config $config --selection-mode auto --pdf-subchapter-path 8.6
+```
+
+This is different from `specific` mode. Targeted auto mode restricts the candidate inventory to the requested section **and still acquires a coordinator lease**. If another worker already owns that section, the targeted worker waits and does not fall through to another section. If the section is already globally successful, it exits successfully. If the target is terminally failed, it reports the blocked state. After the requested section succeeds, the targeted worker exits instead of continuing to the next section.
+
+This form is recommended when a human wants to choose the exact section while other PCs may also be running auto mode.
+
 Use `Ctrl+C` to stop a worker. The current CLI reports interruption and returns an active auto lease safely when possible; abandoned leases also become recoverable through expiry.
 
 See `docs/CONTINUOUS_AUTO_TESTING.md` for a two-PC recovery/concurrency verification procedure.
@@ -441,6 +454,13 @@ For continuous auto mode after project-wide coordinator bootstrap:
 ```powershell
 & $py -m app_generator doctor --config $config --selection-mode auto
 & $py -m app_generator run --config $config --selection-mode auto
+```
+
+For one coordinator-protected target section:
+
+```powershell
+& $py -m app_generator doctor --config $config --selection-mode auto --pdf-subchapter-path <chapter.section>
+& $py -m app_generator run --config $config --selection-mode auto --pdf-subchapter-path <chapter.section>
 ```
 
 ## 15. Common troubleshooting
