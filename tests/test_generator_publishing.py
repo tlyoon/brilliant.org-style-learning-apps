@@ -3,7 +3,9 @@ import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
+from app_generator.errors import GitPublishError
 from app_generator.publishing.git import GitPublisher
 
 
@@ -13,6 +15,10 @@ class RecordingPublisher(GitPublisher):
         self.commands = []
 
     def _run(self, arguments, *, check=True):
+        self.commands.append((arguments, check))
+        return ""
+
+    def _run_remote(self, arguments, *, check=True, retry=True):
         self.commands.append((arguments, check))
         return ""
 
@@ -51,6 +57,72 @@ class GeneratorPublishingTests(unittest.TestCase):
                 commands,
             )
             self.assertIn(["git", "switch", "-c", branch], commands)
+
+    def test_transient_remote_failure_is_retried_with_backoff(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config = SimpleNamespace(repo_root=Path(directory))
+            publisher = GitPublisher(config)
+            failed = subprocess.CompletedProcess(
+                args=["git", "fetch", "origin", "--prune"],
+                returncode=128,
+                stdout="",
+                stderr=(
+                    "fatal: unable to access 'https://github.com/example/project/': "
+                    "Recv failure: Connection was reset"
+                ),
+            )
+            succeeded = subprocess.CompletedProcess(
+                args=["git", "fetch", "origin", "--prune"],
+                returncode=0,
+                stdout="",
+                stderr="",
+            )
+
+            with patch("app_generator.publishing.git.subprocess.run", side_effect=[failed, succeeded]) as runner:
+                with patch("app_generator.publishing.git.time.sleep") as sleeper:
+                    output = publisher._run_remote(["git", "fetch", "origin", "--prune"])
+
+            self.assertEqual("", output)
+            self.assertEqual(2, runner.call_count)
+            sleeper.assert_called_once_with(2)
+
+    def test_non_transient_remote_failure_fails_without_retry(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config = SimpleNamespace(repo_root=Path(directory))
+            publisher = GitPublisher(config)
+            failed = subprocess.CompletedProcess(
+                args=["git", "fetch", "origin", "--prune"],
+                returncode=128,
+                stdout="",
+                stderr="fatal: Authentication failed for 'https://github.com/example/project/'",
+            )
+
+            with patch("app_generator.publishing.git.subprocess.run", return_value=failed) as runner:
+                with patch("app_generator.publishing.git.time.sleep") as sleeper:
+                    with self.assertRaisesRegex(GitPublishError, "Authentication failed"):
+                        publisher._run_remote(["git", "fetch", "origin", "--prune"])
+
+            self.assertEqual(1, runner.call_count)
+            sleeper.assert_not_called()
+
+    def test_transient_remote_failure_stops_after_bounded_attempts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config = SimpleNamespace(repo_root=Path(directory))
+            publisher = GitPublisher(config)
+            failed = subprocess.CompletedProcess(
+                args=["git", "fetch", "origin", "--prune"],
+                returncode=128,
+                stdout="",
+                stderr="fatal: Recv failure: Connection was reset",
+            )
+
+            with patch("app_generator.publishing.git.subprocess.run", return_value=failed) as runner:
+                with patch("app_generator.publishing.git.time.sleep") as sleeper:
+                    with self.assertRaisesRegex(GitPublishError, "after 4 transient-network attempt"):
+                        publisher._run_remote(["git", "fetch", "origin", "--prune"])
+
+            self.assertEqual(4, runner.call_count)
+            self.assertEqual([2, 5, 10], [call.args[0] for call in sleeper.call_args_list])
 
     def test_missing_local_branch_is_not_treated_as_existing_git_error(self):
         with tempfile.TemporaryDirectory() as directory:
