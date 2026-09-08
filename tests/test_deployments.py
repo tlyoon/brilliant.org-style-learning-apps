@@ -11,6 +11,9 @@ from app_generator.deployments import (
 from app_generator.errors import ConfigurationError
 
 
+ROOT = Path(__file__).resolve().parents[1]
+
+
 class DeploymentRegistryTests(unittest.TestCase):
     def _write_package(self, root: Path, relative: str, package_id: str) -> None:
         path = root / relative
@@ -105,6 +108,19 @@ class DeploymentRegistryTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ConfigurationError, "Duplicate deployment appId"):
                 load_deployment_registry(root)
+
+    def test_tracked_registry_deployments_reference_generated_packages(self):
+        rows = deployment_rows(ROOT)
+        deployed = {row.app_id: row for row in rows if row.deployed}
+
+        self.assertTrue(deployed)
+        self.assertTrue(all(row.generated for row in deployed.values()))
+        self.assertEqual(
+            "https://tlyoon.github.io/section-8-1-learning-app/section-8-2/",
+            deployed["section-8-2"].public_url,
+        )
+        self.assertIn("section-8-5", deployed)
+        self.assertIn("section-1-1", deployed)
 
     def test_rendered_table_contains_status_and_url(self):
         with tempfile.TemporaryDirectory() as directory:
