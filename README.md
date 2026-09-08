@@ -103,6 +103,8 @@ python scripts/build_public_release.py content/<chapter>/<section>/package.json 
 
 It creates a minimal static bundle containing the entry page, learner assets, selected package, and `.nojekyll`. It excludes repository history, tests, source PDFs, review records, source manifests, credentials, and development scripts.
 
+`python scripts/build_section_8_1_public_release.py <empty-output-directory>` builds the approved Chapter 8 public review bundle containing Section 8.1 versions plus the current Section 8.2, 8.3, and 8.5 draft packages, each on its own route.
+
 ## Automated draft generator
 
 `app_generator/` contains the Python 3.12/Google Drive/Selenium workflow. Current selection modes are `specific`, `auto`, and `distributed`.
