@@ -9,6 +9,11 @@ import tempfile
 from pathlib import Path
 
 from app_generator.config import GeneratorConfig, load_config
+from app_generator.deployments import (
+    DEFAULT_DEPLOYMENT_REGISTRY,
+    deployment_rows,
+    render_deployments,
+)
 from app_generator.coordinator.client import CoordinatorClient
 from app_generator.coordinator.managed import bootstrap_managed_coordinator, managed_status
 from app_generator.coordinator.verified import ensure_coordinator_ready
@@ -63,6 +68,22 @@ def _parser() -> argparse.ArgumentParser:
     for name in ("coordinator-bootstrap", "coordinator-ensure", "coordinator-status"):
         command = subparsers.add_parser(name)
         _add_config_arguments(command)
+    deployments = subparsers.add_parser(
+        "deployments",
+        help="list generated packages and tracked public deployment URLs",
+    )
+    deployments.add_argument(
+        "--repo-root",
+        type=Path,
+        default=Path("."),
+        help="repository root (default: current directory)",
+    )
+    deployments.add_argument(
+        "--registry",
+        type=Path,
+        default=DEFAULT_DEPLOYMENT_REGISTRY,
+        help="tracked deployment registry relative to the repository root",
+    )
     subparsers.add_parser("show-gem-config")
     return parser
 
@@ -185,6 +206,10 @@ def main(argv: list[str] | None = None) -> int:
         print("\nGem Instructions\n================\n" + gem_instructions())
         return 0
     try:
+        if args.command == "deployments":
+            rows = deployment_rows(args.repo_root, args.registry)
+            print(render_deployments(rows))
+            return 0
         config = _load(args)
         auto_target_subchapter_id = (
             getattr(args, "pdf_subchapter_path", None)
