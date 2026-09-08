@@ -217,6 +217,22 @@ When `git_publish=true`, the worker requires a clean/non-diverged checkout and u
 
 Generation, human approval, merge, and public deployment remain separate gates.
 
+## Deployment inventory
+
+Public review routes are tracked separately from generation state in:
+
+```text
+config/deployments.json
+```
+
+List the current inventory from the repository root:
+
+```powershell
+python -m app_generator deployments
+```
+
+This command does not load workstation configuration or contact Drive/GitHub. It compares the tracked registry with generated `content/chapter-*/section-*/package.json` files, reports `GENERATED` and `DEPLOYED` independently, prints each tracked public URL, and includes generated packages that have no deployment entry yet. See `docs/DEPLOYMENTS.md`.
+
 ## Validation
 
 Deterministic repository checks include:

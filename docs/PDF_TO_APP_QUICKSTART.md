@@ -420,7 +420,25 @@ Open `http://127.0.0.1:8001/`. The bundle contains the learner app and selected 
 
 For public review deployment, prefer a separate minimal GitHub Pages repository and verify the built bundle locally before pushing it.
 
-## 14. Routine multi-PC operating pattern
+## 14. List generated apps and deployment URLs
+
+The tracked public-deployment registry is:
+
+```text
+config/deployments.json
+```
+
+From the repository root, run:
+
+```powershell
+& $py -m app_generator deployments
+```
+
+No workstation TOML, Google authorization, coordinator connection, or Gemini browser session is required. The command reports each tracked app's generated/deployed state and public URL. Any generated package under `content/chapter-*/section-*/package.json` that is missing from the registry is still listed with `DEPLOYED = no` and URL `-`.
+
+Update `config/deployments.json` in the same source-repository PR whenever a public route is created, changed, or removed. See `docs/DEPLOYMENTS.md`.
+
+## 15. Routine multi-PC operating pattern
 
 On every worker PC before use:
 
@@ -465,7 +483,7 @@ For one coordinator-protected target section:
 & $py -m app_generator run --config $config --selection-mode auto --pdf-subchapter-path <chapter.section>
 ```
 
-## 15. Common troubleshooting
+## 16. Common troubleshooting
 
 ### `Configuration file does not exist: project.local.toml`
 

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "deployments": [
+    {
+      "appId": "section-1-1",
+      "label": "Section 1.1",
+      "packagePath": "content/chapter-1/section-1-1/package.json",
+      "deploymentRepository": "tlyoon/section-1-1-learning-app",
+      "publicUrl": "https://tlyoon.github.io/section-1-1-learning-app/",
+      "deployed": true
+    },
+    {
+      "appId": "section-8-1-v1",
+      "label": "Section 8.1 Version 1",
+      "packagePath": "content/chapter-8/section-8-1/package.json",
+      "deploymentRepository": "tlyoon/section-8-1-learning-app",
+      "publicUrl": "https://tlyoon.github.io/section-8-1-learning-app/v1/",
+      "deployed": true,
+      "variant": "immutable historical draft"
+    },
+    {
+      "appId": "section-8-1-v2",
+      "label": "Section 8.1 Version 2",
+      "packagePath": "content/chapter-8/section-8-1/package.json",
+      "deploymentRepository": "tlyoon/section-8-1-learning-app",
+      "publicUrl": "https://tlyoon.github.io/section-8-1-learning-app/v2/",
+      "deployed": true,
+      "variant": "current regenerated draft"
+    },
+    {
+      "appId": "section-8-2",
+      "label": "Section 8.2",
+      "packagePath": "content/chapter-8/section-8-2/package.json",
+      "deploymentRepository": "tlyoon/section-8-1-learning-app",
+      "publicUrl": "https://tlyoon.github.io/section-8-1-learning-app/section-8-2/",
+      "deployed": true
+    },
+    {
+      "appId": "section-8-3",
+      "label": "Section 8.3",
+      "packagePath": "content/chapter-8/section-8-3/package.json",
+      "deploymentRepository": "tlyoon/section-8-1-learning-app",
+      "publicUrl": "https://tlyoon.github.io/section-8-1-learning-app/section-8-3/",
+      "deployed": true
+    },
+    {
+      "appId": "section-8-5",
+      "label": "Section 8.5",
+      "packagePath": "content/chapter-8/section-8-5/package.json",
+      "deploymentRepository": "tlyoon/section-8-1-learning-app",
+      "publicUrl": "https://tlyoon.github.io/section-8-1-learning-app/section-8-5/",
+      "deployed": true
+    }
+  ]
+}
