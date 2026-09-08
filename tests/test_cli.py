@@ -33,6 +33,12 @@ class CliParserTests(unittest.TestCase):
         self.assertEqual("auto", args.selection_mode)
         self.assertEqual("8.6", args.pdf_subchapter_path)
 
+    def test_deployments_command_has_repository_defaults(self):
+        args = _parser().parse_args(["deployments"])
+
+        self.assertEqual(Path("."), args.repo_root)
+        self.assertEqual(Path("config/deployments.json"), args.registry)
+
 
 if __name__ == "__main__":
     unittest.main()
