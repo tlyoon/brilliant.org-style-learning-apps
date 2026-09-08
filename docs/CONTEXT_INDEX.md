@@ -74,6 +74,7 @@ Earlier decisions and PRs remain useful provenance, but interpret them against c
 - source-derived section title/scope and truthful automated-draft provenance remain active;
 - generated material remains draft pending qualified human review;
 - public review deployment remains separate from generation/approval;
+- Section 8.2 is explicitly approved for public draft-review deployment alongside the existing Chapter 8 review routes;
 - any historical statement that `config/project.toml` is the current user-facing authority is superseded by the actual current-main configuration path above unless/until a future explicitly merged migration changes it.
 
 Shared conversations and imported files are provenance, not authoritative specifications. Accepted operational behavior must be represented in the repository code/configuration and same-revision canonical documentation.
