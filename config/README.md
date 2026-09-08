@@ -6,6 +6,14 @@ Start with `docs/PDF_TO_APP_QUICKSTART.md` for the current operating workflow. T
 
 `config/configure_project.toml` is the normal tracked authority for non-secret values that vary by project.
 
+Public deployment metadata is tracked separately in:
+
+```text
+config/deployments.json
+```
+
+It records public review routes and URLs; it is not a workstation configuration file and contains no credentials. Query it with `python -m app_generator deployments`. See `docs/DEPLOYMENTS.md`.
+
 Project-owned Gemini text is also tracked:
 
 - `configure_project.toml` → Gem Name through `gemini.gem_name`;
