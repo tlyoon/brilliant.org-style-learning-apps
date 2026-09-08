@@ -14,6 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_PATH = Path("content/chapter-8/section-8-1/package.json")
 VERSION_ONE_COMMIT = "38b6b59d4d5c0fc408406721c445baf78c00980d"
 EXPECTED_PACKAGE_ID = "chapter-8-section-8-1"
+SECTION_EIGHT_TWO_PACKAGE_PATH = Path("content/chapter-8/section-8-2/package.json")
+SECTION_EIGHT_TWO_PACKAGE_ID = "chapter-8-section-8-2"
 SECTION_EIGHT_THREE_PACKAGE_PATH = Path("content/chapter-8/section-8-3/package.json")
 SECTION_EIGHT_THREE_PACKAGE_ID = "chapter-8-section-8-3"
 SECTION_EIGHT_FIVE_PACKAGE_PATH = Path("content/chapter-8/section-8-5/package.json")
@@ -51,6 +53,18 @@ def version_two_package() -> bytes:
 
     payload = (ROOT / PACKAGE_PATH).read_bytes()
     _validate_public_package(payload, "Section 8.1 Version 2", EXPECTED_PACKAGE_ID)
+    return payload
+
+
+def section_eight_two_package() -> bytes:
+    """Read the current generated Section 8.2 draft."""
+
+    payload = (ROOT / SECTION_EIGHT_TWO_PACKAGE_PATH).read_bytes()
+    _validate_public_package(
+        payload,
+        "Section 8.2",
+        SECTION_EIGHT_TWO_PACKAGE_ID,
+    )
     return payload
 
 
@@ -103,6 +117,39 @@ def _version_page(version: str, label: str, package_url: str) -> str:
       <p class="prototype-notice" role="note">Draft review prototype — {label}; not approved for publication.</p>
       <section id="app" aria-live="polite" data-package-url="{package_url}">
         <p>Loading Section 8.1 {version}…</p>
+      </section>
+    </main>
+    <script type="module" src="../app/app.js"></script>
+  </body>
+</html>
+"""
+
+
+def _section_eight_two_page() -> str:
+    return """<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Section 8.2 Analysis Model: Isolated System (Energy) Review Prototype</title>
+    <link rel="stylesheet" href="../app/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="../">Section 8.2 - Analysis Model: Isolated System (Energy)</a>
+        <label>Language
+          <select id="locale" aria-label="Language">
+            <option value="en">English</option>
+            <option value="ms">Bahasa Melayu</option>
+            <option value="zh">Simplified Chinese</option>
+          </select>
+        </label>
+      </header>
+      <p class="prototype-notice" role="note">Draft review prototype - not approved for publication.</p>
+      <section id="app" aria-live="polite" data-package-url="../content/section-8-2/package.json">
+        <p>Loading Section 8.2...</p>
       </section>
     </main>
     <script type="module" src="../app/app.js"></script>
@@ -211,6 +258,12 @@ def _landing_page() -> str:
           <a class="action version-link" href="v2/">Open Version 2</a>
         </section>
         <section class="card">
+          <p class="eyebrow">Section 8.2</p>
+          <h2>Analysis Model: Isolated System (Energy)</h2>
+          <p>Open the generated, structurally validated 18-activity draft.</p>
+          <a class="action version-link" href="section-8-2/">Open Section 8.2</a>
+        </section>
+        <section class="card">
           <p class="eyebrow">Section 8.3</p>
           <h2>Situations Involving Kinetic Friction</h2>
           <p>Open the generated, structurally validated 18-activity draft.</p>
@@ -240,6 +293,7 @@ def build(output: Path) -> None:
     packages = {
         Path("content/v1/package.json"): version_one_package(),
         Path("content/v2/package.json"): version_two_package(),
+        Path("content/section-8-2/package.json"): section_eight_two_package(),
         Path("content/section-8-3/package.json"): section_eight_three_package(),
         Path("content/section-8-5/package.json"): section_eight_five_package(),
     }
@@ -251,6 +305,7 @@ def build(output: Path) -> None:
         Path("v2/index.html"): _version_page(
             "Version 2", "Version 2", "../content/v2/package.json"
         ).encode("utf-8"),
+        Path("section-8-2/index.html"): _section_eight_two_page().encode("utf-8"),
         Path("section-8-3/index.html"): _section_eight_three_page().encode("utf-8"),
         Path("section-8-5/index.html"): _section_eight_five_page().encode("utf-8"),
         **packages,
