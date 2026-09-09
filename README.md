@@ -15,13 +15,17 @@ The repository contains specifications, schemas, validation scripts, tests, proj
 
 ## Start here
 
-For the **current installation and operating workflow** from one controlled subchapter PDF to a generated draft, managed multi-PC generation, review bundle, and optional deployment, use:
+For setup on a **new Windows PC**, start with:
+
+**`docs/FRESH_PC_QUICKSTART.md`**
+
+It is the short checklist for prerequisites, cloning, machine-local settings, OAuth placement, synchronization, and the first generator run.
+
+For the **complete canonical installation and operating workflow** from one controlled subchapter PDF to a generated draft, managed multi-PC generation, review bundle, and optional deployment, use:
 
 **`docs/PDF_TO_APP_QUICKSTART.md`**
 
 Operational documentation is versioned with the code. Read the docs from the same `main` revision you are running. `docs/DOCUMENTATION_MAINTENANCE.md` defines the same-PR documentation-update rule and CI documentation-impact gate so operator-visible changes do not silently reach `main` with obsolete instructions.
-
-For a short new-PC setup and settings-editing checklist, see `docs/FRESH_PC_QUICKSTART.md`.
 
 Specialist references:
 
