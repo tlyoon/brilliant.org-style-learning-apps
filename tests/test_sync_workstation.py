@@ -233,9 +233,10 @@ class WorkstationSyncTests(unittest.TestCase):
         payload = tomllib.loads(rendered)
         self.assertEqual(root.resolve(), Path(payload["repository"]["repo_root"]).resolve())
         self.assertEqual(SOURCE_URL, payload["placeholders"]["sourcepath"])
-        self.assertEqual(GEM_URL, payload["placeholders"]["gemini-gem"])
+        self.assertEqual(GEM_URL, payload["gemini"]["gem_url"])
         self.assertEqual("8.1", payload["placeholders"]["pdf_subchapter_path"])
         self.assertEqual("tlyoon@gmail.com", config.login_name)
+        self.assertEqual("tlyoon@gmail.com", config.oauth_login)
         self.assertEqual(SOURCE_URL, config.sourcepath)
         self.assertEqual(
             "BRILLIANT_CONTENT_GENERATOR_COORDINATOR_TOKEN",
@@ -387,7 +388,10 @@ class WorkstationSyncTests(unittest.TestCase):
             source.parent.mkdir(parents=True)
             raw = (
                 b'[project]\nproject_name = "BrilliantContentGenerator"\n'
-                b'[placeholders]\nloginname = "person@example.com"\n'
+                b'[placeholders]\nsourcepath = "https://drive.google.com/open?id=test-root"\n'
+                b'[google]\noauth_login = "person@example.com"\n'
+                b'[gemini]\nlogin_name = "person@example.com"\n'
+                b'gem_url = "https://gemini.google.com/gem/test"\n'
                 b'[repository]\nrepo_root = "${REPO_ROOT}"\n'
                 b'[paths]\n'
                 b'state_root = "${STATE_ROOT}"\n'
@@ -403,7 +407,8 @@ class WorkstationSyncTests(unittest.TestCase):
             with patch(
                 "app_generator.config.load_config",
                 return_value=SimpleNamespace(
-                    login_name="person@example.com",
+                    oauth_login="person@example.com",
+                    login_name="alternate-gemini@example.com",
                     drive_oauth_client_file=settings.oauth_client_file,
                     drive_token_file=settings.oauth_token_file,
                     chrome_profile_dir=settings.state_root / "chrome-profile",
@@ -426,6 +431,57 @@ class WorkstationSyncTests(unittest.TestCase):
                 installed_payload["paths"]["drive_token_file"],
             )
 
+    def test_install_preserves_explicit_local_gemini_overrides_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / PROJECT_CONFIG_RELATIVE_PATH
+            source.parent.mkdir(parents=True)
+            source.write_text(
+                '[project]\nproject_name = "BrilliantContentGenerator"\n'
+                '[placeholders]\nsourcepath = "https://drive.google.com/open?id=test-root"\n'
+                '[google]\noauth_login = "person@example.com"\n'
+                '[gemini]\nlogin_name = "default-gemini@example.com"\n'
+                'gem_url = "https://gemini.google.com/gem/default"\n'
+                'gem_edit_url = "https://gemini.google.com/gems/edit/default"\n'
+                '[repository]\nrepo_root = "${REPO_ROOT}"\n'
+                '[paths]\nstate_root = "${STATE_ROOT}"\n'
+                'workstation_settings = "${STATE_ROOT}/workstation-sync.toml"\n'
+                'drive_oauth_client_file = "${STATE_ROOT}/credentials/drive-oauth-client.json"\n'
+                'drive_token_file = "${STATE_ROOT}/credentials/drive-oauth-token.json"\n'
+                'chrome_profile_dir = "${STATE_ROOT}/chrome-profile"\n'
+                'state_dir = "${STATE_ROOT}/runs"\n',
+                encoding="utf-8",
+            )
+            settings = _settings(root)
+            settings.generated_config_file.write_text(
+                '[local_gemini]\n'
+                'login_name = "other@gmail.com"\n'
+                'gem_url = "https://gemini.google.com/gem/other"\n'
+                'gem_edit_url = "https://gemini.google.com/gems/edit/other"\n',
+                encoding="utf-8",
+            )
+
+            with patch(
+                "app_generator.config.load_config",
+                return_value=SimpleNamespace(
+                    oauth_login="person@example.com",
+                    drive_oauth_client_file=settings.oauth_client_file,
+                    drive_token_file=settings.oauth_token_file,
+                    chrome_profile_dir=settings.state_root / "chrome-profile",
+                    state_dir=settings.state_root / "runs",
+                ),
+            ):
+                install_project_config(settings)
+
+            payload = tomllib.loads(settings.generated_config_file.read_text(encoding="utf-8"))
+            self.assertEqual("person@example.com", payload["google"]["oauth_login"])
+            self.assertEqual("default-gemini@example.com", payload["gemini"]["login_name"])
+            self.assertEqual("other@gmail.com", payload["local_gemini"]["login_name"])
+            self.assertEqual(
+                "https://gemini.google.com/gem/other",
+                payload["local_gemini"]["gem_url"],
+            )
+
     def test_install_rejects_machine_and_project_account_mismatch(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -433,7 +489,10 @@ class WorkstationSyncTests(unittest.TestCase):
             source.parent.mkdir(parents=True)
             source.write_text(
                 '[project]\nproject_name = "BrilliantContentGenerator"\n'
-                '[placeholders]\nloginname = "person@example.com"\n'
+                '[placeholders]\nsourcepath = "https://drive.google.com/open?id=test-root"\n'
+                '[google]\noauth_login = "person@example.com"\n'
+                '[gemini]\nlogin_name = "person@example.com"\n'
+                'gem_url = "https://gemini.google.com/gem/test"\n'
                 '[repository]\nrepo_root = "${REPO_ROOT}"\n'
                 '[paths]\nstate_root = "${STATE_ROOT}"\n'
                 'workstation_settings = "${STATE_ROOT}/workstation-sync.toml"\n'
@@ -447,9 +506,9 @@ class WorkstationSyncTests(unittest.TestCase):
 
             with patch(
                 "app_generator.config.load_config",
-                return_value=SimpleNamespace(login_name="different@example.com"),
+                return_value=SimpleNamespace(oauth_login="different@example.com"),
             ):
-                with self.assertRaisesRegex(WorkstationSyncError, "workstation settings expect"):
+                with self.assertRaisesRegex(WorkstationSyncError, "Drive settings expect"):
                     install_project_config(settings)
 
             self.assertFalse(settings.generated_config_file.exists())
