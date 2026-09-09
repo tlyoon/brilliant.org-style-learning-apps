@@ -45,7 +45,14 @@ def _add_config_arguments(command: argparse.ArgumentParser) -> None:
     command.add_argument("--repo-root", type=Path)
     command.add_argument("--gem-url")
     command.add_argument("--gem-edit-url")
-    command.add_argument("--login-name")
+    command.add_argument(
+        "--login-name",
+        help="Gemini browser Google account (overrides gemini.login_name)",
+    )
+    command.add_argument(
+        "--oauth-login",
+        help="Google Drive/coordinator OAuth account (overrides google.oauth_login)",
+    )
     command.add_argument("--chrome-profile-dir", type=Path)
     command.add_argument("--sourcepath")
     command.add_argument("--pdf-subchapter-path")
@@ -94,6 +101,7 @@ def _load(args: argparse.Namespace) -> GeneratorConfig:
         "gem_url": getattr(args, "gem_url", None),
         "gem_edit_url": getattr(args, "gem_edit_url", None),
         "login_name": getattr(args, "login_name", None),
+        "oauth_login": getattr(args, "oauth_login", None),
         "chrome_profile_dir": getattr(args, "chrome_profile_dir", None),
         "sourcepath": getattr(args, "sourcepath", None),
         "pdf_subchapter_path": getattr(args, "pdf_subchapter_path", None),
