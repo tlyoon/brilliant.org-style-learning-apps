@@ -22,6 +22,7 @@ Historical roadmaps, old branch-testing instructions, chat transcripts, and copi
 
 | Task | Read first |
 |---|---|
+| Short fresh-PC setup and settings editing | `docs/FRESH_PC_QUICKSTART.md`, then `docs/PDF_TO_APP_QUICKSTART.md` |
 | Install/setup and first PDF → draft workflow | `docs/PDF_TO_APP_QUICKSTART.md` |
 | Verify documentation freshness policy | `docs/DOCUMENTATION_MAINTENANCE.md` |
 | Recycle repository for another textbook/project | `docs/GENERIC_PROJECT_SETUP.md`, then `config/README.md` |
