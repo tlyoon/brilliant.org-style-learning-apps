@@ -120,6 +120,21 @@ If it is another name, pass it explicitly:
 
 Do not copy a generated local config filename from another PC and assume it is correct locally.
 
+### Preserved local Gemini overrides
+
+The generated local TOML includes a dedicated `[local_gemini]` table. This is the only generated section intended for manual workstation-specific editing:
+
+```toml
+[local_gemini]
+login_name = ""
+gem_url = ""
+gem_edit_url = ""
+```
+
+Blank values inherit the tracked `[gemini]` defaults. Explicit values are preserved when synchronization regenerates the rest of the local file. They affect only the Gemini browser account and Gem URLs.
+
+Drive OAuth and managed-coordinator administration remain bound to tracked `google.oauth_login` and the workstation `[drive].login_name`; a local Gemini override does not alter those identities.
+
 ## Routine synchronization
 
 For a normal full validation:
