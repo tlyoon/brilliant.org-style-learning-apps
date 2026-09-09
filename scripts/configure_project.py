@@ -48,14 +48,14 @@ def validated_values(values: Mapping[str, str]) -> dict[str, str]:
         project_name = validate_project_name(values["project_name"])
     except (KeyError, ProjectIdentityError) as exc:
         raise ProjectConfigurationError(str(exc)) from exc
-    shared_login = values.get("shared_login_name", "").strip()
-    oauth_login = values.get("oauth_login", "").strip() or shared_login
-    login_name = values.get("login_name", "").strip() or shared_login or oauth_login
+    shared_login = str(values.get("shared_login_name") or "").strip()
+    oauth_login = str(values.get("oauth_login") or "").strip() or shared_login
+    login_name = str(values.get("login_name") or "").strip() or shared_login or oauth_login
     if not oauth_login or "@" not in oauth_login:
         raise ProjectConfigurationError("oauth_login must be a non-empty Google account email")
     if not login_name or "@" not in login_name:
         raise ProjectConfigurationError("login_name must be a non-empty Gemini Google account email")
-    gem_edit_url = values.get("gem_edit_url", "").strip()
+    gem_edit_url = str(values.get("gem_edit_url") or "").strip()
     if gem_edit_url:
         gem_edit_url = _validate_https_url(
             gem_edit_url, hostname="gemini.google.com", label="gem_edit_url"
