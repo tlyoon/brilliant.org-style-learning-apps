@@ -185,9 +185,18 @@ class GeneratorConfig:
         )
 
 
+LOCAL_GEMINI_OVERRIDE_KEYS = {"login_name", "gem_url", "gem_edit_url"}
+
+
 def _flatten(document: Mapping[str, Any]) -> dict[str, Any]:
     flat: dict[str, Any] = {}
+    local_gemini = document.get("local_gemini", {})
+    if local_gemini and not isinstance(local_gemini, Mapping):
+        raise ConfigurationError("[local_gemini] must be a TOML table")
+
     for key, value in document.items():
+        if key == "local_gemini":
+            continue
         if isinstance(value, Mapping):
             for child_key, child_value in value.items():
                 if child_key in flat:
@@ -195,6 +204,21 @@ def _flatten(document: Mapping[str, Any]) -> dict[str, Any]:
                 flat[child_key] = child_value
         else:
             flat[key] = value
+
+    if isinstance(local_gemini, Mapping):
+        unknown = set(local_gemini) - LOCAL_GEMINI_OVERRIDE_KEYS
+        if unknown:
+            raise ConfigurationError(
+                "Unsupported [local_gemini] key(s): " + ", ".join(sorted(unknown))
+            )
+        for child_key in LOCAL_GEMINI_OVERRIDE_KEYS:
+            child_value = local_gemini.get(child_key)
+            if child_value is None:
+                continue
+            if not isinstance(child_value, str):
+                raise ConfigurationError(f"local_gemini.{child_key} must be a string")
+            if child_value.strip():
+                flat[child_key] = child_value
     return flat
 
 
