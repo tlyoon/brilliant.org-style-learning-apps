@@ -27,10 +27,11 @@ class GeneratorConfigTests(unittest.TestCase):
             'source_id_prefix = "example"\n'
             "[compatibility]\n"
             'legacy_environment_prefix = ""\n'
+            "[google]\n"
+            'oauth_login = "oauth@example.com"\n'
             "[gemini]\n"
             'gem_url = "https://gemini.google.com/gem/test"\n'
             'gem_edit_url = "https://gemini.google.com/gem/test/edit"\n'
-            'gem_name = "app content generator"\n'
             'login_name = "file@example.com"\n'
             "[paths]\n"
             f"chrome_profile_dir = {json.dumps(str(root / 'state' / 'chrome-profile'))}\n"
@@ -71,10 +72,33 @@ class GeneratorConfigTests(unittest.TestCase):
                 environ={"EXAMPLE_PROJECT_GENERATOR_LOGIN_NAME": "env@example.com", "EXAMPLE_PROJECT_GENERATOR_LOG_LEVEL": "debug"},
             )
             self.assertEqual("cli@example.com", config.login_name)
+            self.assertEqual("oauth@example.com", config.oauth_login)
             self.assertEqual("DEBUG", config.log_level)
             self.assertEqual(4, config.max_repair_attempts)
             self.assertEqual(2, config.max_gemini_session_restarts)
             self.assertEqual("EXAMPLE_PROJECT_GENERATOR_", config.env_prefix)
+
+    def test_local_gemini_overrides_do_not_change_google_oauth_identity(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.pdf"
+            source.write_bytes(b"synthetic")
+            path = self.make_config(root, [source])
+            with path.open("a", encoding="utf-8") as handle:
+                handle.write(
+                    "\n[local_gemini]\n"
+                    'login_name = "alternate@gmail.com"\n'
+                    'gem_url = "https://gemini.google.com/gem/alternate"\n'
+                    'gem_edit_url = "https://gemini.google.com/gems/edit/alternate"\n'
+                )
+
+            config = load_config(path, environ={})
+
+            self.assertEqual("oauth@example.com", config.oauth_login)
+            self.assertEqual("alternate@gmail.com", config.login_name)
+            self.assertEqual("https://gemini.google.com/gem/alternate", config.gem_url)
+            self.assertEqual("https://gemini.google.com/gems/edit/alternate", config.gem_edit_url)
+            self.assertFalse(hasattr(config, "gem_name"))
 
     def test_auto_merge_requires_publishing_and_a_non_draft_pr(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -104,7 +128,7 @@ class GeneratorConfigTests(unittest.TestCase):
 
     def test_project_specific_values_have_no_python_defaults(self):
         for key in (
-            "gem_url", "gem_name", "login_name", "chrome_profile_dir", "state_dir",
+            "gem_url", "login_name", "oauth_login", "chrome_profile_dir", "state_dir",
             "sourcepath", "pdf_subchapter_path", "target_filename", "target_file",
             "source_id_prefix",
             "drive_oauth_client_file", "drive_token_file", "coordinator_token_env",
@@ -177,8 +201,6 @@ class GeneratorConfigTests(unittest.TestCase):
                 'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
                 "[source_tree]\n"
                 'source_id_prefix = "remote"\n'
-                "[gemini]\n"
-                'gem_name = "remote generator"\n'
                 "[paths]\n"
                 f"chrome_profile_dir = {json.dumps(str(root / 'state' / 'chrome-profile'))}\n"
                 f"state_dir = {json.dumps(str(root / 'state' / 'runs'))}\n"
@@ -207,6 +229,7 @@ class GeneratorConfigTests(unittest.TestCase):
             self.assertTrue(config.uses_google_drive)
             self.assertEqual("https://gemini.google.com/gem/remote", config.gem_url)
             self.assertEqual("learner@example.com", config.login_name)
+            self.assertEqual("learner@example.com", config.oauth_login)
             self.assertIn("/**/8.1/source.pdf", config.target_locator)
 
     def test_run_state_cannot_be_stored_inside_repository(self):
@@ -238,9 +261,10 @@ class GeneratorConfigTests(unittest.TestCase):
                 'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
                 "[source_tree]\n"
                 'source_id_prefix = "distributed"\n'
+                "[google]\n"
+                'oauth_login = "oauth@example.com"\n'
                 "[gemini]\n"
                 'gem_url = "https://gemini.google.com/gem/test"\n'
-                'gem_name = "generator"\n'
                 'login_name = "person@example.com"\n'
                 "[paths]\n"
                 f"chrome_profile_dir = {json.dumps(str(root / 'state' / 'chrome-profile'))}\n"
