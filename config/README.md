@@ -16,11 +16,10 @@ It records public review routes and URLs; it is not a workstation configuration 
 
 Project-owned Gemini text is also tracked:
 
-- `configure_project.toml` → Gem Name through `gemini.gem_name`;
 - `gem_description.txt` → Gem Description;
 - `gem_instructions.md` → Gem Instructions.
 
-Before live generation, the generator reconciles the editable Gem fields with these authoritative values and verifies persistence.
+The Gem display name is deliberately **not** part of the configuration contract. The configured Gemini account plus Gem URL/edit URL identify the Gem. Before live generation, the generator reconciles Description and Instructions and verifies persistence without renaming the Gem.
 
 ## Important project-dependent values
 
@@ -28,11 +27,11 @@ Review these when creating/recycling a project:
 
 - `project.project_name`;
 - `placeholders.sourcepath`;
-- `placeholders.gemini-gem`;
-- `placeholders.loginname`;
 - `placeholders.pdf_subchapter_path`;
 - `placeholders.target_filename` and `target_file`;
-- `gemini.gem_edit_url` and `gem_name`;
+- `google.oauth_login` — Google Drive/Cloud OAuth and managed-coordinator administrator identity;
+- `gemini.login_name` — Gemini browser Google account;
+- `gemini.gem_url` and `gemini.gem_edit_url`;
 - source/provenance metadata;
 - automation selection/coordinator policy;
 - Git publication/PR/merge policy;
@@ -86,6 +85,30 @@ generator.shared.local.toml
 ```
 
 The synchronizer prints the exact filename it installed. Direct `app_generator` commands must pass `--config <printed-file>` when that filename differs from the CLI default.
+
+### Workstation-only Gemini override
+
+The generated local TOML contains:
+
+```toml
+[local_gemini]
+login_name = ""
+gem_url = ""
+gem_edit_url = ""
+```
+
+Blank values inherit the tracked `[gemini]` defaults. To use a different Google account and a different Gem on one workstation, edit only these values in the generated local TOML. The synchronizer preserves this table across later full or `--quick` syncs.
+
+For example:
+
+```toml
+[local_gemini]
+login_name = "another.account@gmail.com"
+gem_url = "https://gemini.google.com/gem/OTHER_GEM_ID"
+gem_edit_url = "https://gemini.google.com/gems/edit/OTHER_EDIT_ID"
+```
+
+This does **not** change `google.oauth_login`. For the current project, both tracked defaults remain `tlyoon@gmail.com`, so an untouched local configuration behaves exactly as before.
 
 ## Selection modes
 
