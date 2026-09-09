@@ -21,6 +21,8 @@ For the **current installation and operating workflow** from one controlled subc
 
 Operational documentation is versioned with the code. Read the docs from the same `main` revision you are running. `docs/DOCUMENTATION_MAINTENANCE.md` defines the same-PR documentation-update rule and CI documentation-impact gate so operator-visible changes do not silently reach `main` with obsolete instructions.
 
+For a short new-PC setup and settings-editing checklist, see `docs/FRESH_PC_QUICKSTART.md`.
+
 Specialist references:
 
 1. `AGENTS.md` — durable operational/safety rules;
