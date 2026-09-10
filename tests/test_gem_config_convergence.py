@@ -71,6 +71,7 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
             "https://gemini.google.com/gems/edit/test",
             1,
         )
+        editor_name = Element("Existing display name")
         description = Element("Old meaningful description")
         instructions = Element("Old meaningful instructions")
         save = Element(on_click=lambda: setattr(driver, "current_url", "https://gemini.google.com/gem/test"))
@@ -86,6 +87,7 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
                     description,
                     instructions,
                     save,
+                    editor_name,
                     description,
                     instructions,
                 ],
@@ -100,6 +102,7 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
         self.assertTrue(changed)
         self.assertEqual(2, replace_call.call_count)
         self.assertTrue(save.clicked)
+        self.assertEqual("Existing display name", editor_name.value)
         self.assertEqual("Configured description", description.value)
         self.assertEqual("Configured instructions", instructions.value)
         self.assertEqual(["https://gemini.google.com/gems/edit/test"], driver.loaded_urls)
