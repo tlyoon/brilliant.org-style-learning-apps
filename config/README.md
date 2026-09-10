@@ -97,7 +97,7 @@ gem_url = ""
 gem_edit_url = ""
 ```
 
-Blank values inherit the tracked `[gemini]` defaults. To use a different Google account and a different Gem on one workstation, edit only these values in the generated local TOML. The synchronizer preserves this table across later full or `--quick` syncs.
+Blank values inherit the tracked `[gemini]` defaults. To use a different Google account and a different Gem on one workstation, edit only these values in the generated local TOML. When changing the Gem itself, set `gem_url` and `gem_edit_url` together; a lone URL override is rejected so generation and editing cannot target different Gems. The synchronizer preserves this table across later full or `--quick` syncs.
 
 For example:
 
