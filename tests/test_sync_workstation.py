@@ -278,6 +278,7 @@ class WorkstationSyncTests(unittest.TestCase):
     def test_project_configuration_rejects_invalid_project_name(self):
         raw = (
             b'[project]\nproject_name = "not valid"\n'
+            b'[placeholders]\nsourcepath = "https://drive.google.com/open?id=test-root"\n'
             b'[repository]\nrepo_root = "${REPO_ROOT}"\n'
             b'[paths]\nstate_root = "${STATE_ROOT}"\n'
         )
