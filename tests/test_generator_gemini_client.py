@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from app_generator.errors import TransientGeminiError, UiContractError
 from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
@@ -12,11 +12,27 @@ class GeneratorGeminiClientTests(unittest.TestCase):
         return SimpleNamespace(
             gem_url="https://gemini.google.com/gem/test",
             gem_edit_url="https://gemini.google.com/gems/edit/test",
+            login_name="gemini@example.com",
+            oauth_login="oauth@example.com",
+            login_timeout_seconds=1,
             ui_timeout_seconds=1,
             response_timeout_seconds=1,
             model_preference_patterns=(r"pro", r"flash"),
             allow_unknown_model_fallback=allow_unknown_model_fallback,
         )
+
+    def test_editor_account_verification_uses_gemini_login_not_oauth_login(self):
+        driver = Mock()
+        client = GeminiClient(driver, self.config(allow_unknown_model_fallback=True))
+        client.editor = Mock()
+
+        with patch("app_generator.gemini.client.GoogleAccountVerifier") as verifier:
+            client.open_editor_and_verify_account()
+
+        verifier.assert_called_once_with(driver, "gemini@example.com", 1)
+        verifier.return_value.verify.assert_called_once_with()
+        client.editor.navigate.assert_called_once_with()
+        client.editor.enter_editor.assert_called_once_with()
 
     def test_missing_model_picker_uses_default_when_policy_allows_it(self):
         client = GeminiClient(Mock(), self.config(allow_unknown_model_fallback=True))

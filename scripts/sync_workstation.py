@@ -40,15 +40,17 @@ INSTALL_STAMP_NAME = ".workstation-install.sha256"
 VALIDATION_FINGERPRINT_VERSION = b"workstation-sync-validation-v1\0"
 VALIDATION_STAMP_NAME = "workstation-validation.sha256"
 MANAGED_CONFIG_HEADER = (
-    "# Managed by scripts/sync_workstation.py; edit config/project.toml through Git.\n"
+    "# Managed by scripts/sync_workstation.py. Repository defaults come from the tracked project TOML.\n"
+    "# Workstation-only Gemini overrides belong in [local_gemini] below and are preserved by sync.\n"
 )
+LOCAL_GEMINI_OVERRIDE_KEYS = ("login_name", "gem_url", "gem_edit_url")
 ALLOWED_PROJECT_KEYS = {
     "project": {"project_name"},
     "placeholders": {
-        "sourcepath", "gemini-gem", "loginname", "pdf_subchapter_path",
-        "target_filename", "target_file",
+        "sourcepath", "pdf_subchapter_path", "target_filename", "target_file",
     },
-    "gemini": {"gem_edit_url", "gem_name", "browser_mode"},
+    "google": {"oauth_login"},
+    "gemini": {"login_name", "gem_url", "gem_edit_url", "browser_mode"},
     "google_drive": {"drive_api_timeout_seconds", "max_drive_folders"},
     "source_tree": {"source_id_prefix"},
     "automation": {
@@ -336,7 +338,15 @@ def _validation_fingerprint(settings: SyncSettings) -> str:
     digest.update(b"\0")
     digest.update(_installation_fingerprint(settings.repo_root).encode("ascii"))
     digest.update(b"\0")
-    digest.update(_read_project_config(settings))
+    if settings.generated_config_file.is_file():
+        try:
+            digest.update(settings.generated_config_file.read_bytes())
+        except OSError as exc:
+            raise WorkstationSyncError(
+                f"Could not read generated local configuration {settings.generated_config_file}: {exc}"
+            ) from exc
+    else:
+        digest.update(_read_project_config(settings))
     return digest.hexdigest()
 
 
@@ -538,22 +548,74 @@ def _read_project_config(settings: SyncSettings) -> bytes:
     return raw
 
 
+def _read_local_gemini_overrides(path: Path) -> dict[str, str]:
+    """Read only the explicitly local Gemini override table from an existing generated TOML."""
+
+    if not path.is_file():
+        return {}
+    try:
+        with path.open("rb") as handle:
+            payload = tomllib.load(handle)
+    except (OSError, tomllib.TOMLDecodeError) as exc:
+        raise WorkstationSyncError(
+            f"Could not read existing local project configuration {path}: {exc}"
+        ) from exc
+    raw = payload.get("local_gemini", {})
+    if raw in ({}, None):
+        return {}
+    if not isinstance(raw, Mapping):
+        raise WorkstationSyncError("[local_gemini] in the local project TOML must be a table")
+    unknown = set(raw) - set(LOCAL_GEMINI_OVERRIDE_KEYS)
+    if unknown:
+        raise WorkstationSyncError(
+            "Unsupported [local_gemini] key(s): " + ", ".join(sorted(unknown))
+        )
+    overrides: dict[str, str] = {}
+    for key in LOCAL_GEMINI_OVERRIDE_KEYS:
+        if key not in raw:
+            continue
+        value = raw[key]
+        if not isinstance(value, str):
+            raise WorkstationSyncError(f"local_gemini.{key} must be a string")
+        overrides[key] = value
+    return overrides
+
+
+def _append_local_gemini_overrides(rendered: str, overrides: Mapping[str, str]) -> str:
+    values = {key: str(overrides.get(key, "")) for key in LOCAL_GEMINI_OVERRIDE_KEYS}
+    block = "\n".join(
+        (
+            "",
+            "[local_gemini]",
+            "# Optional workstation-only overrides. Blank values inherit tracked [gemini] defaults.",
+            "# These three values are preserved when sync-workstation regenerates this local file.",
+            f"login_name = {_toml_string(values['login_name'])}",
+            f"gem_url = {_toml_string(values['gem_url'])}",
+            f"gem_edit_url = {_toml_string(values['gem_edit_url'])}",
+            "",
+        )
+    )
+    return rendered.rstrip() + "\n" + block
+
+
 def install_project_config(settings: SyncSettings) -> str:
     raw = _read_project_config(settings)
+    local_gemini = _read_local_gemini_overrides(settings.generated_config_file)
     rendered = render_project_config(
         raw,
         repo_root=settings.repo_root,
         state_root=settings.state_root,
     )
+    rendered = _append_local_gemini_overrides(rendered, local_gemini)
     temporary = settings.generated_config_file.with_name(settings.generated_config_file.name + ".part")
     from app_generator.config import load_config
     try:
         temporary.write_text(rendered, encoding="utf-8", newline="\n")
         config = load_config(temporary)
-        if config.login_name.casefold() != settings.login_name.casefold():
+        if config.oauth_login.casefold() != settings.login_name.casefold():
             raise WorkstationSyncError(
-                f"Project configuration expects {config.login_name}, but workstation settings expect "
-                f"{settings.login_name}"
+                f"Project Google OAuth configuration expects {config.oauth_login}, but workstation "
+                f"Drive settings expect {settings.login_name}"
             )
         if config.drive_oauth_client_file != settings.oauth_client_file:
             raise WorkstationSyncError("Rendered OAuth client path does not match the project-derived path")
@@ -682,7 +744,7 @@ def main(argv: list[str] | None = None) -> int:
             identity = load_project_identity(project_path)
             with project_path.open("rb") as handle:
                 project_payload = tomllib.load(handle)
-            default_login = str(_read_table(project_payload, "placeholders").get("loginname", "")).strip()
+            default_login = str(_read_table(project_payload, "google").get("oauth_login", "")).strip()
         except (ProjectIdentityError, OSError, tomllib.TOMLDecodeError) as exc:
             raise WorkstationSyncError(str(exc)) from exc
         settings_path = _ensure_settings(

@@ -261,9 +261,9 @@ def _verify_admin_account(config: GeneratorConfig, credentials: Credentials) -> 
         email = str(response.json().get("user", {}).get("emailAddress", "")).strip().casefold()
     except Exception as exc:
         raise DriveAuthenticationError(f"Could not verify coordinator administrator account: {exc}") from exc
-    if email != config.login_name.strip().casefold():
+    if email != config.oauth_login.strip().casefold():
         raise WrongAccountError(
-            f"Coordinator administrator account {email or '<unknown>'} does not match configured login_name {config.login_name}"
+            f"Coordinator administrator account {email or '<unknown>'} does not match configured google.oauth_login {config.oauth_login}"
         )
 
 

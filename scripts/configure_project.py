@@ -20,9 +20,10 @@ DEFAULT_CONFIG = ROOT / "config" / "configure_project.toml"
 EDITABLE_VALUES = {
     ("project", "project_name"): "project_name",
     ("placeholders", "sourcepath"): "source_root_url",
-    ("placeholders", "gemini-gem"): "gem_url",
-    ("placeholders", "loginname"): "login_name",
-    ("gemini", "gem_name"): "gem_name",
+    ("google", "oauth_login"): "oauth_login",
+    ("gemini", "login_name"): "login_name",
+    ("gemini", "gem_url"): "gem_url",
+    ("gemini", "gem_edit_url"): "gem_edit_url",
     ("compatibility", "legacy_environment_prefix"): "legacy_environment_prefix",
 }
 
@@ -47,22 +48,29 @@ def validated_values(values: Mapping[str, str]) -> dict[str, str]:
         project_name = validate_project_name(values["project_name"])
     except (KeyError, ProjectIdentityError) as exc:
         raise ProjectConfigurationError(str(exc)) from exc
-    login_name = values.get("login_name", "").strip()
-    gem_name = values.get("gem_name", "").strip()
+    shared_login = str(values.get("shared_login_name") or "").strip()
+    oauth_login = str(values.get("oauth_login") or "").strip() or shared_login
+    login_name = str(values.get("login_name") or "").strip() or shared_login or oauth_login
+    if not oauth_login or "@" not in oauth_login:
+        raise ProjectConfigurationError("oauth_login must be a non-empty Google account email")
     if not login_name or "@" not in login_name:
-        raise ProjectConfigurationError("login_name must be a non-empty account email")
-    if not gem_name:
-        raise ProjectConfigurationError("gem_name is required")
+        raise ProjectConfigurationError("login_name must be a non-empty Gemini Google account email")
+    gem_edit_url = str(values.get("gem_edit_url") or "").strip()
+    if gem_edit_url:
+        gem_edit_url = _validate_https_url(
+            gem_edit_url, hostname="gemini.google.com", label="gem_edit_url"
+        )
     return {
         "project_name": project_name,
         "source_root_url": _validate_https_url(
             values.get("source_root_url", ""), hostname="drive.google.com", label="source_root_url"
         ),
+        "oauth_login": oauth_login,
+        "login_name": login_name,
         "gem_url": _validate_https_url(
             values.get("gem_url", ""), hostname="gemini.google.com", label="gem_url"
         ),
-        "login_name": login_name,
-        "gem_name": gem_name,
+        "gem_edit_url": gem_edit_url,
         "legacy_environment_prefix": "",
     }
 
@@ -141,8 +149,14 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--project-name", required=True)
     parser.add_argument("--source-root-url", required=True)
     parser.add_argument("--gem-url", required=True)
-    parser.add_argument("--login-name", required=True)
-    parser.add_argument("--gem-name", required=True)
+    parser.add_argument("--gem-edit-url", default="")
+    parser.add_argument("--oauth-login")
+    parser.add_argument("--gemini-login-name")
+    parser.add_argument(
+        "--login-name",
+        dest="shared_login_name",
+        help="Legacy shared-account fallback; new projects should use --oauth-login and --gemini-login-name.",
+    )
     parser.add_argument(
         "--apply",
         action="store_true",
@@ -162,8 +176,10 @@ def main(argv: list[str] | None = None) -> int:
                 "project_name": args.project_name,
                 "source_root_url": args.source_root_url,
                 "gem_url": args.gem_url,
-                "login_name": args.login_name,
-                "gem_name": args.gem_name,
+                "gem_edit_url": args.gem_edit_url,
+                "oauth_login": args.oauth_login,
+                "login_name": args.gemini_login_name,
+                "shared_login_name": args.shared_login_name,
             },
         )
         if not args.apply:

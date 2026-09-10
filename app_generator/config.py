@@ -72,8 +72,8 @@ class GeneratorConfig:
     env_prefix: str
     gem_url: str
     gem_edit_url: str
-    gem_name: str
     login_name: str
+    oauth_login: str
     browser_mode: str
     debugger_address: str
     chrome_profile_dir: Path
@@ -185,9 +185,18 @@ class GeneratorConfig:
         )
 
 
+LOCAL_GEMINI_OVERRIDE_KEYS = {"login_name", "gem_url", "gem_edit_url"}
+
+
 def _flatten(document: Mapping[str, Any]) -> dict[str, Any]:
     flat: dict[str, Any] = {}
+    local_gemini = document.get("local_gemini", {})
+    if local_gemini and not isinstance(local_gemini, Mapping):
+        raise ConfigurationError("[local_gemini] must be a TOML table")
+
     for key, value in document.items():
+        if key == "local_gemini":
+            continue
         if isinstance(value, Mapping):
             for child_key, child_value in value.items():
                 if child_key in flat:
@@ -195,6 +204,30 @@ def _flatten(document: Mapping[str, Any]) -> dict[str, Any]:
                 flat[child_key] = child_value
         else:
             flat[key] = value
+
+    if isinstance(local_gemini, Mapping):
+        unknown = set(local_gemini) - LOCAL_GEMINI_OVERRIDE_KEYS
+        if unknown:
+            raise ConfigurationError(
+                "Unsupported [local_gemini] key(s): " + ", ".join(sorted(unknown))
+            )
+        for child_key in LOCAL_GEMINI_OVERRIDE_KEYS:
+            child_value = local_gemini.get(child_key)
+            if child_value is not None and not isinstance(child_value, str):
+                raise ConfigurationError(f"local_gemini.{child_key} must be a string")
+
+        gem_url_override = str(local_gemini.get("gem_url", "")).strip()
+        gem_edit_url_override = str(local_gemini.get("gem_edit_url", "")).strip()
+        if bool(gem_url_override) != bool(gem_edit_url_override):
+            raise ConfigurationError(
+                "local_gemini.gem_url and local_gemini.gem_edit_url must be set together "
+                "so generation and editing cannot target different Gems"
+            )
+
+        for child_key in LOCAL_GEMINI_OVERRIDE_KEYS:
+            child_value = local_gemini.get(child_key)
+            if isinstance(child_value, str) and child_value.strip():
+                flat[child_key] = child_value
     return flat
 
 
@@ -240,12 +273,23 @@ def _validate_gemini_url(value: str, key: str) -> str:
 
 def _normalize_aliases(values: Mapping[str, Any]) -> dict[str, Any]:
     normalized = dict(values)
+    legacy_login = normalized.get("loginname")
     for alias, canonical in ALIASES.items():
         if alias not in normalized:
             continue
         if canonical in normalized and normalized[canonical] != normalized[alias]:
             raise ConfigurationError(f"Conflicting configuration values: {alias} and {canonical}")
         normalized[canonical] = normalized.pop(alias)
+
+    # Backward compatibility for configurations created before Google API
+    # authorization and Gemini browser login became independent identities.
+    # A legacy shared login continues to mean both accounts unless the new
+    # google.oauth_login value is explicitly present.
+    if "oauth_login" not in normalized:
+        if legacy_login is not None:
+            normalized["oauth_login"] = legacy_login
+        elif "login_name" in normalized:
+            normalized["oauth_login"] = normalized["login_name"]
     return normalized
 
 
@@ -334,12 +378,17 @@ def load_config(
     values.update({key: value for key, value in (cli_overrides or {}).items() if value is not None})
 
     for required_key in (
-        "gem_url", "gem_name", "login_name", "chrome_profile_dir", "state_dir",
+        "gem_url", "login_name", "oauth_login", "chrome_profile_dir", "state_dir",
         "sourcepath", "pdf_subchapter_path", "target_filename", "target_file",
         "source_id_prefix",
         "drive_oauth_client_file", "drive_token_file", "coordinator_token_env",
     ):
         _required(values, required_key)
+
+    for account_key in ("login_name", "oauth_login"):
+        account = str(_required(values, account_key)).strip()
+        if "@" not in account:
+            raise ConfigurationError(f"{account_key} must be a non-empty Google account email")
 
     repo_root = Path(_required(values, "repo_root")).expanduser().resolve()
     raw_sources = values.get("source_files", [])
@@ -492,8 +541,8 @@ def load_config(
             if str(values.get("gem_edit_url", "")).strip()
             else ""
         ),
-        gem_name=str(values["gem_name"]).strip(),
         login_name=str(values["login_name"]).strip(),
+        oauth_login=str(values["oauth_login"]).strip(),
         browser_mode=browser_mode,
         debugger_address=debugger_address,
         chrome_profile_dir=chrome_profile_dir,

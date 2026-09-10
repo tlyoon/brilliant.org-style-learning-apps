@@ -51,7 +51,7 @@ class GeminiClient:
             ) from exc
         if not description or not instructions:
             raise UiContractError("Project Gem Description and Instructions must both be non-empty")
-        self.editor.synchronize_configuration(self.config.gem_name, description, instructions)
+        self.editor.synchronize_configuration(description, instructions)
 
     def open_conversation_select_model_and_attach(self, source_path: Path) -> str:
         self.conversation.open_new()

@@ -16,7 +16,8 @@ def configure_core() -> None:
 
     core.PROJECT_CONFIG_RELATIVE_PATH = CONFIGURE_PROJECT_RELATIVE_PATH
     core.MANAGED_CONFIG_HEADER = (
-        "# Managed by scripts/sync_workstation.py; edit config/configure_project.toml through Git.\n"
+        "# Managed by scripts/sync_workstation.py. Repository defaults come from config/configure_project.toml.\n"
+        "# Workstation-only Gemini overrides belong in [local_gemini] below and are preserved by sync.\n"
     )
     core.ALLOWED_PROJECT_KEYS = {
         **core.ALLOWED_PROJECT_KEYS,

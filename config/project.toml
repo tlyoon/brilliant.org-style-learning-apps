@@ -7,15 +7,19 @@ project_name = "BrilliantContentGenerator"
 
 [placeholders]
 sourcepath = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc&usp=drive_fs"
-gemini-gem = "https://gemini.google.com/gem/1dZR01a7xJ9pveqo55MwzfuPV2i_tUQvJ?usp=sharing"
-loginname = "tlyoon@gmail.com"
 pdf_subchapter_path = "8.1"
 target_filename = "source.pdf"
 target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"
 
+[google]
+# Google Drive/Cloud OAuth identity. This remains independent of the Gemini browser account.
+oauth_login = "tlyoon@gmail.com"
+
 [gemini]
+# These three values may be overridden in the generated local project TOML on a workstation.
+login_name = "tlyoon@gmail.com"
+gem_url = "https://gemini.google.com/gem/1dZR01a7xJ9pveqo55MwzfuPV2i_tUQvJ?usp=sharing"
 gem_edit_url = "https://gemini.google.com/gems/edit/815996ef2eef"
-gem_name = "app content generator (tlyoon@gmail.com)"
 browser_mode = "controlled"
 
 [google_drive]
