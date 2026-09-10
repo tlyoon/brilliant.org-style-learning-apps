@@ -30,14 +30,14 @@ class GemEditorPage:
         self.driver.get(self.url)
 
     def enter_editor(self) -> None:
-        if find_all(self.driver, selectors.NAME_FIELD):
+        if find_all(self.driver, selectors.EDITOR_FIELD):
             return
         if self.edit_url:
-            find_first(self.driver, selectors.NAME_FIELD, self.timeout)
+            find_first(self.driver, selectors.EDITOR_FIELD, self.timeout)
             return
         try:
             find_first(self.driver, selectors.EDIT_GEM_BUTTON, self.timeout, clickable=True).click()
-            find_first(self.driver, selectors.NAME_FIELD, self.timeout)
+            find_first(self.driver, selectors.EDITOR_FIELD, self.timeout)
             self.url = str(getattr(self.driver, "current_url", self.gem_url))
         except UiContractError as exc:
             raise GemAccessError(
@@ -85,7 +85,7 @@ class GemEditorPage:
                     break
                 time.sleep(0.25)
             self.driver.get(editor_url)
-            find_first(self.driver, selectors.NAME_FIELD, self.timeout)
+            find_first(self.driver, selectors.EDITOR_FIELD, self.timeout)
             for label, (locators, desired) in fields.items():
                 actual = element_text(find_first(self.driver, locators, self.timeout))
                 if actual.strip() != desired.strip():
@@ -126,7 +126,7 @@ class GemEditorPage:
                     break
                 time.sleep(0.25)
             self.driver.get(editor_url)
-            find_first(self.driver, selectors.NAME_FIELD, self.timeout)
+            find_first(self.driver, selectors.EDITOR_FIELD, self.timeout)
             for label, (locators, desired) in fields.items():
                 actual = element_text(find_first(self.driver, locators, self.timeout))
                 if actual.strip() != desired.strip():

@@ -21,6 +21,7 @@ INSTRUCTIONS_FIELD = (
     ("css selector", '[contenteditable="true"][aria-label*="Instructions"]'),
     ("xpath", '//label[contains(normalize-space(.), "Instructions")]/following::*[self::textarea or @contenteditable="true"][1]'),
 )
+EDITOR_FIELD = DESCRIPTION_FIELD + INSTRUCTIONS_FIELD
 SAVE_BUTTON = (
     ("xpath", '//button[normalize-space()="Update" or normalize-space()="Save"]'),
     ("css selector", 'button[aria-label="Update"]'),
