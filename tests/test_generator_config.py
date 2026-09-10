@@ -100,6 +100,23 @@ class GeneratorConfigTests(unittest.TestCase):
             self.assertEqual("https://gemini.google.com/gems/edit/alternate", config.gem_edit_url)
             self.assertFalse(hasattr(config, "gem_name"))
 
+    def test_local_gemini_url_overrides_must_be_supplied_together(self):
+        for override in (
+            'gem_url = "https://gemini.google.com/gem/alternate"\n',
+            'gem_edit_url = "https://gemini.google.com/gems/edit/alternate"\n',
+        ):
+            with self.subTest(override=override.strip()):
+                with tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    source = root / "source.pdf"
+                    source.write_bytes(b"synthetic")
+                    path = self.make_config(root, [source])
+                    with path.open("a", encoding="utf-8") as handle:
+                        handle.write("\n[local_gemini]\n" + override)
+
+                    with self.assertRaisesRegex(ConfigurationError, "must be set together"):
+                        load_config(path, environ={})
+
     def test_auto_merge_requires_publishing_and_a_non_draft_pr(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
