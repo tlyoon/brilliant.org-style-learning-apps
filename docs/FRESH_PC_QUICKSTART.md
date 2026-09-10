@@ -78,7 +78,7 @@ gem_url = "https://gemini.google.com/gem/OTHER_GEM_ID"
 gem_edit_url = "https://gemini.google.com/gems/edit/OTHER_EDIT_ID"
 ```
 
-Leaving these values blank preserves the tracked defaults. Editing them does not change Drive/Cloud OAuth, which continues to use `google.oauth_login`. Later, refresh the PC with `.\sync-workstation.cmd --quick`.
+Leaving these values blank preserves the tracked defaults. If you change the Gem, set `gem_url` and `gem_edit_url` together; a single URL override is rejected to avoid editing one Gem while generating with another. Editing these values does not change Drive/Cloud OAuth, which continues to use `google.oauth_login`. Later, refresh the PC with `.\sync-workstation.cmd --quick`.
 
 ## Editing shared project settings
 
