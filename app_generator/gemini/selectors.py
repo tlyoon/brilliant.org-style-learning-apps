@@ -13,11 +13,16 @@ EDIT_GEM_BUTTON = (
 )
 DESCRIPTION_FIELD = (
     ("css selector", 'textarea[aria-label*="Description"]'),
+    ("css selector", 'textarea[placeholder*="Describe your Gem"]'),
     ("css selector", '[contenteditable="true"][aria-label*="Description"]'),
     ("xpath", '//label[contains(normalize-space(.), "Description")]/following::*[self::textarea or @contenteditable="true"][1]'),
 )
 INSTRUCTIONS_FIELD = (
     ("css selector", 'textarea[aria-label*="Instructions"]'),
+    (
+        "css selector",
+        'rich-textarea[data-test-id="instruction-rich-input-field"] [contenteditable="true"]',
+    ),
     ("css selector", '[contenteditable="true"][aria-label*="Instructions"]'),
     ("xpath", '//label[contains(normalize-space(.), "Instructions")]/following::*[self::textarea or @contenteditable="true"][1]'),
 )
