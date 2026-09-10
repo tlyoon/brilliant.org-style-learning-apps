@@ -213,11 +213,20 @@ def _flatten(document: Mapping[str, Any]) -> dict[str, Any]:
             )
         for child_key in LOCAL_GEMINI_OVERRIDE_KEYS:
             child_value = local_gemini.get(child_key)
-            if child_value is None:
-                continue
-            if not isinstance(child_value, str):
+            if child_value is not None and not isinstance(child_value, str):
                 raise ConfigurationError(f"local_gemini.{child_key} must be a string")
-            if child_value.strip():
+
+        gem_url_override = str(local_gemini.get("gem_url", "")).strip()
+        gem_edit_url_override = str(local_gemini.get("gem_edit_url", "")).strip()
+        if bool(gem_url_override) != bool(gem_edit_url_override):
+            raise ConfigurationError(
+                "local_gemini.gem_url and local_gemini.gem_edit_url must be set together "
+                "so generation and editing cannot target different Gems"
+            )
+
+        for child_key in LOCAL_GEMINI_OVERRIDE_KEYS:
+            child_value = local_gemini.get(child_key)
+            if isinstance(child_value, str) and child_value.strip():
                 flat[child_key] = child_value
     return flat
 
