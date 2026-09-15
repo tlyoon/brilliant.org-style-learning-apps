@@ -17,7 +17,7 @@ The guiding principle is:
 The intended high-level evolution is:
 
 ```text
-Stage 0  Validated PDF-to-learning-package baseline
+Stage 0  Validated single-source-root PDF-to-learning-package baseline
    ↓
 Stage 1  Multi-source topic and course knowledge/pedagogy model
    ↓
@@ -40,42 +40,80 @@ Stage 9  Production and institutional platform
 
 ---
 
-## End-state source and generation model
+## Single Source Root Principle
 
-The source library is expected to be organized by course/subject and topic. A topic folder may contain one, two, three, or any number of PDF files. All PDFs within a topic folder collectively form that topic's authoritative source corpus for generation.
+The complete generation system shall have **exactly one project-level configurable source-root placeholder**. Stage 0 and every subsequent blueprint stage must obtain source documents, topic structure, provenance, discovery scope, and downstream source-derived artifacts from this root or from artifacts derived from it. Individual stages must not introduce independent source-root configuration values.
 
-Example:
+For the present project, the configured Google Drive source root is:
 
 ```text
-Classical_Physics/
-├── 01_Kinematics/
-│   ├── source_01.pdf
-│   └── source_02.pdf
-├── 02_Newtons_Laws/
-│   ├── source_01.pdf
-│   ├── source_02.pdf
-│   └── source_03.pdf
-├── 03_Work_and_Energy/
-│   ├── source_01.pdf
-│   └── source_02.pdf
-└── m_Topic/
-    ├── source_01.pdf
-    ├── ...
-    └── source_n.pdf
+source_root_folder_id = 1xiYsp3pe3bcWV9W_ikarnjo_i_EsAPaA
 ```
 
-The exact filenames and directory naming convention may be configurable, but the architectural rule is stable:
+This root currently contains the source hierarchy for Chapters 8 through 14 and is the top directory whose source PDFs are in scope for the package.
 
-> **The primary generation unit is the topic; PDFs are source documents belonging to that topic.**
+Conceptually, the authoritative project configuration should contain one value equivalent to:
+
+```toml
+[source]
+root_folder_id = "1xiYsp3pe3bcWV9W_ikarnjo_i_EsAPaA"
+```
+
+The exact configuration key must be reconciled with the repository's current authoritative configuration before implementation. If an equivalent source-root field already exists, it should be reused or generalized rather than creating a second competing setting.
+
+Topic, chapter, subchapter, or individual-file choices are **selectors beneath the Source Root**, not alternative roots. For example:
+
+```toml
+[source]
+root_folder_id = "1xiYsp3pe3bcWV9W_ikarnjo_i_EsAPaA"
+
+[generation]
+target = "8.2"
+```
+
+means "generate target 8.2 from within the configured source universe." A future `target = "8"` may select a whole chapter and `target = "all"` may select the complete source tree, but all modes must resolve from the same Source Root.
+
+This principle is an architectural invariant from **Stage 0 onward**.
+
+---
+
+## End-state source and generation model
+
+The source library is expected to be organized below the single Source Root by course structure and topic. The present project uses a hierarchy such as:
+
+```text
+SOURCE ROOT
+├── 8/
+│   ├── 8.1/
+│   │   └── source.pdf
+│   ├── 8.2/
+│   │   └── source.pdf
+│   ├── ...
+│   └── auxiliary folders where applicable
+├── 9/
+├── 10/
+├── 11/
+├── 12/
+├── 13/
+└── 14/
+```
+
+A topic folder may contain one, two, three, or any number of PDF files. All eligible PDFs within a topic folder collectively form that topic's authoritative source corpus for generation. `source.pdf` remains valid for backward compatibility but must not permanently define the only eligible source filename.
+
+The exact filenames and directory naming convention may be configurable, but the architectural rules are stable:
+
+> **There is one Source Root for the project.**
+>
+> **The primary pedagogical generation unit is the topic; PDFs are source documents belonging to that topic.**
 
 The target end-state pipeline is therefore:
 
 ```text
-COURSE / SUBJECT SOURCE ROOT
+ONE CONFIGURED SOURCE ROOT
             ↓
-Discover topic folders
+Discover course/chapter/topic structure
             ↓
-For each topic, discover all source PDFs
+For each topic, discover all eligible source PDFs
             ↓
 Synthesize the topic source corpus
             ↓
@@ -103,39 +141,49 @@ The system should also support incremental generation. Unchanged topic corpora s
 The stages are capability boundaries rather than single pull requests. A stage may require several independently reviewable PRs.
 
 1. **Preserve a working system.** Do not require a large rewrite merely to advance a stage.
-2. **Topic is the generation unit.** One or more PDFs provide evidence for a topic; they are not inherently separate learning apps.
-3. **Course coherence is a first-class requirement.** Independently generated topic material must ultimately connect into one subject/course learning environment.
-4. **Pedagogy before cosmetics.** Improve the learning mechanism before investing heavily in visual polish or gamification.
-5. **Generated educational content and runtime code remain separate.** Prefer validated, reusable interaction primitives over AI-generated arbitrary executable code.
-6. **Deterministic core first.** Core learning, validation, feedback, and mastery mechanisms should remain testable without depending on a runtime LLM wherever practical.
-7. **AI augments the learning system.** Runtime AI should be introduced where it adds capabilities that deterministic mechanisms cannot provide well, especially contextual tutoring.
-8. **Source grounding remains explicit.** PDF/source provenance and human review requirements remain part of the content lifecycle, including when several PDFs support the same synthesized concept.
-9. **Multilingual capability remains first-class.** English, Malay, and Simplified Chinese should remain supported by the learning contract as capabilities expand.
-10. **Assisted and independent performance remain distinct.** A learner succeeding after scaffolding has provided different evidence from a learner succeeding independently.
-11. **Incremental generation is required.** A changed topic should be rebuildable without forcing unnecessary regeneration of the whole course.
-12. **Every stage requires validation.** Schemas, tests, documentation, and acceptance criteria should evolve with the implementation.
-13. **Do not claim future-stage capability early.** The blueprint describes direction; shipped behavior is determined by current `main`.
+2. **One configurable Source Root.** Every stage derives its source universe from the same project-level Source Root.
+3. **Selectors are not roots.** Chapter/topic/file targets choose material beneath the Source Root and must not redefine it.
+4. **Topic is the generation unit.** One or more PDFs provide evidence for a topic; they are not inherently separate learning apps.
+5. **Course coherence is a first-class requirement.** Independently generated topic material must ultimately connect into one subject/course learning environment.
+6. **Pedagogy before cosmetics.** Improve the learning mechanism before investing heavily in visual polish or gamification.
+7. **Generated educational content and runtime code remain separate.** Prefer validated, reusable interaction primitives over AI-generated arbitrary executable code.
+8. **Deterministic core first.** Core learning, validation, feedback, and mastery mechanisms should remain testable without depending on a runtime LLM wherever practical.
+9. **AI augments the learning system.** Runtime AI should be introduced where it adds capabilities that deterministic mechanisms cannot provide well, especially contextual tutoring.
+10. **Source grounding remains explicit.** PDF/source provenance and human review requirements remain part of the content lifecycle, including when several PDFs support the same synthesized concept.
+11. **Multilingual capability remains first-class.** English, Malay, and Simplified Chinese should remain supported by the learning contract as capabilities expand.
+12. **Assisted and independent performance remain distinct.** A learner succeeding after scaffolding has provided different evidence from a learner succeeding independently.
+13. **Incremental generation is required.** A changed topic should be rebuildable without forcing unnecessary regeneration of the whole course.
+14. **Every stage requires validation.** Schemas, tests, documentation, and acceptance criteria should evolve with the implementation.
+15. **Do not claim future-stage capability early.** The blueprint describes direction; shipped behavior is determined by current `main`.
 
 ---
 
-# Stage 0 — Validated PDF-to-Learning-Package Baseline
+# Stage 0 — Validated Single-Source-Root PDF-to-Learning-Package Baseline
 
 ## Goal
 
-Preserve and clearly identify the current working system as the baseline from which the Brilliant-style transformation proceeds.
+Preserve and clearly identify the current working system as the baseline from which the Brilliant-style transformation proceeds, while establishing the **Single Source Root Principle** as a Stage-0 invariant.
 
-## Starting capability
+## Source-root requirement
 
-The repository already provides a PDF/source-driven generation workflow, structured content packages, schemas and validation, a learner scaffold, multilingual learner-facing content, formative hints and retries, prerequisite routing, difficulty levels, assisted/independent evidence, review controls, and deployment/generation infrastructure.
-
-The current learning-package contract includes both multiple-choice and interactive activities. Stage 0 should therefore not be described merely as an MCQ system; rather, it is the validated baseline whose learning experience is still substantially question/activity oriented.
-
-## Conceptual pipeline
+Stage 0 must use the same project-level Source Root that every later stage will use:
 
 ```text
-PDF/source material
+1xiYsp3pe3bcWV9W_ikarnjo_i_EsAPaA
+```
+
+For the current project, all Stage-0 source selection must resolve beneath this root. Stage 0 may continue to select a specific subchapter or existing `source.pdf` using the current generation mechanism, but such a target is a selector beneath the Source Root rather than a separately configured source location.
+
+Conceptually:
+
+```text
+ONE SOURCE ROOT
       ↓
-generator
+Chapters 8 ... 14
+      ↓
+selected Stage-0 target
+      ↓
+existing PDF/source generator
       ↓
 content package
       ↓
@@ -144,9 +192,28 @@ validation/review
 learner application
 ```
 
+Stage 0 therefore establishes the source universe that Stage 1 will later discover and model more comprehensively. Stage 1 must generalize the behavior below this root rather than create a parallel source system.
+
+## Starting capability
+
+The repository already provides a PDF/source-driven generation workflow, structured content packages, schemas and validation, a learner scaffold, multilingual learner-facing content, formative hints and retries, prerequisite routing, difficulty levels, assisted/independent evidence, review controls, and deployment/generation infrastructure.
+
+The current learning-package contract includes both multiple-choice and interactive activities. Stage 0 should therefore not be described merely as an MCQ system; rather, it is the validated baseline whose learning experience is still substantially question/activity oriented.
+
+## Configuration rule
+
+Before Stage 0 is considered fully aligned with this blueprint, the current configuration and generator code should be audited so that:
+
+- exactly one authoritative project-level source-root setting exists;
+- its default/current project value resolves to the Drive root above;
+- existing target-selection modes resolve beneath that root;
+- no second source-root placeholder is introduced for Stage 1 or later stages;
+- backward compatibility is preserved where practical;
+- canonical configuration documentation and tests reflect the single-root behavior.
+
 ## Exit condition
 
-Stage 0 is considered established when the current baseline is reproducible, documented, tested, and can be referenced as the pre-blueprint implementation state.
+Stage 0 is considered established when the current baseline is reproducible, documented, tested, and can be referenced as the pre-blueprint implementation state **with all source selection resolving from the one configured project Source Root**.
 
 ---
 
@@ -161,6 +228,26 @@ Change the generator's primary question from:
 into:
 
 > What should the learner understand and be able to do in this topic, based on the complete set of source documents for that topic, and how does this topic connect to the rest of the course?
+
+## Stage 1A source-discovery boundary
+
+Stage 1A starts from the **same Source Root established in Stage 0**. It must not define another Drive folder or source-path placeholder.
+
+Its initial transformation is:
+
+```text
+SAME SOURCE ROOT AS STAGE 0
+            ↓
+recursive deterministic discovery
+            ↓
+chapter / topic / auxiliary classification
+            ↓
+all eligible PDFs for each topic
+            ↓
+normalized source-corpus manifest
+```
+
+Stage 1A is responsible for understanding the structure beneath the root, not for redefining the root itself. It should support the current Chapter 8–14 hierarchy while keeping the scanner reusable for future projects.
 
 ## Core transformation
 
@@ -206,58 +293,9 @@ For the course/subject level, represent at least:
 - course-level concept graph;
 - mappings from concepts to their supporting topic/source corpora.
 
-Example topic conceptual structure:
-
-```text
-Topic: Newton's Laws
-
-Concept: Newton's Third Law
-
-Objectives:
-- identify interacting objects
-- identify action-reaction pairs
-- distinguish force from acceleration
-- reason about equal-magnitude/opposite-direction forces
-
-Prerequisites:
-- force
-- vectors
-- Newton's Second Law
-
-Misconceptions:
-- the heavier object exerts the larger interaction force
-- action and reaction act on the same object
-- the faster-moving object must exert the larger force
-
-Representations:
-- verbal scenario
-- vector diagram
-- free-body diagram
-- manipulable physical scenario
-
-Mastery evidence:
-- recognize
-- predict
-- explain
-- transfer
-
-Supported by:
-- source_01.pdf
-- source_02.pdf
-- source_03.pdf
-```
-
 ## Multi-source synthesis rule
 
-If several PDFs discuss the same concept, the system should synthesize them rather than create artificial duplicates. For example:
-
-```text
-PDF 1 ─┐
-PDF 2 ─┼─→ Newton's Second Law concept model
-PDF 3 ─┘
-```
-
-The synthesized concept may combine complementary definitions, representations, examples, and explanations while preserving provenance to the individual sources.
+If several PDFs discuss the same concept, the system should synthesize them rather than create artificial duplicates. The synthesized concept may combine complementary definitions, representations, examples, and explanations while preserving provenance to the individual sources.
 
 Source-grounded statements should remain distinguishable from pedagogically inferred information such as likely misconceptions, recommended scaffolds, or prerequisite relationships when those are not explicitly present in the source corpus.
 
@@ -266,23 +304,22 @@ Source-grounded statements should remain distinguishable from pedagogically infe
 A future implementation may use a structure such as:
 
 ```text
+source-manifest.json
 course-model.json
 
 topics/
-  01_Kinematics/
-    source-manifest.json
+  8.1/
     topic-model.json
-  02_Newtons_Laws/
-    source-manifest.json
+  8.2/
     topic-model.json
   ...
 ```
 
-The exact filenames are implementation decisions, but the separation between topic-level synthesis and course-level relationships is intentional.
+The exact filenames are implementation decisions, but the separation between root-derived source discovery, topic-level synthesis, and course-level relationships is intentional.
 
 ## Exit condition
 
-Given a course/subject source root containing multiple topic folders and arbitrary numbers of PDFs per topic, the package can systematically discover the source structure, synthesize each topic corpus into a validated provenance-aware Topic Learning Model, and connect those topic models into a validated Course Learning Model before activity generation begins. Downstream generated activities can explicitly reference these models.
+Given the single configured Source Root containing multiple chapter/topic folders and arbitrary numbers of PDFs per topic, the package can systematically discover the source structure, synthesize each topic corpus into a validated provenance-aware Topic Learning Model, and connect those topic models into a validated Course Learning Model before activity generation begins. Downstream generated activities can explicitly reference these models without defining another source root.
 
 ---
 
@@ -296,45 +333,13 @@ Move beyond MCQ-dominant interaction by giving the learner multiple ways to mani
 
 Create a reusable library of tested interaction primitives. The generator selects and parameterizes primitives rather than generating arbitrary JavaScript for individual activities.
 
-Candidate activity types include:
+Candidate activity types include multiple choice, multiple select, prediction, drag and drop, matching, ordering, classification, slider experiments, vector manipulation, graph manipulation, diagram annotation, simulation, construction, comparison, error spotting, guided derivation, short response, and concept mapping.
 
-- multiple choice;
-- multiple select;
-- prediction;
-- drag and drop;
-- matching;
-- ordering;
-- classification;
-- slider experiment;
-- vector manipulation;
-- graph manipulation;
-- diagram annotation;
-- simulation;
-- construction;
-- comparison;
-- error spotting;
-- guided derivation;
-- short response;
-- concept mapping.
-
-Example activity contract:
-
-```text
-activity_type: vector_manipulation
-concept: newtons_third_law
-student_action: construct_force_pair
-constraints:
-  vector_origins_locked: true
-success_condition:
-  equal_magnitude: true
-  opposite_direction: true
-```
+Generated activities must derive their source/topic identity through Stage-1 artifacts that ultimately trace back to the same project Source Root; Stage 2 introduces no source-root setting.
 
 ## Design rule
 
-Interaction primitives are trusted runtime components. Generated packages provide declarative content and parameters. This separation keeps generated learning experiences testable, secure, and reusable.
-
-Activity quantity and type should ultimately be determined by the pedagogical needs of the topic and its concepts rather than by a permanently fixed MCQ/interactive quota. Existing Stage 0 quotas may remain for backward compatibility during transition.
+Interaction primitives are trusted runtime components. Generated packages provide declarative content and parameters. Activity quantity and type should ultimately be determined by pedagogical need rather than a permanently fixed quota; existing Stage-0 quotas may remain for backward compatibility during transition.
 
 ## Exit condition
 
@@ -346,51 +351,15 @@ A generated topic can use several genuinely different interaction modes, and the
 
 ## Goal
 
-Transform each topic's collection of concepts and activities into an intentionally ordered learning journey, while retaining coherence with prerequisite and follow-on topics in the course.
+Transform each topic's concepts and activities into an intentionally ordered learning journey while retaining coherence with prerequisite and follow-on topics.
 
-## Core transformation
+Possible sequences include Hook → Predict → Explore → Notice → Explain → Guided practice → Independent challenge → Transfer → Reflect. The pedagogy model determines the appropriate pattern rather than imposing one fixed sequence.
 
-Replace the dominant pattern:
-
-```text
-question → question → question → question
-```
-
-with sequences such as:
-
-```text
-Hook
-  ↓
-Predict
-  ↓
-Explore
-  ↓
-Notice
-  ↓
-Explain
-  ↓
-Guided practice
-  ↓
-Independent challenge
-  ↓
-Transfer
-  ↓
-Reflect
-```
-
-Not every concept must use exactly this sequence. The pedagogy model should determine the appropriate learning pattern.
-
-## Example
-
-For Newton's Third Law, a sequence might first ask the learner to predict which of two interacting objects experiences the larger force, then manipulate masses, observe force vectors, confront the misconception, formalize the law, and finally transfer the reasoning to a different physical situation.
-
-## Course relationship
-
-Topic journeys should be independently generatable and reviewable, but they should consume the Course Learning Model so that prerequisite assumptions, terminology, shared concepts, and progression remain coherent across the subject.
+Topic journeys should consume the Course Learning Model so that prerequisite assumptions, terminology, shared concepts, and progression remain coherent across the subject. Source provenance continues to resolve transitively to the single Source Root.
 
 ## Exit condition
 
-The generator can produce validated topic learning journeys whose ordering has explicit pedagogical roles and whose activities collectively build understanding rather than merely sample questions from a topic. Multiple generated topic journeys can coexist coherently within the same course model.
+The generator can produce validated topic learning journeys whose ordering has explicit pedagogical roles and whose activities collectively build understanding. Multiple topic journeys can coexist coherently within the same course model.
 
 ---
 
@@ -400,48 +369,11 @@ The generator can produce validated topic learning journeys whose ordering has e
 
 Make incorrect responses diagnostically useful and provide targeted help based on the learner's reasoning.
 
-## Core transformation
+The target pattern is response → reasoning/misconception diagnosis → targeted feedback → progressive scaffold → retry, alternate representation, or prerequisite remediation.
 
-Move from:
+Scaffolding may progress through reflective prompts, conceptual hints, visual/representational hints, partial demonstrations, prerequisite remediation, and guided reconstruction. The system should record which scaffolds were required.
 
-```text
-wrong → generic hint → retry
-```
-
-toward:
-
-```text
-response
-   ↓
-reasoning/misconception diagnosis
-   ↓
-targeted feedback
-   ↓
-progressive scaffold
-   ↓
-retry / alternate representation / prerequisite remediation
-```
-
-## Scaffolding levels
-
-A useful progression may include:
-
-1. reflective prompt;
-2. conceptual hint;
-3. visual or representational hint;
-4. partial demonstration;
-5. prerequisite remediation;
-6. guided reconstruction of the solution.
-
-The system should record which scaffolds were required.
-
-## Cross-topic remediation
-
-Because Stage 1 provides course-level prerequisite relationships, remediation may route a learner to a prerequisite concept in an earlier topic rather than only to another activity in the current topic.
-
-## Design rule
-
-Initial misconception mapping and feedback policy should be deterministic and validated where possible. Runtime generative AI is not required for this stage.
+Because Stage 1 provides course-level prerequisite relationships, remediation may route a learner to a prerequisite concept in an earlier topic. No new source root is introduced; remediation content remains traceable through course/topic artifacts to the same root.
 
 ## Exit condition
 
@@ -455,44 +387,11 @@ Common wrong answers or interaction patterns can be mapped to known misconceptio
 
 Create a persistent learner model across the whole course and use learning evidence to decide what the individual learner should do next.
 
-## Core capability
+Track mastery at a finer level than topic completion, including evidence dimensions such as recognition, prediction, representation, explanation, and transfer. Distinguish independent evidence from assisted evidence.
 
-Track mastery at a finer level than topic completion. A concept may carry evidence dimensions such as:
+Possible routes include harder/transfer activity after independent success, consolidation after assisted success, targeted remediation for a known misconception, cross-topic prerequisite routing for prerequisite weakness, and spaced review after stable mastery.
 
-```text
-recognition
-prediction
-representation
-explanation
-transfer
-```
-
-The system should distinguish evidence obtained independently from evidence obtained after hints or tutoring.
-
-Example conceptual state:
-
-```text
-Newton's Third Law
-  recognition:    high
-  prediction:     high
-  representation: moderate
-  explanation:    developing
-  transfer:       developing
-```
-
-## Adaptive routing
-
-Possible routes include:
-
-```text
-successful independent response → harder/transfer activity
-assisted success              → consolidation activity
-known misconception           → targeted remediation
-prerequisite weakness         → prerequisite concept, possibly in another topic
-stable mastery                → spaced review later
-```
-
-The learner model should span topic boundaries so that weaknesses in earlier concepts can explain and remediate difficulties in later topics.
+The learner model spans topic boundaries while the underlying instructional content remains rooted in the same source universe established at Stage 0.
 
 ## Exit condition
 
@@ -506,38 +405,15 @@ Two learners with different evidence histories can legitimately receive differen
 
 Introduce a constrained AI tutor that understands the learner's current activity, topic, course relationships, and learning state and provides Socratic, pedagogically appropriate assistance.
 
-## Tutor context
+Tutor context should include source-grounded concept information, current topic/concept/objective, relevant cross-topic prerequisites, current activity state, expected reasoning, attempts, diagnosed misconceptions, hints used, mastery state, and language preference.
 
-The tutor should receive structured context including:
+The tutor should ask guiding questions, direct attention to relevant evidence, diagnose reasoning divergence, progressively scaffold, route attention to prerequisites where appropriate, avoid immediate answer revelation, and remain within approved/source-grounded scope.
 
-- source-grounded concept information from the relevant topic corpus;
-- current topic, concept, and objective;
-- relevant cross-topic prerequisites;
-- current activity and interaction state;
-- expected reasoning;
-- learner attempts;
-- diagnosed misconception(s);
-- hints/scaffolds already used;
-- relevant prerequisite/mastery state;
-- language preference.
-
-## Tutor behavior
-
-The tutor should preferentially:
-
-- ask guiding questions;
-- direct attention to relevant visual/interactive evidence;
-- diagnose where reasoning diverged;
-- provide progressively stronger scaffolding;
-- route attention to prerequisite concepts when appropriate;
-- avoid immediately revealing the final answer;
-- remain within approved/source-grounded instructional scope.
-
-The tutor augments rather than replaces deterministic validation, activity logic, and mastery tracking.
+The tutor does not configure or discover an independent content root. Its source-grounded context is supplied through artifacts derived from the single Source Root.
 
 ## Exit condition
 
-The tutor can provide context-sensitive assistance during supported activities while respecting pedagogical constraints, source boundaries, cross-topic relationships, multilingual requirements, and cost/safety controls.
+The tutor can provide context-sensitive assistance while respecting pedagogical constraints, source boundaries, cross-topic relationships, multilingual requirements, and cost/safety controls.
 
 ---
 
@@ -545,25 +421,13 @@ The tutor can provide context-sensitive assistance during supported activities w
 
 ## Goal
 
-Improve engagement and persistence across the entire course without allowing game mechanics to distort the learning objectives.
+Improve engagement and persistence across the entire course without allowing game mechanics to distort learning objectives.
 
-## Candidate capabilities
-
-- XP;
-- named mastery levels;
-- topic and course progress visualization;
-- streaks;
-- achievements;
-- challenge activities;
-- concept mastery maps;
-- review milestones;
-- optional cohort-relative indicators or leaderboards where pedagogically appropriate.
-
-## Design rule
+Candidate capabilities include XP, named mastery levels, topic/course progress visualization, streaks, achievements, challenge activities, concept mastery maps, review milestones, and optional cohort-relative indicators where pedagogically appropriate.
 
 Rewards should favor meaningful learning evidence. Independent mastery should generally carry stronger evidence/value than assisted completion, and repeated guessing should not be rewarded equivalently to demonstrated understanding.
 
-Gamification should operate coherently across topics. A learner should experience progression through a subject, not a collection of unrelated mini-apps.
+Gamification should operate coherently across topics. A learner should experience progression through a subject, not a collection of unrelated mini-apps. Stage 7 introduces no source-root configuration.
 
 ## Exit condition
 
@@ -577,67 +441,17 @@ Learners receive clear course-wide motivational and progression signals tied to 
 
 Present all generated topic experiences as a coherent course-level learning environment for students and instructors.
 
-## Course hierarchy
+A generic hierarchy may be Course/Subject → Chapter/Module where applicable → Topic → Concept → Learning journey → Activity.
 
-A generic hierarchy may be:
+Student capabilities may include course/topic/concept mastery maps, recommended next activities/topics, learning history, independent versus assisted performance, review queues, weak-concept identification, multilingual preferences, and XP history.
 
-```text
-Course / Subject
-  ↓
-Topic
-  ↓
-Concept
-  ↓
-Learning journey
-  ↓
-Activity
-```
+Instructor capabilities may include concept mastery by student/cohort, misconception patterns, attempts/time-on-task, participation/completion, problematic activity identification, intervention candidates, topic/source management, and content review/publishing controls.
 
-Projects that need chapters/subchapters may introduce those structural levels without changing the core rule that a topic owns a source corpus and a learning model.
-
-## Student capabilities
-
-Potential capabilities include:
-
-- course, topic, and concept mastery map;
-- recommended next learning activity/topic;
-- full learning history;
-- independent versus assisted performance;
-- review queue;
-- weak-concept identification;
-- multilingual learning preferences;
-- progress and XP history.
-
-## Instructor capabilities
-
-Potential capabilities include:
-
-- concept mastery by student;
-- class/cohort mastery summaries;
-- common misconception patterns;
-- attempts and time-on-task;
-- participation/completion;
-- problematic activity identification;
-- students requiring intervention;
-- topic/source management;
-- content review/publishing controls.
-
-## End-user experience
-
-Although generation may create separate artifacts internally for each topic, the learner-facing product should present one coherent subject/course experience, for example:
-
-```text
-Classical Physics
-├── Kinematics              Mastery 92%
-├── Newton's Laws           Mastery 71%
-├── Work and Energy         Mastery 48%
-├── Momentum                Not started
-└── Rotation                Not started
-```
+Although generation may create separate artifacts internally for each topic, the learner-facing product should present one coherent subject/course experience. All generated course content remains traceable to the one configured Source Root.
 
 ## Exit condition
 
-The platform can support sustained learning across a complete selected subject/course, generated from multiple topic-specific source corpora, and provide actionable learning information to both students and instructors.
+The platform can support sustained learning across a complete selected subject/course, generated from multiple topic-specific source corpora, and provide actionable learning information to students and instructors.
 
 ---
 
@@ -647,52 +461,34 @@ The platform can support sustained learning across a complete selected subject/c
 
 Make the system reliable, secure, maintainable, and economically operable for real institutional deployment.
 
-## Capability areas
+Capability areas include authentication/authorization, accounts, enrolment, persistent databases, privacy/retention, accessibility, responsive/mobile operation, weak-network/offline strategies, analytics governance, AI cost controls, content versioning/publishing, institutional administration, observability, backup/recovery, security review, deployment, and scaling.
 
-- authentication and authorization;
-- student and instructor accounts;
-- course enrolment;
-- persistent databases;
-- privacy and retention controls;
-- accessibility;
-- responsive/mobile operation;
-- weak-network/offline strategy where feasible;
-- analytics governance;
-- AI cost controls, quotas, caching, and fallback models;
-- content versioning and publishing workflow;
-- institutional administration;
-- observability and production monitoring;
-- backup/recovery;
-- security review;
-- deployment and scaling strategy.
-
-Existing repository infrastructure for source discovery, generation, validation, provenance, review, workstation coordination, and release/deployment should be generalized and reused rather than unnecessarily replaced.
+Existing repository infrastructure for source discovery, generation, validation, provenance, review, workstation coordination, and release/deployment should be generalized and reused rather than unnecessarily replaced. Production configuration management must preserve the Single Source Root Principle rather than proliferating stage-specific source roots.
 
 ## Exit condition
 
-The system is capable of supporting real learners and instructors with appropriate operational, security, privacy, reliability, accessibility, and cost controls, while systematically maintaining and updating course content derived from many topic-specific source corpora.
+The system can support real learners and instructors with appropriate operational, security, privacy, reliability, accessibility, and cost controls while systematically maintaining course content derived from the single configured source universe and its many topic-specific corpora.
 
 ---
 
 # Stage dependency summary
 
-The intended dependency order is:
-
 ```text
 0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9
 ```
 
-This does not prohibit preparatory work for later stages, but a later-stage feature should not force premature architectural coupling. In particular:
-
-- Stage 1 establishes what is learned at both topic and course levels from multi-PDF source corpora.
-- Stage 2 establishes how learners can interact with those concepts.
-- Stage 3 establishes how experiences are sequenced into topic learning journeys.
-- Stage 4 establishes how difficulty and errors become learning opportunities, including prerequisite remediation.
-- Stage 5 establishes personalization and mastery across topic boundaries.
-- Stage 6 adds generative tutoring on top of that structured context.
-- Stage 7 adds course-wide motivational systems around meaningful learning.
+- Stage 0 establishes the working baseline **and the single authoritative Source Root**.
+- Stage 1 discovers/models the hierarchy beneath that same root and establishes what is learned at topic/course levels.
+- Stage 2 establishes how learners interact with those concepts.
+- Stage 3 sequences experiences into topic learning journeys.
+- Stage 4 turns errors into learning opportunities, including prerequisite remediation.
+- Stage 5 establishes personalization/mastery across topic boundaries.
+- Stage 6 adds generative tutoring on top of structured context.
+- Stage 7 adds course-wide motivational systems.
 - Stage 8 integrates generated topics into a coherent student/instructor course environment.
 - Stage 9 operationalizes the platform at production/institutional scale.
+
+No stage is permitted to create a second independently configured source universe.
 
 ---
 
@@ -701,17 +497,19 @@ This does not prohibit preparatory work for later stages, but a later-stage feat
 For each stage:
 
 1. inspect current `main` and identify what already satisfies part of the stage;
-2. preserve the topic-folder/multi-source/course-level end-state architecture when making local decisions;
-3. write or update the relevant product/learning/architecture decision records;
-4. define schema/API/runtime changes before large implementation work;
-5. split implementation into independently reviewable PRs;
-6. add automated tests and validators alongside each capability;
-7. update canonical documentation in the same PR as operator-visible behavior changes;
-8. independently review generated learning quality, not merely software correctness;
-9. preserve backward compatibility where practical;
-10. verify incremental generation and provenance when source corpora change;
-11. do not mark the stage complete until explicit exit criteria are satisfied;
-12. record completion and any blueprint amendments in version-controlled documentation.
+2. verify that source access ultimately resolves from the single authoritative project Source Root;
+3. treat chapter/topic/file values as selectors beneath that root, not alternative roots;
+4. preserve the topic-folder/multi-source/course-level end-state architecture when making local decisions;
+5. write or update relevant product/learning/architecture decision records;
+6. define schema/API/runtime changes before large implementation work;
+7. split implementation into independently reviewable PRs;
+8. add automated tests and validators alongside each capability;
+9. update canonical documentation in the same PR as operator-visible behavior changes;
+10. independently review generated learning quality, not merely software correctness;
+11. preserve backward compatibility where practical;
+12. verify incremental generation and provenance when source corpora change;
+13. do not mark the stage complete until explicit exit criteria are satisfied;
+14. record completion and blueprint amendments in version-controlled documentation.
 
 ---
 
@@ -721,14 +519,18 @@ This file is the project's **10-Stage Blueprint**: the strategic guide for the i
 
 It is deliberately more stable and higher-level than individual implementation plans. Detailed delivery sequencing belongs in `docs/DEVELOPMENT_ROADMAP.md`, issues, decision records, and pull requests. If implementation experience shows that a stage boundary or dependency is wrong, amend this document explicitly rather than silently drifting away from it.
 
-The following end-state constraints are fundamental and should not be weakened by later implementation shortcuts:
+The following end-state constraints are fundamental:
 
+- the project has exactly one configurable Source Root;
+- for the present project that root is Google Drive folder ID `1xiYsp3pe3bcWV9W_ikarnjo_i_EsAPaA`;
+- Stage 0 and all later stages derive their source universe from that same root;
+- chapter/topic/file choices are selectors beneath the root, not replacement roots;
 - a course/subject may contain an arbitrary number of topics;
 - each topic may contain an arbitrary number of PDF source documents;
 - topic PDFs are synthesized as one source corpus rather than automatically treated as separate apps;
-- generation should systematically sweep/discover topic folders;
+- generation should systematically sweep/discover the hierarchy beneath the Source Root;
 - topic generation should support incremental rebuilds;
 - topic models should connect through a course-level concept/prerequisite model;
 - generated topic experiences should ultimately appear to the learner as one coherent, adaptive, gamified course environment.
 
-When a future developer or AI coding agent is asked to implement a new capability, it should first identify which blueprint stage the capability belongs to, verify that the necessary earlier-stage foundations exist on the current branch, and ensure that the implementation remains compatible with this multi-source, multi-topic, course-level end state.
+When a future developer or AI coding agent is asked to implement a new capability, it should first identify which blueprint stage the capability belongs to, verify that the necessary earlier-stage foundations exist on the current branch, and ensure that the implementation remains compatible with the single-root, multi-source, multi-topic, course-level end state.
