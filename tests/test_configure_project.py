@@ -1,7 +1,12 @@
 import tomllib
 import unittest
+from pathlib import Path
 
 from scripts.configure_project import ProjectConfigurationError, render_project_configuration
+
+
+ROOT = Path(__file__).resolve().parents[1]
+CURRENT_SOURCE_ROOT = "https://drive.google.com/drive/folders/1xiYsp3pe3bcWV9W_ikarnjo_i_EsAPaA"
 
 
 class ConfigureProjectTests(unittest.TestCase):
@@ -43,6 +48,31 @@ state_root = "${STATE_ROOT}"
         self.assertEqual("${REPO_ROOT}", payload["repository"]["repo_root"])
         self.assertEqual("${PROJECT_SLUG}", payload["source_tree"]["source_id_prefix"])
         self.assertEqual("", payload["compatibility"]["legacy_environment_prefix"])
+
+    def test_current_project_has_one_authoritative_source_root_placeholder(self):
+        payload = tomllib.loads((ROOT / "config" / "configure_project.toml").read_text(encoding="utf-8"))
+        placeholders = payload["placeholders"]
+        self.assertEqual(CURRENT_SOURCE_ROOT, placeholders["sourcepath"])
+        self.assertEqual(
+            "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}",
+            placeholders["target_file"],
+        )
+        source_root_keys = {
+            key for key in placeholders
+            if key.casefold() in {"sourcepath", "source_root", "source_root_url", "root_folder_id"}
+        }
+        self.assertEqual({"sourcepath"}, source_root_keys)
+
+    def test_target_is_a_selector_beneath_source_root(self):
+        payload = tomllib.loads((ROOT / "config" / "configure_project.toml").read_text(encoding="utf-8"))
+        placeholders = payload["placeholders"]
+        locator = placeholders["target_file"].format(
+            sourcepath=placeholders["sourcepath"].rstrip("/"),
+            pdf_subchapter_path=placeholders["pdf_subchapter_path"].strip("/\\"),
+            target_filename=placeholders["target_filename"],
+        )
+        self.assertTrue(locator.startswith(CURRENT_SOURCE_ROOT + "/"))
+        self.assertIn("/8.1/", locator)
 
     def test_invalid_hosts_are_rejected(self):
         values = self.values()
