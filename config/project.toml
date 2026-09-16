@@ -1,12 +1,15 @@
-# Repository-tracked project configuration.
-# This is the sole active editable authority for non-secret project settings.
+# Repository-tracked compatibility configuration.
+# config/configure_project.toml is the active editable authority for non-secret project settings.
+# Keep this compatibility artifact aligned with the authoritative Source Root while older tooling/tests remain.
 # Keep credentials, token values, Chrome profiles, source PDFs, and run data outside Git.
 
 [project]
 project_name = "BrilliantContentGenerator"
 
 [placeholders]
-sourcepath = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc&usp=drive_fs"
+# Compatibility mirror only. The authoritative project-level Source Root is configured
+# in config/configure_project.toml; do not configure this file independently.
+sourcepath = "https://drive.google.com/drive/folders/1xiYsp3pe3bcWV9W_ikarnjo_i_EsAPaA"
 gemini-gem = "https://gemini.google.com/gem/1dZR01a7xJ9pveqo55MwzfuPV2i_tUQvJ?usp=sharing"
 loginname = "tlyoon@gmail.com"
 pdf_subchapter_path = "8.1"
