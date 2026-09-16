@@ -66,7 +66,14 @@ The tracked `placeholders.pdf_subchapter_path` is a default selector and does no
 
 ## Managed versus external coordinator
 
-When `[automation].coordinator_url` is empty, the project uses repository-managed coordinator infrastructure. An explicit valid Google Apps Script URL remains backward-compatible external coordinator mode. Coordinator configuration is independent of the Source Root and must not introduce another content root.
+When the coordinator URL is empty:
+
+```toml
+[automation]
+coordinator_url = ""
+```
+
+the project uses repository-managed coordinator infrastructure. An explicit valid Google Apps Script URL remains backward-compatible external coordinator mode. Coordinator configuration is independent of the Source Root and must not introduce another content root.
 
 ## Git policy
 

@@ -8,7 +8,7 @@
     "manifestVersion": {"enum": ["1.0", "1.1"]},
     "sourceId": {"type": "string", "pattern": "^[a-z0-9]+(?:[-][a-z0-9]+)*$"},
     "driveFileId": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$"},
-    "controlledFilename": {"type": "string", "pattern": "^(?=.*\SS).+$"},
+    "controlledFilename": {"type": "string", "pattern": "^(?=.*\\S).+$"},
     "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
     "corpusSha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
     "sources": {
@@ -18,7 +18,7 @@
         "type": "object",
         "required": ["controlledFilename", "sha256", "role"],
         "properties": {
-          "controlledFilename": {"type": "string", "pattern": "^(?=.*\SS).+$"},
+          "controlledFilename": {"type": "string", "pattern": "^(?=.*\\S).+$"},
           "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
           "role": {"enum": ["primary", "supplementary"]},
           "driveFileId": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$"}
@@ -26,15 +26,15 @@
         "additionalProperties": false
       }
     },
-    "edition": {"type": "string", "pattern": "^(?=.*\SS).+$"},
-    "chapter": {"type": "string", "pattern": "^(?=.*\SS).+$"},
-    "subchapter": {"type": "string", "pattern": "^(?=.*\SS).+$"},
-    "heading": {"type": "string", "pattern": "^(?=.*\SS).+$"},
-    "pageRange": {"type": "string", "pattern": "^(?=.*\SS).+$"},
-    "learningBoundary": {"type": "string", "pattern": "^(?=.*\SS).+$"},
+    "edition": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "chapter": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "subchapter": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "heading": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "pageRange": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "learningBoundary": {"type": "string", "pattern": "^(?=.*\\S).+$"},
     "extractedOn": {"type": "string", "format": "date"},
-    "reviewer": {"type": "string", "pattern": "^(?=.*\SS).+$"},
-    "rightsNote": {"type": "string", "pattern": "^(?=.*\SS).+$"}
+    "reviewer": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "rightsNote": {"type": "string", "pattern": "^(?=.*\\S).+$"}
   },
   "allOf": [
     {
