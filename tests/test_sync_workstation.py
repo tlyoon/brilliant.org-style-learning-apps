@@ -27,7 +27,7 @@ from scripts.sync_workstation import (
 )
 
 
-SOURCE_URL = "https://drive.google.com/open?id=1BqdcGJR3usQvItCNMC997fkcXaScNYqc&usp=drive_fs"
+SOURCE_URL = "https://drive.google.com/drive/folders/1xiYsp3pe3bcWV9W_ikarnjo_i_EsAPaA"
 GEM_URL = "https://gemini.google.com/gem/1dZR01a7xJ9pveqo55MwzfuPV2i_tUQvJ?usp=sharing"
 
 

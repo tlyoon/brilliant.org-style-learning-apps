@@ -53,7 +53,7 @@ class GeminiClient:
             raise UiContractError("Project Gem Description and Instructions must both be non-empty")
         self.editor.synchronize_configuration(self.config.gem_name, description, instructions)
 
-    def open_conversation_select_model_and_attach(self, source_path: Path) -> str:
+    def open_conversation_select_model_and_attach(self, source_paths: Path | tuple[Path, ...]) -> str:
         self.conversation.open_new()
         model_selected_in_ui = False
         try:
@@ -78,8 +78,15 @@ class GeminiClient:
         self.model_index = 0
         if model_selected_in_ui:
             self.conversation.select_model(self.actual_model)
-        self.conversation.attach_pdf(source_path)
-        LOGGER.info("Selected Gemini model and attached claimed source", extra={"model": self.actual_model})
+        paths = (source_paths,) if isinstance(source_paths, Path) else tuple(source_paths)
+        if not paths:
+            raise UiContractError("At least one controlled PDF source is required")
+        for source_path in paths:
+            self.conversation.attach_pdf(source_path)
+        LOGGER.info(
+            "Selected Gemini model and attached topic source corpus",
+            extra={"model": self.actual_model, "source_count": len(paths)},
+        )
         return self.actual_model
 
     def ask(self, prompt: str) -> str:

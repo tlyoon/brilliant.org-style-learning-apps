@@ -24,6 +24,7 @@ from app_generator.runtime.auto import inspect_auto_queue, run_continuous_auto
 from app_generator.sources.google_drive import (
     DriveRestClient,
     discover_drive_sources,
+    discover_topic_corpus,
     resolve_drive_source,
 )
 from app_generator.sources.google_drive_auth import authorize_google_drive
@@ -163,8 +164,18 @@ def doctor(
                     max_folders=config.max_drive_folders,
                 )
             effective_config = config.for_subchapter(drive_source.subchapter_id)
-            local_path = drive_client.download_file(drive_source, Path(directory) / drive_source.filename)
-            sources = inspect_sources((local_path,))
+            drive_corpus = discover_topic_corpus(
+                drive_client,
+                sourcepath=config.sourcepath,
+                pdf_subchapter_path=drive_source.subchapter_id,
+                target_filename=config.target_filename,
+                max_folders=config.max_drive_folders,
+            )
+            local_paths = tuple(
+                drive_client.download_file(item, Path(directory) / item.filename)
+                for item in drive_corpus
+            )
+            sources = inspect_sources(local_paths)
             print(f"Google Drive account: {authorization.email}")
             print(f"Source root: {config.sourcepath}")
             print(f"Target locator: {config.target_locator}")
@@ -179,7 +190,7 @@ def doctor(
             else build_manifest(
                 effective_config,
                 sources,
-                drive_file_id=drive_source.file_id if drive_source else None,
+                drive_file_ids=tuple(item.file_id for item in drive_corpus) if drive_source else (),
             )
         )
         manifest_errors = validate_manifest(effective_config.repo_root, manifest)
@@ -188,7 +199,9 @@ def doctor(
             for error in manifest_errors:
                 print(f"- {error}")
             return 1
-        source_summary = f"{sources[0].controlled_filename} sha256={sources[0].sha256}"
+        source_summary = ", ".join(
+            f"{source.controlled_filename} sha256={source.sha256}" for source in sources
+        )
     chrome = shutil.which("chrome") or shutil.which("chrome.exe") or shutil.which("google-chrome")
     print(f"Repository: {effective_config.repo_root}")
     print(f"Output: {effective_config.package_path}")

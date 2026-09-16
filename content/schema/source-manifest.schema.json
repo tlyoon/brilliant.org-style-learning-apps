@@ -5,20 +5,42 @@
   "type": "object",
   "required": ["manifestVersion", "sourceId", "controlledFilename", "sha256", "edition", "chapter", "subchapter", "heading", "pageRange", "learningBoundary", "extractedOn", "reviewer", "rightsNote"],
   "properties": {
-    "manifestVersion": {"const": "1.0"},
-    "sourceId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "manifestVersion": {"enum": ["1.0", "1.1"]},
+    "sourceId": {"type": "string", "pattern": "^[a-z0-9]+(?:[-][a-z0-9]+)*$"},
     "driveFileId": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$"},
-    "controlledFilename": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "controlledFilename": {"type": "string", "pattern": "^(?=.*\SS).+$"},
     "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
-    "edition": {"type": "string", "pattern": "^(?=.*\\S).+$"},
-    "chapter": {"type": "string", "pattern": "^(?=.*\\S).+$"},
-    "subchapter": {"type": "string", "pattern": "^(?=.*\\S).+$"},
-    "heading": {"type": "string", "pattern": "^(?=.*\\S).+$"},
-    "pageRange": {"type": "string", "pattern": "^(?=.*\\S).+$"},
-    "learningBoundary": {"type": "string", "pattern": "^(?=.*\\S).+$"},
+    "corpusSha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["controlledFilename", "sha256", "role"],
+        "properties": {
+          "controlledFilename": {"type": "string", "pattern": "^(?=.*\SS).+$"},
+          "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+          "role": {"enum": ["primary", "supplementary"]},
+          "driveFileId": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "edition": {"type": "string", "pattern": "^(?=.*\SS).+$"},
+    "chapter": {"type": "string", "pattern": "^(?=.*\SS).+$"},
+    "subchapter": {"type": "string", "pattern": "^(?=.*\SS).+$"},
+    "heading": {"type": "string", "pattern": "^(?=.*\SS).+$"},
+    "pageRange": {"type": "string", "pattern": "^(?=.*\SS).+$"},
+    "learningBoundary": {"type": "string", "pattern": "^(?=.*\SS).+$"},
     "extractedOn": {"type": "string", "format": "date"},
-    "reviewer": {"type": "string", "pattern": "^(?=.*\\S).+$"},
-    "rightsNote": {"type": "string", "pattern": "^(?=.*\\S).+$"}
+    "reviewer": {"type": "string", "pattern": "^(?=.*\SS).+$"},
+    "rightsNote": {"type": "string", "pattern": "^(?=.*\SS).+$"}
   },
+  "allOf": [
+    {
+      "if": {"properties": {"manifestVersion": {"const": "1.1"}}},
+      "then": {"required": ["corpusSha256", "sources"]}
+    }
+  ],
   "additionalProperties": false
 }
