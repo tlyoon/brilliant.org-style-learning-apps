@@ -22,7 +22,7 @@ python -m app_generator coordinator-bootstrap
 The bootstrap:
 
 1. opens Google authorization for the additional coordinator-administration scopes;
-2. verifies that the authorized Google account matches the project's configured `login_name`;
+2. verifies that the authorized Google account matches the project's configured `google.oauth_login`, independently of the Gemini browser account;
 3. stores the refreshable administrator credential directly in the private GitHub Actions secret `COORDINATOR_ADMIN_TOKEN_JSON` using the authenticated GitHub CLI;
 4. requests the serialized `Ensure managed coordinator` workflow;
 5. waits for the managed runtime to appear in the authorized Google Drive account;

@@ -28,9 +28,10 @@ class ManagedCoordinatorTests(unittest.TestCase):
             'target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"\n'
             "[source_tree]\n"
             'source_id_prefix = "managed"\n'
+            "[google]\n"
+            'oauth_login = "owner@example.com"\n'
             "[gemini]\n"
             'gem_url = "https://gemini.google.com/gem/test"\n'
-            'gem_name = "generator"\n'
             'login_name = "owner@example.com"\n'
             "[paths]\n"
             f"chrome_profile_dir = {json.dumps(str(root / 'state' / 'chrome-profile'))}\n"

@@ -20,7 +20,7 @@ class AutoConfigurationTests(unittest.TestCase):
             config_path.write_text(
                 f'''project_name = "TestLearningProject"
 gem_url = "https://gemini.google.com/gem/test"
-gem_name = "test content generator"
+oauth_login = "authorized@example.com"
 login_name = "authorized@example.com"
 chrome_profile_dir = "{(state / 'chrome').as_posix()}"
 state_dir = "{(state / 'runs').as_posix()}"

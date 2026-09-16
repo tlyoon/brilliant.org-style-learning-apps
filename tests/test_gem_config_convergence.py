@@ -44,19 +44,17 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
             "https://gemini.google.com/gems/edit/test",
             1,
         )
-        name = Element("Configured name")
         description = Element("Configured description")
         instructions = Element("Configured instructions")
 
         with (
             patch(
                 "app_generator.gemini.editor.find_first",
-                side_effect=[name, description, instructions],
+                side_effect=[description, instructions],
             ),
             patch("app_generator.gemini.editor.replace_element_text") as replace_text,
         ):
             changed = page.synchronize_configuration(
-                "Configured name",
                 "Configured description",
                 "Configured instructions",
             )
@@ -73,7 +71,7 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
             "https://gemini.google.com/gems/edit/test",
             1,
         )
-        name = Element("Old name")
+        editor_name = Element("Existing display name")
         description = Element("Old meaningful description")
         instructions = Element("Old meaningful instructions")
         save = Element(on_click=lambda: setattr(driver, "current_url", "https://gemini.google.com/gem/test"))
@@ -86,12 +84,10 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
             patch(
                 "app_generator.gemini.editor.find_first",
                 side_effect=[
-                    name,
                     description,
                     instructions,
                     save,
-                    name,
-                    name,
+                    editor_name,
                     description,
                     instructions,
                 ],
@@ -99,15 +95,14 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
             patch("app_generator.gemini.editor.replace_element_text", side_effect=replace_text) as replace_call,
         ):
             changed = page.synchronize_configuration(
-                "Configured name",
                 "Configured description",
                 "Configured instructions",
             )
 
         self.assertTrue(changed)
-        self.assertEqual(3, replace_call.call_count)
+        self.assertEqual(2, replace_call.call_count)
         self.assertTrue(save.clicked)
-        self.assertEqual("Configured name", name.value)
+        self.assertEqual("Existing display name", editor_name.value)
         self.assertEqual("Configured description", description.value)
         self.assertEqual("Configured instructions", instructions.value)
         self.assertEqual(["https://gemini.google.com/gems/edit/test"], driver.loaded_urls)
@@ -129,7 +124,6 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
                 ui_timeout_seconds=1,
                 response_timeout_seconds=1,
                 repo_root=repo_root,
-                gem_name="Configured name",
                 model_preference_patterns=(r"pro",),
                 allow_unknown_model_fallback=True,
             )
@@ -139,7 +133,6 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
             client.configure_gem()
 
         client.editor.synchronize_configuration.assert_called_once_with(
-            "Configured name",
             "Configured description",
             "Configured instructions",
         )
@@ -152,7 +145,6 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
                 ui_timeout_seconds=1,
                 response_timeout_seconds=1,
                 repo_root=Path(directory),
-                gem_name="Configured name",
                 model_preference_patterns=(r"pro",),
                 allow_unknown_model_fallback=True,
             )

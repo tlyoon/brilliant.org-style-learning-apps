@@ -77,7 +77,7 @@ def authorize_google_drive(config: GeneratorConfig) -> DriveAuthorization:
             )
             print(
                 "Authorize read-only Google Drive access in the browser window. "
-                f"Use {config.login_name}."
+                f"Use {config.oauth_login}."
             )
             credentials = flow.run_local_server(
                 host="127.0.0.1",
@@ -102,9 +102,9 @@ def authorize_google_drive(config: GeneratorConfig) -> DriveAuthorization:
 
     if not email:
         raise DriveAccessError("Google Drive did not return the authorized account email")
-    if email.casefold() != config.login_name.casefold():
+    if email.casefold() != config.oauth_login.casefold():
         raise WrongAccountError(
-            f"Google Drive is authorized as {email}, but generator.local.toml expects {config.login_name}. "
+            f"Google Drive is authorized as {email}, but the local project TOML expects {config.oauth_login}. "
             f"Delete {config.drive_token_file} and authorize the expected account."
         )
     return DriveAuthorization(session=session, email=email)

@@ -7,7 +7,7 @@ import time
 from typing import Any
 
 from app_generator.browser.common import element_text, find_all, find_first, replace_element_text
-from app_generator.errors import GemAccessError, GemIdentityError, UiContractError
+from app_generator.errors import GemAccessError, UiContractError
 from app_generator.gemini import selectors
 
 LOGGER = logging.getLogger("app_generator.gemini.editor")
@@ -30,14 +30,14 @@ class GemEditorPage:
         self.driver.get(self.url)
 
     def enter_editor(self) -> None:
-        if find_all(self.driver, selectors.NAME_FIELD):
+        if find_all(self.driver, selectors.EDITOR_FIELD):
             return
         if self.edit_url:
-            find_first(self.driver, selectors.NAME_FIELD, self.timeout)
+            find_first(self.driver, selectors.EDITOR_FIELD, self.timeout)
             return
         try:
             find_first(self.driver, selectors.EDIT_GEM_BUTTON, self.timeout, clickable=True).click()
-            find_first(self.driver, selectors.NAME_FIELD, self.timeout)
+            find_first(self.driver, selectors.EDITOR_FIELD, self.timeout)
             self.url = str(getattr(self.driver, "current_url", self.gem_url))
         except UiContractError as exc:
             raise GemAccessError(
@@ -45,23 +45,15 @@ class GemEditorPage:
                 "Confirm that the configured account owns or can edit the Gem, or set gem_edit_url explicitly."
             ) from exc
 
-    def verify_identity(self, expected_name: str) -> None:
-        """Legacy identity guard retained for callers that still require name-only verification."""
+    def synchronize_configuration(self, description: str, instructions: str) -> bool:
+        """Converge Description and Instructions to project-authoritative values.
 
-        actual = element_text(find_first(self.driver, selectors.NAME_FIELD, self.timeout))
-        if " ".join(actual.split()).casefold() != " ".join(expected_name.split()).casefold():
-            raise GemIdentityError(f"Expected Gem {expected_name!r}, but the editor name is {actual!r}")
-
-    def synchronize_configuration(self, name: str, description: str, instructions: str) -> bool:
-        """Converge Name, Description and Instructions to project-authoritative values.
-
-        The configured edit URL and verified Google account establish which Gem is being edited.
-        The editable fields are therefore treated as project state: differing values are replaced,
-        one Save/Update is issued, and all three values are read back after reopening the editor.
+        The configured edit URL and verified Gemini Google account establish which Gem is being
+        edited. The Gem's editable display name is intentionally left untouched because it is not
+        required for Gem identity or generation.
         """
 
         fields = {
-            "Name": (selectors.NAME_FIELD, name),
             "Description": (selectors.DESCRIPTION_FIELD, description),
             "Instructions": (selectors.INSTRUCTIONS_FIELD, instructions),
         }
@@ -93,7 +85,7 @@ class GemEditorPage:
                     break
                 time.sleep(0.25)
             self.driver.get(editor_url)
-            find_first(self.driver, selectors.NAME_FIELD, self.timeout)
+            find_first(self.driver, selectors.EDITOR_FIELD, self.timeout)
             for label, (locators, desired) in fields.items():
                 actual = element_text(find_first(self.driver, locators, self.timeout))
                 if actual.strip() != desired.strip():
@@ -103,8 +95,8 @@ class GemEditorPage:
     def initialize_configuration(self, description: str, instructions: str) -> bool:
         """Legacy fill-if-placeholder behavior retained for compatibility.
 
-        New live generation uses synchronize_configuration(), which treats all three editable
-        fields as authoritative project configuration.
+        New live generation uses synchronize_configuration(), which treats Description and
+        Instructions as authoritative project configuration while leaving the Gem name untouched.
         """
 
         fields = {
@@ -134,7 +126,7 @@ class GemEditorPage:
                     break
                 time.sleep(0.25)
             self.driver.get(editor_url)
-            find_first(self.driver, selectors.NAME_FIELD, self.timeout)
+            find_first(self.driver, selectors.EDITOR_FIELD, self.timeout)
             for label, (locators, desired) in fields.items():
                 actual = element_text(find_first(self.driver, locators, self.timeout))
                 if actual.strip() != desired.strip():

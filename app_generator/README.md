@@ -1,6 +1,6 @@
 # Automated learning-content generator
 
-This Python 3.12 package turns one controlled Google Drive `source.pdf` into one repository-compatible subchapter draft. It supports controlled specific-subchapter generation and coordinated multi-PC operation, including continuous `auto` mode.
+This Python 3.12 package turns a controlled Google Drive topic corpus (`source.pdf` plus supplementary sibling PDFs) into one repository-compatible subchapter draft. It supports controlled specific-subchapter generation and coordinated multi-PC operation, including continuous `auto` mode.
 
 For the current installation/operating procedure, start with `docs/PDF_TO_APP_QUICKSTART.md`. Documentation is versioned with the code; `docs/DOCUMENTATION_MAINTENANCE.md` defines the same-PR update rule.
 
@@ -31,6 +31,8 @@ Installed config/configure_project.toml as <generated-local-config>.toml (...)
 
 Direct CLI commands must use `--config <that-file>` when it is not the default `project.local.toml`.
 
+Google API authorization uses `google.oauth_login`; the Gemini browser independently uses `gemini.login_name`. CLI `--oauth-login` and `--login-name` override those identities separately. The generated file's `[local_gemini]` table supports preserved per-PC `login_name`, `gem_url`, and `gem_edit_url` overrides. Blank values inherit tracked defaults; alternate Gem URLs must be supplied together. Other generated fields remain managed. See `config/README.md`.
+
 ## Project-derived state
 
 The Windows state root is derived from `project.project_name`:
@@ -53,7 +55,7 @@ The Drive scanner recursively finds:
 
 where the immediate parent looks like `8.1`. Jobs are ordered numerically by chapter/section and tied to stable Drive file/version identity. Replacing a source PDF therefore creates a new source version.
 
-The current source-manifest contract represents one controlled PDF per package.
+Source-manifest version 1.1 records primary/supplementary PDFs and corpus provenance. Drive generation discovers sibling PDFs beneath the selected topic; direct local `source_files` configuration still accepts only one PDF.
 
 ## Selection modes
 
@@ -96,11 +98,10 @@ This is the preferred operator-selected mode when other coordinated workers may 
 
 Before live generation, the client reads the authoritative Gem values:
 
-- Name from `config/configure_project.toml`;
 - Description from `config/gem_description.txt`;
 - Instructions from `config/gem_instructions.md`.
 
-The Gem editor is opened under the configured Google account. The generator compares fields, changes only values that differ, saves only when needed, reopens, and verifies persistence. A fresh Gem conversation is then used for each controlled PDF.
+The Gem editor is opened under the verified Gemini browser account. The configured Gem URLs identify the target; its display name is left untouched. The generator compares Description and Instructions, changes only values that differ, saves only when needed, reopens, and verifies persistence. A fresh Gem conversation is then used for each controlled topic corpus.
 
 ## Generated artifacts
 

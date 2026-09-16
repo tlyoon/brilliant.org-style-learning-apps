@@ -33,8 +33,9 @@ python scripts\configure_project.py `
   --project-name "NewLearningProject" `
   --source-root-url "https://drive.google.com/open?id=SOURCE_FOLDER_ID" `
   --gem-url "https://gemini.google.com/gem/GEM_ID" `
-  --login-name "authorized@example.com" `
-  --gem-name "subject content generator"
+  --gem-edit-url "https://gemini.google.com/gems/edit/EDIT_ID" `
+  --oauth-login "authorized@example.com" `
+  --gemini-login-name "gemini@example.com"
 ```
 
 Review the diff, then repeat with `--apply` when correct.
@@ -49,7 +50,8 @@ Review at minimum:
 
 - `project.project_name`;
 - Drive source root and controlled source naming;
-- Gemini Gem URL/editor/name/account;
+- `google.oauth_login` for Drive/coordinator OAuth;
+- Gemini Gem URL/editor and `gemini.login_name` for its browser account (the display name is unmanaged);
 - default subchapter selector;
 - provenance/rights wording;
 - automation mode and coordinator policy;
@@ -135,6 +137,8 @@ Place the Google Desktop OAuth client JSON at the new project's derived credenti
 The synchronizer prints the exact generated local config filename. A default new workstation normally uses `project.local.toml`; an existing/customized machine may use another allowed name such as `generator.shared.local.toml`.
 
 For direct CLI commands, pass `--config` whenever the printed filename is not `project.local.toml`.
+
+Workers may edit only `[local_gemini]` in that generated file to override the Gemini login or Gem locally. Blank values inherit the tracked defaults; set `gem_url` and `gem_edit_url` together when changing Gems. Sync preserves this table without changing the project's OAuth identity. See `docs/WORKSTATION_SYNC.md`.
 
 ## 6. Validate one specific source first
 
@@ -261,7 +265,7 @@ Prefer targeted auto over ordinary `specific` mode whenever another coordinated 
 
 These remain generic/versioned application behavior rather than textbook identity:
 
-- one controlled PDF per generated package;
+- one controlled topic corpus per generated package, with a primary `source.pdf` and optional supplementary sibling PDFs;
 - numeric `chapter.section` source folders;
 - the current activity/type/difficulty contract;
 - English/Malay/Simplified-Chinese learner contract;
