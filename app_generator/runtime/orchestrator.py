@@ -31,7 +31,9 @@ from app_generator.sources.google_drive import (
     DriveRestClient,
     ResolvedDriveSource,
     discover_drive_sources,
+    discover_topic_corpus,
     resolve_drive_source,
+    topic_corpus_job_key,
 )
 from app_generator.sources.google_drive_auth import DriveAuthorization, authorize_google_drive
 from app_generator.sources.local_sources import inspect_sources
@@ -172,6 +174,7 @@ def run_generation(
             store.transition(RunPhase.CONFIG_LOADED)
         store.transition(RunPhase.WORKER_LOCK_ACQUIRED)
         temporary_source: Path | None = None
+        temporary_sources: list[Path] = []
         browser: ChromeSession | None = None
         coordinator: CoordinatorClient | None = None
         lease: JobLease | None = None
@@ -182,6 +185,7 @@ def run_generation(
             if config.git_publish:
                 publisher_factory(config).sync_base()
             drive_source: ResolvedDriveSource | None = None
+            drive_corpus: tuple[ResolvedDriveSource, ...] = ()
             drive_client: DriveRestClient | None = None
             if config.uses_google_drive:
                 authorization = drive_authorizer(config)
@@ -252,7 +256,22 @@ def run_generation(
                         max_folders=config.max_drive_folders,
                     )
                     active_config = config.for_subchapter(drive_source.subchapter_id)
-                store.transition(RunPhase.SOURCE_RESOLVED, source_locator=drive_source.metadata())
+                drive_corpus = discover_topic_corpus(
+                    drive_client,
+                    sourcepath=config.sourcepath,
+                    pdf_subchapter_path=drive_source.subchapter_id,
+                    target_filename=config.target_filename,
+                    max_folders=config.max_drive_folders,
+                )
+                store.transition(
+                    RunPhase.SOURCE_RESOLVED,
+                    source_locator={
+                        **drive_source.metadata(),
+                        "corpus_file_count": len(drive_corpus),
+                        "corpus_job_key": topic_corpus_job_key(drive_corpus),
+                        "corpus_files": [item.metadata() for item in drive_corpus],
+                    },
+                )
             else:
                 subchapter_id = config.pdf_subchapter_path.replace("\\", "/").split("/")[-1]
                 active_config = config.for_subchapter(subchapter_id)
@@ -261,13 +280,14 @@ def run_generation(
             with guard_context:
                 if drive_source is not None:
                     assert drive_client is not None
-                    temporary_source = drive_client.download_file(
-                        drive_source,
-                        context.sources / drive_source.filename,
-                    )
+                    temporary_sources = [
+                        drive_client.download_file(item, context.sources / item.filename)
+                        for item in drive_corpus
+                    ]
+                    temporary_source = temporary_sources[0]
                     store.transition(RunPhase.SOURCE_DOWNLOADED)
-                    sources = inspect_sources((temporary_source,))
-                    job_key = drive_source.job_key
+                    sources = inspect_sources(tuple(temporary_sources))
+                    job_key = topic_corpus_job_key(drive_corpus)
                 else:
                     sources = inspect_sources(active_config.source_files)
                     job_key = _local_job_key(active_config, sources[0].path)
@@ -295,16 +315,18 @@ def run_generation(
                 store.transition(RunPhase.GOOGLE_ACCOUNT_VERIFIED)
                 client.configure_gem()
                 store.transition(RunPhase.GEM_CONFIG_CHECKED)
-                client.open_conversation_select_model_and_attach(sources[0].path)
+                client.open_conversation_select_model_and_attach(tuple(source.path for source in sources))
                 store.transition(RunPhase.MODEL_SELECTED, actual_model=client.actual_model)
                 store.transition(RunPhase.SOURCE_ATTACHED)
-                if temporary_source is not None:
-                    _remove_temporary_source(temporary_source, context.sources)
+                if temporary_sources:
+                    for path in temporary_sources:
+                        _remove_temporary_source(path, context.sources)
+                    temporary_sources = []
                     temporary_source = None
                     store.transition(RunPhase.TEMPORARY_SOURCE_REMOVED)
 
                 def restart_gemini_session() -> GeminiClient:
-                    nonlocal browser, temporary_source
+                    nonlocal browser, temporary_source, temporary_sources
                     if lease_guard is not None:
                         lease_guard.ensure_owned()
                     if browser is not None:
@@ -317,15 +339,16 @@ def run_generation(
                     try:
                         if drive_source is not None:
                             assert drive_client is not None
-                            temporary_source = drive_client.download_file(
-                                drive_source,
-                                context.sources / drive_source.filename,
-                            )
+                            temporary_sources = [
+                                drive_client.download_file(item, context.sources / item.filename)
+                                for item in drive_corpus
+                            ]
+                            temporary_source = temporary_sources[0]
                             store.transition(RunPhase.SOURCE_DOWNLOADED)
-                            recovery_sources = inspect_sources((temporary_source,))
+                            recovery_sources = inspect_sources(tuple(temporary_sources))
                             if [item.metadata() for item in recovery_sources] != current_source_metadata:
                                 raise SourceSetMismatch(
-                                    "The controlled source changed before Gemini session recovery"
+                                    "The controlled source corpus changed before Gemini session recovery"
                                 )
                             recovery_source = temporary_source
 
@@ -337,7 +360,10 @@ def run_generation(
                         store.transition(RunPhase.GOOGLE_ACCOUNT_VERIFIED)
                         replacement.configure_gem()
                         store.transition(RunPhase.GEM_CONFIG_CHECKED)
-                        replacement.open_conversation_select_model_and_attach(recovery_source)
+                        replacement.open_conversation_select_model_and_attach(
+                            tuple(source.path for source in recovery_sources)
+                            if drive_source is not None else recovery_source
+                        )
                         store.transition(
                             RunPhase.MODEL_SELECTED,
                             actual_model=replacement.actual_model,
@@ -346,8 +372,10 @@ def run_generation(
                         session_ready = True
                         return replacement
                     finally:
-                        if temporary_source is not None:
-                            _remove_temporary_source(temporary_source, context.sources)
+                        if temporary_sources:
+                            for path in temporary_sources:
+                                _remove_temporary_source(path, context.sources)
+                            temporary_sources = []
                             temporary_source = None
                             store.transition(RunPhase.TEMPORARY_SOURCE_REMOVED)
                         if session_ready:
@@ -366,8 +394,8 @@ def run_generation(
                     "chapter": active_config.chapter,
                     "subchapterId": active_config.pdf_subchapter_path,
                     "learningBoundary": (
-                        "The complete controlled PDF defines the included concepts; concepts not supported "
-                        "by that PDF are excluded."
+                        "The complete controlled topic PDF corpus defines the included concepts; concepts not supported "
+                        "by that corpus are excluded."
                     ),
                     "sourceFilenames": [source.controlled_filename for source in sources],
                     "pageRange": active_config.page_range,
@@ -387,7 +415,7 @@ def run_generation(
                     else build_manifest(
                         active_config,
                         sources,
-                        drive_file_id=drive_source.file_id if drive_source else None,
+                        drive_file_ids=tuple(item.file_id for item in drive_corpus) if drive_source else (),
                     )
                 )
                 manifest_errors = validate_manifest(active_config.repo_root, manifest)
@@ -500,6 +528,9 @@ def run_generation(
                 ) from exc
             raise
         finally:
-            _remove_temporary_source(temporary_source, context.sources)
+            for path in temporary_sources:
+                _remove_temporary_source(path, context.sources)
+            if temporary_source is not None and temporary_source not in temporary_sources:
+                _remove_temporary_source(temporary_source, context.sources)
             if browser is not None:
                 browser.close()

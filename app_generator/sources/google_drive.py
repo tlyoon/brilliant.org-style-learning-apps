@@ -279,6 +279,69 @@ def discover_drive_sources(
     return tuple(sorted(candidates, key=_source_sort_key))
 
 
+def discover_topic_corpus(
+    client: DriveRestClient,
+    *,
+    sourcepath: str,
+    pdf_subchapter_path: str,
+    target_filename: str,
+    max_folders: int,
+) -> tuple[ResolvedDriveSource, ...]:
+    """Resolve every eligible PDF in one controlled topic folder.
+
+    target_filename remains the backward-compatible anchor proving that the
+    folder is a controlled topic. Once anchored, every downloadable PDA in
+    that same folder belongs to the topic source corpus.
+    """
+    anchor = resolve_drive_source(
+        client, sourcepath=sourcepath, pdf_subchapter_path=pdf_subchapter_path,
+        target_filename=target_filename, max_folders=max_folders,
+    )
+    target_folder = tuple(anchor.relative_path.split("/")[:-1])
+    root_id = extract_drive_folder_id(sourcepath)
+    queue: deque[tuple[str, tuple[str, ...]]] = deque([(root_id, ())])
+    visited: set[str] = set()
+    members: list[ResolvedDriveSource] = []
+    while queue:
+        folder_id, relative_folder = queue.popleft()
+        if folder_id in visited:
+            continue
+        visited.add(folder_id)
+        if len(visited) > max_folders:
+            raise DriveAccessError(
+                f"Drive traversal exceeded the configured max_drive_folders limit ({max_folders})"
+            )
+        for child in client.list_children(folder_id):
+            if child.mime_type == FOLDER_MIME:
+                queue.append((child.file_id, relative_folder + (child.name,)))
+                continue
+            if relative_folder != target_folder or child.mime_type != PDF_MIME:
+                continue
+            if child.can_download is False:
+                raise SourceDownloadError(
+                    "Google Drive reports that downloading is disabled for "
+                    + "/".join(relative_folder + (child.name,))
+                )
+            members.append(ResolvedDriveSource(
+                file_id=child.file_id, filename=child.name,
+                relative_path="/".join(relative_folder + (child.name,)),
+                mime_type=child.mime_type, size_bytes=child.size_bytes,
+                md5_checksum=child.md5_checksum, subchapter_id=anchor.subchapter_id,
+                modified_time=child.modified_time, version=child.version,
+            ))
+    if not members:
+        raise SourceNotFound(f"No PDF source corpus was found for {pdf_subchapter_path!r}")
+    return tuple(sorted(members, key=lambda item: (item.filename.casefold(), item.file_id)))
+
+
+def topic_corpus_job_key(sources: tuple[ResolvedDriveSource, ...]) -> str:
+    """Stable change-detection key covering every PDF in a topic corpus."""
+    material = "\n".join(
+        f"{source.file_id}:{source.source_version}" for source in sources
+    ).encode("utf-8")
+    return hashlib.sha256(material).hexdigest()
+
+
 def resolve_drive_source(
     client: DriveRestClient,
     *,
