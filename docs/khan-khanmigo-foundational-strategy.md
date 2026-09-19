@@ -4,17 +4,23 @@
 
 This document records a foundational design strategy for expanding the learning-app platform after the present Stage 0 and Stage 1A pipeline has been completed, tested, and stabilized.
 
-The strategy is inspired by useful principles in Khan Academy and Khanmigo, but is not intended to reproduce Khan Academy. The goal is to combine a **Brilliant-style, game-first student experience** with a **Khan-like mastery and adaptive-learning engine hidden underneath it**, then extend that combination specifically for high-stakes public-examination preparation.
+The strategy draws selectively on useful principles from Khan Academy, Khanmigo, Brilliant, adaptive exam-preparation systems, and the observed strengths and limitations of broad commercial learning platforms such as Pandai. It is not intended to reproduce any of them.
+
+The intended product is specifically a **high-stakes public-examination preparation system**, not a general technical-learning platform in the style of Brilliant or Nibble, and not a broad school-learning ecosystem that attempts to cover every age group, subject, teacher workflow, tuition service, and school-management need.
 
 The central product principle is:
 
 > **The student experiences an easy, game-like exam-preparation app; the system experiences a rigorous diagnostic, mastery, exam-readiness, and pedagogical-measurement process.**
 
-The strongest long-term differentiation should not be the number of visible features. Gamification, AI tutoring, videos, question generation, leaderboards, and adaptive practice already exist in competing products. The stronger strategic position is therefore:
+The strongest long-term differentiation should not be the number of visible features. Gamification, AI tutoring, videos, question generation, leaderboards, school tools, live tuition, adaptive quizzes, and social competition already exist in competing products. The stronger strategic position is therefore:
 
 > **Be the easiest exam game to use, backed by the most rigorous hidden exam-readiness engine.**
 
-The student-facing experience should remain deliberately simple, minimally guided, fast to enter, and easy to continue. The hidden system should become progressively more sophisticated in curriculum mapping, item quality, learner modeling, retention measurement, misconception diagnosis, and exam-readiness estimation.
+A broader strategic rule follows from this:
+
+> **Do not try to beat broad competitors by doing more things. Win a narrower public-exam job through greater simplicity, measurement rigor, adaptive precision, and evidence of real exam transfer.**
+
+The student-facing experience should remain deliberately simple, minimally guided, fast to enter, and easy to continue. The hidden system should become progressively more sophisticated in curriculum mapping, item quality, learner modeling, retention measurement, misconception diagnosis, exam-readiness estimation, and adaptive decision-making.
 
 ## 1. Product identity: game first, measurement underneath
 
@@ -45,9 +51,75 @@ Internally, however, the same interaction should be represented as:
 
 This separation between **simple player experience** and **rigorous hidden measurement** is a core architectural principle.
 
-## 2. Exam fidelity before content abundance
+## 2. Strategic positioning relative to broad competitors
 
-The platform is intended primarily for students preparing for public examinations, not for general technical learning in the style of Brilliant or Nibble.
+Broad platforms such as Pandai demonstrate that the market already accepts combinations of:
+
+- curriculum-aligned quizzes;
+- adaptive difficulty;
+- leaderboards and rewards;
+- AI assistance;
+- live or recorded teaching;
+- school and teacher features;
+- parent visibility;
+- nationwide competitions;
+- social and multiplayer elements.
+
+This validates demand, but it also shows that these features are not sufficient differentiation by themselves.
+
+The platform described here should therefore **not** define its uniqueness by claiming to have more quizzes, more videos, more AI, more badges, or more social features.
+
+Its strategic identity should be narrower:
+
+> **A highly focused public-exam game whose visible experience is simpler than broad learning platforms, while its hidden assessment and learner-modeling engine is more rigorous.**
+
+The project should compete on:
+
+- exam fidelity;
+- quality of diagnosis;
+- speed of identifying likely lost marks;
+- assisted-versus-independent mastery separation;
+- retention and transfer measurement;
+- empirical item calibration;
+- adaptive next-question selection;
+- low-friction remediation;
+- trustworthy exam-readiness evidence.
+
+This positioning should remain visible in architectural decisions. A feature that makes the product broader but not better at this exam-specific job should face a high burden of justification.
+
+## 3. Specialize before generalizing
+
+The initial product should aim to become unusually good for a narrow exam use case before expanding across subjects, age groups, or educational markets.
+
+A preferred progression is:
+
+**one examination → one subject → one cohort → validated product-market fit → adjacent subjects → broader examination families**
+
+For example, an initial implementation may focus on SPM Physics or IGCSE Physics before expanding into mathematics, chemistry, biology, or other subjects.
+
+The objective is not to imitate the breadth of an established platform at launch. It is to establish a defensible core whose success can later be generalized.
+
+## 4. Explicit non-goals for the early product
+
+To protect focus and reduce feature creep, the platform should not initially attempt to become:
+
+- a live-tuition provider;
+- a generic AI chatbot for all school subjects;
+- a full learning-management system;
+- a school administration platform;
+- a parent-management portal with extensive supervisory workflows;
+- a broad K–12 content library;
+- an open social network;
+- a general-purpose technical-learning platform;
+- a replacement for teachers or tuition centers.
+
+Some of these capabilities may later connect to the platform, but they should not define the first successful product.
+
+The core product should remain software-scalable and exam-native.
+
+## 5. Exam fidelity before content abundance
+
+The platform is intended primarily for students preparing for public examinations.
 
 The authority hierarchy should therefore be:
 
@@ -60,7 +132,7 @@ A textbook is an important source, but it is not the ultimate authority for exam
 
 The system should optimize for what a candidate must actually know, recognize, explain, calculate, and write under examination conditions.
 
-## 3. Curriculum before generation
+## 6. Curriculum before generation
 
 The future pipeline should transform authoritative source material into a structured hierarchy:
 
@@ -82,7 +154,7 @@ Example:
 
 This knowledge structure should underlie all generated notes, videos, questions, simulations, hints, and remediation resources.
 
-## 4. Build the full micro-course package, but do not force it as the default student journey
+## 7. Build the full micro-course package, but treat it as infrastructure as well as instruction
 
 A future content pipeline may be:
 
@@ -103,7 +175,28 @@ The full micro-course therefore serves two roles:
 
 The platform should avoid turning into another passive video-course product.
 
-## 5. Questions derive from exam skills, not merely from textbook text
+## 8. Exam intelligence before content volume
+
+The product should not measure success primarily by:
+
+- number of videos;
+- number of notes;
+- number of generated questions;
+- number of AI interactions;
+- number of visible features.
+
+A stronger success criterion is whether the platform can increasingly answer:
+
+- What is this student most likely to lose marks on?
+- Which skill has been demonstrated independently rather than with help?
+- Which weakness persists after time has passed?
+- Which next question would provide the most useful evidence?
+- Which remediation is most likely to improve later independent performance?
+- How confident should the system be in its exam-readiness estimate?
+
+The system should therefore optimize for **exam intelligence**, not content abundance.
+
+## 9. Questions derive from exam skills, not merely from textbook text
 
 Avoid the weak architecture:
 
@@ -127,7 +220,7 @@ But the scalable long-term strategy should favor **original exam-style items gen
 
 This is both pedagogically stronger and safer from a copyright perspective.
 
-## 6. Minimal-guidance interaction loop
+## 10. Minimal-guidance interaction loop
 
 The main mode of operation should be a **minimally guided gaming experience**.
 
@@ -166,7 +259,9 @@ Continue / Replay / Challenge / Review
 
 The interface should avoid long onboarding, forced tutorials, excessive explanation, or visible administrative complexity.
 
-## 7. Freedom locally, pedagogical persistence globally
+The visible product should remain dramatically simpler than the hidden architecture.
+
+## 11. Freedom locally, pedagogical persistence globally
 
 The platform should avoid hard mastery locks during normal play.
 
@@ -189,7 +284,7 @@ Skipped or repeatedly avoided skills remain active in the learner model and may 
 
 Thus the platform preserves **local freedom** without sacrificing **global pedagogical persistence**.
 
-## 8. Assistance should be optional, graduated, and guarded
+## 12. Assistance should be optional, graduated, and guarded
 
 Assistance should remain available without becoming an answer shortcut that creates an illusion of competence.
 
@@ -225,7 +320,7 @@ Most importantly:
 
 > **Assisted success must never be treated as equivalent to independent mastery.**
 
-## 9. Assessment hierarchy and transfer to the real examination
+## 13. Assessment hierarchy and transfer to the real examination
 
 The game must eventually transfer into authentic exam performance.
 
@@ -254,7 +349,7 @@ Authentic timing, paper structure, mark allocation, question mixture, and respon
 
 The game is the doorway; the real examination remains the destination.
 
-## 10. Mastery must be multidimensional
+## 14. Mastery must be multidimensional
 
 One correct answer should not establish mastery.
 
@@ -274,7 +369,7 @@ Can the student still do it after time has passed?
 
 A learner can therefore be strong in one dimension and weak in another.
 
-## 11. Game score is not exam readiness
+## 15. Game score is not exam readiness
 
 The visible game score and the hidden mastery model should remain separate.
 
@@ -305,7 +400,11 @@ Early versions may use simpler labels such as:
 - Strong;
 - Exam-ready evidence still incomplete.
 
-## 12. Every question is also a measurement instrument
+A permanent principle should be:
+
+> **Game rewards optimize engagement; exam metrics optimize validity. Never merge the two.**
+
+## 16. Every question is also a measurement instrument
 
 A generated question is not automatically a good question merely because it is factually correct.
 
@@ -324,7 +423,7 @@ Question-level analytics should eventually include:
 
 Questions should therefore be measured just as students are measured.
 
-## 13. Generated content must earn trust empirically
+## 17. Generated content must earn trust empirically
 
 AI-generated questions should move through a lifecycle:
 
@@ -336,7 +435,7 @@ Real student-response data should progressively determine which items become tru
 
 For important exam-readiness claims, the system should eventually use calibrated or protected measurement items rather than only ordinary practice questions.
 
-## 14. Practice items and protected measurement items should be separated
+## 18. Practice items and protected measurement items should be separated
 
 Frequently reused questions can become memorized.
 
@@ -348,7 +447,7 @@ The platform should therefore eventually distinguish:
 
 This reduces contamination from memorization and social sharing.
 
-## 15. Marking architecture should be subject-specific
+## 19. Marking architecture should be subject-specific
 
 The platform may begin with physics or mathematics, but a large-scale public-exam product should not assume that all subjects can be marked by one generic AI function.
 
@@ -368,7 +467,7 @@ For essay-heavy subjects:
 
 Subject-specific validation is essential before high-stakes claims are made.
 
-## 16. Diagnose why marks are lost
+## 20. Diagnose why marks are lost
 
 Do not store only correct/incorrect outcomes.
 
@@ -392,7 +491,7 @@ The goal is not merely to report a score, but to answer:
 
 > **Why is this learner losing marks, and what intervention is most likely to help?**
 
-## 17. The learner model controls question generation
+## 21. The learner model controls question generation
 
 The question generator should not independently decide what to generate next.
 
@@ -414,7 +513,7 @@ Only then should the system select or generate the next challenge.
 
 > **Generation serves pedagogy; pedagogy does not serve generation.**
 
-## 18. Remediation should be targeted and optional, not coercive
+## 22. Remediation should be targeted and optional, not coercive
 
 Assessment and instruction should form a closed loop:
 
@@ -430,7 +529,7 @@ If accepted:
 
 If declined, the player continues and the weakness remains active in the learner model.
 
-## 19. Competition should support both social and self-comparison
+## 23. Competition should support both social and self-comparison
 
 Public ranking is not universally motivating.
 
@@ -449,7 +548,29 @@ The design should avoid repeatedly telling weaker students that they are at the 
 
 For many learners, **competing with oneself** may be more motivating than competing with the entire population.
 
-## 20. Social participation is opt-in and safety-constrained
+## 24. Distribution should be designed into gameplay
+
+Broad competitors demonstrate that competitions, school participation, and social challenges can be important acquisition channels, not merely engagement features.
+
+The platform should therefore consider growth loops such as:
+
+- friend challenge links;
+- class challenge codes;
+- school-versus-school competitions;
+- topic sprints;
+- exam-season challenges;
+- shareable personal-best milestones;
+- opt-in national or regional events.
+
+These should be designed to serve learning first, but they may also reduce the cost of user acquisition.
+
+A useful design test is:
+
+> **Can one student's normal use create a safe, educational reason for another student to join?**
+
+The preferred early social primitive is therefore **challenge**, not open chat.
+
+## 25. Social participation is opt-in and safety-constrained
 
 Players should control whether they are visible to others.
 
@@ -480,7 +601,7 @@ Recommended early social features:
 
 Open chat, public comments, and unrestricted messaging should be deferred until moderation, reporting, blocking, age handling, abuse prevention, and safety governance are mature.
 
-## 21. Player data are a core pedagogical asset
+## 26. Player data are a core pedagogical and strategic asset
 
 The platform should treat behavioral data as educational evidence, not merely operational telemetry.
 
@@ -500,7 +621,21 @@ A skip after four seconds is an observation, not automatically proof of misunder
 
 Keeping these layers separate allows future learner models to improve without losing the original evidence.
 
-## 22. Longitudinal evidence matters more than isolated correctness
+The long-term strategic asset is not simply a large question bank. It is the longitudinal dataset linking:
+
+- item characteristics;
+- learner behavior;
+- assistance use;
+- misconceptions;
+- retention;
+- remediation;
+- social context;
+- later independent performance;
+- authentic exam outcomes where available.
+
+Competitors may copy visible features and use similar foundation models. They cannot immediately reproduce a mature longitudinal evidence base.
+
+## 27. Longitudinal evidence matters more than isolated correctness
 
 The platform should study learning trajectories such as:
 
@@ -520,7 +655,7 @@ The system should therefore care about:
 - independent performance after assistance;
 - performance under exam conditions.
 
-## 23. Player data should improve the question bank
+## 28. Player data should improve the question bank
 
 Real responses should be used to identify:
 
@@ -535,7 +670,9 @@ Real responses should be used to identify:
 
 The question bank should therefore become increasingly empirical rather than remaining permanently AI-authored and uncalibrated.
 
-## 24. Product assumptions must be testable
+The quality target should not be “more questions than competitors.” A smaller bank of empirically strong items can be more valuable than a much larger uncalibrated bank.
+
+## 29. Product assumptions must be testable
 
 Several design choices are hypotheses, not established truths.
 
@@ -548,12 +685,13 @@ Examples:
 - Do leaderboards help or discourage particular learner groups?
 - Are animations better than text for a given misconception?
 - When should hints be offered?
+- Which competition formats improve persistence without discouraging weaker learners?
 
 Where appropriate and ethical, important choices should eventually be tested with controlled experiments rather than inferred only from correlations.
 
 The preferred outcome should be later independent performance, not merely immediate engagement or correctness.
 
-## 25. Analytics should support learners, teachers, and curriculum improvement
+## 30. Analytics should support learners, teachers, and curriculum improvement
 
 Aggregated analytics can answer questions such as:
 
@@ -567,7 +705,51 @@ Aggregated analytics can answer questions such as:
 
 The platform can therefore become a **pedagogical observatory** as well as a student app.
 
-## 26. Privacy and data governance are architectural requirements
+However, teacher and institutional tooling should be added only when it reinforces the core exam engine rather than pulling the product toward a generic LMS.
+
+## 31. Low marginal cost is a design requirement
+
+A broad live-tuition platform carries substantial human and operational costs. This project should preserve software-like scalability wherever possible.
+
+Routine gameplay should avoid unnecessary real-time use of expensive large models.
+
+Where practical, the system should pre-generate, validate, and cache:
+
+- question families;
+- hints;
+- explanations;
+- worked solutions;
+- remediation objects;
+- item metadata;
+- misconception mappings.
+
+Real-time AI inference should be reserved for cases where it creates clear additional value.
+
+This principle supports a lower-cost mass-market product and reduces dependence on model-provider pricing.
+
+## 32. Distribution and monetization should not dictate pedagogy
+
+The platform may eventually support:
+
+- freemium access;
+- exam-season passes;
+- subject-specific paid tiers;
+- school or tuition-center dashboards;
+- sponsored access;
+- institutional licensing.
+
+But commercial incentives should not distort the measurement model.
+
+For example:
+
+- free users should not receive deliberately inferior pedagogy simply to force conversion;
+- XP should not be inflated to simulate progress;
+- exam-readiness claims should not be exaggerated for marketing;
+- sponsored competitions should not compromise assessment validity.
+
+The educational engine should remain trustworthy even as the business model evolves.
+
+## 33. Privacy and data governance are architectural requirements
 
 Because users may include minors, privacy and safety cannot be added later.
 
@@ -588,7 +770,7 @@ Principles include:
 - protect inferred learner profiles;
 - apply appropriate consent and governance for formal research use.
 
-## 27. Long-term architecture
+## 34. Long-term architecture
 
 ```text
                  AUTHORITATIVE SOURCES
@@ -644,13 +826,14 @@ Principles include:
           +--------------+--------------+
           |              |              |
           v              v              v
-   NEXT CHALLENGE   REMEDIATION     SOCIAL LAYER
-                   optional help    constrained / opt-in
+   NEXT CHALLENGE   REMEDIATION     SOCIAL / GROWTH LAYER
+                   optional help    constrained / opt-in /
+                                    challenge-driven
 ```
 
-The **adaptive controller** decides what experience is most useful next. The **game layer** protects simplicity. The **measurement layer** protects validity. The **data layer** enables improvement over time.
+The **adaptive controller** decides what experience is most useful next. The **game layer** protects simplicity. The **measurement layer** protects validity. The **data layer** enables improvement over time. The **social/growth layer** should help students bring other students into safe educational interactions without becoming an unmanaged social network.
 
-## 28. Relationship to present Stage 0 and Stage 1A
+## 35. Relationship to present Stage 0 and Stage 1A
 
 Stages 0 and 1A should still be completed and stabilized before this wider architecture is implemented.
 
@@ -660,42 +843,58 @@ The immediate development strategy remains:
 
 Only afterward should the system be expanded incrementally toward:
 
-**source ingestion → curriculum/exam compilation → micro-course generation → validation → assessment generation → item calibration → game layer → event/data layer → learner model → adaptive controller → social layer**
+**source ingestion → curriculum/exam compilation → micro-course generation → validation → assessment generation → item calibration → game layer → event/data layer → learner model → adaptive controller → constrained social/growth layer**
 
 Current work on source discovery, provenance, multi-source handling, validation, configuration, coordination, and generation infrastructure should be preserved where possible and generalized rather than discarded.
 
 However, once post-Stage-1A development begins, event logging, provenance, item identifiers, and assessment metadata should be designed early enough that valuable evidence is not lost.
 
-## 29. Foundational principles
+## 36. Foundational principles
 
 1. **Game first, measurement underneath.** The student experiences low-friction play; the system maintains rigorous hidden evidence about mastery and exam readiness.
-2. **Exam fidelity before content abundance.** Official assessment requirements outrank convenience, volume, or textbook surface structure.
-3. **Curriculum before generation.** Videos, notes, questions, and simulations should derive from validated learning outcomes and examinable skills.
-4. **Freedom locally, pedagogical persistence globally.** Students may skip, jump ahead, or decline help, but unresolved weaknesses remain active in the learner model.
-5. **Assisted success is not independent mastery.** Every response must retain its assistance context.
-6. **Mastery before completion.** Watching content or answering one question correctly does not establish competence.
-7. **Game score is not exam readiness.** XP, streaks, ranks, and badges motivate; mastery measures learning.
-8. **Every question is a measurement instrument.** Items should be evaluated for difficulty, discrimination, ambiguity, response behavior, and predictive value.
-9. **Generated content must earn trust empirically.** Questions should be generated, validated, deployed, calibrated, and then retained, revised, or retired.
-10. **Practice and protected measurement should remain distinguishable.** Repeated exposure should not contaminate stronger exam-readiness evidence.
-11. **Generation serves pedagogy.** The learner model determines what should be generated or selected next.
-12. **Remediation should be targeted, attractive, and non-coercive.** The app should help without recreating the resistance of a locked course.
-13. **Transfer to the real examination is the final criterion.** Game performance matters only insofar as it supports authentic exam performance.
-14. **Competition should not punish weaker learners.** Self-improvement and ability-matched competition should complement public ranking.
-15. **Social visibility is voluntary and safety-constrained.** Social features should support learning without turning the app prematurely into an unmanaged social network.
-16. **Behavioral events are pedagogical evidence.** Preserve meaningful interaction histories rather than only final scores.
-17. **Raw observation and inference remain separate.** Store what happened independently from what the current model believes it means.
-18. **Longitudinal evidence matters.** Retention, transfer, repeated exposure, and independent re-performance are more informative than isolated correctness.
-19. **Questions are measured as well as students.** Learner data should continuously improve item quality and content generation.
-20. **Product assumptions should be testable.** Skipping, hints, gamification, remediation, and social mechanisms should be evaluated empirically.
-21. **Causal evidence should guide important pedagogical decisions.** Where feasible, controlled experiments should complement observational analytics.
-22. **Subject-specific validity matters.** Different public-exam subjects may require different marking and assessment architectures.
-23. **Data supports pedagogy, not surveillance.** Collect only justified data and protect learner privacy.
-24. **Adaptation should remain auditable.** Begin with interpretable models and add sophistication only when it demonstrably improves outcomes.
-25. **Complexity belongs in the engine, not in the student's way.** The hidden architecture may be sophisticated; the visible app should remain simple.
+2. **Specialize before generalizing.** Win one public-exam use case deeply before expanding across subjects, cohorts, or markets.
+3. **Breadth is not the moat.** More features, more content, and more AI functions do not automatically create a better product.
+4. **Exam intelligence is the core product.** The system should optimize diagnosis, remediation, retention, transfer, and exam performance rather than content volume.
+5. **Exam fidelity before content abundance.** Official assessment requirements outrank convenience, volume, or textbook surface structure.
+6. **Curriculum before generation.** Videos, notes, questions, and simulations should derive from validated learning outcomes and examinable skills.
+7. **The micro-course is both instruction and remediation infrastructure.** Generated course material should support targeted help rather than forcing a lesson-first journey.
+8. **Freedom locally, pedagogical persistence globally.** Students may skip, jump ahead, or decline help, but unresolved weaknesses remain active in the learner model.
+9. **Assisted success is not independent mastery.** Every response must retain its assistance context.
+10. **Mastery before completion.** Watching content or answering one question correctly does not establish competence.
+11. **Game score is not exam readiness.** XP, streaks, ranks, and badges motivate; mastery measures learning.
+12. **Every question is a measurement instrument.** Items should be evaluated for difficulty, discrimination, ambiguity, response behavior, and predictive value.
+13. **Generated content must earn trust empirically.** Questions should be generated, validated, deployed, calibrated, and then retained, revised, or retired.
+14. **Practice and protected measurement should remain distinguishable.** Repeated exposure should not contaminate stronger exam-readiness evidence.
+15. **Generation serves pedagogy.** The learner model determines what should be generated or selected next.
+16. **Remediation should be targeted, attractive, and non-coercive.** The app should help without recreating the resistance of a locked course.
+17. **Transfer to the real examination is the final criterion.** Game performance matters only insofar as it supports authentic exam performance.
+18. **Competition should not punish weaker learners.** Self-improvement and ability-matched competition should complement public ranking.
+19. **Distribution should be designed into gameplay.** Safe challenge and competition mechanics can support both motivation and organic acquisition.
+20. **Social visibility is voluntary and safety-constrained.** Social features should support learning without turning the app prematurely into an unmanaged social network.
+21. **Behavioral events are pedagogical evidence.** Preserve meaningful interaction histories rather than only final scores.
+22. **Raw observation and inference remain separate.** Store what happened independently from what the current model believes it means.
+23. **Longitudinal evidence matters.** Retention, transfer, repeated exposure, and independent re-performance are more informative than isolated correctness.
+24. **Questions are measured as well as students.** Learner data should continuously improve item quality and content generation.
+25. **The data flywheel is strategic.** Longitudinal evidence linking learner behavior, item properties, interventions, and later outcomes should become a durable platform asset.
+26. **Product assumptions should be testable.** Skipping, hints, gamification, remediation, and social mechanisms should be evaluated empirically.
+27. **Causal evidence should guide important pedagogical decisions.** Where feasible, controlled experiments should complement observational analytics.
+28. **Subject-specific validity matters.** Different public-exam subjects may require different marking and assessment architectures.
+29. **Low marginal cost is a design requirement.** Routine gameplay should minimize unnecessary real-time AI inference and preserve software-like scalability.
+30. **The app is not a tuition business by default.** Human instruction may complement the ecosystem, but the core product should remain software-scalable.
+31. **Non-goals matter.** Avoid drifting into a broad LMS, social network, or all-purpose school platform before the narrow exam product has succeeded.
+32. **Commercial growth must not corrupt measurement validity.** Monetization and acquisition mechanisms should not distort mastery estimates or exam-readiness claims.
+33. **Data supports pedagogy, not surveillance.** Collect only justified data and protect learner privacy.
+34. **Adaptation should remain auditable.** Begin with interpretable models and add sophistication only when it demonstrably improves outcomes.
+35. **Complexity belongs in the engine, not in the student's way.** The hidden architecture may be sophisticated; the visible app should remain simple.
 
 ## Status
 
 This document is a **future architectural foundation**, not a requirement to redesign the current Stage 0 or Stage 1A implementation before those stages are completed and stabilized.
 
-The near-term priority remains to complete and stabilize Stage 0 and Stage 1A. The post-Stage-1A architecture should then evolve toward a low-friction, game-first public-exam platform whose principal technical strength is the rigor of its hidden assessment, mastery, item-calibration, learner-modeling, and longitudinal pedagogical-data engine.
+The near-term priority remains to complete and stabilize Stage 0 and Stage 1A.
+
+The post-Stage-1A architecture should then evolve toward a low-friction, game-first public-exam platform whose principal technical strength is the rigor of its hidden assessment, mastery, item-calibration, learner-modeling, and longitudinal pedagogical-data engine.
+
+The competitive lesson from broad platforms such as Pandai should remain explicit:
+
+> **Do not try to win through breadth. Win through exam specificity, simplicity, measurement quality, adaptive precision, and evidence that the system improves authentic independent performance.**
