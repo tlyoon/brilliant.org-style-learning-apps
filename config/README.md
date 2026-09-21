@@ -21,7 +21,12 @@ Do not add another project-level source-root placeholder for Stage 1 or later st
 
 Public deployment metadata is tracked separately in `config/deployments.json`. It records public review routes and URLs; it is not a workstation configuration file and contains no credentials. Query it with `python -m app_generator deployments`. See `docs/DEPLOYMENTS.md`.
 
-Project-owned Gemini text is also tracked through `configure_project.toml`, `gem_description.txt`, and `gem_instructions.md`. Before live generation, the generator reconciles editable Gem fields with these authoritative values and verifies persistence.
+Project-owned Gemini text is tracked in:
+
+- `gem_description.txt` → Gem Description;
+- `gem_instructions.md` → Gem Instructions.
+
+The Gem display name is deliberately **not** part of the configuration contract. The configured Gemini account plus Gem URL/edit URL identify the Gem. Before live generation, the generator reconciles Description and Instructions and verifies persistence without renaming the Gem.
 
 ## Important project-dependent values
 
@@ -29,11 +34,11 @@ Review these when creating/recycling a project:
 
 - `project.project_name`;
 - `placeholders.sourcepath` — the single Source Root;
-- `placeholders.gemini-gem`;
-- `placeholders.loginname`;
 - `placeholders.pdf_subchapter_path` — a selector beneath the Source Root;
 - `placeholders.target_filename` and derived `target_file`;
-- `gemini.gem_edit_url` and `gem_name`;
+- `google.oauth_login` — Google Drive/Cloud OAuth and managed-coordinator administrator identity;
+- `gemini.login_name` — Gemini browser Google account;
+- `gemini.gem_url` and `gemini.gem_edit_url`;
 - source/provenance metadata;
 - automation selection/coordinator policy;
 - Git publication/PR/merge policy;
@@ -50,6 +55,32 @@ The configured OAuth paths resolve under `%LOCALAPPDATA%\<project_name>\credenti
 ## Machine-local rendered configuration
 
 `sync-workstation.cmd` renders the tracked project authority into an ignored local TOML in the repository root. The synchronizer prints the exact filename it installed. Direct `app_generator` commands must pass `--config <printed-file>` when that filename differs from the CLI default.
+
+### Workstation-only Gemini override
+
+The generated local TOML contains:
+
+```toml
+[local_gemini]
+login_name = ""
+gem_url = ""
+gem_edit_url = ""
+```
+
+Blank values inherit the tracked `[gemini]` defaults. To use a different Google account and a different Gem on one workstation, edit only these values in the generated local TOML. When changing the Gem itself, set `gem_url` and `gem_edit_url` together; a lone URL override is rejected so generation and editing cannot target different Gems. The synchronizer preserves this table across later full or `--quick` syncs.
+
+For example:
+
+```toml
+[local_gemini]
+login_name = "another.account@gmail.com"
+gem_url = "https://gemini.google.com/gem/OTHER_GEM_ID"
+gem_edit_url = "https://gemini.google.com/gems/edit/OTHER_EDIT_ID"
+```
+
+This does **not** change `google.oauth_login`. For the current project, both tracked defaults remain `tlyoon@gmail.com`, so an untouched local configuration behaves exactly as before.
+
+Legacy configs with `loginname` still use that account for both services by default. Local Gemini overrides are applied after this shared-account fallback, so they do not silently change OAuth identity.
 
 ## Selection modes
 
@@ -84,7 +115,7 @@ For controlled specific-mode testing, a project may use `git_publish=false` and 
 The current Stage-0 baseline retains these contracts while establishing the single-root invariant:
 
 - one configured Google Drive Source Root;
-- one selected PDF per generated package;
+- one selected topic corpus per generated package, with `source.pdf` as the primary PDF and sibling PDFs as supplementary sources;
 - selectors resolve beneath the Source Root;
 - supported interaction modes;
 - deterministic validation/provenance rules;
@@ -94,7 +125,7 @@ The current Stage-0 baseline retains these contracts while establishing the sing
 - credentials/PDFs/run state outside Git;
 - generated work remains draft until qualified human review.
 
-Multi-PDF topic synthesis belongs to Stage 1; Stage 0 does not need to implement it. Stage 1 must, however, reuse the same `sourcepath` rather than introducing another root.
+The current Stage-0/1A implementation discovers sibling PDFs beneath the selected subchapter and records their primary/supplementary provenance. All stages reuse the same `sourcepath` rather than introducing another root.
 
 ## Compatibility file
 

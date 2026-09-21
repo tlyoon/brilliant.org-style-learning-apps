@@ -1,6 +1,6 @@
 # PDF textbook section to live review app: Windows quickstart
 
-This is the canonical beginner-facing installation and operating guide for the current `main` branch. It covers one controlled `source.pdf`, workstation setup, Google authentication, specific generation, managed continuous-auto mode, review, and optional static deployment.
+This is the canonical beginner-facing installation and operating guide for the current `main` branch. It covers a controlled topic corpus rooted in `source.pdf`, workstation setup, independent Google OAuth and Gemini accounts, specific generation, managed continuous-auto mode, review, and optional static deployment.
 
 **Documentation freshness rule:** use this file from the same `main` revision that you are running. Operational changes must update the relevant documentation in the same PR; see `docs/DOCUMENTATION_MAINTENANCE.md`.
 
@@ -16,7 +16,7 @@ Generation does **not** mean that content is approved, publishable, merged, or p
 
 ## 1. Supported source layout
 
-The generator processes one PDF per subchapter. A supported Google Drive tree looks like:
+The generator processes one topic corpus per subchapter. Each subchapter has a primary `source.pdf`; any sibling PDFs are supplementary sources and are attached in the same fresh Gem conversation. A supported Google Drive tree looks like:
 
 ```text
 Textbook-or-source-root/
@@ -101,7 +101,7 @@ The normal tracked project authority is:
 config/configure_project.toml
 ```
 
-It contains non-secret project identity, Drive source root, Gemini Gem/account, automation policy, project-derived path templates, and Git handoff policy.
+It contains non-secret project identity, Drive source root, Gemini Gem/account, automation policy, project-derived path templates, and Git handoff policy. `google.oauth_login` identifies the Drive/coordinator OAuth account; `gemini.login_name` identifies the Gemini browser account. They may differ. The Gem display name is not managed.
 
 For a new recycled project, preview the configurator:
 
@@ -110,8 +110,9 @@ python scripts\configure_project.py `
   --project-name "NewLearningProject" `
   --source-root-url "https://drive.google.com/open?id=SOURCE_FOLDER_ID" `
   --gem-url "https://gemini.google.com/gem/GEM_ID" `
-  --login-name "authorized@example.com" `
-  --gem-name "subject content generator"
+  --gem-edit-url "https://gemini.google.com/gems/edit/EDIT_ID" `
+  --oauth-login "authorized@example.com" `
+  --gemini-login-name "gemini@example.com"
 ```
 
 Review the diff, then repeat with `--apply` when correct. Validate and merge that configuration through the normal PR workflow before distributing it to other PCs.
@@ -200,6 +201,21 @@ $py = (Resolve-Path ".\.venv\Scripts\python.exe").Path
 
 If the printed file is `project.local.toml`, direct CLI commands can omit `--config`; otherwise pass it explicitly.
 
+### Optional per-PC Gemini account and Gem
+
+Only the `[local_gemini]` table in the generated local TOML is intended for manual editing:
+
+```toml
+[local_gemini]
+login_name = ""
+gem_url = ""
+gem_edit_url = ""
+```
+
+Blank values inherit tracked `[gemini]` defaults. A nonblank login changes only the Gemini browser account, not `google.oauth_login`. When selecting another Gem, set both URLs together; a lone URL override is rejected. This table survives later full and quick syncs; other generated fields are replaced. Ensure the local Gemini account can edit the selected Gem. Changing local overrides invalidates cached full validation.
+
+For direct CLI commands, `--login-name` overrides the Gemini browser account and `--oauth-login` independently overrides the Drive/coordinator account. Keep workstation `[drive].login_name` consistent with tracked `google.oauth_login` for synchronization.
+
 For routine synchronization after a successful full check:
 
 ```powershell
@@ -238,7 +254,9 @@ Start with a controlled specific-mode run when validating a new project:
 & $py -m app_generator run --config $config --selection-mode specific --pdf-subchapter-path 8.5
 ```
 
-The generator opens the configured Gem/account, reconciles project-owned Gem fields, opens a fresh conversation, uploads the controlled PDF, generates/repairs the package, validates it, and installs the generated artifacts.
+The default controlled launcher opens an independent ordinary Chrome window directly on the configured Gemini `gem_url` with no Selenium or remote-debugging connection. Its separate `<chrome_profile_dir>/gemini-browser` profile starts signed out on first use and can retain your Gemini login afterward. The run displays the configured Gemini `login_name` and both the Gem and Gem editor URLs. Finish sign-in, confirm the Gem page loads, close that dedicated Chrome window, and then press Enter in the terminal. The app reopens the same signed-in profile for Selenium, navigates to the configured `gem_edit_url`, and verifies the exact active account before editing or generating. This keeps the Google sign-in flow outside browser automation. Gemini login may differ from Drive OAuth. Existing personal and legacy generator profiles are left untouched. The launcher uses a new local debug connection and reports a connection-readiness failure after 15 seconds rather than silently waiting for an absent browser. Explicit `attach` mode is different: it requires an already-open browser and does not launch a window or clear its login.
+
+The generator verifies the exact configured Gemini email on visible Google Account controls, reconciles project-owned Description and Instructions without renaming the Gem, opens a fresh conversation, uploads the controlled topic PDFs, generates/repairs the package, validates it, and installs the generated artifacts.
 
 A successful package remains a structurally validated **draft** awaiting qualified human review.
 
@@ -276,7 +294,7 @@ gh auth status
 & $py -m app_generator coordinator-bootstrap --config $config
 ```
 
-The bootstrap may open Google consent for additional Apps Script/Drive administration scopes. It verifies the configured Google account, stores the refreshable administrator credential in the private GitHub Actions secret used by this repository, requests the serialized managed deployment, and waits for a live health check.
+The bootstrap may open Google consent for additional Apps Script/Drive administration scopes. It verifies `google.oauth_login` (not the Gemini browser account), stores the refreshable administrator credential in the private GitHub Actions secret used by this repository, requests the serialized managed deployment, and waits for a live health check.
 
 ### First-project web-app recovery
 

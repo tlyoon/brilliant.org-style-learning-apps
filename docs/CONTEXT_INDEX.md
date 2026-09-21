@@ -46,6 +46,8 @@ config/configure_project.toml
 
 `config/project.toml` remains a compatibility artifact during migration and is **not** the normal authority selected by `sync-workstation.cmd` on current `main`.
 
+Google Drive/coordinator authorization uses tracked `google.oauth_login`; the Gemini browser uses independent `gemini.login_name`, `gem_url`, and `gem_edit_url`. A preserved `[local_gemini]` table in the generated local TOML permits workstation-only Gemini overrides. The Gem display name is not synchronized. Topic generation retains `main`'s multi-PDF corpus support beneath the single `sourcepath` root.
+
 Current workstation behavior derives the environment namespace and local state root from `project.project_name`, normally:
 
 ```text

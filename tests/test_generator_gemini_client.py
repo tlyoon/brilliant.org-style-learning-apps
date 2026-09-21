@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, call, patch
 
 from app_generator.errors import TransientGeminiError, UiContractError
 from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
@@ -12,11 +12,27 @@ class GeneratorGeminiClientTests(unittest.TestCase):
         return SimpleNamespace(
             gem_url="https://gemini.google.com/gem/test",
             gem_edit_url="https://gemini.google.com/gems/edit/test",
+            login_name="gemini@example.com",
+            oauth_login="oauth@example.com",
+            login_timeout_seconds=1,
             ui_timeout_seconds=1,
             response_timeout_seconds=1,
             model_preference_patterns=(r"pro", r"flash"),
             allow_unknown_model_fallback=allow_unknown_model_fallback,
         )
+
+    def test_editor_account_verification_uses_gemini_login_not_oauth_login(self):
+        driver = Mock()
+        client = GeminiClient(driver, self.config(allow_unknown_model_fallback=True))
+        client.editor = Mock()
+
+        with patch("app_generator.gemini.client.GoogleAccountVerifier") as verifier:
+            client.open_editor_and_verify_account()
+
+        verifier.assert_called_once_with(driver, "gemini@example.com", 1)
+        verifier.return_value.verify.assert_called_once_with()
+        client.editor.navigate.assert_called_once_with()
+        client.editor.enter_editor.assert_called_once_with()
 
     def test_missing_model_picker_uses_default_when_policy_allows_it(self):
         client = GeminiClient(Mock(), self.config(allow_unknown_model_fallback=True))
@@ -30,6 +46,20 @@ class GeneratorGeminiClientTests(unittest.TestCase):
         client.conversation.open_new.assert_called_once_with()
         client.conversation.select_model.assert_not_called()
         client.conversation.attach_pdf.assert_called_once_with(Path("source.pdf"))
+
+    def test_split_identity_client_retains_multi_pdf_topic_attachment(self):
+        client = GeminiClient(Mock(), self.config(allow_unknown_model_fallback=True))
+        client.conversation = Mock()
+        client.conversation.discover_models.side_effect = UiContractError("picker unavailable")
+        sources = (Path("source.pdf"), Path("question-bank.pdf"))
+
+        with self.assertLogs("app_generator.gemini", level="WARNING"):
+            client.open_conversation_select_model_and_attach(sources)
+
+        client.conversation.open_new.assert_called_once_with()
+        self.assertEqual([call(source) for source in sources], client.conversation.attach_pdf.call_args_list)
+        self.assertEqual("oauth@example.com", client.config.oauth_login)
+        self.assertEqual("gemini@example.com", client.config.login_name)
 
     def test_missing_model_picker_remains_an_error_under_strict_policy(self):
         client = GeminiClient(Mock(), self.config(allow_unknown_model_fallback=False))

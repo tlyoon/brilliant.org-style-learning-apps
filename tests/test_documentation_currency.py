@@ -1,8 +1,11 @@
+import re
+import shlex
 import unittest
 from pathlib import Path
 
 from app_generator.cli import _parser
 from app_generator.config import DEFAULTS
+from scripts.configure_project import _parser as project_parser
 from scripts.check_documentation_impact import (
     documentation_present,
     documentation_required,
@@ -42,6 +45,19 @@ class DocumentationCurrencyTests(unittest.TestCase):
         self.assertEqual(set(selection.choices), {"specific", "auto", "distributed"})
         for mode in selection.choices:
             self.assertIn(mode, combined)
+
+    def test_canonical_project_setup_examples_use_current_arguments(self):
+        for path in (QUICKSTART, ROOT / "docs" / "GENERIC_PROJECT_SETUP.md"):
+            with self.subTest(path=path.name):
+                text = self._text(path)
+                example = re.search(r"python scripts\\configure_project\.py(.*?)```", text, re.S)
+                self.assertIsNotNone(example)
+                args = project_parser().parse_args(shlex.split(example.group(1).replace("`", "")))
+                self.assertEqual("authorized@example.com", args.oauth_login)
+                self.assertEqual("gemini@example.com", args.gemini_login_name)
+                self.assertNotIn("--gem-name", text)
+        self.assertIn("[local_gemini]", self._text(QUICKSTART))
+        self.assertIn("google.oauth_login", self._text(QUICKSTART))
 
     def test_managed_coordinator_default_is_reflected_in_docs(self):
         self.assertEqual(DEFAULTS["coordinator_management"], "github_actions")
