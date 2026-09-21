@@ -369,6 +369,15 @@ This form is recommended when a human wants to choose the exact section while ot
 
 Use `Ctrl+C` to stop a worker. The current CLI reports interruption and returns an active auto lease safely when possible; abandoned leases also become recoverable through expiry.
 
+If an abandoned or repeatedly interrupted target exhausts its automatic attempt budget, targeted `doctor` reports `failed=1` plus the target status, attempt count, and last error code; auto mode refuses to claim it. Review those diagnostics first. To grant a new bounded attempt budget to exactly one verified Drive source, use the explicit recovery command:
+
+```powershell
+& $py -m app_generator coordinator-retry-failed --config $config --pdf-subchapter-path 9.1 --confirm
+& $py -m app_generator doctor --config $config --selection-mode auto --pdf-subchapter-path 9.1
+```
+
+The command synchronizes the Git base, resolves the exact current Drive source identity, and succeeds only when that one coordinator row is terminally failed and still matches the source version. It returns the row to `interrupted`, resets its attempt count, and preserves the last error until the next atomic claim. It does not download or upload the PDF, claim a lease, generate content, or mark unfinished work complete. Do not use `coordinator-complete` as failure recovery.
+
 See `docs/CONTINUOUS_AUTO_TESTING.md` for a two-PC recovery/concurrency verification procedure.
 
 ## 11. Generated repository artifacts

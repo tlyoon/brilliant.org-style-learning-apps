@@ -181,7 +181,14 @@ Final repository content is installed/published only after validation succeeds. 
 
 ## Stopping workers
 
-`Ctrl+C` is the normal manual stop. The CLI reports interruption and returns an active auto lease safely when possible. If a machine disappears unexpectedly, lease expiry makes the job recoverable.
+`Ctrl+C` is the normal manual stop. The CLI reports interruption and returns an active auto lease safely when possible. If a machine disappears unexpectedly, lease expiry makes the job recoverable. If repeated interruption exhausts `max_job_attempts`, review the terminal error and explicitly requeue only the verified target:
+
+```powershell
+& $py -m app_generator coordinator-retry-failed --config $config --pdf-subchapter-path 9.1 --confirm
+& $py -m app_generator doctor --config $config --selection-mode auto --pdf-subchapter-path 9.1
+```
+
+The recovery command requires an exact current Drive source match and a terminal `failed` row. It resets the attempt count and returns that row to `interrupted` without claiming it, uploading its PDF, or marking it complete.
 
 ## Troubleshooting
 

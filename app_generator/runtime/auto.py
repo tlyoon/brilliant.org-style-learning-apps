@@ -82,6 +82,34 @@ def inspect_auto_queue(
     return coordinator.snapshot_auto(inventory, local_completed_job_keys=local_completed)
 
 
+def retry_failed_auto_job(config: GeneratorConfig, *, target_subchapter_id: str) -> tuple[str, int, str]:
+    """Explicitly requeue one exact terminal target after operator intervention."""
+
+    _require_durable_publication(config)
+    config = ensure_coordinator_ready(config)
+    publisher = GitPublisher(config)
+    publisher.sync_base()
+    inventory = _drive_inventory(config, target_subchapter_id=target_subchapter_id)
+    if len(inventory) != 1:
+        raise AutoModeBlockedError(
+            f"Target section {target_subchapter_id} did not resolve to exactly one Drive source job"
+        )
+    source = inventory[0]
+    local_completed = _base_completed(config, inventory)
+    coordinator = CoordinatorClient(config)
+    snapshot = coordinator.snapshot_auto(inventory, local_completed_job_keys=local_completed)
+    if snapshot.failed != 1 or snapshot.total != 1:
+        raise AutoModeBlockedError(
+            f"Target section {target_subchapter_id} is not one terminally failed coordinator job"
+        )
+    result = coordinator.retry_failed(source)
+    if result.status != "interrupted":
+        raise AutoModeBlockedError(
+            f"Coordinator did not return target section {target_subchapter_id} to interrupted state"
+        )
+    return source.subchapter_id, result.previous_attempt_count, result.previous_error_code
+
+
 def reconcile_auto_publications(
     config: GeneratorConfig,
     *,

@@ -4,9 +4,9 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from app_generator.coordinator.client import QueueSnapshot
+from app_generator.coordinator.client import FailedJobRetry, QueueSnapshot
 from app_generator.errors import AutoJobExecutionError, AutoModeBlockedError, NoAvailableJob
-from app_generator.runtime.auto import run_continuous_auto
+from app_generator.runtime.auto import retry_failed_auto_job, run_continuous_auto
 from app_generator.runtime.run_context import RunContext
 
 
@@ -133,6 +133,46 @@ class ContinuousAutoTests(unittest.TestCase):
                 reconciler=lambda config: 0,
                 sleeper=lambda seconds: None,
             )
+
+    def test_explicit_failed_retry_resets_only_one_verified_target(self):
+        source = SimpleNamespace(
+            subchapter_id="9.1",
+            job_key="job-9-1",
+            file_id="drive-9-1",
+            source_version="version-1",
+        )
+        coordinator = SimpleNamespace(
+            snapshot_auto=lambda inventory, local_completed_job_keys: self.snapshot(
+                total=1,
+                generated=0,
+                failed=1,
+            ),
+            retry_failed=lambda selected: FailedJobRetry("interrupted", 3, "LEASE_EXPIRED"),
+        )
+        publisher = SimpleNamespace(sync_base=lambda: None)
+        with patch("app_generator.runtime.auto.GitPublisher", return_value=publisher), \
+             patch("app_generator.runtime.auto._drive_inventory", return_value=(source,)), \
+             patch("app_generator.runtime.auto._base_completed", return_value=set()), \
+             patch("app_generator.runtime.auto.CoordinatorClient", return_value=coordinator):
+            result = retry_failed_auto_job(self.config(), target_subchapter_id="9.1")
+        self.assertEqual(("9.1", 3, "LEASE_EXPIRED"), result)
+
+    def test_explicit_failed_retry_refuses_a_nonfailed_target(self):
+        source = SimpleNamespace(subchapter_id="9.1")
+        coordinator = SimpleNamespace(
+            snapshot_auto=lambda inventory, local_completed_job_keys: self.snapshot(
+                total=1,
+                generated=0,
+                queued=1,
+            )
+        )
+        publisher = SimpleNamespace(sync_base=lambda: None)
+        with patch("app_generator.runtime.auto.GitPublisher", return_value=publisher), \
+             patch("app_generator.runtime.auto._drive_inventory", return_value=(source,)), \
+             patch("app_generator.runtime.auto._base_completed", return_value=set()), \
+             patch("app_generator.runtime.auto.CoordinatorClient", return_value=coordinator):
+            with self.assertRaisesRegex(AutoModeBlockedError, "not one terminally failed"):
+                retry_failed_auto_job(self.config(), target_subchapter_id="9.1")
 
     def test_targeted_auto_runs_only_requested_section_and_exits(self):
         calls = []

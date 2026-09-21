@@ -20,7 +20,7 @@ from app_generator.coordinator.verified import ensure_coordinator_ready
 from app_generator.errors import GeneratorError, NoAvailableJob
 from app_generator.prompts import gem_description, gem_instructions
 from app_generator.runtime.orchestrator import run_generation
-from app_generator.runtime.auto import inspect_auto_queue, run_continuous_auto
+from app_generator.runtime.auto import inspect_auto_queue, retry_failed_auto_job, run_continuous_auto
 from app_generator.sources.google_drive import (
     DriveRestClient,
     discover_drive_sources,
@@ -73,6 +73,16 @@ def _parser() -> argparse.ArgumentParser:
     _add_config_arguments(complete)
     complete.add_argument("--job-key", required=True)
     complete.add_argument("--pr-url", default="")
+    retry_failed = subparsers.add_parser(
+        "coordinator-retry-failed",
+        help="explicitly return one exact terminal auto target to the interrupted queue",
+    )
+    _add_config_arguments(retry_failed)
+    retry_failed.add_argument(
+        "--confirm",
+        action="store_true",
+        help="confirm that the selected terminal failure was reviewed and should receive a new attempt budget",
+    )
     for name in ("coordinator-bootstrap", "coordinator-ensure", "coordinator-status"):
         command = subparsers.add_parser(name)
         _add_config_arguments(command)
@@ -130,6 +140,12 @@ def doctor(
             f"completed={snapshot.completed}, interrupted={snapshot.interrupted}, fresh={snapshot.queued}, "
             f"leased={snapshot.leased}, failed={snapshot.failed}"
         )
+        if auto_target_subchapter_id and snapshot.target_status:
+            diagnostic = snapshot.target_error_code or "none recorded"
+            print(
+                f"Auto target state: status={snapshot.target_status}, "
+                f"attempts={snapshot.target_attempt_count}, last_error={diagnostic}"
+            )
         if snapshot.next_subchapter_id:
             print(f"Next non-claiming candidate preview: {snapshot.next_subchapter_id}")
         elif snapshot.leased:
@@ -260,6 +276,24 @@ def main(argv: list[str] | None = None) -> int:
             config = ensure_coordinator_ready(config)
             CoordinatorClient(config).mark_completed(args.job_key, pr_url=args.pr_url)
             print(f"Coordinator job {args.job_key} marked completed.")
+            return 0
+        if args.command == "coordinator-retry-failed":
+            if not args.pdf_subchapter_path:
+                raise GeneratorError("coordinator-retry-failed requires --pdf-subchapter-path")
+            if not args.confirm:
+                raise GeneratorError(
+                    "Refusing to reset a terminal job without --confirm after reviewing its failure"
+                )
+            section, attempts, error_code = retry_failed_auto_job(
+                config,
+                target_subchapter_id=args.pdf_subchapter_path,
+            )
+            diagnostic = error_code or "none recorded"
+            print(
+                f"Coordinator target {section} returned to interrupted state; "
+                f"previous attempts={attempts}, last error={diagnostic}."
+            )
+            print("Run auto doctor again before starting the recovered target.")
             return 0
         def report_context(context):
             print(f"Run {context.run_id} completed.")

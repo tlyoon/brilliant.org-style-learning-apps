@@ -212,7 +212,7 @@ The continuous worker:
 
 When `target_subchapter_id` is supplied through the explicit auto CLI target, the same lease/checkpoint/publication contract applies to the filtered one-section inventory, and the worker exits after that target succeeds.
 
-`Ctrl+C` stops the worker; active leases are returned safely when possible and expired leases remain recoverable.
+`Ctrl+C` stops the worker; active leases are returned safely when possible and expired leases remain recoverable. If repeated interruption exhausts the configured attempt budget, inspect the failure and explicitly recover only that target with `python -m app_generator coordinator-retry-failed --config <generated-local-config> --pdf-subchapter-path <chapter.section> --confirm`. The command verifies the current Drive source identity and terminal coordinator state, resets the bounded attempt budget, and returns the target to `interrupted`; it neither claims the job nor marks it complete. Run targeted auto `doctor` again before restarting generation.
 
 See `docs/CONTINUOUS_AUTO_TESTING.md` for a two-PC verification procedure.
 
