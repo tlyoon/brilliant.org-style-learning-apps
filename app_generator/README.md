@@ -41,7 +41,7 @@ The Windows state root is derived from `project.project_name`:
 %LOCALAPPDATA%\<project_name>
 ```
 
-It contains workstation settings plus project-scoped credential/token paths, Chrome profile, and run state. Changing `project_name` for a recycled project creates a separate state root and environment namespace.
+It contains workstation settings plus project-scoped credential/token paths, Chrome profile paths, and run state. Changing `project_name` for a recycled project creates a separate state root and environment namespace. Controlled Chrome uses the separate `gemini-browser` child of `chrome_profile_dir`, not the legacy profile's saved sign-ins.
 
 The Google Cloud Desktop OAuth client JSON may be securely copied into multiple trusted project/PC credential directories if those projects intentionally use the same OAuth client. Each project/PC should normally keep its own generated Drive OAuth token.
 
@@ -95,6 +95,12 @@ For a target such as `8.6`, the runtime filters Drive inventory to that exact se
 This is the preferred operator-selected mode when other coordinated workers may be running concurrently. Ordinary `specific` mode remains intentionally uncoordinated.
 
 ## Gemini behavior
+
+With `browser_mode = "controlled"`, the launcher opens independent ordinary Chrome directly on the configured `gem_url` with no Selenium or remote-debugging connection. A new separate profile at `<chrome_profile_dir>/gemini-browser` starts signed out and can retain the Gemini login for later launches. The app displays the configured Gemini `login_name` (or `[local_gemini].login_name` override) and both Gem URLs. The operator finishes sign-in, confirms the Gem loads, closes that dedicated window, and presses Enter. The launcher then reopens the same signed-in profile with a local debug connection, Selenium attaches, and the client navigates to `gem_edit_url` and verifies the active account. Gemini login is independent of Drive's OAuth account. Personal and legacy generator profiles are neither read nor cleared. The local-only debug connection uses a Chrome-assigned port and waits at most 15 seconds for a matching endpoint with an open page; driver setup can take longer, but the Chrome window is already launched.
+
+`ChromeSession.open_window()` opens ordinary Chrome without debugging, `wait_for_manual_sign_in()` requires that window to close, and `start()` relaunches the same profile before connecting Selenium. Closing a connected controlled session closes only this independent browser and preserves its on-disk login. If automation cannot connect, the window remains available for manual sign-in. Explicit `attach` mode remains advanced: it connects only to the supplied existing browser, does not launch a window or reset its login, and leaves that browser open on cleanup. Account verification applies in both modes; a saved login is never assumed correct.
+
+Verification requires the exact configured email on visible Google Account controls. Hidden account-chooser entries, generic email buttons, and ambiguous multiple visible identities do not prove the active account.
 
 Before live generation, the client reads the authoritative Gem values:
 

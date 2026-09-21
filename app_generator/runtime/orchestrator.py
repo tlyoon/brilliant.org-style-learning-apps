@@ -308,6 +308,8 @@ def run_generation(
                     store.transition(RunPhase.GIT_BRANCH_PREPARED, branch=branch)
 
                 browser = chrome_factory(active_config)
+                browser.open_window()
+                browser.wait_for_manual_sign_in()
                 driver = browser.start()
                 store.transition(RunPhase.CHROME_STARTED)
                 client = client_factory(driver, active_config)
@@ -353,6 +355,8 @@ def run_generation(
                             recovery_source = temporary_source
 
                         browser = chrome_factory(active_config)
+                        browser.open_window()
+                        browser.wait_for_manual_sign_in()
                         driver = browser.start()
                         store.transition(RunPhase.CHROME_STARTED)
                         replacement = client_factory(driver, active_config)

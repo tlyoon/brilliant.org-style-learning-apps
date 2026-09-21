@@ -254,7 +254,9 @@ Start with a controlled specific-mode run when validating a new project:
 & $py -m app_generator run --config $config --selection-mode specific --pdf-subchapter-path 8.5
 ```
 
-The generator verifies the configured Gemini browser account, reconciles project-owned Description and Instructions without renaming the Gem, opens a fresh conversation, uploads the controlled topic PDFs, generates/repairs the package, validates it, and installs the generated artifacts.
+The default controlled launcher opens an independent ordinary Chrome window directly on the configured Gemini `gem_url` with no Selenium or remote-debugging connection. Its separate `<chrome_profile_dir>/gemini-browser` profile starts signed out on first use and can retain your Gemini login afterward. The run displays the configured Gemini `login_name` and both the Gem and Gem editor URLs. Finish sign-in, confirm the Gem page loads, close that dedicated Chrome window, and then press Enter in the terminal. The app reopens the same signed-in profile for Selenium, navigates to the configured `gem_edit_url`, and verifies the exact active account before editing or generating. This keeps the Google sign-in flow outside browser automation. Gemini login may differ from Drive OAuth. Existing personal and legacy generator profiles are left untouched. The launcher uses a new local debug connection and reports a connection-readiness failure after 15 seconds rather than silently waiting for an absent browser. Explicit `attach` mode is different: it requires an already-open browser and does not launch a window or clear its login.
+
+The generator verifies the exact configured Gemini email on visible Google Account controls, reconciles project-owned Description and Instructions without renaming the Gem, opens a fresh conversation, uploads the controlled topic PDFs, generates/repairs the package, validates it, and installs the generated artifacts.
 
 A successful package remains a structurally validated **draft** awaiting qualified human review.
 
