@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-REQUIRED_COORDINATOR_VERSION = 2
+REQUIRED_COORDINATOR_VERSION = 3
 MANAGED_COORDINATOR_FILE_NAME = "learning-app-coordinator-runtime.json"
 MANAGED_BY = "learning-app-content-generator"
 MANAGED_WORKFLOW = "ensure-coordinator.yml"

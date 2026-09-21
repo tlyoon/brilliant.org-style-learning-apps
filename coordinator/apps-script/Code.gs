@@ -28,6 +28,7 @@ function dispatch_(request) {
     case 'review_pending': return withLock_(() => updateStatus_(request, 'review_pending'));
     case 'generated': return withLock_(() => updateStatus_(request, 'generated'));
     case 'failed': return withLock_(() => fail_(request));
+    case 'retry_failed': return withLock_(() => retryFailed_(request));
     case 'completed': return withLock_(() => complete_(request));
     case 'checkpoint_save': return withLock_(() => checkpointSave_(request));
     case 'checkpoint_load': return withLock_(() => checkpointLoad_(request));
@@ -276,6 +277,9 @@ function snapshot_(request) {
     if (counts[status] !== undefined) counts[status] += 1;
   });
   const next = chooseCandidate_(request, byKey);
+  const target = request.candidates.length === 1
+    ? byKey[scopedKey_(request.project_name, request.candidates[0].job_key)]
+    : null;
   return {
     snapshot: {
       total: request.candidates.length,
@@ -284,6 +288,11 @@ function snapshot_(request) {
         job_key: String(next.value.job_key),
         subchapter_id: String(next.value.subchapter_id),
         status: String(next.value.status)
+      } : null,
+      target_state: target ? {
+        status: String(target.value.status),
+        attempt_count: Number(target.value.attempt_count || 0),
+        error_code: String(target.value.error_code || '')
       } : null
     }
   };
@@ -343,6 +352,45 @@ function fail_(request) {
   owned.value.updated_at = new Date().toISOString();
   owned.sheet.getRange(owned.rowIndex, 1, 1, HEADERS.length).setValues([row_(owned.value)]);
   return {status: owned.value.status};
+}
+
+function retryFailed_(request) {
+  if (!request.worker_id || !request.job_key || !request.drive_file_id ||
+      !request.source_version || !request.subchapter_id) {
+    throw coded_('INVALID_REQUEST', 'retry_failed requires exact worker and source identity');
+  }
+  const sheet = sheet_();
+  const rows = rows_(sheet);
+  const index = rows.findIndex(row => {
+    const value = object_(row);
+    return String(value.project_name) === String(request.project_name) &&
+      String(value.job_key) === String(request.job_key);
+  });
+  if (index < 0) throw coded_('NOT_FOUND', 'Failed job no longer exists');
+  const value = object_(rows[index]);
+  if (value.status !== 'failed') {
+    throw coded_('INVALID_STATUS', 'Only a terminally failed job can be retried explicitly');
+  }
+  if (String(value.drive_file_id) !== String(request.drive_file_id) ||
+      String(value.source_version) !== String(request.source_version) ||
+      String(value.subchapter_id) !== String(request.subchapter_id)) {
+    throw coded_('SOURCE_MISMATCH', 'Failed job no longer matches the selected Drive source');
+  }
+  const previousAttemptCount = Number(value.attempt_count || 0);
+  const previousErrorCode = String(value.error_code || '');
+  value.status = 'interrupted';
+  value.worker_id = String(request.worker_id);
+  value.lease_expires_at = '';
+  value.heartbeat_at = '';
+  value.attempt_count = 0;
+  // Preserve the last diagnostic until the next successful atomic claim clears it.
+  value.updated_at = new Date().toISOString();
+  sheet.getRange(index + 2, 1, 1, HEADERS.length).setValues([row_(value)]);
+  return {
+    status: value.status,
+    previous_attempt_count: previousAttemptCount,
+    previous_error_code: previousErrorCode
+  };
 }
 
 function complete_(request) {

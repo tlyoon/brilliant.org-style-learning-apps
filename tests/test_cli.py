@@ -1,8 +1,12 @@
+import io
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
-from app_generator.cli import DEFAULT_CONFIG, _load, _parser
+from app_generator.cli import DEFAULT_CONFIG, _load, _parser, doctor
+from app_generator.coordinator.client import QueueSnapshot
 
 
 class CliParserTests(unittest.TestCase):
@@ -33,6 +37,32 @@ class CliParserTests(unittest.TestCase):
         ])
         self.assertEqual("auto", args.selection_mode)
         self.assertEqual("8.6", args.pdf_subchapter_path)
+
+    def test_targeted_doctor_reports_bounded_failure_diagnostics(self):
+        snapshot = QueueSnapshot(
+            total=1, queued=0, interrupted=0, leased=0, generated=0,
+            review_pending=0, completed=0, failed=1,
+            next_job_key="", next_subchapter_id="",
+            target_status="failed", target_attempt_count=3,
+            target_error_code="LEASE_EXPIRED",
+        )
+        output = io.StringIO()
+        with patch("app_generator.cli.inspect_auto_queue", return_value=snapshot), redirect_stdout(output):
+            result = doctor(SimpleNamespace(selection_mode="auto"), auto_target_subchapter_id="9.1")
+        self.assertEqual(0, result)
+        self.assertIn(
+            "Auto target state: status=failed, attempts=3, last_error=LEASE_EXPIRED",
+            output.getvalue(),
+        )
+
+    def test_failed_job_retry_requires_explicit_target_and_confirmation(self):
+        args = _parser().parse_args([
+            "coordinator-retry-failed",
+            "--pdf-subchapter-path", "9.1",
+            "--confirm",
+        ])
+        self.assertEqual("9.1", args.pdf_subchapter_path)
+        self.assertTrue(args.confirm)
 
     def test_separate_account_arguments_reach_config_loader(self):
         for command in ("doctor", "run", "coordinator-bootstrap", "coordinator-ensure", "coordinator-status"):

@@ -36,6 +36,9 @@ class QueueSnapshot:
     failed: int
     next_job_key: str
     next_subchapter_id: str
+    target_status: str = ""
+    target_attempt_count: int = 0
+    target_error_code: str = ""
 
     @property
     def unfinished(self) -> int:
@@ -48,6 +51,13 @@ class QueueSnapshot:
     @property
     def all_successful(self) -> bool:
         return self.total > 0 and self.unfinished == 0 and self.failed == 0
+
+
+@dataclass(frozen=True)
+class FailedJobRetry:
+    status: str
+    previous_attempt_count: int
+    previous_error_code: str
 
 
 class CoordinatorClient:
@@ -147,6 +157,9 @@ class CoordinatorClient:
         next_candidate = raw.get("next_candidate") or {}
         if not isinstance(next_candidate, dict):
             next_candidate = {}
+        target_state = raw.get("target_state") or {}
+        if not isinstance(target_state, dict):
+            target_state = {}
         try:
             return QueueSnapshot(
                 total=int(raw.get("total", 0)),
@@ -159,6 +172,9 @@ class CoordinatorClient:
                 failed=int(counts.get("failed", 0)),
                 next_job_key=str(next_candidate.get("job_key", "")),
                 next_subchapter_id=str(next_candidate.get("subchapter_id", "")),
+                target_status=str(target_state.get("status", "")),
+                target_attempt_count=int(target_state.get("attempt_count", 0)),
+                target_error_code=str(target_state.get("error_code", "")),
             )
         except (TypeError, ValueError) as exc:
             raise CoordinatorError(f"Coordinator returned an invalid queue snapshot: {exc}") from exc
@@ -264,6 +280,26 @@ class CoordinatorClient:
             error_message=error_message[:2000],
         )
         return str(body.get("status", "failed"))
+
+    def retry_failed(self, source: ResolvedDriveSource) -> FailedJobRetry:
+        """Return one exact terminal job to the interrupted queue by operator request."""
+
+        body = self._post(
+            "retry_failed",
+            worker_id=self.worker_id,
+            job_key=source.job_key,
+            drive_file_id=source.file_id,
+            source_version=source.source_version,
+            subchapter_id=source.subchapter_id,
+        )
+        try:
+            return FailedJobRetry(
+                status=str(body["status"]),
+                previous_attempt_count=int(body["previous_attempt_count"]),
+                previous_error_code=str(body.get("previous_error_code", "")),
+            )
+        except (KeyError, TypeError, ValueError) as exc:
+            raise CoordinatorError(f"Coordinator returned an invalid failed-job retry result: {exc}") from exc
 
     def mark_completed(self, job_key: str, *, pr_url: str = "") -> None:
         self._post("completed", worker_id=self.worker_id, job_key=job_key, pr_url=pr_url)

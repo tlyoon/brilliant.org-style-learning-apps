@@ -68,6 +68,45 @@ class GeneratorCoordinatorTests(unittest.TestCase):
         self.assertEqual("ExampleProject", session.request["json"]["project_name"])
         self.assertEqual(source.file_id, session.request["json"]["candidates"][0]["drive_file_id"])
 
+    def test_snapshot_parses_exact_target_failure_diagnostics(self):
+        snapshot = CoordinatorClient._snapshot({
+            "snapshot": {
+                "total": 1,
+                "counts": {"failed": 1},
+                "next_candidate": None,
+                "target_state": {
+                    "status": "failed",
+                    "attempt_count": 3,
+                    "error_code": "LEASE_EXPIRED",
+                },
+            }
+        })
+        self.assertEqual("failed", snapshot.target_status)
+        self.assertEqual(3, snapshot.target_attempt_count)
+        self.assertEqual("LEASE_EXPIRED", snapshot.target_error_code)
+
+    def test_retry_failed_sends_exact_source_identity_and_returns_audit_summary(self):
+        source = ResolvedDriveSource(
+            "drive-file-id", "source.pdf", "Serway_8_14/9/9.1/source.pdf",
+            PDF_MIME, 100, "abc123", "9.1",
+        )
+        session = FakeSession({
+            "ok": True,
+            "status": "interrupted",
+            "previous_attempt_count": 3,
+            "previous_error_code": "LEASE_EXPIRED",
+        })
+        with patch.dict(os.environ, {"TEST_COORDINATOR_TOKEN": "secret"}, clear=False):
+            result = CoordinatorClient(self.config(), session=session).retry_failed(source)
+        self.assertEqual("retry_failed", session.request["json"]["action"])
+        self.assertEqual(source.job_key, session.request["json"]["job_key"])
+        self.assertEqual(source.file_id, session.request["json"]["drive_file_id"])
+        self.assertEqual(source.source_version, session.request["json"]["source_version"])
+        self.assertEqual("9.1", session.request["json"]["subchapter_id"])
+        self.assertEqual("interrupted", result.status)
+        self.assertEqual(3, result.previous_attempt_count)
+        self.assertEqual("LEASE_EXPIRED", result.previous_error_code)
+
     def test_default_project_can_read_legacy_token_during_migration(self):
         config = self.config()
         config.project_name = "BrilliantContentGenerator"
