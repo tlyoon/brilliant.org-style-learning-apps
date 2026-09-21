@@ -512,7 +512,7 @@ def _ensure_deployment(
         updated = _json_response(
             session.put(
                 f"{SCRIPT_API}/{script_id}/deployments/{deployment_id}",
-                json=config,
+                json={"deploymentConfig": config},
                 timeout=60,
             ),
             "update Apps Script deployment",
