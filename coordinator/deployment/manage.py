@@ -13,9 +13,10 @@ import os
 import re
 import secrets
 import sys
+import time
 import tomllib
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import requests
 from google.auth.transport.requests import AuthorizedSession, Request
@@ -353,6 +354,43 @@ def _web_app_is_reachable(deployment: dict[str, Any]) -> bool:
         and payload.get("code") == "UNAUTHORIZED"
     )
 
+def _wait_for_coordinator_version(
+    url: str,
+    *,
+    project_name: str,
+    worker_token: str,
+    expected_version: int = REQUIRED_COORDINATOR_VERSION,
+    timeout_seconds: int = 180,
+    sleeper: Callable[[float], None] = time.sleep,
+) -> None:
+    deadline = time.monotonic() + timeout_seconds
+    last_version = 0
+    while time.monotonic() < deadline:
+        try:
+            response = requests.post(
+                url,
+                json={
+                    "action": "health",
+                    "token": worker_token,
+                    "project_name": project_name,
+                },
+                timeout=30,
+            )
+            response.raise_for_status()
+            payload = response.json()
+            if isinstance(payload, dict) and payload.get("ok") is True:
+                last_version = int(payload.get("coordinator_version", 0))
+                if last_version >= expected_version:
+                    return
+        except (OSError, TypeError, ValueError, requests.RequestException):
+            pass
+        sleeper(5.0)
+    raise RuntimeError(
+        f"Apps Script deployment did not serve coordinator protocol v{expected_version} "
+        f"within {timeout_seconds}s (last live version: v{last_version})"
+    )
+
+
 def _deployment_from_web_app_url(url: str) -> dict[str, Any]:
     normalized = url.strip()
     match = re.fullmatch(
@@ -400,6 +438,7 @@ def _ensure_deployment(
     script_id: str,
     version_number: int,
     project_name: str,
+    worker_token: str = "",
     web_app_url_override: str = "",
     preferred_id: str = "",
 ) -> tuple[str, str]:
@@ -413,10 +452,18 @@ def _ensure_deployment(
         )
         if not _web_app_is_reachable(deployment):
             raise RuntimeError("Web-app URL override is not a reachable coordinator endpoint")
-        return deployment_id, _web_app_url(deployment)
+        url = _web_app_url(deployment)
+        if worker_token:
+            _wait_for_coordinator_version(
+                url,
+                project_name=project_name,
+                worker_token=worker_token,
+            )
+        return deployment_id, url
 
     config = _deployment_config(script_id, version_number, project_name)
     deployment: dict[str, Any] | None = None
+    created = False
     if preferred_id:
         response = session.get(
             f"{SCRIPT_API}/{script_id}/deployments/{preferred_id}",
@@ -457,14 +504,31 @@ def _ensure_deployment(
                 ),
                 "create Apps Script deployment",
             )
+            created = True
     deployment_id = str(deployment.get("deploymentId", ""))
     if not deployment_id:
         raise RuntimeError("Apps Script deployment response omitted deploymentId")
+    if not created:
+        updated = _json_response(
+            session.put(
+                f"{SCRIPT_API}/{script_id}/deployments/{deployment_id}",
+                json=config,
+                timeout=60,
+            ),
+            "update Apps Script deployment",
+        )
+        deployment = {**deployment, **updated}
     url = _web_app_url(deployment)
     if not url or not _web_app_is_reachable(deployment):
         raise RuntimeError(
             "Apps Script deployment has no reachable WEB_APP entry point; authorize the script and create "
             f"one web-app deployment from {_script_editor_url(script_id)}, then retry"
+        )
+    if worker_token:
+        _wait_for_coordinator_version(
+            url,
+            project_name=project_name,
+            worker_token=worker_token,
         )
     return deployment_id, url
 
@@ -513,6 +577,7 @@ def ensure(repo_root: Path, project_name: str, web_app_url_override: str = "") -
         script_id=script_id,
         version_number=version_number,
         project_name=project_name,
+        worker_token=worker_token,
         preferred_id=str(existing.get("deployment_id", "")),
         web_app_url_override=web_app_url_override,
     )

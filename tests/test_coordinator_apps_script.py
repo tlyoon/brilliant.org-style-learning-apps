@@ -36,6 +36,8 @@ class CoordinatorAppsScriptTests(unittest.TestCase):
         self.assertIn("value.status = 'interrupted'", code)
         self.assertIn("value.status === 'interrupted'", code)
         self.assertIn("String(value.worker_id) !== String(workerId)", code)
+        self.assertIn("const COORDINATOR_VERSION = 3", code)
+        self.assertIn("coordinator_version: COORDINATOR_VERSION", code)
         self.assertIn("case 'snapshot'", code)
         self.assertIn("target_state: target ?", code)
         self.assertIn("attempt_count: Number(target.value.attempt_count", code)

@@ -1,3 +1,4 @@
+const COORDINATOR_VERSION = 3;
 const JOB_SHEET = 'Jobs';
 const HEADERS = [
   'project_name', 'job_key', 'drive_file_id', 'source_version', 'subchapter_id', 'relative_path',
@@ -40,7 +41,12 @@ function dispatch_(request) {
 
 function health_(request) {
   sheet_();
-  return {status: 'ok', project_name: request.project_name, checkpoint_configured: Boolean(PropertiesService.getScriptProperties().getProperty('CHECKPOINT_FOLDER_ID'))};
+  return {
+    status: 'ok',
+    project_name: request.project_name,
+    coordinator_version: COORDINATOR_VERSION,
+    checkpoint_configured: Boolean(PropertiesService.getScriptProperties().getProperty('CHECKPOINT_FOLDER_ID'))
+  };
 }
 
 function requireToken_(provided) {

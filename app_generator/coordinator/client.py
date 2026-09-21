@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from typing import Any, Iterable
 
 from app_generator.config import GeneratorConfig
+from app_generator.coordinator.protocol import REQUIRED_COORDINATOR_VERSION
 from app_generator.errors import CoordinatorError, LeaseLostError, NoAvailableJob
 from app_generator.sources.google_drive import ResolvedDriveSource
 
@@ -238,6 +239,14 @@ class CoordinatorClient:
 
     def health(self, *, require_checkpoints: bool = False) -> None:
         body = self._post("health", worker_id=self.worker_id)
+        try:
+            live_version = int(body.get("coordinator_version", 0))
+        except (TypeError, ValueError) as exc:
+            raise CoordinatorError("Coordinator health returned an invalid protocol version") from exc
+        if live_version < REQUIRED_COORDINATOR_VERSION:
+            raise CoordinatorError(
+                f"Live coordinator protocol is v{live_version}; v{REQUIRED_COORDINATOR_VERSION} is required"
+            )
         if require_checkpoints and not bool(body.get("checkpoint_configured")):
             raise CoordinatorError(
                 "Auto mode requires CHECKPOINT_FOLDER_ID in the coordinator Apps Script properties"

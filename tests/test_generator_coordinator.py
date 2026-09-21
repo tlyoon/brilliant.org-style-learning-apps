@@ -5,6 +5,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from app_generator.coordinator.client import CoordinatorClient
+from app_generator.errors import CoordinatorError
 from app_generator.sources.google_drive import PDF_MIME, ResolvedDriveSource
 
 
@@ -67,6 +68,20 @@ class GeneratorCoordinatorTests(unittest.TestCase):
         self.assertEqual("secret", session.request["json"]["token"])
         self.assertEqual("ExampleProject", session.request["json"]["project_name"])
         self.assertEqual(source.file_id, session.request["json"]["candidates"][0]["drive_file_id"])
+
+    def test_health_requires_the_live_coordinator_protocol_version(self):
+        with patch.dict(os.environ, {"TEST_COORDINATOR_TOKEN": "secret"}, clear=False):
+            current = CoordinatorClient(
+                self.config(),
+                session=FakeSession({"ok": True, "coordinator_version": 3}),
+            )
+            current.health()
+            stale = CoordinatorClient(
+                self.config(),
+                session=FakeSession({"ok": True, "coordinator_version": 2}),
+            )
+            with self.assertRaisesRegex(CoordinatorError, "protocol is v2; v3 is required"):
+                stale.health()
 
     def test_snapshot_parses_exact_target_failure_diagnostics(self):
         snapshot = CoordinatorClient._snapshot({
