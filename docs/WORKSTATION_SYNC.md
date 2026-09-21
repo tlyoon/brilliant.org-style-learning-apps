@@ -198,6 +198,6 @@ If the project is already bootstrapped, do not bootstrap again on every PC.
 
 ## Reusing the package for another project
 
-Change `project_name` and other project-dependent values through `config/configure_project.toml` on a reviewed branch. The new project automatically receives its own `%LOCALAPPDATA%\<project_name>` state root, OAuth/token paths, Chrome profile, run state, environment namespace, and managed-coordinator project identity.
+Change `project_name` and other project-dependent values through `config/configure_project.toml` on a reviewed branch. The new project automatically receives its own `%LOCALAPPDATA%\<project_name>` state root, OAuth/token paths, Chrome profile paths, run state, environment namespace, and managed-coordinator project identity. Controlled browser launches open independent regular Chrome directly on Gemini using the separate `gemini-browser` child of `chrome_profile_dir`; legacy and personal profiles are not reused or cleared. The separate profile starts signed out on first use and can retain a manually verified Gemini login for later launches. A Chrome-assigned loopback debug port avoids dependence on an old debug session. Explicit `attach` mode requires an already-open browser and leaves its login unchanged.
 
 See `docs/GENERIC_PROJECT_SETUP.md` for the full recycling procedure.
