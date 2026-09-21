@@ -264,7 +264,8 @@ class CoordinatorDeploymentTests(unittest.TestCase):
         self.assertTrue(get_calls[0].endswith("/non-web-deployment"))
         self.assertEqual(1, len(put_calls))
         self.assertTrue(put_calls[0][0].endswith("/deployments/web-deployment"))
-        self.assertEqual(8, put_calls[0][1]["versionNumber"])
+        self.assertEqual({"deploymentConfig"}, set(put_calls[0][1]))
+        self.assertEqual(8, put_calls[0][1]["deploymentConfig"]["versionNumber"])
 
 
 if __name__ == "__main__":
