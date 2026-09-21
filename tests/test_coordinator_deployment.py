@@ -2,7 +2,11 @@ import unittest
 from unittest.mock import patch
 
 from app_generator.coordinator.managed import ADMIN_SCOPES
-from coordinator.deployment.manage import _ensure_deployment, _web_app_is_reachable
+from coordinator.deployment.manage import (
+    _ensure_deployment,
+    _wait_for_coordinator_version,
+    _web_app_is_reachable,
+)
 
 
 class CoordinatorDeploymentTests(unittest.TestCase):
@@ -153,8 +157,39 @@ class CoordinatorDeploymentTests(unittest.TestCase):
         )
         reachable.assert_not_called()
 
-    def test_inaccessible_preferred_adopts_reachable_web_app_without_updating_it(self):
+    def test_wait_for_coordinator_version_retries_until_live_code_matches(self):
+        class Response:
+            def __init__(self, version):
+                self.version = version
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {"ok": True, "coordinator_version": self.version}
+
+        sleeps = []
+        with patch(
+            "coordinator.deployment.manage.requests.post",
+            side_effect=[Response(2), Response(3)],
+        ) as request:
+            _wait_for_coordinator_version(
+                "https://script.google.com/macros/s/deployment-id/exec",
+                project_name="ManagedProject",
+                worker_token="secret",
+                expected_version=3,
+                timeout_seconds=30,
+                sleeper=sleeps.append,
+            )
+
+        self.assertEqual([5.0], sleeps)
+        self.assertEqual(2, request.call_count)
+        self.assertEqual("health", request.call_args.kwargs["json"]["action"])
+        self.assertEqual("secret", request.call_args.kwargs["json"]["token"])
+
+    def test_inaccessible_preferred_adopts_and_updates_reachable_web_app(self):
         get_calls = []
+        put_calls = []
         web_app_url = "https://script.google.com/macros/s/web-deployment/exec"
 
         class Response:
@@ -172,7 +207,13 @@ class CoordinatorDeploymentTests(unittest.TestCase):
 
         class Session:
             def put(self, url, *, json, timeout):
-                raise AssertionError("reachable web-app deployments must not be updated")
+                put_calls.append((url, json, timeout))
+                return Response({
+                    "deploymentId": "web-deployment",
+                    "entryPoints": [
+                        {"entryPointType": "WEB_APP", "webApp": {"url": web_app_url}}
+                    ],
+                })
 
             def get(self, url, *, timeout):
                 get_calls.append(url)
@@ -221,6 +262,9 @@ class CoordinatorDeploymentTests(unittest.TestCase):
         self.assertEqual(web_app_url, url)
         self.assertEqual(2, len(get_calls))
         self.assertTrue(get_calls[0].endswith("/non-web-deployment"))
+        self.assertEqual(1, len(put_calls))
+        self.assertTrue(put_calls[0][0].endswith("/deployments/web-deployment"))
+        self.assertEqual(8, put_calls[0][1]["versionNumber"])
 
 
 if __name__ == "__main__":

@@ -38,6 +38,8 @@ The GitHub Actions deployment creates or reuses project-scoped resources identif
 - one managed web-app deployment;
 - a private `learning-app-coordinator-runtime.json` Drive record containing the runtime URL/token/resource IDs.
 
+On a protocol upgrade, the deployer publishes a new Apps Script version, updates the existing web-app deployment to that version, and waits for authenticated live health to report the required protocol before writing current runtime metadata.
+
 Normal worker OAuth remains Drive-readonly. Each PC discovers the private runtime record, injects the worker token only into its current process environment, and verifies live coordinator health before any queue operation.
 
 ### Simultaneous PCs
