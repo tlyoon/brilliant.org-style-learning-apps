@@ -187,10 +187,10 @@ class CoordinatorDeploymentTests(unittest.TestCase):
         self.assertEqual("health", request.call_args.kwargs["json"]["action"])
         self.assertEqual("secret", request.call_args.kwargs["json"]["token"])
 
-    def test_inaccessible_preferred_adopts_and_updates_reachable_web_app(self):
+    def test_list_fallback_prefers_recorded_deployment_among_multiple_web_apps(self):
         get_calls = []
         put_calls = []
-        web_app_url = "https://script.google.com/macros/s/web-deployment/exec"
+        recorded_url = "https://script.google.com/macros/s/recorded-deployment/exec"
 
         class Response:
             status_code = 200
@@ -209,37 +209,34 @@ class CoordinatorDeploymentTests(unittest.TestCase):
             def put(self, url, *, json, timeout):
                 put_calls.append((url, json, timeout))
                 return Response({
-                    "deploymentId": "web-deployment",
+                    "deploymentId": "recorded-deployment",
                     "entryPoints": [
-                        {"entryPointType": "WEB_APP", "webApp": {"url": web_app_url}}
+                        {"entryPointType": "WEB_APP", "webApp": {"url": recorded_url}}
                     ],
                 })
 
             def get(self, url, *, timeout):
                 get_calls.append(url)
-                if url.endswith("/non-web-deployment"):
-                    return Response(
-                        {
-                            "deploymentId": "non-web-deployment",
-                            "entryPoints": [
-                                {
-                                    "entryPointType": "WEB_APP",
-                                    "webApp": {
-                                        "url": "https://script.google.com/macros/s/inaccessible/exec"
-                                    },
-                                }
-                            ],
-                        }
-                    )
+                if url.endswith("/recorded-deployment"):
+                    return Response({"deploymentId": "recorded-deployment"})
                 return Response(
                     {
                         "deployments": [
-                            {"deploymentId": "non-web-deployment"},
                             {
-                                "deploymentId": "web-deployment",
-                                "deploymentConfig": {"description": "Manually deployed web app"},
+                                "deploymentId": "recorded-deployment",
                                 "entryPoints": [
-                                    {"entryPointType": "WEB_APP", "webApp": {"url": web_app_url}}
+                                    {"entryPointType": "WEB_APP", "webApp": {"url": recorded_url}}
+                                ],
+                            },
+                            {
+                                "deploymentId": "historical-deployment",
+                                "entryPoints": [
+                                    {
+                                        "entryPointType": "WEB_APP",
+                                        "webApp": {
+                                            "url": "https://script.google.com/macros/s/historical/exec"
+                                        },
+                                    }
                                 ],
                             },
                         ]
@@ -248,22 +245,22 @@ class CoordinatorDeploymentTests(unittest.TestCase):
 
         with patch(
             "coordinator.deployment.manage._web_app_is_reachable",
-            side_effect=lambda deployment: deployment.get("deploymentId") == "web-deployment",
+            side_effect=lambda deployment: bool(deployment.get("entryPoints")),
         ):
             deployment_id, url = _ensure_deployment(
                 Session(),
                 script_id="script-id",
                 version_number=8,
                 project_name="ManagedProject",
-                preferred_id="non-web-deployment",
+                preferred_id="recorded-deployment",
             )
 
-        self.assertEqual("web-deployment", deployment_id)
-        self.assertEqual(web_app_url, url)
+        self.assertEqual("recorded-deployment", deployment_id)
+        self.assertEqual(recorded_url, url)
         self.assertEqual(2, len(get_calls))
-        self.assertTrue(get_calls[0].endswith("/non-web-deployment"))
+        self.assertTrue(get_calls[0].endswith("/recorded-deployment"))
         self.assertEqual(1, len(put_calls))
-        self.assertTrue(put_calls[0][0].endswith("/deployments/web-deployment"))
+        self.assertTrue(put_calls[0][0].endswith("/deployments/recorded-deployment"))
         self.assertEqual({"deploymentConfig"}, set(put_calls[0][1]))
         self.assertEqual(8, put_calls[0][1]["deploymentConfig"]["versionNumber"])
 

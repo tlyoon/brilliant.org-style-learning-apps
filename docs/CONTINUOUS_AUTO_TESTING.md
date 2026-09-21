@@ -63,7 +63,7 @@ Other worker PCs do not repeat bootstrap. Verify readiness with:
 & $py -m app_generator coordinator-ensure --config $config
 ```
 
-There is no normal requirement to manually paste `Code.gs`, create the ledger/checkpoint folder, or configure Apps Script properties on each PC in managed mode. During a protocol upgrade, the serialized workflow updates the existing web-app deployment to the new Apps Script version and waits until authenticated live health reports the required version before publishing current runtime metadata. If the update or health check fails, the workflow stops without publishing replacement runtime metadata.
+There is no normal requirement to manually paste `Code.gs`, create the ledger/checkpoint folder, or configure Apps Script properties on each PC in managed mode. During a protocol upgrade, the serialized workflow updates the web-app deployment recorded in the private runtime metadata—even when historical deployments also exist—and waits until authenticated live health reports the required version before publishing current runtime metadata. If the update or health check fails, the workflow stops without publishing replacement runtime metadata.
 
 ## Verify each PC before a multi-PC run
 

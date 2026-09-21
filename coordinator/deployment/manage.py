@@ -485,16 +485,28 @@ def _ensure_deployment(
                 for item in deployments
                 if isinstance(item, dict) and _web_app_is_reachable(item)
             ]
-            matching = [
-                item
-                for item in reachable_web_apps
-                if str(item.get("deploymentConfig", {}).get("description", "")) == config["description"]
-            ]
-            candidates = matching or reachable_web_apps
-            if len(candidates) > 1:
-                raise RuntimeError("Multiple Apps Script web-app deployments match this project")
-            if candidates:
-                deployment = candidates[0]
+            recorded = next(
+                (
+                    item
+                    for item in reachable_web_apps
+                    if preferred_id and str(item.get("deploymentId", "")) == preferred_id
+                ),
+                None,
+            )
+            if recorded is not None:
+                deployment = recorded
+            else:
+                matching = [
+                    item
+                    for item in reachable_web_apps
+                    if str(item.get("deploymentConfig", {}).get("description", ""))
+                    == config["description"]
+                ]
+                candidates = matching or reachable_web_apps
+                if len(candidates) > 1:
+                    raise RuntimeError("Multiple Apps Script web-app deployments match this project")
+                if candidates:
+                    deployment = candidates[0]
         if deployment is None:
             deployment = _json_response(
                 session.post(
