@@ -145,6 +145,16 @@ def _log_generation_exception(
     LOGGER.exception("Generation run failed", extra=details)
 
 
+def _restart_automation_browser(
+    chrome_factory: Callable[[GeneratorConfig], ChromeSession],
+    config: GeneratorConfig,
+) -> tuple[ChromeSession, object]:
+    """Reopen the already authenticated isolated profile without another manual pause."""
+
+    browser = chrome_factory(config)
+    return browser, browser.start()
+
+
 def run_generation(
     config: GeneratorConfig,
     *,
@@ -354,10 +364,10 @@ def run_generation(
                                 )
                             recovery_source = temporary_source
 
-                        browser = chrome_factory(active_config)
-                        browser.open_window()
-                        browser.wait_for_manual_sign_in()
-                        driver = browser.start()
+                        browser, driver = _restart_automation_browser(
+                            chrome_factory,
+                            active_config,
+                        )
                         store.transition(RunPhase.CHROME_STARTED)
                         replacement = client_factory(driver, active_config)
                         replacement.open_editor_and_verify_account()
