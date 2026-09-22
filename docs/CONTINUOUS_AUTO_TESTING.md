@@ -195,6 +195,6 @@ The recovery command requires an exact current Drive source match and a terminal
 - `Configuration file does not exist: project.local.toml` — pass `--config` with the filename printed by `sync-workstation.cmd`.
 - `Managed coordinator: missing` — bootstrap once on a trusted administrator PC if the project has never been provisioned.
 - coordinator health failure — run `coordinator-ensure`; managed mode may request the serialized repair/deployment workflow.
-- transient Apps Script redirect or Drive timeout — the worker retries the same bounded request before changing job state.
+- transient Apps Script redirect (including an empty result body) or Drive timeout — the worker retries the same bounded result/read request before changing job state and never replays the original coordinator action.
 - transient Gemini restart — after the initial operator-approved sign-in, recovery reopens the authenticated automation profile without another manual sign-in pause.
 - dirty/diverged Git — resolve intentionally before starting auto mode; do not reset blindly.
