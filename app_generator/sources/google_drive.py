@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import os
 import re
-import hashlib
+import time
 from collections import deque
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 from urllib.parse import parse_qs, urlparse
 
 from app_generator.errors import DriveAccessError, SourceAmbiguous, SourceDownloadError, SourceNotFound
@@ -113,17 +114,36 @@ def _item(payload: dict[str, Any]) -> DriveItem:
 class DriveRestClient:
     """Small Drive v3 REST adapter using an authorized requests session."""
 
-    def __init__(self, session: Any, timeout: int) -> None:
+    def __init__(
+        self,
+        session: Any,
+        timeout: int,
+        *,
+        sleeper: Callable[[float], None] = time.sleep,
+    ) -> None:
         self.session = session
         self.timeout = timeout
+        self.sleeper = sleeper
 
     def _json(self, url: str, *, params: dict[str, str | bool]) -> dict[str, Any]:
-        try:
-            response = self.session.get(url, params=params, timeout=self.timeout)
-            response.raise_for_status()
-            payload = response.json()
-        except Exception as exc:
-            raise DriveAccessError(f"Google Drive request failed: {exc}") from exc
+        payload: Any = None
+        for attempt in range(3):
+            try:
+                response = self.session.get(url, params=params, timeout=self.timeout)
+                response.raise_for_status()
+                payload = response.json()
+                break
+            except Exception as exc:
+                if attempt == 2:
+                    raise DriveAccessError(
+                        f"Google Drive request failed after 3 attempts: {exc}"
+                    ) from exc
+                LOGGER.warning(
+                    "Retrying transient Google Drive request (%s/3): %s",
+                    attempt + 1,
+                    exc,
+                )
+                self.sleeper(float(2 ** attempt))
         if not isinstance(payload, dict):
             raise DriveAccessError("Google Drive returned an unexpected response")
         return payload

@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import os
+import time
 import warnings
 from dataclasses import dataclass
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
 from app_generator.config import GeneratorConfig
 from app_generator.coordinator.protocol import REQUIRED_COORDINATOR_VERSION
@@ -62,7 +63,13 @@ class FailedJobRetry:
 
 
 class CoordinatorClient:
-    def __init__(self, config: GeneratorConfig, *, session: Any | None = None) -> None:
+    def __init__(
+        self,
+        config: GeneratorConfig,
+        *,
+        session: Any | None = None,
+        sleeper: Callable[[float], None] = time.sleep,
+    ) -> None:
         token = os.environ.get(config.coordinator_token_env, "").strip()
         if not token and config.project_name == "BrilliantContentGenerator":
             token = os.environ.get("BRILLIANT_COORDINATOR_TOKEN", "").strip()
@@ -91,6 +98,7 @@ class CoordinatorClient:
         self.lease_seconds = config.lease_seconds
         self.max_job_attempts = config.max_job_attempts
         self.session = session
+        self.sleeper = sleeper
 
     def _post(self, action: str, **payload: Any) -> dict[str, Any]:
         request = {
@@ -101,6 +109,21 @@ class CoordinatorClient:
         }
         try:
             response = self.session.post(self.url, json=request, timeout=self.timeout)
+            redirect_url = str(getattr(response, "url", ""))
+            if (
+                getattr(response, "status_code", 0) == 404
+                and redirect_url.startswith("https://script.googleusercontent.com/")
+            ):
+                for attempt in range(2):
+                    self.sleeper(float(2 ** attempt))
+                    try:
+                        response = self.session.get(redirect_url, timeout=self.timeout)
+                    except Exception:
+                        if attempt == 1:
+                            raise
+                        continue
+                    if getattr(response, "status_code", 0) != 404:
+                        break
             response.raise_for_status()
             body = response.json()
         except Exception as exc:

@@ -77,6 +77,40 @@ class GeneratorGoogleDriveTests(unittest.TestCase):
         self.assertEqual(expected, extract_drive_folder_id(f"https://drive.google.com/open?id={expected}"))
         self.assertEqual(expected, extract_drive_folder_id(f"https://drive.google.com/drive/folders/{expected}"))
 
+    def test_transient_drive_timeout_is_retried(self):
+        class JsonResponse:
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {
+                    "id": "folder-id-value",
+                    "name": "Folder",
+                    "mimeType": FOLDER_MIME,
+                }
+
+        class FlakySession:
+            def __init__(self):
+                self.calls = 0
+
+            def get(self, *args, **kwargs):
+                del args, kwargs
+                self.calls += 1
+                if self.calls == 1:
+                    raise TimeoutError("temporary Drive timeout")
+                return JsonResponse()
+
+        session = FlakySession()
+        sleeps = []
+        with self.assertLogs("app_generator.sources.google_drive", level="WARNING"):
+            item = DriveRestClient(session, 1, sleeper=sleeps.append).get_item(
+                "folder-id-value"
+            )
+
+        self.assertEqual("folder-id-value", item.file_id)
+        self.assertEqual(2, session.calls)
+        self.assertEqual([1.0], sleeps)
+
     def test_recursive_resolution_matches_an_exact_folder_component(self):
         source = resolve_drive_source(
             FakeDriveClient(self.tree()),

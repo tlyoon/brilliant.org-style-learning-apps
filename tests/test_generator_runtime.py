@@ -6,11 +6,37 @@ from unittest.mock import patch
 
 from app_generator.errors import GeneratorError, NoAvailableJob
 from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts
-from app_generator.runtime.orchestrator import _log_generation_exception
+from app_generator.runtime.orchestrator import (
+    _log_generation_exception,
+    _restart_automation_browser,
+)
 from app_generator.runtime.state import RunPhase, StateStore
 
 
 class GeneratorRuntimeTests(unittest.TestCase):
+    def test_transient_restart_reopens_automation_without_manual_sign_in(self):
+        events = []
+
+        class Browser:
+            def start(self):
+                events.append("start")
+                return "driver"
+
+            def open_window(self):
+                raise AssertionError("transient restart must not open a manual sign-in window")
+
+            def wait_for_manual_sign_in(self):
+                raise AssertionError("transient restart must not pause for operator input")
+
+        browser, driver = _restart_automation_browser(
+            lambda config: Browser(),
+            SimpleNamespace(),
+        )
+
+        self.assertIsInstance(browser, Browser)
+        self.assertEqual("driver", driver)
+        self.assertEqual(["start"], events)
+
     def test_failed_run_can_resume_but_completed_run_cannot(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "state.json"
