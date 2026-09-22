@@ -16,7 +16,7 @@ from app_generator.coordinator.client import CoordinatorClient, JobLease
 from app_generator.coordinator.drive import DriveCoordinatorClient
 from app_generator.coordinator.heartbeat import LeaseGuard
 from app_generator.coordinator.checkpoints import CoordinatorCheckpointStore
-from app_generator.errors import AutoJobExecutionError, NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, ValidationFailure
+from app_generator.errors import AutoJobExecutionError, NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, UiContractError, ValidationFailure
 from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts, write_json_atomic
 from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
 from app_generator.generation.documents import render_learning_design, render_review_record, render_section_readme
@@ -155,6 +155,35 @@ def _restart_automation_browser(
 
     browser = chrome_factory(config)
     return browser, browser.start()
+
+
+def _configure_gem_with_session_recovery(
+    browser: ChromeSession,
+    client: GeminiClient,
+    config: GeneratorConfig,
+    *,
+    chrome_factory: Callable[[GeneratorConfig], ChromeSession],
+    client_factory: Callable[[object, GeneratorConfig], GeminiClient],
+    lease_guard: LeaseGuard | None = None,
+) -> tuple[ChromeSession, GeminiClient]:
+    """Retry Gem configuration once in a fresh authenticated browser session."""
+
+    try:
+        client.configure_gem()
+        return browser, client
+    except UiContractError:
+        LOGGER.warning(
+            "Gem editor contract was unavailable in the attached Chrome session; "
+            "restarting the isolated browser once"
+        )
+        if lease_guard is not None:
+            lease_guard.ensure_owned()
+        browser.close()
+        replacement_browser, driver = _restart_automation_browser(chrome_factory, config)
+        replacement = client_factory(driver, config)
+        replacement.open_editor_and_verify_account()
+        replacement.configure_gem()
+        return replacement_browser, replacement
 
 
 def run_generation(
@@ -341,7 +370,14 @@ def run_generation(
                 client = client_factory(driver, active_config)
                 client.open_editor_and_verify_account()
                 store.transition(RunPhase.GOOGLE_ACCOUNT_VERIFIED)
-                client.configure_gem()
+                browser, client = _configure_gem_with_session_recovery(
+                    browser,
+                    client,
+                    active_config,
+                    chrome_factory=chrome_factory,
+                    client_factory=client_factory,
+                    lease_guard=lease_guard,
+                )
                 store.transition(RunPhase.GEM_CONFIG_CHECKED)
                 client.open_conversation_select_model_and_attach(tuple(source.path for source in sources))
                 store.transition(RunPhase.MODEL_SELECTED, actual_model=client.actual_model)
