@@ -110,11 +110,17 @@ class CoordinatorClient:
         try:
             response = self.session.post(self.url, json=request, timeout=self.timeout)
             redirect_url = str(getattr(response, "url", ""))
-            if (
-                getattr(response, "status_code", 0) == 404
-                and redirect_url.startswith("https://script.googleusercontent.com/")
-            ):
-                for attempt in range(2):
+            for attempt in range(3):
+                try:
+                    response.raise_for_status()
+                    body = response.json()
+                    break
+                except Exception:
+                    if (
+                        attempt == 2
+                        or not redirect_url.startswith("https://script.googleusercontent.com/")
+                    ):
+                        raise
                     self.sleeper(float(2 ** attempt))
                     try:
                         response = self.session.get(redirect_url, timeout=self.timeout)
@@ -122,10 +128,6 @@ class CoordinatorClient:
                         if attempt == 1:
                             raise
                         continue
-                    if getattr(response, "status_code", 0) != 404:
-                        break
-            response.raise_for_status()
-            body = response.json()
         except Exception as exc:
             raise CoordinatorError(f"Coordinator request {action!r} failed: {exc}") from exc
         if not isinstance(body, dict):

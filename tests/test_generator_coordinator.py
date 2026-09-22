@@ -105,6 +105,44 @@ class GeneratorCoordinatorTests(unittest.TestCase):
         self.assertEqual(1, session.get_calls)
         self.assertEqual([1.0], sleeps)
 
+    def test_transient_empty_redirect_result_is_retried_without_reposting_action(self):
+        class EmptyRedirectResult:
+            url = "https://script.googleusercontent.com/macros/echo?result=temporary"
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                raise ValueError("empty response")
+
+        class FlakySession:
+            def __init__(self):
+                self.post_calls = 0
+                self.get_calls = 0
+
+            def post(self, url, json, timeout):
+                del url, json, timeout
+                self.post_calls += 1
+                return EmptyRedirectResult()
+
+            def get(self, url, timeout):
+                del url, timeout
+                self.get_calls += 1
+                return FakeResponse({"ok": True, "coordinator_version": 3})
+
+        session = FlakySession()
+        sleeps = []
+        with patch.dict(os.environ, {"TEST_COORDINATOR_TOKEN": "secret"}, clear=False):
+            CoordinatorClient(
+                self.config(),
+                session=session,
+                sleeper=sleeps.append,
+            ).health()
+
+        self.assertEqual(1, session.post_calls)
+        self.assertEqual(1, session.get_calls)
+        self.assertEqual([1.0], sleeps)
+
     def test_health_requires_the_live_coordinator_protocol_version(self):
         with patch.dict(os.environ, {"TEST_COORDINATOR_TOKEN": "secret"}, clear=False):
             current = CoordinatorClient(
