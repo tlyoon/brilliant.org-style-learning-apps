@@ -4,6 +4,8 @@ The coordinator is now **repository-managed infrastructure** by default. Worker 
 
 The Apps Script web application still serializes only short job-claim/update operations. Gemini generation remains concurrent across worker PCs.
 
+Protocol v4 gives every worker operation a unique request ID. State-changing results are retained as bounded Script Properties receipts while the script lock is held, so a worker may safely replay the same request after an empty response or transport timeout without duplicating the operation. Receipts contain only the project name, action, token-free request hash, small result object, timestamp, and request ID key; tokens, checkpoint documents, source material, and generated content are never stored in receipts.
+
 ## Managed mode (default)
 
 Managed mode is selected when `coordinator_url` is empty. The repository owns:

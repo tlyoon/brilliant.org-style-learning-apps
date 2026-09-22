@@ -31,12 +31,27 @@ class CoordinatorAppsScriptTests(unittest.TestCase):
         self.assertIn("function migrateLegacySheet_(sheet)", code)
         self.assertIn("sheet.insertColumnBefore(1)", code)
 
+    def test_protocol_v4_replays_durable_request_receipts_under_the_script_lock(self):
+        code = self.code()
+        self.assertIn("const COORDINATOR_VERSION = 4", code)
+        self.assertIn("const RECEIPT_LIMIT = 100", code)
+        self.assertIn("function requestHash_(request)", code)
+        self.assertIn("delete value.token", code)
+        self.assertIn("function requestReceipt_(request)", code)
+        self.assertIn("request_hash: requestHash_(request)", code)
+        self.assertIn("function saveRequestReceipt_(request, result)", code)
+        self.assertIn("function pruneRequestReceipts_(properties)", code)
+        self.assertIn("const replay = requestReceipt_(request)", code)
+        self.assertIn("saveRequestReceipt_(request, result)", code)
+        self.assertIn("State-changing coordinator actions require a valid request_id", code)
+        self.assertNotIn("token: request.token", code)
+
     def test_auto_mode_has_interrupted_priority_and_checkpoint_contract(self):
         code = self.code()
         self.assertIn("value.status = 'interrupted'", code)
         self.assertIn("value.status === 'interrupted'", code)
         self.assertIn("String(value.worker_id) !== String(workerId)", code)
-        self.assertIn("const COORDINATOR_VERSION = 3", code)
+        self.assertIn("const COORDINATOR_VERSION = 4", code)
         self.assertIn("coordinator_version: COORDINATOR_VERSION", code)
         self.assertIn("case 'snapshot'", code)
         self.assertIn("target_state: target ?", code)
