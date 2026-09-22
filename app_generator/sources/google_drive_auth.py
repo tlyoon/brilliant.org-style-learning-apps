@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import tempfile
 from dataclasses import dataclass
@@ -11,7 +12,7 @@ from typing import Any
 from app_generator.config import GeneratorConfig
 from app_generator.errors import DriveAccessError, DriveAuthenticationError, WrongAccountError
 
-DRIVE_READONLY_SCOPE = "https://www.googleapis.com/auth/drive.readonly"
+DRIVE_SCOPE = "https://www.googleapis.com/auth/drive"
 DRIVE_ABOUT_URL = "https://www.googleapis.com/drive/v3/about"
 
 
@@ -44,7 +45,7 @@ def _write_token_atomic(path: Path, payload: str) -> None:
 
 
 def authorize_google_drive(config: GeneratorConfig) -> DriveAuthorization:
-    """Authorize Drive read-only access and verify the configured account."""
+    """Authorize writable Drive access for sources plus Drive-native auto coordination."""
 
     if not config.drive_oauth_client_file.is_file():
         raise DriveAuthenticationError(
@@ -64,19 +65,29 @@ def authorize_google_drive(config: GeneratorConfig) -> DriveAuthorization:
     credentials = None
     try:
         if config.drive_token_file.is_file():
-            credentials = Credentials.from_authorized_user_file(
-                str(config.drive_token_file),
-                scopes=[DRIVE_READONLY_SCOPE],
-            )
+            try:
+                stored = json.loads(config.drive_token_file.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                stored = {}
+            stored_scopes = stored.get("scopes", []) if isinstance(stored, dict) else []
+            if isinstance(stored_scopes, str):
+                stored_scopes = stored_scopes.split()
+            if DRIVE_SCOPE in stored_scopes:
+                credentials = Credentials.from_authorized_user_file(
+                    str(config.drive_token_file),
+                    scopes=[DRIVE_SCOPE],
+                )
+            else:
+                credentials = None
         if credentials and credentials.expired and credentials.refresh_token:
             credentials.refresh(Request())
         if not credentials or not credentials.valid:
             flow = InstalledAppFlow.from_client_secrets_file(
                 str(config.drive_oauth_client_file),
-                scopes=[DRIVE_READONLY_SCOPE],
+                scopes=[DRIVE_SCOPE],
             )
             print(
-                "Authorize read-only Google Drive access in the browser window. "
+                "Authorize Google Drive read/write access in the browser window. "
                 f"Use {config.oauth_login}."
             )
             credentials = flow.run_local_server(

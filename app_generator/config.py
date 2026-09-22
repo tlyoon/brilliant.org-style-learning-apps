@@ -37,6 +37,7 @@ DEFAULTS: dict[str, Any] = {
     "selection_mode": "specific",
     "worker_id": socket.gethostname().casefold(),
     "coordinator_url": "",
+    "coordination_backend": "drive",
     "coordinator_management": "github_actions",
     "coordinator_workflow": "ensure-coordinator.yml",
     "coordinator_ensure_timeout_seconds": 600,
@@ -114,6 +115,7 @@ class GeneratorConfig:
     selection_mode: str
     worker_id: str
     coordinator_url: str
+    coordination_backend: str
     coordinator_management: str
     coordinator_workflow: str
     coordinator_ensure_timeout_seconds: int
@@ -479,6 +481,9 @@ def load_config(
     selection_mode = str(values["selection_mode"]).strip().casefold()
     if selection_mode not in {"specific", "auto", "distributed"}:
         raise ConfigurationError("selection_mode must be specific, auto, or distributed")
+    coordination_backend = str(values.get("coordination_backend", "drive")).strip().casefold()
+    if coordination_backend not in {"drive", "cloud"}:
+        raise ConfigurationError("coordination_backend must be drive or cloud")
     coordinator_management = str(values.get("coordinator_management", "github_actions")).strip().casefold()
     if coordinator_management not in {"external", "github_actions"}:
         raise ConfigurationError("coordinator_management must be external or github_actions")
@@ -491,20 +496,23 @@ def load_config(
     if coordinator_url:
         coordinator_management = "external"
     if selection_mode in {"auto", "distributed"}:
-        if coordinator_management == "external" or coordinator_url:
-            parsed_coordinator = urlparse(coordinator_url)
-            if parsed_coordinator.scheme != "https" or parsed_coordinator.hostname not in {
-                "script.google.com", "script.googleusercontent.com",
-            }:
-                raise ConfigurationError(
-                    f"{selection_mode.capitalize()} mode with an external coordinator requires an HTTPS Google Apps Script coordinator_url"
-                )
         if source_files:
             raise ConfigurationError(f"{selection_mode.capitalize()} mode discovers its source jobs from Google Drive")
         if not bool(values["git_publish"]):
             raise ConfigurationError(
                 f"{selection_mode.capitalize()} mode requires git_publish=true so a claimed job is durably handed off"
             )
+    if selection_mode == "auto" and coordination_backend != "drive":
+        raise ConfigurationError("Auto mode requires coordination_backend=drive; legacy cloud coordination is retained for distributed mode")
+    if selection_mode == "distributed":
+        if coordinator_management == "external" or coordinator_url:
+            parsed_coordinator = urlparse(coordinator_url)
+            if parsed_coordinator.scheme != "https" or parsed_coordinator.hostname not in {
+                "script.google.com", "script.googleusercontent.com",
+            }:
+                raise ConfigurationError(
+                    "Distributed mode with an external coordinator requires an HTTPS Google Apps Script coordinator_url"
+                )
     coordinator_ensure_timeout_seconds = int(values["coordinator_ensure_timeout_seconds"])
     coordinator_timeout_seconds = int(values["coordinator_timeout_seconds"])
     lease_seconds = int(values["lease_seconds"])
@@ -586,6 +594,7 @@ def load_config(
         selection_mode=selection_mode,
         worker_id=worker_id,
         coordinator_url=coordinator_url,
+        coordination_backend=coordination_backend,
         coordinator_management=coordinator_management,
         coordinator_workflow=coordinator_workflow,
         coordinator_ensure_timeout_seconds=coordinator_ensure_timeout_seconds,

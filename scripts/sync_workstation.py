@@ -54,7 +54,7 @@ ALLOWED_PROJECT_KEYS = {
     "google_drive": {"drive_api_timeout_seconds", "max_drive_folders"},
     "source_tree": {"source_id_prefix"},
     "automation": {
-        "selection_mode", "coordinator_url", "coordinator_token_env",
+        "selection_mode", "coordination_backend", "coordinator_url", "coordinator_token_env",
         "coordinator_timeout_seconds", "lease_seconds", "heartbeat_seconds",
         "max_job_attempts",
     },

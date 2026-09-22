@@ -27,16 +27,6 @@ class RecordingCheckpoint:
 
 
 class ContinuousAutoTests(unittest.TestCase):
-    def setUp(self):
-        # These tests isolate the continuous queue loop. Managed coordinator live-health
-        # behavior has dedicated coverage in test_managed_coordinator.py.
-        patcher = patch(
-            "app_generator.runtime.auto.ensure_coordinator_ready",
-            side_effect=lambda config: config,
-        )
-        patcher.start()
-        self.addCleanup(patcher.stop)
-
     def config(self, *, git_publish=True):
         return SimpleNamespace(
             heartbeat_seconds=300,
@@ -153,7 +143,7 @@ class ContinuousAutoTests(unittest.TestCase):
         with patch("app_generator.runtime.auto.GitPublisher", return_value=publisher), \
              patch("app_generator.runtime.auto._drive_inventory", return_value=(source,)), \
              patch("app_generator.runtime.auto._base_completed", return_value=set()), \
-             patch("app_generator.runtime.auto.CoordinatorClient", return_value=coordinator):
+             patch("app_generator.runtime.auto.DriveCoordinatorClient", return_value=coordinator):
             result = retry_failed_auto_job(self.config(), target_subchapter_id="9.1")
         self.assertEqual(("9.1", 3, "LEASE_EXPIRED"), result)
 
@@ -170,7 +160,7 @@ class ContinuousAutoTests(unittest.TestCase):
         with patch("app_generator.runtime.auto.GitPublisher", return_value=publisher), \
              patch("app_generator.runtime.auto._drive_inventory", return_value=(source,)), \
              patch("app_generator.runtime.auto._base_completed", return_value=set()), \
-             patch("app_generator.runtime.auto.CoordinatorClient", return_value=coordinator):
+             patch("app_generator.runtime.auto.DriveCoordinatorClient", return_value=coordinator):
             with self.assertRaisesRegex(AutoModeBlockedError, "not one terminally failed"):
                 retry_failed_auto_job(self.config(), target_subchapter_id="9.1")
 

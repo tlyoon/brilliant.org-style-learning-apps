@@ -8,7 +8,7 @@ import os
 import re
 import time
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Callable, Iterable
 from urllib.parse import parse_qs, urlparse
@@ -19,6 +19,7 @@ LOGGER = logging.getLogger("app_generator.sources.google_drive")
 DRIVE_FILES_URL = "https://www.googleapis.com/drive/v3/files"
 FOLDER_MIME = "application/vnd.google-apps.folder"
 PDF_MIME = "application/pdf"
+APPGEN_STATE_FOLDER_NAME = "_appgen_state"
 DRIVE_ID = re.compile(r"^[A-Za-z0-9_-]{10,}$")
 SUBCHAPTER_ID = re.compile(r"^(?P<chapter>[1-9][0-9]*)\.(?P<section>[1-9][0-9]*)$")
 
@@ -46,6 +47,8 @@ class ResolvedDriveSource:
     subchapter_id: str
     modified_time: str | None = None
     version: str | None = None
+    parent_folder_id: str | None = None
+    corpus_job_key: str | None = None
 
     @property
     def source_version(self) -> str:
@@ -53,8 +56,13 @@ class ResolvedDriveSource:
 
     @property
     def job_key(self) -> str:
+        if self.corpus_job_key:
+            return self.corpus_job_key
         material = f"{self.file_id}:{self.source_version}".encode("utf-8")
         return hashlib.sha256(material).hexdigest()
+
+    def with_corpus_job_key(self, job_key: str) -> "ResolvedDriveSource":
+        return replace(self, corpus_job_key=job_key)
 
     def metadata(self) -> dict[str, str | int]:
         result: dict[str, str | int] = {
@@ -272,6 +280,8 @@ def discover_drive_sources(
             )
         for child in client.list_children(folder_id):
             if child.mime_type == FOLDER_MIME:
+                if child.name == APPGEN_STATE_FOLDER_NAME:
+                    continue
                 queue.append((child.file_id, relative_folder + (child.name,)))
                 continue
             if child.name.casefold() != target_filename.casefold() or child.mime_type != PDF_MIME:
@@ -294,8 +304,83 @@ def discover_drive_sources(
                     subchapter_id=relative_folder[-1],
                     modified_time=child.modified_time,
                     version=child.version,
+                    parent_folder_id=folder_id,
                 )
             )
+    return tuple(sorted(candidates, key=_source_sort_key))
+
+
+def discover_drive_sources_with_corpus_keys(
+    client: DriveRestClient,
+    *,
+    sourcepath: str,
+    target_filename: str,
+    max_folders: int,
+) -> tuple[ResolvedDriveSource, ...]:
+    """Discover anchors and full sibling-PDF corpus identities in one Drive traversal."""
+
+    root_id = extract_drive_folder_id(sourcepath)
+    root = client.get_item(root_id)
+    if root.mime_type != FOLDER_MIME:
+        raise DriveAccessError(f"sourcepath resolves to {root.name!r}, which is not a folder")
+    queue: deque[tuple[str, tuple[str, ...]]] = deque([(root_id, ())])
+    visited: set[str] = set()
+    candidates: list[ResolvedDriveSource] = []
+    while queue:
+        folder_id, relative_folder = queue.popleft()
+        if folder_id in visited:
+            continue
+        visited.add(folder_id)
+        if len(visited) > max_folders:
+            raise DriveAccessError(
+                f"Drive traversal exceeded the configured max_drive_folders limit ({max_folders})"
+            )
+        children = client.list_children(folder_id)
+        for child in children:
+            if child.mime_type == FOLDER_MIME and child.name != APPGEN_STATE_FOLDER_NAME:
+                queue.append((child.file_id, relative_folder + (child.name,)))
+        if not relative_folder or not SUBCHAPTER_ID.fullmatch(relative_folder[-1]):
+            continue
+        pdfs = [child for child in children if child.mime_type == PDF_MIME]
+        anchors = [child for child in pdfs if child.name.casefold() == target_filename.casefold()]
+        if not anchors:
+            continue
+        for child in pdfs:
+            if child.can_download is False:
+                raise SourceDownloadError(
+                    "Google Drive reports that downloading is disabled for "
+                    + "/".join(relative_folder + (child.name,))
+                )
+        corpus = tuple(sorted((
+            ResolvedDriveSource(
+                file_id=child.file_id,
+                filename=child.name,
+                relative_path="/".join(relative_folder + (child.name,)),
+                mime_type=child.mime_type,
+                size_bytes=child.size_bytes,
+                md5_checksum=child.md5_checksum,
+                subchapter_id=relative_folder[-1],
+                modified_time=child.modified_time,
+                version=child.version,
+                parent_folder_id=folder_id,
+            )
+            for child in pdfs
+        ), key=lambda item: (item.filename.casefold(), item.file_id)))
+        corpus_key = topic_corpus_job_key(corpus)
+        for child in anchors:
+            candidates.append(ResolvedDriveSource(
+                file_id=child.file_id,
+                filename=child.name,
+                relative_path="/".join(relative_folder + (child.name,)),
+                mime_type=child.mime_type,
+                size_bytes=child.size_bytes,
+                md5_checksum=child.md5_checksum,
+                subchapter_id=relative_folder[-1],
+                modified_time=child.modified_time,
+                version=child.version,
+                parent_folder_id=folder_id,
+                corpus_job_key=corpus_key,
+            ))
     return tuple(sorted(candidates, key=_source_sort_key))
 
 
@@ -333,6 +418,8 @@ def discover_topic_corpus(
             )
         for child in client.list_children(folder_id):
             if child.mime_type == FOLDER_MIME:
+                if child.name == APPGEN_STATE_FOLDER_NAME:
+                    continue
                 queue.append((child.file_id, relative_folder + (child.name,)))
                 continue
             if relative_folder != target_folder or child.mime_type != PDF_MIME:
@@ -348,6 +435,7 @@ def discover_topic_corpus(
                 mime_type=child.mime_type, size_bytes=child.size_bytes,
                 md5_checksum=child.md5_checksum, subchapter_id=anchor.subchapter_id,
                 modified_time=child.modified_time, version=child.version,
+                parent_folder_id=folder_id,
             ))
     if not members:
         raise SourceNotFound(f"No PDF source corpus was found for {pdf_subchapter_path!r}")
@@ -360,6 +448,21 @@ def topic_corpus_job_key(sources: tuple[ResolvedDriveSource, ...]) -> str:
         f"{source.file_id}:{source.source_version}" for source in sources
     ).encode("utf-8")
     return hashlib.sha256(material).hexdigest()
+
+
+def bind_corpus_job_keys(
+    client: DriveRestClient,
+    sources: tuple[ResolvedDriveSource, ...],
+    *, sourcepath: str, target_filename: str, max_folders: int,
+) -> tuple[ResolvedDriveSource, ...]:
+    """Bind each anchor to the full sibling-PDF corpus identity used by auto mode."""
+    return tuple(
+        source.with_corpus_job_key(topic_corpus_job_key(discover_topic_corpus(
+            client, sourcepath=sourcepath, pdf_subchapter_path=source.subchapter_id,
+            target_filename=target_filename, max_folders=max_folders,
+        )))
+        for source in sources
+    )
 
 
 def resolve_drive_source(

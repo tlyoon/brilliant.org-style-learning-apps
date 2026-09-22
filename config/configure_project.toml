@@ -40,8 +40,9 @@ legacy_environment_prefix = "BRILLIANT_GENERATOR_"
 
 [automation]
 selection_mode = "specific"
-# An empty coordinator_url selects repository-managed coordinator infrastructure.
-# Existing projects with an explicit Apps Script URL continue to use external mode.
+coordination_backend = "drive"
+# Default auto mode uses Drive-native coordination and ignores coordinator_url.
+# coordinator_url is retained only for legacy cloud/distributed coordination.
 coordinator_url = ""
 coordinator_token_env = "${PROJECT_ENV_PREFIX}_COORDINATOR_TOKEN"
 coordinator_timeout_seconds = 30

@@ -13,6 +13,7 @@ from typing import Callable
 from app_generator.browser.chrome import ChromeSession
 from app_generator.config import GeneratorConfig
 from app_generator.coordinator.client import CoordinatorClient, JobLease
+from app_generator.coordinator.drive import DriveCoordinatorClient
 from app_generator.coordinator.heartbeat import LeaseGuard
 from app_generator.coordinator.checkpoints import CoordinatorCheckpointStore
 from app_generator.errors import AutoJobExecutionError, NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, ValidationFailure
@@ -30,6 +31,7 @@ from app_generator.runtime.targeting import restrict_inventory_to_subchapter
 from app_generator.sources.google_drive import (
     DriveRestClient,
     ResolvedDriveSource,
+    discover_drive_sources_with_corpus_keys,
     discover_drive_sources,
     discover_topic_corpus,
     resolve_drive_source,
@@ -165,6 +167,7 @@ def run_generation(
     drive_authorizer: Callable[[GeneratorConfig], DriveAuthorization] = authorize_google_drive,
     drive_client_factory: Callable[[object, int], DriveRestClient] = DriveRestClient,
     coordinator_factory: Callable[[GeneratorConfig], CoordinatorClient] = CoordinatorClient,
+    auto_coordinator_factory: Callable[[GeneratorConfig], DriveCoordinatorClient] = DriveCoordinatorClient,
     publisher_factory: Callable[[GeneratorConfig], GitPublisher] = GitPublisher,
 ) -> RunContext:
     if resume_run_id and (config.selection_mode in {"auto", "distributed"} or config.git_publish):
@@ -186,7 +189,7 @@ def run_generation(
         temporary_source: Path | None = None
         temporary_sources: list[Path] = []
         browser: ChromeSession | None = None
-        coordinator: CoordinatorClient | None = None
+        coordinator: CoordinatorClient | DriveCoordinatorClient | None = None
         lease: JobLease | None = None
         lease_guard: LeaseGuard | None = None
         active_config = config
@@ -202,11 +205,20 @@ def run_generation(
                 store.transition(RunPhase.DRIVE_AUTHENTICATED)
                 drive_client = drive_client_factory(authorization.session, config.drive_api_timeout_seconds)
                 if config.selection_mode in {"auto", "distributed"}:
-                    inventory = discover_drive_sources(
-                        drive_client,
-                        sourcepath=config.sourcepath,
-                        target_filename=config.target_filename,
-                        max_folders=config.max_drive_folders,
+                    inventory = (
+                        discover_drive_sources_with_corpus_keys(
+                            drive_client,
+                            sourcepath=config.sourcepath,
+                            target_filename=config.target_filename,
+                            max_folders=config.max_drive_folders,
+                        )
+                        if config.selection_mode == "auto"
+                        else discover_drive_sources(
+                            drive_client,
+                            sourcepath=config.sourcepath,
+                            target_filename=config.target_filename,
+                            max_folders=config.max_drive_folders,
+                        )
                     )
                     if config.selection_mode == "auto":
                         inventory = restrict_inventory_to_subchapter(
@@ -214,7 +226,11 @@ def run_generation(
                             auto_target_subchapter_id,
                         )
                     store.transition(RunPhase.DRIVE_INVENTORIED)
-                    coordinator = coordinator_factory(config)
+                    coordinator = (
+                        auto_coordinator_factory(config)
+                        if config.selection_mode == "auto"
+                        else coordinator_factory(config)
+                    )
                     if config.selection_mode == "auto":
                         local_completed = {
                             source.job_key
