@@ -525,6 +525,7 @@ class GeneratorConversationTests(unittest.TestCase):
     def test_transient_error_phrase_family_covers_observed_gemini_variants(self):
         messages = (
             "I encountered an error doing what you asked. Could you try again?",
+            "Sorry, something went wrong. Please try your request again.",
             "I seem to be encountering an error. Can I try something else for you?",
             "I'm having a hard time fulfilling your request. Can I help you with something else instead?",
             "I’m having a hard time fulfilling your request. Can I help with something else?",
