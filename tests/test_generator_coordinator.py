@@ -90,7 +90,7 @@ class GeneratorCoordinatorTests(unittest.TestCase):
             def get(self, url, timeout):
                 del url, timeout
                 self.get_calls += 1
-                return FakeResponse({"ok": True, "coordinator_version": 3})
+                return FakeResponse({"ok": True, "coordinator_version": 4})
 
         session = FlakySession()
         sleeps = []
@@ -128,7 +128,7 @@ class GeneratorCoordinatorTests(unittest.TestCase):
             def get(self, url, timeout):
                 del url, timeout
                 self.get_calls += 1
-                return FakeResponse({"ok": True, "coordinator_version": 3})
+                return FakeResponse({"ok": True, "coordinator_version": 4})
 
         session = FlakySession()
         sleeps = []
@@ -143,18 +143,78 @@ class GeneratorCoordinatorTests(unittest.TestCase):
         self.assertEqual(1, session.get_calls)
         self.assertEqual([1.0], sleeps)
 
+    def test_empty_post_response_replays_same_protocol_v4_request(self):
+        class EmptyResponse:
+            url = "https://script.google.com/macros/s/test/exec"
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                raise ValueError("empty response")
+
+        class FlakySession:
+            def __init__(self):
+                self.requests = []
+
+            def post(self, url, json, timeout):
+                del url, timeout
+                self.requests.append(dict(json))
+                if len(self.requests) == 1:
+                    return EmptyResponse()
+                return FakeResponse({"ok": True, "coordinator_version": 4})
+
+        session = FlakySession()
+        sleeps = []
+        with patch.dict(os.environ, {"TEST_COORDINATOR_TOKEN": "secret"}, clear=False):
+            CoordinatorClient(
+                self.config(),
+                session=session,
+                sleeper=sleeps.append,
+            ).health()
+
+        self.assertEqual(2, len(session.requests))
+        self.assertEqual(session.requests[0]["request_id"], session.requests[1]["request_id"])
+        self.assertEqual(4, session.requests[0]["protocol_version"])
+        self.assertEqual([1.0], sleeps)
+
+    def test_post_timeout_replays_same_protocol_v4_request(self):
+        class FlakySession:
+            def __init__(self):
+                self.requests = []
+
+            def post(self, url, json, timeout):
+                del url, timeout
+                self.requests.append(dict(json))
+                if len(self.requests) == 1:
+                    raise TimeoutError("coordinator timed out")
+                return FakeResponse({"ok": True, "coordinator_version": 4})
+
+        session = FlakySession()
+        sleeps = []
+        with patch.dict(os.environ, {"TEST_COORDINATOR_TOKEN": "secret"}, clear=False):
+            CoordinatorClient(
+                self.config(),
+                session=session,
+                sleeper=sleeps.append,
+            ).health()
+
+        self.assertEqual(2, len(session.requests))
+        self.assertEqual(session.requests[0]["request_id"], session.requests[1]["request_id"])
+        self.assertEqual([1.0], sleeps)
+
     def test_health_requires_the_live_coordinator_protocol_version(self):
         with patch.dict(os.environ, {"TEST_COORDINATOR_TOKEN": "secret"}, clear=False):
             current = CoordinatorClient(
                 self.config(),
-                session=FakeSession({"ok": True, "coordinator_version": 3}),
+                session=FakeSession({"ok": True, "coordinator_version": 4}),
             )
             current.health()
             stale = CoordinatorClient(
                 self.config(),
-                session=FakeSession({"ok": True, "coordinator_version": 2}),
+                session=FakeSession({"ok": True, "coordinator_version": 3}),
             )
-            with self.assertRaisesRegex(CoordinatorError, "protocol is v2; v3 is required"):
+            with self.assertRaisesRegex(CoordinatorError, "protocol is v3; v4 is required"):
                 stale.health()
 
     def test_snapshot_parses_exact_target_failure_diagnostics(self):

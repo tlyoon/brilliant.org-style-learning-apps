@@ -7,6 +7,7 @@ import time
 import warnings
 from dataclasses import dataclass
 from typing import Any, Callable, Iterable
+from uuid import uuid4
 
 from app_generator.config import GeneratorConfig
 from app_generator.coordinator.protocol import REQUIRED_COORDINATOR_VERSION
@@ -100,34 +101,46 @@ class CoordinatorClient:
         self.session = session
         self.sleeper = sleeper
 
+    def _response_json(self, response: Any) -> Any:
+        redirect_url = str(getattr(response, "url", ""))
+        for attempt in range(3):
+            try:
+                response.raise_for_status()
+                return response.json()
+            except Exception:
+                if (
+                    attempt == 2
+                    or not redirect_url.startswith("https://script.googleusercontent.com/")
+                ):
+                    raise
+                self.sleeper(float(2 ** attempt))
+                try:
+                    response = self.session.get(redirect_url, timeout=self.timeout)
+                except Exception:
+                    if attempt == 1:
+                        raise
+                    continue
+        raise CoordinatorError("Coordinator response retry loop ended unexpectedly")
+
     def _post(self, action: str, **payload: Any) -> dict[str, Any]:
         request = {
             "action": action,
+            "request_id": uuid4().hex,
+            "protocol_version": REQUIRED_COORDINATOR_VERSION,
             "token": self.token,
             "project_name": self.project_name,
             **payload,
         }
         try:
-            response = self.session.post(self.url, json=request, timeout=self.timeout)
-            redirect_url = str(getattr(response, "url", ""))
             for attempt in range(3):
                 try:
-                    response.raise_for_status()
-                    body = response.json()
+                    response = self.session.post(self.url, json=request, timeout=self.timeout)
+                    body = self._response_json(response)
                     break
                 except Exception:
-                    if (
-                        attempt == 2
-                        or not redirect_url.startswith("https://script.googleusercontent.com/")
-                    ):
+                    if attempt == 2:
                         raise
                     self.sleeper(float(2 ** attempt))
-                    try:
-                        response = self.session.get(redirect_url, timeout=self.timeout)
-                    except Exception:
-                        if attempt == 1:
-                            raise
-                        continue
         except Exception as exc:
             raise CoordinatorError(f"Coordinator request {action!r} failed: {exc}") from exc
         if not isinstance(body, dict):

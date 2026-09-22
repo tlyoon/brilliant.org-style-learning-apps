@@ -1,4 +1,4 @@
-const COORDINATOR_VERSION = 3;
+const COORDINATOR_VERSION = 4;
 const JOB_SHEET = 'Jobs';
 const HEADERS = [
   'project_name', 'job_key', 'drive_file_id', 'source_version', 'subchapter_id', 'relative_path',
@@ -6,6 +6,12 @@ const HEADERS = [
   'branch', 'pr_url', 'error_code', 'error_message', 'updated_at'
 ];
 const LEGACY_HEADERS = HEADERS.slice(1);
+const RECEIPT_ACTIONS = [
+  'claim', 'snapshot', 'heartbeat', 'review_pending', 'generated', 'failed', 'retry_failed',
+  'completed', 'checkpoint_save', 'checkpoint_delete', 'checkpoint_clear'
+];
+const RECEIPT_PREFIX = 'REQUEST_RECEIPT:';
+const RECEIPT_LIMIT = 100;
 
 function doPost(e) {
   try {
@@ -21,22 +27,101 @@ function doPost(e) {
 }
 
 function dispatch_(request) {
+  return withLock_(() => {
+    const replay = requestReceipt_(request);
+    if (replay !== null) return replay;
+    const result = dispatchUnlocked_(request);
+    saveRequestReceipt_(request, result);
+    return result;
+  });
+}
+
+function dispatchUnlocked_(request) {
   switch (request.action) {
-    case 'health': return withLock_(() => health_(request));
-    case 'claim': return withLock_(() => claim_(request));
-    case 'snapshot': return withLock_(() => snapshot_(request));
-    case 'heartbeat': return withLock_(() => heartbeat_(request));
-    case 'review_pending': return withLock_(() => updateStatus_(request, 'review_pending'));
-    case 'generated': return withLock_(() => updateStatus_(request, 'generated'));
-    case 'failed': return withLock_(() => fail_(request));
-    case 'retry_failed': return withLock_(() => retryFailed_(request));
-    case 'completed': return withLock_(() => complete_(request));
-    case 'checkpoint_save': return withLock_(() => checkpointSave_(request));
-    case 'checkpoint_load': return withLock_(() => checkpointLoad_(request));
-    case 'checkpoint_delete': return withLock_(() => checkpointDelete_(request));
-    case 'checkpoint_clear': return withLock_(() => checkpointClear_(request));
+    case 'health': return health_(request);
+    case 'claim': return claim_(request);
+    case 'snapshot': return snapshot_(request);
+    case 'heartbeat': return heartbeat_(request);
+    case 'review_pending': return updateStatus_(request, 'review_pending');
+    case 'generated': return updateStatus_(request, 'generated');
+    case 'failed': return fail_(request);
+    case 'retry_failed': return retryFailed_(request);
+    case 'completed': return complete_(request);
+    case 'checkpoint_save': return checkpointSave_(request);
+    case 'checkpoint_load': return checkpointLoad_(request);
+    case 'checkpoint_delete': return checkpointDelete_(request);
+    case 'checkpoint_clear': return checkpointClear_(request);
     default: throw coded_('INVALID_ACTION', 'Unsupported coordinator action');
   }
+}
+
+function receiptAction_(action) {
+  return RECEIPT_ACTIONS.includes(String(action || ''));
+}
+
+function requestId_(request) {
+  const requestId = String(request.request_id || '');
+  if (!/^[A-Za-z0-9_-]{16,128}$/.test(requestId)) {
+    throw coded_('INVALID_REQUEST', 'State-changing coordinator actions require a valid request_id');
+  }
+  return requestId;
+}
+
+function requestHash_(request) {
+  const value = {...request};
+  delete value.token;
+  const digest = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    JSON.stringify(value)
+  );
+  return Utilities.base64EncodeWebSafe(digest);
+}
+
+function requestReceipt_(request) {
+  if (!receiptAction_(request.action)) return null;
+  const requestId = requestId_(request);
+  const raw = PropertiesService.getScriptProperties().getProperty(RECEIPT_PREFIX + requestId);
+  if (!raw) return null;
+  let receipt;
+  try {
+    receipt = JSON.parse(raw);
+  } catch (error) {
+    throw coded_('INVALID_RECEIPT', 'Stored coordinator request receipt is unreadable');
+  }
+  if (String(receipt.project_name) !== String(request.project_name) ||
+      String(receipt.action) !== String(request.action) ||
+      String(receipt.request_hash) !== requestHash_(request)) {
+    throw coded_('REQUEST_ID_REUSED', 'Coordinator request_id was reused for a different operation');
+  }
+  return receipt.result;
+}
+
+function saveRequestReceipt_(request, result) {
+  if (!receiptAction_(request.action)) return;
+  const requestId = requestId_(request);
+  const properties = PropertiesService.getScriptProperties();
+  properties.setProperty(RECEIPT_PREFIX + requestId, JSON.stringify({
+    project_name: request.project_name,
+    action: request.action,
+    request_hash: requestHash_(request),
+    result: result,
+    created_at: new Date().toISOString()
+  }));
+  pruneRequestReceipts_(properties);
+}
+
+function pruneRequestReceipts_(properties) {
+  const receipts = Object.entries(properties.getProperties())
+    .filter(entry => entry[0].startsWith(RECEIPT_PREFIX))
+    .map(entry => {
+      try {
+        return {key: entry[0], created_at: String(JSON.parse(entry[1]).created_at || '')};
+      } catch (error) {
+        return {key: entry[0], created_at: ''};
+      }
+    })
+    .sort((left, right) => right.created_at.localeCompare(left.created_at));
+  receipts.slice(RECEIPT_LIMIT).forEach(receipt => properties.deleteProperty(receipt.key));
 }
 
 function health_(request) {
