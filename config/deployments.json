@@ -44,6 +44,14 @@
       "deployed": true
     },
     {
+      "appId": "section-8-4",
+      "label": "Section 8.4",
+      "packagePath": "content/chapter-8/section-8-4/package.json",
+      "deploymentRepository": "tlyoon/section-8-1-learning-app",
+      "publicUrl": "https://tlyoon.github.io/section-8-1-learning-app/section-8-4/",
+      "deployed": true
+    },
+    {
       "appId": "section-8-5",
       "label": "Section 8.5",
       "packagePath": "content/chapter-8/section-8-5/package.json",

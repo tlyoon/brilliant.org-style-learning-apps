@@ -81,3 +81,5 @@ Earlier decisions and PRs remain useful provenance, but interpret them against c
 - any historical statement that `config/project.toml` is the current user-facing authority is superseded by the actual current-main configuration path above unless/until a future explicitly merged migration changes it.
 
 Shared conversations and imported files are provenance, not authoritative specifications. Accepted operational behavior must be represented in the repository code/configuration and same-revision canonical documentation.
+
+Accepted Section 8.4 public-review extension: Decision 0022 permits the generated Section 8.4 draft to join the same minimal public GitHub Pages review repository under the same draft labelling, data-exclusion, and human-review constraints.

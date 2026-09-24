@@ -6,6 +6,7 @@ from pathlib import Path
 from scripts.build_section_8_1_public_release import (
     build,
     section_eight_five_package,
+    section_eight_four_package,
     section_eight_three_package,
     section_eight_two_package,
     version_one_package,
@@ -34,11 +35,13 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
                 "v2/index.html",
                 "section-8-2/index.html",
                 "section-8-3/index.html",
+                "section-8-4/index.html",
                 "section-8-5/index.html",
                 "content/v1/package.json",
                 "content/v2/package.json",
                 "content/section-8-2/package.json",
                 "content/section-8-3/package.json",
+                "content/section-8-4/package.json",
                 "content/section-8-5/package.json",
             }, actual_files)
 
@@ -102,6 +105,21 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
             self.assertEqual("draft", deployed["status"])
             self.assertEqual(18, len(deployed["activities"]))
 
+    def test_section_eight_four_uses_the_current_draft_package(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory) / "release"
+            build(output)
+            deployed = json.loads(
+                (output / "content/section-8-4/package.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                section_eight_four_package(),
+                (output / "content/section-8-4/package.json").read_bytes(),
+            )
+            self.assertEqual("chapter-8-section-8-4", deployed["packageId"])
+            self.assertEqual("draft", deployed["status"])
+            self.assertEqual(18, len(deployed["activities"]))
+
     def test_section_eight_five_uses_the_current_draft_package(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
@@ -126,6 +144,7 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
             self.assertIn('href="v2/"', landing)
             self.assertIn('href="section-8-2/"', landing)
             self.assertIn('href="section-8-3/"', landing)
+            self.assertIn('href="section-8-4/"', landing)
             self.assertIn('href="section-8-5/"', landing)
             self.assertIn("none are approved for publication", landing)
             for version in ("v1", "v2"):
@@ -143,6 +162,12 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
             self.assertIn(
                 'data-package-url="../content/section-8-3/package.json"',
                 section_eight_three,
+            )
+            section_eight_four = (output / "section-8-4/index.html").read_text(encoding="utf-8")
+            self.assertIn("Draft review prototype", section_eight_four)
+            self.assertIn(
+                'data-package-url="../content/section-8-4/package.json"',
+                section_eight_four,
             )
             section_eight_five = (output / "section-8-5/index.html").read_text(encoding="utf-8")
             self.assertIn("Draft review prototype", section_eight_five)
