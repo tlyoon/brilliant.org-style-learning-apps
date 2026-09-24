@@ -89,7 +89,8 @@ class GeminiClient:
         )
         return self.actual_model
 
-    def ask(self, prompt: str) -> str:
+    def ask(self, prompt: str, *, stage: str | None = None) -> str:
+        del stage  # Browser/Gem mode relies on prompt contracts and repository validation.
         while True:
             try:
                 response = self.conversation.ask(prompt)
@@ -155,10 +156,12 @@ class RecoveringGeminiClient:
         except Exception as exc:
             LOGGER.warning("Could not capture transient Gemini failure screenshot: %s", exc)
 
-    def ask(self, prompt: str) -> str:
+    def ask(self, prompt: str, *, stage: str | None = None) -> str:
         while True:
             try:
-                return self.client.ask(prompt)
+                if stage is None:
+                    return self.client.ask(prompt)
+                return self.client.ask(prompt, stage=stage)
             except TransientGeminiError:
                 self._capture_transient_error()
                 if self.restart_count >= self.max_restarts:

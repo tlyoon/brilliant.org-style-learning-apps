@@ -17,7 +17,7 @@ TRANSIENT_ERROR_PHRASES = (
     "i seem to be encountering an error",
     "i encountered an error doing what you asked",
     "having a hard time fulfilling your request",
-    "something went wrong while generating",
+    "something went wrong",
 )
 
 

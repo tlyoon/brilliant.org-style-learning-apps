@@ -123,7 +123,7 @@ Generated packages absent from the registry are still shown as not deployed. See
 
 `app_generator/` contains the Python 3.12/Google Drive/Selenium workflow. Current selection modes are `specific`, `auto`, and `distributed`.
 
-Continuous `auto` mode coordinates multiple PCs, recovers interrupted jobs from durable checkpoints, requires durable Git handoff, and uses repository-managed coordinator infrastructure when `automation.coordinator_url` is empty. One trusted administrator PC performs the project-wide `coordinator-bootstrap`; ordinary worker PCs do not repeat it.
+Continuous `auto` mode coordinates multiple PCs directly through small marker/event files stored beside the PDFs in each Google Drive subchapter folder. The default `automation.coordination_backend = "drive"` requires no Apps Script deployment, coordinator token, Sheet, or Google Cloud bootstrap. It uses deterministic Drive claim election, lease fencing, append-only parsed-stage checkpoints, and durable Git handoff. The legacy cloud coordinator remains available for `distributed` mode and explicitly selected compatibility workflows. See `docs/DRIVE_NATIVE_AUTO_COORDINATION.md`.
 
 Auto mode has two operator forms:
 
@@ -131,11 +131,11 @@ Auto mode has two operator forms:
 # unrestricted continuous auto
 python -m app_generator run --config .\<generated-local-config>.toml --selection-mode auto
 
-# coordinator-protected single target
+# Drive-lease-protected single target
 python -m app_generator run --config .\<generated-local-config>.toml --selection-mode auto --pdf-subchapter-path 8.6
 ```
 
-The targeted form still acquires the coordinator lease for the requested section. It waits if another worker owns that target, never falls through to a different section, and exits after the target is globally successful. Use it instead of ordinary `specific` mode when another coordinated worker may be active on the same project.
+The targeted form acquires the same Drive-native lease for the requested section. It waits if another worker owns that target, never falls through to a different section, and exits after the target is globally successful. Use it instead of ordinary `specific` mode when another auto worker may be active on the same project.
 
 Generated content remains draft until qualified human review.
 
@@ -147,6 +147,6 @@ The tracked project authority is:
 config/configure_project.toml
 ```
 
-`sync-workstation.cmd` derives project slug/environment namespace, checkout path, state root, OAuth/token locations, Chrome profile, coordinator identity, and run-state paths per PC.
+`sync-workstation.cmd` derives project slug/environment namespace, checkout path, state root, OAuth/token locations, Chrome profile, Drive coordination identity, and run-state paths per PC.
 
 Credentials, source PDFs, browser profiles, tokens, and run data remain outside Git.

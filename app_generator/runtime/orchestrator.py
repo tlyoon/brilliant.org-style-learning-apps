@@ -13,11 +13,13 @@ from typing import Callable
 from app_generator.browser.chrome import ChromeSession
 from app_generator.config import GeneratorConfig
 from app_generator.coordinator.client import CoordinatorClient, JobLease
+from app_generator.coordinator.drive import DriveCoordinatorClient
 from app_generator.coordinator.heartbeat import LeaseGuard
 from app_generator.coordinator.checkpoints import CoordinatorCheckpointStore
-from app_generator.errors import AutoJobExecutionError, NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, ValidationFailure
+from app_generator.errors import AutoJobExecutionError, NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, UiContractError, ValidationFailure
 from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts, write_json_atomic
 from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
+from app_generator.llm.gemini_api import GeminiApiClient
 from app_generator.generation.documents import render_learning_design, render_review_record, render_section_readme
 from app_generator.generation.metadata import apply_source_metadata, materialize_source_metadata
 from app_generator.generation.protocol import GenerationProtocol
@@ -30,6 +32,7 @@ from app_generator.runtime.targeting import restrict_inventory_to_subchapter
 from app_generator.sources.google_drive import (
     DriveRestClient,
     ResolvedDriveSource,
+    discover_drive_sources_with_corpus_keys,
     discover_drive_sources,
     discover_topic_corpus,
     resolve_drive_source,
@@ -155,6 +158,35 @@ def _restart_automation_browser(
     return browser, browser.start()
 
 
+def _configure_gem_with_session_recovery(
+    browser: ChromeSession,
+    client: GeminiClient,
+    config: GeneratorConfig,
+    *,
+    chrome_factory: Callable[[GeneratorConfig], ChromeSession],
+    client_factory: Callable[[object, GeneratorConfig], GeminiClient],
+    lease_guard: LeaseGuard | None = None,
+) -> tuple[ChromeSession, GeminiClient]:
+    """Retry Gem configuration once in a fresh authenticated browser session."""
+
+    try:
+        client.configure_gem()
+        return browser, client
+    except UiContractError:
+        LOGGER.warning(
+            "Gem editor contract was unavailable in the attached Chrome session; "
+            "restarting the isolated browser once"
+        )
+        if lease_guard is not None:
+            lease_guard.ensure_owned()
+        browser.close()
+        replacement_browser, driver = _restart_automation_browser(chrome_factory, config)
+        replacement = client_factory(driver, config)
+        replacement.open_editor_and_verify_account()
+        replacement.configure_gem()
+        return replacement_browser, replacement
+
+
 def run_generation(
     config: GeneratorConfig,
     *,
@@ -162,9 +194,11 @@ def run_generation(
     auto_target_subchapter_id: str | None = None,
     chrome_factory: Callable[[GeneratorConfig], ChromeSession] = ChromeSession,
     client_factory: Callable[[object, GeneratorConfig], GeminiClient] = GeminiClient,
+    api_client_factory: Callable[[GeneratorConfig, tuple[Path, ...]], GeminiApiClient] = GeminiApiClient,
     drive_authorizer: Callable[[GeneratorConfig], DriveAuthorization] = authorize_google_drive,
     drive_client_factory: Callable[[object, int], DriveRestClient] = DriveRestClient,
     coordinator_factory: Callable[[GeneratorConfig], CoordinatorClient] = CoordinatorClient,
+    auto_coordinator_factory: Callable[[GeneratorConfig], DriveCoordinatorClient] = DriveCoordinatorClient,
     publisher_factory: Callable[[GeneratorConfig], GitPublisher] = GitPublisher,
 ) -> RunContext:
     if resume_run_id and (config.selection_mode in {"auto", "distributed"} or config.git_publish):
@@ -186,7 +220,7 @@ def run_generation(
         temporary_source: Path | None = None
         temporary_sources: list[Path] = []
         browser: ChromeSession | None = None
-        coordinator: CoordinatorClient | None = None
+        coordinator: CoordinatorClient | DriveCoordinatorClient | None = None
         lease: JobLease | None = None
         lease_guard: LeaseGuard | None = None
         active_config = config
@@ -202,11 +236,20 @@ def run_generation(
                 store.transition(RunPhase.DRIVE_AUTHENTICATED)
                 drive_client = drive_client_factory(authorization.session, config.drive_api_timeout_seconds)
                 if config.selection_mode in {"auto", "distributed"}:
-                    inventory = discover_drive_sources(
-                        drive_client,
-                        sourcepath=config.sourcepath,
-                        target_filename=config.target_filename,
-                        max_folders=config.max_drive_folders,
+                    inventory = (
+                        discover_drive_sources_with_corpus_keys(
+                            drive_client,
+                            sourcepath=config.sourcepath,
+                            target_filename=config.target_filename,
+                            max_folders=config.max_drive_folders,
+                        )
+                        if config.selection_mode == "auto"
+                        else discover_drive_sources(
+                            drive_client,
+                            sourcepath=config.sourcepath,
+                            target_filename=config.target_filename,
+                            max_folders=config.max_drive_folders,
+                        )
                     )
                     if config.selection_mode == "auto":
                         inventory = restrict_inventory_to_subchapter(
@@ -214,7 +257,11 @@ def run_generation(
                             auto_target_subchapter_id,
                         )
                     store.transition(RunPhase.DRIVE_INVENTORIED)
-                    coordinator = coordinator_factory(config)
+                    coordinator = (
+                        auto_coordinator_factory(config)
+                        if config.selection_mode == "auto"
+                        else coordinator_factory(config)
+                    )
                     if config.selection_mode == "auto":
                         local_completed = {
                             source.job_key
@@ -317,91 +364,119 @@ def run_generation(
                     )
                     store.transition(RunPhase.GIT_BRANCH_PREPARED, branch=branch)
 
-                browser = chrome_factory(active_config)
-                browser.open_window()
-                browser.wait_for_manual_sign_in()
-                driver = browser.start()
-                store.transition(RunPhase.CHROME_STARTED)
-                client = client_factory(driver, active_config)
-                client.open_editor_and_verify_account()
-                store.transition(RunPhase.GOOGLE_ACCOUNT_VERIFIED)
-                client.configure_gem()
-                store.transition(RunPhase.GEM_CONFIG_CHECKED)
-                client.open_conversation_select_model_and_attach(tuple(source.path for source in sources))
-                store.transition(RunPhase.MODEL_SELECTED, actual_model=client.actual_model)
-                store.transition(RunPhase.SOURCE_ATTACHED)
-                if temporary_sources:
-                    for path in temporary_sources:
-                        _remove_temporary_source(path, context.sources)
-                    temporary_sources = []
-                    temporary_source = None
-                    store.transition(RunPhase.TEMPORARY_SOURCE_REMOVED)
+                if active_config.llm_backend == "gemini_api":
+                    api_client = api_client_factory(
+                        active_config,
+                        tuple(source.path for source in sources),
+                    )
+                    api_client.prepare()
+                    generation_client = api_client
+                    store.update(
+                        llm_backend="gemini_api",
+                        prompt_sha256=api_client.prompt_sha256,
+                    )
+                    store.transition(RunPhase.MODEL_SELECTED, actual_model=api_client.actual_model)
+                    store.transition(RunPhase.SOURCE_ATTACHED)
+                    if temporary_sources:
+                        for path in temporary_sources:
+                            _remove_temporary_source(path, context.sources)
+                        temporary_sources = []
+                        temporary_source = None
+                        store.transition(RunPhase.TEMPORARY_SOURCE_REMOVED)
+                else:
+                    browser = chrome_factory(active_config)
+                    browser.open_window()
+                    browser.wait_for_manual_sign_in()
+                    driver = browser.start()
+                    store.transition(RunPhase.CHROME_STARTED)
+                    client = client_factory(driver, active_config)
+                    client.open_editor_and_verify_account()
+                    store.transition(RunPhase.GOOGLE_ACCOUNT_VERIFIED)
+                    browser, client = _configure_gem_with_session_recovery(
+                        browser,
+                        client,
+                        active_config,
+                        chrome_factory=chrome_factory,
+                        client_factory=client_factory,
+                        lease_guard=lease_guard,
+                    )
+                    store.transition(RunPhase.GEM_CONFIG_CHECKED)
+                    client.open_conversation_select_model_and_attach(tuple(source.path for source in sources))
+                    store.transition(RunPhase.MODEL_SELECTED, actual_model=client.actual_model)
+                    store.transition(RunPhase.SOURCE_ATTACHED)
+                    if temporary_sources:
+                        for path in temporary_sources:
+                            _remove_temporary_source(path, context.sources)
+                        temporary_sources = []
+                        temporary_source = None
+                        store.transition(RunPhase.TEMPORARY_SOURCE_REMOVED)
 
-                def restart_gemini_session() -> GeminiClient:
-                    nonlocal browser, temporary_source, temporary_sources
-                    if lease_guard is not None:
-                        lease_guard.ensure_owned()
-                    if browser is not None:
-                        browser.close()
-                        browser = None
-                    store.transition(RunPhase.GEMINI_SESSION_RESTARTING)
+                    def restart_gemini_session() -> GeminiClient:
+                        nonlocal browser, temporary_source, temporary_sources
+                        if lease_guard is not None:
+                            lease_guard.ensure_owned()
+                        if browser is not None:
+                            browser.close()
+                            browser = None
+                        store.transition(RunPhase.GEMINI_SESSION_RESTARTING)
 
-                    recovery_source = sources[0].path
-                    session_ready = False
-                    try:
-                        if drive_source is not None:
-                            assert drive_client is not None
-                            temporary_sources = [
-                                drive_client.download_file(item, context.sources / item.filename)
-                                for item in drive_corpus
-                            ]
-                            temporary_source = temporary_sources[0]
-                            store.transition(RunPhase.SOURCE_DOWNLOADED)
-                            recovery_sources = inspect_sources(tuple(temporary_sources))
-                            if [item.metadata() for item in recovery_sources] != current_source_metadata:
-                                raise SourceSetMismatch(
-                                    "The controlled source corpus changed before Gemini session recovery"
-                                )
-                            recovery_source = temporary_source
+                        recovery_source = sources[0].path
+                        session_ready = False
+                        try:
+                            if drive_source is not None:
+                                assert drive_client is not None
+                                temporary_sources = [
+                                    drive_client.download_file(item, context.sources / item.filename)
+                                    for item in drive_corpus
+                                ]
+                                temporary_source = temporary_sources[0]
+                                store.transition(RunPhase.SOURCE_DOWNLOADED)
+                                recovery_sources = inspect_sources(tuple(temporary_sources))
+                                if [item.metadata() for item in recovery_sources] != current_source_metadata:
+                                    raise SourceSetMismatch(
+                                        "The controlled source corpus changed before Gemini session recovery"
+                                    )
+                                recovery_source = temporary_source
 
-                        browser, driver = _restart_automation_browser(
-                            chrome_factory,
-                            active_config,
-                        )
-                        store.transition(RunPhase.CHROME_STARTED)
-                        replacement = client_factory(driver, active_config)
-                        replacement.open_editor_and_verify_account()
-                        store.transition(RunPhase.GOOGLE_ACCOUNT_VERIFIED)
-                        replacement.configure_gem()
-                        store.transition(RunPhase.GEM_CONFIG_CHECKED)
-                        replacement.open_conversation_select_model_and_attach(
-                            tuple(source.path for source in recovery_sources)
-                            if drive_source is not None else recovery_source
-                        )
-                        store.transition(
-                            RunPhase.MODEL_SELECTED,
-                            actual_model=replacement.actual_model,
-                        )
-                        store.transition(RunPhase.SOURCE_ATTACHED)
-                        session_ready = True
-                        return replacement
-                    finally:
-                        if temporary_sources:
-                            for path in temporary_sources:
-                                _remove_temporary_source(path, context.sources)
-                            temporary_sources = []
-                            temporary_source = None
-                            store.transition(RunPhase.TEMPORARY_SOURCE_REMOVED)
-                        if session_ready:
-                            store.transition(RunPhase.GENERATING)
+                            browser, driver = _restart_automation_browser(
+                                chrome_factory,
+                                active_config,
+                            )
+                            store.transition(RunPhase.CHROME_STARTED)
+                            replacement = client_factory(driver, active_config)
+                            replacement.open_editor_and_verify_account()
+                            store.transition(RunPhase.GOOGLE_ACCOUNT_VERIFIED)
+                            replacement.configure_gem()
+                            store.transition(RunPhase.GEM_CONFIG_CHECKED)
+                            replacement.open_conversation_select_model_and_attach(
+                                tuple(source.path for source in recovery_sources)
+                                if drive_source is not None else recovery_source
+                            )
+                            store.transition(
+                                RunPhase.MODEL_SELECTED,
+                                actual_model=replacement.actual_model,
+                            )
+                            store.transition(RunPhase.SOURCE_ATTACHED)
+                            session_ready = True
+                            return replacement
+                        finally:
+                            if temporary_sources:
+                                for path in temporary_sources:
+                                    _remove_temporary_source(path, context.sources)
+                                temporary_sources = []
+                                temporary_source = None
+                                store.transition(RunPhase.TEMPORARY_SOURCE_REMOVED)
+                            if session_ready:
+                                store.transition(RunPhase.GENERATING)
 
-                resilient_client = RecoveringGeminiClient(
-                    client,
-                    restart_gemini_session,
-                    max_restarts=active_config.max_gemini_session_restarts,
-                    diagnostics_dir=context.diagnostics,
-                )
-                protocol = GenerationProtocol(resilient_client, context)
+                    generation_client = RecoveringGeminiClient(
+                        client,
+                        restart_gemini_session,
+                        max_restarts=active_config.max_gemini_session_restarts,
+                        diagnostics_dir=context.diagnostics,
+                    )
+                    store.update(llm_backend="gemini_browser")
+                protocol = GenerationProtocol(generation_client, context)
                 store.transition(RunPhase.GENERATING)
                 run_metadata = {
                     "packageId": active_config.package_id,
@@ -441,7 +516,7 @@ def run_generation(
                 store.transition(RunPhase.SOURCE_MANIFEST_READY)
                 store.transition(
                     RunPhase.PACKAGE_ASSEMBLED,
-                    actual_model=resilient_client.actual_model,
+                    actual_model=generation_client.actual_model,
                 )
                 package_relative = _stage_complete_artifacts(context, active_config, package, manifest)
 
@@ -471,7 +546,7 @@ def run_generation(
                     raise ValidationFailure("Semantic repair introduced deterministic validation failures", final_errors)
                 store.transition(
                     RunPhase.SEMANTIC_REVIEW_COMPLETED,
-                    actual_model=resilient_client.actual_model,
+                    actual_model=generation_client.actual_model,
                 )
 
                 installed = install_new_artifacts(

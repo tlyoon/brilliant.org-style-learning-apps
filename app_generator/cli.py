@@ -133,7 +133,7 @@ def doctor(
             target_subchapter_id=auto_target_subchapter_id,
         )
         if auto_target_subchapter_id:
-            print(f"Auto target: {auto_target_subchapter_id} (coordinator-leased; no fallback section)")
+            print(f"Auto target: {auto_target_subchapter_id} (Drive-leased; no fallback section)")
         print(
             "Auto queue: "
             f"total={snapshot.total}, generated={snapshot.generated}, review_pending={snapshot.review_pending}, "

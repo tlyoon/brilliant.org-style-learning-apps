@@ -7,14 +7,19 @@ from collections.abc import Callable
 from pathlib import Path
 
 from app_generator.config import GeneratorConfig
-from app_generator.coordinator.client import CoordinatorClient, JobLease, QueueSnapshot
-from app_generator.coordinator.verified import ensure_coordinator_ready
+from app_generator.coordinator.client import JobLease, QueueSnapshot
+from app_generator.coordinator.drive import DriveCoordinatorClient
 from app_generator.errors import AutoJobExecutionError, AutoModeBlockedError, NoAvailableJob
 from app_generator.publishing.git import GitPublisher
 from app_generator.runtime.orchestrator import run_generation
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.targeting import restrict_inventory_to_subchapter
-from app_generator.sources.google_drive import DriveRestClient, ResolvedDriveSource, discover_drive_sources
+from app_generator.sources.google_drive import (
+    DriveRestClient,
+    ResolvedDriveSource,
+    discover_drive_sources_with_corpus_keys,
+    discover_drive_sources,
+)
 from app_generator.sources.google_drive_auth import authorize_google_drive
 
 
@@ -24,7 +29,7 @@ def _require_durable_publication(config: GeneratorConfig) -> None:
     if not config.git_publish:
         raise AutoModeBlockedError(
             "Continuous auto mode requires git_publish=true so every successful job is "
-            "durably handed off through Git before the coordinator marks it generated."
+            "durably handed off through Git before Drive coordination marks it generated."
         )
 
 
@@ -46,7 +51,7 @@ def _drive_inventory(
 ) -> tuple[ResolvedDriveSource, ...]:
     authorization = authorize_google_drive(config)
     drive_client = DriveRestClient(authorization.session, config.drive_api_timeout_seconds)
-    inventory = discover_drive_sources(
+    inventory = discover_drive_sources_with_corpus_keys(
         drive_client,
         sourcepath=config.sourcepath,
         target_filename=config.target_filename,
@@ -73,12 +78,11 @@ def inspect_auto_queue(
     """Inspect auto state without claiming a generation or recovery lease."""
 
     _require_durable_publication(config)
-    config = ensure_coordinator_ready(config)
     publisher = GitPublisher(config)
     publisher.sync_base()
     inventory = _drive_inventory(config, target_subchapter_id=target_subchapter_id)
     local_completed = _base_completed(config, inventory)
-    coordinator = CoordinatorClient(config)
+    coordinator = DriveCoordinatorClient(config)
     return coordinator.snapshot_auto(inventory, local_completed_job_keys=local_completed)
 
 
@@ -86,7 +90,6 @@ def retry_failed_auto_job(config: GeneratorConfig, *, target_subchapter_id: str)
     """Explicitly requeue one exact terminal target after operator intervention."""
 
     _require_durable_publication(config)
-    config = ensure_coordinator_ready(config)
     publisher = GitPublisher(config)
     publisher.sync_base()
     inventory = _drive_inventory(config, target_subchapter_id=target_subchapter_id)
@@ -96,7 +99,7 @@ def retry_failed_auto_job(config: GeneratorConfig, *, target_subchapter_id: str)
         )
     source = inventory[0]
     local_completed = _base_completed(config, inventory)
-    coordinator = CoordinatorClient(config)
+    coordinator = DriveCoordinatorClient(config)
     snapshot = coordinator.snapshot_auto(inventory, local_completed_job_keys=local_completed)
     if snapshot.failed != 1 or snapshot.total != 1:
         raise AutoModeBlockedError(
@@ -105,7 +108,7 @@ def retry_failed_auto_job(config: GeneratorConfig, *, target_subchapter_id: str)
     result = coordinator.retry_failed(source)
     if result.status != "interrupted":
         raise AutoModeBlockedError(
-            f"Coordinator did not return target section {target_subchapter_id} to interrupted state"
+            f"Drive coordination did not return target section {target_subchapter_id} to interrupted state"
         )
     return source.subchapter_id, result.previous_attempt_count, result.previous_error_code
 
@@ -123,12 +126,11 @@ def reconcile_auto_publications(
     """
 
     _require_durable_publication(config)
-    config = ensure_coordinator_ready(config)
     publisher = GitPublisher(config)
     publisher.sync_base()
     inventory = _drive_inventory(config, target_subchapter_id=target_subchapter_id)
     local_completed = _base_completed(config, inventory)
-    coordinator = CoordinatorClient(config)
+    coordinator = DriveCoordinatorClient(config)
     # Seed rows, reconcile expired leases, and mark only content visible in the freshly
     # synchronized Git base as already generated.
     coordinator.snapshot_auto(inventory, local_completed_job_keys=local_completed)
@@ -212,12 +214,11 @@ def run_continuous_auto(
     """Run coordinated jobs globally, or only one explicitly targeted subchapter."""
 
     _require_durable_publication(config)
-    config = ensure_coordinator_ready(config)
     poll_seconds = max(5, min(60, config.heartbeat_seconds // 10 or 5))
     if target_subchapter_id:
         print(
             f"AUTO_TARGET_START: worker={config.worker_id}; target={target_subchapter_id}. "
-            "Coordinator leasing remains active; this worker will not fall through to another section."
+            "Drive lease fencing remains active; this worker will not fall through to another section."
         )
     else:
         print(

@@ -64,7 +64,7 @@ Three modes are supported:
 | Mode | Purpose |
 |---|---|
 | `specific` | Generate an explicitly selected subchapter; no central job claim is required. |
-| `auto` | Continuously discover, claim, recover, publish, and continue through globally eligible Drive jobs until the source inventory is successful. When the operator explicitly adds `--pdf-subchapter-path`, auto becomes coordinator-protected targeted auto for only that section. |
+| `auto` | Continuously discover, Drive-claim, recover, publish, and continue through globally eligible Drive jobs. The default backend is Drive-native and needs no Apps Script/Sheet coordinator. An explicit `--pdf-subchapter-path` creates a Drive-lease-protected targeted auto run. |
 | `distributed` | Claim coordinated jobs one at a time for advanced/external orchestration. |
 
 CLI examples using an explicit local config:
@@ -82,9 +82,9 @@ python -m app_generator run --config .\<generated-local-config>.toml --selection
 
 Targeted auto is activated only when the operator explicitly supplies `--pdf-subchapter-path` together with `--selection-mode auto`. The tracked/configured default `placeholders.pdf_subchapter_path` remains useful for specific-mode defaults and does **not** silently pin ordinary auto mode.
 
-For a target such as `8.6`, the runtime filters Drive inventory to that exact section before queue preview, durable-handoff reconciliation, and coordinator claim. The worker:
+For a target such as `8.6`, the runtime filters Drive inventory to that exact section before queue preview, durable-handoff reconciliation, and Drive claim election. The worker:
 
-- acquires the normal coordinator lease for 8.6;
+- acquires the normal Drive-native lease for 8.6;
 - waits if another worker currently owns 8.6;
 - never substitutes 8.7 or another section;
 - can restore compatible interrupted checkpoints for 8.6;
@@ -92,7 +92,7 @@ For a target such as `8.6`, the runtime filters Drive inventory to that exact se
 - reports a missing/terminally failed target instead of falling through;
 - exits after 8.6 succeeds rather than continuing through the global queue.
 
-This is the preferred operator-selected mode when other coordinated workers may be running concurrently. Ordinary `specific` mode remains intentionally uncoordinated.
+This is the preferred operator-selected mode when other auto workers may be running concurrently. Ordinary `specific` mode remains intentionally uncoordinated.
 
 ## Gemini behavior
 
@@ -123,102 +123,40 @@ content/source-manifests/<package-id>.json
 
 Artifacts are staged and validated before installation. Existing section artifacts are not silently overwritten.
 
-## Repository-managed coordinator
+## Drive-native auto coordination
 
-Current `main` supports a managed coordinator lifecycle for `auto` and `distributed` modes.
+`auto` mode now defaults to `automation.coordination_backend = "drive"`. It creates small JSON marker/event files directly in the existing Drive subchapter folder beside that topic corpus; no shared state folder has to be bootstrapped. Claim election, heartbeat fencing, parsed-stage checkpoints, failure history, retry resets, and durable success are all represented there. No Google Apps Script deployment, Google Sheet, coordinator token, or administrator bootstrap is required for normal auto operation.
 
-An empty configured URL:
+The winning claim's Drive file ID is a fencing token. Ownership is elected by Drive server `createdTime` and file ID, while expiry uses the Drive HTTP server time and marker `modifiedTime`; PC clocks do not decide ownership. Checkpoints are append-only and source-corpus-bound. See `docs/DRIVE_NATIVE_AUTO_COORDINATION.md`.
 
-```toml
-[automation]
-coordinator_url = ""
-```
-
-selects repository-managed infrastructure. The runtime consists of a private Google Sheet/Apps Script deployment plus private Drive metadata/checkpoint storage managed through the repository's serialized GitHub Actions deployment workflow.
-
-An explicit valid Apps Script URL remains backward-compatible external coordinator mode.
-
-### One-time bootstrap
-
-Before the first bootstrap, enable both the Google Drive API and Apps Script API in the
-Google Cloud project that owns the Desktop OAuth client. For the configured administrator
-account, also turn on **Google Apps Script API** at
-`https://script.google.com/home/usersettings`. Newly enabled access may take a few minutes
-to propagate.
-
-Check:
-
-```powershell
-python -m app_generator coordinator-status --config .\<generated-local-config>.toml
-```
-
-If managed infrastructure is missing, one trusted administrator PC runs:
-
-```powershell
-gh auth status
-python -m app_generator coordinator-bootstrap --config .\<generated-local-config>.toml
-```
-
-Bootstrap obtains the additional Google administration authorization, verifies the configured account, stores the refreshable administrator credential in a private GitHub Actions secret, triggers the serialized deployment, and waits for live health.
-
-If the first deployment reports that it has no `WEB_APP` entry point, open the generated
-Apps Script project as the configured administrator, run `initializeCoordinator` once and
-approve its Drive/Sheets scopes, then create one **Web app** deployment with **Execute as:
-Me** and **Who has access: Anyone**. Rerun bootstrap; the deployer adopts the sole reachable web-app
-entry point and records its real URL. This is an administrator-only first-project recovery,
-not a worker-PC setup step.
-
-The failure message includes the exact generated Apps Script editor URL. Open that URL; do not
-choose a project by its display title because older projects can have the same name. The supplied
-web-app deployment must belong to that exact script project.
-
-If Google does not expose that UI-published URL through its deployment API, dispatch the managed
-workflow once with the exact non-secret `/exec` URL, then verify readiness:
-
-```powershell
-gh workflow run ensure-coordinator.yml --ref main -f project_name=<project_name> -f web_app_url=<web-app-url>
-python -m app_generator coordinator-ensure --config .\<generated-local-config>.toml
-```
-
-The workflow verifies that the deployment ID belongs to the expected managed script before it
-records runtime metadata. If a newly published URL is temporarily reported as unreachable, wait
-briefly for Google deployment propagation and rerun the same workflow command. Do not create or
-archive another deployment merely to retry validation.
-
-Other worker PCs do not repeat bootstrap. Verify readiness with:
-
-```powershell
-python -m app_generator coordinator-ensure --config .\<generated-local-config>.toml
-```
-
-Workers discover managed runtime metadata with their ordinary Drive authorization; they do not need the administrator OAuth token locally.
+The older managed/external Apps Script coordinator remains in the repository for `distributed` mode and legacy administration. Commands such as `coordinator-bootstrap`, `coordinator-ensure`, and `coordinator-status` apply to that compatibility path, not to default auto mode.
 
 ## Continuous auto-mode contract
 
-Auto mode requires Google Drive discovery, a healthy managed/external coordinator, and `git_publish=true` so a job is not marked globally successful while its artifacts exist only on one PC.
+Auto mode requires writable Google Drive access plus `git_publish=true`. It does not require a managed/external cloud coordinator when `coordination_backend = "drive"`.
 
 The continuous worker:
 
 1. synchronizes/reconciles durable Git state;
-2. inspects the globally coordinated source inventory;
-3. atomically claims an eligible lease;
-4. prioritizes recoverable interrupted work according to coordinator policy;
+2. derives the current full-corpus job identity for each source section;
+3. creates a unique Drive claim and wins only after deterministic two-pass election;
+4. prioritizes recoverable interrupted work before untouched queued work;
 5. restores source-version-bound parsed-stage checkpoints when available;
 6. generates/repairs/validates remaining stages;
 7. publishes validated artifacts through the configured Git handoff;
-8. marks the coordinated job generated only after durable publication;
+8. writes a Drive `success` marker only after durable publication;
 9. claims another job;
 10. waits when remaining work is leased elsewhere and exits successfully only when global work is successful.
 
 When `target_subchapter_id` is supplied through the explicit auto CLI target, the same lease/checkpoint/publication contract applies to the filtered one-section inventory, and the worker exits after that target succeeds.
 
-`Ctrl+C` stops the worker; active leases are returned safely when possible and expired leases remain recoverable. If repeated interruption exhausts the configured attempt budget, inspect the failure and explicitly recover only that target with `python -m app_generator coordinator-retry-failed --config <generated-local-config> --pdf-subchapter-path <chapter.section> --confirm`. The command verifies the current Drive source identity and terminal coordinator state, resets the bounded attempt budget, and returns the target to `interrupted`; it neither claims the job nor marks it complete. Run targeted auto `doctor` again before restarting generation.
+`Ctrl+C` stops the worker; active leases are returned safely when possible and expired leases remain recoverable. If repeated interruption exhausts the configured attempt budget, inspect the failure and explicitly recover only that target with `python -m app_generator coordinator-retry-failed --config <generated-local-config> --pdf-subchapter-path <chapter.section> --confirm`. The command verifies the current Drive source identity and terminal Drive coordination state, resets the bounded attempt budget, and returns the target to `interrupted`; it neither claims the job nor marks it complete. Run targeted auto `doctor` again before restarting generation.
 
 See `docs/CONTINUOUS_AUTO_TESTING.md` for a two-PC verification procedure.
 
 ## Git handoff
 
-When `git_publish=true`, the worker requires a clean/non-diverged checkout and uses deterministic/recoverable job branches. It can reuse valid pushed handoffs/open PRs, recognize merged results, and recover under an exact coordinator lease instead of rerunning Gemini unnecessarily.
+When `git_publish=true`, the worker requires a clean/non-diverged checkout and uses deterministic/recoverable job branches. It can reuse valid pushed handoffs/open PRs, recognize merged results, and recover under an exact Drive lease instead of rerunning Gemini unnecessarily.
 
 `auto` and `distributed` modes require durable publication. Specific mode can be operated conservatively with Git publication disabled.
 

@@ -31,12 +31,22 @@ DEFAULTS: dict[str, Any] = {
     "login_timeout_seconds": 300,
     "response_timeout_seconds": 600,
     "max_gemini_session_restarts": 2,
+    "llm_backend": "gemini_browser",
+    "gemini_api_model": "gemini-3.8-flash",
+    "gemini_api_location": "global",
+    "gemini_api_thinking_level": "high",
+    "gemini_api_timeout_seconds": 1200,
+    "gemini_api_upload_timeout_seconds": 180,
+    "gemini_api_max_attempts": 3,
+    "gemini_api_retry_backoff_seconds": 5,
+    "gemini_api_token_file": "",
     "drive_api_timeout_seconds": 60,
     "max_drive_folders": 10000,
     "log_level": "INFO",
     "selection_mode": "specific",
     "worker_id": socket.gethostname().casefold(),
     "coordinator_url": "",
+    "coordination_backend": "drive",
     "coordinator_management": "github_actions",
     "coordinator_workflow": "ensure-coordinator.yml",
     "coordinator_ensure_timeout_seconds": 600,
@@ -108,12 +118,22 @@ class GeneratorConfig:
     login_timeout_seconds: int
     response_timeout_seconds: int
     max_gemini_session_restarts: int
+    llm_backend: str
+    gemini_api_model: str
+    gemini_api_location: str
+    gemini_api_thinking_level: str
+    gemini_api_timeout_seconds: int
+    gemini_api_upload_timeout_seconds: int
+    gemini_api_max_attempts: int
+    gemini_api_retry_backoff_seconds: int
+    gemini_api_token_file: Path
     log_level: str
     model_preference_patterns: tuple[str, ...]
     allow_unknown_model_fallback: bool
     selection_mode: str
     worker_id: str
     coordinator_url: str
+    coordination_backend: str
     coordinator_management: str
     coordinator_workflow: str
     coordinator_ensure_timeout_seconds: int
@@ -241,6 +261,10 @@ def _coerce_env(key: str, value: str) -> Any:
         "login_timeout_seconds",
         "response_timeout_seconds",
         "max_gemini_session_restarts",
+        "gemini_api_timeout_seconds",
+        "gemini_api_upload_timeout_seconds",
+        "gemini_api_max_attempts",
+        "gemini_api_retry_backoff_seconds",
         "drive_api_timeout_seconds",
         "max_drive_folders",
         "coordinator_ensure_timeout_seconds",
@@ -458,6 +482,24 @@ def load_config(
     max_gemini_session_restarts = int(values["max_gemini_session_restarts"])
     if max_gemini_session_restarts < 0:
         raise ConfigurationError("max_gemini_session_restarts must be zero or greater")
+    llm_backend = str(values["llm_backend"]).strip().casefold()
+    if llm_backend not in {"gemini_api", "gemini_browser"}:
+        raise ConfigurationError("llm_backend must be gemini_api or gemini_browser")
+    gemini_api_model = str(values["gemini_api_model"]).strip()
+    if not gemini_api_model:
+        raise ConfigurationError("gemini_api_model must be non-empty")
+    gemini_api_location = str(values["gemini_api_location"]).strip().casefold()
+    if gemini_api_location not in {"global", "us", "eu"}:
+        raise ConfigurationError("gemini_api_location must be global, us, or eu")
+    gemini_api_thinking_level = str(values["gemini_api_thinking_level"]).strip().casefold()
+    if gemini_api_thinking_level not in {"low", "medium", "high"}:
+        raise ConfigurationError("gemini_api_thinking_level must be low, medium, or high")
+    gemini_api_timeout_seconds = int(values["gemini_api_timeout_seconds"])
+    gemini_api_upload_timeout_seconds = int(values["gemini_api_upload_timeout_seconds"])
+    gemini_api_max_attempts = int(values["gemini_api_max_attempts"])
+    gemini_api_retry_backoff_seconds = int(values["gemini_api_retry_backoff_seconds"])
+    if min(gemini_api_timeout_seconds, gemini_api_upload_timeout_seconds, gemini_api_max_attempts, gemini_api_retry_backoff_seconds) < 1:
+        raise ConfigurationError("Gemini API timeout, upload timeout, attempts, and retry backoff must be positive")
     for pattern in values["model_preference_patterns"]:
         try:
             re.compile(str(pattern), re.I)
@@ -467,9 +509,15 @@ def load_config(
     state_dir = Path(values["state_dir"]).expanduser().resolve()
     drive_oauth_client_file = Path(values["drive_oauth_client_file"]).expanduser().resolve()
     drive_token_file = Path(values["drive_token_file"]).expanduser().resolve()
+    raw_gemini_api_token = str(values.get("gemini_api_token_file", "")).strip()
+    gemini_api_token_file = (
+        Path(raw_gemini_api_token).expanduser().resolve()
+        if raw_gemini_api_token
+        else drive_token_file.with_name("gemini-api-token.json")
+    )
     if _is_within(state_dir, repo_root):
         raise ConfigurationError("state_dir must be outside the repository so run data and PDFs cannot enter Git")
-    if _is_within(drive_oauth_client_file, repo_root) or _is_within(drive_token_file, repo_root):
+    if any(_is_within(path, repo_root) for path in (drive_oauth_client_file, drive_token_file, gemini_api_token_file)):
         raise ConfigurationError("Google OAuth client and token files must be stored outside the repository")
     drive_api_timeout_seconds = int(values["drive_api_timeout_seconds"])
     max_drive_folders = int(values["max_drive_folders"])
@@ -479,6 +527,9 @@ def load_config(
     selection_mode = str(values["selection_mode"]).strip().casefold()
     if selection_mode not in {"specific", "auto", "distributed"}:
         raise ConfigurationError("selection_mode must be specific, auto, or distributed")
+    coordination_backend = str(values.get("coordination_backend", "drive")).strip().casefold()
+    if coordination_backend not in {"drive", "cloud"}:
+        raise ConfigurationError("coordination_backend must be drive or cloud")
     coordinator_management = str(values.get("coordinator_management", "github_actions")).strip().casefold()
     if coordinator_management not in {"external", "github_actions"}:
         raise ConfigurationError("coordinator_management must be external or github_actions")
@@ -491,20 +542,23 @@ def load_config(
     if coordinator_url:
         coordinator_management = "external"
     if selection_mode in {"auto", "distributed"}:
-        if coordinator_management == "external" or coordinator_url:
-            parsed_coordinator = urlparse(coordinator_url)
-            if parsed_coordinator.scheme != "https" or parsed_coordinator.hostname not in {
-                "script.google.com", "script.googleusercontent.com",
-            }:
-                raise ConfigurationError(
-                    f"{selection_mode.capitalize()} mode with an external coordinator requires an HTTPS Google Apps Script coordinator_url"
-                )
         if source_files:
             raise ConfigurationError(f"{selection_mode.capitalize()} mode discovers its source jobs from Google Drive")
         if not bool(values["git_publish"]):
             raise ConfigurationError(
                 f"{selection_mode.capitalize()} mode requires git_publish=true so a claimed job is durably handed off"
             )
+    if selection_mode == "auto" and coordination_backend != "drive":
+        raise ConfigurationError("Auto mode requires coordination_backend=drive; legacy cloud coordination is retained for distributed mode")
+    if selection_mode == "distributed":
+        if coordinator_management == "external" or coordinator_url:
+            parsed_coordinator = urlparse(coordinator_url)
+            if parsed_coordinator.scheme != "https" or parsed_coordinator.hostname not in {
+                "script.google.com", "script.googleusercontent.com",
+            }:
+                raise ConfigurationError(
+                    "Distributed mode with an external coordinator requires an HTTPS Google Apps Script coordinator_url"
+                )
     coordinator_ensure_timeout_seconds = int(values["coordinator_ensure_timeout_seconds"])
     coordinator_timeout_seconds = int(values["coordinator_timeout_seconds"])
     lease_seconds = int(values["lease_seconds"])
@@ -580,12 +634,22 @@ def load_config(
         login_timeout_seconds=int(values["login_timeout_seconds"]),
         response_timeout_seconds=int(values["response_timeout_seconds"]),
         max_gemini_session_restarts=max_gemini_session_restarts,
+        llm_backend=llm_backend,
+        gemini_api_model=gemini_api_model,
+        gemini_api_location=gemini_api_location,
+        gemini_api_thinking_level=gemini_api_thinking_level,
+        gemini_api_timeout_seconds=gemini_api_timeout_seconds,
+        gemini_api_upload_timeout_seconds=gemini_api_upload_timeout_seconds,
+        gemini_api_max_attempts=gemini_api_max_attempts,
+        gemini_api_retry_backoff_seconds=gemini_api_retry_backoff_seconds,
+        gemini_api_token_file=gemini_api_token_file,
         log_level=str(values["log_level"]).upper(),
         model_preference_patterns=tuple(str(item) for item in values["model_preference_patterns"]),
         allow_unknown_model_fallback=bool(values["allow_unknown_model_fallback"]),
         selection_mode=selection_mode,
         worker_id=worker_id,
         coordinator_url=coordinator_url,
+        coordination_backend=coordination_backend,
         coordinator_management=coordinator_management,
         coordinator_workflow=coordinator_workflow,
         coordinator_ensure_timeout_seconds=coordinator_ensure_timeout_seconds,

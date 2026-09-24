@@ -107,6 +107,35 @@ class GemConfigurationConvergenceTests(unittest.TestCase):
         self.assertEqual("Configured instructions", instructions.value)
         self.assertEqual(["https://gemini.google.com/gems/edit/test"], driver.loaded_urls)
 
+    def test_missing_field_reopens_editor_once_and_retries(self):
+        driver = Driver()
+        page = GemEditorPage(
+            driver,
+            "https://gemini.google.com/gem/test",
+            "https://gemini.google.com/gems/edit/test",
+            1,
+        )
+        description = Element("Configured description")
+        instructions = Element("Configured instructions")
+
+        with patch(
+            "app_generator.gemini.editor.find_first",
+            side_effect=[
+                UiContractError("synthetic editor settling race"),
+                description,
+                description,
+                instructions,
+            ],
+        ) as finder:
+            changed = page.synchronize_configuration(
+                "Configured description",
+                "Configured instructions",
+            )
+
+        self.assertFalse(changed)
+        self.assertEqual(4, finder.call_count)
+        self.assertEqual(["https://gemini.google.com/gems/edit/test"], driver.loaded_urls)
+
     def test_client_reads_authoritative_files_from_config_directory(self):
         with tempfile.TemporaryDirectory() as directory:
             repo_root = Path(directory)

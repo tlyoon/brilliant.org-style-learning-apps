@@ -63,8 +63,19 @@ class GemEditorPage:
                 raise UiContractError(f"Configured Gem {label} must not be empty")
             try:
                 element = find_first(self.driver, locators, self.timeout)
-            except UiContractError as exc:
-                raise UiContractError(f"Gem editor opened, but the {label} field was not found") from exc
+            except UiContractError:
+                # Gemini's Angular editor can briefly report the page as ready before
+                # Description/Instructions are mounted. Reopen the authoritative edit
+                # URL once and retry the exact same field contract before failing.
+                LOGGER.warning("Gem %s field was not ready; reopening the editor once", label)
+                self.driver.get(self.url)
+                try:
+                    find_first(self.driver, selectors.EDITOR_FIELD, self.timeout)
+                    element = find_first(self.driver, locators, self.timeout)
+                except UiContractError as exc:
+                    raise UiContractError(
+                        f"Gem editor opened, but the {label} field was not found"
+                    ) from exc
             current = element_text(element)
             if current.strip() != desired.strip():
                 LOGGER.info("Updating Gem %s to match project configuration", label)

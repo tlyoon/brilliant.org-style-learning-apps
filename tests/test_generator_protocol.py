@@ -17,7 +17,7 @@ class GeneratorProtocolTests(unittest.TestCase):
         def __init__(self, responses):
             self.responses = iter(responses)
 
-        def ask(self, prompt):
+        def ask(self, prompt, *, stage=None):
             return next(self.responses)
 
     def plan(self):

@@ -25,6 +25,9 @@ class JobLease:
     worker_id: str
     lease_expires_at: str
     attempt_count: int
+    lease_token: str = ""
+    attempt_id: str = ""
+    coordination_parent_id: str = ""
 
 
 @dataclass(frozen=True)

@@ -54,6 +54,8 @@ class RunState:
     created_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     updated_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     actual_model: str | None = None
+    llm_backend: str | None = None
+    prompt_sha256: str | None = None
     job_key: str | None = None
     worker_id: str | None = None
     lease_expires_at: str | None = None
