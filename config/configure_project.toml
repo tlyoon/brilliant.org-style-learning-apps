@@ -20,6 +20,17 @@ target_file = "{sourcepath}/**/{pdf_subchapter_path}/{target_filename}"
 # Google Drive/Cloud OAuth identity. This remains independent of the Gemini browser account.
 oauth_login = "tlyoon@gmail.com"
 
+[llm]
+# Production generation uses the Gemini API. gemini_browser remains available as a legacy fallback.
+backend = "gemini_api"
+gemini_api_model = "gemini-3.8-flash"
+gemini_api_location = "global"
+gemini_api_thinking_level = "high"
+gemini_api_timeout_seconds = 1200
+gemini_api_upload_timeout_seconds = 180
+gemini_api_max_attempts = 3
+gemini_api_retry_backoff_seconds = 5
+
 [gemini]
 # These three values may be overridden in the generated local project TOML on a workstation.
 login_name = "tlyoon@gmail.com"
@@ -58,6 +69,7 @@ state_root = "${STATE_ROOT}"
 workstation_settings = "${STATE_ROOT}/workstation-sync.toml"
 drive_oauth_client_file = "${STATE_ROOT}/credentials/drive-oauth-client.json"
 drive_token_file = "${STATE_ROOT}/credentials/drive-oauth-token.json"
+gemini_api_token_file = "${STATE_ROOT}/credentials/gemini-api-token.json"
 chrome_profile_dir = "${STATE_ROOT}/chrome-profile"
 state_dir = "${STATE_ROOT}/runs"
 

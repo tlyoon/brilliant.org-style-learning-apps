@@ -104,6 +104,10 @@ class TransientGeminiError(GeneratorError):
     code = "GEMINI_TRANSIENT_ERROR"
 
 
+class GeminiApiError(GeneratorError):
+    code = "GEMINI_API_ERROR"
+
+
 class ValidationFailure(GeneratorError):
     code = "VALIDATION_FAILED"
 

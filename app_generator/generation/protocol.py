@@ -23,7 +23,7 @@ from app_generator.runtime.run_context import RunContext
 
 
 class ConversationPort(Protocol):
-    def ask(self, prompt: str) -> str: ...
+    def ask(self, prompt: str, *, stage: str | None = None) -> str: ...
 
 
 class GenerationProtocol:
@@ -35,7 +35,7 @@ class GenerationProtocol:
         existing = self.context.load_stage(name)
         if existing is not None:
             return existing
-        response = self.conversation.ask(prompt_factory())
+        response = self.conversation.ask(prompt_factory(), stage=name)
         self.context.save_raw_response(name, response)
         parsed = parse_json_response(response)
         self.context.save_stage(name, parsed)

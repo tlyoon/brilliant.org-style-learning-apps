@@ -31,6 +31,15 @@ DEFAULTS: dict[str, Any] = {
     "login_timeout_seconds": 300,
     "response_timeout_seconds": 600,
     "max_gemini_session_restarts": 2,
+    "llm_backend": "gemini_browser",
+    "gemini_api_model": "gemini-3.8-flash",
+    "gemini_api_location": "global",
+    "gemini_api_thinking_level": "high",
+    "gemini_api_timeout_seconds": 1200,
+    "gemini_api_upload_timeout_seconds": 180,
+    "gemini_api_max_attempts": 3,
+    "gemini_api_retry_backoff_seconds": 5,
+    "gemini_api_token_file": "",
     "drive_api_timeout_seconds": 60,
     "max_drive_folders": 10000,
     "log_level": "INFO",
@@ -109,6 +118,15 @@ class GeneratorConfig:
     login_timeout_seconds: int
     response_timeout_seconds: int
     max_gemini_session_restarts: int
+    llm_backend: str
+    gemini_api_model: str
+    gemini_api_location: str
+    gemini_api_thinking_level: str
+    gemini_api_timeout_seconds: int
+    gemini_api_upload_timeout_seconds: int
+    gemini_api_max_attempts: int
+    gemini_api_retry_backoff_seconds: int
+    gemini_api_token_file: Path
     log_level: str
     model_preference_patterns: tuple[str, ...]
     allow_unknown_model_fallback: bool
@@ -243,6 +261,10 @@ def _coerce_env(key: str, value: str) -> Any:
         "login_timeout_seconds",
         "response_timeout_seconds",
         "max_gemini_session_restarts",
+        "gemini_api_timeout_seconds",
+        "gemini_api_upload_timeout_seconds",
+        "gemini_api_max_attempts",
+        "gemini_api_retry_backoff_seconds",
         "drive_api_timeout_seconds",
         "max_drive_folders",
         "coordinator_ensure_timeout_seconds",
@@ -460,6 +482,24 @@ def load_config(
     max_gemini_session_restarts = int(values["max_gemini_session_restarts"])
     if max_gemini_session_restarts < 0:
         raise ConfigurationError("max_gemini_session_restarts must be zero or greater")
+    llm_backend = str(values["llm_backend"]).strip().casefold()
+    if llm_backend not in {"gemini_api", "gemini_browser"}:
+        raise ConfigurationError("llm_backend must be gemini_api or gemini_browser")
+    gemini_api_model = str(values["gemini_api_model"]).strip()
+    if not gemini_api_model:
+        raise ConfigurationError("gemini_api_model must be non-empty")
+    gemini_api_location = str(values["gemini_api_location"]).strip().casefold()
+    if gemini_api_location not in {"global", "us", "eu"}:
+        raise ConfigurationError("gemini_api_location must be global, us, or eu")
+    gemini_api_thinking_level = str(values["gemini_api_thinking_level"]).strip().casefold()
+    if gemini_api_thinking_level not in {"low", "medium", "high"}:
+        raise ConfigurationError("gemini_api_thinking_level must be low, medium, or high")
+    gemini_api_timeout_seconds = int(values["gemini_api_timeout_seconds"])
+    gemini_api_upload_timeout_seconds = int(values["gemini_api_upload_timeout_seconds"])
+    gemini_api_max_attempts = int(values["gemini_api_max_attempts"])
+    gemini_api_retry_backoff_seconds = int(values["gemini_api_retry_backoff_seconds"])
+    if min(gemini_api_timeout_seconds, gemini_api_upload_timeout_seconds, gemini_api_max_attempts, gemini_api_retry_backoff_seconds) < 1:
+        raise ConfigurationError("Gemini API timeout, upload timeout, attempts, and retry backoff must be positive")
     for pattern in values["model_preference_patterns"]:
         try:
             re.compile(str(pattern), re.I)
@@ -469,9 +509,15 @@ def load_config(
     state_dir = Path(values["state_dir"]).expanduser().resolve()
     drive_oauth_client_file = Path(values["drive_oauth_client_file"]).expanduser().resolve()
     drive_token_file = Path(values["drive_token_file"]).expanduser().resolve()
+    raw_gemini_api_token = str(values.get("gemini_api_token_file", "")).strip()
+    gemini_api_token_file = (
+        Path(raw_gemini_api_token).expanduser().resolve()
+        if raw_gemini_api_token
+        else drive_token_file.with_name("gemini-api-token.json")
+    )
     if _is_within(state_dir, repo_root):
         raise ConfigurationError("state_dir must be outside the repository so run data and PDFs cannot enter Git")
-    if _is_within(drive_oauth_client_file, repo_root) or _is_within(drive_token_file, repo_root):
+    if any(_is_within(path, repo_root) for path in (drive_oauth_client_file, drive_token_file, gemini_api_token_file)):
         raise ConfigurationError("Google OAuth client and token files must be stored outside the repository")
     drive_api_timeout_seconds = int(values["drive_api_timeout_seconds"])
     max_drive_folders = int(values["max_drive_folders"])
@@ -588,6 +634,15 @@ def load_config(
         login_timeout_seconds=int(values["login_timeout_seconds"]),
         response_timeout_seconds=int(values["response_timeout_seconds"]),
         max_gemini_session_restarts=max_gemini_session_restarts,
+        llm_backend=llm_backend,
+        gemini_api_model=gemini_api_model,
+        gemini_api_location=gemini_api_location,
+        gemini_api_thinking_level=gemini_api_thinking_level,
+        gemini_api_timeout_seconds=gemini_api_timeout_seconds,
+        gemini_api_upload_timeout_seconds=gemini_api_upload_timeout_seconds,
+        gemini_api_max_attempts=gemini_api_max_attempts,
+        gemini_api_retry_backoff_seconds=gemini_api_retry_backoff_seconds,
+        gemini_api_token_file=gemini_api_token_file,
         log_level=str(values["log_level"]).upper(),
         model_preference_patterns=tuple(str(item) for item in values["model_preference_patterns"]),
         allow_unknown_model_fallback=bool(values["allow_unknown_model_fallback"]),

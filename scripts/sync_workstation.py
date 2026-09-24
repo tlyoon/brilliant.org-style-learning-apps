@@ -51,6 +51,11 @@ ALLOWED_PROJECT_KEYS = {
     },
     "google": {"oauth_login"},
     "gemini": {"login_name", "gem_url", "gem_edit_url", "browser_mode"},
+    "llm": {
+        "backend", "gemini_api_model", "gemini_api_location", "gemini_api_thinking_level",
+        "gemini_api_timeout_seconds", "gemini_api_upload_timeout_seconds",
+        "gemini_api_max_attempts", "gemini_api_retry_backoff_seconds",
+    },
     "google_drive": {"drive_api_timeout_seconds", "max_drive_folders"},
     "source_tree": {"source_id_prefix"},
     "automation": {
@@ -61,7 +66,7 @@ ALLOWED_PROJECT_KEYS = {
     "repository": {"repo_root"},
     "paths": {
         "state_root", "workstation_settings", "drive_oauth_client_file",
-        "drive_token_file", "chrome_profile_dir", "state_dir",
+        "drive_token_file", "gemini_api_token_file", "chrome_profile_dir", "state_dir",
     },
     "run": {
         "package_id", "chapter", "subchapter", "chapter_dir", "section_dir",
