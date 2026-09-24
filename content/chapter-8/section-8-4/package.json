@@ -1,0 +1,2246 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-8-section-8-4",
+  "chapter": "Chapter 8",
+  "subchapter": "8.4 Changes in Mechanical Energy for Nonconservative Forces",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Apply the energy conservation equation ΔK + ΔU + ΔEint = 0 to isolated systems involving kinetic friction.",
+    "Relate the increase in internal energy ΔEint to the work done against kinetic friction (fk * d).",
+    "Analyze systems combining gravitational, elastic potential, and internal energy changes.",
+    "Interpret energy bar charts tracking kinetic, potential, internal, and constant total energy in an isolated system.",
+    "Predict how changing path length or surface friction affects final speed and mechanical energy dissipation."
+  ],
+  "prerequisites": [
+    {
+      "id": "kinetic-and-potential-energy-definitions",
+      "description": {
+        "en": "Understanding kinetic energy (K) and potential energies (gravitational Ug and elastic Us).",
+        "ms": "Memahami tenaga kinetik (K) dan tenaga keupayaan (graviti Ug dan elastik Us).",
+        "zh": "理解动能（K）以及势能（重力势能 Ug 和弹性势能 Us）。"
+      },
+      "recovery": {
+        "en": "Review the formulas and physical meanings of kinetic energy (1/2 mv^2), gravitational potential energy (mgy), and spring potential energy (1/2 kx^2).",
+        "ms": "Ulang kaji rumus dan maksud fizikal bagi tenaga kinetik (1/2 mv^2), tenaga keupayaan graviti (mgy), dan tenaga keupayaan spring (1/2 kx^2).",
+        "zh": "复习动能（1/2 mv^2）、重力势能（mgy）和弹簧弹性势能（1/2 kx^2）的公式与物理意义。"
+      }
+    },
+    {
+      "id": "friction-and-normal-force",
+      "description": {
+        "en": "Calculating kinetic friction force using the coefficient of kinetic friction and normal force (fk = μk * n).",
+        "ms": "Mengira daya geseran kinetik menggunakan pekali geseran kinetik dan daya normal (fk = μk * n).",
+        "zh": "使用动摩擦因数和正压力计算动摩擦力（fk = μk * n）。"
+      },
+      "recovery": {
+        "en": "Review Newton's second law for perpendicular equilibrium to determine normal force and compute friction force as fk = μk * n.",
+        "ms": "Ulang kaji hukum Newton kedua untuk keseimbangan serenjang bagi menentukan daya normal dan mengira daya geseran sebagai fk = μk * n.",
+        "zh": "复习垂直方向平衡下的牛顿第二定律以确定正压力，并按 fk = μk * n 计算摩擦力。"
+      }
+    },
+    {
+      "id": "isolated-system-energy-conservation",
+      "description": {
+        "en": "Applying the work-energy theorem and the concept of an isolated system where total energy is conserved.",
+        "ms": "Mengaplikasikan teorem kerja-tenaga dan konsep sistem terpencil di mana jumlah tenaga adalah malar.",
+        "zh": "应用动能定理以及总能量守恒的孤立系统概念。"
+      },
+      "recovery": {
+        "en": "Review how defining the system boundaries to include all interacting objects converts external work into internal energy transfers.",
+        "ms": "Ulang kaji bagaimana mentakrifkan sempadan sistem untuk merangkumi semua objek yang berinteraksi menukarkan kerja luaran kepada pemindahan tenaga dalaman.",
+        "zh": "复习如何通过界定包含所有相互作用物体的系统边界，将外力做功转化为内部能量转化。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "friction-destroys-energy",
+      "description": {
+        "en": "Believing that friction permanently destroys mechanical energy rather than converting it into internal energy.",
+        "ms": "Percaya bahawa geseran memusnahkan tenaga mekanik secara kekal dan bukannya menukarkannya kepada tenaga dalaman.",
+        "zh": "认为摩擦力永久消灭了机械能，而不是将其转化为内能。"
+      }
+    },
+    {
+      "id": "normal-force-always-equals-mg",
+      "description": {
+        "en": "Assuming the normal force always equals mg, regardless of incline angle or surface orientation.",
+        "ms": "Menganggap daya normal sentiasa bersamaan dengan mg, tanpa mengira sudut satah condong atau orientasi permukaan.",
+        "zh": "误以为无论斜面倾角或表面方向如何，正压力始终等于 mg。"
+      }
+    },
+    {
+      "id": "mechanical-energy-conservation-with-friction",
+      "description": {
+        "en": "Assuming mechanical energy (K + U) remains conserved even when nonconservative forces like kinetic friction are present.",
+        "ms": "Menganggap tenaga mekanik (K + U) kekal abadi walaupun daya bukan konservatif seperti geseran kinetik wujud.",
+        "zh": "误以为在存在动摩擦力等非保守力的情况下，机械能（K + U）依然守恒。"
+      }
+    },
+    {
+      "id": "friction-work-independent-of-path-length",
+      "description": {
+        "en": "Thinking that energy converted by friction depends only on initial and final positions, ignoring total sliding distance.",
+        "ms": "Berfikir bahawa tenaga yang ditukarkan oleh geseran hanya bergantung pada kedudukan awal dan akhir, mengabaikan jumlah jarak gelongsoran.",
+        "zh": "认为摩擦转化的能量仅取决于初末位置，而忽略了实际滑动的总路径长度。"
+      }
+    },
+    {
+      "id": "internal-energy-can-decrease-spontaneously",
+      "description": {
+        "en": "Assuming ΔEint due to kinetic friction can be negative during sliding motion.",
+        "ms": "Menganggap bahawa ΔEint akibat geseran kinetik boleh bernilai negatif semasa gerakan gelongsoran.",
+        "zh": "误以为在滑动过程中由动摩擦引起的 ΔEint 可以为负值。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-8/section-8-4/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-8-section-8-4.json",
+  "activities": [
+    {
+      "id": "mcq-friction-internal-energy-concept",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate the increase in internal energy ΔEint to the work done against kinetic friction (fk * d).",
+      "prompt": {
+        "en": "A wooden block slides across a rough horizontal table and gradually comes to a stop. If the system is defined as the block and the table, what happens to the mechanical energy lost by the block during the slide?",
+        "ms": "Sebuah blok kayu menggelongsor di atas meja mengufuk yang kasar dan akhirnya berhenti. Jika sistem ditakrifkan sebagai blok dan meja tersebut, apakah yang berlaku kepada tenaga mekanik yang hilang daripada blok semasa ia menggelongsor?",
+        "zh": "一个木块在粗糙的水平桌面上滑动并逐渐停下来。如果将系统界定为木块和桌面，那么木块在滑动过程中损失的机械能去哪了？"
+      },
+      "hints": [
+        {
+          "en": "Consider the principle of conservation of energy: within an isolated system, energy cannot simply disappear.",
+          "ms": "Pertimbangkan prinsip keabadian tenaga: di dalam suatu sistem terpencil, tenaga tidak boleh hilang begitu sahaja.",
+          "zh": "考虑能量守恒定律：在一个孤立系统内，能量不会凭空消失。"
+        },
+        {
+          "en": "Think about what physical change occurs at the microscopic contact points between the sliding surfaces as friction acts over distance d.",
+          "ms": "Fikirkan apakah perubahan fizikal yang berlaku pada titik sentuhan mikroskopik antara permukaan yang menggelongsor apabila geseran bertindak sepanjang jarak d.",
+          "zh": "思考当摩擦力在距离 d 上发生作用时，滑动表面之间的微观接触点会发生什么物理变化。"
+        }
+      ],
+      "feedback": {
+        "en": "Work done against kinetic friction transforms macroscopic mechanical energy into microscopic internal energy (ΔEint = fk * d), which warms the contacting surfaces rather than destroying energy.",
+        "ms": "Kerja yang dilakukan menentang geseran kinetik menukarkan tenaga mekanik makroskopik kepada tenaga dalaman mikroskopik (ΔEint = fk * d), yang memanaskan permukaan yang bersentuhan dan bukannya memusnahkan tenaga.",
+        "zh": "克服动摩擦力做功将宏观机械能转化为微观内能（ΔEint = fk * d），使接触面升温，而不是消灭能量。"
+      },
+      "answerLogic": {
+        "en": "Option opt-internal-energy is correct because kinetic friction converts mechanical energy into internal thermal energy shared between the sliding objects. Option opt-destroyed represents the misconception that friction destroys energy permanently. Option opt-gravitational is incorrect because no vertical height change occurs on a horizontal table. Option opt-radiation is physically incorrect.",
+        "ms": "Pilihan opt-internal-energy adalah betul kerana geseran kinetik menukarkan tenaga mekanik kepada tenaga dalaman terma yang dikongsi antara objek yang menggelongsor. Pilihan opt-destroyed mewakili salah tanggapan bahawa geseran memusnahkan tenaga secara kekal. Pilihan opt-gravitational tidak betul kerana tiada perubahan ketinggian menegak berlaku di atas meja mengufuk. Pilihan opt-radiation adalah tidak tepat secara fizikal.",
+        "zh": "选项 opt-internal-energy 正确，因为动摩擦将机械能转化为在相互滑动的物体之间共享的内部热能。选项 opt-destroyed 体现了认为摩擦力会永久消灭能量的错误观念。选项 opt-gravitational 错误，因为在水平桌面上没有垂直高度变化。选项 opt-radiation 在物理上是不正确的。"
+      },
+      "explanation": {
+        "en": "In the energy model for nonconservative forces, friction does not eliminate energy from the universe. When kinetic friction acts over a distance d between two surfaces, mechanical energy decreases while the internal energy of the system increases by ΔEint = fk * d. The total energy of the isolated block-table system remains completely conserved.",
+        "ms": "Dalam model tenaga bagi daya bukan konservatif, geseran tidak melenyapkan tenaga daripada alam semesta. Apabila geseran kinetik bertindak merentasi jarak d antara dua permukaan, tenaga mekanik berkurangan manakala tenaga dalaman sistem bertambah sebanyak ΔEint = fk * d. Jumlah tenaga bagi sistem terpencil blok-meja kekal abadi sepenuhnya.",
+        "zh": "在非保守力的能量模型中，摩擦并不会使能量从宇宙中凭空消失。当动摩擦力在两个表面之间作用了距离 d 时，机械能减少，而系统的内能增加 ΔEint = fk * d。孤立的木块-桌面系统的总能量保持完全守恒。"
+      },
+      "misconceptions": [
+        "friction-destroys-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "isolated-system-energy-conservation",
+        "prompt": {
+          "en": "Review how defining the system boundaries to include all interacting objects converts external work into internal energy transfers.",
+          "ms": "Ulang kaji bagaimana mentakrifkan sempadan sistem untuk merangkumi semua objek yang berinteraksi menukarkan kerja luaran kepada pemindahan tenaga dalaman.",
+          "zh": "复习如何通过界定包含所有相互作用物体的系统边界，将外力做功转化为内部能量转化。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking what happens to mechanical energy when a block stops due to friction on a table.",
+        "ms": "Soalan aneka pilihan yang bertanyakan perkara yang berlaku kepada tenaga mekanik apabila sebuah blok berhenti akibat geseran di atas meja.",
+        "zh": "关于木块因桌面摩擦力停止时机械能去向的单项选择题。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-internal-energy",
+        "options": [
+          {
+            "id": "opt-internal-energy",
+            "label": {
+              "en": "It is converted into internal energy within the block and table surfaces, raising their temperatures slightly.",
+              "ms": "Ia ditukarkan kepada tenaga dalaman pada permukaan blok dan meja, lalu meningkatkan sedikit suhunya.",
+              "zh": "它转化为了木块和桌面表面的内能，使它们的温度略微升高。"
+            }
+          },
+          {
+            "id": "opt-destroyed",
+            "label": {
+              "en": "It is permanently destroyed by the friction force and ceases to exist in any form.",
+              "ms": "Ia dimusnahkan secara kekal oleh daya geseran dan tidak lagi wujud dalam sebarang bentuk.",
+              "zh": "它被摩擦力永久消灭，不再以任何形式存在。"
+            },
+            "misconception": "friction-destroys-energy"
+          },
+          {
+            "id": "opt-gravitational",
+            "label": {
+              "en": "It transforms completely into gravitational potential energy stored in the horizontal table.",
+              "ms": "Ia bertukar sepenuhnya menjadi tenaga keupayaan graviti yang tersimpan di dalam meja mengufuk.",
+              "zh": "它完全转化为了储存在水平桌面中的重力势能。"
+            }
+          },
+          {
+            "id": "opt-radiation",
+            "label": {
+              "en": "It radiates away as gravitational waves without affecting the thermal state of the surfaces.",
+              "ms": "Ia memancar keluar sebagai gelombang graviti tanpa mempengaruhi keadaan haba permukaan tersebut.",
+              "zh": "它作为引力波辐射出去，完全不影响接触面的热状态。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-isolated-system-energy-conservation",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the energy conservation equation ΔK + ΔU + ΔEint = 0 to isolated systems involving kinetic friction.",
+      "prompt": {
+        "en": "A crate slides down a rough incline towards the ground. The system consists of the crate, the inclined ramp, and the Earth. Because kinetic friction acts between the crate and the ramp, which energy statement correctly describes this isolated system?",
+        "ms": "Sebuah peti menggelongsor menuruni satah condong yang kasar ke arah tanah. Sistem terdiri daripada peti, satah condong, dan Bumi. Oleh sebab geseran kinetik bertindak antara peti dan satah condong, pernyataan tenaga manakah yang menerangkan sistem terpencil ini dengan betul?",
+        "zh": "一个板条箱沿着粗糙斜坡向地面下滑。该系统由板条箱、斜面以及地球组成。由于板条箱与斜面之间存在动摩擦力，以下哪个能量陈述正确描述了这个孤立系统？"
+      },
+      "hints": [
+        {
+          "en": "Recall that when nonconservative forces like friction act within an isolated system, mechanical energy (K + U) alone is not constant.",
+          "ms": "Ingat kembali bahawa apabila daya bukan konservatif seperti geseran bertindak di dalam sistem terpencil, tenaga mekanik (K + U) sahaja tidak malar.",
+          "zh": "回忆一下，当动摩擦力等非保守力在孤立系统内起作用时，仅机械能（K + U）本身并不守恒。"
+        },
+        {
+          "en": "The total energy of an isolated system is always conserved when all forms of energy, including the increase in internal energy ΔEint, are taken into account.",
+          "ms": "Jumlah tenaga bagi suatu sistem terpencil sentiasa abadi apabila semua bentuk tenaga, termasuk peningkatan tenaga dalaman ΔEint, diambil kira.",
+          "zh": "当把包括内能增加量 ΔEint 在内的所有形式能量都考虑在内时，孤立系统的总能量始终守恒。"
+        }
+      ],
+      "feedback": {
+        "en": "Kinetic friction converts mechanical energy into internal energy. While mechanical energy decreases, the total energy of the isolated system is conserved, satisfying ΔK + ΔU + ΔEint = 0.",
+        "ms": "Geseran kinetik menukarkan tenaga mekanik kepada tenaga dalaman. Walaupun tenaga mekanik berkurangan, jumlah tenaga bagi sistem terpencil adalah abadi, memuaskan ΔK + ΔU + ΔEint = 0.",
+        "zh": "动摩擦力将机械能转化为内能。虽然机械能减少，但孤立系统的总能量守恒，满足 ΔK + ΔU + ΔEint = 0。"
+      },
+      "answerLogic": {
+        "en": "Option opt-mech-decreases correctly states that mechanical energy decreases because of friction, while the full isolated system obeys ΔK + ΔU + ΔEint = 0. Option opt-mech-conserved incorrectly asserts that mechanical energy alone is conserved despite the presence of friction. Options opt-kinetic-constant and opt-potential-constant make false claims about kinetic or potential energy remaining unchanged.",
+        "ms": "Pilihan opt-mech-decreases menyatakan dengan betul bahawa tenaga mekanik berkurangan disebabkan oleh geseran, manakala sistem terpencil yang lengkap mematuhi ΔK + ΔU + ΔEint = 0. Pilihan opt-mech-conserved secara silap mendakwa bahawa tenaga mekanik sahaja kekal abadi walaupun terdapat geseran. Pilihan opt-kinetic-constant dan opt-potential-constant membuat dakwaan palsu bahawa tenaga kinetik atau keupayaan kekal tidak berubah.",
+        "zh": "选项 opt-mech-decreases 正确指出机械能因摩擦而减少，而整个孤立系统遵循 ΔK + ΔU + ΔEint = 0。选项 opt-mech-conserved 错误地断言即使存在摩擦机械能本身仍然守恒。选项 opt-kinetic-constant 和 opt-potential-constant 则对动能或势能保持不变做出了错误断言。"
+      },
+      "explanation": {
+        "en": "When friction acts inside an isolated system containing the sliding object, the surface, and the Earth, nonconservative forces perform work that decreases the system's mechanical energy (ΔEmech < 0). That lost mechanical energy is transformed into internal energy (ΔEint > 0). Consequently, total energy is conserved in the form ΔK + ΔU + ΔEint = 0.",
+        "ms": "Apabila geseran bertindak di dalam sistem terpencil yang mengandungi objek yang menggelongsor, permukaan, dan Bumi, daya bukan konservatif melakukan kerja yang mengurangkan tenaga mekanik sistem (ΔEmech < 0). Tenaga mekanik yang hilang itu ditukarkan kepada tenaga dalaman (ΔEint > 0). Oleh itu, jumlah tenaga adalah abadi dalam bentuk ΔK + ΔU + ΔEint = 0.",
+        "zh": "当摩擦力在包含滑动滑块、表面和地球的孤立系统内部起作用时，非保守力做功使系统的机械能减少（ΔEmech < 0）。损失的机械能转化为内能（ΔEint > 0）。因此，总能量守恒表示为 ΔK + ΔU + ΔEint = 0。"
+      },
+      "misconceptions": [
+        "mechanical-energy-conservation-with-friction"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "isolated-system-energy-conservation",
+        "prompt": {
+          "en": "Review how the conservation of energy equation expands to include internal energy changes when nonconservative forces act within an isolated system.",
+          "ms": "Ulang kaji bagaimana persamaan keabadian tenaga diperluas untuk memasukkan perubahan tenaga dalaman apabila daya bukan konservatif bertindak di dalam sistem terpencil.",
+          "zh": "复习当非保守力在孤立系统内起作用时，能量守恒方程如何扩展以包含内能变化。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking for the correct energy conservation equation in an isolated crate-ramp-Earth system with kinetic friction.",
+        "ms": "Soalan aneka pilihan yang bertanyakan persamaan keabadian tenaga yang betul dalam sistem terpencil peti-satah condong-Bumi dengan geseran kinetik.",
+        "zh": "关于在存在动摩擦的孤立板条箱-斜面-地球系统中正确能量守恒方程的单项选择题。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-mech-decreases",
+        "options": [
+          {
+            "id": "opt-mech-decreases",
+            "label": {
+              "en": "Mechanical energy decreases because part of it transforms into internal energy, satisfying ΔK + ΔU + ΔEint = 0.",
+              "ms": "Tenaga mekanik berkurangan kerana sebahagian daripadanya bertukar menjadi tenaga dalaman, memuaskan ΔK + ΔU + ΔEint = 0.",
+              "zh": "机械能减少，因为其中一部分转化为了内能，满足 ΔK + ΔU + ΔEint = 0。"
+            }
+          },
+          {
+            "id": "opt-mech-conserved",
+            "label": {
+              "en": "Mechanical energy is strictly conserved (ΔK + ΔU = 0) because all forces occur within an isolated system.",
+              "ms": "Tenaga mekanik adalah abadi sepenuhnya (ΔK + ΔU = 0) kerana semua daya berlaku di dalam sistem terpencil.",
+              "zh": "机械能严格守恒（ΔK + ΔU = 0），因为所有力都发生在孤立系统内部。"
+            },
+            "misconception": "mechanical-energy-conservation-with-friction"
+          },
+          {
+            "id": "opt-kinetic-constant",
+            "label": {
+              "en": "Kinetic energy must remain constant because potential energy is converted entirely into internal energy.",
+              "ms": "Tenaga kinetik mesti kekal malar kerana tenaga keupayaan ditukarkan sepenuhnya kepada tenaga dalaman.",
+              "zh": "动能必须保持不变，因为势能全部转化为了内能。"
+            }
+          },
+          {
+            "id": "opt-potential-constant",
+            "label": {
+              "en": "Potential energy cannot change when a nonconservative frictional force is present on the incline.",
+              "ms": "Tenaga keupayaan tidak boleh berubah apabila daya geseran bukan konservatif wujud pada satah condong.",
+              "zh": "当斜面上存在非保守摩擦力时，势能不能发生改变。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-bar-chart-initial-state",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Interpret energy bar charts tracking kinetic, potential, internal, and constant total energy in an isolated system.",
+      "prompt": {
+        "en": "An energy bar chart tracks the kinetic energy, gravitational potential energy, and internal energy change of a system (crate, ramp, Earth). At the initial moment when the crate is held stationary at the top of the ramp just before release, what does the bar chart show?",
+        "ms": "Carta palang tenaga menjejak tenaga kinetik, tenaga keupayaan graviti, dan perubahan tenaga dalaman bagi suatu sistem (peti, satah condong, Bumi). Pada saat awal ketika peti dipegang pegun di puncak satah condong sejurus sebelum dilepaskan, apakah yang ditunjukkan oleh carta palang tersebut?",
+        "zh": "能量柱状图用于追踪系统（板条箱、斜面、地球）的动能、重力势能和内能变化。在板条箱被静止固定在斜坡顶端、即将释放的初始时刻，能量柱状图显示了什么？"
+      },
+      "hints": [
+        {
+          "en": "Consider that the crate is stationary at an elevated position, meaning its initial speed is zero.",
+          "ms": "Pertimbangkan bahawa peti itu berada dalam keadaan pegun pada kedudukan tinggi, bermakna laju awalnya ialah sifar.",
+          "zh": "考虑板条箱在某一高处处于静止状态，这意味着它的初速度为零。"
+        },
+        {
+          "en": "No sliding has taken place yet, so the sliding distance d is zero. What does that imply about the energy transformed by friction?",
+          "ms": "Tiada gelongsoran yang telah berlaku lagi, jadi jarak gelongsoran d ialah sifar. Apakah maksudnya tentang tenaga yang ditukarkan oleh geseran?",
+          "zh": "此时尚未发生任何滑动，因此滑动距离 d 为零。这对摩擦转化的能量意味着什么？"
+        }
+      ],
+      "feedback": {
+        "en": "At release from rest, kinetic energy is zero and friction has not yet acted over any distance (ΔEint = 0). The entire initial total energy resides in gravitational potential energy.",
+        "ms": "Semasa dilepaskan dari keadaan pegun, tenaga kinetik ialah sifar dan geseran masih belum bertindak merentasi sebarang jarak (ΔEint = 0). Keseluruhan jumlah tenaga awal berada dalam bentuk tenaga keupayaan graviti.",
+        "zh": "从静止释放时，动能为零，摩擦力尚未在任何距离上起作用（ΔEint = 0）。初始总能量完全由重力势能构成。"
+      },
+      "answerLogic": {
+        "en": "Option opt-initial-correct correctly identifies that before release, speed is zero (K = 0), elevation is maximum (U > 0), no sliding has occurred (ΔEint = 0), and total energy equals initial potential energy. Option opt-initial-thermal-neg demonstrates the misconception that internal energy change can be negative before motion. Options opt-initial-kinetic-max and opt-initial-total-zero contradict the physical state of resting at an elevated height.",
+        "ms": "Pilihan opt-initial-correct mengenal pasti dengan betul bahawa sebelum dilepaskan, laju adalah sifar (K = 0), ketinggian adalah maksimum (U > 0), tiada gelongsoran berlaku (ΔEint = 0), dan jumlah tenaga menyamai tenaga keupayaan awal. Pilihan opt-initial-thermal-neg menunjukkan salah tanggapan bahawa perubahan tenaga dalaman boleh bernilai negatif sebelum gerakan. Pilihan opt-initial-kinetic-max dan opt-initial-total-zero bercanggah dengan keadaan fizikal pegun pada suatu ketinggian.",
+        "zh": "选项 opt-initial-correct 正确指出在释放前速度为零（K = 0），高度最高（U > 0），未发生滑动（ΔEint = 0），且总能量等于初始势能。选项 opt-initial-thermal-neg 表现出认为运动前内能变化可以为负值的错误观念。选项 opt-initial-kinetic-max 和 opt-initial-total-zero 与物体在高处静止的物理状态相违背。"
+      },
+      "explanation": {
+        "en": "In energy bar charts representing an isolated system (such as Figure 8.13 in the text), the initial instant before release has zero kinetic energy because the object is at rest. Because the sliding distance is zero, friction has done no work, meaning the internal energy bar change is zero. Therefore, 100% of the initial system energy appears as potential energy.",
+        "ms": "Dalam carta palang tenaga yang mewakili sistem terpencil (seperti Rajah 8.13 dalam teks), saat awal sebelum dilepaskan mempunyai tenaga kinetik sifar kerana objek berada dalam keadaan pegun. Oleh sebab jarak gelongsoran adalah sifar, geseran belum melakukan kerja, bermakna perubahan palang tenaga dalaman adalah sifar. Oleh itu, 100% daripada tenaga awal sistem wujud sebagai tenaga keupayaan.",
+        "zh": "在代表孤立系统的能量柱状图（如教材图 8.13 所示）中，释放前的初始时刻动能为零，因为物体处于静止状态。由于滑动距离为零，摩擦力未做功，这意味着内能变化柱为零。因此，系统初始能量的 100% 都表现为势能。"
+      },
+      "misconceptions": [
+        "internal-energy-can-decrease-spontaneously"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-and-potential-energy-definitions",
+        "prompt": {
+          "en": "Review how kinetic energy depends on speed and potential energy depends on position relative to a reference level.",
+          "ms": "Ulang kaji bagaimana tenaga kinetik bergantung pada laju dan tenaga keupayaan bergantung pada kedudukan relatif kepada aras rujukan.",
+          "zh": "复习动能如何取决于速度，以及势能如何取决于相对于参考水平面的位置。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options describing the energy bar chart levels for a stationary object at the top of a ramp before release.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang menerangkan aras carta palang tenaga untuk objek pegun di puncak satah condong sebelum dilepaskan.",
+        "zh": "关于斜坡顶端静止物体在释放前能量柱状图水平的四选一多项选择题。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-initial-correct",
+        "options": [
+          {
+            "id": "opt-initial-correct",
+            "label": {
+              "en": "Gravitational potential energy is high, kinetic energy is zero, the change in internal energy is zero, and total energy equals initial potential energy.",
+              "ms": "Tenaga keupayaan graviti adalah tinggi, tenaga kinetik adalah sifar, perubahan tenaga dalaman adalah sifar, dan jumlah tenaga menyamai tenaga keupayaan awal.",
+              "zh": "重力势能处于高位，动能为零，内能变化为零，总能量等于初始势能。"
+            }
+          },
+          {
+            "id": "opt-initial-thermal-neg",
+            "label": {
+              "en": "Gravitational potential energy is high, kinetic energy is zero, but the change in internal energy is negative before sliding begins.",
+              "ms": "Tenaga keupayaan graviti adalah tinggi, tenaga kinetik adalah sifar, tetapi perubahan tenaga dalaman adalah negatif sebelum gelongsoran bermula.",
+              "zh": "重力势能处于高位，动能为零，但在滑动开始前内能变化为负值。"
+            },
+            "misconception": "internal-energy-can-decrease-spontaneously"
+          },
+          {
+            "id": "opt-initial-kinetic-max",
+            "label": {
+              "en": "Kinetic energy is at maximum, potential energy is zero, and internal energy change is zero.",
+              "ms": "Tenaga kinetik berada pada tahap maksimum, tenaga keupayaan adalah sifar, dan perubahan tenaga dalaman adalah sifar.",
+              "zh": "动能处于最大值，势能为零，且内能变化为零。"
+            }
+          },
+          {
+            "id": "opt-initial-total-zero",
+            "label": {
+              "en": "Total energy is zero because the crate has not yet been set into motion.",
+              "ms": "Jumlah tenaga adalah sifar kerana peti itu masih belum digerakkan.",
+              "zh": "总能量为零，因为板条箱尚未开始运动。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-ramp-length-dissipation",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict how changing path length or surface friction affects final speed and mechanical energy dissipation.",
+      "prompt": {
+        "en": "A crate is released from rest at the top of a ramp of vertical height h. In Setup A, the ramp is steep and short. In Setup B, the ramp starts at the exact same vertical height h but has a gentler incline, making the sliding distance along the ramp longer. Assuming the crate experiences the same constant kinetic friction force fk on both ramps, how does the speed of the crate at the bottom of Setup B compare to Setup A?",
+        "ms": "Sebuah peti dilepaskan dari keadaan pegun di bahagian atas sebuah landasan berketinggian menegak h. Dalam Susunan A, landasan adalah curam dan pendek. Dalam Susunan B, landasan bermula pada ketinggian menegak h yang sama tepat tetapi mempunyai kecondongan yang lebih landai, menjadikan jarak gelongsoran di sepanjang landasan lebih panjang. Dengan menganggap peti itu mengalami daya geseran kinetik malar fk yang sama pada kedua-dua landasan, bagaimanakah laju peti di bahagian bawah Susunan B berbanding dengan Susunan A?",
+        "zh": "一个板箱从竖直高度为 h 的斜面顶端由静止释放。在方案 A 中，斜面较陡且较短。在方案 B 中，斜面起始于完全相同的竖直高度 h，但倾角更平缓，因而沿斜面的滑动距离更长。假设板箱在两个斜面上受到的恒定动摩擦力 fk 大小相同，方案 B 中板箱到达底端时的速度与方案 A 相比如何？"
+      },
+      "hints": [
+        {
+          "en": "Consider the energy equation for an isolated system: delta K + delta Ug + delta Eint = 0. Notice that both crates start with the exact same initial gravitational potential energy.",
+          "ms": "Pertimbangkan persamaan tenaga bagi sistem terpencil: delta K + delta Ug + delta Eint = 0. Perhatikan bahawa kedua-dua peti bermula dengan tenaga keupayaan graviti awal yang sama tepat.",
+          "zh": "考虑孤立系统的能量守恒方程：delta K + delta Ug + delta Eint = 0。注意两个板箱初始时具有完全相同的重力势能。"
+        },
+        {
+          "en": "Recall that the increase in internal energy due to friction is delta Eint = fk * d. A longer ramp increases the sliding distance d, which directly changes how much mechanical energy remains as kinetic energy.",
+          "ms": "Ingat bahawa peningkatan tenaga dalaman akibat geseran ialah delta Eint = fk * d. Landasan yang lebih panjang meningkatkan jarak gelongsoran d, yang secara langsung mengubah jumlah tenaga mekanik yang kekal sebagai tenaga kinetik.",
+          "zh": "回想一下，摩擦引起的内能增加量为 delta Eint = fk * d。更长的斜面增大了滑动距离 d，这直接影响了最终保留为动能的机械能总量。"
+        }
+      ],
+      "feedback": {
+        "en": "Because kinetic friction acts over the entire sliding distance d, a longer ramp dissipates more mechanical energy into internal energy (delta Eint = fk * d), leaving less kinetic energy and therefore yielding a lower speed at the bottom.",
+        "ms": "Kerana geseran kinetik bertindak merentasi seluruh jarak gelongsoran d, landasan yang lebih panjang menghilangkan lebih banyak tenaga mekanik kepada tenaga dalaman (delta Eint = fk * d), meninggalkan kurang tenaga kinetik dan seterusnya menghasilkan laju yang lebih rendah di bahagian bawah.",
+        "zh": "由于动摩擦力在整个滑动距离 d 上做功，更长的斜面会将更多的机械能转化为内能（delta Eint = fk * d），从而使底端剩余的动能更少，因此到达底端时的速度更低。"
+      },
+      "answerLogic": {
+        "en": "Using conservation of energy, the kinetic energy at the bottom is Kf = m*g*h - fk*d. With the same initial elevation h and identical friction force fk, the larger distance d in Setup B means more mechanical energy is converted to internal energy, resulting in a lower final speed.",
+        "ms": "Menggunakan keabadian tenaga, tenaga kinetik di bahagian bawah ialah Kf = m*g*h - fk*d. Dengan ketinggian awal h yang sama dan daya geseran fk yang serupa, jarak d yang lebih besar dalam Susunan B bermakna lebih banyak tenaga mekanik ditukarkan kepada tenaga dalaman, menghasilkan laju akhir yang lebih rendah.",
+        "zh": "根据能量守恒，底端的动能为 Kf = m*g*h - fk*d。在初始高度 h 和摩擦力 fk 相同的情况下，方案 B 中更大的距离 d 意味着更多机械能转化为内能，导致最终速度更低。"
+      },
+      "explanation": {
+        "en": "The work done by kinetic friction is nonconservative and path-dependent. Although the decrease in gravitational potential energy depends solely on the vertical drop h, the mechanical energy dissipated into internal energy depends on the actual path length traversed (delta Eint = fk * d). The gentler slope of Setup B requires the crate to travel over a longer distance, so friction converts a greater amount of mechanical energy into internal thermal energy, leaving the crate with less kinetic energy at the bottom.",
+        "ms": "Kerja yang dilakukan oleh geseran kinetik adalah bukan konservatif dan bersandar pada laluan. Walaupun pengurangan tenaga keupayaan graviti hanya bergantung pada penurunan menegak h, tenaga mekanik yang dilesapkan kepada tenaga dalaman bergantung pada panjang laluan sebenar yang dilalui (delta Eint = fk * d). Kecondongan yang lebih landai dalam Susunan B memerlukan peti bergerak merentasi jarak yang lebih jauh, jadi geseran menukarkan jumlah tenaga mekanik yang lebih besar kepada tenaga terma dalaman, meninggalkan peti dengan kurang tenaga kinetik di bahagian bawah.",
+        "zh": "动摩擦力做功是非保守且与路径相关的。虽然重力势能的减少仅取决于竖直下落高度 h，但耗散为内能的机械能取决于实际经过的路径长度（delta Eint = fk * d）。方案 B 中更平缓的坡度使板箱经过了更长的滑动距离，因此摩擦力将更多的机械能转化为了内热能，使板箱在底端具有更小的动能。"
+      },
+      "misconceptions": [
+        "friction-work-independent-of-path-length"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "friction-and-normal-force",
+        "prompt": {
+          "en": "Review how the change in internal energy due to kinetic friction is determined by the friction force and sliding path length: delta Eint = fk * d.",
+          "ms": "Ulang kaji bagaimana perubahan tenaga dalaman akibat geseran kinetik ditentukan oleh daya geseran dan panjang laluan gelongsoran: delta Eint = fk * d.",
+          "zh": "复习由动摩擦力引起的内能变化如何由摩擦力大小及滑动路径长度决定：delta Eint = fk * d。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple choice question with four options comparing the final speeds of a crate sliding down two ramps of identical vertical height but different incline lengths under constant friction.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang membandingkan laju akhir sebuah peti yang menggelongsor menuruni dua landasan berketinggian menegak sama tetapi berbeza panjang condong di bawah geseran malar.",
+        "zh": "一个包含四个选项的多项选择题，比较在恒定摩擦力作用下，沿相同竖直高度但不同倾斜长度的两个斜面滑下的板箱末速度。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-b-lower",
+        "options": [
+          {
+            "id": "opt-b-lower",
+            "label": {
+              "en": "The speed is lower in Setup B because the friction force acts over a greater distance, converting more mechanical energy into internal energy.",
+              "ms": "Laju adalah lebih rendah dalam Susunan B kerana daya geseran bertindak merentasi jarak yang lebih jauh, menukarkan lebih banyak tenaga mekanik kepada tenaga dalaman.",
+              "zh": "方案 B 中的速度更低，因为摩擦力在更大的距离上做功，将更多的机械能转化为了内能。"
+            }
+          },
+          {
+            "id": "opt-b-same",
+            "label": {
+              "en": "The speed is the same in both setups because both crates start at the same vertical height, so the energy lost to friction depends only on the net vertical displacement.",
+              "ms": "Laju adalah sama dalam kedua-dua susunan kerana kedua-dua peti bermula pada ketinggian menegak yang sama, jadi tenaga yang hilang akibat geseran hanya bergantung pada sesaran menegak bersih.",
+              "zh": "两种方案中的速度相同，因为两个板箱起始于相同的竖直高度，摩擦损失的能量仅取决于净竖直位移。"
+            },
+            "misconception": "friction-work-independent-of-path-length"
+          },
+          {
+            "id": "opt-b-higher-time",
+            "label": {
+              "en": "The speed is higher in Setup B because the longer ramp gives gravity more time to accelerate the crate.",
+              "ms": "Laju adalah lebih tinggi dalam Susunan B kerana landasan yang lebih panjang memberi graviti lebih masa untuk memecutkan peti.",
+              "zh": "方案 B 中的速度更高，因为更长的斜面为重力提供了更长的时间来加速板箱。"
+            }
+          },
+          {
+            "id": "opt-b-higher-heat",
+            "label": {
+              "en": "The speed is higher in Setup B because the additional sliding distance creates internal energy that assists the forward motion of the crate.",
+              "ms": "Laju adalah lebih tinggi dalam Susunan B kerana jarak gelongsoran tambahan menghasilkan tenaga dalaman yang membantu gerakan ke hadapan peti.",
+              "zh": "方案 B 中的速度更高，因为额外的滑动距离产生了内能，从而辅助了板箱向前运动。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-spring-compression-friction",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze systems combining gravitational, elastic potential, and internal energy changes.",
+      "prompt": {
+        "en": "A system consists of a horizontal block on a rough table attached to an unstretched spring, connected over a frictionless pulley to a hanging block, along with Earth and the table surface. The system is released from rest. The hanging block falls vertically by a distance h before momentarily coming to rest. Which statement correctly describes the energy balance of this isolated system over this motion interval?",
+        "ms": "Satu sistem terdiri daripada blok mendatar di atas meja kasar yang disambungkan kepada spring yang tidak meregang, dihubungkan merentasi takal licin kepada blok tergantung, bersama-sama dengan Bumi dan permukaan meja. Sistem ini dilepaskan dari keadaan pegun. Blok tergantung jatuh secara menegak sejauh h sebelum berhenti seketika. Pernyataan manakah yang menerangkan keseimbangan tenaga sistem terpencil ini dengan betul sepanjang selang gerakan ini?",
+        "zh": "一个系统由粗糙桌面上的水平滑块（连接原长弹簧）、跨过光滑定滑轮连接的悬挂重物，以及地球和桌面组成。系统从静止状态释放。悬挂重物竖直下落距离 h 后瞬间静止。下列哪个陈述正确描述了该孤立系统在此运动过程中的能量平衡关系？"
+      },
+      "hints": [
+        {
+          "en": "Apply the general isolated-system conservation equation: delta K + delta Ug + delta Us + delta Eint = 0. Notice the initial and final states are both momentary rest.",
+          "ms": "Gunakan persamaan keabadian sistem terpencil yang umum: delta K + delta Ug + delta Us + delta Eint = 0. Perhatikan keadaan awal dan akhir kedua-duanya adalah keadaan pegun seketika.",
+          "zh": "应用通用的孤立系统能量守恒方程：delta K + delta Ug + delta Us + delta Eint = 0。注意初始状态和末状态均为瞬时静止。"
+        },
+        {
+          "en": "Because initial and final kinetic energies are zero, the decrease in gravitational potential energy (-delta Ug) must account for every form of energy gained in the system.",
+          "ms": "Kerana tenaga kinetik awal dan akhir adalah sifar, pengurangan tenaga keupayaan graviti (-delta Ug) mesti mengimbangi setiap bentuk tenaga yang diperoleh dalam sistem.",
+          "zh": "由于初末动能均为零，重力势能的减少量（-delta Ug）必须正好平衡系统中所有增加的能量形式。"
+        }
+      ],
+      "feedback": {
+        "en": "The lost gravitational potential energy of the hanging block is transformed into two parts: elastic potential energy stored in the stretched spring and internal thermal energy generated by friction between the sliding block and table.",
+        "ms": "Kehilangan tenaga keupayaan graviti bagi blok tergantung diubah kepada dua bahagian: tenaga keupayaan elastik yang disimpan dalam spring tergang dan tenaga terma dalaman yang dihasilkan oleh geseran antara blok gelongsor dan meja.",
+        "zh": "悬挂重物减少的重力势能转化为了两部分：拉伸弹簧中储存的弹性势能，以及滑块与桌面之间由摩擦产生的内热能。"
+      },
+      "answerLogic": {
+        "en": "With delta K = 0, the equation delta K + delta Ug + delta Us + delta Eint = 0 simplifies to -delta Ug = delta Us + delta Eint. Thus, the decrease in gravitational potential energy exactly equals the elastic energy gained plus the increase in internal energy.",
+        "ms": "Dengan delta K = 0, persamaan delta K + delta Ug + delta Us + delta Eint = 0 dipermudahkan kepada -delta Ug = delta Us + delta Eint. Oleh itu, pengurangan tenaga keupayaan graviti adalah tepat bersamaan dengan pertambahan tenaga elastik ditambah peningkatan tenaga dalaman.",
+        "zh": "当 delta K = 0 时，方程 delta K + delta Ug + delta Us + delta Eint = 0 简化为 -delta Ug = delta Us + delta Eint。因此，重力势能的减少量严格等于增加的弹性势能与增加的内能之和。"
+      },
+      "explanation": {
+        "en": "In an isolated system containing nonconservative forces like kinetic friction, total energy is conserved: delta K + delta Ug + delta Us + delta Eint = 0. Because the system starts from rest and momentarily stops at distance h, delta K = 0. The gravitational potential energy lost by the falling block provides the energy to stretch the spring (increasing Us) and does work against friction, which increases the internal thermal energy of the sliding block and table (increasing Eint). Friction does not destroy energy; it converts mechanical energy into internal energy.",
+        "ms": "Dalam sistem terpencil yang mengandungi daya bukan konservatif seperti geseran kinetik, jumlah tenaga adalah abadi: delta K + delta Ug + delta Us + delta Eint = 0. Kerana sistem bermula dari keadaan pegun dan berhenti seketika pada jarak h, delta K = 0. Tenaga keupayaan graviti yang hilang oleh blok yang jatuh membekalkan tenaga untuk meregangkan spring (meningkatkan Us) dan melakukan kerja menentang geseran, yang meningkatkan tenaga terma dalaman blok gelongsor dan meja (meningkatkan Eint). Geseran tidak memusnahkan tenaga; ia menukarkan tenaga mekanik kepada tenaga dalaman.",
+        "zh": "在包含动摩擦力等非保守力的孤立系统中，总能量守恒：delta K + delta Ug + delta Us + delta Eint = 0。由于系统从静止开始且在下落距离 h 处瞬间停止，delta K = 0。下落滑块损失的重力势能既提供了拉伸弹簧所需的能量（使 Us 增加），又克服摩擦力做功，使滑动滑块和桌面的内热能增加（使 Eint 增加）。摩擦力并没有消灭能量，而是将机械能转化为了内能。"
+      },
+      "misconceptions": [
+        "mechanical-energy-conservation-with-friction",
+        "friction-destroys-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-and-potential-energy-definitions",
+        "prompt": {
+          "en": "Review the definitions and formulas for gravitational potential energy (Ug = m*g*y) and spring elastic potential energy (Us = 1/2*k*x^2).",
+          "ms": "Ulang kaji definisi dan rumus bagi tenaga keupayaan graviti (Ug = m*g*y) dan tenaga keupayaan elastik spring (Us = 1/2*k*x^2).",
+          "zh": "复习重力势能（Ug = m*g*y）和弹簧弹性势能（Us = 1/2*k*x^2）的定义与公式。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple choice question with four options asking for the correct energy balance in an isolated system composed of a falling block, a sliding block, a spring, and friction.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang meminta keseimbangan tenaga yang betul dalam sistem terpencil yang terdiri daripada blok jatuh, blok gelongsor, spring, dan geseran.",
+        "zh": "一个包含四个选项的多项选择题，询问由下落重物、滑动滑块、弹簧和摩擦力组成的孤立系统中的正确能量平衡关系。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-balance-correct",
+        "options": [
+          {
+            "id": "opt-balance-correct",
+            "label": {
+              "en": "The decrease in gravitational potential energy equals the elastic potential energy gained by the spring plus the increase in internal energy due to friction.",
+              "ms": "Pengurangan tenaga keupayaan graviti bersamaan dengan tenaga keupayaan elastik yang diperoleh spring ditambah peningkatan tenaga dalaman akibat geseran.",
+              "zh": "重力势能的减少量等于弹簧获得的弹性势能加上摩擦引起的内能增加量。"
+            }
+          },
+          {
+            "id": "opt-balance-mech-conserved",
+            "label": {
+              "en": "The decrease in gravitational potential energy is converted entirely into elastic potential energy because the blocks are momentarily at rest at both endpoints, so mechanical energy must be conserved.",
+              "ms": "Pengurangan tenaga keupayaan graviti ditukarkan sepenuhnya kepada tenaga keupayaan elastik kerana blok berada dalam keadaan pegun seketika pada kedua-dua titik hujung, jadi tenaga mekanik mesti abadi.",
+              "zh": "重力势能的减少量完全转化为了弹性势能，因为滑块在初末两个端点均处于瞬时静止，因此机械能必然守恒。"
+            },
+            "misconception": "mechanical-energy-conservation-with-friction"
+          },
+          {
+            "id": "opt-balance-destroyed",
+            "label": {
+              "en": "The elastic potential energy gained equals the decrease in gravitational potential energy minus the energy permanently destroyed by friction, reducing the universe's total energy.",
+              "ms": "Tenaga keupayaan elastik yang diperoleh bersamaan dengan pengurangan tenaga keupayaan graviti tolak tenaga yang dimusnahkan secara kekal oleh geseran, mengurangkan jumlah tenaga alam semesta.",
+              "zh": "获得的弹性势能等于重力势能的减少量减去被摩擦永久消灭的能量，从而减少了全系统的总能量。"
+            },
+            "misconception": "friction-destroys-energy"
+          },
+          {
+            "id": "opt-balance-internal-adds",
+            "label": {
+              "en": "The elastic potential energy gained equals the sum of the decrease in gravitational potential energy and the internal energy created by the sliding block.",
+              "ms": "Tenaga keupayaan elastik yang diperoleh bersamaan dengan jumlah pengurangan tenaga keupayaan graviti dan tenaga dalaman yang dicipta oleh blok gelongsor.",
+              "zh": "获得的弹性势能等于重力势能的减少量加上滑动滑块产生的内能之和。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-bar-chart-intermediate-state",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Interpret energy bar charts tracking kinetic, potential, internal, and constant total energy in an isolated system.",
+      "prompt": {
+        "en": "An energy bar chart displays kinetic energy (K), gravitational potential energy (Ug), elastic potential energy (Us), internal energy (Eint), and total energy (Etotal) for an isolated two-block, spring, and table system released from rest. At an intermediate instant halfway to the maximum displacement, the blocks are moving and the spring is partially stretched. How do the energy bars in this intermediate state compare to the initial release state?",
+        "ms": "Satu carta palang tenaga memaparkan tenaga kinetik (K), tenaga keupayaan graviti (Ug), tenaga keupayaan elastik (Us), tenaga dalaman (Eint), dan jumlah tenaga (Ejumlah) bagi satu sistem dua blok, spring, dan meja terpencil yang dilepaskan dari keadaan pegun. Pada ketika perantaraan separuh jalan ke sesaran maksimum, blok sedang bergerak dan spring meregang separa. Bagaimanakah palang tenaga dalam keadaan perantaraan ini berbanding dengan keadaan pelepasan awal?",
+        "zh": "一个能量条形图显示了从静止释放的孤立“双滑块-弹簧-桌面”系统的动能（K）、重力势能（Ug）、弹性势能（Us）、内能（Eint）以及总能量（Etotal）。在到达最大位移正中间的某一瞬时状态，滑块正在运动且弹簧部分拉伸。与初始释放状态相比，该中间状态的各能量条形柱具有什么特征？"
+      },
+      "hints": [
+        {
+          "en": "Identify whether energy is transferred into or out of the isolated system. What does that imply for the total energy bar across all states?",
+          "ms": "Kenal pasti sama ada tenaga dipindahkan masuk atau keluar dari sistem terpencil itu. Apakah yang diimplikasikan untuk palang jumlah tenaga merentasi semua keadaan?",
+          "zh": "判断能量是否有流入或流出该孤立系统。这意味着在所有状态下，总能量条形柱应该如何表现？"
+        },
+        {
+          "en": "At this intermediate point, the objects have speed (so K > 0), the spring is stretched (so Us > 0), and friction has already acted over a distance (so Eint has increased). Where did all of this energy originate?",
+          "ms": "Pada titik perantaraan ini, objek mempunyai laju (jadi K > 0), spring meregang (jadi Us > 0), dan geseran telah bertindak merentasi suatu jarak (jadi Eint telah meningkat). Dari manakah semua tenaga ini berasal?",
+          "zh": "在这一中间位置，物体具有速度（因此 K > 0），弹簧被拉伸（因此 Us > 0），摩擦力已经在一定距离上做功（因此 Eint 增加）。所有这些能量最初来源于哪里？"
+        }
+      ],
+      "feedback": {
+        "en": "In an isolated system, the total energy bar is strictly constant. As gravitational potential energy drops, positive bars appear for kinetic energy, elastic potential energy, and internal energy, keeping the total height unchanged.",
+        "ms": "Dalam sistem terpencil, palang jumlah tenaga adalah malar secara ketat. Apabila tenaga keupayaan graviti menurun, palang positif muncul untuk tenaga kinetik, tenaga keupayaan elastik, dan tenaga dalaman, mengekalkan jumlah ketinggian tidak berubah.",
+        "zh": "在孤立系统中，总能量条严格保持不变。随着重力势能下降，动能、弹性势能和内能均出现正的条形柱，并保持总高度恒定。"
+      },
+      "answerLogic": {
+        "en": "Conservation of energy dictates Etotal = constant. At the intermediate point, Ug has decreased because the hanging block fell, while K > 0 (blocks moving), Us > 0 (spring stretched), and Eint > Eint,initial (friction has acted). The sum of increases in K, Us, and Eint equals the decrease in Ug.",
+        "ms": "Keabadian tenaga menetapkan bahawa Ejumlah = malar. Pada titik perantaraan, Ug telah berkurangan kerana blok tergantung jatuh, manakala K > 0 (blok sedang bergerak), Us > 0 (spring meregang), dan Eint > Eint,awal (geseran telah bertindak). Jumlah peningkatan dalam K, Us, dan Eint bersamaan dengan pengurangan dalam Ug.",
+        "zh": "能量守恒定律要求 Etotal = 常数。在中间点，由于悬挂重物下落，Ug 减少；同时 K > 0（滑块在运动），Us > 0（弹簧被拉伸），Eint > Eint,initial（摩擦力已做功）。K、Us 和 Eint 的增加量之和等于 Ug 的减少量。"
+      },
+      "explanation": {
+        "en": "Energy bar charts visually demonstrate energy conservation within an isolated system. The total energy bar remains constant at 100% at all times. Initially, before release, the system possesses only gravitational potential energy. At the intermediate position, that initial gravitational potential energy has transformed into three distinct bars: kinetic energy of the moving blocks, elastic potential energy stored in the stretched spring, and internal thermal energy generated by friction along the surface. Total energy is never destroyed, nor can internal energy spontaneously become negative during sliding.",
+        "ms": "Carta palang tenaga menunjukkan keabadian tenaga secara visual dalam sistem terpencil. Palang jumlah tenaga kekal malar pada 100% pada setiap masa. Pada mulanya, sebelum pelepasan, sistem hanya mempunyai tenaga keupayaan graviti. Pada kedudukan perantaraan, tenaga keupayaan graviti awal tersebut telah berubah kepada tiga palang yang berbeza: tenaga kinetik bagi blok yang bergerak, tenaga keupayaan elastik yang disimpan dalam spring tergang, dan tenaga terma dalaman yang dihasilkan oleh geseran di sepanjang permukaan. Jumlah tenaga tidak pernah dimusnahkan, dan tenaga dalaman juga tidak boleh menjadi negatif secara spontan semasa gelongsoran.",
+        "zh": "能量条形图直观地展示了孤立系统内部的能量守恒。总能量条在任何时刻都恒定在 100%。最初释放前，系统仅具有重力势能。在中间位置，初始的重力势能转化为了三个不同的条形柱：运动滑块的动能、拉伸弹簧中储存的弹性势能以及沿表面滑动由摩擦产生的内热能。总能量绝不会被消灭，而在滑动过程中内能也绝不可能自发变为负值。"
+      },
+      "misconceptions": [
+        "friction-destroys-energy",
+        "internal-energy-can-decrease-spontaneously"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "isolated-system-energy-conservation",
+        "prompt": {
+          "en": "Review how the principle of conservation of energy applies to an isolated system, requiring that the total energy (Etotal = K + U + Eint) remains invariant over time.",
+          "ms": "Ulang kaji bagaimana prinsip keabadian tenaga terpakai pada sistem terpencil, yang memerlukan jumlah tenaga (Ejumlah = K + U + Eint) kekal tidak berubah mengikut masa.",
+          "zh": "复习能量守恒定律在孤立系统中的应用：要求总能量（Etotal = K + U + Eint）随时间保持恒定不变。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple choice question with four options asking to describe the bar heights of kinetic, potential, internal, and total energy on an energy bar chart at an intermediate state with friction.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang meminta penerangan mengenai ketinggian palang tenaga kinetik, keupayaan, dalaman, dan jumlah tenaga pada carta palang tenaga pada keadaan perantaraan dengan geseran.",
+        "zh": "一个包含四个选项的多项选择题，要求描述在存在摩擦的中间状态下，能量条形图中动能、势能、内能和总能量条形柱的高度变化。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-chart-intermediate-valid",
+        "options": [
+          {
+            "id": "opt-chart-intermediate-valid",
+            "label": {
+              "en": "The total energy bar is unchanged; Ug has decreased, while K, Us, and Eint all show non-zero positive bars whose sum equals the lost Ug.",
+              "ms": "Palang jumlah tenaga tidak berubah; Ug telah berkurangan, manakala K, Us, dan Eint semuanya menunjukkan palang positif bukan sifar yang jumlahnya bersamaan dengan Ug yang hilang.",
+              "zh": "总能量条保持不变；Ug 减少，而 K、Us 和 Eint 均显示为非零的正条形柱，它们的增加总量等于失去的 Ug。"
+            }
+          },
+          {
+            "id": "opt-chart-total-shrunk",
+            "label": {
+              "en": "The total energy bar has shrunk because kinetic friction permanently destroyed a portion of the mechanical energy in the system.",
+              "ms": "Palang jumlah tenaga telah menyusut kerana geseran kinetik telah memusnahkan sebahagian daripada tenaga mekanik dalam sistem secara kekal.",
+              "zh": "总能量条变短了，因为动摩擦力永久销毁了系统中的一部分机械能。"
+            },
+            "misconception": "friction-destroys-energy"
+          },
+          {
+            "id": "opt-chart-internal-negative",
+            "label": {
+              "en": "The internal energy bar has become negative because thermal energy was spontaneously converted into mechanical energy to speed up the blocks.",
+              "ms": "Palang tenaga dalaman telah menjadi negatif kerana tenaga terma telah ditukarkan secara spontan kepada tenaga mekanik untuk melajukan blok.",
+              "zh": "内能条变成了负值，因为热能自发转化为了机械能以加速滑块。"
+            },
+            "misconception": "internal-energy-can-decrease-spontaneously"
+          },
+          {
+            "id": "opt-chart-internal-zero",
+            "label": {
+              "en": "The internal energy bar remains at zero until the blocks reach their final stopping point, so only K, Ug, and Us can be non-zero during motion.",
+              "ms": "Palang tenaga dalaman kekal pada sifar sehingga blok mencapai titik berhenti akhir mereka, jadi hanya K, Ug, dan Us yang boleh bernilai bukan sifar semasa gerakan.",
+              "zh": "在滑块到达最终停止点之前，内能条一直保持为零，因此运动期间只有 K、Ug 和 Us 可以是非零值。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-connected-blocks-energy-balance",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze systems combining gravitational, elastic potential, and internal energy changes.",
+      "prompt": {
+        "en": "A block on a rough horizontal surface is connected to a horizontal spring and, via a light cord passing over a frictionless pulley, to a hanging counterweight. The system is released from rest with the spring unstretched. At an instant partway through the descent when the counterweight is moving downward at non-zero speed, which statement correctly analyzes the mechanical energy and total energy balance of the isolated system (both blocks, spring, surface, and Earth)?",
+        "ms": "Sebuah blok di atas permukaan mendatar yang kasar disambungkan kepada spring mendatar dan, melalui tali ringan yang melalui takal licin, kepada pemberat gantung. Sistem ini dilepaskan dari keadaan pegun dengan spring belum diregangkan. Pada suatu ketika semasa penurunan apabila pemberat gantung bergerak ke bawah pada laju bukan sifar, pernyataan manakah yang menganalisis tenaga mekanik dan imbangan jumlah tenaga bagi sistem terpencil (kedua-dua blok, spring, permukaan, dan Bumi) dengan betul?",
+        "zh": "粗糙水平表面上的一块滑块连接着一根水平弹簧，并通过跨过光滑定滑轮的轻绳与一个悬挂重物相连。系统在弹簧未伸长状态下从静止释放。在下落过程中悬挂重物正以非零速度向下运动的某一时刻，下列哪项陈述正确分析了该孤立系统（两滑块、弹簧、表面及地球）的机械能与总能量平衡关系？"
+      },
+      "hints": [
+        {
+          "en": "Distinguish between the system's mechanical energy (E_mech = K + Ug + Us) and its total energy (E_total = E_mech + Eint). Does internal kinetic friction alter mechanical energy, total energy, or both?",
+          "ms": "Bezakan antara tenaga mekanik sistem (E_mech = K + Ug + Us) dan jumlah tenaganya (E_total = E_mech + Eint). Adakah geseran kinetik dalaman mengubah tenaga mekanik, jumlah tenaga, atau kedua-duanya?",
+          "zh": "区分系统的机械能（E_mech = K + Ug + Us）与其总能量（E_total = E_mech + Eint）。内部动摩擦力是改变了机械能、总能量，还是两者都改变？"
+        },
+        {
+          "en": "Because the counterweight is moving downward, the blocks have non-zero kinetic energy (ΔK > 0), the spring is stretched (ΔUs > 0), and friction has generated thermal energy (ΔEint > 0). All three positive changes are supplied entirely by the drop in gravitational potential energy (-ΔUg > 0).",
+          "ms": "Kerana pemberat gantung sedang bergerak ke bawah, blok mempunyai tenaga kinetik bukan sifar (ΔK > 0), spring diregangkan (ΔUs > 0), dan geseran telah menghasilkan tenaga terma (ΔEint > 0). Ketiga-tiga peningkatan positif ini dibekalkan sepenuhnya oleh penurunan tenaga keupayaan graviti (-ΔUg > 0).",
+          "zh": "由于悬挂重物正在向下运动，滑块具有非零动能（ΔK > 0），弹簧被拉伸（ΔUs > 0），摩擦产生了热能（ΔEint > 0）。这三项正向能量变化完全由重力势能的减少（-ΔUg > 0）来提供。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! In an isolated system with friction, total energy is strictly conserved (ΔE_total = 0), but mechanical energy decreases by the amount of internal energy generated (ΔE_mech = -ΔEint < 0). The loss in gravitational potential energy (-ΔUg) supplies the increase in kinetic energy (ΔK), elastic potential energy (ΔUs), and internal thermal energy (ΔEint).",
+        "ms": "Betul! Dalam sistem terpencil dengan geseran, jumlah tenaga diabadikan secara mutlak (ΔE_total = 0), tetapi tenaga mekanik berkurangan sebanyak tenaga dalaman yang dihasilkan (ΔE_mech = -ΔEint < 0). Kehilangan tenaga keupayaan graviti (-ΔUg) membekalkan peningkatan tenaga kinetik (ΔK), tenaga keupayaan kenyal (ΔUs), dan tenaga dalaman terma (ΔEint).",
+        "zh": "正确！在包含摩擦的孤立系统中，总能量严格守恒（ΔE_total = 0），但机械能减少量恰好等于所产生的内能量（ΔE_mech = -ΔEint < 0）。重力势能的减少（-ΔUg）同时提供了动能的增加（ΔK）、弹性势能的增加（ΔUs）以及内能（热能）的增加（ΔEint）。"
+      },
+      "answerLogic": {
+        "en": "For the isolated system containing both blocks, spring, table, and Earth, the energy conservation equation is ΔK + ΔUg + ΔUs + ΔEint = 0. Mechanical energy is defined as E_mech = K + Ug + Us, which gives ΔE_mech = ΔK + ΔUg + ΔUs = -ΔEint. Because kinetic friction does nonconservative work as the block slides, ΔEint > 0, meaning mechanical energy decreases (ΔE_mech < 0). Rearranging yields -ΔUg = ΔK + ΔUs + ΔEint: the single source of energy entering the other channels is the decrease in gravitational potential energy, which partitions simultaneously into kinetic energy of motion, stored elastic energy, and internal energy. The total energy change of the isolated system remains exactly zero.",
+        "ms": "Bagi sistem terpencil yang mengandungi kedua-dua blok, spring, meja, dan Bumi, persamaan keabadian tenaga ialah ΔK + ΔUg + ΔUs + ΔEint = 0. Tenaga mekanik ditakrifkan sebagai E_mech = K + Ug + Us, yang memberikan ΔE_mech = ΔK + ΔUg + ΔUs = -ΔEint. Kerana geseran kinetik melakukan kerja bukan konservatif semasa blok menggelongsor, ΔEint > 0, bermakna tenaga mekanik berkurangan (ΔE_mech < 0). Menyusun semula memberikan -ΔUg = ΔK + ΔUs + ΔEint: satu-satunya punca tenaga yang memasuki saluran lain ialah penurunan tenaga keupayaan graviti, yang dibahagikan secara serentak kepada tenaga kinetik gerakan, tenaga kenyal yang tersimpan, dan tenaga dalaman. Perubahan jumlah tenaga bagi sistem terpencil kekal tepat sifar.",
+        "zh": "对于包含两滑块、弹簧、台面及地球的孤立系统，能量守恒方程为 ΔK + ΔUg + ΔUs + ΔEint = 0。机械能定义为 E_mech = K + Ug + Us，由此得出 ΔE_mech = ΔK + ΔUg + ΔUs = -ΔEint。由于滑块滑动时动摩擦力做非保守功，ΔEint > 0，这意味着机械能减少（ΔE_mech < 0）。移项整理得 -ΔUg = ΔK + ΔUs + ΔEint：转化为其他形式能量的唯一来源是重力势能的减少量，该量同时分配给运动动能、储存的弹性势能以及内能。整个孤立系统的总能量变化量严格为零。"
+      },
+      "explanation": {
+        "en": "Kinetic friction does not destroy energy; it transforms mechanical energy into internal thermal energy within the sliding surfaces. For an isolated system with nonconservative forces acting internally, total energy is conserved (ΔE_total = 0), but mechanical energy is not conserved (ΔE_mech = -ΔEint). At an active intermediate point during the descent, all four energy types are non-zero: the descending counterweight loses gravitational potential energy (-ΔUg > 0), and this lost potential energy is partitioned into the kinetic energy of the moving blocks, the elastic potential energy stored in the extending spring, and the internal thermal energy generated by friction at the table interface.",
+        "ms": "Geseran kinetik tidak memusnahkan tenaga; ia menukarkan tenaga mekanik kepada tenaga dalaman terma di dalam permukaan yang menggelongsor. Bagi sistem terpencil dengan daya bukan konservatif yang bertindak secara dalaman, jumlah tenaga adalah diabadikan (ΔE_total = 0), tetapi tenaga mekanik tidak diabadikan (ΔE_mech = -ΔEint). Pada titik perantaraan yang aktif semasa penurunan, keempat-empat jenis tenaga adalah bukan sifar: pemberat gantung yang turun kehilangan tenaga keupayaan graviti (-ΔUg > 0), dan tenaga keupayaan yang hilang ini dibahagikan kepada tenaga kinetik blok yang bergerak, tenaga keupayaan kenyal yang tersimpan dalam spring yang memanjang, dan tenaga dalaman terma yang dihasilkan oleh geseran pada antara muka meja.",
+        "zh": "动摩擦力并不会消灭能量；它将机械能转化为滑动接触面内的内能（热能）。对于内部存在非保守力的孤立系统，总能量守恒（ΔE_total = 0），但机械能不守恒（ΔE_mech = -ΔEint）。在下落过程中的动态中间点，四种形式的能量均非零：下落的悬挂重物减少了重力势能（-ΔUg > 0），这部分减少的势能被分配给运动滑块的动能、被拉伸弹簧中储存的弹性势能以及台面摩擦产生的内能（热能）。"
+      },
+      "misconceptions": [
+        "friction-destroys-energy",
+        "mechanical-energy-conservation-with-friction"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "isolated-system-energy-conservation",
+        "prompt": {
+          "en": "Recall that in an isolated system with internal friction, mechanical energy is transformed into internal energy (ΔE_mech = -ΔEint), while the total energy remains strictly constant: ΔK + ΔUg + ΔUs + ΔEint = 0.",
+          "ms": "Ingat kembali bahawa dalam sistem terpencil dengan geseran dalaman, tenaga mekanik ditukarkan kepada tenaga dalaman (ΔE_mech = -ΔEint), manakala jumlah tenaga kekal malar secara mutlak: ΔK + ΔUg + ΔUs + ΔEint = 0.",
+          "zh": "请回忆：在包含内部摩擦的孤立系统中，机械能转化为内能（ΔE_mech = -ΔEint），而总能量严格保持守恒：ΔK + ΔUg + ΔUs + ΔEint = 0。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four statements evaluating how mechanical energy, internal energy, and total energy behave while a connected-block and spring system is actively moving with non-zero speed on a surface with friction.",
+        "ms": "Soalan aneka pilihan dengan empat pernyataan yang menilai bagaimana tenaga mekanik, tenaga dalaman, dan jumlah tenaga bertindak semasa sistem blok bersambung dan spring sedang bergerak secara aktif dengan laju bukan sifar di atas permukaan dengan geseran.",
+        "zh": "多项选择题，包含四个陈述，评估当连接滑块与弹簧系统在有摩擦的表面上以非零速度运动时，机械能、内能和总能量的行为表现。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "Mechanical energy decreases because ΔE_mech = -ΔEint, meaning the decrease in gravitational potential energy is partitioned into gains in kinetic energy, elastic potential energy, and internal energy, while total energy remains constant.",
+              "ms": "Tenaga mekanik berkurangan kerana ΔE_mech = -ΔEint, bermakna pengurangan tenaga keupayaan graviti dibahagikan kepada peningkatan tenaga kinetik, tenaga keupayaan kenyal, dan tenaga dalaman, manakala jumlah tenaga kekal malar.",
+              "zh": "机械能减少，因为 ΔE_mech = -ΔEint，这意味着重力势能的减少量被分配为动能、弹性势能和内能的增加量，而总能量保持守恒。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "Mechanical energy is strictly conserved (ΔE_mech = 0) throughout the descent because the gravitational potential energy lost is converted entirely into kinetic and elastic potential energy, with internal energy remaining zero until motion ceases.",
+              "ms": "Tenaga mekanik diabadikan secara mutlak (ΔE_mech = 0) sepanjang penurunan kerana tenaga keupayaan graviti yang hilang ditukarkan sepenuhnya kepada tenaga kinetik dan tenaga keupayaan kenyal, dengan tenaga dalaman kekal sifar sehingga pergerakan terhenti.",
+              "zh": "在整个下落过程中机械能严格守恒（ΔE_mech = 0），因为损失的重力势能完全转化为动能和弹性势能，在运动停止前内能保持为零。"
+            },
+            "misconception": "mechanical-energy-conservation-with-friction"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The total energy of the isolated system decreases because friction permanently consumes energy, meaning the loss in gravitational potential energy exceeds the sum of the kinetic, elastic, and internal energy gains.",
+              "ms": "Jumlah tenaga sistem terpencil berkurangan kerana geseran memusnahkan tenaga secara kekal, bermakna kehilangan tenaga keupayaan graviti melebihi hasil tambah peningkatan tenaga kinetik, kenyal, dan dalaman.",
+              "zh": "孤立系统的总能量减少，因为摩擦力永久消耗了能量，这意味着重力势能的损失量超过了动能、弹性势能和内能增加量的总和。"
+            },
+            "misconception": "friction-destroys-energy"
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "Mechanical energy increases because kinetic energy and elastic potential energy are both increasing simultaneously, while internal energy increases by an equal and opposite amount to keep total energy constant.",
+              "ms": "Tenaga mekanik meningkat kerana tenaga kinetik dan tenaga keupayaan kenyal kedua-duanya meningkat serentak, manakala tenaga dalaman meningkat dengan jumlah yang sama dan bertentangan untuk mengekalkan jumlah tenaga tetap malar.",
+              "zh": "机械能增加，因为动能和弹性势能同时都在增加，而内能以大小相等、符号相反的量增加以保持总能量恒定。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-two-path-incline-comparison",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict how changing path length or surface friction affects final speed and mechanical energy dissipation.",
+      "prompt": {
+        "en": "A crate is released from rest at the top of a ramp of vertical height H and slides down to the horizontal ground. The ramp surface has a constant coefficient of kinetic friction. If the ramp is replaced with a gentler incline (smaller angle with the horizontal) that spans the exact same vertical height H, how do the energy transformed into internal energy and the crate's speed at the bottom compare to the original steeper ramp?",
+        "ms": "Sebuah peti dilepaskan dari keadaan pegun di bahagian atas sebuah landasan condong dengan ketinggian menegak H dan meluncur turun ke lantai mendatar. Permukaan landasan itu mempunyai pekali geseran kinetik yang malar. Jika landasan itu digantikan dengan satah condong yang lebih landai (sudut lebih kecil dengan ufuk) yang merentasi ketinggian menegak H yang sama persis, bagaimanakah tenaga yang ditukarkan kepada tenaga dalaman dan laju peti di bahagian bawah dibandingkan dengan landasan asal yang lebih curam?",
+        "zh": "一个箱子从垂直高度为 H 的斜面顶端由静止释放，滑至水平地面。斜面表面具有恒定的动摩擦因数。如果将该斜面换成一个高度 H 完全相同但坡度更缓（与水平面的夹角更小）的斜面，与原来较陡的斜面相比，转化为内能的能量以及箱子到达底端时的速度将如何变化？"
+      },
+      "hints": [
+        {
+          "en": "Consider how decreasing the incline angle affects both the ramp length for a fixed height H and the normal force acting perpendicular to the ramp.",
+          "ms": "Pertimbangkan bagaimana mengurangkan sudut kecondongan mempengaruhi kedua-dua panjang landasan untuk ketinggian H yang tetap dan daya normal yang bertindak serenjang dengan landasan.",
+          "zh": "考虑减小斜面倾角如何同时影响固定高度 H 下的斜面长度，以及垂直于斜面作用的正压力。"
+        },
+        {
+          "en": "The increase in internal energy is ΔEint = fk * d. Because the incline is gentler, the distance d is longer and the normal force n = mg cos θ is larger, making fk larger as well. Apply ΔK = -ΔUg - ΔEint to deduce the final speed.",
+          "ms": "Peningkatan tenaga dalaman ialah ΔEint = fk * d. Kerana satah lebih landai, jarak d lebih panjang dan daya normal n = mg cos θ lebih besar, menjadikan fk lebih besar juga. Gunakan ΔK = -ΔUg - ΔEint untuk menyimpulkan laju akhir.",
+          "zh": "内能的增加量为 ΔEint = fk * d。由于斜面更平缓，距离 d 更长，且正压力 n = mg cos θ 更大，这使得 fk 也更大。应用 ΔK = -ΔUg - ΔEint 即可推导出最终速度。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! On a gentler incline of the same height H, the sliding distance d is longer and the normal force n = mg cos θ is greater, which means the kinetic friction force fk is also larger. Consequently, ΔEint = fk * d is significantly greater, leaving less kinetic energy and resulting in a lower speed at the bottom.",
+        "ms": "Betul! Pada satah condong yang lebih landai dengan ketinggian H yang sama, jarak gelongsoran d adalah lebih panjang dan daya normal n = mg cos θ adalah lebih besar, yang bermakna daya geseran kinetik fk juga lebih besar. Akibatnya, ΔEint = fk * d adalah jauh lebih besar, meninggalkan kurang tenaga kinetik dan menghasilkan laju yang lebih rendah di bahagian bawah.",
+        "zh": "正确！在相同高度 H 的较缓斜面上，滑动距离 d 更长，且正压力 n = mg cos θ 更大，这意味着动摩擦力 fk 也更大。因此，ΔEint = fk * d 显著增大，留给动能的份额减少，从而导致底端速度更低。"
+      },
+      "answerLogic": {
+        "en": "For an incline of height H and angle θ, the ramp length is d = H / sin θ and the normal force is n = mg cos θ, so fk = μk mg cos θ. The energy converted to internal energy is ΔEint = fk * d = μk mg H cot θ. Decreasing θ increases cot θ, so ΔEint increases. Since the initial gravitational potential energy mgH is identical, conservation of energy gives K_f = mgH - ΔEint, which decreases as ΔEint increases. Therefore, the speed at the bottom must be lower.",
+        "ms": "Bagi satah condong dengan ketinggian H dan sudut θ, panjang landasan ialah d = H / sin θ dan daya normal ialah n = mg cos θ, maka fk = μk mg cos θ. Tenaga yang ditukarkan kepada tenaga dalaman ialah ΔEint = fk * d = μk mg H cot θ. Pengurangan θ meningkatkan cot θ, jadi ΔEint meningkat. Memandangkan tenaga keupayaan graviti awal mgH adalah sama, keabadian tenaga memberikan K_f = mgH - ΔEint, yang berkurangan apabila ΔEint meningkat. Oleh itu, laju di bahagian bawah mestilah lebih rendah.",
+        "zh": "对于高度为 H、倾角为 θ 的斜面，斜面长度为 d = H / sin θ，正压力为 n = mg cos θ，因此 fk = μk mg cos θ。转化为内能的能量为 ΔEint = fk * d = μk mg H cot θ。减小 θ 会使 cot θ 增大，因此 ΔEint 增大。由于初始重力势能 mgH 相同，根据能量守恒定律有 K_f = mgH - ΔEint，随着 ΔEint 增大而减小。因此，底端速度必然更低。"
+      },
+      "explanation": {
+        "en": "Friction is a nonconservative force whose energy transformation depends directly on the path length and the surface contact force. Unlike gravity, where potential energy change depends only on vertical displacement, friction depends on the actual path taken. On a gentler ramp, the crate travels farther, and because the surface is closer to horizontal, the normal force is greater than on a steep slope. Both factors increase the thermal energy generated, leaving less kinetic energy at the bottom.",
+        "ms": "Geseran ialah daya bukan konservatif yang perubahan tenaganya bergantung secara langsung pada panjang laluan dan daya sentuhan permukaan. Tidak seperti graviti, di mana perubahan tenaga keupayaan hanya bergantung pada sesaran menegak, geseran bergantung pada laluan sebenar yang dilalui. Pada landasan yang lebih landai, peti bergerak lebih jauh, dan kerana permukaannya lebih hampir kepada mendatar, daya normal adalah lebih besar berbanding pada cerun yang curam. Kedua-dua faktor meningkatkan tenaga terma yang dijana, meninggalkan kurang tenaga kinetik di bahagian bawah.",
+        "zh": "摩擦力是一种非保守力，其能量转化直接取决于路径长度和接触面压力。与重力势能变化仅取决于垂直位移不同，摩擦耗散取决于实际走过的路径。在更平缓的斜面上，箱子滑行的距离更长，而且由于表面更接近水平，正压力比陡坡上更大。这两个因素都会增加产生的热能，从而使到达底端时的动能减少。"
+      },
+      "misconceptions": [
+        "friction-work-independent-of-path-length",
+        "normal-force-always-equals-mg"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "friction-and-normal-force",
+        "prompt": {
+          "en": "Recall that on an incline tilted at angle θ relative to the horizontal, the normal force is n = mg cos θ and kinetic friction is fk = μk n = μk mg cos θ. The normal force is less than mg and depends on the incline angle.",
+          "ms": "Ingat kembali bahawa pada satah condong dengan sudut θ terhadap ufuk, daya normal ialah n = mg cos θ dan geseran kinetik ialah fk = μk n = μk mg cos θ. Daya normal adalah kurang daripada mg dan bergantung pada sudut kecondongan.",
+          "zh": "请回忆：在与水平面夹角为 θ 的斜面上，正压力为 n = mg cos θ，动摩擦力为 fk = μk n = μk mg cos θ。正压力小于 mg 且取决于斜面倾角。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question comparing the thermal energy generated by friction and the final speed of a crate sliding down two ramps of identical height but different incline angles.",
+        "ms": "Soalan aneka pilihan yang membandingkan tenaga terma yang dihasilkan oleh geseran dan laju akhir sebuah peti yang menggelongsor menuruni dua landasan dengan ketinggian yang sama tetapi sudut kecondongan yang berbeza.",
+        "zh": "多项选择题，比较箱子沿两个高度相同但倾角不同的斜面下滑时摩擦产生的热能和最终速度。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "More energy is transformed into internal energy, and the speed at the bottom is lower, because both the normal force and the sliding distance are greater on the gentler slope.",
+              "ms": "Lebih banyak tenaga ditukarkan kepada tenaga dalaman, dan laju di bahagian bawah adalah lebih rendah, kerana kedua-dua daya normal dan jarak gelongsoran adalah lebih besar pada satah yang lebih landai.",
+              "zh": "转化为内能的能量更多，且底端速度更低，因为在较缓的斜面上正压力与滑动距离均更大。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "The energy transformed into internal energy and the final speed are identical on both ramps, because nonconservative work depends only on the net change in vertical height.",
+              "ms": "Tenaga yang ditukarkan kepada tenaga dalaman dan laju akhir adalah sama pada kedua-dua landasan, kerana kerja bukan konservatif hanya bergantung pada perubahan bersih ketinggian menegak.",
+              "zh": "两个斜面上转化为内能的能量和最终速度完全相同，因为非保守力做功仅取决于垂直高度的净变化。"
+            },
+            "misconception": "friction-work-independent-of-path-length"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The friction force magnitude is identical on both ramps because the normal force always equals the crate's weight, so the gentler slope allows gravity more time to accelerate the crate to a higher speed.",
+              "ms": "Magnitud daya geseran adalah sama pada kedua-dua landasan kerana daya normal sentiasa bersamaan dengan berat peti, maka satah yang lebih landai membolehkan graviti lebih banyak masa untuk memecut peti kepada laju yang lebih tinggi.",
+              "zh": "由于正压力始终等于箱子的重力，两斜面上的摩擦力大小相同，因此较缓的斜面使重力有更多时间将箱子加速到更高的速度。"
+            },
+            "misconception": "normal-force-always-equals-mg"
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "Less energy is transformed into internal energy because the gentler slope reduces the gravitational force down the ramp, resulting in a higher speed at the bottom.",
+              "ms": "Kurang tenaga ditukarkan kepada tenaga dalaman kerana satah yang lebih landai mengurangkan komponen daya graviti sepanjang landasan, menghasilkan laju yang lebih tinggi di bahagian bawah.",
+              "zh": "转化为内能的能量更少，因为较缓的坡度减小了沿斜面向下的重力分量，从而导致底端速度更高。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-internal-energy-irreversibility",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the energy conservation equation ΔK + ΔU + ΔEint = 0 to isolated systems involving kinetic friction.",
+      "prompt": {
+        "en": "A block slides forward across a rough horizontal floor, compresses a buffer spring, momentarily stops, and is then launched backward across the exact same rough floor by the expanding spring. Considering the block, floor, and spring as an isolated system, how do the change in internal energy (ΔEint) and the total mechanical energy (Emech = K + U) behave during the return trip as the block slides backward?",
+        "ms": "Sebuah blok meluncur ke hadapan merentasi lantai mendatar yang kasar, memampatkan spring penampan, berhenti seketika, dan kemudian dilancarkan ke belakang merentasi lantai kasar yang sama persis oleh spring yang mengembang. Dengan menganggap blok, lantai, dan spring sebagai satu sistem terpencil, bagaimanakah perubahan tenaga dalaman (ΔEint) dan jumlah tenaga mekanik (Emech = K + U) bertindak semasa perjalanan pulang apabila blok itu meluncur ke belakang?",
+        "zh": "一个滑块在粗糙的水平地面上向前滑动，压缩缓冲弹簧并瞬时停下，随后被释放回弹的弹簧沿完全相同的粗糙地面向后发射。将滑块、地面和弹簧视为一个孤立系统，当滑块向后滑行时，在返程过程中内能的变化量（ΔEint）和总机械能（Emech = K + U）如何表现？"
+      },
+      "hints": [
+        {
+          "en": "Think about the direction of the kinetic friction force relative to the block's velocity on the return trip. Does friction oppose or aid the return sliding?",
+          "ms": "Fikirkan tentang arah daya geseran kinetik berbanding dengan halaju blok pada perjalanan pulang. Adakah geseran menentang atau membantu gelongsoran pulang?",
+          "zh": "思考返程时动摩擦力相对于滑块速度的方向。摩擦力是阻碍还是协助返程滑动？"
+        },
+        {
+          "en": "Kinetic friction always opposes the direction of relative sliding, which means ΔEint = fk * d is positive for every sliding segment regardless of the direction of travel. In the isolated system equation ΔK + ΔU + ΔEint = 0, this requires Δ(K + U) = -ΔEint < 0.",
+          "ms": "Geseran kinetik sentiasa menentang arah gelongsoran relatif, yang bermaksud ΔEint = fk * d adalah positif bagi setiap segmen gelongsoran tanpa mengira arah pergerakan. Dalam persamaan sistem terpencil ΔK + ΔU + ΔEint = 0, ini memerlukan Δ(K + U) = -ΔEint < 0.",
+          "zh": "动摩擦力始终阻碍相对滑动方向，这意味着无论运动方向如何，每个滑动区段的 ΔEint = fk * d 均始终为正。在孤立系统方程 ΔK + ΔU + ΔEint = 0 中，这要求 Δ(K + U) = -ΔEint < 0。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! The force of kinetic friction always opposes relative motion between contacting surfaces. Therefore, internal energy increases (ΔEint > 0) on both the forward and backward trips, continuously reducing the total mechanical energy of the isolated system.",
+        "ms": "Betul! Daya geseran kinetik sentiasa menentang gerakan relatif antara permukaan yang bersentuhan. Oleh itu, tenaga dalaman meningkat (ΔEint > 0) pada kedua-dua perjalanan ke hadapan dan ke belakang, secara berterusan mengurangkan jumlah tenaga mekanik sistem terpencil.",
+        "zh": "正确！动摩擦力始终阻碍接触面之间的相对运动。因此，在向前和向后的行程中内能都会增加（ΔEint > 0），从而持续减少孤立系统的总机械能。"
+      },
+      "answerLogic": {
+        "en": "For any sliding motion of distance d, the increase in internal energy is ΔEint = fk * d > 0, because kinetic friction continually transforms ordered mechanical energy into disordered thermal energy. Reversing the direction of travel reverses both the velocity and the friction force, keeping the product fk * d positive. According to ΔK + ΔU + ΔEint = 0, ΔEmech = Δ(K + U) = -ΔEint < 0, so mechanical energy always decreases.",
+        "ms": "Bagi sebarang gerakan gelongsoran dengan jarak d, peningkatan tenaga dalaman ialah ΔEint = fk * d > 0, kerana geseran kinetik secara berterusan menukarkan tenaga mekanik yang teratur kepada tenaga terma yang tidak teratur. Menterbalikkan arah pergerakan menterbalikkan kedua-dua halaju dan daya geseran, mengekalkan hasil darab fk * d sebagai positif. Menurut ΔK + ΔU + ΔEint = 0, ΔEmech = Δ(K + U) = -ΔEint < 0, jadi tenaga mekanik sentiasa berkurangan.",
+        "zh": "对于任何距离为 d 的滑动运动，内能的增加量均为 ΔEint = fk * d > 0，因为动摩擦力不断将有序的机械能转化为无序的热能。反转运动方向同时反转了速度和摩擦力方向，使得乘积 fk * d 始终为正。根据 ΔK + ΔU + ΔEint = 0，ΔEmech = Δ(K + U) = -ΔEint < 0，因此机械能始终减少。"
+      },
+      "explanation": {
+        "en": "Kinetic friction is a nonconservative dissipative force. Thermal energy generated by friction cannot spontaneously re-organize into macroscopic kinetic energy to propel an object backward, so ΔEint can never be negative during sliding motion. Even though the net displacement of a round trip might be zero, total sliding distance is non-zero, meaning mechanical energy is permanently degraded into internal energy on every leg of the journey.",
+        "ms": "Geseran kinetik ialah daya lesapan bukan konservatif. Tenaga terma yang dijana oleh geseran tidak boleh menyusun semula secara spontan menjadi tenaga kinetik makroskopik untuk mendorong objek ke belakang, jadi ΔEint tidak boleh bernilai negatif semasa gerakan gelongsoran. Walaupun sesaran bersih perjalanan pergi balik mungkin sifar, jumlah jarak gelongsoran adalah bukan sifar, bermakna tenaga mekanik diturunkan taraf secara kekal kepada tenaga dalaman pada setiap bahagian perjalanan.",
+        "zh": "动摩擦力是一种非保守耗散力。摩擦产生的热能绝不能自发地重新组织成宏观动能以推动物体向后运动，因此在滑动运动期间 ΔEint 绝不可能为负。即使往返行程的净位移为零，滑动的总路程也不为零，这意味着在旅程的每一段中机械能都会永久退化为内能。"
+      },
+      "misconceptions": [
+        "internal-energy-can-decrease-spontaneously",
+        "mechanical-energy-conservation-with-friction"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "isolated-system-energy-conservation",
+        "prompt": {
+          "en": "Review how defining the system boundaries to include all interacting objects converts external work into internal energy transfers.",
+          "ms": "Ulang kaji bagaimana mentakrifkan sempadan sistem untuk merangkumi semua objek yang berinteraksi menukarkan kerja luaran kepada pemindahan tenaga dalaman.",
+          "zh": "复习如何通过界定包含所有相互作用物体的系统边界，将外力做功转化为内部能量转化。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking how internal energy and mechanical energy change during the return trip of a block bouncing off a spring across a rough floor.",
+        "ms": "Soalan aneka pilihan yang bertanyakan bagaimana tenaga dalaman dan tenaga mekanik berubah semasa perjalanan pulang sebuah blok yang melantun daripada spring merentasi lantai yang kasar.",
+        "zh": "多项选择题，询问当滑块在粗糙地面上压缩弹簧并弹回的返程过程中，内能和机械能如何变化。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "Internal energy increases (ΔEint > 0) and total mechanical energy decreases, because kinetic friction opposes relative motion in both directions and continually dissipates mechanical energy.",
+              "ms": "Tenaga dalaman meningkat (ΔEint > 0) dan jumlah tenaga mekanik berkurangan, kerana geseran kinetik menentang gerakan relatif dalam kedua-dua arah dan secara berterusan melesapkan tenaga mekanik.",
+              "zh": "内能增加（ΔEint > 0）且总机械能减少，因为动摩擦力在两个方向上都阻碍相对运动，并持续耗散机械能。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "Internal energy decreases (ΔEint < 0) and mechanical energy increases, because moving in the reverse direction reverses the work done by friction and converts thermal energy back into macroscopic motion.",
+              "ms": "Tenaga dalaman berkurangan (ΔEint < 0) dan tenaga mekanik meningkat, kerana bergerak dalam arah bertentangan menterbalikkan kerja yang dilakukan oleh geseran dan menukarkan tenaga terma kembali kepada gerakan makroskopik.",
+              "zh": "内能减少（ΔEint < 0）且机械能增加，因为反向运动反转了摩擦力做的功，并将热能转化回宏观运动。"
+            },
+            "misconception": "internal-energy-can-decrease-spontaneously"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "Total mechanical energy remains constant throughout the round trip because the net displacement is zero, meaning internal energy changes cancel out.",
+              "ms": "Jumlah tenaga mekanik kekal malar sepanjang perjalanan pergi balik kerana sesaran bersih adalah sifar, bermakna perubahan tenaga dalaman saling membatalkan.",
+              "zh": "整个往返过程中总机械能保持守恒，因为净位移为零，这意味着内能的变化相互抵消。"
+            },
+            "misconception": "mechanical-energy-conservation-with-friction"
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "Internal energy remains unchanged (ΔEint = 0) during the return trip because the surfaces reached thermal equilibrium during the forward compression.",
+              "ms": "Tenaga dalaman kekal tidak berubah (ΔEint = 0) semasa perjalanan pulang kerana permukaan telah mencapai keseimbangan terma semasa pemampatan ke hadapan.",
+              "zh": "在返程过程中内能保持不变（ΔEint = 0），因为接触表面在向前压缩过程中已经达到了热平衡。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "interactive-energy-type-classification",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate the increase in internal energy ΔEint to the work done against kinetic friction (fk * d).",
+      "prompt": {
+        "en": "A crate slides across a rough horizontal floor and comes to rest under a constant kinetic friction force fk over sliding distance d. Classify each statement based on whether it correctly describes the conversion of mechanical energy into internal energy or incorrectly claims that energy is destroyed.",
+        "ms": "Sebuah peti menggelongsor di atas lantai mendatar yang kasar dan berhenti di bawah tindakan daya geseran kinetik malar fk sepanjang jarak gelongsoran d. Kelaskan setiap pernyataan berdasarkan sama ada ia menerangkan penukaran tenaga mekanik kepada tenaga dalaman dengan betul atau mendakwa secara salah bahawa tenaga telah dimusnahkan.",
+        "zh": "一个板条箱在恒定动摩擦力 fk 的作用下在粗糙水平地面上滑行距离 d 后停止。请根据各项表述是正确描述了机械能转化为内能，还是错误地声称能量被消灭，对其进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Consider the principle of conservation of energy for an isolated system: can energy ever be created or destroyed, or does it merely change forms?",
+          "ms": "Pertimbangkan prinsip keabadian tenaga untuk sistem terpencil: bolehkah tenaga dicipta atau dimusnahkan, atau adakah ia hanya berubah bentuk?",
+          "zh": "思考孤立系统的能量守恒定律：能量能够被创造或消灭吗，还是仅仅改变了存在形式？"
+        },
+        {
+          "en": "When kinetic friction acts over sliding distance d, mechanical energy is transformed into internal energy (ΔEint = fk * d), slightly raising the temperature of the surfaces.",
+          "ms": "Apabila geseran kinetik bertindak sepanjang jarak gelongsoran d, tenaga mekanik ditukarkan kepada tenaga dalaman (ΔEint = fk * d), meningkatkan suhu permukaan sedikit demi sedikit.",
+          "zh": "当动摩擦力在滑动距离 d 上做功时，机械能转化为内能（ΔEint = fk * d），使接触面的温度略微升高。"
+        }
+      ],
+      "feedback": {
+        "en": "Friction does not destroy energy. For an isolated system consisting of the crate, surface, and Earth, nonconservative friction transforms mechanical energy into internal thermal energy such that ΔEint = fk * d.",
+        "ms": "Geseran tidak memusnahkan tenaga. Bagi sistem terpencil yang terdiri daripada peti, permukaan, dan Bumi, geseran bukan konservatif menukarkan tenaga mekanik kepada tenaga dalaman terma dengan ΔEint = fk * d.",
+        "zh": "摩擦力不会消灭能量。对于由板条箱、表面和地球组成的孤立系统，非保守摩擦力将机械能转化为内部热能，满足 ΔEint = fk * d。"
+      },
+      "answerLogic": {
+        "en": "Statements describing thermal rise and microscopic atomic agitation accurately reflect ΔEint = fk * d. Statements claiming that energy ceases to exist or reduces the isolated system's total energy confuse mechanical dissipation with energy destruction.",
+        "ms": "Pernyataan yang menerangkan kenaikan haba dan getaran atom mikroskopik mencerminkan ΔEint = fk * d dengan tepat. Pernyataan yang mendakwa tenaga lenyap atau mengurangkan jumlah tenaga sistem terpencil mengelirukan pelesapan mekanik dengan kemusnahan tenaga.",
+        "zh": "描述温度上升和微观原子振动的表述准确反映了 ΔEint = fk * d。声称能量彻底消失或减少孤立系统总能量的表述混淆了机械能耗散与能量消灭。"
+      },
+      "explanation": {
+        "en": "In Section 8.4, the energy equation for an isolated system with nonconservative forces is ΔK + ΔU + ΔEint = 0. Mechanical energy decreases because work done by friction increases the internal energy of the system by ΔEint = fk * d. The crate and floor become slightly warmer, verifying that total energy is conserved.",
+        "ms": "Dalam Seksyen 8.4, persamaan tenaga bagi sistem terpencil dengan daya bukan konservatif ialah ΔK + ΔU + ΔEint = 0. Tenaga mekanik berkurang kerana kerja yang dilakukan oleh geseran meningkatkan tenaga dalaman sistem sebanyak ΔEint = fk * d. Peti dan lantai menjadi lebih panas sedikit, membuktikan bahawa jumlah tenaga adalah abadi.",
+        "zh": "在第 8.4 节中，包含非保守力的孤立系统能量方程为 ΔK + ΔU + ΔEint = 0。机械能减少是因为摩擦力做功使系统的内能增加了 ΔEint = fk * d。板条箱和地面略微变暖，证明总能量是守恒的。"
+      },
+      "misconceptions": [
+        "friction-destroys-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "isolated-system-energy-conservation",
+        "prompt": {
+          "en": "Recall that an isolated system exchanges no energy with its environment, meaning total energy change is zero. Any loss in mechanical energy must appear as another energy form within the system.",
+          "ms": "Ingat kembali bahawa sistem terpencil tidak bertukar tenaga dengan persekitarannya, bermakna perubahan jumlah tenaga adalah sifar. Sebarang kehilangan tenaga mekanik mesti muncul sebagai bentuk tenaga lain di dalam sistem.",
+          "zh": "回顾孤立系统不与外界交换能量，即总能量变化为零。机械能的任何减少都必须以系统内另一种能量形式出现。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classification activity with two category bins: Valid transformation into internal energy, and Erroneous claim of energy destruction. Sort four statements describing the outcome of friction on a sliding crate into the appropriate bin.",
+        "ms": "Aktiviti pengelasan dengan dua tong kategori: Penukaran sah kepada tenaga dalaman, dan Dakwaan salah mengenai kemusnahan tenaga. Isih empat pernyataan yang menerangkan hasil geseran ke atas peti yang menggelongsor ke dalam tong yang sesuai.",
+        "zh": "分类活动包含两个类别栏：有效转化为内能，以及能量被消灭的错误论断。将描述滑动板条箱摩擦结果的四条表述归入相应类别栏中。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-internal-conversion",
+            "label": {
+              "en": "Valid transformation into internal energy (ΔEint = fk * d)",
+              "ms": "Penukaran sah kepada tenaga dalaman (ΔEint = fk * d)",
+              "zh": "有效转化为内能（ΔEint = fk * d）"
+            }
+          },
+          {
+            "id": "target-energy-destruction",
+            "label": {
+              "en": "Erroneous claim of energy destruction",
+              "ms": "Dakwaan salah mengenai kemusnahan tenaga",
+              "zh": "能量被消灭的错误论断"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-contact-heating",
+            "label": {
+              "en": "The product fk * d represents mechanical energy transformed into thermal internal energy shared between the crate and the floor.",
+              "ms": "Hasil darab fk * d mewakili tenaga mekanik yang ditukarkan kepada tenaga dalaman terma yang dikongsi antara peti dan lantai.",
+              "zh": "乘积 fk * d 表示机械能转化为板条箱和地面共同分担的热内能。"
+            }
+          },
+          {
+            "id": "item-energy-annihilation",
+            "label": {
+              "en": "Friction causes the crate's kinetic energy to cease existing entirely, reducing the total energy of the isolated system.",
+              "ms": "Geseran menyebabkan tenaga kinetik peti lenyap sepenuhnya, mengurangkan jumlah tenaga sistem terpencil.",
+              "zh": "摩擦力导致板条箱的动能彻底不复存在，从而减少了孤立系统的总能量。"
+            }
+          },
+          {
+            "id": "item-microscopic-excitation",
+            "label": {
+              "en": "The mechanical work done against friction increases the microscopic atomic vibrational energy of the contacting surfaces.",
+              "ms": "Kerja mekanik yang dilakukan menentang geseran meningkatkan tenaga getaran atom mikroskopik pada permukaan yang bersentuhan.",
+              "zh": "克服摩擦力所做的机械功增加了接触面上原子的微观振动能。"
+            }
+          },
+          {
+            "id": "item-irreversible-loss",
+            "label": {
+              "en": "Because friction is a nonconservative force, the dissipated mechanical energy vanishes from the physical universe without a trace.",
+              "ms": "Oleh sebab geseran ialah daya bukan konservatif, tenaga mekanik yang dilesapkan lenyap daripada alam fizikal tanpa meninggalkan sebarang kesan.",
+              "zh": "由于摩擦力是非保守力，耗散的机械能从物理宇宙中无影无踪地消失了。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-contact-heating",
+            "targetId": "target-internal-conversion"
+          },
+          {
+            "itemId": "item-energy-annihilation",
+            "targetId": "target-energy-destruction"
+          },
+          {
+            "itemId": "item-microscopic-excitation",
+            "targetId": "target-internal-conversion"
+          },
+          {
+            "itemId": "item-irreversible-loss",
+            "targetId": "target-energy-destruction"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "friction-destroys-energy",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-energy-annihilation",
+            "targetId": "target-internal-conversion"
+          }
+        },
+        {
+          "misconception": "friction-destroys-energy",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-irreversible-loss",
+            "targetId": "target-internal-conversion"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-friction-distance-matching",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate the increase in internal energy ΔEint to the work done against kinetic friction (fk * d).",
+      "prompt": {
+        "en": "A block is pushed across a horizontal surface where a constant kinetic friction force fk opposes its motion. The block travels from an initial position X to a final position Y along three different tracks of varying total length. Match each sliding track to the resulting increase in internal energy (ΔEint) of the block-surface system.",
+        "ms": "Sebuah blok ditolak merentasi permukaan mendatar di mana daya geseran kinetik malar fk menentang gerakannya. Blok itu bergerak dari kedudukan awal X ke kedudukan akhir Y di sepanjang tiga laluan berbeza dengan jumlah panjang yang berlainan. Padankan setiap laluan gelongsoran dengan peningkatan tenaga dalaman (ΔEint) sistem blok-permukaan yang terhasil.",
+        "zh": "一个滑块在水平面上滑动，恒定动摩擦力 fk 阻碍其运动。滑块沿总长度不同的三条轨道从初始位置 X 运动到最终位置 Y。请将每条滑动轨道与滑块-接触面系统所产生的内能增量（ΔEint）进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Kinetic friction is a nonconservative force. Does the work done against friction depend only on net displacement or on the total distance traveled along the surface?",
+          "ms": "Geseran kinetik ialah daya bukan konservatif. Adakah kerja yang dilakukan menentang geseran hanya bergantung pada sesaran bersih atau pada jumlah jarak yang dilalui di sepanjang permukaan?",
+          "zh": "动摩擦力是一种非保守力。克服摩擦力所做的功是仅取决于净位移，还是取决于沿表面滑动的总实际路程？"
+        },
+        {
+          "en": "The change in internal energy is given by ΔEint = fk * d, where d is the full path distance over which sliding occurs.",
+          "ms": "Perubahan tenaga dalaman diberikan oleh ΔEint = fk * d, di mana d ialah jumlah jarak laluan gelongsoran berlaku.",
+          "zh": "内能的变化由 ΔEint = fk * d 给出，其中 d 是发生滑动的整个路径总距离。"
+        }
+      ],
+      "feedback": {
+        "en": "Because friction acts at every point along the contact path, the increase in internal energy ΔEint equals the friction force multiplied by the total sliding path length d, not just the net straight-line displacement.",
+        "ms": "Kerana geseran bertindak pada setiap titik di sepanjang laluan sentuhan, peningkatan tenaga dalaman ΔEint bersamaan dengan daya geseran didarabkan dengan jumlah panjang laluan gelongsoran d, bukan sekadar sesaran garis lurus bersih.",
+        "zh": "因为摩擦力在接触路径上的每一点都持续做功，内能增量 ΔEint 等于摩擦力乘以实际滑动的总路径长度 d，而不是两点间的直线净位移。"
+      },
+      "answerLogic": {
+        "en": "Under constant kinetic friction fk, ΔEint = fk * d. For sliding distances L, 2L, and 3L, the respective internal energy increases are fk * L, 2 * fk * L, and 3 * fk * L. Matching all tracks to fk * L reflects the misconception that friction work depends only on endpoints rather than total distance.",
+        "ms": "Di bawah geseran kinetik malar fk, ΔEint = fk * d. Bagi jarak gelongsoran L, 2L, dan 3L, peningkatan tenaga dalaman masing-masing ialah fk * L, 2 * fk * L, dan 3 * fk * L. Memadankan semua laluan kepada fk * L mencerminkan salah faham bahawa kerja geseran hanya bergantung pada titik akhir dan bukannya jumlah jarak.",
+        "zh": "在恒定动摩擦力 fk 作用下，ΔEint = fk * d。对于滑动距离 L、2L 和 3L，相应的内能增量分别为 fk * L、2 * fk * L 和 3 * fk * L。将所有路径都匹配为 fk * L 反映了误以为摩擦做功仅取决于端点而非总距离的错误概念。"
+      },
+      "explanation": {
+        "en": "Nonconservative forces like kinetic friction dissipate mechanical energy in proportion to the total distance traversed (d). Unlike conservative forces, the energy converted by friction cannot be evaluated using only initial and final positions. As shown in Example 8.7, a longer path means friction acts over a greater distance, transforming more mechanical energy into internal energy.",
+        "ms": "Daya bukan konservatif seperti geseran kinetik melesapkan tenaga mekanik berkadaran dengan jumlah jarak yang dilalui (d). Tidak seperti daya konservatif, tenaga yang ditukarkan oleh geseran tidak boleh dinilai hanya menggunakan kedudukan awal dan akhir. Seperti yang ditunjukkan dalam Contoh 8.7, laluan yang lebih panjang bermakna geseran bertindak pada jarak yang lebih besar, menukarkan lebih banyak tenaga mekanik kepada tenaga dalaman.",
+        "zh": "动摩擦力等非保守力耗散机械能的量与所经过的总距离（d）成正比。与保守力不同，摩擦转化的能量不能仅由初位置和末位置决定。正如例题 8.7 所示，路径越长意味着摩擦力作用的距离越长，从而将更多的机械能转化为内能。"
+      },
+      "misconceptions": [
+        "friction-work-independent-of-path-length"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "friction-and-normal-force",
+        "prompt": {
+          "en": "Review how kinetic friction fk acts continuously opposite to the relative velocity of sliding surfaces, exerting a resistive force throughout the entire length of contact.",
+          "ms": "Ulang kaji bagaimana geseran kinetik fk bertindak secara berterusan bertentangan dengan halaju relatif permukaan yang menggelongsor, mengenakan daya rintangan sepanjang keseluruhan panjang sentuhan.",
+          "zh": "复习动摩擦力 fk 如何在滑动表面之间始终与相对速度相反地持续作用，在接触的整个长度上施加阻力。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching activity with three items representing different track shapes and lengths between points X and Y, and three target options representing internal energy increases. Match each track to its corresponding internal energy increase.",
+        "ms": "Aktiviti memadan dengan tiga item yang mewakili bentuk dan panjang laluan berbeza antara titik X dan Y, serta tiga pilihan sasaran yang mewakili peningkatan tenaga dalaman. Padankan setiap laluan dengan peningkatan tenaga dalaman yang sepadan.",
+        "zh": "匹配活动包含代表点 X 和 Y 之间不同轨道形状和长度的三条项目，以及代表内能增量的三个目标选项。将每条轨道与其对应的内能增量进行匹配。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-base-internal",
+            "label": {
+              "en": "Increase in internal energy is fk * L",
+              "ms": "Peningkatan tenaga dalaman ialah fk * L",
+              "zh": "内能增量为 fk * L"
+            }
+          },
+          {
+            "id": "target-double-internal",
+            "label": {
+              "en": "Increase in internal energy is 2 * fk * L",
+              "ms": "Peningkatan tenaga dalaman ialah 2 * fk * L",
+              "zh": "内能增量为 2 * fk * L"
+            }
+          },
+          {
+            "id": "target-triple-internal",
+            "label": {
+              "en": "Increase in internal energy is 3 * fk * L",
+              "ms": "Peningkatan tenaga dalaman ialah 3 * fk * L",
+              "zh": "内能增量为 3 * fk * L"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-straight-track",
+            "label": {
+              "en": "Track 1: A direct straight line from X to Y of total sliding distance L",
+              "ms": "Laluan 1: Garis lurus terus dari X ke Y dengan jumlah jarak gelongsoran L",
+              "zh": "轨道 1：从 X 到 Y 的直线直接路径，总滑动距离为 L"
+            }
+          },
+          {
+            "id": "item-curved-track",
+            "label": {
+              "en": "Track 2: A curved S-shaped path between X and Y of total sliding distance 2L",
+              "ms": "Laluan 2: Laluan melengkung berbentuk S antara X dan Y dengan jumlah jarak gelongsoran 2L",
+              "zh": "轨道 2：连接 X 和 Y 的 S 形弯曲路径，总滑动距离为 2L"
+            }
+          },
+          {
+            "id": "item-looping-track",
+            "label": {
+              "en": "Track 3: A winding detour path between X and Y of total sliding distance 3L",
+              "ms": "Laluan 3: Laluan lencongan berliku antara X dan Y dengan jumlah jarak gelongsoran 3L",
+              "zh": "轨道 3：连接 X 和 Y 的迂回蜿蜒路径，总滑动距离为 3L"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-straight-track",
+            "targetId": "target-base-internal"
+          },
+          {
+            "itemId": "item-curved-track",
+            "targetId": "target-double-internal"
+          },
+          {
+            "itemId": "item-looping-track",
+            "targetId": "target-triple-internal"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "friction-work-independent-of-path-length",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-curved-track",
+            "targetId": "target-base-internal"
+          }
+        },
+        {
+          "misconception": "friction-work-independent-of-path-length",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-looping-track",
+            "targetId": "target-base-internal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-energy-equation-term-selection",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the energy conservation equation ΔK + ΔU + ΔEint = 0 to isolated systems involving kinetic friction.",
+      "prompt": {
+        "en": "A crate slides down a rough ramp. The crate, ramp surface, and Earth are modeled together as an isolated system. Select all statements that correctly express the energy conservation principles and energy changes for this system.",
+        "ms": "Sebuah peti menggelongsor menuruni tanjakan kasar. Peti, permukaan tanjakan, dan Bumi dimodelkan bersama sebagai satu sistem terpencil. Pilih semua pernyataan yang menyatakan prinsip keabadian tenaga dan perubahan tenaga dengan betul bagi sistem ini.",
+        "zh": "一个板条箱沿粗糙斜坡滑下。板条箱、斜坡表面和地球被共同建模为一个孤立系统。请选择所有正确表述该系统能量守恒定律及能量变化的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Recall the difference between total energy and mechanical energy: mechanical energy includes only kinetic (K) and potential (U) energies.",
+          "ms": "Ingat kembali perbezaan antara jumlah tenaga dan tenaga mekanik: tenaga mekanik hanya merangkumi tenaga kinetik (K) dan tenaga keupayaan (U).",
+          "zh": "回忆总能量与机械能的区别：机械能仅包含动能（K）和势能（U）。"
+        },
+        {
+          "en": "When a nonconservative force like friction acts within the isolated system, mechanical energy is not conserved; instead, it decreases by the exact amount gained by internal energy (ΔEint = fk * d).",
+          "ms": "Apabila daya bukan konservatif seperti geseran bertindak dalam sistem terpencil, tenaga mekanik tidak abadi; sebaliknya, ia berkurang sebanyak jumlah tepat yang diperoleh oleh tenaga dalaman (ΔEint = fk * d).",
+          "zh": "当孤立系统内部存在摩擦力等非保守力时，机械能并不守恒；相反，机械能的减少量恰好等于内能的增加量（ΔEint = fk * d）。"
+        }
+      ],
+      "feedback": {
+        "en": "In an isolated system with kinetic friction, total energy is constant (ΔK + ΔU + ΔEint = 0), but mechanical energy is not conserved because friction transforms mechanical energy into internal energy.",
+        "ms": "Dalam sistem terpencil dengan geseran kinetik, jumlah tenaga adalah malar (ΔK + ΔU + ΔEint = 0), tetapi tenaga mekanik tidak abadi kerana geseran menukarkan tenaga mekanik kepada tenaga dalaman.",
+        "zh": "在存在动摩擦力的孤立系统中，总能量保持守恒（ΔK + ΔU + ΔEint = 0），但机械能并不守恒，因为摩擦力将机械能转化为了内能。"
+      },
+      "answerLogic": {
+        "en": "The correct equation for an isolated system containing friction is ΔK + ΔU + ΔEint = 0 (Equation 8.16). Selecting ΔK + ΔU = 0 or ΔK = -ΔU ignores the internal energy increase ΔEint caused by friction.",
+        "ms": "Persamaan yang betul bagi sistem terpencil yang mengandungi geseran ialah ΔK + ΔU + ΔEint = 0 (Persamaan 8.16). Memilih ΔK + ΔU = 0 atau ΔK = -ΔU mengabaikan peningkatan tenaga dalaman ΔEint yang disebabkan oleh geseran.",
+        "zh": "包含摩擦力的孤立系统的正确方程为 ΔK + ΔU + ΔEint = 0（方程 8.16）。选择 ΔK + ΔU = 0 或 ΔK = -ΔU 忽略了由摩擦引起的内能增加量 ΔEint。"
+      },
+      "explanation": {
+        "en": "According to Section 8.4, Equation 8.16 states that for an isolated system with nonconservative forces, ΔK + ΔU + ΔEint = 0. Mechanical energy Emech = K + U changes by ΔEmech = -ΔEint = -fk * d. Therefore, mechanical energy is not conserved, even though the total energy of the isolated system is conserved.",
+        "ms": "Menurut Seksyen 8.4, Persamaan 8.16 menyatakan bahawa bagi sistem terpencil dengan daya bukan konservatif, ΔK + ΔU + ΔEint = 0. Tenaga mekanik Emek = K + U berubah sebanyak ΔEmek = -ΔEint = -fk * d. Oleh itu, tenaga mekanik tidak abadi, walaupun jumlah tenaga sistem terpencil adalah abadi.",
+        "zh": "根据第 8.4 节，方程 8.16 指出，对于存在非保守力的孤立系统，ΔK + ΔU + ΔEint = 0。机械能 Emech = K + U 的变化量为 ΔEmech = -ΔEint = -fk * d。因此，即使孤立系统的总能量守恒，机械能本身也是不守恒的。"
+      },
+      "misconceptions": [
+        "mechanical-energy-conservation-with-friction"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "isolated-system-energy-conservation",
+        "prompt": {
+          "en": "Review how defining an isolated system guarantees that total energy change is zero (ΔEsystem = 0), while allowing energy to shift between kinetic, potential, and internal forms.",
+          "ms": "Ulang kaji bagaimana mentakrifkan sistem terpencil menjamin bahawa perubahan jumlah tenaga adalah sifar (ΔEsistem = 0), di samping membenarkan tenaga beralih antara bentuk kinetik, keupayaan, dan dalaman.",
+          "zh": "复习界定孤立系统如何保证总能量变化为零（ΔEsystem = 0），同时允许能量在动能、势能和内能之间相互转化。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-selection activity presenting four statements about energy changes for a crate sliding down a rough ramp. Choose all statements that accurately apply the isolated system energy conservation equation.",
+        "ms": "Aktiviti berbilang pilihan yang membentangkan empat pernyataan tentang perubahan tenaga bagi sebuah peti yang menggelongsor menuruni tanjakan kasar. Pilih semua pernyataan yang mengaplikasikan persamaan keabadian tenaga sistem terpencil dengan tepat.",
+        "zh": "多项选择活动，呈现了关于沿粗糙斜坡下滑的板条箱能量变化的四条陈述。请选出所有准确应用孤立系统能量守恒方程的陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-total-energy-conservation",
+            "label": {
+              "en": "The total energy of the isolated system is conserved according to ΔK + ΔU + ΔEint = 0.",
+              "ms": "Jumlah tenaga sistem terpencil adalah abadi mengikut persamaan ΔK + ΔU + ΔEint = 0.",
+              "zh": "根据 ΔK + ΔU + ΔEint = 0，孤立系统的总能量守恒。"
+            }
+          },
+          {
+            "id": "item-mech-energy-decrease",
+            "label": {
+              "en": "Mechanical energy alone decreases because kinetic friction transforms mechanical energy into internal energy (ΔEint = fk * d).",
+              "ms": "Tenaga mekanik sahaja berkurang kerana geseran kinetik menukarkan tenaga mekanik kepada tenaga dalaman (ΔEint = fk * d).",
+              "zh": "机械能本身减少，因为动摩擦力将机械能转化为了内能（ΔEint = fk * d）。"
+            }
+          },
+          {
+            "id": "item-mech-energy-conserved-claim",
+            "label": {
+              "en": "Mechanical energy is strictly conserved (ΔK + ΔU = 0) because gravity is a conservative force and the ramp is part of the system.",
+              "ms": "Tenaga mekanik adalah abadi sepenuhnya (ΔK + ΔU = 0) kerana graviti ialah daya konservatif dan tanjakan adalah sebahagian daripada sistem.",
+              "zh": "机械能严格守恒（ΔK + ΔU = 0），因为重力是保守力且斜坡是系统的一部分。"
+            }
+          },
+          {
+            "id": "item-ke-equals-pe-claim",
+            "label": {
+              "en": "The entire loss of gravitational potential energy is converted solely into kinetic energy (ΔK = -ΔU).",
+              "ms": "Keseluruhan kehilangan tenaga keupayaan graviti ditukarkan semata-mata kepada tenaga kinetik (ΔK = -ΔU).",
+              "zh": "重力势能的全部减少量仅转化为动能（ΔK = -ΔU）。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-total-energy-conservation",
+          "item-mech-energy-decrease"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "mechanical-energy-conservation-with-friction",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-mech-energy-conserved-claim",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "mechanical-energy-conservation-with-friction",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-ke-equals-pe-claim",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-bar-chart-stage-ordering",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Interpret energy bar charts tracking kinetic, potential, internal, and constant total energy in an isolated system.",
+      "prompt": {
+        "en": "A package in an isolated package-ramp-Earth system is released from rest at the top of a rough incline, slides down while gaining speed, and finally slides to a stop on a rough horizontal floor. Order the three energy bar-chart descriptions chronologically from earliest to latest in the motion.",
+        "ms": "Satu bungkusan dalam sistem terpencil bungkusan-satah-Bumi dilepaskan dari keadaan pegun di puncak satah condong yang kasar, menggelongsor ke bawah sambil memecut, dan akhirnya menggelongsor sehingga berhenti di atas lantai mendatar yang kasar. Susun tiga penerangan carta bar tenaga mengikut kronologi dari yang terawal hingga yang terakhir dalam gerakan tersebut.",
+        "zh": "在一个由包裹、斜面和地球组成的孤立系统中，包裹从粗糙斜面顶部由静止释放，沿斜面加速下滑，最后在粗糙水平面上滑行直至停止。请按运动的时间先后顺序（由最早到最晚）排列以下三个能量柱状图描述。"
+      },
+      "hints": [
+        {
+          "en": "Identify when kinetic energy is zero: at the instant of initial release and after the package has slid to a complete stop on the floor.",
+          "ms": "Kenal pasti bila tenaga kinetik adalah sifar: pada saat pelepasan awal dan selepas bungkusan menggelongsor sehingga berhenti sepenuhnya di atas lantai.",
+          "zh": "确定动能何时为零：在最初释放瞬间以及包裹在水平面上完全停止之后。"
+        },
+        {
+          "en": "Consider internal energy: because kinetic friction continually dissipates mechanical energy throughout the entire sliding distance, accumulated internal energy strictly increases over time and can never decrease.",
+          "ms": "Pertimbangkan tenaga dalaman: disebabkan geseran kinetik berterusan menghilangkan tenaga mekanik di sepanjang keseluruhan jarak gelongsoran, tenaga dalaman terkumpul meningkat secara berterusan dari semasa ke semasa dan tidak boleh berkurang.",
+          "zh": "考虑内能：由于动摩擦力在整个滑行距离内持续耗散机械能，累积的内能随时间严格递增，绝不可能减少。"
+        }
+      ],
+      "feedback": {
+        "en": "Chronological ordering relies on tracking the continuous conversion of mechanical energy into internal energy. As sliding distance accumulates, internal energy strictly increases while the total system energy remains constant.",
+        "ms": "Susunan kronologi bergantung pada penjejakan penukaran berterusan tenaga mekanik kepada tenaga dalaman. Semakin jarak gelongsoran terkumpul, tenaga dalaman meningkat secara berterusan manakala jumlah tenaga sistem kekal malar.",
+        "zh": "按时间顺序排列的关键在于追踪机械能向内能的持续转化。随着滑行距离的累积，内能严格单调递增，而系统总能量保持守恒。"
+      },
+      "answerLogic": {
+        "en": "At release, the package is at rest at its highest elevation, meaning all energy is gravitational potential energy and internal energy increase is zero. Midway down the ramp, gravitational potential energy has decreased while both kinetic energy and internal energy have increased. After sliding to a complete stop on the floor, both kinetic energy and gravitational potential energy are zero, and all initial mechanical energy has transformed into accumulated internal energy.",
+        "ms": "Semasa pelepasan, bungkusan berada dalam keadaan pegun pada ketinggian tertinggi, bermakna semua tenaga adalah tenaga keupayaan graviti dan peningkatan tenaga dalaman adalah sifar. Di pertengahan satah condong, tenaga keupayaan graviti telah berkurang manakala kedua-dua tenaga kinetik dan tenaga dalaman telah meningkat. Selepas menggelongsor sehingga berhenti sepenuhnya di lantai, kedua-dua tenaga kinetik dan tenaga keupayaan graviti adalah sifar, dan semua tenaga mekanik awal telah berubah menjadi tenaga dalaman terkumpul.",
+        "zh": "释放时，包裹在最高位置处于静止状态，系统全部能量均为重力势能，内能增量为零。下滑到斜面中途时，重力势能减少，动能与内能均有所增加。在地面滑行至完全停止后，动能与重力势能均为零，所有初始机械能已全部转化为累积的内能。"
+      },
+      "explanation": {
+        "en": "In an isolated system governed by Delta K + Delta U + Delta Eint = 0, total energy is strictly conserved. Kinetic friction acts along the entire sliding path, continuously transferring mechanical energy into internal thermal energy. Because sliding distance strictly increases as motion unfolds, Delta Eint = fk * d must grow at every subsequent stage. The correct chronological sequence therefore progresses from zero internal energy at release, to intermediate internal energy during motion, to maximum accumulated internal energy once the package comes permanently to rest.",
+        "ms": "Dalam sistem terpencil yang ditadbir oleh Delta K + Delta U + Delta Eint = 0, jumlah tenaga adalah abadi secara ketat. Geseran kinetik bertindak di sepanjang keseluruhan laluan gelongsoran, secara berterusan memindahkan tenaga mekanik kepada tenaga haba dalaman. Oleh kerana jarak gelongsoran bertambah secara berterusan seiring pergerakan berlaku, Delta Eint = fk * d mesti bertambah pada setiap peringkat yang berikutnya. Oleh itu, jujukan kronologi yang betul bergerak daripada sifar tenaga dalaman semasa pelepasan, kepada tenaga dalaman perantaraan semasa bergerak, hingga ke tenaga dalaman terkumpul maksimum sebaik sahaja bungkusan berhenti sepenuhnya.",
+        "zh": "在由 Delta K + Delta U + Delta Eint = 0 支配的孤立系统中，总能量严格守恒。动摩擦力在整个滑行路径上做功，持续将机械能转化为内部热能。因为滑行距离随着运动过程严格增加，所以在每个后续阶段 Delta Eint = fk * d 都必然增大。因此，正确的时间顺序必然是从释放时的零内能增量，发展到运动过程中的中等内能增量，最后达到完全停止时的最大累积内能。"
+      },
+      "misconceptions": [
+        "internal-energy-can-decrease-spontaneously"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-and-potential-energy-definitions",
+        "prompt": {
+          "en": "Review how gravitational potential energy depends on elevation (mgy), kinetic energy depends on speed (1/2 mv^2), and friction continually converts mechanical energy into internal energy.",
+          "ms": "Ulang kaji bagaimana tenaga keupayaan graviti bergantung pada ketinggian (mgy), tenaga kinetik bergantung pada kelajuan (1/2 mv^2), dan geseran berterusan menukarkan tenaga mekanik kepada tenaga dalaman.",
+          "zh": "复习重力势能如何取决于高度（mgy）、动能如何取决于速度（1/2 mv^2），以及摩擦力如何持续将机械能转化为内能。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Order three chronological stage descriptions for a package sliding down a ramp to a stop: initial release, mid-descent, and final rest.",
+        "ms": "Susun tiga penerangan peringkat kronologi untuk bungkusan yang menggelongsor menuruni satah condong hingga berhenti: pelepasan awal, pertengahan penurunan, dan hentian akhir.",
+        "zh": "按时间先后顺序排列包裹沿斜面下滑直至停止的三个阶段描述：初始释放、滑行中途和最终停止。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "stage-initial-release",
+            "label": {
+              "en": "Chart 1: Maximum gravitational potential energy, zero kinetic energy, and zero change in internal energy.",
+              "ms": "Carta 1: Tenaga keupayaan graviti maksimum, sifar tenaga kinetik, dan sifar perubahan tenaga dalaman.",
+              "zh": "图表 1：重力势能最大，动能为零，内能变化为零。"
+            }
+          },
+          {
+            "id": "stage-mid-descent",
+            "label": {
+              "en": "Chart 2: Reduced gravitational potential energy, non-zero kinetic energy, and moderate accumulated internal energy.",
+              "ms": "Carta 2: Tenaga keupayaan graviti berkurangan, tenaga kinetik bukan sifar, dan tenaga dalaman terkumpul sederhana.",
+              "zh": "图表 2：重力势能减少，动能非零，内能适度累积。"
+            }
+          },
+          {
+            "id": "stage-final-rest",
+            "label": {
+              "en": "Chart 3: Zero gravitational potential energy, zero kinetic energy, and maximum accumulated internal energy.",
+              "ms": "Carta 3: Sifar tenaga keupayaan graviti, sifar tenaga kinetik, dan tenaga dalaman terkumpul maksimum.",
+              "zh": "图表 3：重力势能为零，动能为零，内能累积达到最大值。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "stage-initial-release",
+          "stage-mid-descent",
+          "stage-final-rest"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "internal-energy-can-decrease-spontaneously",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "stage-final-rest",
+            "secondItemId": "stage-mid-descent"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-ramp-angle-comparison-matching",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict how changing path length or surface friction affects final speed and mechanical energy dissipation.",
+      "prompt": {
+        "en": "A crate is released from rest at height h and slides down to the ground. Match each physical characteristic to whether it applies to a steeper incline (larger angle theta, shorter path length d) or a gentler incline (smaller angle theta, longer path length d), assuming both ramps exert the same constant friction force.",
+        "ms": "Sebuah peti dilepaskan dari keadaan pegun pada ketinggian h dan menggelongsor turun ke tanah. Padankan setiap ciri fizikal sama ada ia terpakai pada satah condong lebih curam (sudut theta lebih besar, panjang laluan d lebih pendek) atau satah condong lebih landai (sudut theta lebih kecil, panjang laluan d lebih panjang), dengan andaian kedua-dua satah mengenakan daya geseran malar yang sama.",
+        "zh": "一个板条箱从高度 h 处由静止释放并滑到地面。假设两个斜面产生相同的恒定动摩擦力，请将每个物理特征与对应的斜面（较陡斜面：倾角 theta 较大、路径长度 d 较短；较缓斜面：倾角 theta 较小、路径长度 d 较长）进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Relate the sliding distance d along the ramp to the vertical drop h: d = h / sin(theta). A smaller incline angle produces a longer travel distance.",
+          "ms": "Hubungkan jarak gelongsoran d di sepanjang satah condong dengan penurunan menegak h: d = h / sin(theta). Sudut satah condong yang lebih kecil menghasilkan jarak perjalanan yang lebih panjang.",
+          "zh": "将沿斜面的滑行距离 d 与垂直高度 h 联系起来：d = h / sin(theta)。倾角越小，滑行距离越长。"
+        },
+        {
+          "en": "Recall that internal energy increase depends directly on distance: Delta Eint = fk * d. A greater sliding distance dissipates more mechanical energy, resulting in a lower final kinetic energy at the bottom.",
+          "ms": "Ingat kembali bahawa peningkatan tenaga dalaman bergantung secara langsung pada jarak: Delta Eint = fk * d. Jarak gelongsoran yang lebih besar melesapkan lebih banyak tenaga mekanik, menghasilkan tenaga kinetik akhir yang lebih rendah di bahagian bawah.",
+          "zh": "回想一下，内能增量直接取决于距离：Delta Eint = fk * d。滑行距离越长，耗散的机械能就越多，从而导致底部的最终动能更低。"
+        }
+      ],
+      "feedback": {
+        "en": "Comparing two inclines with the same vertical drop shows that a longer path length causes greater mechanical energy dissipation into internal energy, which results in a lower speed at the bottom.",
+        "ms": "Membandingkan dua satah condong dengan penurunan menegak yang sama menunjukkan bahawa laluan yang lebih panjang menyebabkan pelesapan tenaga mekanik yang lebih besar kepada tenaga dalaman, yang mengakibatkan kelajuan yang lebih rendah di bahagian bawah.",
+        "zh": "对比具有相同垂直落差的两个斜面可知，较长的路径会导致更多的机械能耗散为内能，从而使底部的速度更低。"
+      },
+      "answerLogic": {
+        "en": "For a fixed vertical drop h, the gentler ramp has a longer sliding distance d = h / sin(theta). Because friction acts over this longer distance, the gentler ramp experiences greater mechanical energy dissipation (Delta Eint = fk * d) and produces a lower speed at the bottom. Meanwhile, the steeper ramp has a larger incline angle theta, which makes cos(theta) smaller, resulting in a perpendicular normal force n = mg cos(theta) that differs most from mg.",
+        "ms": "Untuk penurunan menegak h yang tetap, satah yang lebih landai mempunyai jarak gelongsoran yang lebih panjang d = h / sin(theta). Disebabkan geseran bertindak sepanjang jarak yang lebih panjang ini, satah yang lebih landai mengalami pelesapan tenaga mekanik yang lebih besar (Delta Eint = fk * d) dan menghasilkan kelajuan yang lebih rendah di bahagian bawah. Sementara itu, satah yang lebih curam mempunyai sudut satah condong theta yang lebih besar, yang menjadikan kos(theta) lebih kecil, menghasilkan daya normal serenjang n = mg kos(theta) yang paling berbeza daripada mg.",
+        "zh": "对于固定的垂直高度 h，较缓斜面的滑行距离更长（d = h / sin(theta)）。由于摩擦力在更长的距离上做功，较缓斜面经历更大的机械能耗散（Delta Eint = fk * d），使底部的速度更低。同时，较陡斜面的倾角 theta 较大，cos(theta) 较小，导致垂直方向的正压力 n = mg cos(theta) 相比于 mg 减小最多。"
+      },
+      "explanation": {
+        "en": "By conservation of energy in an isolated system, 1/2 mv^2 = mgh - fk * d. Descending the same vertical height via a gentler incline requires a longer sliding path d. More mechanical energy is therefore transformed into internal energy, leaving less kinetic energy and reducing the final speed. Furthermore, on an incline in perpendicular equilibrium, the normal force is n = mg cos(theta). The steeper the ramp, the larger theta is, and the further cos(theta) drops below 1, meaning the normal force is significantly smaller than mg on the steeper ramp.",
+        "ms": "Melalui keabadian tenaga dalam sistem terpencil, 1/2 mv^2 = mgh - fk * d. Menuruni ketinggian menegak yang sama melalui satah yang lebih landai memerlukan laluan gelongsoran d yang lebih panjang. Oleh itu, lebih banyak tenaga mekanik ditukarkan kepada tenaga dalaman, meninggalkan kurang tenaga kinetik dan mengurangkan kelajuan akhir. Tambahan pula, pada satah condong dalam keseimbangan serenjang, daya normal ialah n = mg kos(theta). Semakin curam satah condong, semakin besar theta, dan semakin jauh kos(theta) berkurangan di bawah 1, bermakna daya normal adalah jauh lebih kecil daripada mg pada satah yang lebih curam.",
+        "zh": "根据孤立系统的能量守恒定律，1/2 mv^2 = mgh - fk * d。通过较缓斜面下降相同的垂直高度需要更长的滑行路径 d。因此，更多的机械能被转化为内能，留下的动能更少，从而降低了最终速度。此外，在垂直于斜面的平衡条件下，正压力为 n = mg cos(theta)。斜面越陡，倾角 theta 越大，cos(theta) 越小于 1，这意味着较陡斜面上的正压力显著小于 mg。"
+      },
+      "misconceptions": [
+        "friction-work-independent-of-path-length",
+        "normal-force-always-equals-mg"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "friction-and-normal-force",
+        "prompt": {
+          "en": "Review how the normal force on an incline depends on angle (n = mg cos(theta)) and how kinetic friction force relates to normal force (fk = mu_k * n).",
+          "ms": "Ulang kaji bagaimana daya normal pada satah condong bergantung pada sudut (n = mg kos(theta)) dan bagaimana daya geseran kinetik berkaitan dengan daya normal (fk = mu_k * n).",
+          "zh": "复习斜面上的正压力如何依赖于倾角（n = mg cos(theta)），以及动摩擦力如何与正压力相关联（fk = mu_k * n）。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Match physical outcomes and forces to either the steeper incline or the gentler incline for a crate descending a fixed vertical drop.",
+        "ms": "Padankan hasil fizikal dan daya sama ada kepada satah condong lebih curam atau satah condong lebih landai bagi peti yang menuruni ketinggian menegak yang tetap.",
+        "zh": "将板条箱在固定垂直高度下滑时的物理结果和受力特性，分别与较陡斜面或较缓斜面进行匹配。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-steeper-incline",
+            "label": {
+              "en": "Steeper incline (larger angle theta, shorter path d)",
+              "ms": "Satah condong lebih curam (sudut theta lebih besar, laluan d lebih pendek)",
+              "zh": "较陡斜面（倾角 theta 较大，路径 d 较短）"
+            }
+          },
+          {
+            "id": "target-gentler-incline",
+            "label": {
+              "en": "Gentler incline (smaller angle theta, longer path d)",
+              "ms": "Satah condong lebih landai (sudut theta lebih kecil, laluan d lebih panjang)",
+              "zh": "较缓斜面（倾角 theta 较小，路径 d 较长）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-higher-final-speed",
+            "label": {
+              "en": "Results in a higher final speed at the bottom because friction acts over a shorter path length",
+              "ms": "Menghasilkan kelajuan akhir yang lebih tinggi di bahagian bawah kerana geseran bertindak pada laluan yang lebih pendek",
+              "zh": "底部的最终速度更高，因为摩擦力作用的路径更短"
+            }
+          },
+          {
+            "id": "item-greater-internal-energy",
+            "label": {
+              "en": "Produces greater internal energy dissipation (Delta Eint) because the sliding path length is longer",
+              "ms": "Menghasilkan pelesapan tenaga dalaman (Delta Eint) yang lebih besar kerana laluan gelongsoran lebih panjang",
+              "zh": "产生更大的内能耗散（Delta Eint），因为滑行路径更长"
+            }
+          },
+          {
+            "id": "item-smaller-normal-force",
+            "label": {
+              "en": "Has a smaller normal force magnitude (n = mg cos(theta)) due to the larger incline angle",
+              "ms": "Mempunyai magnitud daya normal yang lebih kecil (n = mg kos(theta)) disebabkan sudut satah condong yang lebih besar",
+              "zh": "由于倾角较大，法向正压力大小（n = mg cos(theta)）更小"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-higher-final-speed",
+            "targetId": "target-steeper-incline"
+          },
+          {
+            "itemId": "item-greater-internal-energy",
+            "targetId": "target-gentler-incline"
+          },
+          {
+            "itemId": "item-smaller-normal-force",
+            "targetId": "target-steeper-incline"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "friction-work-independent-of-path-length",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-greater-internal-energy",
+            "targetId": "target-steeper-incline"
+          }
+        },
+        {
+          "misconception": "normal-force-always-equals-mg",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-smaller-normal-force",
+            "targetId": "target-gentler-incline"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-sliding-scenario-classification",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the energy conservation equation ΔK + ΔU + ΔEint = 0 to isolated systems involving kinetic friction.",
+      "prompt": {
+        "en": "Classify each energy quantity for an isolated system (crate, rough incline, and Earth) as the crate slides down the incline with kinetic friction.",
+        "ms": "Kelaskan setiap kuantiti tenaga bagi satu sistem terpencil (peti, satah condong kasar, dan Bumi) semasa peti menggelongsor menuruni satah condong dengan geseran kinetik.",
+        "zh": "对板条箱在具有动摩擦的粗糙斜面上下滑时的孤立系统（板条箱、粗糙斜面和地球）中的各项能量物理量进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Distinguish between mechanical energy (K + U) and total system energy (K + U + Eint). Mechanical energy alone is not conserved when nonconservative forces act.",
+          "ms": "Bezakan antara tenaga mekanik (K + U) dan jumlah tenaga sistem (K + U + Eint). Tenaga mekanik sahaja tidak abadi apabila daya bukan konservatif bertindak.",
+          "zh": "区分机械能（K + U）与系统总能量（K + U + Eint）。当存在非保守力作用时，机械能本身并不守恒。"
+        },
+        {
+          "en": "In an isolated system, energy is never destroyed. Kinetic friction transforms mechanical energy into internal thermal energy, while sliding down decreases elevation and thus decreases gravitational potential energy.",
+          "ms": "Dalam sistem terpencil, tenaga tidak pernah dimusnahkan. Geseran kinetik menukarkan tenaga mekanik kepada tenaga haba dalaman, manakala menggelongsor ke bawah mengurangkan ketinggian dan seterusnya mengurangkan tenaga keupayaan graviti.",
+          "zh": "在孤立系统中，能量绝不会被消灭。动摩擦力将机械能转化为内部热能，而向下划动会降低高度，从而使重力势能减少。"
+        }
+      ],
+      "feedback": {
+        "en": "In the presence of kinetic friction within an isolated system, mechanical energy and gravitational potential energy decrease, internal thermal energy increases, and the total energy remains strictly conserved.",
+        "ms": "Dengan kehadiran geseran kinetik dalam sistem terpencil, tenaga mekanik dan tenaga keupayaan graviti berkurangan, tenaga haba dalaman meningkat, dan jumlah tenaga kekal abadi secara ketat.",
+        "zh": "在孤立系统内存在动摩擦力时，机械能和重力势能减少，内部热能增加，而系统总能量保持严格守恒。"
+      },
+      "answerLogic": {
+        "en": "As the crate slides down the incline, elevation decreases, so gravitational potential energy (Ug) decreases. Kinetic friction converts macroscopic mechanical energy into microscopic thermal motion, so mechanical energy (K + U) decreases while internal thermal energy (Eint) increases. Because the system is isolated, total energy (Etotal = K + U + Eint) is strictly conserved (constant).",
+        "ms": "Semasa peti menggelongsor menuruni satah condong, ketinggian berkurangan, jadi tenaga keupayaan graviti (Ug) berkurangan. Geseran kinetik menukarkan tenaga mekanik makroskopik kepada pergerakan haba mikroskopik, jadi tenaga mekanik (K + U) berkurangan manakala tenaga haba dalaman (Eint) meningkat. Oleh sebab sistem ini terpencil, jumlah tenaga (Ejumlah = K + U + Eint) kekal abadi secara ketat (malar).",
+        "zh": "当板条箱沿斜面下滑时，高度降低，因此重力势能（Ug）减少。动摩擦力将宏观机械能转化为微观热运动，因此机械能（K + U）减少，而内部热能（Eint）增加。由于系统是孤立的，总能量（Etotal = K + U + Eint）严格守恒（保持恒定）。"
+      },
+      "explanation": {
+        "en": "For an isolated system with kinetic friction, the energy conservation relation is Delta K + Delta U + Delta Eint = 0. The total energy Etotal = K + U + Eint remains constant (conserved). Because the crate moves down the incline, its elevation decreases, meaning gravitational potential energy Ug decreases (Delta Ug < 0). Friction dissipates mechanical energy into internal thermal energy, so mechanical energy Emech = K + U decreases, while internal energy Eint increases by fk * d. This demonstrates that mechanical energy is not conserved when friction acts, but total energy is always conserved.",
+        "ms": "Untuk satu sistem terpencil dengan geseran kinetik, hubungan keabadian tenaga ialah Delta K + Delta U + Delta Eint = 0. Jumlah tenaga Ejumlah = K + U + Eint kekal malar (abadi). Oleh sebab peti bergerak menuruni satah condong, ketinggiannya berkurangan, bermakna tenaga keupayaan graviti Ug berkurangan (Delta Ug < 0). Geseran melesapkan tenaga mekanik kepada tenaga haba dalaman, maka tenaga mekanik Emekanik = K + U berkurangan, manakala tenaga haba dalaman Eint meningkat sebanyak fk * d. Ini menunjukkan bahawa tenaga mekanik tidak abadi apabila geseran bertindak, tetapi jumlah tenaga sentiasa abadi.",
+        "zh": "对于存在动摩擦力的孤立系统，能量守恒关系式为 Delta K + Delta U + Delta Eint = 0。系统总能量 Etotal = K + U + Eint 保持恒定（守恒）。由于板条箱沿斜面向下滑动，其高度降低，这意味着重力势能 Ug 减少（Delta Ug < 0）。摩擦力将机械能耗散为内部热能，因此机械能 Emech = K + U 减少，而内部热能 Eint 增加 fk * d。这表明当摩擦力做功时机械能不守恒，但总能量始终守恒。"
+      },
+      "misconceptions": [
+        "mechanical-energy-conservation-with-friction",
+        "friction-destroys-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "isolated-system-energy-conservation",
+        "prompt": {
+          "en": "Review the definition of an isolated system and the full conservation of energy principle, where all energy transformations within the system boundary sum to zero net change.",
+          "ms": "Ulang kaji takrif sistem terpencil dan prinsip keabadian tenaga penuh, di mana semua transformasi tenaga dalam sempadan sistem berjumlah kepada sifar perubahan bersih.",
+          "zh": "复习孤立系统的定义以及完整的能量守恒原理，即系统边界内的所有能量转化之和净变化量为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classify four energy quantities into three categories: conserved, decreases during sliding, or increases during sliding.",
+        "ms": "Kelaskan empat kuantiti tenaga kepada tiga kategori: abadi, berkurang semasa gelongsoran, atau meningkat semasa gelongsoran.",
+        "zh": "将四个能量物理量归类到三个类别中：守恒量、滑动中减少的量、滑动中增加的量。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-conserved",
+            "label": {
+              "en": "Conserved (constant throughout the motion)",
+              "ms": "Abadi (malar sepanjang gerakan)",
+              "zh": "守恒（在整个运动过程中保持恒定）"
+            }
+          },
+          {
+            "id": "target-decreases",
+            "label": {
+              "en": "Decreases during sliding motion",
+              "ms": "Berkurang semasa gerakan gelongsoran",
+              "zh": "在滑动过程中减少"
+            }
+          },
+          {
+            "id": "target-increases",
+            "label": {
+              "en": "Increases during sliding motion",
+              "ms": "Meningkat semasa gerakan gelongsoran",
+              "zh": "在滑动过程中增加"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-total-isolated-energy",
+            "label": {
+              "en": "Total system energy: Etotal = K + U + Eint",
+              "ms": "Jumlah tenaga sistem: Ejumlah = K + U + Eint",
+              "zh": "系统总能量：Etotal = K + U + Eint"
+            }
+          },
+          {
+            "id": "item-mechanical-energy-sum",
+            "label": {
+              "en": "Mechanical energy of the system: Emech = K + U",
+              "ms": "Tenaga mekanik sistem: Emekanik = K + U",
+              "zh": "系统的机械能：Emech = K + U"
+            }
+          },
+          {
+            "id": "item-internal-thermal-energy",
+            "label": {
+              "en": "Internal thermal energy of the crate and surface: Eint",
+              "ms": "Tenaga haba dalaman peti dan permukaan: Eint",
+              "zh": "板条箱与表面的内部热能：Eint"
+            }
+          },
+          {
+            "id": "item-sum-of-energy-changes",
+            "label": {
+              "en": "Gravitational potential energy of the crate–Earth system: Ug",
+              "ms": "Tenaga keupayaan graviti bagi sistem peti–Bumi: Ug",
+              "zh": "板条箱—地球系统的重力势能：Ug"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-total-isolated-energy",
+            "targetId": "target-conserved"
+          },
+          {
+            "itemId": "item-mechanical-energy-sum",
+            "targetId": "target-decreases"
+          },
+          {
+            "itemId": "item-internal-thermal-energy",
+            "targetId": "target-increases"
+          },
+          {
+            "itemId": "item-sum-of-energy-changes",
+            "targetId": "target-decreases"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "mechanical-energy-conservation-with-friction",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-mechanical-energy-sum",
+            "targetId": "target-conserved"
+          }
+        },
+        {
+          "misconception": "friction-destroys-energy",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-total-isolated-energy",
+            "targetId": "target-decreases"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-system-stages-energy-ordering",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze systems combining gravitational, elastic potential, and internal energy changes.",
+      "prompt": {
+        "en": "A system consists of a block on a rough horizontal surface connected via a light cord over a frictionless pulley to a hanging mass, with a horizontal spring attached to the sliding block. The system is released from rest with the spring unstretched. The hanging mass falls a distance h to a momentary stop, and then the stretched spring pulls the system back toward the initial position.\n\nOrder the four configurations below from GREATEST total mechanical energy (Emech = K + Ug + Us) to LEAST total mechanical energy.",
+        "ms": "Satu sistem terdiri daripada sebuah blok di atas permukaan mengufuk yang kasar disambungkan melalui tali ringan merentasi takal tanpa geseran ke satu jisim tergantung, dengan satu spring mengufuk dilekatkan pada blok yang menggelongsor. Sistem ini dilepaskan dari keadaan pegun dengan spring belum teregang. Jisim tergantung jatuh sejauh h sehingga berhenti seketika, dan kemudian spring yang teregang menarik sistem kembali ke arah kedudukan asal.\n\nSusun empat konfigurasi di bawah mengikut urutan dari jumlah tenaga mekanik (Emech = K + Ug + Us) TERBESAR kepada TERKECIL.",
+        "zh": "一个系统由粗糙水平面上的滑块组成，该滑块通过跨过无摩擦滑轮的轻绳与悬挂物体相连，且滑块还连接有一根水平弹簧。系统在弹簧未伸长状态下从静止释放。悬挂物体下落距离 h 并短暂静止，随后被拉伸的弹簧将系统反向拉回初始位置。\n\n请将以下四个状态按系统总机械能（Emech = K + Ug + Us）从“最大”到“最小”进行排序。"
+      },
+      "hints": [
+        {
+          "en": "Consider how kinetic friction affects mechanical energy over time. Does kinetic friction dissipate mechanical energy only during parts of the motion, or does it dissipate mechanical energy continuously whenever sliding occurs?",
+          "ms": "Pertimbangkan bagaimana geseran kinetik mempengaruhi tenaga mekanik dari masa ke masa. Adakah geseran kinetik melesapkan tenaga mekanik semasa sebahagian gerakan sahaja, atau adakah ia melesapkannya secara berterusan setiap kali gelongsoran berlaku?",
+          "zh": "思考动摩擦力如何随时间影响机械能。动摩擦力是只在部分运动过程中损耗机械能，还是只要发生相对滑动就会持续损耗机械能？"
+        },
+        {
+          "en": "Total mechanical energy changes according to ΔEmech = -ΔEint = -fk * d_total, where d_total is the cumulative distance slid. Because d_total always increases along the actual path traveled, total mechanical energy strictly decreases with each successive stage.",
+          "ms": "Jumlah tenaga mekanik berubah mengikut ΔEmech = -ΔEint = -fk * d_total, dengan d_total ialah jumlah jarak kumulatif yang digelongsor. Oleh kerana d_total sentiasa meningkat di sepanjang laluan sebenar yang dilalui, jumlah tenaga mekanik berkurang secara berterusan pada setiap peringkat berturutan.",
+          "zh": "总机械能的变化满足 ΔEmech = -ΔEint = -fk * d_total，其中 d_total 是累积滑行路程。由于 d_total 沿实际运动路径始终单调递增，总机械能随着后续阶段的推进必定严格递减。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Kinetic friction acts along the entire sliding path regardless of the direction of motion, continuously transforming mechanical energy into internal thermal energy. Because the cumulative distance slid strictly increases from Stage 1 through Stage 4, the mechanical energy remaining in the system strictly decreases.",
+        "ms": "Tepat! Geseran kinetik bertindak di sepanjang seluruh laluan gelongsoran tanpa mengira arah gerakan, menukarkan tenaga mekanik kepada tenaga haba dalaman secara berterusan. Kerana jarak kumulatif yang digelongsor sentiasa bertambah dari Peringkat 1 hingga Peringkat 4, baki tenaga mekanik di dalam sistem berkurang secara berterusan.",
+        "zh": "回答正确！无论运动方向如何，动摩擦力都会在整个滑动路径上做负功，持续将机械能转化为内部热能。因为累积滑行路程从阶段 1 到阶段 4 严格递增，所以系统保留的总机械能严格单调递减。"
+      },
+      "answerLogic": {
+        "en": "Stage 1 has zero sliding distance, so ΔEint = 0 and mechanical energy is at its initial maximum. Stage 2 has slid distance h/2, dissipating fk * (h/2). Stage 3 has slid distance h, dissipating fk * h. Stage 4 has reversed and slid further, accumulating even greater friction dissipation. Therefore, mechanical energy strictly decreases: Stage 1 > Stage 2 > Stage 3 > Stage 4.",
+        "ms": "Peringkat 1 mempunyai sifar jarak gelongsoran, maka ΔEint = 0 dan tenaga mekanik berada pada nilai maksimum awal. Peringkat 2 telah menggelongsor sejauh h/2, melesapkan fk * (h/2). Peringkat 3 telah menggelongsor sejauh h, melesapkan fk * h. Peringkat 4 telah berpatah balik dan menggelongsor lebih jauh, mengumpulkan kehilangan geseran yang lebih tinggi. Oleh itu, tenaga mekanik berkurang secara berterusan: Peringkat 1 > Peringkat 2 > Peringkat 3 > Peringkat 4.",
+        "zh": "阶段 1 滑动距离为零，ΔEint = 0，机械能处于初始最大值。阶段 2 滑动了 h/2，损耗了 fk * (h/2)。阶段 3 滑动了 h，损耗了 fk * h。阶段 4 反弹并继续滑动，累积了更多的摩擦损耗。因此机械能严格递减：阶段 1 > 阶段 2 > 阶段 3 > 阶段 4。"
+      },
+      "explanation": {
+        "en": "In an isolated system with kinetic friction, the change in mechanical energy is given by ΔEmech = -ΔEint = -fk * d, where d is the cumulative path length slid by the contact surface. Kinetic friction always opposes relative motion, so internal energy increases monotonically as motion proceeds. It never spontaneously decreases, even when the block reverses direction. Consequently, every subsequent stage has less mechanical energy than the preceding one.",
+        "ms": "Dalam satu sistem terpencil yang mempunyai geseran kinetik, perubahan tenaga mekanik diberikan oleh ΔEmech = -ΔEint = -fk * d, dengan d ialah jumlah panjang laluan kumulatif yang digelongsor oleh permukaan sentuhan. Geseran kinetik sentiasa menentang gerakan relatif, maka tenaga dalaman meningkat secara monoton sepanjang gerakan berlaku. Ia tidak akan berkurang secara spontan, walaupun blok berpatah balik arah. Oleh itu, setiap peringkat seterusnya mempunyai tenaga mekanik yang lebih rendah daripada peringkat sebelumnya.",
+        "zh": "在存在动摩擦力的孤立系统中，机械能的变化量由 ΔEmech = -ΔEint = -fk * d 给出，其中 d 是接触面滑动的累积路径长度。动摩擦力总是阻碍相对运动，因此随着运动进行，内能单调增加。即使滑块反向运动，内能也绝不会自发减少转回机械能。因此，后续的每一个阶段其机械能都严格小于前一个阶段。"
+      },
+      "misconceptions": [
+        "mechanical-energy-conservation-with-friction",
+        "internal-energy-can-decrease-spontaneously"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "isolated-system-energy-conservation",
+        "prompt": {
+          "en": "Remember that for an isolated system, the total energy remains constant: ΔK + ΔU + ΔEint = 0. Any work done by kinetic friction inside the system transforms mechanical energy into internal thermal energy, meaning mechanical energy alone continuously decreases as sliding occurs.",
+          "ms": "Ingat bahawa bagi suatu sistem terpencil, jumlah tenaga kekal malar: ΔK + ΔU + ΔEint = 0. Sebarang kerja yang dilakukan oleh geseran kinetik di dalam sistem menukarkan tenaga mekanik kepada tenaga haba dalaman, yang bermaksud tenaga mekanik sahaja berkurang secara berterusan apabila gelongsoran berlaku.",
+          "zh": "请记住，对于孤立系统，总能量守恒：ΔK + ΔU + ΔEint = 0。系统内部动摩擦力所做的功将机械能转化为内部热能，这意味着随着相对滑动的持续进行，机械能本身会不断减少。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive ordering task. Arrange four successive stages of a connected block-spring-friction system from greatest total mechanical energy to least total mechanical energy.",
+        "ms": "Tugasan susunan interaktif. Susun empat peringkat berturutan bagi sistem bersambung blok-spring-geseran dari jumlah tenaga mekanik terbesar kepada terkecil.",
+        "zh": "交互式排序任务。将包含滑块、弹簧与摩擦力的相连系统的四个连续阶段，按总机械能从大到小进行排序。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "stage-1-release",
+            "label": {
+              "en": "Stage 1: The instant of release from rest with the spring unstretched",
+              "ms": "Peringkat 1: Detik pelepasan dari keadaan pegun dengan spring belum teregang",
+              "zh": "阶段 1：弹簧未伸长、从静止释放的瞬间"
+            }
+          },
+          {
+            "id": "stage-2-midway",
+            "label": {
+              "en": "Stage 2: The system moving downward at the midpoint of the fall (distance h/2)",
+              "ms": "Peringkat 2: Sistem bergerak ke bawah pada titik tengah kejatuhan (jarak h/2)",
+              "zh": "阶段 2：系统向下运动到下落中点处（距离 h/2）"
+            }
+          },
+          {
+            "id": "stage-3-lowest",
+            "label": {
+              "en": "Stage 3: The instant the hanging block stops momentarily at its maximum fall distance h",
+              "ms": "Peringkat 3: Detik jisim tergantung berhenti seketika pada jarak jatuh maksimum h",
+              "zh": "阶段 3：悬挂物体下落到最大距离 h 处短暂静止的瞬间"
+            }
+          },
+          {
+            "id": "stage-4-rebound",
+            "label": {
+              "en": "Stage 4: The system moving back toward the start after rebounding past the lowest point",
+              "ms": "Peringkat 4: Sistem bergerak kembali ke arah permulaan selepas melantun melepasi titik terendah",
+              "zh": "阶段 4：系统从最低点反弹、向初始位置反向运动的过程中"
+            }
+          }
+        ],
+        "correctOrder": [
+          "stage-1-release",
+          "stage-2-midway",
+          "stage-3-lowest",
+          "stage-4-rebound"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "internal-energy-can-decrease-spontaneously",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "stage-4-rebound",
+            "secondItemId": "stage-3-lowest"
+          }
+        },
+        {
+          "misconception": "mechanical-energy-conservation-with-friction",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "stage-3-lowest",
+            "secondItemId": "stage-2-midway"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-friction-effects-multi-selection",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict how changing path length or surface friction affects final speed and mechanical energy dissipation.",
+      "prompt": {
+        "en": "A package of mass m is released from rest at the top of an incline of vertical height h and slides to the bottom. In Setup A, the incline is steep (angle 35 degrees, shorter sliding length). In Setup B, the incline has a gentler angle (angle 20 degrees, longer sliding length) but spans the exact same vertical drop h. Both surfaces have the same coefficient of kinetic friction μk.\n\nSelect ALL statements that correctly compare the physical outcomes and energy transformations of Setup B to Setup A.",
+        "ms": "Satu bungkusan berjisim m dilepaskan dari keadaan pegun di puncak satah condong berketinggian menegak h dan menggelongsor ke dasar. Dalam Susunan A, satah condong adalah curam (sudut 35 darjah, panjang gelongsoran lebih pendek). Dalam Susunan B, satah condong mempunyai sudut yang lebih landai (sudut 20 darjah, panjang gelongsoran lebih panjang) tetapi merentasi penurunan menegak h yang sama persis. Kedua-dua permukaan mempunyai pekali geseran kinetik μk yang sama.\n\nPilih SEMUA pernyataan yang membandingkan hasil fizikal dan perubahan tenaga bagi Susunan B berbanding Susunan A dengan betul.",
+        "zh": "一个质量为 m 的包裹从垂直高度为 h 的斜面顶端由静止释放并滑到底部。在方案 A 中，斜面较陡（倾角 35 度，滑动长度较短）。在方案 B 中，斜面较缓（倾角 20 度，滑动长度较长），但下落的垂直高度 h 完全相同。两斜面具有相同的动摩擦因数 μk。\n\n请选出所有正确比较方案 B 与方案 A 的物理过程及能量转化的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Recall how kinetic friction relates to path length. Does the work done by a nonconservative force depend only on the vertical endpoints, or does it depend on the actual distance traveled along the incline?",
+          "ms": "Ingat kembali bagaimana geseran kinetik berkaitan dengan panjang laluan. Adakah kerja yang dilakukan oleh daya bukan konservatif hanya bergantung pada titik akhir menegak, atau adakah ia bergantung pada jarak sebenar yang dilalui di sepanjang satah condong?",
+          "zh": "回想动摩擦力与路径长度的关系。非保守力做的功是仅取决于初末垂直位置，还是取决于沿斜面滑动的实际路程？"
+        },
+        {
+          "en": "On an incline, the sliding distance is d = h / sin(θ) and the normal force is n = m * g * cos(θ). The energy converted to internal energy is ΔEint = fk * d = μk * m * g * cos(θ) * [h / sin(θ)] = μk * m * g * h * cot(θ). A gentler slope has a larger cotangent and a longer path, converting more mechanical energy into thermal energy and leaving less kinetic energy at the bottom.",
+          "ms": "Pada satah condong, jarak gelongsoran ialah d = h / sin(θ) dan daya normal ialah n = m * g * cos(θ). Tenaga yang ditukarkan kepada tenaga dalaman ialah ΔEint = fk * d = μk * m * g * cos(θ) * [h / sin(θ)] = μk * m * g * h * cot(θ). Kecerunan yang lebih landai mempunyai kotangen yang lebih besar dan laluan yang lebih panjang, menukarkan lebih banyak tenaga mekanik kepada tenaga haba dan meninggalkan kurang tenaga kinetik di bahagian dasar.",
+          "zh": "在斜面上，滑动距离为 d = h / sin(θ)，法向支持力为 n = m * g * cos(θ)。转化为内能的能量为 ΔEint = fk * d = μk * m * g * cos(θ) * [h / sin(θ)] = μk * m * g * h * cot(θ)。倾角越平缓，余切值越大且滑行路径越长，转化的内能越多，到达底部时保留的动能就越少。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Because friction is a nonconservative force, the energy transformed into internal energy depends on the actual path length and normal force. In Setup B, the longer path and greater normal force lead to a larger ΔEint, meaning less mechanical energy remains as kinetic energy at the bottom.",
+        "ms": "Tepat! Kerana geseran ialah daya bukan konservatif, tenaga yang ditukarkan kepada tenaga dalaman bergantung pada panjang laluan sebenar dan daya normal. Dalam Susunan B, laluan yang lebih panjang dan daya normal yang lebih besar menghasilkan ΔEint yang lebih besar, bermakna kurang tenaga mekanik yang tinggal sebagai tenaga kinetik di bahagian dasar.",
+        "zh": "回答正确！由于摩擦力是非保守力，转化为内能的量取决于实际路径长度和正压力。在方案 B 中，更长的路径和更大的正压力导致 ΔEint 更大，这意味着到底部时保留为动能的机械能更少。"
+      },
+      "answerLogic": {
+        "en": "Setup B has a longer path length d and a larger normal force n = mg cos(θ). Both factors increase ΔEint = fk * d. Since ΔK = mgh - ΔEint, a larger ΔEint results in smaller final kinetic energy and lower speed. Total energy is conserved (not destroyed), so statements claiming path independence or permanent destruction are false.",
+        "ms": "Susunan B mempunyai panjang laluan d yang lebih panjang dan daya normal n = mg cos(θ) yang lebih besar. Kedua-dua faktor meningkatkan ΔEint = fk * d. Oleh kerana ΔK = mgh - ΔEint, ΔEint yang lebih besar menghasilkan tenaga kinetik akhir yang lebih kecil dan kelajuan yang lebih rendah. Jumlah tenaga diabadikan (tidak dimusnahkan), maka pernyataan yang mendakwa ketakbersandaran laluan atau pemusnahan kekal adalah salah.",
+        "zh": "方案 B 具有更长的路径长度 d 和更大的法向支持力 n = mg cos(θ)。这两个因素共同增大了 ΔEint = fk * d。由于 ΔK = mgh - ΔEint，更大的 ΔEint 导致末动能更小、末速度更低。总能量是守恒的（并未被消灭），因此声称与路径无关或能量被永久毁灭的陈述都是错误的。"
+      },
+      "explanation": {
+        "en": "Unlike conservative forces such as gravity, the work done by kinetic friction is path-dependent. On a longer, gentler incline with the same vertical height, friction acts over an extended distance. The mechanical energy transformed into internal energy is greater in Setup B, heating the crate and ramp more. Consequently, less gravitational potential energy is converted into kinetic energy, resulting in a lower final speed at the bottom.",
+        "ms": "Tidak seperti daya konservatif seperti graviti, kerja yang dilakukan oleh geseran kinetik adalah bersandar pada laluan. Pada satah condong yang lebih panjang dan landai dengan ketinggian menegak yang sama, geseran bertindak pada jarak yang lebih jauh. Tenaga mekanik yang ditukarkan kepada tenaga dalaman adalah lebih besar dalam Susunan B, memanaskan peti dan satah condong dengan lebih banyak. Akibatnya, kurang tenaga keupayaan graviti ditukarkan kepada tenaga kinetik, menghasilkan kelajuan akhir yang lebih rendah di dasar.",
+        "zh": "与重力等保守力不同，动摩擦力所做的功是依赖于路径的。在高度相同但更长、更平缓的斜面上，摩擦力作用的距离更长。方案 B 中转化为内能的机械能更多，使得箱子和斜面更热。因此，转化为动能的重力势能较少，导致箱子到达底部的最终速度更低。"
+      },
+      "misconceptions": [
+        "friction-work-independent-of-path-length",
+        "friction-destroys-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "friction-and-normal-force",
+        "prompt": {
+          "en": "Recall that kinetic friction fk = μk * n depends on the normal force perpendicular to the surface. On an incline, n = m * g * cos(θ). The energy dissipated as internal energy equals the friction force multiplied by the total sliding distance along the incline: ΔEint = fk * d.",
+          "ms": "Ingat kembali bahawa geseran kinetik fk = μk * n bergantung pada daya normal yang berserenjang dengan permukaan. Pada satah condong, n = m * g * cos(θ). Tenaga yang dilesapkan sebagai tenaga dalaman bersamaan dengan daya geseran didarab dengan jumlah jarak gelongsoran di sepanjang satah condong: ΔEint = fk * d.",
+          "zh": "回想动摩擦力 fk = μk * n 取决于垂直于接触面的正压力。在斜面上，n = m * g * cos(θ)。摩擦转化为内能的量等于摩擦力乘以沿斜面的总滑行距离：ΔEint = fk * d。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive multiple-selection task. Evaluate four statements comparing the energy transformations and final speed of a crate sliding down a gentle ramp versus a steep ramp of the same height. Select all correct statements.",
+        "ms": "Tugasan pelbagai pilihan interaktif. Nilaikan empat pernyataan yang membandingkan penukaran tenaga dan kelajuan akhir sebuah peti yang menggelongsor menuruni satah landai berbanding satah curam yang sama ketinggian. Pilih semua pernyataan yang betul.",
+        "zh": "交互式多选题任务。评估关于箱子在相同高度的缓斜面与陡斜面上滑下的能量转化及末速度的四项陈述。选出所有正确的陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-more-internal-energy",
+            "label": {
+              "en": "The system experiences a larger increase in internal energy (ΔEint) in Setup B because kinetic friction acts over a longer sliding path.",
+              "ms": "Sistem mengalami peningkatan tenaga dalaman (ΔEint) yang lebih besar dalam Susunan B kerana geseran kinetik bertindak pada laluan gelongsoran yang lebih panjang.",
+              "zh": "方案 B 中系统的内能增量（ΔEint）更大，因为动摩擦力在更长的滑动路径上做功。"
+            }
+          },
+          {
+            "id": "item-lower-final-speed",
+            "label": {
+              "en": "The package reaches the bottom with a lower final speed in Setup B because more mechanical energy is transformed into internal energy.",
+              "ms": "Bungkusan mencapai bahagian dasar dengan kelajuan akhir yang lebih rendah dalam Susunan B kerana lebih banyak tenaga mekanik ditukarkan kepada tenaga dalaman.",
+              "zh": "方案 B 中包裹到达底部的最终速度更小，因为有更多机械能转化为了内能。"
+            }
+          },
+          {
+            "id": "item-path-independent-friction",
+            "misconception": "friction-work-independent-of-path-length",
+            "label": {
+              "en": "Both setups convert identical amounts of mechanical energy into internal energy because both ramps begin and end at the exact same vertical elevations.",
+              "ms": "Kedua-dua susunan menukarkan jumlah tenaga mekanik yang sama kepada tenaga dalaman kerana kedua-dua satah bermula dan berakhir pada ketinggian menegak yang sama persis.",
+              "zh": "两种方案将完全相同数量的机械能转化为内能，因为两斜面的初末垂直高度完全相同。"
+            }
+          },
+          {
+            "id": "item-friction-destroys-energy",
+            "misconception": "friction-destroys-energy",
+            "label": {
+              "en": "The lost mechanical energy ceases to exist in any form because friction permanently eliminates energy from the universe.",
+              "ms": "Tenaga mekanik yang hilang tidak lagi wujud dalam sebarang bentuk kerana geseran memusnahkan tenaga secara kekal dari alam semesta.",
+              "zh": "损失的机械能不再以任何形式存在，因为摩擦力将能量从宇宙中永久消除了。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-more-internal-energy",
+          "item-lower-final-speed"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "friction-work-independent-of-path-length",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-path-independent-friction",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "friction-destroys-energy",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-friction-destroys-energy",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "interactive-connected-system-energy-matching",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze systems combining gravitational, elastic potential, and internal energy changes.",
+      "prompt": {
+        "en": "A block of mass m1 on a rough horizontal surface is attached to a spring and connected by a light cord over a frictionless pulley to a hanging mass m2. The system is released from rest with the spring unstretched and moves until m2 drops a distance h and stops momentarily.\n\nMatch each energy quantity of the isolated system to whether its change across this entire motion interval is an Increase (Δ > 0), a Decrease (Δ < 0), or Zero Change (Δ = 0).",
+        "ms": "Satu blok berjisim m1 di atas permukaan mengufuk yang kasar dilekatkan pada satu spring dan disambungkan melalui tali ringan merentasi takal tanpa geseran ke satu jisim tergantung m2. Sistem ini dilepaskan dari keadaan pegun dengan spring belum teregang dan bergerak sehingga m2 jatuh sejauh h dan berhenti seketika.\n\nPadankan setiap kuantiti tenaga sistem terpencil tersebut sama ada perubahannya merentasi seluruh selang gerakan ini adalah Peningkatan (Δ > 0), Pengurangan (Δ < 0), atau Tiada Perubahan (Δ = 0).",
+        "zh": "粗糙水平面上质量为 m1 的滑块与弹簧相连，并通过轻绳跨过无摩擦滑轮与悬挂质量 m2 相接。系统在弹簧未伸长状态下由静止释放，直到 m2 下落距离 h 并短暂静止。\n\n请将该孤立系统的各项能量变化量与它在整个运动过程中的变化趋势进行匹配：增加（Δ > 0）、减少（Δ < 0）还是无变化（Δ = 0）。"
+      },
+      "hints": [
+        {
+          "en": "Analyze the start and end points: the system begins at rest and ends momentarily at rest, so kinetic energy change is zero. The hanging mass loses elevation, while the spring stretches and the rough surface experiences sliding.",
+          "ms": "Analisis titik mula dan akhir: sistem bermula dari keadaan pegun dan berakhir dengan berhenti seketika, maka perubahan tenaga kinetik adalah sifar. Jisim tergantung kehilangan ketinggian, manakala spring meregang dan permukaan kasar mengalami gelongsoran.",
+          "zh": "分析初末状态：系统从静止开始，最终短暂静止，因此动能变化量为零。悬挂物体的高度降低，同时弹簧被拉伸，粗糙表面发生相对滑动。"
+        },
+        {
+          "en": "Gravitational potential energy decreases. Where does this energy go? Part is stored in the stretched spring, and part is converted into internal thermal energy by friction. Consider what happens to mechanical energy alone versus the total energy of the whole isolated system.",
+          "ms": "Tenaga keupayaan graviti berkurang. Ke manakah tenaga ini pergi? Sebahagiannya disimpan di dalam spring yang meregang, dan sebahagian lagi ditukarkan kepada tenaga haba dalaman oleh geseran. Pertimbangkan apa yang berlaku kepada tenaga mekanik sahaja berbanding jumlah tenaga bagi seluruh sistem terpencil.",
+          "zh": "重力势能减少了。这些能量转化去了哪里？一部分储存在拉伸的弹簧中，一部分被摩擦力转化为内部热能。请区分仅仅是机械能本身的变化，与整个孤立系统总能量的变化。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Gravitational potential energy decreases as the block falls. Elastic potential energy increases as the spring stretches, and internal thermal energy increases as friction warms the sliding surfaces. Total mechanical energy decreases because some is converted into thermal energy, while the total energy of the isolated system remains strictly constant.",
+        "ms": "Tepat! Tenaga keupayaan graviti berkurang apabila blok jatuh. Tenaga keupayaan kenyal meningkat apabila spring meregang, dan tenaga haba dalaman meningkat apabila geseran memanaskan permukaan yang menggelongsor. Jumlah tenaga mekanik berkurang kerana sebahagiannya ditukarkan kepada tenaga haba, manakala jumlah tenaga sistem terpencil kekal malar secara mutlak.",
+        "zh": "回答正确！随着物体下落，重力势能减少。弹簧拉伸使得弹性势能增加，滑动摩擦使得内部热能增加。由于部分机械能转化为了热能，总机械能减少，而整个孤立系统的总能量严格保持守恒。"
+      },
+      "answerLogic": {
+        "en": "ΔUg = -m2*g*h < 0 (decrease). ΔUs = 0.5*k*h^2 > 0 (increase). ΔEint = fk*h > 0 (increase). Mechanical energy change ΔEmech = ΔUg + ΔUs = -ΔEint < 0 (decrease). For the isolated system, ΔEtotal = ΔEmech + ΔEint = 0 (no change).",
+        "ms": "ΔUg = -m2*g*h < 0 (pengurangan). ΔUs = 0.5*k*h^2 > 0 (peningkatan). ΔEint = fk*h > 0 (peningkatan). Perubahan tenaga mekanik ΔEmech = ΔUg + ΔUs = -ΔEint < 0 (pengurangan). Bagi sistem terpencil, ΔEtotal = ΔEmech + ΔEint = 0 (tiada perubahan).",
+        "zh": "ΔUg = -m2*g*h < 0（减少）。ΔUs = 0.5*k*h^2 > 0（增加）。ΔEint = fk*h > 0（增加）。机械能变化量 ΔEmech = ΔUg + ΔUs = -ΔEint < 0（减少）。对于孤立系统，ΔEtotal = ΔEmech + ΔEint = 0（无变化）。"
+      },
+      "explanation": {
+        "en": "In the reduction of the conservation of energy equation for an isolated system, ΔK + ΔUg + ΔUs + ΔEint = 0. Because the system starts from rest and ends momentarily at rest, ΔK = 0. The loss in gravitational potential energy (-ΔUg) equals the gain in elastic potential energy (ΔUs) plus the internal thermal energy generated by friction (ΔEint). Nonconservative friction causes mechanical energy (K + Ug + Us) to decrease, but total energy remains conserved.",
+        "ms": "Dalam peringkasan persamaan keabadian tenaga untuk sistem terpencil, ΔK + ΔUg + ΔUs + ΔEint = 0. Kerana sistem bermula dari keadaan pegun dan berakhir dengan berhenti seketika, ΔK = 0. Kehilangan tenaga keupayaan graviti (-ΔUg) adalah sama dengan peningkatan tenaga keupayaan kenyal (ΔUs) ditambah tenaga haba dalaman yang dijanakan oleh geseran (ΔEint). Geseran bukan konservatif menyebabkan tenaga mekanik (K + Ug + Us) berkurang, tetapi jumlah tenaga kekal terabadi.",
+        "zh": "在孤立系统的能量守恒方程简化中，ΔK + ΔUg + ΔUs + ΔEint = 0。因为系统从静止释放并短暂静止结束，所以 ΔK = 0。重力势能的减少量（-ΔUg）等于弹性势能的增加量（ΔUs）加上摩擦产生的内部热能（ΔEint）。非保守摩擦力导致机械能（K + Ug + Us）减少，但总能量保持守恒。"
+      },
+      "misconceptions": [
+        "mechanical-energy-conservation-with-friction",
+        "friction-destroys-energy"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "isolated-system-energy-conservation",
+        "prompt": {
+          "en": "Review the isolated system model: when all interacting bodies (blocks, spring, surface, Earth) are included inside the system boundary, external work is zero and total energy is conserved (ΔK + ΔUg + ΔUs + ΔEint = 0).",
+          "ms": "Ulang kaji model sistem terpencil: apabila semua jasad yang berinteraksi (blok, spring, permukaan, Bumi) dimasukkan ke dalam sempadan sistem, kerja luaran adalah sifar dan jumlah tenaga adalah malar (ΔK + ΔUg + ΔUs + ΔEint = 0).",
+          "zh": "复习孤立系统模型：当所有相互作用的物体（滑块、弹簧、接触面、地球）都包含在系统边界内时，外力做功为零，总能量守恒（ΔK + ΔUg + ΔUs + ΔEint = 0）。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive matching task. Match five energy quantities of a connected block-spring system with friction to three categories of net change: increases, decreases, or zero change.",
+        "ms": "Tugasan padanan interaktif. Padankan lima kuantiti tenaga bagi sistem bersambung blok-spring dengan geseran kepada tiga kategori perubahan bersih: meningkat, berkurang, atau tiada perubahan.",
+        "zh": "交互式匹配任务。将包含摩擦力的相连滑块-弹簧系统的五个能量变化量，分别匹配到三个净变化类别：增加、减少或无变化。"
+      },
+      "provenance": {
+        "sourceLocation": "8.4 Changes in Mechanical Energy for Nonconservative Forces; Complete controlled PDF for section 8.4",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-positive-change",
+            "label": {
+              "en": "Increases (Positive Change, Δ > 0)",
+              "ms": "Meningkat (Perubahan Positif, Δ > 0)",
+              "zh": "增加（正变化量，Δ > 0）"
+            }
+          },
+          {
+            "id": "target-negative-change",
+            "label": {
+              "en": "Decreases (Negative Change, Δ < 0)",
+              "ms": "Berkurang (Perubahan Negatif, Δ < 0)",
+              "zh": "减少（负变化量，Δ < 0）"
+            }
+          },
+          {
+            "id": "target-zero-change",
+            "label": {
+              "en": "No Net Change (Constant, Δ = 0)",
+              "ms": "Tiada Perubahan Bersih (Malar, Δ = 0)",
+              "zh": "无净变化（守恒/不变，Δ = 0）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-grav-potential",
+            "label": {
+              "en": "Gravitational potential energy of the falling block and Earth (ΔUg)",
+              "ms": "Tenaga keupayaan graviti blok yang jatuh dan Bumi (ΔUg)",
+              "zh": "下落物体与地球系统的重力势能（ΔUg）"
+            }
+          },
+          {
+            "id": "item-elastic-potential",
+            "label": {
+              "en": "Elastic potential energy stored in the horizontal spring (ΔUs)",
+              "ms": "Tenaga keupayaan kenyal yang disimpan di dalam spring mengufuk (ΔUs)",
+              "zh": "水平弹簧中储存的弹性势能（ΔUs）"
+            }
+          },
+          {
+            "id": "item-internal-energy",
+            "label": {
+              "en": "Internal thermal energy of the sliding block and table surface (ΔEint)",
+              "ms": "Tenaga haba dalaman bagi blok yang menggelongsor dan permukaan meja (ΔEint)",
+              "zh": "滑块与桌面系统的内部热能（ΔEint）"
+            }
+          },
+          {
+            "id": "item-mechanical-energy",
+            "misconception": "mechanical-energy-conservation-with-friction",
+            "label": {
+              "en": "Total mechanical energy of the system (ΔEmech = ΔK + ΔUg + ΔUs)",
+              "ms": "Jumlah tenaga mekanik sistem (ΔEmech = ΔK + ΔUg + ΔUs)",
+              "zh": "系统的总机械能（ΔEmech = ΔK + ΔUg + ΔUs）"
+            }
+          },
+          {
+            "id": "item-total-isolated-energy",
+            "misconception": "friction-destroys-energy",
+            "label": {
+              "en": "Total energy of the complete isolated system (ΔEtotal = ΔEmech + ΔEint)",
+              "ms": "Jumlah tenaga bagi sistem terpencil yang lengkap (ΔEtotal = ΔEmech + ΔEint)",
+              "zh": "完整孤立系统的总能量（ΔEtotal = ΔEmech + ΔEint）"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-grav-potential",
+            "targetId": "target-negative-change"
+          },
+          {
+            "itemId": "item-elastic-potential",
+            "targetId": "target-positive-change"
+          },
+          {
+            "itemId": "item-internal-energy",
+            "targetId": "target-positive-change"
+          },
+          {
+            "itemId": "item-mechanical-energy",
+            "targetId": "target-negative-change"
+          },
+          {
+            "itemId": "item-total-isolated-energy",
+            "targetId": "target-zero-change"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "mechanical-energy-conservation-with-friction",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-mechanical-energy",
+            "targetId": "target-zero-change"
+          }
+        },
+        {
+          "misconception": "friction-destroys-energy",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-total-isolated-energy",
+            "targetId": "target-negative-change"
+          }
+        }
+      ]
+    }
+  ]
+}

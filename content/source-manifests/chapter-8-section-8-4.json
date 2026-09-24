@@ -1,0 +1,24 @@
+{
+  "manifestVersion": "1.1",
+  "sourceId": "brilliant-content-generator-section-8-4",
+  "controlledFilename": "source.pdf",
+  "sha256": "d382fa7ae212f95ed90d96b1ebb32113fb9f8f8cbd3017cb072b7f0e1223cbb7",
+  "corpusSha256": "fbc08a1666ff4bda71cda6afdc5249bb393fcead511d3645447c728e6d6a6fa3",
+  "sources": [
+    {
+      "controlledFilename": "source.pdf",
+      "sha256": "d382fa7ae212f95ed90d96b1ebb32113fb9f8f8cbd3017cb072b7f0e1223cbb7",
+      "role": "primary",
+      "driveFileId": "1idQkG61KGCyXYR9Xzcw_TbY_JpQnOZOh"
+    }
+  ],
+  "edition": "Edition not identified in the controlled PDF",
+  "chapter": "Chapter 8",
+  "subchapter": "8.4 Changes in Mechanical Energy for Nonconservative Forces",
+  "heading": "8.4 Changes in Mechanical Energy for Nonconservative Forces",
+  "pageRange": "Complete controlled PDF for section 8.4",
+  "learningBoundary": "Includes concepts supported by the controlled PDF for 8.4 Changes in Mechanical Energy for Nonconservative Forces: Equation of energy conservation for isolated systems with nonconservative forces: ΔK + ΔU + ΔEint = 0; Transformation of mechanical energy into internal energy via kinetic friction (ΔEint = fk * d); Systems with combined gravitational potential energy and friction (e.g., sliding down inclines); Systems with combined elastic potential energy and friction (e.g., block-spring collisions with friction); Interpretation of energy bar charts showing conversion between kinetic, potential, and internal energies; Effect of sliding distance and friction coefficient on energy dissipation. Excludes: Power and rate of energy transfer (Section 8.5); Conservative forces and potential energy functions or gradients (-dU/dx); Non-mechanical energy transfers such as heat conduction, electromagnetic radiation, or chemical reactions; Air resistance and drag forces with speed dependence; Thermodynamics and temperature rise calculations from internal energy changes.",
+  "extractedOn": "2026-09-24",
+  "reviewer": "Automated draft generation; qualified human review required",
+  "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
+}
