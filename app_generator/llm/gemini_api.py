@@ -1,4 +1,4 @@
-﻿"""Gemini API backend for deterministic PDF-grounded generation."""
+"""Gemini API backend for deterministic PDF-grounded generation."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from app_generator.config import GeneratorConfig
-from app_generator.errors import AuthenticationRequired, ResponseContractError, TransientGeminiError
+from app_generator.errors import AuthenticationRequired, GeminiApiError, ResponseContractError, TransientGeminiError
 
 VERTEX_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
 
@@ -359,9 +359,17 @@ class GeminiApiClient:
                 return "BEGIN_JSON\n" + json.dumps(parsed, ensure_ascii=False) + "\nEND_JSON"
             except ResponseContractError:
                 raise
-            except BaseException as exc:
+            except Exception as exc:
+                if not _retryable(exc):
+                    code = _status_code(exc)
+                    if code in {401, 403}:
+                        raise AuthenticationRequired(
+                            f"Gemini API authentication/authorization failed ({code}): {exc}"
+                        ) from exc
+                    status = f" (HTTP {code})" if code is not None else ""
+                    raise GeminiApiError(f"Gemini API request failed{status}: {exc}") from exc
                 last_error = exc
-                if not _retryable(exc) or attempt >= self.config.gemini_api_max_attempts:
+                if attempt >= self.config.gemini_api_max_attempts:
                     break
                 self.sleep(self.config.gemini_api_retry_backoff_seconds * (2 ** (attempt - 1)))
         raise TransientGeminiError(

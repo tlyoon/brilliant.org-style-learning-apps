@@ -1,8 +1,9 @@
-﻿import tempfile
+import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
 
+from app_generator.errors import AuthenticationRequired, GeminiApiError
 from app_generator.llm.gemini_api import GeminiApiClient, response_schema_for_stage
 
 
@@ -77,6 +78,54 @@ class GeminiApiClientTests(unittest.TestCase):
             self.assertEqual("BEGIN_JSON\n{\"ok\": true}\nEND_JSON", response)
             self.assertEqual(2, len(sdk.models.calls))
             self.assertEqual([1], sleeps)
+
+    def test_keyboard_interrupt_propagates_without_being_wrapped(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir()
+            (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
+            pdf = root / "source.pdf"
+            pdf.write_bytes(b"%PDF-test")
+            sdk = FakeSdk([KeyboardInterrupt()])
+            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sleep=lambda _: None)
+            client.prepare()
+            with self.assertRaises(KeyboardInterrupt):
+                client.ask("Return object", stage="custom")
+            self.assertEqual(1, len(sdk.models.calls))
+
+    def test_permanent_api_error_is_not_mislabeled_transient(self):
+        class BadRequest(RuntimeError):
+            status_code = 400
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir()
+            (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
+            pdf = root / "source.pdf"
+            pdf.write_bytes(b"%PDF-test")
+            sdk = FakeSdk([BadRequest("invalid request")])
+            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sleep=lambda _: None)
+            client.prepare()
+            with self.assertRaisesRegex(GeminiApiError, "HTTP 400"):
+                client.ask("Return object", stage="custom")
+            self.assertEqual(1, len(sdk.models.calls))
+
+    def test_auth_api_error_maps_to_authentication_required(self):
+        class Forbidden(RuntimeError):
+            status_code = 403
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir()
+            (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
+            pdf = root / "source.pdf"
+            pdf.write_bytes(b"%PDF-test")
+            sdk = FakeSdk([Forbidden("permission denied")])
+            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sleep=lambda _: None)
+            client.prepare()
+            with self.assertRaisesRegex(AuthenticationRequired, "403"):
+                client.ask("Return object", stage="custom")
+            self.assertEqual(1, len(sdk.models.calls))
 
     def test_high_value_stage_schemas_are_explicit(self):
         source = response_schema_for_stage("source-analysis")
