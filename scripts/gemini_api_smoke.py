@@ -1,4 +1,4 @@
-﻿"""Live Gemini API smoke test for one controlled Google Drive PDF."""
+"""Live Gemini API smoke test for one controlled Google Drive PDF."""
 
 from __future__ import annotations
 
