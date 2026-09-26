@@ -433,7 +433,7 @@ def prepare_environment(settings: SyncSettings) -> Path:
                 [
                     str(python),
                     "-c",
-                    "import app_generator, google.auth, google_auth_oauthlib, jsonschema, requests, selenium",
+                    "import app_generator, google.auth, google.genai, google_auth_oauthlib, jsonschema, requests, selenium",
                 ],
                 settings.repo_root,
             )

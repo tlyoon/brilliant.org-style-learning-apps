@@ -153,6 +153,14 @@ class GitPublisher:
             ).strip()
         )
 
+    def _current_branch(self) -> str:
+        return self._run(["git", "branch", "--show-current"]).strip()
+
+    def _delete_empty_local_branch(self, branch: str) -> None:
+        if self._current_branch() == branch:
+            self._run(["git", "switch", self.config.git_base_branch])
+        self._run(["git", "branch", "-D", branch])
+
     def _remote_branch_exists(self, branch: str) -> bool:
         return bool(
             self._run_remote(
@@ -313,7 +321,7 @@ class GitPublisher:
         if not self._local_branch_exists(branch):
             return False
         if self._local_commits_ahead(branch) == 0:
-            self._run(["git", "branch", "-D", branch])
+            self._delete_empty_local_branch(branch)
             return False
         return True
 
@@ -355,7 +363,7 @@ class GitPublisher:
 
         if self._local_branch_exists(branch):
             if self._local_commits_ahead(branch) == 0:
-                self._run(["git", "branch", "-D", branch])
+                self._delete_empty_local_branch(branch)
                 return None
             self._verify_expected_changes(branch, expected_paths)
             ensure_lease()
@@ -378,7 +386,7 @@ class GitPublisher:
             )
         if self._local_branch_exists(branch):
             if self._local_commits_ahead(branch) == 0:
-                self._run(["git", "branch", "-D", branch])
+                self._delete_empty_local_branch(branch)
             else:
                 raise GitPublishError(
                     f"The local job branch {branch} contains unpublished commits; auto reconciliation must recover it."

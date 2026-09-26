@@ -219,9 +219,10 @@ def _flatten(document: Mapping[str, Any]) -> dict[str, Any]:
             continue
         if isinstance(value, Mapping):
             for child_key, child_value in value.items():
-                if child_key in flat:
-                    raise ConfigurationError(f"Duplicate configuration key: {child_key}")
-                flat[child_key] = child_value
+                flat_key = "llm_backend" if key == "llm" and child_key == "backend" else child_key
+                if flat_key in flat:
+                    raise ConfigurationError(f"Duplicate configuration key: {flat_key}")
+                flat[flat_key] = child_value
         else:
             flat[key] = value
 
