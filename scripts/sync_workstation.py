@@ -277,8 +277,11 @@ def sync_repository(settings: SyncSettings, *, runner: CommandRunner = _command)
         )
     remote = settings.remote
     branch = settings.branch
-    runner(["git", "fetch", remote, "--prune"], repo)
     remote_ref = f"refs/remotes/{remote}/{branch}"
+    runner([
+        "git", "fetch", remote, "--prune",
+        f"+refs/heads/{branch}:{remote_ref}",
+    ], repo)
     runner(["git", "rev-parse", "--verify", remote_ref], repo)
     current = runner(["git", "branch", "--show-current"], repo).strip()
     if current != branch:
