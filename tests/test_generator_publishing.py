@@ -160,6 +160,38 @@ class GeneratorPublishingTests(unittest.TestCase):
             git("branch", branch)
             self.assertTrue(publisher._local_branch_exists(branch))
 
+    def test_prepare_branch_recycles_current_empty_job_branch(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory)
+
+            def git(*args: str) -> str:
+                result = subprocess.run(
+                    ["git", *args], cwd=repo, check=True, capture_output=True,
+                    text=True, encoding="utf-8",
+                )
+                return result.stdout.strip()
+
+            git("init", "--initial-branch=main")
+            git("-c", "user.name=Test", "-c", "user.email=test@example.com",
+                "commit", "--allow-empty", "-m", "initial")
+            config = SimpleNamespace(
+                repo_root=repo, git_remote="origin", git_base_branch="main", git_branch_prefix="automation"
+            )
+
+            class LocalPublisher(GitPublisher):
+                def _remote_branch_exists(self, branch):
+                    return False
+
+            publisher = LocalPublisher(config)
+            branch = publisher.job_branch(subchapter_id="9.3", job_key="f0231eb15ea29090")
+            git("switch", "-c", branch)
+
+            prepared = publisher.prepare_branch(subchapter_id="9.3", job_key="f0231eb15ea29090")
+
+            self.assertEqual(branch, prepared)
+            self.assertEqual(branch, git("branch", "--show-current"))
+            self.assertEqual("0", git("rev-list", "--count", f"main..{branch}"))
+
     def test_auto_merge_uses_normal_github_merge_and_verifies_completion(self):
         with tempfile.TemporaryDirectory() as directory:
             config = SimpleNamespace(repo_root=Path(directory))

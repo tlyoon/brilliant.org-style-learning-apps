@@ -76,6 +76,7 @@ class ConfiguredWorkstationSyncTests(unittest.TestCase):
                     self.assertEqual(source_root, config.sourcepath)
                     self.assertEqual("https://gemini.google.com/gem/local", config.gem_url)
                     self.assertEqual("https://gemini.google.com/gems/edit/local", config.gem_edit_url)
+                    self.assertEqual("gemini_api", config.llm_backend)
                     self.assertEqual(state / "runs", config.state_dir)
                     self.assertEqual("local@example.com", config.for_subchapter("8.6").login_name)
                     self.assertEqual("oauth@example.com", config.for_subchapter("8.6").oauth_login)

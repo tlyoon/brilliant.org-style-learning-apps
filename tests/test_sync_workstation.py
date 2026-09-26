@@ -101,6 +101,9 @@ class WorkstationSyncTests(unittest.TestCase):
             if arguments[1:4] == ["-m", "pip", "install"]
         ]
         self.assertEqual(2, len(pip_calls))
+        self.assertTrue(
+            any(len(arguments) >= 3 and arguments[1] == "-c" and "google.genai" in arguments[2] for arguments in calls)
+        )
 
     def test_missing_pip_is_bootstrapped_before_installation(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -323,12 +326,11 @@ class WorkstationSyncTests(unittest.TestCase):
         self.assertNotIn("BRILLIANT_SYNC_PROJECTS_FOLDER_URL", content)
         self.assertNotIn("--projects-folder", content)
         self.assertNotIn("BRILLIANT_SYNC_", content)
-        command = next(
-            line
-            for line in content.splitlines()
-            if line.startswith("python -m scripts.sync_configured_workstation")
-        )
-        self.assertEqual("python -m scripts.sync_configured_workstation %*", command)
+        self.assertIn('if exist ".venv\\Scripts\\python.exe"', content)
+        self.assertIn('set "PYTHON_CMD=.venv\\Scripts\\python.exe"', content)
+        self.assertIn("py -3.12", content)
+        self.assertIn("%PYTHON_CMD% -m scripts.sync_configured_workstation %*", content)
+        self.assertNotIn("pause", content.casefold())
 
     def test_initial_settings_do_not_reference_projects_folder(self):
         with tempfile.TemporaryDirectory() as directory:

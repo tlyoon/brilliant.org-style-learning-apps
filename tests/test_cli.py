@@ -55,6 +55,24 @@ class CliParserTests(unittest.TestCase):
             output.getvalue(),
         )
 
+    def test_auto_doctor_preflights_gemini_api_authentication(self):
+        snapshot = QueueSnapshot(
+            total=1, queued=1, interrupted=0, leased=0, generated=0,
+            review_pending=0, completed=0, failed=0,
+            next_job_key="job", next_subchapter_id="9.1",
+        )
+        config = SimpleNamespace(selection_mode="auto", llm_backend="gemini_api")
+        output = io.StringIO()
+        with (
+            patch("app_generator.cli.build_gemini_sdk_client") as builder,
+            patch("app_generator.cli.inspect_auto_queue", return_value=snapshot),
+            redirect_stdout(output),
+        ):
+            result = doctor(config, auto_target_subchapter_id="9.1")
+        self.assertEqual(0, result)
+        builder.assert_called_once_with(config)
+        self.assertIn("Gemini API authentication: ready", output.getvalue())
+
     def test_failed_job_retry_requires_explicit_target_and_confirmation(self):
         args = _parser().parse_args([
             "coordinator-retry-failed",

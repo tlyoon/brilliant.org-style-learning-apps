@@ -18,6 +18,7 @@ from app_generator.coordinator.client import CoordinatorClient
 from app_generator.coordinator.managed import bootstrap_managed_coordinator, managed_status
 from app_generator.coordinator.verified import ensure_coordinator_ready
 from app_generator.errors import GeneratorError, NoAvailableJob
+from app_generator.llm.gemini_api import build_gemini_sdk_client
 from app_generator.prompts import gem_description, gem_instructions
 from app_generator.runtime.orchestrator import run_generation
 from app_generator.runtime.auto import inspect_auto_queue, retry_failed_auto_job, run_continuous_auto
@@ -127,6 +128,10 @@ def doctor(
     *,
     auto_target_subchapter_id: str | None = None,
 ) -> int:
+    if getattr(config, "llm_backend", "gemini_browser") == "gemini_api":
+        build_gemini_sdk_client(config)
+        print("Gemini API authentication: ready")
+
     if config.selection_mode == "auto":
         snapshot = inspect_auto_queue(
             config,

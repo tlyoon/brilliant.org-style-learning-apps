@@ -53,7 +53,7 @@ The same Google Cloud Desktop OAuth client JSON may be securely copied into mult
 
 ## First run on each PC
 
-Prerequisites: Python 3.12, Git, Node.js, current Chrome, and network access. GitHub CLI is also required for repository-managed coordinator bootstrap and convenient GitHub operations.
+Prerequisites: Python 3.12, Git, Node.js, current Chrome, and network access. GitHub CLI is also required for repository-managed coordinator bootstrap and convenient GitHub operations. On Windows, `sync-workstation.cmd` first reuses the repository `.venv\Scripts\python.exe` when it exists, then falls back to `py -3.12` or a machine-wide `python`; this lets synchronization repair a stale environment even when Python 3.12 is not the default PATH interpreter.
 
 A new checkout should first be confirmed current:
 
@@ -151,7 +151,7 @@ After a successful full validation, routine code/config refresh can use:
 .\sync-workstation.cmd --quick
 ```
 
-Quick mode still fetches the configured remote, refuses dirty/diverged state, fast-forwards only, validates/renders the tracked project config, and verifies the Python environment. It skips the full test suite and Drive doctor.
+Quick mode still fetches the configured remote, refuses dirty/diverged state, fast-forwards only, validates/renders the tracked project config, and verifies the Python environment. Cached-environment verification includes the Gemini API dependency (`google.genai`), so a stale environment is reinstalled instead of being accepted. Quick mode skips the full test suite and doctor, and therefore does not perform first-time Gemini API OAuth authorization.
 
 The synchronizer itself safely performs the Git fetch/fast-forward operation, but `git fetch origin` plus `git status -sb` remains a useful non-destructive manual check of whether a PC is current.
 
@@ -170,7 +170,7 @@ The synchronizer:
 9. verifies project/workstation Google account consistency;
 10. in full mode runs lint, content validation, unit tests, JavaScript syntax checks, and generator doctor.
 
-`doctor` does not upload to Gemini.
+`doctor` does not upload a source PDF or generate content. When `llm.backend = "gemini_api"`, it does preflight Gemini API authentication; on a workstation without a cached Vertex token, this is the intentional one-time OAuth authorization step before unattended generation.
 
 ## Live run shortcut
 
