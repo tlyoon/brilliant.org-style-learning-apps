@@ -153,7 +153,7 @@ After a successful full validation, routine code/config refresh can use:
 
 Quick mode still fetches the configured remote, refuses dirty/diverged state, fast-forwards only, validates/renders the tracked project config, and verifies the Python environment. Cached-environment verification includes the Gemini API dependency (`google.genai`), so a stale environment is reinstalled instead of being accepted. Quick mode skips the full test suite and doctor, and therefore does not perform first-time Gemini API OAuth authorization.
 
-The synchronizer itself safely performs the Git fetch/fast-forward operation, but `git fetch origin` plus `git status -sb` remains a useful non-destructive manual check of whether a PC is current.
+The synchronizer itself safely performs the Git fetch/fast-forward operation. It explicitly refreshes `refs/remotes/<remote>/<branch>` for the configured branch, so old single-branch clone refspecs cannot leave `origin/main` stale. `git fetch origin` plus `git status -sb` remains a useful non-destructive manual check of whether a PC is current.
 
 ## Safety behavior
 

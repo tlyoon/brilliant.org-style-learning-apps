@@ -22,6 +22,7 @@ from scripts.sync_workstation import (
     record_current_validation,
     render_project_config,
     run_checks,
+    sync_repository,
     _parser,
     _venv_python,
 )
@@ -64,6 +65,40 @@ class WorkstationSyncTests(unittest.TestCase):
 
         with self.assertRaises(SystemExit):
             _parser().parse_args(["--quick", "--run-generator"])
+
+    def test_sync_repository_refreshes_selected_remote_tracking_ref_explicitly(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / ".git").mkdir()
+            settings = _settings(root)
+            calls = []
+
+            def fake_runner(arguments, cwd):
+                calls.append(arguments)
+                if arguments[:3] == ["git", "status", "--porcelain"]:
+                    return ""
+                if arguments[:4] == ["git", "rev-parse", "--verify"]:
+                    return "abc"
+                if arguments == ["git", "branch", "--show-current"]:
+                    return settings.branch
+                if arguments[:4] == ["git", "rev-list", "--left-right", "--count"]:
+                    return "0 0"
+                if arguments == ["git", "rev-parse", "HEAD"]:
+                    return "deadbeef"
+                if arguments == ["git", "rev-parse", f"{settings.remote}/{settings.branch}"]:
+                    return "deadbeef"
+                return ""
+
+            commit = sync_repository(settings, runner=fake_runner)
+
+        self.assertEqual("deadbeef", commit)
+        self.assertIn(
+            [
+                "git", "fetch", settings.remote, "--prune",
+                f"+refs/heads/{settings.branch}:refs/remotes/{settings.remote}/{settings.branch}",
+            ],
+            calls,
+        )
 
     def test_environment_installation_uses_dependency_fingerprint_cache(self):
         with tempfile.TemporaryDirectory() as directory:
