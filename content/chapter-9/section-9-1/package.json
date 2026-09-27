@@ -1,0 +1,2156 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-9-section-9-1",
+  "chapter": "Chapter 9",
+  "subchapter": "9.1 Linear Momentum",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Define linear momentum as the product of mass and velocity and identify its vector nature, dimensions, and SI units.",
+    "Distinguish linear momentum from kinetic energy in terms of vector directionality and energy transformations.",
+    "State and apply Newton's second law as the time rate of change of linear momentum of a particle.",
+    "Relate momentum conservation in a two-particle system to Newton's third law action-reaction pairs.",
+    "Compare the momenta of objects having equal kinetic energies or equal speeds with different masses."
+  ],
+  "prerequisites": [
+    {
+      "id": "newtons-third-law",
+      "description": {
+        "en": "Understanding Newton's third law that interaction forces between two bodies are equal in magnitude and opposite in direction.",
+        "ms": "Memahami hukum ketiga Newton bahawa daya interaksi antara dua jasad adalah sama magnitud tetapi bertentangan arah.",
+        "zh": "理解牛顿第三定律，即两物体间的相互作用力大小相等、方向相反。"
+      },
+      "recovery": {
+        "en": "Review action-reaction force pairs: forces always occur in matched pairs acting on different objects with opposite directions.",
+        "ms": "Ulang kaji pasangan daya tindakan-tindak balas: daya sentiasa wujud berpasangan pada objek berbeza dengan arah bertentangan.",
+        "zh": "复习作用力与反作用力对：力总是成对出现在不同物体上，且方向相反。"
+      }
+    },
+    {
+      "id": "vector-components",
+      "description": {
+        "en": "Ability to resolve two-dimensional and three-dimensional vectors into Cartesian orthogonal components.",
+        "ms": "Kebolehan menghuraikan vektor dua dimensi dan tiga dimensi kepada komponen ortogon Cartesian.",
+        "zh": "能够将二维和三维矢量分解为笛卡尔正交分量。"
+      },
+      "recovery": {
+        "en": "Review vector addition and component resolution along independent x, y, and z axes.",
+        "ms": "Ulang kaji penambahan vektor dan resolusi komponen di sepanjang paksi bebas x, y, dan z.",
+        "zh": "复习沿独立 x、y 和 z 轴的矢量加法与分量分解。"
+      }
+    },
+    {
+      "id": "kinetic-energy-concept",
+      "description": {
+        "en": "Knowledge of kinetic energy as a scalar quantity proportional to mass and the square of speed.",
+        "ms": "Pengetahuan tentang tenaga kinetik sebagai kuantiti skalar yang berkadar terus dengan jisim dan kuasa dua laju.",
+        "zh": "掌握动能是与质量和速率平方成正比的标量这一概念。"
+      },
+      "recovery": {
+        "en": "Recall that kinetic energy depends on speed squared, is strictly non-negative, and has no spatial direction.",
+        "ms": "Ingat kembali bahawa tenaga kinetik bergantung pada kuasa dua laju, sentiasa bukan negatif, dan tiada arah ruang.",
+        "zh": "回顾动能取决于速率平方、恒为非负且没有空间方向。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "momentum-is-scalar",
+      "description": {
+        "en": "Believing that momentum is a scalar quantity like kinetic energy, ignoring its directional vector nature.",
+        "ms": "Percaya bahawa momentum ialah kuantiti skalar seperti tenaga kinetik, mengabaikan sifat vektor berarahnya.",
+        "zh": "误认为动量像动能一样是标量，忽略了其具有方向性的矢量本质。"
+      }
+    },
+    {
+      "id": "equal-ke-means-equal-momentum",
+      "description": {
+        "en": "Assuming objects with identical kinetic energies must also have identical magnitudes of linear momentum.",
+        "ms": "Menganggap objek dengan tenaga kinetik yang sama mestilah mempunyai magnitud momentum linear yang sama juga.",
+        "zh": "假设具有相同动能的物体其线动量大小也必然相同。"
+      }
+    },
+    {
+      "id": "force-equals-momentum",
+      "description": {
+        "en": "Confusing net force with momentum rather than recognizing force as the time rate of change of momentum.",
+        "ms": "Mengelirukan daya padu dengan momentum dan bukannya mengenali daya sebagai kadar perubahan momentum terhadap masa.",
+        "zh": "混淆合外力与动量本身，未能认识到力是动量对时间的变化率。"
+      }
+    },
+    {
+      "id": "single-particle-momentum-conservation",
+      "description": {
+        "en": "Believing that the momentum of an individual particle is conserved during an interaction within an isolated system.",
+        "ms": "Percaya bahawa momentum zarah individu terpelihara semasa interaksi dalam sistem terpencil.",
+        "zh": "误认为在孤立系统内发生相互作用时，单个粒子的动量也是守恒的。"
+      }
+    },
+    {
+      "id": "momentum-transformation",
+      "description": {
+        "en": "Thinking momentum can transform into other physical forms such as potential or internal momentum analogous to energy.",
+        "ms": "Menyangka momentum boleh bertukar menjadi bentuk fizikal lain seperti momentum keupayaan atau dalaman seperti tenaga.",
+        "zh": "认为动量可以像能量一样转化为势动量或内动量等其他物理形式。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-9/section-9-1/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-9-section-9-1.json",
+  "activities": [
+    {
+      "id": "act-mcq-01-vector-nature",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define linear momentum as the product of mass and velocity and identify its vector nature, dimensions, and SI units.",
+      "prompt": {
+        "en": "Two identical survey drones fly at the same constant speed along the same straight test track, but in directly opposite directions. Which statement correctly describes their linear momenta?",
+        "ms": "Dua dron tinjauan yang serupa terbang pada laju malar yang sama di sepanjang trek ujian lurus yang sama, tetapi dalam arah yang bertentangan secara langsung. Pernyataan manakah yang menerangkan momentum linear kedua-dua dron itu dengan betul?",
+        "zh": "两架完全相同的巡检无人机在同一条平直测试轨道上以相同的恒定速率飞行，但飞行方向正好相反。下列关于它们线动量的说法哪项是正确的？"
+      },
+      "hints": [
+        {
+          "en": "Recall that linear momentum is defined as the product of mass (a scalar) and velocity (a vector).",
+          "ms": "Ingat kembali bahawa momentum linear ditakrifkan sebagai hasil darab jisim (skalar) dan halaju (vektor).",
+          "zh": "回想一下，线动量被定义为质量（标量）与速度（矢量）的乘积。"
+        },
+        {
+          "en": "Multiplying a vector by a positive scalar preserves the direction of the vector. If the velocities have opposite directions, how must the momentum vectors compare?",
+          "ms": "Mendarabkan suatu vektor dengan skalar positif mengekalkan arah vektor tersebut. Jika halaju mempunyai arah bertentangan, bagaimanakah vektor momentum dibandingkan?",
+          "zh": "将矢量乘以正标量会保持该矢量的方向。如果两个速度方向相反，那么这两个动量矢量之间有怎样的关系？"
+        }
+      ],
+      "feedback": {
+        "en": "Linear momentum is defined as the product of mass and velocity: p = m v. Because mass is a positive scalar, the linear momentum vector points in the exact same direction as the velocity vector. Objects moving in opposite directions therefore possess oppositely directed momentum vectors.",
+        "ms": "Momentum linear ditakrifkan sebagai hasil darab jisim dan halaju: p = m v. Kerana jisim ialah skalar positif, vektor momentum linear menghala ke arah yang sama persis dengan halaju. Oleh itu, objek yang bergerak dalam arah bertentangan mempunyai vektor momentum yang berarah bertentangan.",
+        "zh": "线动量定义为质量与速度的乘积：p = m v。因为质量是正标量，所以线动量矢量的方向与速度矢量的方向完全相同。因此，沿相反方向运动的物体具有方向相反的动量矢量。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because momentum is a vector pointing along velocity. Option B reflects the misconception that momentum is a scalar. Options C and D misstate the relationship between velocity and momentum.",
+        "ms": "Pilihan A betul kerana momentum ialah vektor yang menghala mengikut halaju. Pilihan B mencerminkan salah tanggapan bahawa momentum ialah skalar. Pilihan C dan D tersilap menyatakan hubungan antara halaju dan momentum.",
+        "zh": "选项 A 正确，因为动量是沿速度方向的矢量。选项 B 反映了认为动量是标量的错误观念。选项 C 和 D 错误表述了速度与动量之间的关系。"
+      },
+      "explanation": {
+        "en": "Linear momentum is defined as p = m v. As the product of a positive scalar mass and a velocity vector, momentum is itself a vector having the same direction as velocity. When two identical objects move at the same speed in opposite directions, their momentum vectors have equal magnitudes but opposite directions, meaning their vector sum is zero.",
+        "ms": "Momentum linear ditakrifkan sebagai p = m v. Sebagai hasil darab jisim skalar positif dan vektor halaju, momentum itu sendiri ialah vektor yang mempunyai arah yang sama dengan halaju. Apabila dua objek serupa bergerak pada laju yang sama dalam arah bertentangan, vektor momentum mereka mempunyai magnitud yang sama tetapi arah bertentangan, yang bermaksud hasil tambah vektor mereka ialah sifar.",
+        "zh": "线动量定义为 p = m v。作为正标量质量与速度矢量的乘积，动量本身也是一个矢量，其方向与速度方向相同。当两个相同的物体以相同速率反向运动时，它们的动量矢量大小相等但方向相反，这意味着它们的矢量和为零。"
+      },
+      "misconceptions": [
+        "momentum-is-scalar"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "Linear momentum requires vector analysis because it includes both magnitude and spatial direction. Recall that vectors pointing along opposing directions along an axis have opposite algebraic signs.",
+          "ms": "Momentum linear memerlukan analisis vektor kerana ia merangkumi kedua-dua magnitud dan arah ruang. Ingat kembali bahawa vektor yang menghala ke arah bertentangan di sepanjang suatu paksi mempunyai tanda algebra yang bertentangan.",
+          "zh": "线动量包含大小和空间方向，因此需要进行矢量分析。回想一下，沿某一轴向相反方向指引的矢量具有相反的代数符号。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four choices about how the linear momenta of two identical drones flying in opposite directions compare.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan tentang bagaimana momentum linear dua dron serupa yang terbang dalam arah bertentangan dibandingkan.",
+        "zh": "包含四个选项的单选题，考查两架沿相反方向飞行的相同无人机线动量的比较。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "They have equal momentum magnitudes but opposite directions, because linear momentum is a vector that points in the direction of velocity.",
+              "ms": "Kedua-duanya mempunyai magnitud momentum yang sama tetapi arah yang bertentangan, kerana momentum linear ialah kuantiti vektor yang menghala mengikut arah halaju.",
+              "zh": "它们的动量大小相等但方向相反，因为线动量是矢量，其方向与速度方向一致。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "Their linear momenta are completely identical, because momentum depends solely on mass and speed without depending on the direction of travel.",
+              "ms": "Momentum linear kedua-duanya adalah sama sepenuhnya, kerana momentum hanya bergantung pada jisim dan laju tanpa bergantung pada arah pergerakan.",
+              "zh": "它们的线动量完全相同，因为动量仅取决于质量和速率，与运动方向无关。"
+            },
+            "misconception": "momentum-is-scalar"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "Both drones have zero linear momentum individually, because constant-speed motion cannot produce momentum.",
+              "ms": "Kedua-dua dron mempunyai momentum linear sifar secara individu, kerana pergerakan pada laju malar tidak dapat menghasilkan momentum.",
+              "zh": "两架无人机各自的线动量均为零，因为匀速运动无法产生动量。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "Their linear momenta point vertically upward perpendicular to their flight path, because momentum always acts at a right angle to velocity.",
+              "ms": "Momentum linear kedua-duanya menghala tegak ke atas berserenjang dengan laluan penerbangan, kerana momentum sentiasa bertindak pada sudut tepat terhadap halaju.",
+              "zh": "它们的线动量垂直向上并垂直于飞行路径，因为动量总是与速度方向垂直。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-02-si-units",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define linear momentum as the product of mass and velocity and identify its vector nature, dimensions, and SI units.",
+      "prompt": {
+        "en": "A laboratory measurement ledger records the physical properties of a moving particle's linear momentum. Which entry correctly states the SI unit, dimensions, and directional property of linear momentum?",
+        "ms": "Buku lejar pengukuran makmal merekodkan sifat fizikal momentum linear bagi suatu zarah yang bergerak. Catatan manakah yang menyatakan unit SI, dimensi, dan sifat berarah momentum linear dengan betul?",
+        "zh": "一份实验室测量记录本记录了运动粒子的线动量物理特性。下列哪一项正确陈述了线动量的国际单位制（SI）单位、量纲及方向属性？"
+      },
+      "hints": [
+        {
+          "en": "Recall that linear momentum is the product of mass (measured in kilograms) and velocity (measured in metres per second).",
+          "ms": "Ingat kembali bahawa momentum linear ialah hasil darab jisim (diukur dalam kilogram) dan halaju (diukur dalam meter sesaat).",
+          "zh": "回想一下，线动量是质量（以千克为单位）与速度（以米每秒为单位）的乘积。"
+        },
+        {
+          "en": "Because velocity is a vector, any physical quantity formed by multiplying velocity by scalar mass must retain a specific spatial direction.",
+          "ms": "Kerana halaju ialah vektor, sebarang kuantiti fizikal yang terbentuk daripada pendaraban halaju dengan jisim skalar mesti mengekalkan arah ruang yang khusus.",
+          "zh": "因为速度是矢量，所以速度与标量质量相乘得到的任何物理量都必须保留特定的空间方向。"
+        }
+      ],
+      "feedback": {
+        "en": "Linear momentum is defined as mass multiplied by velocity, yielding SI units of kg · m/s and dimensions of ML/T. Because it is a vector quantity, a complete description always requires specifying both its magnitude and its spatial direction.",
+        "ms": "Momentum linear ditakrifkan sebagai jisim didarabkan dengan halaju, menghasilkan unit SI kg · m/s dan dimensi ML/T. Oleh kerana ia adalah kuantiti vektor, penerangan yang lengkap sentiasa memerlukan penentuan kedua-dua magnitud dan arah ruangnya.",
+        "zh": "线动量定义为质量乘以速度，因此其 SI 单位为 kg · m/s，量纲为 ML/T。因为它是矢量，完整的描述始终需要同时指明其大小和空间方向。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because momentum equals mass times velocity, giving units of kg · m/s, dimensions ML/T, and vector character. Option B mistakenly treats momentum as a scalar. Option C describes energy, and Option D has inverted dimensions.",
+        "ms": "Pilihan A betul kerana momentum sama dengan jisim darab halaju, memberikan unit kg · m/s, dimensi ML/T, dan sifat vektor. Pilihan B silap menganggap momentum sebagai skalar. Pilihan C menerangkan tenaga, dan Pilihan D mempunyai dimensi yang terbalik.",
+        "zh": "选项 A 正确，因为动量等于质量乘以速度，单位为 kg · m/s，量纲为 ML/T，且具有矢量特征。选项 B 错误地将动量视为标量。选项 C 描述的是能量，选项 D 的量纲颠倒。"
+      },
+      "explanation": {
+        "en": "By definition, p = m v. The mass m has dimension M and SI unit kg, while velocity v has dimension L/T and SI unit m/s. Consequently, linear momentum has dimensions ML/T and SI unit kg · m/s. Furthermore, multiplying a vector by a scalar produces a vector, so linear momentum possesses both magnitude and direction.",
+        "ms": "Mengikut definisi, p = m v. Jisim m mempunyai dimensi M dan unit SI kg, manakala halaju v mempunyai dimensi L/T dan unit SI m/s. Akibatnya, momentum linear mempunyai dimensi ML/T dan unit SI kg · m/s. Tambahan pula, pendaraban vektor dengan skalar menghasilkan vektor, jadi momentum linear memiliki kedua-dua magnitud dan arah.",
+        "zh": "根据定义，p = m v。质量 m 的量纲为 M，SI 单位为 kg；速度 v 的量纲为 L/T，SI 单位为 m/s。因此，线动量的量纲为 ML/T，SI 单位为 kg · m/s。此外，矢量乘以标量仍为矢量，因此线动量同时具有大小和方向。"
+      },
+      "misconceptions": [
+        "momentum-is-scalar"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "Review vector quantities and dimensional analysis: a vector quantity carries directional components in space and cannot be described solely by a magnitude.",
+          "ms": "Ulang kaji kuantiti vektor dan analisis dimensi: kuantiti vektor membawa komponen arah dalam ruang dan tidak boleh diterangkan dengan magnitud sahaja.",
+          "zh": "复习矢量物理量与量纲分析：矢量在空间中具有方向分量，不能仅用大小来描述。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four options asking for the correct SI unit, dimensions, and directional property of linear momentum.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang meminta unit SI, dimensi, dan sifat berarah yang betul bagi momentum linear.",
+        "zh": "包含四个选项的单选题，询问线动量的正确国际单位制单位、量纲及方向属性。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "Unit of kg · m/s, dimensions ML/T, and requiring both magnitude and direction because it is a vector.",
+              "ms": "Unit kg · m/s, dimensi ML/T, dan memerlukan kedua-dua magnitud dan arah kerana ia adalah vektor.",
+              "zh": "单位为 kg · m/s，量纲为 ML/T，且因为它是矢量而需要同时指定大小和方向。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "Unit of kg · m/s, dimensions ML/T, but fully specified by magnitude alone because momentum is a scalar quantity.",
+              "ms": "Unit kg · m/s, dimensi ML/T, tetapi ditentukan sepenuhnya oleh magnitud sahaja kerana momentum ialah kuantiti skalar.",
+              "zh": "单位为 kg · m/s，量纲为 ML/T，但仅凭大小即可完全确定，因为动量是标量。"
+            },
+            "misconception": "momentum-is-scalar"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "Unit of kg · m^2/s^2, dimensions ML^2/T^2, and characterized purely as a scalar quantity without direction because it represents energy.",
+              "ms": "Unit kg · m^2/s^2, dimensi ML^2/T^2, dan dicirikan semata-mata sebagai kuantiti skalar tanpa arah kerana ia mewakili tenaga.",
+              "zh": "单位为 kg · m^2/s^2，量纲为 ML^2/T^2，且纯粹表现为没有方向的标量，因为它是能量。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "Unit of kg · s/m, dimensions MT/L, and pointing perpendicular to the trajectory at all times.",
+              "ms": "Unit kg · s/m, dimensi MT/L, dan menghala berserenjang dengan trajektori pada setiap masa.",
+              "zh": "单位为 kg · s/m，量纲为 MT/L，且始终垂直于运动轨迹。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-03-net-force-definition",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "State and apply Newton's second law as the time rate of change of linear momentum of a particle.",
+      "prompt": {
+        "en": "A deep-space probe is subjected to a constant nonzero net force acting in the direction of its motion. According to Newton's second law expressed in terms of momentum, how is the net force related to the probe's linear momentum?",
+        "ms": "Suatu kuar angkasa lepas dikenakan daya padu bukan sifar yang malar dan bertindak mengikut arah pergerakannya. Menurut hukum kedua Newton yang dinyatakan dalam sebutan momentum, bagaimanakah daya padu berkaitan dengan momentum linear kuar tersebut?",
+        "zh": "深空探测器受到沿其运动方向的恒定非零合外力作用。根据用动量表示的牛顿第二定律，合外力与探测器的线动量之间有何关系？"
+      },
+      "hints": [
+        {
+          "en": "Newton's second law relates the resultant force acting on a particle to how the motion changes over time, rather than the amount of motion already present.",
+          "ms": "Hukum kedua Newton menghubungkan daya padu yang bertindak ke atas suatu zarah dengan cara pergerakan berubah terhadap masa, dan bukannya jumlah pergerakan yang sedia ada.",
+          "zh": "牛顿第二定律将作用在粒子上的合外力与运动随时间的变化联系起来，而不是与物体已具备的运动量直接等同。"
+        },
+        {
+          "en": "Recall Equation 9.3: the net force on a particle equals the time derivative of momentum, dp/dt. What does a nonzero derivative mean for momentum?",
+          "ms": "Ingat kembali Persamaan 9.3: daya padu pada suatu zarah sama dengan terbitan masa bagi momentum, dp/dt. Apakah maksud terbitan bukan sifar terhadap momentum?",
+          "zh": "回想公式 9.3：粒子所受合外力等于动量对时间的一阶导数 dp/dt。非零导数对动量意味着什么？"
+        }
+      ],
+      "feedback": {
+        "en": "Newton's second law states that the net force acting on a particle equals the time rate of change of its linear momentum (net force = dp/dt). Force is not the momentum itself; rather, force causes momentum to change over time.",
+        "ms": "Hukum kedua Newton menyatakan bahawa daya padu yang bertindak ke atas suatu zarah adalah sama dengan kadar perubahan momentum linearnya terhadap masa (daya padu = dp/dt). Daya bukanlah momentum itu sendiri; sebaliknya, daya menyebabkan momentum berubah mengikut masa.",
+        "zh": "牛顿第二定律表明，作用在粒子上的合外力等于其线动量随时间的变化率（合外力 = dp/dt）。力不是动量本身；相反，力是导致动量随时间发生改变的原因。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because Newton's second law equates net force to the time derivative of linear momentum, dp/dt. Option B represents the misconception that force equals momentum. Options C and D misinterpret force and momentum entirely.",
+        "ms": "Pilihan A betul kerana hukum kedua Newton menyamakan daya padu dengan terbitan masa bagi momentum linear, dp/dt. Pilihan B mewakili salah tanggapan bahawa daya sama dengan momentum. Pilihan C dan D salah mentafsirkan daya dan momentum sepenuhnya.",
+        "zh": "选项 A 正确，因为牛顿第二定律将合外力等同于线动量对时间的变化率 dp/dt。选项 B 代表了认为力等同于动量的错误观念。选项 C 和 D 完全曲解了力和动量的概念。"
+      },
+      "explanation": {
+        "en": "Newton formulated his second law of motion in terms of momentum: the resultant force acting on a particle equals the time rate of change of its linear momentum, sum F = dp/dt. A nonzero net force means that momentum is actively changing. If the net force is constant and in the direction of motion, momentum changes at a steady rate in that direction.",
+        "ms": "Newton merumuskan hukum gerakan keduanya dalam sebutan momentum: daya padu yang bertindak ke atas zarah adalah sama dengan kadar perubahan momentum linearnya terhadap masa, jumlah F = dp/dt. Daya padu bukan sifar bermakna momentum sedang berubah secara aktif. Jika daya padu adalah malar dan mengikut arah pergerakan, momentum berubah pada kadar yang tetap dalam arah tersebut.",
+        "zh": "牛顿用动量形式表述了他的第二运动定律：作用在粒子上的合力等于其线动量对时间的变化率，即合外力 = dp/dt。非零合外力意味着动量正在发生变化。如果合外力恒定且与运动方向一致，动量将沿该方向以恒定速率持续增加。"
+      },
+      "misconceptions": [
+        "force-equals-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "Review the definition of acceleration and rate of change: a force causes a change in motion (acceleration or rate of change of momentum), not motion itself.",
+          "ms": "Ulang kaji definisi pecutan dan kadar perubahan: suatu daya menyebabkan perubahan dalam pergerakan (pecutan atau kadar perubahan momentum), bukan pergerakan itu sendiri.",
+          "zh": "复习加速度与变化率的定义：力引起的是运动状态的改变（加速度或动量的变化率），而不是运动本身。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four choices on how a nonzero net force relates to the linear momentum of a space probe according to Newton's second law.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan tentang bagaimana daya padu bukan sifar berkaitan dengan momentum linear kuar angkasa menurut hukum kedua Newton.",
+        "zh": "包含四个选项的单选题，考查根据牛顿第二定律，非零合外力与深空探测器线动量之间的关系。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The net force equals the rate at which linear momentum changes with respect to time, so the probe's momentum continuously increases.",
+              "ms": "Daya padu adalah sama dengan kadar perubahan momentum linear terhadap masa, jadi momentum kuar meningkat secara berterusan.",
+              "zh": "合外力等于线动量对时间的变化率，因此探测器的动量会持续增加。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "The net force is equal to the probe's linear momentum itself, so a constant net force means the momentum remains constant.",
+              "ms": "Daya padu adalah sama dengan momentum linear kuar itu sendiri, jadi daya padu yang malar bermakna momentum kekal malar.",
+              "zh": "合外力等于探测器本身的线动量，因此恒定的合外力意味着动量保持不变。"
+            },
+            "misconception": "force-equals-momentum"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The net force equals the time rate of change of mass only, having no effect on velocity or momentum.",
+              "ms": "Daya padu adalah sama dengan kadar perubahan jisim terhadap masa sahaja, tanpa memberi kesan kepada halaju atau momentum.",
+              "zh": "合外力仅等于质量对时间的变化率，对速度或动量没有任何影响。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The net force must be zero whenever an object already possesses linear momentum.",
+              "ms": "Daya padu mestilah sifar apabila sesuatu objek sudah memiliki momentum linear.",
+              "zh": "只要物体已经具有线动量，合外力就必须为零。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-04-two-particle-opposite-momentum",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish linear momentum from kinetic energy in terms of vector directionality and energy transformations.",
+      "prompt": {
+        "en": "Two identical gliders on a horizontal frictionless air track move directly toward each other with the same constant speed. How do the total linear momentum and the total kinetic energy of this two-glider system compare?",
+        "ms": "Dua peluncur serupa di atas trek udara mendatar tanpa geseran bergerak terus ke arah satu sama lain dengan laju malar yang sama. Bagaimanakah perbandingan antara jumlah momentum linear dan jumlah tenaga kinetik bagi sistem dua peluncur ini?",
+        "zh": "在水平无摩擦气垫导轨上，两个完全相同的滑块以相同的恒定速率迎面相向运动。关于该双滑块系统的总线动量与总动能，下列哪项说法是正确的？"
+      },
+      "hints": [
+        {
+          "en": "Identify whether each quantity is a scalar or a vector: linear momentum depends on velocity (which includes direction), whereas kinetic energy depends on speed squared.",
+          "ms": "Kenal pasti sama ada setiap kuantiti adalah skalar atau vektor: momentum linear bergantung pada halaju (yang merangkumi arah), manakala tenaga kinetik bergantung pada kuasa dua laju.",
+          "zh": "辨析每个物理量是标量还是矢量：线动量取决于速度（包含方向），而动能取决于速率的平方。"
+        },
+        {
+          "en": "When adding vectors of equal magnitude in opposite directions, what is the net result? What happens when adding two positive scalar values?",
+          "ms": "Apabila menjumlahkan dua vektor dengan magnitud yang sama dalam arah bertentangan, apakah hasil bersihnya? Apakah yang berlaku apabila menjumlahkan dua nilai skalar positif?",
+          "zh": "当把两个大小相等、方向相反的矢量相加时，合成结果是什么？而当把两个正标量相加时，结果又如何？"
+        }
+      ],
+      "feedback": {
+        "en": "Linear momentum is a vector: two identical gliders with equal speeds moving in opposite directions have momentum vectors that cancel to zero. In contrast, kinetic energy is a scalar: each glider has positive kinetic energy, so their sum is strictly positive.",
+        "ms": "Momentum linear ialah vektor: dua peluncur serupa dengan laju sama yang bergerak dalam arah bertentangan mempunyai vektor momentum yang saling membatalkan kepada sifar. Sebaliknya, tenaga kinetik ialah skalar: setiap peluncur mempunyai tenaga kinetik positif, jadi jumlahnya adalah tegas positif.",
+        "zh": "线动量是矢量：两个速率相同、相向运动的相同滑块具有大小相等、方向相反的动量矢量，矢量求和抵消为零。相反，动能是标量：每个滑块都具有正动能，因此系统的总动能严格为正。"
+      },
+      "answerLogic": {
+        "en": "Linear momentum is defined as p = mv. For two gliders of mass m with velocities +v and -v, the total momentum is m(+v) + m(-v) = 0. Kinetic energy is defined as K = (1/2)m v^2, which depends on speed squared and is a scalar. The total kinetic energy is (1/2)m v^2 + (1/2)m v^2 = m v^2 > 0. Therefore, the system has zero total momentum but positive non-zero total kinetic energy.",
+        "ms": "Momentum linear ditakrifkan sebagai p = mv. Untuk dua peluncur berjisim m dengan halaju +v dan -v, jumlah momentum ialah m(+v) + m(-v) = 0. Tenaga kinetik ditakrifkan sebagai K = (1/2)m v^2, yang bergantung pada kuasa dua laju dan merupakan kuantiti skalar. Jumlah tenaga kinetik ialah (1/2)m v^2 + (1/2)m v^2 = m v^2 > 0. Oleh itu, sistem ini mempunyai jumlah momentum sifar tetapi jumlah tenaga kinetik positif bukan sifar.",
+        "zh": "线动量定义为 p = mv。对于质量为 m、速度分别为 +v 和 -v 的两个滑块，总动量为 m(+v) + m(-v) = 0。动能定义为 K = (1/2)m v^2，取决于速率的平方且为标量。总动能为 (1/2)m v^2 + (1/2)m v^2 = m v^2 > 0。因此，系统的总线动量为零，但总动能为正且非零。"
+      },
+      "explanation": {
+        "en": "This fundamental comparison highlights the core physical distinction between linear momentum and kinetic energy discussed in Section 9.1. Because momentum is a vector quantity, directional cancellation can occur, resulting in a system with zero total linear momentum despite internal motion. Kinetic energy, however, is a scalar quantity that is strictly non-negative for moving bodies; hence, the kinetic energies of individual moving parts always sum to a positive total value.",
+        "ms": "Perbandingan asas ini menonjolkan perbezaan fizikal utama antara momentum linear dan tenaga kinetik seperti yang dibincangkan dalam Seksyen 9.1. Oleh kerana momentum ialah kuantiti vektor, pembatalan arah boleh berlaku, menghasilkan sistem dengan jumlah momentum linear sifar walaupun terdapat gerakan dalaman. Walau bagaimanapun, tenaga kinetik ialah kuantiti skalar yang sentiasa bukan negatif untuk jasad yang bergerak; oleh itu, tenaga kinetik setiap bahagian yang bergerak sentiasa dijumlahkan menjadi nilai positif.",
+        "zh": "这一基本对比突出了第9.1节中讨论的线动量与动能之间的核心物理区别。因为动量是矢量，存在方向抵消，即使系统内部各部分在运动，系统的总线动量也可能为零。然而，动能是标量，运动物体的动能恒为非负值；因此，各个运动部件的动能相加总会得到一个正的总和。"
+      },
+      "misconceptions": [
+        "momentum-is-scalar",
+        "equal-ke-means-equal-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-concept",
+        "prompt": {
+          "en": "Review kinetic energy: kinetic energy is a scalar quantity defined by one-half mass times speed squared, meaning it is non-negative and adds up without directional cancellation.",
+          "ms": "Ulang kaji konsep tenaga kinetik: tenaga kinetik ialah kuantiti skalar yang ditakrifkan oleh separuh jisim didarab dengan kuasa dua laju, bermakna nilainya sentiasa bukan negatif dan bertambah tanpa pembatalan arah.",
+          "zh": "复习动能概念：动能是一个标量，定义为质量乘以速率平方的一半，这意味着它恒为非负值，并且在求和时不会发生方向抵消。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-choice conceptual question comparing the total linear momentum and total kinetic energy of two identical gliders traveling at equal speeds toward each other on a frictionless air track. Four answer choices are provided.",
+        "ms": "Soalan konsep aneka pilihan yang membandingkan jumlah momentum linear dan jumlah tenaga kinetik bagi dua peluncur serupa yang bergerak pada laju sama ke arah satu sama lain di atas trek udara tanpa geseran. Empat pilihan jawapan disediakan.",
+        "zh": "一道概念型单项选择题，对比在无摩擦气垫导轨上以相同速率相向运动的两个相同滑块的总线动量与总动能。提供四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The total linear momentum is zero, whereas the total kinetic energy is positive and non-zero.",
+              "ms": "Jumlah momentum linear adalah sifar, manakala jumlah tenaga kinetik adalah positif dan bukan sifar.",
+              "zh": "总线动量为零，而总动能为正且非零。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "misconception": "momentum-is-scalar",
+            "label": {
+              "en": "Both the total linear momentum and the total kinetic energy are positive and non-zero, because moving objects always contribute positive momentum regardless of direction.",
+              "ms": "Kedua-dua jumlah momentum linear dan jumlah tenaga kinetik adalah positif dan bukan sifar, kerana objek yang bergerak sentiasa menyumbang momentum positif tanpa mengira arah.",
+              "zh": "总线动量和总动能均为正且非零，因为运动的物体无论运动方向如何总是贡献正动量。"
+            }
+          },
+          {
+            "id": "opt-c",
+            "misconception": "equal-ke-means-equal-momentum",
+            "label": {
+              "en": "Both the total linear momentum and the total kinetic energy are zero, because equal kinetic energies cancel out when moving in opposite directions.",
+              "ms": "Kedua-dua jumlah momentum linear dan jumlah tenaga kinetik adalah sifar, kerana tenaga kinetik yang sama saling membatalkan apabila bergerak dalam arah bertentangan.",
+              "zh": "总线动量和总动能均为零，因为在相反方向运动时，相等的动能会相互抵消。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The total linear momentum is positive, while the total kinetic energy is zero because opposite velocities negate kinetic energy.",
+              "ms": "Jumlah momentum linear adalah positif, manakala jumlah tenaga kinetik adalah sifar kerana halaju bertentangan meniadakan tenaga kinetik.",
+              "zh": "总线动量为正，而总动能为零，因为相反的速度抵消了动能。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-05-third-law-connection",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate momentum conservation in a two-particle system to Newton's third law action-reaction pairs.",
+      "prompt": {
+        "en": "Two particles interact with each other inside an isolated system where no external forces act. Which statement correctly explains why the total linear momentum of the system is conserved, even though the momentum of each particle changes?",
+        "ms": "Dua zarah berinteraksi antara satu sama lain di dalam satu sistem terpencil di mana tiada daya luar bertindak. Pernyataan manakah yang menerangkan dengan betul mengapa jumlah momentum linear sistem terpelihara, walaupun momentum setiap zarah berubah?",
+        "zh": "在没有外力作用的孤立系统内，两个粒子发生相互作用。下列哪项陈述正确解释了为什么即使每个粒子的动量都发生了变化，系统的总线动量依然保持守恒？"
+      },
+      "hints": [
+        {
+          "en": "Relate force to momentum change: by Newton's second law, the net force on an object equals the time derivative of its linear momentum (dp/dt).",
+          "ms": "Hubungkan daya dengan perubahan momentum: mengikut hukum kedua Newton, daya bersih pada suatu objek sama dengan terbitan masa bagi momentum linearnya (dp/dt).",
+          "zh": "将力与动量变化联系起来：根据牛顿第二定律，物体所受的合外力等于其线动量随时间的变化率（dp/dt）。"
+        },
+        {
+          "en": "Consider Newton's third law: F_21 + F_12 = 0. When you replace each force with dp/dt for that particle, what does the derivative of the total momentum (p_1 + p_2) become?",
+          "ms": "Pertimbangkan hukum ketiga Newton: F_21 + F_12 = 0. Apabila anda menggantikan setiap daya dengan dp/dt bagi zarah tersebut, apakah nilai terbitan jumlah momentum (p_1 + p_2)?",
+          "zh": "考虑牛顿第三定律：F_21 + F_12 = 0。当将每个力替换为对应粒子的 dp/dt 时，总动量 (p_1 + p_2) 对时间的导数变成什么？"
+        }
+      ],
+      "feedback": {
+        "en": "According to Newton's third law, the mutual interaction forces between two particles are equal in magnitude and opposite in direction (F_12 = -F_21). Because net force equals dp/dt, adding these forces yields d(p_1 + p_2)/dt = 0, proving total momentum is conserved while individual momenta change.",
+        "ms": "Menurut hukum ketiga Newton, daya interaksi bersama antara dua zarah adalah sama magnitud dan bertentangan arah (F_12 = -F_21). Oleh kerana daya bersih bersamaan dengan dp/dt, penambahan daya ini menghasilkan d(p_1 + p_2)/dt = 0, membuktikan bahawa jumlah momentum terpelihara walaupun momentum individu berubah.",
+        "zh": "根据牛顿第三定律，两粒子间的相互作用力大小相等、方向相反（F_12 = -F_21）。由于合外力等于 dp/dt，将这两个力相加可得 d(p_1 + p_2)/dt = 0，从而证明虽然单个粒子的动量在改变，但系统的总动量保持守恒。"
+      },
+      "answerLogic": {
+        "en": "For an isolated two-particle system, Newton's third law states F_21 + F_12 = 0. Substituting Newton's second law in momentum form, F = dp/dt, yields dp_1/dt + dp_2/dt = d(p_1 + p_2)/dt = 0. Because the time derivative of the sum of momenta is zero, the total momentum p_tot = p_1 + p_2 remains constant over time. Each particle experiences a non-zero individual force, so individual momenta change, but their changes are equal and opposite.",
+        "ms": "Bagi sistem dua zarah yang terpencil, hukum ketiga Newton menyatakan F_21 + F_12 = 0. Menggantikan hukum kedua Newton dalam bentuk momentum, F = dp/dt, memberikan dp_1/dt + dp_2/dt = d(p_1 + p_2)/dt = 0. Oleh kerana terbitan masa bagi jumlah momentum adalah sifar, jumlah momentum p_tot = p_1 + p_2 kekal malar mengikut masa. Setiap zarah mengalami daya individu bukan sifar, jadi momentum individu berubah, tetapi perubahannya adalah sama magnitud dan bertentangan arah.",
+        "zh": "对于孤立的双粒子系统，牛顿第三定律表明 F_21 + F_12 = 0。代入动量形式的牛顿第二定律 F = dp/dt，可得 dp_1/dt + dp_2/dt = d(p_1 + p_2)/dt = 0。因为两粒子动量和对时间的导数为零，所以系统的总动量 p_tot = p_1 + p_2 随时间保持恒定。每个粒子都受到非零的合力，因此各个粒子的动量会发生改变，但它们的变化量大小相等、方向相反。"
+      },
+      "explanation": {
+        "en": "This derivation is central to Section 9.1: conservation of momentum for an isolated system directly arises from Newton's third law of motion. A common misconception (Pitfall Prevention 9.1) is believing that the momentum of an individual particle within the system must be conserved; in fact, individual particles accelerate and exchange momentum precisely because mutual forces act upon them. Momentum conservation applies strictly to the isolated system as a whole.",
+        "ms": "Penerbitan ini merupakan teras Seksyen 9.1: keabadian momentum bagi suatu sistem terpencil terbit secara langsung daripada hukum ketiga gerakan Newton. Satu salah faham biasa (Pencegahan Perangkap 9.1) ialah mempercayai bahawa momentum sesuatu zarah individu dalam sistem mesti terpelihara; hakikatnya, zarah individu memecut dan bertukar momentum tepat kerana daya saling bertindak ke atasnya. Keabadian momentum hanya terpakai kepada keseluruhan sistem terpencil.",
+        "zh": "该推导是第9.1节的核心内容：孤立系统的动量守恒直接源自牛顿第三运动定律。一个常见的误区（警示预防 9.1）是误认为系统中单个粒子的动量也必须守恒；事实上，单个粒子之所以会加速并交换动量，正是因为它们之间存在相互作用力。动量守恒严格适用于孤立系统整体。"
+      },
+      "misconceptions": [
+        "single-particle-momentum-conservation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Recall Newton's third law: when two bodies interact, the force exerted by the first body on the second is equal in magnitude and opposite in direction to the force exerted by the second body on the first.",
+          "ms": "Ingat kembali hukum ketiga Newton: apabila dua jasad berinteraksi, daya yang dikenakan oleh jasad pertama ke atas jasad kedua adalah sama magnitud dan bertentangan arah dengan daya yang dikenakan oleh jasad kedua ke atas jasad pertama.",
+          "zh": "回顾牛顿第三定律：当两个物体相互作用时，第一个物体对第二个物体施加的力与第二个物体对第一个物体施加的力大小相等、方向相反。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-choice question asking which physical statement explains why Newton's third law results in the conservation of total linear momentum for an isolated two-particle system. Four options are presented.",
+        "ms": "Soalan aneka pilihan yang bertanyakan pernyataan fizikal manakah yang menerangkan mengapa hukum ketiga Newton menghasilkan keabadian jumlah momentum linear bagi sistem dua zarah yang terpencil. Empat pilihan dibentangkan.",
+        "zh": "一道单项选择题，询问哪项物理陈述解释了为什么牛顿第三定律会导致孤立双粒子系统的总线动量守恒。提供四个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The internal forces form an action-reaction pair that are equal and opposite, so the sum of the time rates of change of momentum of the two particles is zero.",
+              "ms": "Daya dalaman membentuk pasangan tindakan-tindak balas yang sama magnitud dan bertentangan arah, jadi jumlah kadar perubahan momentum terhadap masa bagi kedua-dua zarah adalah sifar.",
+              "zh": "内部相互作用力构成大小相等、方向相反的作用力与反作用力对，因此两粒子动量随时间变化率的矢量和为零。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "misconception": "single-particle-momentum-conservation",
+            "label": {
+              "en": "The linear momentum of each individual particle must remain strictly constant throughout the interaction because isolated systems preserve the motion of each separate component.",
+              "ms": "Momentum linear bagi setiap zarah individu mesti kekal malar sepanjang interaksi kerana sistem terpencil mengekalkan gerakan setiap komponen yang berasingan.",
+              "zh": "每个粒子的线动量在相互作用过程中都必须严格保持恒定，因为孤立系统会保持每个单独部件的运动状态不变。"
+            }
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The acceleration of each particle is zero at every instant because internal interaction forces automatically neutralize any acceleration.",
+              "ms": "Pecutan setiap zarah adalah sifar pada setiap ketika kerana daya interaksi dalaman secara automatik meneutralkan sebarang pecutan.",
+              "zh": "每个粒子的加速度在每个瞬间都为零，因为内部相互作用力会自动抵消任何加速度。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "Newton's third law guarantees that both particles must have the same mass and velocity before and after any interaction.",
+              "ms": "Hukum ketiga Newton menjamin bahawa kedua-dua zarah mesti mempunyai jisim dan halaju yang sama sebelum dan selepas sebarang interaksi.",
+              "zh": "牛顿第三定律保证两个粒子在相互作用前后的质量和速度必须完全相同。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-06-equal-speed-comparison",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Compare the momenta of objects having equal kinetic energies or equal speeds with different masses.",
+      "prompt": {
+        "en": "A loaded cargo truck with a large mass and a compact passenger car with a small mass travel on a test track at the exact same constant speed. The truck travels due North, while the car travels due East. Which statement correctly compares their linear momenta?",
+        "ms": "Sebuah lori kargo muatan penuh dengan jisim besar dan sebuah kereta penumpang kompak dengan jisim kecil bergerak di atas litar ujian pada laju malar yang sama. Lori tersebut bergerak tepat ke Utara, manakala kereta tersebut bergerak tepat ke Timur. Pernyataan manakah yang membandingkan momentum linear mereka dengan betul?",
+        "zh": "一辆具有大质量的重载货车和一辆具有小质量的紧凑型轿车在测试跑道上以完全相同的恒定速率行驶。货车正向北行驶，而轿车正向东行驶。关于它们的线动量，下列哪项比较是正确的？"
+      },
+      "hints": [
+        {
+          "en": "Consider the definition of linear momentum as the product of mass and velocity: p = mv. How does mass affect the magnitude of momentum when speeds are equal?",
+          "ms": "Pertimbangkan takrifan momentum linear sebagai hasil darab jisim dan halaju: p = mv. Bagaimanakah jisim mempengaruhi magnitud momentum apabila laju adalah sama?",
+          "zh": "考虑线动量作为质量与速度乘积的定义：p = mv。当速率相同时，质量如何影响动量的大小？"
+        },
+        {
+          "en": "Remember that linear momentum is a vector whose direction is identical to that of the velocity vector. Can a vector directed North be equal to a vector directed East?",
+          "ms": "Ingat bahawa momentum linear ialah vektor yang arahnya sama dengan vektor halaju. Bolehkah vektor yang menghala ke Utara sama dengan vektor yang menghala ke Timur?",
+          "zh": "记住线动量是一个矢量，其方向与速度矢量的方向完全相同。指向北方的矢量能与指向东方的矢量相等吗？"
+        }
+      ],
+      "feedback": {
+        "en": "Linear momentum is a vector defined by p = mv. Since the truck has a greater mass, its momentum magnitude is larger than the car's. Furthermore, because momentum has direction, a Northward vector can never equal an Eastward vector.",
+        "ms": "Momentum linear ialah vektor yang ditakrifkan oleh p = mv. Oleh kerana lori mempunyai jisim yang lebih besar, magnitud momentumnya lebih besar daripada kereta. Tambahan pula, kerana momentum mempunyai arah, vektor ke arah Utara tidak boleh sama sekali sama dengan vektor ke arah Timur.",
+        "zh": "线动量是定义为 p = mv 的矢量。由于货车质量更大，其动量大小大于轿车。此外，由于动量具有方向性，指向北方的矢量绝不可能等于指向东方的矢量。"
+      },
+      "answerLogic": {
+        "en": "Linear momentum p is a vector quantity given by p = mv. For objects with identical speed v, magnitude |p| = m v is directly proportional to mass m; therefore, the truck (with greater mass) has a larger momentum magnitude than the car. In addition, two vectors are equal only if both their magnitudes and directions are identical. Because the truck's velocity vector points North and the car's velocity vector points East, their momentum vectors point in perpendicular directions and cannot be equal.",
+        "ms": "Momentum linear p ialah kuantiti vektor yang diberikan oleh p = mv. Bagi objek dengan laju v yang sama, magnitud |p| = m v berkadar terus dengan jisim m; oleh itu, lori (dengan jisim lebih besar) mempunyai magnitud momentum yang lebih besar daripada kereta. Selain itu, dua vektor adalah sama hanya jika kedua-dua magnitud dan arahnya adalah sama. Oleh kerana vektor halaju lori menunjuk ke Utara dan vektor halaju kereta menunjuk ke Timur, vektor momentum mereka menunjuk dalam arah serenjang dan tidak boleh sama.",
+        "zh": "线动量 p 是由 p = mv 给出的矢量。对于速率 v 相同的物体，其大小 |p| = m v 与质量 m 成正比；因此，质量较大的货车比轿车具有更大的动量大小。此外，只有当两个矢量的大小和方向都相同时，它们才相等。由于货车的速度矢量指向北，轿车的速度矢量指向东，它们的动量矢量指向正交垂直的方向，绝不可能相等。"
+      },
+      "explanation": {
+        "en": "This question addresses two fundamental aspects of Section 9.1: momentum provides a quantitative distinction between heavy and light objects traveling at the same speed (the bowling ball versus tennis ball example in the text), and momentum is strictly a vector quantity. Students who treat momentum as a scalar like kinetic energy miss the essential requirement that momentum carries the spatial direction of velocity.",
+        "ms": "Soalan ini menangani dua aspek asas dalam Seksyen 9.1: momentum memberikan perbezaan kuantitatif antara objek berat dan ringan yang bergerak pada laju yang sama (contoh bola boling berbanding bola tenis dalam teks), dan momentum ialah kuantiti vektor sepenuhnya. Murid yang menganggap momentum sebagai skalar seperti tenaga kinetik terlepas pandang syarat penting bahawa momentum membawa arah ruang bagi halaju.",
+        "zh": "此问题探讨了第9.1节的两个基本方面：动量在定量上区分了以相同速率运动的重物与轻物（正如教材中所举的保龄球与网球的例子），并且动量严格是一个矢量。将动量误认为像动能一样的标量的学生，往往会忽略动量具有速度的空间方向这一本质要求。"
+      },
+      "misconceptions": [
+        "momentum-is-scalar"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-concept",
+        "prompt": {
+          "en": "Review kinetic energy and momentum: linear momentum is a vector (p = mv) pointing in the direction of velocity, whereas kinetic energy is a non-directional scalar.",
+          "ms": "Ulang kaji tenaga kinetik dan momentum: momentum linear ialah vektor (p = mv) yang menunjuk ke arah halaju, manakala tenaga kinetik ialah skalar tanpa arah.",
+          "zh": "复习动能与动量：线动量是沿速度方向的矢量（p = mv），而动能是无方向的标量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-choice question comparing the linear momentum of a heavy truck traveling North and a light car traveling East at the same speed. Four options evaluate magnitude and vector direction.",
+        "ms": "Soalan aneka pilihan yang membandingkan momentum linear sebuah lori berat yang bergerak ke Utara dan sebuah kereta ringan yang bergerak ke Timur pada laju yang sama. Empat pilihan menilai magnitud dan arah vektor.",
+        "zh": "一道单项选择题，对比以相同速率分别向北行驶的重型货车和向东行驶的轻型轿车的线动量。四个选项从大小和矢量方向两个维度进行评估。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The truck has a greater magnitude of linear momentum due to its larger mass, and their linear momenta cannot be equal because they point in perpendicular directions.",
+              "ms": "Lori tersebut mempunyai magnitud momentum linear yang lebih besar disebabkan jisimnya yang lebih besar, dan momentum linear mereka tidak boleh sama kerana menunjuk dalam arah serenjang.",
+              "zh": "货车由于质量较大而具有更大的线动量大小，且由于两者指向正交垂直的方向，它们的线动量不可能相等。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "misconception": "momentum-is-scalar",
+            "label": {
+              "en": "The truck has a greater linear momentum solely as a scalar magnitude; travel direction is irrelevant to momentum because momentum, like kinetic energy, has no directional property.",
+              "ms": "Lori tersebut mempunyai momentum linear yang lebih besar hanya sebagai magnitud skalar; arah perjalanan tidak relevan dengan momentum kerana momentum, seperti tenaga kinetik, tiada sifat berarah.",
+              "zh": "货车仅作为标量大小具有更大的线动量；行驶方向与动量无关，因为动量就像动能一样没有方向属性。"
+            }
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The truck and the car have identical linear momenta because linear momentum depends only on speed when comparing vehicles on the same track.",
+              "ms": "Lori dan kereta mempunyai momentum linear yang serupa kerana momentum linear hanya bergantung pada laju apabila membandingkan kenderaan di atas litar yang sama.",
+              "zh": "货车和轿车具有完全相同的线动量，因为在同一跑道上比较车辆时，线动量仅取决于速率。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The car has a greater magnitude of linear momentum because an object with less mass experiences less resistance to motion at any given speed.",
+              "ms": "Kereta mempunyai magnitud momentum linear yang lebih besar kerana objek dengan jisim yang lebih kecil mengalami rintangan yang lebih sedikit terhadap gerakan pada sebarang laju tertentu.",
+              "zh": "轿车具有更大的线动量大小，因为质量较小的物体在给定速率下受到的运动阻力更小。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-07-equal-ke-momentum-relation",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Compare the momenta of objects having equal kinetic energies or equal speeds with different masses.",
+      "prompt": {
+        "en": "A heavy cargo transport and a lightweight scout rover are traveling along parallel horizontal tracks with identical kinetic energies. If the cargo transport has significantly greater mass than the scout rover, how do the magnitudes of their linear momenta compare?",
+        "ms": "Sebuah kenderaan pengangkut kargo yang berat dan sebuah perayau peninjau yang ringan sedang bergerak di sepanjang landasan mengufuk yang selari dengan tenaga kinetik yang serupa. Jika pengangkut kargo itu mempunyai jisim yang jauh lebih besar daripada perayau peninjau, bagaimanakah perbandingan magnitud momentum linear kedua-duanya?",
+        "zh": "一辆重型货物运输车和一辆轻型侦察巡逻车正沿着平行的水平轨道行驶，两者的动能完全相同。如果货物运输车的质量明显大于侦察巡逻车，两者的线动量大小关系如何？"
+      },
+      "hints": [
+        {
+          "en": "Think about the relationship between kinetic energy and linear momentum: kinetic energy depends on the square of speed, whereas momentum is proportional directly to speed.",
+          "ms": "Fikirkan tentang hubungan antara tenaga kinetik dan momentum linear: tenaga kinetik bergantung pada kuasa dua laju, manakala momentum berkadar terus dengan laju.",
+          "zh": "思考动能与线动量之间的关系：动能取决于速率的平方，而动量则与速率直接成正比。"
+        },
+        {
+          "en": "Consider rewriting kinetic energy in terms of momentum: kinetic energy equals the square of momentum divided by twice the mass. If kinetic energy is kept fixed while mass increases, what must happen to momentum?",
+          "ms": "Pertimbangkan untuk menulis semula tenaga kinetik dalam sebutan momentum: tenaga kinetik bersamaan dengan kuasa dua momentum dibahagikan dengan dua kali jisim. Jika tenaga kinetik dikekalkan tetap manakala jisim bertambah, apakah yang mesti berlaku kepada momentum?",
+          "zh": "尝试用动量来表示动能：动能等于动量的平方除以两倍的质量。如果动能保持不变而质量增加，动量必然会如何变化？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Because kinetic energy can be expressed as momentum squared divided by twice the mass, two objects with identical kinetic energies have the square of their momentum proportional to mass. Therefore, the more massive transport carries a greater linear momentum magnitude.",
+        "ms": "Tepat! Kerana tenaga kinetik boleh diungkapkan sebagai momentum kuasa dua dibahagikan dengan dua kali jisim, dua objek yang mempunyai tenaga kinetik yang sama mempunyai kuasa dua momentum yang berkadar terus dengan jisim. Oleh itu, pengangkut yang lebih berjisim membawa magnitud momentum linear yang lebih besar.",
+        "zh": "正确！因为动能可以表示为动量的平方除以两倍质量，具有相同动能的两个物体，其动量的平方与质量成正比。因此，质量更大的运输车具有更大的线动量大小。"
+      },
+      "answerLogic": {
+        "en": "Kinetic energy K equals (1/2)mv^2, which can be rearranged as p^2 / (2m). Solving for the magnitude of momentum yields p = sqrt(2mK). For equal kinetic energies K, the momentum magnitude is strictly proportional to the square root of the mass. The vehicle with larger mass m must have a greater momentum magnitude.",
+        "ms": "Tenaga kinetik K bersamaan dengan (1/2)mv^2, yang boleh disusun semula sebagai p^2 / (2m). Menyelesaikan untuk magnitud momentum memberikan p = punca kuasa dua (2mK). Bagi tenaga kinetik K yang sama, magnitud momentum adalah berkadar terus dengan punca kuasa dua jisim. Kenderaan dengan jisim m yang lebih besar mesti mempunyai magnitud momentum yang lebih besar.",
+        "zh": "动能 K 等于 (1/2)mv^2，可改写为 p^2 / (2m)。求解动量大小可得 p = 根号(2mK)。在动能 K 相等的情况下，动量大小严格与质量的平方根成正比。因此质量 m 更大的车辆必然具有更大的动量大小。"
+      },
+      "explanation": {
+        "en": "Although both linear momentum and kinetic energy involve mass and speed, they scale differently. Kinetic energy is a scalar proportional to the square of speed, whereas linear momentum is a vector directly proportional to speed. For a heavy object and a light object to possess the same kinetic energy, the lighter object must move faster, but its speed advantage is not large enough to overcome the heavy object's mass advantage in the product mv. Consequently, at equal kinetic energies, the more massive body always carries greater linear momentum.",
+        "ms": "Walaupun kedua-dua momentum linear dan tenaga kinetik melibatkan jisim dan laju, kedua-duanya berskala secara berbeza. Tenaga kinetik ialah skalar yang berkadar terus dengan kuasa dua laju, manakala momentum linear ialah vektor yang berkadar terus dengan laju. Supaya objek berat dan objek ringan mempunyai tenaga kinetik yang sama, objek yang lebih ringan mesti bergerak lebih pantas, tetapi kelebihan lajunya tidak cukup besar untuk mengatasi kelebihan jisim objek berat dalam hasil darab mv. Akibatnya, pada tenaga kinetik yang sama, jasad yang lebih berjisim sentiasa membawa momentum linear yang lebih besar.",
+        "zh": "虽然线动量和动能都涉及质量和速率，但它们的标度关系不同。动能是与速率平方成正比的标量，而线动量是与速率直接成正比的矢量。为了使重物体和轻物体具有相同的动能，轻物体必须以更高的速率运动，但在乘积 mv 中，其速率优势不足以抵消重物体的质量优势。因此，在动能相等时，质量更大的物体总是具有更大的线动量。"
+      },
+      "misconceptions": [
+        "equal-ke-means-equal-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-concept",
+        "prompt": {
+          "en": "Recall that kinetic energy is given by half the mass times speed squared. Notice that speed is squared while mass enters linearly, meaning two objects of different masses cannot share both the same speed and the same kinetic energy.",
+          "ms": "Ingat kembali bahawa tenaga kinetik diberikan oleh separuh daripada jisim didarabkan dengan kuasa dua laju. Perhatikan bahawa laju dikuasaduakan manakala jisim masuk secara linear, bermakna dua objek yang berlainan jisim tidak boleh berkongsi kedua-dua laju yang sama dan tenaga kinetik yang sama secara serentak.",
+          "zh": "回顾动能的定义为质量乘以速率平方的一半。请注意速率带有平方项而质量是一次方项，这意味着不同质量的两个物体不可能同时拥有相同的速率和相同的动能。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question presenting four conceptual comparisons of linear momentum magnitudes for two objects of unequal mass having identical kinetic energies.",
+        "ms": "Soalan aneka pilihan yang membentangkan empat perbandingan konseptual magnitud momentum linear bagi dua objek berlainan jisim yang mempunyai tenaga kinetik yang sama.",
+        "zh": "多项选择题，针对具有相同动能但质量不同的两个物体，给出四种关于线动量大小的比较选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-transport-greater",
+        "options": [
+          {
+            "id": "opt-transport-greater",
+            "label": {
+              "en": "The heavy cargo transport has a greater momentum magnitude than the lightweight scout rover.",
+              "ms": "Pengangkut kargo yang berat mempunyai magnitud momentum yang lebih besar daripada perayau peninjau yang ringan.",
+              "zh": "重型货物运输车的动量大小大于轻型侦察巡逻车。"
+            }
+          },
+          {
+            "id": "opt-equal-momentum",
+            "label": {
+              "en": "Both vehicles have identical momentum magnitudes because having equal kinetic energies means they carry the same total motion.",
+              "ms": "Kedua-dua kenderaan mempunyai magnitud momentum yang sama kerana mempunyai tenaga kinetik yang serupa bermakna kedua-duanya membawa jumlah gerakan yang sama.",
+              "zh": "两辆车的动量大小完全相同，因为动能相等意味着它们具有相同总量的运动。"
+            },
+            "misconception": "equal-ke-means-equal-momentum"
+          },
+          {
+            "id": "opt-scout-greater",
+            "label": {
+              "en": "The lightweight scout rover has a greater momentum magnitude because its higher speed has a stronger effect on momentum than mass does.",
+              "ms": "Perayau peninjau yang ringan mempunyai magnitud momentum yang lebih besar kerana lajunya yang lebih tinggi memberi kesan yang lebih kuat terhadap momentum berbanding jisim.",
+              "zh": "轻型侦察巡逻车的动量大小更大，因为其更高的速率对动量的影响强于质量。"
+            }
+          },
+          {
+            "id": "opt-cannot-determine",
+            "label": {
+              "en": "The relationship between their momentum magnitudes cannot be determined without knowing each vehicle's actual speed.",
+              "ms": "Hubungan antara magnitud momentum kedua-duanya tidak dapat ditentukan tanpa mengetahui laju sebenar setiap kenderaan.",
+              "zh": "如果不了解每辆车的实际速率，就无法确定两者动量大小的关系。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-08-isolated-subsystem-fallacy",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "State and apply Newton's second law as the time rate of change of linear momentum of a particle.",
+      "prompt": {
+        "en": "Two astronauts, Nadia and Leo, are at rest floating together in deep space far from any celestial gravitational influence. Nadia then pushes Leo away horizontally. Treating the two-astronaut pair as an isolated system during the push, which statement correctly describes the linear momentum of Nadia alone?",
+        "ms": "Dua orang angkasawan, Nadia dan Leo, berada dalam keadaan pegun terapung bersama-sama di angkasa lepas jauh daripada sebarang pengaruh graviti cakerawala. Nadia kemudian menolak Leo ke arah mengufuk. Dengan menganggap pasangan dua angkasawan itu sebagai sistem terpencil semasa tolakan tersebut, pernyataan manakah yang menerangkan momentum linear Nadia secara bersendirian dengan betul?",
+        "zh": "两位宇航员纳迪娅（Nadia）和利奥（Leo）最初处于静止状态，一起漂浮在远离任何天体引力影响的深空中。随后纳迪娅水平推开利奥。在推开的过程中，将这两名宇航员视为一个孤立系统，下列哪项关于纳迪娅单个人线动量的描述是正确的？"
+      },
+      "hints": [
+        {
+          "en": "Distinguish between the total momentum of the entire system and the momentum of a single member within that system.",
+          "ms": "Bezakan antara jumlah momentum keseluruhan sistem dengan momentum seorang ahli tunggal di dalam sistem tersebut.",
+          "zh": "区分整个系统的总动量与系统中单个成员的动量。"
+        },
+        {
+          "en": "Recall Newton's second law in terms of momentum: the net force acting on any single particle equals the time derivative of that particle's linear momentum.",
+          "ms": "Ingat kembali hukum kedua Newton dalam sebutan momentum: daya padu yang bertindak ke atas mana-mana zarah tunggal bersamaan dengan terbitan masa bagi momentum linear zarah tersebut.",
+          "zh": "回顾用动量表示的牛顿第二定律：作用在任何单个粒子上的合力等于该粒子线动量对时间的变化率。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Although the total momentum of the isolated two-astronaut system is conserved, an individual astronaut experiences a net interaction force from the other astronaut. By Newton's second law, this net force equals the time rate of change of her individual momentum.",
+        "ms": "Tepat! Walaupun jumlah momentum sistem dua angkasawan yang terpencil itu terpelihara, seseorang angkasawan secara individu mengalami daya interaksi padu daripada angkasawan yang lain. Menurut hukum kedua Newton, daya padu ini bersamaan dengan kadar perubahan momentum individunya terhadap masa.",
+        "zh": "正确！尽管由两名宇航员组成的孤立系统的总动量是守恒的，但单个宇航员会受到对方施加的相互作用合力。根据牛顿第二定律，该合力等于她个人动量对时间的变化率。"
+      },
+      "answerLogic": {
+        "en": "Conservation of momentum applies to the isolated system as a whole (total momentum is constant). However, Nadia alone is not an isolated system; Leo exerts an interaction force on her. According to Newton's second law (net force equals dp/dt), the net force acting on Nadia is equal to the time rate of change of her linear momentum. Therefore, her momentum changes as she accelerates backward.",
+        "ms": "Keabadian momentum terpakai kepada sistem terpencil secara keseluruhannya (jumlah momentum adalah malar). Walau bagaimanapun, Nadia secara bersendirian bukanlah sistem terpencil; Leo mengenakan daya interaksi ke atasnya. Menurut hukum kedua Newton (daya padu bersamaan dp/dt), daya padu yang bertindak ke atas Nadia adalah bersamaan dengan kadar perubahan momentum linearnya terhadap masa. Oleh itu, momentumnya berubah semasa dia memecut ke belakang.",
+        "zh": "动量守恒适用于作为整体的孤立系统（总动量守恒）。然而，纳迪娅单个人并不是孤立系统；利奥对她施加了相互作用力。根据牛顿第二定律（合力等于 dp/dt），作用在纳迪娅身上的合力等于她线动量对时间的变化率。因此，随着她向后加速，她的动量必然改变。"
+      },
+      "explanation": {
+        "en": "A widespread pitfall is assuming that because a system is isolated, every constituent particle must also keep its momentum constant. In reality, internal forces redistribute momentum between system members. When Nadia pushes Leo, Leo exerts an equal and opposite force on Nadia (Newton's third law). This force constitutes a non-zero net force acting on Nadia alone. By Newton's second law, this net force dictates the time rate of change of her linear momentum, causing her momentum to change even while the system's total momentum remains strictly zero.",
+        "ms": "Perangkap pemikiran yang meluas ialah menganggap bahawa kerana sesuatu sistem itu terpencil, setiap zarah juzuk juga mesti mengekalkan momentumnya sebagai malar. Pada hakikatnya, daya dalaman mengagihkan semula momentum antara ahli sistem. Apabila Nadia menolak Leo, Leo mengenakan daya yang sama magnitud dan bertentangan arah ke atas Nadia (hukum ketiga Newton). Daya ini membentuk daya padu bukan sifar yang bertindak ke atas Nadia secara individu. Menurut hukum kedua Newton, daya padu ini menentukan kadar perubahan momentum linearnya terhadap masa, menyebabkan momentumnya berubah walaupun jumlah momentum sistem kekal sifar dengan tepat.",
+        "zh": "一个常见的误区是认为既然一个系统是孤立的，那么其中的每个组成粒子也必须保持其动量不变。事实上，内力会在系统成员之间重新分配动量。当纳迪娅推利奥时，利奥对纳迪娅施加大小相等、方向相反的反作用力（牛顿第三定律）。对纳迪娅单独而言，该力构成了一个非零的合力。根据牛顿第二定律，该合力决定了她线动量对时间的变化率，从而使她的动量发生改变，尽管系统的总动量严格保持为零。"
+      },
+      "misconceptions": [
+        "single-particle-momentum-conservation",
+        "force-equals-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Review Newton's third law: interacting bodies exert forces on each other that are equal in magnitude and opposite in direction. Because these two forces act on different bodies, they do not cancel on any single body.",
+          "ms": "Ulang kaji hukum ketiga Newton: jasad yang berinteraksi mengenakan daya antara satu sama lain yang sama magnitud dan bertentangan arah. Kerana kedua-dua daya ini bertindak ke atas jasad yang berbeza, ia tidak membatalkan satu sama lain pada mana-mana jasad tunggal.",
+          "zh": "复习牛顿第三定律：相互作用的物体对彼此施加大小相等、方向相反的力。因为这两个力分别作用在不同的物体上，所以它们在任何单个物体上都不会相互抵消。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question presenting four explanations of the momentum and net force acting on one individual astronaut during an isolated two-person interaction.",
+        "ms": "Soalan aneka pilihan yang membentangkan empat penjelasan mengenai momentum dan daya padu yang bertindak ke atas seorang angkasawan individu semasa interaksi dua orang dalam sistem terpencil.",
+        "zh": "多项选择题，给出关于在双人孤立系统相互作用中作用于单个宇航员的动量与合力的四种解释选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-nadia-momentum-changes",
+        "options": [
+          {
+            "id": "opt-nadia-momentum-changes",
+            "label": {
+              "en": "Nadia's momentum changes because Leo exerts an external contact force on her; the net force on Nadia equals the time rate of change of her individual momentum.",
+              "ms": "Momentum Nadia berubah kerana Leo mengenakan daya sentuhan luar ke atasnya; daya padu ke atas Nadia adalah bersamaan dengan kadar perubahan momentum individunya terhadap masa.",
+              "zh": "纳迪娅的动量发生改变，因为利奥对她施加了一个外在接触力；纳迪娅所受的合力等于她个人动量对时间的变化率。"
+            }
+          },
+          {
+            "id": "opt-single-particle-conserved",
+            "label": {
+              "en": "Nadia's individual momentum remains zero throughout the push because the overall two-astronaut system is isolated from outside forces.",
+              "ms": "Momentum individu Nadia kekal sifar sepanjang tolakan tersebut kerana keseluruhan sistem dua angkasawan itu terpencil daripada daya luar.",
+              "zh": "纳迪娅个人的动量在整个推开过程中始终保持为零，因为两位宇航员构成的整体系统与外界作用力隔离。"
+            },
+            "misconception": "single-particle-momentum-conservation"
+          },
+          {
+            "id": "opt-force-equals-momentum",
+            "label": {
+              "en": "Nadia's individual momentum changes, but the contact force acting on her is directly equal to her instantaneous momentum rather than its time rate of change.",
+              "ms": "Momentum individu Nadia berubah, tetapi daya sentuhan yang bertindak ke atasnya adalah sama secara langsung dengan momentum seketika miliknya dan bukannya kadar perubahan terhadap masa.",
+              "zh": "纳迪娅个人的动量发生改变，但作用在她身上的接触力直接等于她的瞬时动量，而不是动量对时间的变化率。"
+            },
+            "misconception": "force-equals-momentum"
+          },
+          {
+            "id": "opt-forces-cancel-on-body",
+            "label": {
+              "en": "Nadia's momentum cannot change because Newton's third law causes the action-reaction force pair to cancel out entirely on Nadia herself.",
+              "ms": "Momentum Nadia tidak boleh berubah kerana hukum ketiga Newton menyebabkan pasangan daya tindakan-tindak balas membatalkan sepenuhnya pada diri Nadia sendiri.",
+              "zh": "纳迪娅的动量不可能改变，因为牛顿第三定律导致作用力与反作用力对在纳迪娅自身身上完全抵消。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-09-no-momentum-conversion",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish linear momentum from kinetic energy in terms of vector directionality and energy transformations.",
+      "prompt": {
+        "en": "An autonomous docking pod coasts along a straight guide rail and collides with an energy-absorbing spring buffer, temporarily compressing the spring to maximum deflection and coming momentarily to rest. Comparing linear momentum and kinetic energy during this process, which statement is physically accurate?",
+        "ms": "Sebuah pod dok berautonomi meluncur di sepanjang rel panduan lurus dan berlanggar dengan penimbal spring penyerap tenaga, memampatkan spring buat sementara waktu ke pesongan maksimum dan berhenti seketika. Membandingkan momentum linear dan tenaga kinetik semasa proses ini, pernyataan manakah yang tepat dari segi fizik?",
+        "zh": "一个自主对接舱沿着平直的导轨滑行并撞上一个吸能弹簧缓冲器，暂时将弹簧压缩至最大形变量并瞬间停下。对比该过程中线动量与动能的行为，下列哪项陈述在物理上是准确的？"
+      },
+      "hints": [
+        {
+          "en": "Recall that energy can exist in multiple interchangeable forms, such as kinetic, potential, and thermal energy.",
+          "ms": "Ingat kembali bahawa tenaga boleh wujud dalam pelbagai bentuk yang boleh saling bertukar, seperti tenaga kinetik, keupayaan, dan terma.",
+          "zh": "回顾能量可以以多种可相互转化的形式存在，例如动能、势能和内能（热能）。"
+        },
+        {
+          "en": "Consider whether physics defines other forms of momentum analogous to potential energy, or whether there is only one type of linear momentum.",
+          "ms": "Pertimbangkan sama ada fizik mentakrifkan bentuk momentum lain yang serupa dengan tenaga keupayaan, atau adakah hanya terdapat satu jenis momentum linear sahaja.",
+          "zh": "思考物理学中是否定义了类似于势能的其他形式的动量，还是说线动量只有单一的一种类型。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Kinetic energy can transform into other types of energy, such as elastic potential energy or internal thermal energy. In contrast, there is only one type of linear momentum; it never transforms into potential or internal momentum, but rather transfers to other interacting bodies via net forces.",
+        "ms": "Tepat! Tenaga kinetik boleh bertukar menjadi jenis tenaga lain, seperti tenaga keupayaan kenyal atau tenaga terma dalaman. Sebaliknya, hanya terdapat satu jenis momentum linear sahaja; ia tidak pernah bertukar menjadi momentum keupayaan atau dalaman, sebaliknya dipindahkan kepada jasad berinteraksi yang lain melalui daya padu.",
+        "zh": "正确！动能可以转化为其他类型的能量，如弹性势能或内部热能。相比之下，线动量只有一种形式；它永远不会转化为势动量或内动量，而是通过合力传递给其他相互作用的物体。"
+      },
+      "answerLogic": {
+        "en": "A fundamental distinction between kinetic energy and linear momentum is that energy can undergo qualitative transformations between different physical forms (such as kinetic to elastic potential energy). Linear momentum has no other forms (concepts like potential momentum do not exist in classical physics). When a moving body decelerates against a fixed barrier, its momentum is transferred to the barrier and the Earth via the time integral of interaction forces, not converted into stored potential momentum.",
+        "ms": "Perbezaan asas antara tenaga kinetik dan momentum linear ialah tenaga boleh mengalami perubahan kualitatif antara bentuk fizikal yang berbeza (seperti tenaga kinetik kepada tenaga keupayaan kenyal). Momentum linear tidak mempunyai bentuk lain (konsep seperti momentum keupayaan tidak wujud dalam fizik klasik). Apabila jasad yang bergerak menyahpecut terhadap penghadang pegun, momentumnya dipindahkan ke penghadang dan Bumi melalui kamiran masa bagi daya interaksi, bukannya ditukarkan kepada momentum keupayaan yang tersimpan.",
+        "zh": "动能与线动量的一个根本区别在于，能量可以在不同物理形式之间发生质的转化（例如动能转化为弹性势能）。而线动量没有其他形式（经典物理学中不存在势动量等概念）。当运动物体在固定阻挡物上减速时，其动量通过相互作用力对时间的积分传递给阻挡物和地球，而不是转化为储存的势动量。"
+      },
+      "explanation": {
+        "en": "Section 9.1 emphasizes two essential differences between kinetic energy and linear momentum: directionality (kinetic energy is a scalar, linear momentum is a vector) and transformation capacity. Kinetic energy can readily convert into potential, thermal, or internal energy. However, there is strictly only one kind of linear momentum. Linear momentum cannot be stored as potential momentum; whenever an object loses linear momentum, that momentum is transferred directly to other objects through interaction forces in accordance with Newton's second and third laws.",
+        "ms": "Seksyen 9.1 menekankan dua perbezaan penting antara tenaga kinetik dan momentum linear: keberarahan (tenaga kinetik ialah skalar, momentum linear ialah vektor) dan keupayaan penukaran. Tenaga kinetik boleh bertukar dengan mudah kepada tenaga keupayaan, terma, atau dalaman. Walau bagaimanapun, secara tegasnya hanya ada satu jenis momentum linear sahaja. Momentum linear tidak boleh disimpan sebagai momentum keupayaan; setiap kali sesuatu objek kehilangan momentum linear, momentum tersebut dipindahkan secara langsung kepada objek lain melalui daya interaksi selaras dengan hukum kedua dan ketiga Newton.",
+        "zh": "第9.1节强调了动能与线动量之间的两个本质区别：方向性（动能是标量，线动量是矢量）和转化能力。动能可以轻易地转化为势能、热能或内能。然而，严格来说线动量只有一种。线动量不能被储存为势动量；每当一个物体失去线动量时，该动量都会根据牛顿第二和第三定律，通过相互作用力直接传递给其他物体。"
+      },
+      "misconceptions": [
+        "momentum-transformation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-concept",
+        "prompt": {
+          "en": "Recall that kinetic energy is a scalar measure of motion that can convert into potential energy when work is done against conservative forces such as a spring force.",
+          "ms": "Ingat kembali bahawa tenaga kinetik ialah ukuran gerakan skalar yang boleh bertukar menjadi tenaga keupayaan apabila kerja dilakukan terhadap daya konservatif seperti daya spring.",
+          "zh": "回顾动能是运动的标量度量，当克服弹簧力等保守力做功时，动能可以转化为势能。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question presenting four physical comparisons between kinetic energy transformations and linear momentum transfer during a collision with an elastic buffer.",
+        "ms": "Soalan aneka pilihan yang membentangkan empat perbandingan fizikal antara penukaran tenaga kinetik dan pemindahan momentum linear semasa perlanggaran dengan penimbal kenyal.",
+        "zh": "多项选择题，给出在与弹性缓冲器碰撞过程中动能转化与线动量传递的四种物理比较选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-ke-transforms-momentum-transfers",
+        "options": [
+          {
+            "id": "opt-ke-transforms-momentum-transfers",
+            "label": {
+              "en": "Kinetic energy transforms into elastic potential energy stored in the spring, whereas linear momentum cannot transform into potential forms and is transferred to the guide rail system through contact forces.",
+              "ms": "Tenaga kinetik berubah menjadi tenaga keupayaan kenyal yang tersimpan di dalam spring, manakala momentum linear tidak boleh bertukar menjadi bentuk keupayaan dan dipindahkan ke sistem rel panduan melalui daya sentuhan.",
+              "zh": "动能转化为储存在弹簧中的弹性势能，而线动量不能转化为势能形式，它通过接触力转移到了导轨系统。"
+            }
+          },
+          {
+            "id": "opt-potential-momentum-stored",
+            "label": {
+              "en": "Kinetic energy transforms into elastic potential energy, while the pod's linear momentum simultaneously transforms into stored elastic potential momentum inside the spring.",
+              "ms": "Tenaga kinetik bertukar menjadi tenaga keupayaan kenyal, manakala momentum linear pod secara serentak bertukar menjadi momentum keupayaan kenyal yang tersimpan di dalam spring.",
+              "zh": "动能转化为弹性势能，与此同时，对接舱的线动量转化为弹簧内部储存的弹性势动量。"
+            },
+            "misconception": "momentum-transformation"
+          },
+          {
+            "id": "opt-both-turn-to-heat",
+            "label": {
+              "en": "Both kinetic energy and linear momentum transform directly into internal thermal energy, because stopping an object always converts all mechanical quantities into heat.",
+              "ms": "Kedua-dua tenaga kinetik dan momentum linear bertukar secara langsung menjadi tenaga terma dalaman, kerana memberhentikan objek sentiasa menukarkan semua kuantiti mekanikal kepada haba.",
+              "zh": "动能和线动量都直接转化为内部热能，因为使物体停止运动总是会将所有机械量转化为热量。"
+            }
+          },
+          {
+            "id": "opt-momentum-conserved-internally",
+            "label": {
+              "en": "Linear momentum is conserved within the pod alone as scalar inertia, whereas kinetic energy is completely destroyed with no storage in any other form.",
+              "ms": "Momentum linear terpelihara di dalam pod itu sendiri sebagai inersia skalar, manakala tenaga kinetik musnah sepenuhnya tanpa penyimpanan dalam sebarang bentuk lain.",
+              "zh": "线动量作为标量惯性仅在对接舱内部守恒，而动能则完全消失且未以任何其他形式储存。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-int-01-scalar-vs-vector-class",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define linear momentum as the product of mass and velocity and identify its vector nature, dimensions, and SI units.",
+      "prompt": {
+        "en": "Classify each given physical quantity according to whether it is a vector quantity (having both magnitude and spatial direction) or a scalar quantity (having magnitude only).",
+        "ms": "Kelaskan setiap kuantiti fizik yang diberikan mengikut sama ada ia merupakan kuantiti vektor (mempunyai magnitud dan arah ruang) atau kuantiti skalar (mempunyai magnitud sahaja).",
+        "zh": "将以下每个物理量分类为矢量（同时具有大小和空间方向）或标量（仅具有大小）。"
+      },
+      "hints": [
+        {
+          "en": "Recall that multiplying a positive scalar (mass) by a vector (velocity) produces another vector pointing in the same direction.",
+          "ms": "Ingat bahawa mendarabkan skalar positif (jisim) dengan vektor (halaju) menghasilkan satu lagi vektor yang menunjuk ke arah yang sama.",
+          "zh": "请记住，正标量（质量）与矢量（速度）相乘会产生一个指向相同方向的新矢量。"
+        },
+        {
+          "en": "Kinetic energy depends on mass and speed squared, representing a scalar quantity without directional components. By contrast, linear momentum retains the directional orientation of velocity.",
+          "ms": "Tenaga kinetik bergantung pada jisim dan laju kuasa dua, mewakili kuantiti skalar tanpa komponen berarah. Sebaliknya, momentum linear mengekalkan orientasi arah halaju.",
+          "zh": "动能取决于质量与速率的平方，是没有任何方向分量的标量。相比之下，线动量保留了速度的方向特性。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Linear momentum and velocity are vectors possessing both magnitude and spatial direction. Mass and kinetic energy are scalars that possess only magnitude.",
+        "ms": "Tepat! Momentum linear dan halaju ialah vektor yang mempunyai kedua-dua magnitud dan arah ruang. Jisim dan tenaga kinetik ialah skalar yang hanya mempunyai magnitud.",
+        "zh": "正确！线动量和速度是同时具有大小和空间方向的矢量。质量和动能则是仅具有大小的标量。"
+      },
+      "answerLogic": {
+        "en": "Linear momentum is defined as the product of mass (a scalar) and velocity (a vector), giving a vector quantity aligned with velocity. Velocity is also a vector. Mass and kinetic energy are purely scalar quantities.",
+        "ms": "Momentum linear ditakrifkan sebagai hasil darab jisim (skalar) dan halaju (vektor), menghasilkan kuantiti vektor yang searah dengan halaju. Halaju juga merupakan vektor. Jisim dan tenaga kinetik adalah kuantiti skalar semata-mata.",
+        "zh": "线动量定义为质量（标量）与速度（矢量）的乘积，产生与速度方向相同的矢量。速度也是矢量。质量和动能则是纯标量。"
+      },
+      "explanation": {
+        "en": "Because linear momentum is the product of mass and velocity, it inherently carries directional information in one, two, or three dimensions (px = m*vx, py = m*vy, pz = m*vz). Two objects moving with equal speeds in opposite directions have positive kinetic energies that add together, but their momentum vectors point in opposite directions and cancel out. This demonstrates the fundamental distinction between scalar kinetic energy and vector linear momentum.",
+        "ms": "Oleh kerana momentum linear ialah hasil darab jisim dan halaju, ia secara semula jadi membawa maklumat berarah dalam satu, dua, atau tiga dimensi (px = m*vx, py = m*vy, pz = m*vz). Dua objek yang bergerak dengan laju yang sama dalam arah bertentangan mempunyai tenaga kinetik positif yang saling menambah, tetapi vektor momentumnya menunjuk ke arah bertentangan dan saling membatalkan. Ini menunjukkan perbezaan asas antara tenaga kinetik skalar dan momentum linear vektor.",
+        "zh": "由于线动量是质量与速度的乘积，它在一维、二维或三维中本质上都带有方向信息（px = m*vx, py = m*vy, pz = m*vz）。两个以相同速率反向运动的物体，其正动能会相加，但它们的动量矢量方向相反并相互抵消。这体现了标量动能与矢量线动量之间的根本区别。"
+      },
+      "misconceptions": [
+        "momentum-is-scalar"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "Review vector quantities: unlike scalars that have only magnitude, vectors have both magnitude and direction and can be broken down into Cartesian components along the x, y, and z axes.",
+          "ms": "Ulang kaji kuantiti vektor: tidak seperti skalar yang hanya mempunyai magnitud, vektor mempunyai kedua-dua magnitud dan arah serta boleh dihuraikan kepada komponen Cartesian di sepanjang paksi x, y, dan z.",
+          "zh": "复习矢量概念：与仅有大小的标量不同，矢量兼具大小与方向，并可分解为沿 x、y 和 z 轴的笛卡尔分量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A classification activity where four quantities—linear momentum, velocity, kinetic energy, and mass—must be sorted into two categories: Vector quantity or Scalar quantity.",
+        "ms": "Aktiviti pengelasan di mana empat kuantiti—momentum linear, halaju, tenaga kinetik, dan jisim—mesti disusun ke dalam dua kategori: Kuantiti vektor atau Kuantiti skalar.",
+        "zh": "一个分类活动，需将线动量、速度、动能和质量这四个物理量归入两类：矢量或标量。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-p",
+            "label": {
+              "en": "Linear momentum",
+              "ms": "Momentum linear",
+              "zh": "线动量"
+            },
+            "misconception": "momentum-is-scalar"
+          },
+          {
+            "id": "item-v",
+            "label": {
+              "en": "Velocity",
+              "ms": "Halaju",
+              "zh": "速度"
+            }
+          },
+          {
+            "id": "item-ke",
+            "label": {
+              "en": "Kinetic energy",
+              "ms": "Tenaga kinetik",
+              "zh": "动能"
+            }
+          },
+          {
+            "id": "item-m",
+            "label": {
+              "en": "Mass",
+              "ms": "Jisim",
+              "zh": "质量"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-vector",
+            "label": {
+              "en": "Vector quantity (possesses magnitude and spatial direction)",
+              "ms": "Kuantiti vektor (mempunyai magnitud dan arah ruang)",
+              "zh": "矢量（具有大小和空间方向）"
+            }
+          },
+          {
+            "id": "target-scalar",
+            "label": {
+              "en": "Scalar quantity (possesses magnitude only)",
+              "ms": "Kuantiti skalar (mempunyai magnitud sahaja)",
+              "zh": "标量（仅具有大小）"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-p",
+            "targetId": "target-vector"
+          },
+          {
+            "itemId": "item-v",
+            "targetId": "target-vector"
+          },
+          {
+            "itemId": "item-ke",
+            "targetId": "target-scalar"
+          },
+          {
+            "itemId": "item-m",
+            "targetId": "target-scalar"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "momentum-is-scalar",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-p",
+            "targetId": "target-scalar"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-02-quantity-dimension-match",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define linear momentum as the product of mass and velocity and identify its vector nature, dimensions, and SI units.",
+      "prompt": {
+        "en": "Match each physical quantity to its corresponding physical definition and base SI dimensional representation.",
+        "ms": "Padankan setiap kuantiti fizik dengan definisi fizikal dan perwakilan dimensi SI asas yang sepadan.",
+        "zh": "将每个物理量与其对应的物理定义及基本国际单位制（SI）量纲表示进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Notice the role of time derivatives: net force is the derivative of linear momentum with respect to time, which introduces an extra factor of 1/T in dimensions.",
+          "ms": "Perhatikan peranan terbitan masa: daya padu ialah terbitan momentum linear terhadap masa, yang memperkenalkan faktor tambahan 1/T dalam dimensi.",
+          "zh": "注意时间导数的作用：合力是线动量对时间的导数，这在量纲上增加了一个 1/T 的因子。"
+        },
+        {
+          "en": "Linear momentum has units of mass times speed (kg·m/s), whereas force has units of mass times acceleration (kg·m/s² or newtons).",
+          "ms": "Momentum linear mempunyai unit jisim darab laju (kg·m/s), manakala daya mempunyai unit jisim darab pecutan (kg·m/s² atau newton).",
+          "zh": "线动量的单位是质量乘速率（kg·m/s），而力的单位是质量乘加速度（kg·m/s² 或牛顿）。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct matching! Linear momentum is the product of mass and velocity (kg·m/s, ML/T), while net force is the time rate of change of momentum (N, ML/T²), and velocity is the time rate of change of position (m/s, L/T).",
+        "ms": "Padanan betul! Momentum linear ialah hasil darab jisim dan halaju (kg·m/s, ML/T), manakala daya padu ialah kadar perubahan momentum terhadap masa (N, ML/T²), dan halaju ialah kadar perubahan kedudukan terhadap masa (m/s, L/T).",
+        "zh": "配对正确！线动量是质量与速度的乘积（kg·m/s，ML/T），而合外力是动量对时间的变化率（N，ML/T²），速度是位置对时间的变化率（m/s，L/T）。"
+      },
+      "answerLogic": {
+        "en": "Linear momentum equals mass times velocity, so its dimensions are mass times length over time (ML/T) and unit kg·m/s. By Newton's second law, net force equals dp/dt, giving dimensions ML/T² and unit N. Velocity is dr/dt with dimensions L/T and unit m/s.",
+        "ms": "Momentum linear bersamaan jisim darab halaju, maka dimensinya ialah jisim darab panjang per masa (ML/T) dan unit kg·m/s. Mengikut hukum Newton kedua, daya padu bersamaan dp/dt, memberikan dimensi ML/T² dan unit N. Halaju ialah dr/dt dengan dimensi L/T dan unit m/s.",
+        "zh": "线动量等于质量乘以速度，因此其量纲为质量乘以长度除以时间（ML/T），单位为 kg·m/s。根据牛顿第二定律，合外力等于 dp/dt，量纲为 ML/T²，单位为 N。速度为 dr/dt，量纲为 L/T，单位为 m/s。"
+      },
+      "explanation": {
+        "en": "Newton's second law states that the net force acting on a particle equals the time rate of change of its linear momentum (net force = dp/dt). Confusing force with momentum overlooks this critical time derivative. Force causes momentum to change over time, and dividing momentum by time alters both the physical meaning and the dimensional units from kg·m/s to kg·m/s² (newtons).",
+        "ms": "Hukum Newton kedua menyatakan bahawa daya padu yang bertindak ke atas zarah bersamaan dengan kadar perubahan momentum linearnya terhadap masa (daya padu = dp/dt). Mengelirukan daya dengan momentum mengabaikan terbitan masa yang penting ini. Daya menyebabkan momentum berubah mengikut masa, dan membahagikan momentum dengan masa mengubah makna fizikal serta unit dimensi daripada kg·m/s kepada kg·m/s² (newton).",
+        "zh": "牛顿第二定律指出，作用在质点上的合外力等于其线动量对时间的变化率（合外力 = dp/dt）。把力与动量混淆忽略了这一关键的时间导数关系。力引起动量随时间改变，动量除以时间在物理意义以及量纲单位上都发生了改变，从 kg·m/s 变为 kg·m/s²（牛顿）。"
+      },
+      "misconceptions": [
+        "force-equals-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "Review vector quantities and their rates of change: both force and momentum are vector quantities with distinct physical dimensions and distinct components along x, y, and z.",
+          "ms": "Ulang kaji kuantiti vektor dan kadar perubahannya: kedua-dua daya dan momentum ialah kuantiti vektor dengan dimensi fizikal yang berbeza dan komponen berasingan di sepanjang x, y, dan z.",
+          "zh": "复习矢量及其变化率：力和动量都是矢量，具有不同的物理量纲，且在 x、y 和 z 轴上具有独立的分量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A matching interaction where three quantities—linear momentum, net force, and velocity—must each be paired with its correct physical description, dimensions, and SI units.",
+        "ms": "Interaksi pemadanan di mana tiga kuantiti—momentum linear, daya padu, dan halaju—mesti setiap satunya dipadankan dengan huraian fizikal, dimensi, dan unit SI yang betul.",
+        "zh": "一个匹配互动，需要将线动量、合外力和速度这三个物理量分别与其正确的物理描述、量纲和国际单位配对。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-linear-momentum",
+            "label": {
+              "en": "Linear momentum",
+              "ms": "Momentum linear",
+              "zh": "线动量"
+            }
+          },
+          {
+            "id": "item-net-force",
+            "label": {
+              "en": "Net force",
+              "ms": "Daya padu",
+              "zh": "合外力"
+            },
+            "misconception": "force-equals-momentum"
+          },
+          {
+            "id": "item-velocity",
+            "label": {
+              "en": "Velocity",
+              "ms": "Halaju",
+              "zh": "速度"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-desc-momentum",
+            "label": {
+              "en": "Product of mass and velocity with SI unit kg·m/s and dimensions ML/T",
+              "ms": "Hasil darab jisim dan halaju dengan unit SI kg·m/s dan dimensi ML/T",
+              "zh": "质量与速度的乘积，SI单位为 kg·m/s，量纲为 ML/T"
+            }
+          },
+          {
+            "id": "target-desc-force",
+            "label": {
+              "en": "Time rate of change of linear momentum with SI unit N (kg·m/s²) and dimensions ML/T²",
+              "ms": "Kadar perubahan momentum linear terhadap masa dengan unit SI N (kg·m/s²) dan dimensi ML/T²",
+              "zh": "线动量对时间的变化率，SI单位为 N (kg·m/s²)，量纲为 ML/T²"
+            }
+          },
+          {
+            "id": "target-desc-velocity",
+            "label": {
+              "en": "Time rate of change of position with SI unit m/s and dimensions L/T",
+              "ms": "Kadar perubahan kedudukan terhadap masa dengan unit SI m/s dan dimensi L/T",
+              "zh": "位置对时间的变化率，SI单位为 m/s，量纲为 L/T"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-linear-momentum",
+            "targetId": "target-desc-momentum"
+          },
+          {
+            "itemId": "item-net-force",
+            "targetId": "target-desc-force"
+          },
+          {
+            "itemId": "item-velocity",
+            "targetId": "target-desc-velocity"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "force-equals-momentum",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-net-force",
+            "targetId": "target-desc-momentum"
+          }
+        },
+        {
+          "misconception": "force-equals-momentum",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-linear-momentum",
+            "targetId": "target-desc-force"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-03-linear-momentum-properties-select",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define linear momentum as the product of mass and velocity and identify its vector nature, dimensions, and SI units.",
+      "prompt": {
+        "en": "Select all statements that accurately describe the fundamental physical properties and definitions of linear momentum.",
+        "ms": "Pilih semua pernyataan yang menghuraikan dengan tepat sifat fizikal dan definisi asas bagi momentum linear.",
+        "zh": "选择所有准确描述线动量基本物理性质和定义的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Remember that linear momentum is formed by multiplying scalar mass by vector velocity, preserving direction.",
+          "ms": "Ingat bahawa momentum linear terbentuk daripada pendaraban jisim skalar dengan halaju vektor, lalu mengekalkan arah.",
+          "zh": "请记住，线动量是由标量质量乘以矢量速度构成的，因此保留了方向性。"
+        },
+        {
+          "en": "Unlike energy, which can transform into potential, thermal, or internal energy forms, there is only one physical form of linear momentum.",
+          "ms": "Tidak seperti tenaga, yang boleh bertukar menjadi bentuk tenaga keupayaan, terma, atau dalaman, hanya terdapat satu bentuk fizikal bagi momentum linear.",
+          "zh": "与可以转化为势能、热能或内能等形式的能量不同，线动量只有单一的物理形式。"
+        }
+      ],
+      "feedback": {
+        "en": "Great job! You correctly identified that linear momentum is a vector pointing along velocity with dimensions ML/T (kg·m/s), and recognized that momentum cannot transform into other forms like potential or thermal momentum.",
+        "ms": "Syabas! Anda berjaya mengenal pasti bahawa momentum linear ialah vektor yang searah dengan halaju dengan dimensi ML/T (kg·m/s), dan menyedari bahawa momentum tidak boleh bertukar menjadi bentuk lain seperti momentum keupayaan atau terma.",
+        "zh": "太棒了！您正确识别出线动量是沿速度方向的矢量，量纲为 ML/T（kg·m/s），并且认识到动量不会像能量那样转化为势动量或热动量等其他形式。"
+      },
+      "answerLogic": {
+        "en": "Linear momentum p = m*v is fundamentally a vector pointing in the direction of v, having dimensions ML/T and unit kg·m/s. Unlike kinetic energy, which converts to potential or internal energy, there are no alternative types of linear momentum.",
+        "ms": "Momentum linear p = m*v secara asasnya ialah vektor yang menunjuk ke arah v, mempunyai dimensi ML/T dan unit kg·m/s. Tidak seperti tenaga kinetik yang boleh bertukar menjadi tenaga keupayaan atau dalaman, tiada jenis alternatif bagi momentum linear.",
+        "zh": "线动量 p = m*v 在本质上是指向 v 方向的矢量，量纲为 ML/T，单位为 kg·m/s。与动能可转化为势能或内能不同，线动量不存在其他替代的类型。"
+      },
+      "explanation": {
+        "en": "Linear momentum is defined as p = m*v. Because velocity is a directional vector and mass is a positive scalar, momentum must be a vector sharing the exact direction of velocity. Its SI unit is kg·m/s, corresponding to dimensional formula ML/T. A critical distinction between momentum and energy is that while mechanical energy can transform into non-mechanical forms (such as potential energy or thermal internal energy), linear momentum never transforms into other species of momentum. It is transferred between objects, but exists only as linear momentum.",
+        "ms": "Momentum linear ditakrifkan sebagai p = m*v. Oleh kerana halaju ialah vektor berarah dan jisim ialah skalar positif, momentum mestilah vektor yang berkongsi arah yang sama dengan halaju. Unit SI baginya ialah kg·m/s, sepadan dengan formula dimensi ML/T. Perbezaan kritikal antara momentum dan tenaga ialah bahawa walaupun tenaga mekanikal boleh bertukar kepada bentuk bukan mekanikal (seperti tenaga keupayaan atau tenaga dalaman terma), momentum linear tidak pernah bertukar kepada jenis momentum yang lain. Ia dipindahkan antara objek, tetapi hanya wujud sebagai momentum linear.",
+        "zh": "线动量定义为 p = m*v。因为速度是具有方向的矢量，而质量是正标量，所以动量必然是与速度具有完全相同方向的矢量。其国际单位为 kg·m/s，对应量纲公式 ML/T。动量与能量之间的一个关键区别在于：机械能可以转化为非机械形式（如势能或内能/热能），但线动量绝不会转化为其他种类的动量。它可以在物体之间传递，但始终仅以线动量的形式存在。"
+      },
+      "misconceptions": [
+        "momentum-is-scalar",
+        "momentum-transformation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "Review vector quantities: vectors possess both magnitude and spatial direction, meaning they must be resolved into independent components along orthogonal coordinate axes.",
+          "ms": "Ulang kaji kuantiti vektor: vektor mempunyai kedua-dua magnitud dan arah ruang, bermakna ia mesti dihuraikan kepada komponen bebas di sepanjang paksi koordinat ortogon.",
+          "zh": "复习矢量概念：矢量同时具备大小和空间方向，这意味着必须将它们沿正交坐标轴分解为独立分量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multi-select interaction with four statements about linear momentum. Users must select all true statements regarding its vector nature, dimensions, and lack of transformation types.",
+        "ms": "Interaksi pelbagai pilihan dengan empat pernyataan tentang momentum linear. Pengguna mesti memilih semua pernyataan yang benar mengenai sifat vektor, dimensi, dan ketiadaan jenis penukaran bentuknya.",
+        "zh": "一个包含关于线动量的四条陈述的多选交互。用户必须选择所有关于其矢量特性、量纲以及不存在其他转化形式的正确陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-vector-dir",
+            "label": {
+              "en": "Linear momentum is a vector quantity whose direction is identical to the velocity vector of the particle.",
+              "ms": "Momentum linear ialah kuantiti vektor yang arahnya adalah serupa dengan vektor halaju zarah tersebut.",
+              "zh": "线动量是矢量，其方向与质点的速度矢量完全相同。"
+            }
+          },
+          {
+            "id": "item-dimensions-unit",
+            "label": {
+              "en": "The dimensions of linear momentum are ML/T, and its SI unit is kilogram-meter per second (kg·m/s).",
+              "ms": "Dimensi bagi momentum linear ialah ML/T, dan unit SI baginya ialah kilogram-meter sesaat (kg·m/s).",
+              "zh": "线动量的量纲为 ML/T，其国际单位为千克·米/秒（kg·m/s）。"
+            }
+          },
+          {
+            "id": "item-scalar-claim",
+            "label": {
+              "en": "Linear momentum is a scalar quantity because it is simply the amount of motion an object possesses regardless of heading.",
+              "ms": "Momentum linear ialah kuantiti skalar kerana ia hanyalah jumlah gerakan yang dimiliki oleh objek tanpa mengira arah pergerakan.",
+              "zh": "线动量是标量，因为它仅仅是物体所具有的运动量，与运动方向无关。"
+            },
+            "misconception": "momentum-is-scalar"
+          },
+          {
+            "id": "item-transform-claim",
+            "label": {
+              "en": "Linear momentum frequently converts into other forms of momentum, such as potential momentum or thermal momentum.",
+              "ms": "Momentum linear kerap bertukar menjadi bentuk momentum lain, seperti momentum keupayaan atau momentum terma.",
+              "zh": "线动量经常转化为其他形式的动量，例如势动量或热动量。"
+            },
+            "misconception": "momentum-transformation"
+          }
+        ],
+        "correctSelections": [
+          "item-vector-dir",
+          "item-dimensions-unit"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "momentum-is-scalar",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-scalar-claim",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "momentum-transformation",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-transform-claim",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-04-energy-momentum-contrast-class",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish linear momentum from kinetic energy in terms of vector directionality and energy transformations.",
+      "prompt": {
+        "en": "Classify each physical characteristic based on whether it describes linear momentum or kinetic energy.",
+        "ms": "Kelaskan setiap ciri fizikal berdasarkan sama ada ia menerangkan momentum linear atau tenaga kinetik.",
+        "zh": "根据每个物理特征是描述线动量还是动能，对它们进行分类。"
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-momentum",
+            "label": {
+              "en": "Linear Momentum",
+              "ms": "Momentum Linear",
+              "zh": "线动量"
+            }
+          },
+          {
+            "id": "target-energy",
+            "label": {
+              "en": "Kinetic Energy",
+              "ms": "Tenaga Kinetik",
+              "zh": "动能"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-vector-direction",
+            "label": {
+              "en": "Vector quantity pointing in the direction of the object's velocity.",
+              "ms": "Kuantiti vektor yang menghala mengikut arah halaju objek.",
+              "zh": "方向与物体速度方向一致的矢量。"
+            }
+          },
+          {
+            "id": "item-transforms",
+            "label": {
+              "en": "Can transform into potential or thermal internal states during an interaction.",
+              "ms": "Boleh berubah bentuk menjadi keadaan keupayaan atau haba dalaman semasa interaksi.",
+              "zh": "在相互作用过程中可以转化为势能或热内能状态。"
+            }
+          },
+          {
+            "id": "item-cancels-opposite",
+            "label": {
+              "en": "Can sum to zero for two objects moving at identical speeds in opposite directions.",
+              "ms": "Boleh berjumlah sifar bagi dua objek yang bergerak pada laju serupa dalam arah bertentangan.",
+              "zh": "对于以相同速率沿相反方向运动的两个物体，其总和可以为零。"
+            }
+          },
+          {
+            "id": "item-scalar-nonnegative",
+            "label": {
+              "en": "Strictly non-negative scalar quantity that cannot cancel out to zero when constituent objects are moving.",
+              "ms": "Kuantiti skalar yang sentiasa bukan negatif dan tidak boleh saling membatal menjadi sifar apabila objek juzuk sedang bergerak.",
+              "zh": "严格非负的标量，当构成系统的各物体在运动时其总和不可能抵消为零。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-vector-direction",
+            "targetId": "target-momentum"
+          },
+          {
+            "itemId": "item-transforms",
+            "targetId": "target-energy"
+          },
+          {
+            "itemId": "item-cancels-opposite",
+            "targetId": "target-momentum"
+          },
+          {
+            "itemId": "item-scalar-nonnegative",
+            "targetId": "target-energy"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "momentum-transformation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-transforms",
+            "targetId": "target-momentum"
+          }
+        },
+        {
+          "misconception": "momentum-is-scalar",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-scalar-nonnegative",
+            "targetId": "target-momentum"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "Consider how spatial direction affects each quantity: one depends on velocity as a vector, whereas the other depends on speed squared.",
+          "ms": "Pertimbangkan bagaimana arah ruang mempengaruhi setiap kuantiti: satu bergantung pada halaju sebagai vektor, manakala satu lagi bergantung pada laju kuasa dua.",
+          "zh": "思考空间方向如何影响这两个量：一个作为矢量取决于速度，而另一个取决于速率的平方。"
+        },
+        {
+          "en": "Think about energy transformations: can momentum be stored as an alternative 'potential' variety, or is there only one kind of linear momentum?",
+          "ms": "Fikirkan tentang penukaran tenaga: bolehkah momentum disimpan sebagai bentuk 'keupayaan' alternatif, atau adakah hanya wujud satu jenis momentum linear?",
+          "zh": "思考能量的转化：动量能否像能量那样转化为“势动量”储存起来，还是线动量只有唯一的一种形式？"
+        }
+      ],
+      "feedback": {
+        "en": "Linear momentum is a vector quantity that accounts for direction and has no stored potential forms. Kinetic energy is a non-negative scalar that can readily convert into potential or internal energy.",
+        "ms": "Momentum linear ialah kuantiti vektor yang mengambil kira arah dan tiada bentuk keupayaan tersimpan. Tenaga kinetik ialah skalar bukan negatif yang boleh bertukar kepada tenaga keupayaan atau dalaman.",
+        "zh": "线动量是考虑方向的矢量，不存在储存的势能形式。动能则是非负标量，可以转化为势能或内能。"
+      },
+      "answerLogic": {
+        "en": "Linear momentum p = m v is a vector sharing the velocity vector's direction, allowing opposite momenta to cancel to zero, and it cannot transform into other forms. Kinetic energy K = (1/2) m v^2 is a scalar that is strictly non-negative for moving bodies and can transform into potential or thermal energy.",
+        "ms": "Momentum linear p = m v ialah vektor yang berkongsi arah vektor halaju, membolehkan momentum bertentangan saling membatal kepada sifar, dan ia tidak boleh berubah ke bentuk lain. Tenaga kinetik K = (1/2) m v^2 ialah skalar yang sentiasa bukan negatif untuk jasad yang bergerak dan boleh berubah menjadi tenaga keupayaan atau haba.",
+        "zh": "线动量 p = m v 是与速度矢量同向的矢量，因此相反方向的动量可以相互抵消为零，且动量不会转化为其他形式。动能 K = (1/2) m v^2 是标量，对于运动物体恒为非负，且可以在相互作用中转化为势能或热能。"
+      },
+      "explanation": {
+        "en": "Momentum and kinetic energy both combine mass and motion, but their mathematical and physical characteristics differ fundamentally. Because momentum is a vector, an isolated system of two identical bodies moving directly toward each other with equal speeds has zero net momentum, yet its kinetic energy is non-zero because scalar energies add arithmetic magnitudes. Furthermore, kinetic energy readily converts into potential or internal energy, whereas linear momentum has only one form and never undergoes transformation.",
+        "ms": "Momentum dan tenaga kinetik kedua-duanya menggabungkan jisim dan gerakan, tetapi ciri matematik dan fizikalnya berbeza secara asas. Oleh kerana momentum ialah vektor, suatu sistem terpencil yang terdiri daripada dua jasad serupa yang bergerak ke arah satu sama lain dengan laju sama mempunyai jumlah momentum sifar, namun tenaga kinetiknya bukan sifar kerana tenaga skalar menjumlahkan magnitud aritmetik. Tambahan pula, tenaga kinetik mudah bertukar menjadi tenaga keupayaan atau dalaman, sedangkan momentum linear hanya mempunyai satu bentuk dan tidak pernah mengalami penukaran.",
+        "zh": "动量和动能都结合了质量与运动，但它们的数学和物理特性有着根本区别。由于动量是矢量，由两个以相同速率迎面运动的相同物体组成的孤立系统，其总动量为零；然而其动能不为零，因为标量能量的大小直接相加。此外，动能容易转化为势能或内能，而线动量只有一种形式，绝不会发生形态转化。"
+      },
+      "misconceptions": [
+        "momentum-transformation",
+        "momentum-is-scalar"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-concept",
+        "prompt": {
+          "en": "Recall that kinetic energy depends on speed squared, is strictly non-negative, and has no spatial direction.",
+          "ms": "Ingat kembali bahawa tenaga kinetik bergantung pada kuasa dua laju, sentiasa bukan negatif, dan tiada arah ruang.",
+          "zh": "回顾动能取决于速率平方、恒为非负且没有空间方向。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classification activity with two categories: Linear Momentum and Kinetic Energy. Place four physical characteristics into their corresponding category.",
+        "ms": "Aktiviti pengelasan dengan dua kategori: Momentum Linear dan Tenaga Kinetik. Letakkan empat ciri fizikal ke dalam kategori yang sepadan.",
+        "zh": "分类活动，包含两个类别：线动量和动能。将四个物理特征放入其对应的类别中。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "act-int-05-newton-second-law-steps-order",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate momentum conservation in a two-particle system to Newton's third law action-reaction pairs.",
+      "prompt": {
+        "en": "Arrange the theoretical derivation steps in logical order to show how Newton's third law and second law lead to momentum conservation for an isolated two-particle system.",
+        "ms": "Susun langkah penerbitan teori mengikut urutan logik untuk menunjukkan bagaimana hukum ketiga dan hukum kedua Newton membawa kepada keabadian momentum bagi sistem dua zarah terpencil.",
+        "zh": "按逻辑顺序排列理论推导步骤，展示牛顿第三定律和第二定律如何导出孤立双粒子系统的动量守恒。"
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "step-third-law",
+            "label": {
+              "en": "Apply Newton's third law to show that the mutual interaction forces between two isolated particles satisfy F_21 + F_12 = 0.",
+              "ms": "Gunakan hukum ketiga Newton untuk menunjukkan bahawa daya saling tindak antara dua zarah terpencil memenuhi F_21 + F_12 = 0.",
+              "zh": "应用牛顿第三定律说明两孤立粒子间的相互作用力满足 F_21 + F_12 = 0。"
+            }
+          },
+          {
+            "id": "step-second-law",
+            "label": {
+              "en": "Substitute Newton's second law F = m a for each particle to replace forces with mass-acceleration products: m_1 a_1 + m_2 a_2 = 0.",
+              "ms": "Gantikan hukum kedua Newton F = m a bagi setiap zarah untuk menggantikan daya dengan hasil darab jisim-pecutan: m_1 a_1 + m_2 a_2 = 0.",
+              "zh": "对每个粒子代入牛顿第二定律 F = m a，用质量与加速度的乘积替换力：m_1 a_1 + m_2 a_2 = 0。"
+            }
+          },
+          {
+            "id": "step-sum-derivative",
+            "label": {
+              "en": "Replace acceleration with dv/dt and bring constant masses inside the derivative: d(m_1 v_1 + m_2 v_2)/dt = 0.",
+              "ms": "Gantikan pecutan dengan dv/dt dan bawa jisim malar ke dalam pembezaan: d(m_1 v_1 + m_2 v_2)/dt = 0.",
+              "zh": "用 dv/dt 替换加速度并将恒定质量移入微分算子内部：d(m_1 v_1 + m_2 v_2)/dt = 0。"
+            }
+          },
+          {
+            "id": "step-system-constancy",
+            "label": {
+              "en": "Conclude that the total momentum of the isolated system is constant over time, even though each individual particle's momentum changes.",
+              "ms": "Simpulkan bahawa jumlah momentum sistem terpencil adalah malar terhadap masa, walaupun momentum setiap zarah individu berubah.",
+              "zh": "得出结论：孤立系统的总动量随时间保持恒定，尽管每个单独粒子的动量都在改变。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "step-third-law",
+          "step-second-law",
+          "step-sum-derivative",
+          "step-system-constancy"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "single-particle-momentum-conservation",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "step-system-constancy",
+            "secondItemId": "step-sum-derivative"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "Start from the action-reaction force pair governing the isolated interaction before substituting kinematic definitions.",
+          "ms": "Mulakan daripada pasangan daya tindakan-tindak balas yang mengawal interaksi terpencil sebelum menggantikan takrifan kinematik.",
+          "zh": "在代入运动学定义之前，先从支配孤立相互作用的作用力与反作用力对开始。"
+        },
+        {
+          "en": "System constancy is the final deduction obtained once the time derivative of the combined momentum is proven to be zero.",
+          "ms": "Kemalaran sistem ialah deduksi akhir yang diperoleh selepas pembezaan masa bagi gabungan momentum terbukti sifar.",
+          "zh": "系统守恒是在证明了总动量对时间的导数为零之后得到的最终推论。"
+        }
+      ],
+      "feedback": {
+        "en": "The derivation begins with Newton's third law (action-reaction pair), applies Newton's second law to rewrite forces as mass times acceleration, brings constant mass inside the velocity derivative, and concludes that total system momentum is constant while individual momenta change.",
+        "ms": "Penerbitan bermula dengan hukum ketiga Newton (pasangan tindakan-tindak balas), menggunakan hukum kedua Newton untuk menulis semula daya sebagai jisim kali pecutan, membawa jisim malar ke dalam pembezaan halaju, dan menyimpulkan bahawa jumlah momentum sistem adalah malar manakala momentum individu berubah.",
+        "zh": "推导始于牛顿第三定律（作用力与反作用力对），接着应用牛顿第二定律将力改写为质量乘以加速度，将恒定质量并入速度导数中，最后得出结论：单个粒子的动量发生改变，但系统总动量保持恒定。"
+      },
+      "answerLogic": {
+        "en": "First, the sum of internal forces in an isolated two-particle system is zero by Newton's third law: F_21 + F_12 = 0. Second, using Newton's second law gives m_1 a_1 + m_2 a_2 = 0. Third, substituting a = dv/dt gives d(m_1 v_1 + m_2 v_2)/dt = 0. Finally, because this time derivative is zero, the total system momentum p_tot = p_1 + p_2 must remain constant.",
+        "ms": "Pertama, jumlah daya dalaman dalam sistem dua zarah terpencil adalah sifar mengikut hukum ketiga Newton: F_21 + F_12 = 0. Kedua, menggunakan hukum kedua Newton menghasilkan m_1 a_1 + m_2 a_2 = 0. Ketiga, menggantikan a = dv/dt menghasilkan d(m_1 v_1 + m_2 v_2)/dt = 0. Akhir sekali, oleh kerana pembezaan masa ini ialah sifar, jumlah momentum sistem p_tot = p_1 + p_2 mestilah kekal malar.",
+        "zh": "第一步，根据牛顿第三定律，孤立双粒子系统的内力之和为零：F_21 + F_12 = 0。第二步，应用牛顿第二定律得到 m_1 a_1 + m_2 a_2 = 0。第三步，代入 a = dv/dt 得到 d(m_1 v_1 + m_2 v_2)/dt = 0。最后，因为该时间导数为零，系统总动量 p_tot = p_1 + p_2 必然保持恒定。"
+      },
+      "explanation": {
+        "en": "Conservation of linear momentum is derived directly from Newton's laws of motion. Newton's third law guarantees that internal action-reaction forces cancel when summed across the isolated system. Expressing these forces through Newton's second law links them to the time rate of change of momentum. While each particle experiences a non-zero force and changes its individual momentum, the system as a whole experiences zero net external force, ensuring that the combined momentum remains constant.",
+        "ms": "Keabadian momentum linear diterbitkan secara langsung daripada hukum gerakan Newton. Hukum ketiga Newton menjamin bahawa daya tindakan-tindak balas dalaman saling membatal apabila dijumlahkan merentas sistem terpencil. Mengungkapkan daya ini melalui hukum kedua Newton menghubungkannya dengan kadar perubahan momentum terhadap masa. Walaupun setiap zarah mengalami daya bukan sifar dan mengubah momentum individunya, sistem secara keseluruhan mengalami daya bersih sifar, memastikan bahawa momentum gabungan kekal malar.",
+        "zh": "线动量守恒是直接从牛顿运动定律推导出来的。牛顿第三定律保证了在整个孤立系统内求和时，内部的作用力与反作用力相互抵消。通过牛顿第二定律表达这些力，将它们与动量的时间变化率联系起来。虽然每个粒子都受到非零的力并改变各自的动量，但系统整体受到的合外力为零，从而确保了总动量保持恒定。"
+      },
+      "misconceptions": [
+        "single-particle-momentum-conservation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Review action-reaction force pairs: forces always occur in matched pairs acting on different objects with opposite directions.",
+          "ms": "Ulang kaji pasangan daya tindakan-tindak balas: daya sentiasa wujud berpasangan pada objek berbeza dengan arah bertentangan.",
+          "zh": "复习作用力与反作用力对：力总是成对出现在不同物体上，且方向相反。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Ordering activity. Arrange four theoretical derivation steps in logical order from Newton's third law to total momentum conservation.",
+        "ms": "Aktiviti susunan. Susun empat langkah penerbitan teori mengikut urutan logik daripada hukum ketiga Newton kepada keabadian jumlah momentum.",
+        "zh": "排序活动。将从牛顿第三定律到总动量守恒的四个理论推导步骤按逻辑顺序排列。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "act-int-06-equal-speed-momentum-rank",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Compare the momenta of objects having equal kinetic energies or equal speeds with different masses.",
+      "prompt": {
+        "en": "Three gliders move along a frictionless straight track oriented along the x-axis. All three gliders possess the exact same kinetic energy. Rank the gliders in order of their linear momentum component along the positive x-axis, from greatest (most positive) to least (most negative).",
+        "ms": "Tiga peluncur bergerak di atas landasan lurus tanpa geseran yang dijajarkan sepanjang paksi-x. Ketiga-tiga peluncur memiliki tenaga kinetik yang tepat sama. Susun peluncur mengikut urutan komponen momentum linear sepanjang paksi-x positif, daripada yang paling besar (paling positif) kepada yang paling kecil (paling negatif).",
+        "zh": "三个滑块在沿 x 轴布置的无摩擦平直轨道上运动。这三个滑块具有完全相同的动能。请将这些滑块按其沿正 x 轴方向的线动量分量从大到小（从最正到最负）进行排序。"
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-heavy-forward",
+            "label": {
+              "en": "Massive glider moving in the positive x-direction.",
+              "ms": "Peluncur berjisim besar yang bergerak ke arah paksi-x positif.",
+              "zh": "沿正 x 方向运动的重滑块。"
+            }
+          },
+          {
+            "id": "item-light-forward",
+            "label": {
+              "en": "Light glider moving in the positive x-direction.",
+              "ms": "Peluncur berjisim kecil yang bergerak ke arah paksi-x positif.",
+              "zh": "沿正 x 方向运动的轻滑块。"
+            }
+          },
+          {
+            "id": "item-heavy-reverse",
+            "label": {
+              "en": "Massive glider moving in the negative x-direction.",
+              "ms": "Peluncur berjisim besar yang bergerak ke arah paksi-x negatif.",
+              "zh": "沿负 x 方向运动的重滑块。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-heavy-forward",
+          "item-light-forward",
+          "item-heavy-reverse"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "momentum-is-scalar",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-heavy-reverse",
+            "secondItemId": "item-light-forward"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "Relate momentum magnitude to kinetic energy using mass: since K = p^2 / (2 m), which object requires a larger momentum magnitude to have the same kinetic energy?",
+          "ms": "Hubungkan magnitud momentum dengan tenaga kinetik menggunakan jisim: memandangkan K = p^2 / (2 m), objek manakah yang memerlukan magnitud momentum lebih besar untuk mempunyai tenaga kinetik yang sama?",
+          "zh": "利用质量将动量大小与动能联系起来：由于 K = p^2 / (2 m)，在动能相同的情况下，哪种物体需要更大的动量大小？"
+        },
+        {
+          "en": "Remember that linear momentum is a vector: an object travelling in the negative x-direction has a negative x-component of momentum, which ranks below any positive value.",
+          "ms": "Ingat bahawa momentum linear ialah vektor: objek yang bergerak ke arah paksi-x negatif mempunyai komponen-x momentum yang bernilai negatif, yang berada di bawah sebarang nilai positif.",
+          "zh": "请记住线动量是矢量：沿负 x 方向运动的滑块具有负的 x 方向分量，其顺序排在任何正分量之后。"
+        }
+      ],
+      "feedback": {
+        "en": "For equal kinetic energies, momentum magnitude is given by p = sqrt(2 m K), so the more massive glider has a larger momentum magnitude. Taking vector direction along the x-axis into account, positive components exceed negative components.",
+        "ms": "Bagi tenaga kinetik yang sama, magnitud momentum diberikan oleh p = sqrt(2 m K), jadi peluncur yang lebih berjisim mempunyai magnitud momentum yang lebih besar. Mengambil kira arah vektor sepanjang paksi-x, komponen positif melebihi komponen negatif.",
+        "zh": "在动能相同的情况下，动量大小由 p = sqrt(2 m K) 给出，因此质量较大的滑块具有更大的动量大小。考虑沿 x 轴的矢量方向时，正分量大于负分量。"
+      },
+      "answerLogic": {
+        "en": "From K = p^2 / (2 m), momentum magnitude is p = sqrt(2 m K). For identical kinetic energies, the massive glider has a larger momentum magnitude than the light glider. Taking the directional sign along the x-axis into account: the massive glider moving forward has the largest positive momentum, the light glider moving forward has a smaller positive momentum, and the massive glider moving backward has a negative momentum.",
+        "ms": "Daripada K = p^2 / (2 m), magnitud momentum ialah p = sqrt(2 m K). Bagi tenaga kinetik yang serupa, peluncur berjisim besar mempunyai magnitud momentum yang lebih besar daripada peluncur ringan. Mengambil kira tanda arah sepanjang paksi-x: peluncur besar yang bergerak ke hadapan mempunyai momentum positif terbesar, peluncur ringan yang bergerak ke hadapan mempunyai momentum positif yang lebih kecil, dan peluncur besar yang bergerak ke belakang mempunyai momentum negatif.",
+        "zh": "由 K = p^2 / (2 m) 可知，动量大小为 p = sqrt(2 m K)。在动能相同的情况下，重滑块的动量大小大于轻滑块。考虑沿 x 轴的方向符号：沿正向运动的重滑块具有最大的正动量，沿正向运动的轻滑块具有较小的正动量，而沿反向运动的重滑块具有负动量。"
+      },
+      "explanation": {
+        "en": "Ranking linear momentum requires considering both mass dependence and vector sign. Because kinetic energy depends on speed squared while momentum depends linearly on velocity, equal kinetic energy means the heavier body possesses greater momentum magnitude (p = sqrt(2 m K)). Furthermore, linear momentum is a signed vector quantity along the coordinate axis. A glider heading in the negative x-direction has a negative momentum component, placing it below any body with positive momentum regardless of magnitude.",
+        "ms": "Menyusun momentum linear memerlukan pertimbangan kedua-dua kebergantungan jisim dan tanda vektor. Kerana tenaga kinetik bergantung pada laju kuasa dua manakala momentum bergantung secara linear pada halaju, tenaga kinetik yang sama bermakna jasad yang lebih berat memiliki magnitud momentum yang lebih besar (p = sqrt(2 m K)). Tambahan pula, momentum linear ialah kuantiti vektor bertanda sepanjang paksi koordinat. Peluncur yang menuju ke arah paksi-x negatif mempunyai komponen momentum negatif, meletakkannya di bawah mana-mana jasad dengan momentum positif tanpa mengira magnitud.",
+        "zh": "对线动量排序需要同时考虑质量关系与矢量方向。由于动能与速率的平方成正比，而动量与速度成线性关系，在动能相同时，质量较大的物体具有更大的动量大小（p = sqrt(2 m K)）。此外，线动量是沿坐标轴带有正负号的矢量。朝负 x 方向运动的滑块具有负分量，因此无论其动量绝对大小如何，排序都低于任何具有正动量的滑块。"
+      },
+      "misconceptions": [
+        "momentum-is-scalar"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-concept",
+        "prompt": {
+          "en": "Recall that kinetic energy depends on speed squared, is strictly non-negative, and has no spatial direction.",
+          "ms": "Ingat kembali bahawa tenaga kinetik bergantung pada kuasa dua laju, sentiasa bukan negatif, dan tiada arah ruang.",
+          "zh": "回顾动能取决于速率平方、恒为非负且没有空间方向。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Ordering activity. Rank three gliders with equal kinetic energy by their linear momentum component along the positive x-axis from most positive to most negative.",
+        "ms": "Aktiviti susunan. Susun tiga peluncur dengan tenaga kinetik yang sama mengikut komponen momentum linear sepanjang paksi-x positif daripada paling positif kepada paling negatif.",
+        "zh": "排序活动。将三个动能相同的滑块按其沿正 x 轴方向的线动量分量从最正到最负进行排序。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "act-int-07-equal-ke-mass-momentum-rank",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Compare the momenta of objects having equal kinetic energies or equal speeds with different masses.",
+      "prompt": {
+        "en": "Three gliders move along a frictionless air track. Each glider has a different mass, but all three possess the exact same positive kinetic energy K. Rank the gliders in order of the magnitude of their linear momentum, from greatest to least.",
+        "ms": "Tiga peluncur bergerak di atas landasan udara tanpa geseran. Setiap peluncur mempunyai jisim yang berbeza, tetapi ketiga-tiganya memiliki tenaga kinetik positif K yang sama tepat. Susun peluncur mengikut tertib magnitud momentum linear, daripada paling besar kepada paling kecil.",
+        "zh": "三个滑块在无摩擦气垫导轨上运动。每个滑块的质量不同，但三者具有完全相同的正动能 K。请将这些滑块按线动量大小从大到小进行排序。"
+      },
+      "hints": [
+        {
+          "en": "Recall how kinetic energy K and momentum magnitude p are related for an object of mass m: K = p^2 / (2m), which rearranges to p = sqrt(2mK).",
+          "ms": "Ingat kembali bagaimana tenaga kinetik K dan magnitud momentum p berkaitan bagi suatu objek berjisim m: K = p^2 / (2m), yang disusun semula menjadi p = sqrt(2mK).",
+          "zh": "回顾质量为 m 的物体的动能 K 与动量大小 p 之间的关系：K = p^2 / (2m)，可变形为 p = sqrt(2mK)。"
+        },
+        {
+          "en": "Since all three gliders have the same kinetic energy K, the momentum magnitude is directly proportional to the square root of the mass. A larger mass corresponds to a larger momentum magnitude.",
+          "ms": "Oleh kerana ketiga-tiga peluncur mempunyai tenaga kinetik K yang sama, magnitud momentum adalah berkadar terus dengan punca kuasa dua jisim. Jisim yang lebih besar menghasilkan magnitud momentum yang lebih besar.",
+          "zh": "由于三个滑块具有相同的动能 K，动量大小与质量的平方根成正比。质量越大的滑块对应的动量大小也越大。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Because momentum magnitude equals sqrt(2mK), keeping kinetic energy K constant means momentum magnitude scales with the square root of mass. The heaviest glider possesses the greatest momentum magnitude, while the lightest glider has the smallest.",
+        "ms": "Tepat! Kerana magnitud momentum bersamaan dengan sqrt(2mK), penetapan tenaga kinetik K bermakna magnitud momentum berskala dengan punca kuasa dua jisim. Peluncur paling berat memiliki magnitud momentum terbesar, manakala peluncur paling ringan mempunyai magnitud terkecil.",
+        "zh": "正确！因为动量大小等于 sqrt(2mK)，在保持动能 K 不变的情况下，动量大小与质量的平方根成正比。最重的滑块具有最大的动量大小，而最轻的滑块动量大小最小。"
+      },
+      "answerLogic": {
+        "en": "The relationship between kinetic energy and momentum magnitude is K = p^2 / (2m), yielding p = sqrt(2mK). With K identical for all gliders, p increases strictly with mass m. Therefore, the order from greatest momentum magnitude to least is the heavy freight glider, followed by the intermediate glider, and finally the ultralight glider.",
+        "ms": "Hubungan antara tenaga kinetik dan magnitud momentum ialah K = p^2 / (2m), menghasilkan p = sqrt(2mK). Dengan K yang serupa bagi semua peluncur, p meningkat secara ketat mengikut jisim m. Oleh itu, susunan daripada magnitud momentum terbesar kepada terkecil ialah peluncur muatan berat, diikuti oleh peluncur perantaraan, dan akhirnya peluncur ultraringan.",
+        "zh": "动能与动量大小的关系为 K = p^2 / (2m)，即 p = sqrt(2mK)。在所有滑块的 K 相同的情况下，p 严格随着质量 m 的增大而增大。因此，动量大小从大到小的顺序为重载滑块、中等滑块，最后是超轻滑块。"
+      },
+      "explanation": {
+        "en": "It is a common misconception that equal kinetic energy implies equal momentum. While kinetic energy scales with speed squared (K = 0.5 m v^2), momentum scales linearly with speed (p = m v). When kinetic energy is held constant, the lighter object moves faster, but this higher speed does not fully compensate for the smaller mass in momentum: p = sqrt(2mK) demonstrates that the heavier object always has the greater momentum.",
+        "ms": "Merupakan satu salah tanggapan lazim bahawa tenaga kinetik yang sama membayangkan momentum yang sama. Walaupun tenaga kinetik berskala dengan kuasa dua laju (K = 0.5 m v^2), momentum berskala secara linear dengan laju (p = m v). Apabila tenaga kinetik dimalarkan, objek yang lebih ringan bergerak lebih pantas, namun kelajuan yang lebih tinggi ini tidak mengimbangi sepenuhnya jisim yang lebih kecil dalam momentum: p = sqrt(2mK) menunjukkan bahawa objek yang lebih berat sentiasa mempunyai momentum yang lebih besar.",
+        "zh": "一个常见的误解是认为动能相等就意味着动量相等。虽然动能与速率的平方成正比（K = 0.5 m v^2），但动量仅与速率成线性正比（p = m v）。当动能恒定时，较轻的物体运动得更快，但这种更高的速率不足以在动量中完全补偿较小的质量：关系式 p = sqrt(2mK) 表明较重的物体始终具有更大的动量。"
+      },
+      "misconceptions": [
+        "equal-ke-means-equal-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-concept",
+        "prompt": {
+          "en": "Recall that kinetic energy is defined as K = 0.5 m v^2 and momentum magnitude is p = m v. How do mass and speed enter into each quantity?",
+          "ms": "Ingat kembali bahawa tenaga kinetik ditakrifkan sebagai K = 0.5 m v^2 dan magnitud momentum ialah p = m v. Bagaimanakah jisim dan laju mempengaruhi setiap kuantiti?",
+          "zh": "回顾动能定义为 K = 0.5 m v^2，动量大小定义为 p = m v。质量和速率如何分别影响这两个量？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Rank three gliders of different masses having the same kinetic energy K from greatest linear momentum magnitude to least linear momentum magnitude.",
+        "ms": "Susun tiga peluncur dengan jisim berbeza yang mempunyai tenaga kinetik K yang sama daripada magnitud momentum linear terbesar kepada terkecil.",
+        "zh": "将具有相同动能 K 但质量不同的三个滑块按线动量大小从大到小进行排序。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-heavy-glider",
+            "label": {
+              "en": "Heavy freight glider (large mass M, kinetic energy K)",
+              "ms": "Peluncur muatan berat (jisim besar M, tenaga kinetik K)",
+              "zh": "重载滑块（大质量 M，动能 K）"
+            }
+          },
+          {
+            "id": "item-medium-glider",
+            "label": {
+              "en": "Intermediate glider (medium mass M/2, kinetic energy K)",
+              "ms": "Peluncur perantaraan (jisim sederhana M/2, tenaga kinetik K)",
+              "zh": "中等滑块（中等质量 M/2，动能 K）"
+            }
+          },
+          {
+            "id": "item-light-glider",
+            "label": {
+              "en": "Ultralight glider (small mass M/10, kinetic energy K)",
+              "ms": "Peluncur ultraringan (jisim kecil M/10, tenaga kinetik K)",
+              "zh": "超轻滑块（小质量 M/10，动能 K）"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-heavy-glider",
+          "item-medium-glider",
+          "item-light-glider"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "equal-ke-means-equal-momentum",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-light-glider",
+            "secondItemId": "item-heavy-glider"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-08-conservation-validity-select",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate momentum conservation in a two-particle system to Newton's third law action-reaction pairs.",
+      "prompt": {
+        "en": "Two pucks, 1 and 2, interact on a frictionless horizontal surface in an isolated system. Select ALL statements that correctly describe the forces and momentum relationships according to Newton's laws and the principle of conservation of linear momentum.",
+        "ms": "Dua puk, 1 dan 2, berinteraksi di atas permukaan mendatar tanpa geseran dalam suatu sistem terpencil. Pilih SEMUA pernyataan yang menerangkan dengan betul daya dan hubungan momentum mengikut hukum Newton serta prinsip keabadian momentum linear.",
+        "zh": "两只冰球 1 和 2 在无摩擦水平面上相互作用，构成一个孤立系统。请选择所有根据牛顿定律和线动量守恒原理正确描述力和动量关系的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Newton's third law requires that the mutual interaction forces between the two pucks satisfy F_12 = -F_21, meaning their vector sum is zero.",
+          "ms": "Hukum ketiga Newton menetapkan bahawa daya interaksi saling antara kedua-dua puk mematuhi F_12 = -F_21, bermakna hasil tambah vektornya adalah sifar.",
+          "zh": "牛顿第三定律要求两只冰球之间的相互作用力满足 F_12 = -F_21，这意味着它们的矢量和为零。"
+        },
+        {
+          "en": "Newton's second law states that net force equals the time rate of change of momentum (F = dp/dt). Distinguish between the total momentum of the isolated system and the individual momentum of a single puck.",
+          "ms": "Hukum kedua Newton menyatakan bahawa daya padu bersamaan dengan kadar perubahan momentum terhadap masa (F = dp/dt). Bezakan antara jumlah momentum sistem terpencil dengan momentum individu satu puk tunggal.",
+          "zh": "牛顿第二定律指出合力等于动量对时间的变化率（F = dp/dt）。请区分孤立系统的总动量与单只冰球各自的动量。"
+        }
+      ],
+      "feedback": {
+        "en": "Spot on! The internal action-reaction forces cancel identically (F_12 + F_21 = 0), ensuring the time derivative of the total system momentum is zero. Each puck's individual momentum changes due to the net force acting on it, and force is the time rate of change of momentum, not momentum itself.",
+        "ms": "Tepat sekali! Daya tindakan-tindak balas dalaman saling membatalkan secara tepat (F_12 + F_21 = 0), memastikan terbitan masa bagi jumlah momentum sistem adalah sifar. Momentum individu setiap puk berubah disebabkan oleh daya padu yang bertindak ke atasnya, dan daya ialah kadar perubahan momentum terhadap masa, bukan momentum itu sendiri.",
+        "zh": "完全正确！内部作用力与反作用力完全相互抵消（F_12 + F_21 = 0），确保系统总动量对时间的一阶导数为零。每只冰球各自的动量因受到合外力而发生改变，且力是动量对时间的变化率，而非动量本身。"
+      },
+      "answerLogic": {
+        "en": "By Newton's third law, F_21 + F_12 = 0. Substituting Newton's second law F = dp/dt gives d(p1)/dt + d(p2)/dt = d(p1 + p2)/dt = 0, proving total system momentum is conserved. The individual puck's momentum is not conserved because each experiences a non-zero net force from the other. Furthermore, net force represents the rate of change of momentum (dp/dt), not the value of momentum (p).",
+        "ms": "Menurut hukum ketiga Newton, F_21 + F_12 = 0. Menggantikan hukum kedua Newton F = dp/dt menghasilkan d(p1)/dt + d(p2)/dt = d(p1 + p2)/dt = 0, membuktikan jumlah momentum sistem adalah terpelihara. Momentum puk individu tidak terpelihara kerana masing-masing mengalami daya padu bukan sifar daripada puk yang lain. Tambahan pula, daya padu mewakili kadar perubahan momentum (dp/dt), bukan nilai momentum (p) itu sendiri.",
+        "zh": "根据牛顿第三定律，F_21 + F_12 = 0。代入牛顿第二定律 F = dp/dt 可得 d(p1)/dt + d(p2)/dt = d(p1 + p2)/dt = 0，证明系统总动量守恒。单只冰球的动量不守恒，因为每只冰球都受到来自对方的非零合力。此外，合力代表动量的变化率（dp/dt），而非动量本身的值（p）。"
+      },
+      "explanation": {
+        "en": "In Section 9.1, linear momentum conservation is established for an isolated two-particle system: internal forces form an action-reaction pair summing to zero, which makes the time derivative of the total momentum zero. Pitfall Prevention 9.1 emphasizes that conservation applies to the isolated system as a whole, not to individual constituent particles that experience internal interaction forces.",
+        "ms": "Dalam Seksyen 9.1, keabadian momentum linear diasaskan bagi sistem dua zarah terpencil: daya dalaman membentuk pasangan tindakan-tindak balas yang berjumlah sifar, menjadikan terbitan masa bagi jumlah momentum sifar. Petua Pencegahan Kesilapan 9.1 menekankan bahawa keabadian terpakai kepada sistem terpencil secara keseluruhan, bukan kepada zarah konstituen individu yang mengalami daya interaksi dalaman.",
+        "zh": "在第 9.1 节中，线动量守恒定律是在孤立双粒子系统中建立的：内力构成矢量和为零的作用力与反作用力对，从而使总动量对时间的一阶导数为零。“防错警示 9.1”强调守恒适用于整个孤立系统，而不适用于受到相互作用内力的各个组成粒子。"
+      },
+      "misconceptions": [
+        "single-particle-momentum-conservation",
+        "force-equals-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Review Newton's third law: When object 1 exerts a force on object 2, what force does object 2 exert on object 1 in terms of magnitude and direction?",
+          "ms": "Ulang kaji hukum ketiga Newton: Apabila objek 1 mengenakan daya ke atas objek 2, apakah daya yang dikenakan oleh objek 2 ke atas objek 1 dari segi magnitud dan arah?",
+          "zh": "复习牛顿第三定律：当物体 1 对物体 2 施加一个力时，物体 2 对物体 1 施加的力在大小和方向上是怎样的？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Select multiple options that correctly describe the forces and momentum relationships for two interacting pucks in an isolated system.",
+        "ms": "Pilih beberapa pilihan yang menerangkan dengan betul daya dan hubungan momentum bagi dua puk yang berinteraksi dalam sistem terpencil.",
+        "zh": "多项选择：选出所有正确描述孤立系统中两只相互作用冰球的力和动量关系的选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-action-reaction-sum",
+            "label": {
+              "en": "The mutual interaction forces between the pucks satisfy F_12 + F_21 = 0 at every instant.",
+              "ms": "Daya interaksi saling antara puk mematuhi F_12 + F_21 = 0 pada setiap ketika.",
+              "zh": "冰球之间的相互作用力在每一瞬时均满足 F_12 + F_21 = 0。"
+            }
+          },
+          {
+            "id": "item-total-rate-zero",
+            "label": {
+              "en": "The time derivative of the total momentum of the two-puck system is zero, d(p1 + p2)/dt = 0.",
+              "ms": "Terbitan masa bagi jumlah momentum sistem dua puk adalah sifar, d(p1 + p2)/dt = 0.",
+              "zh": "两冰球系统总动量对时间的一阶导数为零，即 d(p1 + p2)/dt = 0。"
+            }
+          },
+          {
+            "id": "item-individual-conserved",
+            "label": {
+              "en": "Because the system is isolated, the linear momentum of puck 1 alone remains constant throughout the interaction.",
+              "ms": "Kerana sistem ini terpencil, momentum linear puk 1 secara bersendirian kekal malar sepanjang interaksi.",
+              "zh": "由于系统是孤立的，冰球 1 单独的线动量在整个相互作用过程中保持不变。"
+            }
+          },
+          {
+            "id": "item-force-is-momentum",
+            "label": {
+              "en": "The contact force acting on puck 1 is equivalent to the instantaneous linear momentum of puck 1.",
+              "ms": "Daya sentuhan yang bertindak ke atas puk 1 adalah setara dengan momentum linear seketika puk 1.",
+              "zh": "作用在冰球 1 上的接触力等同于冰球 1 的瞬时线动量。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-action-reaction-sum",
+          "item-total-rate-zero"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "single-particle-momentum-conservation",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-individual-conserved",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "force-equals-momentum",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-force-is-momentum",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-09-mechanics-models-match",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "State and apply Newton's second law as the time rate of change of linear momentum of a particle.",
+      "prompt": {
+        "en": "In Newtonian mechanics, net force, linear momentum, and kinetic energy describe distinct aspects of particle motion. Match each conceptual description to its corresponding physical quantity.",
+        "ms": "Dalam mekanik Newton, daya padu, momentum linear, dan tenaga kinetik menerangkan aspek pergerakan zarah yang berbeza. Padankan setiap huraian konseptual dengan kuantiti fizikal yang sepadan.",
+        "zh": "在牛顿力学中，合外力、线动量和动能描述了粒子运动的不同方面。请将每个概念描述与其对应的物理量进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Newton's second law relates net force not to momentum itself, but to the time rate of change of linear momentum: Sigma F = dp/dt.",
+          "ms": "Hukum kedua Newton mengaitkan daya padu bukan dengan momentum itu sendiri, tetapi dengan kadar perubahan momentum linear terhadap masa: Sigma F = dp/dt.",
+          "zh": "牛顿第二定律不是将合外力等同于动量本身，而是等同于线动量对时间的变化率：Sigma F = dp/dt。"
+        },
+        {
+          "en": "Consider transformation behavior: kinetic energy can transform into potential or internal energy, whereas linear momentum exists in only one physical type with no alternative forms.",
+          "ms": "Pertimbangkan kelakuan transformasi: tenaga kinetik boleh bertukar menjadi tenaga keupayaan atau dalaman, manakala momentum linear wujud dalam satu jenis fizikal sahaja tanpa bentuk alternatif.",
+          "zh": "考虑转化特性：动能可以转化为势能或内能，而线动量只有单一的物理类型，不存在其他替代形式。"
+        }
+      ],
+      "feedback": {
+        "en": "Excellent match! Net force equals the time rate of change of momentum (dp/dt). Linear momentum is the vector quantity mv that cannot transform into potential forms, while kinetic energy is the scalar quantity that readily converts into potential or internal energy.",
+        "ms": "Padanan cemerlang! Daya padu bersamaan dengan kadar perubahan momentum terhadap masa (dp/dt). Momentum linear ialah kuantiti vektor mv yang tidak boleh bertukar menjadi bentuk keupayaan, manakala tenaga kinetik ialah kuantiti skalar yang mudah bertukar menjadi tenaga keupayaan atau dalaman.",
+        "zh": "匹配非常出色！合外力等于动量对时间的变化率（dp/dt）。线动量是无法转化为势能形式的矢量 mv，而动能是可以转化为势能或内能的标量。"
+      },
+      "answerLogic": {
+        "en": "Newton's second law equates net force to dp/dt, the time derivative of linear momentum. Linear momentum is defined as the vector product mv and cannot convert into potential or internal forms. Kinetic energy is a scalar quantity combining mass and speed that can transform into potential or internal energy.",
+        "ms": "Hukum kedua Newton menyamakan daya padu dengan dp/dt, terbitan masa bagi momentum linear. Momentum linear ditakrifkan sebagai hasil darab vektor mv dan tidak boleh bertukar menjadi bentuk keupayaan atau dalaman. Tenaga kinetik ialah kuantiti skalar yang menggabungkan jisim dan laju yang boleh bertukar menjadi tenaga keupayaan atau dalaman.",
+        "zh": "牛顿第二定律将合外力等同于 dp/dt，即线动量对时间的一阶导数。线动量定义为矢量乘积 mv，且无法转化为势能或内能形式。动能则是结合质量和速率的标量，能够转化为势能或内能。"
+      },
+      "explanation": {
+        "en": "Section 9.1 introduces Newton's second law in its generalized form, Sigma F = dp/dt, showing that net force causes a time rate of change of linear momentum. The text also contrasts momentum and kinetic energy: kinetic energy is a scalar that transforms into other types of energy (such as potential or internal energy), whereas linear momentum is a vector with only one physical type, meaning it never transforms into alternative forms.",
+        "ms": "Seksyen 9.1 memperkenalkan hukum kedua Newton dalam bentuk teritlak, Sigma F = dp/dt, menunjukkan bahawa daya padu menyebabkan kadar perubahan momentum linear terhadap masa. Teks ini juga membezakan momentum dan tenaga kinetik: tenaga kinetik ialah skalar yang bertukar menjadi jenis tenaga lain (seperti tenaga keupayaan atau dalaman), manakala momentum linear ialah vektor dengan hanya satu jenis fizikal, bermakna ia tidak pernah bertukar menjadi bentuk alternatif.",
+        "zh": "第 9.1 节介绍了广义形式的牛顿第二定律 Sigma F = dp/dt，表明合外力引起线动量对时间的变化率。课文还对比了动量与动能：动能是能够转化为其他类型能量（如势能或内能）的标量，而线动量是仅有一种物理类型的矢量，这意味着它绝不会转化为其他替代形式。"
+      },
+      "misconceptions": [
+        "force-equals-momentum",
+        "momentum-transformation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Recall Newton's second law: How is acceleration defined as a time derivative of velocity, and how does multiplying by mass lead to force?",
+          "ms": "Ingat kembali hukum kedua Newton: Bagaimanakah pecutan ditakrifkan sebagai terbitan masa bagi halaju, dan bagaimanakah pendaraban dengan jisim menghasilkan daya?",
+          "zh": "回顾牛顿第二定律：加速度是如何定义为速度对时间的一阶导数的？将其乘以质量又是如何得到力的？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Match three mechanics statements to three target categories: Net Force, Linear Momentum, and Kinetic Energy.",
+        "ms": "Padankan tiga pernyataan mekanik kepada tiga kategori sasaran: Daya Padu, Momentum Linear, dan Tenaga Kinetik.",
+        "zh": "将三个力学陈述匹配到三个目标类别：合外力、线动量和动能。"
+      },
+      "provenance": {
+        "sourceLocation": "9.1 Linear Momentum; Complete controlled PDF for section 9.1",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-rate-of-change",
+            "label": {
+              "en": "Equals the time rate of change of linear momentum (dp/dt) acting on a particle",
+              "ms": "Bersamaan dengan kadar perubahan momentum linear terhadap masa (dp/dt) yang bertindak ke atas suatu zarah",
+              "zh": "等于作用在粒子上的线动量对时间的变化率（dp/dt）"
+            }
+          },
+          {
+            "id": "item-vector-no-transform",
+            "label": {
+              "en": "Vector quantity mv that cannot transform into potential or internal forms",
+              "ms": "Kuantiti vektor mv yang tidak boleh bertukar menjadi bentuk keupayaan atau dalaman",
+              "zh": "不能转化为势能或内能形式的矢量 mv"
+            }
+          },
+          {
+            "id": "item-scalar-transforms",
+            "label": {
+              "en": "Scalar quantity that can transform into potential or internal energy states",
+              "ms": "Kuantiti skalar yang boleh bertukar menjadi keadaan tenaga keupayaan atau dalaman",
+              "zh": "可以转化为势能或内能状态的标量"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-force",
+            "label": {
+              "en": "Net Force",
+              "ms": "Daya Padu",
+              "zh": "合外力"
+            }
+          },
+          {
+            "id": "target-momentum",
+            "label": {
+              "en": "Linear Momentum",
+              "ms": "Momentum Linear",
+              "zh": "线动量"
+            }
+          },
+          {
+            "id": "target-energy",
+            "label": {
+              "en": "Kinetic Energy",
+              "ms": "Tenaga Kinetik",
+              "zh": "动能"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-rate-of-change",
+            "targetId": "target-force"
+          },
+          {
+            "itemId": "item-vector-no-transform",
+            "targetId": "target-momentum"
+          },
+          {
+            "itemId": "item-scalar-transforms",
+            "targetId": "target-energy"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "force-equals-momentum",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-rate-of-change",
+            "targetId": "target-momentum"
+          }
+        },
+        {
+          "misconception": "momentum-transformation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-scalar-transforms",
+            "targetId": "target-momentum"
+          }
+        }
+      ]
+    }
+  ]
+}
