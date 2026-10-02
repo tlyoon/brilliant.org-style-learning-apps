@@ -22,6 +22,10 @@ BRANCH_PREFIX = re.compile(r"^[a-z0-9][a-z0-9._/-]*$")
 WORKFLOW_FILE = re.compile(r"^[A-Za-z0-9._-]+\.ya?ml$")
 
 
+def _normalize_worker_identity(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", value.strip().casefold())
+
+
 DEFAULTS: dict[str, Any] = {
     "gem_edit_url": "",
     "browser_mode": "controlled",
@@ -45,6 +49,8 @@ DEFAULTS: dict[str, Any] = {
     "log_level": "INFO",
     "selection_mode": "specific",
     "worker_id": socket.gethostname().casefold(),
+    "expected_repo_root": "",
+    "expected_worker_id": "",
     "coordinator_url": "",
     "coordination_backend": "drive",
     "coordinator_management": "github_actions",
@@ -458,6 +464,26 @@ def load_config(
             raise ConfigurationError(f"Configured source is not an existing PDF: {source}")
     if not (repo_root / "AGENTS.md").is_file() or not (repo_root / "content" / "schema").is_dir():
         raise ConfigurationError(f"repo_root is not a compatible repository checkout: {repo_root}")
+
+    expected_repo_root = str(values.get("expected_repo_root", "")).strip()
+    expected_worker_id = str(values.get("expected_worker_id", "")).strip()
+    if bool(expected_repo_root) != bool(expected_worker_id):
+        raise ConfigurationError(
+            "workstation binding must provide both expected_repo_root and expected_worker_id"
+        )
+    if expected_repo_root:
+        bound_root = Path(expected_repo_root).expanduser().resolve()
+        if os.path.normcase(str(bound_root)) != os.path.normcase(str(repo_root)):
+            raise ConfigurationError(
+                f"workstation binding refuses repository {repo_root}; expected {bound_root}"
+            )
+        actual_worker = _normalize_worker_identity(socket.gethostname())
+        expected_worker = _normalize_worker_identity(expected_worker_id)
+        if not expected_worker or actual_worker != expected_worker:
+            raise ConfigurationError(
+                f"workstation binding refuses host {socket.gethostname()!r}; "
+                f"expected {expected_worker_id!r}"
+            )
 
     sourcepath = str(_required(values, "sourcepath")).strip()
     parsed_source = urlparse(sourcepath)

@@ -92,6 +92,10 @@ If a winner crashes, its `modifiedTime` stops advancing. After `lease_seconds`, 
 
 Targeted auto uses exactly the same mechanism but filters inventory to the requested section. It waits rather than falling through to another section when the target is owned elsewhere.
 
+Chapter-scoped auto (`--chapter 10`) filters the shared inventory to exact `10.*` section IDs while retaining normal multi-PC lease election. Workers may take several sections from that chapter but cannot claim another chapter, and they exit when that chapter's scoped queue is globally successful.
+
+Each workstation is also bound locally to one PC hostname and one absolute repository checkout through `workstation-sync.toml`; the rendered local generator config repeats that binding. This prevents a Yoga6 process, for example, from accidentally using a Dell-115 checkout simply because both folders are visible through a synchronized drive.
+
 ## Operational commands
 
 Normal auto operation no longer needs `coordinator-bootstrap`, `coordinator-ensure`, a worker coordinator token, or an Apps Script URL. Existing coordinator administration commands are retained only for legacy cloud/distributed operation.

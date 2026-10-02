@@ -3,6 +3,7 @@ import tempfile
 import unittest
 import warnings
 from pathlib import Path
+from unittest.mock import patch
 
 from app_generator.config import DEFAULTS, load_config
 from app_generator.errors import ConfigurationError, RepositoryCompatibilityError
@@ -77,6 +78,39 @@ class GeneratorConfigTests(unittest.TestCase):
             self.assertEqual(4, config.max_repair_attempts)
             self.assertEqual(2, config.max_gemini_session_restarts)
             self.assertEqual("EXAMPLE_PROJECT_GENERATOR_", config.env_prefix)
+
+    def test_workstation_binding_rejects_wrong_repository(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.pdf"
+            source.write_bytes(b"synthetic")
+            path = self.make_config(root, [source])
+            with path.open("a", encoding="utf-8") as handle:
+                handle.write(
+                    "\n[workstation]\n"
+                    f'expected_repo_root = {json.dumps(str(root / "wrong-repo"))}\n'
+                    'expected_worker_id = "test-host"\n'
+                )
+            with patch("app_generator.config.socket.gethostname", return_value="test-host"):
+                with self.assertRaisesRegex(ConfigurationError, "refuses repository"):
+                    load_config(path, environ={})
+
+    def test_workstation_binding_rejects_wrong_pc(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.pdf"
+            source.write_bytes(b"synthetic")
+            path = self.make_config(root, [source])
+            repo = root / "repo"
+            with path.open("a", encoding="utf-8") as handle:
+                handle.write(
+                    "\n[workstation]\n"
+                    f'expected_repo_root = {json.dumps(str(repo))}\n'
+                    'expected_worker_id = "expected-pc"\n'
+                )
+            with patch("app_generator.config.socket.gethostname", return_value="other-pc"):
+                with self.assertRaisesRegex(ConfigurationError, "refuses host"):
+                    load_config(path, environ={})
 
     def test_local_gemini_overrides_do_not_change_google_oauth_identity(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -176,6 +176,8 @@ To initialize only the machine-local settings:
 python -m scripts.sync_configured_workstation --init-settings-only
 ```
 
+This step records a machine-local repository binding: the current PC hostname and the absolute checkout path. Run it once on each intended worker checkout. Existing older workstation settings must be rebound once after this upgrade. Later synchronization and direct generator runs fail closed if the bound settings/configuration are used from another PC or repository path.
+
 Then run the normal synchronizer:
 
 ```powershell
@@ -351,6 +353,17 @@ Start a continuous worker:
 ```
 
 The worker repeatedly claims globally eligible jobs, prioritizes recoverable interrupted work according to coordinator policy, renews leases, uses durable checkpoints, publishes validated artifacts through Git, and continues until the global source inventory is successful. If remaining work is currently leased by other PCs, it waits/polls instead of falsely declaring completion.
+
+### Chapter-scoped auto mode
+
+To run several PCs in parallel on one chapter without changing the canonical Drive source root, give every worker the same chapter scope:
+
+```powershell
+& $py -m app_generator doctor --config $config --selection-mode auto --chapter 10
+& $py -m app_generator run --config $config --selection-mode auto --chapter 10
+```
+
+Each PC still uses the shared Drive-native lease system, but its candidate inventory contains only `10.*` sections. A worker claims any eligible Chapter 10 section, writes only into its own bound local `repo_root`, publishes/merges the deterministic Git handoff, then claims another Chapter 10 section. When all Chapter 10 jobs are globally successful, chapter-scoped workers exit with `AUTO_CHAPTER_COMPLETE` instead of continuing into Chapter 11. `--chapter` and `--pdf-subchapter-path` are mutually exclusive in auto mode.
 
 ### Targeted auto mode
 

@@ -30,7 +30,7 @@ from app_generator.publishing.public import PublicPagesPublisher
 from app_generator.deployments import has_current_public_deployment
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.state import RunPhase
-from app_generator.runtime.targeting import restrict_inventory_to_subchapter
+from app_generator.runtime.targeting import restrict_auto_inventory
 from app_generator.sources.google_drive import (
     DriveRestClient,
     ResolvedDriveSource,
@@ -194,6 +194,7 @@ def run_generation(
     *,
     resume_run_id: str | None = None,
     auto_target_subchapter_id: str | None = None,
+    auto_target_chapter: str | int | None = None,
     chrome_factory: Callable[[GeneratorConfig], ChromeSession] = ChromeSession,
     client_factory: Callable[[object, GeneratorConfig], GeminiClient] = GeminiClient,
     api_client_factory: Callable[[GeneratorConfig, tuple[Path, ...]], GeminiApiClient] = GeminiApiClient,
@@ -255,9 +256,10 @@ def run_generation(
                         )
                     )
                     if config.selection_mode == "auto":
-                        inventory = restrict_inventory_to_subchapter(
+                        inventory = restrict_auto_inventory(
                             inventory,
-                            auto_target_subchapter_id,
+                            target_subchapter_id=auto_target_subchapter_id,
+                            target_chapter=auto_target_chapter,
                         )
                     store.transition(RunPhase.DRIVE_INVENTORIED)
                     coordinator = (

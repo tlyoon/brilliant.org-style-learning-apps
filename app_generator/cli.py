@@ -37,6 +37,16 @@ from app_generator.validation.schema_validation import validate_manifest
 DEFAULT_CONFIG = Path("project.local.toml")
 
 
+def _chapter_number(value: str) -> int:
+    try:
+        chapter = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("chapter must be a positive integer") from exc
+    if chapter < 1:
+        raise argparse.ArgumentTypeError("chapter must be a positive integer")
+    return chapter
+
+
 def _add_config_arguments(command: argparse.ArgumentParser) -> None:
     command.add_argument(
         "--config",
@@ -60,6 +70,11 @@ def _add_config_arguments(command: argparse.ArgumentParser) -> None:
     command.add_argument("--pdf-subchapter-path")
     command.add_argument("--drive-oauth-client-file", type=Path)
     command.add_argument("--selection-mode", choices=("specific", "auto", "distributed"))
+    command.add_argument(
+        "--chapter",
+        type=_chapter_number,
+        help="in auto mode, claim only subchapters belonging to this chapter",
+    )
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -127,6 +142,7 @@ def doctor(
     config: GeneratorConfig,
     *,
     auto_target_subchapter_id: str | None = None,
+    auto_target_chapter: int | None = None,
 ) -> int:
     if getattr(config, "llm_backend", "gemini_browser") == "gemini_api":
         build_gemini_sdk_client(config)
@@ -136,9 +152,15 @@ def doctor(
         snapshot = inspect_auto_queue(
             config,
             target_subchapter_id=auto_target_subchapter_id,
+            target_chapter=auto_target_chapter,
         )
         if auto_target_subchapter_id:
             print(f"Auto target: {auto_target_subchapter_id} (Drive-leased; no fallback section)")
+        elif auto_target_chapter is not None:
+            print(
+                f"Auto chapter scope: {auto_target_chapter} "
+                "(Drive-leased; workers cannot claim outside this chapter)"
+            )
         print(
             "Auto queue: "
             f"total={snapshot.total}, generated={snapshot.generated}, review_pending={snapshot.review_pending}, "
@@ -253,10 +275,20 @@ def main(argv: list[str] | None = None) -> int:
             print(render_deployments(rows))
             return 0
         config = _load(args)
+        requested_subchapter = getattr(args, "pdf_subchapter_path", None)
+        requested_chapter = getattr(args, "chapter", None)
+        if args.command in {"doctor", "run"} and requested_chapter is not None:
+            if config.selection_mode != "auto":
+                raise GeneratorError("--chapter is supported only with --selection-mode auto")
+            if requested_subchapter:
+                raise GeneratorError(
+                    "--chapter cannot be combined with --pdf-subchapter-path in auto mode"
+                )
         auto_target_subchapter_id = (
-            getattr(args, "pdf_subchapter_path", None)
-            if config.selection_mode == "auto"
-            else None
+            requested_subchapter if config.selection_mode == "auto" else None
+        )
+        auto_target_chapter = (
+            requested_chapter if config.selection_mode == "auto" else None
         )
         if args.command == "coordinator-status":
             print(f"Managed coordinator: {managed_status(config)}")
@@ -276,6 +308,7 @@ def main(argv: list[str] | None = None) -> int:
             return doctor(
                 config,
                 auto_target_subchapter_id=auto_target_subchapter_id,
+                auto_target_chapter=auto_target_chapter,
             )
         if args.command == "coordinator-complete":
             config = ensure_coordinator_ready(config)
@@ -314,6 +347,7 @@ def main(argv: list[str] | None = None) -> int:
             return run_continuous_auto(
                 config,
                 target_subchapter_id=auto_target_subchapter_id,
+                target_chapter=auto_target_chapter,
                 on_completed=report_context,
             )
         if config.selection_mode == "distributed":

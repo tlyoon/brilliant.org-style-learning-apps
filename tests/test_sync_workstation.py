@@ -1,4 +1,5 @@
 import hashlib
+import socket
 from dataclasses import replace
 import tempfile
 import tomllib
@@ -376,12 +377,16 @@ class WorkstationSyncTests(unittest.TestCase):
                 login_name="person@example.com",
                 branch="main",
                 project_name="ExampleProject",
+                repo_root=Path(directory),
+                worker_id="test-pc",
             )
 
             with settings_path.open("rb") as handle:
                 payload = tomllib.load(handle)
             self.assertEqual("person@example.com", payload["drive"]["login_name"])
             self.assertEqual("ExampleProject", payload["project"]["project_name"])
+            self.assertEqual(str(Path(directory).resolve()), payload["repository"]["expected_repo_root"])
+            self.assertEqual("test-pc", payload["repository"]["expected_worker_id"])
             self.assertNotIn("projects_folder_url", payload["drive"])
             self.assertNotIn("shared_config_name", payload["drive"])
 
@@ -395,6 +400,8 @@ class WorkstationSyncTests(unittest.TestCase):
                         "[repository]",
                         'remote = "origin"',
                         'branch = "main"',
+                        f'expected_repo_root = "{root.as_posix()}"',
+                        f'expected_worker_id = "{socket.gethostname()}"',
                         "[drive]",
                         'projects_folder_url = "https://drive.google.com/drive/folders/legacy"',
                         'shared_config_name = "generator.shared.toml"',
@@ -414,6 +421,38 @@ class WorkstationSyncTests(unittest.TestCase):
 
             self.assertEqual(root / PROJECT_CONFIG_RELATIVE_PATH, settings.project_config_file)
             self.assertEqual("person@example.com", settings.login_name)
+
+    def test_load_settings_rejects_missing_workstation_binding(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            settings_path = root / "workstation-sync.toml"
+            settings_path.write_text(
+                '[project]\nproject_name = "BrilliantContentGenerator"\n'
+                '[repository]\nremote = "origin"\nbranch = "main"\n'
+                '[drive]\nlogin_name = "person@example.com"\n',
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(WorkstationSyncError, "not bound"):
+                load_settings(
+                    settings_path, repo_root=root, project_name="BrilliantContentGenerator"
+                )
+
+    def test_load_settings_rejects_wrong_repository_binding(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            settings_path = root / "workstation-sync.toml"
+            settings_path.write_text(
+                '[project]\nproject_name = "BrilliantContentGenerator"\n'
+                '[repository]\nremote = "origin"\nbranch = "main"\n'
+                f'expected_repo_root = "{(root / "other").as_posix()}"\n'
+                f'expected_worker_id = "{socket.gethostname()}"\n'
+                '[drive]\nlogin_name = "person@example.com"\n',
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(WorkstationSyncError, "expects"):
+                load_settings(
+                    settings_path, repo_root=root, project_name="BrilliantContentGenerator"
+                )
 
     def test_load_settings_rejects_another_projects_settings_file(self):
         with tempfile.TemporaryDirectory() as directory:

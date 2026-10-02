@@ -193,6 +193,39 @@ class ContinuousAutoTests(unittest.TestCase):
         self.assertEqual(["8.6"], reconciles)
         self.assertEqual([completed], seen)
 
+    def test_chapter_scoped_auto_stays_in_chapter_until_scope_complete(self):
+        calls = []
+        reconciles = []
+        snapshots = []
+
+        def run_once(config, *, auto_target_chapter=None):
+            calls.append(auto_target_chapter)
+            if len(calls) <= 2:
+                return object()
+            raise NoAvailableJob("chapter complete")
+
+        def reconciler(config, *, target_chapter=None):
+            reconciles.append(target_chapter)
+            return 0
+
+        def snapshotter(config, *, target_chapter=None):
+            snapshots.append(target_chapter)
+            return self.snapshot(total=2, generated=2)
+
+        result = run_continuous_auto(
+            self.config(),
+            target_chapter=10,
+            run_once=run_once,
+            snapshotter=snapshotter,
+            reconciler=reconciler,
+            sleeper=lambda seconds: self.fail("should not sleep"),
+        )
+
+        self.assertEqual(0, result)
+        self.assertEqual([10, 10, 10], calls)
+        self.assertEqual([10], reconciles)
+        self.assertEqual([10], snapshots)
+
     def test_targeted_auto_waits_when_target_is_leased_then_exits_when_complete(self):
         attempts = {"run": 0, "snapshot": 0}
         sleeps = []

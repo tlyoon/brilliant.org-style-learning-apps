@@ -28,9 +28,13 @@ class SupervisedRunResult:
         return SimpleNamespace(state=SimpleNamespace(installed_paths=self.installed_paths, pr_url=self.pr_url))
 
 
-def _child(config: object, target: str | None, result_queue: object) -> None:
+def _child(config: object, target: str | None, target_chapter: str | int | None, result_queue: object) -> None:
     try:
-        context = run_generation(config, auto_target_subchapter_id=target)
+        context = run_generation(
+            config,
+            auto_target_subchapter_id=target,
+            auto_target_chapter=target_chapter,
+        )
         state = context.store.state
         result_queue.put(("ok", SupervisedRunResult(
             context.run_id, tuple(state.installed_paths), state.pr_url,
@@ -68,13 +72,21 @@ class AutoAttemptSupervisor:
             if path.is_file()
         ))
 
-    def run(self, target_subchapter_id: str | None = None) -> object:
+    def run(
+        self,
+        target_subchapter_id: str | None = None,
+        *,
+        target_chapter: str | int | None = None,
+    ) -> object:
         context = multiprocessing.get_context("spawn")
         results = context.Queue()
         process = (
-            self.process_factory(_child, (self.config, target_subchapter_id, results))
+            self.process_factory(_child, (self.config, target_subchapter_id, target_chapter, results))
             if self.process_factory is not None
-            else context.Process(target=_child, args=(self.config, target_subchapter_id, results))
+            else context.Process(
+                target=_child,
+                args=(self.config, target_subchapter_id, target_chapter, results),
+            )
         )
         # Every run_generation() call creates a fresh run-state path. Snapshot
         # pre-existing paths before the child starts, then pin progress tracking

@@ -8,6 +8,7 @@ import hashlib
 import os
 import re
 import shutil
+import socket
 import subprocess
 import sys
 import tomllib
@@ -131,8 +132,12 @@ def _write_initial_settings(
     login_name: str,
     branch: str,
     project_name: str,
+    repo_root: Path | None = None,
+    worker_id: str | None = None,
 ) -> None:
     state = _state_root(project_name)
+    bound_root = (repo_root or ROOT).resolve()
+    bound_worker = (worker_id or socket.gethostname()).strip()
     content = "\n".join(
         (
             "# Machine-local, non-secret workstation synchronization settings.",
@@ -142,6 +147,8 @@ def _write_initial_settings(
             "[repository]",
             'remote = "origin"',
             f"branch = {_toml_string(branch)}",
+            f"expected_repo_root = {_toml_string(str(bound_root))}",
+            f"expected_worker_id = {_toml_string(bound_worker)}",
             "",
             "[drive]",
             f"login_name = {_toml_string(login_name)}",
@@ -162,6 +169,61 @@ def _write_initial_settings(
     temporary.write_text(content, encoding="utf-8")
     os.replace(temporary, path)
 
+
+
+
+def _normalize_worker_identity(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", value.strip().casefold())
+
+
+def _validate_repository_binding(
+    repository: Mapping[str, Any],
+    *,
+    repo_root: Path,
+    worker_id: str | None = None,
+) -> None:
+    expected_root = str(repository.get("expected_repo_root", "")).strip()
+    expected_worker = str(repository.get("expected_worker_id", "")).strip()
+    if not expected_root or not expected_worker:
+        raise WorkstationSyncError(
+            "Workstation settings are not bound to one repository and PC. "
+            "Run sync-workstation with --init-settings-only from the intended local repository once."
+        )
+    bound_root = Path(expected_root).expanduser().resolve()
+    if os.path.normcase(str(bound_root)) != os.path.normcase(str(repo_root.resolve())):
+        raise WorkstationSyncError(
+            f"Workstation repository binding expects {bound_root}, not {repo_root.resolve()}"
+        )
+    actual_worker = worker_id or socket.gethostname()
+    if _normalize_worker_identity(actual_worker) != _normalize_worker_identity(expected_worker):
+        raise WorkstationSyncError(
+            f"Workstation repository binding expects PC {expected_worker!r}, not {actual_worker!r}"
+        )
+
+
+def _bind_repository_settings(path: Path, *, repo_root: Path, worker_id: str) -> None:
+    try:
+        text = path.read_text(encoding="utf-8")
+        payload = tomllib.loads(text)
+    except (OSError, tomllib.TOMLDecodeError) as exc:
+        raise WorkstationSyncError(f"Could not read workstation settings {path}: {exc}") from exc
+    repository = _read_table(payload, "repository")
+    existing_root = str(repository.get("expected_repo_root", "")).strip()
+    existing_worker = str(repository.get("expected_worker_id", "")).strip()
+    if existing_root or existing_worker:
+        _validate_repository_binding(repository, repo_root=repo_root, worker_id=worker_id)
+        return
+    match = re.search(r"(?m)^\[repository\][ \t]*$", text)
+    if not match:
+        raise WorkstationSyncError("Workstation settings are missing the [repository] table")
+    addition = (
+        f"\nexpected_repo_root = {_toml_string(str(repo_root.resolve()))}"
+        f"\nexpected_worker_id = {_toml_string(worker_id.strip())}"
+    )
+    updated = text[:match.end()] + addition + text[match.end():]
+    temporary = path.with_name(path.name + ".part")
+    temporary.write_text(updated, encoding="utf-8", newline="\n")
+    os.replace(temporary, path)
 
 def _read_table(payload: Mapping[str, Any], name: str) -> Mapping[str, Any]:
     value = payload.get(name, {})
@@ -192,6 +254,7 @@ def load_settings(
             f"Workstation settings belong to {recorded_name!r}, not {project_name!r}"
         )
     repository = _read_table(payload, "repository")
+    _validate_repository_binding(repository, repo_root=repo_root)
     drive = _read_table(payload, "drive")
     output = _read_table(payload, "output")
     checks = _read_table(payload, "checks")
@@ -592,6 +655,20 @@ def _read_local_gemini_overrides(path: Path) -> dict[str, str]:
     return overrides
 
 
+def _append_workstation_binding(rendered: str, settings: SyncSettings) -> str:
+    block = "\n".join(
+        (
+            "",
+            "[workstation]",
+            "# Machine-local guard: direct generator runs must stay on this PC and checkout.",
+            f"expected_repo_root = {_toml_string(str(settings.repo_root.resolve()))}",
+            f"expected_worker_id = {_toml_string(socket.gethostname())}",
+            "",
+        )
+    )
+    return rendered.rstrip() + "\n" + block
+
+
 def _append_local_gemini_overrides(rendered: str, overrides: Mapping[str, str]) -> str:
     values = {key: str(overrides.get(key, "")) for key in LOCAL_GEMINI_OVERRIDE_KEYS}
     block = "\n".join(
@@ -617,6 +694,7 @@ def install_project_config(settings: SyncSettings) -> str:
         repo_root=settings.repo_root,
         state_root=settings.state_root,
     )
+    rendered = _append_workstation_binding(rendered, settings)
     rendered = _append_local_gemini_overrides(rendered, local_gemini)
     temporary = settings.generated_config_file.with_name(settings.generated_config_file.name + ".part")
     from app_generator.config import load_config
@@ -742,6 +820,8 @@ def _ensure_settings(
         login_name=login,
         branch=branch,
         project_name=identity.name,
+        repo_root=ROOT,
+        worker_id=socket.gethostname(),
     )
     print(f"Created machine-local settings: {path}")
     return path
@@ -764,7 +844,12 @@ def main(argv: list[str] | None = None) -> int:
             default_login_name=default_login,
         )
         if args.init_settings_only:
-            print(f"Workstation settings ready: {settings_path}")
+            _bind_repository_settings(
+                settings_path,
+                repo_root=ROOT,
+                worker_id=socket.gethostname(),
+            )
+            print(f"Workstation settings ready and repository-bound: {settings_path}")
             return 0
         settings = load_settings(settings_path, project_name=identity.name)
         if not args.post_sync:
