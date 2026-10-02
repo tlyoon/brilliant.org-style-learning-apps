@@ -111,6 +111,47 @@ def _candidate_errors(
     return errors
 
 
+def _repair_post_semantic_validation(
+    config: GeneratorConfig,
+    context: RunContext,
+    package: dict,
+    manifest: dict,
+    package_relative: Path,
+    protocol: GenerationProtocol,
+    store: StateStore,
+    lease_guard: LeaseGuard | None = None,
+) -> dict:
+    """Restore deterministic validity if semantic repair changes learner-facing text."""
+
+    for repair_index in range(config.max_repair_attempts + 1):
+        if lease_guard is not None:
+            lease_guard.ensure_owned()
+        errors = _candidate_errors(config, context, package, manifest, package_relative)
+        write_json_atomic(
+            context.validation / f"semantic-validation-{repair_index:02d}.json",
+            {"errors": errors},
+        )
+        if not errors:
+            return package
+        repairable = any("activity[" in error for error in errors)
+        if not repairable:
+            raise ValidationFailure(
+                "Semantic repair introduced non-activity deterministic validation failures",
+                errors,
+            )
+        if repair_index >= config.max_repair_attempts:
+            raise ValidationFailure(
+                "Semantic repair introduced deterministic validation failures that did not converge",
+                errors,
+            )
+        store.transition(RunPhase.REPAIRING)
+        attempt_number = config.max_repair_attempts + repair_index + 1
+        package = protocol.repair_validation_errors(package, errors, attempt_number)
+        _stage_complete_artifacts(context, config, package, manifest)
+
+    return package
+
+
 def _unprocessed_sources(
     config: GeneratorConfig,
     sources: tuple[ResolvedDriveSource, ...],
@@ -552,9 +593,16 @@ def run_generation(
                 package, findings = protocol.audit_and_repair(package)
                 write_json_atomic(context.validation / "semantic-findings.json", {"findings": findings})
                 _stage_complete_artifacts(context, active_config, package, manifest)
-                final_errors = _candidate_errors(active_config, context, package, manifest, package_relative)
-                if final_errors:
-                    raise ValidationFailure("Semantic repair introduced deterministic validation failures", final_errors)
+                package = _repair_post_semantic_validation(
+                    active_config,
+                    context,
+                    package,
+                    manifest,
+                    package_relative,
+                    protocol,
+                    store,
+                    lease_guard,
+                )
                 store.transition(
                     RunPhase.SEMANTIC_REVIEW_COMPLETED,
                     actual_model=generation_client.actual_model,
