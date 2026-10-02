@@ -1,12 +1,12 @@
 # Deployment registry
 
-Public review deployments are tracked in:
+Public deployments are tracked in:
 
 ```text
 config/deployments.json
 ```
 
-The registry is the repository-owned record of public app routes. It does not grant publication approval and does not change a learning package's `draft` or review status.
+The registry is the repository-owned record of public app routes. Publication eligibility is determined by automated repository validation and configured deployment checks; package status remains metadata.
 
 ## List deployments
 
@@ -50,9 +50,9 @@ Optional `variant` text may distinguish multiple routes backed by the same secti
 
 New automatic review deployments also record optional `packageSha256`, the SHA-256 of the exact `package.json` bundled for Pages. Older records without it remain readable, but an auto worker treats them as insufficient proof that its current package reached Pages. The Drive success event also records the public PR/URL/digest for cross-PC reconciliation.
 
-## Automatic draft/review deployment
+## Automatic public deployment
 
-This project's enabled policy uses `tlyoon/section-8-1-learning-app` and routes a section as `section-{section_slug}/` (for example, `9.1` is `section-9-1/`). Workers build only the minimal static bundle, open/reuse a deterministic package-digest branch and PR in that public repository, and merge it automatically. Source PDFs, Drive marker data, run state, raw model responses, credentials, and source manifests never enter that repository. The deployment is explicitly a draft/review app, not human scientific approval.
+This project's enabled policy uses `tlyoon/section-8-1-learning-app` and routes a section as `section-{section_slug}/` (for example, `9.1` is `section-9-1/`). Workers build only the minimal static bundle, open/reuse a deterministic package-digest branch and PR in that public repository, and merge it automatically. Source PDFs, Drive marker data, run state, raw model responses, credentials, and source manifests never enter that repository. Automated validation and configured deployment checks are the publication gate; manual review is optional.
 
 ### Direct links to activities
 
@@ -68,4 +68,4 @@ For example, `.../section-9-5/?activity=act-int-mod-1` opens that exact interact
 
 When a public route is created, changed, or removed, update `config/deployments.json` in the same source-repository PR that records/authorizes that deployment. Keep only public, non-secret deployment metadata in the registry.
 
-A deployment entry is not evidence of physics, pedagogy, translation, accessibility, provenance, or publication sign-off. Those gates remain independent.
+A deployment entry records operational publication state. Content quality remains governed by the automated validation and provenance checks in the generation pipeline; optional manual review remains separate.

@@ -19,6 +19,6 @@
   "pageRange": "Complete controlled PDF for section 9.3",
   "learningBoundary": "Includes concepts supported by the controlled PDF for 9.3 Analysis Model: Nonisolated System (Momentum): Definition of impulse as the integral of net external force over time and area under the force-time curve; Impulse-momentum theorem for a particle and nonisolated system; Relationship between time-averaged force and instantaneous force over a time interval; Application of impulse to impact mitigation and safety mechanisms (airbags, crumple zones); The impulse approximation for brief collisions with dominant contact forces; Vector nature of momentum change and impulse compared to scalar energy transfers. Excludes: Detailed analysis of one-dimensional collisions between multiple isolated particles (Section 9.4); Two-dimensional collisions and center of mass dynamics (Sections 9.5-9.7); Numerical calculus integration of non-constant functions; Rotational momentum and angular impulse (Chapter 10).",
   "extractedOn": "2026-10-02",
-  "reviewer": "Automated draft generation; qualified human review required",
+  "reviewer": "Automated generation and validation pipeline",
   "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
 }

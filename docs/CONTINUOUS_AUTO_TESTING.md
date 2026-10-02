@@ -18,7 +18,7 @@ Each worker PC should have:
 
 Continuous auto mode requires `git_publish=true` and defaults to `coordination_backend = "drive"`.
 
-For this project it also requires the configured public draft/review deployment to merge before Drive records success. A package already in source `main` but missing its current digest-matched review deployment is recovered without reopening Gemini. Each live generation is supervised as a child process; the default watchdog uses three stale 600-second checks and preserves parsed Drive checkpoints on termination.
+For this project it also requires the configured public deployment to merge before Drive records success. A package already in source `main` but missing its current digest-matched public deployment is recovered without reopening Gemini. Each live generation is supervised as a child process; the default watchdog uses three stale 600-second checks and preserves parsed Drive checkpoints on termination.
 
 The first run after upgrading from read-only Drive authorization may open Google consent once to grant writable Drive scope. No Apps Script bootstrap, Sheet, worker coordinator token, or coordinator health check is required.
 ## Verify each PC before a multi-PC run
@@ -104,7 +104,7 @@ Change or replace a supplementary sibling PDF while leaving `source.pdf` unchang
 
 Shared Drive recovery state may contain lease metadata, failure metadata, and parsed generation-stage JSON tied to the exact corpus job key. It must not contain source PDF bytes, OAuth credentials, browser state, cookies, raw Gemini responses, machine-local paths, or general diagnostics.
 
-Final repository content is installed/published only after validation succeeds. Generated content remains draft until qualified human review.
+Final repository content is installed/published only after automated validation succeeds. Human sign-off is not required for publication.
 
 ## Stopping and retrying workers
 

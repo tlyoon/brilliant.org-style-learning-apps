@@ -66,7 +66,7 @@ python -m app_generator coordinator-bootstrap   # first project setup only
 
 ## Continuous auto mode
 
-The `auto` worker uses the coordinator ledger and Apps Script `LockService` claim boundary with explicit `queued`, `interrupted`, `leased`, `generated`, `review_pending`, `completed`, and terminal `failed` states. A worker that loses its lease or exits during a leased job leaves that job recoverable.
+The coordinator retains `review_pending` and `completed` as legacy-compatible states, but current generation workers publish and finish at `generated` after automated validation/deployment succeeds. Human review is not required. A worker that loses its lease or exits during a leased job leaves that job recoverable.
 
 Claims are deterministic within the Drive inventory and prioritize: (1) interrupted work last owned by another PC, (2) never-attempted queued work, and (3) interrupted work last owned by the same PC. This lets a failed PC move on while another PC preferentially recovers the abandoned section.
 

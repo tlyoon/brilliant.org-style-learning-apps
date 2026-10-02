@@ -1,4 +1,4 @@
-"""Deterministic, PR-based publication of minimal GitHub Pages review bundles."""
+"""Deterministic, PR-based publication of minimal GitHub Pages learning bundles."""
 
 from __future__ import annotations
 
@@ -43,7 +43,7 @@ class PublicPagesPublisher:
     def route_for(self, subchapter_id: str) -> str:
         route = f"section-{subchapter_id.replace('.', '-')}/"
         if not route.startswith("section-") or ".." in Path(route).parts:
-            raise GitPublishError(f"Unsafe public review route: {route}")
+            raise GitPublishError(f"Unsafe public release route: {route}")
         return route
 
     def branch_for(self, subchapter_id: str, digest: str) -> str:
@@ -68,7 +68,7 @@ class PublicPagesPublisher:
         try:
             entries = json.loads(output or "[]")
         except json.JSONDecodeError as exc:
-            raise GitPublishError("GitHub returned invalid pull-request data for public review deployment") from exc
+            raise GitPublishError("GitHub returned invalid pull-request data for public deployment") from exc
         return entries[0] if entries else None
 
     @staticmethod
@@ -92,8 +92,8 @@ class PublicPagesPublisher:
         ensure_lease()
         # Always re-materialize the deterministic branch. An earlier PC can have
         # pushed it and crashed before creating its PR; treating that branch as a
-        # recoverable handoff is what prevents duplicate review deployments.
-        with tempfile.TemporaryDirectory(prefix="public-review-") as directory:
+        # recoverable handoff is what prevents duplicate public deployments.
+        with tempfile.TemporaryDirectory(prefix="public-release-") as directory:
             checkout = Path(directory) / "pages"
             clone_url = f"https://github.com/{self.config.public_deploy_repository}.git"
             self._run(["git", "clone", "--origin", "origin", clone_url, str(checkout)])
@@ -119,7 +119,7 @@ class PublicPagesPublisher:
             changed = bool(self._run(["git", "diff", "--cached", "--name-only"], cwd=checkout))
             if changed:
                 self._run([
-                    "git", "commit", "-m", f"Publish draft review Section {subchapter_id}",
+                    "git", "commit", "-m", f"Publish Section {subchapter_id}",
                 ], cwd=checkout)
                 ensure_lease()
                 self._run(["git", "push", "--set-upstream", "origin", branch], cwd=checkout)
@@ -128,13 +128,13 @@ class PublicPagesPublisher:
             url = self._run([
                 "gh", "pr", "create", "--repo", self.config.public_deploy_repository,
                 "--head", branch, "--base", self.config.public_deploy_base_branch,
-                "--title", f"Publish draft review Section {subchapter_id}",
-                "--body", "Automated draft/review deployment. This is not human scientific approval.",
+                "--title", f"Publish Section {subchapter_id}",
+                "--body", "Automated learning-content deployment after repository validation.",
             ], check=False)
             existing = self._pr_for_branch(branch)
             if not existing:
                 if not url.startswith("https://"):
-                    raise GitPublishError("Public review branch was pushed but its pull request could not be created")
+                    raise GitPublishError("Public release branch was pushed but its pull request could not be created")
                 existing = {"url": url, "state": "OPEN"}
 
         ensure_lease()
@@ -149,5 +149,5 @@ class PublicPagesPublisher:
         self._run(["gh", "pr", "merge", pr_url, "--merge", "--repo", self.config.public_deploy_repository])
         info = self._pr_for_branch(branch)
         if not info or not self._merged(info):
-            raise GitPublishError(f"Public review PR did not merge: {pr_url}")
+            raise GitPublishError(f"Public release PR did not merge: {pr_url}")
         return PublicDeployResult(branch, str(info.get("url", pr_url)), digest, public_url, True)

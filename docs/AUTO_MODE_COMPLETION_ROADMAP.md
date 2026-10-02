@@ -105,4 +105,4 @@ Local PC                  transient execution state
 Repository documentation current same-revision operating instructions
 ```
 
-Generated work remains draft until qualified human review, regardless of coordinator or Git handoff status.
+Generated work may be published automatically after repository validation and configured deployment checks succeed; human sign-off is not a publication prerequisite.

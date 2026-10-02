@@ -494,8 +494,8 @@ function complete_(request) {
   });
   if (index < 0) throw coded_('NOT_FOUND', 'Job no longer exists');
   const value = object_(rows[index]);
-  if (value.status !== 'review_pending' && value.status !== 'completed') {
-    throw coded_('INVALID_STATUS', 'Only a review_pending job can be marked completed');
+  if (!['generated', 'review_pending', 'completed'].includes(value.status)) {
+    throw coded_('INVALID_STATUS', 'Only a generated job (or legacy review_pending job) can be marked completed');
   }
   value.status = 'completed';
   value.pr_url = request.pr_url || value.pr_url;

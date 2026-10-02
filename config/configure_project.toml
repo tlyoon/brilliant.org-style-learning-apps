@@ -61,12 +61,12 @@ lease_seconds = 3600
 heartbeat_seconds = 300
 max_job_attempts = 3
 # Continuous auto publishes validated packages as explicitly labelled public
-# draft/review apps. This is operational publication, never scientific approval.
+# validated learning apps. Publication is permitted after automated validation succeeds.
 public_deploy = true
 public_deploy_repository = "tlyoon/section-8-1-learning-app"
 public_deploy_base_url = "https://tlyoon.github.io/section-8-1-learning-app/"
 public_deploy_base_branch = "main"
-public_deploy_branch_prefix = "automation/public-review"
+public_deploy_branch_prefix = "automation/public-release"
 public_deploy_auto_merge = true
 stall_check_seconds = 600
 stall_after_seconds = 600
@@ -96,7 +96,7 @@ source_id = "{source_id_prefix}-section-{section_slug}"
 edition = "Edition not identified in the controlled PDF"
 heading = "{subchapter_id}"
 page_range = "Complete controlled PDF for section {subchapter_id}"
-reviewer = "Automated draft generation; qualified human review required"
+reviewer = "Automated generation and validation pipeline"
 rights_note = "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
 
 [limits]

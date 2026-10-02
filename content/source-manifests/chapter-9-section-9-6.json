@@ -19,6 +19,6 @@
   "pageRange": "Complete controlled PDF for section 9.6",
   "learningBoundary": "Includes concepts supported by the controlled PDF for 9.6 The Center of Mass: Definition and physical concept of center of mass as the mass-weighted average position; Center of mass calculation for discrete systems of two or more particles in one, two, and three dimensions; Translational motion versus rotation under forces applied through versus away from the center of mass; Continuous mass distribution formulation using integral calculus elements; Use of symmetry axes and symmetry planes to locate the center of mass; Definition of center of gravity and conditions under which it coincides with center of mass; Suspension method using intersecting plumb lines to locate the center of gravity. Excludes: Time derivatives of center of mass yielding system velocity and acceleration (Section 9.7); Total linear momentum and Newton's second law for a system of particles (Section 9.7); Kinetic energy and momentum analysis in glancing two-dimensional elastic collisions (Section 9.9); Rotational inertia and moment of inertia integration; Gravitational field gradients causing center of gravity to diverge from center of mass.",
   "extractedOn": "2026-10-02",
-  "reviewer": "Automated draft generation; qualified human review required",
+  "reviewer": "Automated generation and validation pipeline",
   "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
 }

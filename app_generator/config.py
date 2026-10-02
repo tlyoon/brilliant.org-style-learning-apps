@@ -67,12 +67,12 @@ DEFAULTS: dict[str, Any] = {
     "git_create_draft_pr": True,
     "git_run_full_tests": True,
     "git_auto_merge": False,
-    # Public review publication is deliberately opt-in for reusable projects.
+    # Public publication is deliberately opt-in for reusable projects.
     "public_deploy": False,
     "public_deploy_repository": "",
     "public_deploy_base_url": "",
     "public_deploy_base_branch": "main",
-    "public_deploy_branch_prefix": "automation/public-review",
+    "public_deploy_branch_prefix": "automation/public-release",
     "public_deploy_auto_merge": True,
     "stall_check_seconds": 600,
     "stall_after_seconds": 600,
@@ -662,7 +662,7 @@ def load_config(
         if not BRANCH_PREFIX.fullmatch(public_deploy_branch_prefix) or ".." in public_deploy_branch_prefix:
             raise ConfigurationError("public_deploy_branch_prefix is not a safe Git branch prefix")
         if not public_deploy_auto_merge:
-            raise ConfigurationError("public_deploy requires public_deploy_auto_merge=true for automatic review publication")
+            raise ConfigurationError("public_deploy requires public_deploy_auto_merge=true for automatic publication")
     stall_check_seconds = int(values["stall_check_seconds"])
     stall_after_seconds = int(values["stall_after_seconds"])
     stall_max_consecutive_checks = int(values["stall_max_consecutive_checks"])

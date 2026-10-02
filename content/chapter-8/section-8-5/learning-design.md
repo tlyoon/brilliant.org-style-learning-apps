@@ -2,7 +2,7 @@
 
 ## Boundary
 
-Includes concepts supported by the controlled PDF for 8.5 Power: Definition of instantaneous power as the time rate of energy transfer dE/dt; Definition and calculation of average power as work divided by elapsed time; Mechanical power formula P = F · v for a force acting on a moving particle; SI and customary units of power (watt, horsepower) and energy equivalence of the kilowatt-hour; Analysis of power output under uniform velocity versus uniform upward acceleration. Excludes: Rotational power and torque-angular velocity relationships; Electrical circuit power formulations involving potential difference and current; Thermodynamic cycle power and heat engine rate efficiencies; Variable-force path line integrals requiring numerical calculus.
+Includes concepts supported by the controlled PDF for 8.5 Power: Definition of instantaneous power as the time rate of energy transfer dE/dt; Definition and calculation of average power as work divided by elapsed time; Mechanical power formula P = F Â· v for a force acting on a moving particle; SI and customary units of power (watt, horsepower) and energy equivalence of the kilowatt-hour; Analysis of power output under uniform velocity versus uniform upward acceleration. Excludes: Rotational power and torque-angular velocity relationships; Electrical circuit power formulations involving potential difference and current; Thermodynamic cycle power and heat engine rate efficiencies; Variable-force path line integrals requiring numerical calculus.
 
 ## Learning objectives
 
@@ -27,4 +27,4 @@ Includes concepts supported by the controlled PDF for 8.5 Power: Definition of i
 
 ## Evidence intent
 
-The first submitted response is independent evidence. Opening a hint, retrying, or entering prerequisite recovery marks later success as assisted evidence; it does not overwrite the first attempt. This generated record is a draft pending qualified human review.
+The first submitted response is independent evidence. Opening a hint, retrying, or entering prerequisite recovery marks later success as assisted evidence; it does not overwrite the first attempt. Publication is permitted once the automated repository validation and configured deployment checks succeed.

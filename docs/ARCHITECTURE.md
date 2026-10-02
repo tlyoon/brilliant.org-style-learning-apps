@@ -16,7 +16,7 @@ Repository content is provider-neutral. Application, database, model, and hostin
 
 ## Data flow
 
-Instructor source → controlled extraction outside Git → source manifest → original draft package → schema and rule validation → scientific/instructional review → versioned publication → learner evidence → mastery/recommendation → minimal reporting summaries.
+Instructor source -> controlled extraction outside Git -> source manifest -> generated package -> schema/rule validation -> automated semantic audit and repair -> versioned publication -> learner evidence -> mastery/recommendation -> minimal reporting summaries. Optional manual review may occur at any point without gating publication.
 
 Raw source documents, personal data, audio, credentials, and production exports stay outside GitHub.
 
@@ -27,4 +27,3 @@ Raw source documents, personal data, audio, credentials, and production exports 
 - Preserve first-attempt evidence before retries.
 - Log safety decisions without storing unnecessary conversation content.
 - Degrade gracefully to validated static hints if the AI tutor is unavailable.
-

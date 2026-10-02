@@ -19,6 +19,6 @@
   "pageRange": "Complete controlled PDF for section 9.4",
   "learningBoundary": "Includes concepts supported by the controlled PDF for 9.4 Collisions in One Dimension: Definition and categorization of elastic, inelastic, and perfectly inelastic collisions; Conservation of linear momentum in one-dimensional isolated collisions; Conservation of kinetic energy in one-dimensional elastic collisions; Relative speed of approach equals relative speed of separation for 1D elastic collisions; Special limiting mass cases for 1D elastic collisions; Two-phase analysis of ballistic pendulum systems combining momentum conservation and mechanical energy conservation. Excludes: Two-dimensional and oblique collisions (Section 9.5); Center of mass reference frame and multi-particle systems (Section 9.6); Variable-mass systems and rocket propulsion (Section 9.7); Rotational dynamics and angular collisions.",
   "extractedOn": "2026-10-02",
-  "reviewer": "Automated draft generation; qualified human review required",
+  "reviewer": "Automated generation and validation pipeline",
   "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
 }

@@ -19,6 +19,6 @@
   "pageRange": "Complete controlled PDF for section 9.5",
   "learningBoundary": "Includes concepts supported by the controlled PDF for 9.5 Collisions in Two Dimensions: Vector component equations for linear momentum conservation in two dimensions; Glancing collisions and angular deflection analysis; Kinetic energy criteria in two-dimensional elastic versus inelastic collisions; Two-dimensional perfectly inelastic collisions where colliding bodies coalesce; Right-angle separation in elastic collisions between identical masses with a stationary target; Coordinate system selection for planar collision problems. Excludes: Center of mass motion and calculations (Section 9.6); Deformable systems and rocket propulsion (Sections 9.7 and 9.8); Three-dimensional collision dynamics beyond a single plane; One-dimensional relative velocity formula applications (Pitfall Prevention 9.4); Rotational motion, angular momentum, and spin effects during collisions.",
   "extractedOn": "2026-10-02",
-  "reviewer": "Automated draft generation; qualified human review required",
+  "reviewer": "Automated generation and validation pipeline",
   "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
 }

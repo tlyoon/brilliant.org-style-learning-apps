@@ -1,4 +1,7 @@
-# 0003 — AI and content generation
+# 0003 â€” AI and content generation
+
+> Superseded for publication gating by Decision 0023; retained as historical context.
+
 
 Status: Accepted, 15 August 2026
 
@@ -7,4 +10,3 @@ Status: Accepted, 15 August 2026
 - AI may explain, diagnose, hint, and generate bounded variants; it cannot alter answer keys or mastery policy.
 - A soft AI cost budget uses a lower-cost fallback without removing all help.
 - Original content and provenance metadata enter Git; source PDFs and copied passages do not.
-

@@ -49,7 +49,7 @@ class DocumentationQuickstartTests(unittest.TestCase):
             "git_auto_merge = false",
             "source PDFs",
             "OAuth client",
-            "human review",
+            "manual review is optional",
         )
         for phrase in required:
             self.assertIn(phrase, text, phrase)

@@ -1,5 +1,5 @@
 # 9.6 The Center of Mass
 
-This directory contains an automatically generated, structurally validated draft learning-content package for `chapter-9-section-9-6`.
+This directory contains an automatically generated and structurally validated learning-content package for `chapter-9-section-9-6`.
 
-The package is not publishable until the sign-offs in `review-record.md` are complete. The controlled source PDF remains outside Git; provenance is recorded in `content/source-manifests/chapter-9-section-9-6.json`.
+Publication is permitted after automated repository validation and configured deployment checks succeed. Optional manual review does not gate publication. The controlled source PDF remains outside Git; provenance is recorded in `content/source-manifests/chapter-9-section-9-6.json`.

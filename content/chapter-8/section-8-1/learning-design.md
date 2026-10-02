@@ -29,4 +29,4 @@ Concepts contained in the complete controlled source PDF for Section 8.1; exclud
 
 ## Evidence intent
 
-The first submitted response is independent evidence. Opening a hint, retrying, or entering prerequisite recovery marks later success as assisted evidence; it does not overwrite the first attempt. This generated record is a draft pending qualified human review.
+The first submitted response is independent evidence. Opening a hint, retrying, or entering prerequisite recovery marks later success as assisted evidence; it does not overwrite the first attempt. Publication is permitted once the automated repository validation and configured deployment checks succeed.

@@ -10,7 +10,7 @@
   "pageRange": "Complete controlled PDF for section 8.2",
   "learningBoundary": "Includes concepts supported by the controlled PDF for 8.2 Analysis Model: Isolated System (Energy): Definition and criteria for an isolated system for energy with zero energy transfers across the boundary; Conservation of mechanical energy where kinetic and potential energies transform with constant sum; General conservation of energy for isolated systems containing internal energy transformations; Interplay between gravitational potential energy, elastic potential energy, and kinetic energy; Comparison between isolated multi-object systems and nonisolated single-object systems under external forces; Path independence of energy changes when conservative forces transform mechanical energy. Excludes: Microscopic models of sliding kinetic friction and spot-welded contact mechanics; Thermodynamic cycles and macroscopic heat engine formulations; Electromagnetic radiation transfer and quantum photoelectric effect analysis; Time-dependent power ratings and dissipation rate equations.",
   "extractedOn": "2026-08-30",
-  "reviewer": "Automated draft generation; qualified human review required",
+  "reviewer": "Automated generation and validation pipeline",
   "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git.",
   "driveFileId": "1atqtoZbgdWEohEg8pgrAFwubaAMCSGIz"
 }

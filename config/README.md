@@ -19,7 +19,7 @@ This Google Drive folder is the source universe for Chapters 8 through 14. `pdf_
 
 Do not add another project-level source-root placeholder for Stage 1 or later stages. When recycling the repository for another course/source tree, change `placeholders.sourcepath` through the project configurator and keep downstream stages rooted in that value.
 
-Public deployment metadata is tracked separately in `config/deployments.json`. It records public review routes and URLs; it is not a workstation configuration file and contains no credentials. Query it with `python -m app_generator deployments`. See `docs/DEPLOYMENTS.md`.
+Public deployment metadata is tracked separately in `config/deployments.json`. It records public routes and URLs; it is not a workstation configuration file and contains no credentials. Query it with `python -m app_generator deployments`. See `docs/DEPLOYMENTS.md`.
 
 Project-owned Gemini text is tracked in:
 
@@ -108,11 +108,11 @@ the project uses repository-managed coordinator infrastructure. An explicit vali
 
 ## Git policy
 
-For controlled specific-mode testing, a project may use `git_publish=false` and `git_auto_merge=false`. Continuous `auto`/`distributed` operation requires `git_publish=true` so globally completed jobs have durable shared artifacts. Auto-merge is a separate policy choice and never turns a generated draft into qualified human approval.
+For controlled specific-mode testing, a project may use `git_publish=false` and `git_auto_merge=false`. Continuous `auto`/`distributed` operation requires `git_publish=true` so globally completed jobs have durable shared artifacts. Auto-merge is a separate policy choice; publication eligibility is determined by automated validation and configured deployment controls.
 
-## Public review and watchdog policy
+## Public deployment and watchdog policy
 
-Generic package defaults keep `public_deploy = false`. This repository enables it in both tracked project TOMLs and configures the shared Pages review repository, base URL, deterministic PR prefix, and automatic merge. A section route is always `section-{section_slug}/`; this is an automated draft/review deployment only.
+Generic package defaults keep `public_deploy = false`. This repository enables it in both tracked project TOMLs and configures the shared Pages repository, base URL, deterministic PR prefix, and automatic merge. A section route is always `section-{section_slug}/`; validated content may be published automatically.
 
 `stall_check_seconds`, `stall_after_seconds`, `stall_max_consecutive_checks`, and `stall_terminate_grace_seconds` configure continuous-auto child supervision. The project defaults are 600, 600, 3, and 20 respectively. Heartbeats do not count as generation progress; parsed Drive checkpoints survive supervision termination.
 
@@ -129,7 +129,7 @@ The current Stage-0 baseline retains these contracts while establishing the sing
 - current English/Malay/Simplified-Chinese contract;
 - calculator-free conceptual policy;
 - credentials/PDFs/run state outside Git;
-- generated work remains draft until qualified human review.
+- generated work may be published after automated validation and configured deployment checks succeed; manual review is optional.
 
 The current Stage-0/1A implementation discovers sibling PDFs beneath the selected subchapter and records their primary/supplementary provenance. All stages reuse the same `sourcepath` rather than introducing another root.
 

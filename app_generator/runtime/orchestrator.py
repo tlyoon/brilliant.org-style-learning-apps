@@ -644,7 +644,7 @@ def run_generation(
                         ensure_lease=ensure_lease,
                     )
                     if not public.merged:
-                        raise GitPublishError("Public review deployment did not merge")
+                        raise GitPublishError("Public deployment did not merge")
                     store.transition(
                         RunPhase.PUBLIC_DEPLOYED,
                         public_deployment_branch=public.branch,
@@ -658,22 +658,15 @@ def run_generation(
                     lease_guard.ensure_owned()
                     if config.selection_mode == "auto":
                         coordinator.checkpoint_clear(lease_guard.lease)
-                        coordinator.mark_generated(
-                            lease_guard.lease,
-                            branch=store.state.branch or "",
-                            pr_url=store.state.pr_url or "",
-                            public_branch=store.state.public_deployment_branch or "",
-                            public_pr_url=store.state.public_deployment_pr_url or "",
-                            public_url=store.state.public_deployment_url or "",
-                            public_package_sha256=store.state.public_package_sha256 or "",
-                        )
-                    else:
-                        coordinator.mark_review_pending(
-                            lease_guard.lease,
-                            branch=store.state.branch or "",
-                            pr_url=store.state.pr_url or "",
-                        )
-                        store.transition(RunPhase.REVIEW_PENDING)
+                    coordinator.mark_generated(
+                        lease_guard.lease,
+                        branch=store.state.branch or "",
+                        pr_url=store.state.pr_url or "",
+                        public_branch=store.state.public_deployment_branch or "",
+                        public_pr_url=store.state.public_deployment_pr_url or "",
+                        public_url=store.state.public_deployment_url or "",
+                        public_package_sha256=store.state.public_package_sha256 or "",
+                    )
                 store.transition(RunPhase.COMPLETE)
                 return context
         except BaseException as exc:

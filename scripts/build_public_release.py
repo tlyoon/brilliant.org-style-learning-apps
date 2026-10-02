@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a minimal static review bundle for an explicitly selected package."""
+"""Build a minimal static learning bundle for an explicitly selected package."""
 
 from __future__ import annotations
 
@@ -54,7 +54,7 @@ def build(output: Path, package_path: Path, *, source_root: Path = ROOT) -> None
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("package", type=Path, help="Repository content/.../package.json to publish as a review bundle")
+    parser.add_argument("package", type=Path, help="Repository content/.../package.json to publish as a learning bundle")
     parser.add_argument("output", type=Path, help="Empty directory for the public release bundle")
     args = parser.parse_args()
     try:
