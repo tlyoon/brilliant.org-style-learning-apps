@@ -16,7 +16,7 @@ from app_generator.deployments import has_current_public_deployment
 from app_generator.runtime.orchestrator import run_generation
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.watchdog import AutoAttemptSupervisor
-from app_generator.runtime.targeting import restrict_inventory_to_subchapter
+from app_generator.runtime.targeting import restrict_auto_inventory
 from app_generator.sources.google_drive import (
     DriveRestClient,
     ResolvedDriveSource,
@@ -51,6 +51,7 @@ def _drive_inventory(
     config: GeneratorConfig,
     *,
     target_subchapter_id: str | None = None,
+    target_chapter: str | int | None = None,
 ) -> tuple[ResolvedDriveSource, ...]:
     authorization = authorize_google_drive(config)
     drive_client = DriveRestClient(authorization.session, config.drive_api_timeout_seconds)
@@ -60,7 +61,11 @@ def _drive_inventory(
         target_filename=config.target_filename,
         max_folders=config.max_drive_folders,
     )
-    return restrict_inventory_to_subchapter(inventory, target_subchapter_id)
+    return restrict_auto_inventory(
+        inventory,
+        target_subchapter_id=target_subchapter_id,
+        target_chapter=target_chapter,
+    )
 
 
 def _base_completed(config: GeneratorConfig, inventory: tuple[ResolvedDriveSource, ...]) -> set[str]:
@@ -83,13 +88,18 @@ def inspect_auto_queue(
     config: GeneratorConfig,
     *,
     target_subchapter_id: str | None = None,
+    target_chapter: str | int | None = None,
 ) -> QueueSnapshot:
     """Inspect auto state without claiming a generation or recovery lease."""
 
     _require_durable_publication(config)
     publisher = GitPublisher(config)
     publisher.sync_base()
-    inventory = _drive_inventory(config, target_subchapter_id=target_subchapter_id)
+    inventory = _drive_inventory(
+        config,
+        target_subchapter_id=target_subchapter_id,
+        target_chapter=target_chapter,
+    )
     local_completed = _base_completed(config, inventory)
     coordinator = DriveCoordinatorClient(config)
     return coordinator.snapshot_auto(inventory, local_completed_job_keys=local_completed)
@@ -101,7 +111,10 @@ def retry_failed_auto_job(config: GeneratorConfig, *, target_subchapter_id: str)
     _require_durable_publication(config)
     publisher = GitPublisher(config)
     publisher.sync_base()
-    inventory = _drive_inventory(config, target_subchapter_id=target_subchapter_id)
+    inventory = _drive_inventory(
+        config,
+        target_subchapter_id=target_subchapter_id,
+    )
     if len(inventory) != 1:
         raise AutoModeBlockedError(
             f"Target section {target_subchapter_id} did not resolve to exactly one Drive source job"
@@ -126,6 +139,7 @@ def reconcile_auto_publications(
     config: GeneratorConfig,
     *,
     target_subchapter_id: str | None = None,
+    target_chapter: str | int | None = None,
 ) -> int:
     """Recover exact deterministic Git handoffs left by an interrupted worker.
 
@@ -137,7 +151,11 @@ def reconcile_auto_publications(
     _require_durable_publication(config)
     publisher = GitPublisher(config)
     publisher.sync_base()
-    inventory = _drive_inventory(config, target_subchapter_id=target_subchapter_id)
+    inventory = _drive_inventory(
+        config,
+        target_subchapter_id=target_subchapter_id,
+        target_chapter=target_chapter,
+    )
     local_completed = _base_completed(config, inventory)
     coordinator = DriveCoordinatorClient(config)
     # Seed rows, reconcile expired leases, and mark only content visible in the freshly
@@ -238,6 +256,7 @@ def run_continuous_auto(
     config: GeneratorConfig,
     *,
     target_subchapter_id: str | None = None,
+    target_chapter: str | int | None = None,
     on_completed: Callable[[RunContext], None] | None = None,
     run_once: Callable[..., RunContext] = run_generation,
     snapshotter: Callable[..., QueueSnapshot] = inspect_auto_queue,
@@ -249,10 +268,17 @@ def run_continuous_auto(
 
     _require_durable_publication(config)
     poll_seconds = max(5, min(60, config.heartbeat_seconds // 10 or 5))
+    if target_subchapter_id and target_chapter is not None:
+        raise AutoModeBlockedError("Auto mode cannot combine an exact subchapter target with a chapter scope")
     if target_subchapter_id:
         print(
             f"AUTO_TARGET_START: worker={config.worker_id}; target={target_subchapter_id}. "
             "Drive lease fencing remains active; this worker will not fall through to another section."
+        )
+    elif target_chapter is not None:
+        print(
+            f"AUTO_CHAPTER_START: worker={config.worker_id}; chapter={target_chapter}. "
+            "Only sections in this chapter may be claimed; multi-PC lease fencing remains active."
         )
     else:
         print(
@@ -261,18 +287,28 @@ def run_continuous_auto(
         )
     if target_subchapter_id:
         reconciler(config, target_subchapter_id=target_subchapter_id)
+    elif target_chapter is not None:
+        reconciler(config, target_chapter=target_chapter)
     else:
         reconciler(config)
     while True:
         try:
             if run_once is run_generation:
-                context = supervisor_factory(config).run(target_subchapter_id)
-            else:
-                context = (
-                    run_once(config, auto_target_subchapter_id=target_subchapter_id)
-                    if target_subchapter_id
-                    else run_once(config)
+                context = supervisor_factory(config).run(
+                    target_subchapter_id,
+                    target_chapter=target_chapter,
                 )
+            else:
+                if target_subchapter_id:
+                    context = run_once(
+                        config, auto_target_subchapter_id=target_subchapter_id
+                    )
+                elif target_chapter is not None:
+                    context = run_once(
+                        config, auto_target_chapter=target_chapter
+                    )
+                else:
+                    context = run_once(config)
             if on_completed is not None:
                 on_completed(context)
             if target_subchapter_id:
@@ -289,20 +325,29 @@ def run_continuous_auto(
             )
             if target_subchapter_id:
                 reconciler(config, target_subchapter_id=target_subchapter_id)
+            elif target_chapter is not None:
+                reconciler(config, target_chapter=target_chapter)
             else:
                 reconciler(config)
             continue
         except NoAvailableJob:
-            snapshot = (
-                snapshotter(config, target_subchapter_id=target_subchapter_id)
-                if target_subchapter_id
-                else snapshotter(config)
-            )
+            if target_subchapter_id:
+                snapshot = snapshotter(
+                    config, target_subchapter_id=target_subchapter_id
+                )
+            elif target_chapter is not None:
+                snapshot = snapshotter(config, target_chapter=target_chapter)
+            else:
+                snapshot = snapshotter(config)
             if snapshot.failed and snapshot.unfinished == 0:
                 scope = (
                     f"Target section {target_subchapter_id}"
                     if target_subchapter_id
-                    else "Auto mode"
+                    else (
+                        f"Chapter {target_chapter} auto mode"
+                        if target_chapter is not None
+                        else "Auto mode"
+                    )
                 )
                 raise AutoModeBlockedError(
                     f"{scope} is blocked by {snapshot.failed} terminally failed job(s); "
@@ -312,6 +357,11 @@ def run_continuous_auto(
                 if target_subchapter_id:
                     print(
                         f"AUTO_TARGET_COMPLETE: section {target_subchapter_id} is already globally successful."
+                    )
+                elif target_chapter is not None:
+                    print(
+                        f"AUTO_CHAPTER_COMPLETE: all {snapshot.total} Chapter {target_chapter} source job(s) "
+                        "are globally successful."
                     )
                 else:
                     print(
@@ -323,6 +373,11 @@ def run_continuous_auto(
                     print(
                         f"AUTO_TARGET_WAIT: section {target_subchapter_id} is leased by another worker; "
                         f"checking again in {poll_seconds}s."
+                    )
+                elif target_chapter is not None:
+                    print(
+                        f"AUTO_CHAPTER_IDLE: {snapshot.leased} Chapter {target_chapter} job(s) are leased "
+                        f"by other workers; checking again in {poll_seconds}s."
                     )
                 else:
                     print(

@@ -125,3 +125,13 @@ The command name is retained for compatibility; under the Drive backend it write
 - `LEASE_LOST` — the worker is no longer the elected unexpired owner; do not force publication from that process.
 - dirty/diverged Git — resolve intentionally before auto mode; do not reset blindly.
 - transient Gemini restart — recovery uses parsed-stage checkpoints and the authenticated automation browser profile.
+## Chapter-scoped multi-PC guard test
+
+After every PC has run `--init-settings-only` from its intended local checkout, start the same scoped worker on two or more PCs:
+
+```powershell
+& .\.venv\Scripts\python.exe -m app_generator doctor --config .\project.local.toml --selection-mode auto --chapter 10
+& .\.venv\Scripts\python.exe -m app_generator run --config .\project.local.toml --selection-mode auto --chapter 10
+```
+
+Verify that simultaneous workers claim different `10.*` jobs, never claim `11.*`, and exit only after the Chapter 10 queue is complete. As a negative test, copying or invoking another PC's generated `project.local.toml` must fail with a workstation-binding error before source discovery or generation begins.

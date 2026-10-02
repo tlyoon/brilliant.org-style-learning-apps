@@ -75,6 +75,8 @@ Initialize only workstation settings if desired:
 python -m scripts.sync_configured_workstation --init-settings-only
 ```
 
+This initialization now binds the machine-local settings to both the current PC hostname and the absolute repository checkout path. Existing pre-binding workstation settings must run this command once after upgrading. Normal synchronization refuses to run if the same settings file is used from another PC or another local checkout. The rendered local generator configuration carries the same binding, so a direct `app_generator run` also fails closed on the wrong PC or repository.
+
 Then run:
 
 ```powershell

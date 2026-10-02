@@ -38,6 +38,17 @@ class CliParserTests(unittest.TestCase):
         self.assertEqual("auto", args.selection_mode)
         self.assertEqual("8.6", args.pdf_subchapter_path)
 
+    def test_auto_can_accept_chapter_scope(self):
+        args = _parser().parse_args([
+            "run", "--selection-mode", "auto", "--chapter", "10"
+        ])
+        self.assertEqual("auto", args.selection_mode)
+        self.assertEqual(10, args.chapter)
+
+    def test_chapter_scope_requires_positive_integer(self):
+        with self.assertRaises(SystemExit):
+            _parser().parse_args(["run", "--selection-mode", "auto", "--chapter", "0"])
+
     def test_targeted_doctor_reports_bounded_failure_diagnostics(self):
         snapshot = QueueSnapshot(
             total=1, queued=0, interrupted=0, leased=0, generated=0,
