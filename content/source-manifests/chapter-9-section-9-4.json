@@ -1,0 +1,24 @@
+{
+  "manifestVersion": "1.1",
+  "sourceId": "brilliant-content-generator-section-9-4",
+  "controlledFilename": "source.pdf",
+  "sha256": "08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578",
+  "corpusSha256": "e5a9ffa4847241e9415c600d0a6688562ce0a412c3c9eb2b9ae269b74ab7fb9f",
+  "sources": [
+    {
+      "controlledFilename": "source.pdf",
+      "sha256": "08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578",
+      "role": "primary",
+      "driveFileId": "1qFtZ7ZR5RFqLSkVl3VExo_-z9rXzNP0j"
+    }
+  ],
+  "edition": "Edition not identified in the controlled PDF",
+  "chapter": "Chapter 9",
+  "subchapter": "9.4 Collisions in One Dimension",
+  "heading": "9.4 Collisions in One Dimension",
+  "pageRange": "Complete controlled PDF for section 9.4",
+  "learningBoundary": "Includes concepts supported by the controlled PDF for 9.4 Collisions in One Dimension: Definition and categorization of elastic, inelastic, and perfectly inelastic collisions; Conservation of linear momentum in one-dimensional isolated collisions; Conservation of kinetic energy in one-dimensional elastic collisions; Relative speed of approach equals relative speed of separation for 1D elastic collisions; Special limiting mass cases for 1D elastic collisions; Two-phase analysis of ballistic pendulum systems combining momentum conservation and mechanical energy conservation. Excludes: Two-dimensional and oblique collisions (Section 9.5); Center of mass reference frame and multi-particle systems (Section 9.6); Variable-mass systems and rocket propulsion (Section 9.7); Rotational dynamics and angular collisions.",
+  "extractedOn": "2026-10-02",
+  "reviewer": "Automated draft generation; qualified human review required",
+  "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
+}
