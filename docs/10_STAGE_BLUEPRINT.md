@@ -21,7 +21,7 @@ Stage 0  Validated single-source-root PDF-to-learning-package baseline
    ↓
 Stage 1  Multi-source topic and course knowledge/pedagogy model
    ↓
-Stage 2  Rich interactive activity framework
+Stage 2  Visual-interactive activity framework
    ↓
 Stage 3  Topic learning-journey generation
    ↓
@@ -145,7 +145,7 @@ The stages are capability boundaries rather than single pull requests. A stage m
 3. **Selectors are not roots.** Chapter/topic/file targets choose material beneath the Source Root and must not redefine it.
 4. **Topic is the generation unit.** One or more PDFs provide evidence for a topic; they are not inherently separate learning apps.
 5. **Course coherence is a first-class requirement.** Independently generated topic material must ultimately connect into one subject/course learning environment.
-6. **Pedagogy before cosmetics.** Improve the learning mechanism before investing heavily in visual polish or gamification.
+6. **Pedagogy before cosmetics.** Improve the learning mechanism before decorative polish or gamification. Visual representations are not cosmetic when they carry physics meaning, support prediction/manipulation, or expose causal structure; such visuals are part of the pedagogy.
 7. **Generated educational content and runtime code remain separate.** Prefer validated, reusable interaction primitives over AI-generated arbitrary executable code.
 8. **Deterministic core first.** Core learning, validation, feedback, and mastery mechanisms should remain testable without depending on a runtime LLM wherever practical.
 9. **AI augments the learning system.** Runtime AI should be introduced where it adds capabilities that deterministic mechanisms cannot provide well, especially contextual tutoring.
@@ -279,7 +279,8 @@ For each topic, represent at least:
 - prerequisite relationships;
 - expected reasoning;
 - common misconceptions;
-- useful representations;
+- useful representations, including the canonical diagrams, graphs, vectors, states, comparisons, or manipulable variables through which the concept is best understood;
+- visual/simulation affordances and constraints, including what must remain invariant and what details are source-grounded versus pedagogically inferred;
 - mastery evidence;
 - source provenance at concept/claim level where practical;
 - relationships to concepts in other topics.
@@ -323,27 +324,55 @@ Given the single configured Source Root containing multiple chapter/topic folder
 
 ---
 
-# Stage 2 — Rich Interactive Activity Framework
+# Stage 2 ? Visual-Interactive Activity Framework
 
 ## Goal
 
-Move beyond MCQ-dominant interaction by giving the learner multiple ways to manipulate, construct, compare, classify, predict, and explore concepts.
+Move beyond MCQ-dominant and text-card interaction by giving the learner multiple ways to **see, predict, manipulate, construct, compare, classify, and explore** physics concepts. Visual representation is instructional content when it carries spatial, graphical, vectorial, causal, or dynamical meaning.
 
 ## Core architecture
 
-Create a reusable library of tested interaction primitives. The generator selects and parameterizes primitives rather than generating arbitrary JavaScript for individual activities.
+Create a reusable library of tested visual and interaction primitives. The generator plans an activity and its representation together, then selects and parameterizes trusted primitives rather than generating arbitrary JavaScript or unconstrained final artwork for individual activities.
 
-Candidate activity types include multiple choice, multiple select, prediction, drag and drop, matching, ordering, classification, slider experiments, vector manipulation, graph manipulation, diagram annotation, simulation, construction, comparison, error spotting, guided derivation, short response, and concept mapping.
+The Stage-2 pipeline is:
+
+```text
+Topic Learning Model
+        ?
+activity intent + learning objective
+        ?
+visual-value / simulation-value assessment
+        ?
+declarative visual specification
+        ?
+trusted renderer / interaction primitive
+        ?
+question ? answer ? visual ? physics validation
+        ?
+repair or safe fallback
+        ?
+validated activity
+```
+
+Candidate activity/representation types include multiple choice, multiple select, prediction, drag and drop, matching, ordering, classification, slider experiments, vector manipulation, graph manipulation, diagram annotation, hotspot selection, energy/state comparisons, simulation, construction, error spotting, guided derivation, short response, and concept mapping.
 
 Generated activities must derive their source/topic identity through Stage-1 artifacts that ultimately trace back to the same project Source Root; Stage 2 introduces no source-root setting.
 
-## Design rule
+## Visual-first design rule
 
-Interaction primitives are trusted runtime components. Generated packages provide declarative content and parameters. Activity quantity and type should ultimately be determined by pedagogical need rather than a permanently fixed quota; existing Stage-0 quotas may remain for backward compatibility during transition.
+Every activity receives a visual-value assessment. A visual is required when it materially supports the reasoning; a simulation/manipulation is preferred when changing a meaningful parameter exposes cause and effect, an invariant, or an important relationship. Text-first activities remain valid when a visual would add little learning value. No fixed visual percentage should force decorative imagery.
+
+Visual specifications are declarative data. Trusted runtime components own geometry, rendering, animation, and interaction behavior. Every significant entity, label, vector, axis, state, and relation must be justified by the activity, a trusted template invariant, or grounded evidence. Unsupported or ambiguous detail is simplified or falls back rather than being invented.
+
+The detailed contract is Decision 0024 and `docs/VISUAL_INTERACTION_DESIGN.md`.
+
+## Activity-mix transition
+
+Activity quantity and type should ultimately be determined by pedagogical need rather than a permanently fixed quota. Existing Stage-0 quotas remain for backward compatibility until a versioned schema/product migration is explicitly approved after the visual-interactive framework and a bounded pilot are proven.
 
 ## Exit condition
 
-A generated topic can use several genuinely different interaction modes, and the runtime can validate and render each supported mode reliably.
+A generated topic can use several genuinely different visual and interaction modes; the runtime can validate and render each supported mode reliably; seeded question/visual contradictions are detected; unsupported visual requests fail safely; and at least one bounded manipulable physics simulation has a deterministic static/structured fallback.
 
 ---
 
@@ -353,7 +382,7 @@ A generated topic can use several genuinely different interaction modes, and the
 
 Transform each topic's concepts and activities into an intentionally ordered learning journey while retaining coherence with prerequisite and follow-on topics.
 
-Possible sequences include Hook → Predict → Explore → Notice → Explain → Guided practice → Independent challenge → Transfer → Reflect. The pedagogy model determines the appropriate pattern rather than imposing one fixed sequence.
+Possible sequences include Hook ? Observe ? Predict ? Manipulate/Explore ? Notice ? Explain ? Guided practice ? Independent challenge ? Transfer ? Reflect. The pedagogy model determines the appropriate pattern rather than imposing one fixed sequence. Where a visual-interactive representation is central, the learner should normally commit a prediction before the representation reveals the relevant relationship.
 
 Topic journeys should consume the Course Learning Model so that prerequisite assumptions, terminology, shared concepts, and progression remain coherent across the subject. Source provenance continues to resolve transitively to the single Source Root.
 
@@ -371,7 +400,7 @@ Make incorrect responses diagnostically useful and provide targeted help based o
 
 The target pattern is response → reasoning/misconception diagnosis → targeted feedback → progressive scaffold → retry, alternate representation, or prerequisite remediation.
 
-Scaffolding may progress through reflective prompts, conceptual hints, visual/representational hints, partial demonstrations, prerequisite remediation, and guided reconstruction. The system should record which scaffolds were required.
+Scaffolding may progress through reflective prompts, conceptual hints, visual/representational hints, partial demonstrations, prerequisite remediation, and guided reconstruction. A visual hint should use the same validated representation vocabulary as the activity and must not introduce contradictory geometry or answer-revealing decoration. The system should record which scaffolds were required.
 
 Because Stage 1 provides course-level prerequisite relationships, remediation may route a learner to a prerequisite concept in an earlier topic. No new source root is introduced; remediation content remains traceable through course/topic artifacts to the same root.
 
