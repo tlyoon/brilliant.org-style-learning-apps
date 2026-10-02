@@ -1,0 +1,2277 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-9-section-9-8",
+  "chapter": "Chapter 9",
+  "subchapter": "9.8 Deformable Systems",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Explain why the particle work-kinetic energy theorem does not generally apply to deformable systems.",
+    "Distinguish the displacement of a force's application point from the center-of-mass displacement.",
+    "Apply energy conservation to track internal energy conversions into kinetic energy in deformable systems.",
+    "Apply the impulse-momentum theorem to determine the center-of-mass motion of deformable systems.",
+    "Evaluate the work done on a deformable system using the displacement of the point of application."
+  ],
+  "prerequisites": [
+    {
+      "id": "center-of-mass-motion",
+      "description": {
+        "en": "Understanding center-of-mass definition and its motion under external forces.",
+        "ms": "Memahami takrifan pusat jisim dan gerakannya di bawah tindakan daya luar.",
+        "zh": "理解质心的定义及其在外力作用下的运动规律。"
+      },
+      "recovery": {
+        "en": "Review how Newton's second law applies to the center of mass of a system of particles.",
+        "ms": "Ulang kaji bagaimana hukum kedua Newton diaplikasikan kepada pusat jisim suatu sistem zarah.",
+        "zh": "复习牛顿第二定律如何应用于质点系的质心运动。"
+      }
+    },
+    {
+      "id": "impulse-momentum-theorem",
+      "description": {
+        "en": "Applying the impulse-momentum theorem to relate external impulse and momentum change.",
+        "ms": "Mengaplikasikan teorem impuls-momentum untuk menghubungkan impuls luar dan perubahan momentum.",
+        "zh": "应用动量定理联系外力冲量与动量变化。"
+      },
+      "recovery": {
+        "en": "Review how the time integral of net external force determines the change in linear momentum.",
+        "ms": "Ulang kaji bagaimana kamiran masa daya luar bersih menentukan perubahan momentum linear.",
+        "zh": "复习合外力对时间的积分如何决定线动量的变化。"
+      }
+    },
+    {
+      "id": "work-definition",
+      "description": {
+        "en": "Defining mechanical work through the displacement of the point of application of a force.",
+        "ms": "Menakrifkan kerja mekanikal melalui sesaran titik tindakan bagi sesuatu daya.",
+        "zh": "通过力的作用点位移来定义机械功。"
+      },
+      "recovery": {
+        "en": "Review the definition of work as the scalar product of force and the displacement of its contact point.",
+        "ms": "Ulang kaji takrifan kerja sebagai hasil darab skalar daya dan sesaran titik sentuhannya.",
+        "zh": "复习功作为力与接触点位移标量积的定义。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "work-kinetic-energy-always-applies",
+      "description": {
+        "en": "Believing the particle work-kinetic energy theorem, W = Delta K, holds universally for deformable systems.",
+        "ms": "Mempercayai bahawa teorem kerja-tenaga kinetik zarah, W = Delta K, sentiasa benar untuk sistem boleh ubah bentuk.",
+        "zh": "认为质点动能定理 W = Delta K 普遍适用于可变形系统。"
+      }
+    },
+    {
+      "id": "normal-force-does-work-pushing-off",
+      "description": {
+        "en": "Believing a rigid surface does work on a jumper or skater whose contact point does not move.",
+        "ms": "Mempercayai bahawa permukaan tegar melakukan kerja ke atas pelompat atau peluncur yang titik sentuhannya tidak bergerak.",
+        "zh": "认为跳跃者或滑板者在接触点不移动的情况下推离刚性表面时，刚性表面对其做功。"
+      }
+    },
+    {
+      "id": "force-displacement-equals-center-of-mass-displacement",
+      "description": {
+        "en": "Confusing the displacement of a force's application point with the displacement of the system center of mass.",
+        "ms": "Mengelirukan sesaran titik tindakan daya dengan sesaran pusat jisim sistem.",
+        "zh": "混淆力的作用点位移与系统质心位移。"
+      }
+    },
+    {
+      "id": "internal-forces-change-total-momentum",
+      "description": {
+        "en": "Believing internal forces, such as muscular exertion or springs, can directly change total linear momentum.",
+        "ms": "Mempercayai bahawa daya dalaman, seperti tenaga otot atau spring, boleh mengubah jumlah momentum linear sistem secara langsung.",
+        "zh": "认为诸如肌肉发力或弹簧弹力等内力可以直接改变系统的总线动量。"
+      }
+    },
+    {
+      "id": "energy-isolation-implies-momentum-isolation",
+      "description": {
+        "en": "Assuming a system that is isolated in terms of energy must also be isolated in terms of momentum.",
+        "ms": "Menganggap bahawa sistem yang terpencil dari segi tenaga mestilah juga terpencil dari segi momentum.",
+        "zh": "假设在能量上孤立的系统在动量上也必然是孤立的。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-9/section-9-8/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-9-section-9-8.json",
+  "activities": [
+    {
+      "id": "mcq-push-off-wall-work",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Explain why the particle work-kinetic energy theorem does not generally apply to deformable systems.",
+      "prompt": {
+        "en": "A skater stands on a skateboard on frictionless horizontal ground and pushes horizontally against a rigid, stationary wall, accelerating away from the wall. What mechanical work is performed on the skater-skateboard system by the normal force from the wall during the push, and why?",
+        "ms": "Seorang peluncur berdiri di atas papan selaju di atas lantai mengufuk tanpa geseran dan menolak dinding tegar yang pegun secara mengufuk, lalu memecut menjauhi dinding. Apakah kerja mekanikal yang dilakukan ke atas sistem peluncur-papan selaju oleh daya normal daripada dinding semasa tolakan tersebut, dan mengapa?",
+        "zh": "一名滑板者站在光滑无摩擦的水平地面上的滑板上，水平推一堵静止的刚性墙壁，随后加速离开墙壁。在推墙过程中，墙壁对滑板者-滑板系统施加的支持力做了多少机械功？为什么？"
+      },
+      "hints": [
+        {
+          "en": "Recall the definition of mechanical work: work depends strictly on the force and the displacement of that force's specific point of application.",
+          "ms": "Ingat kembali takrifan kerja mekanikal: kerja bergantung secara khusus pada daya dan sesaran titik tindakan tertentu bagi daya tersebut.",
+          "zh": "回忆机械功的定义：功严格取决于力以及该力具体作用点的位移。"
+        },
+        {
+          "en": "Consider the skater's hands while they are in contact with the rigid wall. Does the interface between the hands and the wall move through any distance while the force is exerted?",
+          "ms": "Pertimbangkan tangan peluncur semasa bersentuhan dengan dinding tegar. Adakah antara muka antara tangan dan dinding bergerak melalui sebarang jarak semasa daya dikenakan?",
+          "zh": "考虑推墙时滑板者与刚性墙壁接触的双手。在施力的过程中，手与墙壁的接触面是否移动了任何距离？"
+        }
+      ],
+      "feedback": {
+        "en": "The contact point between the hands and the rigid wall does not move while the force is exerted, meaning the displacement of the application point is zero. Consequently, the normal force does zero mechanical work on the system. The gained kinetic energy comes from internal potential energy stored in the skater's body.",
+        "ms": "Titik sentuhan antara tangan dan dinding tegar tidak bergerak semasa daya dikenakan, bermakna sesaran titik tindakan adalah sifar. Oleh itu, daya normal melakukan kerja mekanikal sifar ke atas sistem. Tenaga kinetik yang diperoleh berasal daripada tenaga keupayaan dalaman yang tersimpan di dalam badan peluncur.",
+        "zh": "在施力过程中，双手与刚性墙壁的接触点并未发生位移，这意味着力的作用点位移为零。因此，支持力对系统做的机械功为零。获得的动能来自于滑板者体内储存的内部势能。"
+      },
+      "answerLogic": {
+        "en": "Mechanical work is defined by the displacement of the point of application of the force. Because the wall is rigid and stationary, the hands remain at the wall interface during the push, so the point of application undergoes zero displacement (W = 0).",
+        "ms": "Kerja mekanikal ditakrifkan oleh sesaran titik tindakan daya. Oleh kerana dinding adalah tegar dan pegun, tangan kekal pada antara muka dinding semasa tolakan, jadi titik tindakan mengalami sesaran sifar (W = 0).",
+        "zh": "机械功由力的作用点的位移决定。由于墙壁是刚性且静止的，推墙过程中双手保持在墙面上，因此力的作用点位移为零（W = 0）。"
+      },
+      "explanation": {
+        "en": "For a deformable system such as a human body pushing off a wall, the particle work-kinetic energy theorem (W = Delta K) cannot be applied directly. The normal force acts at a stationary boundary and therefore performs zero work (W = 0). Instead, the system transforms internal chemical potential energy into kinetic energy (Delta K + Delta U = 0), while the external impulse from the wall accounts for the momentum change.",
+        "ms": "Bagi sistem boleh ubah bentuk seperti tubuh manusia yang menolak dinding, teorem kerja-tenaga kinetik zarah (W = Delta K) tidak boleh digunakan secara langsung. Daya normal bertindak pada sempadan pegun dan oleh itu melakukan kerja sifar (W = 0). Sebaliknya, sistem menukarkan tenaga keupayaan kimia dalaman kepada tenaga kinetik (Delta K + Delta U = 0), manakala impuls luar daripada dinding menjelaskan perubahan momentum.",
+        "zh": "对于像人体推墙这样的可变形系统，不能直接应用质点动能定理（W = Delta K）。支持力作用在静止的边界上，因此做功为零（W = 0）。系统将体内的化学势能转化为动能（Delta K + Delta U = 0），而墙壁施加的外力冲量则解释了系统动量的改变。"
+      },
+      "misconceptions": [
+        "normal-force-does-work-pushing-off",
+        "work-kinetic-energy-always-applies"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the definition of mechanical work as the product of force and the displacement of its point of application, rather than the motion of other parts of the body.",
+          "ms": "Ulang kaji takrifan kerja mekanikal sebagai hasil darab daya dan sesaran titik tindakannya, dan bukannya pergerakan bahagian badan yang lain.",
+          "zh": "复习机械功的定义：功是力与该力作用点位移的乘积，而不是物体其他部分的运动位移。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options asking to determine the mechanical work done by a rigid wall on a skater pushing off it, along with the physical reason.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang meminta untuk menentukan kerja mekanikal yang dilakukan oleh dinding tegar ke atas peluncur yang menolaknya, berserta sebab fizikalnya.",
+        "zh": "四选一单选题，要求判断刚性墙壁对推墙滑板者所做的机械功并给出物理原因。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-zero-displacement",
+        "options": [
+          {
+            "id": "opt-zero-displacement",
+            "label": {
+              "en": "Zero work, because the point of application of the force at the wall interface does not move during the push.",
+              "ms": "Kerja sifar, kerana titik tindakan daya pada antara muka dinding tidak bergerak semasa tolakan.",
+              "zh": "做功为零，因为在推墙过程中，墙壁界面处的力的作用点没有移动。"
+            }
+          },
+          {
+            "id": "opt-positive-work-normal",
+            "label": {
+              "en": "Positive work equal to the gained kinetic energy, because the normal force points away from the wall in the direction of acceleration.",
+              "ms": "Kerja positif yang sama dengan tenaga kinetik yang diperoleh, kerana daya normal mengarah menjauhi dinding dalam arah pecutan.",
+              "zh": "做正功且等于获得的动能，因为支持力背离墙壁，沿着加速度方向。"
+            },
+            "misconception": "normal-force-does-work-pushing-off"
+          },
+          {
+            "id": "opt-work-theorem-must-hold",
+            "label": {
+              "en": "Positive work, because the work-kinetic energy theorem requires that any increase in kinetic energy must equal net external work done on the system.",
+              "ms": "Kerja positif, kerana teorem kerja-tenaga kinetik memerlukan sebarang pertambahan tenaga kinetik mestilah sama dengan kerja luar bersih yang dilakukan ke atas sistem.",
+              "zh": "做正功，因为动能定理要求动能的任何增加都必须等于对系统所做的合外力功。"
+            },
+            "misconception": "work-kinetic-energy-always-applies"
+          },
+          {
+            "id": "opt-negative-work",
+            "label": {
+              "en": "Negative work, because the skater moves in a direction opposite to the internal reaction forces inside the wall.",
+              "ms": "Kerja negatif, kerana peluncur bergerak ke arah yang bertentangan dengan daya tindak balas dalaman di dalam dinding.",
+              "zh": "做负功，因为滑板者的运动方向与墙壁内部的反作用力相反。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-deformable-energy-momentum-isolation",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply energy conservation to track internal energy conversions into kinetic energy in deformable systems.",
+      "prompt": {
+        "en": "A skater pushes horizontally against a fixed wall on level, frictionless ground, accelerating from rest. When the skater and skateboard are treated as the system, how is this system categorized regarding energy isolation and linear momentum isolation during the push?",
+        "ms": "Seorang peluncur menolak dinding tetap secara mengufuk di atas lantai rata tanpa geseran, lalu memecut dari keadaan pegun. Apabila peluncur dan papan selaju dianggap sebagai sistem, bagaimanakah sistem ini dikategorikan dari segi keterpencilan tenaga dan keterpencilan momentum linear semasa tolakan?",
+        "zh": "一名滑板者在平整无摩擦的水平地面上水平推固定墙壁，从静止开始加速。若将滑板者和滑板视为一个系统，在推墙过程中，该系统在能量孤立和线动量孤立方面应如何分类？"
+      },
+      "hints": [
+        {
+          "en": "Consider whether mechanical energy enters or leaves the skater system across its boundary, given that the wall does zero work.",
+          "ms": "Pertimbangkan sama ada tenaga mekanikal masuk atau keluar dari sistem peluncur merentasi sempadannya, memandangkan dinding melakukan kerja sifar.",
+          "zh": "鉴于墙壁做功为零，考虑是否有机械能跨越滑板者系统的边界流入或流出。"
+        },
+        {
+          "en": "Next consider whether an external force acts on the system over time to change the total momentum of the skater.",
+          "ms": "Seterusnya pertimbangkan sama ada daya luar bertindak ke atas sistem mengikut masa untuk mengubah jumlah momentum peluncur.",
+          "zh": "接着考虑是否存在外力在一段时间内作用于系统，从而改变了滑板者的总动量。"
+        }
+      ],
+      "feedback": {
+        "en": "The system is isolated in terms of energy because the external force does zero work (W = 0), so total system energy is conserved through Delta K + Delta U = 0. However, it is nonisolated in terms of momentum because the horizontal force from the wall delivers an external impulse that changes the system's linear momentum.",
+        "ms": "Sistem ini terpencil dari segi tenaga kerana daya luar melakukan kerja sifar (W = 0), jadi jumlah tenaga sistem adalah diabadikan melalui Delta K + Delta U = 0. Walau bagaimanapun, ia bukan terpencil dari segi momentum kerana daya mengufuk daripada dinding menghasilkan impuls luar yang mengubah momentum linear sistem.",
+        "zh": "该系统在能量方面是孤立系统，因为外力做功为零（W = 0），系统总能量通过 Delta K + Delta U = 0 守恒。然而，它在动量方面是非孤立系统，因为墙壁施加的水平力产生了外力冲量，改变了系统的线动量。"
+      },
+      "answerLogic": {
+        "en": "Isolation depends on boundary transfers. No energy crosses the boundary as work (W = 0), so internal potential energy is converted directly into kinetic energy (energy-isolated). A net external force acts over a time interval, changing total momentum via impulse (momentum-nonisolated).",
+        "ms": "Keterpencilan bergantung pada pemindahan sempadan. Tiada tenaga merentasi sempadan sebagai kerja (W = 0), jadi tenaga keupayaan dalaman ditukar terus kepada tenaga kinetik (terpencil tenaga). Daya luar bersih bertindak dalam selang masa, mengubah jumlah momentum melalui impuls (bukan terpencil momentum).",
+        "zh": "孤立性取决于跨越边界的转移。没有能量以功的形式跨越边界（W = 0），因此内部势能直接转化为动能（能量孤立）。合外力在一段时间内持续作用，通过冲量改变总动量（动量非孤立）。"
+      },
+      "explanation": {
+        "en": "A deformable system can be isolated with respect to energy while simultaneously nonisolated with respect to momentum. Pushing off the wall involves zero boundary work (W = 0), giving Delta K + Delta U = 0 as muscular potential energy becomes kinetic energy. In contrast, the impulse-momentum theorem requires Delta p = integral of F_wall dt, which is non-zero because the external wall force accelerates the center of mass.",
+        "ms": "Sistem boleh ubah bentuk boleh terpencil dari segi tenaga manakala pada masa yang sama bukan terpencil dari segi momentum. Menolak dinding melibatkan kerja sempadan sifar (W = 0), memberikan Delta K + Delta U = 0 apabila tenaga keupayaan otot menjadi tenaga kinetik. Sebaliknya, teorem impuls-momentum memerlukan Delta p = kamiran F_dinding dt, yang bukan sifar kerana daya dinding luar memecutkan pusat jisim.",
+        "zh": "可变形系统可以在能量上孤立，同时在动量上非孤立。推墙过程中边界功为零（W = 0），肌肉势能转化为动能，满足 Delta K + Delta U = 0。与此相反，动量定理要求 Delta p = 积分 F_wall dt，由于外力支持力加速了质心，该积分不为零。"
+      },
+      "misconceptions": [
+        "energy-isolation-implies-momentum-isolation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "impulse-momentum-theorem",
+        "prompt": {
+          "en": "Review the impulse-momentum theorem: whenever an external force acts over time, it delivers an impulse that changes the momentum of the system, regardless of whether that force displaces its contact point.",
+          "ms": "Ulang kaji teorem impuls-momentum: setiap kali daya luar bertindak mengikut masa, ia menghasilkan impuls yang mengubah momentum sistem, tanpa mengira sama ada daya itu menyesarkan titik sentuhannya.",
+          "zh": "复习动量定理：只要外力在一段时间内持续作用，就会产生冲量并改变系统的动量，而不管该力是否移动了其接触点。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options asking to classify a skater pushing off a wall as isolated or nonisolated with respect to energy and momentum.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang meminta untuk mengelaskan peluncur yang menolak dinding sebagai terpencil atau bukan terpencil dari segi tenaga dan momentum.",
+        "zh": "四选一单选题，要求将推墙滑板者系统在能量和动量方面分别分类为孤立或非孤立系统。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-energy-iso-momentum-noniso",
+        "options": [
+          {
+            "id": "opt-energy-iso-momentum-noniso",
+            "label": {
+              "en": "The system is isolated in terms of energy, but nonisolated in terms of momentum.",
+              "ms": "Sistem ini terpencil dari segi tenaga, tetapi bukan terpencil dari segi momentum.",
+              "zh": "该系统在能量方面是孤立系统，但在动量方面是非孤立系统。"
+            }
+          },
+          {
+            "id": "opt-both-nonisolated",
+            "label": {
+              "en": "The system is nonisolated in terms of both energy and momentum, because any external force that changes momentum must also do external work.",
+              "ms": "Sistem ini bukan terpencil dari segi kedua-dua tenaga dan momentum, kerana sebarang daya luar yang mengubah momentum mestilah juga melakukan kerja luar.",
+              "zh": "该系统在能量和动量两方面都是非孤立系统，因为任何改变动量的外力都必然做外力功。"
+            },
+            "misconception": "energy-isolation-implies-momentum-isolation"
+          },
+          {
+            "id": "opt-both-isolated",
+            "label": {
+              "en": "The system is isolated in terms of both energy and momentum, because internal forces cannot change total momentum or total energy.",
+              "ms": "Sistem ini terpencil dari segi kedua-dua tenaga dan momentum, kerana daya dalaman tidak dapat mengubah jumlah momentum atau jumlah tenaga.",
+              "zh": "该系统在能量和动量两方面都是孤立系统，因为内力无法改变总动量或总能量。"
+            },
+            "misconception": "energy-isolation-implies-momentum-isolation"
+          },
+          {
+            "id": "opt-energy-noniso-momentum-iso",
+            "label": {
+              "en": "The system is nonisolated in terms of energy because internal energy changes, but isolated in terms of momentum because the wall does not move.",
+              "ms": "Sistem ini bukan terpencil dari segi tenaga kerana tenaga dalaman berubah, tetapi terpencil dari segi momentum kerana dinding tidak bergerak.",
+              "zh": "该系统在能量方面是非孤立系统，因为内部能量发生了改变；但在动量方面是孤立系统，因为墙壁没有移动。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-displacement-definition-work",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Evaluate the work done on a deformable system using the displacement of the point of application.",
+      "prompt": {
+        "en": "A constant horizontal force pushes on one block of a two-block spring system on a frictionless floor, compressing the spring while accelerating the entire system forward. To evaluate the mechanical work done on this deformable system by the applied force, which displacement must be used?",
+        "ms": "Satu daya mengufuk malar menolak satu blok daripada sistem spring dua blok di atas lantai tanpa geseran, memampatkan spring sambil memecutkan keseluruhan sistem ke hadapan. Untuk menilai kerja mekanikal yang dilakukan ke atas sistem boleh ubah bentuk ini oleh daya yang dikenakan, sesaran manakah yang mesti digunakan?",
+        "zh": "在光滑无摩擦的地面上，一个恒定的水平力推压双物块弹簧系统中的一个物块，在压缩弹簧的同时加速整个系统向前运动。要评估该外力对这个可变形系统所做的机械功，必须使用哪个位移？"
+      },
+      "hints": [
+        {
+          "en": "Consider the fundamental definition of work: does work follow the movement of the specific contact point where the force acts, or the average position of the whole system?",
+          "ms": "Pertimbangkan takrifan asas kerja: adakah kerja mengikut pergerakan titik sentuhan khusus di mana daya bertindak, atau kedudukan purata seluruh sistem?",
+          "zh": "考虑功的基本物理定义：做功是依据力所作用的具体接触点的移动，还是依据整个系统的平均位置？"
+        },
+        {
+          "en": "Notice that when a spring compresses, the block being pushed moves a different distance than the center of mass of the two blocks.",
+          "ms": "Perhatikan bahawa apabila spring memampat, blok yang ditolak bergerak pada jarak yang berbeza daripada pusat jisim kedua-dua blok tersebut.",
+          "zh": "注意当弹簧被压缩时，受推物块移动的距离与两个物块构成的质心移动的距离并不相同。"
+        }
+      ],
+      "feedback": {
+        "en": "Mechanical work is defined strictly through the displacement of the point of application of the force. For a deformable body, this displacement generally differs from the displacement of the center of mass.",
+        "ms": "Kerja mekanikal ditakrifkan secara khusus melalui sesaran titik tindakan daya. Bagi jasad boleh ubah bentuk, sesaran ini secara amnya berbeza daripada sesaran pusat jisim.",
+        "zh": "机械功严格通过力的作用点的位移来定义。对于可变形物体，该位移通常不同于质心的位移。"
+      },
+      "answerLogic": {
+        "en": "Work is defined as the integral of force over the displacement of its point of application. In deformable systems, the contact point displacement differs from the center-of-mass displacement, and using center-of-mass displacement would incorrectly determine the total energy transferred.",
+        "ms": "Kerja ditakrifkan sebagai kamiran daya ke atas sesaran titik tindakannya. Dalam sistem boleh ubah bentuk, sesaran titik sentuhan berbeza daripada sesaran pusat jisim, dan penggunaan sesaran pusat jisim akan tersilap menentukan jumlah tenaga yang dipindahkan.",
+        "zh": "功被定义为力对作用点位移的积分。在可变形系统中，接触点的位移与质心的位移不同，若使用质心位移将会错误判定系统转移的总能量。"
+      },
+      "explanation": {
+        "en": "In the general definition of work, displacement refers specifically to the displacement of the point of application of the force. For a rigid body, every point undergoes the same displacement as the center of mass. In a deformable system, such as blocks connected by a spring, the pushed block moves through a distance x1 while the center of mass moves through a different distance. Evaluating work using x1 correctly accounts for both center-of-mass acceleration and internal spring deformation.",
+        "ms": "Dalam takrifan umum kerja, sesaran merujuk secara khusus kepada sesaran titik tindakan daya. Bagi jasad tegar, setiap titik mengalami sesaran yang sama seperti pusat jisim. Dalam sistem boleh ubah bentuk, seperti blok yang disambungkan oleh spring, blok yang ditolak bergerak melalui jarak x1 manakala pusat jisim bergerak melalui jarak yang berbeza. Menilai kerja menggunakan x1 menjelaskan dengan betul kedua-dua pecutan pusat jisim dan ubah bentuk spring dalaman.",
+        "zh": "在功的一般定义中，位移特指力的作用点的位移。对于刚体，每个部分的位移都与质心位移相同。但在诸如由弹簧连接的物块等可变形系统中，被推物块移动的距离 x1 与质心移动的距离不同。使用作用点位移 x1 来评估功，才能同时正确体现质心的加速以及内部弹簧的形变。"
+      },
+      "misconceptions": [
+        "force-displacement-equals-center-of-mass-displacement"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the definition of mechanical work, noting that the displacement term always tracks the exact point where the force is applied.",
+          "ms": "Ulang kaji takrifan kerja mekanikal, dengan memperhatikan bahawa sebutan sesaran sentiasa menjejaki titik tepat di mana daya itu dikenakan.",
+          "zh": "复习机械功的定义，注意位移项始终追踪的是施加力的确切作用点。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options asking which displacement must be used to evaluate mechanical work done by an external force on a deformable system.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang meminta sesaran manakah yang mesti digunakan untuk menilai kerja mekanikal yang dilakukan oleh daya luar ke atas sistem boleh ubah bentuk.",
+        "zh": "四选一单选题，询问在评估外力对可变形系统所做的机械功时必须使用哪一个位移。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-point-of-application",
+        "options": [
+          {
+            "id": "opt-point-of-application",
+            "label": {
+              "en": "The displacement of the point of application of the applied force.",
+              "ms": "Sesaran titik tindakan bagi daya yang dikenakan.",
+              "zh": "所施加外力的作用点的位移。"
+            }
+          },
+          {
+            "id": "opt-center-of-mass",
+            "label": {
+              "en": "The displacement of the center of mass of the system.",
+              "ms": "Sesaran pusat jisim sistem.",
+              "zh": "系统质心的位移。"
+            },
+            "misconception": "force-displacement-equals-center-of-mass-displacement"
+          },
+          {
+            "id": "opt-either-displacement",
+            "label": {
+              "en": "Either the displacement of the center of mass or that of the contact point interchangeably, because both yield identical work.",
+              "ms": "Sama ada sesaran pusat jisim atau titik sentuhan secara boleh tukar ganti, kerana kedua-duanya menghasilkan kerja yang serupa.",
+              "zh": "质心位移或接触点位移两者均可互换使用，因为两者所得的功相同。"
+            },
+            "misconception": "force-displacement-equals-center-of-mass-displacement"
+          },
+          {
+            "id": "opt-spring-compression-only",
+            "label": {
+              "en": "The change in length of the spring only, ignoring any translational motion of the blocks.",
+              "ms": "Perubahan panjang spring sahaja, mengabaikan sebarang gerakan translasi blok.",
+              "zh": "仅弹簧长度的变化量，忽略物块的任何平动位移。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-jumper-energy-source",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply energy conservation to track internal energy conversions into kinetic energy in deformable systems.",
+      "misconceptions": [
+        "normal-force-does-work-pushing-off",
+        "internal-forces-change-total-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Recall the definition of mechanical work as the product of force and the displacement of its point of application. If a contact point on a rigid surface does not move, how much work does that surface do on the body pushing against it?",
+          "ms": "Ingat kembali takrifan kerja mekanikal sebagai hasil darab daya dan sesaran titik tindakannya. Jika titik sentuhan pada permukaan tegar tidak bergerak, berapakah kerja yang dilakukan oleh permukaan itu ke atas jasad yang menolaknya?",
+          "zh": "回忆机械功的定义：力与力的作用点位移的标量积。如果刚性表面上的接触点不移动，该表面对推向它的物体做了多少功？"
+        }
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking to identify the energy source responsible for an athlete's kinetic energy increase when pushing off a rigid barrier.",
+        "ms": "Soalan aneka pilihan yang meminta untuk mengenal pasti punca tenaga bagi peningkatan tenaga kinetik seorang atlet apabila menolak penghadang tegar.",
+        "zh": "一道多选题，要求指出运动员推离刚性障碍物时使其动能增加的能量来源。"
+      },
+      "prompt": {
+        "en": "A skater standing on frictionless ice pushes horizontally against a fixed, rigid railing to propel themselves backward into motion. From the perspective of energy conservation in a deformable system, what accounts for the increase in the skater's kinetic energy?",
+        "ms": "Seorang peluncur ais di atas ais tanpa geseran menolak secara mengufuk pada pagar tegar yang tetap untuk menggerakkan dirinya ke belakang. Dari perspektif keabadian tenaga dalam sistem boleh ubah bentuk, apakah yang menyebabkan peningkatan dalam tenaga kinetik peluncur itu?",
+        "zh": "一名滑冰者在无摩擦的冰面上水平推向固定的刚性栏杆，使自己向后运动。从可变形系统能量守恒的角度来看，滑冰者动能增加的原因是什么？"
+      },
+      "answerKey": {
+        "correct": "opt-energy-internal",
+        "options": [
+          {
+            "id": "opt-energy-internal",
+            "label": {
+              "en": "The rigid railing does no work because its contact point does not move; stored internal chemical potential energy is converted into kinetic energy via muscular exertion.",
+              "ms": "Pagar tegar tidak melakukan kerja kerana titik sentuhannya tidak bergerak; tenaga keupayaan kimia dalaman yang tersimpan ditukarkan kepada tenaga kinetik melalui daya otot.",
+              "zh": "刚性栏杆不做功，因为其接触点没有发生位移；是通过肌肉发力将体内储存的化学势能转化为动能。"
+            }
+          },
+          {
+            "id": "opt-normal-work",
+            "misconception": "normal-force-does-work-pushing-off",
+            "label": {
+              "en": "The normal force exerted by the rigid railing does positive mechanical work on the skater, transferring energy directly into the skater's kinetic energy.",
+              "ms": "Daya normal yang dikenakan oleh pagar tegar melakukan kerja mekanikal positif ke atas peluncur, memindahkan tenaga secara terus ke dalam tenaga kinetik peluncur.",
+              "zh": "刚性栏杆施加的支持力对滑冰者做正功，将能量直接传递为滑冰者的动能。"
+            }
+          },
+          {
+            "id": "opt-internal-impulse",
+            "misconception": "internal-forces-change-total-momentum",
+            "label": {
+              "en": "Internal muscular forces alone generate momentum from within the body, increasing kinetic energy without requiring an external force to act on the system.",
+              "ms": "Daya otot dalaman sahaja yang menjana momentum dari dalam badan, meningkatkan tenaga kinetik tanpa memerlukan daya luar bertindak ke atas sistem.",
+              "zh": "仅凭体内肌肉内力就能在内部产生动量，无需外力作用于系统即可增加动能。"
+            }
+          },
+          {
+            "id": "opt-gravity-work",
+            "label": {
+              "en": "Gravitational potential energy is transformed directly into horizontal kinetic energy through the bending and extending of the leg joints.",
+              "ms": "Tenaga keupayaan graviti ditukarkan secara terus kepada tenaga kinetik mengufuk melalui pembengkokan dan pelurusan sendi kaki.",
+              "zh": "重力势能通过腿部关节的屈伸直接转化为水平动能。"
+            }
+          }
+        ]
+      },
+      "hints": [
+        {
+          "en": "Consider the definition of mechanical work: does the contact point between the rigid railing and the skater's hands undergo any displacement while the push occurs?",
+          "ms": "Pertimbangkan takrifan kerja mekanikal: adakah titik sentuhan antara pagar tegar dan tangan peluncur mengalami sebarang sesaran semasa tolakan berlaku?",
+          "zh": "考虑机械功的定义：在推栏杆的过程中，刚性栏杆与滑冰者双手之间的接触点是否发生了位移？"
+        },
+        {
+          "en": "Because the railing's point of application does not move, the external force does zero work. Identify where the energy that speeds up the skater must originally have been stored.",
+          "ms": "Oleh kerana titik tindakan pagar tidak bergerak, daya luar melakukan kerja sifar. Kenal pasti di mana tenaga yang memecutkan peluncur itu pada asalnya disimpan.",
+          "zh": "由于栏杆力的作用点没有移动，外力做的功为零。请找出使滑冰者加速的能量最初储存在哪里。"
+        }
+      ],
+      "feedback": {
+        "en": "The rigid railing exerts an external force, but because the point of application does not move, it does zero mechanical work. The gain in kinetic energy arises from transforming internal chemical potential energy.",
+        "ms": "Pagar tegar mengenakan daya luar, tetapi oleh kerana titik tindakannya tidak bergerak, ia melakukan kerja mekanikal sifar. Peningkatan tenaga kinetik berpunca daripada penukaran tenaga keupayaan kimia dalaman.",
+        "zh": "刚性栏杆虽然施加了外力，但由于力的作用点没有移动，它做功为零。动能的增加来源于体内化学势能的转化。"
+      },
+      "answerLogic": {
+        "en": "Work is defined as the force multiplied by the displacement of the point of application of that force. Because the railing is rigid and fixed, the contact point does not move, so W_ext = 0. By energy conservation for the deformable skater system (Delta K + Delta U = 0), the increase in macroscopic kinetic energy comes entirely from the decrease in internal chemical potential energy stored in muscles and food.",
+        "ms": "Kerja ditakrifkan sebagai daya didarab dengan sesaran titik tindakan daya tersebut. Oleh kerana pagar adalah tegar dan tetap, titik sentuhan tidak bergerak, maka W_luar = 0. Berdasarkan keabadian tenaga bagi sistem peluncur yang boleh ubah bentuk (Delta K + Delta U = 0), peningkatan tenaga kinetik makroskopik datang sepenuhnya daripada pengurangan tenaga keupayaan kimia dalaman yang tersimpan dalam otot dan makanan.",
+        "zh": "功定义为力与该力作用点位移的标量积。由于栏杆固定且为刚性，接触点不发生位移，因此外力做功 W_外 = 0。根据可变形滑冰者系统的能量守恒定律（Delta K + Delta U = 0），宏观动能的增加完全来自于肌肉和食物中储存的内部化学势能的减少。"
+      },
+      "explanation": {
+        "en": "In a deformable system such as a human body, particles within the system can move relative to one another. When pushing off a stationary rigid object, the external contact force has zero displacement at its point of contact, meaning W = 0. Therefore, the standard particle work-kinetic energy theorem (W = Delta K) fails if applied naively using external work. Instead, general energy conservation shows that muscular exertion converts internal chemical potential energy (Delta U < 0) into kinetic energy (Delta K > 0) such that Delta K + Delta U = 0.",
+        "ms": "Dalam sistem boleh ubah bentuk seperti badan manusia, zarah-zarah di dalam sistem boleh bergerak secara relatif antara satu sama lain. Apabila menolak objek tegar yang pegun, daya sentuhan luar mempunyai sesaran sifar pada titik sentuhannya, bermakna W = 0. Oleh itu, teorem kerja-tenaga kinetik zarah standard (W = Delta K) tidak boleh digunakan secara naif dengan menggunakan kerja luar. Sebaliknya, prinsip keabadian tenaga umum menunjukkan bahawa tenaga otot menukarkan tenaga keupayaan kimia dalaman (Delta U < 0) kepada tenaga kinetik (Delta K > 0) dengan Delta K + Delta U = 0.",
+        "zh": "在诸如人体等可变形系统中，系统内部各部分可以发生相对运动。当推向静止的刚性物体时，外部接触力在其接触点处的位移为零，即 W = 0。因此，若机械地将外力功代入质点动能定理（W = Delta K）将会失效。相反，根据广义能量守恒定律，肌肉发力将体内化学势能（Delta U < 0）转化为动能（Delta K > 0），满足 Delta K + Delta U = 0。"
+      }
+    },
+    {
+      "id": "mcq-two-blocks-work-evaluation",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish the displacement of a force's application point from the center-of-mass displacement.",
+      "misconceptions": [
+        "force-displacement-equals-center-of-mass-displacement",
+        "work-kinetic-energy-always-applies"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the definition of mechanical work: work is the integral of force over the displacement of the exact point where that force is applied, rather than the average position of an extended object.",
+          "ms": "Ulang kaji takrifan kerja mekanikal: kerja ialah kamiran daya ke atas sesaran titik tepat di mana daya itu dikenakan, bukannya kedudukan purata objek yang luas.",
+          "zh": "复习机械功的定义：功是力沿受力接触点位移的积分，而不是延展物体的平均位置位移。"
+        }
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question comparing the displacement of a force's application point to the center-of-mass displacement in evaluating work on two connected carts.",
+        "ms": "Soalan aneka pilihan yang membandingkan sesaran titik tindakan daya dengan sesaran pusat jisim dalam menilai kerja pada dua troli yang bersambung.",
+        "zh": "一道多选题，比较在评估两个相连小车所受做功时，力的作用点位移与质心位移的区别。"
+      },
+      "prompt": {
+        "en": "A system consists of two identical carts on a frictionless horizontal track connected by an internal spring. A person applies a constant horizontal external force F to the rear cart, compressing the spring. During a time interval, the rear cart moves forward by distance x_rear while the center of mass of the two carts advances by a smaller distance x_cm. What is the total mechanical work W done on the two-cart system by the external force F?",
+        "ms": "Satu sistem terdiri daripada dua troli serupa di atas trek mengufuk tanpa geseran yang disambungkan oleh satu spring dalaman. Seseorang mengenakan daya luar mengufuk yang malar F pada troli belakang, memampatkan spring tersebut. Dalam suatu sela masa, troli belakang bergerak ke hadapan sejauh x_belakang manakala pusat jisim kedua-dua troli bergerak ke hadapan sejauh x_pj yang lebih kecil. Apakah jumlah kerja mekanikal W yang dilakukan ke atas sistem dua troli itu oleh daya luar F?",
+        "zh": "一个系统由光滑水平轨道上的两辆相同小车组成，两车之间由一根内置弹簧连接。有人对后车施加一个恒定的水平外力 F 使弹簧压缩。在一段时间内，后车向前移动了距离 x_后，而两车的质心向前移动了较小的距离 x_质心。外力 F 对这个双车系统所做的总机械功 W 是多少？"
+      },
+      "answerKey": {
+        "correct": "opt-rear-displacement",
+        "options": [
+          {
+            "id": "opt-rear-displacement",
+            "label": {
+              "en": "W = F * x_rear, because work is defined strictly by the displacement of the point of application of the force.",
+              "ms": "W = F * x_belakang, kerana kerja ditakrifkan secara khusus oleh sesaran titik tindakan daya tersebut.",
+              "zh": "W = F * x_后，因为功的严格定义是力与其作用点的位移相乘。"
+            }
+          },
+          {
+            "id": "opt-cm-displacement",
+            "misconception": "force-displacement-equals-center-of-mass-displacement",
+            "label": {
+              "en": "W = F * x_cm, because the work done on any multi-particle system is always determined by the displacement of its center of mass.",
+              "ms": "W = F * x_pj, kerana kerja yang dilakukan ke atas mana-mana sistem banyak zarah sentiasa ditentukan oleh sesaran pusat jisimnya.",
+              "zh": "W = F * x_质心，因为对任何多质点系统所做的功始终由其质心的位移决定。"
+            }
+          },
+          {
+            "id": "opt-theorem-interchangeable",
+            "misconception": "work-kinetic-energy-always-applies",
+            "label": {
+              "en": "Either displacement gives the same work because the work-kinetic energy theorem guarantees external work equals the translational kinetic energy change of the center of mass.",
+              "ms": "Mana-mana sesaran memberikan kerja yang sama kerana teorem kerja-tenaga kinetik menjamin kerja luar sama dengan perubahan tenaga kinetik translasi pusat jisim.",
+              "zh": "任一位移所对应的功都相同，因为动能定理保证外力做功等于质心平动动能的变化量。"
+            }
+          },
+          {
+            "id": "opt-relative-compression",
+            "label": {
+              "en": "W = F * (x_rear - x_cm), because only the relative compression of the spring consumes mechanical work.",
+              "ms": "W = F * (x_belakang - x_pj), kerana hanya pemampatan relatif spring yang menggunakan kerja mekanikal.",
+              "zh": "W = F * (x_后 - x_质心)，因为只有弹簧的相对压缩量才消耗机械功。"
+            }
+          }
+        ]
+      },
+      "hints": [
+        {
+          "en": "Recall the fundamental definition of mechanical work: does work depend on where the whole system's center of mass goes, or on how far the specific contact point where the force acts travels?",
+          "ms": "Ingat kembali takrifan asas kerja mekanikal: adakah kerja bergantung pada ke mana pusat jisim seluruh sistem pergi, atau pada sejauh mana titik sentuhan khusus di mana daya bertindak itu bergerak?",
+          "zh": "回忆机械功的基本定义：功取决于整个系统的质心移动了多远，还是取决于受力作用的特定接触点移动了多远？"
+        },
+        {
+          "en": "The external force is applied directly to the rear cart. The displacement of that contact point is x_rear, which is larger than x_cm because the spring is being compressed.",
+          "ms": "Daya luar dikenakan secara terus pada troli belakang. Sesaran titik sentuhan itu ialah x_belakang, yang lebih besar daripada x_pj kerana spring sedang dimampatkan.",
+          "zh": "外力直接作用在后车上。该受力接触点的位移为 x_后，由于弹簧被压缩，它大于 x_质心。"
+        }
+      ],
+      "feedback": {
+        "en": "Work depends strictly on the displacement of the point where the force is applied (the rear cart, x_rear), not on the center-of-mass displacement.",
+        "ms": "Kerja bergantung secara khusus pada sesaran titik di mana daya dikenakan (troli belakang, x_belakang), bukan pada sesaran pusat jisim.",
+        "zh": "功严格取决于力的作用点（后车，x_后）的位移，而不是质心的位移。"
+      },
+      "answerLogic": {
+        "en": "Mechanical work is defined as the integral of F dot dr, where dr is the displacement of the point of application of the force. Here, the force F is applied directly to the rear cart, which moves through distance x_rear. Therefore, the work done on the system is W = F * x_rear. The quantity F * x_cm is center-of-mass work (pseudowork), which equals the change in translational kinetic energy of the center of mass, but does not equal the total work done on a deformable system.",
+        "ms": "Kerja mekanikal ditakrifkan sebagai kamiran F darab bintik dr, dengan dr ialah sesaran titik tindakan daya. Di sini, daya F dikenakan secara terus pada troli belakang, yang bergerak sejauh x_belakang. Oleh itu, kerja yang dilakukan ke atas sistem ialah W = F * x_belakang. Kuantiti F * x_pj ialah kerja pusat jisim (kerja pseudo), yang bersamaan dengan perubahan tenaga kinetik translasi pusat jisim, tetapi tidak sama dengan jumlah kerja yang dilakukan ke atas sistem boleh ubah bentuk.",
+        "zh": "机械功定义为力与作用点位移的积分。在此情境中，力 F 直接作用在后车上，后车移动的距离为 x_后。因此，外力对系统所做的总功为 W = F * x_后。而量 F * x_质心 是质心功（伪功），它等于质心平动动能的变化量，但并不等于对可变形系统所做的总功。"
+      },
+      "explanation": {
+        "en": "For a deformable system, the displacement of the point of application of a force generally differs from the displacement of the center of mass. The total mechanical work done on the system by an external force F is W = F * x_contact = F * x_rear. This external work supplies both translational kinetic energy to the center of mass (associated with F * x_cm) and internal energy, such as spring potential energy and vibrational kinetic energy (associated with F * (x_rear - x_cm)). Equating work to F * x_cm confuses pseudowork with actual thermodynamic work.",
+        "ms": "Bagi sistem boleh ubah bentuk, sesaran titik tindakan daya secara umumnya berbeza daripada sesaran pusat jisim. Jumlah kerja mekanikal yang dilakukan ke atas sistem oleh daya luar F ialah W = F * x_sentuhan = F * x_belakang. Kerja luar ini membekalkan kedua-dua tenaga kinetik translasi kepada pusat jisim (berkaitan dengan F * x_pj) dan tenaga dalaman, seperti tenaga keupayaan spring dan tenaga kinetik getaran (berkaitan dengan F * (x_belakang - x_pj)). Menyamakan kerja dengan F * x_pj mengelirukan kerja pseudo dengan kerja termodinamik sebenar.",
+        "zh": "对于可变形系统，力的作用点位移通常与质心位移不同。外力 F 对系统所做的总机械功为 W = F * x_接触 = F * x_后。这个外力功既为质心平动提供了动能（与 F * x_质心 对应），也转化为了内部能量，例如弹簧势能和振动动能（与 F * (x_后 - x_质心) 对应）。若将外力功等同于 F * x_质心，则是混淆了伪功与真正的做功。"
+      }
+    },
+    {
+      "id": "mcq-impulse-center-of-mass",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the impulse-momentum theorem to determine the center-of-mass motion of deformable systems.",
+      "misconceptions": [
+        "internal-forces-change-total-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "center-of-mass-motion",
+        "prompt": {
+          "en": "Review how the center of mass of a system responds to forces: the total external force equals total mass times center-of-mass acceleration (sum of F_ext = m * a_cm), because internal forces sum to zero.",
+          "ms": "Ulang kaji bagaimana pusat jisim suatu sistem bertindak balas terhadap daya: jumlah daya luar sama dengan jumlah jisim darab pecutan pusat jisim (jumlah F_luar = m * a_pj), kerana daya dalaman berjumlah sifar.",
+          "zh": "复习质点系的质心对外力的响应规律：合外力等于总质量乘以质心加速度（合外力 = m * a_质心），因为系统内力矢量和为零。"
+        }
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question on whether internal or external forces provide the net impulse that changes the momentum of a jumping gymnast.",
+        "ms": "Soalan aneka pilihan tentang sama ada daya dalaman atau luar yang membekalkan impuls bersih yang mengubah momentum ahli gimnastik yang melompat.",
+        "zh": "一道多选题，考查是内力还是外力提供了改变跳跃体操运动员动量的净冲量。"
+      },
+      "prompt": {
+        "en": "A gymnast on a spring floor crouches and forcefully straightens their body to launch upward into the air. Which statement correctly describes how forces determine the change in the gymnast's total linear momentum during the launch?",
+        "ms": "Seorang ahli gimnastik di atas lantai berpegun mencangkung dan meluruskan badannya dengan bertenaga untuk melonjak ke udara. Pernyataan manakah yang menerangkan dengan betul bagaimana daya-daya menentukan perubahan dalam jumlah momentum linear ahli gimnastik itu semasa lonjakan?",
+        "zh": "一名体操运动员在弹性地板上蹲下，然后用力蹬直身体向上跃入空中。下列哪项陈述正确描述了在起跳过程中，力是如何决定运动员总线动量的改变的？"
+      },
+      "answerKey": {
+        "correct": "opt-external-impulse",
+        "options": [
+          {
+            "id": "opt-external-impulse",
+            "label": {
+              "en": "The net change in total momentum is determined solely by the impulse of external forces (the upward normal force from the floor minus gravity), while internal muscular forces deform the body to enable that interaction.",
+              "ms": "Perubahan bersih dalam jumlah momentum ditentukan semata-mata oleh impuls daya luar (daya normal ke atas dari lantai tolak graviti), manakala daya otot dalaman mengubah bentuk badan untuk membolehkan interaksi tersebut.",
+              "zh": "总动量的净改变仅由外力的冲量决定（地板向上的支持力减去重力），而体内的肌肉内力使身体变形以实现这一相互作用。"
+            }
+          },
+          {
+            "id": "opt-internal-impulse",
+            "misconception": "internal-forces-change-total-momentum",
+            "label": {
+              "en": "Internal muscular forces exert an internal impulse that directly changes the system's total momentum, allowing the gymnast to accelerate upward even without an external normal force.",
+              "ms": "Daya otot dalaman mengenakan impuls dalaman yang secara terus mengubah jumlah momentum sistem, membolehkan ahli gimnastik memecut ke atas walaupun tanpa daya normal luar.",
+              "zh": "体内的肌肉力施加了内部冲量，可直接改变系统的总动量，即使没有外部支持力也能使运动员向上加速。"
+            }
+          },
+          {
+            "id": "opt-internal-cancels",
+            "label": {
+              "en": "Internal muscular forces act against external forces, completely canceling out the impulse from the floor so that center-of-mass acceleration remains zero throughout the crouch.",
+              "ms": "Daya otot dalaman bertindak menentang daya luar, membatalkan sepenuhnya impuls dari lantai sehingga pecutan pusat jisim kekal sifar sepanjang cangkungan.",
+              "zh": "肌肉内力与外力方向相反，完全抵消了来自地板的冲量，使得起跳全过程中质心加速度保持为零。"
+            }
+          },
+          {
+            "id": "opt-equal-independent",
+            "label": {
+              "en": "External forces affect only the contact points, while the motion of the center of mass is governed entirely and independently by internal spring-like tensions in the tendons.",
+              "ms": "Daya luar hanya mempengaruhi titik sentuhan, manakala gerakan pusat jisim dikawal sepenuhnya dan secara bebas oleh ketegangan seakan spring dalam tendon.",
+              "zh": "外力仅影响接触点，而质心的运动完全且独立地由肌腱内部类似弹簧的张力决定。"
+            }
+          }
+        ]
+      },
+      "hints": [
+        {
+          "en": "Apply Newton's third law to all internal forces: internal forces between body parts always occur in equal and opposite action-reaction pairs within the system. What is their net sum?",
+          "ms": "Gunakan hukum ketiga Newton kepada semua daya dalaman: daya dalaman antara bahagian badan sentiasa berlaku dalam pasangan tindakan-tindak balas yang sama dan bertentangan di dalam sistem. Apakah jumlah bersihnya?",
+          "zh": "对所有内力应用牛顿第三定律：身体各部分之间的内力在系统内部始终成对出现且大小相等、方向相反。它们的合力是多少？"
+        },
+        {
+          "en": "Because the sum of all internal forces is zero, only external forces can exert a net impulse on the system. The rate of change of total momentum equals the sum of external forces.",
+          "ms": "Oleh kerana jumlah semua daya dalaman ialah sifar, hanya daya luar yang boleh mengenakan impuls bersih ke atas sistem. Kadar perubahan jumlah momentum adalah sama dengan jumlah daya luar.",
+          "zh": "因为所有内力的矢量和为零，所以只有外力才能对系统施加净冲量。总动量的变化率等于外力的合力。"
+        }
+      ],
+      "feedback": {
+        "en": "Only external forces can provide a net impulse to change the total linear momentum of a deformable system. Internal forces cancel in pairs by Newton's third law.",
+        "ms": "Hanya daya luar yang boleh memberikan impuls bersih untuk mengubah jumlah momentum linear sistem boleh ubah bentuk. Daya dalaman saling membatalkan secara berpasangan mengikut hukum ketiga Newton.",
+        "zh": "只有外力才能提供净冲量来改变可变形系统的总线动量。根据牛顿第三定律，内力成对相互抵消。"
+      },
+      "answerLogic": {
+        "en": "According to the impulse-momentum theorem for any system of particles (rigid or deformable), Delta p_tot = Integral(F_ext dt). Internal forces between parts of the system sum to zero by Newton's third law and cannot change the velocity of the center of mass. Therefore, the upward change in linear momentum requires a net external impulse from the floor's normal force overcoming gravity.",
+        "ms": "Menurut teorem impuls-momentum untuk sebarang sistem zarah (tegar atau boleh ubah bentuk), Delta p_jumlah = Kamiran(F_luar dt). Daya dalaman antara bahagian sistem berjumlah sifar mengikut hukum ketiga Newton dan tidak boleh mengubah halaju pusat jisim. Oleh itu, perubahan momentum linear ke atas memerlukan impuls luar bersih daripada daya normal lantai yang mengatasi graviti.",
+        "zh": "根据适用于任何质点系（无论刚性还是可变形）的动量定理，Delta p_总 = 积分(F_外 dt)。根据牛顿第三定律，系统各部分之间的内力之和为零，不能改变质心的速度。因此，向上的线动量改变必须来自于克服重力后的地面支持力所提供的净外力冲量。"
+      },
+      "explanation": {
+        "en": "A common misconception is that internal forces (like muscular effort) can directly propel a system through space. While muscular exertion causes the body to deform, straighten the legs, and push against the floor, internal forces always occur in equal and opposite pairs and sum vectorially to zero. Thus, internal forces cannot alter the total linear momentum of the system. The floor pushes back with an external normal force; the integral of the net external force (normal force minus gravity) over time is the external impulse that accelerates the center of mass upward.",
+        "ms": "Salah faham yang lazim ialah daya dalaman (seperti daya otot) boleh mendorong sistem secara terus melalui ruang. Walaupun daya otot menyebabkan badan berubah bentuk, meluruskan kaki, dan menolak lantai, daya dalaman sentiasa berlaku dalam pasangan yang sama dan bertentangan serta hasil tambah vektornya ialah sifar. Oleh itu, daya dalaman tidak boleh mengubah jumlah momentum linear sistem. Lantai menolak kembali dengan daya normal luar; kamiran daya luar bersih (daya normal tolak graviti) mengikut masa ialah impuls luar yang memecutkan pusat jisim ke atas.",
+        "zh": "一个常见的误解是内力（例如肌肉收缩发力）可以直接推动系统在空间中平动。尽管肌肉发力使身体变形、伸直双腿并推蹬地面，但根据牛顿第三定律，内力始终成对出现且矢量和为零。因此，内力无法直接改变系统的总线动量。地面反过来施加外部支持力，净外力（支持力减去重力）对时间的积分即为外力冲量，使质心向上加速。"
+      }
+    },
+    {
+      "id": "mcq-vibrational-energy-accounting",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply energy conservation to track internal energy conversions into kinetic energy in deformable systems.",
+      "prompt": {
+        "en": "Two identical gliders on a horizontal frictionless track are connected by an internal spring. An external horizontal force of constant magnitude F pushes against the rear glider, compressing the spring while both gliders accelerate forward. During this interaction, the contact point where force F acts moves through a distance D_contact, while the center of mass of the two-glider system moves through a shorter distance D_cm. After force F is removed, the gliders continue translating together while oscillating back and forth relative to their center of mass. According to the conservation of energy for deformable systems, how is the total work done by the external force accounted for?",
+        "ms": "Dua peluncur serupa di atas landasan tanpa geseran mendatar disambungkan oleh satu spring dalaman. Suatu daya mendatar luar bermagnitud malar F menolak peluncur belakang, memampatkan spring sementara kedua-dua peluncur memecut ke hadapan. Semasa interaksi ini, titik sentuhan di mana daya F bertindak bergerak melalui sesaran D_sentuhan, manakala pusat jisim sistem dua peluncur itu bergerak melalui sesaran yang lebih pendek D_pj. Selepas daya F dialihkan, peluncur terus bergerak secara translasi bersama sambil berayun berulang-alik secara relatif kepada pusat jisimnya. Mengikut keabadian tenaga bagi sistem boleh ubah bentuk, bagaimanakah jumlah kerja yang dilakukan oleh daya luar ini diakaunkan?",
+        "zh": "两个相同的滑块放置在水平无摩擦轨道上，中间由一个轻弹簧连接。一个恒定大小为 F 的水平外力推压后方的滑块，在两个滑块向前加速的同时压缩弹簧。在相互作用过程中，力 F 作用的接触点移动了位移 D_contact，而双滑块系统的质心移动了较小的位移 D_cm。当外力 F 撤去后，两滑块在共同向前平动的同时相对于其质心来回振动。根据可变形系统的能量守恒，外力所做的总功应当如何分配与转化？"
+      },
+      "hints": [
+        {
+          "en": "Recall how mechanical work is defined in physics: does work depend on the displacement of the system's center of mass, or on the displacement of the point where the external force is physically applied?",
+          "ms": "Ingat kembali bagaimana kerja mekanikal ditakrifkan dalam fizik: adakah kerja bergantung pada sesaran pusat jisim sistem, atau pada sesaran titik di mana daya luar bertindak secara fizikal?",
+          "zh": "回忆物理学中机械功是如何定义的：功取决于系统质心的位移，还是取决于外力实际作用点的位移？"
+        },
+        {
+          "en": "In a deformable system, the total kinetic energy can be separated into the translational kinetic energy of the center of mass plus the kinetic energy of motion relative to the center of mass. Energy conservation relates total external work to all changes in kinetic and internal potential energies.",
+          "ms": "Dalam sistem boleh ubah bentuk, jumlah tenaga kinetik boleh diasingkan kepada tenaga kinetik translasi pusat jisim ditambah tenaga kinetik gerakan relatif kepada pusat jisim. Keabadian tenaga menghubungkan jumlah kerja luar dengan semua perubahan dalam tenaga kinetik dan tenaga keupayaan dalaman.",
+          "zh": "在可变形系统中，总动能可以分解为质心的平动动能加上相对于质心运动的动能。能量守恒定律将总外力功与动能及内部势能的所有变化联系起来。"
+        }
+      ],
+      "feedback": {
+        "en": "Excellent. In deformable systems, the work done by an external force is determined by the displacement of its point of application (F * D_contact). Because the system deforms, D_contact exceeds D_cm, and this excess work provides the energy for the internal vibrational modes (both spring potential energy and relative kinetic energy).",
+        "ms": "Cemerlang. Dalam sistem boleh ubah bentuk, kerja yang dilakukan oleh daya luar ditentukan oleh sesaran titik tindakannya (F * D_sentuhan). Kerana sistem berubah bentuk, D_sentuhan melebihi D_pj, dan lebihan kerja ini membekalkan tenaga untuk mod getaran dalaman (kedua-dua tenaga keupayaan spring dan tenaga kinetik relatif).",
+        "zh": "太棒了！在可变形系统中，外力所做的功由其作用点的位移决定（F * D_contact）。由于系统发生形变，D_contact 大于 D_cm，多出的这部分功为系统的内部振动模式（包括弹簧势能和相对动能）提供了能量。"
+      },
+      "answerLogic": {
+        "en": "Work is defined by the displacement of the application point of the force, W = F * D_contact. The center-of-mass translational kinetic energy accounts for K_cm = F * D_cm. The difference W - K_cm = F * (D_contact - D_cm) is stored as internal vibrational energy E_vib, which consists of internal relative kinetic energy and elastic potential energy.",
+        "ms": "Kerja ditakrifkan oleh sesaran titik tindakan daya, W = F * D_sentuhan. Tenaga kinetik translasi pusat jisim diakaunkan oleh K_pj = F * D_pj. Perbezaan W - K_pj = F * (D_sentuhan - D_pj) disimpan sebagai tenaga getaran dalaman E_getaran, yang terdiri daripada tenaga kinetik relatif dalaman dan tenaga keupayaan kenyal.",
+        "zh": "功定义为力乘以其作用点的位移，即 W = F * D_contact。质心平动动能满足 K_cm = F * D_cm。二者之差 W - K_cm = F * (D_contact - D_cm) 则作为内部振动能 E_vib 储存起来，包括内部相对动能和弹性势能。"
+      },
+      "explanation": {
+        "en": "For a deformable system, the displacement of the point of application of an external force generally differs from the displacement of the system's center of mass. The total mechanical work done by the external force is calculated using the displacement of the point of application (W = F * D_contact). Under energy conservation (Delta K_cm + Delta E_vib = W), this work splits between accelerating the center of mass (Delta K_cm) and increasing the internal energy of relative motion and elastic deformation (Delta E_vib). Attempting to use the center-of-mass displacement would fail to account for the energy transferred into internal vibration.",
+        "ms": "Bagi sistem boleh ubah bentuk, sesaran titik tindakan daya luar secara amnya berbeza daripada sesaran pusat jisim sistem. Jumlah kerja mekanikal yang dilakukan oleh daya luar dikira menggunakan sesaran titik tindakannya (W = F * D_sentuhan). Di bawah keabadian tenaga (Delta K_pj + Delta E_getaran = W), kerja ini dibahagikan antara memecutkan pusat jisim (Delta K_pj) dan meningkatkan tenaga dalaman bagi gerakan relatif serta perubahan bentuk kenyal (Delta E_getaran). Percubaan untuk menggunakan sesaran pusat jisim akan gagal mengambil kira tenaga yang dipindahkan ke dalam getaran dalaman.",
+        "zh": "对于可变形系统，外力作用点的位移通常不同于系统质心的位移。外力所做的总机械功取决于其作用点的位移（W = F * D_contact）。根据能量守恒定律（Delta K_cm + Delta E_vib = W），该外力功分为两部分：一部分用于加速质心（Delta K_cm），另一部分用于增加相对运动和弹性形变的内部能量（Delta E_vib）。如果试图仅以质心位移来衡量做功，将无法体现转移到内部振动中的能量。"
+      },
+      "misconceptions": [
+        "work-kinetic-energy-always-applies",
+        "force-displacement-equals-center-of-mass-displacement"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "center-of-mass-motion",
+        "prompt": {
+          "en": "Review how the motion of the center of mass relates to external forces, and notice why center-of-mass displacement alone does not represent the full motion of every contact point in a deformable body.",
+          "ms": "Ulang kaji bagaimana gerakan pusat jisim berkait dengan daya luar, dan perhatikan mengapa sesaran pusat jisim sahaja tidak mewakili gerakan penuh setiap titik sentuhan dalam jasad boleh ubah bentuk.",
+          "zh": "复习质心运动与外力的关系，并注意为什么仅凭质心位移不能代表可变形物体中每个接触点的完整运动。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking how energy conservation accounts for external work done on a two-glider spring system when the contact displacement exceeds center-of-mass displacement. Select the single correct option.",
+        "ms": "Soalan aneka pilihan yang bertanyakan bagaimana keabadian tenaga mengakaunkan kerja luar yang dilakukan ke atas sistem dua peluncur berspring apabila sesaran sentuhan melebihi sesaran pusat jisim. Pilih satu jawapan yang betul.",
+        "zh": "单项选择题，询问当接触点位移大于质心位移时，能量守恒定律如何解释对带弹簧的双滑块系统所做的外力功。选择唯一正确的选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-vibe-correct",
+        "options": [
+          {
+            "id": "opt-vibe-correct",
+            "label": {
+              "en": "The external work equals F multiplied by D_contact; it converts into the translational kinetic energy of the center of mass plus internal vibrational energy (both the relative kinetic energy of the gliders and the spring's elastic potential energy).",
+              "ms": "Kerja luar bersamaan F didarabkan dengan D_sentuhan; ia berubah menjadi tenaga kinetik translasi pusat jisim ditambah tenaga getaran dalaman (kedua-dua tenaga kinetik relatif peluncur dan tenaga keupayaan kenyal spring).",
+              "zh": "外力功等于 F 乘以 D_contact；它转化为质心的平动动能加上内部振动能量（滑块相对质心的相对动能与弹簧弹性势能之和）。"
+            }
+          },
+          {
+            "id": "opt-vibe-distractor-cm",
+            "misconception": "force-displacement-equals-center-of-mass-displacement",
+            "label": {
+              "en": "The actual work done on the system is only F multiplied by D_cm because mechanical work on any multi-particle system depends solely on the center-of-mass displacement, so D_contact cannot be used.",
+              "ms": "Kerja sebenar yang dilakukan ke atas sistem hanyalah F didarabkan dengan D_pj kerana kerja mekanikal pada sebarang sistem banyak zarah bergantung semata-mata pada sesaran pusat jisim, maka D_sentuhan tidak boleh digunakan.",
+              "zh": "系统所受的实际机械功仅为 F 乘以 D_cm，因为多质点系统上的机械功严格取决于质心位移，因此接触点位移 D_contact 并不适用。"
+            }
+          },
+          {
+            "id": "opt-vibe-distractor-wk",
+            "misconception": "work-kinetic-energy-always-applies",
+            "label": {
+              "en": "By the work-kinetic energy theorem, the total work done by F must equal only the translational kinetic energy of the system, meaning the internal oscillations must be powered by a separate, preexisting internal energy source.",
+              "ms": "Mengikut teorem kerja-tenaga kinetik, jumlah kerja yang dilakukan oleh F mestilah bersamaan dengan tenaga kinetik translasi sistem sahaja, bermakna getaran dalaman mesti dibekalkan oleh sumber tenaga dalaman sedia ada yang berasingan.",
+              "zh": "根据动能定理，F 所做的总功必须仅等于系统的平动动能，这意味着内部振动能量必须由独立的、预先存在的内部能源供给。"
+            }
+          },
+          {
+            "id": "opt-vibe-distractor-equal",
+            "label": {
+              "en": "The work done is shared equally between the two gliders because internal forces transfer half the external force directly to the front glider, eliminating any difference between contact displacement and center-of-mass motion.",
+              "ms": "Kerja yang dilakukan dibahagikan sama rata antara kedua-dua peluncur kerana daya dalaman memindahkan separuh daripada daya luar terus kepada peluncur hadapan, menghapuskan sebarang perbezaan antara sesaran sentuhan dan gerakan pusat jisim.",
+              "zh": "所做的功在两个滑块之间平均分配，因为内力将一半的外力直接传递给前滑块，从而消除了接触点位移与质心运动之间的差异。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-work-energy-theorem-breakdown",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Explain why the particle work-kinetic energy theorem does not generally apply to deformable systems.",
+      "prompt": {
+        "en": "A figure skater wearing frictionless skates stands motionless facing a rigid, immovable arena railing with their arms bent. By pushing horizontally against the railing, the skater straightens their arms and glides backward across the ice at a significant speed. If one treats the skater as the system, why does the particle work-kinetic energy theorem, W_net = Delta K, fail to describe this event?",
+        "ms": "Seorang peluncur ais yang memakai kasut luncur tanpa geseran berdiri pegun menghadap susur gelanggang yang tegar dan tidak boleh bergerak dengan lengan mereka dibengkokkan. Dengan menolak secara mendatar pada susur itu, peluncur meluruskan lengan mereka dan meluncur ke belakang merentasi ais pada kelajuan ketara. Jika seseorang menganggap peluncur itu sebagai sistem, mengapakah teorem kerja-tenaga kinetik zarah, W_bersih = Delta K, gagal untuk menerangkan peristiwa ini?",
+        "zh": "一名穿着无摩擦冰鞋的花样滑冰运动员双臂弯曲、静止面对刚性且固定不动的场馆护栏站立。运动员通过水平推压护栏伸直双臂，以可观的速度向后滑上冰面。如果将运动员视为研究系统，为什么质点动能定理 W_net = Delta K 不能正确描述这一过程？"
+      },
+      "hints": [
+        {
+          "en": "Consider the exact definition of mechanical work done by a contact force: what is the displacement of the skater's hands while they are pushing against the immovable railing?",
+          "ms": "Pertimbangkan takrifan tepat kerja mekanikal yang dilakukan oleh daya sentuhan: apakah sesaran tangan peluncur semasa mereka menolak pada susur yang tidak boleh bergerak?",
+          "zh": "思考接触力做机械功的精确定义：当运动员推压固定护栏时，运动员双手的位移是多少？"
+        },
+        {
+          "en": "Evaluate both sides of W_net = Delta K: if the contact point has zero displacement, what is W_net? Does the skater's speed (and thus K) remain zero, or does it increase? Where does that kinetic energy originate?",
+          "ms": "Nilaikan kedua-dua belah W_bersih = Delta K: jika titik sentuhan mempunyai sifar sesaran, apakah W_bersih? Adakah kelajuan peluncur (dan seterusnya K) kekal sifar, atau meningkat? Dari manakah asalnya tenaga kinetik tersebut?",
+          "zh": "评估 W_net = Delta K 的两端：如果接触点位移为零，W_net 是多少？运动员的速度（以及动能 K）是保持为零还是增加了？这部分动能来源于何处？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! The rigid railing applies a normal force, but because the skater's hands do not move while in contact with the railing, the displacement of the application point is zero, giving W = 0. Meanwhile, the skater acquires kinetic energy (Delta K > 0) by converting internal chemical potential energy into mechanical energy as their arms straighten. Thus W = Delta K fails for this deformable system.",
+        "ms": "Betul! Susur tegar mengenakan daya normal, tetapi oleh kerana tangan peluncur tidak bergerak semasa bersentuhan dengan susur, sesaran titik tindakan adalah sifar, memberikan W = 0. Sementara itu, peluncur memperoleh tenaga kinetik (Delta K > 0) dengan menukarkan tenaga keupayaan kimia dalaman kepada tenaga mekanikal semasa lengan mereka diluruskan. Oleh itu W = Delta K gagal bagi sistem boleh ubah bentuk ini.",
+        "zh": "正确！刚性护栏施加了支持力，但由于接触期间运动员的手相对于护栏没有位移，力的作用点位移为零，因此做功 W = 0。与此同时，运动员随着双臂伸直，将体内的化学势能转化为机械能，获得了动能（Delta K > 0）。因此，W = Delta K 对此可变形系统失效。"
+      },
+      "answerLogic": {
+        "en": "Mechanical work requires displacement of the force's application point: W = Integral F dot dr_point. Since the hands do not move during contact with the wall, dr_point = 0 and W = 0. However, the skater speeds up, so Delta K > 0. Because W = 0 while Delta K > 0, the particle theorem W = Delta K does not hold. Instead, energy conservation gives Delta K + Delta U_internal = 0.",
+        "ms": "Kerja mekanikal memerlukan sesaran titik tindakan daya: W = Kamiran F dot dr_titik. Oleh kerana tangan tidak bergerak semasa bersentuhan dengan dinding, dr_titik = 0 dan W = 0. Walau bagaimanapun, peluncur memecut, jadi Delta K > 0. Kerana W = 0 manakala Delta K > 0, teorem zarah W = Delta K tidak benar. Sebaliknya, keabadian tenaga memberikan Delta K + Delta U_dalaman = 0.",
+        "zh": "机械功需要力的作用点发生位移：W = 积分 F dot dr_point。在与墙壁接触期间，手不发生位移，因此 dr_point = 0 且 W = 0。然而运动员加速了，故 Delta K > 0。由于 W = 0 而 Delta K > 0，质点定理 W = Delta K 不成立。正确的能量守恒关系为 Delta K + Delta U_internal = 0。"
+      },
+      "explanation": {
+        "en": "The particle work-kinetic energy theorem applies strictly to point particles or nondeformable objects where every point undergoes the identical displacement. When a deformable body (like an athlete or skater) straightens their limbs against a stationary surface, the external force is applied at a point that does not displace. Consequently, the external force performs zero work on the system. The acceleration is powered entirely by the transformation of internal chemical energy into kinetic energy (Delta K + Delta U = 0). Equating external work to center-of-mass kinetic energy change is an error stemming from conflating particle mechanics with deformable-body dynamics.",
+        "ms": "Teorem kerja-tenaga kinetik zarah terpakai secara ketat kepada zarah titik atau objek tidak boleh ubah bentuk di mana setiap titik mengalami sesaran yang sama. Apabila jasad boleh ubah bentuk (seperti atlet atau peluncur) meluruskan anggota badan mereka pada permukaan pegun, daya luar bertindak pada titik yang tidak tersesar. Akibatnya, daya luar melakukan sifar kerja ke atas sistem. Pecutan itu digerakkan sepenuhnya oleh penukaran tenaga kimia dalaman kepada tenaga kinetik (Delta K + Delta U = 0). Menyamakan kerja luar dengan perubahan tenaga kinetik pusat jisim adalah satu kesilapan yang berpunca daripada kekeliruan antara mekanik zarah dengan dinamik jasad boleh ubah bentuk.",
+        "zh": "质点动能定理严格仅适用于点质点或各部分位移完全相同的不可变形物体。当可变形体（如运动员或滑冰者）倚靠静止表面伸展肢体时，外力的作用点并没有发生位移。因此，外力对系统所做的功为零。系统的加速完全由内部化学能转化为动能来驱动（Delta K + Delta U = 0）。将外力功等同于质心动能变化，是混淆了质点力学与可变形体动力学的典型错误。"
+      },
+      "misconceptions": [
+        "work-kinetic-energy-always-applies",
+        "normal-force-does-work-pushing-off"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the foundational definition of work, emphasizing that work is the integral of force over the displacement of the specific point of contact where that force acts.",
+          "ms": "Ulang kaji takrifan asas kerja, dengan menekankan bahawa kerja ialah kamiran daya terhadap sesaran titik sentuhan khusus di mana daya itu bertindak.",
+          "zh": "复习功的基本定义，强调功是力沿该力实际作用的具体接触点的位移所作的积分。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question analyzing why the work-kinetic energy theorem fails for a figure skater pushing off a stationary railing. Select the single correct option.",
+        "ms": "Soalan aneka pilihan yang menganalisis mengapa teorem kerja-tenaga kinetik gagal bagi seorang peluncur ais yang menolak pada susur pegun. Pilih satu jawapan yang betul.",
+        "zh": "单项选择题，分析花样滑冰运动员推开静止护栏时动能定理为何失效。选择唯一正确的选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-breakdown-correct",
+        "options": [
+          {
+            "id": "opt-breakdown-correct",
+            "label": {
+              "en": "The normal force exerted by the railing acts on hands that do not move relative to the railing during contact, so the railing does zero work (W_net = 0), yet the skater's kinetic energy increases (Delta K > 0) due to internal biochemical energy conversion.",
+              "ms": "Daya normal yang dikenakan oleh susur bertindak ke atas tangan yang tidak bergerak secara relatif kepada susur semasa sentuhan, jadi susur melakukan sifar kerja (W_bersih = 0), namun tenaga kinetik peluncur meningkat (Delta K > 0) disebabkan penukaran tenaga biokimia dalaman.",
+              "zh": "护栏施加的支持力作用在与护栏接触且没有相对移动的手上，因此护栏做功为零（W_net = 0），然而运动员的动能却由于体内生物化学能的转化而增加了（Delta K > 0）。"
+            }
+          },
+          {
+            "id": "opt-breakdown-distractor-normal-work",
+            "misconception": "normal-force-does-work-pushing-off",
+            "label": {
+              "en": "The railing performs positive mechanical work on the skater through the normal force acting over the displacement of the skater's center of mass, so the particle work-kinetic energy theorem remains fully valid.",
+              "ms": "Susur itu melakukan kerja mekanikal positif ke atas peluncur melalui daya normal yang bertindak merentasi sesaran pusat jisim peluncur, jadi teorem kerja-tenaga kinetik zarah kekal sah sepenuhnya.",
+              "zh": "护栏通过支持力作用于运动员质心的位移而对运动员做正机械功，因此质点动能定理仍然完全有效。"
+            }
+          },
+          {
+            "id": "opt-breakdown-distractor-always-applies",
+            "misconception": "work-kinetic-energy-always-applies",
+            "label": {
+              "en": "The particle work-kinetic energy theorem is universally valid, which means that because the railing does zero work, the skater's center of mass cannot genuinely gain kinetic energy until an external body transfers energy to them.",
+              "ms": "Teorem kerja-tenaga kinetik zarah adalah sah secara sejagat, bermakna oleh kerana susur melakukan sifar kerja, pusat jisim peluncur tidak boleh benar-benar memperoleh tenaga kinetik sehingga jasad luar memindahkan tenaga kepadanya.",
+              "zh": "质点动能定理具有普遍有效性，这意味着既然护栏做的功为零，运动员的质心就不可能真正获得动能，除非有外部物体向其传递能量。"
+            }
+          },
+          {
+            "id": "opt-breakdown-distractor-friction",
+            "label": {
+              "en": "The theorem fails because friction between the skates and the ice destroys the mechanical energy balance, requiring thermal dissipation terms to be added to the particle work equation.",
+              "ms": "Teorem itu gagal kerana geseran antara kasut luncur dan ais memusnahkan keseimbangan tenaga mekanikal, memerlukan sebutan lesapan haba ditambah pada persamaan kerja zarah.",
+              "zh": "该定理失效是因为冰鞋与冰面之间的摩擦破坏了机械能平衡，需要在质点做功方程中增加热耗散项。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-nonrigid-impulse-vs-work",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the impulse-momentum theorem to determine the center-of-mass motion of deformable systems.",
+      "prompt": {
+        "en": "A motorized robotic inspection cart rests on a frictionless horizontal floor next to a massive, anchored vertical pillar. The robot extends an onboard mechanical piston against the pillar, pushing itself away and reaching a final velocity v across the floor. Taking the robot (including its chassis, motor, battery, and piston) as the defined system, how do energy isolation and momentum isolation apply to this event?",
+        "ms": "Sebuah troli pemeriksaan robotik bermotor berada di atas lantai mendatar tanpa geseran bersebelahan tiang menegak besar yang terpacak kukuh. Robot itu memanjangkan omboh mekanikal di atasnya ke tiang tersebut, menolak dirinya menjauhi tiang dan mencapai halaju akhir v merentasi lantai. Mengambil robot (termasuk casis, motor, bateri, dan ombohnya) sebagai sistem yang ditakrifkan, bagaimanakah keterpencilan tenaga dan keterpencilan momentum diguna pakai untuk peristiwa ini?",
+        "zh": "一台机动巡检机器车停放在无摩擦水平地面上，紧挨着一根巨大的固定垂直立柱。机器人通过向立柱伸出自带的机械推杆将自己推开，在地面上达到了最终速度 v。将机器人（包括底盘、电机、电池和推杆）视为所研究的系统，能量孤立和动量孤立应如何应用于该过程？"
+      },
+      "hints": [
+        {
+          "en": "Determine whether any energy crosses the boundary of the robot system. Remember that mechanical work requires the point of application of an external force to undergo a displacement.",
+          "ms": "Tentukan sama ada sebarang tenaga merentasi sempadan sistem robot. Ingat bahawa kerja mekanikal memerlukan titik tindakan daya luar mengalami sesaran.",
+          "zh": "判断是否有能量穿过机器人系统的边界。记住机械功要求外力的作用点发生位移。"
+        },
+        {
+          "en": "Now examine the momentum of the robot system: does an external force act on the robot over time while the piston pushes against the pillar? Can internal forces alone change the total linear momentum of a system?",
+          "ms": "Sekarang periksa momentum sistem robot: adakah daya luar bertindak ke atas robot sepanjang masa semasa omboh menolak tiang? Bolehkah daya dalaman sahaja mengubah jumlah momentum linear sesuatu sistem?",
+          "zh": "现在检查机器人系统的动量：当推杆推压立柱时，是否有外力在一段时间内作用在机器人上？单凭内力能否改变系统的总线动量？"
+        }
+      ],
+      "feedback": {
+        "en": "Exactly right! The pillar does zero work on the robot because the contact interface is motionless (displacement is zero), meaning no mechanical energy enters from outside and Delta K + Delta U = 0 (energy isolated). However, the pillar exerts a non-zero external normal force over time, delivering an external impulse Integral F dt = Delta p (nonisolated in terms of momentum).",
+        "ms": "Tepat sekali! Tiang melakukan sifar kerja ke atas robot kerana antara muka sentuhan tidak bergerak (sesaran adalah sifar), bermakna tiada tenaga mekanikal masuk dari luar dan Delta K + Delta U = 0 (terpencil dari segi tenaga). Walau bagaimanapun, tiang mengenakan daya normal luar bukan sifar sepanjang masa, memberikan impuls luar Kamiran F dt = Delta p (tidak terpencil dari segi momentum).",
+        "zh": "完全正确！由于接触界面静止不动（位移为零），立柱对机器人做功为零，这意味着没有机械能从外界传入，满足 Delta K + Delta U = 0（能量孤立）。然而，立柱在一段时间内施加了非零的外力法向力，提供了外力冲量 积分 F dt = Delta p（动量非孤立）。"
+      },
+      "answerLogic": {
+        "en": "Work is W = Integral F dot dr_contact = 0 because the contact point does not displace. Thus Delta K + Delta U = 0, proving the system is energy-isolated. Linear momentum changes according to Delta p = Integral F_ext dt. Because the pillar exerts a real external normal force over time Delta t, external impulse is non-zero, making the system nonisolated in terms of momentum. Internal forces cannot change the total momentum of a system.",
+        "ms": "Kerja ialah W = Kamiran F dot dr_sentuhan = 0 kerana titik sentuhan tidak tersesar. Oleh itu Delta K + Delta U = 0, membuktikan sistem terpencil dari segi tenaga. Momentum linear berubah mengikut Delta p = Kamiran F_luar dt. Kerana tiang mengenakan daya normal luar yang sebenar sepanjang masa Delta t, impuls luar bukan sifar, menjadikan sistem tidak terpencil dari segi momentum. Daya dalaman tidak boleh mengubah jumlah momentum sistem.",
+        "zh": "功满足 W = 积分 F dot dr_contact = 0，因为接触点没有位移。因此 Delta K + Delta U = 0，证明系统在能量上是孤立的。而线动量根据 Delta p = 积分 F_ext dt 发生改变。由于立柱在时间 Delta t 内施加了真实的外力法向力，外力冲量非零，这使得系统在动量上是非孤立的。内力无法改变系统的总动量。"
+      },
+      "explanation": {
+        "en": "A common misconception is that a system isolated in terms of energy must also be isolated in terms of momentum. For this robotic cart, the external contact point remains stationary against the anchor pillar throughout the push, so the pillar does zero work on the system (W = 0). The cart accelerates by converting internal stored electrical energy into macroscopic kinetic energy, satisfying Delta K + Delta U = 0. However, the pillar applies an external force over the interaction time interval, providing a non-zero external impulse (Integral F_ext dt = Delta p_total). Internal forces (such as the motor rotating the piston) cannot change the total momentum of the system; only external impulse can accelerate the center of mass.",
+        "ms": "Salah tanggapan biasa ialah bahawa sistem yang terpencil dari segi tenaga mestilah juga terpencil dari segi momentum. Bagi troli robotik ini, titik sentuhan luar kekal pegun pada tiang sauh sepanjang tolakan, jadi tiang melakukan sifar kerja ke atas sistem (W = 0). Troli memecut dengan menukarkan tenaga elektrik tersimpan dalaman kepada tenaga kinetik makroskopik, memenuhi Delta K + Delta U = 0. Walau bagaimanapun, tiang mengenakan daya luar sepanjang selang masa interaksi, memberikan impuls luar bukan sifar (Kamiran F_luar dt = Delta p_jumlah). Daya dalaman (seperti motor yang memutarkan omboh) tidak boleh mengubah jumlah momentum sistem; hanya impuls luar yang boleh memecutkan pusat jisim.",
+        "zh": "一个常见的错误认知是认为在能量上孤立的系统在动量上也必然是孤立的。对于这辆机器车，在推开的整个过程中，外部接触点相对于固定立柱保持静止，因此立柱对系统做的功为零（W = 0）。小车通过将内部储存的电能转化为宏观动能而加速，满足 Delta K + Delta U = 0。然而，立柱在相互作用的时间间隔内施加了外力，提供了非零的外力冲量（积分 F_ext dt = Delta p_total）。内力（例如电机驱动推杆）无法改变系统的总动量；只有外力冲量才能使质心加速。"
+      },
+      "misconceptions": [
+        "energy-isolation-implies-momentum-isolation",
+        "internal-forces-change-total-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "impulse-momentum-theorem",
+        "prompt": {
+          "en": "Review the impulse-momentum theorem, which states that only net external forces integrated over time can produce a change in the total linear momentum of a system.",
+          "ms": "Ulang kaji teorem impuls-momentum, yang menyatakan bahawa hanya daya luar bersih yang dikamirkan terhadap masa boleh menghasilkan perubahan dalam jumlah momentum linear sesuatu sistem.",
+          "zh": "复习动量定理，该定理表明只有合外力对时间的积分才能引起系统总线动量的改变。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question evaluating whether a robotic cart pushing off a fixed pillar is isolated in terms of energy, momentum, or both. Select the single correct option.",
+        "ms": "Soalan aneka pilihan yang menilai sama ada troli robotik yang menolak pada tiang tetap terpencil dari segi tenaga, momentum, atau kedua-duanya. Pilih satu jawapan yang betul.",
+        "zh": "单项选择题，评估机器车推开固定立柱时在能量、动量还是两者上都是孤立的。选择唯一正确的选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-impulse-correct",
+        "options": [
+          {
+            "id": "opt-impulse-correct",
+            "label": {
+              "en": "The system is isolated in terms of energy because the contact point against the fixed pillar does not move (W = 0, so internal battery energy converts into kinetic energy), but it is nonisolated in terms of momentum because the pillar exerts an external normal impulse that changes the robot's linear momentum.",
+              "ms": "Sistem ini terpencil dari segi tenaga kerana titik sentuhan pada tiang tetap tidak bergerak (W = 0, jadi tenaga bateri dalaman berubah menjadi tenaga kinetik), tetapi ia tidak terpencil dari segi momentum kerana tiang mengenakan impuls normal luar yang mengubah momentum linear robot.",
+              "zh": "该系统在能量上是孤立的，因为与固定立柱接触的点不发生位移（W = 0，内部电池能量转化为动能）；但在动量上是非孤立的，因为立柱施加了改变机器人线动量的外力法向冲量。"
+            }
+          },
+          {
+            "id": "opt-impulse-distractor-energy-implies-momentum",
+            "misconception": "energy-isolation-implies-momentum-isolation",
+            "label": {
+              "en": "Because zero work is done on the robot across its boundary, the system is isolated in terms of energy and must therefore also be isolated in terms of momentum, meaning the robot's center of mass cannot gain net momentum without expelling reaction mass.",
+              "ms": "Kerana sifar kerja dilakukan ke atas robot merentasi sempadannya, sistem ini terpencil dari segi tenaga dan oleh itu mestilah juga terpencil dari segi momentum, bermakna pusat jisim robot tidak boleh memperoleh momentum bersih tanpa mengeluarkan jisim tindak balas.",
+              "zh": "因为穿过机器人边界的外力做功为零，系统在能量上是孤立的，因此在动量上也必然是孤立的，这意味着机器人的质心在不向外喷射反作用工质的情况下不可能获得净动量。"
+            }
+          },
+          {
+            "id": "opt-impulse-distractor-internal-momentum",
+            "misconception": "internal-forces-change-total-momentum",
+            "label": {
+              "en": "The system is isolated in terms of momentum because internal motorized forces alone are responsible for driving the piston and propelling the chassis forward, directly increasing total system momentum from within.",
+              "ms": "Sistem ini terpencil dari segi momentum kerana daya bermotor dalaman sahaja bertanggungjawab untuk memacu omboh dan mendorong casis ke hadapan, secara langsung meningkatkan jumlah momentum sistem dari dalam.",
+              "zh": "系统在动量上是孤立的，因为仅靠内部电机的作用力就驱动了推杆并推动底盘前进，完全由内部直接增加了系统的总动量。"
+            }
+          },
+          {
+            "id": "opt-impulse-distractor-both-nonisolated",
+            "label": {
+              "en": "The system is nonisolated in terms of both energy and momentum because the immovable pillar injects mechanical work into the robot equal to the final kinetic energy while simultaneously delivering an impulse.",
+              "ms": "Sistem ini tidak terpencil dari kedua-dua segi tenaga dan momentum kerana tiang yang tidak boleh bergerak menyuntik kerja mekanikal ke dalam robot bersamaan dengan tenaga kinetik akhir sambil pada masa yang sama memberikan impuls.",
+              "zh": "系统在能量和动量两方面都是非孤立的，因为固定立柱在提供冲量的同时，向机器人注入了等于其最终动能的机械功。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ia-system-isolation-classification",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply energy conservation to track internal energy conversions into kinetic energy in deformable systems.",
+      "prompt": {
+        "en": "Classify each physical aspect of the described situations based on whether the chosen system is isolated or nonisolated with respect to that quantity.",
+        "ms": "Kelaskan setiap aspek fizikal bagi situasi yang diterangkan berdasarkan sama ada sistem yang dipilih adalah terpencil atau tidak terpencil berkenaan dengan kuantiti tersebut.",
+        "zh": "根据所选系统相对于该物理量是孤立的还是非孤立的，对所描述情境中的各个物理方面进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Consider whether external interactions transfer that specific quantity across the system boundary.",
+          "ms": "Pertimbangkan sama ada interaksi luar memindahkan kuantiti khusus tersebut merentasi sempadan sistem.",
+          "zh": "考虑外部相互作用是否使该特定物理量跨越系统边界发生传递。"
+        },
+        {
+          "en": "When a skater pushes against a rigid wall, the hands do not move relative to the wall, so the wall does zero work on the skater (energy is isolated). However, the wall exerts a real external contact force over time, delivering an impulse that changes momentum (momentum is nonisolated).",
+          "ms": "Apabila seorang peluncur menolak dinding tegar, tangan tidak bergerak relatif kepada dinding, maka dinding melakukan sifar kerja ke atas peluncur (tenaga adalah terpencil). Walau bagaimanapun, dinding mengenakan daya sentuhan luar yang sebenar sepanjang masa, membekalkan impuls yang mengubah momentum (momentum adalah tidak terpencil).",
+          "zh": "当滑板者推向刚性墙壁时，手相对于墙壁没有位移，因此墙壁对滑板者做功为零（能量系统是孤立的）。然而，墙壁在一段时间内施加了真实的外接触力，提供冲量从而改变了动量（动量系统是非孤立的）。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! A system can be isolated with respect to energy while being nonisolated with respect to momentum. For the skater pushing off a wall, zero external work is done across the boundary, so chemical potential energy converts into kinetic energy internally (Delta K + Delta U = 0). Meanwhile, the external normal force from the wall delivers an impulse, changing the skater's momentum. For the pushed spring-block system, external forces perform work and deliver impulse, making it nonisolated in both quantities.",
+        "ms": "Tepat! Sesuatu sistem boleh menjadi terpencil berkenaan dengan tenaga sementara tidak terpencil berkenaan dengan momentum. Bagi peluncur yang menolak dinding, tiada kerja luar dilakukan merentasi sempadan, maka tenaga keupayaan kimia bertukar kepada tenaga kinetik secara dalaman (Delta K + Delta U = 0). Pada masa yang sama, daya normal luar daripada dinding membekalkan impuls, mengubah momentum peluncur. Bagi sistem blok-spring yang ditolak, daya luar melakukan kerja dan membekalkan impuls, menjadikannya tidak terpencil dalam kedua-dua kuantiti.",
+        "zh": "正确！一个系统可以相对于能量是孤立的，同时相对于动量是非孤立的。对于推墙的滑板者，没有外功跨越边界输入，因此体内的化学势能转化为动能（Delta K + Delta U = 0）。与此同时，来自墙壁的外法向力提供了冲量，改变了滑板者的动量。对于受到外力推压的弹簧-滑块系统，外力既做功又提供冲量，因此在这两个物理量上都是非孤立的。"
+      },
+      "answerLogic": {
+        "en": "The energy boundary for the skater is isolated because the wall does not move and performs zero work (W = 0). The momentum boundary for the skater is nonisolated because the wall exerts an external force over time, yielding a non-zero impulse. For the spring-block pair pushed by an external hand, the hand does work and delivers impulse, making both its energy and momentum boundaries nonisolated.",
+        "ms": "Sempadan tenaga bagi peluncur adalah terpencil kerana dinding tidak bergerak dan melakukan sifar kerja (W = 0). Sempadan momentum bagi peluncur adalah tidak terpencil kerana dinding mengenakan daya luar sepanjang masa, menghasilkan impuls bukan sifar. Bagi pasangan blok-spring yang ditolak oleh tangan luar, tangan melakukan kerja dan membekalkan impuls, menjadikan kedua-dua sempadan tenaga dan momentumnya tidak terpencil.",
+        "zh": "滑板者的能量边界是孤立的，因为墙壁不移动且做功为零（W = 0）。滑板者的动量边界是非孤立的，因为墙壁随时间施加了外力，产生了非零冲量。对于被外力推动的弹簧-滑块对，外力既做功又施加冲量，因此其能量和动量边界均是非孤立的。"
+      },
+      "explanation": {
+        "en": "Section 9.8 explains that deformable systems often challenge assumptions built from particle mechanics. In the case of a person on a skateboard pushing away from a rigid wall, the system (person plus skateboard) converts internal food-derived potential energy into translational kinetic energy: Delta K + Delta U = 0. Because no energy crosses the boundary via work or heat, the system is isolated in terms of energy. However, the wall exerts an external contact force over the duration of the push, creating an impulse that equals the change in momentum: Delta p = integral F dt. Therefore, energy isolation does not imply momentum isolation.",
+        "ms": "Seksyen 9.8 menerangkan bahawa sistem boleh ubah bentuk sering mencabar andaian yang dibina daripada mekanik zarah. Dalam kes seseorang di atas papan selaju menolak dinding tegar, sistem (orang dan papan selaju) menukarkan tenaga keupayaan dalaman yang diperoleh daripada makanan kepada tenaga kinetik translasi: Delta K + Delta U = 0. Kerana tiada tenaga yang merentasi sempadan melalui kerja atau haba, sistem ini terpencil dari segi tenaga. Walau bagaimanapun, dinding mengenakan daya sentuhan luar sepanjang tempoh tolakan, menghasilkan impuls yang bersamaan dengan perubahan momentum: Delta p = kamiran F dt. Oleh itu, keterpencilan tenaga tidak membayangkan keterpencilan momentum.",
+        "zh": "第 9.8 节解释说，可变形系统常常颠覆基于质点力学建立的假设。在滑板上的人推离刚性墙壁的情形中，系统（人加滑板）将体内源自食物的势能转化为平动动能：Delta K + Delta U = 0。由于没有能量通过做功或传热跨越边界，该系统在能量上是孤立的。然而，墙壁在推离的整个持续时间内施加了外接触力，产生的冲量等于动量的变化：Delta p = 积分 F dt。因此，能量孤立并不意味着动量孤立。"
+      },
+      "misconceptions": [
+        "energy-isolation-implies-momentum-isolation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "impulse-momentum-theorem",
+        "prompt": {
+          "en": "Recall the impulse-momentum theorem: net external force integrated over time equals the change in momentum. Does an external force act on the skater during push-off?",
+          "ms": "Ingat kembali teorem impuls-momentum: daya luar bersih yang dikamirkan terhadap masa bersamaan dengan perubahan momentum. Adakah daya luar bertindak ke atas peluncur semasa menolak dinding?",
+          "zh": "回想动量定理：合外力对时间的积分等于动量的变化。推离墙壁期间是否有外力作用在滑板者身上？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classification task with two categories: 'Isolated' and 'Nonisolated'. Classify four items describing the energy and momentum statuses of a skater pushing off a wall and a spring-block system being pushed.",
+        "ms": "Tugasan pengelasan dengan dua kategori: 'Terpencil' dan 'Tidak Terpencil'. Kelaskan empat item yang menerangkan status tenaga dan momentum bagi peluncur yang menolak dinding dan sistem blok-spring yang ditolak.",
+        "zh": "分类任务，包含两个类别：'孤立'和'非孤立'。对描述推墙滑板者以及受推弹簧-滑块系统的能量和动量状态的四个项目进行分类。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-isolated",
+            "label": {
+              "en": "Isolated System (No net exchange across boundary)",
+              "ms": "Sistem Terpencil (Tiada pertukaran bersih merentasi sempadan)",
+              "zh": "孤立系统（跨边界无净交换）"
+            }
+          },
+          {
+            "id": "target-nonisolated",
+            "label": {
+              "en": "Nonisolated System (Net transfer occurs across boundary)",
+              "ms": "Sistem Tidak Terpencil (Pemindahan bersih berlaku merentasi sempadan)",
+              "zh": "非孤立系统（跨边界发生净转移）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "skater-energy",
+            "label": {
+              "en": "Energy boundary for a skater pushing away from a rigid wall (hands do not move at contact interface)",
+              "ms": "Sempadan tenaga bagi peluncur yang menolak dinding tegar (tangan tidak bergerak pada antara muka sentuhan)",
+              "zh": "滑板者推离刚性墙壁时的能量边界（手在接触界面上不移动）"
+            }
+          },
+          {
+            "id": "skater-momentum",
+            "label": {
+              "en": "Momentum boundary for a skater pushing away from a rigid wall (wall exerts contact normal force)",
+              "ms": "Sempadan momentum bagi peluncur yang menolak dinding tegar (dinding mengenakan daya normal sentuhan)",
+              "zh": "滑板者推离刚性墙壁时的动量边界（墙壁施加法向接触力）"
+            },
+            "misconception": "energy-isolation-implies-momentum-isolation"
+          },
+          {
+            "id": "block-spring-energy",
+            "label": {
+              "en": "Energy boundary for two spring-connected blocks pushed across a frictionless table by a constant horizontal hand force",
+              "ms": "Sempadan tenaga bagi dua blok bersambung spring yang ditolak merentasi meja tanpa geseran oleh daya tangan mendatar yang malar",
+              "zh": "在无摩擦桌面上被恒定水平手推力推动的弹簧连接双滑块系统的能量边界"
+            }
+          },
+          {
+            "id": "block-spring-momentum",
+            "label": {
+              "en": "Momentum boundary for two spring-connected blocks pushed across a frictionless table by a constant horizontal hand force",
+              "ms": "Sempadan momentum bagi dua blok bersambung spring yang ditolak merentasi meja tanpa geseran oleh daya tangan mendatar yang malar",
+              "zh": "在无摩擦桌面上被恒定水平手推力推动的弹簧连接双滑块系统的动量边界"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "skater-energy",
+            "targetId": "target-isolated"
+          },
+          {
+            "itemId": "skater-momentum",
+            "targetId": "target-nonisolated"
+          },
+          {
+            "itemId": "block-spring-energy",
+            "targetId": "target-nonisolated"
+          },
+          {
+            "itemId": "block-spring-momentum",
+            "targetId": "target-nonisolated"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "energy-isolation-implies-momentum-isolation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "skater-momentum",
+            "targetId": "target-isolated"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ia-point-vs-cm-displacement-matching",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish the displacement of a force's application point from the center-of-mass displacement.",
+      "prompt": {
+        "en": "Match each physical scenario or definition to the displacement concept that correctly characterizes it.",
+        "ms": "Padankan setiap senario fizikal atau takrifan dengan konsep sesaran yang mencirikannya dengan betul.",
+        "zh": "将每个物理情境或定义与正确表征它的位移概念进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Mechanical work depends specifically on where the external force acts and how that contact point moves.",
+          "ms": "Kerja mekanikal bergantung secara khusus pada tempat daya luar bertindak dan bagaimana titik sentuhan tersebut bergerak.",
+          "zh": "机械功具体取决于外力作用在何处以及该接触点如何移动。"
+        },
+        {
+          "en": "The motion of the center of mass describes the overall displacement of the system's mass distribution, which can differ from the displacement of individual contact points in deformable bodies.",
+          "ms": "Gerakan pusat jisim menerangkan sesaran keseluruhan taburan jisim sistem, yang boleh berbeza daripada sesaran titik sentuhan individu dalam jasad boleh ubah bentuk.",
+          "zh": "质心的运动描述了系统质量分布的整体位移，在可变形物体中这可能不同于各个接触点的位移。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! In deformable systems, the displacement of the point of application of a force often differs from the displacement of the center of mass. For a skater pushing off a wall, the contact point does not move at all (zero displacement), while the skater's center of mass moves away from the wall. In the spring-block example, work on the system depends on the displacement x1 of the contact point, while the center of mass moves by the average displacement (x1 + x2)/2.",
+        "ms": "Tepat! Dalam sistem boleh ubah bentuk, sesaran titik tindakan sesuatu daya sering berbeza daripada sesaran pusat jisim. Bagi peluncur yang menolak dinding, titik sentuhan tidak bergerak langsung (sifar sesaran), manakala pusat jisim peluncur bergerak menjauhi dinding. Dalam contoh blok-spring, kerja ke atas sistem bergantung pada sesaran x1 bagi titik sentuhan, manakala pusat jisim bergerak sebanyak sesaran purata (x1 + x2)/2.",
+        "zh": "正确！在可变形系统中，力的作用点位移往往不同于质心位移。对于推墙的滑板者，接触点完全不移动（零位移），而滑板者的质心远离墙壁运动。在弹簧-滑块示例中，对系统做的功取决于接触点的位移 x1，而质心移动的位移是平均位移 (x1 + x2)/2。"
+      },
+      "answerLogic": {
+        "en": "Work is defined strictly by the displacement of the point of application of the force (W = integral F dot dr). Therefore, the zero displacement at the hand-wall interface and the displacement x1 of the left block where force F acts represent point-of-application displacements. The non-zero movement of the skater's body and the average position shift (x1 + x2)/2 represent center-of-mass displacements.",
+        "ms": "Kerja ditakrifkan secara ketat oleh sesaran titik tindakan daya (W = kamiran F bintik dr). Oleh itu, sifar sesaran pada antara muka tangan-dinding dan sesaran x1 bagi blok kiri di mana daya F bertindak mewakili sesaran titik tindakan. Gerakan bukan sifar badan peluncur dan anjakan kedudukan purata (x1 + x2)/2 mewakili sesaran pusat jisim.",
+        "zh": "功是严格根据力的作用点位移来定义的（W = 积分 F dot dr）。因此，手-墙界面处的零位移以及力 F 作用的左滑块位移 x1 代表力的作用点位移。滑板者身体的非零移动以及平均位置移动 (x1 + x2)/2 代表质心位移。"
+      },
+      "explanation": {
+        "en": "Section 9.8 and Example 9.14 emphasize that in deformable systems, the displacement appearing in the definition of work (W = integral F dot dr) is strictly the displacement of the point of application of the force. It is not the displacement of the center of mass. When pushing off a wall, the wall's force acts on hands that remain stationary against the wall, so the point-of-application displacement is zero, yielding zero work. Meanwhile, the body's center of mass accelerates and moves away. Similarly, for two blocks connected by a spring, the hand moves through distance x1, doing work W = F x1, even though the center of mass only moves through distance (x1 + x2)/2.",
+        "ms": "Seksyen 9.8 dan Contoh 9.14 menekankan bahawa dalam sistem boleh ubah bentuk, sesaran yang muncul dalam takrifan kerja (W = kamiran F bintik dr) adalah strictly sesaran titik tindakan daya. Ia bukan sesaran pusat jisim. Semasa menolak dinding, daya dinding bertindak pada tangan yang kekal pegun pada dinding, jadi sesaran titik tindakan adalah sifar, menghasilkan sifar kerja. Sementara itu, pusat jisim badan memecut dan bergerak menjauh. Begitu juga, bagi dua blok yang disambungkan oleh spring, tangan bergerak melalui jarak x1, melakukan kerja W = F x1, walaupun pusat jisim hanya bergerak melalui jarak (x1 + x2)/2.",
+        "zh": "第 9.8 节与示例 9.14 强调，在可变形系统中，出现在功的定义（W = 积分 F dot dr）中的位移严格是力的作用点位移，而不是质心位移。当推离墙壁时，墙壁的力作用在相对于墙壁保持静止的手上，因此作用点位移为零，所做的功也为零。与此同时，身体的质心加速并远离墙壁移动。类似地，对于弹簧连接的两个滑块，手移动了距离 x1，做功 W = F x1，尽管质心仅仅移动了距离 (x1 + x2)/2。"
+      },
+      "misconceptions": [
+        "force-displacement-equals-center-of-mass-displacement"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the definition of mechanical work: work is determined by the displacement of the specific contact point where the force acts.",
+          "ms": "Ulang kaji takrifan kerja mekanikal: kerja ditentukan oleh sesaran titik sentuhan khusus di mana daya bertindak.",
+          "zh": "复习机械功的定义：功由力所作用的具体接触点的位移决定。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching task with two categories: 'Displacement of the Point of Application of the Force' and 'Displacement of the System Center of Mass'. Match four descriptions to their corresponding displacement concept.",
+        "ms": "Tugasan pemadanan dengan dua kategori: 'Sesaran Titik Tindakan Daya' dan 'Sesaran Pusat Jisim Sistem'. Padankan empat penerangan dengan konsep sesaran yang sepadan.",
+        "zh": "匹配任务，包含两个类别：'力的作用点位移'和'系统质心位移'。将四个描述与对应的位移概念进行匹配。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-point-of-application",
+            "label": {
+              "en": "Displacement of the Point of Application of the Force",
+              "ms": "Sesaran Titik Tindakan Daya",
+              "zh": "力的作用点位移"
+            }
+          },
+          {
+            "id": "target-center-of-mass",
+            "label": {
+              "en": "Displacement of the System Center of Mass",
+              "ms": "Sesaran Pusat Jisim Sistem",
+              "zh": "系统质心位移"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-skater-wall-contact",
+            "label": {
+              "en": "The displacement that remains zero while a skateboarder's hands push against a fixed wall",
+              "ms": "Sesaran yang kekal sifar semasa tangan peluncur menolak dinding pegun",
+              "zh": "滑板者的手推向固定墙壁时保持为零的位移"
+            }
+          },
+          {
+            "id": "item-skater-overall-shift",
+            "label": {
+              "en": "The non-zero displacement measuring the shift of the skateboarder's entire body away from the wall",
+              "ms": "Sesaran bukan sifar yang mengukur anjakan seluruh badan peluncur menjauhi dinding",
+              "zh": "测量滑板者整个身体远离墙壁位移的非零位移"
+            }
+          },
+          {
+            "id": "item-work-definition-quantity",
+            "label": {
+              "en": "The displacement quantity that enters directly into the definition of mechanical work done by an applied force",
+              "ms": "Kuantiti sesaran yang memasuki secara langsung ke dalam takrifan kerja mekanikal yang dilakukan oleh daya yang dikenakan",
+              "zh": "直接进入外力所做机械功定义中的位移量"
+            },
+            "misconception": "force-displacement-equals-center-of-mass-displacement"
+          },
+          {
+            "id": "item-spring-block-average",
+            "label": {
+              "en": "The average displacement (x1 + x2)/2 for two equal-mass blocks connected by a spring when the left block moves x1 and the right block moves x2",
+              "ms": "Sesaran purata (x1 + x2)/2 bagi dua blok berjisim sama yang disambungkan oleh spring apabila blok kiri bergerak x1 dan blok kanan bergerak x2",
+              "zh": "弹簧连接的两个等质量滑块在左滑块移动 x1 且右滑块移动 x2 时的平均位移 (x1 + x2)/2"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-skater-wall-contact",
+            "targetId": "target-point-of-application"
+          },
+          {
+            "itemId": "item-skater-overall-shift",
+            "targetId": "target-center-of-mass"
+          },
+          {
+            "itemId": "item-work-definition-quantity",
+            "targetId": "target-point-of-application"
+          },
+          {
+            "itemId": "item-spring-block-average",
+            "targetId": "target-center-of-mass"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "force-displacement-equals-center-of-mass-displacement",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-work-definition-quantity",
+            "targetId": "target-center-of-mass"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ia-identify-deformable-features-selection",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Explain why the particle work-kinetic energy theorem does not generally apply to deformable systems.",
+      "prompt": {
+        "en": "Select all statements that correctly explain why the particle work-kinetic energy theorem, W = Delta K, does not validly describe a person pushing away from a rigid wall on a skateboard.",
+        "ms": "Pilih semua pernyataan yang menerangkan dengan betul mengapa teorem kerja-tenaga kinetik zarah, W = Delta K, tidak sah untuk menerangkan seseorang yang menolak dinding tegar di atas papan selaju.",
+        "zh": "选择所有能正确解释为什么质点动能定理 W = Delta K 不能有效描述一个人在滑板上推离刚性墙壁这一过程的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Consider whether the contact point where the wall exerts a normal force moves through any distance during the push.",
+          "ms": "Pertimbangkan sama ada titik sentuhan di mana dinding mengenakan daya normal bergerak melalui sebarang jarak semasa menolak.",
+          "zh": "考虑推墙期间墙壁施加法向力的接触点是否移动了任何距离。"
+        },
+        {
+          "en": "Recall that the skateboarder's kinetic energy increases even though the wall does zero work. Identify where this kinetic energy originates and why W = Delta K fails.",
+          "ms": "Ingat kembali bahawa tenaga kinetik peluncur meningkat walaupun dinding melakukan sifar kerja. Kenal pasti dari mana tenaga kinetik ini berasal dan mengapa W = Delta K gagal.",
+          "zh": "回想一下，尽管墙壁做功为零，滑板者的动能却增加了。确定这部分动能从何而来，以及为什么 W = Delta K 失效。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! The stationary wall exerts a force that moves through zero displacement at the interface, so the external work done on the skater is zero (W = 0). Yet the skater accelerates and gains kinetic energy (Delta K > 0). If one wrote W = Delta K, the left side would be zero while the right side is non-zero. Instead, the gain in kinetic energy is powered by a decrease in internal chemical potential energy from the body (Delta K + Delta U = 0), demonstrating why the particle work-kinetic energy theorem is not valid for deformable systems.",
+        "ms": "Tepat! Dinding pegun mengenakan daya yang bergerak merentasi sifar sesaran pada antara muka, maka kerja luar yang dilakukan ke atas peluncur ialah sifar (W = 0). Namun peluncur memecut dan memperoleh tenaga kinetik (Delta K > 0). Jika seseorang menulis W = Delta K, bahagian kiri akan menjadi sifar manakala bahagian kanan bukan sifar. Sebaliknya, peningkatan tenaga kinetik dikuasakan oleh penurunan tenaga keupayaan kimia dalaman daripada badan (Delta K + Delta U = 0), menunjukkan mengapa teorem kerja-tenaga kinetik zarah tidak sah untuk sistem boleh ubah bentuk.",
+        "zh": "正确！静止墙壁施加的力在接触界面上的位移为零，因此对外系统做的功为零（W = 0）。然而滑板者加速并获得了动能（Delta K > 0）。如果套用 W = Delta K，等式左边为零而右边不为零。实际上，动能的增加是由体内化学势能的减少所驱动的（Delta K + Delta U = 0），这说明了为什么质点动能定理不适用于可变形系统。"
+      },
+      "answerLogic": {
+        "en": "The correct selections identify that the contact force from the wall acts across zero displacement (producing zero external work) and that the increase in kinetic energy originates from internal chemical potential energy (Delta K + Delta U = 0). The statement that the wall does work is false because the contact point does not move. The statement that W = Delta K always applies to every system is false because deformable systems have internal degrees of freedom that store or convert energy without external work.",
+        "ms": "Pilihan yang betul mengenal pasti bahawa daya sentuhan daripada dinding bertindak merentasi sifar sesaran (menghasilkan sifar kerja luar) dan bahawa peningkatan tenaga kinetik berpunca daripada tenaga keupayaan kimia dalaman (Delta K + Delta U = 0). Pernyataan bahawa dinding melakukan kerja adalah salah kerana titik sentuhan tidak bergerak. Pernyataan bahawa W = Delta K sentiasa terpakai untuk setiap sistem adalah salah kerana sistem boleh ubah bentuk mempunyai darjah kebebasan dalaman yang menyimpan atau menukar tenaga tanpa kerja luar.",
+        "zh": "正确的选项指出了墙壁的接触力在零位移上作用（外功为零），以及动能的增加源于内部化学势能的转化（Delta K + Delta U = 0）。声称墙壁做功的陈述是错误的，因为接触点不移动。声称 W = Delta K 普遍适用于所有系统的陈述也是错误的，因为可变形系统具有内部自由度，可以在没有外功的情况下储存或转换能量。"
+      },
+      "explanation": {
+        "en": "Section 9.8 states: 'The force from the wall on your hands moves through no displacement; the force is always located at the interface between the wall and your hands. Therefore, the force does no work on the system, which is you and your skateboard. Pushing off the wall, however, does indeed result in a change in the kinetic energy of the system. If you try to use the work-kinetic energy theorem, W = Delta K, to describe this event, you will notice that the left side of the equation is zero but the right side is not zero. The work-kinetic energy theorem is not valid for this event and is often not valid for systems that are deformable.' The correct framework uses energy conservation with internal energy changes: Delta K + Delta U = 0.",
+        "ms": "Seksyen 9.8 menyatakan bahawa daya daripada dinding pada tangan tidak bergerak merentasi sebarang sesaran kerana daya sentiasa berada pada antara muka antara dinding dan tangan. Oleh itu, daya tersebut tidak melakukan kerja ke atas sistem (peluncur dan papan selaju). Namun, menolak dinding menghasilkan perubahan dalam tenaga kinetik sistem. Jika teorem kerja-tenaga kinetik W = Delta K digunakan, bahagian kiri ialah sifar tetapi bahagian kanan bukan sifar. Maka teorem ini tidak sah untuk peristiwa tersebut dan secara umumnya tidak sah untuk sistem boleh ubah bentuk. Rangka kerja yang betul menggunakan keabadian tenaga dengan perubahan tenaga dalaman: Delta K + Delta U = 0.",
+        "zh": "第 9.8 节指出：墙壁作用在手上的力没有经历任何位移；该力始终位于墙壁与手之间的接触面上。因此，该力对系统（人和滑板）不做功。然而，推离墙壁确实导致了系统动能的变化。如果尝试用动能定理 W = Delta K 来描述该过程，会发现方程左边为零而右边不为零。动能定理在该事件中不成立，并且通常对可变形系统不成立。正确的分析框架是结合内部能量变化的能量守恒定律：Delta K + Delta U = 0。"
+      },
+      "misconceptions": [
+        "work-kinetic-energy-always-applies",
+        "normal-force-does-work-pushing-off"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Recall that mechanical work requires a force acting through a displacement at its point of application. If hands do not displace at the wall interface, how much work does the wall do?",
+          "ms": "Ingat kembali bahawa kerja mekanikal memerlukan daya bertindak merentasi sesuatu sesaran pada titik tindakannya. Jika tangan tidak mengalami sesaran pada antara muka dinding, berapakah kerja yang dilakukan oleh dinding?",
+          "zh": "回想机械功要求力在其作用点处经历位移。如果手在墙壁接触界面上没有发生位移，墙壁做了多少功？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple selection task. Choose all valid explanations for why the work-kinetic energy theorem W = Delta K fails when a person on a skateboard pushes off a rigid wall.",
+        "ms": "Tugasan berbilang pilihan. Pilih semua penjelasan yang sah tentang mengapa teorem kerja-tenaga kinetik W = Delta K gagal apabila seseorang di atas papan selaju menolak dinding tegar.",
+        "zh": "多项选择任务。选择关于滑板上的人推离刚性墙壁时动能定理 W = Delta K 为什么失效的所有合理解释。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "zero-displacement-zero-work",
+            "label": {
+              "en": "The normal force from the stationary wall acts across zero displacement at the hand-wall interface, doing zero external work on the system.",
+              "ms": "Daya normal daripada dinding pegun bertindak merentasi sifar sesaran pada antara muka tangan-dinding, melakukan sifar kerja luar ke atas sistem.",
+              "zh": "来自静止墙壁的法向力在手与墙壁界面上的位移为零，因此对系统做的外功为零。"
+            }
+          },
+          {
+            "id": "internal-energy-source",
+            "label": {
+              "en": "The increase in the system's kinetic energy comes from the conversion of internal chemical potential energy stored in the body rather than external work.",
+              "ms": "Peningkatan tenaga kinetik sistem berpunca daripada penukaran tenaga keupayaan kimia dalaman yang tersimpan di dalam badan dan bukannya kerja luar.",
+              "zh": "系统动能的增加源自于体内储存的内部化学势能的转化，而不是外部做功。"
+            }
+          },
+          {
+            "id": "wall-does-work",
+            "label": {
+              "en": "The rigid wall does positive mechanical work on the person because the normal force points in the direction of the resulting motion.",
+              "ms": "Dinding tegar melakukan kerja mekanikal positif ke atas orang itu kerana daya normal menghala ke arah gerakan yang terhasil.",
+              "zh": "刚性墙壁对人做正机械功，因为法向力指向最终运动的方向。"
+            },
+            "misconception": "normal-force-does-work-pushing-off"
+          },
+          {
+            "id": "w-delta-k-universal",
+            "label": {
+              "en": "The equation W = Delta K always holds universally for every system because external work is defined to automatically equal the final kinetic energy.",
+              "ms": "Persamaan W = Delta K sentiasa benar secara universal bagi setiap sistem kerana kerja luar ditakrifkan untuk secara automatik bersamaan dengan tenaga kinetik akhir.",
+              "zh": "公式 W = Delta K 对所有系统普遍成立，因为外功被定义为自动等于最终动能。"
+            },
+            "misconception": "work-kinetic-energy-always-applies"
+          }
+        ],
+        "correctSelections": [
+          "zero-displacement-zero-work",
+          "internal-energy-source"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "normal-force-does-work-pushing-off",
+          "condition": {
+            "kind": "selection",
+            "itemId": "wall-does-work",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "work-kinetic-energy-always-applies",
+          "condition": {
+            "kind": "selection",
+            "itemId": "w-delta-k-universal",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "ia-push-off-energy-momentum-ordering",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply energy conservation to track internal energy conversions into kinetic energy in deformable systems.",
+      "prompt": {
+        "en": "A skater initially at rest on a frictionless level surface pushes away from a rigid, stationary vertical wall by straightening their bent arms. Arrange the stages of the physical analysis in chronological and causal order, tracking how energy and momentum are transferred to the skater.",
+        "ms": "Seorang peluncur yang pada mulanya pegun di atas permukaan rata tanpa geseran menolak diri menjauhi dinding menegak yang tegar dan pegun dengan meluruskan lengan yang bengkok. Susun peringkat analisis fizikal mengikut urutan kronologi dan sebab-akibat, menjejaki bagaimana tenaga dan momentum dipindahkan kepada peluncur.",
+        "zh": "一名最初在无摩擦水平面上静止的滑板者，通过伸直弯曲的手臂推离一堵坚固不动的垂直墙壁并向前滑行。请按照时间与因果顺序排列物理分析的各个阶段，追踪能量和动量是如何转移给滑板者的。"
+      },
+      "hints": [
+        {
+          "en": "Consider what initiates the movement inside the body before any interaction at the wall occurs, and identify which energy store decreases.",
+          "ms": "Pertimbangkan perkara yang memulakan pergerakan di dalam badan sebelum sebarang interaksi di dinding berlaku, dan kenal pasti stor simpanan tenaga yang berkurangan.",
+          "zh": "思考在墙壁发生相互作用之前，身体内部是什么引发了动作，并识别哪种能量储备减少了。"
+        },
+        {
+          "en": "Focus on the contact boundary between the hands and the wall: does this point move while the force is applied, and what does that imply for mechanical work versus external impulse?",
+          "ms": "Tumpukan perhatian pada sempadan sentuhan antara tangan dan dinding: adakah titik ini bergerak semasa daya dikenakan, dan apakah implikasinya terhadap kerja mekanikal berbanding impuls luar?",
+          "zh": "关注手与墙壁之间的接触界面：施力过程中该点是否移动？这对机械功与外力冲量分别意味着什么？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. Muscular exertion first converts internal chemical potential energy into mechanical action. The hands then exert force on the stationary wall, which delivers an external impulse over time without performing mechanical work because the contact point does not move. Consequently, total momentum increases via the external impulse while kinetic energy increases solely from the internal energy transformation.",
+        "ms": "Tepat. Penggunaan tenaga otot terlebih dahulu menukarkan tenaga keupayaan kimia dalaman kepada tindakan mekanikal. Tangan kemudian mengenakan daya pada dinding pegun, yang membekalkan impuls luar sepanjang masa tanpa melakukan kerja mekanikal kerana titik sentuhan tidak bergerak. Akibatnya, jumlah momentum meningkat melalui impuls luar manakala tenaga kinetik meningkat semata-mata daripada penukaran tenaga dalaman.",
+        "zh": "正确。肌肉发力首先将体内的化学势能转化为机械运动。接着双手推向静止的墙壁，墙壁在一段时间内提供外力冲量；但由于接触点并未发生位移，因此没有做机械功。最终，总动量通过外力冲量增加，而动能则完全由内部能量转化所提供。"
+      },
+      "answerLogic": {
+        "en": "Chronological and causal sequence: (1) Internal biochemical potential energy is mobilized to extend the arms; (2) The hands exert force on the wall, producing an equal and opposite external normal force; (3) Because the hand-wall interface has zero displacement, the external normal force performs zero work (W = 0); (4) The external normal force impulse increases center-of-mass momentum, while internal chemical energy conversion accounts for the final kinetic energy (Delta K + Delta U = 0).",
+        "ms": "Urutan kronologi dan sebab-akibat: (1) Tenaga keupayaan biokimia dalaman digerakkan untuk meluruskan lengan; (2) Tangan mengenakan daya pada dinding, menghasilkan daya normal luar yang sama magnitud dan bertentangan arah; (3) Oleh kerana antara muka tangan-dinding mempunyai sesaran sifar, daya normal luar melakukan kerja sifar (W = 0); (4) Impuls daya normal luar meningkatkan momentum pusat jisim, manakala penukaran tenaga kimia dalaman menyumbang kepada tenaga kinetik akhir (Delta K + Delta U = 0).",
+        "zh": "时间与因果顺序：(1) 体内的生化势能被调用以伸直手臂；(2) 手对墙壁施加力，产生大小相等、方向相反的外部支持力；(3) 由于手与墙的接触界面位移为零，该外部支持力所做的功为零（W = 0）；(4) 外部支持力的冲量增加了质心动量，而内部化学能的转化则解释了最终获得的动能（Delta K + Delta U = 0）。"
+      },
+      "explanation": {
+        "en": "Deformable systems can alter their kinetic energy without external work being done on them. When pushing off an immovable wall, the contact point between hands and wall remains fixed, so the external normal force acts through zero displacement and performs zero work (W = 0). Energy conservation for the skater system yields Delta K + Delta U = 0, proving that the gain in kinetic energy originates entirely from internal chemical energy. Simultaneously, because the external normal force acts over a finite time interval, it provides an external impulse integral F dt that changes the system's linear momentum. Thus, the system is isolated in terms of energy but nonisolated in terms of momentum.",
+        "ms": "Sistem boleh ubah bentuk boleh mengubah tenaga kinetiknya tanpa kerja luar dilakukan ke atasnya. Apabila menolak dinding yang tidak bergerak, titik sentuhan antara tangan dan dinding kekal pegun, jadi daya normal luar bertindak melalui sesaran sifar dan melakukan kerja sifar (W = 0). Keabadian tenaga untuk sistem peluncur memberikan Delta K + Delta U = 0, membuktikan bahawa peningkatan tenaga kinetik berasal sepenuhnya daripada tenaga kimia dalaman. Pada masa yang sama, kerana daya normal luar bertindak dalam suatu selang masa yang nyata, ia membekalkan impuls luar kamiran F dt yang mengubah momentum linear sistem. Oleh itu, sistem ini terpencil dari segi tenaga tetapi tidak terpencil dari segi momentum.",
+        "zh": "可变形系统可以在没有外力做功的情况下改变其动能。当推离静止不动的墙壁时，手与墙壁的接触点保持固定，因此外部支持力的作用点位移为零，所做的机械功为零（W = 0）。滑板者系统的能量守恒方程为 Delta K + Delta U = 0，证明动能的增加完全来自于体内的化学能。与此同时，由于外部支持力在有限的时间间隔内持续作用，它提供了外力冲量 integral F dt，从而改变了系统的线动量。因此，该系统在能量上是孤立的，但在动量上是非孤立的。"
+      },
+      "misconceptions": [
+        "normal-force-does-work-pushing-off",
+        "internal-forces-change-total-momentum"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "impulse-momentum-theorem",
+        "prompt": {
+          "en": "Recall the impulse-momentum theorem: the change in linear momentum of a system equals the time integral of the net external force. External forces acting over time change momentum even if their points of application do not move.",
+          "ms": "Ingat kembali teorem impuls-momentum: perubahan dalam momentum linear sesuatu sistem adalah bersamaan dengan kamiran masa bagi daya luar bersih. Daya luar yang bertindak sepanjang masa mengubah momentum walaupun titik tindakannya tidak bergerak.",
+          "zh": "回忆动量定理：系统线动量的变化等于合外力对时间的积分。即使外力作用点没有移动，只要外力在一段时间内持续作用，就会改变动量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Order four stages describing a skater pushing off a rigid wall from the initial internal muscular effort to the final momentum and kinetic energy outcome.",
+        "ms": "Susun empat peringkat yang menerangkan seorang peluncur menolak dinding tegar daripada usaha otot dalaman awal sehingga hasil akhir momentum dan tenaga kinetik.",
+        "zh": "对描述滑板者推离刚性墙壁的四个阶段进行排序，从最初的肌肉发力到最终的动量与动能结果。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-1-internal-activation",
+            "label": {
+              "en": "Chemical potential energy is transformed internally as muscles exert forces to push outward against the hands.",
+              "ms": "Tenaga keupayaan kimia ditransformasikan secara dalaman apabila otot mengenakan daya untuk menolak keluar pada tangan.",
+              "zh": "当肌肉施加力向外推按手部时，体内储存的化学势能发生转化。"
+            }
+          },
+          {
+            "id": "item-2-wall-impulse",
+            "label": {
+              "en": "Straightening arms press against the rigid wall, causing the wall to exert an external normal force over the duration of contact.",
+              "ms": "Lengan yang diluruskan menekan dinding tegar, menyebabkan dinding mengenakan daya normal luar sepanjang tempoh sentuhan.",
+              "zh": "伸直的手臂推向刚性墙壁，使墙壁在接触时间内施加一个外部支持力。"
+            }
+          },
+          {
+            "id": "item-3-zero-work",
+            "label": {
+              "en": "Because the interface between the hands and the rigid wall remains stationary, the external normal force performs zero mechanical work.",
+              "ms": "Oleh kerana antara muka antara tangan dan dinding tegar kekal pegun, daya normal luar melakukan kerja mekanikal sifar.",
+              "zh": "由于手部与刚性墙壁之间的接触面保持静止，因此外部支持力所做的机械功为零。"
+            }
+          },
+          {
+            "id": "item-4-final-state",
+            "label": {
+              "en": "The skater gains center-of-mass momentum solely from the wall's external impulse, with all kinetic energy originating from internal chemical energy.",
+              "ms": "Peluncur memperoleh momentum pusat jisim semata-mata daripada impuls luar dinding, dengan semua tenaga kinetik berasal daripada tenaga kimia dalaman.",
+              "zh": "滑板者的质心动量完全由墙壁的外力冲量提供，而所有的动能则完全来源于体内的化学能。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-1-internal-activation",
+          "item-2-wall-impulse",
+          "item-3-zero-work",
+          "item-4-final-state"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "internal-forces-change-total-momentum",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-4-final-state",
+            "secondItemId": "item-2-wall-impulse"
+          }
+        },
+        {
+          "misconception": "normal-force-does-work-pushing-off",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-4-final-state",
+            "secondItemId": "item-3-zero-work"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ia-analysis-model-classification",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the impulse-momentum theorem to determine the center-of-mass motion of deformable systems.",
+      "prompt": {
+        "en": "Classify each mechanical process based on whether the chosen system is isolated or nonisolated in terms of energy and linear momentum.",
+        "ms": "Kelaskan setiap proses mekanikal berdasarkan sama ada sistem yang dipilih adalah terpencil atau tidak terpencil dari segi tenaga dan momentum linear.",
+        "zh": "根据所选系统在能量和线动量方面是孤立还是非孤立，对以下各项机械过程进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Check whether any external force performs work across the system boundary (displacing its point of contact) and whether any net external force acts over a time interval.",
+          "ms": "Periksa sama ada sebarang daya luar melakukan kerja merentasi sempadan sistem (menyesarkan titik sentuhannya) dan sama ada sebarang daya luar bersih bertindak sepanjang selang masa.",
+          "zh": "检查是否有任何外力穿过系统边界做功（使其接触点发生位移），以及是否有合外力在一段时间内持续作用。"
+        },
+        {
+          "en": "Remember that a system can have zero external work done on it (energy isolated) while still experiencing an external impulse (momentum nonisolated), such as when pushing against a rigid stationary surface.",
+          "ms": "Ingat bahawa suatu sistem boleh mempunyai kerja luar sifar yang dilakukan ke atasnya (terpencil tenaga) sementara masih mengalami impuls luar (tidak terpencil momentum), seperti apabila menolak permukaan tegar yang pegun.",
+          "zh": "记住，一个系统可以在外力做功为零（能量孤立）的同时仍然承受外力冲量（动量非孤立），例如推按坚固静止的表面时。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. Systems pushing against immovable rigid boundaries (the skater and jumper) experience zero external work because the contact points do not move, making them energy-isolated; however, the normal force provides an external impulse, making them momentum-nonisolated. The spring-block system being pushed has external work done and an external impulse applied, making it nonisolated in both. The released cart system has no net external forces or external boundary work, making it isolated in both.",
+        "ms": "Tepat. Sistem yang menolak sempadan tegar yang tidak bergerak (peluncur dan pelompat) mengalami kerja luar sifar kerana titik sentuhan tidak bergerak, menjadikannya terpencil dari segi tenaga; walau bagaimanapun, daya normal membekalkan impuls luar, menjadikannya tidak terpencil dari segi momentum. Sistem blok-spring yang ditolak menerima kerja luar dan impuls luar, menjadikannya tidak terpencil dalam kedua-duanya. Sistem troli yang dilepaskan tidak mempunyai daya luar bersih atau kerja sempadan luar, menjadikannya terpencil dalam kedua-duanya.",
+        "zh": "正确。推离坚固不动边界的系统（滑板者和跳跃者）因为接触点不移动而承受零外力功，因而在能量上孤立；但支持力提供了外力冲量，因而在动量上非孤立。被推压的弹簧滑块系统同时受到外力做功和外力冲量，两者皆非孤立。自由释放的弹簧小车系统没有合外力也没有外部边界做功，在两者上均孤立。"
+      },
+      "answerLogic": {
+        "en": "Classification criteria: (1) Skater pushing off a rigid wall: zero contact displacement means W = 0 (energy isolated), but normal force delivers external impulse (momentum nonisolated). (2) Jumper pushing off rigid ground: contact point is stationary so W = 0 (energy isolated), but ground normal force delivers upward impulse (momentum nonisolated). (3) Spring-connected blocks pushed horizontally: force moves contact point by distance x1 doing work W = F*x1 (energy nonisolated) and acts over time interval Delta t (momentum nonisolated). (4) Compressed spring carts released freely: net external horizontal force is zero and no external work crosses boundary (isolated in both energy and momentum).",
+        "ms": "Kriteria pengelasan: (1) Peluncur menolak dinding tegar: sesaran sentuhan sifar bermakna W = 0 (tenaga terpencil), tetapi daya normal membekalkan impuls luar (momentum tidak terpencil). (2) Pelompat menolak tanah tegar: titik sentuhan pegun maka W = 0 (tenaga terpencil), tetapi daya normal tanah membekalkan impuls ke atas (momentum tidak terpencil). (3) Blok bersambung spring ditolak secara mendatar: daya menggerakkan titik sentuhan sejauh x1 melakukan kerja W = F*x1 (tenaga tidak terpencil) dan bertindak dalam selang masa Delta t (momentum tidak terpencil). (4) Troli spring termampat dilepaskan secara bebas: daya mendatar luar bersih adalah sifar dan tiada kerja luar merentasi sempadan (terpencil dalam kedua-dua tenaga dan momentum).",
+        "zh": "分类逻辑：(1) 滑板者推离刚性墙壁：接触点位移为零意味着 W = 0（能量孤立），但支持力提供了外力冲量（动量非孤立）。(2) 跳跃者推离坚固地面：接触点静止因此 W = 0（能量孤立），但地面支持力提供向上的冲量（动量非孤立）。(3) 弹簧连接的滑块受到水平推力：力使作用点移动了距离 x1 并做功 W = F*x1（能量非孤立），并在时间 Delta t 内施加冲量（动量非孤立）。(4) 压缩弹簧小车自由释放：合外力为零且无外力跨越边界做功（能量与动量均孤立）。"
+      },
+      "explanation": {
+        "en": "In deformable systems, energy isolation and momentum isolation must be evaluated independently. Mechanical work depends on the displacement of the point of application of the force: if the boundary contact point does not move, W = 0, and the system is energy-isolated (Delta K + Delta U = 0). Conversely, linear momentum depends on the time integral of external forces: if a net external force acts over time, the system is nonisolated in momentum regardless of whether the contact point moves. Hence, pushing off a rigid surface is isolated in energy but nonisolated in momentum.",
+        "ms": "Dalam sistem boleh ubah bentuk, keterpencilan tenaga dan keterpencilan momentum mesti dinilai secara berasingan. Kerja mekanikal bergantung kepada sesaran titik tindakan daya: jika titik sentuhan sempadan tidak bergerak, W = 0, dan sistem adalah terpencil dari segi tenaga (Delta K + Delta U = 0). Sebaliknya, momentum linear bergantung kepada kamiran masa bagi daya luar: jika daya luar bersih bertindak sepanjang masa, sistem adalah tidak terpencil dari segi momentum tanpa mengira sama ada titik sentuhan bergerak atau tidak. Oleh itu, menolak permukaan tegar adalah terpencil dari segi tenaga tetapi tidak terpencil dari segi momentum.",
+        "zh": "在可变形系统中，能量孤立与动量孤立必须独立评估。机械功取决于力的作用点的位移：如果边界接触点不移动，则 W = 0，系统在能量上是孤立的（Delta K + Delta U = 0）。相反，线动量取决于外力对时间的积分：只要合外力在一段时间内作用，无论接触点是否移动，系统在动量上都是非孤立的。因此，推离刚性表面在能量上是孤立的，但在动量上是非孤立的。"
+      },
+      "misconceptions": [
+        "energy-isolation-implies-momentum-isolation",
+        "work-kinetic-energy-always-applies"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "center-of-mass-motion",
+        "prompt": {
+          "en": "Review Newton's second law for a system of particles: the net external force equals the total mass times the acceleration of the center of mass. External forces determine center-of-mass acceleration, independent of internal energy transformations.",
+          "ms": "Ulang kaji hukum kedua Newton untuk suatu sistem zarah: daya luar bersih adalah bersamaan dengan jumlah jisim didarab dengan pecutan pusat jisim. Daya luar menentukan pecutan pusat jisim, bebas daripada penukaran tenaga dalaman.",
+          "zh": "复习质点系的牛顿第二定律：合外力等于总质量乘以质心加速度。外力决定了质心的加速度，这与内部能量的转化无关。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classify four mechanical scenarios into three categories: isolated in energy but nonisolated in momentum, nonisolated in both energy and momentum, or isolated in both energy and momentum.",
+        "ms": "Kelaskan empat senario mekanikal ke dalam tiga kategori: terpencil dari segi tenaga tetapi tidak terpencil dari segi momentum, tidak terpencil dari segi kedua-dua tenaga dan momentum, atau terpencil dalam kedua-dua tenaga dan momentum.",
+        "zh": "将四个机械情景分类到三个类别中：能量孤立但动量非孤立、能量与动量均非孤立、以及能量与动量均孤立。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-energy-isolated-momentum-nonisolated",
+            "label": {
+              "en": "Isolated in energy, nonisolated in momentum",
+              "ms": "Terpencil dari segi tenaga, tidak terpencil dari segi momentum",
+              "zh": "能量孤立，动量非孤立"
+            }
+          },
+          {
+            "id": "target-nonisolated-both",
+            "label": {
+              "en": "Nonisolated in both energy and momentum",
+              "ms": "Tidak terpencil dari segi tenaga dan momentum",
+              "zh": "能量与动量均非孤立"
+            }
+          },
+          {
+            "id": "target-isolated-both",
+            "label": {
+              "en": "Isolated in both energy and momentum",
+              "ms": "Terpencil dari segi tenaga dan momentum",
+              "zh": "能量与动量均孤立"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-skater-wall",
+            "label": {
+              "en": "A skater on a skateboard straightening bent arms to push off a stationary, rigid vertical wall.",
+              "ms": "Seorang peluncur papan selaju meluruskan lengan bengkok untuk menolak dinding menegak yang tegar dan pegun.",
+              "zh": "滑板上的滑板者伸直弯曲的手臂推离静止坚固的垂直墙壁。"
+            }
+          },
+          {
+            "id": "item-jumper-floor",
+            "label": {
+              "en": "A jumper extending bent legs to launch upward from a rigid, immovable concrete floor before takeoff.",
+              "ms": "Seorang pelompat meluruskan kaki bengkok untuk melancarkan diri ke atas dari lantai konkrit yang tegar dan tidak bergerak sebelum berlepas.",
+              "zh": "跳跃者在起跳前伸直弯曲的双腿，推离坚固不动的混凝土地面向上跃起。"
+            }
+          },
+          {
+            "id": "item-spring-blocks-pushed",
+            "label": {
+              "en": "Two blocks connected by a spring on a frictionless surface while an external horizontal force pushes the left block inward.",
+              "ms": "Dua blok yang disambungkan oleh spring di atas permukaan tanpa geseran semasa daya mendatar luar menolak blok kiri ke dalam.",
+              "zh": "两个由弹簧连接的光滑平面上的滑块，受到一个水平外力向内推压左侧滑块。"
+            }
+          },
+          {
+            "id": "item-compressed-carts-released",
+            "label": {
+              "en": "Two dynamic carts on a frictionless horizontal track held together with a compressed spring between them, then released freely.",
+              "ms": "Dua troli dinamik di atas trek mendatar tanpa geseran yang dipegang bersama dengan spring termampat di antaranya, kemudian dilepaskan secara bebas.",
+              "zh": "光滑水平轨道上的两辆小车，中间夹着一根被压缩的弹簧，随后被自由释放。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-skater-wall",
+            "targetId": "target-energy-isolated-momentum-nonisolated"
+          },
+          {
+            "itemId": "item-jumper-floor",
+            "targetId": "target-energy-isolated-momentum-nonisolated"
+          },
+          {
+            "itemId": "item-spring-blocks-pushed",
+            "targetId": "target-nonisolated-both"
+          },
+          {
+            "itemId": "item-compressed-carts-released",
+            "targetId": "target-isolated-both"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "energy-isolation-implies-momentum-isolation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-skater-wall",
+            "targetId": "target-isolated-both"
+          }
+        },
+        {
+          "misconception": "work-kinetic-energy-always-applies",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-skater-wall",
+            "targetId": "target-nonisolated-both"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ia-external-force-criteria-selection",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Evaluate the work done on a deformable system using the displacement of the point of application.",
+      "prompt": {
+        "en": "Consider the evaluation of mechanical work and motion for deformable systems. Select all the statements that accurately describe how work, contact displacements, and center-of-mass motion are related.",
+        "ms": "Pertimbangkan penilaian kerja mekanikal dan gerakan bagi sistem boleh ubah bentuk. Pilih semua pernyataan yang menerangkan dengan tepat bagaimana kerja, sesaran sentuhan, dan gerakan pusat jisim saling berkaitan.",
+        "zh": "考虑可变形系统的机械功和运动评估。选择所有准确描述功、接触点位移以及质心运动之间关系的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Recall the fundamental definition of mechanical work: does work depend on the displacement of the system's center of mass or on the displacement of the specific point where the force is applied?",
+          "ms": "Ingat kembali takrifan asas kerja mekanikal: adakah kerja bergantung pada sesaran pusat jisim sistem atau pada sesaran titik tertentu di mana daya dikenakan?",
+          "zh": "回忆机械功的基本定义：功是取决于系统质心的位移，还是取决于施力具体作用点的位移？"
+        },
+        {
+          "en": "Consider what happens to the point of contact when an athlete pushes off a rigid floor or wall: does that boundary point displace while the force is acting?",
+          "ms": "Pertimbangkan perkara yang berlaku kepada titik sentuhan apabila seorang atlet menolak lantai atau dinding tegar: adakah titik sempadan itu tersesar semasa daya bertindak?",
+          "zh": "思考当运动员推离坚固的地面或墙壁时，接触点会发生什么：施力期间该边界点是否发生了位移？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. For deformable systems, mechanical work is defined by the displacement of the force's point of application, not the center-of-mass displacement. When pushing against a rigid boundary, the contact point does not move, meaning the normal force does zero work. The center-of-mass displacement can differ completely from the displacement of the point of application.",
+        "ms": "Tepat. Bagi sistem boleh ubah bentuk, kerja mekanikal ditakrifkan oleh sesaran titik tindakan daya, bukan sesaran pusat jisim. Apabila menolak sempadan tegar, titik sentuhan tidak bergerak, bermakna daya normal melakukan kerja sifar. Sesaran pusat jisim boleh berbeza sama sekali daripada sesaran titik tindakan.",
+        "zh": "正确。对于可变形系统，机械功是由力的作用点的位移决定的，而不是由质心位移决定的。当推离刚性边界时，接触点不移动，这意味着支持力做功为零。质心位移可以与作用点的位移完全不同。"
+      },
+      "answerLogic": {
+        "en": "Statement evaluation: (1) Point-displacement work is true: work is defined as the integral of force with respect to the displacement of the point of application. (2) Wall zero work is true: because the wall-hand contact point has zero displacement, W = 0. (3) Displacement disparity is true: in deformable systems (such as a compressed spring or bending body), the application point displacement and center-of-mass displacement are generally distinct. (4) COM work fallacy is false: equating external work to force times center-of-mass displacement confuses the center-of-mass equation with genuine mechanical work. (5) Normal force work fallacy is false: normal force does zero work when the contact surface does not displace, regardless of the body's center-of-mass velocity.",
+        "ms": "Penilaian pernyataan: (1) Kerja sesaran titik adalah benar: kerja ditakrifkan sebagai kamiran daya terhadap sesaran titik tindakan. (2) Kerja sifar dinding adalah benar: oleh kerana titik sentuhan dinding-tangan mempunyai sesaran sifar, W = 0. (3) Perbezaan sesaran adalah benar: dalam sistem boleh ubah bentuk (seperti spring termampat atau badan yang membongkok), sesaran titik tindakan dan sesaran pusat jisim secara amnya adalah berbeza. (4) Falasi kerja pusat jisim adalah palsu: menyamakan kerja luar dengan daya didarab dengan sesaran pusat jisim mengelirukan persamaan pusat jisim dengan kerja mekanikal sebenar. (5) Falasi kerja daya normal adalah palsu: daya normal melakukan kerja sifar apabila permukaan sentuhan tidak tersesar, tanpa mengira halaju pusat jisim badan.",
+        "zh": "陈述评估：(1) 作用点位移决定功为真：功的定义是力对作用点位移的积分。(2) 墙壁做功为零为真：由于手与墙的接触点位移为零，W = 0。(3) 位移差异为真：在可变形系统（例如压缩弹簧或弯曲的人体）中，作用点位移与质心位移通常是不同的。(4) 质心功谬误为假：将外力功等同于力乘以质心位移混淆了质心运动方程与真实的机械功。(5) 支持力做功谬误为假：当接触面不发生位移时，无论身体的质心速度如何，支持力所做的功均为零。"
+      },
+      "explanation": {
+        "en": "In nondeformable particle mechanics, every part of an object moves together, so the displacement of the point of application equals the displacement of the center of mass. In deformable systems, however, different parts can move by different amounts. Mechanical work is strictly defined by the displacement of the point of application of the force. For example, when pushing against a rigid wall or floor, the contact interface undergoes zero displacement, so the normal force performs zero work (W = 0). Center-of-mass motion is governed by the impulse of external forces (impulse-momentum theorem), whereas changes in total energy are governed by mechanical work plus internal energy conversions.",
+        "ms": "Dalam mekanik zarah tidak boleh ubah bentuk, setiap bahagian objek bergerak bersama-sama, jadi sesaran titik tindakan adalah bersamaan dengan sesaran pusat jisim. Walau bagaimanapun, dalam sistem boleh ubah bentuk, bahagian yang berbeza boleh bergerak dengan jumlah yang berbeza. Kerja mekanikal ditakrifkan secara ketat oleh sesaran titik tindakan bagi sesuatu daya. Sebagai contoh, apabila menolak dinding atau lantai tegar, antara muka sentuhan mengalami sesaran sifar, jadi daya normal melakukan kerja sifar (W = 0). Gerakan pusat jisim ditadbir oleh impuls daya luar (teorem impuls-momentum), manakala perubahan dalam jumlah tenaga ditadbir oleh kerja mekanikal ditambah penukaran tenaga dalaman.",
+        "zh": "在不可变形的质点力学中，物体的每个部分都一起运动，因此力的作用点位移等于质心的位移。然而，在可变形系统中，不同部分的位移可以各不相同。机械功严格定义为力在其作用点位移上的积分。例如，当推离刚性墙壁或地面时，接触界面发生零位移，因此支持力做功为零（W = 0）。质心运动由外力的冲量决定（动量定理），而总能量的变化则由机械功加上内部能量的转化共同决定。"
+      },
+      "misconceptions": [
+        "force-displacement-equals-center-of-mass-displacement",
+        "normal-force-does-work-pushing-off"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the definition of mechanical work: work is the scalar product of force and the displacement of its point of application. If the contact point does not move, the work done by that force is identically zero.",
+          "ms": "Ulang kaji takrifan kerja mekanikal: kerja ialah hasil darab skalar bagi daya dan sesaran titik tindakannya. Jika titik sentuhan tidak bergerak, kerja yang dilakukan oleh daya tersebut adalah tepat sifar.",
+          "zh": "复习机械功的定义：功是力与其作用点位移的标量积。如果接触点不移动，则该力所做的功恒为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Select three correct statements from five options regarding how work, application point displacement, and center-of-mass motion apply to deformable systems.",
+        "ms": "Pilih tiga pernyataan yang betul daripada lima pilihan mengenai bagaimana kerja, sesaran titik tindakan, dan gerakan pusat jisim diaplikasikan kepada sistem boleh ubah bentuk.",
+        "zh": "从五个选项中选择三个关于功、作用点位移和质心运动如何应用于可变形系统的正确陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-point-displacement-work",
+            "label": {
+              "en": "Mechanical work done on a deformable system is determined by the displacement of the force's point of application rather than the displacement of the center of mass.",
+              "ms": "Kerja mekanikal yang dilakukan ke atas sistem boleh ubah bentuk ditentukan oleh sesaran titik tindakan daya dan bukannya sesaran pusat jisim.",
+              "zh": "对可变形系统所做的机械功取决于力的作用点的位移，而不是质心的位移。"
+            }
+          },
+          {
+            "id": "item-wall-zero-work",
+            "label": {
+              "en": "When an athlete pushes off a rigid, immovable wall, the normal force does zero work because its point of contact undergoes no displacement.",
+              "ms": "Apabila seorang atlet menolak dinding tegar yang tidak bergerak, daya normal melakukan kerja sifar kerana titik sentuhannya tidak mengalami sebarang sesaran.",
+              "zh": "当运动员推离坚固不动的墙壁时，支持力所做的功为零，因为其接触点没有发生位移。"
+            }
+          },
+          {
+            "id": "item-displacement-disparity",
+            "label": {
+              "en": "In a deformable system, the displacement of the point where an external force is applied can be entirely different from the displacement of the system's center of mass.",
+              "ms": "Dalam sistem boleh ubah bentuk, sesaran titik di mana daya luar dikenakan boleh berbeza sama sekali daripada sesaran pusat jisim sistem.",
+              "zh": "在可变形系统中，外力作用点的位移可以与系统质心的位移完全不同。"
+            }
+          },
+          {
+            "id": "item-com-work-fallacy",
+            "misconception": "force-displacement-equals-center-of-mass-displacement",
+            "label": {
+              "en": "The total mechanical work done by an external force on a deformable system always equals the magnitude of the force multiplied by the displacement of the system's center of mass.",
+              "ms": "Jumlah kerja mekanikal yang dilakukan oleh daya luar ke atas sistem boleh ubah bentuk sentiasa bersamaan dengan magnitud daya didarab dengan sesaran pusat jisim sistem.",
+              "zh": "外力对可变形系统所做的总机械功始终等于力的大小乘以系统质心的位移。"
+            }
+          },
+          {
+            "id": "item-normal-force-work-fallacy",
+            "misconception": "normal-force-does-work-pushing-off",
+            "label": {
+              "en": "A stationary ground surface does positive mechanical work on a jumping person because the normal force points in the direction of the person's upward velocity.",
+              "ms": "Permukaan tanah yang pegun melakukan kerja mekanikal positif ke atas orang yang melompat kerana daya normal mengarah ke arah halaju ke atas orang tersebut.",
+              "zh": "静止的地面会对跳跃者做正机械功，因为支持力的方向与该人向上的速度方向一致。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-point-displacement-work",
+          "item-wall-zero-work",
+          "item-displacement-disparity"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "force-displacement-equals-center-of-mass-displacement",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-com-work-fallacy",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "normal-force-does-work-pushing-off",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-normal-force-work-fallacy",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "ia-energy-components-matching",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Evaluate the work done on a deformable system using the displacement of the point of application.",
+      "prompt": {
+        "en": "A horizontal force acts on the outer face of a block in a two-block system connected by a spring on a frictionless surface. Match each energy component or work term to the displacement metric that governs it.",
+        "ms": "Satu daya mendatar bertindak ke atas muka luar suatu blok dalam sistem dua blok yang disambung oleh spring di atas permukaan tanpa geseran. Padankan setiap komponen tenaga atau sebutan kerja dengan metrik sesaran yang menentukannya.",
+        "zh": "在一个置于无摩擦水平面上、由弹簧相连的双滑块系统中，一个水平推力作用于外侧滑块的受力面。请将各能量分量或功的项与其所决定的位移指标进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Recall the fundamental definition of mechanical work: work done by an external force depends on the displacement of the actual point of application where the force is applied, which can differ from the movement of the balance point of the whole system.",
+          "ms": "Ingat kembali takrifan asas kerja mekanikal: kerja yang dilakukan oleh daya luar bergantung pada sesaran titik tindakan sebenar tempat daya dikenakan, yang boleh berbeza daripada pergerakan titik keseimbangan keseluruhan sistem.",
+          "zh": "回忆机械功的基本定义：外力所做的功取决于该力实际作用点的位移，这一位移可以不同于整个系统平衡点（质心）的位移。"
+        },
+        {
+          "en": "Newton's second law for a system relates the net external force directly to the acceleration and displacement of the center of mass, fixing the translational kinetic energy change. Any extra work done at the contact point beyond this goes into internal vibrational and elastic energy.",
+          "ms": "Hukum kedua Newton untuk suatu sistem mengaitkan daya luar bersih secara langsung dengan pecutan dan sesaran pusat jisim, lalu menetapkan perubahan tenaga kinetik translasi. Sebarang kerja tambahan yang dilakukan pada titik sentuhan melebihi nilai ini akan diserap menjadi tenaga getaran dan keupayaan elastik dalaman.",
+          "zh": "质点系的牛顿第二定律将合外力直接与质心的加速度及位移联系起来，从而决定了质心平动动能的变化。在接触点处所做的超出此项的任何额外功，都转化为内部振动动能与弹性势能。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. Total work on a deformable system is evaluated using the displacement of the force's point of application. The center-of-mass displacement governs the change in translational kinetic energy, and the difference between these two displacements determines the energy converted into internal vibration and potential energy.",
+        "ms": "Tepat. Jumlah kerja ke atas sistem boleh ubah bentuk dinilai menggunakan sesaran titik tindakan daya tersebut. Sesaran pusat jisim menentukan perubahan dalam tenaga kinetik translasi, dan perbezaan antara kedua-dua sesaran ini menentukan tenaga yang ditukarkan kepada getaran dalaman serta tenaga keupayaan.",
+        "zh": "正确。可变形系统所受的总外功由外力作用点的位移确定。质心位移决定了系统质心平动动能的变化，而这两个位移之间的差值则决定了转化为内部振动与势能的能量。"
+      },
+      "answerLogic": {
+        "en": "Work is strictly defined by the integral of force over the displacement of the point of application. Center-of-mass kinetic energy change is determined by the displacement of the center of mass. Internal energy change corresponds to the force acting through the relative displacement between the point of application and the center of mass.",
+        "ms": "Kerja ditakrifkan secara ketat oleh kamiran daya terhadap sesaran titik tindakan daya. Perubahan tenaga kinetik pusat jisim ditentukan oleh sesaran pusat jisim. Perubahan tenaga dalaman sepadan dengan daya yang bertindak melalui sesaran relatif antara titik tindakan daya dan pusat jisim.",
+        "zh": "功的严格定义是力对作用点位移的积分。质心平动动能的改变由质心的位移决定。内部能量的变化则对应于力在作用点与质心之间的相对位移上所做的功。"
+      },
+      "explanation": {
+        "en": "In a deformable system, individual parts may displace differently. Total external work equals the force multiplied by the displacement of its actual application point. The impulse-momentum theorem links the external force to center-of-mass motion, meaning the force multiplied by center-of-mass displacement yields the translational kinetic energy change. The difference between point-of-application displacement and center-of-mass displacement represents deformation, which alters internal vibrational energy.",
+        "ms": "Dalam sistem boleh ubah bentuk, bahagian individu boleh mengalami sesaran yang berbeza. Jumlah kerja luar bersamaan dengan daya didarabkan dengan sesaran titik tindakan sebenar. Teorem impuls-momentum menghubungkan daya luar dengan gerakan pusat jisim, bermakna daya didarabkan dengan sesaran pusat jisim menghasilkan perubahan tenaga kinetik translasi. Perbezaan antara sesaran titik tindakan dan sesaran pusat jisim mewakili ubah bentuk, yang mengubah tenaga getaran dalaman.",
+        "zh": "在可变形系统中，各个组成部分的位移可以不同。总外功等于力乘以其实际作用点的位移。冲量-动量定理将外力与质心运动联系起来，表明力乘以质心位移得到质心平动动能的改变。而作用点位移与质心位移之差代表了系统的形变，该部分外功直接改变了系统的内部振动能量。"
+      },
+      "misconceptions": [
+        "force-displacement-equals-center-of-mass-displacement",
+        "work-kinetic-energy-always-applies"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "center-of-mass-motion",
+        "prompt": {
+          "en": "Review how the net external force acting on any collection of particles determines the acceleration of their center of mass, regardless of internal forces.",
+          "ms": "Ulang kaji bagaimana daya luar bersih yang bertindak ke atas mana-mana himpunan zarah menentukan pecutan pusat jisim mereka, tanpa mengira daya dalaman.",
+          "zh": "复习作用于任何质点系的合外力如何独立于内力而单独决定其质心的加速度。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Match three energy quantities to three displacement descriptions by pairing each item with its correct governing metric.",
+        "ms": "Padankan tiga kuantiti tenaga dengan tiga perihalan sesaran dengan memadankan setiap item kepada metrik penentu yang betul.",
+        "zh": "通过将每个能量项目与其正确的决定性位移指标配对，将三个能量物理量与三个位移描述进行匹配。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-work-on-system",
+            "label": {
+              "en": "Total mechanical work done on the system by the applied external force",
+              "ms": "Jumlah kerja mekanikal yang dilakukan ke atas sistem oleh daya luar yang dikenakan",
+              "zh": "外力对系统所做的总机械功"
+            }
+          },
+          {
+            "id": "item-trans-ke-change",
+            "label": {
+              "en": "Change in the translational kinetic energy of the system's center of mass",
+              "ms": "Perubahan dalam tenaga kinetik translasi bagi pusat jisim sistem",
+              "zh": "系统质心平动动能的变化量"
+            }
+          },
+          {
+            "id": "item-internal-energy-change",
+            "label": {
+              "en": "Change in internal energy (elastic potential and vibration relative to center of mass)",
+              "ms": "Perubahan dalam tenaga dalaman (keupayaan elastik dan getaran relatif kepada pusat jisim)",
+              "zh": "系统内部能量的变化量（相对质心的弹性势能与振动动能）"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-total-work",
+            "label": {
+              "en": "Governed by the displacement of the point of application of the applied force",
+              "ms": "Ditentukan oleh sesaran titik tindakan bagi daya yang dikenakan",
+              "zh": "由外力实际作用点的位移决定"
+            }
+          },
+          {
+            "id": "target-cm-energy",
+            "label": {
+              "en": "Governed by the displacement of the system's center of mass",
+              "ms": "Ditentukan oleh sesaran pusat jisim sistem",
+              "zh": "由系统质心的位移决定"
+            }
+          },
+          {
+            "id": "target-internal-energy",
+            "label": {
+              "en": "Governed by the difference between application-point displacement and center-of-mass displacement",
+              "ms": "Ditentukan oleh perbezaan antara sesaran titik tindakan dan sesaran pusat jisim",
+              "zh": "由作用点位移与质心位移之差决定"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-work-on-system",
+            "targetId": "target-total-work"
+          },
+          {
+            "itemId": "item-trans-ke-change",
+            "targetId": "target-cm-energy"
+          },
+          {
+            "itemId": "item-internal-energy-change",
+            "targetId": "target-internal-energy"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "force-displacement-equals-center-of-mass-displacement",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-work-on-system",
+            "targetId": "target-cm-energy"
+          }
+        },
+        {
+          "misconception": "work-kinetic-energy-always-applies",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-trans-ke-change",
+            "targetId": "target-total-work"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ia-two-block-dynamics-ordering",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish the displacement of a force's application point from the center-of-mass displacement.",
+      "prompt": {
+        "en": "A horizontal push is applied to the left block of an at-rest two-block spring system on a frictionless floor, compressing the spring before being released. Arrange the steps of the physical analysis into the correct logical order.",
+        "ms": "Satu tolakan mendatar dikenakan pada blok kiri bagi sistem dua blok berspring yang pegun di atas lantai tanpa geseran, memampatkan spring sebelum daya dilepaskan. Susun langkah-langkah analisis fizikal ini mengikut urutan logik yang betul.",
+        "zh": "在无摩擦地面上，向静止的双滑块弹簧系统的左侧滑块施加水平推力，压缩弹簧后撤去外力。请将以下物理分析步骤按正确的逻辑顺序排列。"
+      },
+      "hints": [
+        {
+          "en": "Begin with the initial boundary interaction: how does the external force first introduce momentum into the system through external impulse alone?",
+          "ms": "Mulakan dengan interaksi sempadan awal: bagaimanakah daya luar pertama kali memasukkan momentum ke dalam sistem melalui impuls luar semata-mata?",
+          "zh": "从初始边界相互作用开始：外力首先如何仅通过外力冲量向系统输入动量？"
+        },
+        {
+          "en": "Consider geometry before final energy accounting: the lagging motion of the second block ensures the center of mass moves less than the contact point, which then dictates how the external work is divided.",
+          "ms": "Pertimbangkan geometri sebelum perakaunan tenaga akhir: pergerakan tertinggal blok kedua memastikan pusat jisim bergerak kurang daripada titik sentuhan, yang kemudiannya menentukan bagaimana kerja luar dibahagikan.",
+          "zh": "在进行最终能量核算前考虑几何位移关系：第二个滑块的滞后运动确保质心位移小于接触点位移，这进而决定了外功如何被分配。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. External impulse first sets the center-of-mass momentum change without influence from internal forces. Because the spring compresses during this push, the center of mass travels a smaller distance than the contact point. Finally, the work done through this displacement disparity is stored as internal vibrational energy.",
+        "ms": "Tepat. Impuls luar terlebih dahulu menetapkan perubahan momentum pusat jisim tanpa pengaruh daripada daya dalaman. Oleh kerana spring termampat semasa tolakan ini, pusat jisim bergerak pada jarak yang lebih kecil daripada titik sentuhan. Akhirnya, kerja yang dilakukan melalui perbezaan sesaran ini disimpan sebagai tenaga getaran dalaman.",
+        "zh": "正确。外力冲量首先决定了质心动量的变化，完全不受内力影响。由于推压过程中弹簧被压缩，质心移动的距离小于力的接触点位移。最后，由于这一位移差所做的外功被储存为系统内部的振动能量。"
+      },
+      "answerLogic": {
+        "en": "The correct logical sequence proceeds from external interaction to momentum change, then to kinematic displacement comparison, and finally to internal energy partitioning: boundary force application -> impulse governing center-of-mass momentum -> center-of-mass displacement lagging contact-point displacement -> excess work converting to vibrational energy.",
+        "ms": "Urutan logik yang betul bermula daripada interaksi luar kepada perubahan momentum, kemudian kepada perbandingan sesaran kinematik, dan akhirnya kepada pembahagian tenaga dalaman: tindakan daya sempadan -> impuls menentukan momentum pusat jisim -> sesaran pusat jisim tertinggal di belakang sesaran titik sentuhan -> lebihan kerja bertukar menjadi tenaga getaran.",
+        "zh": "正确的逻辑顺序是从外部相互作用到动量变化，再到运动学位移比较，最后到内部能量分配：边界外力作用 -> 冲量决定质心动量 -> 质心位移滞后于接触点位移 -> 超出质心动能的外功转化为振动能量。"
+      },
+      "explanation": {
+        "en": "When a force acts on the boundary block, the impulse of this external force exclusively changes the total momentum of the system; internal spring forces cancel out. While the spring is compressing, the far block displaces less than the pushed block, meaning the center-of-mass displacement is strictly less than the displacement of the point of force application. The total work performed on the system is the product of the force and its contact displacement. Because this contact displacement exceeds the center-of-mass displacement, the work done exceeds the kinetic energy of the center of mass, and the remaining energy appears as internal vibration.",
+        "ms": "Apabila daya bertindak pada blok sempadan, impuls daya luar ini secara eksklusif mengubah jumlah momentum sistem; daya spring dalaman saling membatalkan. Semasa spring termampat, blok yang jauh mengalami sesaran yang kurang daripada blok yang ditolak, bermakna sesaran pusat jisim adalah lebih kecil daripada sesaran titik tindakan daya. Jumlah kerja yang dilakukan ke atas sistem ialah hasil darab daya dan sesaran sentuhannya. Oleh kerana sesaran sentuhan ini melebihi sesaran pusat jisim, kerja yang dilakukan melebihi tenaga kinetik pusat jisim, dan baki tenaga muncul sebagai getaran dalaman.",
+        "zh": "当外力作用于边界滑块时，该外力的冲量唯一定义了系统总动量的改变；弹簧内力相互抵消。在弹簧压缩过程中，远端滑块的位移小于受推滑块的位移，这意味着质心位移严格小于外力作用点的位移。系统受到的总外功是力与其接触点位移的乘积。因为接触点位移大于质心位移，所做的总外功大于质心动能，剩余的能量便体现为系统内部的振动能。"
+      },
+      "misconceptions": [
+        "internal-forces-change-total-momentum",
+        "force-displacement-equals-center-of-mass-displacement"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "center-of-mass-motion",
+        "prompt": {
+          "en": "Review the principle that internal forces within a system occur in action-reaction pairs and cannot change the system's total momentum or center-of-mass velocity.",
+          "ms": "Ulang kaji prinsip bahawa daya dalaman dalam suatu sistem berlaku dalam pasangan tindakan-tindak balas dan tidak boleh mengubah jumlah momentum atau halaju pusat jisim sistem.",
+          "zh": "复习系统内力总是成对出现且不能改变系统总动量或质心速度的物理原理。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Reorder the four analysis statements into the correct chronological and physical reasoning order.",
+        "ms": "Susun semula empat pernyataan analisis ke dalam urutan kronologi dan penaakulan fizik yang betul.",
+        "zh": "将这四个物理分析陈述按正确的因果与物理推理顺序重新排序。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "step-boundary-displacement",
+            "label": {
+              "en": "A constant external force is applied at the outer block face, displacing its contact point and starting spring compression",
+              "ms": "Daya luar malar dikenakan pada muka blok luar, menyesarkan titik sentuhannya dan memulakan mampatan spring",
+              "zh": "恒定外力作用于外侧滑块表面，使其接触点发生位移并开始压缩弹簧"
+            }
+          },
+          {
+            "id": "step-external-impulse",
+            "label": {
+              "en": "The external impulse determines the total momentum gain of the system, independent of internal spring forces",
+              "ms": "Impuls luar menentukan penambahan jumlah momentum sistem, tanpa bergantung pada daya spring dalaman",
+              "zh": "外力冲量决定了系统总动量的增量，完全独立于弹簧内部弹力"
+            }
+          },
+          {
+            "id": "step-cm-displacement-lag",
+            "label": {
+              "en": "Because the far block has moved a shorter distance during compression, the center of mass moves less than the contact point",
+              "ms": "Disebabkan blok yang jauh bergerak pada jarak yang lebih pendek semasa pemampatan, pusat jisim bergerak kurang daripada titik sentuhan",
+              "zh": "由于远端滑块在压缩期间移动距离较小，质心移动的距离小于受力接触点的位移"
+            }
+          },
+          {
+            "id": "step-vibrational-energy",
+            "label": {
+              "en": "The work performed through the contact-point displacement exceeding the center-of-mass displacement is stored as internal vibrational energy",
+              "ms": "Kerja yang dilakukan melalui sesaran titik sentuhan yang melebihi sesaran pusat jisim disimpan sebagai tenaga getaran dalaman",
+              "zh": "接触点位移超出质心位移所对应的外功被储存为系统内部振动能量"
+            }
+          }
+        ],
+        "correctOrder": [
+          "step-boundary-displacement",
+          "step-external-impulse",
+          "step-cm-displacement-lag",
+          "step-vibrational-energy"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "internal-forces-change-total-momentum",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "step-cm-displacement-lag",
+            "secondItemId": "step-external-impulse"
+          }
+        },
+        {
+          "misconception": "force-displacement-equals-center-of-mass-displacement",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "step-vibrational-energy",
+            "secondItemId": "step-cm-displacement-lag"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ia-flawed-reasoning-classification",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Explain why the particle work-kinetic energy theorem does not generally apply to deformable systems.",
+      "prompt": {
+        "en": "A skater stands on a skateboard and pushes off a rigid vertical wall, rolling backward with increasing speed. Classify each of the following statements about this event as physically valid or flawed reasoning.",
+        "ms": "Seorang pemain papan selaju berdiri di atas papan selaju dan menolak dinding tegak yang tegar, lalu meluncur ke belakang dengan kelajuan yang semakin meningkat. Kelaskan setiap pernyataan berikut tentang peristiwa ini sebagai analisis yang sah dari segi fizik atau penaakulan yang mengandungi kecacatan.",
+        "zh": "一名滑板者站在滑板上推开一堵刚性垂直墙壁，向后加速滑开。请将下列关于该过程的各个陈述分类为“符合物理规律的有效分析”或“存在逻辑缺陷的有误推论”。"
+      },
+      "hints": [
+        {
+          "en": "Focus on the point of contact between the hands and the wall: does the normal force exerted by the rigid wall move through any displacement while it acts?",
+          "ms": "Fokus pada titik sentuhan antara tangan dan dinding: adakah daya normal yang dikenakan oleh dinding tegar bergerak melalui sebarang sesaran semasa ia bertindak?",
+          "zh": "关注双手与墙壁之间的接触点：刚性墙壁施加的支持力在其作用期间是否经历了任何位移？"
+        },
+        {
+          "en": "Remember that momentum transfer requires an external impulse, whereas mechanical work requires force through contact displacement. A system can be nonisolated in momentum while isolated in mechanical energy.",
+          "ms": "Ingat bahawa pemindahan momentum memerlukan impuls luar, manakala kerja mekanikal memerlukan daya melalui sesaran titik sentuhan. Suatu sistem boleh jadi tak terpencil dari segi momentum tetapi terpencil dari segi tenaga mekanikal.",
+          "zh": "记住动量传递需要外力冲量，而机械功需要力在接触点位移上做功。一个系统可以在动量上是非孤立的，同时在机械能量上是孤立的。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. The force from the wall acts at a stationary interface and does zero work. The skater-board system is isolated in terms of energy (chemical potential energy converts into kinetic energy) but nonisolated in terms of momentum (the wall provides an external impulse). The particle work-kinetic energy theorem fails because external work is zero while kinetic energy changes.",
+        "ms": "Tepat. Daya daripada dinding bertindak pada antara muka pegun dan melakukan kerja sifar. Sistem pemain-papan selaju adalah terpencil dari segi tenaga (tenaga keupayaan kimia bertukar kepada tenaga kinetik) tetapi tak terpencil dari segi momentum (dinding membekalkan impuls luar). Teorem kerja-tenaga kinetik zarah gagal kerana kerja luar adalah sifar sedangkan tenaga kinetik berubah.",
+        "zh": "正确。墙壁施加的力作用于静止界面，做功为零。滑板者与滑板组成的系统在能量上是孤立的（体内化学势能转化为动能），但在动量上是非孤立的（墙壁提供了外力冲量）。由于外功为零而动能发生改变，质点动能定理在此并不适用。"
+      },
+      "answerLogic": {
+        "en": "Valid statements recognize zero work done at the stationary wall contact and internal chemical energy conversion under external momentum impulse. Flawed statements incorrectly claim the wall does positive work, misapply W = Delta K to a deformable body, or confuse energy isolation with momentum isolation.",
+        "ms": "Pernyataan yang sah mengiktiraf bahawa kerja sifar dilakukan pada sentuhan dinding yang pegun dan penukaran tenaga kimia dalaman berlaku di bawah impuls momentum luar. Pernyataan cacat mendakwa secara salah bahawa dinding melakukan kerja positif, tersalah menggunakan W = Delta K pada jasad boleh ubah bentuk, atau mengelirukan keterpencilan tenaga dengan keterpencilan momentum.",
+        "zh": "有效分析能够认识到静止接触面处外力做功为零、动能增加源自内部化学能转化并在外力冲量下获得动量。有误陈述则错误地认为墙壁做了正功、将质点动能定理 W = Delta K 盲目套用于可变形系统，或将能量孤立与动量孤立混为一谈。"
+      },
+      "explanation": {
+        "en": "During the push-off, the skater's body deforms as the arms extend. The normal force exerted by the wall acts at the interface between the wall and the hands, which does not displace. Thus, W_ext = 0. However, kinetic energy increases, so W_ext does not equal Delta K; the particle theorem is invalid. Energy conservation gives Delta K + Delta U = 0, where Delta U is the decrease in internal chemical potential energy from muscles. The system is isolated in terms of energy but nonisolated in terms of momentum, because the external impulse from the wall provides the net momentum change.",
+        "ms": "Semasa menolak, badan pemain papan selaju berubah bentuk apabila lengan diluruskan. Daya normal yang dikenakan oleh dinding bertindak pada antara muka antara dinding dan tangan, yang tidak mengalami sesaran. Maka, W_luar = 0. Walau bagaimanapun, tenaga kinetik bertambah, jadi W_luar tidak sama dengan Delta K; teorem zarah tidak sah. Keabadian tenaga memberikan Delta K + Delta U = 0, di mana Delta U ialah pengurangan tenaga keupayaan kimia dalaman daripada otot. Sistem ini terpencil dari segi tenaga tetapi tak terpencil dari segi momentum, kerana impuls luar daripada dinding memberikan perubahan momentum bersih.",
+        "zh": "在推离过程中，滑板者的手臂伸展，身体发生形变。墙壁施加的支持力作用在双手与墙壁的界面上，该接触点没有位移，因此外力做功 W_ext = 0。然而系统的动能确实增加了，导致 W_ext 不等于 Delta K，因此质点动能定理失效。由能量守恒定律可知 Delta K + Delta U = 0，其中 Delta U 是肌肉内部化学势能的减少量。该系统在能量上是孤立的，但在动量上是非孤立的，因为来自墙壁的外力冲量提供了系统总动量的改变量。"
+      },
+      "misconceptions": [
+        "work-kinetic-energy-always-applies",
+        "normal-force-does-work-pushing-off",
+        "energy-isolation-implies-momentum-isolation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "work-definition",
+        "prompt": {
+          "en": "Review the definition of mechanical work, which requires a force to act through an actual spatial displacement of its point of contact.",
+          "ms": "Ulang kaji takrifan kerja mekanikal, yang memerlukan sesuatu daya bertindak melalui sesaran ruang sebenar bagi titik sentuhannya.",
+          "zh": "复习机械功的定义：力必须在其接触点的实际空间位移上发生作用才做功。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classify five statements about a skater pushing off a wall into two categories: Physically Valid Analysis or Flawed Reasoning.",
+        "ms": "Kelaskan lima pernyataan tentang pemain papan selaju yang menolak dinding kepada dua kategori: Analisis Sah dari Segi Fizik atau Penaakulan yang Mengandungi Kecacatan.",
+        "zh": "将关于滑板者推墙过程的五个陈述分类到两个类别中：“符合物理规律的有效分析”或“存在逻辑缺陷的有误推论”。"
+      },
+      "provenance": {
+        "sourceLocation": "9.8 Deformable Systems; Complete controlled PDF for section 9.8",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-valid-contact-work",
+            "label": {
+              "en": "The contact point between the hands and the wall does not move, so the normal force from the wall performs zero mechanical work on the skater",
+              "ms": "Titik sentuhan antara tangan dan dinding tidak bergerak, maka daya normal daripada dinding melakukan kerja mekanikal sifar ke atas pemain",
+              "zh": "双手与墙壁之间的接触点没有移动，因此墙壁施加的支持力对滑板者所做的机械功为零"
+            }
+          },
+          {
+            "id": "item-valid-internal-conversion",
+            "label": {
+              "en": "The increase in kinetic energy comes from the decrease of internal chemical potential energy in the skater's body, while wall impulse delivers momentum",
+              "ms": "Peningkatan tenaga kinetik berpunca daripada pengurangan tenaga keupayaan kimia dalaman dalam badan pemain, manakala impuls dinding membekalkan momentum",
+              "zh": "动能的增加源于滑板者体内化学势能的减少，而墙壁施加的外力冲量提供了系统动量"
+            }
+          },
+          {
+            "id": "item-flawed-work-ke",
+            "label": {
+              "en": "Because the skater's kinetic energy increases, the net external work done on the skater must equal that kinetic energy gain (W = Delta K)",
+              "ms": "Disebabkan tenaga kinetik pemain bertambah, jumlah kerja luar yang dilakukan ke atas pemain mestilah bersamaan dengan pertambahan tenaga kinetik itu (W = Delta K)",
+              "zh": "因为滑板者的动能增加了，所以外力对滑板者所做的合外功必然等于该动能增量（W = Delta K）"
+            }
+          },
+          {
+            "id": "item-flawed-wall-work",
+            "label": {
+              "en": "The rigid wall does positive work on the skater's hands, transferring mechanical energy from the wall into the skater",
+              "ms": "Dinding tegar melakukan kerja positif ke atas tangan pemain, memindahkan tenaga mekanikal daripada dinding ke dalam badan pemain",
+              "zh": "刚性墙壁对滑板者的双手做了正功，将机械能从墙壁传递给了滑板者"
+            }
+          },
+          {
+            "id": "item-flawed-isolation",
+            "label": {
+              "en": "Since no external work enters the skater-board system, the system is isolated in energy and therefore cannot experience any change in momentum",
+              "ms": "Memandangkan tiada kerja luar memasuki sistem pemain-papan, sistem ini terpencil dari segi tenaga dan oleh itu tidak boleh mengalami sebarang perubahan momentum",
+              "zh": "由于没有外功输入滑板者-滑板系统，该系统在能量上是孤立的，因此其总动量绝不可能发生任何改变"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-valid",
+            "label": {
+              "en": "Physically Valid Analysis",
+              "ms": "Analisis Sah dari Segi Fizik",
+              "zh": "符合物理规律的有效分析"
+            }
+          },
+          {
+            "id": "target-flawed",
+            "label": {
+              "en": "Flawed Reasoning",
+              "ms": "Penaakulan yang Mengandungi Kecacatan",
+              "zh": "存在逻辑缺陷的有误推论"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-valid-contact-work",
+            "targetId": "target-valid"
+          },
+          {
+            "itemId": "item-valid-internal-conversion",
+            "targetId": "target-valid"
+          },
+          {
+            "itemId": "item-flawed-work-ke",
+            "targetId": "target-flawed"
+          },
+          {
+            "itemId": "item-flawed-wall-work",
+            "targetId": "target-flawed"
+          },
+          {
+            "itemId": "item-flawed-isolation",
+            "targetId": "target-flawed"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "work-kinetic-energy-always-applies",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-flawed-work-ke",
+            "targetId": "target-valid"
+          }
+        },
+        {
+          "misconception": "normal-force-does-work-pushing-off",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-flawed-wall-work",
+            "targetId": "target-valid"
+          }
+        },
+        {
+          "misconception": "energy-isolation-implies-momentum-isolation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-flawed-isolation",
+            "targetId": "target-valid"
+          }
+        }
+      ]
+    }
+  ]
+}
