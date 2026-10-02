@@ -1,0 +1,2303 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-9-section-9-4",
+  "chapter": "Chapter 9",
+  "subchapter": "9.4 Collisions in One Dimension",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Distinguish between elastic, inelastic, and perfectly inelastic collisions based on kinetic energy conservation.",
+    "Apply conservation of linear momentum to solve for final velocities in perfectly inelastic one-dimensional collisions.",
+    "Apply relative velocity relationships to analyze one-dimensional elastic collisions between two isolated bodies.",
+    "Predict post-collision motion in elastic collisions for equal masses, stationary targets, and extreme mass ratios.",
+    "Analyze multi-stage systems like ballistic pendulums by separating collision and mechanical energy swing phases."
+  ],
+  "prerequisites": [
+    {
+      "id": "linear-momentum-definition",
+      "description": {
+        "en": "Definition of linear momentum as the product of mass and velocity.",
+        "ms": "Definisi momentum linear sebagai hasil darab jisim dan halaju.",
+        "zh": "动量的定义，即质量与速度的乘积。"
+      },
+      "recovery": {
+        "en": "Review p = mv as a vector quantity directed along the velocity vector.",
+        "ms": "Ulang kaji p = mv sebagai kuantiti vektor yang searah dengan vektor halaju.",
+        "zh": "复习 p = mv 作为沿速度矢量方向的矢量概念。"
+      }
+    },
+    {
+      "id": "conservation-of-linear-momentum",
+      "description": {
+        "en": "Principle of conservation of linear momentum for an isolated system.",
+        "ms": "Prinsip keabadian momentum linear bagi sistem terpencil.",
+        "zh": "孤立系统的动量守恒定律。"
+      },
+      "recovery": {
+        "en": "Recall that total momentum remains constant when net external force is zero.",
+        "ms": "Ingat kembali bahawa jumlah momentum kekal malar apabila daya padu luar adalah sifar.",
+        "zh": "回顾当系统所受合外力为零时，总动量保持守恒。"
+      }
+    },
+    {
+      "id": "translational-kinetic-energy",
+      "description": {
+        "en": "Calculation and conceptual understanding of translational kinetic energy.",
+        "ms": "Pengiraan dan pemahaman konsep tenaga kinetik translasi.",
+        "zh": "平动动能的计算及其物理意义。"
+      },
+      "recovery": {
+        "en": "Review K = (1/2)mv^2 as a scalar energy associated with motion.",
+        "ms": "Ulang kaji K = (1/2)mv^2 sebagai tenaga skalar yang berkait dengan gerakan.",
+        "zh": "复习 K = (1/2)mv^2 作为与运动相关的标量能量度量。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "momentum-lost-in-inelastic",
+      "description": {
+        "en": "Believing that total linear momentum is not conserved in inelastic or perfectly inelastic collisions.",
+        "ms": "Mempercayai bahawa jumlah momentum linear tidak abadi dalam perlanggaran tak kenyal atau tak kenyal sempurna.",
+        "zh": "误认为在非弹性碰撞或完全非弹性碰撞中总动量不守恒。"
+      }
+    },
+    {
+      "id": "kinetic-energy-always-conserved",
+      "description": {
+        "en": "Assuming kinetic energy is conserved in every collision as long as the colliding objects bounce apart.",
+        "ms": "Menganggap tenaga kinetik abadi dalam setiap perlanggaran selagi objek yang berlanggar melantun berasingan.",
+        "zh": "误认为只要物体碰撞后弹开分开运动，动能就总是守恒的。"
+      }
+    },
+    {
+      "id": "velocity-sign-neglect",
+      "description": {
+        "en": "Treating velocities as scalar magnitudes without assigning algebraic signs for direction in 1D momentum conservation.",
+        "ms": "Memperlakukan halaju sebagai magnitud skalar tanpa memberikan tanda algebra bagi arah dalam keabadian momentum 1D.",
+        "zh": "在一维动量守恒中将速度视作标量大小，忽略代数正负符号来表示方向。"
+      }
+    },
+    {
+      "id": "relative-velocity-formula-misapplication",
+      "description": {
+        "en": "Applying the relative velocity relation v1i - v2i = -(v1f - v2f) to inelastic collisions where it is invalid.",
+        "ms": "Menggunakan hubungan halaju relatif v1i - v2i = -(v1f - v2f) pada perlanggaran tak kenyal sedangkan hubungan itu tidak sah.",
+        "zh": "将仅适用于弹性碰撞的相对速度关系 v1i - v2i = -(v1f - v2f) 错误套用于非弹性碰撞。"
+      }
+    },
+    {
+      "id": "ballistic-pendulum-energy-conservation",
+      "description": {
+        "en": "Assuming mechanical energy is conserved during the inelastic impact phase of a ballistic pendulum.",
+        "ms": "Menganggap tenaga mekanik abadi semasa fasa perlanggaran tak kenyal dalam ayunan bandul balistik.",
+        "zh": "误认为弹道摆在子弹射入木块发生非弹性碰撞的瞬间机械能守恒。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-9/section-9-4/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-9-section-9-4.json",
+  "activities": [
+    {
+      "id": "act-mcq-01-easy",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between elastic, inelastic, and perfectly inelastic collisions based on kinetic energy conservation.",
+      "prompt": {
+        "en": "Two gliders collide along a straight, frictionless track in an isolated system. They bounce apart after impact, but acoustic sensors record sound and thermal imaging shows slight heating at the contact bumpers. How should this collision be classified regarding linear momentum and kinetic energy?",
+        "ms": "Dua peluncur berlanggar di sepanjang landasan lurus tanpa geseran dalam suatu sistem terpencil. Kedua-duanya melantun berasingan selepas hentaman, tetapi penderia akustik mengesan bunyi dan pengimejan terma menunjukkan sedikit pemanasan pada bampar sentuhan. Bagaimanakah perlanggaran ini harus dikelaskan berkaitan momentum linear dan tenaga kinetik?",
+        "zh": "在孤立系统中，两个滑块在平直无摩擦轨道上相撞。碰撞后两者分开弹开，但声学传感器记录到声音，热成像显示接触缓冲处有轻微发热。关于该系统的动量与动能，应如何对本次碰撞进行归类？"
+      },
+      "hints": [
+        {
+          "en": "Consider the isolation of the system: does any net external horizontal force act on the two gliders during the collision?",
+          "ms": "Pertimbangkan keterpencilan sistem: adakah sebarang daya padu luar mendatar bertindak ke atas kedua-dua peluncur semasa perlanggaran?",
+          "zh": "考虑系统的孤立性：在碰撞过程中是否有任何水平合外力作用于这两个滑块？"
+        },
+        {
+          "en": "Notice that some mechanical energy is transformed into sound and thermal energy. An elastic collision requires total kinetic energy to remain strictly constant.",
+          "ms": "Perhatikan bahawa sebahagian tenaga mekanik telah diubah menjadi bunyi dan tenaga terma. Perlanggaran kenyal memerlukan jumlah tenaga kinetik kekal malar secara mutlak.",
+          "zh": "注意部分机械能转化为了声能和热能。弹性碰撞要求总动能严格保持不变。"
+        }
+      ],
+      "feedback": {
+        "en": "Because the system is isolated, total linear momentum is strictly conserved. Since some kinetic energy was transformed into sound and thermal energy, the collision is inelastic even though the gliders bounced apart.",
+        "ms": "Oleh kerana sistem ini terpencil, jumlah momentum linear adalah abadi sepenuhnya. Oleh sebab sebahagian tenaga kinetik telah diubah menjadi bunyi dan tenaga terma, perlanggaran ini adalah tak kenyal walaupun peluncur melantun berasingan.",
+        "zh": "因为系统是孤立的，所以总动量严格守恒。由于部分动能转化为了声能和热能，即使滑块在碰撞后弹开，该碰撞也是非弹性碰撞。"
+      },
+      "answerLogic": {
+        "en": "Total linear momentum is conserved in every collision within an isolated system. When kinetic energy is transformed into other energy forms such as sound or internal thermal energy without the objects sticking together, the collision is categorized as inelastic.",
+        "ms": "Jumlah momentum linear sentiasa abadi dalam setiap perlanggaran dalam sistem terpencil. Apabila tenaga kinetik berubah menjadi bentuk tenaga lain seperti bunyi atau tenaga haba dalaman tanpa objek melekat bersama, perlanggaran itu dikategorikan sebagai tak kenyal.",
+        "zh": "在孤立系统中，任何碰撞的总动量都守恒。当动能转化为其他形式的能量（如声音或内能）且两物体并未粘在一起时，该碰撞被归类为非弹性碰撞。"
+      },
+      "explanation": {
+        "en": "By definition, an elastic collision conserves both momentum and kinetic energy. In an inelastic collision, momentum is conserved, but some kinetic energy is converted to internal energy or sound. A perfectly inelastic collision specifically refers to cases where the colliding objects stick together and move as one body.",
+        "ms": "Mengikut definisi, perlanggaran kenyal mengabadikan kedua-dua momentum dan tenaga kinetik. Dalam perlanggaran tak kenyal, momentum abadi, tetapi sebahagian tenaga kinetik bertukar kepada tenaga dalaman atau bunyi. Perlanggaran tak kenyal sempurna merujuk secara khusus kepada keadaan di mana objek yang berlanggar melekat bersama dan bergerak sebagai satu jasad.",
+        "zh": "根据定义，弹性碰撞同时守恒动量和动能。在非弹性碰撞中，动量守恒，但部分动能转化为内能或声能。完全非弹性碰撞特指碰撞物体粘合在一起作为一个整体运动的情况。"
+      },
+      "misconceptions": [
+        "momentum-lost-in-inelastic",
+        "kinetic-energy-always-conserved"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-linear-momentum",
+        "prompt": {
+          "en": "Recall that internal interaction forces between colliding objects cancel out in action-reaction pairs, ensuring total linear momentum of an isolated system never changes regardless of energy dissipation.",
+          "ms": "Ingat kembali bahawa daya interaksi dalaman antara objek yang berlanggar saling membatalkan dalam pasangan tindakan-tindak balas, memastikan jumlah momentum linear sistem terpencil tidak pernah berubah tanpa mengira kehilangan tenaga.",
+          "zh": "回顾碰撞物体之间的内部相互作用力成对抵消，因此无论是否有能量耗散，孤立系统的总动量都绝不会改变。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options evaluating whether momentum and kinetic energy are conserved when colliding gliders emit sound and heat.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang menilai sama ada momentum dan tenaga kinetik abadi apabila peluncur yang berlanggar menghasilkan bunyi dan haba.",
+        "zh": "包含四个选项的单选题，用于评估碰撞滑块产生声音和热量时动量与动能是否守恒。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-1a",
+        "options": [
+          {
+            "id": "opt-1a",
+            "label": {
+              "en": "It is an inelastic collision: total linear momentum is conserved, but total kinetic energy decreases.",
+              "ms": "Ia ialah perlanggaran tak kenyal: jumlah momentum linear abadi, tetapi jumlah tenaga kinetik berkurang.",
+              "zh": "这是非弹性碰撞：总动量守恒，但总动能减少。"
+            }
+          },
+          {
+            "id": "opt-1b",
+            "label": {
+              "en": "It is an elastic collision: both total linear momentum and total kinetic energy are conserved because the gliders rebound rather than stick together.",
+              "ms": "Ia ialah perlanggaran kenyal: kedua-dua jumlah momentum linear dan jumlah tenaga kinetik abadi kerana peluncur melantun dan bukannya melekat bersama.",
+              "zh": "这是弹性碰撞：总动量和总动能都守恒，因为滑块相互弹开而不是粘在一起。"
+            },
+            "misconception": "kinetic-energy-always-conserved"
+          },
+          {
+            "id": "opt-1c",
+            "label": {
+              "en": "It is an inelastic collision: total kinetic energy decreases, and as a result, total linear momentum is also not conserved.",
+              "ms": "Ia ialah perlanggaran tak kenyal: jumlah tenaga kinetik berkurang, dan akibatnya, jumlah momentum linear juga tidak abadi.",
+              "zh": "这是非弹性碰撞：总动能减少，因此总动量也不守恒。"
+            },
+            "misconception": "momentum-lost-in-inelastic"
+          },
+          {
+            "id": "opt-1d",
+            "label": {
+              "en": "It is a perfectly inelastic collision: total linear momentum is conserved only because the gliders separate.",
+              "ms": "Ia ialah perlanggaran tak kenyal sempurna: jumlah momentum linear abadi hanya kerana peluncur berpisah.",
+              "zh": "这是完全非弹性碰撞：仅因为滑块分开了，总动量才守恒。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-02-easy",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply conservation of linear momentum to solve for final velocities in perfectly inelastic one-dimensional collisions.",
+      "prompt": {
+        "en": "A toy railway engine rolls smoothly on a straight horizontal frictionless track and collides with a stationary caboose of identical mass. A latch mechanism engages upon contact, causing the two cars to couple and travel together. What happens to the velocity of the combined train cars immediately after coupling?",
+        "ms": "Sebuah lokomotif kereta api mainan bergerak lancar di atas landasan mendatar lurus tanpa geseran dan berlanggar dengan gerabak belakang pegun yang mempunyai jisim serupa. Mekanisme selak bertaut semasa sentuhan, menyebabkan kedua-dua gerabak bercantum dan bergerak bersama-sama. Apakah yang berlaku kepada halaju gerabak kereta api gabungan serta-merta selepas bercantum?",
+        "zh": "一列玩具机车在平直水平无摩擦轨道上平稳滑行，并与一节质量完全相同的静止车厢相撞。碰撞时弹簧锁扣咬合，使两节车厢连为一体并一同运动。联挂后组合车厢的速度立即呈现何种状态？"
+      },
+      "hints": [
+        {
+          "en": "Identify what is conserved during this collision: since no external horizontal forces act along the track, total linear momentum must remain constant before and after coupling.",
+          "ms": "Kenal pasti apa yang abadi semasa perlanggaran ini: oleh sebab tiada daya padu luar mendatar bertindak di sepanjang landasan, jumlah momentum linear mesti kekal malar sebelum dan selepas bercantum.",
+          "zh": "确定碰撞过程中哪个量守恒：由于沿轨道方向没有水平外力作用，结合前后的总动量必须保持恒定。"
+        },
+        {
+          "en": "The initial momentum was carried by a single car; after coupling, that exact same total momentum is distributed across twice the mass. How does increasing mass affect velocity when momentum is fixed?",
+          "ms": "Momentum awal dibawa oleh sebuah gerabak tunggal; selepas bercantum, jumlah momentum yang sama diagihkan ke atas dua kali ganda jisim tersebut. Bagaimanakah pertambahan jisim mempengaruhi halaju apabila momentum adalah tetap?",
+          "zh": "初始动量仅由一节车厢承载；结合后，完全相同的总动量分配到了两倍的质量上。当动量固定时，质量翻倍会对速度产生什么影响？"
+        }
+      ],
+      "feedback": {
+        "en": "In a perfectly inelastic collision, linear momentum is conserved. Because the combined mass is twice the mass of the initially moving car, the forward speed becomes lower than the initial speed while maintaining the same direction of travel.",
+        "ms": "Dalam perlanggaran tak kenyal sempurna, momentum linear adalah abadi. Oleh kerana jisim gabungan adalah dua kali ganda jisim gerabak yang pada asalnya bergerak, kelajuan ke hadapan menjadi lebih rendah daripada kelajuan awal sambil mengekalkan arah gerakan yang sama.",
+        "zh": "在完全非弹性碰撞中，动量守恒。由于合并后的质量是原本运动车厢质量的两倍，向前的速度会低于初始速度，同时保持相同的运动方向。"
+      },
+      "answerLogic": {
+        "en": "By conservation of linear momentum, the initial forward momentum m*v equals the final total momentum (m + m)*vf = (2m)*vf. Because mass doubles, the final common velocity must be in the same direction at reduced speed.",
+        "ms": "Melalui keabadian momentum linear, momentum awal ke hadapan m*v bersamaan dengan jumlah momentum akhir (m + m)*vf = (2m)*vf. Oleh kerana jisim berganda dua, halaju sepunya akhir mestilah berada dalam arah yang sama pada kelajuan yang berkurang.",
+        "zh": "根据动量守恒定律，初始向前动量 m*v 等于最终总动量 (m + m)*vf = (2m)*vf。由于质量翻倍，最终共同速度必须在同一方向上且速率减小。"
+      },
+      "explanation": {
+        "en": "A collision where objects stick together is categorized as perfectly inelastic. Even though mechanical kinetic energy is transformed during latching, linear momentum is strictly conserved because the system is isolated. Thus, the combined train cars must continue forward in the original direction at a lower velocity.",
+        "ms": "Perlanggaran di mana objek melekat bersama dikategorikan sebagai tak kenyal sempurna. Walaupun tenaga kinetik mekanikal berubah semasa penyelakan, momentum linear adalah abadi sepenuhnya kerana sistem ini terpencil. Oleh itu, gerabak kereta api yang bergabung mesti terus mara ke hadapan dalam arah asal pada halaju yang lebih rendah.",
+        "zh": "物体粘合在一起的碰撞属于完全非弹性碰撞。尽管锁紧过程中部分机械能发生了转化，但由于系统是孤立的，动量严格守恒。因此，组合车厢必须沿原方向以较低的速度继续向前滑行。"
+      },
+      "misconceptions": [
+        "momentum-lost-in-inelastic"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Review the definition of linear momentum as p = mv. For a fixed total momentum, increasing the moving mass requires the velocity to decrease proportionally.",
+          "ms": "Ulang kaji definisi momentum linear sebagai p = mv. Bagi jumlah momentum yang tetap, pertambahan jisim yang bergerak memerlukan halaju berkurang secara berkadar.",
+          "zh": "复习动量的定义 p = mv。对于固定的总动量，运动质量增大必然导致速度按比例减小。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking for the qualitative motion of two identical train cars that latch together upon collision.",
+        "ms": "Soalan aneka pilihan yang bertanyakan pergerakan kualitatif dua gerabak kereta api serupa yang bercantum bersama semasa perlanggaran.",
+        "zh": "关于两节相同火车车厢在碰撞后相互锁死联挂时的定性运动特征的单选题。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-2a",
+        "options": [
+          {
+            "id": "opt-2a",
+            "label": {
+              "en": "They move in the engine's original direction at a lower speed than the engine's initial speed, because total momentum is distributed over a larger mass.",
+              "ms": "Kedua-duanya bergerak dalam arah asal lokomotif pada kelajuan yang lebih rendah daripada kelajuan awal lokomotif, kerana jumlah momentum diagihkan ke atas jisim yang lebih besar.",
+              "zh": "它们以低于机车初速度的速率沿机车原本的方向前进，因为总动量分布在了更大的质量上。"
+            }
+          },
+          {
+            "id": "opt-2b",
+            "label": {
+              "en": "They come to an immediate and complete stop because locking together eliminates all linear momentum from the system.",
+              "ms": "Kedua-duanya berhenti serta-merta dan sepenuhnya kerana bercantum bersama menghapuskan semua momentum linear daripada sistem.",
+              "zh": "它们立即完全停下，因为结合锁死消除了系统中的所有动量。"
+            },
+            "misconception": "momentum-lost-in-inelastic"
+          },
+          {
+            "id": "opt-2c",
+            "label": {
+              "en": "They rebound backward together because the stationary caboose resists the forward motion with an opposing force greater than momentum.",
+              "ms": "Kedua-duanya melantun ke belakang bersama-sama kerana gerabak pegun menentang gerakan ke hadapan dengan daya bertentangan yang lebih besar daripada momentum.",
+              "zh": "它们一起向后反弹，因为静止车厢以大于动量的反作用力阻碍向前运动。"
+            }
+          },
+          {
+            "id": "opt-2d",
+            "label": {
+              "en": "They continue forward at the engine's original speed because momentum conservation preserves velocity unchanged.",
+              "ms": "Kedua-duanya terus mara ke hadapan pada kelajuan asal lokomotif kerana keabadian momentum mengekalkan halaju tanpa perubahan.",
+              "zh": "它们以机车原本的速度继续向前运动，因为动量守恒使速度保持不变。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-03-easy",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict post-collision motion in elastic collisions for equal masses, stationary targets, and extreme mass ratios.",
+      "prompt": {
+        "en": "A red gliding puck of mass M moves smoothly on an isolated horizontal air table and strikes a stationary blue puck of identical mass M in a head-on elastic collision. What is the motion of each puck immediately following the collision?",
+        "ms": "Sebuah puck merah bergelongsor berjisim M bergerak lancar di atas meja udara mendatar terpencil dan melanggar sebuah puck biru pegun yang mempunyai jisim serupa M dalam suatu perlanggaran kenyal bersemuka. Apakah pergerakan setiap puck serta-merta selepas perlanggaran tersebut?",
+        "zh": "一个质量为 M 的红色滑行冰球在孤立水平气垫桌上平稳滑行，并与一个质量同为 M 的静止蓝色冰球发生一维对心弹性碰撞。碰撞后瞬间两个冰球的运动状态分别是什么？"
+      },
+      "hints": [
+        {
+          "en": "Recall the elastic collision relationship for equal masses (m1 = m2): what happens to the velocities of the two colliding objects?",
+          "ms": "Ingat kembali hubungan perlanggaran kenyal bagi jisim yang sama (m1 = m2): apakah yang berlaku kepada halaju kedua-dua objek yang berlanggar?",
+          "zh": "回顾等质量物体 (m1 = m2) 弹性碰撞的关系：两个碰撞物体的速度会发生怎样的变化？"
+        },
+        {
+          "en": "In a one-dimensional elastic collision between identical masses where the target is at rest, the two objects completely exchange their velocities.",
+          "ms": "Dalam perlanggaran kenyal satu dimensi antara jisim yang serupa di mana sasaran berada dalam keadaan pegun, kedua-dua objek bertukar halaju mereka sepenuhnya.",
+          "zh": "在一维对心弹性碰撞中，若两物体质量相同且目标物体初始静止，两物体会完全交换速度。"
+        }
+      ],
+      "feedback": {
+        "en": "In a head-on elastic collision between two objects of equal mass, the objects exchange velocities. The incoming red puck stops completely, and the stationary blue puck moves forward with the red puck's initial velocity.",
+        "ms": "Dalam perlanggaran kenyal bersemuka antara dua objek yang mempunyai jisim serupa, objek-objek tersebut bertukar halaju. Puck merah yang masuk berhenti sepenuhnya, dan puck biru yang asalnya pegun bergerak ke hadapan dengan halaju awal puck merah.",
+        "zh": "在两个质量相等的物体发生的一维对心弹性碰撞中，两物体会交换速度。入射的红冰球完全停下，而原本静止的蓝冰球则以红冰球最初的速度向前运动。"
+      },
+      "answerLogic": {
+        "en": "For an elastic collision with equal masses m1 = m2 and target velocity v2i = 0, the one-dimensional elastic collision equations give v1f = 0 and v2f = v1i. The two identical masses swap velocities, which simultaneously satisfies conservation of momentum and conservation of kinetic energy.",
+        "ms": "Bagi perlanggaran kenyal dengan jisim serupa m1 = m2 dan halaju sasaran v2i = 0, persamaan perlanggaran kenyal satu dimensi memberikan v1f = 0 dan v2f = v1i. Kedua-dua jisim yang serupa bertukar halaju, yang memuaskan kedua-dua keabadian momentum dan keabadian tenaga kinetik secara serentak.",
+        "zh": "对于质量相等 m1 = m2 且目标初速度 v2i = 0 的弹性碰撞，一维弹性碰撞公式给出 v1f = 0 且 v2f = v1i。两个相同质量的物体交换速度，同时满足动量守恒和动能守恒。"
+      },
+      "explanation": {
+        "en": "When two identical masses collide elastically in one dimension, simultaneous conservation of linear momentum and kinetic energy requires a complete velocity exchange. Because the blue target was initially at rest, the red projectile transfers all its momentum and kinetic energy to the blue target, coming to a dead stop while the blue puck departs with the original speed and direction.",
+        "ms": "Apabila dua jisim serupa berlanggar secara kenyal dalam satu dimensi, keabadian serentak momentum linear dan tenaga kinetik memerlukan pertukaran halaju yang lengkap. Oleh kerana sasaran biru pada mulanya pegun, projektil merah memindahkan semua momentum dan tenaga kinetiknya kepada sasaran biru, berhenti serta-merta sementara puck biru berlepas dengan kelajuan dan arah asal.",
+        "zh": "当两个质量相同的物体在一维中发生弹性碰撞时，动量守恒与动能守恒的同时成立要求它们完全交换速度。由于蓝冰球初始静止，红冰球将其全部动量和动能传递给蓝冰球，自身完全停下，而蓝冰球以红冰球原本的速度和方向飞出。"
+      },
+      "misconceptions": [
+        "kinetic-energy-always-conserved"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-linear-momentum",
+        "prompt": {
+          "en": "Recall that in a one-dimensional elastic collision, relative velocity of approach equals relative velocity of separation: (v1i - v2i) = -(v1f - v2f), which together with momentum conservation dictates the post-collision velocities.",
+          "ms": "Ingat kembali bahawa dalam perlanggaran kenyal satu dimensi, halaju relatif pendekatan bersamaan dengan negatif halaju relatif pemisahan: (v1i - v2i) = -(v1f - v2f), yang bersama-sama keabadian momentum menentukan halaju selepas perlanggaran.",
+          "zh": "回顾在一维弹性碰撞中，接近的相对速度等于分离的相对速度的相反数：(v1i - v2i) = -(v1f - v2f)，它与动量守恒方程共同决定了碰撞后的速度。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking what happens after an elastic head-on collision between two pucks of identical mass when one is initially stationary.",
+        "ms": "Soalan aneka pilihan yang bertanyakan perkara yang berlaku selepas perlanggaran kenyal bersemuka antara dua puck berjisim serupa apabila salah satu daripadanya pada mulanya pegun.",
+        "zh": "单选题，询问两个质量相同的冰球在其中一个最初静止时发生一维对心弹性碰撞后的运动情况。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-3a",
+        "options": [
+          {
+            "id": "opt-3a",
+            "label": {
+              "en": "The red puck comes to a complete stop, and the blue puck moves forward with the red puck's initial velocity.",
+              "ms": "Puck merah berhenti sepenuhnya, dan puck biru bergerak ke hadapan dengan halaju awal puck merah.",
+              "zh": "红冰球完全停下，而蓝冰球以红冰球最初的速度向前运动。"
+            }
+          },
+          {
+            "id": "opt-3b",
+            "label": {
+              "en": "Both pucks rebound backward with their initial speeds because kinetic energy conservation prevents any individual object from losing speed.",
+              "ms": "Kedua-dua puck melantun ke belakang dengan kelajuan awal mereka kerana keabadian tenaga kinetik menghalang sebarang objek individu daripada kehilangan kelajuan.",
+              "zh": "两个冰球都以初始速率向后反弹，因为动能守恒阻止任何单个物体降低速率。"
+            },
+            "misconception": "kinetic-energy-always-conserved"
+          },
+          {
+            "id": "opt-3c",
+            "label": {
+              "en": "Both pucks latch together and proceed forward at half speed as a single combined body.",
+              "ms": "Kedua-dua puck bertaut bersama dan meneruskan perjalanan ke hadapan pada separuh kelajuan sebagai satu jasad gabungan.",
+              "zh": "两个冰球相互锁在一起，作为一个组合整体以半速向前运动。"
+            }
+          },
+          {
+            "id": "opt-3d",
+            "label": {
+              "en": "The red puck continues forward unaffected while the blue puck remains stationary because forces balance instantaneously.",
+              "ms": "Puck merah terus mara ke hadapan tanpa terjejas sementara puck biru kekal pegun kerana daya seimbang secara serta-merta.",
+              "zh": "红冰球不受影响地继续向前运动，而蓝冰球保持静止，因为力瞬时平衡。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-04-mod",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply relative velocity relationships to analyze one-dimensional elastic collisions between two isolated bodies.",
+      "prompt": {
+        "en": "Two gliders collide along a straight horizontal track in an isolated system. An investigator observes that the relative velocity of the two gliders after the collision is exactly the negative of their relative velocity before the collision: (v1i - v2i) = -(v1f - v2f). Under what physical condition is this relationship strictly valid, and what does it indicate about the collision?",
+        "ms": "Dua peluncur berlanggar di sepanjang landasan mengufuk lurus dalam satu sistem terpencil. Seorang penyelidik mendapati bahawa halaju relatif kedua-dua peluncur selepas perlanggaran adalah tepat bersamaan dengan negatif halaju relatif sebelum perlanggaran: (v1i - v2i) = -(v1f - v2f). Dalam keadaan fizikal apakah hubungan ini sah secara ketat, dan apakah yang ditunjukkannya tentang perlanggaran tersebut?",
+        "zh": "两个滑块在一个孤立系统中沿水平直线轨道发生碰撞。研究人员观察到，碰撞后两滑块的相对速度正好是碰撞前相对速度的负值，即 (v1i - v2i) = -(v1f - v2f)。该关系在什么物理条件下严格成立，它说明了关于该碰撞的什么性质？"
+      },
+      "hints": [
+        {
+          "en": "Recall how Equation 9.20 is derived: it results from dividing the factored kinetic energy conservation equation by the factored linear momentum conservation equation.",
+          "ms": "Ingat kembali bagaimana Persamaan 9.20 diterbitkan: ia terhasil daripada membahagikan persamaan keabadian tenaga kinetik yang difaktorkan dengan persamaan keabadian momentum linear yang difaktorkan.",
+          "zh": "回顾公式 (v1i - v2i) = -(v1f - v2f) 的推导过程：它是将因式分解后的动能守恒方程除以因式分解后的线动量守恒方程得到的。"
+        },
+        {
+          "en": "Consider what happens if any kinetic energy is converted into thermal energy, sound, or deformation: will the separation speed still equal the approach speed?",
+          "ms": "Pertimbangkan apa yang berlaku jika sebahagian tenaga kinetik ditukarkan kepada tenaga terma, bunyi, atau perubahan bentuk: adakah laju pemisahan masih akan menyamai laju pendekatan?",
+          "zh": "思考一下，如果部分动能转化为内能、声能或形变能：碰撞后的相对分离速率还会等于碰撞前的相对接近速率吗？"
+        }
+      ],
+      "feedback": {
+        "en": "The relationship (v1i - v2i) = -(v1f - v2f) holds only for one-dimensional elastic collisions because it relies directly on the simultaneous conservation of total kinetic energy and linear momentum.",
+        "ms": "Hubungan (v1i - v2i) = -(v1f - v2f) hanya berlaku untuk perlanggaran kenyal satu dimensi kerana ia bergantung secara langsung pada keabadian serentak jumlah tenaga kinetik dan momentum linear.",
+        "zh": "关系式 (v1i - v2i) = -(v1f - v2f) 仅对一维弹性碰撞成立，因为它直接依赖于系统总动能和线动量的同时守恒。"
+      },
+      "answerLogic": {
+        "en": "Equation 9.20 is obtained by dividing the kinetic energy equation m1(v1i^2 - v1f^2) = m2(v2f^2 - v2i^2) by the momentum equation m1(v1i - v1f) = m2(v2f - v2i). If kinetic energy is not conserved (inelastic collision), this division is mathematically invalid and the relative speed of separation is strictly less than the relative speed of approach.",
+        "ms": "Persamaan 9.20 diperoleh dengan membahagikan persamaan tenaga kinetik m1(v1i^2 - v1f^2) = m2(v2f^2 - v2i^2) dengan persamaan momentum m1(v1i - v1f) = m2(v2f - v2i). Jika tenaga kinetik tidak abadi (perlanggaran tak kenyal), pembahagian ini tidak sah secara matematik dan laju pemisahan relatif adalah kurang daripada laju pendekatan relatif.",
+        "zh": "公式 9.20 是通过将动能守恒方程 m1(v1i^2 - v1f^2) = m2(v2f^2 - v2i^2) 除以动量守恒方程 m1(v1i - v1f) = m2(v2f - v2i) 得到的。如果动能不守恒（非弹性碰撞），该除法在数学上不成立，分离的相对速率必将严格小于接近的相对速率。"
+      },
+      "explanation": {
+        "en": "In any isolated collision, linear momentum is conserved. However, the condition that relative approach velocity equals the negative of relative separation velocity requires that mechanical kinetic energy is also completely conserved. Therefore, observing this equality confirms that the collision is elastic. For any inelastic collision, mechanical energy is lost to internal energy or deformation, making the post-collision relative speed strictly smaller than the pre-collision relative speed.",
+        "ms": "Dalam mana-mana perlanggaran terpencil, momentum linear adalah abadi. Walau bagaimanapun, syarat bahawa halaju pendekatan relatif bersamaan dengan negatif halaju pemisahan relatif memerlukan tenaga kinetik mekanikal juga diabadikan sepenuhnya. Oleh itu, pemerhatian kesamarataan ini mengesahkan bahawa perlanggaran itu adalah kenyal. Bagi sebarang perlanggaran tak kenyal, tenaga mekanikal hilang kepada tenaga dalaman atau perubahan bentuk, menjadikan laju relatif selepas perlanggaran lebih kecil daripada laju relatif sebelum perlanggaran.",
+        "zh": "在任何孤立系统的碰撞中，线动量均守恒。然而，接近相对速度等于分离相对速度的负值这一条件，要求机械动能也完全守恒。因此，观察到该等式成立即可确认碰撞是弹性碰撞。对于任何非弹性碰撞，机械能都会损耗为内能或形变能，导致碰撞后的相对速率严格小于碰撞前的相对速率。"
+      },
+      "misconceptions": [
+        "relative-velocity-formula-misapplication",
+        "velocity-sign-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-linear-momentum",
+        "prompt": {
+          "en": "Review linear momentum conservation: while total momentum is always conserved in an isolated collision regardless of energy loss, kinetic energy is only conserved in special collisions termed elastic.",
+          "ms": "Ulang kaji keabadian momentum linear: walaupun jumlah momentum sentiasa abadi dalam perlanggaran terpencil tanpa mengira kehilangan tenaga, tenaga kinetik hanya abadi dalam perlanggaran khas yang dinamakan kenyal.",
+          "zh": "复习线动量守恒：无论是否存在能量损失，孤立系统碰撞的总动量总是守恒的；但动能仅在被称为弹性的特殊碰撞中守恒。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking under which physical condition the one-dimensional relative velocity equation (v1i - v2i) = -(v1f - v2f) holds true.",
+        "ms": "Soalan pelbagai pilihan yang bertanyakan dalam keadaan fizikal manakah persamaan halaju relatif satu dimensi (v1i - v2i) = -(v1f - v2f) adalah benar.",
+        "zh": "单选题，询问一维相对速度方程 (v1i - v2i) = -(v1f - v2f) 在何种物理条件下成立。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "It is valid exclusively for an elastic collision, because equating the relative approach speed to the relative separation speed requires total kinetic energy to be conserved alongside momentum.",
+              "ms": "Ia sah secara eksklusif untuk perlanggaran kenyal, kerana menyamakan laju pendekatan relatif dengan laju pemisahan relatif memerlukan jumlah tenaga kinetik diabadikan bersama-sama momentum.",
+              "zh": "该式仅对弹性碰撞成立，因为令相对接近速率等于相对分离速率必然要求总动能与动量一同守恒。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "It is valid for any isolated collision regardless of elasticity, because the relative velocity relationship is derived purely from linear momentum conservation.",
+              "ms": "Ia sah untuk sebarang perlanggaran terpencil tanpa mengira sifat kekenyalannya, kerana hubungan halaju relatif diterbitkan semata-mata daripada keabadian momentum linear.",
+              "zh": "它对任何孤立碰撞都成立而与弹性无关，因为相对速度关系纯粹是由线动量守恒推导得出的。"
+            },
+            "misconception": "relative-velocity-formula-misapplication"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "It is valid for all collisions where the bodies bounce apart, because kinetic energy loss only affects the motion if the objects stick together permanently.",
+              "ms": "Ia sah untuk semua perlanggaran di mana jasad melantun berasingan, kerana kehilangan tenaga kinetik hanya mempengaruhi gerakan jika objek melekat secara kekal.",
+              "zh": "它对所有物体反弹分开的碰撞都成立，因为只有当物体永久粘在一起时动能损失才会影响运动。"
+            },
+            "misconception": "relative-velocity-formula-misapplication"
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "It is valid only when both objects move in the positive direction before and after collision, because algebraic signs cannot be negative when comparing speeds.",
+              "ms": "Ia sah hanya apabila kedua-dua objek bergerak dalam arah positif sebelum dan selepas perlanggaran, kerana tanda algebra tidak boleh bernilai negatif apabila membandingkan laju.",
+              "zh": "它仅在碰撞前后两物体均沿正方向运动时才成立，因为在比较速率时代数符号不能为负。"
+            },
+            "misconception": "velocity-sign-neglect"
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-05-mod",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict post-collision motion in elastic collisions for equal masses, stationary targets, and extreme mass ratios.",
+      "prompt": {
+        "en": "On a frictionless horizontal air track, Glider 1 moves to the right with initial velocity v1i and collides head-on elastically with Glider 2, which is initially at rest (v2i = 0). Which statement correctly predicts the resulting velocities based on the relative masses of the two gliders?",
+        "ms": "Di atas landasan udara mengufuk tanpa geseran, Peluncur 1 bergerak ke kanan dengan halaju awal v1i dan berlanggar secara bersemuka dan kenyal dengan Peluncur 2 yang pada mulanya pegun (v2i = 0). Pernyataan manakah yang meramalkan halaju terhasil dengan betul berdasarkan jisim relatif kedua-dua peluncur?",
+        "zh": "在光滑水平气垫导轨上，滑块 1 以初速度 v1i 向右运动，与初始静止 (v2i = 0) 的滑块 2 发生一维正碰弹性碰撞。下列哪项陈述根据两滑块的相对质量关系正确预测了碰撞后的速度？"
+      },
+      "hints": [
+        {
+          "en": "Recall the elastic collision formulas for a stationary target: v1f = ((m1 - m2)/(m1 + m2))v1i and v2f = (2m1/(m1 + m2))v1i.",
+          "ms": "Ingat kembali formula perlanggaran kenyal bagi sasaran pegun: v1f = ((m1 - m2)/(m1 + m2))v1i dan v2f = (2m1/(m1 + m2))v1i.",
+          "zh": "回顾目标初始静止时的一维弹性碰撞公式：v1f = ((m1 - m2)/(m1 + m2))v1i 以及 v2f = (2m1/(m1 + m2))v1i。"
+        },
+        {
+          "en": "Pay close attention to direction and algebraic signs: when m1 is much smaller than m2, the factor (m1 - m2) becomes negative, meaning the lighter glider rebounds backward.",
+          "ms": "Beri perhatian teliti kepada arah dan tanda algebra: apabila m1 jauh lebih kecil daripada m2, faktor (m1 - m2) menjadi negatif, bermakna peluncur yang lebih ringan melantun ke belakang.",
+          "zh": "密切注意方向与代数正负号：当 m1 远小于 m2 时，因式 (m1 - m2) 为负，意味着较轻的滑块会向后反弹。"
+        }
+      ],
+      "feedback": {
+        "en": "When m1 = m2, the incident glider stops and the target glider moves off with v1i. When m1 is much smaller than m2, the lighter glider rebounds with approximately -v1i while the heavy target remains nearly stationary.",
+        "ms": "Apabila m1 = m2, peluncur tuju berhenti dan peluncur sasaran bergerak dengan v1i. Apabila m1 jauh lebih kecil daripada m2, peluncur ringan melantun dengan kira-kira -v1i manakala sasaran berat hampir pegun.",
+        "zh": "当 m1 = m2 时，入射滑块停止，目标滑块以 v1i 移开。当 m1 远小于 m2 时，较轻的滑块以约 -v1i 反弹，而沉重的目标几乎保持静止。"
+      },
+      "answerLogic": {
+        "en": "From Equations 9.23 and 9.24: (1) If m1 = m2, v1f = 0 and v2f = v1i, so velocities are completely exchanged. (2) If m2 >> m1, v1f approaches -v1i (velocity reverses direction, requiring a negative sign) and v2f approaches 0. (3) If m1 >> m2, v1f approaches v1i and v2f approaches 2v1i.",
+        "ms": "Daripada Persamaan 9.23 dan 9.24: (1) Jika m1 = m2, v1f = 0 dan v2f = v1i, jadi halaju ditukar sepenuhnya. (2) Jika m2 >> m1, v1f menghampiri -v1i (halaju membalikkan arah, memerlukan tanda negatif) dan v2f menghampiri 0. (3) Jika m1 >> m2, v1f menghampiri v1i dan v2f menghampiri 2v1i.",
+        "zh": "根据公式 9.23 和 9.24：(1) 若 m1 = m2，则 v1f = 0 且 v2f = v1i，速度完全交换。(2) 若 m2 >> m1，则 v1f 趋近于 -v1i（速度反向，具有负号）且 v2f 趋近于 0。(3) 若 m1 >> m2，则 v1f 趋近于 v1i 且 v2f 趋近于 2v1i。"
+      },
+      "explanation": {
+        "en": "In a one-dimensional elastic collision with a stationary target, velocity is a vector quantity where sign conveys direction. When the colliding masses are identical, the incoming cart transfers all its momentum and kinetic energy, coming to a dead stop while the target moves off with the initial velocity. When a very light cart strikes a massive stationary target, the target barely recoils, and the light cart rebounds with nearly its initial speed in the opposite direction (velocity approximately -v1i). Neglecting the negative sign misses the essential physical reversal of momentum.",
+        "ms": "Dalam perlanggaran kenyal satu dimensi dengan sasaran pegun, halaju ialah kuantiti vektor di mana tanda menyampaikan arah. Apabila jisim yang berlanggar adalah serupa, kereta tuju memindahkan semua momentum dan tenaga kinetiknya, lalu berhenti sepenuhnya manakala sasaran bergerak dengan halaju awal. Apabila kereta yang sangat ringan menghentam sasaran pegun yang besar, sasaran hampir tidak berganjak, dan kereta ringan itu melantun dengan hampir laju awalnya dalam arah bertentangan (halaju kira-kira -v1i). Mengabaikan tanda negatif akan terlepas pembalikan momentum fizikal yang penting.",
+        "zh": "在目标静止的一维弹性碰撞中，速度是矢量，符号代表运动方向。当碰撞双方质量相等时，入射滑块传递其全部动量和动能后完全停止，目标滑块以初始速度移开。当非常轻的滑块撞击巨大的静止目标时，重目标几乎不动，轻滑块以接近原速率反向弹回（速度约为 -v1i）。若忽略负号，就会遗漏动量反向这一至关重要的物理特征。"
+      },
+      "misconceptions": [
+        "velocity-sign-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "translational-kinetic-energy",
+        "prompt": {
+          "en": "Review kinetic energy and velocity vectors: while kinetic energy depends on speed squared and is always positive, linear momentum depends directly on velocity and requires careful accounting of positive and negative directional signs.",
+          "ms": "Ulang kaji tenaga kinetik dan vektor halaju: walaupun tenaga kinetik bergantung pada laju kuasa dua dan sentiasa positif, momentum linear bergantung terus pada halaju dan memerlukan perakaunan tanda arah positif dan negatif yang teliti.",
+          "zh": "复习动能与速度矢量：动能取决于速率的平方且恒为正标量，但线动量直接取决于速度矢量，必须严格考虑正负方向代数符号。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking to identify the correct post-collision velocities for equal masses and extreme mass ratios in a 1D elastic collision with a stationary target.",
+        "ms": "Soalan pelbagai pilihan yang meminta untuk mengenal pasti halaju selepas perlanggaran yang betul untuk jisim yang sama dan nisbah jisim ekstrem dalam perlanggaran kenyal 1D dengan sasaran pegun.",
+        "zh": "单选题，要求识别目标静止的一维弹性碰撞中，两物体质量相等及处于极端质量比时的碰撞后速度。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "If m1 = m2, Glider 1 stops completely and Glider 2 moves right with velocity v1i; if m1 is much smaller than m2, Glider 1 rebounds to the left with velocity approximately -v1i while Glider 2 remains nearly stationary.",
+              "ms": "Jika m1 = m2, Peluncur 1 berhenti sepenuhnya dan Peluncur 2 bergerak ke kanan dengan halaju v1i; jika m1 jauh lebih kecil daripada m2, Peluncur 1 melantun ke kiri dengan halaju kira-kira -v1i manakala Peluncur 2 hampir pegun.",
+              "zh": "若 m1 = m2，滑块 1 完全停止，滑块 2 以速度 v1i 向右运动；若 m1 远小于 m2，滑块 1 以约为 -v1i 的速度向左反弹，而滑块 2 几乎保持静止。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "If m1 is much smaller than m2, Glider 1 must continue moving to the right with velocity +v1i, because kinetic energy conservation prevents velocity from taking a negative directional sign.",
+              "ms": "Jika m1 jauh lebih kecil daripada m2, Peluncur 1 mesti terus bergerak ke kanan dengan halaju +v1i, kerana keabadian tenaga kinetik menghalang halaju daripada mengambil tanda arah negatif.",
+              "zh": "若 m1 远小于 m2，滑块 1 必然继续以速度 +v1i 向右运动，因为动能守恒阻止速度出现负的方向符号。"
+            },
+            "misconception": "velocity-sign-neglect"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "If m1 is much greater than m2, Glider 2 moves forward with speed v1i/2, because a target object cannot acquire a speed larger than the incoming cart's initial speed magnitude regardless of direction.",
+              "ms": "Jika m1 jauh lebih besar daripada m2, Peluncur 2 bergerak ke hadapan dengan laju v1i/2, kerana objek sasaran tidak boleh memperoleh laju yang lebih besar daripada magnitud laju awal kereta tuju tanpa mengira arah.",
+              "zh": "若 m1 远大于 m2，滑块 2 仅能以速率 v1i/2 向前运动，因为无论方向如何，目标物体获得的速率大小都不能超过入射滑块的初速率大小。"
+            },
+            "misconception": "velocity-sign-neglect"
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "If m1 = m2, both gliders must move forward together with velocity v1i/2, because equal mass distribution requires equal sharing of the final motion.",
+              "ms": "Jika m1 = m2, kedua-dua peluncur mesti bergerak ke hadapan bersama-sama dengan halaju v1i/2, kerana taburan jisim yang sama memerlukan perkongsian gerakan akhir yang sama rata.",
+              "zh": "若 m1 = m2，两滑块必然以速度 v1i/2 一同向前运动，因为质量均等要求平分最终的运动速度。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-06-mod",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between elastic, inelastic, and perfectly inelastic collisions based on kinetic energy conservation.",
+      "prompt": {
+        "en": "Three separate head-on collisions occur on a frictionless surface between isolated pairs of carts. In Collision X, the carts bounce apart and the total kinetic energy after impact equals the initial kinetic energy. In Collision Y, the carts bounce apart but total kinetic energy decreases. In Collision Z, the carts stick together and move with a single common velocity. Which statement accurately categorizes these collisions and their conservation principles?",
+        "ms": "Tiga perlanggaran bersemuka yang berasingan berlaku di atas permukaan tanpa geseran antara pasangan kereta terpencil. Dalam Perlanggaran X, kereta melantun berasingan dan jumlah tenaga kinetik selepas hentaman menyamai tenaga kinetik awal. Dalam Perlanggaran Y, kereta melantun berasingan tetapi jumlah tenaga kinetik berkurangan. Dalam Perlanggaran Z, kereta melekat bersama dan bergerak dengan satu halaju sepunya. Pernyataan manakah yang mengkategorikan perlanggaran ini dan prinsip keabadiannya dengan tepat?",
+        "zh": "在光滑水平面上，三对孤立滑块分别发生一维对心碰撞。在碰撞 X 中，滑块弹开且碰撞后的总动能等于初始总动能。在碰撞 Y 中，滑块弹开但总动能减少。在碰撞 Z 中，滑块粘在一起并以共同速度运动。下列哪项陈述准确分类了这些碰撞及其适用的守恒定律？"
+      },
+      "hints": [
+        {
+          "en": "Check the status of total linear momentum: because all three pairs are isolated from external horizontal forces, is momentum conserved in all three collisions or only in some?",
+          "ms": "Semak status jumlah momentum linear: oleh kerana ketiga-tiga pasangan terpencil daripada daya luar mengufuk, adakah momentum diabadikan dalam ketiga-tiga perlanggaran atau hanya dalam sebahagian daripadanya?",
+          "zh": "检查系统总线动量的状态：由于这三对滑块均不受水平外力作用（孤立系统），动量是在所有三种碰撞中都守恒，还是仅在部分碰撞中守恒？"
+        },
+        {
+          "en": "Distinguish collision categories strictly by what happens to mechanical kinetic energy and whether the bodies stick together: elastic (kinetic energy conserved), inelastic (kinetic energy lost, objects separate), and perfectly inelastic (kinetic energy lost, objects stick together).",
+          "ms": "Bezakan kategori perlanggaran secara ketat berdasarkan apa yang berlaku kepada tenaga kinetik mekanikal dan sama ada jasad melekat bersama: kenyal (tenaga kinetik abadi), tak kenyal (tenaga kinetik hilang, objek berpisah), dan tak kenyal sempurna (tenaga kinetik hilang, objek melekat bersama).",
+          "zh": "严格根据机械动能的变化以及物体是否粘合来划分碰撞类型：弹性碰撞（动能守恒）、非弹性碰撞（动能减少，物体分开）以及完全非弹性碰撞（动能减少，物体粘在一起）。"
+        }
+      ],
+      "feedback": {
+        "en": "Collision X is elastic, Collision Y is inelastic, and Collision Z is perfectly inelastic. Total linear momentum is conserved in all three isolated collisions, but kinetic energy is conserved only in Collision X.",
+        "ms": "Perlanggaran X adalah kenyal, Perlanggaran Y adalah tak kenyal, dan Perlanggaran Z adalah tak kenyal sempurna. Jumlah momentum linear abadi dalam ketiga-tiga perlanggaran terpencil, tetapi tenaga kinetik hanya abadi dalam Perlanggaran X.",
+        "zh": "碰撞 X 是弹性碰撞，碰撞 Y 是非弹性碰撞，碰撞 Z 是完全非弹性碰撞。在所有三个孤立系统的碰撞中，总线动量均守恒，但动能仅在碰撞 X 中守恒。"
+      },
+      "answerLogic": {
+        "en": "By textbook definition (Section 9.4): (1) An elastic collision conserves both momentum and kinetic energy (Collision X). (2) An inelastic collision conserves momentum, but mechanical kinetic energy is transformed into internal energy or sound; when the objects do not stick together, it is simply termed inelastic (Collision Y). (3) When the colliding objects stick together, maximum possible kinetic energy is lost consistent with momentum conservation, and the collision is called perfectly inelastic (Collision Z). Momentum is conserved in all three because internal interaction forces cannot change the total momentum of an isolated system.",
+        "ms": "Mengikut definisi buku teks (Seksyen 9.4): (1) Perlanggaran kenyal mengabadikan kedua-dua momentum dan tenaga kinetik (Perlanggaran X). (2) Perlanggaran tak kenyal mengabadikan momentum, tetapi tenaga kinetik mekanikal ditukarkan kepada tenaga dalaman atau bunyi; apabila objek tidak melekat bersama, ia dinamakan tak kenyal sahaja (Perlanggaran Y). (3) Apabila objek yang berlanggar melekat bersama, kehilangan tenaga kinetik maksimum yang konsisten dengan keabadian momentum berlaku, dan perlanggaran dipanggil tak kenyal sempurna (Perlanggaran Z). Momentum diabadikan dalam ketiga-tiga kes kerana daya interaksi dalaman tidak boleh mengubah jumlah momentum sistem terpencil.",
+        "zh": "根据教材第 9.4 节定义：(1) 弹性碰撞中动量和动能均守恒（碰撞 X）。(2) 非弹性碰撞中动量守恒，但机械动能部分转化为内能或声能；当物体碰撞后没有粘在一起时，称为非弹性碰撞（碰撞 Y）。(3) 当碰撞物体粘在一起以共同速度运动时，在满足动量守恒的前提下损失了最大可能的动能，称为完全非弹性碰撞（碰撞 Z）。在这三种情况下，由于内力不改变孤立系统的总动量，动量全部守恒。"
+      },
+      "explanation": {
+        "en": "A fundamental distinction in mechanics is that total linear momentum is conserved in every isolated collision regardless of internal deformation or heat generation. In contrast, mechanical kinetic energy is conserved only in elastic collisions (Collision X). If colliding bodies separate after deformation or sound generation, the collision is inelastic (Collision Y). When colliding bodies stick together, it is perfectly inelastic (Collision Z). A common misconception is that bouncing implies kinetic energy conservation, or that losing kinetic energy implies momentum is not conserved.",
+        "ms": "Perbezaan asas dalam mekanik ialah jumlah momentum linear diabadikan dalam setiap perlanggaran terpencil tanpa mengira perubahan bentuk dalaman atau penghasilan haba. Sebaliknya, tenaga kinetik mekanikal hanya diabadikan dalam perlanggaran kenyal (Perlanggaran X). Jika jasad yang berlanggar berpisah selepas perubahan bentuk atau penghasilan bunyi, perlanggaran tersebut adalah tak kenyal (Perlanggaran Y). Apabila jasad yang berlanggar melekat bersama, ia adalah tak kenyal sempurna (Perlanggaran Z). Salah faham yang biasa ialah menganggap lantunan membayangkan keabadian tenaga kinetik, atau kehilangan tenaga kinetik membayangkan momentum tidak diabadikan.",
+        "zh": "力学中的一个基本区别是：在任何孤立系统的碰撞中，无论物体内部如何形变或产生热量，总线动量始终守恒。相反，机械动能仅在弹性碰撞（碰撞 X）中守恒。若碰撞物体在产生形变或声音后弹开分开运动，该碰撞为非弹性碰撞（碰撞 Y）。当物体碰撞后粘合在一起时，为完全非弹性碰撞（碰撞 Z）。常见的误区是认为只要物体反弹动能就守恒，或者认为动能减少就意味着动量不守恒。"
+      },
+      "misconceptions": [
+        "kinetic-energy-always-conserved",
+        "momentum-lost-in-inelastic"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "translational-kinetic-energy",
+        "prompt": {
+          "en": "Review kinetic energy in macroscopic collisions: unlike total energy which is universally conserved, mechanical kinetic energy can be transformed into thermal energy and internal deformation work during collisions.",
+          "ms": "Ulang kaji tenaga kinetik dalam perlanggaran makroskopik: tidak seperti jumlah tenaga yang abadi secara sejagat, tenaga kinetik mekanikal boleh ditukarkan kepada tenaga terma dan kerja perubahan bentuk dalaman semasa perlanggaran.",
+          "zh": "复习宏观碰撞中的动能概念：总能量在宇宙中守恒，但机械动能在碰撞过程中可以转化为内能、声能以及形变做功。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking to categorize three collisions (bouncing with kinetic energy conserved, bouncing with kinetic energy lost, and sticking together) as elastic, inelastic, or perfectly inelastic.",
+        "ms": "Soalan pelbagai pilihan yang meminta untuk mengkategorikan tiga perlanggaran (melantun dengan tenaga kinetik abadi, melantun dengan tenaga kinetik hilang, dan melekat bersama) sebagai kenyal, tak kenyal, atau tak kenyal sempurna.",
+        "zh": "单选题，要求将三种碰撞（反弹且动能守恒、反弹且动能减少、粘在一起）分类为弹性碰撞、非弹性碰撞或完全非弹性碰撞。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "X is elastic, Y is inelastic, and Z is perfectly inelastic; total momentum is conserved in all three collisions, but kinetic energy is conserved only in X.",
+              "ms": "X adalah kenyal, Y adalah tak kenyal, dan Z adalah tak kenyal sempurna; jumlah momentum diabadikan dalam ketiga-tiga perlanggaran, tetapi tenaga kinetik hanya diabadikan dalam X.",
+              "zh": "X 是弹性碰撞，Y 是非弹性碰撞，Z 是完全非弹性碰撞；在三种碰撞中总动量均守恒，但动能仅在 X 中守恒。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "X is elastic, Y is inelastic, and Z is perfectly inelastic; however, linear momentum is conserved only in X because the loss of kinetic energy in Y and Z destroys momentum conservation.",
+              "ms": "X adalah kenyal, Y adalah tak kenyal, dan Z adalah tak kenyal sempurna; walau bagaimanapun, momentum linear hanya diabadikan dalam X kerana kehilangan tenaga kinetik dalam Y dan Z memusnahkan keabadian momentum.",
+              "zh": "X 是弹性碰撞，Y 是非弹性碰撞，Z 是完全非弹性碰撞；然而，线动量仅在 X 中守恒，因为 Y 和 Z 中动能的损失破坏了动量守恒。"
+            },
+            "misconception": "momentum-lost-in-inelastic"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "Both X and Y are elastic collisions because the carts bounce apart; only Z is inelastic because kinetic energy loss can occur only when objects stick together.",
+              "ms": "Kedua-dua X dan Y adalah perlanggaran kenyal kerana kereta melantun berasingan; hanya Z adalah tak kenyal kerana kehilangan tenaga kinetik hanya boleh berlaku apabila objek melekat bersama.",
+              "zh": "X 和 Y 都是弹性碰撞，因为滑块都反弹分开了；只有 Z 是非弹性碰撞，因为只有当物体粘在一起时才会发生动能损失。"
+            },
+            "misconception": "kinetic-energy-always-conserved"
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "X and Y are elastic collisions that conserve momentum and kinetic energy, whereas Z is inelastic and fails to conserve either momentum or kinetic energy.",
+              "ms": "X dan Y adalah perlanggaran kenyal yang mengabadikan momentum dan tenaga kinetik, manakala Z adalah tak kenyal dan gagal mengabadikan kedua-dua momentum atau tenaga kinetik.",
+              "zh": "X 和 Y 都是动量和动能均守恒的弹性碰撞，而 Z 是非弹性碰撞，动量和动能均不守恒。"
+            },
+            "misconception": "momentum-lost-in-inelastic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-07-diff",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze multi-stage systems like ballistic pendulums by separating collision and mechanical energy swing phases.",
+      "prompt": {
+        "en": "In a ballistic pendulum demonstration, a projectile of mass m1 is fired horizontally into a stationary block of mass m2 suspended by light vertical cords. The projectile embeds deeply inside the block during an extremely brief collision, and the combined block-plus-projectile system subsequently swings upward along an arc, reaching a maximum vertical height h before momentarily stopping. A student suggests determining the projectile's launch speed in a single step by setting the projectile's initial kinetic energy equal to the maximum gravitational potential energy of the combined system at height h. Why is this proposed single-step approach fundamentally invalid?",
+        "ms": "Dalam satu demonstrasi bandul balistik, satu projektil berjisim m1 ditembak secara ufuk ke dalam blok pegun berjisim m2 yang digantung oleh tali menegak ringan. Projektil itu terbenam jauh ke dalam blok semasa perlanggaran yang amat singkat, dan sistem gabungan blok-bersama-projektil itu kemudiannya berayun ke atas mengikut lengkok sehingga mencapai ketinggian menegak maksimum h sebelum berhenti seketika. Seorang pelajar mencadangkan untuk menentukan laju pelancaran projektil dalam satu langkah sahaja dengan menyamakan tenaga kinetik awal projektil kepada tenaga keupayaan graviti maksimum sistem gabungan pada ketinggian h. Mengapakah pendekatan satu langkah yang dicadangkan ini tidak sah secara asasnya?",
+        "zh": "在一次弹道摆演示中，一个质量为 m1 的弹丸沿水平方向射入由轻质竖直细绳悬挂的静止木块（质量为 m2）中。在极短的碰撞时间内，弹丸深深嵌入木块中，随后两者的组合系统沿圆弧向上摆动，在短暂停止前达到最大竖直高度 h。一名学生建议采用一步法分析弹丸的发射速率：直接令弹丸初始动能等于组合系统在高度 h 处的最大重力势能。为什么这种提议的一步式分析方案在物理原理上是完全错误的？"
+      },
+      "hints": [
+        {
+          "en": "Consider what happens to the mechanical energy of the two-body system while the projectile is carving into the block and coming to rest relative to it.",
+          "ms": "Pertimbangkan apa yang berlaku kepada tenaga mekanik sistem dua jasad itu semasa projektil menembusi blok dan berhenti secara relatif kepadanya.",
+          "zh": "思考当弹丸钻入木块并相对于木块减速静止的过程中，两物体系统的机械能发生了什么变化。"
+        },
+        {
+          "en": "The motion consists of two distinct stages: an initial horizontal collision where only momentum is conserved while kinetic energy is lost, followed by an upward swing where mechanical energy is conserved without nonconservative forces.",
+          "ms": "Gerakan ini terdiri daripada dua peringkat yang berbeza: perlanggaran ufuk awal di mana hanya momentum yang abadi manakala tenaga kinetik hilang, diikuti oleh ayunan ke atas di mana tenaga mekanik abadi tanpa kehadiran daya bukan abadi.",
+          "zh": "该过程包含两个截然不同的物理阶段：首先是水平碰撞阶段，在此阶段只有动量守恒，动能发生损失；随后是向上摆动阶段，在没有非保守力做功的情况下机械能守恒。"
+        }
+      ],
+      "feedback": {
+        "en": "The embedding process is a perfectly inelastic collision in which large internal resistive forces deform the materials, dissipating a substantial fraction of the initial mechanical energy into internal thermal energy and deformation. Momentum conservation must be applied to the collision to find the speed immediately after impact, after which conservation of mechanical energy is applied to the upward swing.",
+        "ms": "Proses pembenaman itu ialah perlanggaran tak kenyal sempurna di mana daya rintangan dalaman yang besar mengubah bentuk bahan, menghilangkan sebahagian besar tenaga mekanik awal kepada tenaga terma dalaman dan ubah bentuk. Keabadian momentum mesti digunakan pada perlanggaran untuk mencari laju sejurus selepas hentaman, dan selepas itu keabadian tenaga mekanik digunakan pada ayunan ke atas.",
+        "zh": "弹丸嵌入木块的过程是完全非弹性碰撞，巨大的内部阻力使材料发生形变，将大部分初始机械能转化为了内能（热能）与形变能。必须先利用动量守恒定律确定碰撞后瞬间的速度，然后再利用机械能守恒定律分析随后的上摆过程。"
+      },
+      "answerLogic": {
+        "en": "The embedding of the projectile is a perfectly inelastic collision. While momentum along the horizontal direction is conserved during this short interval because external forces are negligible compared to internal collision forces, mechanical energy is nonconserved due to inelastic deformation. Equating initial kinetic energy directly to final potential energy ignores this major energy transformation.",
+        "ms": "Pembenaman projektil adalah perlanggaran tak kenyal sempurna. Walaupun momentum sepanjang arah ufuk adalah abadi semasa selang singkat ini kerana daya luar boleh diabaikan berbanding daya perlanggaran dalaman, tenaga mekanik tidak abadi disebabkan oleh ubah bentuk tak kenyal. Menyamakan tenaga kinetik awal secara terus kepada tenaga keupayaan akhir mengabaikan transformasi tenaga utama ini.",
+        "zh": "弹丸嵌入过程属于完全非弹性碰撞。尽管在极短碰撞时间内水平方向合外力远小于内力从而动量守恒，但剧烈的非弹性形变导致机械能严重损失而不守恒。直接将初始动能等同于最终重力势能完全忽视了这一关键的能量耗散过程。"
+      },
+      "explanation": {
+        "en": "In a ballistic pendulum, the physical analysis must be decoupled into two consecutive phases governed by different physical conservation models. In phase 1 (the collision), the projectile embeds into the block. Under the impulse approximation, external horizontal forces are negligible, so the system of projectile plus block is isolated for linear momentum: m1*v1i = (m1 + m2)*vf. However, internal nonconservative friction and deformation forces act, meaning mechanical energy is definitely not conserved (a large portion of kinetic energy transforms into internal energy). In phase 2 (the swing), tension in the cords acts perpendicularly to the path of motion (doing zero work), and gravity is a conservative force. Hence, the system of composite mass plus Earth is an isolated system for mechanical energy: (1/2)(m1 + m2)*vf^2 = (m1 + m2)*g*h. Attempting to bypass the collision phase by equating initial kinetic energy to final potential energy violates the physics of inelastic collisions.",
+        "ms": "Dalam bandul balistik, analisis fizikal mesti dipisahkan kepada dua fasa berturutan yang dikawal oleh model keabadian fizikal yang berbeza. Dalam fasa 1 (perlanggaran), projektil terbenam ke dalam blok. Di bawah anggaran impuls, daya ufuk luar boleh diabaikan, maka sistem projektil bersama blok adalah terpencil bagi momentum linear: m1*v1i = (m1 + m2)*vf. Walau bagaimanapun, daya geseran dan ubah bentuk dalaman bukan abadi bertindak, bermakna tenaga mekanik pasti tidak abadi (sebahagian besar tenaga kinetik berubah menjadi tenaga dalaman). Dalam fasa 2 (ayunan), tegangan tali bertindak serenjang dengan arah gerakan (melakukan kerja sifar), dan graviti ialah daya abadi. Oleh itu, sistem jisim komposit bersama Bumi adalah sistem terpencil bagi tenaga mekanik: (1/2)(m1 + m2)*vf^2 = (m1 + m2)*g*h. Percubaan untuk melangkau fasa perlanggaran dengan menyamakan tenaga kinetik awal kepada tenaga keupayaan akhir melanggar fizik perlanggaran tak kenyal.",
+        "zh": "在弹道摆问题中，物理分析必须划分为受不同守恒模型支配的两个连续阶段。第一阶段（碰撞阶段）：弹丸射入木块。在冲量近似下，水平外力相比内力可忽略不计，弹丸与木块系统在水平方向上可视为孤立系统，动量守恒：m1*v1i = (m1 + m2)*vf。然而内部存在剧烈的非保守阻抗力做功与形变，机械能绝不守恒（初始动能的大部分转化为系统内能）。第二阶段（上摆阶段）：悬绳拉力始终垂直于运动轨迹不做功，重力为保守力，弹丸-木块-地球系统在此阶段机械能守恒：(1/2)(m1 + m2)*vf^2 = (m1 + m2)*g*h。若试图跨越碰撞阶段直接令初始动能等于最终势能，完全违背了非弹性碰撞的物理本质。"
+      },
+      "misconceptions": [
+        "ballistic-pendulum-energy-conservation",
+        "momentum-lost-in-inelastic"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-linear-momentum",
+        "prompt": {
+          "en": "Review how momentum remains conserved during an isolated collision even when kinetic energy is transformed into internal energy by nonconservative internal forces.",
+          "ms": "Ulang kaji bagaimana momentum kekal abadi semasa perlanggaran terpencil walaupun tenaga kinetik ditukarkan kepada tenaga dalaman oleh daya dalaman bukan abadi.",
+          "zh": "复习孤立系统发生碰撞时，即使非保守内力使动能转化为内能，系统总动量依然守恒的原理。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice conceptual question evaluating why a single-step kinetic-to-potential energy conservation approach is invalid for a ballistic pendulum. Four conceptual statements are provided.",
+        "ms": "Soalan konsep aneka pilihan yang menilai mengapa pendekatan keabadian tenaga kinetik kepada keupayaan satu langkah tidak sah untuk bandul balistik. Empat pernyataan konsep disediakan.",
+        "zh": "多项选择概念题，评估为何对弹道摆直接应用一步式动能到势能守恒方案在物理上是无效的。提供四个概念选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The impact is a perfectly inelastic collision in which nonconservative forces deform the materials and transform mechanical energy into internal energy, so mechanical energy is not conserved during the collision stage.",
+              "ms": "Hentaman itu ialah perlanggaran tak kenyal sempurna di mana daya bukan abadi mengubah bentuk bahan dan memindahkan tenaga mekanik kepada tenaga dalaman, jadi tenaga mekanik tidak abadi semasa peringkat perlanggaran.",
+              "zh": "碰撞属于完全非弹性碰撞，非保守力使材料形变并将机械能转化为内能，因此碰撞阶段机械能并不守恒。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "misconception": "ballistic-pendulum-energy-conservation",
+            "label": {
+              "en": "Mechanical energy is conserved throughout the entire process because internal forces do not change the total energy, but the approach fails because the suspension cords exert an external impulse that destroys momentum.",
+              "ms": "Tenaga mekanik adalah abadi sepanjang keseluruhan proses kerana daya dalaman tidak mengubah jumlah tenaga, tetapi pendekatan ini gagal kerana tali ampaian mengenakan impuls luar yang memusnahkan momentum.",
+              "zh": "机械能在整个过程中是守恒的，因为内力不改变总能量，该方案不成立是因为悬绳施加的外力冲量破坏了动量。"
+            }
+          },
+          {
+            "id": "opt-c",
+            "misconception": "momentum-lost-in-inelastic",
+            "label": {
+              "en": "Linear momentum is destroyed during the collision because kinetic energy decreases, which requires modeling the impact by work-energy theorems rather than momentum.",
+              "ms": "Momentum linear termusnah semasa perlanggaran kerana tenaga kinetik berkurang, yang memerlukan hentaman dimodelkan dengan teorem kerja-tenaga dan bukannya momentum.",
+              "zh": "碰撞过程中线动量被破坏，因为动能减少了，因此必须用功-能定理解析碰撞而不是用动量守恒。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The reasoning fails solely because the gravitational force varies with vertical displacement along the arc, preventing mechanical energy conservation during the swing.",
+              "ms": "Penaakulan itu gagal semata-mata kerana daya graviti berubah mengikut sesaran menegak di sepanjang lengkok, menghalang keabadian tenaga mekanik semasa ayunan.",
+              "zh": "该推理失效仅仅是因为重力随圆弧上的竖直位移发生变化，从而阻碍了摆动过程中的机械能守恒。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-08-diff",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict post-collision motion in elastic collisions for equal masses, stationary targets, and extreme mass ratios.",
+      "prompt": {
+        "en": "A small autonomous probe of mass m travels in deep space along a straight line with velocity +v toward an automated space station of mass M that is initially at rest. The station is enormous compared to the probe (M is thousands of times larger than m). The probe and station undergo an ideal, one-dimensional, head-on elastic collision mediated by a lossless repulsive mechanism. What are the velocities of the probe and the space station immediately after the collision?",
+        "ms": "Sebuah kuar autonomi kecil berjisim m bergerak di angkasa lepas sepanjang satu garis lurus dengan halaju +v ke arah sebuah stesen angkasa berjisim M yang pada asalnya pegun. Stesen tersebut adalah sangat besar berbanding kuar (M adalah beribu-ribu kali ganda lebih besar daripada m). Kuar dan stesen tersebut mengalami perlanggaran kenyal berhadapan satu dimensi yang ideal melalui mekanisme tolakan tanpa kehilangan tenaga. Apakah halaju kuar dan stesen angkasa sejurus selepas perlanggaran?",
+        "zh": "一个质量为 m 的小型自主探测器在深空中沿直线以速度 +v 运动，朝向一座初始静止且质量为 M 的自动化太空站。太空站的质量远大于探测器（M 是 m 的数千倍）。探测器与太空站通过无损耗的斥力装置发生理想的一维正向完全弹性碰撞。碰撞后瞬间，探测器和太空站的速度分别是多少？"
+      },
+      "hints": [
+        {
+          "en": "Recall the elastic collision result for a light incoming particle striking a very massive stationary obstacle: how does the projectile rebound, and how much can a massive target accelerate?",
+          "ms": "Ingat kembali hasil perlanggaran kenyal bagi zarah masuk yang ringan melanggar halangan pegun yang amat besar: bagaimanakah projektil melantun, dan berapa banyakkah sasaran yang besar boleh memecut?",
+          "zh": "回忆轻小入射粒子与超大质量静止障碍物发生弹性碰撞时的结论：入射粒子如何反弹？大质量目标获得了怎样的速度？"
+        },
+        {
+          "en": "Examine the one-dimensional elastic formula v1f = [(m1 - m2)/(m1 + m2)]*v1i and v2f = [2*m1/(m1 + m2)]*v1i in the limiting condition where m1 is m and m2 is M with m much smaller than M.",
+          "ms": "Teliti formula kenyal satu dimensi v1f = [(m1 - m2)/(m1 + m2)]*v1i dan v2f = [2*m1/(m1 + m2)]*v1i dalam keadaan had di mana m1 ialah m dan m2 ialah M dengan m jauh lebih kecil daripada M.",
+          "zh": "考察一维弹性碰撞公式 v1f = [(m1 - m2)/(m1 + m2)]*v1i 以及 v2f = [2*m1/(m1 + m2)]*v1i 在极限条件（m1 为 m，m2 为 M，且 m 远小于 M）下的表现。"
+        }
+      ],
+      "feedback": {
+        "en": "When a very light body elastically strikes a very massive stationary target, the light body rebounds with approximately its original speed in the reverse direction (velocity approximately -v), while the massive target gains an imperceptible forward speed (velocity approximately 0).",
+        "ms": "Apabila satu jasad yang amat ringan melanggar secara kenyal satu sasaran pegun yang amat besar, jasad ringan itu melantun semula dengan kira-kira laju asalnya dalam arah bertentangan (halaju kira-kira -v), manakala sasaran yang besar mendapat laju ke hadapan yang hampir tidak ketara (halaju kira-kira 0).",
+        "zh": "当极轻物体与超大质量静止目标发生弹性碰撞时，轻质物体将以接近原速率反向弹回（速度约为 -v），而大质量目标获得的前进速度微乎其微（速度约为 0）。"
+      },
+      "answerLogic": {
+        "en": "For an elastic collision with a stationary target (v2i = 0), the analytical solution yields v1f = [(m - M)/(m + M)]*v and v2f = [2*m/(m + M)]*v. In the limit where m << M, (m - M)/(m + M) approaches -1, giving v1f approximately -v. The factor 2*m/(m + M) approaches 0, giving v2f approximately 0.",
+        "ms": "Bagi perlanggaran kenyal dengan sasaran pegun (v2i = 0), penyelesaian analisis memberikan v1f = [(m - M)/(m + M)]*v dan v2f = [2*m/(m + M)]*v. Dalam had di mana m << M, (m - M)/(m + M) menghampiri -1, memberikan v1f kira-kira -v. Faktor 2*m/(m + M) menghampiri 0, memberikan v2f kira-kira 0.",
+        "zh": "对于靶物体静止（v2i = 0）的一维弹性碰撞，解析解为 v1f = [(m - M)/(m + M)]*v 与 v2f = [2*m/(m + M)]*v。在 m << M 的极限条件下，(m - M)/(m + M) 趋近于 -1，故 v1f 约为 -v；系数 2*m/(m + M) 趋近于 0，故 v2f 约为 0。"
+      },
+      "explanation": {
+        "en": "This scenario demonstrates the extreme mass ratio limit of head-on elastic collisions. From conservation of momentum and kinetic energy, the relative speed of separation must equal the relative speed of approach: v1f - v2f = -(v1i - v2i) = -v. Because the space station has an overwhelming mass M >> m, its inertia prevents it from acquiring any significant acceleration or velocity during the brief collision; thus, v2f is approximately 0. Substituting this into the relative velocity condition immediately gives v1f is approximately -v. The light probe rebounds with virtually unchanged speed but reversed velocity vector. Confusing this with the case where a heavy projectile hits a light stationary target (where the light target moves away at 2v) is a misapplication of the relative velocity relationship.",
+        "ms": "Senario ini menunjukkan had nisbah jisim melampau bagi perlanggaran kenyal berhadapan. Daripada keabadian momentum dan tenaga kinetik, laju pemisahan relatif mesti sama dengan laju pendekatan relatif: v1f - v2f = -(v1i - v2i) = -v. Oleh kerana stesen angkasa mempunyai jisim M >> m yang amat besar, inersianya menghalangnya daripada memperoleh sebarang pecutan atau halaju yang ketara semasa perlanggaran singkat; oleh itu, v2f adalah kira-kira 0. Menggantikan nilai ini ke dalam hubungan halaju relatif serta-merta memberikan v1f adalah kira-kira -v. Kuar ringan melantun dengan laju yang hampir tidak berubah tetapi vektor halajunya disongsangkan. Mengelirukan keadaan ini dengan kes di mana projektil berat melanggar sasaran pegun yang ringan (di mana sasaran ringan bergerak menjauh pada 2v) ialah satu salah guna hubungan halaju relatif.",
+        "zh": "本情境展示了一维正碰在极端质量比极限下的性质。由动量守恒和动能守恒可知，分离相对速度等于接近相对速度的反号：v1f - v2f = -(v1i - v2i) = -v。由于太空站质量 M >> m 极其巨大，其巨大惯性使得在碰撞期间获得的加速度和速度完全微不足道，因此 v2f 约为 0。代入相对速度公式立即得到 v1f 约为 -v。轻质探测器以几乎不变的速率反向弹回。若误认为静止目标获得 2v 速度，则是将重物撞轻物（m1 >> m2）与轻物撞重物（m1 << m2）的相对速度关系混淆了。"
+      },
+      "misconceptions": [
+        "velocity-sign-neglect",
+        "relative-velocity-formula-misapplication"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-linear-momentum",
+        "prompt": {
+          "en": "Review the isolated system momentum model and how directional signs must be assigned to 1D velocity vectors before and after collisions.",
+          "ms": "Ulang kaji model momentum sistem terpencil dan bagaimana tanda arah mesti diberikan kepada vektor halaju 1D sebelum dan selepas perlanggaran.",
+          "zh": "复习孤立系统动量守恒模型，以及碰撞前后一维速度矢量方向正负号的正确确定方法。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking for post-collision velocities of a tiny probe and a massive stationary space station after an elastic collision. Four options with symbolic velocities are given.",
+        "ms": "Soalan aneka pilihan yang bertanyakan halaju selepas perlanggaran bagi sebuah kuar kecil dan stesen angkasa pegun yang besar selepas perlanggaran kenyal. Empat pilihan dengan halaju simbolik diberikan.",
+        "zh": "多项选择题，考查微型探测器与超大质量静止太空站发生一维完全弹性碰撞后的速度。提供了四个包含符号速度的选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The probe rebounds with velocity approximately -v, while the space station remains virtually stationary with velocity approximately 0.",
+              "ms": "Kuar melantun dengan halaju kira-kira -v, manakala stesen angkasa kekal hampir pegun dengan halaju kira-kira 0.",
+              "zh": "探测器以约为 -v 的速度反弹，而太空站几乎保持静止，速度约为 0。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "misconception": "relative-velocity-formula-misapplication",
+            "label": {
+              "en": "The space station moves forward with velocity approximately +2v, while the probe comes to a complete rest with velocity 0.",
+              "ms": "Stesen angkasa bergerak ke hadapan dengan halaju kira-kira +2v, manakala kuar berhenti sepenuhnya dengan halaju 0.",
+              "zh": "太空站以约为 +2v 的速度向前运动，而探测器完全停下，速度为 0。"
+            }
+          },
+          {
+            "id": "opt-c",
+            "misconception": "velocity-sign-neglect",
+            "label": {
+              "en": "Both the probe and the space station move forward along the original direction with positive velocities because momentum magnitude cannot become negative.",
+              "ms": "Kedua-dua kuar dan stesen angkasa bergerak ke hadapan mengikut arah asal dengan halaju positif kerana magnitud momentum tidak boleh menjadi negatif.",
+              "zh": "探测器和太空站都沿原方向以正速度向前运动，因为动量大小不能为负。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The probe transfers its entire velocity to the station, so the probe stops with velocity 0 and the station advances with velocity +v.",
+              "ms": "Kuar memindahkan keseluruhan halajunya kepada stesen, maka kuar berhenti dengan halaju 0 dan stesen bergerak maju dengan halaju +v.",
+              "zh": "探测器将其全部速度转移给太空站，因此探测器以速度 0 停下，太空站以速度 +v 前进。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-09-diff",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply relative velocity relationships to analyze one-dimensional elastic collisions between two isolated bodies.",
+      "prompt": {
+        "en": "Two gliders on a frictionless air track collide head-on and subsequently bounce apart, traveling away from each other as separate bodies. A student asserts: 'Because the gliders do not stick together and continue moving separately, their relative speed of separation |v1f - v2f| must equal their relative speed of approach |v1i - v2i|.' Which evaluation correctly assesses the validity of the student's assertion?",
+        "ms": "Dua peluncur di atas landasan udara tanpa geseran berlanggar secara berhadapan dan kemudiannya melantun berasingan, bergerak menjauhi satu sama lain sebagai jasad berasingan. Seorang pelajar menegaskan: 'Oleh kerana peluncur tidak melekat bersama dan terus bergerak secara berasingan, laju pemisahan relatif mereka |v1f - v2f| mestilah sama dengan laju pendekatan relatif mereka |v1i - v2i|.' Penilaian manakah yang menilai kesahihan penegasan pelajar tersebut dengan betul?",
+        "zh": "两架滑块在无摩擦气垫导轨上发生正碰后反弹分开，作为独立的物体各自反向远离。一名学生断言：“因为滑块没有粘在一起且碰撞后分开运动，所以它们的分离相对速率 |v1f - v2f| 必然等于接近相对速率 |v1i - v2i|。”下列哪项评价正确指出了该学生论断的物理正误？"
+      },
+      "hints": [
+        {
+          "en": "Recall the exact physical conditions required to derive the relative velocity relation v1i - v2i = -(v1f - v2f). Does momentum conservation alone guarantee it?",
+          "ms": "Ingat kembali syarat fizikal tepat yang diperlukan untuk menerbitkan hubungan halaju relatif v1i - v2i = -(v1f - v2f). Adakah keabadian momentum sahaja mencukupi untuk menjaminnya?",
+          "zh": "回忆推导相对速度公式 v1i - v2i = -(v1f - v2f) 所需的严格物理前提。仅靠动量守恒能得出该关系吗？"
+        },
+        {
+          "en": "Consider an everyday bouncing rubber ball: it rebounds without sticking, yet it does not reach its original drop height because some kinetic energy was converted to internal thermal energy.",
+          "ms": "Pertimbangkan bola getah yang melantun setiap hari: ia melantun tanpa melekat, namun ia tidak mencapai ketinggian jatuh asalnya kerana sebahagian tenaga kinetik telah ditukarkan kepada tenaga terma dalaman.",
+          "zh": "想一想日常生活中弹起的小皮球：它反弹而没有粘在地面上，但它无法弹回原始高度，因为部分动能转化为了系统内能。"
+        }
+      ],
+      "feedback": {
+        "en": "The student's assertion is incorrect. Separation speed equals approach speed if and only if the collision is perfectly elastic (kinetic energy is conserved). In ordinary inelastic collisions where objects bounce apart without sticking, kinetic energy is partially converted into internal thermal energy or sound, which forces the relative speed of separation to be strictly less than the relative speed of approach.",
+        "ms": "Penegasan pelajar tersebut adalah tidak betul. Laju pemisahan sama dengan laju pendekatan jika dan hanya jika perlanggaran itu adalah kenyal sempurna (tenaga kinetik abadi). Dalam perlanggaran tak kenyal biasa di mana objek melantun berasingan tanpa melekat, tenaga kinetik sebahagiannya ditukarkan kepada tenaga terma dalaman atau bunyi, yang menyebabkan laju pemisahan relatif menjadi lebih kecil secara ketat daripada laju pendekatan relatif.",
+        "zh": "该学生的论断是错误的。分离速率等于接近速率当且仅当碰撞为完全弹性碰撞（动能严格守恒）。在物体弹开但未粘连的普通非弹性碰撞中，部分动能转化为了内能或声能，使得分离相对速率必然严格小于接近相对速率。"
+      },
+      "answerLogic": {
+        "en": "The relationship (v1i - v2i) = -(v1f - v2f) requires both momentum conservation and kinetic energy conservation to be simultaneously satisfied. If any mechanical energy is transformed into internal energy or acoustic energy during contact, the collision is inelastic even if the bodies separate, and the separation speed is reduced.",
+        "ms": "Hubungan (v1i - v2i) = -(v1f - v2f) memerlukan kedua-dua keabadian momentum dan keabadian tenaga kinetik dipenuhi secara serentak. Sekiranya sebarang tenaga mekanik ditukarkan kepada tenaga dalaman atau tenaga akustik semasa sentuhan, perlanggaran adalah tak kenyal walaupun jasad-jasad itu berpisah, dan laju pemisahan berkurangan.",
+        "zh": "相对速度关系 (v1i - v2i) = -(v1f - v2f) 的推导必须同时满足动量守恒和动能守恒。如果在碰撞接触期间有任何机械能转化为内能或声能，即使物体最终分离，该碰撞也是非弹性碰撞，其分离速率必然减小。"
+      },
+      "explanation": {
+        "en": "The relative velocity equation v1i - v2i = -(v1f - v2f) is derived by simultaneously combining the conservation of linear momentum equation m1*(v1i - v1f) = m2*(v2f - v2i) with the conservation of kinetic energy equation m1*(v1i^2 - v1f^2) = m2*(v2f^2 - v2i^2). Therefore, it is valid exclusively for one-dimensional elastic collisions. Simply bouncing apart (not sticking) only rules out perfectly inelastic collisions; it does not guarantee that the collision is elastic. When two macroscopic objects collide, inelastic deformation, acoustic emission, and internal thermal heating generally transform a portion of the macroscopic kinetic energy into internal energy. As a consequence, in any non-ideal inelastic collision where the objects separate, the relative speed of recession |v1f - v2f| is strictly smaller than the relative speed of approach |v1i - v2i|.",
+        "ms": "Persamaan halaju relatif v1i - v2i = -(v1f - v2f) diterbitkan dengan menggabungkan persamaan keabadian momentum linear m1*(v1i - v1f) = m2*(v2f - v2i) serentak dengan persamaan keabadian tenaga kinetik m1*(v1i^2 - v1f^2) = m2*(v2f^2 - v2i^2). Oleh itu, ia sah secara eksklusif untuk perlanggaran kenyal satu dimensi. Tindakan melantun berasingan semata-mata (tidak melekat) hanya menolak kemungkinan perlanggaran tak kenyal sempurna; ia tidak menjamin bahawa perlanggaran tersebut adalah kenyal. Apabila dua objek makroskopik berlanggar, ubah bentuk tak kenyal, pelepasan akustik, dan pemanasan terma dalaman secara amnya memindahkan sebahagian daripada tenaga kinetik makroskopik kepada tenaga dalaman. Akibatnya, dalam mana-mana perlanggaran tak kenyal bukan ideal di mana objek berpisah, laju pemisahan relatif |v1f - v2f| adalah lebih kecil secara ketat daripada laju pendekatan relatif |v1i - v2i|.",
+        "zh": "相对速度方程 v1i - v2i = -(v1f - v2f) 是通过将线动量守恒方程 m1*(v1i - v1f) = m2*(v2f - v2i) 与动能守恒方程 m1*(v1i^2 - v1f^2) = m2*(v2f^2 - v2i^2) 联立因式分解相除推导出来的。因此，该关系仅对一维完全弹性碰撞严格有效。碰撞后物体弹开（没有粘连）仅仅排除了完全非弹性碰撞，绝不等于碰撞就是弹性的。宏观物体碰撞时，非弹性形变、声波辐射和摩擦发热通常会将一部分机械能转化为系统内能。因此，在物体弹开的普通非弹性碰撞中，分离相对速率 |v1f - v2f| 必然严格小于接近相对速率 |v1i - v2i|。"
+      },
+      "misconceptions": [
+        "relative-velocity-formula-misapplication",
+        "kinetic-energy-always-conserved"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "translational-kinetic-energy",
+        "prompt": {
+          "en": "Review the definition of translational kinetic energy and how it differs from momentum in its sensitivity to nonconservative structural deformations during contact.",
+          "ms": "Ulang kaji definisi tenaga kinetik translasi dan perbezaannya dengan momentum dari segi kepekaannya terhadap ubah bentuk struktur bukan abadi semasa sentuhan.",
+          "zh": "复习平动动能的定义，以及它与动量在面对碰撞形变等非保守过程时的本质区别。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question evaluating whether the relative speed of separation must equal approach speed whenever objects bounce apart. Four conceptual justifications are provided.",
+        "ms": "Soalan aneka pilihan yang menilai sama ada laju pemisahan relatif mesti sama dengan laju pendekatan setiap kali objek melantun berasingan. Empat justifikasi konsep disediakan.",
+        "zh": "多项选择题，评估只要物体弹开分离相对速率是否就必然等于接近相对速率。提供四个概念辨析选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The assertion is invalid because equality of relative speeds requires kinetic energy to be conserved; if mechanical energy is transformed into internal energy during deformation, the collision is inelastic and the separation speed is strictly less than the approach speed.",
+              "ms": "Penegasan itu tidak sah kerana kesamaan laju relatif memerlukan tenaga kinetik diabadikan; sekiranya tenaga mekanik ditukarkan kepada tenaga dalaman semasa ubah bentuk, perlanggaran adalah tak kenyal dan laju pemisahan adalah lebih kecil secara ketat daripada laju pendekatan.",
+              "zh": "该论断无效，因为相对速率相等的前提是动能守恒；若形变过程中机械能转化为内能，碰撞即为非弹性碰撞，分离速率必然严格小于接近速率。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "misconception": "kinetic-energy-always-conserved",
+            "label": {
+              "en": "The assertion is entirely valid because any collision where the colliding objects separate rather than stick together is classified as elastic, guaranteeing full kinetic energy conservation.",
+              "ms": "Penegasan itu adalah sah sepenuhnya kerana sebarang perlanggaran di mana objek yang berlanggar berpisah dan bukannya melekat bersama dikelaskan sebagai kenyal, menjamin keabadian penuh tenaga kinetik.",
+              "zh": "该论断完全有效，因为任何物体弹开而不粘在一起的碰撞都被归类为弹性碰撞，从而保证动能完全守恒。"
+            }
+          },
+          {
+            "id": "opt-c",
+            "misconception": "relative-velocity-formula-misapplication",
+            "label": {
+              "en": "The assertion is invalid because the relative velocity relationship is derived purely from linear momentum conservation and therefore holds only when one of the objects is initially stationary.",
+              "ms": "Penegasan itu tidak sah kerana hubungan halaju relatif diterbitkan semata-mata daripada keabadian momentum linear dan oleh itu hanya sah apabila salah satu objek pada asalnya pegun.",
+              "zh": "该论断无效，因为相对速度关系纯粹是由线动量守恒推导出来的，因此仅在其中一个物体初始静止时才成立。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The assertion is valid only if the gliders have identical masses, because equal masses exchange velocities regardless of whether kinetic energy is conserved.",
+              "ms": "Penegasan itu sah hanya jika peluncur mempunyai jisim yang sama, kerana jisim yang sama bertukar halaju tanpa mengira sama ada tenaga kinetik abadi atau tidak.",
+              "zh": "该论断仅在两滑块质量相等时才有效，因为等质量物体必然交换速度，而无论动能是否守恒。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-int-01-easy",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between elastic, inelastic, and perfectly inelastic collisions based on kinetic energy conservation.",
+      "prompt": {
+        "en": "Classify each described one-dimensional collision scenario into the correct collision category based on how kinetic energy behaves and whether the bodies stick together.",
+        "ms": "Kelaskan setiap senario perlanggaran satu dimensi yang diterangkan ke dalam kategori perlanggaran yang betul berdasarkan kelakuan tenaga kinetik dan sama ada jasad bercantum bersama.",
+        "zh": "根据动能的转化规律以及碰撞后物体是否粘合在一起，将以下描述的一维碰撞场景归类到正确的碰撞类型中。"
+      },
+      "hints": [
+        {
+          "en": "Recall the defining difference: an elastic collision conserves total kinetic energy perfectly, whereas an inelastic collision converts some kinetic energy into internal energy, deformation, or sound.",
+          "ms": "Ingat kembali perbezaan takrifan: perlanggaran kenyal mengabadikan jumlah tenaga kinetik secara sempurna, manakala perlanggaran tak kenyal menukarkan sebahagian tenaga kinetik kepada tenaga dalaman, ubah bentuk, atau bunyi.",
+          "zh": "回顾定义上的核心区别：弹性碰撞中总动能严格守恒，而非弹性碰撞则会将部分动能转化为内能、形变能或声能。"
+        },
+        {
+          "en": "If the colliding bodies fuse or stick together after impact and move with a common final velocity, the collision is classified as perfectly inelastic.",
+          "ms": "Jika jasad yang berlanggar bercantum atau melekat bersama selepas hentaman dan bergerak dengan satu halaju sepunya, perlanggaran itu dikelaskan sebagai tak kenyal sempurna.",
+          "zh": "如果碰撞物体在撞击后粘合或锁合在一起并以共同的速度运动，则该碰撞被归类为完全非弹性碰撞。"
+        }
+      ],
+      "feedback": {
+        "en": "Classification verified. Only subatomic interactions without energy dissipation are truly elastic; macroscopic collisions that bounce apart while dissipating sound or heat are inelastic, and objects that stick together represent perfectly inelastic collisions.",
+        "ms": "Pengelasan disahkan. Hanya interaksi subatom tanpa lesapan tenaga adalah kenyal sebenar; perlanggaran makroskopik yang melantun berasingan sambil melesapkan bunyi atau haba adalah tak kenyal, dan objek yang melekat bersama mewakili perlanggaran tak kenyal sempurna.",
+        "zh": "分类验证完成。只有没有能量耗散的亚原子相互作用才是严格的弹性碰撞；宏观物体碰撞后弹开但散发声音或热量的属于非弹性碰撞；而碰撞后粘合在一起运动的则属于完全非弹性碰撞。"
+      },
+      "answerLogic": {
+        "en": "Electrostatically repelling protons conserve both momentum and kinetic energy without contact deformation, making the collision elastic. A tennis ball rebounding to a lower height and billiard balls producing audible sound dissipate mechanical energy, categorizing them as inelastic. Latching freight cars moving together as a composite mass undergo a perfectly inelastic collision.",
+        "ms": "Proton yang menolak secara elektrostatik mengabadikan kedua-dua momentum dan tenaga kinetik tanpa ubah bentuk sentuhan, menjadikannya perlanggaran kenyal. Bola tenis yang melantun ke ketinggian lebih rendah dan bola biliard yang menghasilkan bunyi boleh didengar melesapkan tenaga mekanikal, mengkategorikannya sebagai tak kenyal. Gerabak kereta api yang bercantum dan bergerak bersama sebagai jisim komposit mengalami perlanggaran tak kenyal sempurna.",
+        "zh": "质子通过静电斥力相互作用，无接触形变，系统动量与动能均完全守恒，属于弹性碰撞。网球反弹高度降低以及台球发声均伴随机械能耗散，属于非弹性碰撞。两节车厢锁合为一体共同运动，机械能损失最大，属于完全非弹性碰撞。"
+      },
+      "explanation": {
+        "en": "Linear momentum is conserved in all isolated collisions. Categorization depends on mechanical energy: elastic collisions conserve total kinetic energy (common at atomic scales); inelastic collisions conserve momentum but dissipate kinetic energy into heat, sound, or deformation; perfectly inelastic collisions are the extreme case where objects stick together and move at a common final velocity.",
+        "ms": "Momentum linear diabadikan dalam semua perlanggaran terpencil. Pengkategorian bergantung pada tenaga mekanikal: perlanggaran kenyal mengabadikan jumlah tenaga kinetik (lazim pada skala atom); perlanggaran tak kenyal mengabadikan momentum tetapi melesapkan tenaga kinetik kepada haba, bunyi, atau ubah bentuk; perlanggaran tak kenyal sempurna ialah kes melampau di mana objek melekat bersama dan bergerak pada halaju akhir sepunya.",
+        "zh": "在所有孤立碰撞中，线动量都守恒。碰撞类型的划分取决于机械能的守恒情况：弹性碰撞的总动能完全守恒（通常发生在微观原子尺度）；非弹性碰撞中动量守恒但动能转化为热能、声能或形变能；完全非弹性碰撞则是物体碰撞后粘合在一起并以共同速度运动的极限情况。"
+      },
+      "misconceptions": [
+        "momentum-lost-in-inelastic",
+        "kinetic-energy-always-conserved"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-linear-momentum",
+        "prompt": {
+          "en": "Remember that in an isolated system, the total linear momentum is always conserved regardless of whether kinetic energy is conserved or dissipated.",
+          "ms": "Ingat bahawa dalam suatu sistem terpencil, jumlah momentum linear sentiasa diabadikan tidak kira sama ada tenaga kinetik diabadikan atau dilesapkan.",
+          "zh": "请记住，在孤立系统中，无论动能是守恒还是耗散，总动量都始终守恒。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive classification task. Four scenario items must be sorted into three target categories: Elastic Collision, Inelastic Collision (Separating), and Perfectly Inelastic Collision.",
+        "ms": "Tugasan pengelasan interaktif. Empat item senario mesti diisih ke dalam tiga kategori sasaran: Perlanggaran Kenyal, Perlanggaran Tak Kenyal (Berpisah), dan Perlanggaran Tak Kenyal Sempurna.",
+        "zh": "交互式分类任务。需要将四个碰撞场景分别放入三个目标类别中：弹性碰撞、非弹性碰撞（碰撞后分离）和完全非弹性碰撞。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-elastic",
+            "label": {
+              "en": "Elastic Collision",
+              "ms": "Perlanggaran Kenyal",
+              "zh": "弹性碰撞"
+            }
+          },
+          {
+            "id": "target-inelastic",
+            "label": {
+              "en": "Inelastic Collision (Separating)",
+              "ms": "Perlanggaran Tak Kenyal (Berpisah)",
+              "zh": "非弹性碰撞（碰撞后分离）"
+            }
+          },
+          {
+            "id": "target-perfectly-inelastic",
+            "label": {
+              "en": "Perfectly Inelastic Collision",
+              "ms": "Perlanggaran Tak Kenyal Sempurna",
+              "zh": "完全非弹性碰撞"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-subatomic",
+            "label": {
+              "en": "Two subatomic protons repel electrostatically and move apart with both total momentum and total kinetic energy strictly conserved.",
+              "ms": "Dua proton subatom menolak secara elektrostatik dan menjauh dengan jumlah momentum dan jumlah tenaga kinetik terpelihara sepenuhnya.",
+              "zh": "两个亚原子质子通过静电排斥相互作用，系统的总动量与总动能均严格守恒。"
+            }
+          },
+          {
+            "id": "item-bouncing-ball",
+            "label": {
+              "en": "A tennis ball rebounds from a hard court surface to a lower height, transferring some kinetic energy into internal thermal energy and sound.",
+              "ms": "Sebiji bola tenis melantun dari permukaan gelanggang keras ke ketinggian lebih rendah, memindahkan sebahagian tenaga kinetik kepada tenaga terma dalaman dan bunyi.",
+              "zh": "网球从坚硬地面反弹到较低的高度，部分动能转化为内能和声能。"
+            }
+          },
+          {
+            "id": "item-coupled-cars",
+            "label": {
+              "en": "Two freight railcars collide and latch together, continuing their horizontal motion as a single combined mass.",
+              "ms": "Dua gerabak kereta api barang berlanggar dan bercantum bersama, meneruskan gerakan mendatar sebagai satu jisim gabungan.",
+              "zh": "两节货运火车车厢碰撞并咬合在一起，作为一个结合整体继续向前运动。"
+            }
+          },
+          {
+            "id": "item-billiard-click",
+            "label": {
+              "en": "Two macroscopic billiard balls strike head-on and bounce apart, dissipating a small fraction of kinetic energy as an audible click.",
+              "ms": "Dua bola biliard makroskopik berlanggar secara bersemuka dan melantun berasingan, melesapkan sebahagian kecil tenaga kinetik sebagai bunyi klik yang boleh didengar.",
+              "zh": "两个宏观台球发生对心碰撞后弹开，微量动能以可闻撞击声的形式耗散。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-subatomic",
+            "targetId": "target-elastic"
+          },
+          {
+            "itemId": "item-bouncing-ball",
+            "targetId": "target-inelastic"
+          },
+          {
+            "itemId": "item-coupled-cars",
+            "targetId": "target-perfectly-inelastic"
+          },
+          {
+            "itemId": "item-billiard-click",
+            "targetId": "target-inelastic"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "kinetic-energy-always-conserved",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-bouncing-ball",
+            "targetId": "target-elastic"
+          }
+        },
+        {
+          "misconception": "kinetic-energy-always-conserved",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-billiard-click",
+            "targetId": "target-elastic"
+          }
+        },
+        {
+          "misconception": "momentum-lost-in-inelastic",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-coupled-cars",
+            "targetId": "target-elastic"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-02-easy",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict post-collision motion in elastic collisions for equal masses, stationary targets, and extreme mass ratios.",
+      "prompt": {
+        "en": "Match each physical scenario involving an elastic one-dimensional collision with a stationary target cart (v2i = 0) to its correct resulting post-collision motion.",
+        "ms": "Padankan setiap senario fizikal yang melibatkan perlanggaran kenyal satu dimensi dengan troli sasaran pegun (v2i = 0) kepada gerakan selepas perlanggaran yang betul.",
+        "zh": "将每个靶车初始静止（v2i = 0）的一维弹性碰撞物理情境，与其碰撞后正确的运动状态进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Consider the mass relationships: when masses are equal (m1 = m2), colliding elastic bodies cleanly exchange their velocities.",
+          "ms": "Pertimbangkan hubungan jisim: apabila jisim adalah sama (m1 = m2), jasad kenyal yang berlanggar bertukar halaju secara bersih.",
+          "zh": "考虑质量关系：当两物体质量相等（m1 = m2）时，弹性碰撞后两物体完全交换速度。"
+        },
+        {
+          "en": "Pay close attention to vector direction: when a very light projectile strikes a very heavy stationary object (m1 << m2), the light projectile rebounds backward with negative velocity (v1f ≈ -v1i).",
+          "ms": "Beri perhatian teliti kepada arah vektor: apabila projektil yang sangat ringan melanggar objek pegun yang sangat berat (m1 << m2), projektil ringan melantun ke belakang dengan halaju negatif (v1f ≈ -v1i).",
+          "zh": "密切注意矢量方向：当极轻的入射体撞击极重的静止靶体（m1 << m2）时，轻质入射体会以负速度沿相反方向反弹（v1f ≈ -v1i）。"
+        }
+      ],
+      "feedback": {
+        "en": "Matching verified. Equal masses exchange velocities completely. When a heavy projectile strikes a light resting target, it continues almost unaffected while the target shoots forward at roughly twice incoming speed. When a light projectile strikes a heavy resting target, it rebounds backward with reversed velocity.",
+        "ms": "Padanan disahkan. Jisim yang sama bertukar halaju sepenuhnya. Apabila projektil berat melanggar sasaran pegun yang ringan, ia meneruskan gerakan hampir tanpa perubahan manakala sasaran meluncur ke hadapan pada kira-kira dua kali kelajuan masuk. Apabila projektil ringan melanggar sasaran pegun yang berat, ia melantun ke belakang dengan halaju yang disongsangkan.",
+        "zh": "匹配验证完成。质量相等时速度完全交换；重质物体撞击轻质静止靶体时自身速度几乎不变，而轻靶以约两倍入射速度向前飞出；轻质物体撞击重质静止靶体时则以反向速度弹回。"
+      },
+      "answerLogic": {
+        "en": "From Equations 9.23 and 9.24: For m1 = m2, v1f = 0 and v2f = v1i (incoming cart stops, target acquires v1i). For m1 >> m2, v1f ≈ v1i and v2f ≈ 2v1i (massive cart plows ahead unaltered, light cart propelled at 2v1i). For m1 << m2, v1f ≈ -v1i and v2f ≈ 0 (light cart rebounds with negative velocity, massive target stays nearly at rest).",
+        "ms": "Daripada Persamaan 9.23 dan 9.24: Untuk m1 = m2, v1f = 0 dan v2f = v1i (troli masuk berhenti, sasaran memperoleh v1i). Untuk m1 >> m2, v1f ≈ v1i dan v2f ≈ 2v1i (troli besar meneruskan gerakan tanpa perubahan, troli ringan ditolak pada 2v1i). Untuk m1 << m2, v1f ≈ -v1i dan v2f ≈ 0 (troli ringan melantun dengan halaju negatif, sasaran besar kekal hampir pegun).",
+        "zh": "根据公式 9.23 和 9.24：当 m1 = m2 时，v1f = 0 且 v2f = v1i（入射小车停下，靶车获得 v1i）；当 m1 >> m2 时，v1f ≈ v1i 且 v2f ≈ 2v1i（重车速度几乎不变，轻靶以 2v1i 飞出）；当 m1 << m2 时，v1f ≈ -v1i 且 v2f ≈ 0（轻车以负速度反向弹回，重靶几乎保持静止）。"
+      },
+      "explanation": {
+        "en": "In a 1D elastic collision with a stationary target, the final velocities depend on the mass ratio. The relative velocity formula v1i - v2i = -(v1f - v2f) dictates that for m1 = m2, the moving particle stops and transfers all velocity to the target. For extreme mass differences, momentum and kinetic energy conservation result in the lighter object undergoing the large velocity change, including a velocity sign reversal when m1 << m2.",
+        "ms": "Dalam perlanggaran kenyal 1D dengan sasaran pegun, halaju akhir bergantung pada nisbah jisim. Formula halaju relatif v1i - v2i = -(v1f - v2f) menetapkan bahawa bagi m1 = m2, zarah yang bergerak berhenti dan memindahkan semua halaju kepada sasaran. Bagi perbezaan jisim yang ketara, keabadian momentum dan tenaga kinetik menyebabkan objek yang lebih ringan mengalami perubahan halaju yang besar, termasuk penyongsangan tanda halaju apabila m1 << m2.",
+        "zh": "在一维弹性碰撞且靶体静止的情境中，碰撞后的最终速度取决于质量比。根据相对速度关系式 v1i - v2i = -(v1f - v2f)，当 m1 = m2 时，入射粒子停下并将速度完全传递给靶体；在极端质量比下，动量与动能守恒要求轻质物体承受剧烈的速度变化，当 m1 << m2 时入射轻体速度符号反转。"
+      },
+      "misconceptions": [
+        "velocity-sign-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Review that velocity and momentum are signed vector quantities in one dimension, where positive and negative signs indicate opposite directions of motion.",
+          "ms": "Ulang kaji bahawa halaju dan momentum ialah kuantiti vektor bertanda dalam satu dimensi, dengan tanda positif dan negatif menunjukkan arah gerakan yang bertentangan.",
+          "zh": "复习一维情况下速度和动量均为带符号的矢量，正号和负号分别表示相反的运动方向。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive matching activity. Match three elastic collision setups (equal masses, massive projectile into light target, light projectile into massive target) with their three corresponding post-collision velocity outcomes.",
+        "ms": "Aktiviti padanan interaktif. Padankan tiga persediaan perlanggaran kenyal (jisim sama, projektil besar ke sasaran ringan, projektil ringan ke sasaran besar) dengan tiga hasil halaju selepas perlanggaran yang sepadan.",
+        "zh": "交互式匹配活动。将三种弹性碰撞情境（等质量、重撞轻、轻撞重）分别与三种碰撞后速度结果进行匹配。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-velocity-exchange",
+            "label": {
+              "en": "Incoming body halts completely (v1f = 0); target moves forward at full initial speed (v2f = v1i)",
+              "ms": "Jasad masuk berhenti sepenuhnya (v1f = 0); sasaran bergerak ke hadapan pada kelajuan awal penuh (v2f = v1i)",
+              "zh": "入射物体完全停止（v1f = 0）；靶体以全部初速度向前运动（v2f = v1i）"
+            }
+          },
+          {
+            "id": "target-plow-through",
+            "label": {
+              "en": "Incoming body continues forward nearly unaffected (v1f ≈ v1i); target is propelled at approximately twice the incoming speed (v2f ≈ 2v1i)",
+              "ms": "Jasad masuk meneruskan gerakan ke hadapan hampir tanpa terjejas (v1f ≈ v1i); sasaran melonjak ke hadapan pada kira-kira dua kali kelajuan masuk (v2f ≈ 2v1i)",
+              "zh": "入射物体几乎不受影响继续前进（v1f ≈ v1i）；靶体以约两倍入射速度向前飞出（v2f ≈ 2v1i）"
+            }
+          },
+          {
+            "id": "target-rebound-reverse",
+            "label": {
+              "en": "Incoming body rebounds in the opposite direction (v1f ≈ -v1i); target remains virtually stationary (v2f ≈ 0)",
+              "ms": "Jasad masuk melantun ke arah bertentangan (v1f ≈ -v1i); sasaran kekal hampir pegun (v2f ≈ 0)",
+              "zh": "入射物体沿相反方向反弹（v1f ≈ -v1i）；靶体几乎保持静止（v2f ≈ 0）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-equal-mass-collision",
+            "label": {
+              "en": "Two identical dynamic gliders on a frictionless track, where Cart 1 moving at velocity v1i strikes stationary Cart 2 (m1 = m2).",
+              "ms": "Dua peluncur dinamik yang serupa di atas landasan tanpa geseran, di mana Troli 1 yang bergerak pada halaju v1i melanggar Troli 2 yang pegun (m1 = m2).",
+              "zh": "无摩擦轨道上两个相同的滑块，滑块 1 以速度 v1i 撞击静止的滑块 2（m1 = m2）。"
+            }
+          },
+          {
+            "id": "item-massive-strikes-light",
+            "label": {
+              "en": "A heavily weighted lead cart moving at velocity v1i collides elastically with an ultra-light hollow plastic cart at rest (m1 >> m2).",
+              "ms": "Troli plumbum yang sarat dengan pemberat bergerak pada halaju v1i berlanggar secara kenyal dengan troli plastik berongga yang sangat ringan dalam keadaan pegun (m1 >> m2).",
+              "zh": "一辆以速度 v1i 运动的重载铅滑车，与一辆静止的超轻空心塑料滑车发生弹性碰撞（m1 >> m2）。"
+            }
+          },
+          {
+            "id": "item-light-strikes-massive",
+            "label": {
+              "en": "An ultra-light ping-pong ball moving at velocity v1i strikes a massive stationary steel anvil head-on (m1 << m2).",
+              "ms": "Sebiji bola pingpong yang sangat ringan bergerak pada halaju v1i melanggar andas keluli pegun yang sangat besar secara bersemuka (m1 << m2).",
+              "zh": "一个以速度 v1i 运动的超轻乒乓球正碰一个巨大的静止钢制铁砧（m1 << m2）。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-equal-mass-collision",
+            "targetId": "target-velocity-exchange"
+          },
+          {
+            "itemId": "item-massive-strikes-light",
+            "targetId": "target-plow-through"
+          },
+          {
+            "itemId": "item-light-strikes-massive",
+            "targetId": "target-rebound-reverse"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "velocity-sign-neglect",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-light-strikes-massive",
+            "targetId": "target-plow-through"
+          }
+        },
+        {
+          "misconception": "velocity-sign-neglect",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-light-strikes-massive",
+            "targetId": "target-velocity-exchange"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-03-easy",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between elastic, inelastic, and perfectly inelastic collisions based on kinetic energy conservation.",
+      "prompt": {
+        "en": "Select all statements that correctly describe the conservation of linear momentum and kinetic energy for collisions in an isolated system.",
+        "ms": "Pilih semua pernyataan yang menerangkan dengan betul keabadian momentum linear dan tenaga kinetik bagi perlanggaran dalam suatu sistem terpencil.",
+        "zh": "选择所有正确描述孤立系统中碰撞的线动量和动能守恒特性的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Distinguish between laws that hold for all isolated collisions and conditions that define specific collision types: does momentum conservation ever depend on whether the collision is elastic or inelastic?",
+          "ms": "Bezakan antara hukum yang terpakai bagi semua perlanggaran terpencil dan syarat yang mentakrifkan jenis perlanggaran tertentu: adakah keabadian momentum pernah bergantung pada sama ada perlanggaran itu kenyal atau tak kenyal?",
+          "zh": "区分适用于所有孤立碰撞的普遍规律与定义特定碰撞类型的条件：动量守恒是否依赖于碰撞是弹性还是非弹性？"
+        },
+        {
+          "en": "Consider macroscopic collisions: even when objects bounce apart without sticking, is kinetic energy truly conserved if sound is produced or surfaces warm up?",
+          "ms": "Pertimbangkan perlanggaran makroskopik: walaupun objek melantun berasingan tanpa melekat, adakah tenaga kinetik benar-benar diabadikan jika bunyi dihasilkan atau permukaan menjadi panas?",
+          "zh": "考虑宏观物体的碰撞：即使物体撞击后分开而没有粘在一起，如果产生了声音或表面发热，动能还能算真正守恒吗？"
+        }
+      ],
+      "feedback": {
+        "en": "Selection verified. In an isolated system, total linear momentum is always conserved regardless of collision type. Total kinetic energy is conserved only in perfectly elastic collisions; all inelastic collisions transform some kinetic energy into internal energy, sound, or deformation.",
+        "ms": "Pilihan disahkan. Dalam suatu sistem terpencil, jumlah momentum linear sentiasa diabadikan tanpa mengira jenis perlanggaran. Jumlah tenaga kinetik hanya diabadikan dalam perlanggaran kenyal sempurna; semua perlanggaran tak kenyal menukarkan sebahagian tenaga kinetik kepada tenaga dalaman, bunyi, atau ubah bentuk.",
+        "zh": "选择验证完成。在孤立系统中，无论何种碰撞类型，总线动量始终守恒。总动能仅在完全弹性碰撞中守恒；所有非弹性碰撞都会将部分动能转化为内能、声能或形变能。"
+      },
+      "answerLogic": {
+        "en": "Statement 1 is correct because isolated systems experience zero net external force, ensuring momentum conservation in all collision types. Statement 2 is correct because the defining characteristic of an inelastic collision is the loss of kinetic energy to internal energy, sound, or deformation. Statement 3 is false because separating after collision does not guarantee elasticity (e.g. rubber balls and billiard balls dissipate energy). Statement 4 is false because total momentum is strictly conserved even when colliding objects stick together.",
+        "ms": "Pernyataan 1 betul kerana sistem terpencil tidak mengalami daya padu luar, memastikan keabadian momentum dalam semua jenis perlanggaran. Pernyataan 2 betul kerana ciri pentakrif perlanggaran tak kenyal ialah kehilangan tenaga kinetik kepada tenaga dalaman, bunyi, atau ubah bentuk. Pernyataan 3 palsu kerana berpisah selepas perlanggaran tidak menjamin kekenyalan (cth. bola getah dan bola biliard melesapkan tenaga). Pernyataan 4 palsu kerana jumlah momentum tetap terpelihara walaupun objek yang berlanggar melekat bersama.",
+        "zh": "陈述 1 正确，因为孤立系统所受合外力为零，确保在所有碰撞类型中动量守恒。陈述 2 正确，因为非弹性碰撞的特征就是部分动能转化为内能、声能或形变能。陈述 3 错误，因为碰撞后分离并不能保证碰撞是弹性的（例如橡胶球和台球均耗散能量）。陈述 4 错误，因为即使物体完全粘合在一起，系统的总动量也严格守恒。"
+      },
+      "explanation": {
+        "en": "Conservation of linear momentum is universal for any isolated collision because the collision forces are entirely internal action-reaction pairs. In contrast, kinetic energy is only conserved in elastic collisions. When objects deform, generate acoustic vibrations, or stick together, mechanical energy is converted into non-mechanical forms, making the collision inelastic while momentum remains perfectly conserved.",
+        "ms": "Keabadian momentum linear adalah sejagat bagi sebarang perlanggaran terpencil kerana daya perlanggaran adalah pasangan tindakan-tindak balas dalaman sepenuhnya. Sebaliknya, tenaga kinetik hanya diabadikan dalam perlanggaran kenyal. Apabila objek berubah bentuk, menjana getaran akustik, atau melekat bersama, tenaga mekanikal ditukarkan kepada bentuk bukan mekanikal, menjadikan perlanggaran itu tak kenyal sementara momentum kekal diabadikan secara sempurna.",
+        "zh": "线动量守恒对任何孤立碰撞都是普适的，因为碰撞力完全是系统内部的作用力与反作用力对。相比之下，动能仅在弹性碰撞中守恒。当物体发生形变、产生声波振动或粘合在一起时，机械能转化为非机械能形式，使得碰撞为非弹性碰撞，但总动量仍然完全守恒。"
+      },
+      "misconceptions": [
+        "kinetic-energy-always-conserved",
+        "momentum-lost-in-inelastic"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "translational-kinetic-energy",
+        "prompt": {
+          "en": "Review translational kinetic energy as scalar energy of motion that can be transformed into thermal energy, deformation, or sound during non-elastic interactions.",
+          "ms": "Ulang kaji tenaga kinetik translasi sebagai tenaga gerakan skalar yang boleh ditukarkan kepada tenaga terma, ubah bentuk, atau bunyi semasa interaksi bukan kenyal.",
+          "zh": "复习平动动能的概念：动能是标量运动能量，在非弹性相互作用中可以转化为内能、形变能或声能。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive multi-selection activity. Read four statements regarding momentum and kinetic energy conservation in isolated collisions and select all correct statements.",
+        "ms": "Aktiviti pelbagai pilihan interaktif. Baca empat pernyataan mengenai keabadian momentum dan tenaga kinetik dalam perlanggaran terpencil dan pilih semua pernyataan yang betul.",
+        "zh": "交互式多项选择活动。阅读关于孤立系统碰撞中动量和动能守恒的四项陈述，并选出所有正确的陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-momentum-always-conserved",
+            "label": {
+              "en": "Total linear momentum of the system is strictly conserved in all isolated collisions, whether elastic, inelastic, or perfectly inelastic.",
+              "ms": "Jumlah momentum linear sistem diabadikan secara ketat dalam semua perlanggaran terpencil, sama ada kenyal, tak kenyal, atau tak kenyal sempurna.",
+              "zh": "在所有孤立碰撞中，无论碰撞是弹性、非弹性还是完全非弹性，系统的总线动量都严格守恒。"
+            }
+          },
+          {
+            "id": "item-inelastic-transforms-ke",
+            "label": {
+              "en": "In any inelastic collision, total kinetic energy decreases because part of the initial kinetic energy is converted into internal energy, deformation, or sound.",
+              "ms": "Dalam sebarang perlanggaran tak kenyal, jumlah tenaga kinetik berkurangan kerana sebahagian tenaga kinetik awal ditukarkan kepada tenaga dalaman, ubah bentuk, atau bunyi.",
+              "zh": "在任何非弹性碰撞中，总动能都会减少，因为部分初始动能被转化为了内能、形变能或声能。"
+            }
+          },
+          {
+            "id": "item-bouncing-guarantees-elastic",
+            "label": {
+              "en": "Whenever colliding bodies bounce apart and move separately after impact, the collision is guaranteed to be elastic with zero loss of kinetic energy.",
+              "ms": "Setiap kali jasad yang berlanggar melantun berasingan dan bergerak secara terpisah selepas hentaman, perlanggaran itu dijamin kenyal dengan sifar kehilangan tenaga kinetik.",
+              "zh": "只要碰撞物体在撞击后弹开并分开运动，就保证该碰撞是弹性碰撞且动能零损失。"
+            }
+          },
+          {
+            "id": "item-perfectly-inelastic-loses-momentum",
+            "label": {
+              "en": "When colliding bodies stick together in a perfectly inelastic collision, the system loses total linear momentum alongside the loss of kinetic energy.",
+              "ms": "Apabila jasad yang berlanggar melekat bersama dalam perlanggaran tak kenyal sempurna, sistem kehilangan jumlah momentum linear bersama-sama dengan kehilangan tenaga kinetik.",
+              "zh": "当碰撞物体在完全非弹性碰撞中粘合在一起时，系统在损失动能的同时也损失了总线动量。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-momentum-always-conserved",
+          "item-inelastic-transforms-ke"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "kinetic-energy-always-conserved",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-bouncing-guarantees-elastic",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "momentum-lost-in-inelastic",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-perfectly-inelastic-loses-momentum",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "momentum-lost-in-inelastic",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-momentum-always-conserved",
+            "selected": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-04-mod",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply conservation of linear momentum to solve for final velocities in perfectly inelastic one-dimensional collisions.",
+      "misconceptions": [
+        "velocity-sign-neglect",
+        "momentum-lost-in-inelastic"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-linear-momentum",
+        "prompt": {
+          "en": "Remember that an isolated system experiences zero net external horizontal force during a collision. Therefore, total linear momentum before the collision must equal total linear momentum after the collision: p_initial = p_final.",
+          "ms": "Ingat bahawa suatu sistem terpencil mengalami daya padu luar mendatar sifar semasa perlanggaran. Oleh itu, jumlah momentum linear sebelum perlanggaran mesti bersamaan dengan jumlah momentum linear selepas perlanggaran: p_awal = p_akhir.",
+          "zh": "请记住，在碰撞过程中孤立系统受到的水平合外力为零。因此，碰撞前的总线动量必须等于碰撞后的总线动量：p_初 = p_末。"
+        }
+      },
+      "prompt": {
+        "en": "Four pairs of identical gliders (each of mass m) collide and lock together on a horizontal frictionless air track. Arrange the four collision scenarios in order of the system's final velocity after the collision, from most positive (fastest moving to the right) to most negative (fastest moving to the left).",
+        "ms": "Empat pasangan peluncur serupa (setiap satu berjisim m) berlanggar dan terkunci bersama di atas landasan udara mendatar tanpa geseran. Susun empat senario perlanggaran ini mengikut susunan halaju akhir sistem selepas perlanggaran, daripada paling positif (paling laju ke kanan) kepada paling negatif (paling laju ke kiri).",
+        "zh": "四对相同的滑块（每个质量均为 m）在水平无摩擦气垫导轨上碰撞并锁结在一起。请将这四种碰撞情形按照碰撞后系统的最终速度从最正（向右运动最快）到最负（向左运动最快）的顺序进行排序。"
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "case-1",
+            "label": {
+              "en": "Glider 1 moving right at speed 4v collides with a stationary Glider 2 (speed 0) and latches together.",
+              "ms": "Peluncur 1 yang bergerak ke kanan pada kelajuan 4v berlanggar dengan Peluncur 2 yang pegun (kelajuan 0) dan melekat bersama.",
+              "zh": "滑块 1 以速率 4v 向右运动，与静止的滑块 2（速率为 0）碰撞并粘在一起。"
+            }
+          },
+          {
+            "id": "case-2",
+            "label": {
+              "en": "Glider 1 moving right at speed 2v catches up with Glider 2 moving right at speed 1v and latches together.",
+              "ms": "Peluncur 1 yang bergerak ke kanan pada kelajuan 2v mengejar Peluncur 2 yang bergerak ke kanan pada kelajuan 1v dan melekat bersama.",
+              "zh": "滑块 1 以速率 2v 向右运动，追上以速率 1v 向右运动的滑块 2 并粘在一起。"
+            }
+          },
+          {
+            "id": "case-3",
+            "label": {
+              "en": "Glider 1 moving right at speed 3v collides head-on with Glider 2 moving left at speed 2v and latches together.",
+              "ms": "Peluncur 1 yang bergerak ke kanan pada kelajuan 3v berlanggar secara berhadapan dengan Peluncur 2 yang bergerak ke kiri pada kelajuan 2v dan melekat bersama.",
+              "zh": "滑块 1 以速率 3v 向右运动，与以速率 2v 向左运动的滑块 2 迎头碰撞并粘在一起。"
+            }
+          },
+          {
+            "id": "case-4",
+            "label": {
+              "en": "Glider 1 moving right at speed 1v collides head-on with Glider 2 moving left at speed 3v and latches together.",
+              "ms": "Peluncur 1 yang bergerak ke kanan pada kelajuan 1v berlanggar secara berhadapan dengan Peluncur 2 yang bergerak ke kiri pada kelajuan 3v dan melekat bersama.",
+              "zh": "滑块 1 以速率 1v 向右运动，与以速率 3v 向左运动的滑块 2 迎头碰撞并粘在一起。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "case-1",
+          "case-2",
+          "case-3",
+          "case-4"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "velocity-sign-neglect",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "case-3",
+            "secondItemId": "case-2"
+          }
+        },
+        {
+          "misconception": "momentum-lost-in-inelastic",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "case-2",
+            "secondItemId": "case-1"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "First determine the total initial momentum of each system using algebraic signs: take rightward motion as positive (+) and leftward motion as negative (-).",
+          "ms": "Mula-mula tentukan jumlah momentum awal setiap sistem menggunakan tanda algebra: ambil pergerakan ke kanan sebagai positif (+) dan pergerakan ke kiri sebagai negatif (-).",
+          "zh": "首先利用代数符号确定每个系统的总初动量：规定向右运动为正 (+)，向左运动为负 (-)。"
+        },
+        {
+          "en": "For each pair, the combined mass is 2m. Because the system is isolated, total momentum is conserved regardless of how much kinetic energy is dissipated into internal energy: v_final = (m1*v1i + m2*v2i) / (2m).",
+          "ms": "Bagi setiap pasangan, jumlah jisim gabungan ialah 2m. Kerana sistem ini terpencil, jumlah momentum sentiasa abadi tanpa mengira berapa banyak tenaga kinetik yang lesap menjadi tenaga dalaman: v_akhir = (m1*v1i + m2*v2i) / (2m).",
+          "zh": "对于每对滑块，结合后的总质量为 2m。由于系统是孤立的，无论有多少动能转化为内能，总动量均守恒：v_末 = (m1*v1i + m2*v2i) / (2m)。"
+        }
+      ],
+      "feedback": {
+        "en": "Evaluating total initial signed momentum for identical masses m yields: Case 1 gives +4mv (v_final = +2.0v); Case 2 gives +2mv + 1mv = +3mv (v_final = +1.5v); Case 3 gives +3mv - 2mv = +1mv (v_final = +0.5v); Case 4 gives +1mv - 3mv = -2mv (v_final = -1.0v).",
+        "ms": "Menilai jumlah momentum bertanda awal bagi jisim serupa m menghasilkan: Kes 1 memberikan +4mv (v_akhir = +2.0v); Kes 2 memberikan +2mv + 1mv = +3mv (v_akhir = +1.5v); Kes 3 memberikan +3mv - 2mv = +1mv (v_akhir = +0.5v); Kes 4 memberikan +1mv - 3mv = -2mv (v_akhir = -1.0v).",
+        "zh": "对比相同质量 m 的各对滑块带符号总初动量：情形 1 的总动量为 +4mv（末速度为 +2.0v）；情形 2 为 +2mv + 1mv = +3mv（末速度为 +1.5v）；情形 3 为 +3mv - 2mv = +1mv（末速度为 +0.5v）；情形 4 为 +1mv - 3mv = -2mv（末速度为 -1.0v）。"
+      },
+      "answerLogic": {
+        "en": "In a perfectly inelastic collision, the two masses combine so v_final = p_total / (m1 + m2). Total momentum is strictly conserved in every isolated collision. Neglecting velocity signs in Case 3 leads to erroneously adding speeds (3v + 2v = 5v), while assuming momentum is destroyed in high-energy collisions leads to placing Case 2 ahead of Case 1.",
+        "ms": "Dalam perlanggaran tak kenyal sempurna, kedua-dua jisim bergabung supaya v_akhir = p_jumlah / (m1 + m2). Jumlah momentum adalah sentiasa abadi dalam setiap perlanggaran terpencil. Mengabaikan tanda halaju dalam Kes 3 menyebabkan penambahan kelajuan yang salah (3v + 2v = 5v), manakala menganggap momentum hilang dalam perlanggaran bertenaga tinggi menyebabkan Kes 2 diletakkan sebelum Kes 1.",
+        "zh": "在完全非弹性碰撞中，两物体合二为一，因此 v_末 = p_总 / (m1 + m2)。在每个孤立碰撞中总动量严格守恒。若在情形 3 中忽略速度符号，就会错误地将速率相加 (3v + 2v = 5v)；若误认为剧烈碰撞会损失动量，就会将情形 2 排在情形 1 之前。"
+      },
+      "explanation": {
+        "en": "Although kinetic energy is converted into internal energy and deformation during a perfectly inelastic collision, linear momentum remains conserved because internal collision forces cancel in pairs. Correctly solving for the post-collision velocity requires tracking direction through algebraic signs.",
+        "ms": "Walaupun tenaga kinetik bertukar menjadi tenaga dalaman dan ubah bentuk semasa perlanggaran tak kenyal sempurna, momentum linear tetap abadi kerana daya perlanggaran dalaman saling membatalkan secara berpasangan. Menyelesaikan halaju selepas perlanggaran dengan betul memerlukan penetapan arah melalui tanda algebra.",
+        "zh": "尽管在完全非弹性碰撞中动能转化为内能和形变能，但由于碰撞内力成对抵消，线动量仍然守恒。正确求解碰撞后速度的关键在于通过代数正负号准确表达方向。"
+      },
+      "accessibilityText": {
+        "en": "A vertical list of four collision scenarios between identical gliders. Reorder the list from top (most positive final velocity) to bottom (most negative final velocity) using move up and move down controls.",
+        "ms": "Senarai menegak empat senario perlanggaran antara peluncur serupa. Susun semula senarai dari atas (halaju akhir paling positif) ke bawah (halaju akhir paling negatif) menggunakan kawalan gerak ke atas dan gerak ke bawah.",
+        "zh": "包含四个相同滑块碰撞情形的垂直列表。使用上移和下移控件，将列表从顶部（最终速度最正）到底部（最终速度最负）重新排序。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "act-int-05-mod",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply relative velocity relationships to analyze one-dimensional elastic collisions between two isolated bodies.",
+      "misconceptions": [
+        "relative-velocity-formula-misapplication",
+        "velocity-sign-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Recall that velocity is a vector quantity with magnitude and direction. In one dimension, direction is indicated by a positive or negative sign, which directly affects relative velocity expressions.",
+          "ms": "Ingat bahawa halaju ialah kuantiti vektor yang mempunyai magnitud dan arah. Dalam satu dimensi, arah ditunjukkan oleh tanda positif atau negatif, yang mempengaruhi ungkapan halaju relatif secara langsung.",
+          "zh": "回顾速度是具有大小和方向的矢量。在一维情况下，方向由正负号表示，这直接决定了相对速度表达式的值。"
+        }
+      },
+      "prompt": {
+        "en": "Match each physical collision scenario between two carts on a frictionless track to the correct kinematic relative velocity relationship that describes the interaction.",
+        "ms": "Padankan setiap senario perlanggaran fizikal antara dua troli di atas landasan tanpa geseran dengan hubungan halaju relatif kinematik yang betul yang menerangkan interaksi tersebut.",
+        "zh": "将光滑轨道上两辆小车的每种物理碰撞情形，与其正确的运动学相对速度关系进行匹配。"
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-opposing-elastic",
+            "label": {
+              "en": "Elastic collision with opposing initial velocities: relative speed of approach is the sum of initial speeds (v1 + v2), and relative velocity reverses: (v1i - v2i) = -(v1f - v2f).",
+              "ms": "Perlanggaran kenyal dengan halaju awal bertentangan: kelajuan relatif pendekatan ialah hasil tambah kelajuan awal (v1 + v2), dan halaju relatif berbalik: (v1i - v2i) = -(v1f - v2f).",
+              "zh": "具有相反初速度的弹性碰撞：接近相对速率为两初始速率之和 (v1 + v2)，且相对速度严格反向：(v1i - v2i) = -(v1f - v2f)。"
+            }
+          },
+          {
+            "id": "target-samedir-elastic",
+            "label": {
+              "en": "Elastic collision with same-direction initial velocities: relative speed of approach is the difference of initial speeds (v1 - v2), and relative velocity reverses: (v1i - v2i) = -(v1f - v2f).",
+              "ms": "Perlanggaran kenyal dengan halaju awal searah: kelajuan relatif pendekatan ialah beza kelajuan awal (v1 - v2), dan halaju relatif berbalik: (v1i - v2i) = -(v1f - v2f).",
+              "zh": "具有同向初速度的弹性碰撞：接近相对速率为两初始速率之差 (v1 - v2)，且相对速度严格反向：(v1i - v2i) = -(v1f - v2f)。"
+            }
+          },
+          {
+            "id": "target-inelastic-invalid",
+            "label": {
+              "en": "Inelastic collision: mechanical kinetic energy is transformed into internal energy, so the relation (v1i - v2i) = -(v1f - v2f) does NOT hold.",
+              "ms": "Perlanggaran tak kenyal: tenaga kinetik mekanikal bertukar menjadi tenaga dalaman, maka hubungan (v1i - v2i) = -(v1f - v2f) TIDAK terpakai.",
+              "zh": "非弹性碰撞：机械动能转化为内能，因此关系式 (v1i - v2i) = -(v1f - v2f) 不成立。"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-elastic-head-on",
+            "label": {
+              "en": "Two magnetic carts approach each other head-on with opposite velocity vectors and collide elastically without contact deformation.",
+              "ms": "Dua troli bermagnet menghampiri satu sama lain secara berhadapan dengan vektor halaju bertentangan dan berlanggar secara kenyal tanpa ubah bentuk sentuhan.",
+              "zh": "两辆带有磁铁的小车以相反的速度矢量迎头接近，发生弹性碰撞且无接触形变。"
+            }
+          },
+          {
+            "id": "item-elastic-overtake",
+            "label": {
+              "en": "A fast cart moves rightward and catches up with a slower cart moving in the same direction, colliding elastically via an ideal spring bumper.",
+              "ms": "Sebuah troli laju bergerak ke kanan dan mengejar troli yang lebih perlahan yang bergerak dalam arah yang sama, berlanggar secara kenyal melalui penimbal spring unggul.",
+              "zh": "一辆较快的小车向右运动，追上沿同方向运动的较慢小车，并通过理想弹簧缓冲器发生弹性碰撞。"
+            }
+          },
+          {
+            "id": "item-inelastic-rebound",
+            "label": {
+              "en": "Two rubber-padded carts collide head-on and bounce apart, but contact friction and warming dissipate part of their initial kinetic energy.",
+              "ms": "Dua troli berlapik getah berlanggar secara berhadapan dan melantun berpisah, tetapi geseran sentuhan dan pemanasan melesapkan sebahagian daripada tenaga kinetik awal mereka.",
+              "zh": "两辆装有橡胶垫的小车迎头碰撞并弹开，但接触摩擦与发热耗散了部分初始动能。"
+            }
+          },
+          {
+            "id": "item-perfectly-inelastic",
+            "label": {
+              "en": "Two carts collide head-on, lock together with mechanical clasps, and move forward as a single combined body.",
+              "ms": "Dua troli berlanggar secara berhadapan, terkunci bersama dengan cangkuk mekanikal, dan bergerak ke hadapan sebagai satu jasad gabungan.",
+              "zh": "两辆小车迎头相撞，通过机械卡扣锁结在一起，并作为一个组合整体向前运动。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-elastic-head-on",
+            "targetId": "target-opposing-elastic"
+          },
+          {
+            "itemId": "item-elastic-overtake",
+            "targetId": "target-samedir-elastic"
+          },
+          {
+            "itemId": "item-inelastic-rebound",
+            "targetId": "target-inelastic-invalid"
+          },
+          {
+            "itemId": "item-perfectly-inelastic",
+            "targetId": "target-inelastic-invalid"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "relative-velocity-formula-misapplication",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-inelastic-rebound",
+            "targetId": "target-opposing-elastic"
+          }
+        },
+        {
+          "misconception": "velocity-sign-neglect",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-elastic-head-on",
+            "targetId": "target-samedir-elastic"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "Recall Pitfall Prevention 9.3: the relative velocity reversal formula v1i - v2i = -(v1f - v2f) is strictly derived from the simultaneous conservation of both momentum and kinetic energy.",
+          "ms": "Ingat Pencegahan Kesilapan 9.3: rumus pembalikan halaju relatif v1i - v2i = -(v1f - v2f) diterbitkan secara khusus daripada keabadian serentak kedua-dua momentum dan tenaga kinetik.",
+          "zh": "回忆注意事项 9.3：相对速度反转公式 v1i - v2i = -(v1f - v2f) 严格由动量与动能的同时守恒推导而来。"
+        },
+        {
+          "en": "When bodies move in opposite directions, one velocity has a negative sign (-v2), so the initial relative velocity magnitude is v1 - (-v2) = v1 + v2. If kinetic energy is lost to heat or permanent deformation, the relative velocity formula cannot be applied.",
+          "ms": "Apabila jasad bergerak dalam arah bertentangan, satu halaju mempunyai tanda negatif (-v2), jadi magnitud halaju relatif awal ialah v1 - (-v2) = v1 + v2. Jika tenaga kinetik hilang menjadi haba atau ubah bentuk kekal, rumus halaju relatif tidak boleh digunakan.",
+          "zh": "当物体反向运动时，其中一个速度带有负号 (-v2)，因此初始相对速度大小为 v1 - (-v2) = v1 + v2。如果动能转化为热或永久形变，则不能套用相对速度公式。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct matching! The relation (v1i - v2i) = -(v1f - v2f) holds exclusively for elastic collisions. For head-on collisions, opposing signs make the approach speed equal to the sum of speeds. For collisions where kinetic energy is dissipated, the formula is invalid.",
+        "ms": "Padanan betul! Hubungan (v1i - v2i) = -(v1f - v2f) hanya sah untuk perlanggaran kenyal. Bagi perlanggaran berhadapan, tanda bertentangan menjadikan kelajuan pendekatan bersamaan dengan hasil tambah kelajuan. Bagi perlanggaran di mana tenaga kinetik dilesapkan, rumus ini tidak sah.",
+        "zh": "匹配正确！关系式 (v1i - v2i) = -(v1f - v2f) 仅在弹性碰撞中成立。在迎头碰撞中，相反的方向符号使得接近速率等于两速率之和。对于耗散了动能的碰撞，该公式不适用。"
+      },
+      "answerLogic": {
+        "en": "Deriving Equation 9.20 requires dividing the kinetic energy conservation equation by the momentum conservation equation. If kinetic energy is not conserved (as in inelastic rebounding or latching collisions), this derivation fails completely. Furthermore, treating opposing velocity vectors without negative signs mistakenly turns approach speed from a sum into a difference.",
+        "ms": "Menerbitkan Persamaan 9.20 memerlukan pembahagian persamaan keabadian tenaga kinetik dengan persamaan keabadian momentum. Jika tenaga kinetik tidak abadi (seperti dalam perlanggaran melantun tak kenyal atau melekat), penerbitan ini gagal sepenuhnya. Tambahan pula, memperlakukan vektor halaju bertentangan tanpa tanda negatif secara salah menukar kelajuan pendekatan daripada hasil tambah kepada beza.",
+        "zh": "推导方程 9.20 需要将动能守恒方程除以动量守恒方程。如果动能不守恒（例如非弹性反弹或锁结碰撞），该推导完全不成立。此外，若在相反速度矢量中忽略负号，就会错误地将接近速率从相加变成相减。"
+      },
+      "explanation": {
+        "en": "In one-dimensional elastic collisions, the relative velocity of the two bodies after collision equals the negative of their relative velocity before collision. This elegant kinematic rule is only valid when no kinetic energy is lost; any inelastic deformation breaks this relationship.",
+        "ms": "Dalam perlanggaran kenyal satu dimensi, halaju relatif kedua-dua jasad selepas perlanggaran adalah bersamaan dengan negatif halaju relatif mereka sebelum perlanggaran. Hukum kinematik ini hanya sah apabila tiada tenaga kinetik yang hilang; sebarang ubah bentuk tak kenyal merosakkan hubungan ini.",
+        "zh": "在一维弹性碰撞中，两物体碰撞后的相对速度等于碰撞前相对速度的相反数。这一优美的运动学规律仅在无动能损失时成立；任何非弹性形变都会使该关系失效。"
+      },
+      "accessibilityText": {
+        "en": "A matching interaction with four collision scenarios to be paired with three relative velocity relationship categories. Select each scenario and assign it to its matching category.",
+        "ms": "Interaksi padanan dengan empat senario perlanggaran untuk dipadankan dengan tiga kategori hubungan halaju relatif. Pilih setiap senario dan tetapkan kepada kategori yang sepadan.",
+        "zh": "一个匹配交互活动，包含四个碰撞情形，需与三个相对速度关系类别进行配对。选择每个情形并将其分配到相应的匹配类别中。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "act-int-06-mod",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict post-collision motion in elastic collisions for equal masses, stationary targets, and extreme mass ratios.",
+      "misconceptions": [
+        "velocity-sign-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-linear-momentum",
+        "prompt": {
+          "en": "Recall the 1D elastic collision solution for a target initially at rest (v2i = 0): v1f = ((m1 - m2) / (m1 + m2)) * v1i. The algebraic sign of the factor (m1 - m2) dictates whether the projectile continues forward, stops, or rebounds backward.",
+          "ms": "Ingat kembali penyelesaian perlanggaran kenyal 1D untuk sasaran yang pada mulanya pegun (v2i = 0): v1f = ((m1 - m2) / (m1 + m2)) * v1i. Tanda algebra faktor (m1 - m2) menentukan sama ada projektil terus ke hadapan, berhenti, atau melantun ke belakang.",
+          "zh": "回顾靶物体初始静止 (v2i = 0) 时的一维弹性碰撞公式：v1f = ((m1 - m2) / (m1 + m2)) * v1i。因子 (m1 - m2) 的代数符号决定了入射物体是继续向前、完全停止还是向后反弹。"
+        }
+      },
+      "prompt": {
+        "en": "Classify the post-collision motion of the moving incident object (mass m1) after it undergoes a head-on elastic collision with a stationary target object (mass m2, initially at rest).",
+        "ms": "Kelaskan pergerakan selepas perlanggaran bagi objek tuju yang sedang bergerak (jisim m1) selepas ia mengalami perlanggaran kenyal berhadapan dengan objek sasaran pegun (jisim m2, pada mulanya pegun).",
+        "zh": "将运动的入射物体（质量为 m1）与静止的靶物体（质量为 m2，初始静止）发生对心弹性碰撞后，入射物体的碰撞后运动状态进行分类。"
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "outcome-stops",
+            "label": {
+              "en": "Incident object stops completely (v1f = 0) while transferring its velocity to the target.",
+              "ms": "Objek tuju berhenti sepenuhnya (v1f = 0) sambil memindahkan halajunya kepada sasaran.",
+              "zh": "入射物体完全停止 (v1f = 0)，同时将其速度传递给靶物体。"
+            }
+          },
+          {
+            "id": "outcome-continues-forward",
+            "label": {
+              "en": "Incident object continues moving forward in its original direction (v1f > 0, nearly unaltered).",
+              "ms": "Objek tuju terus bergerak ke hadapan dalam arah asalnya (v1f > 0, hampir tidak berubah).",
+              "zh": "入射物体沿原方向继续向前运动（v1f > 0，速度几乎不变）。"
+            }
+          },
+          {
+            "id": "outcome-rebounds-backward",
+            "label": {
+              "en": "Incident object reverses direction and rebounds backward (v1f < 0).",
+              "ms": "Objek tuju berbalik arah dan melantun ke belakang (v1f < 0).",
+              "zh": "入射物体反向运动并向后反弹 (v1f < 0)。"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "case-equal-mass",
+            "label": {
+              "en": "A moving billiard ball collides head-on elastically with an identical stationary billiard ball (m1 = m2).",
+              "ms": "Sebiji bola biliard yang bergerak berlanggar secara berhadapan dan kenyal dengan bola biliard serupa yang pegun (m1 = m2).",
+              "zh": "一个运动的台球与另一个相同的静止台球发生对心弹性碰撞 (m1 = m2)。"
+            }
+          },
+          {
+            "id": "case-heavy-hits-light",
+            "label": {
+              "en": "A heavy bowling ball collides head-on elastically with a stationary table-tennis ball (m1 >> m2).",
+              "ms": "Sebiji bola boling yang berat berlanggar secara berhadapan dan kenyal dengan bola pingpong yang pegun (m1 >> m2).",
+              "zh": "一个沉重的保龄球与一个静止的乒乓球发生对心弹性碰撞 (m1 >> m2)。"
+            }
+          },
+          {
+            "id": "case-light-hits-heavy",
+            "label": {
+              "en": "A light table-tennis ball collides head-on elastically with a stationary bowling ball (m1 << m2).",
+              "ms": "Sebiji bola pingpong yang ringan berlanggar secara berhadapan dan kenyal dengan bola boling yang pegun (m1 << m2).",
+              "zh": "一个轻质乒乓球与一个静止的保龄球发生对心弹性碰撞 (m1 << m2)。"
+            }
+          },
+          {
+            "id": "case-alpha-nucleus",
+            "label": {
+              "en": "A moving proton collides head-on elastically with a stationary massive gold nucleus (m1 << m2).",
+              "ms": "Sebuah proton yang bergerak berlanggar secara berhadapan dan kenyal dengan nukleus emas yang sangat berjisim dan pegun (m1 << m2).",
+              "zh": "一个运动的质子与一个静止的重金原子核发生对心弹性碰撞 (m1 << m2)。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "case-equal-mass",
+            "targetId": "outcome-stops"
+          },
+          {
+            "itemId": "case-heavy-hits-light",
+            "targetId": "outcome-continues-forward"
+          },
+          {
+            "itemId": "case-light-hits-heavy",
+            "targetId": "outcome-rebounds-backward"
+          },
+          {
+            "itemId": "case-alpha-nucleus",
+            "targetId": "outcome-rebounds-backward"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "velocity-sign-neglect",
+          "condition": {
+            "kind": "placement",
+            "itemId": "case-light-hits-heavy",
+            "targetId": "outcome-continues-forward"
+          }
+        },
+        {
+          "misconception": "velocity-sign-neglect",
+          "condition": {
+            "kind": "placement",
+            "itemId": "case-alpha-nucleus",
+            "targetId": "outcome-continues-forward"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "Consider the numerator in the 1D elastic velocity equation for the incident body: v1f = ((m1 - m2) / (m1 + m2)) * v1i. What happens to the sign of (m1 - m2) when m1 is smaller than m2?",
+          "ms": "Pertimbangkan pengangka dalam persamaan halaju kenyal 1D bagi jasad tuju: v1f = ((m1 - m2) / (m1 + m2)) * v1i. Apakah yang berlaku kepada tanda (m1 - m2) apabila m1 lebih kecil daripada m2?",
+          "zh": "考虑入射物体一维弹性速度公式中的分子：v1f = ((m1 - m2) / (m1 + m2)) * v1i。当 m1 小于 m2 时，(m1 - m2) 的符号是什么？"
+        },
+        {
+          "en": "When m1 = m2, the factor (m1 - m2) equals zero, causing the incident particle to halt. When m1 is much smaller than m2, (m1 - m2) is negative, meaning the velocity vector flips by 180 degrees (rebound).",
+          "ms": "Apabila m1 = m2, faktor (m1 - m2) bersamaan dengan sifar, menyebabkan zarah tuju berhenti. Apabila m1 jauh lebih kecil daripada m2, (m1 - m2) adalah negatif, bermakna vektor halaju berputar sebanyak 180 darjah (melantun).",
+          "zh": "当 m1 = m2 时，因子 (m1 - m2) 等于零，导致入射粒子停止。当 m1 远小于 m2 时，(m1 - m2) 为负，这意味着速度矢量反转 180 度（反弹）。"
+        }
+      ],
+      "feedback": {
+        "en": "Accurately classified! Equal masses exchange velocities completely (incident halts). A very massive incident body continues forward virtually unaffected, while a very light projectile bounces backward with approximately reversed velocity (v1f ≈ -v1i).",
+        "ms": "Dikelaskan dengan tepat! Jisim yang sama bertukar halaju sepenuhnya (jasad tuju berhenti). Jasad tuju yang sangat berjisim terus mara ke hadapan hampir tanpa terjejas, manakala projektil yang sangat ringan melantun ke belakang dengan halaju yang berbalik (v1f ≈ -v1i).",
+        "zh": "分类完全正确！等质量物体完全交换速度（入射物体静止）。极重的入射物体几乎不受影响继续向前运动，而极轻的入射物体则以近似相反的速度向后反弹 (v1f ≈ -v1i)。"
+      },
+      "answerLogic": {
+        "en": "From v1f = ((m1 - m2)/(m1 + m2))v1i: for m1 = m2, v1f = 0. For m1 >> m2, (m1 - m2)/(m1 + m2) ≈ +1, so v1f ≈ +v1i (continues forward). For m1 << m2, (m1 - m2)/(m1 + m2) ≈ -1, so v1f ≈ -v1i (rebounds backward). Neglecting the algebraic minus sign leads learners to wrongly believe the light projectile continues forward simply because initial momentum was positive.",
+        "ms": "Daripada v1f = ((m1 - m2)/(m1 + m2))v1i: bagi m1 = m2, v1f = 0. Bagi m1 >> m2, (m1 - m2)/(m1 + m2) ≈ +1, jadi v1f ≈ +v1i (terus ke hadapan). Bagi m1 << m2, (m1 - m2)/(m1 + m2) ≈ -1, jadi v1f ≈ -v1i (melantun ke belakang). Mengabaikan tanda tolak algebra menyebabkan murid tersalah anggap bahawa projektil ringan terus ke hadapan semata-mata kerana momentum awal adalah positif.",
+        "zh": "由公式 v1f = ((m1 - m2)/(m1 + m2))v1i 可知：当 m1 = m2 时，v1f = 0。当 m1 >> m2 时，(m1 - m2)/(m1 + m2) ≈ +1，因此 v1f ≈ +v1i（继续向前）。当 m1 << m2 时，(m1 - m2)/(m1 + m2) ≈ -1，因此 v1f ≈ -v1i（向后反弹）。忽略代数负号会导致学生仅凭初始动量为正就错误地认为轻质入射物体会继续向前运动。"
+      },
+      "explanation": {
+        "en": "In head-on elastic collisions with a stationary target, the sign of the incident object's post-collision velocity is dictated solely by the mass difference (m1 - m2). Directional signs are essential for tracking whether velocity is retained, stopped, or reversed.",
+        "ms": "Dalam perlanggaran kenyal berhadapan dengan sasaran pegun, tanda halaju objek tuju selepas perlanggaran ditentukan sepenuhnya oleh perbezaan jisim (m1 - m2). Tanda arah adalah penting untuk menjejaki sama ada halaju dikekalkan, dihentikan, atau diterbalikkan.",
+        "zh": "在靶物体静止的对心弹性碰撞中，入射物体碰撞后速度的正负符号完全由质量差 (m1 - m2) 决定。代数方向符号对于判断速度是保持原向、停止还是反转至关重要。"
+      },
+      "accessibilityText": {
+        "en": "A classification interaction with four collision items to be sorted into three outcome targets: stops completely, continues forward, or rebounds backward. Use keyboard arrow keys or selection controls to assign each item.",
+        "ms": "Interaksi pengelasan dengan empat item perlanggaran untuk diisih ke dalam tiga sasaran hasil: berhenti sepenuhnya, terus ke hadapan, atau melantun ke belakang. Gunakan kekunci anak panah papan kekunci atau kawalan pilihan untuk menetapkan setiap item.",
+        "zh": "一个分类交互活动，包含四个碰撞项目，需归类到三个结果目标中：完全停止、继续向前或向后反弹。使用键盘方向键或选择控件分配每个项目。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "act-int-07-diff",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze multi-stage systems like ballistic pendulums by separating collision and mechanical energy swing phases.",
+      "prompt": {
+        "en": "A high-speed dart is fired horizontally into a suspended wooden block and embeds completely within it. The combined block and dart then swing upward together along an arc to a maximum vertical height. Arrange the physical analysis steps in the correct chronological and methodological order required to determine the dart's initial speed without violating conservation laws.",
+        "ms": "Sebutir damak berkelajuan tinggi dilepaskan secara mengufuk ke dalam sebuah bongkah kayu tergantung dan terbenam sepenuhnya di dalamnya. Bongkah dan damak itu kemudian berayun bersama-sama ke atas sepanjang lengkok sehingga mencapai ketinggian menegak maksimum. Susun langkah-langkah analisis fizikal mengikut urutan kronologi dan metodologi yang betul untuk menentukan laju awal damak tersebut secara tepat tanpa melanggar hukum keabadian.",
+        "zh": "一枚高速飞镖沿水平方向射入悬挂的木块并完全嵌入其中。随后，木块与飞镖一同沿圆弧向上摆动至最大垂直高度。请按正确的时间与物理建模逻辑顺序，排列确定飞镖初速度所需的分析步骤。"
+      },
+      "hints": [
+        {
+          "en": "Notice that the event consists of two distinct physical regimes: a sudden inelastic impact where external horizontal impulse is negligible, followed by a smooth upward swing governed by gravity.",
+          "ms": "Perhatikan bahawa peristiwa ini terdiri daripada dua fasa fizikal yang berbeza: hentaman tak kenyal mendadak di mana impuls luar mengufuk boleh diabaikan, diikuti oleh ayunan lancar ke atas yang dikawal oleh graviti.",
+          "zh": "注意该物理过程分为两个截然不同的阶段：一是持续时间极短且水平外力冲量可忽略的完全非弹性碰撞；二是受重力支配的平滑向上摆动过程。"
+        },
+        {
+          "en": "During the embedding collision, mechanical energy is converted into internal thermal and deformation energy, so kinetic energy is not conserved across the impact. Momentum conservation must be used to find the post-impact speed before mechanical energy conservation can be applied to the swing.",
+          "ms": "Semasa perlanggaran pembenaman, tenaga mekanik bertukar menjadi tenaga haba dalaman dan ubah bentuk, maka tenaga kinetik tidak abadi merentasi hentaman. Keabadian momentum mesti digunakan untuk mencari laju selepas hentaman sebelum keabadian tenaga mekanik dapat digunakan untuk ayunan.",
+          "zh": "在嵌入碰撞过程中，机械能转化为内能与形变能，因此碰撞前后动能不守恒。必须先使用动量守恒求出碰撞后的瞬时共同速度，随后才能对上摆过程应用机械能守恒。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! You recognized that a ballistic pendulum requires a two-step model: momentum conservation horizontally during the inelastic impact, followed by mechanical energy conservation during the upward swing.",
+        "ms": "Tahniah, betul! Anda menyedari bahawa bandul balistik memerlukan model dua langkah: keabadian momentum secara mengufuk semasa hentaman tak kenyal, diikuti oleh keabadian tenaga mekanik semasa ayunan ke atas.",
+        "zh": "回答正确！你准确识别出弹道摆必须采用两阶段建模：在完全非弹性碰撞阶段应用水平动量守恒，在随后的上摆阶段应用机械能守恒。"
+      },
+      "answerLogic": {
+        "en": "The correct sequence begins with collision momentum conservation (step 1), recognizing kinetic energy dissipation (step 2), modeling the upward swing as a conservative mechanical system (step 3), and equating the post-collision kinetic energy to peak potential energy to find the launch speed (step 4).",
+        "ms": "Urutan yang betul bermula dengan keabadian momentum perlanggaran (langkah 1), mengenal pasti kehilangan tenaga kinetik (langkah 2), memodelkan ayunan ke atas sebagai sistem mekanik abadi (langkah 3), dan menyamakan tenaga kinetik selepas perlanggaran dengan tenaga keupayaan puncak untuk mencari laju pelancaran (langkah 4).",
+        "zh": "正确顺序始于碰撞瞬间的动量守恒（步骤1），明确非弹性形变伴随动能损失（步骤2），将上摆过程建模为保守力学系统（步骤3），最后将碰撞后动能转化为最高点重力势能以反解初速度（步骤4）。"
+      },
+      "explanation": {
+        "en": "In a ballistic pendulum, mechanical energy is converted to thermal and deformation energy as the projectile embeds. Thus, mechanical energy is not conserved across the impact. Horizontal linear momentum is conserved during impact because collision forces are internal and external forces over the brief collision interval are negligible. Once the projectile is embedded, the system swings under gravity with string tension perpendicular to motion, so mechanical energy is conserved during the swing phase alone.",
+        "ms": "Dalam bandul balistik, sebahagian tenaga mekanik ditukarkan kepada haba dan ubah bentuk semasa damak terbenam. Oleh itu, tenaga mekanik tidak abadi merentasi hentaman. Momentum linear mengufuk abadi semasa hentaman kerana daya hentaman adalah dalaman dan daya luar dalam selang masa yang singkat boleh diabaikan. Selepas damak terbenam, sistem berayun di bawah graviti dengan tegangan tali berserenjang dengan gerakan, maka tenaga mekanik hanya abadi semasa fasa ayunan sahaja.",
+        "zh": "在弹道摆装置中，飞镖嵌入木块时会发生剧烈形变并产生内能，因此碰撞瞬间机械能绝不守恒。但在极短的碰撞时间内水平合外力冲量可忽略，水平方向动量严格守恒。碰撞完成后系统在重力作用下向上摆动，悬绳拉力始终垂直于运动方向不做功，此时机械能守恒。"
+      },
+      "misconceptions": [
+        "ballistic-pendulum-energy-conservation",
+        "momentum-lost-in-inelastic"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-linear-momentum",
+        "prompt": {
+          "en": "Review the principle of conservation of linear momentum: when the net external force on a system during a brief collision is negligible, total linear momentum is conserved regardless of internal energy transformations.",
+          "ms": "Ulang kaji prinsip keabadian momentum linear: apabila daya padu luar pada suatu sistem semasa perlanggaran singkat boleh diabaikan, jumlah momentum linear adalah abadi tanpa mengira transformasi tenaga dalaman.",
+          "zh": "复习线性动量守恒定律：当系统在极短碰撞时间内所受合外力可忽略时，无论系统内部发生何种能量转化，系统总动量均保持守恒。"
+        }
+      },
+      "accessibilityText": {
+        "en": "An ordering interactive activity with four physical modeling steps for analyzing a ballistic pendulum. Reorder the items from the initial impact to the final maximum swing height using keyboard navigation or drag-and-drop.",
+        "ms": "Aktiviti interaktif susunan dengan empat langkah pemodelan fizikal untuk menganalisis bandul balistik. Susun semula item dari hentaman awal hingga ketinggian ayunan maksimum akhir menggunakan papan kekunci atau seret-dan-lepas.",
+        "zh": "包含四个分析弹道摆物理建模步骤的排序互动活动。请使用键盘导航或拖放操作，按从初始碰撞到最终最大摆高的顺序排列各项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "step-collision-momentum",
+            "label": {
+              "en": "Apply conservation of linear momentum along the horizontal direction to the isolated dart-block system during the brief impact to find the combined speed immediately after collision.",
+              "ms": "Gunakan keabadian momentum linear sepanjang arah mengufuk bagi sistem terpencil damak-bongkah semasa hentaman singkat untuk mencari laju gabungan sejurus selepas perlanggaran.",
+              "zh": "在短暂的碰撞过程中，对飞镖-木块孤立系统在水平方向应用动量守恒定律，求出碰撞后瞬间的共同速度。"
+            }
+          },
+          {
+            "id": "step-inelastic-energy-loss",
+            "label": {
+              "en": "Identify that mechanical energy is dissipated into internal thermal energy and deformation during the inelastic embedding, confirming that initial projectile kinetic energy cannot be directly equated to pendulum potential energy.",
+              "ms": "Kenal pasti bahawa tenaga mekanik terlesap menjadi tenaga haba dalaman dan ubah bentuk semasa pembenaman tak kenyal, mengesahkan bahawa tenaga kinetik awal damak tidak boleh disamakan terus dengan tenaga keupayaan bandul.",
+              "zh": "明确在非弹性嵌入过程中机械能已转化为内能与形变能，确认绝不能将飞镖的初始动能直接等同于摆动的重力势能。"
+            }
+          },
+          {
+            "id": "step-swing-mechanical-energy",
+            "label": {
+              "en": "Apply conservation of mechanical energy to the combined dart-block-Earth system during the upward swing, where gravitational force is conservative and string tension does no work.",
+              "ms": "Gunakan keabadian tenaga mekanik bagi sistem gabungan damak-bongkah-Bumi semasa ayunan ke atas, di mana daya graviti adalah daya abadi dan tegangan tali tidak melakukan kerja.",
+              "zh": "在向上摆动过程中，对飞镖-木块-地球系统应用机械能守恒定律，此时重力为保守力且悬绳拉力不做功。"
+            }
+          },
+          {
+            "id": "step-equate-height",
+            "label": {
+              "en": "Equate the kinetic energy of the combined mass immediately after the collision to its gravitational potential energy at the peak height to solve for the launch speed.",
+              "ms": "Samakan tenaga kinetik jisim gabungan sejurus selepas perlanggaran dengan tenaga keupayaan gravitinya pada ketinggian puncak untuk menyelesaikan laju pelancaran.",
+              "zh": "将碰撞结束瞬间复合质量的动能与最高点处的重力势能相等，从而反推出飞镖的初始发射速度。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "step-collision-momentum",
+          "step-inelastic-energy-loss",
+          "step-swing-mechanical-energy",
+          "step-equate-height"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "ballistic-pendulum-energy-conservation",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "step-equate-height",
+            "secondItemId": "step-collision-momentum"
+          }
+        },
+        {
+          "misconception": "momentum-lost-in-inelastic",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "step-inelastic-energy-loss",
+            "secondItemId": "step-collision-momentum"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-08-diff",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict post-collision motion in elastic collisions for equal masses, stationary targets, and extreme mass ratios.",
+      "prompt": {
+        "en": "Consider one-dimensional collisions between particles or particle-like objects on a frictionless horizontal track. Select all statements that represent mathematically and physically valid predictions for ideal elastic collisions.",
+        "ms": "Pertimbangkan perlanggaran satu dimensi antara zarah atau objek seperti zarah di atas landasan ufuk tanpa geseran. Pilih semua pernyataan yang mewakili ramalan yang sah secara matematik dan fizik bagi perlanggaran kenyal unggul.",
+        "zh": "考虑光滑水平轨道上粒子或可视为粒子的物体之间发生的一维碰撞。请选择所有对理想弹性碰撞在物理和数学上均有效的正确预测陈述。"
+      },
+      "hints": [
+        {
+          "en": "Recall that an elastic collision strictly conserves both linear momentum and total kinetic energy. Equations 9.21 through 9.24 describe the special cases for equal masses and extreme mass limits.",
+          "ms": "Ingat bahawa perlanggaran kenyal secara tegas mengabadikan kedua-dua momentum linear dan jumlah tenaga kinetik. Persamaan 9.21 hingga 9.24 menerangkan kes-kes khas bagi jisim yang sama dan had nisbah jisim yang ekstrem.",
+          "zh": "回想弹性碰撞严格同时守恒动量和总动能。公式 9.21 至 9.24 描述了等质量以及极端质量比下的特殊极限情形。"
+        },
+        {
+          "en": "Bouncing apart does not guarantee elasticity: macroscopic objects like tennis balls bounce yet lose kinetic energy to internal heat and sound. The relative velocity formula depends directly on kinetic energy conservation.",
+          "ms": "Melantun berasingan tidak menjamin kekenyalan: objek makroskopik seperti bola tenis melantun tetapi kehilangan tenaga kinetik kepada haba dalaman dan bunyi. Formula halaju relatif bergantung secara langsung pada keabadian tenaga kinetik.",
+          "zh": "反弹分开并不能保证碰撞是弹性的：宏观物体（如网球）碰撞后弹开，但部分动能已转化为内能和声能。相对速度关系式推导的前提是动能完全守恒。"
+        }
+      ],
+      "feedback": {
+        "en": "Excellent! You correctly identified the physical behaviors of elastic collisions across various mass ratios and rejected the false assumptions about general inelastic collisions.",
+        "ms": "Cemerlang! Anda berjaya mengenal pasti tingkah laku fizikal perlanggaran kenyal merentas pelbagai nisbah jisim dan menolak andaian palsu mengenai perlanggaran tak kenyal umum.",
+        "zh": "太棒了！你准确识别了不同质量比下弹性碰撞的物理特征，并排除了对非弹性碰撞的错误推论。"
+      },
+      "answerLogic": {
+        "en": "The three valid statements correspond to standard limiting solutions of 1D elastic collisions: equal masses exchange velocities (v1f=0, v2f=v1i), a heavy object strikes a light target (v2f ≈ 2v1i), and a light object strikes a massive barrier (v1f ≈ -v1i). The claims that bouncing implies elasticity and that the relative velocity relation holds for inelastic collisions are false.",
+        "ms": "Tiga pernyataan yang sah sepadan dengan penyelesaian had piawai bagi perlanggaran kenyal 1D: jisim sama bertukar halaju (v1f=0, v2f=v1i), jasad berat melanggar sasaran ringan (v2f ≈ 2v1i), dan jasad ringan melanggar penghalang besar (v1f ≈ -v1i). Dakwaan bahawa melantun membayangkan kekenyalan dan bahawa hubungan halaju relatif terpakai untuk perlanggaran tak kenyal adalah palsu.",
+        "zh": "三个正确的陈述对应一维弹性碰撞的标准极限解：等质量物体交换速度（v1f=0, v2f=v1i）、重物撞轻物（轻物以约2倍初速飞出）、轻物撞重物（轻物以原速率反弹）。而“弹开即弹性”和“相对速度关系通用于非弹性碰撞”的说法均违背物理规律。"
+      },
+      "explanation": {
+        "en": "In one-dimensional elastic collisions, simultaneous conservation of momentum and kinetic energy yields v1f = [(m1-m2)/(m1+m2)]v1i and v2f = [2m1/(m1+m2)]v1i when target 2 is initially stationary. When m1 = m2, v1f = 0 and v2f = v1i. When m1 >> m2, v1f ≈ v1i and v2f ≈ 2v1i. When m2 >> m1, v1f ≈ -v1i and v2f ≈ 0. Bouncing apart without sticking is simply an inelastic collision unless kinetic energy is perfectly conserved; thus, the relative velocity relation v1i - v2i = -(v1f - v2f) does not hold when kinetic energy is transformed into internal energy.",
+        "ms": "Dalam perlanggaran kenyal satu dimensi, keabadian serentak bagi momentum dan tenaga kinetik menghasilkan v1f = [(m1-m2)/(m1+m2)]v1i dan v2f = [2m1/(m1+m2)]v1i apabila sasaran 2 pada asalnya pegun. Apabila m1 = m2, v1f = 0 dan v2f = v1i. Apabila m1 >> m2, v1f ≈ v1i dan v2f ≈ 2v1i. Apabila m2 >> m1, v1f ≈ -v1i dan v2f ≈ 0. Melantun tanpa melekat hanyalah perlanggaran tak kenyal melainkan tenaga kinetik diabadikan secara sempurna; oleh itu, hubungan halaju relatif v1i - v2i = -(v1f - v2f) tidak terpakai apabila tenaga kinetik bertukar menjadi tenaga dalaman.",
+        "zh": "在一维弹性碰撞中，由动量守恒和动能守恒联立可得（当目标2初始静止时）：v1f = [(m1-m2)/(m1+m2)]v1i，v2f = [2m1/(m1+m2)]v1i。当 m1 = m2 时，两物体交换速度；当 m1 >> m2 时，重物速度不变，轻物以 2v1i 飞出；当 m2 >> m1 时，轻物以 -v1i 反弹，重物不动。宏观物体碰撞弹开若有能量耗散则属于一般非弹性碰撞，相对速度公式 v1i - v2i = -(v1f - v2f) 在有动能损失时根本不成立。"
+      },
+      "misconceptions": [
+        "relative-velocity-formula-misapplication",
+        "kinetic-energy-always-conserved"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "translational-kinetic-energy",
+        "prompt": {
+          "en": "Review kinetic energy K = (1/2)mv^2. Recognize that while total energy is always conserved in the universe, kinetic energy alone is conserved only when no mechanical energy is converted to internal energy or sound.",
+          "ms": "Ulang kaji tenaga kinetik K = (1/2)mv^2. Fahami bahawa walaupun jumlah tenaga sentiasa abadi di alam semesta, tenaga kinetik sahaja hanya abadi apabila tiada tenaga mekanik ditukarkan kepada tenaga dalaman atau bunyi.",
+          "zh": "复习平动动能公式 K = (1/2)mv^2。明确虽然宇宙总能量始终守恒，但机械动能守恒仅发生在没有机械能转化为内能、形变能或声能的理想弹性碰撞中。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multi-select interactive activity presenting five statements about one-dimensional collisions. Use checkboxes to select all valid physical statements.",
+        "ms": "Aktiviti interaktif berbilang pilihan yang membentangkan lima pernyataan tentang perlanggaran satu dimensi. Gunakan kotak semak untuk memilih semua pernyataan fizikal yang sah.",
+        "zh": "包含五个关于一维碰撞陈述的多选交互活动。使用复选框选择所有物理上有效的正确陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "stmt-equal-mass",
+            "label": {
+              "en": "If an incoming body strikes an identical stationary body of equal mass in an elastic collision, the incoming body stops completely and the target moves forward with the exact initial velocity of the incoming body.",
+              "ms": "Jika suatu jasad yang bergerak melanggar jasad pegun yang serupa dengan jisim yang sama dalam perlanggaran kenyal, jasad yang datang akan berhenti sepenuhnya dan jasad sasaran akan bergerak ke hadapan dengan halaju awal yang sama seperti jasad yang datang.",
+              "zh": "在弹性碰撞中，若运动物体撞击一个质量相同的静止同种物体，入射物体将完全停下，而目标物体将以入射物体的初始速度向前运动。"
+            }
+          },
+          {
+            "id": "stmt-heavy-strikes-light",
+            "label": {
+              "en": "If a very massive body strikes a much lighter stationary target elastically, the massive body continues moving with virtually unchanged velocity, while the light target rebounds forward at roughly twice the incident body's initial speed.",
+              "ms": "Jika suatu jasad yang sangat berjisim melanggar sasaran pegun yang jauh lebih ringan secara kenyal, jasad berjisim itu terus bergerak dengan halaju yang hampir tidak berubah, manakala sasaran ringan melantun ke hadapan dengan laju kira-kira dua kali ganda laju awal jasad yang datang.",
+              "zh": "若大质量物体弹性碰撞一个质量远小于它的静止轻质目标，大质量物体的速度几乎保持不变，而轻质目标将以约两倍于入射物体的初速度向前飞出。"
+            }
+          },
+          {
+            "id": "stmt-light-strikes-heavy",
+            "label": {
+              "en": "If a very light body strikes an extremely massive stationary barrier elastically, the light body rebounds in the reverse direction with approximately its initial speed, while the massive barrier remains nearly at rest.",
+              "ms": "Jika suatu jasad yang sangat ringan melanggar penghalang pegun yang sangat berjisim secara kenyal, jasad ringan itu melantun dalam arah bertentangan dengan anggaran laju awalnya, manakala penghalang berjisim kekal hampir pegun.",
+              "zh": "若轻质物体弹性碰撞一个质量极大的静止巨大障碍物，轻质物体将以近似其初始速率沿反方向弹回，而巨大障碍物基本保持静止。"
+            }
+          },
+          {
+            "id": "stmt-bounce-implies-elastic",
+            "misconception": "kinetic-energy-always-conserved",
+            "label": {
+              "en": "Any collision in which the two colliding bodies bounce apart rather than sticking together conserves total kinetic energy.",
+              "ms": "Sebarang perlanggaran di mana dua jasad yang berlanggar melantun berasingan dan tidak melekat bersama akan mengabadikan jumlah tenaga kinetik.",
+              "zh": "任何两物体碰撞后反弹分开而不粘在一起的碰撞，系统总动能都严格守恒。"
+            }
+          },
+          {
+            "id": "stmt-relative-velocity-general",
+            "misconception": "relative-velocity-formula-misapplication",
+            "label": {
+              "en": "The relative velocity relationship v1i - v2i = -(v1f - v2f) holds true for all one-dimensional collisions where objects separate, even when internal deformation dissipates mechanical energy.",
+              "ms": "Hubungan halaju relatif v1i - v2i = -(v1f - v2f) adalah benar untuk semua perlanggaran satu dimensi di mana objek berpisah, walaupun ubah bentuk dalaman melesapkan tenaga mekanik.",
+              "zh": "相对速度关系式 v1i - v2i = -(v1f - v2f) 适用于所有物体分离的一维碰撞，即便发生内部形变损耗了机械能也是如此。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "stmt-equal-mass",
+          "stmt-heavy-strikes-light",
+          "stmt-light-strikes-heavy"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "kinetic-energy-always-conserved",
+          "condition": {
+            "kind": "selection",
+            "itemId": "stmt-bounce-implies-elastic",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "relative-velocity-formula-misapplication",
+          "condition": {
+            "kind": "selection",
+            "itemId": "stmt-relative-velocity-general",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-09-diff",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply relative velocity relationships to analyze one-dimensional elastic collisions between two isolated bodies.",
+      "prompt": {
+        "en": "Consider an analysis of head-on collisions between two carts on a linear horizontal track. Classify each methodological statement or formula application into the appropriate category based on the principles of one-dimensional momentum and elastic relative velocity.",
+        "ms": "Pertimbangkan analisis perlanggaran berdepan antara dua troli di atas landasan ufuk lurus. Kelaskan setiap pernyataan metodologi atau aplikasi formula ke dalam kategori yang sesuai berdasarkan prinsip momentum satu dimensi dan halaju relatif kenyal.",
+        "zh": "考虑在平直水平轨道上两辆滑车之间对头碰撞的物理分析。请依据一维动量原理和弹性碰撞相对速度关系，将下列各项分析方法或公式应用归入相应类别。"
+      },
+      "hints": [
+        {
+          "en": "Remember that velocities are vectors. In one dimension, motion along a chosen axis is strictly indicated by algebraic signs (+ for right, - for left). When two objects move toward each other, their relative speed of approach is the sum of their speeds.",
+          "ms": "Ingat bahawa halaju ialah vektor. Dalam satu dimensi, gerakan sepanjang paksi yang dipilih ditunjukkan secara tegas oleh tanda algebra (+ untuk kanan, - untuk kiri). Apabila dua objek bergerak ke arah satu sama lain, laju pendekatan relatif mereka ialah hasil tambah laju mereka.",
+          "zh": "请记住速度是矢量。在一维运动中，沿选定坐标轴的运动必须严格用代数正负号表示（向右为正，向左为负）。当两个物体相向运动时，它们的相对接近速率等于各自速率之和。"
+        },
+        {
+          "en": "The relation v1i - v2i = -(v1f - v2f) is derived by dividing factored kinetic energy conservation by factored momentum conservation. It is mathematically and physically invalid for collisions where kinetic energy is converted to heat or deformation.",
+          "ms": "Hubungan v1i - v2i = -(v1f - v2f) diterbitkan dengan membahagikan keabadian tenaga kinetik terfaktor dengan keabadian momentum terfaktor. Ia tidak sah secara matematik dan fizik bagi perlanggaran di mana tenaga kinetik bertukar menjadi haba atau ubah bentuk.",
+          "zh": "公式 v1i - v2i = -(v1f - v2f) 是通过将因式分解后的动能守恒方程除以动量守恒方程推导出来的。对于动能转化为热能或形变能的非弹性碰撞，该式在数学和物理上均无效。"
+        }
+      ],
+      "feedback": {
+        "en": "Great job! You properly distinguished valid elastic relative velocity procedures—including rigorous algebraic sign conventions—from invalid applications to inelastic cases.",
+        "ms": "Kerja yang cemerlang! Anda berjaya membezakan prosedur halaju relatif kenyal yang sah—termasuk konvensi tanda algebra yang teliti—daripada aplikasi tidak sah pada kes tak kenyal.",
+        "zh": "做得很好！你准确区分了一维弹性碰撞相对速度分析中的有效方法（包括严谨的代数正负号约定）与错误套用至非弹性碰撞的无效做法。"
+      },
+      "answerLogic": {
+        "en": "Directional signs are essential for 1D vectors, making item 1 valid and item 2 invalid. The relative velocity condition v1i - v2i = -(v1f - v2f) requires kinetic energy conservation, making item 4 valid for elastic collisions and item 3 invalid for inelastic/deformation collisions.",
+        "ms": "Tanda arah adalah penting untuk vektor 1D, menjadikan item 1 sah dan item 2 tidak sah. Syarat halaju relatif v1i - v2i = -(v1f - v2f) memerlukan keabadian tenaga kinetik, menjadikan item 4 sah untuk perlanggaran kenyal dan item 3 tidak sah untuk perlanggaran tak kenyal/ubah bentuk.",
+        "zh": "方向正负号对一维矢量运算至关重要，因此条目1有效而条目2错误。相对速度关系 v1i - v2i = -(v1f - v2f) 严格依赖动能守恒，故条目4在弹性分析中有效，而条目3将其套用于非弹性碰撞是错误的。"
+      },
+      "explanation": {
+        "en": "In one dimension, velocities have sign and magnitude. When objects approach each other, v1i > 0 and v2i < 0, so their relative velocity of approach is v1i - v2i = v1i - (-|v2i|) = v1i + |v2i|. Neglecting signs leads to severe momentum errors. Furthermore, Equation 9.20, v1i - v2i = -(v1f - v2f), is derived from both momentum and kinetic energy conservation. In inelastic collisions, kinetic energy is transformed into internal energy or thermal energy, meaning Equation 9.20 is not applicable.",
+        "ms": "Dalam satu dimensi, halaju mempunyai tanda dan magnitud. Apabila objek saling mendekati, v1i > 0 dan v2i < 0, maka halaju pendekatan relatif mereka ialah v1i - v2i = v1i - (-|v2i|) = v1i + |v2i|. Mengabaikan tanda membawa kepada ralat momentum yang besar. Tambahan pula, Persamaan 9.20, v1i - v2i = -(v1f - v2f), diterbitkan daripada kedua-dua keabadian momentum dan tenaga kinetik. Dalam perlanggaran tak kenyal, tenaga kinetik bertukar menjadi tenaga dalaman atau haba, bermakna Persamaan 9.20 tidak boleh digunakan.",
+        "zh": "在一维碰撞中，速度具有正负符号和大小。当两个物体相向运动时，v1i > 0 且 v2i < 0，相对接近速度为 v1i - v2i = v1i - (-|v2i|) = v1i + |v2i|。忽略符号直接相减速率会导致严重错误。此外，公式 9.20（v1i - v2i = -(v1f - v2f)）由动能守恒和动量守恒联立导出；在非弹性碰撞中动能转化为内能或形变能，该关系式绝不适用。"
+      },
+      "misconceptions": [
+        "relative-velocity-formula-misapplication",
+        "velocity-sign-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-linear-momentum",
+        "prompt": {
+          "en": "Recall that linear momentum is a vector quantity (p = mv). In one-dimensional problems, directional orientation must be represented by positive and negative algebraic signs before applying conservation equations.",
+          "ms": "Ingat kembali bahawa momentum linear ialah kuantiti vektor (p = mv). Dalam masalah satu dimensi, orientasi arah mesti diwakili oleh tanda algebra positif dan negatif sebelum menggunakan persamaan keabadian.",
+          "zh": "回顾线性动量是矢量（p = mv）。在一维问题中，应用守恒方程之前，必须用正负代数符号严格表示运动的方向性。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A classification interactive activity with two category bins and four statements regarding relative velocity and vector signs. Classify each statement into the appropriate category.",
+        "ms": "Aktiviti interaktif klasifikasi dengan dua kategori sasaran dan empat pernyataan mengenai halaju relatif dan tanda vektor. Kelaskan setiap pernyataan ke dalam kategori yang sesuai.",
+        "zh": "包含两个目标分类框和四条关于相对速度与矢量符号陈述的分类交互活动。请将每条陈述归类到相应的类别中。"
+      },
+      "provenance": {
+        "sourceLocation": "9.4 Collisions in One Dimension; Complete controlled PDF for section 9.4",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-valid-elastic",
+            "label": {
+              "en": "Valid Application in One-Dimensional Elastic Analysis",
+              "ms": "Aplikasi Sah dalam Analisis Kenyal Satu Dimensi",
+              "zh": "一维弹性碰撞分析中的有效应用"
+            }
+          },
+          {
+            "id": "target-invalid-method",
+            "label": {
+              "en": "Invalid or Erroneous Application",
+              "ms": "Aplikasi Tidak Sah atau Mengandungi Ralat",
+              "zh": "无效或存在错误的物理应用"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-opposite-direction-signs",
+            "label": {
+              "en": "Assigning an algebraic negative sign to Cart B moving to the left so that the relative velocity of approach is expressed as v_Ai - (-|v_Bi|) = v_Ai + |v_Bi|.",
+              "ms": "Menetapkan tanda negatif algebra kepada Troli B yang bergerak ke kiri supaya halaju relatif pendekatan dinyatakan sebagai v_Ai - (-|v_Bi|) = v_Ai + |v_Bi|.",
+              "zh": "对向左运动的滑车B赋予代数负号，使相对接近速度表示为 v_Ai - (-|v_Bi|) = v_Ai + |v_Bi|。"
+            }
+          },
+          {
+            "id": "item-scalar-speed-subtraction",
+            "misconception": "velocity-sign-neglect",
+            "label": {
+              "en": "Defining the relative approach speed of two carts moving toward each other as the scalar difference |v_Ai| - |v_Bi|, disregarding coordinate signs.",
+              "ms": "Menakrifkan laju pendekatan relatif dua troli yang bergerak ke arah satu sama lain sebagai perbezaan skalar |v_Ai| - |v_Bi| tanpa mengambil kira tanda koordinat.",
+              "zh": "将两辆相向运动滑车的相对接近速度直接表述为标量速率之差 |v_Ai| - |v_Bi|，而忽略坐标正负号。"
+            }
+          },
+          {
+            "id": "item-relative-velocity-inelastic",
+            "misconception": "relative-velocity-formula-misapplication",
+            "label": {
+              "en": "Using the relative velocity relation v1i - v2i = -(v1f - v2f) to predict post-collision velocities in a collision where carts latch together or permanently deform.",
+              "ms": "Menggunakan hubungan halaju relatif v1i - v2i = -(v1f - v2f) untuk meramalkan halaju selepas perlanggaran dalam situasi di mana troli bercantum bersama atau mengalami ubah bentuk kekal.",
+              "zh": "在两滑车锁合在一起或发生永久形变的碰撞中，应用相对速度关系式 v1i - v2i = -(v1f - v2f) 来预测碰撞后的运动状态。"
+            }
+          },
+          {
+            "id": "item-relative-speed-reversal",
+            "label": {
+              "en": "Stating that in an isolated 1D elastic collision, the relative speed of separation after collision equals the relative speed of approach before collision: |v1f - v2f| = |v1i - v2i|.",
+              "ms": "Menyatakan bahawa dalam perlanggaran kenyal 1D terpencil, laju pemisahan relatif selepas perlanggaran sama dengan laju pendekatan relatif sebelum perlanggaran: |v1f - v2f| = |v1i - v2i|.",
+              "zh": "陈述在孤立的一维弹性碰撞中，碰撞后的相对分离速率等于碰撞前的相对接近速率：|v1f - v2f| = |v1i - v2i|。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-opposite-direction-signs",
+            "targetId": "target-valid-elastic"
+          },
+          {
+            "itemId": "item-scalar-speed-subtraction",
+            "targetId": "target-invalid-method"
+          },
+          {
+            "itemId": "item-relative-velocity-inelastic",
+            "targetId": "target-invalid-method"
+          },
+          {
+            "itemId": "item-relative-speed-reversal",
+            "targetId": "target-valid-elastic"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "velocity-sign-neglect",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-scalar-speed-subtraction",
+            "targetId": "target-valid-elastic"
+          }
+        },
+        {
+          "misconception": "relative-velocity-formula-misapplication",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-relative-velocity-inelastic",
+            "targetId": "target-valid-elastic"
+          }
+        }
+      ]
+    }
+  ]
+}
