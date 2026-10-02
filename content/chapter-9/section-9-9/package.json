@@ -1,0 +1,2187 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-9-section-9-9",
+  "chapter": "Chapter 9",
+  "subchapter": "9.9 Rocket Propulsion",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Model a rocket and its expelled exhaust as an isolated system conserving total linear momentum.",
+    "Explain rocket thrust as an internal reaction force without requiring external air to push against.",
+    "Analyze how exhaust speed and mass ratio determine the final speed change of a rocket.",
+    "Relate thrust to exhaust speed and fuel burn rate using Newton's second and third laws.",
+    "Describe the uniform motion of the system center of mass in free space during propulsion."
+  ],
+  "prerequisites": [
+    {
+      "id": "conservation-of-momentum",
+      "description": {
+        "en": "Understanding that total linear momentum is constant in an isolated system.",
+        "ms": "Memahami bahawa jumlah momentum linear adalah malar dalam sistem terpencil.",
+        "zh": "理解在孤立系统中总线动量守恒。"
+      },
+      "recovery": {
+        "en": "Review linear momentum definitions and the condition of zero net external force.",
+        "ms": "Ulang kaji takrifan momentum linear dan syarat daya luar bersih sifar.",
+        "zh": "复习线动量定义及合外力为零的条件。"
+      }
+    },
+    {
+      "id": "newtons-third-law",
+      "description": {
+        "en": "Recognizing that forces between interacting objects are equal in magnitude and opposite in direction.",
+        "ms": "Mengenal pasti bahawa daya antara objek yang berinteraksi adalah sama magnitud dan bertentangan arah.",
+        "zh": "认识到相互作用物体之间的力大小相等且方向相反。"
+      },
+      "recovery": {
+        "en": "Review action-reaction force pairs acting on distinct bodies.",
+        "ms": "Ulang kaji pasangan daya tindakan-tindak balas yang bertindak pada jasad berasingan.",
+        "zh": "复习作用在不同物体上的作用力与反作用力对。"
+      }
+    },
+    {
+      "id": "center-of-mass-motion",
+      "description": {
+        "en": "Understanding that internal forces do not accelerate the center of mass of a system.",
+        "ms": "Memahami bahawa daya dalaman tidak memecut pusat jisim sesuatu sistem.",
+        "zh": "理解内力不会改变系统质心的加速度或动量状态。"
+      },
+      "recovery": {
+        "en": "Review center-of-mass dynamics for systems of particles.",
+        "ms": "Ulang kaji dinamik pusat jisim untuk sistem zarah.",
+        "zh": "复习质点系的质心动力学概念。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "needs-atmosphere-to-push",
+      "description": {
+        "en": "Believing that rockets require external air or a physical medium to push against to accelerate.",
+        "ms": "Mempercayai bahawa roket memerlukan udara luar atau medium fizikal untuk ditolak bagi memecut.",
+        "zh": "认为火箭需要向外推挤空气或物理介质才能加速。"
+      }
+    },
+    {
+      "id": "exhaust-pushes-rocket-externally",
+      "description": {
+        "en": "Viewing exhaust gas as an external applied force rather than an internal reaction from momentum ejection.",
+        "ms": "Melihat gas ekzos sebagai daya luar yang dikenakan dan bukannya tindak balas dalaman daripada lentingan momentum.",
+        "zh": "将喷出的尾气视为外力作用，而非质量排出产生的内部反作用动量交换。"
+      }
+    },
+    {
+      "id": "constant-mass-assumption",
+      "description": {
+        "en": "Treating the accelerating rocket as having constant mass, ignoring the continuous loss of propellant.",
+        "ms": "Menganggap roket yang memecut mempunyai jisim malar, mengabaikan kehilangan bahan api secara berterusan.",
+        "zh": "假定加速中的火箭质量恒定，忽略了推进剂的持续质量损耗。"
+      }
+    },
+    {
+      "id": "thrust-equals-rocket-speed",
+      "description": {
+        "en": "Confusing rocket forward speed with the exhaust speed relative to the rocket.",
+        "ms": "Mengelirukan laju roket ke hadapan dengan laju ekzos relatif kepada roket.",
+        "zh": "将火箭的前进速度与排气相对于火箭的排出速度混淆。"
+      }
+    },
+    {
+      "id": "linear-speed-gain-with-fuel",
+      "description": {
+        "en": "Believing that final rocket velocity increases linearly with fuel mass rather than logarithmically with mass ratio.",
+        "ms": "Mempercayai bahawa halaju akhir roket meningkat secara linear dengan jisim bahan api dan bukannya secara logaritma dengan nisbah jisim.",
+        "zh": "认为火箭的最终速度随燃料质量线性增加，而非与初末质量比的自然对数成正比。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-9/section-9-9/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-9-section-9-9.json",
+  "activities": [
+    {
+      "id": "rp-mcq-easy-1",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Explain rocket thrust as an internal reaction force without requiring external air to push against.",
+      "prompt": {
+        "en": "A deep-space probe fires its thrusters in a complete vacuum far from any planetary atmosphere. Which statement best explains how the probe accelerates forward?",
+        "ms": "Sebuah kuar angkasa lepas menyalakan pendorongnya di dalam vakum mutlak yang jauh dari sebarang atmosfera planet. Pernyataan manakah yang paling tepat menerangkan cara kuar tersebut memecut ke hadapan?",
+        "zh": "一艘深空探测器在远离任何行星大气的完全真空中启动推进器。下列哪项陈述最能合理解释该探测器如何向前加速？"
+      },
+      "hints": [
+        {
+          "en": "Think about Newton's third law: what happens when one body exerts a force on another body during the ejection of mass?",
+          "ms": "Fikirkan tentang hukum ketiga Newton: apakah yang berlaku apabila satu jasad mengenakan daya ke atas jasad lain semasa pelentingan jisim?",
+          "zh": "思考牛顿第三定律：当一个物体在排出质量的过程中对另一个物体施加力时，会发生什么？"
+        },
+        {
+          "en": "Consider an archer on frictionless ice: does the archer require air behind them to recoil when firing an arrow?",
+          "ms": "Pertimbangkan seorang pemanah di atas ais tanpa geseran: adakah pemanah memerlukan udara di belakang mereka untuk tersentak apabila melepaskan anak panah?",
+          "zh": "想象一位站在无摩擦冰面上的弓箭手：射出箭支时，弓箭手需要身后有空气才能发生反冲吗？"
+        }
+      ],
+      "feedback": {
+        "en": "Rocket propulsion does not rely on pushing against an external medium like air. It relies on an internal interaction: ejecting mass backward exerts an equal forward reaction force on the craft.",
+        "ms": "Perejahan roket tidak bergantung pada tolakan terhadap medium luaran seperti udara. Ia bergantung pada interaksi dalaman: mengeluarkan jisim ke belakang mengenakan daya tindak balas ke hadapan yang sama magnitud pada kapal angkasa.",
+        "zh": "火箭推进并不依赖向外推挤空气等外部介质。它依赖于系统内部相互作用：向后喷出质量会对航天器施加大小相等的向前反作用力。"
+      },
+      "answerLogic": {
+        "en": "Option opt-e1-reaction is correct because rocket thrust is the forward reaction force exerted on the vehicle by the expelled exhaust mass as described by Newton's third law. Option opt-e1-atmosphere reflects the misconception that rockets require ambient air to push against. Options opt-e1-vacuum-pull and opt-e1-gravity-field propose fictitious physical mechanisms.",
+        "ms": "Pilihan opt-e1-reaction adalah betul kerana tujahan roket ialah daya tindak balas ke hadapan yang dikenakan ke atas kenderaan oleh jisim ekzos yang dikeluarkan seperti yang diterangkan oleh hukum ketiga Newton. Pilihan opt-e1-atmosphere mencerminkan salah faham bahawa roket memerlukan udara persekitaran untuk ditolak. Pilihan opt-e1-vacuum-pull dan opt-e1-gravity-field mencadangkan mekanisme fizikal yang tidak berasas.",
+        "zh": "选项 opt-e1-reaction 正确，因为火箭推力是根据牛顿第三定律由喷出的废气质量对飞行器施加的向前反作用力。选项 opt-e1-atmosphere 反映了认为火箭必须推挤周围空气的误解。选项 opt-e1-vacuum-pull 和 opt-e1-gravity-field 提出了不符合物理事实的机制。"
+      },
+      "explanation": {
+        "en": "In space, there is no road or atmosphere to push against. A rocket operates by expelling exhaust gases backward at high speed. As the rocket engine exerts a backward force on the exhaust gas, the exhaust gas simultaneously exerts a forward reaction force of equal magnitude on the rocket. Consequently, the rocket accelerates forward regardless of whether any surrounding atmosphere is present.",
+        "ms": "Di angkasa lepas, tiada jalan atau atmosfera untuk ditolak. Roket beroperasi dengan mengeluarkan gas ekzos ke belakang pada kelajuan tinggi. Semasa enjin roket mengenakan daya ke belakang pada gas ekzos, gas ekzos secara serentak mengenakan daya tindak balas ke hadapan yang sama magnitud pada roket. Akibatnya, roket memecut ke hadapan tanpa mengira sama ada atmosfera persekitaran wujud atau tidak.",
+        "zh": "在太空中，没有地面或大气可供推挤。火箭通过以高速向后排出废气来工作。当火箭发动机对废气施加向后的力时，废气同时对火箭施加大小相等的向前反作用力。因此，无论周围是否存在大气，火箭都会向前加速。"
+      },
+      "misconceptions": [
+        "needs-atmosphere-to-push"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Recall Newton's third law: forces always occur in matched interaction pairs acting on two distinct interacting bodies.",
+          "ms": "Ingat kembali hukum ketiga Newton: daya sentiasa wujud dalam pasangan interaksi sepadan yang bertindak pada dua jasad berasingan yang saling berinteraksi.",
+          "zh": "回想牛顿第三定律：力总是成对出现的相互作用对，分别作用在两个相互作用的不同物体上。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking how a rocket engine produces forward acceleration in a vacuum. Select one of four options.",
+        "ms": "Soalan aneka pilihan yang bertanyakan cara enjin roket menghasilkan pecutan ke hadapan di dalam vakum. Pilih satu daripada empat pilihan.",
+        "zh": "询问火箭发动机如何在真空中产生向前加速度的单选题。从四个选项中选择一个。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-e1-reaction",
+        "options": [
+          {
+            "id": "opt-e1-reaction",
+            "label": {
+              "en": "The engine expels exhaust gas backward, and by Newton's third law, the expelled gas exerts an equal and opposite forward reaction force on the probe.",
+              "ms": "Enjin mengeluarkan gas ekzos ke belakang, dan mengikut hukum ketiga Newton, gas yang dikeluarkan mengenakan daya tindak balas ke hadapan yang sama magnitud dan bertentangan arah pada kuar.",
+              "zh": "发动机向后喷出废气，根据牛顿第三定律，被排出的气体对探测器施加大小相等、方向向前的反作用力。"
+            }
+          },
+          {
+            "id": "opt-e1-atmosphere",
+            "label": {
+              "en": "The expanding exhaust gas pushes against surrounding ambient gases in space to propel the probe forward.",
+              "ms": "Gas ekzos yang mengembang menolak gas persekitaran di angkasa untuk mendorong kuar ke hadapan.",
+              "zh": "膨胀的喷射废气推挤太空中周围的环境气体，从而推动探测器前进。"
+            },
+            "misconception": "needs-atmosphere-to-push"
+          },
+          {
+            "id": "opt-e1-vacuum-pull",
+            "label": {
+              "en": "The thruster pulls vacuum particles into the combustion chamber and pushes them out ahead of the vehicle.",
+              "ms": "Pendorong menarik zarah vakum ke dalam kebuk pembakaran dan menolaknya keluar ke hadapan kenderaan.",
+              "zh": "推进器将真空粒子吸入燃烧室，并将它们推向飞行器前方。"
+            }
+          },
+          {
+            "id": "opt-e1-gravity-field",
+            "label": {
+              "en": "The burning fuel creates a localized gravitational difference between the front and rear of the probe.",
+              "ms": "Pembakaran bahan api menghasilkan perbezaan graviti setempat antara bahagian hadapan dan belakang kuar.",
+              "zh": "燃烧的燃料在探测器前后两端之间产生局部引力差。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rp-mcq-easy-2",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Model a rocket and its expelled exhaust as an isolated system conserving total linear momentum.",
+      "prompt": {
+        "en": "When analyzing a rocket moving in space with its engine firing, why is the combination of the rocket and its expelled fuel modeled as an isolated system?",
+        "ms": "Apabila menganalisis roket yang bergerak di angkasa lepas dengan enjinnya menyala, mengapakah gabungan roket dan bahan api yang dikeluarkan dimodelkan sebagai sistem terpencil?",
+        "zh": "在分析火箭在太空中发动机点火运行的运动时，为什么将火箭及其排出的燃料组合建模为一个孤立系统？"
+      },
+      "hints": [
+        {
+          "en": "Recall the definition of an isolated system in mechanics: what condition must be met regarding forces originating from outside the system boundary?",
+          "ms": "Ingat kembali takrifan sistem terpencil dalam mekanik: apakah syarat yang mesti dipenuhi berkaitan daya yang berasal dari luar sempadan sistem?",
+          "zh": "回顾力学中孤立系统的定义：关于来自系统边界外部的力，必须满足什么条件？"
+        },
+        {
+          "en": "Notice that all the propellant was originally contained within the craft, so forces between the engine and the exhaust gases are internal forces.",
+          "ms": "Perhatikan bahawa semua propelan pada asalnya terkandung di dalam kapal, jadi daya antara enjin dan gas ekzos adalah daya dalaman.",
+          "zh": "注意所有推进剂最初都包含在飞行器内部，因此发动机与废气之间的力属于内力。"
+        }
+      ],
+      "feedback": {
+        "en": "Defining the system as the rocket plus all expelled fuel means the thrust forces between them are internal. With no external forces acting in deep space, total momentum is conserved.",
+        "ms": "Mentakrifkan sistem sebagai roket berserta semua bahan api yang dikeluarkan bermakna daya tujahan antara kedua-duanya adalah daya dalaman. Tanpa daya luar yang bertindak di angkasa lepas, jumlah momentum terpelihara.",
+        "zh": "将系统定义为火箭加上所有排出的燃料，意味着两者之间的推力属于内力。在深空中没有外力作用的情况下，总动量守恒。"
+      },
+      "answerLogic": {
+        "en": "Option opt-e2-isolated is correct because an isolated system in linear momentum analysis is characterized by zero net external force, ensuring momentum conservation. Option opt-e2-external-gas incorrectly categorizes exhaust gas as an external entity. Option opt-e2-constant-ke is incorrect because chemical potential energy is converted to kinetic energy during combustion. Option opt-e2-constant-mass is false because the rocket's mass decreases as fuel is expelled.",
+        "ms": "Pilihan opt-e2-isolated adalah betul kerana sistem terpencil dalam analisis momentum linear dicirikan oleh daya luar bersih sifar, memastikan keabadian momentum. Pilihan opt-e2-external-gas salah mengkategorikan gas ekzos sebagai entiti luaran. Pilihan opt-e2-constant-ke tidak betul kerana tenaga keupayaan kimia ditukarkan kepada tenaga kinetik semasa pembakaran. Pilihan opt-e2-constant-mass adalah palsu kerana jisim roket berkurangan apabila bahan api dikeluarkan.",
+        "zh": "选项 opt-e2-isolated 正确，因为线动量分析中的孤立系统特征是合外力为零，从而保证动量守恒。选项 opt-e2-external-gas 错误地将废气归类为外部实体。选项 opt-e2-constant-ke 错误，因为燃烧过程中化学势能转化为了动能。选项 opt-e2-constant-mass 错误，因为火箭质量随燃料排出而减小。"
+      },
+      "explanation": {
+        "en": "An isolated system is defined as one subject to zero net external force. When the system boundary is chosen to include both the rocket structure and all ejected exhaust gases, the forces accelerating the exhaust and the rocket are internal action-reaction pairs. Because no external agent acts on this combined entity in deep space, the total linear momentum of the rocket-plus-exhaust system remains constant.",
+        "ms": "Sistem terpencil ditakrifkan sebagai sistem yang tidak tertakluk kepada sebarang daya luar bersih. Apabila sempadan sistem dipilih untuk merangkumi kedua-dua struktur roket dan semua gas ekzos yang dikeluarkan, daya yang memecutkan ekzos dan roket ialah pasangan tindakan-tindak balas dalaman. Oleh kerana tiada agen luar yang bertindak ke atas entiti gabungan ini di angkasa lepas, jumlah momentum linear sistem roket dan ekzos kekal malar.",
+        "zh": "孤立系统被定义为不受净外力作用的系统。当选取的系统边界同时包含火箭结构和所有排出的废气时，使废气和火箭加速的力属于内部作用力与反作用力对。由于在深空中没有外部主体作用于该复合实体，火箭加喷气系统的总线动量保持守恒。"
+      },
+      "misconceptions": [
+        "exhaust-pushes-rocket-externally"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-momentum",
+        "prompt": {
+          "en": "Review linear momentum conservation: a system experiences zero change in total momentum when net external impulse is zero.",
+          "ms": "Ulang kaji keabadian momentum linear: sesebuah sistem mengalami sifar perubahan dalam jumlah momentum apabila impuls luar bersih adalah sifar.",
+          "zh": "复习线动量守恒：当净外冲量为零时，系统的总动量变化为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking why a rocket and its ejected fuel are modeled as an isolated system. Select one of four options.",
+        "ms": "Soalan aneka pilihan yang bertanyakan sebab roket dan bahan api yang dikeluarkan dimodelkan sebagai sistem terpencil. Pilih satu daripada empat pilihan.",
+        "zh": "询问为什么将火箭及其排出的燃料建模为孤立系统的单选题。从四个选项中选择一个。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-e2-isolated",
+        "options": [
+          {
+            "id": "opt-e2-isolated",
+            "label": {
+              "en": "No net external forces act on the rocket-plus-fuel system, so its total linear momentum remains conserved.",
+              "ms": "Tiada daya luar bersih bertindak ke atas sistem roket dan bahan api, jadi jumlah momentum linearnya kekal terpelihara.",
+              "zh": "没有合外力作用于火箭加燃料系统，因此系统的总线动量守恒。"
+            }
+          },
+          {
+            "id": "opt-e2-external-gas",
+            "label": {
+              "en": "The expelled exhaust acts as an external body from the environment that applies an external force to push the rocket forward.",
+              "ms": "Gas ekzos yang dikeluarkan bertindak sebagai jasad luaran dari persekitaran yang mengenakan daya luar untuk menolak roket ke hadapan.",
+              "zh": "排出的废气充当来自环境的外部物体，施加外力以推动火箭向前运动。"
+            },
+            "misconception": "exhaust-pushes-rocket-externally"
+          },
+          {
+            "id": "opt-e2-constant-ke",
+            "label": {
+              "en": "The total mechanical kinetic energy of the rocket and exhaust remains constant throughout the burn.",
+              "ms": "Jumlah tenaga kinetik mekanikal roket dan ekzos kekal malar sepanjang pembakaran berlangsung.",
+              "zh": "火箭和喷气的总机械动能整个燃烧过程中保持恒定不变。"
+            }
+          },
+          {
+            "id": "opt-e2-constant-mass",
+            "label": {
+              "en": "The total mass of the rocket body itself does not change during propulsion.",
+              "ms": "Jumlah jisim badan roket itu sendiri tidak berubah semasa pendorongan berlaku.",
+              "zh": "火箭本体自身的质量在推进过程中不发生改变。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rp-mcq-easy-3",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Describe the uniform motion of the system center of mass in free space during propulsion.",
+      "prompt": {
+        "en": "A rocket is coasting at constant velocity in deep space with no external gravitational or resistive forces. When its engines fire and continuously eject exhaust backward, what happens to the motion of the center of mass of the entire system (rocket plus all expelled exhaust)?",
+        "ms": "Sebuah roket meluncur pada halaju malar di angkasa lepas tanpa sebarang daya graviti atau rintangan luaran. Apabila enjinnya menyala dan terus mengeluarkan ekzos ke belakang, apakah yang berlaku kepada gerakan pusat jisim bagi keseluruhan sistem (roket berserta semua ekzos yang dikeluarkan)?",
+        "zh": "一枚火箭在没有外部引力或阻力的深空中以恒定速度滑行。当其发动机点火并持续向后喷出废气时，整个系统（火箭加所有排出的废气）的质心运动会发生什么变化？"
+      },
+      "hints": [
+        {
+          "en": "Consider Newton's second law for a system of particles: what is required to change the acceleration or velocity of a system's center of mass?",
+          "ms": "Pertimbangkan hukum kedua Newton untuk suatu sistem zarah: apakah yang diperlukan untuk mengubah pecutan atau halaju pusat jisim sesuatu sistem?",
+          "zh": "考虑质点系的牛顿第二定律：要改变系统质心的加速度或速度需要什么条件？"
+        },
+        {
+          "en": "Does the propulsion process involve any external forces acting across the outer boundary of the combined system?",
+          "ms": "Adakah proses perejahan melibatkan sebarang daya luar yang bertindak merentasi sempadan luar sistem gabungan tersebut?",
+          "zh": "推进过程是否涉及任何穿过复合系统外边界的外力作用？"
+        }
+      ],
+      "feedback": {
+        "en": "The rocket accelerates forward and the exhaust moves backward, but internal forces cannot accelerate the center of mass of the combined system. The center of mass continues its uniform motion.",
+        "ms": "Roket memecut ke hadapan dan ekzos bergerak ke belakang, tetapi daya dalaman tidak boleh memecut pusat jisim sistem gabungan tersebut. Pusat jisim meneruskan gerakan seragamnya.",
+        "zh": "火箭向前加速，废气向后运动，但内力无法加速复合系统的质心。质心继续保持其匀速直线运动。"
+      },
+      "answerLogic": {
+        "en": "Option opt-e3-constant-v is correct because the acceleration of the center of mass depends solely on external forces. In the absence of external forces, the center of mass maintains its original velocity. Option opt-e3-accelerates-forward incorrectly treats internal thrust as an external force acting on the whole system. Option opt-e3-stops misunderstands momentum conservation by assuming momentum must drop to zero. Option opt-e3-accelerates-backward confuses mass distribution shift with center-of-mass acceleration.",
+        "ms": "Pilihan opt-e3-constant-v adalah betul kerana pecutan pusat jisim bergantung sepenuhnya pada daya luar. Dengan ketiadaan daya luar, pusat jisim mengekalkan halaju asalnya. Pilihan opt-e3-accelerates-forward silap menganggap tujahan dalaman sebagai daya luar yang bertindak ke atas seluruh sistem. Pilihan opt-e3-stops salah faham tentang keabadian momentum dengan menganggap momentum mesti menjadi sifar. Pilihan opt-e3-accelerates-backward mengelirukan anjakan taburan jisim dengan pecutan pusat jisim.",
+        "zh": "选项 opt-e3-constant-v 正确，因为质心的加速度完全取决于外力。在没有外力的情况下，质心保持其原有的速度。选项 opt-e3-accelerates-forward 错误地将内部推力视为作用于整个系统的外力。选项 opt-e3-stops 误解了动量守恒，错误地假设动量必须归零。选项 opt-e3-accelerates-backward 混淆了质量分布变化与质心加速度。"
+      },
+      "explanation": {
+        "en": "According to Newton's second law for a system of particles, the center of mass of a system accelerates only if a net external force acts on it. In deep space, the forces between the rocket and its expelled gases are purely internal action-reaction pairs. Because the net external force on the system (rocket plus exhaust) is zero, the center of mass continues to move uniformly in a straight line, completely independent of the engine firing.",
+        "ms": "Menurut hukum kedua Newton untuk suatu sistem zarah, pusat jisim sesuatu sistem hanya memecut jika terdapat daya luar bersih yang bertindak ke atasnya. Di angkasa lepas, daya antara roket dan gas yang dikeluarkan adalah pasangan tindakan-tindak balas dalaman semata-mata. Oleh kerana daya luar bersih ke atas sistem (roket berserta ekzos) adalah sifar, pusat jisim terus bergerak secara seragam dalam garis lurus, bebas sepenuhnya daripada pembakaran enjin.",
+        "zh": "根据质点系的牛顿第二定律，仅当合外力作用于系统时，系统的质心才会产生加速度。在深空中，火箭与其排出的气体之间的力纯粹是内部的作用力与反作用力对。由于系统（火箭加喷气）所受的合外力为零，质心继续沿直线匀速运动，完全独立于发动机的点火推进。"
+      },
+      "misconceptions": [
+        "exhaust-pushes-rocket-externally"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "center-of-mass-motion",
+        "prompt": {
+          "en": "Review center-of-mass motion: internal forces between components of a system cannot alter the velocity of the system's center of mass.",
+          "ms": "Ulang kaji gerakan pusat jisim: daya dalaman antara komponen sistem tidak boleh mengubah halaju pusat jisim sistem tersebut.",
+          "zh": "复习质心运动：系统各组成部分之间的内力不能改变系统质心的速度。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking how the motion of the center of mass of a rocket-plus-exhaust system behaves during propulsion. Select one of four options.",
+        "ms": "Soalan aneka pilihan yang bertanyakan kelakuan gerakan pusat jisim sistem roket dan ekzos semasa perejahan. Pilih satu daripada empat pilihan.",
+        "zh": "询问火箭加喷气系统的质心在推进过程中的运动状态如何变化的单选题。从四个选项中选择一个。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-e3-constant-v",
+        "options": [
+          {
+            "id": "opt-e3-constant-v",
+            "label": {
+              "en": "The center of mass continues moving in a straight line at the original constant velocity because no net external force acts on the system.",
+              "ms": "Pusat jisim terus bergerak dalam garis lurus pada halaju malar asal kerana tiada daya luar bersih bertindak ke atas sistem.",
+              "zh": "质心继续以原有的恒定速度沿直线运动，因为系统没有受到合外力的作用。"
+            }
+          },
+          {
+            "id": "opt-e3-accelerates-forward",
+            "label": {
+              "en": "The center of mass accelerates forward because the thrust from the exhaust pushes the system as an external driving force.",
+              "ms": "Pusat jisim memecut ke hadapan kerana tujahan daripada ekzos menolak sistem sebagai daya penggerak luaran.",
+              "zh": "质心向前加速运动，因为来自喷气的推力作为外力推动系统前进。"
+            },
+            "misconception": "exhaust-pushes-rocket-externally"
+          },
+          {
+            "id": "opt-e3-stops",
+            "label": {
+              "en": "The center of mass comes to an immediate stop because the forward momentum of the rocket cancels the backward momentum of the exhaust.",
+              "ms": "Pusat jisim berhenti serta-merta kerana momentum ke hadapan roket membatalkan momentum ke belakang ekzos.",
+              "zh": "质心立即停止运动，因为火箭向前的动量抵消了喷气向后的动量。"
+            }
+          },
+          {
+            "id": "opt-e3-accelerates-backward",
+            "label": {
+              "en": "The center of mass accelerates backward because the ejected gas carries away mass at high velocity.",
+              "ms": "Pusat jisim memecut ke belakang kerana gas yang dikeluarkan membawa pergi jisim pada halaju yang tinggi.",
+              "zh": "质心向后加速运动，因为排出的气体以高速度带走了质量。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rp-mcq-mod-1",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate thrust to exhaust speed and fuel burn rate using Newton's second and third laws.",
+      "prompt": {
+        "en": "A rocket operates its engine in deep space far from external gravitational forces. The engine ejects exhaust gases at a constant exhaust speed relative to the rocket and at a constant mass burn rate. How does the rocket's forward acceleration behave during this continuous burn?",
+        "ms": "Sebuah roket menyalakan enjinnya di angkasa lepas jauh daripada daya graviti luar. Enjin itu mengeluarkan gas ekzos pada laju ekzos relatif malar terhadap roket dan pada kadar pembakaran jisim yang malar. Bagaimanakah kelakuan pecutan roket ke hadapan sepanjang pembakaran berterusan ini?",
+        "zh": "一枚火箭在远离外重力的深空中开动发动机。发动机以相对于火箭恒定的排气速度和恒定的质量燃烧率喷射废气。在这一持续燃烧过程中，火箭的前进加速度表现如何？"
+      },
+      "hints": [
+        {
+          "en": "Recall how thrust relates to the relative exhaust speed and the fuel burn rate. What happens to the thrust force if both of these factors remain constant?",
+          "ms": "Ingat kembali bagaimana daya tujahan berkaitan dengan laju ekzos relatif dan kadar pembakaran bahan api. Apakah yang berlaku kepada daya tujahan jika kedua-dua faktor ini kekal malar?",
+          "zh": "思考推力与相对排气速度以及燃料燃烧率之间的关系。如果这两项因素都保持恒定，推力大小会发生什么改变？"
+        },
+        {
+          "en": "Apply Newton's second law, acceleration = Thrust / mass. As fuel is steadily burned and ejected into space, what happens to the rocket's total mass over time, and how does that affect its acceleration?",
+          "ms": "Gunakan hukum kedua Newton, pecutan = Tujahan / jisim. Apabila bahan api dibakar secara tetap dan dikeluarkan ke angkasa, apakah yang berlaku kepada jumlah jisim roket dari semasa ke semasa, dan bagaimanakah hal itu mempengaruhi pecutannya?",
+          "zh": "应用牛顿第二定律，加速度 = 推力 / 质量。随着燃料稳定燃烧并喷向太空，火箭的总质量随时间发生什么变化，这又是如何影响其加速度的？"
+        }
+      ],
+      "feedback": {
+        "en": "Thrust depends on the exhaust speed and the mass burn rate. Because both parameters are constant, the thrust force remains constant. However, as propellant is continuously expelled, the rocket's total mass decreases, causing the forward acceleration to increase steadily.",
+        "ms": "Daya tujahan bergantung pada laju ekzos dan kadar pembakaran jisim. Oleh kerana kedua-dua parameter malar, daya tujahan kekal malar. Walau bagaimanapun, apabila bahan dorong dikeluarkan secara berterusan, jumlah jisim roket berkurangan, menyebabkan pecutan ke hadapan meningkat secara berterusan.",
+        "zh": "推力取决于排气速度和质量燃烧率。因为这两个参数恒定，推力大小保持恒定。然而，随着推进剂持续喷出，火箭的总质量不断减小，导致前进加速度稳步增大。"
+      },
+      "answerLogic": {
+        "en": "Thrust equals the product of exhaust speed and mass burn rate. Because both factors are constant, the thrust force acting on the rocket body is constant. By Newton's second law, acceleration equals thrust divided by instantaneous rocket mass. Since the mass decreases continuously throughout the burn, the acceleration must continuously increase.",
+        "ms": "Tujahan bersamaan dengan hasil darab laju ekzos dan kadar pembakaran jisim. Oleh kerana kedua-dua faktor adalah malar, daya tujahan yang bertindak ke atas jasad roket adalah malar. Mengikut hukum kedua Newton, pecutan bersamaan dengan tujahan dibahagikan dengan jisim seketika roket. Oleh kerana jisim berkurangan secara berterusan sepanjang pembakaran, pecutan mesti meningkat secara berterusan.",
+        "zh": "推力由排气速度与质量燃烧率共同决定。由于这两个因素都是恒定的，作用在火箭本体上的推力保持恒定。根据牛顿第二定律，加速度等于推力与火箭瞬时质量的比值。由于质量在整个燃烧过程中持续减小，加速度必然持续增大。"
+      },
+      "explanation": {
+        "en": "Rocket thrust is the reaction force generated by ejecting exhaust mass at high velocity, given by Thrust = ve |dM/dt|. If the engine operates with a constant exhaust speed and burn rate, the thrust force remains constant. However, unlike everyday road vehicles that maintain an essentially constant mass, a rocket expels a major portion of its initial mass as exhaust. By Newton's second law, the forward acceleration of the vehicle is a = Thrust / M(t). As the remaining vehicle mass M(t) diminishes over time under constant thrust, the rocket's acceleration steadily increases.",
+        "ms": "Tujahan roket ialah daya tindak balas yang dijana dengan mengeluarkan jisim ekzos pada kelajuan tinggi, yang diberikan oleh Tujahan = ve |dM/dt|. Jika enjin beroperasi dengan laju ekzos dan kadar pembakaran yang malar, daya tujahan kekal malar. Walau bagaimanapun, tidak seperti kenderaan jalan raya harian yang mengekalkan jisim asas yang malar, roket mengeluarkan sebahagian besar jisim awalnya sebagai ekzos. Mengikut hukum kedua Newton, pecutan kenderaan ke hadapan ialah a = Tujahan / M(t). Apabila baki jisim kenderaan M(t) menyusut dari semasa ke semasa di bawah tujahan malar, pecutan roket meningkat secara berterusan.",
+        "zh": "火箭推力是通过高速喷出排气质量产生的反作用力，表达式为推力 = ve |dM/dt|。如果发动机以恒定的排气速度和燃烧率运行，推力大小保持恒定。然而，与基本保持恒定质量的日常道路车辆不同，火箭会将其初始质量的大部分作为废气喷出。根据牛顿第二定律，运载工具的前进加速度为 a = 推力 / M(t)。在恒定推力下，随着剩余质量 M(t) 随时间减少，火箭的加速度稳步增大。"
+      },
+      "misconceptions": [
+        "constant-mass-assumption"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Recall Newton's third law: the force exerted on the exhaust gas by the rocket engine creates an equal and opposite reaction force, called thrust, acting on the rocket. By Newton's second law, this net thrust equals the rocket's instantaneous mass multiplied by its acceleration. How does the rocket's mass change during fuel consumption?",
+          "ms": "Ingat kembali hukum ketiga Newton: daya yang dikenakan ke atas gas ekzos oleh enjin roket menghasilkan daya tindak balas yang sama magnitud dan bertentangan arah, yang dipanggil tujahan, bertindak ke atas roket. Mengikut hukum kedua Newton, tujahan bersih ini bersamaan dengan jisim seketika roket didarab dengan pecutannya. Bagaimanakah jisim roket berubah semasa bahan api digunakan?",
+          "zh": "回忆牛顿第三定律：火箭发动机对排气施加的力会产生一个大小相等、方向相反的反作用力（即推力），作用在火箭上。根据牛顿第二定律，该净推力等于火箭的瞬时质量乘以其加速度。在消耗燃料的过程中，火箭的质量是如何变化的？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking how a rocket's acceleration changes over time when it ejects gas at a constant relative exhaust speed and constant burn rate in deep space.",
+        "ms": "Soalan aneka pilihan yang bertanyakan bagaimana pecutan roket berubah mengikut masa apabila ia mengeluarkan gas pada laju ekzos relatif malar dan kadar pembakaran malar di angkasa lepas.",
+        "zh": "多项选择题，询问当火箭在深空中以恒定的相对排气速度和恒定的燃烧率喷射气体时，其加速度随时间如何变化。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-acc-increases",
+        "options": [
+          {
+            "id": "opt-acc-increases",
+            "label": {
+              "en": "The forward acceleration continuously increases because thrust remains constant while the vehicle's total mass steadily decreases.",
+              "ms": "Pecutan ke hadapan meningkat secara berterusan kerana daya tujahan kekal malar sementara jumlah jisim kenderaan berkurangan secara tetap.",
+              "zh": "前进加速度持续增加，因为推力保持恒定，而运载工具的总质量稳步减小。"
+            }
+          },
+          {
+            "id": "opt-acc-constant",
+            "misconception": "constant-mass-assumption",
+            "label": {
+              "en": "The forward acceleration remains constant because the engine operates at a steady burn rate and constant exhaust speed.",
+              "ms": "Pecutan ke hadapan kekal malar kerana enjin beroperasi pada kadar pembakaran yang tetap dan laju ekzos yang malar.",
+              "zh": "前进加速度保持恒定，因为发动机以稳定的燃烧率和恒定的排气速度运行。"
+            }
+          },
+          {
+            "id": "opt-acc-decreases",
+            "label": {
+              "en": "The forward acceleration steadily decreases because higher speeds cause the rocket to experience greater resistance to acceleration.",
+              "ms": "Pecutan ke hadapan berkurangan secara tetap kerana kelajuan yang lebih tinggi menyebabkan roket mengalami rintangan yang lebih besar terhadap pecutan.",
+              "zh": "前进加速度稳步减小，因为更高的速度使火箭在加速时遇到更大的阻力。"
+            }
+          },
+          {
+            "id": "opt-acc-zero",
+            "label": {
+              "en": "The forward acceleration immediately drops to zero once the exhaust leaves the engine because no external surface supports the rocket.",
+              "ms": "Pecutan ke hadapan serta-merta turun kepada sifar sebaik sahaja ekzos keluar dari enjin kerana tiada permukaan luar yang menyokong roket.",
+              "zh": "废气一旦离开发动机，前进加速度立即降至零，因为没有外部表面支撑火箭。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rp-mcq-mod-2",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Model a rocket and its expelled exhaust as an isolated system conserving total linear momentum.",
+      "prompt": {
+        "en": "A spacecraft in deep space accelerates until its forward speed relative to a distant space station exceeds the exhaust speed of its engine gases. With no external forces acting, which statement correctly describes the isolated system consisting of the spacecraft plus all its expelled exhaust?",
+        "ms": "Sebuah kapal angkasa di angkasa lepas memecut sehingga laju ke hadapannya relatif kepada stesen angkasa yang jauh melebihi laju ekzos gas enjinnya. Tanpa tindakan daya luar, pernyataan manakah yang menerangkan dengan betul sistem terpencil yang terdiri daripada kapal angkasa bersama semua ekzos yang dikeluarkan?",
+        "zh": "一艘深空航天器持续加速，直到其相对于遥远空间站的前进速度超过了其发动机气体的排气速度。在没有外力作用的情况下，下列哪项陈述正确描述了由航天器及其喷出的所有废气组成的孤立系统？"
+      },
+      "hints": [
+        {
+          "en": "Consider the definition of an isolated system. Are there any external forces acting on the combination of the rocket and all expelled exhaust gases?",
+          "ms": "Pertimbangkan takrifan sistem terpencil. Adakah terdapat sebarang daya luar yang bertindak ke atas gabungan roket dan semua gas ekzos yang dikeluarkan?",
+          "zh": "考虑孤立系统的定义。是否有任何外力作用于火箭和所有排出废气的组合？"
+        },
+        {
+          "en": "Remember that exhaust speed is measured relative to the rocket nozzle. If the rocket moves forward at high speed and expels gas backward relative to itself, does the gas have less forward momentum than the rocket? What does momentum conservation require for the rocket?",
+          "ms": "Ingat bahawa laju ekzos diukur relatif kepada muncung roket. Jika roket bergerak ke hadapan pada kelajuan tinggi dan mengeluarkan gas ke belakang relatif kepada dirinya sendiri, adakah gas itu mempunyai momentum ke hadapan yang kurang daripada roket? Apakah yang diperlukan oleh keabadian momentum untuk roket?",
+          "zh": "记住排气速度是相对于火箭喷嘴测量的。如果火箭以高速向前移动并相对于自身向后喷出气体，该气体的向前动量是否小于火箭？动量守恒对火箭有什么要求？"
+        }
+      ],
+      "feedback": {
+        "en": "Because no external forces act on the rocket-plus-exhaust system, total linear momentum is strictly conserved and its center of mass continues at constant velocity. Even when the rocket moves faster than its relative exhaust speed, ejecting gas backward relative to the rocket gives that gas less forward speed than the vehicle, transferring forward momentum to the rocket.",
+        "ms": "Kerana tiada daya luar yang bertindak ke atas sistem roket-tambah-ekzos, jumlah momentum linear diabadikan secara ketat dan pusat jisimnya terus bergerak pada halaju malar. Walaupun roket bergerak lebih laju daripada laju ekzos relatifnya, mengeluarkan gas ke belakang relatif kepada roket memberikan gas itu laju ke hadapan yang lebih rendah daripada kenderaan, memindahkan momentum ke hadapan kepada roket.",
+        "zh": "由于没有外力作用于火箭加排气系统，总线动量严格守恒，其质心继续以恒定速度运动。即使火箭的前进速度超过了相对排气速度，相对于火箭向后喷射废气也会使该废气的向前速度小于航天器，从而将前进动量传递给火箭。"
+      },
+      "answerLogic": {
+        "en": "In the absence of external forces, the total momentum change is zero. The exhaust speed is defined relative to the rocket nozzle. In the station frame, newly expelled exhaust moves at speed (v - ve). Even when v exceeds ve, this exhaust velocity is strictly less than v. By momentum conservation, releasing matter with lower forward velocity than the remaining spacecraft requires the spacecraft's forward velocity to increase, while total system momentum remains unchanged.",
+        "ms": "Tanpa daya luar, perubahan jumlah momentum adalah sifar. Laju ekzos ditakrifkan relatif kepada muncung roket. Dalam kerangka stesen, ekzos yang baru dikeluarkan bergerak pada kelajuan (v - ve). Walaupun v melebihi ve, halaju ekzos ini adalah lebih rendah daripada v secara ketat. Melalui keabadian momentum, membebaskan jirim dengan halaju ke hadapan yang lebih rendah daripada baki kapal angkasa memerlukan halaju ke hadapan kapal angkasa meningkat, manakala jumlah momentum sistem kekal tidak berubah.",
+        "zh": "在没有外力的情况下，总动量改变量为零。排气速度是相对于火箭喷嘴定义的。在空间站参考系中，新喷出的废气以 (v - ve) 的速度运动。即使 v 超过了 ve，该排气速度依然严格小于 v。根据动量守恒，释放向前速度低于剩余航天器的物质必然要求航天器的向前速度增加，而系统的总动量保持不变。"
+      },
+      "explanation": {
+        "en": "An isolated system is one on which no external forces act. For a rocket plus its expelled exhaust in free space, the forces between the expanding exhaust and the engine are entirely internal action-reaction pairs. Therefore, by the impulse-momentum theorem, the total linear momentum of the system is strictly conserved, and the center of mass of the combined system moves at a constant velocity. A common misconception is that a rocket cannot accelerate once its speed exceeds its relative exhaust speed. In reality, exhaust speed is measured relative to the rocket. Even if the rocket travels faster than its exhaust speed relative to an outside observer, expelling gas backward relative to the rocket leaves the gas moving forward slower than the rocket, ensuring continuous forward acceleration through linear momentum conservation.",
+        "ms": "Sistem terpencil ialah sistem di mana tiada daya luar bertindak ke atasnya. Bagi sebuah roket bersama ekzos yang dikeluarkan di angkasa bebas, daya antara ekzos yang mengembang dan enjin adalah pasangan tindakan-tindak balas dalaman sepenuhnya. Oleh itu, melalui teorem impuls-momentum, jumlah momentum linear sistem diabadikan secara ketat, dan pusat jisim sistem gabungan bergerak pada halaju malar. Salah faham yang biasa ialah roket tidak boleh memecut lagi sebaik sahaja kelajuannya melebihi laju ekzos relatifnya. Hakikatnya, laju ekzos diukur relatif kepada roket. Walaupun roket bergerak lebih laju daripada laju ekzosnya relatif kepada pemerhati luar, mengeluarkan gas ke belakang relatif kepada roket menyebabkan gas itu bergerak ke hadapan lebih perlahan daripada roket, memastikan pecutan ke hadapan yang berterusan melalui keabadian momentum linear.",
+        "zh": "孤立系统是指没有外力作用的系统。对于自由空间中的火箭及其喷出的废气，膨胀气体与发动机之间的力完全是内部的作用力-反作用力对。因此，根据动量定理，该系统的总线动量严格守恒，组合系统的质心以恒定速度运动。一个常见的误解是：一旦火箭的速度超过其相对排气速度，火箭就无法继续加速。实际上，排气速度是相对于火箭测量的。即使火箭相对于外部观察者的速度超过了其排气速度，相对于火箭向后喷射废气也会使该废气向前运动的速度慢于火箭，从而通过线动量守恒确保火箭持续向前加速。"
+      },
+      "misconceptions": [
+        "thrust-equals-rocket-speed"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-momentum",
+        "prompt": {
+          "en": "Recall the isolated system model for linear momentum: when no net external force acts on a system, its total linear momentum remains constant over time. What constitutes the isolated system during rocket propulsion in deep space?",
+          "ms": "Ingat kembali model sistem terpencil untuk momentum linear: apabila tiada daya luar bersih bertindak ke atas sistem, jumlah momentum linearnya kekal malar sepanjang masa. Apakah yang membentuk sistem terpencil semasa dorongan roket di angkasa lepas?",
+          "zh": "回忆线动量的孤立系统模型：当没有净外力作用于系统时，其总线动量随时间保持恒定。在深空火箭推进过程中，什么构成了孤立系统？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question evaluating how the total linear momentum of an isolated rocket-exhaust system behaves when the rocket travels faster than its relative exhaust speed.",
+        "ms": "Soalan aneka pilihan yang menilai bagaimana jumlah momentum linear sistem terpencil roket-ekzos berkelakuan apabila roket bergerak lebih laju daripada laju ekzos relatifnya.",
+        "zh": "多项选择题，评估当火箭的运动速度超过其相对排气速度时，孤立的火箭-排气系统的总线动量如何表现。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-sys-momentum-conserved",
+        "options": [
+          {
+            "id": "opt-sys-momentum-conserved",
+            "label": {
+              "en": "The total linear momentum of the system is strictly conserved at all times, and newly expelled exhaust gas moving forward in the station frame still imparts forward momentum to the spacecraft.",
+              "ms": "Jumlah momentum linear sistem diabadikan secara ketat pada setiap masa, dan gas ekzos yang baru dikeluarkan yang bergerak ke hadapan dalam kerangka stesen masih memindahkan momentum ke hadapan kepada kapal angkasa.",
+              "zh": "系统的总线动量始终严格守恒，在空间站参考系中向前运动的新喷出废气仍然能给航天器提供向前的前进动量。"
+            }
+          },
+          {
+            "id": "opt-sys-thrust-stops",
+            "misconception": "thrust-equals-rocket-speed",
+            "label": {
+              "en": "Thrust and momentum transfer cease because the spacecraft is moving faster than the exhaust gas, preventing the gas from exerting backward force.",
+              "ms": "Tujahan dan pemindahan momentum terhenti kerana kapal angkasa bergerak lebih laju daripada gas ekzos, menghalang gas daripada mengenakan daya ke belakang.",
+              "zh": "推力和动量传递停止，因为航天器的运动速度快于废气，阻止了气体向后施加作用力。"
+            }
+          },
+          {
+            "id": "opt-sys-momentum-grows",
+            "label": {
+              "en": "The total linear momentum of the combined system increases continuously because chemical energy stored in the propellant creates new momentum.",
+              "ms": "Jumlah momentum linear sistem gabungan meningkat secara berterusan kerana tenaga kimia yang tersimpan dalam bahan dorong mencipta momentum baharu.",
+              "zh": "组合系统的总线动量持续增加，因为推进剂中存储的化学能创造了新的动量。"
+            }
+          },
+          {
+            "id": "opt-sys-com-accelerates",
+            "label": {
+              "en": "The center of mass of the combined spacecraft and exhaust cloud accelerates forward in the direction of flight.",
+              "ms": "Pusat jisim bagi gabungan kapal angkasa dan awan ekzos memecut ke hadapan mengikut arah penerbangan.",
+              "zh": "航天器与喷出废气云组成的系统质心沿飞行方向向前加速。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rp-mcq-mod-3",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze how exhaust speed and mass ratio determine the final speed change of a rocket.",
+      "prompt": {
+        "en": "According to the rocket propulsion equation, the change in speed of a rocket in free space is given by the exhaust speed multiplied by the natural logarithm of the initial-to-final mass ratio. Can the total increase in the rocket's forward speed exceed the exhaust speed of its engine gases?",
+        "ms": "Menurut persamaan dorongan roket, perubahan kelajuan roket di angkasa bebas diberikan oleh laju ekzos didarab dengan logaritma semula jadi bagi nisbah jisim awal kepada akhir. Bolehkah jumlah peningkatan kelajuan roket ke hadapan melebihi laju ekzos gas enjinnya?",
+        "zh": "根据火箭推进方程，自由空间中火箭的速度变化量等于排气速度乘以初始质量与最终质量之比的自然对数。火箭前进速度的总增量能否超过其发动机气体的排气速度？"
+      },
+      "hints": [
+        {
+          "en": "Examine the rocket propulsion equation: the change in speed is the product of the exhaust speed and the natural logarithm of (initial mass / final mass). Under what mathematical condition is the natural logarithm greater than one?",
+          "ms": "Teliti persamaan dorongan roket: perubahan kelajuan ialah hasil darab laju ekzos dan logaritma semula jadi (jisim awal / jisim akhir). Di bawah syarat matematik apakah logaritma semula jadi lebih besar daripada satu?",
+          "zh": "检查火箭推进方程：速度变化量是排气速度与（初始质量 / 最终质量）的自然对数的乘积。在什么数学条件下自然对数大于一？"
+        },
+        {
+          "en": "Notice that as a rocket carries more fuel relative to its empty payload mass, the ratio of initial to final mass increases. If this ratio exceeds the base of natural logarithms (e, approximately 2.72), what does that tell you about the final speed change relative to the exhaust speed?",
+          "ms": "Perhatikan bahawa apabila roket membawa lebih banyak bahan api berbanding jisim muatan kosongnya, nisbah jisim awal kepada akhir meningkat. Jika nisbah ini melebihi asas logaritma semula jadi (e, kira-kira 2.72), apakah yang diberitahukan kepada anda tentang perubahan kelajuan akhir berbanding laju ekzos?",
+          "zh": "请注意，当火箭相对于其空载荷质量携带更多燃料时，初始质量与最终质量的比值会增加。如果该比值超过自然对数的底数（e，约 2.72），这关于最终速度增量与排气速度的关系说明了什么？"
+        }
+      ],
+      "feedback": {
+        "en": "The speed increase is proportional to the exhaust speed multiplied by ln(Mi / Mf). When fuel accounts for most of the launch mass so that the mass ratio exceeds e (approximately 2.72), the logarithmic factor is greater than one, and the rocket's speed increase exceeds the exhaust speed.",
+        "ms": "Peningkatan kelajuan adalah berkadar dengan laju ekzos didarab dengan ln(Mi / Mf). Apabila bahan api menyumbang sebahagian besar jisim pelancaran sehingga nisbah jisim melebihi e (kira-kira 2.72), faktor logaritma adalah lebih besar daripada satu, dan peningkatan kelajuan roket melebihi laju ekzos.",
+        "zh": "速度增量与排气速度乘以 ln(Mi / Mf) 成正比。当燃料占发射质量的绝大部分使得质量比超过 e（约 2.72）时，对数因子大于一，火箭的速度增量就会超过排气速度。"
+      },
+      "answerLogic": {
+        "en": "The rocket propulsion equation is vf - vi = ve * ln(Mi / Mf). The exhaust speed ve is a parameter describing gas ejection speed relative to the rocket, not an upper limit on the rocket's velocity change. Whenever the mass ratio Mi / Mf is greater than the mathematical constant e (approximately 2.718), ln(Mi / Mf) is greater than 1, meaning the total velocity increase strictly exceeds ve.",
+        "ms": "Persamaan dorongan roket ialah vf - vi = ve * ln(Mi / Mf). Laju ekzos ve ialah parameter yang menerangkan laju pengeluaran gas relatif kepada roket, bukan had atas bagi perubahan halaju roket. Setiap kali nisbah jisim Mi / Mf lebih besar daripada pemalar matematik e (kira-kira 2.718), ln(Mi / Mf) lebih besar daripada 1, bermakna peningkatan halaju keseluruhan melebihi ve secara ketat.",
+        "zh": "火箭推进方程为 vf - vi = ve * ln(Mi / Mf)。排气速度 ve 是描述气体相对于火箭喷射速度的参数，而不是火箭速度变化的上限。只要质量比 Mi / Mf 大于数学常数 e（约 2.718），ln(Mi / Mf) 就大于 1，这意味着总速度增量严格大于 ve。"
+      },
+      "explanation": {
+        "en": "The rocket equation, vf - vi = ve ln(Mi / Mf), demonstrates that a rocket's final speed increase depends on two key factors: the relative exhaust speed ve and the natural logarithm of the mass ratio Mi / Mf. A common misconception is confusing the exhaust speed with a strict ceiling on the rocket's achievable speed increase. Because propellant is continuously ejected backward from an already accelerating vehicle, momentum continues to accumulate in the remaining mass. Whenever propellant comprises enough of the total launch mass so that Mi / Mf exceeds e (approximately 2.72), ln(Mi / Mf) exceeds 1, allowing the vehicle's speed increase to surpass the exhaust speed itself.",
+        "ms": "Persamaan roket, vf - vi = ve ln(Mi / Mf), menunjukkan bahawa peningkatan kelajuan akhir roket bergantung pada dua faktor utama: laju ekzos relatif ve dan logaritma semula jadi bagi nisbah jisim Mi / Mf. Salah faham yang lazim ialah mengelirukan laju ekzos sebagai had siling yang ketat bagi peningkatan kelajuan yang boleh dicapai oleh roket. Oleh kerana bahan dorong dikeluarkan secara berterusan ke belakang daripada kenderaan yang sudah memecut, momentum terus terkumpul dalam baki jisim. Setiap kali bahan dorong merangkumi bahagian jisim pelancaran yang mencukupi sehingga Mi / Mf melebihi e (kira-kira 2.72), ln(Mi / Mf) melebihi 1, membolehkan peningkatan kelajuan kenderaan mengatasi laju ekzos itu sendiri.",
+        "zh": "火箭方程 vf - vi = ve ln(Mi / Mf) 表明，火箭的最终速度增量取决于两个关键因素：相对排气速度 ve 以及质量比 Mi / Mf 的自然对数。一个常见的误解是将排气速度混淆为火箭可达到的速度增量的严格上限。因为推进剂是从已经加速的运载工具中不断向后喷出的，动量会在剩余质量中继续累积。只要推进剂在总发射质量中占有足够大的比例，使得 Mi / Mf 超过 e（约 2.72），ln(Mi / Mf) 就会超过 1，从而使运载工具的速度增量超过排气速度本身。"
+      },
+      "misconceptions": [
+        "thrust-equals-rocket-speed"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Recall Newton's third law and momentum transfer: each parcel of expelled exhaust pushes the rocket forward. How does the cumulative speed change accumulate over a burn as the ratio of initial to final mass changes?",
+          "ms": "Ingat kembali hukum ketiga Newton dan pemindahan momentum: setiap kelompok ekzos yang dikeluarkan menolak roket ke hadapan. Bagaimanakah perubahan kelajuan terkumpul sepanjang pembakaran apabila nisbah jisim awal kepada akhir berubah?",
+          "zh": "回忆牛顿第三定律和动量传递：喷出的每一团废气都向前推动火箭。随着初始质量与最终质量的比值变化，整个燃烧过程中累积的速度变化是如何叠加的？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question comparing the maximum achievable speed change of a rocket to its exhaust speed based on the rocket propulsion equation and mass ratio.",
+        "ms": "Soalan aneka pilihan yang membandingkan perubahan kelajuan maksimum yang boleh dicapai oleh roket dengan laju ekzosnya berdasarkan persamaan dorongan roket dan nisbah jisim.",
+        "zh": "多项选择题，根据火箭推进方程和质量比，比较火箭可实现的最大速度变化与其排气速度。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-ratio-exceeds",
+        "options": [
+          {
+            "id": "opt-ratio-exceeds",
+            "label": {
+              "en": "Yes, because if the initial-to-final mass ratio is sufficiently large, the natural logarithm of this ratio is greater than one, making the speed change larger than the exhaust speed.",
+              "ms": "Ya, kerana jika nisbah jisim awal kepada akhir cukup besar, logaritma semula jadi bagi nisbah ini adalah lebih besar daripada satu, menjadikan perubahan kelajuan lebih besar daripada laju ekzos.",
+              "zh": "可以，因为如果初始质量与最终质量的比值足够大，该比值的自然对数将大于一，从而使速度增量大于排气速度。"
+            }
+          },
+          {
+            "id": "opt-capped-exhaust",
+            "misconception": "thrust-equals-rocket-speed",
+            "label": {
+              "en": "No, because a rocket's speed increase is fundamentally capped at the exhaust speed of the propellant leaving the nozzle.",
+              "ms": "Tidak, kerana peningkatan kelajuan roket pada dasarnya dihadkan kepada laju ekzos bahan dorong yang keluar dari muncung.",
+              "zh": "不可以，因为火箭的速度增量在根本上受限于离开喷嘴的推进剂排气速度。"
+            }
+          },
+          {
+            "id": "opt-mass-independent",
+            "label": {
+              "en": "No, because the mass ratio only determines fuel consumption rate, not the magnitude of the final speed change.",
+              "ms": "Tidak, kerana nisbah jisim hanya menentukan kadar penggunaan bahan api, bukan magnitud perubahan kelajuan akhir.",
+              "zh": "不可以，因为质量比仅决定燃料消耗速率，而不决定最终速度变化的大小。"
+            }
+          },
+          {
+            "id": "opt-linear-ratio",
+            "label": {
+              "en": "Yes, but only if the rocket expels its entire mass all at once in an instantaneous single explosion rather than a continuous burn.",
+              "ms": "Ya, tetapi hanya jika roket mengeluarkan seluruh jisimnya sekaligus dalam satu letupan serta-merta berbanding pembakaran berterusan.",
+              "zh": "可以，但前提是火箭在一次瞬间爆炸中喷出全部质量，而不是通过持续燃烧。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rp-mcq-chal-1",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze how exhaust speed and mass ratio determine the final speed change of a rocket.",
+      "prompt": {
+        "en": "A propulsion engineer proposes doubling the initial fuel loaded onto a deep-space probe while keeping the craft's dry structural mass unchanged. The engineer claims this will double the overall change in speed (Δv) achieved during a full burn at constant exhaust speed. Which statement correctly assesses this prediction using the rocket propulsion equation?",
+        "ms": "Seorang jurutera pendorongan mencadangkan untuk menggandakan jisim bahan api awal yang dimuatkan ke dalam sebuah kuar angkasa lepas sambil mengekalkan jisim struktur kering kapal angkasa. Jurutera itu mendakwa ini akan menggandakan jumlah perubahan laju (Δv) keseluruhan yang dicapai semasa pembakaran penuh pada laju ekzos malar. Pernyataan manakah yang menilai ramalan ini dengan tepat menggunakan persamaan pendorongan roket?",
+        "zh": "一名推进工程师提议将深空探测器搭载的初始燃料质量加倍，同时保持飞行器的干结构质量不变。该工程师声称，在恒定排气速度下进行全额燃烧时，这会使探测器获得的最终速度增量（Δv）增加一倍。根据火箭推进方程，下列哪项陈述对该预测的评价是正确的？"
+      },
+      "hints": [
+        {
+          "en": "Recall the rocket propulsion equation relating speed change to exhaust speed and mass ratio: Δv = ve ln(Mi / Mf).",
+          "ms": "Ingat kembali persamaan pendorongan roket yang menghubungkan perubahan laju dengan laju ekzos dan nisbah jisim: Δv = ve ln(Mi / Mf).",
+          "zh": "回想将速度增量与排气速度及质量比联系起来的火箭推进方程：Δv = ve ln(Mi / Mf)。"
+        },
+        {
+          "en": "Consider how the mass ratio Mi / Mf changes when fuel is added. Does doubling the fuel mass double the ratio Mi / Mf, and does a natural logarithm scale linearly with its argument?",
+          "ms": "Fikirkan bagaimana nisbah jisim Mi / Mf berubah apabila bahan api ditambah. Adakah penggandaan jisim bahan api menggandakan nisbah Mi / Mf, dan adakah logaritma semula jadi berskala secara linear dengan nilainya?",
+          "zh": "思考增加燃料时质量比 Mi / Mf 如何变化。燃料质量翻倍是否会使初末质量比 Mi / Mf 翻倍？自然对数函数会随自变量线性缩放吗？"
+        }
+      ],
+      "feedback": {
+        "en": "The speed gain is proportional to the natural logarithm of the mass ratio Mi / Mf, not linear in propellant mass. The extra fuel adds mass that must itself be accelerated during earlier burn phases.",
+        "ms": "Pertambahan laju adalah berkadar dengan logaritma semula jadi bagi nisbah jisim Mi / Mf, dan bukannya linear dengan jisim bahan api. Bahan api tambahan menambah jisim yang perlu dipecutkan semasa fasa pembakaran awal.",
+        "zh": "速度增量与初末质量比 Mi / Mf 的自然对数成正比，而不是与推进剂质量呈线性关系。额外添加的燃料自身也构成了载荷，必须在燃烧前段被一同加速。"
+      },
+      "answerLogic": {
+        "en": "Because Δv = ve ln(Mi / Mf), doubling the initial fuel mass increases the ratio Mi / Mf but does not double it (since Mf remains fixed while Mi increases by less than a factor of two relative to structural mass). Furthermore, because the logarithm is a concave sublinear function, ln(Mi / Mf) increases even more slowly than the ratio itself. Therefore, the speed gain is strictly less than doubled.",
+        "ms": "Kerana Δv = ve ln(Mi / Mf), penggandaan jisim bahan api awal meningkatkan nisbah Mi / Mf tetapi tidak menggandakannya (kerana Mf kekal tetap manakala Mi meningkat kurang daripada faktor dua berbanding jisim struktur). Tambahan pula, kerana fungsi logaritma bersifat sublinear, ln(Mi / Mf) meningkat lebih perlahan daripada nisbah itu sendiri. Oleh itu, pertambahan laju adalah kurang daripada dua kali ganda.",
+        "zh": "因为 Δv = ve ln(Mi / Mf)，初始燃料质量翻倍会增大初末质量比 Mi / Mf，但绝不会使其翻倍（因为干重 Mf 固定，而初始总质量 Mi 相对结构质量而言增长倍数有限）。此外，由于自然对数函数的下凹次线性特征，ln(Mi / Mf) 的增长比自变量本身的增长还要缓慢，因此最终获得的速度增量严格小于两倍。"
+      },
+      "explanation": {
+        "en": "In rocket propulsion, every additional kilogram of fuel loaded onto the craft must be propelled by earlier fuel burns before it can be ejected to provide thrust. The rocket equation accounts for this through the natural logarithm of the mass ratio Mi / Mf. Consequently, adding fuel exhibits diminishing returns in Δv, refuting any assumption of a linear relationship between fuel load and final velocity.",
+        "ms": "Dalam pendorongan roket, setiap kilogram bahan api tambahan yang dimuatkan mesti digerakkan oleh pembakaran bahan api terdahulu sebelum ia dapat dikeluarkan untuk menghasilkan tujahan. Persamaan roket mengambil kira perkara ini melalui logaritma semula jadi nisbah jisim Mi / Mf. Oleh itu, penambahan bahan api menghasilkan pulangan yang semakin berkurangan dalam Δv, menyangkal andaian hubungan linear antara muatan bahan api dan halaju akhir.",
+        "zh": "在火箭推进中，装载到飞行器上的每一千克额外燃料，在被喷出产生推力之前，都必须由先期消耗的燃料提供动力来加速。齐奥尔科夫斯基火箭方程通过初末质量比 Mi / Mf 的自然对数体现了这一物理机制。因此，增加燃料带来的 Δv 收益具有边际递减效应，证明燃料加装量与最终航速增量之间并非线性正比关系。"
+      },
+      "misconceptions": [
+        "linear-speed-gain-with-fuel"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-momentum",
+        "prompt": {
+          "en": "Recall that in an isolated system, momentum conservation relates the forward momentum gained by the rocket to the backward momentum carried away by each expelled mass element dm.",
+          "ms": "Ingat kembali bahawa dalam sistem terpencil, keabadian momentum menghubungkan momentum ke hadapan yang diperoleh roket dengan momentum ke belakang yang dibawa oleh setiap unsur jisim dm yang dikeluarkan.",
+          "zh": "复习孤立系统的动量守恒概念：火箭向前获得的动量增量与每个喷射出的微元 dm 所带走的后向动量严格对等。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-choice question presenting an engineering claim about doubling fuel mass. Four options evaluate whether the claim is correct using logarithmic scaling and momentum conservation.",
+        "ms": "Soalan pelbagai pilihan yang mengemukakan dakwaan kejuruteraan tentang penggandaan jisim bahan api. Empat pilihan menilai sama ada dakwaan itu betul menggunakan penskalaan logaritma dan keabadian momentum.",
+        "zh": "一道多项选择题，提出关于燃料质量翻倍的工程断言。四个选项基于对数缩放规律和动量守恒定律评估该断言是否成立。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "chal-1-opt-a",
+        "options": [
+          {
+            "id": "chal-1-opt-a",
+            "label": {
+              "en": "The claim is incorrect because speed gain scales with the natural logarithm of the mass ratio Mi / Mf, meaning additional fuel delivers diminishing increases in speed.",
+              "ms": "Dakwaan tersebut tidak betul kerana pertambahan laju berskala dengan logaritma semula jadi nisbah jisim Mi / Mf, bermakna bahan api tambahan memberikan peningkatan laju yang semakin berkurangan.",
+              "zh": "该断言不正确，因为速度增量与质量比 Mi / Mf 的自然对数成正比，这意味着额外添加的燃料带来的航速收益会持续递减。"
+            }
+          },
+          {
+            "id": "chal-1-opt-b",
+            "label": {
+              "en": "The claim is correct because the final velocity gain is directly proportional to the total mass of expelled propellant.",
+              "ms": "Dakwaan tersebut betul kerana pertambahan halaju akhir adalah berkadar terus dengan jumlah jisim bahan dorong yang dikeluarkan.",
+              "zh": "该断言正确，因为最终获得的速度增量与喷出的推进剂总质量成严格正比。"
+            },
+            "misconception": "linear-speed-gain-with-fuel"
+          },
+          {
+            "id": "chal-1-opt-c",
+            "label": {
+              "en": "The claim is incorrect because speed gain is determined entirely by exhaust speed and is completely independent of fuel mass.",
+              "ms": "Dakwaan tersebut tidak betul kerana pertambahan laju ditentukan sepenuhnya oleh laju ekzos dan langsung tidak bergantung pada jisim bahan api.",
+              "zh": "该断言不正确，因为速度增量完全由排气速度决定，与燃料质量的多少毫无关系。"
+            }
+          },
+          {
+            "id": "chal-1-opt-d",
+            "label": {
+              "en": "The claim is correct because doubling fuel mass doubles the engine thrust throughout the entire burn duration.",
+              "ms": "Dakwaan tersebut betul kerana penggandaan jisim bahan api menggandakan daya tujah enjin sepanjang tempoh pembakaran.",
+              "zh": "该断言正确，因为燃料质量加倍会使发动机在整个燃烧期间的推力均翻倍。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rp-mcq-chal-2",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Describe the uniform motion of the system center of mass in free space during propulsion.",
+      "prompt": {
+        "en": "A deep-space probe with initial mass M_i coasts at constant velocity in free space, far from all external gravitational and atmospheric forces. The probe ignites its engine, ejecting exhaust backward at a constant speed relative to the probe while burning fuel at a steady rate until half of its initial mass is expended.\n\nWhen contrasting the motion of the probe itself with that of the center of mass of the isolated system (probe plus all expelled exhaust), which statement correctly describes and explains the behavior of the system's center of mass during the burn?",
+        "ms": "Sebuah kuar angkasa lepas dengan jisim awal M_i meluncur pada halaju malar di ruang bebas, jauh daripada semua daya graviti dan atmosfera luar. Kuar itu menyalakan enjinnya, mengeluarkan ekzos ke belakang pada laju malar relatif kepada kuar sambil membakar bahan api pada kadar mantap sehingga separuh daripada jisim awalnya dikeluarkan.\n\nApabila membezakan gerakan kuar itu sendiri dengan gerakan pusat jisim bagi sistem terpencil (kuar bersama semua ekzos yang dikeluarkan), pernyataan manakah yang menerangkan dan menjelaskan dengan betul kelakuan pusat jisim sistem tersebut semasa pembakaran?",
+        "zh": "一艘初始质量为 M_i 的深空探测器在远离所有外层引力与大气外力的自由深空中以恒定速度匀速滑行。该探测器点燃发动机，以相对于探测器的恒定速度向后喷出气体，并以恒定速率燃烧燃料，直到消耗掉其初始质量的一半。\n\n在对比探测器本体自身的运动与由探测器及所有喷出尾气组成的孤立系统的质心运动时，下列哪项陈述正确描述并解释了燃烧期间该系统质心的行为？"
+      },
+      "hints": [
+        {
+          "en": "Recall Newton's second law for a system of particles: the acceleration of the center of mass depends strictly on the net external force acting on the defined system boundary.",
+          "ms": "Ingat kembali hukum Newton kedua bagi suatu sistem zarah: pecutan pusat jisim bergantung secara mutlak pada daya luar paduan yang bertindak ke atas sempadan sistem yang ditakrifkan.",
+          "zh": "回忆质点系的牛顿第二定律：质心的加速度严格取决于作用在所选系统边界上的合外力。"
+        },
+        {
+          "en": "Differentiate between the rocket body alone (a subsystem of decreasing mass experiencing an unbalanced internal thrust) and the total system (rocket plus all expelled exhaust). Consider whether any forces cross the boundary of the total system in free space.",
+          "ms": "Bezakan antara badan roket sahaja (subsistem dengan jisim berkurangan yang mengalami tujahan dalaman tidak seimbang) dan jumlah sistem (roket bersama semua ekzos yang dikeluarkan). Pertimbangkan sama ada sebarang daya merentasi sempadan jumlah sistem di ruang bebas.",
+          "zh": "区分火箭本体（一个经历非平衡内部推力且质量不断减少的子系统）与整个系统（火箭加上所有喷出的尾气）。思考在自由深空中是否有任何力穿透了整个系统的外边界。"
+        }
+      ],
+      "feedback": {
+        "en": "While the rocket itself accelerates with increasing acceleration as it sheds mass, the center of mass of the combined rocket-plus-exhaust system remains in uniform motion at constant velocity because no external forces act on the system boundary.",
+        "ms": "Walaupun roket itu sendiri memecut dengan pecutan yang semakin meningkat apabila jisimnya berkurangan, pusat jisim bagi sistem gabungan roket-bersama-ekzos kekal dalam gerakan seragam pada halaju malar kerana tiada daya luar yang bertindak ke atas sempadan sistem.",
+        "zh": "尽管火箭本体因质量不断减少而以越来越大的加速度向前加速，但“火箭+尾气”组合系统的质心仍然以恒定速度保持匀速运动，因为没有任何外力作用于该系统边界。"
+      },
+      "answerLogic": {
+        "en": "According to Newton's second law for a system of particles, the acceleration of the system center of mass is governed by Sigma F_ext = M_total * a_CM. For the rocket body alone, it experiences a forward thrust while its mass decreases, causing its forward acceleration a = Thrust / M(t) to increase over time. However, for the isolated system comprising the rocket and all expelled exhaust, the thrust force and the reaction on the exhaust are internal action-reaction pairs (Newton's third law). In free space, Sigma F_ext = 0, which strictly requires a_CM = 0. Therefore, the velocity of the center of mass remains equal to the initial coasting velocity throughout the entire burn.",
+        "ms": "Menurut hukum Newton kedua bagi sistem zarah, pecutan pusat jisim sistem ditadbir oleh Sigma F_luar = M_jumlah * a_CM. Bagi badan roket sahaja, ia mengalami daya tujah ke hadapan manakala jisimnya berkurang, menyebabkan pecutan ke hadapannya a = Tujahan / M(t) meningkat mengikut masa. Walau bagaimanapun, bagi sistem terpencil yang merangkumi roket dan semua ekzos yang dikeluarkan, daya tujah dan tindak balas pada ekzos adalah pasangan tindakan-tindak balas dalaman (hukum Newton ketiga). Di ruang bebas, Sigma F_luar = 0, yang secara mutlak memerlukan a_CM = 0. Oleh itu, halaju pusat jisim kekal sama dengan halaju luncuran awal sepanjang tempoh pembakaran.",
+        "zh": "根据质点系的牛顿第二定律，系统质心的加速度由 合外力 = 总质量 × a_CM 决定。对于火箭本体而言，它受到向前的推力，同时其质量不断减小，导致其前向加速度 a = 推力 / M(t) 随时间持续增大。然而，对于由火箭和所有喷出尾气组成的孤立系统，推力以及作用于尾气的反作用力属于内部相互作用对（牛顿第三定律）。在自由深空中，合外力严格为零，这必然要求 a_CM = 0。因此，在整个推进燃烧过程中，系统质心的速度始终严格等于初始滑行速度。"
+      },
+      "explanation": {
+        "en": "A common point of confusion is conflating the dramatic, increasing acceleration of the lightening rocket body with the motion of the total system. In an isolated system in deep space, internal forces (such as the chemical pressure accelerating the exhaust backward and the rocket forward) redistribute momentum between components without altering the system's total linear momentum. The forward momentum gained by the rocket is exactly balanced at every moment by the backward momentum carried away by the expanding exhaust. Consequently, the center of mass of the combined rocket-plus-exhaust system moves at constant velocity along a straight line, completely unaffected by the burn rate, mass depletion, or thrust magnitude.",
+        "ms": "Kekeliruan biasa ialah menyamakan pecutan dramatik badan roket yang semakin ringan dengan gerakan keseluruhan sistem. Dalam sistem terpencil di angkasa lepas, daya dalaman (seperti tekanan kimia yang memecutkan ekzos ke belakang dan roket ke hadapan) mengagihkan semula momentum antara komponen tanpa mengubah jumlah momentum linear sistem. Momentum ke hadapan yang diperoleh oleh roket diimbangi secara tepat pada setiap saat oleh momentum ke belakang yang dibawa oleh ekzos yang mengembang. Oleh itu, pusat jisim bagi sistem gabungan roket-bersama-ekzos bergerak pada halaju malar sepanjang garis lurus, langsung tidak terjejas oleh kadar pembakaran, susutan jisim, atau magnitud daya tujah.",
+        "zh": "学生常犯的一个混淆是将逐渐变轻的火箭本体所经历的剧烈且递增的加速度，与整个系统的运动混为一谈。在深空的孤立系统中，内力（例如将尾气向后加速并将火箭向前加速的化学燃气压力）仅在各组分之间重新分配动量，而绝不会改变系统的总线动量。火箭本体获得的向前动量，在每一瞬间都与膨胀尾气带走的向后动量精确平衡。因此，“火箭+尾气”组合系统的质心始终以恒定速度沿直线匀速运动，完全不受燃耗率、质量减少或推力大小的影响。"
+      },
+      "misconceptions": [
+        "exhaust-pushes-rocket-externally"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "center-of-mass-motion",
+        "prompt": {
+          "en": "Review center-of-mass dynamics: for any system, the acceleration of the center of mass depends solely on external forces (Sigma F_ext = M_total * a_CM); internal forces cannot change the velocity of the center of mass.",
+          "ms": "Ulang kaji dinamik pusat jisim: bagi mana-mana sistem, pecutan pusat jisim bergantung semata-mata pada daya luar (Sigma F_luar = M_jumlah * a_CM); daya dalaman tidak boleh mengubah halaju pusat jisim.",
+          "zh": "复习质心动力学：对任何系统而言，质心的加速度完全取决于外力（合外力 = 总质量 × a_CM）；内力绝不能改变质心的速度。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A conceptual multiple-choice question contrasting the increasing acceleration of an emptying rocket with the uniform motion of the center of mass of the entire rocket-plus-exhaust isolated system in deep space.",
+        "ms": "Soalan pelbagai pilihan konseptual yang membezakan peningkatan pecutan roket yang semakin mengosong dengan gerakan seragam pusat jisim bagi keseluruhan sistem terpencil roket-bersama-ekzos di angkasa lepas.",
+        "zh": "一道概念性多项选择题，对比深空中燃料逐渐耗尽的火箭本体递增的加速度，与包含火箭及全部排出尾气的孤立系统质心的匀速直线运动。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "chal-2-opt-a",
+        "options": [
+          {
+            "id": "chal-2-opt-a",
+            "label": {
+              "en": "The probe's forward acceleration increases over time as its mass decreases, but the center of mass of the combined probe-plus-exhaust system continues moving at constant velocity, because all propulsion forces between the engine and exhaust are internal to the system.",
+              "ms": "Pecutan ke hadapan kuar meningkat mengikut masa apabila jisimnya berkurangan, tetapi pusat jisim sistem gabungan kuar-bersama-ekzos terus bergerak pada halaju malar, kerana semua daya pendorongan antara enjin dan ekzos adalah dalaman kepada sistem.",
+              "zh": "随着探测器质量减少，其向前加速度随时间不断增大，但“探测器+尾气”组合系统的质心继续以恒定速度运动，因为发动机与尾气之间的所有推进力都是系统内部的内力。"
+            }
+          },
+          {
+            "id": "chal-2-opt-b",
+            "label": {
+              "en": "The center of mass of the combined system accelerates forward at an increasing rate alongside the probe, because the expelled exhaust acts as an external medium that continuously exerts a net forward driving force on the system.",
+              "ms": "Pusat jisim sistem gabungan memecut ke hadapan pada kadar yang semakin meningkat bersama-sama kuar, kerana ekzos yang dikeluarkan bertindak sebagai medium luaran yang secara berterusan mengenakan daya penggerak luar paduan ke hadapan pada sistem.",
+              "zh": "组合系统的质心与探测器一同以递增的加速度向前加速，因为喷出的尾气充当了外部介质，持续对该系统施加向前的合外力驱动。"
+            },
+            "misconception": "exhaust-pushes-rocket-externally"
+          },
+          {
+            "id": "chal-2-opt-c",
+            "label": {
+              "en": "The center of mass of the combined system shifts backward toward the expanding exhaust plume, because the ejected gas continuously carries away mechanical energy and spreads across an increasing volume of space.",
+              "ms": "Pusat jisim sistem gabungan berganjak ke belakang ke arah kepulan ekzos yang mengembang, kerana gas yang dikeluarkan secara berterusan membawa pergi tenaga mekanikal dan merebak merentasi isi padu ruang yang semakin membesar.",
+              "zh": "组合系统的质心向后朝膨胀的尾气羽流方向偏移，因为喷出的气体不断带走机械能并在越来越大的空间体积中扩散。"
+            }
+          },
+          {
+            "id": "chal-2-opt-d",
+            "label": {
+              "en": "The center of mass of the combined system accelerates forward at a constant rate equal to the engine thrust divided by the initial total mass, because the release of chemical energy increases the total momentum of the combined system.",
+              "ms": "Pusat jisim sistem gabungan memecut ke hadapan pada kadar malar bersamaan dengan tujahan enjin dibahagikan dengan jumlah jisim awal, kerana pembebasan tenaga kimia meningkatkan jumlah momentum sistem gabungan.",
+              "zh": "组合系统的质心以恒定加速度向前加速，其加速度等于发动机推力除以初始总质量，因为释放的化学能增加了组合系统的总动量。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rp-mcq-chal-3",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate thrust to exhaust speed and fuel burn rate using Newton's second and third laws.",
+      "prompt": {
+        "en": "An unmanned space vessel operates its engine in deep space far from external gravitational forces. The engine ejects exhaust gas backward at a constant exhaust speed ve relative to the craft, and burns propellant at a constant mass rate |dM/dt|. How do the magnitude of the thrust force acting on the vessel and the vessel's forward acceleration evolve over the duration of this burn?",
+        "ms": "Sebuah kapal angkasa tanpa pemandu mengendalikan enjinnya di angkasa lepas jauh daripada daya graviti luar. Enjin itu mengeluarkan gas ekzos ke belakang pada laju ekzos malar ve relatif kepada kapal, dan membakar bahan dorong pada kadar jisim malar |dM/dt|. Bagaimanakah magnitud daya tujah yang bertindak ke atas kapal dan pecutan ke hadapan kapal berubah sepanjang tempoh pembakaran ini?",
+        "zh": "一艘无人太空飞船在远离外部引力的深空中运行发动机。发动机以相对于飞船恒定的排气速度 ve 向后喷射气体，并以恒定的质量消耗率 |dM/dt| 燃烧推进剂。在本次燃烧过程中，作用在飞船上的推力大小以及飞船的向前加速度将如何演变？"
+      },
+      "hints": [
+        {
+          "en": "Examine the expression for rocket thrust: Thrust = ve |dM/dt|. What happens to this force when both exhaust speed and burn rate are constant?",
+          "ms": "Teliti ungkapan bagi daya tujah roket: Tujahan = ve |dM/dt|. Apakah yang berlaku kepada daya ini apabila kedua-dua laju ekzos dan kadar pembakaran adalah malar?",
+          "zh": "审视火箭推力的表达式：推力 = ve |dM/dt|。当排气速度和燃烧速率均恒定时，该力的大小如何？"
+        },
+        {
+          "en": "Connect thrust to acceleration using Newton's second law: a = Thrust / M. Consider what happens to the total mass M of the vessel as fuel is continuously expelled.",
+          "ms": "Hubungkan daya tujah dengan pecutan menggunakan hukum Newton kedua: a = Tujahan / M. Fikirkan apa yang berlaku kepada jumlah jisim M kapal apabila bahan api dikeluarkan secara berterusan.",
+          "zh": "利用牛顿第二定律将推力与加速度联系起来：a = 推力 / M。思考随着燃料持续被喷出，飞船的总质量 M 会发生什么变化。"
+        }
+      ],
+      "feedback": {
+        "en": "The thrust remains constant because both the exhaust speed and the burn rate are constant. However, as propellant is ejected, the mass of the vehicle continuously decreases, causing its acceleration (a = Thrust / M) to steadily increase.",
+        "ms": "Daya tujah kekal malar kerana kedua-dua laju ekzos dan kadar pembakaran adalah malar. Walau bagaimanapun, apabila bahan dorong dikeluarkan, jisim kenderaan berkurangan secara berterusan, menyebabkan pecutannya (a = Tujahan / M) meningkat secara beransur-ansur.",
+        "zh": "推力保持恒定，因为排气速度和燃料消耗率都是恒定的。然而，随着推进剂被排出，飞行器的总质量持续减小，导致其加速度（a = 推力 / M）稳步上升。"
+      },
+      "answerLogic": {
+        "en": "Thrust is given by Thrust = ve |dM/dt|. Since ve and |dM/dt| are constant, the thrust force exerted on the craft by the exiting gases is constant throughout the maneuver. By Newton's second law, the instantaneous acceleration is a = Thrust / M(t). Because fuel is expelled at a steady rate, M(t) strictly decreases with time. With constant numerator and decreasing denominator, the forward acceleration continuously increases.",
+        "ms": "Daya tujah diberikan oleh Tujahan = ve |dM/dt|. Oleh kerana ve dan |dM/dt| adalah malar, daya tujah yang dikenakan ke atas kapal oleh gas yang keluar adalah malar sepanjang gerakan tersebut. Menurut hukum Newton kedua, pecutan seketika ialah a = Tujahan / M(t). Kerana bahan api dikeluarkan pada kadar mantap, M(t) berkurangan secara berterusan mengikut masa. Dengan pengangka yang malar dan penyebut yang berkurangan, pecutan ke hadapan meningkat secara berterusan.",
+        "zh": "推力的表达式为：推力 = ve |dM/dt|。由于 ve 和 |dM/dt| 恒定不变，喷射气体施加给飞船的反作用推力在整个机动过程中保持恒定。根据牛顿第二定律，瞬时加速度为 a = 推力 / M(t)。随着燃料持续排出，飞船质量 M(t) 随时间单调递减。在分子恒定而分母持续减小的情况下，飞船向前的瞬时加速度必将持续增大。"
+      },
+      "explanation": {
+        "en": "A common mistake is assuming that a steady engine operating at constant thrust produces constant acceleration. Because a rocket is a system of variable mass, continuous fuel combustion reduces the inertia of the vehicle. For a fixed thrust force, dividing by an ever-decreasing mass means the vehicle accelerates more and more vigorously as its fuel tanks empty.",
+        "ms": "Kesilapan biasa adalah menganggap bahawa enjin mantap yang beroperasi pada daya tujah malar menghasilkan pecutan malar. Oleh kerana roket ialah sistem berjisim boleh ubah, pembakaran bahan api yang berterusan mengurangkan inersia kenderaan. Bagi daya tujah yang tetap, pembahagian dengan jisim yang semakin berkurangan bermakna kenderaan memecut dengan lebih cergas apabila tangki bahan apinya semakin kosong.",
+        "zh": "常见的错误是将恒定推力等同于恒定加速度，忽略了火箭作为变质量系统的本质。随着推进剂持续喷出，飞船的惯性质重不断减小。在推力保持不变的条件下，除以不断减小的质量，意味着随着燃料舱逐渐排空，飞行器的加速度会越来越大。"
+      },
+      "misconceptions": [
+        "constant-mass-assumption"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Review Newton's third law: the force exerted on the rocket by escaping gas is equal in magnitude and opposite in direction to the force the nozzle exerts on the gas.",
+          "ms": "Ulang kaji hukum Newton ketiga: daya yang dikenakan ke atas roket oleh gas yang keluar adalah sama magnitud dan bertentangan arah dengan daya yang dikenakan oleh muncung ke atas gas.",
+          "zh": "复习牛顿第三定律：喷出的气体对火箭施加的反作用力，与喷嘴对排出气体施加的作用力大小相等、方向相反。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A conceptual multiple-choice question analyzing how constant thrust affects the acceleration of a rocket with decreasing mass.",
+        "ms": "Soalan pelbagai pilihan konseptual yang menganalisis bagaimana daya tujah malar mempengaruhi pecutan roket dengan jisim yang berkurangan.",
+        "zh": "一道概念性多项选择题，分析恒定推力如何影响质量不断缩减的火箭的加速度演变。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "chal-3-opt-a",
+        "options": [
+          {
+            "id": "chal-3-opt-a",
+            "label": {
+              "en": "The thrust remains constant, while the forward acceleration continuously increases over time.",
+              "ms": "Daya tujah kekal malar, manakala pecutan ke hadapan meningkat secara berterusan mengikut masa.",
+              "zh": "推力保持恒定，而向前的加速度随时间持续增大。"
+            }
+          },
+          {
+            "id": "chal-3-opt-b",
+            "label": {
+              "en": "Both the thrust and the forward acceleration remain strictly constant throughout the entire burn.",
+              "ms": "Kedua-dua daya tujah dan pecutan ke hadapan kekal malar sepenuhnya sepanjang pembakaran.",
+              "zh": "在整个燃烧过程中，推力和向前加速度均严格保持恒定不变。"
+            },
+            "misconception": "constant-mass-assumption"
+          },
+          {
+            "id": "chal-3-opt-c",
+            "label": {
+              "en": "The thrust decreases as fuel empties, causing the vessel's forward acceleration to diminish gradually.",
+              "ms": "Daya tujah berkurangan apabila bahan api kehabisan, menyebabkan pecutan ke hadapan kapal merosot secara beransur-ansur.",
+              "zh": "随着燃料排空推力持续减小，导致飞船向前的加速度逐渐衰退。"
+            }
+          },
+          {
+            "id": "chal-3-opt-d",
+            "label": {
+              "en": "Both the thrust and the acceleration continuously increase because the vessel's speed increases.",
+              "ms": "Kedua-dua daya tujah dan pecutan meningkat secara berterusan kerana kelajuan kapal bertambah.",
+              "zh": "推力和加速度都持续增大，因为飞船的飞行速率在不断提高。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rp-int-easy-1",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Explain rocket thrust as an internal reaction force without requiring external air to push against.",
+      "prompt": {
+        "en": "Classify each propulsion mechanism according to whether it accelerates by ejecting internal mass into space or by pushing directly against an external physical medium.",
+        "ms": "Kelaskan setiap mekanisme dorongan mengikut sama ada ia memecut dengan melentingkan jisim dalaman ke ruang angkasa atau dengan menolak secara terus medium fizikal luaran.",
+        "zh": "根据推进机制是通过向空间喷射内部质量加速，还是通过直接推挤外部物理介质加速，对下列各项进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Consider whether the driving force originates strictly between parts of the vehicle system (vehicle body and ejected propellant) or between the vehicle and surrounding environmental matter.",
+          "ms": "Pertimbangkan sama ada daya penggerak berasal semata-mata dari antara bahagian sistem kenderaan (badan kenderaan dan bahan dorong yang dilentingkan) atau antara kenderaan dengan jirim persekitaran luaran.",
+          "zh": "思考驱动力究竟纯粹产生于飞行器系统内部各组分之间（飞行器本体与喷出的推进剂），还是产生于飞行器与外部环境物质之间。"
+        },
+        {
+          "en": "Rockets and pressurized thrusters do not need air or a roadway to push against. Ejecting propellant backward imparts an equal and opposite forward reaction force directly to the craft in complete vacuum.",
+          "ms": "Roket dan pendorong bertekanan tidak memerlukan udara atau jalan raya untuk ditolak. Melentingkan bahan dorong ke belakang mengenakan daya tindak balas ke hadapan yang sama magnitud dan bertentangan arah secara terus kepada kapal dalam vakum penuh.",
+          "zh": "火箭和高压推进器不需要推挤周围空气或路面。在完全真空的环境中，向后喷出推进剂会直接对航天器施加一个大小相等、方向相反的反作用力。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Rocket engines and cold-gas thrusters accelerate because expelling mass backward creates an internal reaction force directly on the vehicle, meaning they operate effectively in the vacuum of space without any surrounding atmosphere.",
+        "ms": "Tepat! Enjin roket dan pendorong gas sejuk memecut kerana melentingkan jisim ke belakang menghasilkan daya tindak balas dalaman terus pada kenderaan, bermakna ia beroperasi dengan berkesan dalam vakum angkasa tanpa sebarang atmosfera persekitaran.",
+        "zh": "正确！火箭发动机和冷气推进器之所以能加速，是因为向后喷出质量会直接对运载工具施加内部反作用力，这意味着它们在没有任何周围大气的太空真空中也能高效工作。"
+      },
+      "answerLogic": {
+        "en": "The craft and its propellant form an isolated system. Rocket thrust is the internal reaction force between the vehicle and the escaping propellant gases. Propeller planes and cars, by contrast, rely on external contact forces from atmospheric air or road friction.",
+        "ms": "Kapal dan bahan dorongnya membentuk sistem terpencil. Tujahan roket ialah daya tindak balas dalaman antara kenderaan dengan gas bahan dorong yang keluar. Sebaliknya, kapal terbang kipas dan kereta bergantung pada daya sentuhan luaran daripada udara atmosfera atau geseran jalan.",
+        "zh": "航天器及其推进剂构成一个孤立系统。火箭推力是运载工具与喷出推进剂气体之间的内部反作用力。相反，螺旋桨飞机和汽车则依赖大气空气或路面摩擦力提供的外部接触力。"
+      },
+      "explanation": {
+        "en": "Newton's third law governs rocket propulsion: when the engine exerts a force to push exhaust gas backward, the escaping gas simultaneously pushes the rocket forward with an equal and opposite force. Because this reaction is internal to the rocket-propellant system, rockets require no ambient atmosphere, roadway, or external material to push against.",
+        "ms": "Hukum ketiga Newton mengawal dorongan roket: apabila enjin mengenakan daya untuk menolak gas ekzos ke belakang, gas yang keluar secara serentak menolak roket ke hadapan dengan daya yang sama magnitud dan bertentangan arah. Oleh kerana tindak balas ini bersifat dalaman kepada sistem roket-bahan dorong, roket tidak memerlukan atmosfera persekitaran, jalan raya, atau bahan luaran untuk ditolak.",
+        "zh": "牛顿第三定律解释了火箭推进原理：当发动机施加力将废气向后喷出时，排出的气体同时以大小相等、方向相反的力向前推动火箭。由于这种反作用力属于火箭-推进剂系统的内部相互作用，因此火箭完全不需要推挤周围大气、路面或任何外部物质。"
+      },
+      "misconceptions": [
+        "needs-atmosphere-to-push"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Recall Newton's third law: when object A exerts a force on object B, object B exerts an equal and opposite force on object A. Does an escaping exhaust gas particle exert a forward force on the engine nozzle itself?",
+          "ms": "Ingat kembali hukum ketiga Newton: apabila objek A mengenakan daya pada objek B, objek B mengenakan daya yang sama magnitud dan bertentangan arah pada objek A. Adakah zarah gas ekzos yang keluar mengenakan daya ke hadapan pada muncung enjin itu sendiri?",
+          "zh": "回顾牛顿第三定律：当物体 A 对物体 B 施加力时，物体 B 必然同时对物体 A 施加大小相等、方向相反的力。喷出的尾气微粒是否会对发动机喷管自身施加向前的推力？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Four cards describe different propulsion scenarios. Classify each card into one of two categories: internal mass ejection in a vacuum, or interaction requiring an external medium.",
+        "ms": "Empat kad menerangkan senario dorongan yang berbeza. Kelaskan setiap kad ke dalam salah satu daripada dua kategori: lentingan jisim dalaman dalam vakum, atau interaksi yang memerlukan medium luaran.",
+        "zh": "四个卡片分别描述了不同的推进场景。请将每张卡片分类至以下两类之一：真空中的内部质量喷射，或需要外部介质的相互作用。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-rocket-exhaust",
+            "label": {
+              "en": "A rocket chamber accelerating by expelling combustion exhaust backward into the vacuum of space",
+              "ms": "Kebuk roket memecut dengan melentingkan ekzos pembakaran ke belakang ke dalam vakum angkasa lepas",
+              "zh": "火箭燃烧室通过向后方太空真空喷射燃烧尾气实现加速"
+            },
+            "misconception": "needs-atmosphere-to-push"
+          },
+          {
+            "id": "item-gas-thruster",
+            "label": {
+              "en": "An astronaut maneuvering in space by discharging short bursts of pressurized nitrogen gas",
+              "ms": "Seorang angkasawan melakukan gerakan manuver di angkasa dengan melepaskan hembusan pendek gas nitrogen bertekanan",
+              "zh": "航天员在太空中通过向外释放短促的高压氮气流完成姿态机动"
+            }
+          },
+          {
+            "id": "item-propeller-plane",
+            "label": {
+              "en": "An aircraft gaining forward speed by driving ambient atmospheric air backward with spinning blades",
+              "ms": "Sebuah pesawat memperoleh laju ke hadapan dengan menolak udara atmosfera persekitaran ke belakang menggunakan bilah berputar",
+              "zh": "飞机通过旋转叶片将周围的大气空气向后推挤以获得前进速度"
+            }
+          },
+          {
+            "id": "item-ground-car",
+            "label": {
+              "en": "A surface rover accelerating because the launch pad pavement exerts a forward static friction force on its wheels",
+              "ms": "Sebuah perayau permukaan memecut kerana turapan tapak pelancaran mengenakan daya geseran statik ke hadapan pada rodanya",
+              "zh": "地面巡视车加速前进，依靠发射台路面对其车轮施加向前的静摩擦力"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-internal",
+            "label": {
+              "en": "Internal Mass Ejection (Functions in a Vacuum)",
+              "ms": "Lentingan Jisim Dalaman (Berfungsi dalam Vakum)",
+              "zh": "内部质量喷射（可在真空环境中运行）"
+            }
+          },
+          {
+            "id": "target-external",
+            "label": {
+              "en": "External Medium Interaction (Requires Surrounding Air or Surface)",
+              "ms": "Interaksi Medium Luaran (Memerlukan Udara Persekitaran atau Permukaan)",
+              "zh": "外部介质相互作用（需要周围空气或接触表面）"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-rocket-exhaust",
+            "targetId": "target-internal"
+          },
+          {
+            "itemId": "item-gas-thruster",
+            "targetId": "target-internal"
+          },
+          {
+            "itemId": "item-propeller-plane",
+            "targetId": "target-external"
+          },
+          {
+            "itemId": "item-ground-car",
+            "targetId": "target-external"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "needs-atmosphere-to-push",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-rocket-exhaust",
+            "targetId": "target-external"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rp-int-easy-2",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate thrust to exhaust speed and fuel burn rate using Newton's second and third laws.",
+      "prompt": {
+        "en": "Match each rocket parameter or physical change to its direct effect on the magnitude of instantaneous thrust produced by the rocket engine.",
+        "ms": "Padankan setiap parameter roket atau perubahan fizikal dengan kesan langsungnya terhadap magnitud tujahan serta-merta yang dihasilkan oleh enjin roket.",
+        "zh": "将每个火箭参数或物理变化与其对火箭发动机产生的瞬时推力大小的直接影响进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Recall how thrust is defined from Newton's laws: thrust depends directly on the exhaust speed relative to the rocket and the propellant burn rate.",
+          "ms": "Ingat kembali bagaimana tujahan ditakrifkan daripada hukum Newton: tujahan bergantung secara langsung pada laju ekzos relatif kepada roket dan kadar pembakaran bahan dorong.",
+          "zh": "回顾根据牛顿定律对推力的描述：推力大小直接取决于尾气相对于火箭的喷气速度与推进剂的燃烧率。"
+        },
+        {
+          "en": "The exhaust speed is measured relative to the rocket nozzle, not relative to an external observer. How fast the rocket is already traveling relative to Earth does not change the thrust generated inside the engine.",
+          "ms": "Laju ekzos diukur relatif kepada muncung roket, bukan relatif kepada pemerhati luar. Berapa laju roket sudah bergerak relatif kepada Bumi tidak mengubah tujahan yang dijana di dalam enjin.",
+          "zh": "排气速度是相对于火箭喷管测量的，而不是相对于外部观察者。火箭相对于地球已经具有多大的飞行速度，并不会改变发动机内部产生的推力。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Rocket thrust depends strictly on the exhaust speed relative to the engine and the rate of propellant mass expelled per second. The vehicle's forward velocity relative to external bodies and the volume of stored fuel do not alter instantaneous thrust.",
+        "ms": "Tepat! Tujahan roket bergantung secara eksklusif pada laju ekzos relatif kepada enjin dan kadar jisim bahan dorong yang dilentingkan sesaat. Halaju ke hadapan kenderaan relatif kepada jasad luar dan isi padu bahan api tersimpan tidak mengubah tujahan serta-merta.",
+        "zh": "正确！火箭推力严格取决于废气相对于发动机的喷射速度以及每秒喷出的推进剂质量变化率。运载工具相对于外部参考系的前进速度以及储箱内储存的燃料总量都不会改变瞬时推力。"
+      },
+      "answerLogic": {
+        "en": "Engine thrust magnitude equals the relative exhaust speed multiplied by the mass burn rate: Thrust = |v_e · (dM/dt)|. Increasing either factor increases thrust. The rocket's current travel speed relative to a launch site and the unspent fuel mass remaining in the tanks have no direct influence on the thrust force.",
+        "ms": "Magnitud tujahan enjin bersamaan dengan laju ekzos relatif didarab dengan kadar pembakaran jisim: Tujahan = |v_e · (dM/dt)|. Meningkatkan mana-mana faktor akan meningkatkan tujahan. Kelajuan semasa roket relatif kepada tapak pelancaran dan jisim bahan api belum terbakar yang tinggal di dalam tangki tidak mempunyai pengaruh langsung terhadap daya tujahan.",
+        "zh": "发动机推力大小等于相对排气速度与质量燃烧率的乘积：推力 = |v_e · (dM/dt)|。增大这两者中的任一项都会直接增大推力。而火箭相对于发射场当前的前进速度以及储箱中剩余的未燃燃料质量，对瞬时推力均无直接影响。"
+      },
+      "explanation": {
+        "en": "Applying Newton's second and third laws to the mass ejected during an infinitesimal time interval reveals that thrust is the reaction force exerted on the vehicle: Thrust = |v_e · (dM/dt)|. Therefore, thrust scales directly with the ejection speed relative to the nozzle and the fuel burn rate. Rocket velocity relative to an external observer represents overall frame motion and does not affect the engine's internal force generation.",
+        "ms": "Menggunakan hukum Newton kedua dan ketiga pada jisim yang dilentingkan semasa selang masa infinitesimal menunjukkan bahawa tujahan ialah daya tindak balas yang dikenakan ke atas kenderaan: Tujahan = |v_e · (dM/dt)|. Oleh itu, tujahan berkadar langsung dengan laju lentingan relatif kepada muncung dan kadar pembakaran bahan api. Halaju roket relatif kepada pemerhati luar mewakili gerakan kerangka keseluruhan dan tidak menjejaskan penjanaan daya dalaman enjin.",
+        "zh": "对极短时间间隔内排出的质量应用牛顿第二和第三定律可知，推力是喷气施加在飞行器上的反作用力：推力 = |v_e · (dM/dt)|。因此，推力大小直接取决于气体相对于喷管的排出速度和燃料消耗率。火箭相对于外部观察者的飞行速度仅代表系统在参考系中的整体运动，不影响发动机内部推力的产生。"
+      },
+      "misconceptions": [
+        "thrust-equals-rocket-speed"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-momentum",
+        "prompt": {
+          "en": "Recall linear momentum conservation: the impulse received by the rocket body over a brief moment equals the momentum carried away by the ejected fuel mass during that same interval. What two quantities determine that ejected fuel momentum?",
+          "ms": "Ingat kembali keabadian momentum linear: impuls yang diterima oleh badan roket dalam tempoh yang singkat bersamaan dengan momentum yang dibawa keluar oleh jisim bahan api yang dilentingkan dalam selang masa yang sama. Apakah dua kuantiti yang menentukan momentum bahan api yang dilentingkan itu?",
+          "zh": "回顾线动量守恒：在极短时间内火箭机体获得的冲量，等于同一时间内喷出的燃料质量所带走的动量。决定喷出燃料动量的两个物理量是什么？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Four rocket parameters are listed. Match each parameter to whether it directly increases the engine thrust or does not change the instantaneous thrust force.",
+        "ms": "Empat parameter roket disenaraikan. Padankan setiap parameter dengan sama ada ia meningkatkan daya tujahan enjin secara langsung atau tidak mengubah daya tujahan serta-merta.",
+        "zh": "列出了四个火箭参数。请将每个参数分别匹配至：直接增大推力，或不改变瞬时推力大小。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-exhaust-speed",
+            "label": {
+              "en": "Increasing the speed at which exhaust gases exit relative to the rocket nozzle",
+              "ms": "Meningkatkan laju pelepasan gas ekzos relatif kepada muncung roket",
+              "zh": "提高废气相对于火箭喷管的喷射速度"
+            }
+          },
+          {
+            "id": "item-burn-rate",
+            "label": {
+              "en": "Increasing the mass of propellant consumed and expelled per second",
+              "ms": "Meningkatkan jisim bahan dorong yang digunakan dan dilentingkan sesaat",
+              "zh": "增加每秒消耗并喷出的推进剂质量（燃烧率）"
+            }
+          },
+          {
+            "id": "item-forward-speed",
+            "label": {
+              "en": "Increasing the forward velocity of the rocket relative to a distant launch pad",
+              "ms": "Meningkatkan halaju ke hadapan roket relatif kepada tapak pelancaran yang jauh",
+              "zh": "提高火箭相对于遥远发射台的前进速度"
+            },
+            "misconception": "thrust-equals-rocket-speed"
+          },
+          {
+            "id": "item-remaining-mass",
+            "label": {
+              "en": "Carrying a larger reserve of unspent fuel inside the storage tanks",
+              "ms": "Membawa rizab bahan api belum terbakar yang lebih besar di dalam tangki simpanan",
+              "zh": "在储罐中携带更多尚未燃烧的备用燃料储备"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-increases-thrust",
+            "label": {
+              "en": "Directly increases the thrust force",
+              "ms": "Meningkatkan daya tujahan secara langsung",
+              "zh": "直接增大推力"
+            }
+          },
+          {
+            "id": "target-no-thrust-effect",
+            "label": {
+              "en": "Does not change the instantaneous thrust force",
+              "ms": "Tidak mengubah daya tujahan serta-merta",
+              "zh": "不改变瞬时推力大小"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-exhaust-speed",
+            "targetId": "target-increases-thrust"
+          },
+          {
+            "itemId": "item-burn-rate",
+            "targetId": "target-increases-thrust"
+          },
+          {
+            "itemId": "item-forward-speed",
+            "targetId": "target-no-thrust-effect"
+          },
+          {
+            "itemId": "item-remaining-mass",
+            "targetId": "target-no-thrust-effect"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "thrust-equals-rocket-speed",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-forward-speed",
+            "targetId": "target-increases-thrust"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rp-int-easy-3",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Describe the uniform motion of the system center of mass in free space during propulsion.",
+      "prompt": {
+        "en": "A rocket fires its engines in free space far from all gravitational bodies, ejecting exhaust gas. Consider the combined system consisting of the rocket and all expelled gas. Select all statements that correctly describe the forces and center-of-mass motion of this combined system.",
+        "ms": "Sebuah roket menyalakan enjinnya di ruang angkasa bebas yang jauh daripada semua jasad graviti, melentingkan gas ekzos. Pertimbangkan sistem gabungan yang terdiri daripada roket dan semua gas yang dilentingkan. Pilih semua penyataan yang menerangkan daya dan gerakan pusat jisim bagi sistem gabungan ini dengan betul.",
+        "zh": "一枚火箭在远离所有天体引力的自由太空中启动发动机并喷出废气。将火箭以及所有喷出的废气视为一个组合系统。请选出所有正确描述该组合系统的受力及质心运动的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Define the system boundary so that it contains both the rocket and every bit of expelled gas. Are the forces between the rocket and exhaust internal or external to this boundary?",
+          "ms": "Takrifkan sempadan sistem supaya ia mengandungi kedua-dua roket dan setiap bahagian gas yang dilentingkan. Adakah daya antara roket dengan ekzos bersifat dalaman atau luaran kepada sempadan ini?",
+          "zh": "明确系统边界，使其同时包含火箭机体与所有喷出的废气微粒。火箭与废气之间的相互作用力对于该边界而言是内力还是外力？"
+        },
+        {
+          "en": "Newton's second law for a system establishes that only external forces can accelerate the center of mass. In free space with no external interactions, what must happen to the velocity of the center of mass?",
+          "ms": "Hukum Newton kedua untuk suatu sistem menetapkan bahawa hanya daya luar yang boleh memecutkan pusat jisim. Di ruang angkasa bebas tanpa interaksi luar, apakah yang mesti berlaku kepada halaju pusat jisim?",
+          "zh": "质点系的牛顿第二定律表明只有外力才能使系统质心加速。在没有任何外部相互作用的自由太空中，系统质心的速度必然如何变化？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! When the system is defined as the rocket plus all expelled gases, the thrust forces are strictly internal. Because the net external force is zero, the center of mass of the combined system moves uniformly at constant velocity.",
+        "ms": "Tepat! Apabila sistem ditakrifkan sebagai roket bersama semua gas yang dilentingkan, daya tujahan adalah bersifat dalaman semata-mata. Oleh kerana daya luar bersih adalah sifar, pusat jisim sistem gabungan bergerak secara seragam dengan halaju malar.",
+        "zh": "正确！当系统被定义为火箭以及所有喷出的气体时，推力纯粹属于系统内力。因为所受合外力为零，该组合系统的质心将保持匀速直线运动。"
+      },
+      "answerLogic": {
+        "en": "For the isolated system of rocket plus exhaust, no external forces act on the system in free space (net external force equals zero). Internal action-reaction forces push the rocket forward and the gas backward, but internal forces cannot accelerate the system's center of mass, which continues moving uniformly.",
+        "ms": "Bagi sistem terpencil roket bersama ekzos, tiada daya luar yang bertindak ke atas sistem di ruang bebas (daya luar bersih bersamaan dengan sifar). Daya tindakan-tindak balas dalaman menolak roket ke hadapan dan gas ke belakang, tetapi daya dalaman tidak boleh memecutkan pusat jisim sistem, yang terus bergerak secara seragam.",
+        "zh": "对于由火箭和废气构成的孤立系统，在自由太空中不受任何外力作用（合外力为零）。内部的作用力与反作用力将火箭向前推并将气体向后喷射，但内力绝不可能改变系统质心的运动状态，因此质心继续保持匀速运动。"
+      },
+      "explanation": {
+        "en": "Newton's second law for a composite system states that the net external force equals total mass times the acceleration of the center of mass: net external force = total mass · acceleration of center of mass. Because no external objects exert forces on the rocket-exhaust system in free space, the net external force is zero, meaning the acceleration of the center of mass is zero. The center of mass moves with constant velocity regardless of how aggressively propellant is burned.",
+        "ms": "Hukum Newton kedua untuk sistem komposit menyatakan bahawa daya luar bersih bersamaan dengan jumlah jisim didarab dengan pecutan pusat jisim: daya luar bersih = jumlah jisim · pecutan pusat jisim. Oleh kerana tiada objek luar mengenakan daya pada sistem roket-ekzos di ruang bebas, daya luar bersih adalah sifar, bermakna pecutan pusat jisim adalah sifar. Pusat jisim bergerak dengan halaju malar tanpa mengira betapa kuatnya bahan dorong dibakar.",
+        "zh": "复合系统的牛顿第二定律指出，合外力等于系统总质量乘以质心加速度：合外力 = 总质量 · 质心加速度。在自由太空中，没有任何外部物体对火箭-废气系统施加作用力，因此合外力为零，质心加速度为零。无论推进剂燃烧得多么剧烈，系统质心始终以恒定速度做匀速运动。"
+      },
+      "misconceptions": [
+        "exhaust-pushes-rocket-externally"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "center-of-mass-motion",
+        "prompt": {
+          "en": "Recall center-of-mass dynamics: the acceleration of a system's center of mass depends solely on external forces acting across the system boundary. Can internal forces change the velocity of the center of mass?",
+          "ms": "Ingat kembali dinamik pusat jisim: pecutan pusat jisim suatu sistem bergantung semata-mata pada daya luar yang bertindak merentasi sempadan sistem. Bolehkah daya dalaman mengubah halaju pusat jisim?",
+          "zh": "回顾质心动力学：系统质心的加速度完全取决于跨越系统边界的外力。系统内力能否改变质心的速度？"
+        }
+      },
+      "accessibilityText": {
+        "en": "A list of statements about a rocket and its expelled exhaust in free space is presented. Select all statements that correctly describe the forces and motion of the combined system center of mass.",
+        "ms": "Senarai penyataan mengenai roket dan gas ekzos yang dilentingkan di ruang bebas dibentangkan. Pilih semua penyataan yang menerangkan daya dan gerakan pusat jisim sistem gabungan dengan betul.",
+        "zh": "呈现了一组关于自由太空中火箭及其喷出废气的陈述。请选出所有正确描述该组合系统的受力及质心运动的选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-cm-constant-velocity",
+            "label": {
+              "en": "The center of mass of the combined rocket-exhaust system moves with constant velocity.",
+              "ms": "Pusat jisim bagi sistem gabungan roket-ekzos bergerak dengan halaju malar.",
+              "zh": "火箭与废气组合系统的质心以恒定速度做匀速运动。"
+            }
+          },
+          {
+            "id": "item-internal-forces",
+            "label": {
+              "en": "The interaction forces between the rocket engine and the exhaust gases are internal forces within the combined system.",
+              "ms": "Daya interaksi antara enjin roket dengan gas ekzos adalah daya dalaman dalam sistem gabungan.",
+              "zh": "火箭发动机与废气之间的相互作用力属于组合系统的内部作用力。"
+            }
+          },
+          {
+            "id": "item-cm-accelerates",
+            "label": {
+              "en": "The center of mass of the combined rocket-exhaust system accelerates because escaping gas acts as an external driving force.",
+              "ms": "Pusat jisim bagi sistem gabungan roket-ekzos memecut kerana gas yang keluar bertindak sebagai daya penggerak luaran.",
+              "zh": "火箭与废气组合系统的质心加速运动，因为逸出的气体充当了外部驱动力。"
+            },
+            "misconception": "exhaust-pushes-rocket-externally"
+          },
+          {
+            "id": "item-external-net-force",
+            "label": {
+              "en": "A non-zero net external force acts across the boundary of the combined system during the engine burn.",
+              "ms": "Daya luar bersih bukan sifar bertindak merentasi sempadan sistem gabungan semasa pembakaran enjin.",
+              "zh": "在发动机燃烧期间，存在不为零的合外力跨越组合系统的边界作用于该系统。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-cm-constant-velocity",
+          "item-internal-forces"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "exhaust-pushes-rocket-externally",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-cm-accelerates",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "rp-int-mod-1",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate thrust to exhaust speed and fuel burn rate using Newton's second and third laws.",
+      "prompt": {
+        "en": "Order the steps of the physical chain of events that explains why a rocket accelerates at an increasing rate during a steady burn.",
+        "ms": "Susun langkah-langkah dalam rantai peristiwa fizikal yang menerangkan mengapa roket memecut pada kadar yang semakin meningkat semasa pembakaran berterusan yang mantap.",
+        "zh": "排列解释火箭在稳定燃烧期间为何以递增的加速度加速的物理因果事件顺序。"
+      },
+      "hints": [
+        {
+          "en": "Start with how internal combustion exerts a force on the fuel, and use Newton's third law to find the resulting thrust force on the rocket.",
+          "ms": "Mulakan dengan bagaimana pembakaran dalaman mengenakan daya pada bahan api, dan gunakan hukum ketiga Newton untuk mencari daya tujahan yang terhasil pada roket.",
+          "zh": "首先考虑内部燃烧如何对推进剂施加力，并利用牛顿第三定律确定火箭受到的反作用推力。"
+        },
+        {
+          "en": "Connect the constant thrust to Newton's second law (a = Thrust / M) while accounting for the effect of continuous mass ejection on vehicle mass M.",
+          "ms": "Hubungkan tujahan malar dengan hukum kedua Newton (a = Tujahan / M) sambil mengambil kira kesan pelepasan jisim berterusan terhadap jisim kenderaan M.",
+          "zh": "将恒定推力与牛顿第二定律（a = 推力 / M）联系起来，同时考虑持续喷出质量对飞行器总质量 M 的影响。"
+        }
+      ],
+      "feedback": {
+        "en": "The engine expels exhaust gases rearward, generating a forward reaction thrust. Because propellant is continuously ejected, vehicle mass steadily decreases, causing the forward acceleration (Thrust / M) to increase over time.",
+        "ms": "Enjin mengeluarkan gas ekzos ke belakang, menghasilkan daya tindak balas tujahan ke hadapan. Oleh kerana bahan api dikeluarkan secara berterusan, jisim roket semakin berkurangan, menyebabkan pecutan ke hadapan (Tujahan / M) meningkat mengikut masa.",
+        "zh": "发动机向后喷出废气，产生向前的反作用推力。随着推进剂持续喷出，飞行器质量不断减少，导致向前加速度（推力 / M）随时间不断增大。"
+      },
+      "answerLogic": {
+        "en": "1. Combustion forces exhaust gas backward at speed ve. 2. By Newton's third law, the gas exerts an equal forward thrust on the rocket. 3. Continuous ejection reduces total rocket mass M over time. 4. By Newton's second law, steady thrust divided by decreasing mass produces an increasing acceleration.",
+        "ms": "1. Pembakaran menolak gas ekzos ke belakang pada laju ve. 2. Mengikut hukum ketiga Newton, gas mengenakan tujahan ke hadapan yang sama pada roket. 3. Pelepasan berterusan mengurangkan jumlah jisim roket M dari semasa ke semasa. 4. Mengikut hukum kedua Newton, tujahan mantap dibahagikan dengan jisim yang berkurangan menghasilkan pecutan yang semakin meningkat.",
+        "zh": "1. 燃烧迫使废气以排气速度 ve 向后排出。2. 根据牛顿第三定律，气体对火箭施加大小相等的向前推力。3. 持续喷射使火箭总质量 M 随时间减少。4. 根据牛顿第二定律，恒定推力除以递减的质量，使加速度持续增大。"
+      },
+      "explanation": {
+        "en": "Newton's third law establishes that the thrust force on the rocket equals the product of exhaust speed ve and the fuel burn rate |dM/dt|. Newton's second law gives the instantaneous acceleration as a = Thrust / M. As fuel is burned and ejected, M decreases while thrust remains steady, so acceleration steadily rises.",
+        "ms": "Hukum ketiga Newton menetapkan bahawa daya tujahan pada roket bersamaan dengan hasil darab laju ekzos ve dan kadar pembakaran bahan api |dM/dt|. Hukum kedua Newton memberikan pecutan seketika sebagai a = Tujahan / M. Apabila bahan api dibakar dan dikeluarkan, M berkurangan manakala tujahan kekal mantap, maka pecutan meningkat secara berterusan.",
+        "zh": "牛顿第三定律表明火箭受到的推力等于排气速度 ve 与推进剂燃烧率 |dM/dt| 的乘积。牛顿第二定律给出瞬时加速度为 a = 推力 / M。随着燃料燃烧排出，总质量 M 持续减少而推力保持恒定，因此加速度不断上升。"
+      },
+      "misconceptions": [
+        "constant-mass-assumption"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Review how interacting objects exert forces of equal magnitude and opposite direction on one another, creating action-reaction pairs between the engine and the expelled gas.",
+          "ms": "Ulang kaji bagaimana objek yang berinteraksi mengenakan daya dengan magnitud yang sama dan arah bertentangan antara satu sama lain, menghasilkan pasangan tindakan-tindak balas antara enjin dan gas yang dikeluarkan.",
+          "zh": "复习相互作用的物体如何对彼此施加大小相等、方向相反的力，从而在发动机与喷出气体之间形成作用力与反作用力对。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Chronologically order four statements describing rocket acceleration: backward gas ejection, reaction thrust on rocket, progressive mass loss, and increasing vehicle acceleration.",
+        "ms": "Susun mengikut kronologi empat pernyataan yang menerangkan pecutan roket: pengeluaran gas ke belakang, tujahan tindak balas pada roket, kehilangan jisim berperingkat, dan pecutan kenderaan yang semakin meningkat.",
+        "zh": "按时间顺序排列描述火箭加速的四个陈述：气体向后喷出、火箭受反作用推力、质量逐步损耗、飞行器加速度增大。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "seq-ejection",
+            "label": {
+              "en": "Combustion exerts a backward force on the exhaust gas, expelling it rearward at relative exhaust speed ve.",
+              "ms": "Pembakaran mengenakan daya ke belakang pada gas ekzos, mengeluarkannya ke belakang pada laju ekzos relatif ve.",
+              "zh": "燃烧对废气施加向后的力，使其以相对排气速度 ve 向后喷出。"
+            }
+          },
+          {
+            "id": "seq-thrust",
+            "label": {
+              "en": "By Newton's third law, the expelled gas exerts an equal and opposite forward reaction force (thrust) on the rocket.",
+              "ms": "Mengikut hukum ketiga Newton, gas yang dikeluarkan mengenakan daya tindak balas ke hadapan yang sama magnitud dan bertentangan arah (tujahan) pada roket.",
+              "zh": "根据牛顿第三定律，排出的废气对火箭施加大小相等、方向相反的向前反作用力（推力）。"
+            }
+          },
+          {
+            "id": "seq-mass-loss",
+            "label": {
+              "en": "As propellant is continuously ejected at burn rate |dM/dt|, the remaining vehicle mass M steadily decreases.",
+              "ms": "Apabila bahan api dikeluarkan secara berterusan pada kadar pembakaran |dM/dt|, baki jisim kenderaan M berkurangan secara berterusan.",
+              "zh": "随着推进剂以燃烧率 |dM/dt| 持续喷出，飞行器剩余质量 M 不断减少。"
+            }
+          },
+          {
+            "id": "seq-acceleration-increase",
+            "label": {
+              "en": "Because steady thrust acts on a continuously lightening rocket mass, the rocket's forward acceleration increases over time.",
+              "ms": "Oleh kerana tujahan mantap bertindak ke atas jisim roket yang semakin ringan, pecutan ke hadapan roket meningkat dari semasa ke semasa.",
+              "zh": "由于恒定推力作用在不断减轻的火箭质量上，火箭向前的加速度随时间增大。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "seq-ejection",
+          "seq-thrust",
+          "seq-mass-loss",
+          "seq-acceleration-increase"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "constant-mass-assumption",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "seq-acceleration-increase",
+            "secondItemId": "seq-mass-loss"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rp-int-mod-2",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze how exhaust speed and mass ratio determine the final speed change of a rocket.",
+      "prompt": {
+        "en": "Classify each physical assertion about rocket propulsion into whether it is a valid physical principle or a flawed claim reflecting a misconception.",
+        "ms": "Kelaskan setiap pernyataan fizikal mengenai perejanan roket sama ada ia merupakan prinsip fizik yang sah atau pernyataan cacat yang mencerminkan salah tanggapan.",
+        "zh": "将关于火箭推进的各项物理陈述分类为有效的物理原理或反映误解的有缺陷陈述。"
+      },
+      "hints": [
+        {
+          "en": "Recall the rocket propulsion equation: the change in speed equals the exhaust speed multiplied by the natural logarithm of the initial-to-final mass ratio (Delta v = ve * ln(Mi / Mf)).",
+          "ms": "Ingat kembali persamaan perejanan roket: perubahan laju bersamaan dengan laju ekzos didarab dengan logaritma asli nisbah jisim awal kepada akhir (Delta v = ve * ln(Mi / Mf)).",
+          "zh": "回忆火箭推进方程：速度增量等于排气速度乘以初末质量比的自然对数（Delta v = ve * ln(Mi / Mf)）。"
+        },
+        {
+          "en": "Check how the natural logarithm affects speed gain when mass increases, and note that exhaust speed ve is measured relative to the rocket, not relative to an external observer.",
+          "ms": "Perhatikan bagaimana logaritma asli mempengaruhi peningkatan laju apabila jisim bertambah, dan ambil perhatian bahawa laju ekzos ve diukur relatif kepada roket, bukan kepada pemerhati luar.",
+          "zh": "观察当质量增加时自然对数如何影响速度增量，并注意排气速度 ve 是相对于火箭测量的，而不是相对于外部观察者。"
+        }
+      ],
+      "feedback": {
+        "en": "Speed change depends linearly on exhaust speed ve and logarithmically on the mass ratio Mi / Mf. Doubling fuel does not double speed gain, and final rocket speed relative to Earth can exceed engine exhaust speed.",
+        "ms": "Perubahan laju bergantung secara linear pada laju ekzos ve dan secara logaritma pada nisbah jisim Mi / Mf. Menggandakan bahan api tidak menggandakan pertambahan laju, dan laju akhir roket relatif kepada Bumi boleh melebihi laju ekzos enjin.",
+        "zh": "速度变化与排气速度 ve 成线性关系，与初末质量比 Mi / Mf 成对数关系。将燃料加倍并不会使速度增量加倍，且火箭相对于地球的最终速度完全可以超过发动机排气速度。"
+      },
+      "answerLogic": {
+        "en": "The rocket equation Delta v = ve * ln(Mi / Mf) shows: (1) Delta v is directly proportional to relative exhaust speed ve (valid); (2) Delta v depends logarithmically on the mass ratio (valid); (3) doubling fuel increases Mi but does not double Delta v because of the logarithm (flawed); (4) when Mi / Mf exceeds Euler's constant e, ln(Mi / Mf) > 1, so Delta v exceeds ve (flawed claim of a speed cap).",
+        "ms": "Persamaan roket Delta v = ve * ln(Mi / Mf) menunjukkan: (1) Delta v berkadar terus dengan laju ekzos relatif ve (sah); (2) Delta v bergantung secara logaritma pada nisbah jisim (sah); (3) menggandakan bahan api meningkatkan Mi tetapi tidak menggandakan Delta v disebabkan sifat logaritma (cacat); (4) apabila Mi / Mf melebihi pemalar Euler e, ln(Mi / Mf) > 1, maka Delta v melebihi ve (pernyataan cacat mengenai had laju).",
+        "zh": "火箭方程 Delta v = ve * ln(Mi / Mf) 表明：(1) Delta v 与相对排气速度 ve 成正比（有效）；(2) Delta v 取决于质量比的自然对数（有效）；(3) 增加一倍燃料增加了初始质量，但因对数关系并不会使 Delta v 加倍（有缺陷）；(4) 当质量比 Mi / Mf 大于自然常数 e 时，ln(Mi / Mf) > 1，因此 Delta v 大于 ve（速度上限说法有缺陷）。"
+      },
+      "explanation": {
+        "en": "In the expression vf - vi = ve * ln(Mi / Mf), exhaust speed ve acts as a constant linear multiplier, while fuel contribution enters solely through the natural logarithm of the mass ratio. Because the logarithmic function grows much slower than a linear function, carrying additional fuel yields diminishing marginal speed increases. Furthermore, because ln(Mi / Mf) can exceed 1 for sufficiently high fuel fractions, the rocket can reach speeds far greater than the exhaust speed ve relative to its launch frame.",
+        "ms": "Dalam ungkapan vf - vi = ve * ln(Mi / Mf), laju ekzos ve bertindak sebagai pengganda linear malar, manakala sumbangan bahan api masuk semata-mata melalui logaritma asli nisbah jisim. Oleh kerana fungsi logaritma berkembang jauh lebih perlahan daripada fungsi linear, membawa bahan api tambahan menghasilkan pertambahan laju marginal yang berkurangan. Tambahan pula, kerana ln(Mi / Mf) boleh melebihi 1 untuk pecahan bahan api yang cukup tinggi, roket boleh mencapai laju yang jauh lebih besar daripada laju ekzos ve relatif kepada kerangka pelancarannya.",
+        "zh": "在公式 vf - vi = ve * ln(Mi / Mf) 中，排气速度 ve 作为常数线性乘数，而燃料的贡献仅通过质量比的自然对数体现。由于对数函数的增长远慢于线性函数，携带更多燃料带来的边际速度增益递减。此外，只要燃料质量占比足够大使得 ln(Mi / Mf) 大于 1，火箭相对于发射参考系的速度增量就能远超排气速度 ve。"
+      },
+      "misconceptions": [
+        "linear-speed-gain-with-fuel",
+        "thrust-equals-rocket-speed"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-momentum",
+        "prompt": {
+          "en": "Review the impulse-momentum model and the isolated system model where integrating M * dv = -ve * dM produces the natural logarithm of mass ratio.",
+          "ms": "Ulang kaji model impuls-momentum dan model sistem terpencil di mana pengamiran M * dv = -ve * dM menghasilkan logaritma asli bagi nisbah jisim.",
+          "zh": "复习冲量-动量模型及孤立系统模型，其中对 M * dv = -ve * dM 积分会得出质量比的自然对数。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classify four statements about exhaust speed and mass ratio into two categories: Physically Valid Principle or Flawed Claim.",
+        "ms": "Kelaskan empat pernyataan mengenai laju ekzos dan nisbah jisim kepada dua kategori: Prinsip Fizik Sah atau Pernyataan Cacat.",
+        "zh": "将关于排气速度和质量比的四个陈述分类到两个类别中：有效的物理原理或有缺陷的陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-valid",
+            "label": {
+              "en": "Physically Valid Principle",
+              "ms": "Prinsip Fizik yang Sah",
+              "zh": "有效的物理原理"
+            }
+          },
+          {
+            "id": "target-flawed",
+            "label": {
+              "en": "Flawed Claim",
+              "ms": "Pernyataan yang Cacat",
+              "zh": "有缺陷的陈述"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-log-mass",
+            "label": {
+              "en": "The final velocity gain scales with the natural logarithm of the initial-to-final mass ratio (Mi / Mf).",
+              "ms": "Pertambahan halaju akhir berkadar dengan logaritma asli nisbah jisim awal kepada akhir (Mi / Mf).",
+              "zh": "最终速度增量与初末质量比（Mi / Mf）的自然对数成正比。"
+            }
+          },
+          {
+            "id": "item-exhaust-proportionality",
+            "label": {
+              "en": "The overall speed gain is directly proportional to the exhaust speed ve of the expelled gases relative to the rocket.",
+              "ms": "Pertambahan laju keseluruhan berkadar terus dengan laju ekzos ve bagi gas yang dikeluarkan relatif kepada roket.",
+              "zh": "总速度增量与喷出气体相对于火箭的排气速度 ve 成正比。"
+            }
+          },
+          {
+            "id": "item-linear-fuel",
+            "misconception": "linear-speed-gain-with-fuel",
+            "label": {
+              "en": "Doubling the carried propellant mass doubles the rocket's final burnout speed in free space.",
+              "ms": "Menggandakan jisim bahan api yang dibawa akan menggandakan laju akhir roket apabila bahan api habis di angkasa lepas.",
+              "zh": "将携带的推进剂质量加倍，会使火箭在太空中的最终燃尽速度加倍。"
+            }
+          },
+          {
+            "id": "item-speed-cap",
+            "misconception": "thrust-equals-rocket-speed",
+            "label": {
+              "en": "The maximum forward speed a rocket can reach relative to its launch point is physically limited to its exhaust speed ve.",
+              "ms": "Laju maksimum ke hadapan yang boleh dicapai oleh roket relatif kepada titik pelancarannya dihadkan secara fizikal kepada laju ekzosnya ve.",
+              "zh": "火箭相对于发射点所能达到的最大前进速度在物理上被限制为其排气速度 ve。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-log-mass",
+            "targetId": "target-valid"
+          },
+          {
+            "itemId": "item-exhaust-proportionality",
+            "targetId": "target-valid"
+          },
+          {
+            "itemId": "item-linear-fuel",
+            "targetId": "target-flawed"
+          },
+          {
+            "itemId": "item-speed-cap",
+            "targetId": "target-flawed"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "linear-speed-gain-with-fuel",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-linear-fuel",
+            "targetId": "target-valid"
+          }
+        },
+        {
+          "misconception": "thrust-equals-rocket-speed",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-speed-cap",
+            "targetId": "target-valid"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rp-int-mod-3",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Model a rocket and its expelled exhaust as an isolated system conserving total linear momentum.",
+      "prompt": {
+        "en": "Select ALL statements that correctly describe the momentum and motion of a rocket and its exhaust gases modeled as an isolated system in free space.",
+        "ms": "Pilih SEMUA pernyataan yang menerangkan dengan betul momentum dan gerakan roket serta gas ekzosnya yang dimodelkan sebagai sistem terpencil di angkasa bebas.",
+        "zh": "选择所有正确描述在自由空间中作为孤立系统的火箭及其排出废气的动量与运动的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Identify what 'isolated system' means for momentum: are there any net external forces acting on the rocket plus all expelled exhaust?",
+          "ms": "Kenal pasti maksud 'sistem terpencil' untuk momentum: adakah terdapat sebarang daya luar bersih yang bertindak ke atas roket serta semua ekzos yang dikeluarkan?",
+          "zh": "明确“孤立系统”对动量意味着什么：是否有任何合外力作用于火箭及其全部排出的废气？"
+        },
+        {
+          "en": "Distinguish between the exhaust speed measured relative to the rocket engine nozzle and the exhaust velocity measured in an external stationary frame.",
+          "ms": "Bezakan antara laju ekzos yang diukur relatif kepada muncung enjin roket dengan halaju ekzos yang diukur dalam kerangka pegun luaran.",
+          "zh": "区分相对于火箭发动机喷管测量的排气速度与在外部静止参考系中测量的排气速度。"
+        }
+      ],
+      "feedback": {
+        "en": "For the isolated system of rocket plus exhaust, total momentum is conserved and the center of mass moves uniformly. Ejecting mass backward gives compensating forward momentum to the vehicle. Exhaust speed relative to Earth depends on the rocket's velocity (v - ve) and is not fixed at ve.",
+        "ms": "Bagi sistem terpencil roket tambah ekzos, jumlah momentum diabadikan dan pusat jisim bergerak secara seragam. Pengeluaran jisim ke belakang memberikan momentum pampasan ke hadapan kepada kenderaan. Laju ekzos relatif kepada Bumi bergantung pada halaju roket (v - ve) dan tidak terhad pada ve.",
+        "zh": "对于火箭与废气组成的孤立系统，总动量守恒，质心以匀速运动。向后喷出质量会赋予飞行器向前的补偿动量。废气相对于地球参考系的速度取决于火箭自身的速度（v - ve），并不固定为 ve。"
+      },
+      "answerLogic": {
+        "en": "Correct selections are: (1) center of mass moves uniformly because external net force is zero; (2) total linear momentum of rocket plus all exhaust is conserved; (3) each packet of expelled gas transfers compensating forward momentum to the rocket. Incorrect statements confuse relative exhaust speed ve with Earth-frame speed or falsely claim rocket speed cannot exceed ve.",
+        "ms": "Pilihan yang betul ialah: (1) pusat jisim bergerak secara seragam kerana daya luar bersih adalah sifar; (2) jumlah momentum linear roket serta semua ekzos diabadikan; (3) setiap paket gas yang dikeluarkan memindahkan momentum pampasan ke hadapan kepada roket. Pernyataan yang salah mengelirukan laju ekzos relatif ve dengan laju kerangka Bumi atau mendakwa secara salah bahawa laju roket tidak boleh melebihi ve.",
+        "zh": "正确选项为：(1) 质心匀速运动，因为系统合外力为零；(2) 火箭与全部排出废气的总线动量守恒；(3) 每一份向后排出的气体都会传递给火箭向前的补偿动量。错误选项混淆了相对排气速度 ve 与地面参考系速度，或错误地认为火箭速度无法超越 ve。"
+      },
+      "explanation": {
+        "en": "In free space, no external forces act on the system composed of the rocket and all expelled fuel. Consequently, Delta p = 0, meaning total momentum is strictly conserved and the system's center of mass moves at constant velocity. The propulsion mechanism is internal momentum exchange: expelling mass backward with velocity (v - ve) relative to Earth imparts compensating forward momentum to the remaining rocket mass. Because exhaust speed ve is relative to the rocket, the rocket's forward speed v can readily exceed ve.",
+        "ms": "Di angkasa bebas, tiada daya luar bertindak ke atas sistem yang terdiri daripada roket dan semua bahan api yang dikeluarkan. Akibatnya, Delta p = 0, bermakna jumlah momentum diabadikan sepenuhnya dan pusat jisim sistem bergerak pada halaju malar. Mekanisme perejanan adalah pertukaran momentum dalaman: mengeluarkan jisim ke belakang dengan halaju (v - ve) relatif kepada Bumi memberikan momentum pampasan ke hadapan kepada baki jisim roket. Oleh kerana laju ekzos ve adalah relatif kepada roket, laju ke hadapan roket v boleh dengan mudah melebihi ve.",
+        "zh": "在自由空间中，没有外力作用于由火箭和全部喷出推进剂组成的系统。因此 Delta p = 0，这意味着系统总动量严格守恒，且系统质心以恒定速度运动。推进机制本质上是系统内部的动量交换：以相对于地球 (v - ve) 的速度向后喷射质量，会赋予剩余火箭质量向前的补偿动量。因为排气速度 ve 是相对于火箭测量的，火箭向前的飞行速度 v 完全可以超过 ve。"
+      },
+      "misconceptions": [
+        "thrust-equals-rocket-speed"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-momentum",
+        "prompt": {
+          "en": "Review the principle of conservation of linear momentum, which states that total linear momentum remains constant whenever net external force is zero.",
+          "ms": "Ulang kaji prinsip keabadian momentum linear, yang menyatakan bahawa jumlah momentum linear kekal malar apabila daya luar bersih adalah sifar.",
+          "zh": "复习线动量守恒定律：当合外力为零时，系统的总线动量保持不变。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Select the correct physical statements from a checklist of five options concerning momentum conservation and exhaust velocity of a rocket in free space.",
+        "ms": "Pilih pernyataan fizik yang betul daripada senarai semak lima pilihan mengenai keabadian momentum dan halaju ekzos roket di angkasa bebas.",
+        "zh": "从五个关于自由空间中火箭动量守恒及排气速度的选项清单中选择正确的物理陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "sel-cm-uniform",
+            "label": {
+              "en": "The center of mass of the combined rocket-plus-exhaust system moves with constant velocity.",
+              "ms": "Pusat jisim gabungan sistem roket-tambah-ekzos bergerak dengan halaju malar.",
+              "zh": "火箭与排气组合系统的质心以恒定速度运动。"
+            }
+          },
+          {
+            "id": "sel-momentum-isolated",
+            "label": {
+              "en": "The total linear momentum of the rocket and all expelled fuel remains constant over time.",
+              "ms": "Jumlah momentum linear roket dan semua bahan api yang dikeluarkan kekal malar dari semasa ke semasa.",
+              "zh": "火箭及所有排出燃料的总线动量随时间保持恒定。"
+            }
+          },
+          {
+            "id": "sel-opposite-momentum",
+            "label": {
+              "en": "Each parcel of fuel ejected rearward imparts an equal magnitude of forward compensating momentum to the rocket.",
+              "ms": "Setiap bahagian bahan api yang dikeluarkan ke belakang memberikan magnitud momentum pampasan ke hadapan yang sama kepada roket.",
+              "zh": "向后喷出的每一份推进剂都会赋予火箭大小相等的向前补偿动量。"
+            }
+          },
+          {
+            "id": "sel-exhaust-observer-speed",
+            "misconception": "thrust-equals-rocket-speed",
+            "label": {
+              "en": "Exhaust gases always move backward at speed ve relative to a stationary Earth observer, regardless of rocket speed.",
+              "ms": "Gas ekzos sentiasa bergerak ke belakang pada laju ve relatif kepada pemerhati Bumi yang pegun, tanpa mengira laju roket.",
+              "zh": "无论火箭速度多大，排出的气体相对于地球静止观测者始终以速度 ve 向后运动。"
+            }
+          },
+          {
+            "id": "sel-speed-ceiling",
+            "misconception": "thrust-equals-rocket-speed",
+            "label": {
+              "en": "The forward speed of the rocket relative to its launch point can never exceed the exhaust speed ve.",
+              "ms": "Laju ke hadapan roket relatif kepada titik pelancarannya tidak boleh melebihi laju ekzos ve.",
+              "zh": "火箭相对于发射点的前进速度永远不可能超过排气速度 ve。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "sel-cm-uniform",
+          "sel-momentum-isolated",
+          "sel-opposite-momentum"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "thrust-equals-rocket-speed",
+          "condition": {
+            "kind": "selection",
+            "itemId": "sel-exhaust-observer-speed",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "thrust-equals-rocket-speed",
+          "condition": {
+            "kind": "selection",
+            "itemId": "sel-speed-ceiling",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "rp-int-chal-1",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze how exhaust speed and mass ratio determine the final speed change of a rocket.",
+      "prompt": {
+        "en": "A deep-space rocket engine fires continuously at a constant exhaust speed and constant burn rate, expelling its propellant in four successive equal mass segments (each representing one quarter of the initial propellant mass). Arrange the four burn segments in order of the speed increase (gain in forward speed) produced, from greatest speed increase to smallest speed increase.",
+        "ms": "Enjin roket di angkasa lepas menyala secara berterusan pada laju ekzos malar dan kadar pembakaran malar, mengeluarkan bahan apinya dalam empat segmen jisim yang sama berturut-turut (setiap satu mewakili satu perempat daripada jisim bahan api awal). Susun empat segmen pembakaran tersebut mengikut tertib peningkatan laju (pertambahan laju ke hadapan) yang dihasilkan, daripada peningkatan laju terbesar kepada peningkatan laju terkecil.",
+        "zh": "一枚深空火箭发动机以恒定的喷气速度和恒定的燃烧率持续点火，将其推进剂按相等的质量分为四个连续阶段喷出（每个阶段占初始推进剂质量的四分之一）。请按所产生的速度增量（前向速度增加值）从大到小的顺序排列这四个燃烧阶段。"
+      },
+      "hints": [
+        {
+          "en": "Consider Newton's second law or momentum conservation for a small mass ejection: the change in rocket speed is proportional to the ejected mass divided by the instantaneous mass of the vehicle.",
+          "ms": "Pertimbangkan hukum kedua Newton atau keabadian momentum untuk lentingan jisim kecil: perubahan laju roket adalah berkadar dengan jisim yang dikeluarkan dibahagikan dengan jisim seketika kenderaan tersebut.",
+          "zh": "考虑微小质量喷射时的牛顿第二定律或动量守恒：火箭的速度增量与喷出的质量成正比，而与飞行器当时的瞬时质量成反比。"
+        },
+        {
+          "en": "As fuel is consumed, total vehicle mass decreases steadily. Expelling the same mass of gas produces a greater velocity boost when pushing a lighter vehicle than when pushing a heavy, fully fueled vehicle.",
+          "ms": "Apabila bahan api digunakan, jumlah jisim kenderaan berkurangan secara berterusan. Mengeluarkan jisim gas yang sama menghasilkan lonjakan halaju yang lebih besar apabila menolak kenderaan yang lebih ringan berbanding menolak kenderaan berat yang sarat dengan bahan api.",
+          "zh": "随着推进剂被消耗，飞行器的总质量持续减少。喷出相同质量的气体时，推动较轻的飞行器所产生的速度提升远大于推动装满燃料的沉重飞行器。"
+        }
+      ],
+      "feedback": {
+        "en": "Because the rocket's mass decreases continuously as fuel is expended, each successive kilogram of exhaust imparts a larger change in velocity to the lighter remaining structure. Thus, the final segment yields the greatest speed increase, and the initial segment yields the least.",
+        "ms": "Oleh kerana jisim roket berkurangan secara berterusan apabila bahan api digunakan, setiap kilogram ekzos yang berikutnya memberikan perubahan halaju yang lebih besar kepada struktur baki yang lebih ringan. Oleh itu, segmen terakhir menghasilkan peningkatan laju terbesar, dan segmen awal menghasilkan peningkatan paling sedikit.",
+        "zh": "由于火箭的质量随燃料消耗而持续减小，每喷出相同质量的气体都会给较轻的剩余结构带来更大的速度改变。因此，最后阶段产生的速度增量最大，而最初阶段产生的增量最小。"
+      },
+      "answerLogic": {
+        "en": "From the differential momentum relation M dv = v_e dm, the differential speed increase is dv = v_e (dm / M). Because the vehicle mass M in the denominator decreases over time while dm and v_e remain constant, dv grows larger for each successive equal mass segment. Therefore, Segment 4 produces the greatest speed increase, followed by Segment 3, Segment 2, and finally Segment 1.",
+        "ms": "Daripada hubungan momentum pembezaan M dv = v_e dm, peningkatan laju pembezaan ialah dv = v_e (dm / M). Oleh kerana jisim kenderaan M pada penyebut berkurangan dari semasa ke semasa manakala dm dan v_e kekal malar, dv menjadi lebih besar bagi setiap segmen jisim sama yang berikutnya. Oleh itu, Segmen 4 menghasilkan peningkatan laju terbesar, diikuti oleh Segmen 3, Segmen 2, dan akhirnya Segmen 1.",
+        "zh": "由微分动量关系 M dv = v_e dm 可知，微分速度增量为 dv = v_e (dm / M)。由于在 dm 和 v_e 保持不变的情况下分母中的飞行器质量 M 随时间减小，因此每个相等的质量段所产生的 dv 依次增大。故第4阶段产生的速度增量最大，其次是第3阶段、第2阶段，最后是第1阶段。"
+      },
+      "explanation": {
+        "en": "The rocket propulsion equation demonstrates that vehicle speed does not increase linearly with fuel mass. Speed gain is governed by the natural logarithm of the mass ratio: Delta v = v_e ln(M_initial / M_final). The ratio of initial to final mass across Segment 4 is significantly larger than across Segment 1, meaning that discarding deadweight causes the vehicle to accelerate with increasing effectiveness as fuel empties.",
+        "ms": "Persamaan dorongan roket menunjukkan bahawa laju kenderaan tidak meningkat secara linear dengan jisim bahan api. Pertambahan laju dikawal oleh logaritma asli nisbah jisim: Delta v = v_e ln(M_awal / M_akhir). Nisbah jisim awal kepada akhir merentasi Segmen 4 adalah jauh lebih besar berbanding merentasi Segmen 1, bermakna pelupusan beban mati membolehkan kenderaan memecut dengan keberkesanan yang semakin meningkat apabila bahan api semakin habis.",
+        "zh": "齐奥尔科夫斯基火箭方程表明，飞行器速度的增加并非与消耗的燃料质量呈线性关系。速度增量由初末质量比的自然对数决定：Delta v = v_e ln(M_初 / M_末)。在第4阶段，该区间的初末质量比远大于第1阶段，这意味着随着推进剂死重不断减少，飞行器的加速效率随着燃料排空而大幅提升。"
+      },
+      "misconceptions": [
+        "linear-speed-gain-with-fuel"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "conservation-of-momentum",
+        "prompt": {
+          "en": "Review the isolated system momentum model: when an object expels mass dm at speed v_e, the momentum gained by the remaining mass M must equal the momentum carried away by the exhaust.",
+          "ms": "Ulang kaji model momentum sistem terpencil: apabila suatu objek mengeluarkan jisim dm pada laju v_e, momentum yang diperoleh oleh baki jisim M mesti sama dengan momentum yang dibawa pergi oleh ekzos.",
+          "zh": "复习孤立系统的动量守恒模型：当物体以速度 v_e 喷射出质量 dm 时，剩余质量 M 所获得的动量必须等于排气带走的动量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Ordering interaction with four burn segments. Arrange the segments from greatest forward speed increase to smallest forward speed increase.",
+        "ms": "Interaksi susunan dengan empat segmen pembakaran. Susun segmen daripada peningkatan laju ke hadapan terbesar kepada peningkatan laju terkecil.",
+        "zh": "包含四个燃烧阶段的排序交互题。将各阶段按前向速度增量从大到小排序。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "segment-4",
+            "label": {
+              "en": "Segment 4: Expelling the fourth (final) quarter of fuel",
+              "ms": "Segmen 4: Mengeluarkan suku keempat (terakhir) bahan api",
+              "zh": "第4阶段：喷出第四个（最后）四分之一燃料"
+            }
+          },
+          {
+            "id": "segment-3",
+            "label": {
+              "en": "Segment 3: Expelling the third quarter of fuel",
+              "ms": "Segmen 3: Mengeluarkan suku ketiga bahan api",
+              "zh": "第3阶段：喷出第三个四分之一燃料"
+            }
+          },
+          {
+            "id": "segment-2",
+            "label": {
+              "en": "Segment 2: Expelling the second quarter of fuel",
+              "ms": "Segmen 2: Mengeluarkan suku kedua bahan api",
+              "zh": "第2阶段：喷出第二个四分之一燃料"
+            }
+          },
+          {
+            "id": "segment-1",
+            "label": {
+              "en": "Segment 1: Expelling the first (initial) quarter of fuel",
+              "ms": "Segmen 1: Mengeluarkan suku pertama (awal) bahan api",
+              "zh": "第1阶段：喷出第一个（初始）四分之一燃料"
+            }
+          }
+        ],
+        "correctOrder": [
+          "segment-4",
+          "segment-3",
+          "segment-2",
+          "segment-1"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "linear-speed-gain-with-fuel",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "segment-1",
+            "secondItemId": "segment-4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rp-int-chal-2",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate thrust to exhaust speed and fuel burn rate using Newton's second and third laws.",
+      "prompt": {
+        "en": "A spacecraft operates its engine in deep space at a constant mass burn rate and constant exhaust speed. Match each physical quantity of the spacecraft to its behavior over time during this steady burn.",
+        "ms": "Sebuah kapal angkasa mengendalikan enjinnya di angkasa lepas pada kadar pembakaran jisim malar dan laju ekzos malar. Padankan setiap kuantiti fizikal kapal angkasa tersebut dengan kelakuannya mengikut masa semasa pembakaran mantap ini.",
+        "zh": "一艘航天器在深空中以恒定的质量燃烧率和恒定的喷气速度开动发动机。请将航天器的各项物理量与其在此平稳燃烧过程中的随时间变化趋势进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Recall the thrust formula: Thrust = v_e |dM/dt|. How does thrust behave when both exhaust speed and fuel consumption rate are fixed?",
+          "ms": "Ingat kembali formula daya tujah: Tujah = v_e |dM/dt|. Bagaimanakah kelakuan daya tujah apabila kedua-dua laju ekzos dan kadar penggunaan bahan api adalah tetap?",
+          "zh": "回想推力公式：推力 = v_e |dM/dt|。当喷气速度和燃料消耗率都固定时，推力的大小如何？"
+        },
+        {
+          "en": "Apply Newton's second law, F_net = M a. If thrust is constant but mass M decreases continually as propellant is ejected, what must happen to acceleration?",
+          "ms": "Gunakan hukum kedua Newton, F_bersih = M a. Jika daya tujah adalah malar tetapi jisim M berkurangan secara berterusan apabila bahan api dikeluarkan, apakah yang mesti berlaku kepada pecutan?",
+          "zh": "应用牛顿第二定律 F_合 = M a。如果推力恒定，但随着推进剂喷出机体质量 M 持续减少，加速度必然会怎样变化？"
+        }
+      ],
+      "feedback": {
+        "en": "Thrust remains constant because both exhaust speed and fuel burn rate are steady. However, because the rocket continually expels mass, that constant thrust acts on an increasingly lighter body, meaning acceleration and speed gain per unit fuel increase over time.",
+        "ms": "Daya tujah kekal malar kerana kedua-dua laju ekzos dan kadar pembakaran bahan api adalah stabil. Walau bagaimanapun, oleh kerana roket terus mengeluarkan jisim, daya tujah malar itu bertindak ke atas jasad yang semakin ringan, bermakna pecutan dan peningkatan laju per unit bahan api meningkat mengikut masa.",
+        "zh": "推力保持恒定，因为喷气速度和燃料消耗率都是恒定的。然而，随着火箭不断排出质量，恒定的推力作用在越来越轻的机体上，这意味着瞬时加速度以及单位燃料带来的速度增量随时间持续增加。"
+      },
+      "answerLogic": {
+        "en": "Thrust equals v_e |dM/dt|, which is constant during steady operation. Rocket mass decreases steadily as fuel leaves. By Newton's second law, acceleration a = Thrust / M(t); as M(t) drops in the denominator, acceleration increases. Similarly, the speed increment per unit propellant dv / |dM| = v_e / M(t) increases as mass decreases.",
+        "ms": "Daya tujah bersamaan dengan v_e |dM/dt|, yang mana adalah malar semasa operasi mantap. Jisim roket berkurangan secara berterusan apabila bahan api keluar. Mengikut hukum kedua Newton, pecutan a = Tujah / M(t); apabila M(t) menurun pada penyebut, pecutan meningkat. Begitu juga, tokokan laju per unit bahan api dv / |dM| = v_e / M(t) meningkat apabila jisim berkurangan.",
+        "zh": "推力等于 v_e |dM/dt|，在平稳运行期间为恒定值。随着燃料喷出，火箭质量持续减少。由牛顿第二定律，加速度 a = 推力 / M(t)；由于分母中的 M(t) 减小，加速度持续增大。同理，单位推进剂带来的速度增量 dv / |dM| = v_e / M(t) 也随着质量减少而增加。"
+      },
+      "explanation": {
+        "en": "Newton's third law explains that ejecting exhaust gas at speed v_e produces a forward thrust on the vehicle. While this thrust force is constant under uniform burn conditions, the vehicle has a changing mass. Assuming constant mass overlooks the continuous loss of propellant, which causes the rocket's acceleration to escalate progressively toward burn completion.",
+        "ms": "Hukum ketiga Newton menerangkan bahawa mengeluarkan gas ekzos pada laju v_e menghasilkan daya tujah ke hadapan pada kenderaan. Walaupun daya tujah ini adalah malar di bawah keadaan pembakaran seragam, kenderaan tersebut mempunyai jisim yang berubah. Menganggap jisim adalah malar mengabaikan kehilangan bahan api secara berterusan, yang menyebabkan pecutan roket meningkat secara progresif menjelang tamat pembakaran.",
+        "zh": "牛顿第三定律表明，以速度 v_e 向后排出尾气会对飞行器产生向前的推力。在均匀燃烧条件下推力虽保持恒定，但飞行器属于变质量系统。假定质量恒定会忽视推进剂的持续损耗，而正是这种损耗导致火箭的加速度在临近燃烧结束时急剧上升。"
+      },
+      "misconceptions": [
+        "constant-mass-assumption",
+        "linear-speed-gain-with-fuel"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Review Newton's third law: when the engine pushes exhaust gases backward, the gases exert an equal and opposite forward force on the rocket.",
+          "ms": "Ulang kaji hukum ketiga Newton: apabila enjin menolak gas ekzos ke belakang, gas tersebut mengenakan daya ke hadapan yang sama dan bertentangan ke atas roket.",
+          "zh": "复习牛顿第三定律：当发动机向后推动尾气时，尾气对火箭施加大小相等、方向相反的向前作用力。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching interaction pairing four vehicle parameters with three trend categories: remains constant, increases, or decreases.",
+        "ms": "Interaksi pemadanan yang menggandingkan empat parameter kenderaan dengan tiga kategori aliran: kekal malar, meningkat, atau berkurang.",
+        "zh": "包含四个飞行器参数与三种变化趋势类别（保持恒定、增加、减小）的连线匹配交互题。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-thrust",
+            "label": {
+              "en": "Thrust force exerted on the vehicle by the exhaust",
+              "ms": "Daya tujah yang dikenakan ke atas kenderaan oleh ekzos",
+              "zh": "尾气施加在飞行器上的推力"
+            }
+          },
+          {
+            "id": "item-mass",
+            "label": {
+              "en": "Total vehicle mass (vehicle plus remaining propellant)",
+              "ms": "Jumlah jisim kenderaan (kenderaan berserta baki bahan api)",
+              "zh": "飞行器总质量（机体加上剩余推进剂）"
+            }
+          },
+          {
+            "id": "item-accel",
+            "label": {
+              "en": "Forward acceleration of the vehicle",
+              "ms": "Pecutan ke hadapan kenderaan",
+              "zh": "飞行器的向前加速度"
+            }
+          },
+          {
+            "id": "item-speed-rate",
+            "label": {
+              "en": "Rate of speed gain per unit mass of propellant expelled",
+              "ms": "Kadar peningkatan laju per unit jisim bahan api yang dikeluarkan",
+              "zh": "每喷出单位质量推进剂所获得的速度增量"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-constant",
+            "label": {
+              "en": "Remains constant in magnitude throughout the burn",
+              "ms": "Kekal malar dalam magnitud sepanjang pembakaran",
+              "zh": "在整个燃烧过程中大小保持恒定"
+            }
+          },
+          {
+            "id": "target-increasing",
+            "label": {
+              "en": "Increases in magnitude over time throughout the burn",
+              "ms": "Meningkat dalam magnitud mengikut masa sepanjang pembakaran",
+              "zh": "在整个燃烧过程中大小随时间持续增加"
+            }
+          },
+          {
+            "id": "target-decreasing",
+            "label": {
+              "en": "Decreases in magnitude over time throughout the burn",
+              "ms": "Berkurang dalam magnitud mengikut masa sepanjang pembakaran",
+              "zh": "在整个燃烧过程中大小随时间持续减小"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-thrust",
+            "targetId": "target-constant"
+          },
+          {
+            "itemId": "item-mass",
+            "targetId": "target-decreasing"
+          },
+          {
+            "itemId": "item-accel",
+            "targetId": "target-increasing"
+          },
+          {
+            "itemId": "item-speed-rate",
+            "targetId": "target-increasing"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "constant-mass-assumption",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-accel",
+            "targetId": "target-constant"
+          }
+        },
+        {
+          "misconception": "linear-speed-gain-with-fuel",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-speed-rate",
+            "targetId": "target-constant"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rp-int-chal-3",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Model a rocket and its expelled exhaust as an isolated system conserving total linear momentum.",
+      "prompt": {
+        "en": "A deep-space probe executes an engine burn far from any gravitational bodies or ambient medium. An engineering team models the composite system consisting of the probe vehicle and all expelled exhaust particles. Select all statements that correctly apply linear momentum conservation, internal-versus-external force distinctions, and center-of-mass principles to this isolated system.",
+        "ms": "Sebuah kuar angkasa lepas melakukan pembakaran enjin jauh daripada sebarang jasad graviti atau medium persekitaran. Satu pasukan kejuruteraan memodelkan sistem komposit yang terdiri daripada kenderaan kuar dan semua zarah ekzos yang dikeluarkan. Pilih semua pernyataan yang mengaplikasikan keabadian momentum linear, perbezaan daya dalaman berbanding luaran, dan prinsip pusat jisim dengan betul pada sistem terpencil ini.",
+        "zh": "一艘深空探测器在远离任何引力天体或环境介质的太空中启动发动机。工程团队对由探测器飞行器及其喷出的所有尾气微粒组成的复合系统进行建模。请选出所有正确将线动量守恒、内力与外力区别以及质心原理应用于该孤立系统的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Identify all interactions across the system boundary enclosing the vehicle and its expelled exhaust. In the absence of external bodies or atmospheres, does any net external force act on this composite system?",
+          "ms": "Kenal pasti semua interaksi yang merentasi sempadan sistem yang melingkungi kenderaan dan gas ekzos yang dikeluarkan. Dengan ketiadaan jasad luar atau atmosfera, adakah sebarang daya luar bersih bertindak ke atas sistem komposit ini?",
+          "zh": "识别跨越包络飞行器及其喷出尾气的系统边界的所有相互作用。在不存在外部天体或大气的情况下，该复合系统是否受到任何合外力的作用？"
+        },
+        {
+          "en": "Distinguish between momentum and kinetic energy: internal forces (such as chemical combustion) can convert chemical potential energy into mechanical kinetic energy without changing the composite system's total linear momentum or the uniform velocity of its center of mass.",
+          "ms": "Bezakan antara momentum dan tenaga kinetik: daya dalaman (seperti pembakaran kimia) boleh menukarkan tenaga keupayaan kimia kepada tenaga kinetik mekanikal tanpa mengubah jumlah momentum linear sistem komposit atau halaju seragam pusat jisimnya.",
+          "zh": "区分动量与动能：内部作用力（例如化学燃烧）可以将化学势能转化为机械动能，而不会改变复合系统的总线动量或其质心的匀速直线运动。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! The probe and its expelled exhaust form an isolated system with zero net external force. Total linear momentum is strictly conserved across all inertial frames, the center-of-mass velocity remains constant throughout the burn, and forward thrust is produced entirely by internal action-reaction forces between the engine and the propellant.",
+        "ms": "Betul! Kuar dan gas ekzos yang dikeluarkannya membentuk suatu sistem terpencil dengan daya luar bersih sifar. Jumlah momentum linear adalah terpelihara secara mutlak dalam semua kerangka inersia, halaju pusat jisim kekal malar sepanjang pembakaran, dan daya tujah ke hadapan dihasilkan sepenuhnya oleh daya tindakan-tindak balas dalaman antara enjin dengan bahan api.",
+        "zh": "正确！探测器及其喷出的尾气构成一个合外力为零的孤立系统。在所有惯性参考系中，总线动量都严格守恒，质心速度在整个燃烧过程中保持恒定，并且向前的推力完全由发动机与推进剂之间的内部作用力与反作用力产生。"
+      },
+      "answerLogic": {
+        "en": "Because no external forces act on the composite system, net external force is zero. By Newton's second law for a system of particles, the center of mass has zero acceleration and continues at its initial velocity. Internal gas-dynamic forces accelerate the probe forward and the exhaust backward with equal and opposite momentum changes, conserving total momentum while converting chemical energy into kinetic energy. No external cushion or atmospheric resistance is involved.",
+        "ms": "Oleh kerana tiada daya luar bertindak ke atas sistem komposit, daya luar bersih adalah sifar. Menurut hukum Newton kedua bagi suatu sistem zarah, pusat jisim mempunyai pecutan sifar dan meneruskan pergerakannya pada halaju awal. Daya dinamik gas dalaman memecutkan kuar ke hadapan dan ekzos ke belakang dengan perubahan momentum yang sama dan bertentangan, mengekalkan jumlah momentum sambil menukarkan tenaga kimia kepada tenaga kinetik. Tiada kusyen luaran atau rintangan atmosfera yang terlibat.",
+        "zh": "由于没有外力作用于复合系统，合外力为零。根据质点系的牛顿第二定律，系统质心的加速度为零，并保持其初始速度继续运动。内部气体动力使探测器向前加速、尾气向后喷出，两者动量变化大小相等、方向相反，从而在将化学能转化为动能的同时严格保持总动量守恒。该过程不需要任何外部气垫或大气阻力支持。"
+      },
+      "explanation": {
+        "en": "Rocket propulsion is fundamentally an internal momentum exchange, analogous to an explosion or the reverse of a perfectly inelastic collision. Defining the system as the vehicle plus all ejected exhaust guarantees that all propulsion forces are internal action-reaction pairs governed by Newton's third law. Consequently, the total linear momentum is constant and the center of mass moves at constant velocity. Believing that the exhaust must push against an external environment or act as an external pusher confuses internal interaction forces with external forces.",
+        "ms": "Dorongan roket pada asasnya ialah pertukaran momentum dalaman, serupa dengan letupan atau kebalikan daripada perlanggaran tidak kenyal sempurna. Mentakrifkan sistem sebagai kenderaan berserta semua ekzos yang dikeluarkan menjamin bahawa semua daya dorongan adalah pasangan tindakan-tindak balas dalaman yang dikawal oleh hukum Newton ketiga. Akibatnya, jumlah momentum linear adalah malar dan pusat jisim bergerak pada halaju malar. Kepercayaan bahawa ekzos mesti menolak persekitaran luaran atau bertindak sebagai penolak luar mengelirukan daya interaksi dalaman dengan daya luar.",
+        "zh": "火箭推进本质上是一种内部动量交换，类似于爆炸或完全非弹性碰撞的逆过程。将系统定义为飞行器加上所有喷出的尾气，可确保所有推进力均为受牛顿第三定律支配的内部作用力与反作用力对。因此，总线动量守恒，且系统质心以恒定速度运动。认为尾气必须推挤外部环境或充当外部推挤者的观念，混淆了内部相互作用力与外力。"
+      },
+      "misconceptions": [
+        "exhaust-pushes-rocket-externally"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "center-of-mass-motion",
+        "prompt": {
+          "en": "Review Newton's second law for a system of particles: the acceleration of the center of mass depends solely on external forces. Internal interactions cancel out in pairs and cannot accelerate the center of mass.",
+          "ms": "Ulang kaji hukum Newton kedua bagi suatu sistem zarah: pecutan pusat jisim bergantung semata-mata pada daya luar. Interaksi dalaman saling membatalkan secara berpasangan dan tidak boleh memecutkan pusat jisim.",
+          "zh": "复习质点系的牛顿第二定律：质心的加速度完全取决于外力。内部相互作用力成对抵消，绝不能使质心产生加速度。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-selection interaction with five complex theoretical statements about momentum conservation, internal forces, and center-of-mass motion for an isolated rocket system. Choose all correct statements.",
+        "ms": "Interaksi berbilang pilihan dengan lima pernyataan teori kompleks tentang keabadian momentum, daya dalaman, dan gerakan pusat jisim bagi sistem roket terpencil. Pilih semua pernyataan yang betul.",
+        "zh": "包含五个关于孤立火箭系统的动量守恒、内力与质心运动的深层理论陈述的多选交互题。选出所有正确的陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.9 Rocket Propulsion; Complete controlled PDF for section 9.9",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-cm-motion",
+            "label": {
+              "en": "The velocity of the center of mass of the probe-plus-exhaust system remains strictly identical to the initial velocity of the unignited probe throughout the burn.",
+              "ms": "Halaju pusat jisim bagi sistem kuar berserta ekzos kekal sama persis dengan halaju awal kuar sebelum penyalaan sepanjang pembakaran.",
+              "zh": "在整个燃烧过程中，探测器加尾气系统的质心速度严格等于点火前探测器的初始速度。"
+            }
+          },
+          {
+            "id": "item-internal-forces",
+            "label": {
+              "en": "The thrust accelerating the vehicle forward is generated entirely by internal action-reaction forces between the nozzle and escaping gas, requiring zero net external force on the composite system.",
+              "ms": "Daya tujah yang memecutkan kenderaan ke hadapan dihasilkan sepenuhnya oleh daya tindakan-tindak balas dalaman antara muncung dengan gas yang keluar, memerlukan sifar daya luar bersih pada sistem komposit.",
+              "zh": "使飞行器向前加速的推力完全由喷管与逸出气体之间的内部作用力与反作用力产生，复合系统所受合外力为零。"
+            }
+          },
+          {
+            "id": "item-momentum-conservation",
+            "label": {
+              "en": "While the system's total mechanical kinetic energy increases due to chemical energy conversion, its total linear momentum remains conserved across all inertial reference frames.",
+              "ms": "Walaupun jumlah tenaga kinetik mekanikal sistem meningkat disebabkan oleh penukaran tenaga kimia, jumlah momentum linearnya kekal terpelihara dalam semua kerangka rujukan inersia.",
+              "zh": "虽然系统的总机械动能因化学能转化而增加，但其总线动量在所有惯性参考系中均保持守恒。"
+            }
+          },
+          {
+            "id": "item-external-push",
+            "label": {
+              "en": "The vehicle accelerates forward because the expanding exhaust gas forms an external medium outside the system boundary that applies an external forward contact force to the nozzle.",
+              "ms": "Kenderaan memecut ke hadapan kerana gas ekzos yang mengembang membentuk medium luaran di luar sempadan sistem yang mengenakan daya sentuhan ke hadapan secara luaran pada muncung.",
+              "zh": "飞行器之所以向前加速，是因为膨胀的尾气在系统边界之外形成了外部介质，从而对喷管施加了向前的外部接触力。"
+            }
+          },
+          {
+            "id": "item-cm-acceleration",
+            "label": {
+              "en": "The center of mass of the probe-plus-exhaust system accelerates in the forward direction because the vehicle's forward speed increases continuously during propellant expulsion.",
+              "ms": "Pusat jisim sistem kuar berserta ekzos memecut ke arah hadapan kerana kelajuan ke hadapan kenderaan meningkat secara berterusan semasa pengeluaran bahan api.",
+              "zh": "探测器加尾气系统的质心沿向前方向加速，因为在推进剂喷射期间飞行器的向前速度持续增加。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-cm-motion",
+          "item-internal-forces",
+          "item-momentum-conservation"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "exhaust-pushes-rocket-externally",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-external-push",
+            "selected": true
+          }
+        }
+      ]
+    }
+  ]
+}

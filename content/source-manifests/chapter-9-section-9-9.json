@@ -1,0 +1,24 @@
+{
+  "manifestVersion": "1.1",
+  "sourceId": "brilliant-content-generator-section-9-9",
+  "controlledFilename": "source.pdf",
+  "sha256": "4210d2a5de455f9a1d98fbf9848fcc5a2de76b25d4423674d1638c82995c8a10",
+  "corpusSha256": "f79fe0ab0f93aac4688b436d7b46e95b2caf3d1d8be5cdb6d7f6c956d775ebd8",
+  "sources": [
+    {
+      "controlledFilename": "source.pdf",
+      "sha256": "4210d2a5de455f9a1d98fbf9848fcc5a2de76b25d4423674d1638c82995c8a10",
+      "role": "primary",
+      "driveFileId": "1JJ8UxJNcdU_O2s1G9FF1oyxreoRz2W3b"
+    }
+  ],
+  "edition": "Edition not identified in the controlled PDF",
+  "chapter": "Chapter 9",
+  "subchapter": "9.9 Rocket Propulsion",
+  "heading": "9.9 Rocket Propulsion",
+  "pageRange": "Complete controlled PDF for section 9.9",
+  "learningBoundary": "Includes concepts supported by the controlled PDF for 9.9 Rocket Propulsion: Momentum conservation in variable-mass isolated systems; Rocket thrust as the product of exhaust speed and burn rate; Rocket propulsion equation involving mass ratio logarithm; Exhaust velocity relative to the rocket versus inertial frame; Uniform center of mass velocity in free space. Excludes: Relativistic rocket dynamics; Atmospheric drag and aerodynamic lift effects; Gravitational potential variations across orbital trajectories; Multi-stage staging optimization mathematics.",
+  "extractedOn": "2026-10-02",
+  "reviewer": "Automated draft generation; qualified human review required",
+  "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
+}
