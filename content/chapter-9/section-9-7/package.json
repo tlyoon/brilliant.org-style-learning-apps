@@ -1,0 +1,2304 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-9-section-9-7",
+  "chapter": "Chapter 9",
+  "subchapter": "9.7 Systems of Many Particles",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Relate the velocity and total momentum of a multi-particle system to the motion of its center of mass.",
+    "Explain why internal forces between particles cancel in pairs and do not accelerate the system center of mass.",
+    "Apply Newton's second law for a system of particles to determine the acceleration of the center of mass.",
+    "Analyze the conservation of linear momentum and center-of-mass motion for an isolated multi-particle system.",
+    "Predict the trajectory of a system center of mass during internal fragmentation or explosions."
+  ],
+  "prerequisites": [
+    {
+      "id": "prereq-center-of-mass-position",
+      "description": {
+        "en": "Understanding the definition and calculation of the center of mass position for a system of particles.",
+        "ms": "Memahami takrifan dan pengiraan kedudukan pusat jisim bagi suatu sistem zarah.",
+        "zh": "理解质点系质心位置的定义与计算方法。"
+      },
+      "recovery": {
+        "en": "Review how the center of mass represents the mass-weighted average position of all parts in a system.",
+        "ms": "Ulang kaji bagaimana pusat jisim mewakili kedudukan purata berpemberat jisim bagi semua bahagian dalam suatu sistem.",
+        "zh": "复习质心如何表示系统中所有组成部分的质量加权平均位置。"
+      }
+    },
+    {
+      "id": "prereq-newtons-third-law",
+      "description": {
+        "en": "Recognizing that interactive forces between two bodies are equal in magnitude and opposite in direction.",
+        "ms": "Mengenal pasti bahawa daya saling tindakan antara dua jasad adalah sama magnitud dan bertentangan arah.",
+        "zh": "认识到两物体之间的相互作用力大小相等且方向相反。"
+      },
+      "recovery": {
+        "en": "Review Newton's third law action-reaction pairs and verify that internal interactions sum to zero.",
+        "ms": "Ulang kaji pasangan tindakan-tindak balas hukum ketiga Newton dan sahkan bahawa hasil tambah interaksi dalaman adalah sifar.",
+        "zh": "复习牛顿第三定律的作用力与反作用力对，确认内力矢量和为零。"
+      }
+    },
+    {
+      "id": "prereq-linear-momentum-definition",
+      "description": {
+        "en": "Defining linear momentum as the product of mass and velocity for a moving particle.",
+        "ms": "Mentakrifkan momentum linear sebagai hasil darab jisim dan halaju bagi zarah yang bergerak.",
+        "zh": "将质点的线动量定义为质量与速度的乘积。"
+      },
+      "recovery": {
+        "en": "Review the definition of momentum as a vector quantity directed along the velocity vector.",
+        "ms": "Ulang kaji takrifan momentum sebagai kuantiti vektor yang searah dengan vektor halaju.",
+        "zh": "复习动量作为沿速度矢量方向的矢量定义。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "misc-internal-forces-accelerate-cm",
+      "description": {
+        "en": "Believing that internal forces within a system can accelerate its center of mass.",
+        "ms": "Mempercayai bahawa daya dalaman dalam suatu sistem boleh memecutkan pusat jisimnya.",
+        "zh": "误认为系统内部的作用力可以使其质心产生加速度。"
+      }
+    },
+    {
+      "id": "misc-individual-motion-equals-cm-motion",
+      "description": {
+        "en": "Assuming that every fragment or component in a system must move with the same velocity as the center of mass.",
+        "ms": "Menganggap bahawa setiap serpihan atau komponen dalam sistem mesti bergerak dengan halaju yang sama seperti pusat jisim.",
+        "zh": "误认为系统中每个碎片或部件的运动速度都必须与质心相同。"
+      }
+    },
+    {
+      "id": "misc-cm-alters-trajectory-upon-breakup",
+      "description": {
+        "en": "Thinking that an exploding projectile's center of mass abruptly deviates from its parabolic path upon breaking apart.",
+        "ms": "Menyangka bahawa pusat jisim projektil yang meletup menyimpang secara mendadak daripada laluan parabolanya apabila berkecai.",
+        "zh": "误认为爆炸抛体的质心在碎片裂开时会突然偏离其原有的抛物线轨迹。"
+      }
+    },
+    {
+      "id": "misc-momentum-conservation-requires-zero-velocity",
+      "description": {
+        "en": "Believing that system momentum conservation only holds if the center of mass is initially at rest.",
+        "ms": "Mempercayai bahawa keabadian momentum sistem hanya berlaku jika pusat jisim pada mulanya pegun.",
+        "zh": "误认为系统动量守恒仅在质心初始静止时才成立。"
+      }
+    },
+    {
+      "id": "misc-external-force-location-confusion",
+      "description": {
+        "en": "Believing that the acceleration of the center of mass depends on which specific particle experiences an external force.",
+        "ms": "Mempercayai bahawa pecutan pusat jisim bergantung pada zarah khusus mana yang mengalami daya luaran.",
+        "zh": "误认为质心的加速度取决于外力具体施加在系统的哪一个质点上。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-9/section-9-7/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-9-section-9-7.json",
+  "activities": [
+    {
+      "id": "act-mcq-easy-1",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate the total linear momentum of a multi-particle system directly to the velocity of its center of mass.",
+      "prompt": {
+        "en": "A system consists of several separate objects moving in different directions with different speeds. How is the total linear momentum of this multi-particle system related to the velocity of its center of mass?",
+        "ms": "Satu sistem terdiri daripada beberapa objek berasingan yang bergerak dalam arah yang berbeza dengan kelajuan yang berbeza. Bagaimanakah jumlah momentum linear sistem berbilang zarah ini berkaitan dengan halaju pusat jisimnya?",
+        "zh": "一个系统由多个以不同速率向不同方向运动的独立物体组成。该多质点系统的总线动量与质心速度之间有怎样的关系？"
+      },
+      "hints": [
+        {
+          "en": "Consider the definition of the center of mass position vector and take its time derivative to find the velocity of the center of mass.",
+          "ms": "Pertimbangkan takrifan vektor kedudukan pusat jisim dan ambil terbitan masanya untuk mencari halaju pusat jisim.",
+          "zh": "考虑质心位置矢量的定义，对其求时间导数以求出质心的速度。"
+        },
+        {
+          "en": "Notice that multiplying the total mass by the center of mass velocity yields the vector sum of all individual particle momenta, regardless of how individual velocities differ.",
+          "ms": "Perhatikan bahawa mendarabkan jumlah jisim dengan halaju pusat jisim menghasilkan hasil tambah vektor bagi semua momentum zarah individu, tanpa mengira perbezaan halaju setiap zarah.",
+          "zh": "注意将总质量乘以质心速度即可得到所有单个质点动量的矢量和，无论各质点的单独速度有何不同。"
+        }
+      ],
+      "feedback": {
+        "en": "The total linear momentum of any system is always equal to the total mass multiplied by the velocity of its center of mass, acting as an equivalent single particle.",
+        "ms": "Jumlah momentum linear bagi sebarang sistem sentiasa sama dengan jumlah jisim didarab dengan halaju pusat jisimnya, bertindak seperti zarah tunggal yang setara.",
+        "zh": "任何系统的总线动量始终等于总质量乘以质心速度，其运动表现如同一个等效的单个质点。"
+      },
+      "answerLogic": {
+        "en": "Differentiating the center of mass position with respect to time and multiplying by total mass M demonstrates that total linear momentum equals M times the velocity of the center of mass. Individual objects do not need to share the center of mass velocity.",
+        "ms": "Membezakan kedudukan pusat jisim terhadap masa dan mendarabkannya dengan jumlah jisim M menunjukkan bahawa jumlah momentum linear bersamaan dengan M kali halaju pusat jisim. Objek individu tidak perlu berkongsi halaju yang sama dengan pusat jisim.",
+        "zh": "对质心位置求时间导数并乘以总质量 M 表明，总线动量等于 M 乘以质心速度。各个单独物体并不需要具有与质心相同的速度。"
+      },
+      "explanation": {
+        "en": "By definition, the position of the center of mass is the mass-weighted average of individual positions: r_CM = (1/M) sum(m_i * r_i). Taking the time derivative yields v_CM = (1/M) sum(m_i * v_i). Multiplying both sides by the total mass M gives M * v_CM = sum(p_i) = p_tot. This fundamental result proves that the total linear momentum of a multi-particle system behaves exactly like a single particle of mass M travelling with the velocity of the center of mass, even when the components inside have varied velocities and directions.",
+        "ms": "Secara takrifan, kedudukan pusat jisim ialah purata berpemberat jisim bagi kedudukan individu: r_CM = (1/M) sum(m_i * r_i). Mengambil terbitan masa memberikan v_CM = (1/M) sum(m_i * v_i). Mendarabkan kedua-dua belah dengan jumlah jisim M menghasilkan M * v_CM = sum(p_i) = p_tot. Hasil asas ini membuktikan bahawa jumlah momentum linear sistem berbilang zarah berkelakuan tepat seperti zarah tunggal berjisim M yang bergerak dengan halaju pusat jisim, walaupun komponen di dalamnya mempunyai halaju dan arah yang berbeza.",
+        "zh": "根据定义，质心位置是各质点位置的质量加权平均值：r_CM = (1/M) sum(m_i * r_i)。对其求时间导数可得 v_CM = (1/M) sum(m_i * v_i)。两边同乘总质量 M，可得 M * v_CM = sum(p_i) = p_tot。这一基本结论证明，多质点系统的总线动量表现得就像一个质量为 M、以质心速度运动的等效质点，即使系统内部各组成部分的速度和方向各不相同。"
+      },
+      "misconceptions": [
+        "misc-individual-motion-equals-cm-motion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-linear-momentum-definition",
+        "prompt": {
+          "en": "Recall that the momentum of a single particle is defined as the product of its mass and velocity vector, p = m * v. How do we find the total momentum of several particles?",
+          "ms": "Ingat kembali bahawa momentum zarah tunggal ditakrifkan sebagai hasil darab jisim dan vektor halajunya, p = m * v. Bagaimanakah kita mencari jumlah momentum beberapa zarah?",
+          "zh": "回忆单个质点的动量定义为其质量与速度矢量的乘积，p = m * v。我们如何求多个质点的总动量？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options asking for the relationship between the total linear momentum of a system of particles and the velocity of its center of mass.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang bertanyakan tentang hubungan antara jumlah momentum linear suatu sistem zarah dan halaju pusat jisimnya.",
+        "zh": "包含四个选项的单选题，询问质点系统的总线动量与其质心速度之间的关系。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The total linear momentum equals the total mass of the system multiplied by the velocity of the center of mass.",
+              "ms": "Jumlah momentum linear adalah sama dengan jumlah jisim sistem didarab dengan halaju pusat jisim.",
+              "zh": "总线动量等于系统的总质量乘以质心的速度。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "The total linear momentum equals the sum of individual momenta only if every object moves with the exact same velocity as the center of mass.",
+              "ms": "Jumlah momentum linear hanya sama dengan hasil tambah momentum individu jika setiap objek bergerak dengan halaju yang tepat sama dengan pusat jisim.",
+              "zh": "仅当每个物体都以与质心完全相同的速度运动时，总线动量才等于各单个动量的和。"
+            },
+            "misconception": "misc-individual-motion-equals-cm-motion"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The total linear momentum is always zero because the different directions of motion cause all individual momenta to cancel completely.",
+              "ms": "Jumlah momentum linear sentiasa sifar kerana arah gerakan yang berbeza menyebabkan semua momentum individu membatalkan satu sama lain sepenuhnya.",
+              "zh": "总线动量恒为零，因为不同的运动方向会导致所有单个动量完全抵消。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The total linear momentum equals only the momentum of the single most massive object in the system.",
+              "ms": "Jumlah momentum linear hanya sama dengan momentum objek tunggal yang paling berjisim dalam sistem.",
+              "zh": "总线动量仅等于系统中质量最大的单个物体的动量。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-easy-2",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Identify why internal forces cancel in pairs and cannot accelerate the center of mass of a system.",
+      "prompt": {
+        "en": "Why do internal interactions between objects within an isolated system fail to cause any acceleration of the system's center of mass?",
+        "ms": "Mengapakah interaksi dalaman antara objek dalam suatu sistem terpencil tidak dapat menghasilkan sebarang pecutan pada pusat jisim sistem tersebut?",
+        "zh": "为什么孤立系统内各物体之间的相互作用力无法使系统的质心产生任何加速度？"
+      },
+      "hints": [
+        {
+          "en": "Apply Newton's third law to any pair of interacting particles within the defined system boundary.",
+          "ms": "Gunakan hukum ketiga Newton kepada mana-mana pasangan zarah yang berinteraksi dalam sempadan sistem yang ditetapkan.",
+          "zh": "将牛顿第三定律应用于系统边界内任何相互作用的质点对。"
+        },
+        {
+          "en": "When summing all forces acting on all particles, notice that the force of particle 1 on particle 2 is exactly cancelled by the force of particle 2 on particle 1.",
+          "ms": "Apabila menjumlahkan semua daya yang bertindak ke atas semua zarah, perhatikan bahawa daya zarah 1 ke atas zarah 2 dibatalkan secara tepat oleh daya zarah 2 ke atas zarah 1.",
+          "zh": "当对作用在所有质点上的所有力进行求和时，请注意质点 1 对质点 2 的作用力恰好被质点 2 对质点 1 的作用力完全抵消。"
+        }
+      ],
+      "feedback": {
+        "en": "Because internal forces cancel pairwise by Newton's third law, the net force accelerating the center of mass arises purely from external forces: sum of F_ext = M * a_CM.",
+        "ms": "Kerana daya dalaman membatalkan satu sama lain secara berpasangan mengikut hukum ketiga Newton, daya bersih yang memecutkan pusat jisim hanya berpunca daripada daya luaran: jumlah F_ext = M * a_CM.",
+        "zh": "因为根据牛顿第三定律，内力成对抵消，使质心加速的合力完全来自于外力：合外力 F_ext = M * a_CM。"
+      },
+      "answerLogic": {
+        "en": "According to Newton's third law, the force exerted by particle i on particle j is equal in magnitude and opposite in direction to the force exerted by particle j on particle i. Consequently, the vector sum of all internal forces is identically zero, meaning only external forces can accelerate the center of mass.",
+        "ms": "Menurut hukum ketiga Newton, daya yang dikenakan oleh zarah i ke atas zarah j adalah sama magnitud dan bertentangan arah dengan daya yang dikenakan oleh zarah j ke atas zarah i. Akibatnya, hasil tambah vektor semua daya dalaman adalah tepat sifar, bermakna hanya daya luaran yang boleh memecutkan pusat jisim.",
+        "zh": "根据牛顿第三定律，质点 i 作用于质点 j 的力与质点 j 作用于质点 i 的力大小相等、方向相反。因此，所有内力的矢量和恒为零，这意味着只有外力才能使质心产生加速度。"
+      },
+      "explanation": {
+        "en": "When writing Newton's second law for a system of particles, the sum of all forces equals M * a_CM. The total force consists of internal forces (interactions between system members) and external forces (interactions with the surroundings). For every internal force F_12, there is an equal and opposite reaction force F_21 such that F_12 + F_21 = 0. Therefore, all internal forces cancel in pairs in the summation, leaving sum of F_ext = M * a_CM. An isolated system has sum of F_ext = 0, so its center of mass cannot accelerate, regardless of how intensely its internal components interact.",
+        "ms": "Apabila menulis hukum kedua Newton bagi sistem zarah, hasil tambah semua daya bersamaan dengan M * a_CM. Jumlah daya terdiri daripada daya dalaman (interaksi antara ahli sistem) dan daya luaran (interaksi dengan persekitaran). Bagi setiap daya dalaman F_12, terdapat daya tindak balas yang sama dan bertentangan F_21 supaya F_12 + F_21 = 0. Oleh itu, semua daya dalaman membatalkan satu sama lain secara berpasangan dalam penjumlahan, meninggalkan jumlah F_ext = M * a_CM. Sistem terpencil mempunyai jumlah F_ext = 0, jadi pusat jisimnya tidak boleh memecut, tidak kira betapa kuat komponen dalamannya berinteraksi.",
+        "zh": "在对质点系列出牛顿第二定律方程时，所有力的矢量和等于 M * a_CM。总力包含内力（系统各成员之间的相互作用）和外力（与环境的相互作用）。对于每个内力 F_12，都存在一个大小相等且方向相反的反作用力 F_21，满足 F_12 + F_21 = 0。因此，在求和过程中所有内力成对抵消，只剩下合外力之和等于 M * a_CM。孤立系统的合外力为零，因此无论其内部组成部分之间的相互作用多么剧烈，其质心都绝不会产生加速度。"
+      },
+      "misconceptions": [
+        "misc-internal-forces-accelerate-cm"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-newtons-third-law",
+        "prompt": {
+          "en": "Review Newton's third law: when object A exerts a force on object B, what force does object B exert on object A, and what is their vector sum?",
+          "ms": "Ulang kaji hukum ketiga Newton: apabila objek A mengenakan daya pada objek B, apakah daya yang dikenakan oleh objek B pada objek A, dan berapakah hasil tambah vektor kedua-duanya?",
+          "zh": "复习牛顿第三定律：当物体 A 对物体 B 施加力时，物体 B 对物体 A 施加什么样的力？两者的矢量和是多少？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options asking why internal forces cannot cause an acceleration of a system's center of mass.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang bertanyakan mengapa daya dalaman tidak dapat menyebabkan pecutan pada pusat jisim suatu sistem.",
+        "zh": "包含四个选项的单选题，询问为什么内力无法使系统的质心产生加速度。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "Internal forces occur in action-reaction pairs that are equal in magnitude and opposite in direction, summing to zero across the system.",
+              "ms": "Daya dalaman berlaku dalam pasangan tindakan-tindak balas yang sama magnitud dan bertentangan arah, menghasilkan jumlah sifar bagi keseluruhan sistem.",
+              "zh": "内力成对出现（作用力与反作用力），大小相等且方向相反，在整个系统中矢量求和为零。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "Internal forces do accelerate the center of mass whenever they are strong enough to overcome the inertia of the individual parts.",
+              "ms": "Daya dalaman memang memecutkan pusat jisim apabila daya tersebut cukup kuat untuk mengatasi inersia bahagian-bahagian individu.",
+              "zh": "只要内力足够强大以克服各个部件的惯性，内力确实会使质心产生加速度。"
+            },
+            "misconception": "misc-internal-forces-accelerate-cm"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "Internal forces only exist when an external force is simultaneously applied from the environment.",
+              "ms": "Daya dalaman hanya wujud apabila daya luaran dikenakan serentak dari persekitaran.",
+              "zh": "仅当环境同时施加外力时，内力才会存在。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "Internal forces always act perpendicular to the displacement of each particle, so they do zero work.",
+              "ms": "Daya dalaman sentiasa bertindak berserenjang dengan sesaran setiap zarah, jadi daya tersebut melakukan kerja sifar.",
+              "zh": "内力总是垂直于每个质点的位移方向，因此不做功。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-easy-3",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict the trajectory of a projectile's center of mass when it breaks apart in flight under gravity alone.",
+      "prompt": {
+        "en": "A scientific research probe is launched along a parabolic ballistic path across an airless crater. Midway through its flight, an internal compressed spring pushes the probe apart into two separate instrument capsules. What happens to the path of the combined system's center of mass after the separation?",
+        "ms": "Sebuah kuar penyelidikan saintifik dilancarkan mengikut laluan balistik parabola merentasi sebuah kawah tanpa udara. Di pertengahan penerbangannya, spring termampat dalaman menolak kuar tersebut berpisah kepada dua kapsul instrumen yang berasingan. Apakah yang berlaku kepada laluan pusat jisim bagi sistem gabungan tersebut selepas pemisahan itu?",
+        "zh": "一个科学探测器在无空气的环形山上空沿着抛物线弹道飞行。在飞行途中，其内部压缩弹簧将探测器推开，分成两个独立的仪器舱。分离后，该组合系统的质心轨迹会发生什么变化？"
+      },
+      "hints": [
+        {
+          "en": "Consider whether the forces that pushed the two capsules apart came from inside or outside the probe system.",
+          "ms": "Pertimbangkan sama ada daya yang menolak kedua-dua kapsul itu berpisah datang dari dalam atau dari luar sistem kuar tersebut.",
+          "zh": "考虑将两个仪器舱推开的作用力是来自探测器系统内部还是外部。"
+        },
+        {
+          "en": "Newton's second law for a system of particles states that only external forces can alter the acceleration of the center of mass. The spring forces are purely internal, so the only external force acting on the system is still gravity.",
+          "ms": "Hukum kedua Newton untuk sistem zarah menyatakan bahawa hanya daya luaran yang boleh mengubah pecutan pusat jisim. Daya spring adalah dalaman semata-mata, maka satu-satunya daya luaran yang bertindak ke atas sistem masih graviti.",
+          "zh": "质点系的牛顿第二定律指出，只有外力才能改变质心的加速度。弹簧弹力纯粹是内力，因此作用在系统上的唯一外力依然只有重力。"
+        }
+      ],
+      "feedback": {
+        "en": "Because the push separating the capsules is an internal force, the net external force remains solely gravity, so the center of mass continues along the identical parabolic trajectory.",
+        "ms": "Oleh kerana tolakan yang memisahkan kapsul-kapsul itu merupakan daya dalaman, daya luaran bersih kekal hanya graviti, jadi pusat jisim terus bergerak di sepanjang trajektori parabola yang serupa.",
+        "zh": "因为推开仪器舱的弹力是内力，系统的合外力仍然只有重力，所以质心继续沿着原先相同的抛物线轨迹运动。"
+      },
+      "answerLogic": {
+        "en": "The forces exerted by the compressed spring are internal to the two-capsule system. By Newton's third law, these internal forces are equal in magnitude and opposite in direction, summing to zero. Therefore, they exert no net force on the system and cannot alter the acceleration of its center of mass. Because gravity is the sole external force acting on the capsules throughout, the center of mass continues with constant downward acceleration g, tracing the original parabolic trajectory without deflection.",
+        "ms": "Daya yang dikenakan oleh spring termampat adalah dalaman kepada sistem dua kapsul itu. Mengikut hukum ketiga Newton, daya-daya dalaman ini sama magnitud dan bertentangan arah, menghasilkan jumlah sifar. Oleh itu, daya-daya tersebut tidak mengenakan sebarang daya bersih ke atas sistem dan tidak boleh mengubah pecutan pusat jisimnya. Memandangkan graviti adalah satu-satunya daya luaran yang bertindak ke atas kapsul sepanjang masa, pusat jisim meneruskan pergerakan dengan pecutan ke bawah yang malar g, mengikut trajektori parabola asal tanpa sebarang pesongan.",
+        "zh": "压缩弹簧施加的作用力属于双仪器舱系统的内力。根据牛顿第三定律，这些内力大小相等、方向相反，矢量和为零。因此，它们不会对系统产生合力，也无法改变其质心的加速度。由于重力始终是作用在仪器舱上的唯一外力，质心继续以恒定的竖直向下加速度 g 运动，不偏不倚地沿着原有的抛物线轨迹前进。"
+      },
+      "explanation": {
+        "en": "According to Newton's second law for a system of particles (sum of F_ext = M * a_CM), the motion of the center of mass is governed strictly by external forces. Mutual forces between components within the system—such as the expanding spring pushing the pods apart—are internal forces that cancel pairwise in the vector sum. With no air resistance or external thrust, gravity remains the only external force on the system, giving the center of mass the exact same acceleration (g downward) as before the separation. Consequently, the center of mass continues along the exact parabolic path it would have traced had the probe remained intact.",
+        "ms": "Menurut hukum kedua Newton untuk sistem zarah (jumlah F_ext = M * a_CM), gerakan pusat jisim dikawal secara ketat oleh daya luaran. Daya saling antara komponen di dalam sistem—seperti spring yang mengembang menolak pod-pod itu berpisah—ialah daya dalaman yang membatalkan satu sama lain secara berpasangan dalam hasil tambah vektor. Tanpa rintangan udara atau tujahan luaran, graviti kekal sebagai satu-satunya daya luaran ke atas sistem, memberikan pusat jisim pecutan yang tepat sama (g ke bawah) seperti sebelum pemisahan. Akibatnya, pusat jisim terus bergerak di sepanjang laluan parabola asal yang akan dilaluinya jika kuar tersebut kekal bercantum.",
+        "zh": "根据质点系的牛顿第二定律（合外力之和 = M * a_CM），质心的运动严格由外力决定。系统内部组件之间的相互作用力（例如弹簧张开推开各个仪器舱的力）属于内力，在矢量求和中两两抵消。在没有空气阻力或外部推力的情况下，重力依然是作用在系统上的唯一外力，使质心保持与分离前完全相同的加速度（竖直向下的 g）。因此，质心将完全沿着探测器未分离时原本会行进的抛物线路径继续运动。"
+      },
+      "misconceptions": [
+        "misc-cm-alters-trajectory-upon-breakup"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-center-of-mass-position",
+        "prompt": {
+          "en": "How does the position of a multi-part system's center of mass relate to the positions of its individual parts, and why does Newton's second law apply to the center of mass as if it were a single particle?",
+          "ms": "Bagaimanakah kedudukan pusat jisim suatu sistem berbilang bahagian berkaitan dengan kedudukan bahagian-bahagian individunya, dan mengapakah hukum kedua Newton terpakai kepada pusat jisim seolah-olah ia adalah zarah tunggal?",
+          "zh": "多部件系统的质心位置与各组成部分的位置有何关系？为什么牛顿第二定律可以把质心视作单个质点来应用？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four options asking how the trajectory of a two-part probe's center of mass behaves after an internal spring separates the parts during ballistic flight under gravity alone.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang bertanyakan bagaimana trajektori pusat jisim sebuah kuar dua bahagian bertindak selepas spring dalaman memisahkan bahagian-bahagian itu semasa penerbangan balistik di bawah pengaruh graviti sahaja.",
+        "zh": "包含四个选项的单选题，询问在仅受重力作用的弹道飞行中，内部弹簧将双部件探测器分离后，其质心轨迹会如何变化。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Pages 234-236",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "It continues along the exact same parabolic path that the intact probe would have followed.",
+              "ms": "Ia terus bergerak di sepanjang laluan parabola yang tepat sama seperti yang akan dilalui oleh kuar yang tidak berpisah.",
+              "zh": "它继续沿着未分离探测器原本会遵循的完全相同的抛物线路径运动。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "It abruptly deviates from the original parabolic path because of the force pushing the capsules apart.",
+              "ms": "Ia menyimpang secara mendadak daripada laluan parabola asal disebabkan oleh daya yang menolak kapsul-kapsul tersebut berpisah.",
+              "zh": "由于推开各仪器舱的作用力，它突然偏离原有的抛物线路径。"
+            },
+            "misconception": "misc-cm-alters-trajectory-upon-breakup"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "It momentarily halts in mid-air at the separation point before resuming motion.",
+              "ms": "Ia berhenti seketika di udara pada titik pemisahan sebelum meneruskan pergerakan.",
+              "zh": "它在分离点短暂悬停，然后才继续运动。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "It immediately shifts to a vertical trajectory and drops straight down toward the ground.",
+              "ms": "Ia serta-merta beralih kepada trajektori menegak dan jatuh tegak lurus ke tanah.",
+              "zh": "它立即转为竖直轨迹并笔直坠向地面。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-mod-1",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Determine the effect of internal passenger displacement on the velocity of an isolated vessel.",
+      "misconceptions": [
+        "misc-internal-forces-accelerate-cm",
+        "misc-individual-motion-equals-cm-motion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-linear-momentum-definition",
+        "prompt": {
+          "en": "Recall that the total linear momentum of an isolated system is the sum of the momenta of its parts: P_tot = m_1 v_1 + m_2 v_2. If no net external force acts on the system, how must the velocity of the vessel adjust when passengers increase their forward speed relative to the vessel?",
+          "ms": "Ingat kembali bahawa jumlah momentum linear bagi sistem terpencil ialah hasil tambah momentum bahagian-bahagiannya: P_tot = m_1 v_1 + m_2 v_2. Jika tiada daya luaran bersih bertindak ke atas sistem, bagaimanakah halaju kapal mesti diselaraskan apabila penumpang meningkatkan kelajuan ke hadapan mereka secara relatif kepada kapal?",
+          "zh": "回忆孤立系统的总线动量是各部分动量的总和：P_tot = m_1 v_1 + m_2 v_2。若系统未受净外力作用，当乘员相对飞船提高向前运动速度时，飞船的速度必须如何调整？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question about the velocity behavior of an isolated spacecraft hull while passengers walk forward and after they strap into new seats. Four options describe different velocity behaviors.",
+        "ms": "Soalan aneka pilihan tentang kelakuan halaju badan kapal angkasa terpencil semasa penumpang berjalan ke hadapan dan selepas mereka mengikat diri pada tempat duduk baharu. Empat pilihan menerangkan kelakuan halaju yang berbeza.",
+        "zh": "关于孤立航天器艇体在乘员向前走动期间以及就座后速度变化的单选题。四个选项描述了不同的速度变化行为。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "prompt": {
+        "en": "A deep-space crew transport is coasting at a constant forward velocity through interstellar space with all propulsion systems powered down. An onboard telemetry sensor monitors the transport hull as a group of astronauts unbuckles from the rear workstation, walks forward along the longitudinal corridor, and straps into seats at the forward flight deck. Which statement correctly describes the behavior of the transport hull's forward velocity throughout this passenger relocation?",
+        "ms": "Sebuah kapal pengangkut krew angkasa lepas sedang meluncur pada halaju ke hadapan yang malar melalui ruang antara bintang dengan semua sistem dorongan dimatikan. Sensor telemetri di atas kapal memantau badan kapal pengangkut semasa sekumpulan angkasawan membuka tali pinggang keledar dari stesen kerja belakang, berjalan ke hadapan di sepanjang koridor membujur, dan mengikat diri pada tempat duduk di dek penerbangan hadapan. Pernyataan manakah yang menerangkan dengan betul kelakuan halaju ke hadapan badan kapal pengangkut sepanjang penempatan semula penumpang ini?",
+        "zh": "一艘深空载人运输飞船在所有推进系统关闭的情况下，以恒定的向前速度在星际空间中滑行。当一组宇航员解开后部工作站的安全带，沿着纵向走廊向前走动，并系紧前部驾驶舱的座椅安全带时，船载遥测传感器监测着飞船艇体的运动。下列哪项陈述正确描述了在此乘员转移过程中飞船艇体向前速度的变化行为？"
+      },
+      "hints": [
+        {
+          "en": "Identify the system as the spacecraft hull plus all the astronauts inside. Since the propulsion engines are off and external forces in deep space are negligible, the total linear momentum of this combined system must remain constant.",
+          "ms": "Kenal pasti sistem sebagai badan kapal angkasa berserta semua angkasawan di dalamnya. Oleh kerana enjin dorongan dimatikan dan daya luaran di angkasa lepas boleh diabaikan, jumlah momentum linear bagi sistem gabungan ini mestilah kekal malar.",
+          "zh": "将航天器艇体与内部所有宇航员视为一个整体系统。由于推进引擎已关闭且深空中的外力可忽略不计，该组合系统的总线动量必须保持恒定。"
+        },
+        {
+          "en": "When the astronauts push off the floor to walk forward, their forward momentum increases. To keep the total system momentum constant, what must happen to the momentum of the hull? What happens when they push backward against the cabin to stop at their new seats?",
+          "ms": "Apabila angkasawan menolak lantai untuk berjalan ke hadapan, momentum ke hadapan mereka meningkat. Untuk memastikan jumlah momentum sistem kekal malar, apakah yang mesti berlaku kepada momentum badan kapal? Apakah yang berlaku apabila mereka menolak ke belakang terhadap kabin untuk berhenti di tempat duduk baharu mereka?",
+          "zh": "当宇航员蹬踏地板向前走动时，他们的向前动量增加。为了保持系统总动量守恒，艇体的动量必须如何变化？当他们为了在新的座位停下而对舱体施加向后的阻力时，又会发生什么？"
+        }
+      ],
+      "feedback": {
+        "en": "Because the spacecraft is isolated, its total linear momentum is conserved. When the astronauts walk forward, they gain forward momentum by exerting a backward force on the hull, causing the hull to slow down temporarily. When they stop at the forward cabin, they exert a forward force on the hull that cancels this change, restoring the hull to its original velocity.",
+        "ms": "Oleh kerana kapal angkasa itu terpencil, jumlah momentum linearnya adalah diabadikan. Apabila angkasawan berjalan ke hadapan, mereka memperoleh momentum ke hadapan dengan mengenakan daya ke belakang pada badan kapal, menyebabkan badan kapal bergerak lebih perlahan buat sementara waktu. Apabila mereka berhenti di kabin hadapan, mereka mengenakan daya ke hadapan pada badan kapal yang membatalkan perubahan ini, mengembalikan badan kapal kepada halaju asalnya.",
+        "zh": "由于航天器处于孤立状态，其总线动量守恒。当宇航员向前走动时，他们通过对艇体施加向后的反作用力获得向前动量，导致艇体速度暂时降低。当他们在前舱停下就座时，他们对艇体施加向前的力，恰好抵消了这一变化，使艇体恢复到最初的速度。"
+      },
+      "answerLogic": {
+        "en": "Let M be the hull mass and m be the crew mass. Initially, total momentum is P = (M + m)v_0. During the walk, the crew has velocity v_crew > v_0, so conservation of momentum requires M v_hull + m v_crew = (M + m)v_0, meaning v_hull < v_0 (the hull slows down). Once the crew stops relative to the cabin, v_crew = v_hull = v_final. Then (M + m)v_final = (M + m)v_0, giving v_final = v_0. Internal forces cannot produce a permanent change in velocity.",
+        "ms": "Katakan M ialah jisim badan kapal dan m ialah jisim krew. Pada awalnya, jumlah momentum ialah P = (M + m)v_0. Semasa berjalan, krew mempunyai halaju v_krew > v_0, maka keabadian momentum memerlukan M v_badan + m v_krew = (M + m)v_0, yang bermaksud v_badan < v_0 (badan kapal menjadi lebih perlahan). Sebaik sahaja krew berhenti secara relatif kepada kabin, v_krew = v_badan = v_akhir. Maka (M + m)v_akhir = (M + m)v_0, memberikan v_akhir = v_0. Daya dalaman tidak boleh menghasilkan perubahan halaju yang kekal.",
+        "zh": "设艇体质量为 M，乘员质量为 m。最初，总动量为 P = (M + m)v_0。走动期间，乘员速度 v_乘员 > v_0，动量守恒要求 M v_艇体 + m v_乘员 = (M + m)v_0，因此 v_艇体 < v_0（艇体减速）。一旦乘员相对客舱停下，v_乘员 = v_艇体 = v_最终。此时 (M + m)v_最终 = (M + m)v_0，得出 v_最终 = v_0。内力无法改变系统的总动量或产生永久性的速度改变。"
+      },
+      "explanation": {
+        "en": "In the absence of external forces, the total momentum and center-of-mass velocity of the system remain constant (sum F_ext = M_tot * a_CM = 0). The interactions between the passengers' feet and the spacecraft floor are entirely internal action-reaction pairs that cancel in the vector sum. While the passengers are moving forward relative to the vessel, they carry an increased share of the system's forward momentum, forcing the hull to slow down. When they decelerate to take their seats, the forward force they exert on the floor returns the hull precisely to its original velocity.",
+        "ms": "Dengan ketiadaan daya luaran, jumlah momentum dan halaju pusat jisim sistem kekal malar (jumlah F_ext = M_tot * a_CM = 0). Interaksi antara kaki penumpang dan lantai kapal angkasa adalah pasangan tindakan-tindak balas dalaman sepenuhnya yang saling membatalkan dalam hasil tambah vektor. Semasa penumpang bergerak ke hadapan secara relatif kepada kapal, mereka membawa bahagian momentum ke hadapan sistem yang lebih besar, memaksa badan kapal bergerak lebih perlahan. Apabila mereka menyahpecut untuk duduk di tempat duduk mereka, daya ke hadapan yang mereka kenakan pada lantai mengembalikan badan kapal tepat kepada halaju asalnya.",
+        "zh": "在没有外力作用的情况下，系统的总动量和质心速度保持恒定（合外力 = M_总 * a_质心 = 0）。乘员脚底与航天器地板之间的相互作用完全是内部作用力与反作用力对，在矢量求和时完全抵消。当乘员相对飞船向前移动时，他们占据了系统向前动量的更大份额，迫使艇体减速。当他们减速就座时，对地板施加的向前推力使艇体精确恢复到最初的速度。"
+      },
+      "answerKey": {
+        "correct": "opt-mod-1-a",
+        "options": [
+          {
+            "id": "opt-mod-1-a",
+            "label": {
+              "en": "The hull's forward speed temporarily decreases while the astronauts walk forward, then returns exactly to its initial velocity once they strap into their forward seats.",
+              "ms": "Kelajuan ke hadapan badan kapal berkurang buat sementara waktu semasa angkasawan berjalan ke hadapan, kemudian kembali tepat kepada halaju awalnya sebaik sahaja mereka mengikat diri pada tempat duduk hadapan mereka.",
+              "zh": "当宇航员向前走动时，艇体的向前速度暂时降低；一旦他们系紧前舱座位的安全带，艇体速度便精确恢复到初始值。"
+            }
+          },
+          {
+            "id": "opt-mod-1-b",
+            "misconception": "misc-internal-forces-accelerate-cm",
+            "label": {
+              "en": "The hull's forward speed increases permanently because the internal contact forces between the astronauts and the floor impart net forward momentum to the entire vessel.",
+              "ms": "Kelajuan ke hadapan badan kapal meningkat secara kekal kerana daya sentuhan dalaman antara angkasawan dan lantai menyumbang momentum bersih ke hadapan kepada seluruh kapal.",
+              "zh": "艇体的向前速度永久增加，因为宇航员与地板之间的内部接触力赋予了整个飞船净向前动量。"
+            }
+          },
+          {
+            "id": "opt-mod-1-c",
+            "misconception": "misc-individual-motion-equals-cm-motion",
+            "label": {
+              "en": "The hull's forward speed increases in the forward direction while the astronauts walk, and the entire vessel permanently maintains this higher speed after they sit down.",
+              "ms": "Kelajuan ke hadapan badan kapal meningkat ke arah hadapan semasa angkasawan berjalan, dan seluruh kapal mengekalkan kelajuan lebih tinggi ini secara kekal selepas mereka duduk.",
+              "zh": "当宇航员走动时，艇体的向前速度沿前进方向增加，且在宇航员坐下后整个飞船永久保持该更高速度。"
+            }
+          },
+          {
+            "id": "opt-mod-1-d",
+            "label": {
+              "en": "The hull's forward speed remains completely constant while the astronauts walk, but decreases permanently when their forward impact forces are absorbed as they sit down.",
+              "ms": "Kelajuan ke hadapan badan kapal kekal malar sepenuhnya semasa angkasawan berjalan, tetapi berkurang secara kekal apabila daya hentaman hadapan mereka diserap semasa mereka duduk.",
+              "zh": "当宇航员走动时，艇体的向前速度完全保持恒定，但在他们坐下并吸收向前的冲击力时，艇体速度永久降低。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-mod-2",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze how an external force applied to a single component accelerates the center of mass of the entire system.",
+      "misconceptions": [
+        "misc-external-force-location-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-center-of-mass-position",
+        "prompt": {
+          "en": "Recall Newton's second law for a system of particles: Sigma F_ext = M * a_CM, where M is the combined total mass. Does this relation depend on which individual component experiences the external force?",
+          "ms": "Ingat kembali hukum kedua Newton bagi suatu sistem zarah: Sigma F_ext = M * a_CM, di mana M ialah jumlah jisim gabungan. Adakah hubungan ini bergantung pada komponen individu mana yang mengalami daya luaran tersebut?",
+          "zh": "回忆质点系的牛顿第二定律：Sigma F_ext = M * a_CM，其中 M 为系统的总质量。该关系式是否取决于外力施加在哪一个具体的部件上？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question comparing the acceleration of the center of mass for a two-module spacecraft when an identical external force is applied to different modules. Select one of four options.",
+        "ms": "Soalan aneka pilihan yang membandingkan pecutan pusat jisim bagi kapal angkasa dua modul apabila daya luaran yang serupa dikenakan pada modul yang berbeza. Pilih satu daripada empat pilihan.",
+        "zh": "单选题，比较将相同的外力施加在双舱段航天器的不同舱段时系统质心加速度的关系。从四个选项中选择一项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "prompt": {
+        "en": "A modular orbital probe drifting in deep space consists of two rigidly connected sections: an equipment hub of mass M_1 and a larger laboratory module of mass M_2, where M_2 is greater than M_1. In Experiment 1, a small thruster mounted on the hub exerts an external force F directed to the right. In Experiment 2, the exact same thruster is moved to the laboratory module, exerting the identical external force F directed to the right. How does the acceleration of the center of mass of the combined probe compare between Experiment 1 and Experiment 2?",
+        "ms": "Satu prob orbit modular yang melayang di angkasa lepas terdiri daripada dua bahagian yang disambung tegar: hab peralatan berjisim M_1 dan modul makmal yang lebih besar berjisim M_2, di mana M_2 lebih besar daripada M_1. Dalam Eksperimen 1, sebuah pendorong kecil yang dipasang pada hab mengenakan daya luaran F ke arah kanan. Dalam Eksperimen 2, pendorong yang sama dipindahkan ke modul makmal, mengenakan daya luaran F yang serupa ke arah kanan. Bagaimanakah pecutan pusat jisim prob gabungan tersebut berbanding antara Eksperimen 1 dan Eksperimen 2?",
+        "zh": "一个在深空中漂移的模块化轨道探测器由两个刚性连接的舱段组成：质量为 M_1 的设备舱和质量为 M_2 的较重实验舱（其中 M_2 大于 M_1）。在实验 1 中，安装在设备舱上的小型推进器产生一个向右的外力 F。在实验 2 中，完全相同的推进器被移至实验舱，产生向右的相同外力 F。在这两次实验中，探测器组合体质心的加速度大小关系如何？"
+      },
+      "hints": [
+        {
+          "en": "State the equation connecting net external force, total mass, and the acceleration of the center of mass for a multi-particle system.",
+          "ms": "Nyatakan persamaan yang menghubungkan daya luaran bersih, jumlah jisim, dan pecutan pusat jisim bagi suatu sistem banyak zarah.",
+          "zh": "写出联系多质点系合外力、总质量以及质心加速度的动力学方程。"
+        },
+        {
+          "en": "Notice that in both experiments, the combined mass is M_1 + M_2 and the net external force vector is identical. Does the location of the point of application affect the net external force?",
+          "ms": "Perhatikan bahawa dalam kedua-dua eksperimen, jisim gabungan ialah M_1 + M_2 dan vektor daya luaran bersih adalah serupa. Adakah titik tindakan daya mempengaruhi daya luaran bersih?",
+          "zh": "注意在两次实验中，系统的总质量均为 M_1 + M_2，且净外力矢量完全相同。外力的作用点位置是否会改变净外力的大小与方向？"
+        }
+      ],
+      "feedback": {
+        "en": "Newton's second law for a system of particles states that Sigma F_ext = M_total * a_CM. Because the net external force F and total mass (M_1 + M_2) are identical in both experiments, the linear acceleration of the center of mass is exactly the same regardless of which module receives the push.",
+        "ms": "Hukum kedua Newton bagi suatu sistem zarah menyatakan bahawa Sigma F_ext = M_jumlah * a_CM. Oleh kerana daya luaran bersih F dan jumlah jisim (M_1 + M_2) adalah serupa dalam kedua-dua eksperimen, pecutan linear pusat jisim adalah sama tepat tanpa mengira modul mana yang menerima tolakan tersebut.",
+        "zh": "质点系的牛顿第二定律表明 Sigma F_ext = M_总 * a_CM。由于两次实验中的净外力 F 和系统总质量（M_1 + M_2）完全相同，因此无论推力施加在哪个舱段上，系统质心的线加速度都完全相同。"
+      },
+      "answerLogic": {
+        "en": "According to Sigma F_ext = M_total * a_CM, the center-of-mass acceleration depends solely on the vector sum of external forces and the total system mass. Since both F_ext and M_total are identical in Experiment 1 and Experiment 2, a_CM is identical in both cases.",
+        "ms": "Menurut Sigma F_ext = M_jumlah * a_CM, pecutan pusat jisim hanya bergantung pada hasil tambah vektor daya luaran dan jumlah jisim sistem. Memandangkan kedua-dua F_ext dan M_jumlah adalah serupa dalam Eksperimen 1 dan Eksperimen 2, a_CM adalah serupa dalam kedua-dua kes.",
+        "zh": "根据 Sigma F_ext = M_总 * a_CM，质心加速度仅取决于外力的矢量和以及系统的总质量。由于在实验 1 和实验 2 中，外力 F_ext 与总质量 M_总 均完全相同，因此两者的质心加速度 a_CM 完全相同。"
+      },
+      "explanation": {
+        "en": "Equation 9.39 shows that the center of mass of any system moves as though all the system's mass were concentrated at that single point and acted on by the net external force. Although applying the force to the lighter module may produce different internal stresses or rotational tendencies if misaligned, the linear acceleration of the center of mass depends only on the net external force and the total mass, making it identical in both tests.",
+        "ms": "Persamaan 9.39 menunjukkan bahawa pusat jisim mana-mana sistem bergerak seolah-olah semua jisim sistem tertumpu pada titik tunggal tersebut dan dikenakan daya luaran bersih. Walaupun mengenakan daya pada modul yang lebih ringan boleh menghasilkan tegasan dalaman yang berbeza atau kecenderungan putaran jika tidak sejajar, pecutan linear bagi pusat jisim hanya bergantung pada daya luaran bersih dan jumlah jisim, menjadikannya serupa dalam kedua-dua ujian.",
+        "zh": "公式 9.39 表明，任何系统的质心运动都表现得如同整个系统的质量集中于该单一质点，并受到系统合外力的作用。虽然将力施加在较轻的舱段上可能会引起不同的内应力，或者在未对齐时引起转动效应，但质心的线加速度只取决于合外力与总质量，因此两次测试中的质心加速度完全相同。"
+      },
+      "answerKey": {
+        "correct": "opt-mod-2-a",
+        "options": [
+          {
+            "id": "opt-mod-2-a",
+            "label": {
+              "en": "The acceleration of the center of mass is identical in both experiments because the net external force and the total system mass are unchanged.",
+              "ms": "Pecutan pusat jisim adalah serupa dalam kedua-dua eksperimen kerana daya luaran bersih dan jumlah jisim sistem tidak berubah.",
+              "zh": "两次实验中质心的加速度完全相同，因为合外力与系统的总质量均保持不变。"
+            }
+          },
+          {
+            "id": "opt-mod-2-b",
+            "misconception": "misc-external-force-location-confusion",
+            "label": {
+              "en": "The acceleration of the center of mass is greater in Experiment 1 because pushing the less massive hub accelerates that section more easily.",
+              "ms": "Pecutan pusat jisim lebih besar dalam Eksperimen 1 kerana menolak hab yang berjisim lebih kecil memecutkan bahagian tersebut dengan lebih mudah.",
+              "zh": "实验 1 中质心的加速度更大，因为推力作用在质量较小的设备舱上更容易使该部分加速。"
+            }
+          },
+          {
+            "id": "opt-mod-2-c",
+            "misconception": "misc-external-force-location-confusion",
+            "label": {
+              "en": "The acceleration of the center of mass is greater in Experiment 2 because the external force is applied directly to the module containing most of the mass.",
+              "ms": "Pecutan pusat jisim lebih besar dalam Eksperimen 2 kerana daya luaran dikenakan terus pada modul yang mengandungi sebahagian besar jisim.",
+              "zh": "实验 2 中质心的加速度更大，因为外力直接作用在包含系统绝大部分质量的实验舱上。"
+            }
+          },
+          {
+            "id": "opt-mod-2-d",
+            "label": {
+              "en": "The center of mass cannot accelerate in either experiment because an external force on one section is balanced out by internal connection forces.",
+              "ms": "Pusat jisim tidak boleh memecut dalam mana-mana eksperimen kerana daya luaran pada satu bahagian diseimbangkan oleh daya sambungan dalaman.",
+              "zh": "在两次实验中质心均不会加速，因为施加在单个舱段上的外力会被内部连接力相互抵消。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-mod-3",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Evaluate linear momentum conservation in an isolated system undergoing internal movement while already in motion.",
+      "misconceptions": [
+        "misc-momentum-conservation-requires-zero-velocity",
+        "misc-internal-forces-accelerate-cm"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-linear-momentum-definition",
+        "prompt": {
+          "en": "Review the condition for momentum conservation in a many-particle system: if the sum of all external forces is zero, does the constancy of total momentum depend on the initial velocity being zero?",
+          "ms": "Ulang kaji syarat keabadian momentum dalam sistem banyak zarah: jika hasil tambah semua daya luaran adalah sifar, adakah kekekalan jumlah momentum bergantung pada halaju awal yang bernilai sifar?",
+          "zh": "复习多质点系动量守恒的条件：如果所有外力的矢量和为零，总动量的守恒是否依赖于系统初始速度为零？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question evaluating the total momentum and center-of-mass velocity of an already moving, isolated railway cart system experiencing internal motion. Select one of four options.",
+        "ms": "Soalan aneka pilihan yang menilai jumlah momentum dan halaju pusat jisim bagi suatu sistem troli landasan terpencil yang sudah bergerak dan mengalami gerakan dalaman. Pilih satu daripada empat pilihan.",
+        "zh": "单选题，评估一个已处于运动状态且受内部运动影响的孤立轨道检测车系统的总动量与质心速度。从四个选项中选择一项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "prompt": {
+        "en": "A motorized inspection flatcar is rolling along a frictionless, straight horizontal track at a constant initial speed v_0. A robotic rover on the flatcar suddenly drives from the front bumper toward the rear bumper and then brakes to a complete halt relative to the flatcar. Throughout this event, no external horizontal forces act on the flatcar-rover system. Which statement correctly describes the total horizontal momentum and the velocity of the center of mass of the system?",
+        "ms": "Sebuah gerabak rata pemeriksaan bermotor sedang bergolek di sepanjang landasan mendatar lurus tanpa geseran pada kelajuan awal malar v_0. Sebuah perayau robotik di atas gerabak tersebut tiba-tiba memandu dari bampar hadapan ke arah bampar belakang dan kemudian membrek hingga berhenti sepenuhnya secara relatif kepada gerabak. Sepanjang peristiwa ini, tiada daya luaran mendatar bertindak ke atas sistem gerabak-perayau. Pernyataan manakah yang menerangkan dengan betul jumlah momentum mendatar dan halaju pusat jisim sistem tersebut?",
+        "zh": "一辆机动巡检平板车正沿着无摩擦的水平平直轨道以恒定的初始速度 v_0 滑行。车上的一台巡检机器人突然从前保险杠向后保险杠行驶，随后相对平板车制动并完全停下。在整个过程中，平板车与机器人组成的系统未受任何水平外力作用。下列哪项陈述正确描述了该系统的水平总动量与质心速度？"
+      },
+      "hints": [
+        {
+          "en": "Identify whether any external horizontal forces act on the system composed of the flatcar and the rover.",
+          "ms": "Kenal pasti sama ada sebarang daya luaran mendatar bertindak ke atas sistem yang terdiri daripada gerabak rata dan perayau.",
+          "zh": "确定平板车与机器人组成的系统是否受到任何水平外力作用。"
+        },
+        {
+          "en": "Recall Equation 9.42: when Sigma F_ext = 0, total momentum P_tot = M * v_CM = constant. Does this principle require the initial velocity to be zero, or does it hold for any initial motion?",
+          "ms": "Ingat kembali Persamaan 9.42: apabila Sigma F_ext = 0, jumlah momentum P_tot = M * v_CM = malar. Adakah prinsip ini memerlukan halaju awal bernilai sifar, atau adakah ia sah untuk sebarang gerakan awal?",
+          "zh": "回忆公式 9.42：当 Sigma F_ext = 0 时，总动量 P_tot = M * v_CM = 常数。该原理是否要求初始速度必须为零，还是对任何初始运动状态均成立？"
+        }
+      ],
+      "feedback": {
+        "en": "Because the net external horizontal force is zero, the isolated system model applies. The total horizontal linear momentum and the velocity of the center of mass remain strictly constant at all times, regardless of the fact that the system was already moving before the internal reconfiguration occurred.",
+        "ms": "Oleh kerana daya luaran bersih mendatar adalah sifar, model sistem terpencil diguna pakai. Jumlah momentum linear mendatar dan halaju pusat jisim kekal malar sepenuhnya pada setiap masa, tanpa mengira fakta bahawa sistem tersebut telah pun bergerak sebelum penyusunan semula dalaman berlaku.",
+        "zh": "由于水平合外力为零，孤立系统模型成立。无论系统在发生内部重构前是否已经处于运动状态，其水平总线动量和质心速度在整个过程中均严格保持不变。"
+      },
+      "answerLogic": {
+        "en": "According to Newton's second law for systems of particles, dP_tot/dt = Sigma F_ext. Since Sigma F_ext = 0, P_tot is conserved and v_CM = P_tot / M remains constant. The initial nonzero velocity does not compromise momentum conservation, and internal driving or braking forces cancel in pairs via Newton's third law.",
+        "ms": "Menurut hukum kedua Newton bagi sistem zarah, dP_tot/dt = Sigma F_ext. Memandangkan Sigma F_ext = 0, P_tot adalah terabadi dan v_CM = P_tot / M kekal malar. Halaju bukan sifar pada mulanya tidak menjejaskan keabadian momentum, dan daya dorongan atau membrek dalaman saling membatalkan secara berpasangan melalui hukum ketiga Newton.",
+        "zh": "根据质点系的牛顿第二定律，dP_tot/dt = Sigma F_ext。由于 Sigma F_ext = 0，总动量 P_tot 守恒，质心速度 v_CM = P_tot / M 保持恒定。初始速度非零并不会削弱动量守恒定理的适用性，且内部的驱动力与制动力根据牛顿第三定律成对抵消。"
+      },
+      "explanation": {
+        "en": "The law of conservation of linear momentum states that the total momentum of an isolated system remains constant whenever the net external force is zero. This fundamental principle applies equally to systems initially at rest and systems already in motion. The internal driving and braking forces between the rover wheels and the flatcar deck are internal to the system, so they cannot exert an impulse on the system as a whole or change the velocity of its center of mass.",
+        "ms": "Hukum keabadian momentum linear menyatakan bahawa jumlah momentum suatu sistem terpencil kekal malar apabila daya luaran bersih adalah sifar. Prinsip asas ini terpakai sama rata kepada sistem yang pada mulanya pegun mahupun sistem yang sudah bergerak. Daya pacuan dan membrek dalaman antara roda perayau dan dek gerabak rata adalah dalaman kepada sistem, jadi daya tersebut tidak boleh mengenakan impuls ke atas sistem secara keseluruhan atau mengubah halaju pusat jisimnya.",
+        "zh": "线动量守恒定律指出，只要合外力为零，孤立系统的总动量就保持恒定。这一基本原理既适用于初始静止的系统，也同样适用于已经处于运动中的系统。机器人轮子与平板车底板之间的内部驱动力与制动力属于系统内力，因此它们无法对整个系统施加净冲量，也无法改变系统质心的速度。"
+      },
+      "answerKey": {
+        "correct": "opt-mod-3-a",
+        "options": [
+          {
+            "id": "opt-mod-3-a",
+            "label": {
+              "en": "Both the total horizontal momentum and the velocity of the center of mass remain constant throughout the entire event.",
+              "ms": "Kedua-dua jumlah momentum mendatar dan halaju pusat jisim kekal malar sepanjang keseluruhan peristiwa.",
+              "zh": "在整个过程中，系统的水平总动量和质心速度均保持恒定。"
+            }
+          },
+          {
+            "id": "opt-mod-3-b",
+            "misconception": "misc-momentum-conservation-requires-zero-velocity",
+            "label": {
+              "en": "Total momentum is conserved only when a system begins from rest, so the rover's motion changes the system's total momentum because it was already moving.",
+              "ms": "Jumlah momentum hanya terabadi apabila sistem bermula dari keadaan pegun, jadi pergerakan perayau mengubah jumlah momentum sistem kerana ia sudah bergerak.",
+              "zh": "总动量仅在系统从静止开始时守恒，因此由于平板车已在运动，机器人的运动改变了系统的总动量。"
+            }
+          },
+          {
+            "id": "opt-mod-3-c",
+            "misconception": "misc-internal-forces-accelerate-cm",
+            "label": {
+              "en": "The rover's braking forces act as an internal impulse that permanently changes the velocity of the center of mass.",
+              "ms": "Daya membrek perayau bertindak sebagai impuls dalaman yang mengubah halaju pusat jisim secara kekal.",
+              "zh": "机器人的制动力作为内部冲量，会永久改变系统质心的速度。"
+            }
+          },
+          {
+            "id": "opt-mod-3-d",
+            "label": {
+              "en": "The total momentum remains constant, but the velocity of the center of mass shifts permanently to zero when the rover brakes.",
+              "ms": "Jumlah momentum kekal malar, tetapi halaju pusat jisim beralih secara kekal kepada sifar apabila perayau membrek.",
+              "zh": "总动量保持恒定，但当机器人制动时，质心速度永久变为零。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-chal-1",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Deduce the final landing coordinate of a fragment relative to the unperturbed system center of mass.",
+      "prompt": {
+        "en": "An unpowered aerial probe follows a symmetric parabolic path over level ground. If intact, its center of mass would land at a target marker. Exactly at its apex, an internal release pushes the probe purely horizontally into two fragments: a heavy module of mass two-thirds M and a light pod of mass one-third M. Both fragments hit the level ground simultaneously. If the heavier module lands short of the target marker by a horizontal distance d, where does the lighter pod land?",
+        "ms": "Sebuah prob udara tanpa kuasa bergerak mengikut laluan parabola yang simetri di atas tanah rata. Jika kekal utuh, pusat jisimnya akan mendarat di penanda sasaran. Tepat pada puncaknya, satu pelepas dalaman menolak prob secara mendatar sepenuhnya kepada dua serpihan: modul berat berjisim dua pertiga M dan pod ringan berjisim satu pertiga M. Kedua-dua serpihan mendarat di tanah rata secara serentak. Jika modul yang lebih berat mendarat kurang daripada penanda sasaran sebanyak jarak mendatar d, di manakah pod yang lebih ringan mendarat?",
+        "zh": "一枚无动力的航空探测器在水平地面上方沿对称的抛物线路径飞行。如果保持完整，其质心将落在目标标记处。在其最高点处，一个内部释放机构将探测器完全沿水平方向推开为两个碎片：质量为三分之二 M 的较重模块和质量为三分之一 M 的较轻舱体。两个碎片同时落在水平地面上。如果较重的模块落在距目标标记前水平距离 d 的位置，那么较轻的舱体将落在何处？"
+      },
+      "hints": [
+        {
+          "en": "Because the separation forces are purely internal, the net external force on the two-fragment system remains gravity alone. How does the motion of the center of mass compare to the original unbroken trajectory?",
+          "ms": "Oleh kerana daya pemisahan adalah dalaman semata-mata, daya luaran bersih ke atas sistem dua serpihan kekal sebagai graviti sahaja. Bagaimanakah pergerakan pusat jisim dibandingkan dengan trajektori asal yang tidak terputus?",
+          "zh": "由于分离力纯粹是内力，两碎片系统所受的合外力仍然只有重力。质心的运动轨迹与原本未破裂时的轨迹相比如何？"
+        },
+        {
+          "en": "The center of mass is the mass-weighted average position of the fragments. If the heavier fragment carrying two-thirds of the total mass lands short of the target by distance d, how far beyond the target must the lighter fragment land to keep the center of mass at the target marker?",
+          "ms": "Pusat jisim ialah kedudukan purata berpemberat jisim bagi serpihan-serpihan tersebut. Jika serpihan yang lebih berat dengan dua pertiga daripada jumlah jisim mendarat kurang daripada sasaran sebanyak jarak d, sejauh manakah melepasi sasaran serpihan yang lebih ringan mesti mendarat untuk mengekalkan pusat jisim pada penanda sasaran?",
+          "zh": "质心是碎片位置的质量加权平均值。如果承载总质量三分之二的较重碎片落在目标前距离 d 处，较轻的碎片必须落在超过目标多远的位置，才能使质心保持在目标标记处？"
+        }
+      ],
+      "feedback": {
+        "en": "Internal forces cannot change the trajectory of the center of mass. Because gravity is the only external force, the center of mass of the fragments lands precisely at the original target marker. Since the piece with two-thirds of the mass lands short by distance d, the piece with one-third of the mass must land beyond the marker by twice that distance (2d) to keep the mass-weighted average centered on the target.",
+        "ms": "Daya dalaman tidak boleh mengubah trajektori pusat jisim. Kerana graviti adalah satu-satunya daya luaran, pusat jisim serpihan mendarat tepat pada penanda sasaran asal. Oleh kerana serpihan dengan dua pertiga jisim mendarat kurang sebanyak jarak d, serpihan dengan satu pertiga jisim mesti mendarat melepasi penanda sebanyak dua kali ganda jarak tersebut (2d) untuk mengekalkan purata berpemberat jisim berpusat pada sasaran.",
+        "zh": "内力不能改变质心的轨迹。由于重力是唯一的合外力，两碎片的质心恰好落在原目标标记处。因为具有三分之二质量的碎片落在目标前距离 d 处，具有三分之一质量的碎片必须落在目标标记后两倍距离（2d）处，以保持质量加权平均位置处于目标中心。"
+      },
+      "answerLogic": {
+        "en": "The system center of mass location is given by x_CM = (m1 * x1 + m2 * x2) / M. With x_CM located at the target marker (x_target), setting m1 = 2M/3 at (x_target - d) requires m2 = M/3 to be located at (x_target + 2d). Thus, the lighter fragment must land beyond the marker by a distance greater than d.",
+        "ms": "Kedudukan pusat jisim sistem diberikan oleh x_CM = (m1 * x1 + m2 * x2) / M. Dengan x_CM terletak pada penanda sasaran (x_sasaran), menetapkan m1 = 2M/3 pada (x_sasaran - d) memerlukan m2 = M/3 terletak pada (x_sasaran + 2d). Oleh itu, serpihan yang lebih ringan mesti mendarat melepasi penanda sebanyak jarak yang lebih besar daripada d.",
+        "zh": "系统质心位置由 x_CM = (m1 * x1 + m2 * x2) / M 给出。由于 x_CM 位于目标标记处（x_target），当质量为 m1 = 2M/3 的碎片位于 (x_target - d) 时，质量为 m2 = M/3 的碎片必须位于 (x_target + 2d)。因此，较轻的碎片必须落在超过标记且距离大于 d 的位置。"
+      },
+      "explanation": {
+        "en": "Newton's second law for a system of particles states that the net external force equals total mass times the acceleration of the center of mass. Internal forces generated during separation cancel in equal and opposite pairs and impart zero net force to the system. Since horizontal external forces are absent throughout the flight, the horizontal motion of the center of mass continues unaffected. Consequently, the center of mass strikes the ground at the unperturbed target marker. Because the fragments land simultaneously and the heavier fragment lands short of the marker by d, the lighter fragment must land downrange beyond the marker by 2d to preserve the center of mass position.",
+        "ms": "Hukum kedua Newton untuk sistem zarah menyatakan bahawa daya luaran bersih sama dengan jumlah jisim didarabkan dengan pecutan pusat jisim. Daya dalaman yang dijana semasa pemisahan membatalkan satu sama lain dalam pasangan yang sama dan bertentangan serta mengenakan daya bersih sifar pada sistem. Oleh kerana tiada daya luaran mendatar sepanjang penerbangan, gerakan mendatar pusat jisim berterusan tanpa gangguan. Akibatnya, pusat jisim menghentam tanah pada penanda sasaran yang tidak terganggu. Kerana serpihan mendarat serentak dan serpihan yang lebih berat mendarat kurang daripada penanda sebanyak d, serpihan yang lebih ringan mesti mendarat di hilir melepasi penanda sebanyak 2d untuk mengekalkan kedudukan pusat jisim.",
+        "zh": "质点系的牛顿第二定律指出，合外力等于总质量乘以质心加速度。分离过程中产生的内部作用力成对大小相等、方向相反互相抵消，对系统产生的合力为零。由于整个飞行过程中不存在水平外力，质心的水平运动不受任何影响。因此，质心落在不受干扰的原目标标记处。由于两碎片同时落地，且较重的碎片落在距标记前 d 处，较轻的碎片必须落在标记后方 2d 处，以保持质心位置不变。"
+      },
+      "misconceptions": [
+        "misc-cm-alters-trajectory-upon-breakup",
+        "misc-individual-motion-equals-cm-motion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-center-of-mass-position",
+        "prompt": {
+          "en": "Recall that the center of mass represents the mass-weighted average coordinate of all elements in a system. If a heavy section is shifted to one side of the center of mass, where must a lighter section be located relative to that center of mass?",
+          "ms": "Ingat kembali bahawa pusat jisim mewakili koordinat purata berpemberat jisim bagi semua unsur dalam suatu sistem. Jika bahagian yang berat dialihkan ke satu sisi pusat jisim, di manakah bahagian yang lebih ringan mesti berada berbanding dengan pusat jisim tersebut?",
+          "zh": "回想质心表示系统中所有组成部分的质量加权平均坐标。如果较重的一部分移到质心的一侧，较轻的一部分必须位于相对于质心的什么位置？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question presenting an unpowered projectile that breaks into a 2/3 mass fragment and a 1/3 mass fragment at its apex, asking for the landing position of the lighter fragment relative to the target marker.",
+        "ms": "Soalan pelbagai pilihan membentangkan projektil tanpa kuasa yang berpecah kepada serpihan jisim 2/3 dan serpihan jisim 1/3 di puncaknya, bertanyakan kedudukan pendaratan serpihan yang lebih ringan berbanding dengan penanda sasaran.",
+        "zh": "多项选择题，描述一枚无动力抛体在其最高点裂为质量为 2/3 和 1/3 的两个碎片，询问较轻碎片相对于目标标记的落点位置。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-beyond-greater",
+        "options": [
+          {
+            "id": "opt-beyond-greater",
+            "label": {
+              "en": "Beyond the target marker by a horizontal distance greater than d, so that the mass-weighted center of mass lands at the target marker.",
+              "ms": "Melepasi penanda sasaran sebanyak jarak mendatar yang lebih besar daripada d, supaya pusat jisim berpemberat jisim mendarat di penanda sasaran.",
+              "zh": "落在目标标记后方且水平距离大于 d 的位置，从而使质量加权的质心恰好落在目标标记处。"
+            }
+          },
+          {
+            "id": "opt-short-drag",
+            "label": {
+              "en": "Short of the target marker as well, because the internal separation consumes forward momentum and deflects the center-of-mass trajectory backward.",
+              "ms": "Kurang daripada penanda sasaran juga, kerana pemisahan dalaman menggunakan momentum ke hadapan dan memesongkan trajektori pusat jisim ke belakang.",
+              "zh": "同样落在目标标记的前方，因为内部推力消耗了向前动量并使质心轨迹向后偏转。"
+            },
+            "misconception": "misc-cm-alters-trajectory-upon-breakup"
+          },
+          {
+            "id": "opt-at-marker",
+            "label": {
+              "en": "Exactly at the target marker, because individual fragments always follow the unperturbed center-of-mass trajectory.",
+              "ms": "Tepat pada penanda sasaran, kerana setiap serpihan individu sentiasa mengikut trajektori pusat jisim yang tidak terganggu.",
+              "zh": "恰好落在目标标记处，因为各个单独的碎片始终遵循不受干扰的质心轨迹。"
+            },
+            "misconception": "misc-individual-motion-equals-cm-motion"
+          },
+          {
+            "id": "opt-equal-offset",
+            "label": {
+              "en": "Beyond the target marker by the exact horizontal distance d, because fragment displacements from the target are always equal regardless of mass.",
+              "ms": "Melepasi penanda sasaran sebanyak jarak mendatar d yang sama persis, kerana anjakan serpihan dari sasaran sentiasa sama tanpa mengira perbezaan jisim.",
+              "zh": "落在目标标记后方且水平距离恰好等于 d 的位置，因为无论质量如何，碎片偏离目标的距离始终相等。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-chal-2",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Contrast the acceleration of individual system members with the acceleration of the center of mass during internal push-offs.",
+      "prompt": {
+        "en": "Two testing carts of masses M and 3M rest on a frictionless horizontal track. A compressed spring between them releases, pushing them apart with strong internal forces. At the same moment, an external horizontal pull force F directed to the right is applied exclusively to the lighter cart. While the spring is pushing the carts apart, how does the acceleration of the two-cart system's center of mass compare with the accelerations of the individual carts?",
+        "ms": "Dua troli ujian berjisim M dan 3M berada dalam keadaan pegun di atas landasan mendatar tanpa geseran. Satu spring termampat di antara mereka dilepaskan, menolak mereka menjauhi satu sama lain dengan daya dalaman yang kuat. Pada masa yang sama, satu daya tarikan luaran mendatar F yang diarahkan ke kanan dikenakan secara eksklusif pada troli yang lebih ringan. Semasa spring menolak troli-troli tersebut, bagaimanakah pecutan pusat jisim sistem dua troli dibandingkan dengan pecutan troli-troli individu?",
+        "zh": "两辆质量分别为 M 和 3M 的测试小车静止在无摩擦的水平轨道上。它们之间压缩的弹簧释放，以强大的内力将它们推开。与此同时，一个向右的恒定水平外力 F 仅施加在较轻的小车上。在弹簧推开小车的过程中，双车系统的质心加速度与各小车的单独加速度相比有何特征？"
+      },
+      "hints": [
+        {
+          "en": "Newton's second law for a system of particles relates the acceleration of the center of mass directly to the net external force: sum of F_ext = total mass times a_CM. Do internal spring forces enter this equation?",
+          "ms": "Hukum kedua Newton untuk sistem zarah mengaitkan pecutan pusat jisim secara langsung dengan daya luaran bersih: jumlah F_ext = jumlah jisim darab a_CM. Adakah daya spring dalaman memasuki persamaan ini?",
+          "zh": "质点系的牛顿第二定律将质心加速度与合外力直接联系起来：合外力等于总质量乘以 a_CM。内部弹簧力会进入这个方程吗？"
+        },
+        {
+          "en": "Consider each cart separately versus the system as a whole. Each individual cart responds to both the internal spring force and any force applied to it, but the internal spring forces cancel out when summing over the whole system.",
+          "ms": "Pertimbangkan setiap troli secara berasingan berbanding sistem secara keseluruhan. Setiap troli individu bertindak balas terhadap kedua-dua daya spring dalaman dan sebarang daya yang dikenakan padanya, tetapi daya spring dalaman membatalkan satu sama lain apabila menjumlahkan seluruh sistem.",
+          "zh": "分别考虑单辆小车与整个系统。每辆单独的小车都会对内部弹簧力及其受到的外力作出反应，但在对整个系统求和时，内部弹簧力会相互抵消。"
+        }
+      ],
+      "feedback": {
+        "en": "The acceleration of the center of mass is determined solely by the net external force divided by the total mass: a_CM = F / 4M directed to the right. Internal spring forces cancel completely in the system sum and do not affect a_CM, even though they produce large, opposing accelerations on the individual carts.",
+        "ms": "Pecutan pusat jisim ditentukan semata-mata oleh daya luaran bersih dibahagikan dengan jumlah jisim: a_CM = F / 4M diarahkan ke kanan. Daya spring dalaman membatalkan sepenuhnya dalam hasil tambah sistem dan tidak mempengaruhi a_CM, walaupun ia menghasilkan pecutan yang besar dan bertentangan pada troli individu.",
+        "zh": "质心的加速度完全由合外力除以总质量决定：a_CM = F / 4M，方向向右。内部弹簧力在系统求和中完全抵消，不会影响 a_CM，尽管它们对各单独小车产生了巨大的反向加速度。"
+      },
+      "answerLogic": {
+        "en": "Equation 9.39 states sum F_ext = M_tot * a_CM. The only external force on the system is F to the right, and M_tot = M + 3M = 4M, so a_CM = F / 4M to the right regardless of internal spring action or which specific cart receives F. In contrast, cart 1 feels F_ext + F_spring and cart 2 feels -F_spring, so their individual accelerations depend strongly on the internal spring force.",
+        "ms": "Persamaan 9.39 menyatakan jumlah F_ext = M_tot * a_CM. Satu-satunya daya luaran pada sistem ialah F ke kanan, dan M_tot = M + 3M = 4M, jadi a_CM = F / 4M ke kanan tanpa mengira tindakan spring dalaman atau troli khusus mana yang menerima F. Sebaliknya, troli 1 mengalami F_ext + F_spring dan troli 2 mengalami -F_spring, jadi pecutan individu mereka sangat bergantung pada daya spring dalaman.",
+        "zh": "公式 9.39 指出合外力等于总质量乘以质心加速度。系统受到的唯一外力是向右的 F，且总质量为 4M，因此质心加速度恒为 F / 4M 向右，与内部弹簧作用或外力具体施加在哪个小车上无关。相反，小车 1 受到外力和弹簧力，小车 2 受到反向弹簧力，它们的单独加速度强烈依赖于内部弹簧力。"
+      },
+      "explanation": {
+        "en": "In a multi-particle system, internal forces between constituents always occur in equal-magnitude, oppositely directed pairs according to Newton's third law. When summing forces over all members of the system, every internal interaction cancels to zero. Therefore, internal forces cannot alter the velocity or acceleration of the center of mass. The center of mass accelerates as an equivalent single particle of mass 4M subject only to the net external force F. Meanwhile, the individual carts experience large internal forces from the compressed spring, causing them to accelerate in opposite directions relative to one another.",
+        "ms": "Dalam sistem banyak zarah, daya dalaman antara juzuk sentiasa berlaku dalam pasangan bermagnitud sama dan bertentangan arah mengikut hukum ketiga Newton. Apabila menjumlahkan daya ke atas semua anggota sistem, setiap interaksi dalaman membatalkan kepada sifar. Oleh itu, daya dalaman tidak boleh mengubah halaju atau pecutan pusat jisim. Pusat jisim memecut seperti zarah tunggal setara berjisim 4M yang hanya tertakluk kepada daya luaran bersih F. Sementara itu, troli individu mengalami daya dalaman yang besar daripada spring termampat, menyebabkan mereka memecut dalam arah bertentangan relatif antara satu sama lain.",
+        "zh": "在多质点系统中，根据牛顿第三定律，组成部分之间的相互作用力总是成对出现，大小相等且方向相反。在对系统所有成员的力求和时，所有内力相互抵消为零。因此，内力无法改变质心的速度或加速度。质心犹如一个质量为 4M 的等效单质点，仅在合外力 F 的作用下产生加速度。与此同时，各单独小车承受压缩弹簧施加的巨大内力，导致它们相对于彼此朝相反方向剧烈加速。"
+      },
+      "misconceptions": [
+        "misc-internal-forces-accelerate-cm",
+        "misc-external-force-location-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-newtons-third-law",
+        "prompt": {
+          "en": "Review Newton's third law: when two bodies interact internally, their mutual forces are equal in magnitude and opposite in direction. What is the vector sum of these internal forces when you consider both bodies together as one system?",
+          "ms": "Ulang kaji hukum ketiga Newton: apabila dua jasad berinteraksi secara dalaman, daya saling tindakan mereka adalah sama magnitud dan bertentangan arah. Apakah hasil tambah vektor daya-daya dalaman ini apabila anda mempertimbangkan kedua-dua jasad bersama-sama sebagai satu sistem?",
+          "zh": "复习牛顿第三定律：当两个物体发生内部相互作用时，它们之间的相互作用力大小相等、方向相反。当把这两个物体作为一个整体系统考虑时，这些内力的矢量和是多少？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question comparing the acceleration of two individual carts pushed apart by a spring with the acceleration of the combined two-cart system center of mass when an external force is applied.",
+        "ms": "Soalan pelbagai pilihan membandingkan pecutan dua troli individu yang ditolak oleh spring dengan pecutan pusat jisim sistem dua troli gabungan apabila daya luaran dikenakan.",
+        "zh": "多项选择题，对比在施加外力的情况下，被弹簧推开的两辆单独小车的加速度与双车系统质心加速度的差异。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-cm-governed-by-fext",
+        "options": [
+          {
+            "id": "opt-cm-governed-by-fext",
+            "label": {
+              "en": "The center of mass accelerates to the right based strictly on F divided by the total mass 4M, unaffected by internal spring forces, while each cart's acceleration depends heavily on the spring force.",
+              "ms": "Pusat jisim memecut ke kanan secara ketat berdasarkan F dibahagikan dengan jumlah jisim 4M, tidak dipengaruhi oleh daya spring dalaman, manakala pecutan setiap troli sangat bergantung pada daya spring.",
+              "zh": "质心向右加速，其加速度严格等于外力 F 除以总质量 4M，不受内部弹簧力的影响；而各小车的加速度则强烈依赖于弹簧力。"
+            }
+          },
+          {
+            "id": "opt-cm-surges-internal",
+            "label": {
+              "en": "The center of mass acceleration is driven predominantly by the spring force, because violent internal repulsion propels the system center forward.",
+              "ms": "Pecutan pusat jisim didorong terutamanya oleh daya spring, kerana penolakan dalaman yang kuat melonjakkan pusat sistem ke hadapan.",
+              "zh": "质心的加速度主要由弹簧力驱动，因为强烈的内部排斥力会推动系统中心向前加速。"
+            },
+            "misconception": "misc-internal-forces-accelerate-cm"
+          },
+          {
+            "id": "opt-cm-depends-location",
+            "label": {
+              "en": "The center of mass accelerates as F divided by M because F is applied directly to the lighter cart; applying F to the heavier cart instead would produce F divided by 3M.",
+              "ms": "Pusat jisim memecut sebagai F dibahagikan dengan M kerana F dikenakan secara langsung pada troli yang lebih ringan; mengenakan F pada troli yang lebih berat sebaliknya akan menghasilkan F dibahagikan dengan 3M.",
+              "zh": "质心加速度为 F 除以 M，因为外力 F 直接作用在较轻的小车上；如果改将 F 施加在较重的小车上，质心加速度将变为 F 除以 3M。"
+            },
+            "misconception": "misc-external-force-location-confusion"
+          },
+          {
+            "id": "opt-cm-zero-cancel",
+            "label": {
+              "en": "The center of mass has zero acceleration because internal action-reaction pairs between the carts neutralize the external force.",
+              "ms": "Pusat jisim mempunyai pecutan sifar kerana pasangan tindakan-tindak balas dalaman antara troli meneutralkan daya luaran.",
+              "zh": "质心加速度为零，因为小车之间的内部作用力与反作用力抵消了外部作用力。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-chal-3",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze component-wise momentum conservation when external forces act along only one coordinate axis.",
+      "prompt": {
+        "en": "A two-stage atmospheric research vehicle glides diagonally upward through the air with substantial horizontal and vertical velocity. Neglecting air resistance, the only external force acting on the vehicle is downward gravity along the vertical axis. An internal explosive latch suddenly triggers, thrusting the upper stage forward away from the booster along their line of flight. Which statement correctly evaluates the linear momentum of the two-stage vehicle system during this separation?",
+        "ms": "Sebuah kenderaan penyelidikan atmosfera dua peringkat meluncur secara menyerong ke atas melalui udara dengan halaju mendatar dan menegak yang ketara. Mengabaikan rintangan udara, satu-satunya daya luaran yang bertindak ke atas kenderaan ialah graviti ke bawah di sepanjang paksi menegak. Selak letupan dalaman tiba-tiba terpicu, menolak peringkat atas ke hadapan menjauhi penggalak di sepanjang garis penerbangan mereka. Pernyataan manakah yang menilai momentum linear sistem kenderaan dua peringkat dengan betul semasa pemisahan ini?",
+        "zh": "一架两级高空科研飞行器正在空中沿对角线斜向上滑行，具有显著的水平和垂直速度。忽略空气阻力，作用在飞行器上的唯一外力是沿竖直轴向下的重力。一个内部爆炸释放栓突然触发，将上一级沿飞行方向强行推离助推级。下列哪项陈述正确评估了在此分离过程中双级飞行器系统的线动量？"
+      },
+      "hints": [
+        {
+          "en": "Linear momentum is a vector equation: d p_tot / dt = sum of F_ext. Consider the horizontal component (x-axis) and the vertical component (y-axis) separately.",
+          "ms": "Momentum linear ialah persamaan vektor: d p_tot / dt = jumlah F_ext. Pertimbangkan komponen mendatar (paksi-x) dan komponen menegak (paksi-y) secara berasingan.",
+          "zh": "线动量遵循矢量方程：d p_tot / dt = 合外力。请分别独立考虑水平分量（x 轴）和垂直分量（y 轴）。"
+        },
+        {
+          "en": "Does linear momentum conservation along a particular direction require the center of mass to be stationary, or does it depend solely on whether the net external force along that direction is zero?",
+          "ms": "Adakah keabadian momentum linear di sepanjang arah tertentu memerlukan pusat jisim berada dalam keadaan pegun, atau adakah ia bergantung semata-mata pada sama ada daya luaran bersih di sepanjang arah itu adalah sifar?",
+          "zh": "某个特定方向上的线动量守恒是否要求质心初始处于静止状态？还是仅仅取决于该方向上的合外力是否为零？"
+        }
+      ],
+      "feedback": {
+        "en": "Because there are no external forces acting in the horizontal direction, the horizontal component of the system's total linear momentum is strictly conserved. This conservation holds true regardless of how fast the vehicle is traveling and regardless of the internal explosion.",
+        "ms": "Kerana tiada daya luaran yang bertindak dalam arah mendatar, komponen mendatar bagi jumlah momentum linear sistem diabadikan secara ketat. Keabadian ini berlaku tanpa mengira seberapa laju kenderaan bergerak dan tanpa mengira letupan dalaman.",
+        "zh": "由于水平方向上不存在任何外力，系统总线动量的水平分量严格守恒。无论飞行器原本运动速度有多快，也无论内部发生何种剧烈爆炸，这一守恒规律始终成立。"
+      },
+      "answerLogic": {
+        "en": "Newton's second law for a multi-particle system applies along each axis independently: sum F_ext,x = d(p_tot,x)/dt and sum F_ext,y = d(p_tot,y)/dt. Because sum F_ext,x = 0, p_tot,x is constant in time. Non-zero velocity does not prevent momentum from being conserved, nor does internal explosive thrust change the total system momentum.",
+        "ms": "Hukum kedua Newton untuk sistem banyak zarah terpakai di sepanjang setiap paksi secara bebas: jumlah F_ext,x = d(p_tot,x)/dt dan jumlah F_ext,y = d(p_tot,y)/dt. Kerana jumlah F_ext,x = 0, p_tot,x adalah malar mengikut masa. Halaju bukan sifar tidak menghalang momentum daripada diabadikan, dan tolakan letupan dalaman juga tidak mengubah jumlah momentum sistem.",
+        "zh": "多质点系统的牛顿第二定律在每个坐标轴上独立成立：水平合外力等于水平动量对时间的变化率，竖直合外力等于竖直动量对时间的变化率。因为水平合外力为零，所以系统总水平动量随时间保持恒定。非零初速度不会阻碍动量守恒，内部爆炸推力也不会改变系统的总动量。"
+      },
+      "explanation": {
+        "en": "The momentum principle states that the time rate of change of total system momentum equals the net external force vector. When external forces act purely along one axis (in this case, downward gravity along the vertical axis), the net external force along the perpendicular horizontal axis is zero. Consequently, the total horizontal momentum of the system is strictly conserved. Internal forces between the two stages during staging push with equal and opposite impulses on the two parts, causing zero change in the total momentum vector. Furthermore, momentum conservation applies whether the center of mass is initially stationary or moving at high velocity.",
+        "ms": "Prinsip momentum menyatakan bahawa kadar perubahan masa bagi jumlah momentum sistem sama dengan vektor daya luaran bersih. Apabila daya luaran bertindak semata-mata di sepanjang satu paksi (dalam kes ini, graviti ke bawah di sepanjang paksi menegak), daya luaran bersih di sepanjang paksi mendatar yang berserenjang ialah sifar. Oleh itu, jumlah momentum mendatar sistem diabadikan secara ketat. Daya dalaman antara kedua-dua peringkat semasa pemisahan menolak dengan impuls yang sama dan bertentangan pada kedua-dua bahagian, menyebabkan sifar perubahan dalam vektor momentum keseluruhan. Tambahan pula, keabadian momentum terpakai sama ada pusat jisim pada mulanya pegun atau bergerak pada halaju tinggi.",
+        "zh": "动量定理指出，系统总动量随时间的变化率等于合外力矢量。当外力仅沿单一轴线作用时（在此例中为沿竖直轴向下的重力），在与其垂直的水平轴向上的合外力精确为零。因此，系统的总水平动量严格守恒。两级分离过程中的内部作用力对两部分施加大小相等、方向相反的冲量，使系统总动量矢量的改变量为零。此外，无论质心初始处于静止状态还是以高速度运动，动量守恒定律都同样成立。"
+      },
+      "misconceptions": [
+        "misc-momentum-conservation-requires-zero-velocity",
+        "misc-internal-forces-accelerate-cm"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-linear-momentum-definition",
+        "prompt": {
+          "en": "Review the vector definition of linear momentum. How is the time rate of change of momentum along a single coordinate axis related to the external forces acting along that specific axis?",
+          "ms": "Ulang kaji takrifan vektor bagi momentum linear. Bagaimanakah kadar perubahan masa bagi momentum di sepanjang satu paksi koordinat berkaitan dengan daya luaran yang bertindak di sepanjang paksi khusus tersebut?",
+          "zh": "复习线动量的矢量定义。某一单个坐标轴上的动量随时间的变化率与沿该特定轴作用的外力之间有何关系？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question evaluating whether the horizontal and vertical linear momentum components of a two-stage aerial vehicle are conserved during an internal stage separation under vertical gravity.",
+        "ms": "Soalan pelbagai pilihan menilai sama ada komponen momentum linear mendatar dan menegak bagi kenderaan udara dua peringkat diabadikan semasa pemisahan peringkat dalaman di bawah graviti menegak.",
+        "zh": "多项选择题，评估在竖直重力作用下内部级分离过程中，两级高空飞行器的水平和垂直线动量分量是否守恒。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-px-conserved-py-not",
+        "options": [
+          {
+            "id": "opt-px-conserved-py-not",
+            "label": {
+              "en": "The horizontal momentum component is strictly conserved because the net external horizontal force is zero, regardless of the vehicle's speed or internal forces.",
+              "ms": "Komponen momentum mendatar diabadikan secara ketat kerana daya luaran mendatar bersih ialah sifar, tanpa mengira kelajuan kenderaan atau daya dalaman.",
+              "zh": "水平动量分量严格守恒，因为水平合外力为零，这与飞行器的速度大小或内部推力无关。"
+            }
+          },
+          {
+            "id": "opt-px-not-conserved-speed",
+            "label": {
+              "en": "Horizontal momentum is not conserved because conservation requires the system's center of mass to be initially at rest.",
+              "ms": "Momentum mendatar tidak diabadikan kerana keabadian memerlukan pusat jisim sistem berada dalam keadaan pegun pada mulanya.",
+              "zh": "水平动量不守恒，因为动量守恒要求系统质心初始必须处于静止状态。"
+            },
+            "misconception": "misc-momentum-conservation-requires-zero-velocity"
+          },
+          {
+            "id": "opt-px-increases-internal",
+            "label": {
+              "en": "The total horizontal momentum increases because the internal explosive latch imparts a net forward impulse to the entire system.",
+              "ms": "Jumlah momentum mendatar meningkat kerana selak letupan dalaman memberikan impuls ke hadapan bersih kepada seluruh sistem.",
+              "zh": "总水平动量增加，因为内部爆炸释放栓给整个系统赋予了向前的净冲量。"
+            },
+            "misconception": "misc-internal-forces-accelerate-cm"
+          },
+          {
+            "id": "opt-both-conserved-always",
+            "label": {
+              "en": "Both horizontal and vertical momentum components are strictly conserved over time because the internal separation forces overpower gravity.",
+              "ms": "Kedua-dua komponen momentum mendatar dan menegak diabadikan secara ketat dari semasa ke semasa kerana daya pemisahan dalaman mengatasi graviti.",
+              "zh": "水平和垂直动量分量随时间都严格守恒，因为内部推力压倒了重力。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-int-easy-1",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Classify forces acting in a multi-body scenario as internal or external with respect to a defined system boundary.",
+      "prompt": {
+        "en": "A deep-space robotic probe consists of an orbiter module and a lander module joined together. Consider the combined orbiter-plus-lander as the defined system. Classify each described force as an internal force or an external force relative to this system boundary.",
+        "ms": "Satu kuar robotik angkasa lepas terdiri daripada modul pengorbit dan modul pendarat yang bercantum bersama. Anggap gabungan pengorbit dan pendarat sebagai sistem yang ditakrifkan. Kelaskan setiap daya yang diterangkan sebagai daya dalaman atau daya luaran berhubung dengan sempadan sistem ini.",
+        "zh": "一个深空探测机器人由轨道舱模块和着陆舱模块连接组合而成。将轨道舱与着陆舱的组合体视为所定义的系统。针对该系统边界，将以下描述的每个作用力分类为内力或外力。"
+      },
+      "hints": [
+        {
+          "en": "Ask yourself whether both the agent applying the force and the object receiving the force reside entirely inside the defined two-module probe system.",
+          "ms": "Tanya diri anda sama ada kedua-dua agen yang mengenakan daya dan objek yang menerima daya berada sepenuhnya di dalam sistem kuar dua modul yang ditakrifkan.",
+          "zh": "思考一下施力物体和受力物体是否都完全位于所定义的双模块探测器系统内部。"
+        },
+        {
+          "en": "Forces exchanged mutually between the orbiter and lander cancel in equal and opposite action-reaction pairs inside the system, making them internal forces. External forces must originate from the surrounding environment outside the probe.",
+          "ms": "Daya yang bertukar secara timbal balik antara pengorbit dan pendarat saling membatalkan dalam pasangan tindakan-tindak balas yang sama dan bertentangan di dalam sistem, menjadikannya daya dalaman. Daya luaran mesti berpunca daripada persekitaran di luar kuar.",
+          "zh": "轨道舱与着陆舱之间相互施加的作用力在系统内部构成大小相等、方向相反的作用力与反作用力对并相互抵消，属于内力。外力则必须来自探测器外部的周围环境。"
+        }
+      ],
+      "feedback": {
+        "en": "Forces between components of the specified system are internal, while forces exerted on the system by external agents in the surrounding environment are external.",
+        "ms": "Daya antara komponen sistem yang ditentukan adalah dalaman, manakala daya yang dikenakan ke atas sistem oleh agen luaran dalam persekitaran sekeliling adalah luaran.",
+        "zh": "所指定系统各组件之间的相互作用力属于内力，而周围环境中外部施力物体对系统施加的力则属于外力。"
+      },
+      "answerLogic": {
+        "en": "The separation spring and mechanical latch act directly between the orbiter and lander, so both the source and recipient are inside the system boundary (internal forces). In contrast, solar wind particles and interplanetary dust originate in the external environment and act upon the system from outside (external forces).",
+        "ms": "Spring pemisah dan selak mekanikal bertindak secara langsung antara pengorbit dan pendarat, jadi kedua-dua punca dan penerima berada di dalam sempadan sistem (daya dalaman). Sebaliknya, zarah angin suria dan debu antara planet berpunca dari persekitaran luar dan bertindak ke atas sistem dari luar (daya luaran).",
+        "zh": "分离弹簧和机械锁扣直接作用在轨道舱与着陆舱之间，施力方和受力方均在系统边界内部（内力）。相反，太阳风粒子和星际尘埃来自外部环境，从外部对系统施加作用（外力）。"
+      },
+      "explanation": {
+        "en": "Newton's second law for a system of particles states that the net external force equals the total mass times the acceleration of the center of mass. Internal forces always occur in equal and opposite pairs between system constituents and sum to zero vectorially, meaning internal interactions cannot change the total momentum or accelerate the center of mass.",
+        "ms": "Hukum kedua Newton untuk sistem zarah menyatakan bahawa daya luaran bersih bersamaan dengan jumlah jisim didarabkan dengan pecutan pusat jisim. Daya dalaman sentiasa wujud dalam pasangan yang sama magnitud dan bertentangan arah antara juzuk sistem dan hasil tambah vektornya adalah sifar, bermakna interaksi dalaman tidak boleh mengubah jumlah momentum atau memecutkan pusat jisim.",
+        "zh": "质点系的牛顿第二定律指出，合外力等于系统总质量乘以质心加速度。系统各组成部分之间的内力总是成对出现且大小相等、方向相反，其矢量和为零，这意味着内力不能改变系统的总动量，也不能使系统的质心产生加速度。"
+      },
+      "misconceptions": [
+        "misc-internal-forces-accelerate-cm"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-newtons-third-law",
+        "prompt": {
+          "en": "Review Newton's third law: when object A exerts a force on object B, object B simultaneously exerts an equal and opposite force on object A. When both A and B are within your system boundary, these two forces sum to zero.",
+          "ms": "Ulang kaji hukum ketiga Newton: apabila objek A mengenakan daya ke atas objek B, objek B secara serentak mengenakan daya yang sama magnitud dan bertentangan arah ke atas objek A. Apabila kedua-dua A dan B berada dalam sempadan sistem anda, kedua-dua daya ini berjumlah sifar.",
+          "zh": "复习牛顿第三定律：当物体A对物体B施加力时，物体B同时对物体A施加大小相等、方向相反的反作用力。当A和B都在所划定的系统边界内部时，这两个力的矢量和为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classification activity. Four force descriptions must each be assigned to either the Internal Force target category or the External Force target category.",
+        "ms": "Aktiviti pengelasan. Empat penerangan daya mesti masing-masing diuntukkan kepada sama ada kategori sasaran Daya Dalaman atau kategori sasaran Daya Luaran.",
+        "zh": "分类互动题。需要将四个关于力的描述分别归类到“内力”或“外力”目标分类中。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-separation-spring",
+            "label": {
+              "en": "The push exerted by a compressed separation spring acting directly between the orbiter and the lander",
+              "ms": "Tolakan yang dikenakan oleh spring pemisah termampat yang bertindak secara langsung antara pengorbit dan pendarat",
+              "zh": "处于压缩状态的分离弹簧直接作用在轨道舱与着陆舱之间的推力"
+            }
+          },
+          {
+            "id": "item-latch-tension",
+            "label": {
+              "en": "The structural holding tension exerted by the mechanical release latch connecting the two modules",
+              "ms": "Tegangan pegangan struktur yang dikenakan oleh selak pelepas mekanikal yang menyambungkan kedua-dua modul",
+              "zh": "连接两个模块的机械释放锁扣所施加的结构紧固拉力"
+            }
+          },
+          {
+            "id": "item-solar-wind",
+            "label": {
+              "en": "The pressure force exerted on the probe's outer solar sails by incoming solar wind particles",
+              "ms": "Daya tekanan yang dikenakan pada layar suria luar kuar oleh zarah angin suria yang datang",
+              "zh": "入射太阳风粒子作用在探测器外部太阳能帆板上的辐射压力"
+            }
+          },
+          {
+            "id": "item-micrometeoroid-drag",
+            "label": {
+              "en": "The resistive drag force exerted by ambient interplanetary dust particles colliding with the outer hull",
+              "ms": "Daya seretan rintangan yang dikenakan oleh zarah debu antara planet yang berlanggar dengan badan luar",
+              "zh": "星际空间环境中的尘埃颗粒撞击探测器外壳所产生的阻力"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-internal",
+            "label": {
+              "en": "Internal Force",
+              "ms": "Daya Dalaman",
+              "zh": "内力"
+            }
+          },
+          {
+            "id": "target-external",
+            "label": {
+              "en": "External Force",
+              "ms": "Daya Luaran",
+              "zh": "外力"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-separation-spring",
+            "targetId": "target-internal"
+          },
+          {
+            "itemId": "item-latch-tension",
+            "targetId": "target-internal"
+          },
+          {
+            "itemId": "item-solar-wind",
+            "targetId": "target-external"
+          },
+          {
+            "itemId": "item-micrometeoroid-drag",
+            "targetId": "target-external"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-internal-forces-accelerate-cm",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-separation-spring",
+            "targetId": "target-external"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-easy-2",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Match physical descriptions of multi-particle systems to the corresponding state of center-of-mass velocity.",
+      "prompt": {
+        "en": "Each scenario describes a mechanical system with specified internal activities and external environments. Match each scenario to the resulting behavior of its center-of-mass velocity.",
+        "ms": "Setiap senario menerangkan sistem mekanikal dengan aktiviti dalaman dan persekitaran luaran yang ditentukan. Padankan setiap senario dengan tingkah laku halaju pusat jisimnya yang terhasil.",
+        "zh": "每个情境分别描述了一个具有特定内部活动和外部环境的力学系统。将每个情境与其质心速度的相应变化行为进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Examine whether any net external horizontal force acts on each system, and determine what the total system momentum was at the start.",
+          "ms": "Periksa sama ada sebarang daya luaran mendatar bersih bertindak pada setiap sistem, dan tentukan apakah jumlah momentum sistem pada permulaan.",
+          "zh": "检查每个系统是否受到任何合外力（水平方向）的作用，并判断系统在初始时刻的总动量状态。"
+        },
+        {
+          "en": "When the net external force is zero, total momentum and center-of-mass velocity remain constant. If the system started at rest, its center-of-mass velocity stays zero; if it was already cruising, its center-of-mass velocity continues at that non-zero constant value regardless of internal walking.",
+          "ms": "Apabila daya luaran bersih adalah sifar, jumlah momentum dan halaju pusat jisim kekal malar. Jika sistem bermula dari keadaan pegun, halaju pusat jisimnya kekal sifar; jika ia sudah meluncur, halaju pusat jisimnya berterusan pada nilai malar bukan sifar itu tanpa mengira pergerakan berjalan di dalamnya.",
+          "zh": "当合外力为零时，总动量和质心速度保持不变。如果系统最初处于静止状态，其质心速度保持为零；如果系统最初已经在匀速滑行，无论内部人员如何走动，其质心速度都将保持该非零恒定值。"
+        }
+      ],
+      "feedback": {
+        "en": "The center of mass responds only to external forces: with zero net external force, an initially stationary system remains at rest and an initially moving system maintains a constant non-zero velocity.",
+        "ms": "Pusat jisim bertindak balas hanya kepada daya luaran: dengan daya luaran bersih sifar, sistem yang pada mulanya pegun kekal pegun dan sistem yang pada mulanya bergerak mengekalkan halaju malar bukan sifar.",
+        "zh": "质心的运动只对合外力做出响应：当合外力为零时，初始静止的系统质心保持静止，初始运动的系统质心保持非零恒定速度。"
+      },
+      "answerLogic": {
+        "en": "For the ice skaters, the push is internal and initial momentum is zero, so the center-of-mass velocity remains zero. For the cruising train car with walking passengers, net external force is zero and initial velocity is non-zero, so the center-of-mass velocity remains constant and non-zero. For the laboratory cart, the dangling weight exerts an external pulling force on the cart, causing its center of mass to accelerate.",
+        "ms": "Bagi pemain luncur ais, tolakan adalah daya dalaman dan momentum awal adalah sifar, jadi halaju pusat jisim kekal sifar. Bagi gerabak kereta api yang meluncur dengan penumpang berjalan, daya luaran bersih adalah sifar dan halaju awal bukan sifar, jadi halaju pusat jisim kekal malar dan bukan sifar. Bagi troli makmal, pemberat tergantung mengenakan daya tarikan luaran ke atas troli, menyebabkan pusat jisimnya memecut.",
+        "zh": "对于滑冰运动员，推力属于内力且初始动量为零，因此质心速度保持为零。对于匀速滑行且内部有人走动的车厢，合外力为零且初始速度非零，因此质心速度保持非零恒定。对于实验小车，悬挂的重物对小车施加了外力拉力，从而使质心产生加速度。"
+      },
+      "explanation": {
+        "en": "The total momentum of a system of particles equals total mass multiplied by center-of-mass velocity: p_tot = M v_CM. If no net external force acts on the system, v_CM remains strictly constant in time. Internal interactions redistribute momentum among constituents but cannot change the total momentum or shift v_CM.",
+        "ms": "Jumlah momentum bagi sistem zarah bersamaan dengan jumlah jisim didarabkan dengan halaju pusat jisim: p_tot = M v_CM. Jika tiada daya luaran bersih bertindak pada sistem, v_CM kekal malar dalam masa. Interaksi dalaman mengagihkan semula momentum antara juzuk tetapi tidak boleh mengubah jumlah momentum atau mengalihkan v_CM.",
+        "zh": "质点系的总动量等于总质量乘以质心速度：p_tot = M v_CM。若没有合外力作用于系统，v_CM 将在时间进程中严格保持恒定。内部相互作用仅在各组成部分之间重新分配动量，但不能改变总动量或改变 v_CM。"
+      },
+      "misconceptions": [
+        "misc-individual-motion-equals-cm-motion",
+        "misc-momentum-conservation-requires-zero-velocity"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-linear-momentum-definition",
+        "prompt": {
+          "en": "Recall that total system momentum equals total mass times the velocity of the center of mass. If total momentum is constant, center-of-mass velocity must also be constant.",
+          "ms": "Ingat kembali bahawa jumlah momentum sistem bersamaan dengan jumlah jisim didarabkan dengan halaju pusat jisim. Jika jumlah momentum adalah malar, halaju pusat jisim juga mestilah malar.",
+          "zh": "复习系统总动量等于总质量乘以质心速度的概念。如果系统的总动量保持恒定，则质心速度也必然保持恒定。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching activity. Three physical scenarios must each be matched to one of three center-of-mass velocity states: zero velocity, constant non-zero velocity, or changing velocity.",
+        "ms": "Aktiviti pemadanan. Tiga senario fizikal mesti masing-masing dipadankan dengan salah satu daripada tiga keadaan halaju pusat jisim: halaju sifar, halaju bukan sifar malar, atau halaju yang berubah.",
+        "zh": "匹配互动题。需要将三个物理情境分别与三种质心速度状态（质心速度为零、质心速度为非零恒定值、质心速度改变）进行连线匹配。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-skaters-ice",
+            "label": {
+              "en": "Two ice skaters initially standing still on a frictionless rink suddenly push each other apart and glide away in opposite directions",
+              "ms": "Dua pemain luncur ais yang pada mulanya berdiri pegun di atas gelanggang tanpa geseran tiba-tiba menolak antara satu sama lain dan meluncur pergi ke arah bertentangan",
+              "zh": "两名花样滑冰运动员最初静止在无摩擦的冰面上，突然相互推开并朝相反方向滑行"
+            }
+          },
+          {
+            "id": "item-subway-car",
+            "label": {
+              "en": "A frictionless maglev train car coasts horizontally at steady cruising speed while several passengers walk down the aisle in different directions",
+              "ms": "Gerabak kereta api maglev tanpa geseran meluncur secara mendatar pada kelajuan pelayaran malar sementara beberapa penumpang berjalan di sepanjang lorong dalam pelbagai arah",
+              "zh": "一节无摩擦的磁悬浮列车车厢正以恒定巡航速度沿水平方向滑行，车厢内数名乘客沿过道朝不同方向走动"
+            }
+          },
+          {
+            "id": "item-cart-falling-mass",
+            "label": {
+              "en": "A wheeled laboratory cart rolling on a level track pulled forward by a string connected over a pulley to a dangling suspended weight",
+              "ms": "Troli makmal beroda yang bergolek di atas landasan rata ditarik ke hadapan oleh tali yang disambungkan melalui takal kepada pemberat tergantung",
+              "zh": "在平直轨道上滚动的带轮实验小车，被一根跨过滑轮且连接着悬挂重物的细绳向前持续拉拽"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-cm-zero",
+            "label": {
+              "en": "Center-of-mass velocity remains zero (system center of mass remains at rest)",
+              "ms": "Halaju pusat jisim kekal sifar (pusat jisim sistem kekal pegun)",
+              "zh": "质心速度保持为零（系统质心保持静止）"
+            }
+          },
+          {
+            "id": "target-cm-constant-nonzero",
+            "label": {
+              "en": "Center-of-mass velocity remains constant and non-zero (steady uniform motion)",
+              "ms": "Halaju pusat jisim kekal malar dan bukan sifar (gerakan seragam yang mantap)",
+              "zh": "质心速度保持非零恒定（匀速直线运动）"
+            }
+          },
+          {
+            "id": "target-cm-accelerating",
+            "label": {
+              "en": "Center-of-mass velocity continuously changes (accelerated motion)",
+              "ms": "Halaju pusat jisim berubah secara berterusan (gerakan memecut)",
+              "zh": "质心速度持续改变（加速运动）"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-skaters-ice",
+            "targetId": "target-cm-zero"
+          },
+          {
+            "itemId": "item-subway-car",
+            "targetId": "target-cm-constant-nonzero"
+          },
+          {
+            "itemId": "item-cart-falling-mass",
+            "targetId": "target-cm-accelerating"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-individual-motion-equals-cm-motion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-skaters-ice",
+            "targetId": "target-cm-constant-nonzero"
+          }
+        },
+        {
+          "misconception": "misc-momentum-conservation-requires-zero-velocity",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-subway-car",
+            "targetId": "target-cm-zero"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-easy-3",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Select all statements that correctly characterize the center-of-mass motion of a mid-air exploding projectile.",
+      "prompt": {
+        "en": "A celebratory aerial firework shell is launched upward in a parabolic arc. Neglecting air resistance, the shell suddenly explodes mid-air into several glowing fragments. Select all statements that correctly describe the motion of the center of mass of the entire fragment system during and after the explosion.",
+        "ms": "Sebuah kelongsong bunga api perayaan dilancarkan ke atas dalam lengkok parabola. Dengan mengabaikan rintangan udara, kelongsong itu tiba-tiba meletup di udara kepada beberapa serpihan yang menyala. Pilih semua pernyataan yang menerangkan dengan betul pergerakan pusat jisim seluruh sistem serpihan semasa dan selepas letupan.",
+        "zh": "一枚节日礼花弹沿抛物线弧线发射升空。忽略空气阻力，礼花弹在空中突然爆炸分裂成多个发光的碎片。选择所有正确描述整个碎片系统的质心在爆炸期间及爆炸后运动状态的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Consider whether the explosive blast force acts from within the shell or originates from an external environmental agent.",
+          "ms": "Pertimbangkan sama ada daya letupan bertindak dari dalam kelongsong atau berpunca daripada agen persekitaran luaran.",
+          "zh": "思考一下爆炸冲击力是产生于礼花弹内部还是来自外部环境施力物体。"
+        },
+        {
+          "en": "Because the forces causing the explosion are entirely internal, they cancel in pairs and cannot alter the net external force on the system, which remains solely gravity.",
+          "ms": "Oleh kerana daya yang menyebabkan letupan adalah dalaman sepenuhnya, ia saling membatalkan secara berpasangan dan tidak dapat mengubah daya luaran bersih pada sistem, yang kekal hanya graviti.",
+          "zh": "由于导致爆炸的力完全是内力，它们成对相互抵消，无法改变系统所受的合外力；系统的合外力仍然只有重力。"
+        }
+      ],
+      "feedback": {
+        "en": "Because the explosion forces are entirely internal, the net external force on the fragments remains strictly gravity. Consequently, the center of mass continues along the exact same parabolic trajectory with constant downward gravitational acceleration.",
+        "ms": "Oleh kerana daya letupan adalah dalaman sepenuhnya, daya luaran bersih pada serpihan kekal hanya graviti. Akibatnya, pusat jisim terus bergerak di sepanjang trajektori parabola yang sama dengan pecutan graviti ke bawah yang malar.",
+        "zh": "因为爆炸力完全属于内力，碎片系统所受的合外力严格保持为重力。因此，碎片系统的质心继续沿着完全相同的抛物线轨迹运动，且具有恒定的竖直向下重力加速度。"
+      },
+      "answerLogic": {
+        "en": "The only external force acting on the projectile before and after the explosion is the downward force of gravity. Internal forces from the detonation cannot alter the net external force or the acceleration of the center of mass. Therefore, the center of mass continues along the identical parabolic path with downward gravitational acceleration g, rather than deflecting or dropping straight down.",
+        "ms": "Satu-satunya daya luaran yang bertindak ke atas projektil sebelum dan selepas letupan ialah daya graviti ke bawah. Daya dalaman daripada letupan tidak boleh mengubah daya luaran bersih atau pecutan pusat jisim. Oleh itu, pusat jisim terus bergerak di sepanjang laluan parabola yang serupa dengan pecutan graviti g ke bawah, bukannya melencong atau jatuh tegak ke bawah.",
+        "zh": "在爆炸发生前后，作用在抛体上的唯一外力只有竖直向下的重力。爆炸产生的内力不会改变系统的合外力，也不会改变质心的加速度。因此，质心会以竖直向下的重力加速度 g 继续沿原有的完全相同的抛物线轨迹运动，而绝不会发生偏转或直接垂直下坠。"
+      },
+      "explanation": {
+        "en": "According to Newton's second law for a system of particles, the net external force equals the total mass times the acceleration of the center of mass (Sum F_ext = M a_CM). Since the explosion forces are internal, they sum to zero and have no effect on a_CM. The center of mass of the fragments moves exactly like an equivalent single particle subjected only to gravity, following the original parabolic trajectory until fragments strike the ground.",
+        "ms": "Menurut hukum kedua Newton untuk sistem zarah, daya luaran bersih bersamaan dengan jumlah jisim didarabkan dengan pecutan pusat jisim (Jumlah F_luar = M a_CM). Memandangkan daya letupan adalah dalaman, hasil tambah vektornya adalah sifar dan tidak memberi kesan kepada a_CM. Pusat jisim serpihan bergerak tepat seperti zarah tunggal setara yang hanya tertakluk kepada graviti, mengikut trajektori parabola asal sehingga serpihan mencecah tanah.",
+        "zh": "根据质点系的牛顿第二定律，合外力等于系统总质量乘以质心加速度（合外力 = M a_CM）。由于爆炸产生的作用力属于内力，它们的矢量和为零，对质心加速度 a_CM 毫无影响。碎片系统的质心运动完全等同于一个仅受重力作用的等效单质点，继续遵循原有的抛物线轨迹，直到碎片落地。"
+      },
+      "misconceptions": [
+        "misc-cm-alters-trajectory-upon-breakup"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-center-of-mass-position",
+        "prompt": {
+          "en": "Review how the center of mass tracks the mass-weighted average position of all parts of a body, behaving as if the entire system's mass were concentrated at that single point under external forces.",
+          "ms": "Ulang kaji bagaimana pusat jisim menjejaki kedudukan purata berpemberat jisim bagi semua bahagian sesuatu jasad, bertindak seolah-olah seluruh jisim sistem tertumpu pada titik tunggal itu di bawah tindakan daya luaran.",
+          "zh": "复习质心如何追踪物体所有组成部分的质量加权平均位置，其运动表现就如同整个系统的全部质量都集中在该单一点上并受外力支配一样。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple selection activity. Select two of the four statements that accurately describe the trajectory and acceleration of the center of mass of an exploded projectile.",
+        "ms": "Aktiviti pelbagai pilihan. Pilih dua daripada empat pernyataan yang menerangkan trajektori dan pecutan pusat jisim projektil yang meletup dengan tepat.",
+        "zh": "多项选择互动题。从四个陈述中选出两项能准确描述爆炸抛体质心轨迹和加速度的陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-cm-same-path",
+            "label": {
+              "en": "The center of mass of all fragments continues along the identical parabolic trajectory the unexploded projectile would have followed",
+              "ms": "Pusat jisim semua serpihan terus bergerak di sepanjang trajektori parabola yang serupa dengan yang akan dilalui oleh projektil yang tidak meletup",
+              "zh": "所有碎片的整体质心继续沿着未爆炸抛体原本会遵循的完全相同的抛物线轨迹运动"
+            }
+          },
+          {
+            "id": "item-cm-gravity-accel",
+            "label": {
+              "en": "The acceleration of the system's center of mass remains equal to the downward acceleration due to gravity throughout the event",
+              "ms": "Pecutan pusat jisim sistem kekal bersamaan dengan pecutan ke bawah disebabkan oleh graviti sepanjang peristiwa tersebut",
+              "zh": "在整个爆炸和飞行过程中，系统质心的加速度始终等于竖直向下的重力加速度"
+            }
+          },
+          {
+            "id": "item-cm-veers-fastest",
+            "label": {
+              "en": "The center of mass abruptly veers toward whichever side the heaviest or fastest fragment is propelled",
+              "ms": "Pusat jisim melencong secara mendadak ke arah mana serpihan yang paling berat atau paling laju digerakkan",
+              "zh": "质心会突然向最重或速度最快的碎片飞出的那一侧急剧偏转"
+            },
+            "misconception": "misc-cm-alters-trajectory-upon-breakup"
+          },
+          {
+            "id": "item-cm-freezes-midair",
+            "label": {
+              "en": "The horizontal velocity of the center of mass instantly drops to zero when the explosive shock wave detonates",
+              "ms": "Halaju mendatar pusat jisim serta-merta turun kepada sifar apabila gelombang kejutan letupan meletup",
+              "zh": "在爆炸冲击波发生引爆的瞬间，质心的水平分速度会立即降为零"
+            },
+            "misconception": "misc-cm-alters-trajectory-upon-breakup"
+          }
+        ],
+        "correctSelections": [
+          "item-cm-same-path",
+          "item-cm-gravity-accel"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-cm-alters-trajectory-upon-breakup",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-cm-veers-fastest",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "misc-cm-alters-trajectory-upon-breakup",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-cm-freezes-midair",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-mod-1",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Order the logical sequence proving why internal forces vanish in Newton's second law for a system of particles.",
+      "prompt": {
+        "en": "Arrange the steps in the correct logical sequence to demonstrate why internal forces cancel and only external forces accelerate the center of mass of a system.",
+        "ms": "Susun langkah-langkah dalam urutan logik yang betul untuk menunjukkan mengapa daya dalaman saling membatalkan dan hanya daya luaran yang memecutkan pusat jisim suatu sistem.",
+        "zh": "按正确的逻辑顺序排列下列步骤，以论证为什么内力相互抵消，且只有外力才能使质点系的质心产生加速度。"
+      },
+      "hints": [
+        {
+          "en": "Start with Newton's second law applied to each individual particle before separating forces into external and internal types.",
+          "ms": "Mulakan dengan hukum kedua Newton yang digunakan pada setiap zarah individu sebelum mengasingkan daya kepada jenis luaran dan dalaman.",
+          "zh": "从应用于每个单独质点的牛顿第二定律开始，然后再将力划分为外力和内力。"
+        },
+        {
+          "en": "Remember that internal forces occur between pairs of particles within the system; invoke Newton's third law before performing the total summation.",
+          "ms": "Ingat bahawa daya dalaman berlaku antara pasangan zarah dalam sistem; gunakan hukum ketiga Newton sebelum melakukan hasil tambah keseluruhan.",
+          "zh": "请记住内力发生在系统内部的质点对之间；在进行总体求和之前，先应用牛顿第三定律。"
+        }
+      ],
+      "feedback": {
+        "en": "Logical derivation verified: individual particle equations lead to force categorization, pairwise cancellation via Newton's third law, and the final net external force equation.",
+        "ms": "Penerbitan logik disahkan: persamaan zarah individu membawa kepada pengkategorian daya, pembatalan berpasangan melalui hukum ketiga Newton, dan persamaan akhir daya luaran bersih.",
+        "zh": "逻辑推导验证完成：单个质点方程引入力分类，通过牛顿第三定律成对抵消，最终得出净外力方程。"
+      },
+      "answerLogic": {
+        "en": "Step 1 equates total mass times center-of-mass acceleration to the sum of all individual forces. Step 2 splits each particle's force into external and internal components. Step 3 recognizes internal forces as third-law action-reaction pairs that are equal and opposite. Step 4 sums all pairs to show they cancel to zero, leaving only external forces.",
+        "ms": "Langkah 1 menyamakan jumlah jisim didarab dengan pecutan pusat jisim kepada hasil tambah semua daya individu. Langkah 2 memisahkan daya setiap zarah kepada komponen luaran dan dalaman. Langkah 3 mengenal pasti daya dalaman sebagai pasangan tindakan-tindak balas hukum ketiga yang sama magnitud dan bertentangan arah. Langkah 4 menjumlahkan semua pasangan untuk menunjukkan bahawa ia terbatal kepada sifar, meninggalkan daya luaran sahaja.",
+        "zh": "第一步将总质量乘以质心加速度等同于所有单个质点合力的总和。第二步将每个质点的受力拆分为外力与内力分量。第三步根据牛顿第三定律确认内力为大小相等、方向相反的作用力与反作用力对。第四步将所有内力对求和，证明它们相消为零，从而只留下外力。"
+      },
+      "explanation": {
+        "en": "By Newton's third law, the internal force exerted by particle 1 on particle 2 is equal in magnitude and opposite in direction to the force exerted by particle 2 on particle 1. When summing over all particles in the system, these internal forces cancel out in pairs. Consequently, the acceleration of the center of mass depends exclusively on the net external force acting on the system.",
+        "ms": "Mengikut hukum ketiga Newton, daya dalaman yang dikenakan oleh zarah 1 ke atas zarah 2 adalah sama magnitud dan bertentangan arah dengan daya yang dikenakan oleh zarah 2 ke atas zarah 1. Apabila dijumlahkan ke atas semua zarah dalam sistem, daya dalaman ini saling membatalkan secara berpasangan. Akibatnya, pecutan pusat jisim bergantung secara eksklusif pada daya luaran bersih yang bertindak ke atas sistem.",
+        "zh": "根据牛顿第三定律，质点1施加于质点2的内力与质点2施加于质点1的内力大小相等且方向相反。对系统中所有质点求和时，这些内力成对抵消。因此，质心的加速度完全仅取决于作用在系统上的净外力。"
+      },
+      "misconceptions": [
+        "misc-internal-forces-accelerate-cm"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-newtons-third-law",
+        "prompt": {
+          "en": "Recall Newton's third law: whenever one object exerts a force on a second object, the second exerts an equal and opposite force on the first, so mutual internal interactions cancel when summed.",
+          "ms": "Ingat kembali hukum ketiga Newton: setiap kali satu objek mengenakan daya pada objek kedua, objek kedua mengenakan daya yang sama magnitud dan bertentangan arah pada objek pertama, jadi saling tindakan dalaman terbatal apabila dijumlahkan.",
+          "zh": "复习牛顿第三定律：当一个物体对另一个物体施加力时，第二个物体必然对第一个物体施加大小相等、方向相反的力，因此两者的相互内力求和时必然抵消。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Order four logical statements from first to last to complete the mathematical proof showing why internal forces cancel out in Newton's second law for a system of particles.",
+        "ms": "Susun empat pernyataan logik dari pertama hingga terakhir untuk melengkapkan bukti matematik yang menunjukkan mengapa daya dalaman saling membatalkan dalam hukum kedua Newton bagi sistem zarah.",
+        "zh": "将四个逻辑陈述从先到后排序，以完成证明为什么在质点系的牛顿第二定律中内力会相互抵消的数学推导。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "step-sum-particle-forces",
+            "label": {
+              "en": "Relate total mass times center-of-mass acceleration to the sum of all net forces acting on individual particles.",
+              "ms": "Hubungkan jumlah jisim didarab dengan pecutan pusat jisim kepada hasil tambah semua daya bersih yang bertindak ke atas zarah individu.",
+              "zh": "将总质量乘以质心加速度与作用于各单个质点上的所有合力之和联系起来。"
+            }
+          },
+          {
+            "id": "step-split-external-internal",
+            "label": {
+              "en": "Decompose the total force on each particle into external forces from the environment and internal forces from other particles.",
+              "ms": "Ceraikan jumlah daya pada setiap zarah kepada daya luaran daripada persekitaran dan daya dalaman daripada zarah lain.",
+              "zh": "将每个质点上的总受力分解为来自环境的外力和来自其他质点的内力。"
+            }
+          },
+          {
+            "id": "step-pair-third-law",
+            "label": {
+              "en": "Apply Newton's third law to show that internal forces between any pair of particles are equal in magnitude and opposite in direction.",
+              "ms": "Gunakan hukum ketiga Newton untuk menunjukkan bahawa daya dalaman antara mana-mana pasangan zarah adalah sama magnitud dan bertentangan arah.",
+              "zh": "应用牛顿第三定律，说明任意一对质点之间的内部相互作用力大小相等且方向相反。"
+            }
+          },
+          {
+            "id": "step-cancel-to-net-external",
+            "label": {
+              "en": "Sum all internal forces across the system so they cancel in pairs, leaving net external force equal to mass times center-of-mass acceleration.",
+              "ms": "Jumlahkan semua daya dalaman merentasi sistem supaya ia saling membatalkan secara berpasangan, meninggalkan daya luaran bersih bersamaan jisim didarab pecutan pusat jisim.",
+              "zh": "将系统内的所有内力求和使其成对相消，得出净外力等于质量乘以质心加速度。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "step-sum-particle-forces",
+          "step-split-external-internal",
+          "step-pair-third-law",
+          "step-cancel-to-net-external"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-internal-forces-accelerate-cm",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "step-cancel-to-net-external",
+            "secondItemId": "step-pair-third-law"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-mod-2",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Classify diverse physical systems by whether their center of mass accelerates, moves at constant non-zero velocity, or stays at rest.",
+      "prompt": {
+        "en": "Classify each physical scenario according to the resulting motion of the system's center of mass.",
+        "ms": "Kelaskan setiap senario fizikal mengikut pergerakan pusat jisim sistem yang terhasil.",
+        "zh": "根据系统质心的运动状态，对下列各物理情景进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Check whether the system experiences any net external force. If net external force is zero, center-of-mass acceleration must be zero.",
+          "ms": "Semak sama ada sistem mengalami sebarang daya luaran bersih. Jika daya luaran bersih adalah sifar, pecutan pusat jisim mestilah sifar.",
+          "zh": "检查系统是否受到净外力。如果净外力为零，质心加速度必为零。"
+        },
+        {
+          "en": "When center-of-mass acceleration is zero, check the initial velocity: an initially stationary system stays at rest, while an initially coasting system continues at constant velocity.",
+          "ms": "Apabila pecutan pusat jisim adalah sifar, semak halaju awal: sistem yang pada mulanya pegun kekal pegun, manakala sistem yang pada mulanya meluncur berterusan pada halaju malar.",
+          "zh": "当质心加速度为零时，检查初始速度：初始静止的系统保持静止，而初始滑行的系统则保持恒定速度继续运动。"
+        }
+      ],
+      "feedback": {
+        "en": "Classification correct: systems with zero net external force maintain constant center-of-mass velocity (either zero or non-zero), while an unbalanced external force accelerates the center of mass regardless of where it is applied.",
+        "ms": "Pengelasan betul: sistem dengan daya luaran bersih sifar mengekalkan halaju pusat jisim yang malar (sama ada sifar atau bukan sifar), manakala daya luaran yang tidak seimbang memecutkan pusat jisim tanpa mengira di mana ia dikenakan.",
+        "zh": "分类正确：净外力为零的系统保持恒定的质心速度（为零或非零），而非平衡外力无论作用于何处都会使质心产生加速度。"
+      },
+      "answerLogic": {
+        "en": "The spacecraft and meteoroid have zero net external force and initial non-zero velocities, so their centers of mass move at constant non-zero velocity. The exploding firecracker and swimmer-raft system have zero net external force and start from rest, so their centers of mass remain at rest. The ice platform experiences an unbalanced external rope force, so its center of mass accelerates.",
+        "ms": "Kuar angkasa dan meteoroid mempunyai daya luaran bersih sifar dan halaju awal bukan sifar, jadi pusat jisimnya bergerak pada halaju bukan sifar yang malar. Mercun yang meletup dan sistem perenang-rakit mempunyai daya luaran bersih sifar dan bermula dari keadaan pegun, jadi pusat jisimnya kekal pegun. Platform ais mengalami daya tali luaran yang tidak seimbang, jadi pusat jisimnya memecut.",
+        "zh": "空间探测器和流星体受到的净外力为零且具有初始非零速度，因此其质心以恒定非零速度运动。爆炸的爆竹和跳水员-浮排系统净外力为零且初始静止，因此其质心保持静止。冰面平板受到不平衡的绳索外力，因此其质心加速运动。"
+      },
+      "explanation": {
+        "en": "Newton's second law for a system states that the net external force equals total mass times center-of-mass acceleration. If the net external force is zero, the center of mass velocity cannot change; it stays at rest if initially at rest, or continues at steady speed if already moving. Applying an external force to any part of a body accelerates the center of mass according to the system's total mass.",
+        "ms": "Hukum kedua Newton bagi suatu sistem menyatakan bahawa daya luaran bersih bersamaan dengan jumlah jisim didarab dengan pecutan pusat jisim. Jika daya luaran bersih adalah sifar, halaju pusat jisim tidak boleh berubah; ia kekal pegun jika pada mulanya pegun, atau berterusan pada kelajuan mantap jika sudah bergerak. Mengenakan daya luaran pada mana-mana bahagian jasad memecutkan pusat jisim mengikut jumlah jisim sistem.",
+        "zh": "质点系的牛顿第二定律指出，净外力等于总质量乘以质心加速度。若净外力为零，质心速度便不可改变：初始静止则保持静止，初始运动则保持恒速。在物体的任何部位施加外力，都会使整个质点系的质心产生与其总质量相对应的加速度。"
+      },
+      "misconceptions": [
+        "misc-momentum-conservation-requires-zero-velocity",
+        "misc-external-force-location-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-linear-momentum-definition",
+        "prompt": {
+          "en": "Review linear momentum: total system momentum equals total mass times center-of-mass velocity. In the absence of external forces, total momentum remains constant.",
+          "ms": "Ulang kaji momentum linear: jumlah momentum sistem bersamaan dengan jumlah jisim didarab dengan halaju pusat jisim. Tanpa kehadiran daya luaran, jumlah momentum kekal malar.",
+          "zh": "复习线动量：系统的总动量等于总质量乘以质心速度。在没有外力作用时，系统总动量保持守恒。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classify five scenarios into three categories: Center of mass accelerates, Center of mass moves at constant non-zero velocity, or Center of mass remains at rest.",
+        "ms": "Kelaskan lima senario kepada tiga kategori: Pusat jisim memecut, Pusat jisim bergerak dengan halaju bukan sifar yang malar, atau Pusat jisim kekal pegun.",
+        "zh": "将五个情景归入三个类别：质心加速运动、质心以恒定非零速度运动、或质心保持静止。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-cruising-spacecraft",
+            "label": {
+              "en": "A space probe coasting through deep space with internal robotic arms moving while no thrusters fire.",
+              "ms": "Sebuah kuar angkasa meluncur merentasi angkasa lepas dengan lengan robotik dalaman bergerak sementara tiada pendorong dinyalakan.",
+              "zh": "一艘在深空中滑行的空间探测器，其内部机械臂正在运动，但推进器未点火。"
+            }
+          },
+          {
+            "id": "item-stationary-firecracker",
+            "label": {
+              "en": "A stationary firecracker exploding into multiple fragments inside a sealed vacuum chamber.",
+              "ms": "Sebuah mercun pegun yang meletup kepada beberapa serpihan di dalam kebuk vakum bertutup.",
+              "zh": "一个放置在密封真空室内的静止爆竹突然爆炸成数块碎片。"
+            }
+          },
+          {
+            "id": "item-corner-pulled-platform",
+            "label": {
+              "en": "A stationary flat platform on frictionless ice pulled horizontally at one outer corner by a constant rope tension.",
+              "ms": "Sebuah platform rata pegun di atas ais tanpa geseran ditarik secara mendatar pada satu sudut luar oleh ketegangan tali yang malar.",
+              "zh": "一个位于无摩擦冰面上的静止平板，其外缘一个角受到恒定绳索拉力的水平牵引。"
+            }
+          },
+          {
+            "id": "item-diver-on-raft",
+            "label": {
+              "en": "A swimmer standing on a floating raft initially at rest in frictionless water who dives horizontally off the edge.",
+              "ms": "Seorang perenang yang berdiri di atas rakit terapung yang pada mulanya pegun di air tanpa geseran terjun secara mendatar dari tepi.",
+              "zh": "一名游泳者站在无摩擦水中初始静止的浮排上，随后水平跳入水中。"
+            }
+          },
+          {
+            "id": "item-meteor-coasting",
+            "label": {
+              "en": "A meteoroid traveling through an interstellar void far from all gravitational sources.",
+              "ms": "Sebuah meteoroid yang bergerak merentasi ruang antara bintang jauh daripada semua punca graviti.",
+              "zh": "一颗在远离所有引力源的星际空间中飞行的流星体。"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-accelerates",
+            "label": {
+              "en": "Center of mass accelerates",
+              "ms": "Pusat jisim memecut",
+              "zh": "质心加速运动"
+            }
+          },
+          {
+            "id": "target-constant-vel",
+            "label": {
+              "en": "Center of mass moves at constant non-zero velocity",
+              "ms": "Pusat jisim bergerak dengan halaju bukan sifar yang malar",
+              "zh": "质心以恒定非零速度运动"
+            }
+          },
+          {
+            "id": "target-remains-at-rest",
+            "label": {
+              "en": "Center of mass remains at rest",
+              "ms": "Pusat jisim kekal pegun",
+              "zh": "质心保持静止"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-cruising-spacecraft",
+            "targetId": "target-constant-vel"
+          },
+          {
+            "itemId": "item-stationary-firecracker",
+            "targetId": "target-remains-at-rest"
+          },
+          {
+            "itemId": "item-corner-pulled-platform",
+            "targetId": "target-accelerates"
+          },
+          {
+            "itemId": "item-diver-on-raft",
+            "targetId": "target-remains-at-rest"
+          },
+          {
+            "itemId": "item-meteor-coasting",
+            "targetId": "target-constant-vel"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-momentum-conservation-requires-zero-velocity",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-cruising-spacecraft",
+            "targetId": "target-accelerates"
+          }
+        },
+        {
+          "misconception": "misc-external-force-location-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-corner-pulled-platform",
+            "targetId": "target-remains-at-rest"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-mod-3",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Match directional fragment movements in an explosion to the required counter-movement maintaining center-of-mass velocity.",
+      "prompt": {
+        "en": "A firework shell is coasting Eastward along a parabolic path when an internal explosion splits it. Match each fragment's velocity deviation to the required counter-balancing behavior of the remaining mass that preserves the center-of-mass trajectory.",
+        "ms": "Sebuah kelongsong bunga api sedang meluncur ke arah Timur di sepanjang laluan parabola apabila letupan dalaman membelahnya. Padankan sisihan halaju setiap serpihan dengan tingkah laku pengimbang yang diperlukan oleh jisim selebihnya yang mengekalkan trajektori pusat jisim.",
+        "zh": "一枚烟花弹正沿抛物线轨迹向东滑行，内部爆炸将其炸裂。将各个碎片的运动偏差与其余质量所需的平衡运动进行匹配，以确保质心轨迹保持不变。"
+      },
+      "hints": [
+        {
+          "en": "Because internal explosion forces cancel in pairs, the total momentum vector and the motion of the center of mass remain completely unchanged by the breakup.",
+          "ms": "Kerana daya letupan dalaman saling membatalkan secara berpasangan, vektor jumlah momentum dan pergerakan pusat jisim kekal tidak berubah sama sekali oleh perpecahan tersebut.",
+          "zh": "因为内部爆炸力成对相互抵消，总动量矢量以及质心的运动完全不受碎片炸裂的影响。"
+        },
+        {
+          "en": "Any impulse given to one fragment in a specific direction must be balanced by an equal and opposite impulse distributed among the remaining fragments.",
+          "ms": "Sebarang impuls yang diberikan kepada satu serpihan dalam arah tertentu mesti diimbangi oleh impuls yang sama magnitud dan bertentangan arah yang diagihkan dalam kalangan serpihan yang selebihnya.",
+          "zh": "给予某块碎片特定方向的任何冲量，都必须由分布在其余碎片中的大小相等、方向相反的冲量来平衡。"
+        }
+      ],
+      "feedback": {
+        "en": "Matching correct: every directional burst component is countered by an equal and opposite momentum shift in the remaining fragments, ensuring the center of mass follows its original path.",
+        "ms": "Padanan betul: setiap komponen letupan berarah diimbangi oleh anjakan momentum yang sama magnitud dan bertentangan arah pada serpihan yang selebihnya, memastikan pusat jisim mengikuti laluan asalnya.",
+        "zh": "匹配正确：每个方向上的爆炸分量都由其余碎片大小相等、方向相反的动量改变相平衡，确保质心严格遵循其原轨迹。"
+      },
+      "answerLogic": {
+        "en": "A fragment propelled Northward requires Southward counter-momentum from the rest of the shell. A fragment propelled Southward requires Northward counter-momentum. A fragment speeding up Eastward beyond center-of-mass velocity requires the remaining mass to have reduced forward velocity. A fragment moving Eastward slower than the center of mass requires the remaining mass to have increased forward velocity.",
+        "ms": "Serpihan yang didorong ke arah Utara memerlukan momentum balas ke arah Selatan daripada bahagian kelongsong yang selebihnya. Serpihan yang didorong ke arah Selatan memerlukan momentum balas ke arah Utara. Serpihan yang memecut ke hadapan ke arah Timur melebihi halaju pusat jisim memerlukan jisim yang selebihnya mempunyai halaju ke hadapan yang berkurang. Serpihan yang bergerak ke arah Timur lebih perlahan daripada pusat jisim memerlukan jisim yang selebihnya mempunyai halaju ke hadapan yang meningkat.",
+        "zh": "向北喷射的碎片需要其余部分提供向南的平衡动量。向南喷射的碎片需要向北的平衡动量。向前（向东）加速超过质心速度的碎片要求其余质量的向前速度降低。向前（向东）运动但慢于质心速度的碎片要求其余质量的向前速度增加。"
+      },
+      "explanation": {
+        "en": "Since forces caused by the explosion are purely internal, the net external force on the exploding shell remains only the downward gravitational force. Consequently, the center of mass continues along the identical parabolic path it would have followed with no explosion. Any momentum component gained by one piece must be exactly offset by opposite momentum in the remaining fragments.",
+        "ms": "Oleh kerana daya yang disebabkan oleh letupan adalah semata-mata dalaman, daya luaran bersih pada kelongsong yang meletup kekal hanya daya graviti ke bawah. Akibatnya, pusat jisim meneruskan sepanjang laluan parabola serupa yang sepatutnya dilaluinya tanpa letupan. Sebarang komponen momentum yang diperoleh oleh satu bahagian mesti diimbangi dengan tepat oleh momentum bertentangan dalam serpihan yang selebihnya.",
+        "zh": "由于爆炸产生的力纯属内力，爆炸烟花弹受到的净外力依然仅有向下的重力。因此，质心继续沿着若未发生爆炸本应遵循的完全相同的抛物线轨迹运动。某一块碎片获得的任何动量分量，都必须由其余碎片中相反的动量精确抵消。"
+      },
+      "misconceptions": [
+        "misc-individual-motion-equals-cm-motion",
+        "misc-cm-alters-trajectory-upon-breakup"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-center-of-mass-position",
+        "prompt": {
+          "en": "Review center of mass position: the center of mass is the mass-weighted average position of all pieces. When no external forces act, its velocity is the mass-weighted average of individual velocities.",
+          "ms": "Ulang kaji kedudukan pusat jisim: pusat jisim ialah kedudukan purata berpemberat jisim bagi semua bahagian. Apabila tiada daya luaran bertindak, halajunya ialah purata berpemberat jisim bagi halaju individu.",
+          "zh": "复习质心位置：质心是所有组成部分的质量加权平均位置。在没有外力作用时，其速度是所有个体速度的质量加权平均值。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Match each of four fragment velocity deviations to the corresponding momentum requirement on the remaining mass needed to maintain the center-of-mass trajectory.",
+        "ms": "Padankan setiap daripada empat sisihan halaju serpihan dengan keperluan momentum yang sepadan pada jisim yang selebihnya untuk mengekalkan trajektori pusat jisim.",
+        "zh": "将四个碎片速度偏差分别与其余质量维持质心轨迹所需的相应动量要求进行匹配。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-lateral-north",
+            "label": {
+              "en": "Fragment A is propelled Northward, perpendicular to the flight path.",
+              "ms": "Serpihan A didorong ke arah Utara, berserenjang dengan laluan penerbangan.",
+              "zh": "碎片A垂直于飞行路径向北喷射。"
+            }
+          },
+          {
+            "id": "item-lateral-south",
+            "label": {
+              "en": "Fragment B is propelled Southward, perpendicular to the flight path.",
+              "ms": "Serpihan B didorong ke arah Selatan, berserenjang dengan laluan penerbangan.",
+              "zh": "碎片B垂直于飞行路径向南喷射。"
+            }
+          },
+          {
+            "id": "item-longitudinal-speedup",
+            "label": {
+              "en": "Fragment C surges forward Eastward at a speed exceeding the center-of-mass velocity.",
+              "ms": "Serpihan C meluncur ke hadapan ke arah Timur pada kelajuan yang melebihi halaju pusat jisim.",
+              "zh": "碎片C沿原方向向东疾驰，其速度大于质心速度。"
+            }
+          },
+          {
+            "id": "item-longitudinal-slowdown",
+            "label": {
+              "en": "Fragment D moves forward Eastward at a speed less than the center-of-mass velocity.",
+              "ms": "Serpihan D bergerak ke hadapan ke arah Timur pada kelajuan yang kurang daripada halaju pusat jisim.",
+              "zh": "碎片D沿原方向向东前行，但速度低于质心速度。"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-south-recoil",
+            "label": {
+              "en": "Remaining fragments must deliver Southward momentum to prevent any lateral deviation of the center of mass.",
+              "ms": "Serpihan yang selebihnya mesti menghasilkan momentum ke arah Selatan untuk mengelakkan sebarang sisihan sisi pusat jisim.",
+              "zh": "其余碎片必须提供向南的动量，以防止质心发生任何侧向偏离。"
+            }
+          },
+          {
+            "id": "target-north-recoil",
+            "label": {
+              "en": "Remaining fragments must deliver Northward momentum to prevent any lateral deviation of the center of mass.",
+              "ms": "Serpihan yang selebihnya mesti menghasilkan momentum ke arah Utara untuk mengelakkan sebarang sisihan sisi pusat jisim.",
+              "zh": "其余碎片必须提供向北的动量，以防止质心发生任何侧向偏离。"
+            }
+          },
+          {
+            "id": "target-backward-compensation",
+            "label": {
+              "en": "Remaining fragments must have reduced forward velocity so the mass-weighted velocity equals the center-of-mass velocity.",
+              "ms": "Serpihan yang selebihnya mesti mempunyai halaju ke hadapan yang berkurang supaya halaju purata berpemberat jisim menyamai halaju pusat jisim.",
+              "zh": "其余碎片的向前速度必须减小，使质量加权平均速度等于质心速度。"
+            }
+          },
+          {
+            "id": "target-forward-compensation",
+            "label": {
+              "en": "Remaining fragments must have increased forward velocity so the mass-weighted velocity equals the center-of-mass velocity.",
+              "ms": "Serpihan yang selebihnya mesti mempunyai halaju ke hadapan yang meningkat supaya halaju purata berpemberat jisim menyamai halaju pusat jisim.",
+              "zh": "其余碎片的向前速度必须增大，使质量加权平均速度等于质心速度。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-lateral-north",
+            "targetId": "target-south-recoil"
+          },
+          {
+            "itemId": "item-lateral-south",
+            "targetId": "target-north-recoil"
+          },
+          {
+            "itemId": "item-longitudinal-speedup",
+            "targetId": "target-backward-compensation"
+          },
+          {
+            "itemId": "item-longitudinal-slowdown",
+            "targetId": "target-forward-compensation"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-cm-alters-trajectory-upon-breakup",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-lateral-north",
+            "targetId": "target-north-recoil"
+          }
+        },
+        {
+          "misconception": "misc-individual-motion-equals-cm-motion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-longitudinal-speedup",
+            "targetId": "target-forward-compensation"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-chal-1",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Order multi-particle configurations by the magnitude of their center-of-mass acceleration under differing external force distributions.",
+      "prompt": {
+        "en": "Four systems of identical total mass, each composed of two coupled particles, experience different force combinations. Rank the systems in order of the magnitude of their center-of-mass acceleration, from greatest acceleration to least acceleration.",
+        "ms": "Empat sistem dengan jumlah jisim yang sama, setiap satu terdiri daripada dua zarah berpasangan, mengalami gabungan daya yang berbeza. Susun sistem-sistem tersebut mengikut tertib magnitud pecutan pusat jisimnya, daripada pecutan terbesar kepada pecutan terkecil.",
+        "zh": "四个总质量相同且均由两个相连质点组成的系统分别承受不同的受力组合。请按质心加速度的大小将这些系统排序，从最大加速度排到最小加速度。"
+      },
+      "hints": [
+        {
+          "en": "Recall Newton's second law for a system of particles: the acceleration of the center of mass is determined entirely by the vector sum of all external forces divided by the total mass.",
+          "ms": "Ingat kembali hukum kedua Newton bagi suatu sistem zarah: pecutan pusat jisim ditentukan sepenuhnya oleh hasil tambah vektor bagi semua daya luaran dibahagikan dengan jumlah jisim.",
+          "zh": "回忆质点系的牛顿第二定律：质心的加速度完全由所有外力的矢量和除以总质量决定。"
+        },
+        {
+          "en": "Internal interactions between particles cancel out pairwise according to Newton's third law and have no effect on the center of mass. Focus purely on the net external force vector acting on each system.",
+          "ms": "Interaksi dalaman antara zarah membatalkan satu sama lain secara berpasangan mengikut hukum ketiga Newton dan tidak memberi kesan kepada pusat jisim. Tumpukan perhatian semata-mata pada vektor daya luaran bersih yang bertindak ke atas setiap sistem.",
+          "zh": "根据牛顿第三定律，质点间的内部相互作用成对抵消，对质心没有任何影响。请完全专注于作用在每个系统上的合外力矢量。"
+        }
+      ],
+      "feedback": {
+        "en": "Center-of-mass acceleration depends exclusively on the net external force acting on the total mass of the system.",
+        "ms": "Pecutan pusat jisim bergantung secara eksklusif pada daya luaran bersih yang bertindak ke atas jumlah jisim sistem.",
+        "zh": "质心的加速度完全取决于作用在系统总质量上的合外力。"
+      },
+      "answerLogic": {
+        "en": "By Newton's second law for a system of particles, the net external force equals total mass times center-of-mass acceleration, while all internal forces cancel pairwise. System 1 has two external forces of magnitude F acting in the same forward direction, yielding a net external force of 2F. System 2 has a single external force of magnitude F forward, while its intense internal spring forces cancel out completely, yielding a net external force of F. System 3 has an external force of magnitude F forward and an opposing external drag force of half that magnitude backward, yielding a net external force of 0.5F. System 4 experiences zero external forces, so its explosive internal forces produce exactly zero net force. Therefore, the correct order of center-of-mass acceleration magnitude from greatest to least is System 1, System 2, System 3, and System 4.",
+        "ms": "Menurut hukum kedua Newton bagi sistem zarah, daya luaran bersih bersamaan dengan jumlah jisim didarab dengan pecutan pusat jisim, manakala semua daya dalaman terbatal secara berpasangan. Sistem 1 mempunyai dua daya luaran bermagnitud F yang bertindak dalam arah ke hadapan yang sama, menghasilkan daya luaran bersih 2F. Sistem 2 mempunyai daya luaran tunggal bermagnitud F ke hadapan, manakala daya spring dalamannya yang kuat terbatal sepenuhnya, menghasilkan daya luaran bersih F. Sistem 3 mempunyai daya luaran bermagnitud F ke hadapan dan daya seretan luaran menentang separuh magnitud itu ke belakang, menghasilkan daya luaran bersih 0.5F. Sistem 4 mengalami sifar daya luaran, jadi daya letupan dalamannya menghasilkan daya bersih tepat sifar. Oleh itu, susunan magnitud pecutan pusat jisim yang betul daripada terbesar kepada terkecil ialah Sistem 1, Sistem 2, Sistem 3, dan Sistem 4.",
+        "zh": "根据质点系的牛顿第二定律，合外力等于总质量乘以质心加速度，而所有内力均成对相互抵消。系统 1 受到两个大小为 F 且同向向前的外力，合外力为 2F。系统 2 受到一个大小为 F 的向前单一外力，其内部强烈的弹簧力完全抵消，合外力为 F。系统 3 受到一个大小为 F 的向前外力和一个大小为其一半的向后外阻力，合外力为 0.5F。系统 4 所受外力为零，其内部爆炸力产生的合外力精确为零。因此，按质心加速度大小从大到小的正确排列顺序为：系统 1、系统 2、系统 3、系统 4。"
+      },
+      "explanation": {
+        "en": "Newton's second law for a system of particles states that the sum of external forces equals the total mass multiplied by the acceleration of the center of mass. Internal forces always occur in action-reaction pairs between particles within the system and sum to zero vectorially. Consequently, internal forces cannot alter the center-of-mass velocity or acceleration, no matter how intense they are. Furthermore, an external force accelerates the center of mass identically regardless of which individual constituent particle receives that force.",
+        "ms": "Hukum kedua Newton bagi suatu sistem zarah menyatakan bahawa hasil tambah daya luaran bersamaan dengan jumlah jisim didarab dengan pecutan pusat jisim. Daya dalaman sentiasa wujud dalam pasangan tindakan-tindak balas antara zarah dalam sistem dan menghasilkan jumlah sifar secara vektor. Akibatnya, daya dalaman tidak boleh mengubah halaju atau pecutan pusat jisim, tidak kira betapa kuatnya daya tersebut. Tambahan pula, daya luaran memecutkan pusat jisim secara serupa tanpa mengira zarah juzuk mana yang menerima daya tersebut.",
+        "zh": "质点系的牛顿第二定律指出，合外力矢量和等于总质量乘以质心的加速度。内力始终在系统内部各质点之间成对出现（作用力与反作用力），在矢量求和时恒等于零。因此，无论内力多么剧烈，都绝不可能改变质心的速度或加速度。此外，外力对质心加速度的作用效果是完全一致的，与该外力具体作用在系统的哪一个组成质点上无关。"
+      },
+      "misconceptions": [
+        "misc-external-force-location-confusion",
+        "misc-internal-forces-accelerate-cm"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-center-of-mass-position",
+        "prompt": {
+          "en": "Review how the center-of-mass position represents the mass-weighted average distribution of all particle positions, and why differentiating this relationship leads to Newton's second law for the entire system.",
+          "ms": "Ulang kaji bagaimana kedudukan pusat jisim mewakili taburan purata berpemberat jisim bagi semua kedudukan zarah, dan mengapa membezakan hubungan ini membawa kepada hukum kedua Newton bagi seluruh sistem.",
+          "zh": "复习质心位置如何表征所有质点位置由质量加权的平均分布，以及对该关系进行时间求导为何能推导出整个系统的牛顿第二定律。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive ordering task: four coupled-particle systems under different force arrangements are presented. Reorder the four items into a vertical sequence from the largest center-of-mass acceleration magnitude at the top to the smallest magnitude at the bottom.",
+        "ms": "Tugasan susunan interaktif: empat sistem zarah berpasangan di bawah susunan daya yang berbeza dipersembahkan. Susun semula empat item ke dalam urutan menegak daripada magnitud pecutan pusat jisim terbesar di bahagian atas kepada magnitud terkecil di bahagian bawah.",
+        "zh": "交互式排序任务：呈现了受不同外力配置作用的四个双质点耦合系统。将这四个项目按质心加速度大小重新排列成垂直序列，最大加速度置于最上方，最小加速度置于最下方。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-dual-aligned",
+            "label": {
+              "en": "System 1: External forces of equal magnitude F act on both particles in the same forward direction.",
+              "ms": "Sistem 1: Daya luaran dengan magnitud F yang sama bertindak pada kedua-dua zarah dalam arah ke hadapan yang sama.",
+              "zh": "系统 1：两个质点均受到大小为 F 且方向相同的向前外力作用。"
+            }
+          },
+          {
+            "id": "item-single-forward",
+            "label": {
+              "en": "System 2: A single external force of magnitude F acts forward on one particle, while strong internal spring forces act between the two particles.",
+              "ms": "Sistem 2: Daya luaran tunggal bermagnitud F bertindak ke hadapan pada satu zarah, manakala daya spring dalaman yang kuat bertindak di antara kedua-dua zarah.",
+              "zh": "系统 2：仅一个质点受到大小为 F 的向前外力，同时两质点之间存在较强的内部弹簧力相互作用。"
+            }
+          },
+          {
+            "id": "item-opposed-unequal",
+            "label": {
+              "en": "System 3: An external force of magnitude F acts forward on the first particle while an external opposing drag force of half that magnitude acts backward on the second particle.",
+              "ms": "Sistem 3: Daya luaran bermagnitud F bertindak ke hadapan pada zarah pertama manakala daya seretan luaran menentang separuh daripada magnitud itu bertindak ke belakang pada zarah kedua.",
+              "zh": "系统 3：第一个质点受到大小为 F 的向前外力，而第二个质点受到大小为 F 一半的向后外阻力。"
+            }
+          },
+          {
+            "id": "item-internal-explosion",
+            "label": {
+              "en": "System 4: Zero external forces act on either particle, but an energetic internal pyrotechnic charge drives the two particles apart.",
+              "ms": "Sistem 4: Sifar daya luaran bertindak pada mana-mana zarah, tetapi cas piroteknik dalaman yang bertenaga menolak kedua-dua zarah saling menjauhi.",
+              "zh": "系统 4：没有任何外力作用于质点，但内部剧烈的烟火装药爆破将两个质点推开。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-dual-aligned",
+          "item-single-forward",
+          "item-opposed-unequal",
+          "item-internal-explosion"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-internal-forces-accelerate-cm",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-internal-explosion",
+            "secondItemId": "item-single-forward"
+          }
+        },
+        {
+          "misconception": "misc-external-force-location-confusion",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-opposed-unequal",
+            "secondItemId": "item-single-forward"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-chal-2",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Select all valid physical deductions regarding momentum conservation and center-of-mass motion during internal separations.",
+      "prompt": {
+        "en": "Select all statements that accurately describe the momentum and center-of-mass motion of a multi-particle system undergoing internal separation or explosion.",
+        "ms": "Pilih semua pernyataan yang menerangkan dengan tepat gerakan momentum dan pusat jisim bagi suatu sistem banyak zarah yang mengalami pemisahan atau letupan dalaman.",
+        "zh": "选择所有准确描述发生内部解体或爆炸的多质点系统的动量与质心运动的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Recall the fundamental distinction between internal forces (which cancel out in pairs) and external forces (which alter total system momentum).",
+          "ms": "Ingat kembali perbezaan asas antara daya dalaman (yang terbatal secara berpasangan) dan daya luaran (yang mengubah jumlah momentum sistem).",
+          "zh": "回忆内力（成对抵消）与外力（改变系统总动量）之间的根本区别。"
+        },
+        {
+          "en": "Consider whether the center of mass of an isolated system must be at rest for total momentum to be conserved, and whether individual fragment velocities must match the velocity of the center of mass.",
+          "ms": "Pertimbangkan sama ada pusat jisim sistem terpencil mesti berada dalam keadaan pegun untuk jumlah momentum diabadikan, dan sama ada halaju serpihan individu mesti sepadan dengan halaju pusat jisim.",
+          "zh": "考虑孤立系统的质心是否必须处于静止状态才能使总动量守恒，以及各个碎片的运动速度是否必须与质心速度相同。"
+        }
+      ],
+      "feedback": {
+        "en": "Total momentum conservation depends strictly on the absence of net external forces, while internal breakup forces cannot alter the center-of-mass trajectory.",
+        "ms": "Keabadian jumlah momentum bergantung secara ketat pada ketiadaan daya luaran bersih, manakala daya perpecahan dalaman tidak boleh mengubah trajektori pusat jisim.",
+        "zh": "总动量守恒完全取决于合外力是否为零，而内部解体力绝不能改变质心的运动轨迹。"
+      },
+      "answerLogic": {
+        "en": "Statement 1 is valid because internal forces do not change center-of-mass motion, so an exploding projectile's center of mass follows the original parabolic trajectory under gravity alone. Statement 2 is valid because momentum conservation applies to any isolated system regardless of its initial center-of-mass speed. Statement 3 is valid because opposite internal impulses allow fragments to fly apart at high speeds while the system's center of mass remains completely stationary. In contrast, Statement 4 is false because internal chemical forces cancel out and cannot deflect the center of mass. Statement 5 is false because momentum is conserved in any isolated system, moving or stationary. Statement 6 is false because individual fragments can move in opposite directions and with speeds vastly different from the center-of-mass velocity.",
+        "ms": "Pernyataan 1 sah kerana daya dalaman tidak mengubah gerakan pusat jisim, maka pusat jisim projektil yang meletup mengikut trajektori parabola asal di bawah tindakan graviti sahaja. Pernyataan 2 sah kerana keabadian momentum terpakai kepada mana-mana sistem terpencil tanpa mengira kelajuan awal pusat jisimnya. Pernyataan 3 sah kerana impuls dalaman yang bertentangan membolehkan serpihan berterbangan pada kelajuan tinggi sementara pusat jisim sistem kekal pegun sepenuhnya. Sebaliknya, Pernyataan 4 salah kerana daya kimia dalaman terbatal dan tidak boleh memesongkan pusat jisim. Pernyataan 5 salah kerana momentum diabadikan dalam mana-mana sistem terpencil, sama ada bergerak atau pegun. Pernyataan 6 salah kerana serpihan individu boleh bergerak ke arah bertentangan dan dengan kelajuan yang sangat berbeza daripada halaju pusat jisim.",
+        "zh": "陈述 1 正确，因为内力不改变质心运动，爆炸抛体的质心在仅受重力作用下继续沿着原有的抛物线轨迹运动。陈述 2 正确，因为动量守恒定律适用于任何孤立系统，与其初始质心速度无关。陈述 3 正确，因为成对反向的内部冲量使碎片以高速向相反方向飞散，而系统的质心仍能保持完全静止。相反，陈述 4 错误，因为内部化学力成对抵消，不可能偏折质心轨迹。陈述 5 错误，因为无论运动还是静止，只要系统孤立，动量均守恒。陈述 6 错误，因为各个碎片完全可以向相反方向运动，且其速度可以与质心速度截然不同。"
+      },
+      "explanation": {
+        "en": "The motion of the center of mass of any system is governed solely by external forces: the net external force equals the total mass times the center-of-mass acceleration. During an internal explosion or separation, the forces propelling the fragments apart are internal forces that cancel pairwise by Newton's third law. Therefore, internal forces impart zero net impulse to the system. The total momentum remains constant if no net external force acts, and under uniform gravity alone, the center of mass traces the exact same parabolic flight path as an unexploded projectile. Individual parts may acquire diverse velocities whose mass-weighted average always yields the center-of-mass velocity.",
+        "ms": "Gerakan pusat jisim bagi mana-mana sistem dikawal semata-mata oleh daya luaran: daya luaran bersih bersamaan dengan jumlah jisim didarab dengan pecutan pusat jisim. Semasa letupan atau pemisahan dalaman, daya yang mendorong serpihan berpisah adalah daya dalaman yang membatalkan satu sama lain secara berpasangan mengikut hukum ketiga Newton. Oleh itu, daya dalaman memberikan sifar impuls bersih kepada sistem. Jumlah momentum kekal malar jika tiada daya luaran bersih bertindak, dan di bawah pengaruh graviti seragam sahaja, pusat jisim mengikuti laluan penerbangan parabola yang sama persis seperti projektil yang tidak meletup. Bahagian individu boleh memperoleh pelbagai halaju yang mana purata berpemberat jisimnya sentiasa menghasilkan halaju pusat jisim.",
+        "zh": "任何系统的质心运动仅由外力决定：合外力等于总质量乘以质心加速度。在内部爆炸或分离过程中，推动各个碎片分开的力是内力，根据牛顿第三定律它们成对抵消。因此，内力对系统施加的净冲量为零。若没有合外力作用，系统总动量保持恒定；若仅受均匀重力作用，质心将精确地沿着未爆炸抛体的原有抛物线飞行轨迹运动。各个碎片可以拥有截然不同的速度，而这些速度的质量加权平均值始终等于质心速度。"
+      },
+      "misconceptions": [
+        "misc-cm-alters-trajectory-upon-breakup",
+        "misc-momentum-conservation-requires-zero-velocity",
+        "misc-individual-motion-equals-cm-motion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-linear-momentum-definition",
+        "prompt": {
+          "en": "Review the definition of total linear momentum as the vector sum of individual particle momenta, and verify that this equals the total system mass multiplied by the center-of-mass velocity.",
+          "ms": "Ulang kaji takrifan jumlah momentum linear sebagai hasil tambah vektor bagi momentum zarah individu, dan sahkan bahawa ini bersamaan dengan jumlah jisim sistem didarab dengan halaju pusat jisim.",
+          "zh": "复习总线动量作为各质点动量矢量和的定义，并确认其等于系统总质量乘以质心速度。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive multiple selection task: evaluate six statements regarding system momentum and center-of-mass behavior during internal separations. Select all statements that represent correct physics principles.",
+        "ms": "Tugasan pilihan berganda interaktif: nilaikan enam pernyataan mengenai momentum sistem dan tingkah laku pusat jisim semasa pemisahan dalaman. Pilih semua pernyataan yang mewakili prinsip fizik yang betul.",
+        "zh": "交互式多项选择任务：评估关于内部解体期间系统动量与质心表现的六个陈述。勾选所有代表正确物理原理的陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-cm-parabola",
+            "label": {
+              "en": "If a projectile explodes in mid-air, the center of mass of all fragments continues along the exact same parabolic trajectory as the unbroken projectile would have followed.",
+              "ms": "Jika projektil meletup di udara, pusat jisim bagi semua serpihan terus bergerak mengikut trajektori parabola yang sama seperti yang akan dilalui oleh projektil yang tidak pecah.",
+              "zh": "若抛体在空中发生爆炸，所有碎片的质心将继续沿着未分裂抛体原本会遵循的完全相同的抛物线轨迹运动。"
+            }
+          },
+          {
+            "id": "item-momentum-moving-or-rest",
+            "label": {
+              "en": "The total linear momentum of an isolated system remains constant regardless of whether its center of mass is initially moving at high speed or at rest.",
+              "ms": "Jumlah momentum linear suatu sistem terpencil kekal malar tanpa mengira sama ada pusat jisimnya pada mulanya bergerak pada kelajuan tinggi atau pegun.",
+              "zh": "孤立系统的总线动量保持恒定，无论其质心最初是以高速运动还是处于静止状态。"
+            }
+          },
+          {
+            "id": "item-fragments-opposite",
+            "label": {
+              "en": "An isolated system initially at rest can expel fragments in opposite directions at high speeds while its center of mass remains permanently at rest.",
+              "ms": "Sistem terpencil yang pada mulanya pegun boleh melontarkan serpihan ke arah bertentangan pada kelajuan tinggi sementara pusat jisimnya kekal pegun secara kekal.",
+              "zh": "一个初始静止的孤立系统可以向相反方向高速喷射碎片，而系统的质心保持永久静止。"
+            }
+          },
+          {
+            "id": "item-chemical-deflects-cm",
+            "label": {
+              "en": "The release of chemical energy during a mid-air detonation produces an impulsive force that abruptly knocks the center-of-mass path off its parabolic trajectory.",
+              "ms": "Pembebasan tenaga kimia semasa letupan di udara menghasilkan daya impuls yang memesongkan laluan pusat jisim secara mendadak daripada trajektori parabolanya.",
+              "zh": "空中爆炸过程中化学能的释放会产生冲力，使质心路径突然偏离原有的抛物线轨迹。"
+            },
+            "misconception": "misc-cm-alters-trajectory-upon-breakup"
+          },
+          {
+            "id": "item-stationary-only-restriction",
+            "label": {
+              "en": "Conservation of linear momentum holds only for systems whose center-of-mass velocity is zero prior to internal separation.",
+              "ms": "Keabadian momentum linear hanya berlaku untuk sistem yang halaju pusat jisimnya adalah sifar sebelum pemisahan dalaman.",
+              "zh": "线动量守恒仅适用于内部解体前质心速度为零的系统。"
+            },
+            "misconception": "misc-momentum-conservation-requires-zero-velocity"
+          },
+          {
+            "id": "item-identical-fragment-velocities",
+            "label": {
+              "en": "Because total momentum equals total mass times center-of-mass velocity, every separated fragment must move in the same direction and at the same speed as the center of mass.",
+              "ms": "Oleh kerana jumlah momentum bersamaan dengan jumlah jisim didarab dengan halaju pusat jisim, setiap serpihan yang terpisah mesti bergerak dalam arah dan kelajuan yang sama seperti pusat jisim.",
+              "zh": "因为总动量等于总质量乘以质心速度，所以每个分离后的碎片都必须以与质心相同的速度和方向运动。"
+            },
+            "misconception": "misc-individual-motion-equals-cm-motion"
+          }
+        ],
+        "correctSelections": [
+          "item-cm-parabola",
+          "item-momentum-moving-or-rest",
+          "item-fragments-opposite"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-cm-alters-trajectory-upon-breakup",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-chemical-deflects-cm",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "misc-momentum-conservation-requires-zero-velocity",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-stationary-only-restriction",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "misc-individual-motion-equals-cm-motion",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-identical-fragment-velocities",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-chal-3",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Match specific multi-body interactions to their strictly conserved physical vectors and trajectory invariants.",
+      "prompt": {
+        "en": "Match each physical scenario to the correct principle governing its total linear momentum and center-of-mass motion.",
+        "ms": "Padankan setiap senario fizikal dengan prinsip yang betul yang mengawal jumlah momentum linear dan gerakan pusat jisimnya.",
+        "zh": "将每个物理场景与支配其总线动量及质心运动的正确物理原理相匹配。"
+      },
+      "hints": [
+        {
+          "en": "Identify whether forces in the scenario are strictly internal interactions between system members or external interactions acting on the system from outside.",
+          "ms": "Kenal pasti sama ada daya dalam senario adalah interaksi dalaman semata-mata antara ahli sistem atau interaksi luaran yang bertindak ke atas sistem dari luar.",
+          "zh": "识别场景中的力究竟是系统各成员之间的纯内力相互作用，还是外界对系统施加的外力相互作用。"
+        },
+        {
+          "en": "Newton's second law for a system relates the net external force directly to the acceleration of the center of mass. External forces accelerate the center of mass regardless of which component they act on, while internal forces cannot accelerate the center of mass.",
+          "ms": "Hukum kedua Newton bagi suatu sistem menghubungkan daya luaran bersih secara langsung dengan pecutan pusat jisim. Daya luaran memecutkan pusat jisim tanpa mengira komponen mana yang diatasinya, manakala daya dalaman tidak dapat memecutkan pusat jisim.",
+          "zh": "质点系的牛顿第二定律将合外力与质心的加速度直接联系起来。外力无论作用在哪个部件上都会使质心加速，而内力绝不能使质心加速。"
+        }
+      ],
+      "feedback": {
+        "en": "Center-of-mass motion is dictated exclusively by external forces; internal interactions leave total momentum and center-of-mass velocity completely invariant.",
+        "ms": "Gerakan pusat jisim ditentukan secara eksklusif oleh daya luaran; interaksi dalaman membiarkan jumlah momentum dan halaju pusat jisim kekal tidak berubah sama sekali.",
+        "zh": "质心运动完全由外力决定；内力相互作用使总动量和质心速度保持完全恒定。"
+      },
+      "answerLogic": {
+        "en": "For the exploding firework, air resistance is negligible and gravity is the sole external force; because the explosion forces are internal, the center of mass continues along the exact parabolic trajectory governed by external gravity. For the ice skaters pushing apart on frictionless horizontal ice, the normal and gravitational forces cancel vertically, and the horizontal push is an internal third-law interaction, so net external force is zero, making center-of-mass velocity constant and total momentum conserved. For the two-module space probe firing an external thruster on one module, an external force acts on the system, which accelerates the center of mass in the thruster force direction regardless of which module carries the thruster. For the compressed spring releasing two gliders on a frictionless track, horizontal forces are purely internal, yielding zero net external force, so total momentum is conserved and the center of mass remains at rest.",
+        "ms": "Bagi bunga api yang meletup, rintangan udara boleh diabaikan dan graviti adalah satu-satunya daya luaran; oleh kerana daya letupan adalah dalaman, pusat jisim meneruskan trajektori parabola yang tepat yang dikawal oleh graviti luaran. Bagi peluncur ais yang menolak antara satu sama lain di atas ais mendatar tanpa geseran, daya normal dan graviti terbatal secara menegak, dan tolakan mendatar ialah interaksi hukum ketiga dalaman, jadi daya luaran bersih ialah sifar, menjadikan halaju pusat jisim malar dan jumlah momentum diabadikan. Bagi kuar angkasa dua modul yang menyalakan pendorong luaran pada satu modul, daya luaran bertindak ke atas sistem, yang memecutkan pusat jisim mengikut arah daya pendorong tanpa mengira modul mana yang membawa pendorong. Bagi spring termampat yang melepaskan dua peluncur di atas trek tanpa geseran, daya mendatar adalah dalaman semata-mata, menghasilkan sifar daya luaran bersih, jadi jumlah momentum diabadikan dan pusat jisim kekal pegun.",
+        "zh": "对于爆炸的礼花弹，空气阻力可忽略，重力是唯一的合外力；由于爆炸力属于内力，质心在外部重力支配下继续沿原有的抛物线轨迹运动。对于在无摩擦水平冰面上相互推开的滑冰者，重力与支持力在竖直方向抵消，水平推力是内部第三定律相互作用，因而合外力为零，质心速度保持恒定且总动量守恒。对于在其中一个舱段上启动外部推进器的双舱太空探测器，外力作用于系统，无论推进器安装在哪个舱段上，质心都会沿推进力方向加速。对于在无摩擦轨道上释放压缩弹簧的两个滑块，水平力纯属内力，合外力为零，因而总动量守恒且质心保持静止。"
+      },
+      "explanation": {
+        "en": "A fundamental theorem of mechanics states that the net external force equals the total mass multiplied by the acceleration of the center of mass. Internal forces between constituent particles always cancel in pairs and exert zero net impulse. In an isolated system with zero net external force, the total linear momentum is conserved and the center-of-mass velocity is constant. Under gravity alone, the center of mass undergoes constant downward acceleration, preserving a smooth parabolic path irrespective of mid-air explosions. When an external force acts on any part of a system, it accelerates the center of mass of the entire system as an equivalent single particle.",
+        "ms": "Teorem asas mekanik menyatakan bahawa daya luaran bersih bersamaan dengan jumlah jisim didarab dengan pecutan pusat jisim. Daya dalaman antara zarah juzuk sentiasa terbatal secara berpasangan dan mengenakan sifar impuls bersih. Dalam sistem terpencil dengan sifar daya luaran bersih, jumlah momentum linear diabadikan dan halaju pusat jisim adalah malar. Di bawah graviti sahaja, pusat jisim mengalami pecutan seragam ke bawah, mengekalkan laluan parabola yang licin tanpa mengira letupan di udara. Apabila daya luaran bertindak ke atas mana-mana bahagian sistem, ia memecutkan pusat jisim seluruh sistem sebagai zarah tunggal yang setara.",
+        "zh": "力学的一个基本定理表明，合外力等于总质量乘以质心的加速度。组成质点之间的内力总是成对抵消，对系统产生的净冲量为零。在合外力为零的孤立系统中，总线动量守恒，质心速度恒定。在仅受重力作用时，质心具有恒定的向下加速度，无论中途发生何种爆炸，均保持光滑的抛物线路径。当外力作用于系统的任何一个部分时，它都会将整个系统作为一个等效的单质点来加速其质心。"
+      },
+      "misconceptions": [
+        "misc-internal-forces-accelerate-cm",
+        "misc-external-force-location-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "prereq-newtons-third-law",
+        "prompt": {
+          "en": "Review Newton's third law to understand why internal forces within a closed system always sum to zero vectorially and cannot produce a net force.",
+          "ms": "Ulang kaji hukum ketiga Newton untuk memahami mengapa daya dalaman dalam sistem tertutup sentiasa berjumlah sifar secara vektor dan tidak dapat menghasilkan daya bersih.",
+          "zh": "复习牛顿第三定律，理解为什么封闭系统内部的相互作用力在矢量求和时恒等于零，因而无法产生合力。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive matching task: four multi-body scenarios are given. Match each scenario to one of three dynamical categories describing momentum conservation and center-of-mass motion.",
+        "ms": "Tugasan pemadanan interaktif: empat senario pelbagai jasad diberikan. Padankan setiap senario dengan salah satu daripada tiga kategori dinamik yang menerangkan keabadian momentum dan gerakan pusat jisim.",
+        "zh": "交互式匹配任务：给出了四个多体物理场景。将每个场景匹配到描述动量守恒与质心运动的三个力学类别之一。"
+      },
+      "provenance": {
+        "sourceLocation": "9.7 Systems of Many Particles; Complete controlled PDF for section 9.7",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-exploding-firework",
+            "label": {
+              "en": "A recreational firework shell bursts into numerous glowing fragments while in free-flight arc through calm air (air resistance negligible).",
+              "ms": "Sebuah kelongsong bunga api pecah kepada banyak serpihan semasa dalam arka penerbangan bebas melalui udara tenang (rintangan udara boleh diabaikan).",
+              "zh": "一枚空中飞行的礼花弹在静止空气中自由弧线飞行时爆裂为多个碎片（空气阻力忽略不计）。"
+            }
+          },
+          {
+            "id": "item-ice-skaters-pushing",
+            "label": {
+              "en": "Two ice skaters gliding forward side-by-side on frictionless level ice suddenly push each other apart with their hands.",
+              "ms": "Dua peluncur ais yang meluncur ke hadapan bersebelahan di atas ais mendatar tanpa geseran tiba-tiba menolak antara satu sama lain dengan tangan mereka.",
+              "zh": "两位花样滑冰运动员在无摩擦的水平冰面上并排向前滑行时，突然用手互相推开。"
+            }
+          },
+          {
+            "id": "item-deep-space-thruster",
+            "label": {
+              "en": "A two-module space probe drifting in zero gravity activates an external maneuvering thruster attached solely to one module.",
+              "ms": "Sebuah kuar angkasa dua modul yang hanyut dalam graviti sifar mengaktifkan pendorong manuver luaran yang dipasang hanya pada satu modul.",
+              "zh": "一个在零重力深空中漂移的双舱太空探测器启动了仅安装在其中一个舱段上的外部姿态推进器。"
+            }
+          },
+          {
+            "id": "item-compressed-spring-gliders",
+            "label": {
+              "en": "A latch releases a compressed internal spring between two motionless gliders on a horizontal frictionless air track.",
+              "ms": "Satu selak melepaskan spring dalaman yang termampat di antara dua peluncur pegun di atas trek udara mendatar tanpa geseran.",
+              "zh": "水平无摩擦气垫导轨上两个原本静止的滑块之间释放了一个压缩的内置弹簧。"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-isolated-constant-cm",
+            "label": {
+              "en": "Total momentum is conserved and center-of-mass velocity remains constant (Zero net external force)",
+              "ms": "Jumlah momentum diabadikan dan halaju pusat jisim kekal malar (Sifar daya luaran bersih)",
+              "zh": "总动量守恒且质心速度保持恒定（合外力为零）"
+            }
+          },
+          {
+            "id": "target-gravity-parabolic-cm",
+            "label": {
+              "en": "Center of mass maintains its original downward-accelerating parabolic flight path (External gravity acting alone)",
+              "ms": "Pusat jisim mengekalkan laluan penerbangan parabola memecut ke bawah yang asal (Graviti luaran bertindak sendirian)",
+              "zh": "质心保持原有的向下加速抛物线飞行轨迹（仅受外部重力作用）"
+            }
+          },
+          {
+            "id": "target-net-external-accelerates-cm",
+            "label": {
+              "en": "Center of mass accelerates in the direction of the external force regardless of internal forces (Non-zero net external force)",
+              "ms": "Pusat jisim memecut mengikut arah daya luaran tanpa mengira daya dalaman (Daya luaran bersih bukan sifar)",
+              "zh": "无论内力如何，质心均沿合外力方向加速（合外力非零）"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-exploding-firework",
+            "targetId": "target-gravity-parabolic-cm"
+          },
+          {
+            "itemId": "item-ice-skaters-pushing",
+            "targetId": "target-isolated-constant-cm"
+          },
+          {
+            "itemId": "item-deep-space-thruster",
+            "targetId": "target-net-external-accelerates-cm"
+          },
+          {
+            "itemId": "item-compressed-spring-gliders",
+            "targetId": "target-isolated-constant-cm"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "misc-internal-forces-accelerate-cm",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-ice-skaters-pushing",
+            "targetId": "target-net-external-accelerates-cm"
+          }
+        },
+        {
+          "misconception": "misc-external-force-location-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-deep-space-thruster",
+            "targetId": "target-isolated-constant-cm"
+          }
+        }
+      ]
+    }
+  ]
+}
