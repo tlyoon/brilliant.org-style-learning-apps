@@ -28,6 +28,20 @@ class AppScaffoldTests(unittest.TestCase):
         self.assertNotIn("not approved for publication", html)
         self.assertNotIn("Section 1.1", html)
 
+    def test_entrypoint_has_selector_without_visible_banner_or_language_label(self):
+        html = (APP / "index.html").read_text(encoding="utf-8")
+        self.assertNotIn('class="brand"', html)
+        self.assertNotIn(">Interactive Learning<", html)
+        self.assertNotIn("<label>Language", html)
+        self.assertIn('<select id="locale" aria-label="Language">', html)
+        self.assertIn('<option value="en">English</option>', html)
+
+    def test_question_and_action_control_layout_contract(self):
+        css = (APP / "styles.css").read_text(encoding="utf-8")
+        self.assertIn(".choice, .interaction-item { font-size: 1rem; }", css)
+        self.assertIn(".question { font-size: 1.25rem;", css)
+        self.assertIn(".action-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));", css)
+
     def test_existing_section_one_package_remains_in_review(self):
         package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
         self.assertEqual("review", package["status"])
