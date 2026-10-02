@@ -1,5 +1,8 @@
 # Decision 0017: Source-derived metadata and opt-in draft merging
 
+> Superseded for publication gating by Decision 0023; retained as historical context.
+
+
 ## Status
 
 Accepted 29 August 2026 by explicit project-owner request.

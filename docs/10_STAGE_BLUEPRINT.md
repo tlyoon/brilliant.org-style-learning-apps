@@ -149,7 +149,7 @@ The stages are capability boundaries rather than single pull requests. A stage m
 7. **Generated educational content and runtime code remain separate.** Prefer validated, reusable interaction primitives over AI-generated arbitrary executable code.
 8. **Deterministic core first.** Core learning, validation, feedback, and mastery mechanisms should remain testable without depending on a runtime LLM wherever practical.
 9. **AI augments the learning system.** Runtime AI should be introduced where it adds capabilities that deterministic mechanisms cannot provide well, especially contextual tutoring.
-10. **Source grounding remains explicit.** PDF/source provenance and human review requirements remain part of the content lifecycle, including when several PDFs support the same synthesized concept.
+10. **Source grounding remains explicit.** PDF/source provenance and automated validation remain part of the content lifecycle, including when several PDFs support the same synthesized concept. Manual review is optional and does not gate publication.
 11. **Multilingual capability remains first-class.** English, Malay, and Simplified Chinese should remain supported by the learning contract as capabilities expand.
 12. **Assisted and independent performance remain distinct.** A learner succeeding after scaffolding has provided different evidence from a learner succeeding independently.
 13. **Incremental generation is required.** A changed topic should be rebuildable without forcing unnecessary regeneration of the whole course.

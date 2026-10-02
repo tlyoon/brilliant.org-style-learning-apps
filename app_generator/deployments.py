@@ -115,7 +115,7 @@ def package_digest(path: Path) -> str:
 
 
 def has_current_public_deployment(repo_root: Path, config: object) -> bool:
-    """Whether one active config package has a matching tracked review deployment.
+    """Whether one active config package has a matching tracked public deployment.
 
     Older registry entries without a digest remain readable, but intentionally do not
     satisfy automatic-publication completion: source content alone is not evidence

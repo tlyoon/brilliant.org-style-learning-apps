@@ -203,7 +203,7 @@ def reconcile_auto_publications(
                     )
                     continue
                 # Auto-merge may have advanced source main while this worker was
-                # finishing the source PR; build public review from durable main.
+                # finishing the source PR; build the public release from durable main.
                 publisher.sync_base()
             ensure_lease()
             if getattr(active_config, "public_deploy", False):
@@ -214,7 +214,7 @@ def reconcile_auto_publications(
                 )
                 if not public.merged:
                     raise AutoJobExecutionError(
-                        "Public review PR did not merge",
+                        "Public release PR did not merge",
                         status="interrupted",
                         original_code="PUBLIC_DEPLOY_NOT_MERGED",
                     )

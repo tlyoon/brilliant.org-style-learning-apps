@@ -260,7 +260,7 @@ The default controlled launcher opens an independent ordinary Chrome window dire
 
 The generator verifies the exact configured Gemini email on visible Google Account controls, reconciles project-owned Description and Instructions without renaming the Gem, opens a fresh conversation, uploads the controlled topic PDFs, generates/repairs the package, validates it, and installs the generated artifacts.
 
-A successful package remains a structurally validated **draft** awaiting qualified human review.
+A successful package is structurally validated and may proceed directly to configured publication without human sign-off.
 
 ## 9. Managed coordinator: one-time project bootstrap
 
@@ -423,7 +423,7 @@ node tests\test_interaction_rendering.js
 git diff --check
 ```
 
-## 12. Review, PR, and human approval
+## 12. Validation, PR, and publication
 
 If a specific-mode run did not publish automatically, create a short-lived content branch, add only intended artifacts, validate, push, and open a PR:
 
@@ -436,9 +436,9 @@ git push -u origin content/section-8-5-draft
 gh pr create --base main --fill
 ```
 
-Green CI is not subject/pedagogical approval. Complete the required qualified reviews recorded in `review-record.md` before treating content as approved.
+Green CI and automated semantic validation are sufficient for configured publication. The `review-record.md` file is an audit/traceability record; any additional manual review is optional and does not block publication.
 
-## 13. Build and preview a minimal static review app
+## 13. Build and preview a minimal static app
 
 Build one selected package into an empty directory:
 
@@ -458,7 +458,7 @@ Preview:
 
 Open `http://127.0.0.1:8001/`. The bundle contains the learner app and selected package, not PDFs, credentials, review records, source manifests, or development files.
 
-For public review deployment, prefer a separate minimal GitHub Pages repository and verify the built bundle locally before pushing it.
+For public deployment, prefer a separate minimal GitHub Pages repository and verify the built bundle locally before pushing it.
 
 ## 14. List generated apps and deployment URLs
 
@@ -543,9 +543,9 @@ Automated Git synchronization/publication retries recognized transient transport
 
 If all transient attempts are exhausted, the run stops safely with a `GIT_PUBLISH_FAILED` error. Resolve the network path and rerun; auto mode does not treat the job as successfully generated when durable Git publication could not be established.
 
-### Automatic public draft/review deployment and stalls
+### Automatic public deployment and stalls
 
-This project's auto mode publishes validated source packages to `https://tlyoon.github.io/section-8-1-learning-app/section-{section_slug}/` through a deterministic public-repository PR. It remains a draft/review deployment, not human scientific approval. If a worker stops after source merge, the next auto worker skips Gemini and completes the same public PR.
+This project's auto mode publishes validated source packages to `https://tlyoon.github.io/section-8-1-learning-app/section-{section_slug}/` through a deterministic public-repository PR. Human sign-off is not required. If a worker stops after source merge, the next auto worker skips Gemini and completes the same public PR.
 
 Each auto attempt is a supervised child. Default checks are every 600 seconds and terminate after three consecutive stale checks; heartbeats do not count as content progress. Parsed Drive checkpoints are retained, so recovery begins at the last parsed stage rather than mid-token.
 

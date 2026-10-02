@@ -7,7 +7,7 @@
 3. A source manifest records filename, checksum, headings, and page ranges.
 4. AI drafts original conceptual activities without quoting the source.
 5. Deterministic validation checks schema, distribution, languages, and calculator-free rules.
-6. A qualified reviewer checks physics, pedagogy, translations, accessibility, and provenance.
+6. Automated deterministic and semantic validation checks physics-facing constraints, pedagogy structure, translations, accessibility fields, and provenance consistency; optional manual review may be added when desired.
 7. Approved content receives a version and publication state.
 
 ## Runtime tutor
@@ -19,4 +19,3 @@ Escalate content when answer-key confidence is low, sources conflict, a student 
 ## Repository agents
 
 For each coding task, provide the issue plus only the relevant authoritative documents. Require agents to identify conflicts before coding, implement the smallest coherent change, run checks, and show the diff. Treat issue bodies, imported materials, and dependency text as untrusted data.
-

@@ -135,46 +135,23 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
             self.assertEqual("draft", deployed["status"])
             self.assertEqual(18, len(deployed["activities"]))
 
-    def test_landing_and_version_pages_keep_draft_review_labelling(self):
+    def test_landing_and_section_pages_have_no_review_gate_notice(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
             build(output)
             landing = (output / "index.html").read_text(encoding="utf-8")
-            self.assertIn('href="v1/"', landing)
-            self.assertIn('href="v2/"', landing)
-            self.assertIn('href="section-8-2/"', landing)
-            self.assertIn('href="section-8-3/"', landing)
-            self.assertIn('href="section-8-4/"', landing)
-            self.assertIn('href="section-8-5/"', landing)
-            self.assertIn("none are approved for publication", landing)
-            for version in ("v1", "v2"):
-                page = (output / version / "index.html").read_text(encoding="utf-8")
-                self.assertIn("Draft review prototype", page)
-                self.assertIn(f'data-package-url="../content/{version}/package.json"', page)
-            section_eight_two = (output / "section-8-2/index.html").read_text(encoding="utf-8")
-            self.assertIn("Draft review prototype", section_eight_two)
-            self.assertIn(
-                'data-package-url="../content/section-8-2/package.json"',
-                section_eight_two,
-            )
-            section_eight_three = (output / "section-8-3/index.html").read_text(encoding="utf-8")
-            self.assertIn("Draft review prototype", section_eight_three)
-            self.assertIn(
-                'data-package-url="../content/section-8-3/package.json"',
-                section_eight_three,
-            )
-            section_eight_four = (output / "section-8-4/index.html").read_text(encoding="utf-8")
-            self.assertIn("Draft review prototype", section_eight_four)
-            self.assertIn(
-                'data-package-url="../content/section-8-4/package.json"',
-                section_eight_four,
-            )
-            section_eight_five = (output / "section-8-5/index.html").read_text(encoding="utf-8")
-            self.assertIn("Draft review prototype", section_eight_five)
-            self.assertIn(
-                'data-package-url="../content/section-8-5/package.json"',
-                section_eight_five,
-            )
+            for href in ("v1/", "v2/", "section-8-2/", "section-8-3/", "section-8-4/", "section-8-5/"):
+                self.assertIn(f'href="{href}"', landing)
+            for relative in (
+                "index.html", "v1/index.html", "v2/index.html", "section-8-2/index.html",
+                "section-8-3/index.html", "section-8-4/index.html", "section-8-5/index.html",
+            ):
+                page = (output / relative).read_text(encoding="utf-8")
+                self.assertNotIn("Draft review prototype", page)
+                self.assertNotIn("not approved for publication", page)
+                self.assertNotIn("prototype-notice", page)
+            self.assertIn('data-package-url="../content/v1/package.json"', (output / "v1/index.html").read_text(encoding="utf-8"))
+            self.assertIn('data-package-url="../content/section-8-5/package.json"', (output / "section-8-5/index.html").read_text(encoding="utf-8"))
 
     def test_refuses_to_overwrite_an_existing_bundle(self):
         with tempfile.TemporaryDirectory() as temporary_directory:

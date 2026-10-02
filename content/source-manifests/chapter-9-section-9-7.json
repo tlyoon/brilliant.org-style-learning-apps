@@ -19,6 +19,6 @@
   "pageRange": "Complete controlled PDF for section 9.7",
   "learningBoundary": "Includes concepts supported by the controlled PDF for 9.7 Systems of Many Particles: Velocity and linear momentum of a multi-particle system's center of mass; Acceleration of the center of mass and Newton's second law for systems of particles; Pairwise cancellation of internal forces via Newton's third law; Motion of the center of mass as an equivalent single particle under net external force; Conservation of total linear momentum and constant center-of-mass velocity in isolated systems; Trajectory persistence of the center of mass during projectile fragmentation or explosions. Excludes: Work-kinetic energy theorem limitations for deformable systems (Section 9.8); Internal energy transformations and muscular chemical energy changes (Section 9.8); Continuous mass integration for extended rigid bodies with non-uniform density; Rotational motion, torque, and angular momentum of extended bodies; Relativistic momentum and variable-mass rocket propulsion equations.",
   "extractedOn": "2026-10-02",
-  "reviewer": "Automated draft generation; qualified human review required",
+  "reviewer": "Automated generation and validation pipeline",
   "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
 }

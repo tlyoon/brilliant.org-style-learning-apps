@@ -19,7 +19,6 @@ Raw voice audio is deleted immediately after transcription. Tutor transcripts ar
 - Ground tutor output in approved content and standard prerequisites.
 - Do not send personal identifiers to a model unless separately approved and required.
 - Maintain a soft AI budget with a lower-cost fallback; preserve validated non-AI help when unavailable.
-- Pin dependencies, review additions, and enable secret scanning. Automated deployment remains disabled. Decision 0017 permits an explicitly configured private-repository merge of a validated `draft`; it does not bypass branch protection or human-review publication gates.
+- Pin dependencies, review additions, and enable secret scanning. Publication must still satisfy repository validation, branch protection, secret-handling, and configured deployment controls; no separate human-review gate is required.
 
 Suspected privacy or security incidents must be handled outside ordinary public issue text.
-

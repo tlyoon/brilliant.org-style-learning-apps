@@ -2,7 +2,7 @@
 
 ## Boundary
 
-Includes concepts supported by the controlled PDF for 9.1 Linear Momentum: Definition of linear momentum as p = mv with SI units of kg·m/s; Vector characteristics and Cartesian components of linear momentum; Distinction between linear momentum and kinetic energy; Newton's second law formulated as net force equals time derivative of momentum; Derivation of two-particle isolated momentum constancy from Newton's third law. Excludes: Center of mass motion and collisions in two dimensions; Impulse-momentum theorem calculations and time integrals of force; Detailed rocket propulsion variable-mass thrust equations; Rotational motion and angular momentum; Quantitative collision coefficient of restitution and internal kinetic energy loss.
+Includes concepts supported by the controlled PDF for 9.1 Linear Momentum: Definition of linear momentum as p = mv with SI units of kgÂ·m/s; Vector characteristics and Cartesian components of linear momentum; Distinction between linear momentum and kinetic energy; Newton's second law formulated as net force equals time derivative of momentum; Derivation of two-particle isolated momentum constancy from Newton's third law. Excludes: Center of mass motion and collisions in two dimensions; Impulse-momentum theorem calculations and time integrals of force; Detailed rocket propulsion variable-mass thrust equations; Rotational motion and angular momentum; Quantitative collision coefficient of restitution and internal kinetic energy loss.
 
 ## Learning objectives
 
@@ -28,4 +28,4 @@ Includes concepts supported by the controlled PDF for 9.1 Linear Momentum: Defin
 
 ## Evidence intent
 
-The first submitted response is independent evidence. Opening a hint, retrying, or entering prerequisite recovery marks later success as assisted evidence; it does not overwrite the first attempt. This generated record is a draft pending qualified human review.
+The first submitted response is independent evidence. Opening a hint, retrying, or entering prerequisite recovery marks later success as assisted evidence; it does not overwrite the first attempt. Publication is permitted once the automated repository validation and configured deployment checks succeed.

@@ -272,4 +272,4 @@ These remain generic/versioned application behavior rather than textbook identit
 - calculator-free conceptual-activity policy;
 - deterministic validation/provenance rules;
 - source PDFs and credentials outside Git;
-- generated content remains draft until qualified human review.
+- generated content may be published after automated validation and configured deployment checks succeed; manual review is optional.

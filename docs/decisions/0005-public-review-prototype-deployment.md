@@ -1,4 +1,7 @@
-# 0005 — Public review-prototype deployment
+# 0005 â€” Public review-prototype deployment
+
+> Superseded for publication gating by Decision 0023; retained as historical context.
+
 
 Status: Accepted, 19 August 2026
 

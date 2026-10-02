@@ -4,7 +4,7 @@ This Python 3.12 package turns a controlled Google Drive topic corpus (`source.p
 
 For the current installation/operating procedure, start with `docs/PDF_TO_APP_QUICKSTART.md`. Documentation is versioned with the code; `docs/DOCUMENTATION_MAINTENANCE.md` defines the same-PR update rule.
 
-Generated content remains `draft` until qualified human review is complete. Source PDFs, credentials, browser profiles, coordinator tokens, and raw Gemini responses never belong in Git.
+Generated content may be published automatically after repository validation and configured deployment checks succeed. The package `status` remains metadata and does not create a human-review publication gate. Source PDFs, credentials, browser profiles, coordinator tokens, and raw Gemini responses never belong in Git.
 
 ## Project authority and machine-local configuration
 
@@ -144,7 +144,7 @@ The continuous worker:
 5. restores source-version-bound parsed-stage checkpoints when available;
 6. generates/repairs/validates remaining stages;
 7. publishes validated artifacts through the configured Git handoff;
-8. when configured, publishes/reuses the deterministic public draft/review Pages PR;
+8. when configured, publishes/reuses the deterministic public Pages PR;
 9. writes a Drive `success` marker only after every required durable publication;
 10. claims another job;
 11. waits when remaining work is leased elsewhere and exits successfully only when global work is successful.
@@ -161,13 +161,13 @@ When `git_publish=true`, the worker requires a clean/non-diverged checkout and u
 
 `auto` and `distributed` modes require durable publication. Specific mode can be operated conservatively with Git publication disabled.
 
-Generation, human approval, merge, and public deployment remain separate gates.
+Generation, automated validation, source merge, and public deployment remain separate machine-enforced gates.
 
-The repository project enables automatic public deployment to the shared review Pages repository. It is always a draft/review deployment, never qualified human approval. Each auto attempt is supervised in a child process: default 600-second meaningful-activity checks terminate after three stale checks while preserving Drive parsed-stage checkpoints for a later lease reclaim.
+The repository project enables automatic public deployment to the shared Pages repository after automated validation succeeds. Each auto attempt is supervised in a child process: default 600-second meaningful-activity checks terminate after three stale checks while preserving Drive parsed-stage checkpoints for a later lease reclaim.
 
 ## Deployment inventory
 
-Public review routes are tracked separately from generation state in:
+Public routes are tracked separately from generation state in:
 
 ```text
 config/deployments.json

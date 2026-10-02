@@ -1,5 +1,8 @@
 # 0021 - Section 8.2 public review
 
+> Superseded for publication gating by Decision 0023; retained as historical context.
+
+
 Status: Accepted, 8 September 2026 by explicit project-owner deployment request
 
 - The generated Section 8.2 package may be released as a public static review prototype alongside the existing Chapter 8 drafts.

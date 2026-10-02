@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the minimal Chapter 8 public review site."""
+"""Build the minimal Chapter 8 public learning site."""
 
 from __future__ import annotations
 
@@ -31,8 +31,8 @@ def _validate_public_package(payload: bytes, label: str, expected_package_id: st
         raise ValueError(f"{label} is not valid UTF-8 JSON: {exc}") from exc
     if package.get("packageId") != expected_package_id:
         raise ValueError(f"{label} has an unexpected packageId")
-    if package.get("status") != "draft":
-        raise ValueError(f"{label} must remain explicitly labelled as draft")
+    if package.get("status") not in {"draft", "review", "publishable"}:
+        raise ValueError(f"{label} has an unsupported package status")
     if len(package.get("activities", [])) != 18:
         raise ValueError(f"{label} must contain exactly 18 activities")
 
@@ -113,7 +113,7 @@ def _version_page(version: str, label: str, package_url: str) -> str:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Section 8.1 {label} Review Prototype</title>
+    <title>Section 8.1 {label}</title>
     <link rel="stylesheet" href="../app/styles.css">
   </head>
   <body>
@@ -128,7 +128,6 @@ def _version_page(version: str, label: str, package_url: str) -> str:
           </select>
         </label>
       </header>
-      <p class="prototype-notice" role="note">Draft review prototype — {label}; not approved for publication.</p>
       <section id="app" aria-live="polite" data-package-url="{package_url}">
         <p>Loading Section 8.1 {version}…</p>
       </section>
@@ -146,7 +145,7 @@ def _section_eight_two_page() -> str:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Section 8.2 Analysis Model: Isolated System (Energy) Review Prototype</title>
+    <title>Section 8.2 Analysis Model: Isolated System (Energy)</title>
     <link rel="stylesheet" href="../app/styles.css">
   </head>
   <body>
@@ -161,7 +160,6 @@ def _section_eight_two_page() -> str:
           </select>
         </label>
       </header>
-      <p class="prototype-notice" role="note">Draft review prototype - not approved for publication.</p>
       <section id="app" aria-live="polite" data-package-url="../content/section-8-2/package.json">
         <p>Loading Section 8.2...</p>
       </section>
@@ -179,7 +177,7 @@ def _section_eight_three_page() -> str:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Section 8.3 Situations Involving Kinetic Friction Review Prototype</title>
+    <title>Section 8.3 Situations Involving Kinetic Friction</title>
     <link rel="stylesheet" href="../app/styles.css">
   </head>
   <body>
@@ -194,7 +192,6 @@ def _section_eight_three_page() -> str:
           </select>
         </label>
       </header>
-      <p class="prototype-notice" role="note">Draft review prototype — not approved for publication.</p>
       <section id="app" aria-live="polite" data-package-url="../content/section-8-3/package.json">
         <p>Loading Section 8.3…</p>
       </section>
@@ -212,7 +209,7 @@ def _section_eight_four_page() -> str:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Section 8.4 Changes in Mechanical Energy for Nonconservative Forces Review Prototype</title>
+    <title>Section 8.4 Changes in Mechanical Energy for Nonconservative Forces</title>
     <link rel="stylesheet" href="../app/styles.css">
   </head>
   <body>
@@ -227,7 +224,6 @@ def _section_eight_four_page() -> str:
           </select>
         </label>
       </header>
-      <p class="prototype-notice" role="note">Draft review prototype - not approved for publication.</p>
       <section id="app" aria-live="polite" data-package-url="../content/section-8-4/package.json">
         <p>Loading Section 8.4...</p>
       </section>
@@ -245,7 +241,7 @@ def _section_eight_five_page() -> str:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Section 8.5 Power Review Prototype</title>
+    <title>Section 8.5 Power</title>
     <link rel="stylesheet" href="../app/styles.css">
   </head>
   <body>
@@ -260,7 +256,6 @@ def _section_eight_five_page() -> str:
           </select>
         </label>
       </header>
-      <p class="prototype-notice" role="note">Draft review prototype - not approved for publication.</p>
       <section id="app" aria-live="polite" data-package-url="../content/section-8-5/package.json">
         <p>Loading Section 8.5...</p>
       </section>
@@ -278,7 +273,7 @@ def _landing_page() -> str:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Chapter 8 Learning Review Prototypes</title>
+    <title>Chapter 8 Learning</title>
     <link rel="stylesheet" href="app/styles.css">
     <style>
       .version-grid { display: grid; gap: 1rem; margin: 1rem 0 3rem; }
@@ -289,18 +284,17 @@ def _landing_page() -> str:
   <body>
     <main class="shell">
       <header class="topbar"><span class="brand">Chapter 8 Learning</span></header>
-      <p class="prototype-notice" role="note">Public draft review prototypes — none are approved for publication.</p>
-      <h1>Choose a learning prototype</h1>
+      <h1>Choose a learning activity set</h1>
       <div class="version-grid">
         <section class="card">
           <p class="eyebrow">Version 1</p>
-          <h2>Initial generated draft</h2>
+          <h2>Initial generated version</h2>
           <p>Open the earlier validated 18-activity package.</p>
           <a class="action version-link" href="v1/">Open Version 1</a>
         </section>
         <section class="card">
           <p class="eyebrow">Version 2</p>
-          <h2>Regenerated draft</h2>
+          <h2>Regenerated version</h2>
           <p>Open the later validated 18-activity package.</p>
           <a class="action version-link" href="v2/">Open Version 2</a>
         </section>

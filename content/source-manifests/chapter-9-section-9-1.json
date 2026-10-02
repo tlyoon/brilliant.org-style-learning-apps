@@ -17,8 +17,8 @@
   "subchapter": "9.1 Linear Momentum",
   "heading": "9.1 Linear Momentum",
   "pageRange": "Complete controlled PDF for section 9.1",
-  "learningBoundary": "Includes concepts supported by the controlled PDF for 9.1 Linear Momentum: Definition of linear momentum as p = mv with SI units of kg·m/s; Vector characteristics and Cartesian components of linear momentum; Distinction between linear momentum and kinetic energy; Newton's second law formulated as net force equals time derivative of momentum; Derivation of two-particle isolated momentum constancy from Newton's third law. Excludes: Center of mass motion and collisions in two dimensions; Impulse-momentum theorem calculations and time integrals of force; Detailed rocket propulsion variable-mass thrust equations; Rotational motion and angular momentum; Quantitative collision coefficient of restitution and internal kinetic energy loss.",
+  "learningBoundary": "Includes concepts supported by the controlled PDF for 9.1 Linear Momentum: Definition of linear momentum as p = mv with SI units of kgÂ·m/s; Vector characteristics and Cartesian components of linear momentum; Distinction between linear momentum and kinetic energy; Newton's second law formulated as net force equals time derivative of momentum; Derivation of two-particle isolated momentum constancy from Newton's third law. Excludes: Center of mass motion and collisions in two dimensions; Impulse-momentum theorem calculations and time integrals of force; Detailed rocket propulsion variable-mass thrust equations; Rotational motion and angular momentum; Quantitative collision coefficient of restitution and internal kinetic energy loss.",
   "extractedOn": "2026-09-27",
-  "reviewer": "Automated draft generation; qualified human review required",
+  "reviewer": "Automated generation and validation pipeline",
   "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
 }

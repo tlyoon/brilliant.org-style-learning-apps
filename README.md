@@ -99,7 +99,7 @@ node tests/test_interaction_rendering.js
 
 Node.js is development-time only; the learner application has no runtime package dependency/build step.
 
-## Public review-prototype bundle
+## Public learning bundle
 
 The generic builder requires an explicit package:
 
@@ -109,7 +109,7 @@ python scripts/build_public_release.py content/<chapter>/<section>/package.json 
 
 It creates a minimal static bundle containing the entry page, learner assets, selected package, and `.nojekyll`. It excludes repository history, tests, source PDFs, review records, source manifests, credentials, and development scripts.
 
-`python scripts/build_section_8_1_public_release.py <empty-output-directory>` builds the approved Chapter 8 public review bundle containing Section 8.1 versions plus the current Section 8.2, 8.3, 8.4, and 8.5 draft packages, each on its own route.
+`python scripts/build_section_8_1_public_release.py <empty-output-directory>` builds the Chapter 8 public learning bundle containing Section 8.1 versions plus the current Section 8.2, 8.3, 8.4, and 8.5 packages, each on its own route.
 
 Public app routes are tracked in `config/deployments.json`. From the repository root, list generated packages together with tracked deployment status and URLs using:
 
@@ -137,9 +137,9 @@ python -m app_generator run --config .\<generated-local-config>.toml --selection
 
 The targeted form acquires the same Drive-native lease for the requested section. It waits if another worker owns that target, never falls through to a different section, and exits after the target is globally successful. Use it instead of ordinary `specific` mode when another auto worker may be active on the same project.
 
-Generated content remains draft until qualified human review.
+Generated content may be published automatically after repository validation and configured deployment checks succeed; optional manual review does not gate publication.
 
-For this project, validated auto jobs also publish an explicitly labelled draft/review bundle through a deterministic PR in `tlyoon/section-8-1-learning-app`. Section `9.1`, for example, is routed to `section-9-1/` under the Pages base URL. This automatic operational deployment is not human scientific, instructional, accessibility, or provenance approval.
+For this project, validated auto jobs publish the learning bundle through a deterministic PR in `tlyoon/section-8-1-learning-app`. Section `9.1`, for example, is routed to `section-9-1/` under the Pages base URL. Automated validation and configured deployment checks govern publication; additional manual review is optional.
 
 ## Configuration authority
 

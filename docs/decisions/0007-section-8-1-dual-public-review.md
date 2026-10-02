@@ -1,4 +1,7 @@
-# 0007 — Section 8.1 dual-version public review
+# 0007 â€” Section 8.1 dual-version public review
+
+> Superseded for publication gating by Decision 0023; retained as historical context.
+
 
 Status: Accepted, 26 August 2026
 

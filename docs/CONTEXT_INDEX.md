@@ -75,8 +75,8 @@ Earlier decisions and PRs remain useful provenance, but interpret them against c
 - one-PDF-per-fresh-Gem-conversation and central lease/heartbeat coordination remain active design principles;
 - project-derived path/environment isolation remains active;
 - source-derived section title/scope and truthful automated-draft provenance remain active;
-- generated material remains draft pending qualified human review;
-- public review deployment remains separate from generation/approval;
+- generated material may be published after automated validation; optional manual review does not gate publication;
+- public deployment remains separate from generation state;
 - Section 8.2 is explicitly approved for public draft-review deployment alongside the existing Chapter 8 review routes;
 - any historical statement that `config/project.toml` is the current user-facing authority is superseded by the actual current-main configuration path above unless/until a future explicitly merged migration changes it.
 

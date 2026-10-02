@@ -21,9 +21,11 @@ class AppScaffoldTests(unittest.TestCase):
         self.assertIn("data-package-url", javascript)
         self.assertIn("loadPackage()", javascript)
 
-    def test_entrypoint_identifies_the_review_prototype(self):
+    def test_entrypoint_has_no_blanket_review_notice(self):
         html = (APP / "index.html").read_text(encoding="utf-8")
-        self.assertIn("Review prototype", html)
+        self.assertNotIn("Review prototype", html)
+        self.assertNotIn("qualified human review", html)
+        self.assertNotIn("not approved for publication", html)
         self.assertNotIn("Section 1.1", html)
 
     def test_existing_section_one_package_remains_in_review(self):

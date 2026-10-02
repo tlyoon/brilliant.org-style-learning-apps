@@ -2,7 +2,7 @@
 
 ## Boundary
 
-This pack begins at “1.1 Standards of Length, Mass, and Time” and ends immediately before “1.2 Modeling and Alternative Representations.” It covers measurement standards, SI, length, mass, time, prefixes, fundamental and derived quantities, and qualitative density relationships. Numerical calculations, unit conversions, copied textbook examples, and Section 1.2 are excluded.
+This pack begins at â€œ1.1 Standards of Length, Mass, and Timeâ€ and ends immediately before â€œ1.2 Modeling and Alternative Representations.â€ It covers measurement standards, SI, length, mass, time, prefixes, fundamental and derived quantities, and qualitative density relationships. Numerical calculations, unit conversions, copied textbook examples, and Section 1.2 are excluded.
 
 ## Learning objectives
 
@@ -17,7 +17,7 @@ This pack begins at “1.1 Standards of Length, Mass, and Time” and ends immed
 
 - `compare-properties`: compare two objects or descriptions using same, greater, smaller, stable, and changing.
 - `read-unit-symbols`: recognize that a quantity and its unit are different roles in a measurement statement.
-- `ratio-language`: interpret “more per same amount” and “same amount in less space” qualitatively, without arithmetic.
+- `ratio-language`: interpret â€œmore per same amountâ€ and â€œsame amount in less spaceâ€ qualitatively, without arithmetic.
 
 Each activity names a recovery route to one of these prerequisites. Recovery appears only after evidence from the learner's independent first attempt has been preserved.
 
@@ -44,4 +44,3 @@ Each activity names a recovery route to one of these prerequisites. Recovery app
 ## Evidence intent
 
 The first submitted response is independent evidence. Opening a hint, retrying, or entering prerequisite recovery marks subsequent success as assisted evidence; it never overwrites the first attempt. This pack describes the evidence contract only and does not implement persistence, mastery, or backend services.
-

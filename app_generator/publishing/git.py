@@ -204,14 +204,14 @@ class GitPublisher:
 
     @staticmethod
     def _title(subchapter: str) -> str:
-        return f"Generate {subchapter} learning-content draft"
+        return f"Generate {subchapter} learning content"
 
     @staticmethod
     def _body(package_id: str) -> str:
         return (
             f"Automated generation for `{package_id}`. The source PDF was attached to a fresh Gem conversation "
-            "and was not committed. Deterministic repository checks passed. The package remains a draft pending "
-            "qualified physics, instructional, language, accessibility, and provenance review."
+            "and was not committed. Deterministic repository checks passed. The package is eligible for configured publication. "
+            "Additional manual review is optional."
         )
 
     def _create_pr(self, branch: str, title: str, body: str) -> str:

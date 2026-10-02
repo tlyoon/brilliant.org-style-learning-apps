@@ -100,7 +100,7 @@ class PublicPublisherTests(unittest.TestCase):
             public_deploy_repository="example/pages",
             public_deploy_base_url="https://example.github.io/pages/",
             public_deploy_base_branch="main",
-            public_deploy_branch_prefix="automation/public-review",
+            public_deploy_branch_prefix="automation/public-release",
         )
 
         class Publisher(PublicPagesPublisher):
@@ -113,7 +113,7 @@ class PublicPublisherTests(unittest.TestCase):
             package_path=package, subchapter_id="9.1", ensure_lease=lambda: None,
         )
         self.assertTrue(result.merged)
-        self.assertEqual("automation/public-review/section-9-1-" + result.package_sha256[:12], result.branch)
+        self.assertEqual("automation/public-release/section-9-1-" + result.package_sha256[:12], result.branch)
         self.assertEqual("https://example.github.io/pages/section-9-1/", result.public_url)
 
     def test_reconciliation_uses_source_main_and_finishes_public_handoff(self):
@@ -147,7 +147,7 @@ class PublicPublisherTests(unittest.TestCase):
                 mark_failed=lambda *args, **kwargs: self.fail("public recovery should succeed"),
             )
             public = SimpleNamespace(
-                branch="automation/public-review/section-9-1-digest",
+                branch="automation/public-release/section-9-1-digest",
                 pr_url="https://github.com/example/pages/pull/1",
                 public_url="https://example.github.io/pages/section-9-1/",
                 package_sha256="a" * 64,

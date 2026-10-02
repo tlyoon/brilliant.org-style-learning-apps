@@ -338,8 +338,8 @@ def main(argv: list[str] | None = None) -> int:
             for path in context.store.state.installed_paths:
                 print(f"Generated: {path}")
             if context.store.state.pr_url:
-                print(f"Draft pull request: {context.store.state.pr_url}")
-            print("Status: structurally validated draft awaiting qualified content review; not approved for publication.")
+                print(f"Content pull request: {context.store.state.pr_url}")
+            print("Status: automated validation complete; eligible for configured publication.")
 
         if config.selection_mode == "auto":
             if args.resume:

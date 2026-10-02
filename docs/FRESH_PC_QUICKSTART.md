@@ -67,7 +67,7 @@ $config = '.\project.local.toml' # replace if sync printed another name
 & .\.venv\Scripts\python.exe -m app_generator run --config $config --selection-mode specific --pdf-subchapter-path 8.5
 ```
 
-Replace `8.5` with the required Drive subchapter folder. Generated content is a draft until qualified human review.
+Replace `8.5` with the required Drive subchapter folder. Validated content may be published automatically; manual review is optional.
 
 Optional per-PC Gemini override:
 

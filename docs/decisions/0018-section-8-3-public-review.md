@@ -1,4 +1,7 @@
-# 0018 — Section 8.3 public review
+# 0018 â€” Section 8.3 public review
+
+> Superseded for publication gating by Decision 0023; retained as historical context.
+
 
 Status: Accepted, 29 August 2026 by explicit project-owner deployment request
 
