@@ -1,0 +1,2241 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-9-section-9-2",
+  "chapter": "Chapter 9",
+  "subchapter": "9.2 Analysis Model: Isolated System (Momentum)",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Define an isolated system in the context of linear momentum as one subject to zero net external force.",
+    "State and apply the principle of conservation of linear momentum for an isolated system.",
+    "Analyze momentum conservation independently along orthogonal coordinate axes.",
+    "Distinguish between internal forces that exchange momentum and external forces that alter system momentum.",
+    "Predict recoil velocities of interacting bodies within an isolated system using directional conservation."
+  ],
+  "prerequisites": [
+    {
+      "id": "linear-momentum-definition",
+      "description": {
+        "en": "Definition of linear momentum as the vector product of mass and velocity (p = mv).",
+        "ms": "Definisi momentum linear sebagai hasil darab vektor jisim dan halaju (p = mv).",
+        "zh": "动量定义为质量与速度的矢量乘积（p = mv）。"
+      },
+      "recovery": {
+        "en": "Review how momentum depends directionally and proportionally on an object's mass and velocity vector.",
+        "ms": "Ulang kaji bagaimana momentum bergantung mengikut arah dan berkadaran dengan vektor jisim dan halaju objek.",
+        "zh": "复习动量如何在方向和大小上取决于物体的质量与速度矢量。"
+      }
+    },
+    {
+      "id": "newtons-third-law",
+      "description": {
+        "en": "Newton's third law stating interaction forces between two bodies are equal in magnitude and opposite in direction.",
+        "ms": "Hukum Newton ketiga yang menyatakan daya interaksi antara dua jasad adalah sama magnitud dan bertentangan arah.",
+        "zh": "牛顿第三定律指出两物体间的相互作用力大小相等、方向相反。"
+      },
+      "recovery": {
+        "en": "Recall that action-reaction force pairs act on different bodies simultaneously with equal magnitude and opposing sign.",
+        "ms": "Ingat kembali bahawa pasangan daya tindakan-tindak balas bertindak ke atas jasad berbeza serentak dengan magnitud sama dan tanda bertentangan.",
+        "zh": "回顾作用力与反作用力对同时作用于不同物体，大小相等且符号相反。"
+      }
+    },
+    {
+      "id": "vector-components",
+      "description": {
+        "en": "Resolution of vectors into independent orthogonal components (x, y, z).",
+        "ms": "Leraian vektor kepada komponen ortogon tak bersandar (x, y, z).",
+        "zh": "将矢量分解为相互独立的正交分量（x、y、z）。"
+      },
+      "recovery": {
+        "en": "Practice resolving two-dimensional vectors into horizontal and vertical components using trigonometric projections.",
+        "ms": "Latih tubi meleraikan vektor dua dimensi kepada komponen mendatar dan menegak menggunakan unjuran trigonometri.",
+        "zh": "练习利用三角投影将二维矢量分解为水平和竖直分量。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "single-particle-conservation",
+      "description": {
+        "en": "Believing that the momentum of every individual particle within an isolated system must remain constant.",
+        "ms": "Percaya bahawa momentum setiap zarah individu dalam suatu sistem terpencil mesti kekal malar.",
+        "zh": "误认为孤立系统内每个独立粒子的动量都必须保持恒定。"
+      }
+    },
+    {
+      "id": "internal-force-confusion",
+      "description": {
+        "en": "Assuming that internal forces between interacting system members can change the total momentum of the system.",
+        "ms": "Menganggap bahawa daya dalaman antara ahli sistem yang berinteraksi boleh mengubah jumlah momentum sistem.",
+        "zh": "误以为系统内部成员之间的相互作用力会改变系统的总动量。"
+      }
+    },
+    {
+      "id": "scalar-momentum-treatment",
+      "description": {
+        "en": "Treating momentum as a scalar quantity by neglecting directional signs and component independence during interactions.",
+        "ms": "Menganggap momentum sebagai kuantiti skalar dengan mengabaikan tanda arah dan ketakbersandaran komponen semasa interaksi.",
+        "zh": "将动量视为标量，在相互作用中忽略方向符号与分量独立性。"
+      }
+    },
+    {
+      "id": "kinetic-energy-momentum-conflation",
+      "description": {
+        "en": "Confusing kinetic energy with momentum, expecting total kinetic energy to remain constant whenever momentum is conserved.",
+        "ms": "Mengelirukan tenaga kinetik dengan momentum, menjangkakan jumlah tenaga kinetik kekal malar setiap kali momentum terpelihara.",
+        "zh": "混淆动能与动量，以为只要动量守恒，系统的总动能就必然守恒。"
+      }
+    },
+    {
+      "id": "vertical-force-invalidates-horizontal-conservation",
+      "description": {
+        "en": "Believing that external vertical forces (such as gravity or normal force) prevent momentum conservation along an isolated horizontal axis.",
+        "ms": "Percaya bahawa daya menegak luaran (seperti graviti atau daya normal) menghalang keabadian momentum di sepanjang paksi mendatar yang terpencil.",
+        "zh": "误认为竖直方向的外力（如重力或支持力）会破坏水平孤立方向上的动量守恒。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-9/section-9-2/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-9-section-9-2.json",
+  "activities": [
+    {
+      "id": "act-mcq-iso-01",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define an isolated system in the context of linear momentum as one subject to zero net external force.",
+      "prompt": {
+        "en": "In the study of linear momentum, which condition specifically defines an isolated system?",
+        "ms": "Dalam kajian momentum linear, keadaan manakah yang secara khusus mentakrifkan suatu sistem terpencil?",
+        "zh": "在线性动量的研究中，以下哪项条件明确定义了一个孤立系统？"
+      },
+      "hints": [
+        {
+          "en": "Recall the distinction between forces exerted by objects outside the chosen boundary and forces exerted between members of the system.",
+          "ms": "Ingat kembali perbezaan antara daya yang dikenakan oleh objek di luar sempadan yang dipilih dengan daya yang dikenakan antara ahli dalam sistem.",
+          "zh": "回忆选定边界外部物体施加的力与系统内部成员之间相互施加的力之间的区别。"
+        },
+        {
+          "en": "Internal forces between members of a system can be present and strong; isolation specifically requires the absence of net forces acting across the system boundary.",
+          "ms": "Daya dalaman antara ahli sistem boleh wujud dan kuat; keadaan terpencil secara khusus memerlukan ketiadaan daya bersih yang bertindak merentasi sempadan sistem.",
+          "zh": "系统成员之间的内力可以存在且很大；孤立条件特别要求不存在穿过系统边界作用的合外力。"
+        }
+      ],
+      "feedback": {
+        "en": "An isolated system for linear momentum is defined by the absence of net external forces acting across its boundary; internal forces between parts can still occur.",
+        "ms": "Sistem terpencil bagi momentum linear ditakrifkan oleh ketiadaan daya luar bersih yang bertindak merentasi sempadannya; daya dalaman antara bahagian masih boleh berlaku.",
+        "zh": "线性动量中的孤立系统定义为没有合外力穿过其边界作用；内部部件之间的内力仍然可以存在。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because isolation refers solely to forces crossing the boundary from the environment. Option B is incorrect because internal forces do not violate isolation. Option C is incorrect because individual parts can accelerate due to internal forces. Option D is incorrect because isolated systems can contain any number of interacting particles.",
+        "ms": "Pilihan A betul kerana keterpencilan hanya merujuk kepada daya yang merentasi sempadan dari persekitaran. Pilihan B salah kerana daya dalaman tidak melanggar keterpencilan. Pilihan C salah kerana bahagian individu boleh memecut akibat daya dalaman. Pilihan D salah kerana sistem terpencil boleh mengandungi sebarang bilangan zarah yang berinteraksi.",
+        "zh": "选项 A 正确，因为孤立仅指来自环境、跨越边界的外力为零。选项 B 错误，因为内力并不破坏孤立性。选项 C 错误，因为单个部件可在内力作用下加速。选项 D 错误，因为孤立系统可以包含任意数量相互作用的粒子。"
+      },
+      "explanation": {
+        "en": "In mechanics, an isolated system regarding momentum is one for which the net external force is zero. Particles within the system may exert forces on one another, but because these interaction pairs are internal, they do not alter the system boundary condition.",
+        "ms": "Dalam mekanik, sistem terpencil berkaitan momentum ialah sistem yang daya luar bersihnya adalah sifar. Zarah-zarah di dalam sistem boleh mengenakan daya antara satu sama lain, tetapi kerana pasangan interaksi ini adalah dalaman, ia tidak mengubah keadaan sempadan sistem.",
+        "zh": "在力学中，关于动量的孤立系统是指合外力为零的系统。系统内的粒子可以相互施加力，但由于这些相互作用对是内力，它们不会改变系统的边界条件。"
+      },
+      "misconceptions": [
+        "internal-force-confusion",
+        "single-particle-conservation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Remember that an object's momentum changes when a net force acts on it over time. Consider whether forces from within a group change the total momentum of the group as a whole.",
+          "ms": "Ingat bahawa momentum suatu objek berubah apabila daya bersih bertindak ke atasnya dari semasa ke semasa. Fikirkan sama ada daya dari dalam kumpulan mengubah jumlah momentum kumpulan secara keseluruhan.",
+          "zh": "请记住，当合力随时间作用于物体时，该物体的动量会发生改变。思考来自群体内部的力是否会改变整个群体的总动量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four choices about the definition of an isolated system in linear momentum. Select one option.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan tentang definisi sistem terpencil dalam momentum linear. Pilih satu jawapan.",
+        "zh": "关于线性动量中孤立系统定义的四选一单选题。请选择一个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "No net external force acts on the system from outside its boundary.",
+              "ms": "Tiada daya luar bersih bertindak ke atas sistem dari luar sempadannya.",
+              "zh": "没有合外力从系统边界外部作用于该系统。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "misconception": "internal-force-confusion",
+            "label": {
+              "en": "No forces whatsoever act, meaning internal interactions between constituent parts are also absent.",
+              "ms": "Tiada sebarang daya yang bertindak, bermaksud interaksi dalaman antara komponen juzuk juga tiada.",
+              "zh": "没有任何力作用，这意味着组成部分之间的内部相互作用也不存在。"
+            }
+          },
+          {
+            "id": "opt-c",
+            "misconception": "single-particle-conservation",
+            "label": {
+              "en": "Every individual object inside the system must separately travel at a constant velocity.",
+              "ms": "Setiap objek individu di dalam sistem mesti bergerak secara berasingan pada halaju malar.",
+              "zh": "系统内的每个独立物体都必须单独以恒定速度运动。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The system contains only one single particle so that collisions cannot happen.",
+              "ms": "Sistem hanya mengandungi satu zarah tunggal supaya pelanggaran tidak boleh berlaku.",
+              "zh": "系统仅包含单个粒子，因此不会发生碰撞。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-iso-02",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "State and apply the principle of conservation of linear momentum for an isolated system.",
+      "prompt": {
+        "en": "Two gliders interact on a horizontal frictionless air track with no horizontal external forces acting on them. Which statement correctly describes their momentum during the interaction?",
+        "ms": "Dua peluncur berinteraksi di atas trek udara mendatar tanpa geseran tanpa sebarang daya luar mendatar bertindak ke atasnya. Pernyataan manakah yang menerangkan momentum mereka dengan betul semasa interaksi tersebut?",
+        "zh": "两个滑块在无摩擦的水平气垫导轨上相互作用，且没有水平外力作用于它们。下列哪项陈述正确描述了它们在相互作用过程中的动量？"
+      },
+      "hints": [
+        {
+          "en": "Consider the principle of conservation of linear momentum: it applies to the vector sum of all momenta within the isolated system.",
+          "ms": "Pertimbangkan prinsip keabadian momentum linear: ia terpakai kepada hasil tambah vektor semua momentum di dalam sistem terpencil.",
+          "zh": "思考线性动量守恒定律：它适用于孤立系统内所有动量的矢量和。"
+        },
+        {
+          "en": "During a collision, internal forces push on the gliders, changing their individual velocities. Ask yourself what happens to the sum of their momenta.",
+          "ms": "Semasa perlanggaran, daya dalaman menolak peluncur, mengubah halaju individu masing-masing. Fikirkan apa yang berlaku kepada hasil tambah momentum mereka.",
+          "zh": "碰撞过程中，内力作用于滑块并改变各自的速度。思考两者的动量之和会发生什么。"
+        }
+      ],
+      "feedback": {
+        "en": "In an isolated system, the total linear momentum is conserved, even though individual particles exchange momentum and change their velocities.",
+        "ms": "Dalam sistem terpencil, jumlah momentum linear diabadikan, walaupun zarah individu bertukar momentum dan mengubah halaju masing-masing.",
+        "zh": "在孤立系统中，尽管单个粒子会交换动量并改变速度，但系统的总线性动量守恒。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because conservation of momentum applies to the entire isolated system, not individual constituents. Option B represents the misconception that individual particle momenta must be conserved. Option C is incorrect because internal forces cannot add total momentum. Option D is incorrect because conservation holds regardless of whether the final velocities are zero or non-zero.",
+        "ms": "Pilihan A betul kerana keabadian momentum terpakai kepada keseluruhan sistem terpencil, bukan juzuk individu. Pilihan B mewakili salah faham bahawa momentum zarah individu mesti diabadikan. Pilihan C salah kerana daya dalaman tidak boleh menambah jumlah momentum. Pilihan D salah kerana keabadian berlaku tanpa mengira sama ada halaju akhir adalah sifar atau bukan sifar.",
+        "zh": "选项 A 正确，因为动量守恒定律适用于整个孤立系统，而非单个组成成分。选项 B 体现了误认为每个独立粒子的动量都必须守恒的错误观念。选项 C 错误，因为内力无法增加总动量。选项 D 错误，因为无论最终速度是否为零，守恒定律均成立。"
+      },
+      "explanation": {
+        "en": "Pitfall Prevention 9.1 highlights that while the total momentum of an isolated system is constant, the momentum of any single constituent particle is not necessarily constant because other particles within the system exert forces on it.",
+        "ms": "Pencegahan Kesilapan 9.1 menekankan bahawa walaupun jumlah momentum suatu sistem terpencil adalah malar, momentum mana-mana zarah juzuk tunggal tidak semestinya malar kerana zarah lain di dalam sistem mengenakan daya ke atasnya.",
+        "zh": "防错提示 9.1 指出，尽管孤立系统的总动量是恒定的，但系统内任何单个组成粒子的动量并不一定恒定，因为系统内的其他粒子会对它施加力。"
+      },
+      "misconceptions": [
+        "single-particle-conservation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Review how an individual object's momentum is defined as mass times velocity, so a change in velocity means that individual object's momentum changes.",
+          "ms": "Ulang kaji bagaimana momentum objek individu ditakrifkan sebagai jisim darab halaju, jadi perubahan halaju bermakna momentum objek individu tersebut berubah.",
+          "zh": "复习单个物体的动量是如何定义为质量乘以速度的，因此速度的变化意味着该单个物体的动量发生改变。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four choices about the momentum of individual gliders versus total momentum in an isolated system. Select one option.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan tentang momentum peluncur individu berbanding jumlah momentum dalam sistem terpencil. Pilih satu jawapan.",
+        "zh": "关于孤立系统中单个滑块动量与总动量关系的四选一单选题。请选择一个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The total momentum of the two-glider system remains constant, while the momentum of each individual glider may change.",
+              "ms": "Jumlah momentum sistem dua peluncur kekal malar, manakala momentum setiap peluncur individu boleh berubah.",
+              "zh": "两滑块系统的总动量保持恒定，而每个单独滑块的动量可以改变。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "misconception": "single-particle-conservation",
+            "label": {
+              "en": "The momentum of each separate glider must individually remain constant at every instant.",
+              "ms": "Momentum setiap peluncur yang berasingan mesti kekal malar secara individu pada setiap ketika.",
+              "zh": "每个单独滑块的动量在每一瞬间都必须分别保持恒定。"
+            }
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The total momentum of the system increases because the collision forces impart additional forward motion.",
+              "ms": "Jumlah momentum sistem bertambah kerana daya perlanggaran memberikan gerakan ke hadapan tambahan.",
+              "zh": "系统的总动量增加，因为碰撞力赋予了额外的向前运动。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The total momentum is conserved only if both gliders come to a complete stop relative to the track.",
+              "ms": "Jumlah momentum hanya dikekalkan jika kedua-dua peluncur berhenti sepenuhnya berbanding trek.",
+              "zh": "仅当两个滑块相对于导轨完全静止时，总动量才守恒。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-iso-03",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between internal forces that exchange momentum and external forces that alter system momentum.",
+      "prompt": {
+        "en": "Two ice skaters stand at rest facing each other on frictionless ice and then push against each other to move apart. Treating the two skaters together as the system, how do the pushing forces affect the system's total momentum?",
+        "ms": "Dua pemain luncur ais berdiri pegun berhadapan antara satu sama lain di atas ais tanpa geseran dan kemudian menolak antara satu sama lain untuk berpisah. Menganggap kedua-dua pemain luncur bersama sebagai satu sistem, bagaimanakah daya tolakan tersebut mempengaruhi jumlah momentum sistem?",
+        "zh": "两名滑冰者在无摩擦的冰面上静止面对面站立，然后互相推开对方。将两名滑冰者作为一个系统，推力如何影响系统的总动量？"
+      },
+      "hints": [
+        {
+          "en": "Identify what belongs inside the chosen system boundary: both skaters are defined as members of the single system.",
+          "ms": "Kenal pasti apa yang berada di dalam sempadan sistem yang dipilih: kedua-dua pemain luncur ditakrifkan sebagai ahli bagi satu sistem tunggal.",
+          "zh": "确定选定系统边界内部包含什么：两名滑冰者都被定义为该单一系统的成员。"
+        },
+        {
+          "en": "By Newton's third law, the mutual push forces between the skaters are equal in magnitude and opposite in direction, summing to zero internal net impulse on the system.",
+          "ms": "Menurut hukum Newton ketiga, daya tolakan bersama antara pemain luncur adalah sama magnitud dan bertentangan arah, menghasilkan jumlah impuls bersih dalaman sifar ke atas sistem.",
+          "zh": "根据牛顿第三定律，滑冰者之间的相互推力大小相等、方向相反，对系统产生的内力合冲量为零。"
+        }
+      ],
+      "feedback": {
+        "en": "The pushing forces are internal to the two-skater system. In accordance with Newton's third law, they sum to zero vectorially and cannot change the system's total momentum.",
+        "ms": "Daya tolakan adalah daya dalaman kepada sistem dua pemain luncur. Menurut hukum Newton ketiga, hasil tambah vektornya adalah sifar dan tidak dapat mengubah jumlah momentum sistem.",
+        "zh": "推力属于两名滑冰者系统的内力。根据牛顿第三定律，它们在矢量上相加为零，不能改变系统的总动量。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because the forces between the skaters are action-reaction pairs internal to the system, so the total momentum remains zero. Option B illustrates the misconception that internal pushing forces create net system momentum. Option C confuses individual member boundaries with the defined two-skater system boundary. Option D contradicts observations because each skater acquires an equal and opposite momentum.",
+        "ms": "Pilihan A betul kerana daya antara pemain luncur ialah pasangan tindakan-tindak balas dalaman kepada sistem, jadi jumlah momentum kekal sifar. Pilihan B menggambarkan salah faham bahawa daya tolakan dalaman menghasilkan momentum sistem bersih. Pilihan C mengelirukan sempadan ahli individu dengan sempadan sistem dua pemain luncur yang ditakrifkan. Pilihan D bercanggah dengan pemerhatian kerana setiap pemain luncur memperoleh momentum yang sama dan bertentangan.",
+        "zh": "选项 A 正确，因为滑冰者之间的力是系统内部的作用力与反作用力对，因此总动量保持为零。选项 B 说明了内推力会产生系统净动量的错误观念。选项 C 混淆了个体成员的边界与所定义的双人系统边界。选项 D 与事实相悖，因为每位滑冰者都会获得大小相等、方向相反的动量。"
+      },
+      "explanation": {
+        "en": "Forces between interacting parts of a defined system are internal forces. By Newton's third law, these forces occur in equal and opposite pairs that sum to zero, transferring momentum from one member to another without altering the total momentum of the isolated system.",
+        "ms": "Daya antara bahagian yang berinteraksi dalam sistem yang ditakrifkan ialah daya dalaman. Menurut hukum Newton ketiga, daya-daya ini berlaku dalam pasangan yang sama dan bertentangan yang menghasilkan sifar apabila dijumlahkan, memindahkan momentum daripada satu ahli kepada ahli yang lain tanpa mengubah jumlah momentum sistem terpencil.",
+        "zh": "所定义系统相互作用部件之间的力是内力。根据牛顿第三定律，这些力成对出现、大小相等且方向相反，其矢量和为零，仅在系统成员之间转移动量，而不会改变孤立系统的总动量。"
+      },
+      "misconceptions": [
+        "internal-force-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Recall Newton's third law: when skater 1 exerts a force on skater 2, skater 2 simultaneously exerts an equal and opposite force on skater 1.",
+          "ms": "Ingat kembali hukum Newton ketiga: apabila pemain luncur 1 mengenakan daya ke atas pemain luncur 2, pemain luncur 2 serentak mengenakan daya yang sama dan bertentangan ke atas pemain luncur 1.",
+          "zh": "回顾牛顿第三定律：当滑冰者 1 对滑冰者 2 施加力时，滑冰者 2 同时对滑冰者 1 施加大小相等、方向相反的反作用力。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four choices about the effect of internal pushing forces between two skaters on system momentum. Select one option.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan tentang kesan daya tolakan dalaman antara dua pemain luncur terhadap momentum sistem. Pilih satu jawapan.",
+        "zh": "关于两名滑冰者之间的内部推力对系统总动量影响的四选一单选题。请选择一个选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "They are internal forces that transfer momentum between the skaters, leaving the system's total momentum unchanged at zero.",
+              "ms": "Ia merupakan daya dalaman yang memindahkan momentum antara pemain luncur, menjadikan jumlah momentum sistem kekal tidak berubah pada nilai sifar.",
+              "zh": "它们是在滑冰者之间传递动量的内力，使系统的总动量保持为零且不改变。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "misconception": "internal-force-confusion",
+            "label": {
+              "en": "They are internal forces that push outward on both skaters, thereby increasing the system's total momentum.",
+              "ms": "Ia merupakan daya dalaman yang menolak kedua-dua pemain luncur ke luar, seterusnya meningkatkan jumlah momentum sistem.",
+              "zh": "它们是向外推开两名滑冰者的内力，从而增加了系统的总动量。"
+            }
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "They act as external forces because each skater feels a push coming from someone outside their own body.",
+              "ms": "Ia bertindak sebagai daya luar kerana setiap pemain luncur merasakan tolakan yang datang dari seseorang di luar badan mereka sendiri.",
+              "zh": "它们充当外力，因为每位滑冰者都感受到来自自己身体外部其他人的推力。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "They cancel the velocity of both skaters immediately, ensuring neither skater can move across the ice.",
+              "ms": "Ia membatalkan halaju kedua-dua pemain luncur serta-merta, memastikan tiada pemain luncur yang boleh bergerak merentasi ais.",
+              "zh": "它们立即使两名滑冰者的速度抵消，确保两名滑冰者都无法在冰面上移动。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-iso-04",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict recoil velocities of interacting bodies within an isolated system using directional conservation.",
+      "misconceptions": [
+        "scalar-momentum-treatment",
+        "single-particle-conservation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Recall Newton's third law: when body A exerts a force on body B, body B exerts an equal and opposite force on body A over the exact same time duration.",
+          "ms": "Ingat kembali hukum Newton ketiga: apabila jasad A mengenakan daya ke atas jasad B, jasad B mengenakan daya yang sama magnitud dan bertentangan arah ke atas jasad A dalam tempoh masa yang sama.",
+          "zh": "回顾牛顿第三定律：当物体A对物体B施加力时，物体B在相同时间内对物体A施加大小相等、方向相反的反作用力。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four options evaluating the recoil velocity and direction of an astronaut pushing an equipment module in deep space.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang menilai halaju dan arah sentakan seorang angkasawan yang menolak modul peralatan di angkasa lepas.",
+        "zh": "包含四个选项的多项选择题，评估宇航员在深空中推开设备舱时的反冲速度与方向。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "prompt": {
+        "en": "A stationary astronaut floating freely in deep space pushes a piece of equipment away from herself along a straight horizontal line. The equipment has less mass than the astronaut and moves forward in the positive x-direction. Assuming no external forces act on the astronaut-equipment system, how does the astronaut move after the push?",
+        "ms": "Seorang angkasawan pegun yang terapung bebas di angkasa lepas menolak sebuah peralatan menjauhi dirinya di sepanjang satu garis mendatar yang lurus. Peralatan tersebut mempunyai jisim yang lebih kecil daripada angkasawan dan bergerak ke hadapan dalam arah x positif. Dengan mengandaikan tiada daya luaran bertindak ke atas sistem angkasawan-peralatan, bagaimanakah angkasawan itu bergerak selepas tolakan tersebut?",
+        "zh": "一名在深空中自由漂浮的静止宇航员沿水平直线将一件设备推离自己。该设备的质量小于宇航员，并沿正x方向向前运动。假设宇航员-设备系统不受任何外力作用，推开之后宇航员将如何运动？"
+      },
+      "answerKey": {
+        "correct": "opt-recoil-opp-lower",
+        "options": [
+          {
+            "id": "opt-recoil-opp-lower",
+            "label": {
+              "en": "She recoils in the negative x-direction at a lower speed than the equipment.",
+              "ms": "Dia tersentak ke arah x negatif pada laju yang lebih rendah daripada peralatan tersebut.",
+              "zh": "她沿负x方向反冲，速率低于设备的速率。"
+            }
+          },
+          {
+            "id": "opt-fwd-scalar",
+            "misconception": "scalar-momentum-treatment",
+            "label": {
+              "en": "She moves forward in the positive x-direction alongside the equipment because momentum has magnitude only and cannot cancel through opposing motion.",
+              "ms": "Dia bergerak ke hadapan dalam arah x positif bersama-sama peralatan itu kerana momentum hanya mempunyai magnitud dan tidak boleh saling membatalkan melalui gerakan bertentangan.",
+              "zh": "她与设备一起沿正x方向向前运动，因为动量仅有大小，不能通过相反运动来相互抵消。"
+            }
+          },
+          {
+            "id": "opt-stationary-single",
+            "misconception": "single-particle-conservation",
+            "label": {
+              "en": "She remains completely stationary because the momentum of each individual body in an isolated system must be conserved independently at zero.",
+              "ms": "Dia kekal pegun sepenuhnya kerana momentum setiap jasad individu dalam sistem terpencil mesti terpelihara secara berasingan pada nilai sifar.",
+              "zh": "她完全保持静止，因为孤立系统中每个独立物体的动量都必须各自独立守恒为零。"
+            }
+          },
+          {
+            "id": "opt-recoil-higher",
+            "label": {
+              "en": "She recoils in the negative x-direction at a higher speed than the equipment because her greater mass generates greater velocity.",
+              "ms": "Dia tersentak ke arah x negatif pada laju yang lebih tinggi daripada peralatan tersebut kerana jisimnya yang lebih besar menjana halaju yang lebih tinggi.",
+              "zh": "她沿负x方向反冲，速率高于设备的速率，因为她更大的质量会产生更大的速度。"
+            }
+          }
+        ]
+      },
+      "hints": [
+        {
+          "en": "The astronaut and equipment form an isolated system that is initially at rest, meaning the initial total momentum vector of the system is zero.",
+          "ms": "Angkasawan dan peralatan membentuk satu sistem terpencil yang pada mulanya berada dalam keadaan pegun, bermakna vektor jumlah momentum awal sistem adalah sifar.",
+          "zh": "宇航员与设备构成一个最初处于静止状态的孤立系统，这意味着系统的总初始动量矢量为零。"
+        },
+        {
+          "en": "Because total momentum must remain zero, the momentum of the astronaut and the momentum of the equipment must have equal magnitudes but opposite directional signs. How does mass affect speed when magnitude of momentum is identical?",
+          "ms": "Oleh kerana jumlah momentum mesti kekal sifar, momentum angkasawan dan momentum peralatan mesti mempunyai magnitud yang sama tetapi tanda arah yang bertentangan. Bagaimanakah jisim mempengaruhi laju apabila magnitud momentum adalah serupa?",
+          "zh": "因为总动量必须保持为零，所以宇航员的动量与设备的动量大小必须相等且方向符号相反。当动量大小相同时，质量如何影响速率？"
+        }
+      ],
+      "feedback": {
+        "en": "Conservation of total linear momentum requires that the astronaut's final momentum balances the equipment's forward momentum. Because momentum is a vector with direction, the astronaut must move in the opposite direction (negative x), and because her mass is greater, her speed is proportionally lower.",
+        "ms": "Keabadian jumlah momentum linear memerlukan momentum akhir angkasawan mengimbangi momentum ke hadapan peralatan. Oleh kerana momentum ialah vektor dengan arah, angkasawan mesti bergerak ke arah bertentangan (x negatif), dan kerana jisimnya lebih besar, lajunya adalah lebih rendah secara berkadar.",
+        "zh": "总线动量守恒要求宇航员的末动量与设备向前的前向动量相平衡。由于动量是具有方向的矢量，宇航员必须向相反方向（负x方向）运动；并且由于她的质量更大，她的速率相应地更低。"
+      },
+      "answerLogic": {
+        "en": "The initial system momentum is zero: p_initial = 0. Since no external forces act, Delta p_tot = 0, giving m_astronaut * v_astronaut + m_equipment * v_equipment = 0. Solving for the astronaut's velocity yields v_astronaut = - (m_equipment / m_astronaut) * v_equipment. The negative sign confirms opposite direction (negative x), and because m_equipment < m_astronaut, the speed |v_astronaut| < |v_equipment|.",
+        "ms": "Momentum awal sistem ialah sifar: p_awal = 0. Memandangkan tiada daya luaran bertindak, Delta p_tot = 0, memberikan m_angkasawan * v_angkasawan + m_peralatan * v_peralatan = 0. Menyelesaikan untuk halaju angkasawan menghasilkan v_angkasawan = - (m_peralatan / m_angkasawan) * v_peralatan. Tanda negatif mengesahkan arah bertentangan (x negatif), dan kerana m_peralatan < m_angkasawan, laju |v_angkasawan| < |v_peralatan|.",
+        "zh": "系统的初始动量为零：p_初 = 0。由于没有外力作用，Delta p_tot = 0，得到 m_宇航员 * v_宇航员 + m_设备 * v_设备 = 0。解出宇航员速度得 v_宇航员 = - (m_设备 / m_宇航员) * v_设备。负号证实了方向相反（负x方向），且由于 m_设备 < m_宇航员，速率 |v_宇航员| < |v_设备|。"
+      },
+      "explanation": {
+        "en": "In an isolated system, internal forces cannot alter the total vector momentum. The mutual push exerts equal and opposite impulses on the astronaut and the equipment. For the vector sum of their momenta to remain zero, their momentum vectors must point in opposite directions. Furthermore, since momentum magnitude is the product of mass and speed (p = m*v), the more massive body acquires a correspondingly smaller recoil speed.",
+        "ms": "Dalam sistem terpencil, daya dalaman tidak dapat mengubah jumlah momentum vektor. Tolakan saling mengenakan impuls yang sama magnitud dan bertentangan arah ke atas angkasawan dan peralatan. Supaya hasil tambah vektor momentum mereka kekal sifar, vektor momentum mereka mesti menunjuk ke arah bertentangan. Tambahan pula, memandangkan magnitud momentum ialah hasil darab jisim dan laju (p = m*v), jasad yang lebih berjisim memperoleh laju sentakan yang lebih kecil secara berkadar.",
+        "zh": "在孤立系统中，内力无法改变总动量矢量。相互推开的作用对宇航员和设备施加了大小相等、方向相反的冲量。为了使二者动量的矢量和保持为零，它们的动量矢量必须指向相反的方向。此外，由于动量大小等于质量与速率的乘积（p = m*v），质量较大的物体所获得的反冲速率相应较小。"
+      }
+    },
+    {
+      "id": "act-mcq-iso-05",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze momentum conservation independently along orthogonal coordinate axes.",
+      "misconceptions": [
+        "vertical-force-invalidates-horizontal-conservation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "Review how two-dimensional vectors are resolved into perpendicular x, y, and z components that can be analyzed completely independently.",
+          "ms": "Ulang kaji bagaimana vektor dua dimensi dileraikan kepada komponen serenjang x, y, dan z yang boleh dianalisis secara bebas sepenuhnya.",
+          "zh": "复习如何将二维矢量分解为相互垂直的x、y和z分量，这些分量可以完全独立地进行分析。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question presenting a scenario of sliding pucks on ice to examine how vertical forces affect horizontal momentum conservation.",
+        "ms": "Soalan aneka pilihan yang membentangkan senario kepingan gelongsor di atas ais untuk memeriksa bagaimana daya menegak mempengaruhi keabadian momentum mendatar.",
+        "zh": "包含多个选项的多项选择题，通过冰面上滑行冰球的场景检验竖直方向的力如何影响水平动量守恒。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "prompt": {
+        "en": "Two curling stones slide and collide on a horizontal, frictionless sheet of ice. Gravity pulls downward on the stones in the vertical z-direction, and the ice exerts an upward normal force in the vertical z-direction. Why is the total momentum of the two-stone system conserved along the horizontal x- and y-directions during the collision?",
+        "ms": "Dua batu 'curling' menggelongsor dan berlanggar di atas permukaan ais mendatar yang bebas geseran. Graviti menarik batu ke bawah dalam arah z menegak, manakala ais mengenakan daya normal ke atas dalam arah z menegak. Mengapakah jumlah momentum sistem dua batu itu terpelihara di sepanjang arah mendatar x dan y semasa perlanggaran?",
+        "zh": "两只冰壶在光滑无摩擦的水平冰面上滑行并发生碰撞。重力在竖直z方向向下吸引冰壶，冰面在竖直z方向施加向上的支持力。为什么在碰撞过程中两只冰壶系统的总动量在水平x和y方向上是守恒的？"
+      },
+      "answerKey": {
+        "correct": "opt-independent-axes",
+        "options": [
+          {
+            "id": "opt-independent-axes",
+            "label": {
+              "en": "Momentum is conserved independently along each orthogonal axis; because there are no horizontal external forces, total horizontal momentum is conserved regardless of vertical forces.",
+              "ms": "Momentum terpelihara secara bebas di sepanjang setiap paksi ortogon; oleh kerana tiada daya luaran mendatar, jumlah momentum mendatar terpelihara tanpa mengira daya menegak.",
+              "zh": "动量在各个正交轴上是相互独立守恒的；由于不存在水平外力，无论竖直方向存在何种力，水平方向的总动量均守恒。"
+            }
+          },
+          {
+            "id": "opt-vert-destroys-horiz",
+            "misconception": "vertical-force-invalidates-horizontal-conservation",
+            "label": {
+              "en": "Total horizontal momentum cannot truly be conserved because any external force acting on a system, regardless of its direction, ruins momentum conservation along all axes.",
+              "ms": "Jumlah momentum mendatar tidak boleh benar-benar terpelihara kerana sebarang daya luaran yang bertindak ke atas sistem, tanpa mengira arahnya, merosakkan keabadian momentum di sepanjang semua paksi.",
+              "zh": "水平方向的总动量不可能真正守恒，因为作用在系统上的任何外力，无论其方向如何，都会破坏所有轴向上的动量守恒。"
+            }
+          },
+          {
+            "id": "opt-energy-equalizes",
+            "label": {
+              "en": "Horizontal momentum is conserved only because kinetic energy converts into gravitational potential energy during the collision.",
+              "ms": "Momentum mendatar terpelihara hanya kerana tenaga kinetik bertukar menjadi tenaga keupayaan graviti semasa perlanggaran.",
+              "zh": "水平动量之所以守恒，仅仅是因为碰撞过程中动能转化为了重力势能。"
+            }
+          },
+          {
+            "id": "opt-mass-reduction",
+            "label": {
+              "en": "Horizontal momentum is conserved only if the two stones have identical masses that cancel out the vertical gravitational pull.",
+              "ms": "Momentum mendatar terpelihara hanya jika kedua-dua batu mempunyai jisim yang serupa yang membatalkan tarikan graviti menegak.",
+              "zh": "水平动量仅在两只冰壶质量完全相同以抵消竖直重力作用时才守恒。"
+            }
+          }
+        ]
+      },
+      "hints": [
+        {
+          "en": "Recall Equation 9.6: momentum conservation holds as three independent component equations: one each for x, y, and z.",
+          "ms": "Ingat kembali Persamaan 9.6: keabadian momentum berlaku sebagai tiga persamaan komponen yang tak bersandar: masing-masing untuk x, y, dan z.",
+          "zh": "回顾公式9.6：动量守恒表现为三个独立的分量方程，分别对应x、y和z轴。"
+        },
+        {
+          "en": "Does an external force purely in the vertical direction have any component along the horizontal plane? If the net external force along an axis is zero, what happens to momentum along that axis?",
+          "ms": "Adakah daya luaran yang bertindak semata-mata dalam arah menegak mempunyai sebarang komponen di sepanjang satah mendatar? Jika daya paduan luaran di sepanjang suatu paksi adalah sifar, apakah yang berlaku kepada momentum di sepanjang paksi tersebut?",
+          "zh": "单纯沿竖直方向的外力在水平面上是否有任何分量？如果某一轴向上的合外力为零，该轴向上的动量会怎样？"
+        }
+      ],
+      "feedback": {
+        "en": "Linear momentum is a vector quantity that satisfies conservation independently along each perpendicular direction. Since gravity and the normal force act purely along the vertical axis, the net external force along the horizontal axes is zero, so horizontal momentum is strictly conserved.",
+        "ms": "Momentum linear ialah kuantiti vektor yang memenuhi keabadian secara bebas di sepanjang setiap arah serenjang. Memandangkan graviti dan daya normal bertindak semata-mata di sepanjang paksi menegak, daya paduan luaran di sepanjang paksi mendatar ialah sifar, maka momentum mendatar terpelihara secara mutlak.",
+        "zh": "线动量是矢量，它在各个相互垂直的方向上独立满足守恒定律。由于重力和支持力纯粹沿竖直轴作用，水平轴向上的合外力为零，因此水平动量严格守恒。"
+      },
+      "answerLogic": {
+        "en": "According to Newton's second law in component form, d(p_tot_x)/dt = F_ext_x and d(p_tot_y)/dt = F_ext_y. Because gravity and the normal force are strictly in the z direction, F_ext_x = 0 and F_ext_y = 0. Therefore, dp_tot_x/dt = 0 and dp_tot_y/dt = 0, which means total momentum in the horizontal plane is conserved independently of vertical forces.",
+        "ms": "Menurut hukum Newton kedua dalam bentuk komponen, d(p_tot_x)/dt = F_ext_x dan d(p_tot_y)/dt = F_ext_y. Oleh kerana graviti dan daya normal berada tepat dalam arah z, F_ext_x = 0 dan F_ext_y = 0. Oleh itu, dp_tot_x/dt = 0 dan dp_tot_y/dt = 0, yang bermaksud jumlah momentum dalam satah mendatar terpelihara secara bebas daripada daya menegak.",
+        "zh": "根据分量形式的牛顿第二定律，d(p_tot_x)/dt = F_ext_x且d(p_tot_y)/dt = F_ext_y。因为重力和支持力严格处于z方向，所以F_ext_x = 0且F_ext_y = 0。因此dp_tot_x/dt = 0且dp_tot_y/dt = 0，这意味着水平面内的总动量独立于竖直方向的力而守恒。"
+      },
+      "explanation": {
+        "en": "The isolated system model for momentum applies along any specific axis where the net external force is zero. External forces in the vertical direction do not project onto the horizontal plane. As shown in Section 9.2, total momentum along the x, y, and z directions is independently conserved (p1ix + p2ix = p1fx + p2fx, and similarly for y and z). Thus, vertical forces cannot prevent horizontal momentum conservation.",
+        "ms": "Model sistem terpencil untuk momentum terpakai di sepanjang mana-mana paksi tertentu di mana daya paduan luaran adalah sifar. Daya luaran dalam arah menegak tidak mempunyai unjuran ke atas satah mendatar. Seperti yang ditunjukkan dalam Seksyen 9.2, jumlah momentum di sepanjang arah x, y, dan z terpelihara secara bebas (p1ix + p2ix = p1fx + p2fx, dan begitu juga untuk y dan z). Maka, daya menegak tidak dapat menghalang keabadian momentum mendatar.",
+        "zh": "只要某一特定轴向上的合外力为零，动量的孤立系统模型就适用于该轴向。竖直方向的外力在水平面上没有投影。如第9.2节所述，x、y和z方向上的总动量是相互独立守恒的（p1ix + p2ix = p1fx + p2fx，y与z同理）。因此，竖直方向的力不会破坏水平方向的动量守恒。"
+      }
+    },
+    {
+      "id": "act-mcq-iso-06",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "State and apply the principle of conservation of linear momentum for an isolated system.",
+      "misconceptions": [
+        "kinetic-energy-momentum-conflation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Review how linear momentum (vector p = mv) differs conceptually from kinetic energy (scalar K = 1/2 m v^2).",
+          "ms": "Ulang kaji bagaimana momentum linear (vektor p = mv) berbeza secara konsep daripada tenaga kinetik (skalar K = 1/2 m v^2).",
+          "zh": "复习线动量（矢量 p = mv）与动能（标量 K = 1/2 m v^2）在概念上的本质区别。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question comparing changes in total linear momentum and total kinetic energy for an isolated system of two blocks pushed apart by a spring.",
+        "ms": "Soalan aneka pilihan yang membandingkan perubahan dalam jumlah momentum linear dan jumlah tenaga kinetik bagi suatu sistem terpencil dua blok yang ditolak berasingan oleh spring.",
+        "zh": "包含四个选项的多项选择题，比较弹簧推开两个滑块的孤立系统中总线动量与总动能的变化情况。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "prompt": {
+        "en": "Two carts on a frictionless, horizontal track are held at rest with a compressed spring between them. The carts and spring form an isolated system. When the latch is released, the spring pushes the carts apart in opposite directions along the track. How do the total linear momentum and the total kinetic energy of the system after release compare to their values before release?",
+        "ms": "Dua troli di atas landasan mendatar tanpa geseran dipegang pegun dengan spring termampat di antara mereka. Troli dan spring tersebut membentuk satu sistem terpencil. Apabila selak dilepaskan, spring menolak troli-troli tersebut berasingan dalam arah bertentangan di sepanjang landasan. Bagaimanakah jumlah momentum linear dan jumlah tenaga kinetik sistem selepas pelepasan berbanding dengan nilainya sebelum pelepasan?",
+        "zh": "光滑水平轨道上的两辆小车静止放置，它们之间夹有一根被压缩的轻弹簧。小车与弹簧构成一个孤立系统。当释放锁扣后，弹簧将两辆小车沿轨道推向相反方向。与释放前相比，释放后该系统的总线动量和总动能有何变化？"
+      },
+      "answerKey": {
+        "correct": "opt-mom-const-ke-increases",
+        "options": [
+          {
+            "id": "opt-mom-const-ke-increases",
+            "label": {
+              "en": "Total linear momentum remains constant at zero, while total kinetic energy increases.",
+              "ms": "Jumlah momentum linear kekal malar pada nilai sifar, manakala jumlah tenaga kinetik meningkat.",
+              "zh": "总线动量保持为零不变，而总动能增加。"
+            }
+          },
+          {
+            "id": "opt-conflate-ke-mom",
+            "misconception": "kinetic-energy-momentum-conflation",
+            "label": {
+              "en": "Total kinetic energy must remain constant at zero because momentum conservation strictly requires total kinetic energy to be conserved.",
+              "ms": "Jumlah tenaga kinetik mesti kekal malar pada nilai sifar kerana keabadian momentum secara mutlak memerlukan jumlah tenaga kinetik turut terpelihara.",
+              "zh": "总动能必须保持为零不变，因为动量守恒严格要求总动能也必须守恒。"
+            }
+          },
+          {
+            "id": "opt-mom-increases-ke-const",
+            "label": {
+              "en": "Total linear momentum increases because both carts gain speed, while total kinetic energy remains constant.",
+              "ms": "Jumlah momentum linear meningkat kerana kedua-dua troli memperoleh laju, manakala jumlah tenaga kinetik kekal malar.",
+              "zh": "总线动量增加，因为两辆小车都获得了速率，而总动能保持不变。"
+            }
+          },
+          {
+            "id": "opt-neither-conserved",
+            "label": {
+              "en": "Neither total linear momentum nor total kinetic energy is conserved because the spring force acts as an external force.",
+              "ms": "Kedua-dua jumlah momentum linear dan jumlah tenaga kinetik tidak terpelihara kerana daya spring bertindak sebagai daya luaran.",
+              "zh": "总线动量和总动能都不守恒，因为弹簧弹力起到了外力的作用。"
+            }
+          }
+        ]
+      },
+      "hints": [
+        {
+          "en": "The system is isolated, meaning no net external force acts on the carts. What does the isolated system model (momentum) state about the total vector momentum?",
+          "ms": "Sistem ini terpencil, bermakna tiada daya paduan luaran bertindak ke atas troli. Apakah yang dinyatakan oleh model sistem terpencil (momentum) tentang jumlah momentum vektor?",
+          "zh": "该系统是孤立的，意味着小车上没有合外力作用。动量的孤立系统模型对总矢量动量作出了怎样的阐述？"
+        },
+        {
+          "en": "Initially, both carts are at rest, so initial momentum is zero and initial kinetic energy is zero. After release, both carts are moving. Can kinetic energy be negative to cancel out to zero?",
+          "ms": "Pada mulanya, kedua-dua troli berada dalam keadaan pegun, jadi momentum awal adalah sifar dan tenaga kinetik awal adalah sifar. Selepas pelepasan, kedua-dua troli bergerak. Bolehkah tenaga kinetik bernilai negatif untuk saling membatalkan kepada sifar?",
+          "zh": "最初两辆小车均处于静止状态，因此初始动量为零，初始动能也为零。释放后两车均处于运动中。动能可以是负值并相互抵消为零吗？"
+        }
+      ],
+      "feedback": {
+        "en": "Because no net external force acts on the system, total vector momentum is strictly conserved and remains zero (the carts move in opposite directions, so their momenta cancel). However, kinetic energy is a positive scalar quantity that increases as stored elastic potential energy is converted into motion; momentum conservation does not imply kinetic energy conservation.",
+        "ms": "Oleh kerana tiada daya paduan luaran bertindak ke atas sistem, jumlah momentum vektor terpelihara secara mutlak dan kekal sifar (troli bergerak dalam arah bertentangan, maka momentum mereka saling membatalkan). Walau bagaimanapun, tenaga kinetik ialah kuantiti skalar positif yang meningkat apabila tenaga keupayaan kenyal yang tersimpan ditukarkan kepada gerakan; keabadian momentum tidak membayangkan keabadian tenaga kinetik.",
+        "zh": "因为系统没有受到合外力作用，总动量矢量严格守恒且保持为零（小车沿相反方向运动，它们的动量相互抵消）。然而，动能是正标量，随着储存的弹性势能转化为机械运动而增加；动量守恒绝不意味着动能守恒。"
+      },
+      "answerLogic": {
+        "en": "For an isolated system: Delta p_tot = 0. Since p_initial = 0, p_final = p1 + p2 = m1*v1 + m2*v2 = 0, so total linear momentum is unchanged. For kinetic energy: K_initial = 0. After release, each cart has non-zero speed, so K_final = 1/2*m1*v1^2 + 1/2*m2*v2^2 > 0. Stored elastic potential energy was converted into kinetic energy. Therefore, momentum is conserved but kinetic energy increases.",
+        "ms": "Bagi suatu sistem terpencil: Delta p_tot = 0. Memandangkan p_awal = 0, p_akhir = p1 + p2 = m1*v1 + m2*v2 = 0, maka jumlah momentum linear tidak berubah. Bagi tenaga kinetik: K_awal = 0. Selepas pelepasan, setiap troli mempunyai laju bukan sifar, maka K_akhir = 1/2*m1*v1^2 + 1/2*m2*v2^2 > 0. Tenaga keupayaan kenyal tersimpan telah ditukar kepada tenaga kinetik. Oleh itu, momentum terpelihara tetapi tenaga kinetik meningkat.",
+        "zh": "对于孤立系统：Delta p_tot = 0。由于 p_初 = 0，p_末 = p1 + p2 = m1*v1 + m2*v2 = 0，因此总线动量保持不变。对于动能：K_初 = 0。释放后每辆小车都具有非零速率，所以 K_末 = 1/2*m1*v1^2 + 1/2*m2*v2^2 > 0。储存的弹性势能转化为了动能。因此，动量守恒，但动能增加了。"
+      },
+      "explanation": {
+        "en": "The isolated system (momentum) model states that whenever particles in an isolated system interact, the total momentum does not change (Equation 9.5). Momentum is a vector that can cancel out when objects move in opposite directions. In contrast, kinetic energy is a scalar that depends on speed squared and cannot be negative. Internal forces such as spring forces readily convert potential energy into kinetic energy without altering the system's total momentum. Conflating momentum conservation with kinetic energy conservation is a common error.",
+        "ms": "Model sistem terpencil (momentum) menyatakan bahawa apabila zarah-zarah dalam sistem terpencil berinteraksi, jumlah momentum tidak berubah (Persamaan 9.5). Momentum ialah vektor yang boleh saling membatalkan apabila objek bergerak dalam arah bertentangan. Sebaliknya, tenaga kinetik ialah skalar yang bergantung kepada kuasa dua laju dan tidak boleh bernilai negatif. Daya dalaman seperti daya spring dengan mudah menukarkan tenaga keupayaan kepada tenaga kinetik tanpa mengubah jumlah momentum sistem. Mengelirukan keabadian momentum dengan keabadian tenaga kinetik adalah satu kesilapan yang lazim.",
+        "zh": "动量的孤立系统模型指出：只要孤立系统中的粒子发生相互作用，系统的总动量就不会改变（公式9.5）。动量是矢量，当物体向相反方向运动时可以相互抵消。相比之下，动能是取决于速率平方的标量，不能为负。弹簧弹力等内力很容易将势能转化为动能，而丝毫不会改变系统的总动量。将动量守恒与动能守恒混为一谈是一种常见的认知误区。"
+      }
+    },
+    {
+      "id": "act-mcq-iso-07",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze momentum conservation independently along orthogonal coordinate axes.",
+      "prompt": {
+        "en": "A surface rover resting on flat, frictionless ice launches a small deployable probe upward at an angle of 45 degrees relative to the ice surface. While the probe is being launched, gravity acts downward and the ice exerts an upward normal force on the rover. How does conservation of linear momentum apply to the rover-probe system?",
+        "ms": "Sebuah perayau permukaan yang berada di atas ais rata tanpa geseran melancarkan sebuah prob boleh kembang kecil ke atas pada sudut 45 darjah relatif kepada permukaan ais. Semasa prob dilancarkan, graviti bertindak ke bawah dan ais mengenakan daya normal ke atas perayau. Bagaimanakah keabadian momentum linear terpakai kepada sistem perayau-prob?",
+        "zh": "一辆停放在平整无摩擦冰面上的探测车以与冰面成 45 度角向上发射一枚小型探测器。在发射过程中，重力竖直向下作用，冰面对探测车施加竖直向上的支持力。线动量守恒定律应如何应用于该探测车-探测器系统？"
+      },
+      "hints": [
+        {
+          "en": "Recall that linear momentum is a vector quantity, which allows Newton's second law and conservation principles to be evaluated independently along perpendicular coordinate axes.",
+          "ms": "Ingat kembali bahawa momentum linear ialah kuantiti vektor, yang membolehkan hukum Newton kedua dan prinsip keabadian dinilai secara tak bersandar di sepanjang paksi koordinat berserenjang.",
+          "zh": "回顾线动量是一个矢量，这使得牛顿第二定律和守恒定律可以在相互垂直的坐标轴上独立进行评估。"
+        },
+        {
+          "en": "Check each coordinate axis separately: is there any net external force acting horizontally, and is there any net external force acting vertically during the launch?",
+          "ms": "Periksa setiap paksi koordinat secara berasingan: adakah terdapat sebarang daya luaran bersih yang bertindak secara mendatar, dan adakah terdapat sebarang daya luaran bersih yang bertindak secara menegak semasa pelancaran?",
+          "zh": "分别检查每个坐标轴：在发射期间，水平方向是否存在合外力？竖直方向是否存在合外力？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. Linear momentum is a vector quantity that is conserved independently along orthogonal directions. Because zero net external force acts horizontally, total horizontal momentum remains conserved regardless of unbalanced vertical forces.",
+        "ms": "Tepat. Momentum linear ialah kuantiti vektor yang diabadikan secara tak bersandar di sepanjang arah ortogon. Oleh sebab daya luaran bersih sifar bertindak secara mendatar, jumlah momentum mendatar kekal terabadi tanpa mengira daya menegak yang tidak seimbang.",
+        "zh": "正确。线动量是一个矢量，在正交方向上独立守恒。因为水平方向受到的合外力为零，所以无论竖直方向受力是否平衡，系统的水平总动量都保持守恒。"
+      },
+      "answerLogic": {
+        "en": "In component form, d(p_tot,x)/dt = F_net,external,x and d(p_tot,y)/dt = F_net,external,y. Along the horizontal axis, no external forces act (F_net,external,x = 0), so horizontal momentum is strictly conserved. Along the vertical axis, external gravitational and normal contact forces act, meaning vertical momentum is not conserved.",
+        "ms": "Dalam bentuk komponen, d(p_tot,x)/dt = F_bersih,luaran,x dan d(p_tot,y)/dt = F_bersih,luaran,y. Di sepanjang paksi mendatar, tiada daya luaran yang bertindak (F_bersih,luaran,x = 0), jadi momentum mendatar diabadikan dengan ketat. Di sepanjang paksi menegak, daya graviti luaran dan daya sentuhan normal bertindak, bermakna momentum menegak tidak terabadi.",
+        "zh": "在分量形式中，d(p_tot,x)/dt = F_合外力,x 且 d(p_tot,y)/dt = F_合外力,y。沿水平轴没有外力作用（F_合外力,x = 0），因此水平动量严格守恒。沿竖直轴存在外力重力和法向接触力，这意味着竖直动量不守恒。"
+      },
+      "explanation": {
+        "en": "The isolated system model for momentum applies component-by-component. An external force acting strictly in the vertical direction produces zero impulse along the perpendicular horizontal direction. Therefore, a physical system can be isolated along one coordinate axis while simultaneously nonisolated along an orthogonal axis.",
+        "ms": "Model sistem terpencil untuk momentum terpakai komponen demi komponen. Daya luaran yang bertindak secara ketat dalam arah menegak menghasilkan impuls sifar di sepanjang arah mendatar yang berserenjang. Oleh itu, sistem fizikal boleh menjadi terpencil di sepanjang satu paksi koordinat sementara pada masa yang sama tidak terpencil di sepanjang paksi ortogon.",
+        "zh": "动量的孤立系统模型是按分量分别适用的。严格沿竖直方向作用的外力在垂直的水平方向上产生的冲量为零。因此，一个物理系统可以在某一个坐标轴方向上是孤立的，同时在正交轴方向上是非孤立的。"
+      },
+      "misconceptions": [
+        "vertical-force-invalidates-horizontal-conservation",
+        "scalar-momentum-treatment"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "When resolving vectors into orthogonal components, forces and momentum changes along the horizontal axis operate completely independently of forces along the perpendicular vertical axis.",
+          "ms": "Apabila meleraikan vektor kepada komponen ortogon, daya dan perubahan momentum di sepanjang paksi mendatar beroperasi sepenuhnya secara tak bersandar daripada daya di sepanjang paksi menegak yang berserenjang.",
+          "zh": "将矢量分解为正交分量时，沿水平轴的力和动量变化完全独立于沿垂直竖直轴的力。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question evaluating momentum conservation along horizontal versus vertical axes for a rover launching an angled probe on frictionless ice.",
+        "ms": "Soalan aneka pilihan yang menilai keabadian momentum di sepanjang paksi mendatar berbanding menegak bagi perayau yang melancarkan prob bersudut di atas ais tanpa geseran.",
+        "zh": "多项选择题，评估在无摩擦冰面上斜向发射探测器的探测车系统沿水平轴与竖直轴的动量守恒情况。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-07-a",
+        "options": [
+          {
+            "id": "opt-07-a",
+            "label": {
+              "en": "Total horizontal momentum is conserved because the net external horizontal force is zero, whereas vertical momentum is not conserved.",
+              "ms": "Jumlah momentum mendatar adalah terabadi kerana daya luaran bersih mendatar adalah sifar, manakala momentum menegak tidak terabadi.",
+              "zh": "水平总动量守恒，因为水平合外力为零；而竖直动量不守恒。"
+            }
+          },
+          {
+            "id": "opt-07-b",
+            "label": {
+              "en": "Momentum cannot be conserved along any axis because the external vertical forces prevent the system from being isolated as a whole.",
+              "ms": "Momentum tidak boleh diabadikan di sepanjang mana-mana paksi kerana daya luaran menegak menghalang sistem daripada menjadi terpencil secara keseluruhannya.",
+              "zh": "动量在任何轴向上都不能守恒，因为竖直外力使得整个系统无法被视为孤立系统。"
+            },
+            "misconception": "vertical-force-invalidates-horizontal-conservation"
+          },
+          {
+            "id": "opt-07-c",
+            "label": {
+              "en": "Total momentum is conserved as a single scalar magnitude, so directional components do not need to be separated.",
+              "ms": "Jumlah momentum diabadikan sebagai satu magnitud skalar tunggal, jadi komponen berarah tidak perlu dipisahkan.",
+              "zh": "总动量作为一个单一标量大小守恒，因此无需分离方向分量。"
+            },
+            "misconception": "scalar-momentum-treatment"
+          },
+          {
+            "id": "opt-07-d",
+            "label": {
+              "en": "Vertical momentum is conserved because the launch force is internal, while horizontal momentum changes due to reaction from the ice.",
+              "ms": "Momentum menegak adalah terabadi kerana daya pelancaran adalah dalaman, manakala momentum mendatar berubah akibat tindak balas daripada ais.",
+              "zh": "竖直动量守恒，因为发射力属于内力；而水平动量由于冰面的反作用力而改变。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-iso-08",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict recoil velocities of interacting bodies within an isolated system using directional conservation.",
+      "prompt": {
+        "en": "A heavy exploration satellite and a lightweight sensor pod are at rest together in deep space, forming an isolated system. An internal latch mechanism releases a compressed spring that pushes the lightweight sensor pod directly along the +x direction. Which statement correctly predicts the final velocity of the heavy satellite?",
+        "ms": "Sebuah satelit penerokaan yang berat dan sebuah pod penderia yang ringan berada dalam keadaan pegun bersama-sama di angkasa lepas, membentuk suatu sistem terpencil. Mekanisme selak dalaman melepaskan spring termampat yang menolak pod penderia ringan tepat di sepanjang arah +x. Pernyataan manakah yang meramalkan halaju akhir satelit berat dengan betul?",
+        "zh": "一颗沉重的探测卫星和一个轻型传感器舱一同静止在深空中，构成一个孤立系统。内部释放机构松开压缩弹簧，将轻型传感器舱直接沿 +x 方向推开。下列哪项陈述正确预测了重型卫星的最终速度？"
+      },
+      "hints": [
+        {
+          "en": "Determine the total initial momentum of the isolated system before release, and remember that the vector sum of both momenta must remain identical after the push.",
+          "ms": "Tentukan jumlah momentum awal sistem terpencil sebelum dilepaskan, dan ingat bahawa hasil tambah vektor bagi kedua-dua momentum mestilah kekal sama selepas tolakan.",
+          "zh": "确定释放前孤立系统的初始总动量，并记住推开后两物体的动量矢量和必须与初始值完全相同。"
+        },
+        {
+          "en": "Momentum equals mass times velocity. To ensure two opposing momentum vectors cancel to zero, how must the velocity of the more massive object compare to the velocity of the lighter object?",
+          "ms": "Momentum bersamaan jisim didarab halaju. Untuk memastikan dua vektor momentum yang bertentangan saling membatalkan kepada sifar, bagaimanakah halaju objek yang lebih berjisim mesti dibandingkan dengan halaju objek yang lebih ringan?",
+          "zh": "动量等于质量乘以速度。为确保两个反向的动量矢量相加为零，质量较大物体的速度在大小和方向上必须与较轻物体的速度如何对应？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. Since initial momentum is zero and the system is isolated, the final momentum vectors must sum to zero (p_satellite + p_pod = 0). The heavy satellite must recoil in the -x direction with a smaller speed than the lightweight pod.",
+        "ms": "Tepat. Memandangkan momentum awal ialah sifar dan sistem ini terpencil, vektor momentum akhir mestilah berjumlah sifar (p_satelit + p_pod = 0). Satelit yang berat mesti tersentak ke arah -x dengan laju yang lebih kecil daripada pod yang ringan.",
+        "zh": "正确。由于初始动量为零且系统孤立，最终的动量矢量和必须为零（p_卫星 + p_舱 = 0）。较重的卫星必须以小于轻型舱的速率沿 -x 方向后坐。"
+      },
+      "answerLogic": {
+        "en": "Conservation of momentum requires m_satellite * v_satellite + m_pod * v_pod = 0. Solving for the satellite velocity gives v_satellite = -(m_pod / m_satellite) * v_pod. Because the pod moves in the +x direction, the satellite must move in the -x direction. Since m_satellite > m_pod, the magnitude of the satellite's velocity is strictly smaller than that of the pod. Kinetic energy is not equally divided; the lighter pod carries away more kinetic energy.",
+        "ms": "Keabadian momentum memerlukan m_satelit * v_satelit + m_pod * v_pod = 0. Menyelesaikan halaju satelit memberikan v_satelit = -(m_pod / m_satelit) * v_pod. Oleh sebab pod bergerak dalam arah +x, satelit mesti bergerak dalam arah -x. Memandangkan m_satelit > m_pod, magnitud halaju satelit adalah lebih kecil daripada pod. Tenaga kinetik tidak dibahagikan secara sama rata; pod yang lebih ringan membawa lebih banyak tenaga kinetik.",
+        "zh": "动量守恒要求 m_卫星 * v_卫星 + m_舱 * v_舱 = 0。解出卫星速度得到 v_卫星 = -(m_舱 / m_卫星) * v_舱。因为传感器舱沿 +x 方向运动，卫星必须沿 -x 方向运动。由于 m_卫星 > m_舱，卫星速度的大小必然小于传感器舱。动能不是均分的，较轻的传感器舱带走了更多的动能。"
+      },
+      "explanation": {
+        "en": "When an isolated system splits apart from rest under internal forces, the pieces must move in opposite directions to keep total momentum zero. The speeds of the separating bodies are inversely proportional to their masses. Therefore, the heavier satellite recoils in the opposite direction (-x) with a smaller speed.",
+        "ms": "Apabila suatu sistem terpencil berpecah daripada keadaan pegun di bawah daya dalaman, bahagian-bahagian tersebut mesti bergerak ke arah bertentangan untuk mengekalkan jumlah momentum sifar. Laju jasad yang berpisah adalah berkadar songsang dengan jisim masing-masing. Oleh itu, satelit yang lebih berat tersentak ke arah bertentangan (-x) dengan laju yang lebih kecil.",
+        "zh": "当一个孤立系统在内力作用下由静止分离时，各部分必须向相反方向运动以保持总动量为零。分离物体的速率与它们的质量成反比。因此，较重的卫星以后坐形式向相反方向（-x）以较小速率运动。"
+      },
+      "misconceptions": [
+        "kinetic-energy-momentum-conflation",
+        "scalar-momentum-treatment"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Review linear momentum as a directional vector quantity given by p = mv. Two bodies starting from rest can have equal and opposite momentum vectors only if the more massive body has a smaller speed.",
+          "ms": "Ulang kaji momentum linear sebagai kuantiti vektor berarah yang diberikan oleh p = mv. Dua jasad yang bermula dari keadaan pegun hanya boleh mempunyai vektor momentum yang sama dan bertentangan jika jasad yang lebih berjisim mempunyai laju yang lebih kecil.",
+          "zh": "复习线动量是由 p = mv 给出的方向性矢量。两个从静止开始运动的物体，只有当质量较大的物体速率较小时，两者的动量矢量才能大小相等、方向相反。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking for the direction and relative speed of a massive satellite after pushing away a lighter sensor pod in deep space.",
+        "ms": "Soalan aneka pilihan yang bertanyakan arah dan laju relatif sebuah satelit berat selepas menolak pod penderia yang lebih ringan di angkasa lepas.",
+        "zh": "多项选择题，询问在深空中推开较轻传感器舱后，重型卫星运动的方向和相对速率。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-08-a",
+        "options": [
+          {
+            "id": "opt-08-a",
+            "label": {
+              "en": "The satellite moves along the -x direction with a smaller speed than the sensor pod.",
+              "ms": "Satelit bergerak di sepanjang arah -x dengan laju yang lebih kecil daripada pod penderia.",
+              "zh": "卫星沿 -x 方向运动，且速率小于传感器舱。"
+            }
+          },
+          {
+            "id": "opt-08-b",
+            "label": {
+              "en": "The satellite moves along the -x direction with the exact same speed as the sensor pod because spring energy splits equally.",
+              "ms": "Satelit bergerak di sepanjang arah -x dengan laju yang sama persis seperti pod penderia kerana tenaga spring dibahagi sama rata.",
+              "zh": "卫星沿 -x 方向运动，且速率与传感器舱完全相同，因为弹簧能量平均分配。"
+            },
+            "misconception": "kinetic-energy-momentum-conflation"
+          },
+          {
+            "id": "opt-08-c",
+            "label": {
+              "en": "The satellite moves along the +x direction because internal forces generate forward-directed scalar momentum for the whole system.",
+              "ms": "Satelit bergerak di sepanjang arah +x kerana daya dalaman menjana momentum skalar berarah ke hadapan untuk seluruh sistem.",
+              "zh": "卫星沿 +x 方向运动，因为内力为整个系统产生了向前方向的标量动量。"
+            },
+            "misconception": "scalar-momentum-treatment"
+          },
+          {
+            "id": "opt-08-d",
+            "label": {
+              "en": "The satellite remains completely stationary because its much greater mass absorbs the spring force without recoiling.",
+              "ms": "Satelit kekal pegun sepenuhnya kerana jisimnya yang jauh lebih besar menyerap daya spring tanpa mengalami sentakan.",
+              "zh": "卫星保持完全静止，因为其大得多的质量吸收了弹簧力而不会产生后坐。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-iso-09",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between internal forces that exchange momentum and external forces that alter system momentum.",
+      "prompt": {
+        "en": "Two magnetic carts move freely on a level, frictionless horizontal air track. The mutual magnetic repulsion between the two carts acts directly between them. Meanwhile, a researcher uses a hand-held rod to apply a steady horizontal contact force to Cart 1 only. Defining the two carts together as the system, how do the magnetic forces and the rod force affect the system's total horizontal momentum?",
+        "ms": "Dua troli magnet bergerak bebas di atas landasan udara mendatar yang rata dan tanpa geseran. Tolakan magnet bersama antara kedua-dua troli bertindak secara langsung antara mereka. Pada masa yang sama, seorang penyelidik menggunakan rod pegang tangan untuk mengenakan daya sentuhan mendatar yang malar pada Troli 1 sahaja. Mentakrifkan kedua-dua troli bersama-sama sebagai sistem, bagaimanakah daya magnet dan daya rod mempengaruhi jumlah momentum mendatar sistem?",
+        "zh": "两个带磁性的滑块在平整无摩擦的水平气垫导轨上自由移动。两滑块之间的相互磁斥力直接作用于彼此。与此同时，实验人员使用手持推杆仅对滑块 1 施加持续的水平接触力。将这两个滑块共同定义为研究系统，磁力和推杆施加的力如何影响系统的水平总动量？"
+      },
+      "hints": [
+        {
+          "en": "Classify each force according to the defined system boundary: does the force act strictly between system members, or does it originate from an agent outside the boundary?",
+          "ms": "Kelaskan setiap daya mengikut sempadan sistem yang ditakrifkan: adakah daya tersebut bertindak secara ketat antara ahli sistem, atau adakah ia berasal daripada agen di luar sempadan?",
+          "zh": "根据所定义的系统边界对每个力进行分类：该力是严格作用于系统成员之间，还是源自边界之外的施力体？"
+        },
+        {
+          "en": "Recall Newton's third law: action-reaction pairs between internal members cancel in the system sum, whereas external forces crossing the boundary provide an unbalanced impulse.",
+          "ms": "Ingat kembali hukum Newton ketiga: pasangan tindakan-tindak balas antara ahli dalaman saling membatalkan dalam hasil tambah sistem, manakala daya luaran yang merentasi sempadan membekalkan impuls yang tidak seimbang.",
+          "zh": "回顾牛顿第三定律：系统内部成员之间的作用力与反作用力对在系统求和时相互抵消，而跨越边界的外力则会提供非平衡冲量。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. Internal magnetic forces act between constituents as third-law action-reaction pairs; they transfer momentum between the two carts but sum to zero, leaving total momentum unchanged. The rod force originates outside the system boundary, acting as a net external force that changes the total momentum.",
+        "ms": "Tepat. Daya magnet dalaman bertindak antara juzuk sebagai pasangan tindakan-tindak balas hukum ketiga; mereka memindahkan momentum antara kedua-dua troli tetapi berjumlah sifar, menjadikan jumlah momentum tidak berubah. Daya rod berasal dari luar sempadan sistem, bertindak sebagai daya luaran bersih yang mengubah jumlah momentum.",
+        "zh": "正确。内部磁力作为牛顿第三定律的作用力-反作用力对在两滑块间作用；它们在两滑块之间传递动量，但矢量和为零，使总动量保持不变。推杆力源自系统边界之外，作为合外力改变系统的总动量。"
+      },
+      "answerLogic": {
+        "en": "According to the isolated/nonisolated system momentum principle, d(p_tot)/dt equals the sum of external forces. The magnetic forces F_12 and F_21 satisfy F_12 = -F_21, so F_12 + F_21 = 0; these internal forces cannot change the total momentum of the two-cart system. In contrast, the rod force F_rod is external to the two-cart system, producing d(p_tot)/dt = F_rod which directly alters the system's total momentum.",
+        "ms": "Menurut prinsip momentum sistem terpencil/tidak terpencil, d(p_tot)/dt bersamaan dengan hasil tambah daya luaran. Daya magnet F_12 dan F_21 mematuhi F_12 = -F_21, maka F_12 + F_21 = 0; daya dalaman ini tidak boleh mengubah jumlah momentum sistem dua troli. Sebaliknya, daya rod F_rod adalah luaran kepada sistem dua troli, menghasilkan d(p_tot)/dt = F_rod yang secara langsung mengubah jumlah momentum sistem.",
+        "zh": "根据孤立/非孤立系统动量原理，d(p_tot)/dt 等于外力之和。磁力 F_12 与 F_21 满足 F_12 = -F_21，因此 F_12 + F_21 = 0；这些内力无法改变双滑块系统的总动量。相比之下，推杆力 F_推杆 属于双滑块系统的外力，导致 d(p_tot)/dt = F_推杆，直接改变了系统的总动量。"
+      },
+      "explanation": {
+        "en": "The distinction between internal and external forces is fundamental to the isolated system model. Internal forces, whether contact or field forces, always cancel in pairs when summing over all parts of the system and therefore only redistribute momentum internally. Only external forces crossing the defined system boundary can impart a net impulse that changes the total momentum of the system.",
+        "ms": "Perbezaan antara daya dalaman dan luaran adalah asas kepada model sistem terpencil. Daya dalaman, sama ada daya sentuhan atau medan, sentiasa membatalkan secara berpasangan apabila dijumlahkan ke atas semua bahagian sistem dan oleh itu hanya mengagihkan semula momentum secara dalaman. Hanya daya luaran yang merentasi sempadan sistem yang ditakrifkan boleh memberikan impuls bersih yang mengubah jumlah momentum sistem.",
+        "zh": "内力与外力的区分是孤立系统模型的核心基础。无论是接触力还是场力，在对系统所有部分求和时，内力总是成对抵消，因此仅在内部重新分配动量。只有跨越所定义系统边界的外力才能传递净冲量，从而改变系统的总动量。"
+      },
+      "misconceptions": [
+        "internal-force-confusion",
+        "single-particle-conservation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Recall that interaction forces between two bodies inside a system are equal in magnitude and opposite in direction (Newton's third law), so their vector sum within the system is always zero.",
+          "ms": "Ingat kembali bahawa daya interaksi antara dua jasad di dalam suatu sistem adalah sama magnitud dan bertentangan arah (hukum Newton ketiga), jadi hasil tambah vektornya di dalam sistem sentiasa sifar.",
+          "zh": "回顾系统内两物体间的相互作用力大小相等、方向相反（牛顿第三定律），因此它们在系统内部的矢量和始终为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question distinguishing the effects of internal magnetic forces versus an external hand-held pushrod on the total horizontal momentum of a two-cart system.",
+        "ms": "Soalan aneka pilihan yang membezakan kesan daya magnet dalaman berbanding rod penolak pegang tangan luaran terhadap jumlah momentum mendatar bagi sistem dua troli.",
+        "zh": "多项选择题，区分内部磁力与手持外部推杆对双滑块系统水平总动量的不同影响。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-09-a",
+        "options": [
+          {
+            "id": "opt-09-a",
+            "label": {
+              "en": "The magnetic forces are internal forces that exchange momentum without altering total momentum, whereas the rod force is an external force that alters total momentum.",
+              "ms": "Daya magnet ialah daya dalaman yang bertukar momentum tanpa mengubah jumlah momentum, manakala daya rod ialah daya luaran yang mengubah jumlah momentum.",
+              "zh": "磁力是内力，在两滑块间传递动量而不改变总动量；而推杆力是外力，会改变系统的总动量。"
+            }
+          },
+          {
+            "id": "opt-09-b",
+            "label": {
+              "en": "The magnetic repulsion alters total system momentum because repulsive forces push both carts apart with large accelerations.",
+              "ms": "Tolakan magnet mengubah jumlah momentum sistem kerana daya tolakan menolak kedua-dua troli menjauhi antara satu sama lain dengan pecutan yang besar.",
+              "zh": "磁斥力会改变系统的总动量，因为斥力以较大的加速度将两个滑块推开。"
+            },
+            "misconception": "internal-force-confusion"
+          },
+          {
+            "id": "opt-09-c",
+            "label": {
+              "en": "The system's total momentum cannot change even with the rod force because each individual cart must conserve its own momentum.",
+              "ms": "Jumlah momentum sistem tidak boleh berubah walaupun dengan daya rod kerana setiap troli individu mesti mengabadikan momentumnya sendiri.",
+              "zh": "即使有推杆力作用，系统的总动量也不能改变，因为每个独立的滑块都必须保持自身动量守恒。"
+            },
+            "misconception": "single-particle-conservation"
+          },
+          {
+            "id": "opt-09-d",
+            "label": {
+              "en": "Both the magnetic forces and the rod force alter total system momentum equally because any force on any cart changes total momentum.",
+              "ms": "Kedua-dua daya magnet dan daya rod mengubah jumlah momentum sistem secara sama rata kerana sebarang daya pada mana-mana troli mengubah jumlah momentum.",
+              "zh": "磁力和推杆力都会同样改变系统的总动量，因为作用在任何滑块上的任何力都会改变总动量。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-int-iso-01",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define an isolated system in the context of linear momentum as one subject to zero net external force.",
+      "prompt": {
+        "en": "Classify each physical scenario according to whether the system is isolated along the horizontal axis (zero net external horizontal force).",
+        "ms": "Kelaskan setiap senario fizikal mengikut sama ada sistem itu terpencil di sepanjang paksi mendatar (daya mendatar luaran bersih adalah sifar).",
+        "zh": "根据系统在水平轴上是否孤立（水平方向合外力为零），对以下各个物理情境进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Focus only on horizontal forces acting from outside the defined system. External vertical forces that balance do not affect horizontal momentum.",
+          "ms": "Fokus hanya pada daya mendatar yang bertindak dari luar sistem yang ditakrifkan. Daya menegak luaran yang seimbang tidak mempengaruhi momentum mendatar.",
+          "zh": "仅关注从所定义系统外部作用的水平力。相互平衡的竖直外力不会影响水平动量。"
+        },
+        {
+          "en": "Forces exerted by system members on each other are internal forces. Internal forces cannot change the total momentum of the system.",
+          "ms": "Daya yang dikenakan oleh ahli sistem sesama sendiri ialah daya dalaman. Daya dalaman tidak boleh mengubah jumlah momentum sistem.",
+          "zh": "系统成员之间相互施加的力属于内力。内力不能改变系统的总动量。"
+        }
+      ],
+      "feedback": {
+        "en": "An isolated system for momentum requires zero net external force along the direction considered. The gliders and ice skaters experience no net external horizontal force, making them isolated horizontally. The blocks on rough wood and the fan-blown cart experience external horizontal forces (friction and air thrust), so they are not isolated.",
+        "ms": "Sistem terpencil untuk momentum memerlukan daya luaran bersih sifar di sepanjang arah yang dipertimbangkan. Peluncur dan pemain luncur ais tidak mengalami daya mendatar luaran bersih, menjadikannya terpencil secara mendatar. Bongkah di atas kayu kasar dan troli tiupan kipas mengalami daya mendatar luaran (geseran dan tujahan udara), jadi ia tidak terpencil.",
+        "zh": "动量守恒的孤立系统要求在所考察的方向上合外力为零。气垫滑块和滑冰者在水平方向不受合外力，因此在水平方向是孤立的。而在粗糙木板上的木块和受风扇吹拂的小车受到了水平外力（摩擦力和空气推力），因此不是孤立的。"
+      },
+      "answerLogic": {
+        "en": "Horizontal isolation depends strictly on whether external entities exert net horizontal forces on the system. Friction from the table and the fan thrust are external horizontal forces, making those systems non-isolated. In contrast, normal force and gravity are perpendicular to the horizontal axis, and mutual pushing between skaters is strictly an internal interaction, so both conserve horizontal momentum.",
+        "ms": "Keterpencilan mendatar bergantung sepenuhnya pada sama ada entiti luaran mengenakan daya mendatar bersih ke atas sistem. Geseran dari meja dan tujahan kipas adalah daya mendatar luaran, menjadikan sistem tersebut tidak terpencil. Sebaliknya, daya normal dan graviti adalah berserenjang dengan paksi mendatar, dan tolakan bersama antara pemain luncur adalah interaksi dalaman semata-mata, jadi kedua-duanya mengabadikan momentum mendatar.",
+        "zh": "水平孤立性严格取决于外部实体是否对系统施加水平合外力。桌面摩擦力与风扇推力属于水平外力，使对应系统非孤立。相反，支持力与重力垂直于水平轴，而滑冰者之间的相互推力纯属内力相互作用，因此两者均守恒水平动量。"
+      },
+      "explanation": {
+        "en": "Linear momentum is conserved along any axis where the net external force is zero. Even if external forces exist in the vertical direction (such as gravity and normal force), as long as they balance and have no horizontal component, the system remains isolated along the horizontal axis. Furthermore, internal interaction forces between system members always sum to zero by Newton's third law and cannot alter the total momentum.",
+        "ms": "Momentum linear diabadikan di sepanjang mana-mana paksi di mana daya luaran bersih adalah sifar. Walaupun daya luaran wujud dalam arah menegak (seperti graviti dan daya normal), selagi daya tersebut seimbang dan tidak mempunyai komponen mendatar, sistem itu kekal terpencil di sepanjang paksi mendatar. Tambahan pula, daya interaksi dalaman antara ahli sistem sentiasa menghasilkan jumlah sifar mengikut hukum Newton ketiga dan tidak boleh mengubah jumlah momentum.",
+        "zh": "在合外力为零的任何坐标轴方向上，线动量都是守恒的。即使竖直方向存在外力（如重力和支持力），只要它们平衡且没有水平分量，系统在水平轴方向依然是孤立的。此外，根据牛顿第三定律，系统成员之间的相互作用内力矢量和始终为零，绝不会改变系统的总动量。"
+      },
+      "misconceptions": [
+        "internal-force-confusion",
+        "vertical-force-invalidates-horizontal-conservation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Recall that momentum is a vector property of moving mass. A system's total momentum changes only when an external force delivers an impulse from outside the boundary.",
+          "ms": "Ingat kembali bahawa momentum ialah sifat vektor bagi jisim yang bergerak. Jumlah momentum sistem berubah hanya apabila daya luaran memberikan impuls dari luar sempadan.",
+          "zh": "回顾动量是运动质量的矢量属性。只有当外力从系统边界外部提供冲量时，系统的总动量才会改变。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classify four physical scenarios into two targets: Isolated along Horizontal Axis or Not Isolated along Horizontal Axis, based on whether external horizontal forces act on the system.",
+        "ms": "Kelaskan empat senario fizikal ke dalam dua sasaran: Terpencil di Sepanjang Paksi Mendatar atau Tidak Terpencil di Sepanjang Paksi Mendatar, berdasarkan sama ada daya mendatar luaran bertindak ke atas sistem.",
+        "zh": "根据系统是否受到水平外力作用，将四个物理情境分类到两个目标中：沿水平轴孤立或沿水平轴非孤立。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-isolated",
+            "label": {
+              "en": "Isolated along Horizontal Axis",
+              "ms": "Terpencil di Sepanjang Paksi Mendatar",
+              "zh": "沿水平轴孤立"
+            }
+          },
+          {
+            "id": "target-non-isolated",
+            "label": {
+              "en": "Not Isolated along Horizontal Axis",
+              "ms": "Tidak Terpencil di Sepanjang Paksi Mendatar",
+              "zh": "沿水平轴非孤立"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-glider-collision",
+            "label": {
+              "en": "Two gliders colliding on a frictionless horizontal air track while gravity and normal force balance vertically",
+              "ms": "Dua peluncur bertembung di atas landasan udara mendatar tanpa geseran manakala graviti dan daya normal seimbang secara menegak",
+              "zh": "两个滑块在无摩擦水平气垫导轨上碰撞，此时重力与支持力在竖直方向平衡"
+            },
+            "misconception": "vertical-force-invalidates-horizontal-conservation"
+          },
+          {
+            "id": "item-skaters-push",
+            "label": {
+              "en": "Two skaters at rest on smooth horizontal ice pushing off each other through mutual hand contact",
+              "ms": "Dua pemain luncur pegun di atas ais mendatar yang licin menolak antara satu sama lain melalui sentuhan tangan bersama",
+              "zh": "两名静止在光滑水平冰面上的滑冰者通过双手相互推开"
+            },
+            "misconception": "internal-force-confusion"
+          },
+          {
+            "id": "item-rough-slide",
+            "label": {
+              "en": "Two wooden blocks colliding while sliding across a rough table experiencing opposing kinetic friction from the surface",
+              "ms": "Dua bongkah kayu bertembung semasa menggelongsor merentasi meja kasar yang mengalami geseran kinetik bertentangan daripada permukaan",
+              "zh": "两个木块在粗糙桌面上滑行碰撞，受到来自桌面的反向动摩擦力"
+            }
+          },
+          {
+            "id": "item-fan-cart",
+            "label": {
+              "en": "A rolling laboratory cart driven across a level floor by an external blower blowing air against its sail",
+              "ms": "Sebuah troli makmal bergolek dipacu merentasi lantai rata oleh penghembus luaran yang meniup udara ke layarnya",
+              "zh": "一辆在水平地面上滚动的实验小车，受到外部风机吹向其风帆的驱动"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-glider-collision",
+            "targetId": "target-isolated"
+          },
+          {
+            "itemId": "item-skaters-push",
+            "targetId": "target-isolated"
+          },
+          {
+            "itemId": "item-rough-slide",
+            "targetId": "target-non-isolated"
+          },
+          {
+            "itemId": "item-fan-cart",
+            "targetId": "target-non-isolated"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "vertical-force-invalidates-horizontal-conservation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-glider-collision",
+            "targetId": "target-non-isolated"
+          }
+        },
+        {
+          "misconception": "internal-force-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-skaters-push",
+            "targetId": "target-non-isolated"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-iso-02",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "State and apply the principle of conservation of linear momentum for an isolated system.",
+      "prompt": {
+        "en": "Match each momentum quantity of a two-object isolated collision to whether it remains constant or can change during the interaction.",
+        "ms": "Padankan setiap kuantiti momentum pertembungan terpencil dua objek mengikut sama ada ia kekal malar atau boleh berubah semasa interaksi.",
+        "zh": "将双物体孤立碰撞中的各个动量物理量，与其在相互作用期间是保持恒定还是可以改变进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Distinguish between the entire isolated system and the individual components interacting within that system.",
+          "ms": "Bezakan antara keseluruhan sistem terpencil dengan komponen individu yang berinteraksi dalam sistem tersebut.",
+          "zh": "区分整个孤立系统与系统内部相互作用的单个组成部分。"
+        },
+        {
+          "en": "Internal collision forces transfer momentum between the interacting objects. While each individual object's momentum can change, the changes cancel out in the vector sum.",
+          "ms": "Daya pertembungan dalaman memindahkan momentum antara objek yang berinteraksi. Walaupun momentum setiap objek individu boleh berubah, perubahan tersebut saling menghapuskan dalam hasil tambah vektor.",
+          "zh": "碰撞内力在相互作用的物体之间传递动量。尽管每个独立物体的动量都会改变，但这些变化量在矢量和中恰好相互抵消。"
+        }
+      ],
+      "feedback": {
+        "en": "In an isolated system, the total vector momentum (and the sum of its directional components) is strictly conserved. However, individual constituents exchange momentum through internal forces, so single-particle momentum generally changes.",
+        "ms": "Dalam sistem terpencil, jumlah momentum vektor (dan hasil tambah komponen arahnya) diabadikan secara ketat. Walau bagaimanapun, juzuk individu bertukar momentum melalui daya dalaman, jadi momentum zarah tunggal secara amnya berubah.",
+        "zh": "在孤立系统中，总矢量动量（以及各方向分量之和）严格守恒。然而，各个组成物体通过内力交换动量，因此单个粒子的动量通常会发生改变。"
+      },
+      "answerLogic": {
+        "en": "The principle of conservation of linear momentum applies strictly to the isolated system as a whole (Delta p_tot = 0). When particles interact, internal action-reaction forces cause momentum to transfer from one particle to another. Thus, Object 1 and Object 2 change momentum individually, while their vector sum remains identical before and after.",
+        "ms": "Prinsip keabadian momentum linear terpakai secara ketat kepada sistem terpencil secara keseluruhannya (Delta p_tot = 0). Apabila zarah berinteraksi, daya tindakan-tindak balas dalaman menyebabkan momentum dipindahkan daripada satu zarah ke zarah yang lain. Oleh itu, Objek 1 dan Objek 2 mengubah momentum secara individu, manakala hasil tambah vektornya kekal serupa sebelum dan selepas.",
+        "zh": "动量守恒定律严格适用于整个孤立系统（Delta p_tot = 0）。当粒子相互作用时，内部的作用力与反作用力使动量从一个粒子转移到另一个粒子。因此，物体1和物体2各自的动量发生改变，但它们在相互作用前后的矢量和保持完全一致。"
+      },
+      "explanation": {
+        "en": "Pitfall Prevention 9.1 highlights that although the momentum of an isolated system is conserved, the momentum of one particle within the system is not necessarily conserved. Internal forces between particles exert impulses on each particle, changing their individual momenta. Because these internal forces are equal and opposite, the changes cancel, keeping the total system momentum constant at all times.",
+        "ms": "Pencegahan Kesilapan 9.1 menekankan bahawa walaupun momentum sesuatu sistem terpencil diabadikan, momentum satu zarah dalam sistem tersebut tidak semestinya diabadikan. Daya dalaman antara zarah mengenakan impuls pada setiap zarah, sekali gus mengubah momentum individunya. Kerana daya dalaman ini adalah sama magnitud dan bertentangan arah, perubahan tersebut saling membatalkan, menjadikan jumlah momentum sistem kekal malar pada setiap masa.",
+        "zh": "避坑指南9.1指出，虽然孤立系统的动量是守恒的，但系统内单一粒子的动量并不一定守恒。粒子间的内力对各个粒子施加冲量，改变它们各自的动量。由于这些内力大小相等、方向相反，它们的动量变化量完全抵消，从而使系统的总动量始终保持恒定。"
+      },
+      "misconceptions": [
+        "single-particle-conservation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Review the definition of momentum as mass times velocity (p = mv). When an object experiences a force, its velocity and therefore its individual momentum change.",
+          "ms": "Ulang kaji definisi momentum sebagai jisim darab halaju (p = mv). Apabila suatu objek mengalami daya, halajunya dan dengan itu momentum individunya akan berubah.",
+          "zh": "复习动量定义为质量乘以速度（p = mv）。当物体受到力的作用时，其速度改变，因此其个体动量也会改变。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Match four momentum quantities to two categories: Remains Constant (Conserved) or Can Change (Not Individually Conserved).",
+        "ms": "Padankan empat kuantiti momentum kepada dua kategori: Kekal Malar (Diabadikan) atau Boleh Berubah (Tidak Diabadikan Secara Individu).",
+        "zh": "将四个动量物理量匹配到两个类别中：保持恒定（守恒）或可以改变（个体不守恒）。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-constant",
+            "label": {
+              "en": "Remains Constant (Conserved)",
+              "ms": "Kekal Malar (Diabadikan)",
+              "zh": "保持恒定（守恒）"
+            }
+          },
+          {
+            "id": "target-changes",
+            "label": {
+              "en": "Can Change (Not Individually Conserved)",
+              "ms": "Boleh Berubah (Tidak Diabadikan Secara Individu)",
+              "zh": "可以改变（个体不守恒）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-total-system-p",
+            "label": {
+              "en": "The total vector momentum of the combined two-object system",
+              "ms": "Jumlah momentum vektor bagi gabungan sistem dua objek",
+              "zh": "两个物体组成的系统的总矢量动量"
+            }
+          },
+          {
+            "id": "item-vector-components-sum",
+            "label": {
+              "en": "The sum of the initial horizontal momentum components compared to the final sum",
+              "ms": "Hasil tambah komponen momentum mendatar awal berbanding hasil tambah akhir",
+              "zh": "初态水平动量分量之和与末态水平动量分量之和"
+            }
+          },
+          {
+            "id": "item-object1-p",
+            "label": {
+              "en": "The individual momentum vector of Object 1 during the collision",
+              "ms": "Vektor momentum individu bagi Objek 1 semasa pertembungan",
+              "zh": "碰撞过程中物体1的独立动量矢量"
+            },
+            "misconception": "single-particle-conservation"
+          },
+          {
+            "id": "item-object2-p",
+            "label": {
+              "en": "The individual momentum vector of Object 2 during the collision",
+              "ms": "Vektor momentum individu bagi Objek 2 semasa pertembungan",
+              "zh": "碰撞过程中物体2的独立动量矢量"
+            },
+            "misconception": "single-particle-conservation"
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-total-system-p",
+            "targetId": "target-constant"
+          },
+          {
+            "itemId": "item-vector-components-sum",
+            "targetId": "target-constant"
+          },
+          {
+            "itemId": "item-object1-p",
+            "targetId": "target-changes"
+          },
+          {
+            "itemId": "item-object2-p",
+            "targetId": "target-changes"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "single-particle-conservation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-object1-p",
+            "targetId": "target-constant"
+          }
+        },
+        {
+          "misconception": "single-particle-conservation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-object2-p",
+            "targetId": "target-constant"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-iso-03",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict recoil velocities of interacting bodies within an isolated system using directional conservation.",
+      "prompt": {
+        "en": "Two ice skaters, Skater A (lighter mass) and Skater B (heavier mass), are initially at rest on frictionless ice. Skater A pushes Skater B, sending Skater B gliding in the positive x direction. Select ALL statements that correctly describe their subsequent motion and momenta.",
+        "ms": "Dua pemain luncur ais, Peluncur A (jisim lebih ringan) dan Peluncur B (jisim lebih berat), pada mulanya pegun di atas ais tanpa geseran. Peluncur A menolak Peluncur B, menghantar Peluncur B meluncur ke arah positif x. Pilih SEMUA pernyataan yang menerangkan gerakan dan momentum mereka selepas itu dengan betul.",
+        "zh": "两名花样滑冰运动员，滑冰者A（质量较小）和滑冰者B（质量较大），最初静止在无摩擦的冰面上。滑冰者A推滑冰者B，使滑冰者B沿正x方向滑出。选择所有能正确描述他们随后的运动和动量的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Consider the initial momentum of the system before the push, and apply the isolated system model (total momentum change is zero).",
+          "ms": "Pertimbangkan momentum awal sistem sebelum tolakan, dan gunakan model sistem terpencil (perubahan jumlah momentum adalah sifar).",
+          "zh": "考虑推开前系统的初始动量，并应用孤立系统模型（总动量变化为零）。"
+        },
+        {
+          "en": "Remember that momentum is a vector with direction. To maintain a sum of zero, momenta must point in opposite directions, and the lighter mass must move faster.",
+          "ms": "Ingat bahawa momentum ialah vektor yang mempunyai arah. Untuk mengekalkan hasil tambah sifar, momentum mesti menunjuk ke arah bertentangan, dan jisim yang lebih ringan mesti bergerak lebih laju.",
+          "zh": "记住动量是具有方向的矢量。为了保持和为零，动量必须指向相反方向，且质量较小者必须运动得更快。"
+        }
+      ],
+      "feedback": {
+        "en": "Because the system starts from rest, its initial momentum is zero. With no external horizontal forces, the total momentum remains zero (m_A * v_A + m_B * v_B = 0). This requires Skater A to recoil in the opposite (-x) direction. To balance momentum magnitudes, the lighter skater must move with a higher speed.",
+        "ms": "Kerana sistem bermula dari keadaan pegun, momentum awalnya adalah sifar. Tanpa daya mendatar luaran, jumlah momentum kekal sifar (m_A * v_A + m_B * v_B = 0). Ini memerlukan Peluncur A menyentak ke arah bertentangan (-x). Untuk mengimbangi magnitud momentum, pemain luncur yang lebih ringan mesti bergerak dengan kelajuan yang lebih tinggi.",
+        "zh": "因为系统最初静止，其初始动量为零。在没有水平外力的情况下，总动量保持为零（m_A * v_A + m_B * v_B = 0）。这要求滑冰者A沿相反方向（-x方向）后退。为了使动量大小相互平衡，质量较轻的滑冰者必须具有更大的速度。"
+      },
+      "answerLogic": {
+        "en": "Linear momentum is a vector quantity. Since p_initial = 0 and the system is isolated horizontally, p_final = m_A * v_A + m_B * v_B = 0. Solving for v_A gives v_A = -(m_B / m_A) * v_B. The negative sign confirms opposite direction (-x), and having m_A < m_B means |v_A| > |v_B|. Treating momentum as a scalar magnitude sum ignores directional cancellation.",
+        "ms": "Momentum linear ialah kuantiti vektor. Oleh kerana p_awal = 0 dan sistem adalah terpencil secara mendatar, p_akhir = m_A * v_A + m_B * v_B = 0. Menyelesaikan untuk v_A memberikan v_A = -(m_B / m_A) * v_B. Tanda negatif mengesahkan arah bertentangan (-x), dan mempunyai m_A < m_B bermakna |v_A| > |v_B|. Menganggap momentum sebagai hasil tambah magnitud skalar mengabaikan pembatalan arah.",
+        "zh": "线动量是矢量。由于初始动量 p_initial = 0 且系统在水平方向上孤立，因此末态动量 p_final = m_A * v_A + m_B * v_B = 0。解出 v_A 可得 v_A = -(m_B / m_A) * v_B。负号证实了方向相反（-x方向），而 m_A < m_B 意味着 |v_A| > |v_B|。若将动量当作标量大小相加，则忽略了方向上的相互抵消。"
+      },
+      "explanation": {
+        "en": "When an isolated system starts from rest, any internal push produces equal and opposite momentum changes. Momentum conservation requires p_A = -p_B. Thus, the two skaters must travel in opposite directions. Furthermore, because momentum is the product of mass and velocity, the lighter person must attain a proportionally higher speed so their momenta cancel out completely.",
+        "ms": "Apabila sistem terpencil bermula dari keadaan pegun, sebarang tolakan dalaman menghasilkan perubahan momentum yang sama dan bertentangan. Keabadian momentum memerlukan p_A = -p_B. Oleh itu, kedua-dua pemain luncur mesti bergerak ke arah bertentangan. Tambahan pula, kerana momentum ialah hasil darab jisim dan halaju, individu yang lebih ringan mesti memperoleh kelajuan yang berkadaran lebih tinggi supaya momentum mereka saling membatalkan sepenuhnya.",
+        "zh": "当孤立系统从静止开始时，任何内部推力都会产生大小相等、方向相反的动量变化。动量守恒要求 p_A = -p_B。因此，两名滑冰者必须朝相反方向运动。此外，因为动量是质量与速度的乘积，较轻的人必须获得成比例的更高速度，从而使彼此的动量完全抵消。"
+      },
+      "misconceptions": [
+        "scalar-momentum-treatment"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Recall Newton's third law: when Skater A exerts a forward force on Skater B, Skater B simultaneously exerts an equal backward force on Skater A.",
+          "ms": "Ingat kembali hukum Newton ketiga: apabila Peluncur A mengenakan daya ke hadapan pada Peluncur B, Peluncur B secara serentak mengenakan daya ke belakang yang sama magnitud pada Peluncur A.",
+          "zh": "回顾牛顿第三定律：当滑冰者A对滑冰者B施加向前的力时，滑冰者B同时对滑冰者A施加大小相等、方向向后的反作用力。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Select the two correct statements out of four options regarding the recoil directions, speeds, and total momentum of two interacting skaters.",
+        "ms": "Pilih dua pernyataan yang betul daripada empat pilihan mengenai arah sentakan, kelajuan, dan jumlah momentum dua pemain luncur yang berinteraksi.",
+        "zh": "从四个选项中选出关于两个相互作用滑冰者的后退方向、速度和总动量的两个正确陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "sel-opposite-direction",
+            "label": {
+              "en": "Skater A must recoil in the negative x direction so that the total horizontal momentum vector remains zero.",
+              "ms": "Peluncur A mesti sentak balik ke arah negatif x supaya jumlah vektor momentum mendatar kekal sifar.",
+              "zh": "滑冰者A必须沿负x方向后退，以确保总水平动量矢量保持为零。"
+            }
+          },
+          {
+            "id": "sel-speed-comparison",
+            "label": {
+              "en": "Skater A recoils with a greater speed than Skater B because Skater A has less mass.",
+              "ms": "Peluncur A menyentak dengan kelajuan yang lebih tinggi daripada Peluncur B kerana Peluncur A mempunyai jisim yang lebih kecil.",
+              "zh": "滑冰者A后退的速度大于滑冰者B，因为滑冰者A的质量较小。"
+            }
+          },
+          {
+            "id": "sel-scalar-sum",
+            "label": {
+              "en": "The total momentum after the push is positive because both skaters are now moving with non-zero speeds.",
+              "ms": "Jumlah momentum selepas tolakan adalah positif kerana kedua-dua pemain luncur kini bergerak dengan kelajuan bukan sifar.",
+              "zh": "推开后的总动量为正值，因为两名滑冰者现在都以非零速度运动。"
+            },
+            "misconception": "scalar-momentum-treatment"
+          },
+          {
+            "id": "sel-same-direction",
+            "label": {
+              "en": "Skater A moves in the positive x direction along with Skater B because the push force acts forward.",
+              "ms": "Peluncur A bergerak ke arah positif x bersama Peluncur B kerana daya tolakan bertindak ke hadapan.",
+              "zh": "滑冰者A与滑冰者B一同沿正x方向运动，因为推力向前作用。"
+            },
+            "misconception": "scalar-momentum-treatment"
+          }
+        ],
+        "correctSelections": [
+          "sel-opposite-direction",
+          "sel-speed-comparison"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "scalar-momentum-treatment",
+          "condition": {
+            "kind": "selection",
+            "itemId": "sel-scalar-sum",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "scalar-momentum-treatment",
+          "condition": {
+            "kind": "selection",
+            "itemId": "sel-same-direction",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-iso-04",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict recoil velocities of interacting bodies within an isolated system using directional conservation.",
+      "prompt": {
+        "en": "A stationary space probe on a frictionless linear deployment rail tests three payload ejection mechanisms. Rank the mechanisms by the resulting recoil speed of the probe along the rail, from greatest recoil speed to least recoil speed.",
+        "ms": "Satu prob angkasa pegun di atas rel pelancaran linear tanpa geseran menguji tiga mekanisme pelentingan muatan. Susun mekanisme tersebut mengikut laju sentakan prob yang terhasil di sepanjang rel, daripada laju sentakan terbesar kepada terkecil.",
+        "zh": "一个位于无摩擦线性展开轨道上的静止太空探测器测试了三种有效载荷弹射机构。请按探测器沿轨道产生的反冲速度从大到小对这些机构进行排序。"
+      },
+      "hints": [
+        {
+          "en": "Recall that the probe and payload form an isolated system along the rail direction. The probe's recoil speed depends solely on the magnitude of the horizontal momentum transferred to the ejected payload.",
+          "ms": "Ingat kembali bahawa prob dan muatan membentuk sistem terpencil sepanjang arah rel. Laju sentakan prob bergantung semata-mata pada magnitud momentum mendatar yang dipindahkan kepada muatan yang dilentingkan.",
+          "zh": "请记住，探测器和载荷在轨道方向上构成一个孤立系统。探测器的反冲速度仅取决于转移给被弹射载荷的水平动量大小。"
+        },
+        {
+          "en": "Compare the horizontal momentum components: for equal kinetic energies, a smaller mass carries less momentum than a larger mass. Any momentum directed perpendicularly to the rail produces zero recoil along the rail.",
+          "ms": "Bandingkan komponen momentum mendatar: untuk tenaga kinetik yang sama, jisim yang lebih kecil membawa momentum yang kurang berbanding jisim yang lebih besar. Sebarang momentum yang berserenjang dengan rel menghasilkan sifar sentakan sepanjang rel.",
+          "zh": "比较水平动量分量：在动能相同的情况下，较小质量比较大质量所具有的动量更小。任何垂直于轨道的动量在轨道方向上产生的反冲均为零。"
+        }
+      ],
+      "feedback": {
+        "en": "Ordering verified. Recoil velocity along a specific axis is determined strictly by the component of momentum conserved along that axis.",
+        "ms": "Susunan disahkan. Halaju sentakan di sepanjang paksi tertentu ditentukan secara ketat oleh komponen momentum yang terpelihara di sepanjang paksi tersebut.",
+        "zh": "排序验证正确。沿特定轴的反冲速度严格由该轴上守恒的动量分量决定。"
+      },
+      "answerLogic": {
+        "en": "Because initial total momentum along the rail is zero, the probe's recoil momentum must balance the payload's horizontal momentum. The massive pod ejected horizontally transfers the greatest horizontal momentum. The miniature probe with equal kinetic energy transfers less momentum because momentum scales with the square root of mass for fixed kinetic energy. The perpendicular beacon transfers zero momentum along the rail.",
+        "ms": "Oleh kerana jumlah momentum awal di sepanjang rel adalah sifar, momentum sentakan prob mesti mengimbangi momentum mendatar muatan. Pod berjisim besar yang dilentingkan secara mendatar memindahkan momentum mendatar terbesar. Prob miniatur dengan tenaga kinetik yang sama memindahkan momentum yang lebih kecil kerana momentum berkadar dengan punca kuasa dua jisim untuk tenaga kinetik tetap. Bikon serenjang memindahkan sifar momentum di sepanjang rel.",
+        "zh": "由于沿轨道的初始总动量为零，探测器的反冲动量必须平衡载荷的水平动量。水平弹射的大质量舱传递了最大的水平动量。具有相同动能的微型探测器传递的动量较小，因为在动能一定时动量与质量的平方根成正比。垂直弹射的信标在轨道方向上转移的动量为零。"
+      },
+      "explanation": {
+        "en": "In an isolated system, the total momentum vector is conserved: Delta p_tot = 0. Along the single dimension of the rail, the probe's recoil speed is directly proportional to the horizontal momentum component of the ejected body. Although a lighter object with equal kinetic energy travels much faster, it carries less momentum than a heavier object of the same kinetic energy (p = sqrt(2*m*K)). Furthermore, ejecting an object purely in an orthogonal direction transfers zero momentum along the rail axis.",
+        "ms": "Dalam sistem terpencil, vektor jumlah momentum adalah terpelihara: Delta p_tot = 0. Di sepanjang satu dimensi rel, laju sentakan prob berkadar terus dengan komponen momentum mendatar jasad yang dilentingkan. Walaupun objek yang lebih ringan dengan tenaga kinetik yang sama bergerak lebih laju, ia membawa momentum yang lebih kecil berbanding objek yang lebih berat dengan tenaga kinetik yang sama (p = sqrt(2*m*K)). Tambahan pula, melentingkan objek secara tulen dalam arah ortogon memindahkan sifar momentum di sepanjang paksi rel.",
+        "zh": "在孤立系统中，总动量矢量是守恒的：Delta p_tot = 0。在轨道这单一维度上，探测器的反冲速度与发射物体的水平动量分量成正比。虽然具有相同动能的较轻物体运动速度更快，但其动量小于具有相同动能的较重物体（p = sqrt(2*m*K)）。此外，纯粹向正交方向弹射物体在轨道轴向上转移的动量为零。"
+      },
+      "misconceptions": [
+        "scalar-momentum-treatment",
+        "kinetic-energy-momentum-conflation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Linear momentum is defined as p = m*v and is directly proportional to mass, whereas kinetic energy is (1/2)*m*v^2. Review how two bodies can possess identical kinetic energy yet possess substantially different momenta.",
+          "ms": "Momentum linear ditakrifkan sebagai p = m*v dan berkadar terus dengan jisim, manakala tenaga kinetik ialah (1/2)*m*v^2. Ulang kaji bagaimana dua jasad boleh memiliki tenaga kinetik yang sama tetapi memiliki momentum yang jauh berbeza.",
+          "zh": "线动量定义为 p = m*v 并与质量成正比，而动能为 (1/2)*m*v^2。复习两个物体为何可以拥有完全相同的动能却具有显著不同的动量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive ordering activity containing three payload ejection options to be arranged in descending order of resulting probe recoil speed along a frictionless deployment rail.",
+        "ms": "Aktiviti susunan interaktif yang mengandungi tiga pilihan pelentingan muatan untuk disusun mengikut tertib menurun laju sentakan prob di sepanjang rel tanpa geseran.",
+        "zh": "交互式排序活动，包含三个有效载荷弹射选项，需按其在无摩擦展开轨道上产生的探测器反冲速度从大到小降序排列。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-heavy-horiz",
+            "label": {
+              "en": "Massive sample capsule ejected horizontally along the rail at moderate speed",
+              "ms": "Kapsul sampel berjisim besar dilentingkan secara mendatar sepanjang rel pada kelajuan sederhana",
+              "zh": "大质量样本舱沿轨道以中等速度水平弹射"
+            }
+          },
+          {
+            "id": "item-light-ke",
+            "label": {
+              "en": "Miniature scout beacon ejected horizontally with kinetic energy identical to the massive capsule",
+              "ms": "Bikon peninjau miniatur dilentingkan secara mendatar dengan tenaga kinetik yang sama dengan kapsul berjisim besar",
+              "zh": "微型侦察信标以与大质量样本舱相同的动能沿水平方向弹射"
+            }
+          },
+          {
+            "id": "item-vertical-launch",
+            "label": {
+              "en": "Secondary probe launched with high speed and high kinetic energy purely perpendicular to the rail",
+              "ms": "Prob sekunder dilancarkan dengan kelajuan tinggi dan tenaga kinetik tinggi secara tegak berserenjang dengan rel",
+              "zh": "副探测器以高速度和高动能纯正交垂直于轨道发射"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-heavy-horiz",
+          "item-light-ke",
+          "item-vertical-launch"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "kinetic-energy-momentum-conflation",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-light-ke",
+            "secondItemId": "item-heavy-horiz"
+          }
+        },
+        {
+          "misconception": "scalar-momentum-treatment",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-vertical-launch",
+            "secondItemId": "item-light-ke"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-iso-05",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between internal forces that exchange momentum and external forces that alter system momentum.",
+      "prompt": {
+        "en": "A field research team defines a mechanical system consisting exclusively of a motorized rover and an attached cargo sled moving together. Classify each force according to whether it is an internal force (which cannot change total system momentum) or an external force (which can change total system momentum).",
+        "ms": "Satu pasukan penyelidik lapangan mentakrifkan sistem mekanikal yang mengandungi secara eksklusif sebuah rover bermotor dan sebuahเลgelongsor kargo yang bergerak bersama. Kelaskan setiap daya sama ada ia merupakan daya dalaman (yang tidak boleh mengubah jumlah momentum sistem) atau daya luaran (yang boleh mengubah jumlah momentum sistem).",
+        "zh": "一个野外考察队将一个机械系统严格定义为一同运动的动力巡视车及相连的货运雪橇。请将下列各力分类为内力（不能改变系统总动量）或外力（能够改变系统总动量）。"
+      },
+      "hints": [
+        {
+          "en": "Check the objects involved in each interaction. A force is internal if both the object exerting the force and the object experiencing the force lie within the declared system boundary.",
+          "ms": "Periksa objek yang terlibat dalam setiap interaksi. Sesuatu daya adalah dalaman jika kedua-dua objek yang mengenakan daya dan objek yang mengalami daya berada di dalam sempadan sistem yang diisytiharkan.",
+          "zh": "检查每次相互作用中涉及的物体。如果施力物体和受力物体都位于所声明的系统边界内部，则该力为内力。"
+        },
+        {
+          "en": "Newton's third law guarantees that internal action-reaction pairs cancel each other when summing the forces on the entire system. External forces originate from bodies outside the rover-sled boundary.",
+          "ms": "Hukum Newton ketiga menjamin bahawa pasangan tindakan-tindak balas dalaman saling membatalkan apabila menjumlahkan daya ke atas keseluruhan sistem. Daya luaran berasal daripada jasad di luar sempadan rover-legelongsor.",
+          "zh": "牛顿第三定律保证了在对整个系统的力求和时，内部作用力与反作用力对会相互抵消。外力则来源于巡视车-雪橇边界之外的物体。"
+        }
+      ],
+      "feedback": {
+        "en": "Classification accurate. Internal interactions transfer momentum between members without altering the system's total momentum vector.",
+        "ms": "Pengelasan tepat. Interaksi dalaman memindahkan momentum antara ahli tanpa mengubah vektor jumlah momentum sistem.",
+        "zh": "分类正确。内部相互作用在成员之间传递动量，而不会改变系统的总动量矢量。"
+      },
+      "answerLogic": {
+        "en": "The rover and sled together constitute the system. The coupling tension and collision contact occur solely between these two system members, making them internal forces that sum to zero. Friction from the terrain and aerodynamic drag from atmospheric wind originate from outside bodies, making them external forces that alter the system's total momentum.",
+        "ms": "Rover dan legelongsor bersama-sama membentuk sistem. Ketegangan pengganding dan sentuhan perlanggaran berlaku semata-mata antara dua ahli sistem ini, menjadikannya daya dalaman yang berjumlah sifar. Geseran daripada rupa bumi dan seretan aerodinamik daripada angin atmosfera berasal daripada jasad luar, menjadikannya daya luaran yang mengubah jumlah momentum sistem.",
+        "zh": "巡视车和雪橇共同构成了该系统。连挂装置的拉力和碰撞接触力仅发生在这两个系统成员之间，因而是合力为零的内力。来自地形的摩擦力以及来自大气风的空气阻力源于外部物体，因而是能够改变系统总动量的外力。"
+      },
+      "explanation": {
+        "en": "According to the isolated system model for momentum, the total momentum remains constant if no net external force acts on the system (dp_tot/dt = 0). Internal forces between constituent parts always appear in action-reaction pairs according to Newton's third law. Their vector sum across the system is identically zero, so internal forces can only exchange momentum among constituent parts and cannot alter the system's total momentum.",
+        "ms": "Menurut model sistem terpencil untuk momentum, jumlah momentum kekal malar jika tiada daya luaran bersih bertindak ke atas sistem (dp_tot/dt = 0). Daya dalaman antara bahagian juzuk sentiasa muncul dalam pasangan tindakan-tindak balas menurut hukum Newton ketiga. Hasil tambah vektornya merentasi sistem adalah sifar tepat, jadi daya dalaman hanya boleh menukar momentum antara bahagian juzuk dan tidak boleh mengubah jumlah momentum sistem.",
+        "zh": "根据动量的孤立系统模型，如果没有净外力作用于系统，总动量保持恒定（dp_tot/dt = 0）。根据牛顿第三定律，组成部分之间的内力总是成对出现（作用力与反作用力）。它们在整个系统上的矢量和恒为零，因此内力只能在组成部分之间交换动量，而不能改变系统的总动量。"
+      },
+      "misconceptions": [
+        "internal-force-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Newton's third law states that whenever body A exerts a force on body B, body B simultaneously exerts an equal and opposite force on body A. Review why adding these two forces yields zero net force on the two-body system.",
+          "ms": "Hukum Newton ketiga menyatakan bahawa apabila jasad A mengenakan daya ke atas jasad B, jasad B mengenakan daya yang sama magnitud dan bertentangan arah secara serentak ke atas jasad A. Ulang kaji mengapa penambahan kedua-dua daya ini menghasilkan sifar daya bersih pada sistem dua jasad.",
+          "zh": "牛顿第三定律指出，当物体A对物体B施加力时，物体B同时对物体A施加大小相等、方向相反的力。复习为何将这两个力相加会使双物体系统所受的合力为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive classification activity with two categories: Internal Force and External Force. Four interaction forces must be sorted into the appropriate category based on the defined rover-sled system.",
+        "ms": "Aktiviti pengelasan interaktif dengan dua kategori: Daya Dalaman dan Daya Luaran. Empat daya interaksi mesti diisih ke dalam kategori yang sesuai berdasarkan sistem rover-legelongsor yang ditakrifkan.",
+        "zh": "具有两个类别的交互式分类活动：内力与外力。需根据所定义的巡视车-雪橇系统，将四种相互作用力归入相应的类别中。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-internal",
+            "label": {
+              "en": "Internal Force (exchanges momentum between system parts; cannot change total system momentum)",
+              "ms": "Daya Dalaman (menukar momentum antara bahagian sistem; tidak boleh mengubah jumlah momentum sistem)",
+              "zh": "内力（在系统各部分之间交换动量；不能改变系统总动量）"
+            }
+          },
+          {
+            "id": "target-external",
+            "label": {
+              "en": "External Force (originates outside system boundary; can alter total system momentum)",
+              "ms": "Daya Luaran (berasal dari luar sempadan sistem; boleh mengubah jumlah momentum sistem)",
+              "zh": "外力（源于系统边界之外；能够改变系统总动量）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-tow-tension",
+            "label": {
+              "en": "Tension force exerted by the rigid tow hitch connecting the rover to the sled",
+              "ms": "Daya tegangan yang dikenakan oleh pengganding tunda tegar yang menyambungkan rover ke legelongsor",
+              "zh": "连接巡视车与雪橇的刚性牵引挂钩所施加的拉力"
+            }
+          },
+          {
+            "id": "item-bumper-impact",
+            "label": {
+              "en": "Normal impact contact force between the rover's rear bumper and the sled's front chassis during a sudden slowdown",
+              "ms": "Daya sentuhan hentaman normal antara bampar belakang rover dan casis hadapan legelongsor semasa perlahaman mendadak",
+              "zh": "急减速期间巡视车后保险杠与雪橇前底盘之间的法向碰撞接触力"
+            }
+          },
+          {
+            "id": "item-snow-drag",
+            "label": {
+              "en": "Frictional resistance exerted by the underlying snow surface on the sled runners",
+              "ms": "Rintangan geseran yang dikenakan oleh permukaan salji di bawahnya ke atas peluncur legelongsor",
+              "zh": "下方雪面对雪橇滑行板施加的摩擦阻力"
+            }
+          },
+          {
+            "id": "item-wind-force",
+            "label": {
+              "en": "Aerodynamic pushing force exerted by atmospheric crosswind gusts against the side of the rover",
+              "ms": "Daya tolakan aerodinamik yang dikenakan oleh tiupan angin lintang atmosfera pada sisi rover",
+              "zh": "大气侧向阵风对巡视车侧面施加的空气动力推力"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-tow-tension",
+            "targetId": "target-internal"
+          },
+          {
+            "itemId": "item-bumper-impact",
+            "targetId": "target-internal"
+          },
+          {
+            "itemId": "item-snow-drag",
+            "targetId": "target-external"
+          },
+          {
+            "itemId": "item-wind-force",
+            "targetId": "target-external"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "internal-force-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-tow-tension",
+            "targetId": "target-external"
+          }
+        },
+        {
+          "misconception": "internal-force-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-bumper-impact",
+            "targetId": "target-external"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-iso-06",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze momentum conservation independently along orthogonal coordinate axes.",
+      "prompt": {
+        "en": "For each physical interaction scenario, determine whether total momentum of the defined system is conserved along the specified spatial axis.",
+        "ms": "Bagi setiap senario interaksi fizikal, tentukan sama ada jumlah momentum sistem yang ditakrifkan adalah terpelihara di sepanjang paksi ruang yang dinyatakan.",
+        "zh": "针对以下各物理相互作用情景，判断所定义系统的总动量在指定的空间轴向上是否守恒。"
+      },
+      "hints": [
+        {
+          "en": "Apply Equation 9.6: momentum conservation holds independently for each coordinate component (x, y, and z) whenever the net external force along that specific axis is zero.",
+          "ms": "Gunakan Persamaan 9.6: keabadian momentum berlaku secara bebas untuk setiap komponen koordinat (x, y, dan z) apabila daya luaran bersih di sepanjang paksi khusus tersebut adalah sifar.",
+          "zh": "应用公式9.6：只要沿特定坐标轴的合外力为零，该坐标分量（x、y 和 z）上的动量守恒就独立成立。"
+        },
+        {
+          "en": "The presence of external forces acting along one axis (such as vertical gravity or normal forces) does not invalidate momentum conservation along a perpendicular axis where no net external force acts.",
+          "ms": "Kehadiran daya luaran yang bertindak di sepanjang satu paksi (seperti graviti menegak atau daya normal) tidak membatalkan keabadian momentum di sepanjang paksi serenjang yang tidak mempunyai daya luaran bersih.",
+          "zh": "沿某一轴作用的外力（如竖直重力或支持力）的存在，并不会破坏在没有净外力作用的正交垂直轴向上的动量守恒。"
+        }
+      ],
+      "feedback": {
+        "en": "Matching accurate. Coordinate axes are orthogonal, so momentum conservation applies independently along each axis based on its own net external force.",
+        "ms": "Padanan tepat. Paksi koordinat adalah ortogon, jadi keabadian momentum terpakai secara bebas di sepanjang setiap paksi berdasarkan daya luaran bersihnya sendiri.",
+        "zh": "匹配正确。坐标轴是相互正交的，因此动量守恒基于各轴自身的净外力独立适用。"
+      },
+      "answerLogic": {
+        "en": "Along the horizontal x-axis and y-axis on level frictionless surfaces, external forces (gravity and normal force) act strictly vertically (z-axis), leaving zero net external force in the horizontal plane; thus horizontal momentum components are strictly conserved. Along the vertical axis for an airborne projectile, unbalanced gravity exerts a net downward external force, so vertical momentum is not conserved.",
+        "ms": "Di sepanjang paksi-x dan paksi-y mendatar pada permukaan rata tanpa geseran, daya luaran (graviti dan daya normal) bertindak secara menegak tulen (paksi-z), meninggalkan sifar daya luaran bersih dalam satah mendatar; oleh itu komponen momentum mendatar adalah terpelihara dengan ketat. Di sepanjang paksi menegak bagi projektil di udara, graviti tidak seimbang mengenakan daya luaran bersih ke bawah, jadi momentum menegak tidak terpelihara.",
+        "zh": "在水平无摩擦表面上的水平x轴和y轴方向，外力（重力和支持力）纯粹沿竖直方向（z轴）作用，使得水平面内的净外力为零；因此水平动量分量严格守恒。而对于空中的抛体，在竖直轴向上不平衡的重力施加了向下的净外力，因此竖直动量不守恒。"
+      },
+      "explanation": {
+        "en": "Linear momentum is a vector quantity described by three independent component equations: p_1ix + p_2ix = p_1fx + p_2fx, with matching relations for y and z. An external force acting along the vertical direction changes the vertical momentum component of the system, but it has exactly zero projection along any perpendicular horizontal axis. Therefore, the system remains isolated along the horizontal axis, and horizontal momentum is conserved.",
+        "ms": "Momentum linear ialah kuantiti vektor yang diterangkan oleh tiga persamaan komponen tak bersandar: p_1ix + p_2ix = p_1fx + p_2fx, dengan hubungan yang sepadan untuk y dan z. Daya luaran yang bertindak di sepanjang arah menegak mengubah komponen momentum menegak sistem, tetapi mempunyai unjuran sifar tepat di sepanjang mana-mana paksi mendatar yang berserenjang. Oleh itu, sistem kekal terpencil di sepanjang paksi mendatar, dan momentum mendatar terpelihara.",
+        "zh": "线动量是一个由三个独立分量方程描述的矢量：p_1ix + p_2ix = p_1fx + p_2fx，y和z方向具有对应的关系。沿竖直方向作用的外力会改变系统的竖直动量分量，但在任何垂直的水平轴向上的投影严格为零。因此，该系统沿水平轴向仍然是孤立的，水平动量守恒。"
+      },
+      "misconceptions": [
+        "vertical-force-invalidates-horizontal-conservation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "Vectors resolved into mutually perpendicular axes act independently. Review how a vertical vector (such as downward gravity) has zero projection or component along any horizontal axis.",
+          "ms": "Vektor yang dileraikan ke dalam paksi berserenjang saling bertindak secara bebas. Ulang kaji bagaimana vektor menegak (seperti graviti ke bawah) mempunyai unjuran atau komponen sifar di sepanjang sebarang paksi mendatar.",
+          "zh": "分解到相互垂直轴上的矢量彼此独立起作用。复习竖直矢量（例如向下的重力）在任何水平轴上的投影或分量为何为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive matching activity with two status targets: Conserved and Not Conserved. Three interaction axis scenarios must be assigned to the correct conservation status based on net external forces along that axis.",
+        "ms": "Aktiviti padanan interaktif dengan dua sasaran status: Terpelihara dan Tidak Terpelihara. Tiga senario paksi interaksi mesti diberikan kepada status keabadian yang betul berdasarkan daya luaran bersih di sepanjang paksi tersebut.",
+        "zh": "具有两个状态目标的交互式匹配活动：守恒与不守恒。需根据沿该轴的净外力，将三个相互作用轴向情景分配到正确的守恒状态。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-conserved",
+            "label": {
+              "en": "Conserved along this axis (component of net external force along this axis is zero)",
+              "ms": "Terpelihara di sepanjang paksi ini (komponen daya luaran bersih di sepanjang paksi ini adalah sifar)",
+              "zh": "沿该轴守恒（沿该轴的合外力分量为零）"
+            }
+          },
+          {
+            "id": "target-not-conserved",
+            "label": {
+              "en": "Not Conserved along this axis (nonzero component of net external force acts along this axis)",
+              "ms": "Tidak Terpelihara di sepanjang paksi ini (komponen daya luaran bersih bukan sifar bertindak di sepanjang paksi ini)",
+              "zh": "沿该轴不守恒（沿该轴存在非零的合外力分量）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-horiz-skater",
+            "label": {
+              "en": "Horizontal x-axis: A skater standing on frictionless horizontal ice pushes a heavy sled forward horizontally, while downward gravity and upward normal force support the bodies vertically",
+              "ms": "Paksi-x mendatar: Seorang pemain luncur di atas ais mendatar tanpa geseran menolak legelongsor berat ke hadapan secara mendatar, manakala graviti ke bawah dan daya normal ke atas menyokong jasad secara menegak",
+              "zh": "水平x轴：滑冰者站在无摩擦的水平冰面上沿水平方向向前推重雪橇，同时向下的重力和向上的支持力在竖直方向支撑物体"
+            }
+          },
+          {
+            "id": "item-vert-mortar",
+            "label": {
+              "en": "Vertical y-axis: Two fireworks shells collide mid-air during free flight while Earth's downward gravitational force acts continuously on both shells",
+              "ms": "Paksi-y menegak: Dua kelongsong bunga api berlanggar di udara semasa penerbangan bebas manakala daya graviti ke bawah Bumi bertindak berterusan ke atas kedua-dua kelongsong",
+              "zh": "竖直y轴：两个礼花弹在自由飞行中于半空中相撞，同时地球向下的重力持续作用于两个礼花弹"
+            }
+          },
+          {
+            "id": "item-lateral-hockey",
+            "label": {
+              "en": "Transverse horizontal y-axis: Two pucks collide glancingly on a level air-cushion table where downward weight is balanced exactly by vertical air pressure",
+              "ms": "Paksi-y mendatar melintang: Dua keping hoki berlanggar secara sipi di atas meja kusyen udara rata di mana berat ke bawah diimbangi tepat oleh tekanan udara menegak",
+              "zh": "横向水平y轴：两个冰球在水平气垫球台上发生擦碰，向下的重力被竖直气压精确平衡"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-horiz-skater",
+            "targetId": "target-conserved"
+          },
+          {
+            "itemId": "item-vert-mortar",
+            "targetId": "target-not-conserved"
+          },
+          {
+            "itemId": "item-lateral-hockey",
+            "targetId": "target-conserved"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "vertical-force-invalidates-horizontal-conservation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-horiz-skater",
+            "targetId": "target-not-conserved"
+          }
+        },
+        {
+          "misconception": "vertical-force-invalidates-horizontal-conservation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-lateral-hockey",
+            "targetId": "target-not-conserved"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-iso-07",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict recoil velocities of interacting bodies within an isolated system using directional conservation.",
+      "prompt": {
+        "en": "A stationary science sled rests on frictionless horizontal ice. An onboard launcher can eject a probe of mass m with identical launch speed relative to the sled in different configurations. Rank the four release scenarios from greatest resulting forward velocity (+x direction) of the sled to least resulting forward velocity (or most negative forward velocity).",
+        "ms": "Sebuah giring sains pegun berada di atas ais mendatar tanpa geseran. Pelancar di atas giring boleh melentingkan prob berjisim m dengan laju pelancaran yang sama relatif kepada giring dalam konfigurasi berbeza. Susun empat senario pelepasan ini daripada halaju ke hadapan (arah +x) giring yang paling besar kepada halaju ke hadapan yang paling kecil (atau paling negatif).",
+        "zh": "一辆静止的科研滑橇停留在无摩擦的水平冰面上。滑橇上的发射器能以相同相对速率向不同方向弹射一个质量为 m 的探测器。请将以下四种发射情形按滑橇最终获得的向前（+x 方向）速度从大到小（从最正到最负）进行排序。"
+      },
+      "hints": [
+        {
+          "en": "Apply conservation of momentum along the horizontal x-axis: the total horizontal momentum of the isolated system must remain zero because it starts from rest.",
+          "ms": "Gunakan keabadian momentum di sepanjang paksi mendatar x: jumlah momentum mendatar sistem terpencil mesti kekal sifar kerana ia bermula dari keadaan pegun.",
+          "zh": "在水平 x 轴方向应用动量守恒：由于系统最初静止，因此孤立系统的总水平动量必须始终保持为零。"
+        },
+        {
+          "en": "Consider directional signs and component projections: ejecting mass backward (-x) creates positive forward (+x) recoil, ejecting at an angle only transfers the horizontal component of momentum, ejecting into an internal stop exerts balanced internal forces yielding zero net change, and ejecting forward (+x) causes backward (-x) recoil.",
+          "ms": "Pertimbangkan tanda arah dan unjuran komponen: melentingkan jisim ke belakang (-x) menghasilkan sentakan ke hadapan (+x), melentingkan pada suatu sudut hanya memindahkan komponen momentum mendatar, melentingkan ke dalam penghadang dalaman mengenakan daya dalaman seimbang yang menghasilkan perubahan bersih sifar, dan melentingkan ke hadapan (+x) menyebabkan sentakan ke belakang (-x).",
+          "zh": "注意方向符号与分量投影：向后（-x）发射质量会使滑橇向前（+x）反冲；斜向发射仅转移水平分量动量；向内部阻挡物发射时内部作用力平衡，净动量改变为零；而向前（+x）发射则会迫使滑橇向后（-x）反冲。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. Firing backward imparts the full horizontal momentum forward (+x). Firing at an elevation of 45 degrees imparts only the horizontal component of that momentum. Firing into an internal barrier exerts equal and opposite internal forces, resulting in zero net change. Firing forward imparts negative momentum to the sled, causing it to recoil backward.",
+        "ms": "Tepat. Menembak ke belakang memindahkan momentum mendatar penuh ke hadapan (+x). Menembak pada sudut dongakan 45 darjah hanya memindahkan komponen mendatar momentum tersebut. Menembak ke dalam penghadang dalaman mengenakan daya dalaman yang sama dan bertentangan, menghasilkan perubahan bersih sifar. Menembak ke hadapan memindahkan momentum negatif kepada giring, menyebabkannya tersentak ke belakang.",
+        "zh": "正确。向后发射将全部动量在水平正方向（+x）传递给滑橇；以 45 度仰角发射仅传递该动量的水平分量；向内部阻挡物发射时，大小相等、方向相反的内力相互抵消，净改变为零；向前发射则赋予滑橇负动量，使其向后反冲。"
+      },
+      "answerLogic": {
+        "en": "Total horizontal momentum conservation requires delta(p_sled,x) = -delta(p_probe,x). Rearward launch has negative x-momentum, giving the sled maximum positive forward speed. Angled launch has a reduced negative horizontal component (-p cos 45 deg), giving moderate positive speed. Internal capture has net zero momentum transfer. Forward launch gives positive x-momentum to the probe, forcing negative x-velocity on the sled.",
+        "ms": "Keabadian jumlah momentum mendatar memerlukan delta(p_giring,x) = -delta(p_prob,x). Pelancaran ke belakang mempunyai momentum x negatif, memberikan laju ke hadapan positif maksimum kepada giring. Pelancaran bersudut mempunyai komponen mendatar negatif yang berkurang (-p kos 45 darjah), memberikan laju positif sederhana. Tangkapan dalaman menghasilkan pemindahan momentum bersih sifar. Pelancaran ke hadapan memberikan momentum x positif kepada prob, memaksa halaju x negatif ke atas giring.",
+        "zh": "水平总动量守恒要求 delta(p_滑橇,x) = -delta(p_探测器,x)。向后发射具有负 x 动量，赋予滑橇最大正向向前速度；成角发射具有较小的负水平分量（-p cos 45 度），提供中等正向速度；内部捕获的净动量转移为零；向前发射赋予探测器正 x 动量，迫使滑橇获得负 x 速度（向后运动）。"
+      },
+      "explanation": {
+        "en": "Because the sled and probe start from rest on frictionless ice, no external horizontal force acts. Momentum conservation dictates that any momentum given to the probe along the horizontal axis must be countered by equal and opposite momentum of the sled. Directional signs are crucial: throwing mass forward makes the launcher move backward, while throwing mass at an upward angle reduces the horizontal impulse in proportion to the cosine of the launch angle.",
+        "ms": "Kerana giring dan prob bermula dari pegun di atas ais tanpa geseran, tiada daya mendatar luaran bertindak. Keabadian momentum menetapkan bahawa sebarang momentum yang diberikan kepada prob di sepanjang paksi mendatar mesti diimbangi oleh momentum yang sama dan bertentangan oleh giring. Tanda arah adalah penting: melontar jisim ke hadapan menjadikan pelancar bergerak ke belakang, manakala melontar jisim pada sudut dongakan mengurangkan impuls mendatar berkadar dengan kosinus sudut pelancaran.",
+        "zh": "因为滑橇与探测器最初静止在无摩擦冰面上，所以水平方向没有外力作用。动量守恒定律表明，探测器在水平轴上获得的任何动量必须由滑橇大小相等、方向相反的动量来抵消。方向符号至关重要：向前抛出物体会使发射体向后运动，而以仰角发射则会使传递的水平冲量按发射角的余弦值比例衰减。"
+      },
+      "misconceptions": [
+        "scalar-momentum-treatment",
+        "internal-force-confusion"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "Recall how to resolve vectors into components along the coordinate axes: momentum is conserved along each axis independently, and the horizontal impulse depends on the cosine of the launch elevation angle.",
+          "ms": "Ingat kembali cara meleraikan vektor kepada komponen di sepanjang paksi koordinat: momentum diabadikan di sepanjang setiap paksi secara bebas, dan impuls mendatar bergantung pada kosinus sudut dongakan pelancaran.",
+          "zh": "回顾如何将矢量分解为坐标轴上的分量：动量在各个坐标轴上是独立守恒的，水平冲量取决于发射仰角的余弦值。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Ordering task with four launch configurations. Arrange items from the greatest positive forward velocity of the sled to the least (most negative) forward velocity along the horizontal axis.",
+        "ms": "Tugasan susunan dengan empat konfigurasi pelancaran. Susun item daripada halaju ke hadapan positif terbesar bagi giring kepada halaju ke hadapan terkecil (paling negatif) di sepanjang paksi mendatar.",
+        "zh": "包含四个发射配置的排序任务。将各项按滑橇沿水平轴获得的向前正速度从大到小（从最正到最负）进行排列。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-eject-backward",
+            "label": {
+              "en": "Rearward horizontal launch: Ejecting the probe horizontally in the negative x-direction.",
+              "ms": "Pelancaran mendatar ke belakang: Melentingkan prob secara mendatar dalam arah x negatif.",
+              "zh": "向后水平发射：沿负 x 方向水平弹出一个探测器。"
+            }
+          },
+          {
+            "id": "item-eject-angled-back",
+            "label": {
+              "en": "Rearward angled launch: Ejecting the probe at an angle of 45 degrees above the negative x-axis.",
+              "ms": "Pelancaran bersudut ke belakang: Melentingkan prob pada sudut 45 darjah di atas paksi x negatif.",
+              "zh": "向后成角发射：沿与负 x 轴成 45 度角斜向上方弹出探测器。"
+            }
+          },
+          {
+            "id": "item-internal-catch",
+            "label": {
+              "en": "Internal launch and capture: Ejecting the probe horizontally into an onboard containment barrier fixed to the sled.",
+              "ms": "Pelancaran dan tangkapan dalaman: Melentingkan prob secara mendatar ke dalam penghadang penahan di atas giring.",
+              "zh": "内部发射并捕获：将探测器水平发射至固定在滑橇上的内部阻挡网中。"
+            }
+          },
+          {
+            "id": "item-eject-forward",
+            "label": {
+              "en": "Forward horizontal launch: Ejecting the probe horizontally in the positive x-direction.",
+              "ms": "Pelancaran mendatar ke hadapan: Melentingkan prob secara mendatar dalam arah x positif.",
+              "zh": "向前水平发射：沿正 x 方向水平弹出探测器。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "item-eject-backward",
+          "item-eject-angled-back",
+          "item-internal-catch",
+          "item-eject-forward"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "scalar-momentum-treatment",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-eject-forward",
+            "secondItemId": "item-internal-catch"
+          }
+        },
+        {
+          "misconception": "internal-force-confusion",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "item-internal-catch",
+            "secondItemId": "item-eject-angled-back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-iso-08",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze momentum conservation independently along orthogonal coordinate axes.",
+      "prompt": {
+        "en": "A two-robot exploration system operates on a flat, horizontal frictionless frozen lake. Gravity acts downward (-z) and the ice exerts an upward normal force (+z). During an interaction, the robots push against one another, moving across the horizontal xy-plane. Select all statements that correctly describe momentum conservation for this system across orthogonal coordinate axes.",
+        "ms": "Sistem penerokaan dua robot beroperasi di atas tasik beku mendatar tanpa geseran. Graviti bertindak ke bawah (-z) dan ais mengenakan daya normal ke atas (+z). Semasa interaksi, kedua-dua robot menolak antara satu sama lain, bergerak merentasi satah mendatar xy. Pilih semua pernyataan yang menghuraikan keabadian momentum bagi sistem ini merentasi paksi koordinat ortogon dengan betul.",
+        "zh": "一套双机器人探测系统在平坦无摩擦的水平结冰湖面上作业。重力竖直向下（-z），冰面施加竖直向上的支持力（+z）。在相互作用过程中，两台机器人互相推开，在水平 xy 平面上运动。请选择所有能正确描述该系统在正交坐标轴上动量守恒特性的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Review Equation 9.6: momentum conservation can be written as three independent scalar component equations (one for x, one for y, and one for z).",
+          "ms": "Semak Persamaan 9.6: keabadian momentum boleh ditulis sebagai tiga persamaan komponen skalar yang tak bersandar (satu untuk x, satu untuk y, dan satu untuk z).",
+          "zh": "回顾公式 9.6：动量守恒可以写成三个独立的正交分量方程（x、y 和 z 各一个）。"
+        },
+        {
+          "en": "A net external force in the vertical direction only changes momentum in the vertical direction; it does not affect or invalidate momentum conservation along horizontal directions where no external forces act.",
+          "ms": "Daya luaran bersih dalam arah menegak hanya mengubah momentum dalam arah menegak; ia tidak mempengaruhi atau membatalkan keabadian momentum di sepanjang arah mendatar di mana tiada daya luaran bertindak.",
+          "zh": "竖直方向的合外力仅改变竖直方向的动量；只要水平方向没有外力作用，它就不会影响或破坏水平方向上的动量守恒。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. Total momentum along the x and y axes is conserved independently because external forces in those horizontal directions are zero. Vertical forces affect only the vertical z-component and do not invalidate horizontal conservation.",
+        "ms": "Tepat. Jumlah momentum di sepanjang paksi x dan y adalah terpelihara secara tak bersandar kerana daya luaran dalam arah mendatar tersebut ialah sifar. Daya menegak hanya mempengaruhi komponen z menegak dan tidak membatalkan keabadian mendatar.",
+        "zh": "正确。由于水平方向上的外力为零，系统在 x 轴和 y 轴方向的总动量是独立守恒的。竖直方向的外力仅影响竖直 z 分量，绝不会破坏水平方向上的动量守恒。"
+      },
+      "answerLogic": {
+        "en": "Newton's second law in component form demonstrates that dp_x/dt = F_ext,x, dp_y/dt = F_ext,y, and dp_z/dt = F_ext,z. Because F_ext,x = 0 and F_ext,y = 0, both horizontal components are conserved independently. External vertical forces act exclusively along z and do not enter the x or y equations.",
+        "ms": "Hukum Newton kedua dalam bentuk komponen menunjukkan bahawa dp_x/dt = F_luar,x, dp_y/dt = F_luar,y, dan dp_z/dt = F_luar,z. Kerana F_luar,x = 0 dan F_luar,y = 0, kedua-dua komponen mendatar terpelihara secara tak bersandar. Daya menegak luaran bertindak secara eksklusif di sepanjang z dan tidak memasuki persamaan x atau y.",
+        "zh": "分量形式的牛顿第二定律表明 dp_x/dt = F_外,x、dp_y/dt = F_外,y 以及 dp_z/dt = F_外,z。因为 F_外,x = 0 且 F_外,y = 0，所以两个水平分量各自独立守恒。竖直外力仅沿 z 轴作用，不参与 x 或 y 方向的方程。"
+      },
+      "explanation": {
+        "en": "Linear momentum is a vector equation that resolves into independent component equations along orthogonal axes. An isolated system along a specific coordinate axis requires only that the net external force along that particular axis is zero. Therefore, even when a system experiences external forces vertically (such as gravity or normal force), horizontal momentum remains strictly conserved.",
+        "ms": "Momentum linear ialah persamaan vektor yang terlerai kepada persamaan komponen tak bersandar di sepanjang paksi ortogon. Sistem terpencil di sepanjang paksi koordinat tertentu hanya memerlukan daya luaran bersih di sepanjang paksi tersebut ialah sifar. Oleh itu, walaupun sistem mengalami daya luaran secara menegak (seperti graviti atau daya normal), momentum mendatar kekal terpelihara secara ketat.",
+        "zh": "线动量守恒是一个矢量方程，在正交坐标轴上分解为完全独立的分量方程。某个特定坐标轴上的孤立系统仅要求沿该轴的合外力为零。因此，即使系统在竖直方向受到外力（如重力或支持力），水平方向的动量依然严格守恒。"
+      },
+      "misconceptions": [
+        "vertical-force-invalidates-horizontal-conservation",
+        "scalar-momentum-treatment"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components",
+        "prompt": {
+          "en": "Review vector resolution and coordinate independence: perpendicular vectors do not have components along one another, allowing Newton's second law and momentum conservation to apply independently along x, y, and z.",
+          "ms": "Semak leraian vektor dan ketakbersandaran koordinat: vektor berserenjang tidak mempunyai komponen di sepanjang satu sama lain, membolehkan hukum Newton kedua dan keabadian momentum diaplikasikan secara tak bersandar di sepanjang x, y, dan z.",
+          "zh": "复习矢量分解与坐标独立性：相互正交的矢量彼此之间没有投影分量，因此牛顿第二定律与动量守恒定律可以在 x、y 和 z 轴上各自独立成立。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-selection task presenting five statements regarding momentum conservation along orthogonal axes. Select all statements that accurately represent vector component independence.",
+        "ms": "Tugasan berbilang pilihan membentangkan lima pernyataan mengenai keabadian momentum di sepanjang paksi ortogon. Pilih semua pernyataan yang mewakili ketakbersandaran komponen vektor dengan tepat.",
+        "zh": "包含五个关于正交轴动量守恒陈述的多选题。选择所有准确反映矢量分量独立性的陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "sel-px-indep",
+            "label": {
+              "en": "The total momentum along the horizontal x-axis is conserved independently of whether forces act along the vertical z-axis.",
+              "ms": "Jumlah momentum di sepanjang paksi mendatar x adalah terpelihara secara bebas daripada sama ada daya bertindak di sepanjang paksi menegak z.",
+              "zh": "水平 x 轴方向的总动量是独立守恒的，不受竖直 z 轴上是否存在外力的影响。"
+            }
+          },
+          {
+            "id": "sel-py-indep",
+            "label": {
+              "en": "The total momentum along the horizontal y-axis remains constant as long as the net external force along the y-direction is zero.",
+              "ms": "Jumlah momentum di sepanjang paksi mendatar y kekal malar selagi daya luaran bersih di sepanjang arah y ialah sifar.",
+              "zh": "只要沿 y 方向的合外力为零，水平 y 轴方向的总动量就保持恒定。"
+            }
+          },
+          {
+            "id": "sel-pz-external",
+            "label": {
+              "en": "External vertical forces (gravity and the normal force from the ice) act along the z-axis, so vertical momentum conservation is evaluated separately from the horizontal axes.",
+              "ms": "Daya menegak luaran (graviti dan daya normal daripada ais) bertindak di sepanjang paksi z, jadi keabadian momentum menegak dinilai secara berasingan daripada paksi mendatar.",
+              "zh": "竖直方向的外力（重力与冰面的支持力）沿 z 轴作用，因此竖直动量守恒独立于水平轴进行评估。"
+            }
+          },
+          {
+            "id": "sel-vert-blocks-horiz",
+            "label": {
+              "en": "The existence of external gravitational and normal forces along the vertical axis prevents momentum from being conserved along any horizontal axis.",
+              "ms": "Kewujudan daya graviti dan daya normal luaran di sepanjang paksi menegak menghalang momentum daripada diabadikan di sepanjang mana-mana paksi mendatar.",
+              "zh": "竖直轴上重力和支持力等外力的存在，会阻止任何水平轴上的动量守恒。"
+            }
+          },
+          {
+            "id": "sel-scalar-combine",
+            "label": {
+              "en": "Because momentum is conserved as a single overall scalar magnitude, individual directional components along orthogonal axes cannot be analyzed separately.",
+              "ms": "Kerana momentum terpelihara sebagai satu magnitud skalar keseluruhan, komponen arah individu di sepanjang paksi ortogon tidak boleh dianalisis secara berasingan.",
+              "zh": "因为动量作为一个整体标量大小守恒，所以不能分别独立分析正交轴上的各个方向分量。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "sel-px-indep",
+          "sel-py-indep",
+          "sel-pz-external"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "vertical-force-invalidates-horizontal-conservation",
+          "condition": {
+            "kind": "selection",
+            "itemId": "sel-vert-blocks-horiz",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "scalar-momentum-treatment",
+          "condition": {
+            "kind": "selection",
+            "itemId": "sel-scalar-combine",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-iso-09",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between internal forces that exchange momentum and external forces that alter system momentum.",
+      "prompt": {
+        "en": "A physics laboratory investigates a two-cart system on a track. Match each physical scenario to whether it constitutes an internal interaction (which conserves total system momentum, even if kinetic energy changes) or an external interaction (which alters total system momentum through external impulse).",
+        "ms": "Sebuah makmal fizik menyiasat sistem dua troli di atas landasan. Padankan setiap senario fizikal sama ada ia membentuk interaksi dalaman (yang mengekalkan jumlah momentum sistem, walaupun tenaga kinetik berubah) atau interaksi luaran (yang mengubah jumlah momentum sistem melalui impuls luaran).",
+        "zh": "物理实验室正在研究轨道上的双滑车系统。请将以下各个物理情形匹配为其属于内部相互作用（保持系统总动量守恒，即使动能发生改变），还是属于外部相互作用（通过外力冲量改变系统总动量）。"
+      },
+      "hints": [
+        {
+          "en": "Identify the system boundary: the system consists of both carts. Forces exerted by one cart on the other are internal force pairs that sum to zero by Newton's third law.",
+          "ms": "Kenal pasti sempadan sistem: sistem terdiri daripada kedua-dua troli. Daya yang dikenakan oleh satu troli ke atas troli yang satu lagi ialah pasangan daya dalaman yang berjumlah sifar mengikut hukum Newton ketiga.",
+          "zh": "明确系统边界：系统由两辆滑车共同组成。一辆滑车对另一辆滑车施加的力属于内部作用力对，根据牛顿第三定律，它们的矢量和必为零。"
+        },
+        {
+          "en": "Do not confuse momentum with kinetic energy: internal forces can convert potential energy into kinetic energy (explosive spring) or kinetic energy into thermal energy (inelastic latch), but they can never change the total momentum of the isolated system.",
+          "ms": "Jangan kelirukan momentum dengan tenaga kinetik: daya dalaman boleh menukar tenaga keupayaan kepada tenaga kinetik (spring letupan) atau tenaga kinetik kepada tenaga haba (pautan tak anjal), tetapi ia tidak sekali-kali boleh mengubah jumlah momentum sistem terpencil.",
+          "zh": "切勿混淆动量与动能：内部作用力可以将势能转化为动能（弹簧弹出）或将动能转化为内能（完全非弹性碰撞），但它们绝不会改变孤立系统的总动量。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. The compressed spring, inelastic latch, and mutual magnetic forces are all internal interactions between members of the two-cart system; by Newton's third law, they sum to zero and conserve total system momentum regardless of changes in kinetic energy. Track friction is an external force exerted by the environment, which delivers an external impulse and alters system momentum.",
+        "ms": "Tepat. Spring termampat, pautan tak anjal, dan daya magnet saling adalah semua interaksi dalaman antara ahli sistem dua troli; mengikut hukum Newton ketiga, ia berjumlah sifar dan memelihara jumlah momentum sistem tanpa mengira perubahan tenaga kinetik. Geseran landasan ialah daya luaran yang dikenakan oleh persekitaran, yang memberikan impuls luaran dan mengubah momentum sistem.",
+        "zh": "正确。压缩弹簧、非弹性卡扣以及相互磁力都是双滑车系统成员之间的内部相互作用；根据牛顿第三定律，它们的合力为零，无论动能如何改变，系统的总动量均守恒。轨道摩擦力是外界施加的外力，会产生外力冲量并改变系统的总动量。"
+      },
+      "answerLogic": {
+        "en": "An interaction is internal if the third-law action-reaction force pair acts entirely between bodies within the defined system boundary. These internal forces cancel in vector addition (sum F_int = 0), leaving total momentum unchanged. Kinetic energy is not required to be conserved for momentum to be conserved. External forces originate from bodies outside the system and produce dP_tot/dt = F_ext.",
+        "ms": "Satu interaksi adalah dalaman jika pasangan daya tindakan-tindak balas hukum ketiga bertindak sepenuhnya antara jasad di dalam sempadan sistem yang ditakrifkan. Daya dalaman ini saling membatalkan dalam penambahan vektor (jumlah F_dalaman = 0), menjadikan jumlah momentum tidak berubah. Tenaga kinetik tidak disyaratkan untuk terpelihara bagi memastikan momentum terpelihara. Daya luaran berasal daripada jasad di luar sistem dan menghasilkan dP_jumlah/dt = F_luar.",
+        "zh": "如果第三定律的作用力与反作用力对完全作用于所定义系统边界内的物体之间，则该相互作用属于内力。这些内力在矢量求和中相互抵消（合内力为零），使总动量保持不变。动量守恒并不要求动能同时守恒。外力则源自系统外部的物体，会导致 dP_总/dt = F_外。"
+      },
+      "explanation": {
+        "en": "The isolated system model for momentum requires that no net external force acts across the system boundary. Internal forces can be conservative or nonconservative, constant or varying, and can dramatically transform kinetic energy (as when springs release or latching mechanisms lock). Despite these internal energy conversions, the third-law force pairs guarantee that internal forces cannot impart an impulse to the center of mass, preserving total momentum.",
+        "ms": "Model sistem terpencil bagi momentum memerlukan tiada daya luaran bersih bertindak merentasi sempadan sistem. Daya dalaman boleh menjadi konservatif atau bukan konservatif, malar atau berubah-ubah, dan boleh mengubah tenaga kinetik secara mendadak (seperti apabila spring dilepaskan atau mekanisme pautan terkunci). Di sebalik penukaran tenaga dalaman ini, pasangan daya hukum ketiga menjamin bahawa daya dalaman tidak boleh memberikan impuls kepada pusat jisim, mengekalkan jumlah momentum.",
+        "zh": "动量的孤立系统模型只要求穿过系统边界的合外力为零。系统内部的力可以是保守力或非保守力、恒力或变力，并且可以剧烈改变系统的总动能（例如弹簧释放势能或卡扣碰撞耗散动能）。尽管存在这些内部能量转换，但牛顿第三定律的作用力对保证了内力无法对系统质心产生外冲量，从而严格保持总动量守恒。"
+      },
+      "misconceptions": [
+        "internal-force-confusion",
+        "kinetic-energy-momentum-conflation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-third-law",
+        "prompt": {
+          "en": "Review Newton's third law: every action force between system members is accompanied by an equal and opposite reaction force, ensuring that internal forces always sum vectorially to zero.",
+          "ms": "Semak hukum Newton ketiga: setiap daya tindakan antara ahli sistem diiringi oleh daya tindak balas yang sama magnitud dan bertentangan arah, memastikan daya dalaman sentiasa berjumlah sifar secara vektor.",
+          "zh": "复习牛顿第三定律：系统成员之间的每一个作用力都伴随一个大小相等、方向相反的反作用力，这确保了内部相互作用力的矢量和始终为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Matching task pairing four interaction scenarios with two categories: internal force interaction conserving total momentum, or external force interaction altering total momentum.",
+        "ms": "Tugasan padanan memadankan empat senario interaksi dengan dua kategori: interaksi daya dalaman yang memelihara jumlah momentum, atau interaksi daya luaran yang mengubah jumlah momentum.",
+        "zh": "将四个相互作用情形与两个类别匹配的任务：保持总动量守恒的内部力相互作用，或改变总动量的外部力相互作用。"
+      },
+      "provenance": {
+        "sourceLocation": "9.2 Analysis Model: Isolated System (Momentum); Complete controlled PDF for section 9.2",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-internal",
+            "label": {
+              "en": "Internal interaction: Total system momentum is conserved",
+              "ms": "Interaksi dalaman: Jumlah momentum sistem terpelihara",
+              "zh": "内部相互作用：系统总动量守恒"
+            }
+          },
+          {
+            "id": "target-external",
+            "label": {
+              "en": "External interaction: Total system momentum changes over time",
+              "ms": "Interaksi luaran: Jumlah momentum sistem berubah mengikut masa",
+              "zh": "外部相互作用：系统总动量随时间改变"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-spring-push",
+            "label": {
+              "en": "An internal spring compressed between two carts is released, pushing them apart and increasing total kinetic energy from rest.",
+              "ms": "Satu spring dalaman termampat di antara dua troli dilepaskan, menolak kedua-duanya berpisah dan meningkatkan jumlah tenaga kinetik daripada keadaan pegun.",
+              "zh": "两辆滑车之间压缩的内置弹簧被释放，将两车推开，使系统的总动能从零增加。"
+            }
+          },
+          {
+            "id": "item-friction-patch",
+            "label": {
+              "en": "Both carts glide across a rough tabletop patch that exerts dynamic friction forces opposing their motion.",
+              "ms": "Kedua-dua troli meluncur merentasi tompok meja kasar yang mengenakan daya geseran dinamik menentang gerakan mereka.",
+              "zh": "两辆滑车滑过一段粗糙桌面，桌面施加阻碍它们运动的动摩擦力。"
+            }
+          },
+          {
+            "id": "item-sticky-collision",
+            "label": {
+              "en": "Two moving carts collide and latch together with hook-and-loop pads, transforming kinetic energy into thermal energy.",
+              "ms": "Dua troli yang bergerak berlanggar dan berpaut bersama dengan pad pencangkuk dan gelung, mengubah tenaga kinetik kepada tenaga haba.",
+              "zh": "两辆运动中的滑车相撞并通过魔术贴卡扣锁定在一起，将动能转化为内能。"
+            }
+          },
+          {
+            "id": "item-magnetic-pull",
+            "label": {
+              "en": "Permanent magnets mounted on Cart 1 and Cart 2 attract each other across the gap, accelerating both carts toward each other.",
+              "ms": "Magnet kekal yang dipasang pada Troli 1 dan Troli 2 menarik antara satu sama lain merentasi jurang, memecutkan kedua-dua troli ke arah satu sama lain.",
+              "zh": "固定在滑车 1 和滑车 2 上的永磁体隔空相互吸引，使两车加速彼此靠近。"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-spring-push",
+            "targetId": "target-internal"
+          },
+          {
+            "itemId": "item-friction-patch",
+            "targetId": "target-external"
+          },
+          {
+            "itemId": "item-sticky-collision",
+            "targetId": "target-internal"
+          },
+          {
+            "itemId": "item-magnetic-pull",
+            "targetId": "target-internal"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "internal-force-confusion",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-magnetic-pull",
+            "targetId": "target-external"
+          }
+        },
+        {
+          "misconception": "kinetic-energy-momentum-conflation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-spring-push",
+            "targetId": "target-external"
+          }
+        }
+      ]
+    }
+  ]
+}
