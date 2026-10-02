@@ -54,6 +54,16 @@ New automatic review deployments also record optional `packageSha256`, the SHA-2
 
 This project's enabled policy uses `tlyoon/section-8-1-learning-app` and routes a section as `section-{section_slug}/` (for example, `9.1` is `section-9-1/`). Workers build only the minimal static bundle, open/reuse a deterministic package-digest branch and PR in that public repository, and merge it automatically. Source PDFs, Drive marker data, run state, raw model responses, credentials, and source manifests never enter that repository. The deployment is explicitly a draft/review app, not human scientific approval.
 
+### Direct links to activities
+
+Every rendered activity has a stable deep link using its package activity ID:
+
+```text
+https://<pages-route>/?activity=<activity-id>
+```
+
+For example, `.../section-9-5/?activity=act-int-mod-1` opens that exact interactive activity rather than starting at Activity 1. The player updates the `activity` query parameter as the learner advances, preserves unrelated query parameters and URL fragments, and falls back safely to the first activity if an unknown ID is supplied.
+
 ## Maintenance rule
 
 When a public route is created, changed, or removed, update `config/deployments.json` in the same source-repository PR that records/authorizes that deployment. Keep only public, non-secret deployment metadata in the registry.

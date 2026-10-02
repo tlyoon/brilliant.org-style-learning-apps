@@ -10,6 +10,36 @@ const copy = {
 
 const localized = (value) => typeof value === "string" ? value : value?.[state.locale] ?? value?.en ?? "";
 
+const ACTIVITY_QUERY_KEY = "activity";
+
+function activityIdFromLocation() {
+  if (typeof window === "undefined" || !window.location) return "";
+  try {
+    return new URL(window.location.href).searchParams.get(ACTIVITY_QUERY_KEY) || "";
+  } catch (_error) {
+    return "";
+  }
+}
+
+function applyActivityDeepLink(activities) {
+  const requestedId = activityIdFromLocation();
+  const requestedIndex = requestedId ? activities.findIndex((activity) => activity.id === requestedId) : -1;
+  state.activityIndex = requestedIndex >= 0 ? requestedIndex : 0;
+  resetActivity();
+}
+
+function syncActivityUrl(activity) {
+  if (typeof window === "undefined" || !window.location || !window.history?.replaceState) return;
+  try {
+    const url = new URL(window.location.href);
+    if (activity?.id) url.searchParams.set(ACTIVITY_QUERY_KEY, activity.id);
+    else url.searchParams.delete(ACTIVITY_QUERY_KEY);
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  } catch (_error) {
+    // Rendering must remain usable even when a host blocks History API access.
+  }
+}
+
 function element(tag, { className, text, attributes } = {}) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -148,6 +178,7 @@ function renderResponse(card, activity) {
 }
 
 function renderComplete(root) {
+  syncActivityUrl(null);
   const card = element("section", { className: "card" });
   card.append(
     element("p", { className: "eyebrow", text: localized(state.package.subchapter) }),
@@ -168,6 +199,7 @@ function render() {
   }
 
   const activity = activities[state.activityIndex];
+  syncActivityUrl(activity);
   ensureResponse(activity);
   const labels = copy[state.locale];
   const card = element("section", { className: "card" });
@@ -233,6 +265,7 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
     const loadedPackage = await response.json();
     if (generation !== loadGeneration) return;
     state.package = loadedPackage;
+    applyActivityDeepLink(loadedPackage.activities ?? []);
     state.loading = false;
     localeSelector.disabled = false;
     render();
@@ -244,6 +277,14 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
     const message = `Could not load the selected learning package. Start the app through the documented local server. (${error.message})`;
     document.querySelector("#app").replaceChildren(element("p", { className: "error", text: message }));
   }
+}
+
+if (typeof window !== "undefined" && window.addEventListener) {
+  window.addEventListener("popstate", () => {
+    if (!state.package) return;
+    applyActivityDeepLink(state.package.activities);
+    render();
+  });
 }
 
 localeSelector.addEventListener("change", (event) => {
