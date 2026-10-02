@@ -2,6 +2,16 @@
   "schemaVersion": "1.0",
   "deployments": [
     {
+      "appId": "section-9-1",
+      "label": "Section 9.1",
+      "packagePath": "content/chapter-9/section-9-1/package.json",
+      "deploymentRepository": "tlyoon/section-8-1-learning-app",
+      "publicUrl": "https://tlyoon.github.io/section-8-1-learning-app/section-9-1/",
+      "deployed": true,
+      "packageSha256": "aa7b82fa8f256d02e7af1bb0ddfa8b91020b82d100175c14a37834eedb51ff7e",
+      "variant": "automated draft/review deployment; not human scientific approval"
+    },
+    {
       "appId": "section-1-1",
       "label": "Section 1.1",
       "packagePath": "content/chapter-1/section-1-1/package.json",

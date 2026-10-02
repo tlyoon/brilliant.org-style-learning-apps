@@ -16,7 +16,7 @@ from app_generator.coordinator.client import CoordinatorClient, JobLease
 from app_generator.coordinator.drive import DriveCoordinatorClient
 from app_generator.coordinator.heartbeat import LeaseGuard
 from app_generator.coordinator.checkpoints import CoordinatorCheckpointStore
-from app_generator.errors import AutoJobExecutionError, NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, UiContractError, ValidationFailure
+from app_generator.errors import AutoJobExecutionError, GitPublishError, NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, UiContractError, ValidationFailure
 from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts, write_json_atomic
 from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
 from app_generator.llm.gemini_api import GeminiApiClient
@@ -26,6 +26,8 @@ from app_generator.generation.protocol import GenerationProtocol
 from app_generator.locking import WorkerLock
 from app_generator.logging_setup import configure_logging
 from app_generator.publishing.git import GitPublisher
+from app_generator.publishing.public import PublicPagesPublisher
+from app_generator.deployments import has_current_public_deployment
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.state import RunPhase
 from app_generator.runtime.targeting import restrict_inventory_to_subchapter
@@ -200,6 +202,7 @@ def run_generation(
     coordinator_factory: Callable[[GeneratorConfig], CoordinatorClient] = CoordinatorClient,
     auto_coordinator_factory: Callable[[GeneratorConfig], DriveCoordinatorClient] = DriveCoordinatorClient,
     publisher_factory: Callable[[GeneratorConfig], GitPublisher] = GitPublisher,
+    public_publisher_factory: Callable[[GeneratorConfig], PublicPagesPublisher] = PublicPagesPublisher,
 ) -> RunContext:
     if resume_run_id and (config.selection_mode in {"auto", "distributed"} or config.git_publish):
         raise ValidationFailure(
@@ -267,6 +270,12 @@ def run_generation(
                             source.job_key
                             for source in inventory
                             if config.for_subchapter(source.subchapter_id).package_path.exists()
+                            and (
+                                not getattr(config, "public_deploy", False)
+                                or has_current_public_deployment(
+                                    config.repo_root, config.for_subchapter(source.subchapter_id)
+                                )
+                            )
                         }
                         lease = coordinator.claim_auto(
                             inventory,
@@ -576,12 +585,38 @@ def run_generation(
                         pr_url=published.pr_url,
                         merged=published.merged,
                     )
+                if getattr(active_config, "public_deploy", False):
+                    ensure_lease = lease_guard.ensure_owned if lease_guard is not None else (lambda: None)
+                    store.transition(RunPhase.PUBLIC_DEPLOYING)
+                    public = public_publisher_factory(active_config).publish(
+                        package_path=active_config.package_path,
+                        subchapter_id=active_config.pdf_subchapter_path,
+                        ensure_lease=ensure_lease,
+                    )
+                    if not public.merged:
+                        raise GitPublishError("Public review deployment did not merge")
+                    store.transition(
+                        RunPhase.PUBLIC_DEPLOYED,
+                        public_deployment_branch=public.branch,
+                        public_deployment_pr_url=public.pr_url,
+                        public_deployment_url=public.public_url,
+                        public_package_sha256=public.package_sha256,
+                        public_deployed=public.merged,
+                    )
                 if coordinator is not None and lease is not None:
                     assert lease_guard is not None
                     lease_guard.ensure_owned()
                     if config.selection_mode == "auto":
                         coordinator.checkpoint_clear(lease_guard.lease)
-                        coordinator.mark_generated(lease_guard.lease)
+                        coordinator.mark_generated(
+                            lease_guard.lease,
+                            branch=store.state.branch or "",
+                            pr_url=store.state.pr_url or "",
+                            public_branch=store.state.public_deployment_branch or "",
+                            public_pr_url=store.state.public_deployment_pr_url or "",
+                            public_url=store.state.public_deployment_url or "",
+                            public_package_sha256=store.state.public_package_sha256 or "",
+                        )
                     else:
                         coordinator.mark_review_pending(
                             lease_guard.lease,

@@ -144,9 +144,10 @@ The continuous worker:
 5. restores source-version-bound parsed-stage checkpoints when available;
 6. generates/repairs/validates remaining stages;
 7. publishes validated artifacts through the configured Git handoff;
-8. writes a Drive `success` marker only after durable publication;
-9. claims another job;
-10. waits when remaining work is leased elsewhere and exits successfully only when global work is successful.
+8. when configured, publishes/reuses the deterministic public draft/review Pages PR;
+9. writes a Drive `success` marker only after every required durable publication;
+10. claims another job;
+11. waits when remaining work is leased elsewhere and exits successfully only when global work is successful.
 
 When `target_subchapter_id` is supplied through the explicit auto CLI target, the same lease/checkpoint/publication contract applies to the filtered one-section inventory, and the worker exits after that target succeeds.
 
@@ -161,6 +162,8 @@ When `git_publish=true`, the worker requires a clean/non-diverged checkout and u
 `auto` and `distributed` modes require durable publication. Specific mode can be operated conservatively with Git publication disabled.
 
 Generation, human approval, merge, and public deployment remain separate gates.
+
+The repository project enables automatic public deployment to the shared review Pages repository. It is always a draft/review deployment, never qualified human approval. Each auto attempt is supervised in a child process: default 600-second meaningful-activity checks terminate after three stale checks while preserving Drive parsed-stage checkpoints for a later lease reclaim.
 
 ## Deployment inventory
 

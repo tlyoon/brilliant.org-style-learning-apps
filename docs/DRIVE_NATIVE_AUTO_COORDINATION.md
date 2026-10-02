@@ -70,6 +70,14 @@ For the Drive backend this writes a `retry` reset event. Earlier attempt/failure
 Drive success is written only after the validated package has completed its configured Git publication path. A `success` marker therefore means the generated result has a durable shared handoff, not merely local files on one PC.
 
 Before opening Gemini, auto still checks deterministic recoverable Git handoffs. If a previous PC pushed a valid branch/PR but crashed before recording success, the next worker claims the exact job, completes Git reconciliation, records success, and skips Gemini regeneration.
+
+When `public_deploy` is enabled, success is delayed until the deterministic public GitHub Pages review PR has also merged. A source package already present in `main` is therefore not treated as globally complete by itself: the next worker claims it, skips Gemini, and finishes/reuses the public branch/PR. The success marker includes public branch, PR URL, route URL, and package digest for diagnostics.
+
+## Stall supervision and resume
+
+Each normal continuous-auto generation attempt runs in a supervised child process. By default the parent checks meaningful run-state activity every 600 seconds; after 600 seconds without activity, three consecutive stale checks terminate that child. Lease heartbeats intentionally do not reset this counter. The parent remains alive to reconcile the queue.
+
+The supervisor first requests termination and gives the child a bounded grace period before a hard kill where the platform supports it. On Windows a hard kill can be unavoidable. It never clears Drive checkpoints: another worker reclaims after lease expiry and restores the last durable parsed-stage checkpoint. Resume is from the last parsed stage, not from a mid-token model response.
 ## Google Drive authorization
 
 Drive-native coordination creates and updates files, so the generator now requests writable Google Drive OAuth access instead of the earlier read-only scope. An existing token that does not contain the writable scope is discarded in memory and the normal installed-app authorization flow asks the operator to authorize again; the refreshed token remains machine-local.

@@ -11,10 +11,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def _resolve_package(package_path: Path) -> Path:
-    source = package_path if package_path.is_absolute() else ROOT / package_path
+def _resolve_package(package_path: Path, source_root: Path = ROOT) -> Path:
+    source = package_path if package_path.is_absolute() else source_root / package_path
     source = source.resolve()
-    content_root = (ROOT / "content").resolve()
+    content_root = (source_root / "content").resolve()
     try:
         source.relative_to(content_root)
     except ValueError as exc:
@@ -24,14 +24,15 @@ def _resolve_package(package_path: Path) -> Path:
     return source
 
 
-def build(output: Path, package_path: Path) -> None:
+def build(output: Path, package_path: Path, *, source_root: Path = ROOT) -> None:
     """Create an empty-directory release bundle from one explicitly selected package."""
     if output.exists() and any(output.iterdir()):
         raise ValueError(f"Output directory must be empty: {output}")
-    source_package = _resolve_package(package_path)
+    source_root = source_root.resolve()
+    source_package = _resolve_package(package_path, source_root)
     output.mkdir(parents=True, exist_ok=True)
 
-    source_index = (ROOT / "app" / "index.html").read_text(encoding="utf-8")
+    source_index = (source_root / "app" / "index.html").read_text(encoding="utf-8")
     public_index = source_index.replace('href="styles.css"', 'href="app/styles.css"').replace(
         'src="app.js"', 'src="app/app.js"'
     ).replace(
@@ -42,8 +43,8 @@ def build(output: Path, package_path: Path) -> None:
     (output / ".nojekyll").touch()
 
     for source, relative_target in (
-        (ROOT / "app" / "app.js", Path("app/app.js")),
-        (ROOT / "app" / "styles.css", Path("app/styles.css")),
+        (source_root / "app" / "app.js", Path("app/app.js")),
+        (source_root / "app" / "styles.css", Path("app/styles.css")),
         (source_package, Path("content/package.json")),
     ):
         target = output / relative_target

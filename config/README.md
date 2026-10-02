@@ -110,6 +110,12 @@ the project uses repository-managed coordinator infrastructure. An explicit vali
 
 For controlled specific-mode testing, a project may use `git_publish=false` and `git_auto_merge=false`. Continuous `auto`/`distributed` operation requires `git_publish=true` so globally completed jobs have durable shared artifacts. Auto-merge is a separate policy choice and never turns a generated draft into qualified human approval.
 
+## Public review and watchdog policy
+
+Generic package defaults keep `public_deploy = false`. This repository enables it in both tracked project TOMLs and configures the shared Pages review repository, base URL, deterministic PR prefix, and automatic merge. A section route is always `section-{section_slug}/`; this is an automated draft/review deployment only.
+
+`stall_check_seconds`, `stall_after_seconds`, `stall_max_consecutive_checks`, and `stall_terminate_grace_seconds` configure continuous-auto child supervision. The project defaults are 600, 600, 3, and 20 respectively. Heartbeats do not count as generation progress; parsed Drive checkpoints survive supervision termination.
+
 ## Stage-0 application contracts
 
 The current Stage-0 baseline retains these contracts while establishing the single-root invariant:

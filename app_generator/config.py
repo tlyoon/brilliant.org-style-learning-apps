@@ -61,6 +61,17 @@ DEFAULTS: dict[str, Any] = {
     "git_create_draft_pr": True,
     "git_run_full_tests": True,
     "git_auto_merge": False,
+    # Public review publication is deliberately opt-in for reusable projects.
+    "public_deploy": False,
+    "public_deploy_repository": "",
+    "public_deploy_base_url": "",
+    "public_deploy_base_branch": "main",
+    "public_deploy_branch_prefix": "automation/public-review",
+    "public_deploy_auto_merge": True,
+    "stall_check_seconds": 600,
+    "stall_after_seconds": 600,
+    "stall_max_consecutive_checks": 3,
+    "stall_terminate_grace_seconds": 20,
     "model_preference_patterns": [
         r"\bpro\b|most capable|highest capability|advanced reasoning",
         r"advanced|reasoning|high capability",
@@ -149,6 +160,16 @@ class GeneratorConfig:
     git_create_draft_pr: bool
     git_run_full_tests: bool
     git_auto_merge: bool
+    public_deploy: bool
+    public_deploy_repository: str
+    public_deploy_base_url: str
+    public_deploy_base_branch: str
+    public_deploy_branch_prefix: str
+    public_deploy_auto_merge: bool
+    stall_check_seconds: int
+    stall_after_seconds: int
+    stall_max_consecutive_checks: int
+    stall_terminate_grace_seconds: int
 
     @property
     def output_dir(self) -> Path:
@@ -273,11 +294,15 @@ def _coerce_env(key: str, value: str) -> Any:
         "lease_seconds",
         "heartbeat_seconds",
         "max_job_attempts",
+        "stall_check_seconds",
+        "stall_after_seconds",
+        "stall_max_consecutive_checks",
+        "stall_terminate_grace_seconds",
     }:
         return int(value)
     if key in {
         "allow_unknown_model_fallback", "git_publish", "git_create_draft_pr", "git_run_full_tests",
-        "git_auto_merge",
+        "git_auto_merge", "public_deploy", "public_deploy_auto_merge",
     }:
         return value.strip().casefold() in {"1", "true", "yes", "on"}
     if key in {"source_files", "model_preference_patterns"}:
@@ -590,6 +615,35 @@ def load_config(
     if git_auto_merge and bool(values["git_create_draft_pr"]):
         raise ConfigurationError("git_auto_merge requires git_create_draft_pr=false")
 
+    public_deploy = bool(values["public_deploy"])
+    public_deploy_repository = str(values["public_deploy_repository"]).strip()
+    public_deploy_base_url = str(values["public_deploy_base_url"]).strip()
+    public_deploy_base_branch = str(values["public_deploy_base_branch"]).strip()
+    public_deploy_branch_prefix = str(values["public_deploy_branch_prefix"]).strip().strip("/")
+    public_deploy_auto_merge = bool(values["public_deploy_auto_merge"])
+    if public_deploy:
+        if not bool(values["git_publish"]):
+            raise ConfigurationError("public_deploy requires git_publish=true")
+        if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", public_deploy_repository):
+            raise ConfigurationError("public_deploy_repository must be an owner/repository name")
+        parsed_public_url = urlparse(public_deploy_base_url)
+        if parsed_public_url.scheme != "https" or not parsed_public_url.hostname or parsed_public_url.query or parsed_public_url.fragment:
+            raise ConfigurationError("public_deploy_base_url must be a clean https URL")
+        if not public_deploy_base_url.endswith("/"):
+            raise ConfigurationError("public_deploy_base_url must end with /")
+        if not BRANCH_PREFIX.fullmatch(public_deploy_base_branch) or ".." in public_deploy_base_branch:
+            raise ConfigurationError("public_deploy_base_branch is not a safe Git branch name")
+        if not BRANCH_PREFIX.fullmatch(public_deploy_branch_prefix) or ".." in public_deploy_branch_prefix:
+            raise ConfigurationError("public_deploy_branch_prefix is not a safe Git branch prefix")
+        if not public_deploy_auto_merge:
+            raise ConfigurationError("public_deploy requires public_deploy_auto_merge=true for automatic review publication")
+    stall_check_seconds = int(values["stall_check_seconds"])
+    stall_after_seconds = int(values["stall_after_seconds"])
+    stall_max_consecutive_checks = int(values["stall_max_consecutive_checks"])
+    stall_terminate_grace_seconds = int(values["stall_terminate_grace_seconds"])
+    if min(stall_check_seconds, stall_after_seconds, stall_max_consecutive_checks, stall_terminate_grace_seconds) < 1:
+        raise ConfigurationError("Stall supervision values must be positive")
+
     return GeneratorConfig(
         project_name=project_name,
         env_prefix=env_prefix,
@@ -666,4 +720,14 @@ def load_config(
         git_create_draft_pr=bool(values["git_create_draft_pr"]),
         git_run_full_tests=bool(values["git_run_full_tests"]),
         git_auto_merge=git_auto_merge,
+        public_deploy=public_deploy,
+        public_deploy_repository=public_deploy_repository,
+        public_deploy_base_url=public_deploy_base_url,
+        public_deploy_base_branch=public_deploy_base_branch,
+        public_deploy_branch_prefix=public_deploy_branch_prefix,
+        public_deploy_auto_merge=public_deploy_auto_merge,
+        stall_check_seconds=stall_check_seconds,
+        stall_after_seconds=stall_after_seconds,
+        stall_max_consecutive_checks=stall_max_consecutive_checks,
+        stall_terminate_grace_seconds=stall_terminate_grace_seconds,
     )

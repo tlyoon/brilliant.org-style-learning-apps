@@ -530,6 +530,12 @@ Automated Git synchronization/publication retries recognized transient transport
 
 If all transient attempts are exhausted, the run stops safely with a `GIT_PUBLISH_FAILED` error. Resolve the network path and rerun; auto mode does not treat the job as successfully generated when durable Git publication could not be established.
 
+### Automatic public draft/review deployment and stalls
+
+This project's auto mode publishes validated source packages to `https://tlyoon.github.io/section-8-1-learning-app/section-{section_slug}/` through a deterministic public-repository PR. It remains a draft/review deployment, not human scientific approval. If a worker stops after source merge, the next auto worker skips Gemini and completes the same public PR.
+
+Each auto attempt is a supervised child. Default checks are every 600 seconds and terminate after three consecutive stale checks; heartbeats do not count as content progress. Parsed Drive checkpoints are retained, so recovery begins at the last parsed stage rather than mid-token.
+
 ### Dirty or diverged Git checkout
 
 Do not reset blindly. Inspect `git status -sb`; commit/stash/remove intended local changes before synchronization. The workstation synchronizer intentionally refuses to overwrite local-only work.
