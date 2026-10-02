@@ -1,0 +1,24 @@
+{
+  "manifestVersion": "1.1",
+  "sourceId": "brilliant-content-generator-section-9-8",
+  "controlledFilename": "source.pdf",
+  "sha256": "a9d234cc86ce1cf99d8891034ec96296109776c5df239fa74d74f28306325b1c",
+  "corpusSha256": "1251b0dfb7b2db270974253d3905d7b2ed6b05f6bd09126cddd368b50ca9f640",
+  "sources": [
+    {
+      "controlledFilename": "source.pdf",
+      "sha256": "a9d234cc86ce1cf99d8891034ec96296109776c5df239fa74d74f28306325b1c",
+      "role": "primary",
+      "driveFileId": "1EOTYkW2YPYDpVacRK20JfQnq_eEWtP4m"
+    }
+  ],
+  "edition": "Edition not identified in the controlled PDF",
+  "chapter": "Chapter 9",
+  "subchapter": "9.8 Deformable Systems",
+  "heading": "9.8 Deformable Systems",
+  "pageRange": "Complete controlled PDF for section 9.8",
+  "learningBoundary": "Includes concepts supported by the controlled PDF for 9.8 Deformable Systems: Distinction between deformable systems and particle models; Failure of the particle work-kinetic energy theorem for deformable systems; Work evaluated using the displacement of the point of application of the force; Distinction between point of application displacement and center-of-mass displacement; Conservation of energy and transformation of internal energy into kinetic energy; Classification of deformable systems as isolated or nonisolated in terms of energy and momentum. Excludes: Rocket propulsion and variable-mass thrust equations; Thermodynamic work and heat transfer in expanding gases; Rotational kinetic energy of extended rigid bodies; Damped and driven harmonic oscillations of spring-mass systems.",
+  "extractedOn": "2026-10-02",
+  "reviewer": "Automated draft generation; qualified human review required",
+  "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
+}
