@@ -1,0 +1,24 @@
+{
+  "manifestVersion": "1.1",
+  "sourceId": "brilliant-content-generator-section-9-3",
+  "controlledFilename": "source.pdf",
+  "sha256": "a813202fdd9155b310027c73e1bc4b3d5eff3b8a0c29f428061352b1b6634a25",
+  "corpusSha256": "e91250ae499a3c83d7de1c472115472305ba5ecb435e73ed18f7d9baa4a4b70f",
+  "sources": [
+    {
+      "controlledFilename": "source.pdf",
+      "sha256": "a813202fdd9155b310027c73e1bc4b3d5eff3b8a0c29f428061352b1b6634a25",
+      "role": "primary",
+      "driveFileId": "1IQlsmGR22eTmE8TZqfb6Arn8EkTeOSH_"
+    }
+  ],
+  "edition": "Edition not identified in the controlled PDF",
+  "chapter": "Chapter 9",
+  "subchapter": "9.3 Analysis Model: Nonisolated System (Momentum)",
+  "heading": "9.3 Analysis Model: Nonisolated System (Momentum)",
+  "pageRange": "Complete controlled PDF for section 9.3",
+  "learningBoundary": "Includes concepts supported by the controlled PDF for 9.3 Analysis Model: Nonisolated System (Momentum): Definition of impulse as the integral of net external force over time and area under the force-time curve; Impulse-momentum theorem for a particle and nonisolated system; Relationship between time-averaged force and instantaneous force over a time interval; Application of impulse to impact mitigation and safety mechanisms (airbags, crumple zones); The impulse approximation for brief collisions with dominant contact forces; Vector nature of momentum change and impulse compared to scalar energy transfers. Excludes: Detailed analysis of one-dimensional collisions between multiple isolated particles (Section 9.4); Two-dimensional collisions and center of mass dynamics (Sections 9.5-9.7); Numerical calculus integration of non-constant functions; Rotational momentum and angular impulse (Chapter 10).",
+  "extractedOn": "2026-10-02",
+  "reviewer": "Automated draft generation; qualified human review required",
+  "rightsNote": "Instructor-authorized controlled source; use is limited to original transformation and provenance. The PDF and extracted passages must not enter Git."
+}

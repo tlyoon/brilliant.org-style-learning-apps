@@ -1,0 +1,2194 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-9-section-9-3",
+  "chapter": "Chapter 9",
+  "subchapter": "9.3 Analysis Model: Nonisolated System (Momentum)",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Define linear impulse as the time integral of net external force and the area under a force-time graph.",
+    "Relate impulse to a particle's change in momentum using the impulse-momentum theorem.",
+    "Distinguish between a time-varying force and its equivalent constant time-averaged force.",
+    "Explain how extending collision duration reduces average force for a given momentum change in safety devices.",
+    "Apply the impulse approximation by identifying dominant impulsive contact forces over brief collision intervals.",
+    "Contrast momentum transfer across a system boundary with energy transfer mechanisms."
+  ],
+  "prerequisites": [
+    {
+      "id": "linear-momentum-definition",
+      "description": {
+        "en": "Understanding linear momentum as the vector product of an object's mass and velocity.",
+        "ms": "Memahami momentum linear sebagai hasil darab vektor antara jisim dan halaju sesuatu objek.",
+        "zh": "理解线动量是物体的质量与速度的矢量乘积。"
+      },
+      "recovery": {
+        "en": "Review momentum as a vector pointing in the direction of velocity, given by mass times velocity.",
+        "ms": "Semak semula momentum sebagai vektor yang searah dengan halaju, yang ditakrifkan sebagai jisim darab halaju.",
+        "zh": "复习动量是沿速度方向的矢量，由质量乘以速度决定。"
+      }
+    },
+    {
+      "id": "newtons-second-law-momentum-form",
+      "description": {
+        "en": "Understanding Newton's second law as the time rate of change of momentum.",
+        "ms": "Memahami hukum kedua Newton sebagai kadar perubahan momentum terhadap masa.",
+        "zh": "理解牛顿第二定律表示为动量随时间的变化率。"
+      },
+      "recovery": {
+        "en": "Revisit Newton's second law showing that net external force equals the rate of momentum change.",
+        "ms": "Kaji semula hukum kedua Newton yang menunjukkan daya bersih luaran bersamaan kadar perubahan momentum.",
+        "zh": "重新温习牛顿第二定律，即合外力等于动量对时间的变化率。"
+      }
+    },
+    {
+      "id": "vector-change-concept",
+      "description": {
+        "en": "Ability to calculate vector changes by subtracting initial velocity from final velocity.",
+        "ms": "Keupayaan untuk mengira perubahan vektor dengan menolak halaju awal daripada halaju akhir.",
+        "zh": "能够通过末速度减去初速度来确定矢量变化。"
+      },
+      "recovery": {
+        "en": "Practice finding vector differences with directional signs along a coordinate axis.",
+        "ms": "Latih tubi mencari perbezaan vektor dengan tanda arah di sepanjang paksi koordinat.",
+        "zh": "练习沿坐标轴利用方向符号求解矢量差。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "impulse-as-intrinsic-property",
+      "description": {
+        "en": "Believing that impulse is an intrinsic property possessed by a moving body rather than a measure of momentum transferred by an external force.",
+        "ms": "Percaya bahawa impuls ialah sifat intrinsik yang dimiliki oleh jasad bergerak dan bukannya ukuran momentum yang dipindahkan oleh daya luaran.",
+        "zh": "认为冲量是运动物体所固有的物理属性，而不是外力传递动量的度量。"
+      }
+    },
+    {
+      "id": "ignoring-time-in-momentum-change",
+      "description": {
+        "en": "Assuming that peak force alone determines momentum change without considering the time interval during which the force acts.",
+        "ms": "Menganggap bahawa daya puncak sahaja yang menentukan perubahan momentum tanpa mengambil kira selang masa tindakan daya itu.",
+        "zh": "误认为仅由峰值力决定动量的改变，而忽略了力作用的时间间隔。"
+      }
+    },
+    {
+      "id": "rebound-involves-less-impulse",
+      "description": {
+        "en": "Thinking that an object that stops suffers a greater change in momentum and impulse than an object that rebounds at similar speeds.",
+        "ms": "Menyangka bahawa objek yang terhenti mengalami perubahan momentum dan impuls yang lebih besar berbanding objek yang melantun pada kelajuan serupa.",
+        "zh": "误认为停下的物体比以相近速率反弹的物体承受更大的动量改变和冲量。"
+      }
+    },
+    {
+      "id": "cushioning-increases-impact-force",
+      "description": {
+        "en": "Believing that cushioning devices reduce momentum change rather than reducing average force by prolonging collision time for a fixed momentum change.",
+        "ms": "Percaya bahawa peranti kusyen mengurangkan perubahan momentum dan bukannya mengurangkan daya purata dengan memanjangkan masa perlanggaran bagi perubahan momentum yang tetap.",
+        "zh": "认为缓冲装置减少了动量的总改变量，而不是在动量改变量固定的情况下通过延长碰撞时间来减小平均力。"
+      }
+    },
+    {
+      "id": "confusing-impulse-with-work",
+      "description": {
+        "en": "Confusing impulse (force acting over time to change momentum) with work (force acting over spatial displacement to change energy).",
+        "ms": "Mengelirukan impuls (daya bertindak merentasi masa untuk mengubah momentum) dengan kerja (daya bertindak merentasi sesaran ruang untuk mengubah tenaga).",
+        "zh": "混淆冲量（力在时间上的累积导致动量变化）与功（力在空间位移上的累积导致能量变化）。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-9/section-9-3/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-9-section-9-3.json",
+  "activities": [
+    {
+      "id": "sec9-3-mcq-01",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define linear impulse as the time integral of net external force and the area under a force-time graph.",
+      "prompt": {
+        "en": "A net external force acts on a particle over a specific time interval. In physics, what does the impulse delivered by this force represent, both conceptually and graphically?",
+        "ms": "Satu daya bersih luaran bertindak ke atas suatu zarah dalam suatu selang masa tertentu. Dalam fizik, apakah yang diwakili oleh impuls yang dikenakan oleh daya ini, dari segi konsep dan secara grafik?",
+        "zh": "合外力在特定时间间隔内作用于粒子。在物理学中，该力所传递的冲量在概念上和图像上分别代表什么？"
+      },
+      "hints": [
+        {
+          "en": "Consider the mathematical definition of impulse as the integral of net force with respect to time: I = integral of Sigma F dt.",
+          "ms": "Pertimbangkan takrif matematik bagi impuls sebagai kamiran daya bersih terhadap masa: I = kamiran Sigma F dt.",
+          "zh": "考虑冲量的数学定义，即合外力对时间的积分：I = integral of Sigma F dt。"
+        },
+        {
+          "en": "Integrating a physical quantity with respect to time over an interval corresponds geometrically to the area bounded under that quantity's curve plotted against time.",
+          "ms": "Mengamirkan suatu kuantiti fizik terhadap masa merentasi suatu selang masa secara geometri sepadan dengan luas di bawah lengkung kuantiti tersebut yang diplotkan melawan masa.",
+          "zh": "在一段时间间隔内对某个物理量进行时间积分，在几何上对应于该物理量随时间变化的曲线所围成的面积。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Impulse is defined as the time integral of the net external force, which geometrically equals the area under the force-versus-time curve and physically measures the momentum transferred across the system boundary.",
+        "ms": "Tepat! Impuls ditakrifkan sebagai kamiran masa bagi daya bersih luaran, yang secara geometri bersamaan dengan luas di bawah lengkung daya melawan masa dan secara fizikal mengukur momentum yang dipindahkan merentasi sempadan sistem.",
+        "zh": "正确！冲量被定义为合外力对时间的积分，在几何上等于力-时间曲线下的面积，在物理上度量了跨越系统边界传递的动量。"
+      },
+      "answerLogic": {
+        "en": "Impulse is defined as I = integral(Sigma F dt) over the time interval from initial time to final time. On a graph of net force versus time, this integral evaluates to the area under the curve. Impulse measures the transfer of momentum into or out of the system, rather than an intrinsic property stored within the particle.",
+        "ms": "Impuls ditakrifkan sebagai I = kamiran(Sigma F dt) merentasi selang masa dari masa awal ke masa akhir. Pada graf daya bersih melawan masa, kamiran ini dinilai sebagai luas di bawah lengkung. Impuls mengukur pemindahan momentum ke dalam atau ke luar sistem, dan bukannya sifat intrinsik yang tersimpan di dalam zarah.",
+        "zh": "冲量定义为初始时间到终止时间内的 I = integral(Sigma F dt)。在合外力随时间变化的图像中，该积分等于曲线下的面积。冲量度量了动量进出系统的传递量，而不是储存在粒子内部的固有属性。"
+      },
+      "explanation": {
+        "en": "Impulse is not an internal property possessed by a moving body; rather, it is an interaction quantity that measures how much momentum is transferred to the body by an external force over time. Graphically, just as the integral of force over displacement gives work as the area under a force-displacement graph, the integral of force over time gives impulse as the area under a force-time graph.",
+        "ms": "Impuls bukanlah sifat dalaman yang dimiliki oleh jasad yang bergerak; sebaliknya, ia adalah kuantiti interaksi yang mengukur berapa banyak momentum yang dipindahkan kepada jasad oleh daya luaran sepanjang masa. Secara grafik, sama seperti kamiran daya terhadap sesaran memberikan kerja sebagai luas di bawah graf daya-sesaran, kamiran daya terhadap masa memberikan impuls sebagai luas di bawah graf daya-masa.",
+        "zh": "冲量不是运动物体所固有的内部物理属性；相反，它是一个相互作用量，用于度量外力随时间传递给物体的动量。在图像上，正如力对位移的积分以力-位移图像下的面积表示功一样，力对时间的积分以力-时间图像下的面积表示冲量。"
+      },
+      "misconceptions": [
+        "impulse-as-intrinsic-property"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law-momentum-form",
+        "prompt": {
+          "en": "Recall that Newton's second law relates net force to the rate of momentum change: Sigma F = dp/dt. Integrating both sides with respect to time yields the total momentum change.",
+          "ms": "Ingat kembali bahawa hukum kedua Newton menghubungkan daya bersih dengan kadar perubahan momentum: Sigma F = dp/dt. Mengamirkan kedua-dua belah terhadap masa menghasilkan jumlah perubahan momentum.",
+          "zh": "回忆牛顿第二定律将合外力与动量变化率联系起来：Sigma F = dp/dt。对两边进行时间积分即可得出总动量改变量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-choice question asking to identify the physical meaning and graphical representation of linear impulse on a force-time graph.",
+        "ms": "Soalan aneka pilihan yang meminta mengenal pasti makna fizikal dan perwakilan grafik bagi impuls linear pada graf daya-masa.",
+        "zh": "一道单项选择题，要求识别力-时间图像上线冲量的物理意义及其几何表示。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "It represents momentum transferred to the particle by the external force, corresponding to the area under the force-versus-time curve.",
+              "ms": "Ia mewakili momentum yang dipindahkan kepada zarah oleh daya luaran, sepadan dengan luas di bawah lengkung daya melawan masa.",
+              "zh": "它代表外力传递给粒子的动量，对应于力-时间曲线下的面积。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "It represents an intrinsic property possessed by the moving particle, corresponding to the slope of the force-versus-time curve.",
+              "ms": "Ia mewakili sifat intrinsik yang dimiliki oleh zarah yang bergerak, sepadan dengan kecerunan lengkung daya melawan masa.",
+              "zh": "它代表运动粒子所固有的物理属性，对应于力-时间曲线的斜率。"
+            },
+            "misconception": "impulse-as-intrinsic-property"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "It represents the mechanical work done on the particle, corresponding to the area under the force-versus-position curve.",
+              "ms": "Ia mewakili kerja mekanikal yang dilakukan ke atas zarah, sepadan dengan luas di bawah lengkung daya melawan kedudukan.",
+              "zh": "它代表对粒子所做的机械功，对应于力-位置曲线下的面积。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "It represents the instantaneous rate of acceleration, corresponding to the maximum height of the force-versus-time curve.",
+              "ms": "Ia mewakili kadar pecutan serta-merta, sepadan dengan ketinggian maksimum lengkung daya melawan masa.",
+              "zh": "它代表瞬时加速度率，对应于力-时间曲线的最高峰值。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sec9-3-mcq-02",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate impulse to a particle's change in momentum using the impulse-momentum theorem.",
+      "prompt": {
+        "en": "A particle belongs to a nonisolated system and experiences an external net force over a time interval. According to the impulse-momentum theorem, what is the direct consequence of the impulse delivered to the particle?",
+        "ms": "Suatu zarah tergolong dalam sistem tak terpencil dan mengalami daya bersih luaran dalam suatu selang masa. Menurut teorem impuls-momentum, apakah akibat langsung daripada impuls yang dikenakan ke atas zarah tersebut?",
+        "zh": "一个粒子属于非孤立系统，在一段时间间隔内受到合外力的作用。根据冲量-动量定理，传递给该粒子的冲量所带来的直接物理结果是什么？"
+      },
+      "hints": [
+        {
+          "en": "Integrate Newton's second law in momentum form, Sigma F = dp/dt, across the interaction time interval.",
+          "ms": "Kamirkan hukum kedua Newton dalam bentuk momentum, Sigma F = dp/dt, merentasi selang masa interaksi.",
+          "zh": "将牛顿第二定律的动量形式 Sigma F = dp/dt 在相互作用时间间隔内进行积分。"
+        },
+        {
+          "en": "Distinguish between integrating force over time (which governs momentum transfer) and integrating force over distance (which governs energy transfer).",
+          "ms": "Bezakan antara mengamirkan daya terhadap masa (yang mengawal pemindahan momentum) dan mengamirkan daya terhadap jarak (yang mengawal pemindahan tenaga).",
+          "zh": "区分力对时间的积分（决定动量传递）与力对距离的积分（决定能量传递）。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! The impulse-momentum theorem states that Delta p = I, meaning the net impulse delivered to a particle is exactly equal to its vector change in linear momentum.",
+        "ms": "Tepat! Teorem impuls-momentum menyatakan bahawa Delta p = I, yang bermaksud impuls bersih yang dikenakan ke atas suatu zarah adalah tepat bersamaan dengan perubahan vektor dalam momentum linearnya.",
+        "zh": "正确！冲量-动量定理指出 Delta p = I，即施加给粒子的净冲量恰好等于其线动量的矢量改变量。"
+      },
+      "answerLogic": {
+        "en": "Direct integration of Newton's second law over time produces Delta p = p_final - p_initial = integral(Sigma F dt) = I. The impulse equals the change in momentum vector, not the change in kinetic energy or a steady intrinsic state.",
+        "ms": "Pengamiran langsung hukum kedua Newton terhadap masa menghasilkan Delta p = p_akhir - p_awal = kamiran(Sigma F dt) = I. Impuls bersamaan dengan perubahan vektor momentum, bukan perubahan tenaga kinetik atau keadaan intrinsik yang mantap.",
+        "zh": "对牛顿第二定律直接进行时间积分可得 Delta p = p_末 - p_初 = integral(Sigma F dt) = I。冲量等于动量矢量的改变量，而不是动能的改变或恒定的固有状态。"
+      },
+      "explanation": {
+        "en": "The impulse-momentum theorem (Delta p = I) is the nonisolated system momentum model, directly parallel to how work changes energy. Work is force integrated over displacement and changes kinetic energy, whereas impulse is force integrated over time and changes linear momentum. Impulse is not an intrinsic property carried by an object, but rather the cumulative effect of external force acting across time.",
+        "ms": "Teorem impuls-momentum (Delta p = I) ialah model momentum sistem tak terpencil, selari secara langsung dengan bagaimana kerja mengubah tenaga. Kerja ialah daya yang dikamirkan merentasi sesaran dan mengubah tenaga kinetik, manakala impuls ialah daya yang dikamirkan merentasi masa dan mengubah momentum linear. Impuls bukanlah sifat intrinsik yang dibawa oleh sesuatu objek, sebaliknya kesan terkumpul daya luaran yang bertindak merentasi masa.",
+        "zh": "冲量-动量定理（Delta p = I）是非孤立系统动量分析模型，与做功改变能量直接对应。功是力对位移的积分并改变动能，而冲量是力对时间的积分并改变线动量。冲量并不是物体所携带的固有属性，而是外力在时间上累积作用的效果。"
+      },
+      "misconceptions": [
+        "impulse-as-intrinsic-property",
+        "confusing-impulse-with-work"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Recall that linear momentum is defined as p = m*v, a vector quantity that points in the direction of the particle's velocity.",
+          "ms": "Ingat kembali bahawa momentum linear ditakrifkan sebagai p = m*v, suatu kuantiti vektor yang mengarah ke arah halaju zarah.",
+          "zh": "回忆线动量定义为 p = m*v，是一个指向粒子速度方向的矢量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-choice question asking to identify the relationship established by the impulse-momentum theorem.",
+        "ms": "Soalan aneka pilihan yang meminta mengenal pasti hubungan yang diasaskan oleh teorem impuls-momentum.",
+        "zh": "一道单项选择题，要求识别动量定理（冲量-动量定理）所确立的物理关系。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The impulse equals the vector change in the particle's linear momentum over that time interval.",
+              "ms": "Impuls adalah bersamaan dengan perubahan vektor dalam momentum linear zarah tersebut dalam selang masa itu.",
+              "zh": "冲量等于该时间间隔内粒子线动量的矢量改变量。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "The impulse equals the change in the particle's kinetic energy caused by spatial displacement.",
+              "ms": "Impuls adalah bersamaan dengan perubahan tenaga kinetik zarah yang disebabkan oleh sesaran ruang.",
+              "zh": "冲量等于空间位移引起的粒子动能的改变量。"
+            },
+            "misconception": "confusing-impulse-with-work"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The impulse is an intrinsic quantity of motion stored inside the particle that keeps it moving at constant speed.",
+              "ms": "Impuls ialah kuantiti gerakan intrinsik yang tersimpan di dalam zarah yang mengekalkannya bergerak pada kelajuan malar.",
+              "zh": "冲量是储存在粒子内部以保持其匀速运动的固有运动量。"
+            },
+            "misconception": "impulse-as-intrinsic-property"
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The impulse equals the time rate of change of the particle's velocity.",
+              "ms": "Impuls adalah bersamaan dengan kadar perubahan halaju zarah terhadap masa.",
+              "zh": "冲量等于粒子速度对时间的变化率。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sec9-3-mcq-03",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Explain how extending collision duration reduces average force for a given momentum change in safety devices.",
+      "prompt": {
+        "en": "During a vehicle collision, an occupant is brought to rest from an initial highway speed. How does an inflatable air bag protect the occupant compared to colliding directly with a hard, rigid dashboard?",
+        "ms": "Semasa perlanggaran kenderaan, seorang penumpang dihentikan daripada kelajuan awal lebuh raya. Bagaimanakah beg udara yang mengembang melindungi penumpang berbanding menghentam papan pemuka yang keras dan tegar secara terus?",
+        "zh": "在车辆碰撞过程中，乘员从最初的高速行驶状态减速至静止。与直接撞击坚硬刚性的仪表板相比，充气安全气囊是如何保护乘员的？"
+      },
+      "hints": [
+        {
+          "en": "Stopping the occupant from the same initial velocity to rest requires the exact same total change in momentum, regardless of which surface is struck.",
+          "ms": "Menghentikan penumpang daripada halaju awal yang sama sehingga pegun memerlukan jumlah perubahan momentum yang sama persis, tanpa mengira permukaan mana yang dihentam.",
+          "zh": "无论撞击什么表面，使乘员从相同的初速度减速至静止所需的总动量改变量完全相同。"
+        },
+        {
+          "en": "Relate impulse to average force using I = (Sigma F)_avg * Delta t. If impulse I is fixed, how does increasing the contact duration Delta t affect the average force (Sigma F)_avg?",
+          "ms": "Hubungkan impuls dengan daya purata menggunakan I = (Sigma F)_purata * Delta t. Jika impuls I adalah tetap, bagaimanakah peningkatan tempoh sentuhan Delta t mempengaruhi daya purata (Sigma F)_purata?",
+          "zh": "利用 I = (Sigma F)_avg * Delta t 将冲量与平均力联系起来。如果冲量 I 保持不变，增加接触时间 Delta t 会如何影响平均力 (Sigma F)_avg？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Because bringing the occupant to rest requires a fixed momentum change (and therefore a fixed impulse), extending the time interval of the collision proportionally reduces the average force exerted on the occupant.",
+        "ms": "Tepat! Oleh kerana menghentikan penumpang memerlukan perubahan momentum yang tetap (dan seterusnya impuls yang tetap), memanjangkan selang masa perlanggaran mengurangkan daya purata yang dikenakan ke atas penumpang secara berkadar.",
+        "zh": "正确！因为使乘员停下来需要固定的动量改变量（即固定的冲量），延长碰撞的时间间隔会成比例地减小施加在乘员身上的平均力。"
+      },
+      "answerLogic": {
+        "en": "The total momentum change Delta p is identical in both scenarios because the occupant starts at velocity v and ends at rest. According to the impulse-momentum theorem, the required impulse I is constant. Since I = (Sigma F)_avg * Delta t, making Delta t larger decreases (Sigma F)_avg inversely.",
+        "ms": "Jumlah perubahan momentum Delta p adalah sama dalam kedua-dua senario kerana penumpang bermula pada halaju v dan berakhir dalam keadaan pegun. Menurut teorem impuls-momentum, impuls yang diperlukan I adalah malar. Oleh kerana I = (Sigma F)_purata * Delta t, menjadikan Delta t lebih besar akan mengurangkan (Sigma F)_purata secara berkadar songsang.",
+        "zh": "在两种情况下，总动量改变量 Delta p 都是相同的，因为乘员都从初速度 v 减速到静止。根据动量定理，所需的冲量 I 是恒定的。由于 I = (Sigma F)_avg * Delta t，增大 Delta t 会反比地减小 (Sigma F)_avg。"
+      },
+      "explanation": {
+        "en": "Protective cushioning devices do not reduce the magnitude of momentum that must be removed from the passenger; that quantity is fixed by the initial velocity and mass. Instead, the air bag lengthens the duration Delta t over which the momentum transfer occurs. Because average net force is impulse divided by collision duration, a longer duration results in a substantially smaller average force, preventing fatal structural trauma.",
+        "ms": "Peranti kusyen keselamatan tidak mengurangkan magnitud momentum yang mesti disingkirkan daripada penumpang; kuantiti itu ditetapkan oleh halaju awal dan jisim. Sebaliknya, beg udara memanjangkan tempoh masa Delta t di mana pemindahan momentum berlaku. Oleh kerana daya bersih purata ialah impuls dibahagikan dengan tempoh perlanggaran, tempoh yang lebih lama menghasilkan daya purata yang jauh lebih kecil, mengelakkan trauma struktur yang membawa maut.",
+        "zh": "保护性缓冲装置并不能减小必须从乘员身上消除的动量大小；该量由初速度和质量决定。相反，安全气囊延长了动量传递发生的时间 Delta t。因为平均合力等于冲量除以碰撞持续时间，更长的时间会导致显著更小的平均力，从而避免致命的机体创伤。"
+      },
+      "misconceptions": [
+        "cushioning-increases-impact-force"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law-momentum-form",
+        "prompt": {
+          "en": "Review the definition of the time-averaged net force, (Sigma F)_avg = Delta p / Delta t, which shows that average force is inversely proportional to collision duration for a given change in momentum.",
+          "ms": "Semak semula takrif daya bersih purata masa, (Sigma F)_purata = Delta p / Delta t, yang menunjukkan bahawa daya purata adalah berkadar songsang dengan tempoh perlanggaran bagi perubahan momentum yang diberikan.",
+          "zh": "复习时间平均合力的定义 (Sigma F)_avg = Delta p / Delta t，该式表明在动量改变量确定的情况下，平均力与碰撞持续时间成反比。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-choice question asking how an air bag reduces injury by modifying collision time and average force for a passenger stopping from a given speed.",
+        "ms": "Soalan aneka pilihan yang bertanyakan bagaimana beg udara mengurangkan kecederaan dengan mengubah masa perlanggaran dan daya purata bagi penumpang yang berhenti daripada kelajuan tertentu.",
+        "zh": "一道单项选择题，询问安全气囊如何通过改变碰撞时间和平均力来保护从特定速度停下来的乘员。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "It increases the time duration over which the occupant stops, which reduces the average impact force for the same total momentum change.",
+              "ms": "Ia meningkatkan tempoh masa di mana penumpang itu berhenti, yang mengurangkan daya hentaman purata bagi perubahan momentum keseluruhan yang sama.",
+              "zh": "它延长了乘员停下来的时间历程，从而在总动量改变量相同的情况下减小了平均冲击力。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "It reduces the occupant's total momentum change to zero, whereas striking a rigid dashboard causes no change in momentum at all.",
+              "ms": "Ia mengurangkan perubahan momentum keseluruhan penumpang kepada sifar, manakala menghentam papan pemuka yang tegar tidak menyebabkan sebarang perubahan momentum sama sekali.",
+              "zh": "它使乘员的总动量改变量变为零，而撞击刚性仪表板则根本不会引起动量的任何改变。"
+            },
+            "misconception": "cushioning-increases-impact-force"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "It shortens the collision duration so that the impact force has much less time to transfer impulse to the occupant.",
+              "ms": "Ia memendekkan tempoh perlanggaran supaya daya hentaman mempunyai masa yang jauh lebih singkat untuk memindahkan impuls kepada penumpang.",
+              "zh": "它缩短了碰撞持续时间，从而使冲击力传递冲量给乘员的时间大大缩短。"
+            },
+            "misconception": "cushioning-increases-impact-force"
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "It eliminates all external forces acting on the occupant, transforming the passenger compartment into an isolated system.",
+              "ms": "Ia menghapuskan semua daya luaran yang bertindak ke atas penumpang, menukarkan ruang penumpang menjadi satu sistem terpencil.",
+              "zh": "它消除了作用在乘员身上的所有外力，将乘员舱转变成一个孤立系统。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sec9-3-mcq-04",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between a time-varying force and its equivalent constant time-averaged force.",
+      "prompt": {
+        "en": "A sensor measures a time-varying net force applied to a glider on an air track during a time interval Δt, reaching a sharp peak before dropping back to zero. In a second run over the exact same time interval Δt, an actuator applies a steady, constant net force that delivers the exact same change in momentum. How does this constant force relate to the original time-varying force?",
+        "ms": "Sebuah penderia mengukur daya bersih berubah mengikut masa yang dikenakan pada peluncur di atas landasan udara sepanjang selang masa Δt, mencapai puncak yang tajam sebelum menurun semula ke sifar. Dalam ujian kedua pada selang masa Δt yang sama persis, satu penggerak mengenakan daya bersih yang malar dan seragam yang menghasilkan perubahan momentum yang sama persis. Bagaimanakah daya malar ini berhubung kait dengan daya berubah mengikut masa yang asal?",
+        "zh": "传感器测量了在时间间隔 Δt 内施加在气垫导轨滑块上的随时间变化的合外力，该力达到一个尖锐的峰值后回落至零。在第二次测试中，在完全相同的时间间隔 Δt 内，执行器施加了一个恒定不变的合外力，产生完全相同的动量变化。这个恒定力与原始的随时间变化的力之间有何关系？"
+      },
+      "answerKey": {
+        "correct": "opt-avg-area",
+        "options": [
+          {
+            "id": "opt-avg-area",
+            "label": {
+              "en": "The constant force equals the time-average of the varying force, meaning the area under its force–time rectangle equals the area under the varying force–time curve over Δt.",
+              "ms": "Daya malar tersebut bersamaan dengan purata masa bagi daya yang berubah, bermakna luas di bawah segi empat tepat daya–masa adalah sama dengan luas di bawah lengkok daya–masa yang berubah sepanjang Δt.",
+              "zh": "该恒定力等于变化力的时间平均值，意味着在 Δt 内其力—时间矩形的面积等于随时间变化的力—时间曲线下的面积。"
+            }
+          },
+          {
+            "id": "opt-peak-match",
+            "label": {
+              "en": "The constant force must match the peak force attained by the varying force, because the maximum force determines the total momentum delivered.",
+              "ms": "Daya malar mesti menyamai daya puncak yang dicapai oleh daya yang berubah, kerana daya maksimum menentukan jumlah momentum yang dipindahkan.",
+              "zh": "恒定力必须与变化力所达到的峰值力相匹配，因为最大力决定了传递的总动量。"
+            },
+            "misconception": "ignoring-time-in-momentum-change"
+          },
+          {
+            "id": "opt-half-peak",
+            "label": {
+              "en": "The constant force must always equal exactly half of the peak force, regardless of how wide or narrow the force pulse was.",
+              "ms": "Daya malar mesti sentiasa bersamaan tepat dengan separuh daripada daya puncak, tanpa mengira selebar atau sesempit mana denyutan daya tersebut.",
+              "zh": "无论力脉冲有多宽或多窄，恒定力必须始终严格等于峰值力的一半。"
+            }
+          },
+          {
+            "id": "opt-greater-impulse",
+            "label": {
+              "en": "The constant force must be greater than the time-averaged force because a steady force transfers momentum more effectively than a pulse.",
+              "ms": "Daya malar mestilah lebih besar daripada daya purata masa kerana daya yang stabil memindahkan momentum dengan lebih berkesan berbanding denyutan.",
+              "zh": "恒定力必须大于时间平均力，因为稳定的力比脉冲力更有效地传递动量。"
+            }
+          }
+        ]
+      },
+      "hints": [
+        {
+          "en": "Recall how impulse relates geometrically to a graph of net force versus time.",
+          "ms": "Ingat kembali bagaimana impuls berkait secara geometri dengan graf daya bersih melawan masa.",
+          "zh": "回想一下冲量在几何上如何与合力对时间的图像相关联。"
+        },
+        {
+          "en": "Because both interactions produce identical momentum changes across the same duration Δt, the impulse, which is the integral of force over time, must be the same.",
+          "ms": "Oleh kerana kedua-dua interaksi menghasilkan perubahan momentum yang sama dalam tempoh masa Δt yang sama, impuls, iaitu kamiran daya terhadap masa, mestilah sama.",
+          "zh": "因为两次相互作用在相同持续时间 Δt 内产生相同的动量变化，所以冲量（即力对时间的积分）必须相同。"
+        }
+      ],
+      "feedback": {
+        "en": "Impulse is represented by the total area under the force–time graph. A constant time-averaged force creates a rectangular area over Δt that equals the integral of the time-varying force over that same interval.",
+        "ms": "Impuls diwakili oleh jumlah luas di bawah graf daya–masa. Daya purata masa yang malar menghasilkan luas segi empat tepat sepanjang Δt yang sama dengan kamiran daya berubah terhadap masa dalam selang tersebut.",
+        "zh": "冲量由力—时间图像下的总面积表示。恒定的时间平均力在 Δt 内形成的矩形面积等于变化力在同一时间间隔内的积分。"
+      },
+      "answerLogic": {
+        "en": "By definition, the time-averaged force is (1/Δt) times the integral of the net force over time. Multiplying this average force by Δt gives the total impulse, which matches the area under the time-varying curve. Matching the peak force overlooks the role of duration in momentum transfer.",
+        "ms": "Secara takrifan, daya purata masa ialah (1/Δt) didarabkan dengan kamiran daya bersih terhadap masa. Mendarabkan daya purata ini dengan Δt memberikan jumlah impuls, yang sepadan dengan luas di bawah lengkok berubah masa. Menyamakan daya dengan nilai puncak mengabaikan peranan tempoh masa dalam pemindahan momentum.",
+        "zh": "根据定义，时间平均力是合外力对时间的积分乘以 (1/Δt)。将此平均力乘以 Δt 得到总冲量，该冲量等于随时间变化曲线下的面积。直接匹配峰值力忽略了持续时间在动量传递中的决定性作用。"
+      },
+      "explanation": {
+        "en": "The impulse-momentum theorem states that impulse equals the integral of net force over time. The time-averaged net force is the hypothetical constant force that, acting over the identical duration Δt, provides the exact same impulse as the time-varying force. Therefore, the area under the constant force line equals the area under the fluctuating force curve.",
+        "ms": "Teorem impuls-momentum menyatakan bahawa impuls adalah bersamaan dengan kamiran daya bersih terhadap masa. Daya bersih purata masa ialah daya malar hipotesis yang, apabila bertindak sepanjang tempoh Δt yang serupa, memberikan impuls yang sama persis seperti daya yang berubah mengikut masa. Oleh itu, luas di bawah garis daya malar adalah sama dengan luas di bawah lengkok daya yang berubah.",
+        "zh": "动量定理指出，冲量等于合外力对时间的积分。时间平均合力是指这样一个假设的恒定力：在完全相同的持续时间 Δt 内作用时，它所提供的冲量与随时间变化的力完全相同。因此，恒力矩形的面积等于波动曲线下的面积。"
+      },
+      "misconceptions": [
+        "ignoring-time-in-momentum-change"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law-momentum-form",
+        "prompt": {
+          "en": "Review how integrating Newton's second law over time connects force, time, and momentum change.",
+          "ms": "Kaji semula bagaimana mengamirkan hukum kedua Newton terhadap masa menghubungkan daya, masa, dan perubahan momentum.",
+          "zh": "复习对牛顿第二定律进行时间积分如何将力、时间和动量变化联系起来。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking to identify the relationship between a peak time-varying force and an equivalent constant time-averaged force that produces the same momentum change.",
+        "ms": "Soalan pelbagai pilihan yang meminta untuk mengenal pasti hubungan antara daya puncak yang berubah mengikut masa dan daya malar purata masa setara yang menghasilkan perubahan momentum yang sama.",
+        "zh": "多项选择题，要求确定峰值时变力与产生相同动量变化的等效恒定时间平均力之间的关系。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "sec9-3-mcq-05",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate impulse to a particle's change in momentum when velocity reverses direction.",
+      "prompt": {
+        "en": "Two identical blocks, Cart A and Cart B, travel across a horizontal frictionless surface toward a sturdy wall with identical initial speeds. Cart A carries sticky clay and comes to an immediate complete stop against the wall. Cart B is equipped with an elastic spring bumper and rebounds backwards at nearly its initial speed. How does the magnitude of the impulse delivered to Cart B compare to the magnitude of the impulse delivered to Cart A?",
+        "ms": "Dua troli serupa, Troli A dan Troli B, bergerak merentasi permukaan mendatar tanpa geseran menuju ke dinding yang kukuh dengan kelajuan awal yang sama. Troli A membawa tanah liat melekit dan berhenti sepenuhnya serta-merta pada dinding. Troli B dilengkapi dengan bampar spring kenyal dan melantun ke belakang pada kelajuan yang hampir sama dengan kelajuan awalnya. Bagaimanakah magnitud impuls yang dikenakan ke atas Troli B berbanding magnitud impuls yang dikenakan ke atas Troli A?",
+        "zh": "两辆完全相同的小车 A 和 B 在水平无摩擦表面上以相同的初速率滑向一面坚固的墙壁。小车 A 带有粘土，撞墙后立即完全静止。小车 B 装有弹性弹簧缓冲器，以接近初始速率反向弹回。墙壁施加给小车 B 的冲量大小与施加给小车 A 的冲量大小相比如何？"
+      },
+      "answerKey": {
+        "correct": "opt-rebound-larger",
+        "options": [
+          {
+            "id": "opt-rebound-larger",
+            "label": {
+              "en": "Cart B experiences a greater impulse magnitude because its velocity reverses, requiring the wall to both halt its forward momentum and supply backward momentum.",
+              "ms": "Troli B mengalami magnitud impuls yang lebih besar kerana halajunya berbalik arah, memerlukan dinding menghentikan momentum ke hadapan dan membekalkan momentum ke belakang.",
+              "zh": "小车 B 承受的冲量大小更大，因为其速度发生反向，墙壁既要消除其向前的初动量，又要赋予其向后的动量。"
+            }
+          },
+          {
+            "id": "opt-stop-larger",
+            "label": {
+              "en": "Cart A experiences a greater impulse magnitude because stopping dead absorbs all the object's momentum, whereas rebounding retains momentum.",
+              "ms": "Troli A mengalami magnitud impuls yang lebih besar kerana berhenti sepenuhnya menyerap semua momentum objek, manakala melantun mengekalkan momentum.",
+              "zh": "小车 A 承受的冲量大小更大，因为完全停下吸收了物体的全部动量，而反弹则保留了动量。"
+            },
+            "misconception": "rebound-involves-less-impulse"
+          },
+          {
+            "id": "opt-equal-impulse",
+            "label": {
+              "en": "Both carts experience the exact same impulse magnitude because both possess identical mass and entered the collision with identical kinetic energy.",
+              "ms": "Kedua-dua troli mengalami magnitud impuls yang sama persis kerana kedua-duanya mempunyai jisim yang sama dan memasuki perlanggaran dengan tenaga kinetik yang sama.",
+              "zh": "两辆小车承受完全相同的冲量大小，因为它们的质量相同且以相同的动能发生碰撞。"
+            }
+          },
+          {
+            "id": "opt-zero-rebound",
+            "label": {
+              "en": "Cart B experiences zero net impulse because the outgoing momentum cancels out the incoming momentum.",
+              "ms": "Troli B mengalami impuls bersih sifar kerana momentum keluar membatalkan momentum masuk.",
+              "zh": "小车 B 承受的净冲量为零，因为离开的动量抵消了进入的动量。"
+            }
+          }
+        ]
+      },
+      "hints": [
+        {
+          "en": "Remember that momentum is a vector quantity, so direction signs must be taken into account when finding the vector difference.",
+          "ms": "Ingat bahawa momentum ialah kuantiti vektor, jadi tanda arah mesti diambil kira semasa mencari perbezaan vektor.",
+          "zh": "请记住动量是矢量，在求矢量差时必须考虑方向符号。"
+        },
+        {
+          "en": "The change in momentum is final momentum minus initial momentum. Compare stopping (final momentum is zero) with rebounding (final momentum is directed opposite to initial momentum).",
+          "ms": "Perubahan momentum ialah momentum akhir tolak momentum awal. Bandingkan perhentian (momentum akhir adalah sifar) dengan lantunan (momentum akhir berarah bertentangan dengan momentum awal).",
+          "zh": "动量变化等于末动量减去初动量。将停下（末动量为零）与反弹（末动量方向与初动量相反）进行比较。"
+        }
+      ],
+      "feedback": {
+        "en": "Impulse equals the vector change in momentum: Δp = p_f - p_i. Reversing direction means subtracting a positive vector from a negative vector (or vice versa), yielding a change roughly double that of merely coming to rest.",
+        "ms": "Impuls adalah bersamaan dengan perubahan vektor dalam momentum: Δp = p_f - p_i. Membalikkan arah bermaksud menolak vektor positif daripada vektor negatif (atau sebaliknya), menghasilkan perubahan kira-kira dua kali ganda berbanding hanya berhenti.",
+        "zh": "冲量等于动量的矢量变化：Δp = p_f - p_i。反向意味着从负矢量中减去正矢量（反之亦然），所得到的动量改变几乎是单纯停下静止的两倍。"
+      },
+      "answerLogic": {
+        "en": "For Cart A, Δp = 0 - (m v_i) = -m v_i. For Cart B, with rebound velocity roughly -v_i, Δp = -m v_i - (m v_i) = -2 m v_i. Thus the rebound requires approximately twice the impulse magnitude of stopping. Believing stopping requires more impulse is the rebound-involves-less-impulse misconception.",
+        "ms": "Bagi Troli A, Δp = 0 - (m v_i) = -m v_i. Bagi Troli B, dengan halaju lantunan kira-kira -v_i, Δp = -m v_i - (m v_i) = -2 m v_i. Oleh itu, lantunan memerlukan kira-kira dua kali ganda magnitud impuls berbanding perhentian. Beranggapan bahawa berhenti memerlukan lebih banyak impuls adalah salah faham 'rebound-involves-less-impulse'.",
+        "zh": "对小车 A 而言，Δp = 0 - (m v_i) = -m v_i。对小车 B 而言，若反弹速度约为 -v_i，则 Δp = -m v_i - (m v_i) = -2 m v_i。因此反弹所需的冲量大小大约是停止的两倍。误以为停下需要更大冲量正属于“rebound-involves-less-impulse”概念偏差。"
+      },
+      "explanation": {
+        "en": "According to the impulse-momentum theorem, the impulse equals the vector change in momentum. When an object stops, the net force only needs to remove its initial momentum. When an object rebounds, the net force must first remove its initial momentum and then supply an additional momentum in the reverse direction. Consequently, rebounding always involves a larger impulse than stopping from the same incident velocity.",
+        "ms": "Menurut teorem impuls-momentum, impuls adalah bersamaan dengan perubahan vektor dalam momentum. Apabila sesuatu objek berhenti, daya bersih hanya perlu menghapuskan momentum awalnya. Apabila objek melantun, daya bersih mesti terlebih dahulu menghapuskan momentum awalnya dan kemudian membekalkan momentum tambahan dalam arah yang bertentangan. Oleh itu, melantun sentiasa melibatkan impuls yang lebih besar berbanding berhenti daripada halaju tuju yang sama.",
+        "zh": "根据动量定理，冲量等于动量的矢量变化量。当物体停下时，合外力只需消除其初始动量；而当物体反弹时，合外力必须先消除其初始动量，再沿相反方向赋予新的动量。因此，相比从相同初速度停下，反弹过程承受的冲量绝对值必然更大。"
+      },
+      "misconceptions": [
+        "rebound-involves-less-impulse"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-change-concept",
+        "prompt": {
+          "en": "Review how direction signs determine the overall change in a vector when an object reverses its motion along a straight line.",
+          "ms": "Ulang kaji bagaimana tanda arah menentukan perubahan keseluruhan suatu vektor apabila suatu objek membalikkan arah pergerakannya di sepanjang garis lurus.",
+          "zh": "复习当物体沿直线反向运动时，方向正负号如何决定矢量的整体变化。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question comparing the impulse delivered to an object that stops versus an identical object that bounces back.",
+        "ms": "Soalan pelbagai pilihan yang membandingkan impuls yang dikenakan ke atas objek yang berhenti berbanding objek serupa yang melantun semula.",
+        "zh": "多项选择题，对比停止的物体与反弹的相同物体所承受的冲量大小。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "sec9-3-mcq-06",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the impulse approximation by identifying dominant impulsive contact forces over brief collision intervals.",
+      "prompt": {
+        "en": "A soccer player kicks a ball that is falling vertically downward through the air. The foot contacts the ball for a tiny fraction of a second, exerting a forceful horizontal blow. When applying the impulse approximation to analyze the ball during this collision, why is the downward gravitational force omitted from the momentum-change calculation?",
+        "ms": "Seorang pemain bola sepak menendang bola yang sedang jatuh menegak ke bawah di udara. Kaki bersentuhan dengan bola untuk pecahan saat yang sangat kecil, mengenakan hentaman mendatar yang sangat kuat. Apabila menggunakan anggaran impuls untuk menganalisis bola semasa perlanggaran ini, mengapakah daya graviti ke bawah diabaikan daripada pengiraan perubahan momentum?",
+        "zh": "一名足球运动员踢中正在空中竖直下落的足球。脚与球接触的时间极短，施加了强劲的水平撞击力。在利用冲量近似分析碰撞期间足球的动量变化时，为什么可以忽略竖直向下的重力？"
+      },
+      "answerKey": {
+        "correct": "opt-grav-impulse-negligible",
+        "options": [
+          {
+            "id": "opt-grav-impulse-negligible",
+            "label": {
+              "en": "Because the collision time Δt is so brief, the impulse delivered by the constant gravitational force (mg Δt) is negligible compared to the colossal impulse delivered by the impact force.",
+              "ms": "Kerana masa perlanggaran Δt sangat singkat, impuls yang dibekalkan oleh daya graviti malar (mg Δt) adalah terabai berbanding impuls yang sangat besar daripada daya hentaman.",
+              "zh": "因为碰撞时间 Δt 极短，恒定重力所产生的冲量（mg Δt）与碰撞接触力产生的巨大冲量相比完全可以忽略不计。"
+            }
+          },
+          {
+            "id": "opt-gravity-stops",
+            "label": {
+              "en": "Gravity momentarily turns off whenever a horizontal contact force exceeds the object's weight.",
+              "ms": "Graviti terhenti bertindak buat seketika apabila daya sentuhan mendatar melebihi berat objek.",
+              "zh": "一旦水平接触力超过物体的重力，重力就会瞬间停止作用。"
+            }
+          },
+          {
+            "id": "opt-peak-erases-gravity",
+            "label": {
+              "en": "Because the peak impact force is large, peak force alone dictates all dynamics, permanently removing gravitational acceleration from the rest of the trajectory.",
+              "ms": "Kerana daya hentaman puncak adalah besar, daya puncak sahaja yang menentukan semua dinamik, menghapuskan pecutan graviti secara kekal daripada baki trajektori.",
+              "zh": "由于峰值冲击力很大，仅凭峰值力便决定了全部动力学过程，从而在后续轨迹中永久消除了重力加速度。"
+            },
+            "misconception": "ignoring-time-in-momentum-change"
+          },
+          {
+            "id": "opt-perpendicular-cancel",
+            "label": {
+              "en": "Perpendicular forces automatically balance each other out during any high-speed contact interaction.",
+              "ms": "Daya-daya berserenjang secara automatik mengimbangi antara satu sama lain semasa sebarang interaksi sentuhan berkelajuan tinggi.",
+              "zh": "在任何高速接触相互作用中，相互垂直的力都会自动相互抵消。"
+            }
+          }
+        ]
+      },
+      "hints": [
+        {
+          "en": "Recall that the total impulse from any force depends on both the force magnitude and the duration Δt over which it acts.",
+          "ms": "Ingat bahawa jumlah impuls daripada sebarang daya bergantung pada kedua-dua magnitud daya dan tempoh masa Δt tindakan daya itu.",
+          "zh": "回想一下，任何力产生的总冲量取决于力的大小以及力作用的持续时间 Δt。"
+        },
+        {
+          "en": "Compare the impulse from the contact force to the impulse of gravity over the brief collision interval: I_contact versus mg Δt.",
+          "ms": "Bandingkan impuls daripada daya sentuhan dengan impuls graviti sepanjang selang perlanggaran yang singkat: I_sentuhan berbanding mg Δt.",
+          "zh": "对比短暂碰撞时间间隔内接触力的冲量与重力的冲量：I_接触 与 mg Δt。"
+        }
+      ],
+      "feedback": {
+        "en": "The impulse approximation is valid because the duration of contact is extremely short and the contact force is enormous. While gravity still acts, the product of the ball's weight and the tiny contact time Δt is utterly insignificant compared to the impact impulse.",
+        "ms": "Anggaran impuls adalah sah kerana tempoh sentuhan sangat singkat dan daya sentuhan adalah sangat besar. Walaupun graviti masih bertindak, hasil darab berat bola dengan masa sentuhan Δt yang sangat kecil adalah tidak signifikan berbanding impuls hentaman.",
+        "zh": "冲量近似之所以成立，是因为接触时间极短而接触力极为巨大。尽管重力依然存在，但球的重力与微小接触时间 Δt 的乘积与强烈的碰撞冲量相比微不足道。"
+      },
+      "answerLogic": {
+        "en": "Under the impulse approximation, external forces like gravity are not physically zero, but their impulse (F_ext Δt) over milliseconds is negligible compared to the massive contact force integrated over the same interval. Misidentifying peak force as the sole factor neglects the fundamental role of the time interval.",
+        "ms": "Di bawah anggaran impuls, daya luaran seperti graviti tidaklah sifar secara fizikal, tetapi impulsnya (F_luar Δt) dalam beberapa milisaat adalah terabai berbanding daya sentuhan yang besar yang dikamirkan sepanjang selang yang sama. Menganggap daya puncak sebagai satu-satunya faktor mengabaikan peranan asas selang masa.",
+        "zh": "在冲量近似下，像重力这样的外力在物理上并未消失，但在几毫秒内它们的冲量（F_外 Δt）与同一时间段内巨大接触力的冲量积分相比可以忽略不计。将峰值力视为唯一决定因素忽视了时间间隔在动量改变中的核心地位。"
+      },
+      "explanation": {
+        "en": "In collision analysis, when an impulsive force acts over a very brief time interval, its magnitude is typically thousands of times larger than ordinary non-impulsive external forces such as gravity. Because impulse is force multiplied by time interval, the impulse contributed by gravity during those few milliseconds is negligible compared to the impulse of the kick. Therefore, the change in momentum during the impact is almost entirely due to the impulsive contact force.",
+        "ms": "Dalam analisis perlanggaran, apabila daya impulsif bertindak dalam selang masa yang amat singkat, magnitudnya biasanya beribu-ribu kali lebih besar daripada daya luaran bukan impulsif biasa seperti graviti. Oleh kerana impuls ialah daya didarabkan dengan selang masa, impuls yang disumbangkan oleh graviti sepanjang beberapa milisaat itu adalah terabai berbanding impuls daripada tendangan. Oleh itu, perubahan momentum semasa hentaman hampir sepenuhnya disebabkan oleh daya sentuhan impulsif.",
+        "zh": "在碰撞分析中，当冲击力在极短的时间间隔内作用时，其大小通常比重力等普通非冲激性外力大数千倍。因为冲量是力与时间间隔的乘积，所以在该数毫秒内重力贡献的冲量与踢击的冲量相比微不足道。因此，碰撞期间动量的改变几乎完全由冲激性的接触力决定。"
+      },
+      "misconceptions": [
+        "ignoring-time-in-momentum-change"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law-momentum-form",
+        "prompt": {
+          "en": "Revisit Newton's second law to see how integrating each individual external force over a time interval contributes to the total momentum change.",
+          "ms": "Kaji semula hukum kedua Newton untuk melihat bagaimana mengamirkan setiap daya luaran individu terhadap selang masa menyumbang kepada jumlah perubahan momentum.",
+          "zh": "重温牛顿第二定律，了解在时间间隔内对各个独立外力进行积分如何共同构成总动量变化。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question explaining why gravitational force can be neglected during a very short collision under the impulse approximation.",
+        "ms": "Soalan pelbagai pilihan yang menerangkan sebab daya graviti boleh diabaikan semasa perlanggaran yang sangat singkat di bawah anggaran impuls.",
+        "zh": "多项选择题，解释在冲量近似下为什么可以在极短碰撞过程中忽略重力。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "sec9-3-mcq-07",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Contrast momentum transfer across a system boundary with energy transfer mechanisms.",
+      "prompt": {
+        "en": "In the analysis model for a nonisolated system, physical quantities can cross the system boundary to or from the environment. When contrasting how momentum transfers into a system with how energy transfers into a system, which statement correctly identifies the fundamental physical distinction according to the conservation equations?",
+        "ms": "Dalam model analisis untuk sistem tak terpencil, kuantiti fizikal boleh merentasi sempadan sistem ke atau daripada persekitaran. Apabila membezakan bagaimana momentum dipindahkan ke dalam sistem dengan bagaimana tenaga dipindahkan ke dalam sistem, pernyataan manakah yang mengenal pasti perbezaan fizikal asas dengan betul mengikut persamaan keabadian?",
+        "zh": "在非孤立系统的分析模型中，物理量可以跨越系统边界往返于环境之间。当对比动量传入系统与能量传入系统的方式时，根据守恒方程，下列哪项表述正确指出了它们之间的根本物理区别？"
+      },
+      "hints": [
+        {
+          "en": "Focus on how impulse transfers momentum across a boundary via an external force acting over time, whereas work transfers energy via a force acting over a displacement.",
+          "ms": "Fokus kepada bagaimana impuls memindahkan momentum merentasi sempadan melalui daya luaran yang bertindak mengikut masa, manakala kerja memindahkan tenaga melalui daya yang bertindak merentasi sesaran.",
+          "zh": "关注冲量如何通过随时间作用的外力跨越边界传递动量，而做功则是通过沿位移作用的力来传递能量。"
+        },
+        {
+          "en": "Compare the forms of storage: linear momentum describes mass in motion without internal or potential variations, whereas energy can take kinetic, potential, or internal forms.",
+          "ms": "Bandingkan bentuk simpanan: momentum linear menggambarkan jisim yang bergerak tanpa variasi dalaman atau keupayaan, manakala tenaga boleh mengambil bentuk kinetik, keupayaan, atau dalaman.",
+          "zh": "对比能量与动量的存储形式：线动量描述处于运动中的质量，不存在内动量或势动量形态；而能量则可以采取动能、势能或内能的形式。"
+        }
+      ],
+      "feedback": {
+        "en": "Momentum transfer across a system boundary occurs uniquely through an external force applied over time (impulse), stored solely as particle momentum. Energy transfer can occur via multiple boundary mechanisms (such as work and heat) and can be stored as kinetic, potential, or internal energy.",
+        "ms": "Pemindahan momentum merentasi sempadan sistem berlaku secara eksklusif melalui daya luaran yang dikenakan merentasi masa (impuls), dan disimpan semata-mata sebagai momentum zarah. Pemindahan tenaga boleh berlaku melalui pelbagai mekanisme sempadan (seperti kerja dan haba) dan boleh disimpan sebagai tenaga kinetik, keupayaan, atau dalaman.",
+        "zh": "动量跨越系统边界的传递唯一地通过外力随时间的作用（冲量）发生，并在系统内仅以质点动量的形式存储。能量传递则可通过多种边界机制（如做功和热传递）发生，并可存储为动能、势能或内能。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct because Section 9.3 highlights three key differences between the nonisolated system momentum equation and the energy conservation equation: momentum is a vector whereas energy is a scalar; momentum has only one storage form whereas energy has three (kinetic, potential, internal); and momentum has only one transfer mechanism (force applied over time, or impulse) whereas energy has six distinct transfer mechanisms. Option B is incorrect because work transfers energy across displacement, not momentum. Option C is incorrect because momentum is a vector and energy is a scalar. Option D is incorrect because it reverses the transfer properties of momentum and energy.",
+        "ms": "Pilihan A adalah betul kerana Seksyen 9.3 menekankan tiga perbezaan utama antara persamaan momentum sistem tak terpencil dan persamaan keabadian tenaga: momentum ialah vektor manakala tenaga ialah skalar; momentum hanya mempunyai satu bentuk simpanan manakala tenaga mempunyai tiga (kinetik, keupayaan, dalaman); dan momentum hanya mempunyai satu mekanisme pemindahan (daya dikenakan merentasi masa, atau impuls) manakala tenaga mempunyai enam mekanisme pemindahan yang berbeza. Pilihan B tidak betul kerana kerja memindahkan tenaga merentasi sesaran, bukan momentum. Pilihan C tidak betul kerana momentum ialah vektor dan tenaga ialah skalar. Pilihan D tidak betul kerana ia menyongsangkan sifat pemindahan momentum dan tenaga.",
+        "zh": "选项A正确，因为第9.3节强调了非孤立系统动量方程与能量守恒方程之间的三个关键区别：动量是矢量而能量是标量；动量仅有一种存储形式，而能量有三种（动能、势能、内能）；动量只有一种跨边界传递机制（力在时间上的累积，即冲量），而能量有六种不同的传递机制。选项B错误，因为做功是力在空间位移上的累积，传递的是能量而非动量。选项C错误，因为动量是矢量，能量是标量。选项D错误，因为它颠倒了动量与能量的传递特征。"
+      },
+      "explanation": {
+        "en": "In Section 9.3, the nonisolated system momentum model establishes that the change in total momentum equals the net external impulse (Delta p = I). Unlike energy, which can enter a system through work, heat, mechanical waves, matter transfer, electrical transmission, or electromagnetic radiation, momentum enters a system solely through net external force acting over a duration of time. Moreover, there is no potential or internal form of momentum; momentum is stored strictly in the physical motion of mass.",
+        "ms": "Dalam Seksyen 9.3, model momentum sistem tak terpencil menetapkan bahawa perubahan jumlah momentum bersamaan dengan impuls luaran bersih (Delta p = I). Berbeza dengan tenaga yang boleh memasuki sistem melalui kerja, haba, gelombang mekanikal, pemindahan jirim, penghantaran elektrik, atau sinaran elektromagnet, momentum memasuki sistem semata-mata melalui daya luaran bersih yang bertindak dalam tempoh masa tertentu. Tambahan pula, tiada bentuk momentum keupayaan atau dalaman; momentum disimpan secara khusus dalam gerakan fizikal jisim.",
+        "zh": "在第9.3节中，非孤立系统动量模型确立了总动量的改变等于合外冲量（Delta p = I）。与能量可以通过做功、热、机械波、物质传递、电传导或电磁辐射进入系统不同，动量只能通过合外力在一段时间内的作用进入系统。此外，不存在势动量或内动量形式；动量严格存储于质量的物理运动之中。"
+      },
+      "misconceptions": [
+        "confusing-impulse-with-work"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Recall the definition of linear momentum as the product of mass and velocity: p = m v. Momentum is a directed vector quantity describing mass in motion, which cannot be converted into internal or potential varieties.",
+          "ms": "Ingat kembali takrif momentum linear sebagai hasil darab jisim dan halaju: p = m v. Momentum ialah kuantiti vektor berarah yang menggambarkan jisim yang bergerak, yang tidak boleh ditukar kepada jenis dalaman atau keupayaan.",
+          "zh": "回顾线动量的定义，即质量与速度的乘积：p = m v。动量是描述运动质量的有向矢量，不能转化为内部或势能形式。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question contrasting how momentum and energy cross boundaries and store inside a system. Select one of four options.",
+        "ms": "Soalan aneka pilihan yang membezakan cara momentum dan tenaga merentasi sempadan dan disimpan di dalam sistem. Pilih satu daripada empat pilihan.",
+        "zh": "对比动量和能量跨越边界及在系统内存储方式的多项选择题。请从四个选项中选择一项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-sec9-3-mcq-07-a",
+        "options": [
+          {
+            "id": "opt-sec9-3-mcq-07-a",
+            "label": {
+              "en": "Momentum is transferred across a boundary through only one mechanism—an external net force acting over a time interval (impulse)—and is stored in only one form; energy is transferred through multiple mechanisms (such as work and heat) and is stored in multiple forms (kinetic, potential, and internal).",
+              "ms": "Momentum dipindahkan merentasi sempadan melalui satu mekanisme sahaja—daya bersih luaran yang bertindak merentasi selang masa (impuls)—dan disimpan dalam satu bentuk sahaja; tenaga dipindahkan melalui pelbagai mekanisme (seperti kerja dan haba) dan disimpan dalam pelbagai bentuk (kinetik, keupayaan, dan dalaman).",
+              "zh": "动量只能通过单一机制跨越边界传递——即外合力在一段时间间隔内的作用（冲量）——并且在系统内仅以单一形式存储；能量则可通过多种机制传递（例如做功和热传递），并可存储为多种形式（动能、势能和内能）。"
+            }
+          },
+          {
+            "id": "opt-sec9-3-mcq-07-b",
+            "label": {
+              "en": "Momentum and energy transfer across a boundary through the exact same mechanism of mechanical work exerted through spatial displacement, but momentum is stored in kinetic and potential forms while energy is purely internal.",
+              "ms": "Momentum dan tenaga dipindahkan merentasi sempadan melalui mekanisme kerja mekanikal yang sama persis merentasi sesaran ruang, tetapi momentum disimpan dalam bentuk kinetik dan keupayaan manakala tenaga adalah bersifat dalaman semata-mata.",
+              "zh": "动量与能量跨越边界的传递完全遵循相同的机制，即通过空间位移施加的机械功，但动量以动能和势能形式存储，而能量纯粹是内能。"
+            },
+            "misconception": "confusing-impulse-with-work"
+          },
+          {
+            "id": "opt-sec9-3-mcq-07-c",
+            "label": {
+              "en": "Momentum transfer across a boundary is a path-dependent scalar quantity that accumulates without direction, whereas energy transfer is an inherently directional vector quantity that requires vector addition of directional work components.",
+              "ms": "Pemindahan momentum merentasi sempadan ialah kuantiti skalar bersandar laluan yang terkumpul tanpa arah, manakala pemindahan tenaga ialah kuantiti vektor berarah secara semula jadi yang memerlukan penambahan vektor komponen kerja berarah.",
+              "zh": "跨越边界的动量传递是与路径相关的标量，不具有方向性地累积；而能量传递本质上是具有方向性的矢量，需要对各个方向的做功分量进行矢量叠加。"
+            }
+          },
+          {
+            "id": "opt-sec9-3-mcq-07-d",
+            "label": {
+              "en": "Energy can cross a boundary only through an external contact force acting over a short time interval, whereas momentum can cross a boundary through numerous non-mechanical mechanisms including thermal conduction and electromagnetic radiation.",
+              "ms": "Tenaga boleh merentasi sempadan hanya melalui daya sentuhan luaran yang bertindak merentasi selang masa yang singkat, manakala momentum boleh merentasi sempadan melalui pelbagai mekanisme bukan mekanikal termasuk konduksi terma dan sinaran elektromagnet.",
+              "zh": "能量只能通过在短时间间隔内作用的外接触力跨越边界，而动量则可以通过包括热传导和电磁辐射在内的多种非机械机制跨越边界。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sec9-3-mcq-08",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Compare the impulse delivered by identical forces acting over equal distance versus equal time intervals.",
+      "prompt": {
+        "en": "Two frictionless blocks, Block 1 of mass M and Block 2 of mass 2M, are initially at rest on a level floor. A constant horizontal force of magnitude F is applied to each block in two separate experiments:\n- Experiment 1 (Equal Distance): Each block is pushed from rest through the same spatial displacement d.\n- Experiment 2 (Equal Time Interval): Each block is pushed from rest for the same time interval Delta t.\nWhich statement correctly compares the impulse delivered to the blocks in Experiment 1 and Experiment 2?",
+        "ms": "Dua blok tanpa geseran, Blok 1 berjisim M dan Blok 2 berjisim 2M, pada mulanya berada dalam keadaan rehat di atas lantai mendatar. Daya mendatar malar bermagnitud F dikenakan pada setiap blok dalam dua eksperimen berasingan:\n- Eksperimen 1 (Jarak Sama): Setiap blok ditolak dari keadaan rehat merentasi sesaran ruang d yang sama.\n- Eksperimen 2 (Selang Masa Sama): Setiap blok ditolak dari keadaan rehat selama selang masa Delta t yang sama.\nPernyataan manakah yang membandingkan impuls yang dikenakan kepada blok-blok tersebut dalam Eksperimen 1 dan Eksperimen 2 dengan betul?",
+        "zh": "两个无摩擦滑块，滑块1的质量为M，滑块2的质量为2M，初始时均静止在水平地面上。在两个独立的实验中分别对每个滑块施加大小为F的恒定水平力：\n- 实验1（相同距离）：每个滑块从静止开始被推动相同的空间位移d。\n- 实验2（相同时间间隔）：每个滑块从静止开始被推动相同的时间间隔Delta t。\n关于在实验1和实验2中传递给滑块的冲量，下列哪项比较是正确的？"
+      },
+      "hints": [
+        {
+          "en": "Impulse is defined as the product of net force and elapsed time (I = F Delta t). In Experiment 1, do both blocks take the same amount of time to travel the distance d?",
+          "ms": "Impuls ditakrifkan sebagai hasil darab daya bersih dan masa yang berlalu (I = F Delta t). Dalam Eksperimen 1, adakah kedua-dua blok mengambil masa yang sama untuk melalui jarak d?",
+          "zh": "冲量定义为合力与经过时间的乘积（I = F Delta t）。在实验1中，两个滑块通过距离d所花费的时间相同吗？"
+        },
+        {
+          "en": "Because Block 2 has twice the mass of Block 1, its acceleration is half as large (a = F / m). Starting from rest, lower acceleration requires a longer time duration to cover displacement d. How does that longer time duration affect the impulse delivered by constant force F?",
+          "ms": "Kerana Blok 2 mempunyai dua kali ganda jisim Blok 1, pecutannya adalah separuh daripada Blok 1 (a = F / m). Bermula dari keadaan rehat, pecutan yang lebih rendah memerlukan tempoh masa yang lebih lama untuk merentasi sesaran d. Bagaimanakah tempoh masa yang lebih lama itu mempengaruhi impuls yang dikenakan oleh daya malar F?",
+          "zh": "因为滑块2的质量是滑块1的两倍，所以其加速度只有滑块1的一半（a = F / m）。从静止开始，较小的加速度需要更长的时间来完成位移d。这更长的时间间隔如何影响恒力F所施加的冲量？"
+        }
+      ],
+      "feedback": {
+        "en": "Impulse depends on the time interval over which a force acts (I = F Delta t). Over equal distance, the heavier block accelerates more slowly, takes longer, and thus receives a greater impulse. Over equal time, identical forces deliver identical impulses regardless of mass.",
+        "ms": "Impuls bergantung pada selang masa tindakan daya (I = F Delta t). Merentasi jarak yang sama, blok yang lebih berat memecut lebih perlahan, mengambil masa lebih lama, dan oleh itu menerima impuls yang lebih besar. Merentasi masa yang sama, daya yang serupa memberikan impuls yang serupa tanpa mengira jisim.",
+        "zh": "冲量取决于力作用的时间间隔（I = F Delta t）。在相同位移下，较重的滑块加速度较小，运动时间更长，因此受到的冲量更大。在相同时间内，完全相同的力无论物体质量多大都传递相同的冲量。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct. Impulse is given by I = F Delta t. In Experiment 1, both blocks travel distance d under constant force F. Since a = F/m, Block 2 has half the acceleration of Block 1 and therefore takes a factor of sqrt(2) longer to cover distance d (Delta t_2 > Delta t_1). Because F is identical, I_2 = F Delta t_2 > F Delta t_1 = I_1. In Experiment 2, the time interval Delta t is explicitly identical for both, so I = F Delta t is exactly identical for both blocks. Option B is incorrect because equal displacement produces equal work (W = F d), not equal impulse. Option C is incorrect because greater acceleration leads to a shorter time interval and hence less impulse over fixed displacement. Option D is incorrect because impulse depends on time, not force alone.",
+        "ms": "Pilihan A adalah betul. Impuls diberikan oleh I = F Delta t. Dalam Eksperimen 1, kedua-dua blok bergerak sejauh d di bawah daya malar F. Memandangkan a = F/m, Blok 2 mempunyai separuh pecutan Blok 1 dan oleh itu mengambil masa lebih lama sebanyak faktor sqrt(2) untuk merentasi jarak d (Delta t_2 > Delta t_1). Kerana F adalah sama, I_2 = F Delta t_2 > F Delta t_1 = I_1. Dalam Eksperimen 2, selang masa Delta t adalah serupa secara jelas bagi kedua-duanya, maka I = F Delta t adalah sama tepat bagi kedua-dua blok. Pilihan B tidak betul kerana sesaran yang sama menghasilkan kerja yang sama (W = F d), bukannya impuls yang sama. Pilihan C tidak betul kerana pecutan yang lebih besar membawa kepada selang masa yang lebih singkat dan seterusnya impuls yang lebih kecil merentasi sesaran tetap. Pilihan D tidak betul kerana impuls bergantung pada masa, bukan daya sahaja.",
+        "zh": "选项A正确。冲量由公式 I = F Delta t 给出。在实验1中，两个滑块在恒力F作用下均通过位移d。由于 a = F/m，滑块2的加速度仅为滑块1的一半，因此通过距离d所需的时间要长出sqrt(2)倍（Delta t_2 > Delta t_1）。因为F相同，所以 I_2 = F Delta t_2 > F Delta t_1 = I_1。在实验2中，两个滑块经历的时间间隔Delta t完全相同，因此对于两个滑块，I = F Delta t 完全相同。选项B错误，因为相同位移产生相同的做功（W = F d），而非相同的冲量。选项C错误，因为较大的加速度会导致运动时间更短，因而在固定位移下冲量更小。选项D错误，因为冲量取决于时间，而非仅由力决定。"
+      },
+      "explanation": {
+        "en": "According to Newton's second law in momentum form, net force is the time rate of change of momentum (Sigma F = dp/dt). When integrated over time, the resulting impulse I = Sigma F_avg Delta t equals the change in momentum. When a force acts across a set distance, the work done on both masses is identical, but the less massive object traverses that distance faster. Consequently, the force acts on the less massive object for a shorter time interval, resulting in a smaller impulse than on the more massive object. Conversely, when the force acts for a specified time interval, impulse is strictly determined by force multiplied by time, making the impulse identical regardless of mass or distance traversed.",
+        "ms": "Mengikut hukum kedua Newton dalam bentuk momentum, daya bersih ialah kadar perubahan momentum terhadap masa (Sigma F = dp/dt). Apabila dikamirkan terhadap masa, impuls yang terhasil I = Sigma F_avg Delta t bersamaan dengan perubahan momentum. Apabila daya bertindak merentasi jarak yang ditetapkan, kerja yang dilakukan ke atas kedua-dua jisim adalah serupa, tetapi objek yang kurang jisim merentasi jarak tersebut dengan lebih pantas. Akibatnya, daya bertindak ke atas objek yang kurang jisim untuk selang masa yang lebih singkat, menghasilkan impuls yang lebih kecil berbanding objek yang lebih berjisim. Sebaliknya, apabila daya bertindak untuk selang masa yang ditentukan, impuls ditentukan secara mutlak oleh daya didarab dengan masa, menjadikan impuls serupa tanpa mengira jisim atau jarak yang direntasi.",
+        "zh": "根据动量形式的牛顿第二定律，合外力是动量对时间的变化率（Sigma F = dp/dt）。对时间积分后，所得冲量 I = Sigma F_avg Delta t 等于动量的改变。当力作用固定距离时，对两物体所做的功相同，但质量较小的物体通过该距离更快。因此，力作用在质量较小物块上的时间间隔较短，所产生的冲量小于质量较大物块上的冲量。反之，当力在指定的时间间隔内作用时，冲量严格由力与时间的乘积决定，无论物体质量大小或位移多少，冲量都完全相同。"
+      },
+      "misconceptions": [
+        "confusing-impulse-with-work",
+        "ignoring-time-in-momentum-change"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law-momentum-form",
+        "prompt": {
+          "en": "Revisit Newton's second law written as Sigma F = dp/dt. Multiplying both sides by dt reveals that momentum changes through the accumulation of force over time (dp = F dt), showing that duration of application is essential.",
+          "ms": "Kaji semula hukum kedua Newton yang ditulis sebagai Sigma F = dp/dt. Mendarab kedua-dua belah dengan dt menunjukkan bahawa momentum berubah melalui pengumpulan daya merentasi masa (dp = F dt), menunjukkan bahawa tempoh masa tindakan adalah penting.",
+          "zh": "重新温习表示为 Sigma F = dp/dt 的牛顿第二定律。两边同乘 dt 可知动量是通过力在时间上的累积而改变的（dp = F dt），这表明力的作用持续时间至关重要。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options comparing the impulse delivered to light and heavy blocks across equal distance versus equal time intervals.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang membandingkan impuls yang dikenakan kepada blok ringan dan berat merentasi jarak yang sama berbanding selang masa yang sama.",
+        "zh": "包含四个选项的多项选择题，对比在相同距离和相同时间间隔下传递给轻滑块与重滑块的冲量。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-sec9-3-mcq-08-a",
+        "options": [
+          {
+            "id": "opt-sec9-3-mcq-08-a",
+            "label": {
+              "en": "In Experiment 1, Block 2 receives a greater impulse than Block 1 because its smaller acceleration means it takes more time to travel distance d; in Experiment 2, both blocks receive identical impulses because the force and time interval are the same.",
+              "ms": "Dalam Eksperimen 1, Blok 2 menerima impuls yang lebih besar daripada Blok 1 kerana pecutannya yang lebih kecil bermakna ia mengambil masa yang lebih lama untuk melalui jarak d; dalam Eksperimen 2, kedua-dua blok menerima impuls yang serupa kerana daya dan selang masanya adalah sama.",
+              "zh": "在实验1中，滑块2受到的冲量大于滑块1，因为其加速度较小，意味着通过距离d需要更长的时间；在实验2中，两个滑块受到的冲量相同，因为力与时间间隔完全相同。"
+            }
+          },
+          {
+            "id": "opt-sec9-3-mcq-08-b",
+            "label": {
+              "en": "In Experiment 1, both blocks receive identical impulses because the force acts through the exact same displacement d; in Experiment 2, Block 1 receives a greater impulse because its higher speed causes it to cover more distance during the time interval.",
+              "ms": "Dalam Eksperimen 1, kedua-dua blok menerima impuls yang serupa kerana daya bertindak merentasi sesaran d yang sama persis; dalam Eksperimen 2, Blok 1 menerima impuls yang lebih besar kerana kelajuannya yang lebih tinggi menyebabkan ia merentasi jarak yang lebih jauh dalam selang masa tersebut.",
+              "zh": "在实验1中，两个滑块受到的冲量相同，因为力作用了完全相同的位移d；在实验2中，滑块1受到的冲量更大，因为其更高的速度使它在相同时间间隔内移动了更长的距离。"
+            },
+            "misconception": "confusing-impulse-with-work"
+          },
+          {
+            "id": "opt-sec9-3-mcq-08-c",
+            "label": {
+              "en": "In Experiment 1, Block 1 receives a greater impulse because its larger acceleration creates a much higher final momentum; in Experiment 2, Block 2 receives a greater impulse because its larger mass resists acceleration and absorbs more force.",
+              "ms": "Dalam Eksperimen 1, Blok 1 menerima impuls yang lebih besar kerana pecutannya yang lebih besar menghasilkan momentum akhir yang jauh lebih tinggi; dalam Eksperimen 2, Blok 2 menerima impuls yang lebih besar kerana jisimnya yang lebih besar menentang pecutan dan menyerap lebih banyak daya.",
+              "zh": "在实验1中，滑块1受到的冲量更大，因为其较大的加速度产生了高得多的最终动量；在实验2中，滑块2受到的冲量更大，因为其较大的质量阻碍加速度并吸收了更多的力。"
+            },
+            "misconception": "ignoring-time-in-momentum-change"
+          },
+          {
+            "id": "opt-sec9-3-mcq-08-d",
+            "label": {
+              "en": "In both Experiment 1 and Experiment 2, the impulses delivered to Block 1 and Block 2 are identical across all trials because the applied force magnitude F is unchanged.",
+              "ms": "Dalam kedua-dua Eksperimen 1 dan Eksperimen 2, impuls yang dikenakan kepada Blok 1 dan Blok 2 adalah sama dalam semua percubaan kerana magnitud daya F yang dikenakan tidak berubah.",
+              "zh": "在实验1和实验2中，所有测试中传递给滑块1和滑块2的冲量都完全相同，因为所施加的力的大小F保持不变。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sec9-3-mcq-09",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze directional impulse requirements for a projectile redirected at an oblique angle.",
+      "prompt": {
+        "en": "A deep-space probe of mass m drifts along the +x direction with constant velocity v_i = v i_hat (momentum p_i = m v i_hat). Its thrusters fire briefly in two separate mission scenarios:\n- Mission 1 (Complete Stop): The thrusters bring the probe to a complete rest (v_f = 0).\n- Mission 2 (Oblique Deflection): The thrusters redirect the probe so that it emerges with the original speed v, but heading at an obtuse angle greater than 90 degrees relative to its original path (such that its final velocity has a negative x-component and a positive y-component).\nHow does the magnitude of the impulse delivered to the probe in Mission 2 compare to Mission 1, and what is the direction of the impulse vector in Mission 2?",
+        "ms": "Sebuah kuar angkasa lepas berjisim m hanyut di sepanjang arah +x dengan halaju malar v_i = v i_hat (momentum p_i = m v i_hat). Pendorongnya dinyalakan secara singkat dalam dua senario misi berasingan:\n- Misi 1 (Berhenti Sepenuhnya): Pendorong membawa kuar ke keadaan rehat sepenuhnya (v_f = 0).\n- Misi 2 (Pemesongan Serong): Pendorong memesongkan kuar supaya ia keluar dengan kelajuan asal v, tetapi menuju pada sudut cakah melebihi 90 darjah relatif kepada laluan asalnya (sehinggakan halaju akhirnya mempunyai komponen-x negatif dan komponen-y positif).\nBagaimanakah magnitud impuls yang dikenakan kepada kuar dalam Misi 2 berbanding dengan Misi 1, dan apakah arah vektor impuls dalam Misi 2?",
+        "zh": "一个质量为m的深空探测器沿+x方向以恒定速度 v_i = v i_hat（动量 p_i = m v i_hat）漂移。在两个独立的任务场景中，其推进器短暂点火：\n- 任务1（完全停止）：推进器使探测器完全静止（v_f = 0）。\n- 任务2（斜向偏转）：推进器使探测器改变方向，以原来的速率v滑出，但航向与初始路径成大于90度的钝角（使其末速度具有负x分量和正y分量）。\n任务2中传递给探测器的冲量大小与任务1相比如何？任务2中的冲量矢量指向什么方向？"
+      },
+      "hints": [
+        {
+          "en": "Remember that impulse is a vector equation: I = Delta p = p_f - p_i. You must evaluate the change in each coordinate component separately.",
+          "ms": "Ingat bahawa impuls ialah persamaan vektor: I = Delta p = p_f - p_i. Anda mesti menilai perubahan dalam setiap komponen koordinat secara berasingan.",
+          "zh": "记住冲量是一个矢量方程：I = Delta p = p_f - p_i。你必须分别评估每个坐标分量的改变。"
+        },
+        {
+          "en": "In Mission 1, the change in x-momentum is 0 - m v = -m v. In Mission 2, the probe ends with a negative x-momentum (-m v_x). What is Delta p_x = p_fx - p_ix in Mission 2, and what additional momentum appears in the y-direction?",
+          "ms": "Dalam Misi 1, perubahan momentum-x ialah 0 - m v = -m v. Dalam Misi 2, kuar berakhir dengan momentum-x negatif (-m v_x). Apakah Delta p_x = p_fx - p_ix dalam Misi 2, dan apakah momentum tambahan yang muncul dalam arah y?",
+          "zh": "在任务1中，x方向动量的改变为 0 - m v = -m v。在任务2中，探测器最终具有负的x方向动量（-m v_x）。任务2中 Delta p_x = p_fx - p_ix 是多少？并且y方向上出现了什么额外的动量？"
+        }
+      ],
+      "feedback": {
+        "en": "Because impulse is the vector difference I = p_f - p_i, deflecting a projectile backward requires not only eliminating its positive forward momentum (as in stopping), but also adding negative x-momentum and positive y-momentum. Thus, obtuse deflection requires a larger impulse than stopping.",
+        "ms": "Kerana impuls ialah perbezaan vektor I = p_f - p_i, memesongkan projektil ke belakang memerlukan bukan sahaja menghapuskan momentum positif ke hadapannya (seperti dalam menghentikannya), tetapi juga menambah momentum-x negatif dan momentum-y positif. Oleh itu, pemesongan cakah memerlukan impuls yang lebih besar daripada menghentikannya.",
+        "zh": "因为冲量是矢量差 I = p_f - p_i，将弹体向后偏转不仅需要消除其向前的正动量（如同停下时那样），还必须增加负的x方向动量和正的y方向动量。因此，钝角偏转所需的冲量大于使物体停下所需的冲量。"
+      },
+      "answerLogic": {
+        "en": "Option A is correct. Impulse equals the vector change in momentum: I = p_f - p_i. In Mission 1, I_1 = 0 - m v i_hat = -m v i_hat, with magnitude m v. In Mission 2, the final velocity has an x-component v_fx < 0 and a y-component v_fy > 0. The impulse components are I_x = m v_fx - m v < -m v, so |I_x| > m v, and I_y = m v_fy > 0. The total magnitude |I_2| = sqrt(I_x^2 + I_y^2) is strictly greater than m v. Hence, Mission 2 requires a larger impulse than Mission 1, pointing toward negative x and positive y. Option B is incorrect because reversing or deflecting an object requires more impulse than stopping it (just as a rebounding car experiences greater impulse than one that stops without rebounding, as demonstrated in Example 9.3). Option C is incorrect because momentum is a vector; unchanged speed does not mean zero momentum change when direction changes. Option D is incorrect because turning past 90 degrees requires reversing forward momentum in addition to lateral redirection.",
+        "ms": "Pilihan A adalah betul. Impuls bersamaan dengan perubahan vektor dalam momentum: I = p_f - p_i. Dalam Misi 1, I_1 = 0 - m v i_hat = -m v i_hat, dengan magnitud m v. Dalam Misi 2, halaju akhir mempunyai komponen-x v_fx < 0 dan komponen-y v_fy > 0. Komponen impuls ialah I_x = m v_fx - m v < -m v, jadi |I_x| > m v, dan I_y = m v_fy > 0. Jumlah magnitud |I_2| = sqrt(I_x^2 + I_y^2) adalah lebih besar secara mutlak daripada m v. Oleh itu, Misi 2 memerlukan impuls yang lebih besar daripada Misi 1, menghala ke arah x negatif dan y positif. Pilihan B tidak betul kerana membalikkan atau memesongkan objek memerlukan lebih banyak impuls daripada menghentikannya (seperti kereta yang melantun mengalami impuls yang lebih besar berbanding kereta yang terhenti tanpa melantun, seperti yang ditunjukkan dalam Contoh 9.3). Pilihan C tidak betul kerana momentum ialah vektor; kelajuan yang tidak berubah tidak bermakna perubahan momentum adalah sifar apabila arah berubah. Pilihan D tidak betul kerana membelok melebihi 90 darjah memerlukan pembalikan momentum ke hadapan selain daripada pemesongan sisi.",
+        "zh": "选项A正确。冲量等于动量的矢量改变：I = p_f - p_i。在任务1中，I_1 = 0 - m v i_hat = -m v i_hat，大小为 m v。在任务2中，末速度具有x分量 v_fx < 0 和y分量 v_fy > 0。冲量分量为 I_x = m v_fx - m v < -m v，因此 |I_x| > m v，且 I_y = m v_fy > 0。总大小 |I_2| = sqrt(I_x^2 + I_y^2) 严格大于 m v。因此，任务2所需的冲量大于任务1，且指向负x和正y方向。选项B错误，因为反弹或向后偏转物体比使物体停止需要更大的冲量（正如例9.3所示，反弹的汽车比没有反弹而停下的汽车承受更大的冲量）。选项C错误，因为动量是矢量；方向改变时速率不变并不意味着动量改变为零。选项D错误，因为偏转超过90度除了需要侧向转向外，还必须反转原先向前的动量。"
+      },
+      "explanation": {
+        "en": "The impulse-momentum theorem states that I = Delta p = p_f - p_i. Because momentum is a vector, changing the direction of motion requires an impulse even if speed remains unchanged. When an object is deflected at an angle greater than 90 degrees (an obtuse redirection), its forward momentum must be completely stopped and then accelerated backward, while simultaneously acquiring transverse momentum. As established in Example 9.3's 'What If?' discussion, bringing an object to rest requires only stopping the initial momentum, whereas redirecting or rebounding it requires an additional impulse, making the total required impulse magnitude strictly larger.",
+        "ms": "Teorem impuls-momentum menyatakan bahawa I = Delta p = p_f - p_i. Kerana momentum ialah vektor, mengubah arah gerakan memerlukan impuls walaupun kelajuan kekal tidak berubah. Apabila sesuatu objek dipesongkan pada sudut yang melebihi 90 darjah (pemesongan cakah), momentum ke hadapannya mesti dihentikan sepenuhnya dan kemudian dipecut ke belakang, sambil secara serentak memperoleh momentum melintang. Seperti yang dinyatakan dalam perbincangan 'What If?' Contoh 9.3, menghentikan objek hanya memerlukan penghentian momentum awal, manakala memesongkan atau melantunkannya memerlukan impuls tambahan, menjadikan jumlah magnitud impuls yang diperlukan lebih besar secara mutlak.",
+        "zh": "动量定理指出 I = Delta p = p_f - p_i。由于动量是矢量，即使速率保持不变，改变运动方向也需要冲量。当物体以大于90度的角度偏转（钝角偏转）时，必须先完全消除其向前的动量，然后使其向后加速，同时获得横向动量。正如例9.3的“What If?”讨论中所确立的，使物体静止仅需停止初始动量，而将其偏转或反弹则需要额外的冲量，使得所需的总冲量大小严格更大。"
+      },
+      "misconceptions": [
+        "rebound-involves-less-impulse",
+        "impulse-as-intrinsic-property"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-change-concept",
+        "prompt": {
+          "en": "Practice vector subtraction: Delta p = p_f - p_i. Along any axis, subtract the initial component from the final component, taking careful note of negative signs indicating reverse direction.",
+          "ms": "Latih tubi penolakan vektor: Delta p = p_f - p_i. Di sepanjang mana-mana paksi, tolak komponen awal daripada komponen akhir, dengan memberi perhatian teliti kepada tanda negatif yang menunjukkan arah bertentangan.",
+          "zh": "练习矢量减法：Delta p = p_f - p_i。沿任意坐标轴，用末分量减去初分量，特别注意表示反方向的负号。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options comparing the vector impulse required to bring a space probe to rest versus deflecting it at an obtuse angle at constant speed.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang membandingkan impuls vektor yang diperlukan untuk menghentikan kuar angkasa berbanding memesongkannya pada sudut cakah pada kelajuan malar.",
+        "zh": "包含四个选项的多项选择题，对比使太空探测器静止与使其以恒定速率进行钝角偏转所需的矢量冲量。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-sec9-3-mcq-09-a",
+        "options": [
+          {
+            "id": "opt-sec9-3-mcq-09-a",
+            "label": {
+              "en": "Mission 2 requires an impulse of greater magnitude than Mission 1 because the thrusters must both fully cancel the forward x-momentum and supply additional backward and lateral momentum; the impulse vector points with a negative x-component and a positive y-component.",
+              "ms": "Misi 2 memerlukan impuls bermagnitud lebih besar daripada Misi 1 kerana pendorong mesti membatalkan sepenuhnya momentum-x ke hadapan dan membekalkan momentum ke belakang serta sisi tambahan; vektor impuls menghala dengan komponen-x negatif dan komponen-y positif.",
+              "zh": "任务2所需的冲量大小大于任务1，因为推进器不仅必须完全抵消向前的x方向动量，还必须提供额外的反向及侧向动量；冲量矢量指向具有负x分量和正y分量的方向。"
+            }
+          },
+          {
+            "id": "opt-sec9-3-mcq-09-b",
+            "label": {
+              "en": "Mission 2 requires an impulse of smaller magnitude than Mission 1 because bringing an object to rest destroys all of its forward motion, whereas deflecting an object only alters its path without overcoming its full momentum.",
+              "ms": "Misi 2 memerlukan impuls bermagnitud lebih kecil daripada Misi 1 kerana menghentikan objek memusnahkan semua gerakan ke hadapannya, manakala memesongkan objek hanya mengubah laluannya tanpa mengatasi keseluruhan momentumnya.",
+              "zh": "任务2所需的冲量大小小于任务1，因为使物体停止会消除其所有向前运动，而偏转物体仅改变其路径，无需克服其全部动量。"
+            },
+            "misconception": "rebound-involves-less-impulse"
+          },
+          {
+            "id": "opt-sec9-3-mcq-09-c",
+            "label": {
+              "en": "Mission 2 requires zero net impulse because the probe maintains the exact same scalar speed and kinetic energy before and after the deflection, meaning its intrinsic momentum is conserved.",
+              "ms": "Misi 2 memerlukan sifar impuls bersih kerana kuar mengekalkan kelajuan skalar dan tenaga kinetik yang sama persis sebelum dan selepas pemesongan, bermakna momentum intrinsiknya adalah abadi.",
+              "zh": "任务2不需要净冲量，因为探测器在偏转前后的标量速率和动能完全相同，这意味着其固有动量是守恒的。"
+            },
+            "misconception": "impulse-as-intrinsic-property"
+          },
+          {
+            "id": "opt-sec9-3-mcq-09-d",
+            "label": {
+              "en": "Mission 2 requires an impulse identical in magnitude to Mission 1 because the change in speed is zero in Mission 2, so the required force only turns the existing velocity vector sideways along the +y axis.",
+              "ms": "Misi 2 memerlukan impuls yang serupa magnitudnya dengan Misi 1 kerana perubahan kelajuan adalah sifar dalam Misi 2, jadi daya yang diperlukan hanya memusingkan vektor halaju sedia ada ke sisi di sepanjang paksi +y.",
+              "zh": "任务2所需的冲量大小与任务1相同，因为任务2中速率的变化为零，所以所需的力仅仅是将现有的速度矢量沿+y轴向侧面偏转。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sec9-3-int-01",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Define linear impulse as the time integral of net external force and the area under a force-time graph.",
+      "prompt": {
+        "en": "Classify each description according to whether it characterizes linear impulse (the external mechanism transferring momentum) or an intrinsic state property of the particle itself.",
+        "ms": "Kelaskan setiap penerangan mengikut sama ada ia mencirikan impuls linear (mekanisme luaran yang memindahkan momentum) atau sifat keadaan intrinsik zarah itu sendiri.",
+        "zh": "根据各项描述是指线冲量（传递动量的外部机制）还是质点本身的固有状态属性进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Consider whether the description relates to what an external force does across a duration of time, or what an object possesses solely by virtue of its instantaneous motion.",
+          "ms": "Pertimbangkan sama ada penerangan tersebut berkaitan dengan apa yang dilakukan oleh daya luaran merentasi suatu tempoh masa, atau apa yang dimiliki oleh objek semata-mata kerana gerakan seketikanya.",
+          "zh": "考虑该描述是指外力在一段时间内所产生的作用，还是物体仅凭其瞬时运动就具有的属性。"
+        },
+        {
+          "en": "Impulse is defined as the time integral of net force, corresponding to the area under a force-time curve. It is not a property stored inside a body.",
+          "ms": "Impuls ditakrifkan sebagai kamiran masa bagi daya bersih, yang sepadan dengan luas di bawah lengkung daya-masa. Ia bukan sifat yang disimpan di dalam jasad.",
+          "zh": "冲量定义为合外力对时间的积分，对应力-时间曲线下的面积。它不是储存在物体内部的属性。"
+        }
+      ],
+      "feedback": {
+        "en": "Classification complete. Impulse describes the momentum transferred to a system by an external force over time (and equals the area under the force-time curve), whereas momentum and velocity are intrinsic state properties of the body.",
+        "ms": "Pengelasan selesai. Impuls menerangkan momentum yang dipindahkan kepada sistem oleh daya luaran merentasi masa (dan bersamaan dengan luas di bawah lengkung daya-masa), manakala momentum dan halaju merupakan sifat keadaan intrinsik bagi jasad tersebut.",
+        "zh": "分类完成。冲量描述了外力随时间传递给系统的动量（等于力-时间曲线下的面积），而动量和速度则是物体本身固有的状态属性。"
+      },
+      "answerLogic": {
+        "en": "Impulse is an action exerted by the surroundings across a time interval, evaluated as the time integral of net force or the area under a force-time curve. In contrast, an object does not carry or possess impulse; it possesses momentum as an instantaneous state.",
+        "ms": "Impuls ialah tindakan yang dikenakan oleh persekitaran merentasi suatu selang masa, yang dinilai sebagai kamiran masa bagi daya bersih atau luas di bawah lengkung daya-masa. Sebaliknya, objek tidak membawa atau memiliki impuls; ia memiliki momentum sebagai keadaan seketika.",
+        "zh": "冲量是环境在一段时间内施加的作用，对应于合外力对时间的积分或力-时间曲线下的面积。相反，物体不携带或拥有冲量；它拥有动量作为其瞬时状态。"
+      },
+      "explanation": {
+        "en": "By definition, impulse is the integral of net external force over time and equals the area under the force-versus-time graph. Impulse is a measure of momentum transferred across the system boundary by an external force, not an inherent property possessed by the particle.",
+        "ms": "Secara takrifan, impuls ialah kamiran daya bersih luaran merentasi masa dan bersamaan dengan luas di bawah graf daya melawan masa. Impuls ialah ukuran momentum yang dipindahkan merentasi sempadan sistem oleh daya luaran, bukannya sifat sedia ada yang dimiliki oleh zarah.",
+        "zh": "根据定义，冲量是合外力对时间的积分，等于力随时间变化曲线下的面积。冲量是外力跨越系统边界传递动量的量度，而不是质点固有的物理属性。"
+      },
+      "misconceptions": [
+        "impulse-as-intrinsic-property"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Remember that an object's instantaneous motion is quantified by its momentum (mass times velocity), while impulse represents the external force action that changes that momentum.",
+          "ms": "Ingat bahawa gerakan seketika objek dikuantifikasikan oleh momentumnya (jisim darab halaju), manakala impuls mewakili tindakan daya luaran yang mengubah momentum tersebut.",
+          "zh": "请记住，物体的瞬时运动状态由其动量（质量乘以速度）量化，而冲量则代表改变该动量的外力作用。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A classification task with four items to place into two categories: Characteristics of Linear Impulse and Characteristics of Particle State.",
+        "ms": "Tugasan pengelasan dengan empat item untuk diletakkan ke dalam dua kategori: Ciri-ciri Impuls Linear dan Ciri-ciri Keadaan Zarah.",
+        "zh": "一个分类任务，包含四个项目，需归入两个类别：线冲量的特征与质点状态的特征。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-impulse",
+            "label": {
+              "en": "Characteristics of Linear Impulse",
+              "ms": "Ciri-ciri Impuls Linear",
+              "zh": "线冲量的特征"
+            }
+          },
+          {
+            "id": "target-state",
+            "label": {
+              "en": "Characteristics of Particle State",
+              "ms": "Ciri-ciri Keadaan Zarah",
+              "zh": "质点状态的特征"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-force-time-area",
+            "label": {
+              "en": "Geometric area bounded under the net force versus time curve",
+              "ms": "Luas geometri yang dibatasi di bawah lengkung daya bersih melawan masa",
+              "zh": "合力对时间曲线所包围的几何面积"
+            }
+          },
+          {
+            "id": "item-force-integral",
+            "label": {
+              "en": "Time integral of net external force acting over a finite duration",
+              "ms": "Kamiran masa bagi daya bersih luaran yang bertindak merentasi suatu tempoh terhingga",
+              "zh": "合外力在有限时间段内对时间的积分"
+            }
+          },
+          {
+            "id": "item-internal-possession",
+            "label": {
+              "en": "A dynamic quantity stored within and carried along by a moving body",
+              "ms": "Kuantiti dinamik yang disimpan di dalam dan dibawa bersama oleh jasad yang bergerak",
+              "zh": "由运动物体内部储存并随身携带的动态物理量"
+            },
+            "misconception": "impulse-as-intrinsic-property"
+          },
+          {
+            "id": "item-instantaneous-mv",
+            "label": {
+              "en": "Product of a particle's mass and its instantaneous velocity",
+              "ms": "Hasil darab jisim zarah dan halaju seketikanya",
+              "zh": "质点的质量与其瞬时速度的乘积"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-force-time-area",
+            "targetId": "target-impulse"
+          },
+          {
+            "itemId": "item-force-integral",
+            "targetId": "target-impulse"
+          },
+          {
+            "itemId": "item-internal-possession",
+            "targetId": "target-state"
+          },
+          {
+            "itemId": "item-instantaneous-mv",
+            "targetId": "target-state"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "impulse-as-intrinsic-property",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-internal-possession",
+            "targetId": "target-impulse"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec9-3-int-02",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate impulse to a particle's change in momentum using the impulse-momentum theorem.",
+      "prompt": {
+        "en": "Match each physical quantity or integral formulation to the governing physics principle that directly equates them.",
+        "ms": "Padankan setiap kuantiti fizikal atau formulasi kamiran dengan prinsip fizik berkaitan yang menyamakannya secara langsung.",
+        "zh": "将每个物理量或积分表达式与直接将其联系起来的物理学原理进行配对。"
+      },
+      "hints": [
+        {
+          "en": "Notice the variable of integration: one principle integrates net force over time, whereas the other integrates net force over spatial displacement.",
+          "ms": "Perhatikan pemboleh ubah pengamiran: satu prinsip mengamirkan daya bersih merentasi masa, manakala satu lagi mengamirkan daya bersih merentasi sesaran ruang.",
+          "zh": "注意积分变量：一个原理是将合力对时间积分，而另一个原理是将合力对空间位移积分。"
+        },
+        {
+          "en": "The impulse-momentum theorem equates the vector time integral of net force to the vector change in linear momentum.",
+          "ms": "Teorem impuls-momentum menyamakan kamiran masa vektor bagi daya bersih dengan perubahan vektor dalam momentum linear.",
+          "zh": "动量定理将合外力对时间的矢量积分与线动量的矢量变化量等同起来。"
+        }
+      ],
+      "feedback": {
+        "en": "Pairs correctly matched. Impulse involves integrating force over time to yield the vector change in momentum, contrasting with work which integrates force over displacement to yield scalar kinetic energy change.",
+        "ms": "Pasangan berjaya dipadankan dengan betul. Impuls melibatkan pengamiran daya merentasi masa untuk menghasilkan perubahan vektor dalam momentum, berbeza dengan kerja yang mengamirkan daya merentasi sesaran untuk menghasilkan perubahan skalar tenaga kinetik.",
+        "zh": "配对正确。冲量涉及力对时间的积分以产生动量的矢量变化，这与功（力对位移的积分以产生标量动能变化）有着本质区别。"
+      },
+      "answerLogic": {
+        "en": "The impulse-momentum theorem equates the net force integrated over time to the change in momentum (a vector relation). The work-kinetic energy theorem equates net force integrated over displacement to change in kinetic energy (a scalar relation).",
+        "ms": "Teorem impuls-momentum menyamakan daya bersih yang dikamirkan merentasi masa dengan perubahan momentum (hubungan vektor). Teorem kerja-tenaga kinetik menyamakan daya bersih yang dikamirkan merentasi sesaran dengan perubahan tenaga kinetik (hubungan skalar).",
+        "zh": "动量定理将合力对时间的积分等同于动量的改变（矢量关系）。动能定理则将合力对位移的积分等同于动能的改变（标量关系）。"
+      },
+      "explanation": {
+        "en": "Integrating net force with respect to time yields impulse, which equals the change in momentum according to the impulse-momentum theorem. By contrast, integrating force with respect to position gives work, which changes kinetic energy.",
+        "ms": "Mengamirkan daya bersih terhadap masa menghasilkan impuls, yang bersamaan dengan perubahan momentum menurut teorem impuls-momentum. Sebaliknya, mengamirkan daya terhadap kedudukan memberikan kerja, yang mengubah tenaga kinetik.",
+        "zh": "合力对时间积分得到冲量，根据动量定理，冲量等于动量的改变量。相比之下，力对位置积分得到的是功，功引起动能的改变。"
+      },
+      "misconceptions": [
+        "confusing-impulse-with-work"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law-momentum-form",
+        "prompt": {
+          "en": "Recall Newton's second law: net force equals the time derivative of momentum. Multiplying by dt and integrating across time directly reveals that force integrated over time equals momentum change.",
+          "ms": "Ingat kembali hukum kedua Newton: daya bersih bersamaan dengan terbitan masa bagi momentum. Mendarab dengan dt dan mengamirkan merentasi masa secara langsung mendedahkan bahawa daya yang dikamirkan merentasi masa bersamaan dengan perubahan momentum.",
+          "zh": "回想牛顿第二定律：合力等于动量对时间的一阶导数。两边同乘 dt 并对时间积分，直接表明力对时间的积分等于动量的改变量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A matching interaction with four items to pair with two frameworks: Impulse-Momentum Theorem and Work-Kinetic Energy Theorem.",
+        "ms": "Interaksi pemadanan dengan empat item untuk dipasangkan dengan dua rangka kerja: Teorem Impuls-Momentum dan Teorem Kerja-Tenaga Kinetik.",
+        "zh": "一个匹配交互，包含四个项目，需分别与两个框架配对：动量定理与动能定理。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-impulse-theorem",
+            "label": {
+              "en": "Impulse-Momentum Theorem",
+              "ms": "Teorem Impuls-Momentum",
+              "zh": "动量定理"
+            }
+          },
+          {
+            "id": "target-work-energy-theorem",
+            "label": {
+              "en": "Work-Kinetic Energy Theorem",
+              "ms": "Teorem Kerja-Tenaga Kinetik",
+              "zh": "动能定理"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-time-integral",
+            "label": {
+              "en": "Integral of net external force evaluated with respect to elapsed time",
+              "ms": "Kamiran daya bersih luaran yang dinilai terhadap masa yang berlalu",
+              "zh": "合外力对经过时间的积分"
+            }
+          },
+          {
+            "id": "item-momentum-change",
+            "label": {
+              "en": "Vector difference between final and initial linear momentum",
+              "ms": "Perbezaan vektor antara momentum linear akhir dan awal",
+              "zh": "末线动量与初线动量之间的矢量差"
+            }
+          },
+          {
+            "id": "item-disp-integral",
+            "label": {
+              "en": "Integral of net force evaluated with respect to spatial displacement",
+              "ms": "Kamiran daya bersih yang dinilai terhadap sesaran ruang",
+              "zh": "合力对空间位移的积分"
+            },
+            "misconception": "confusing-impulse-with-work"
+          },
+          {
+            "id": "item-kinetic-energy-change",
+            "label": {
+              "en": "Scalar difference between final and initial translational kinetic energy",
+              "ms": "Perbezaan skalar antara tenaga kinetik translasi akhir dan awal",
+              "zh": "末平动动能与初平动动能之间的标量差"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-time-integral",
+            "targetId": "target-impulse-theorem"
+          },
+          {
+            "itemId": "item-momentum-change",
+            "targetId": "target-impulse-theorem"
+          },
+          {
+            "itemId": "item-disp-integral",
+            "targetId": "target-work-energy-theorem"
+          },
+          {
+            "itemId": "item-kinetic-energy-change",
+            "targetId": "target-work-energy-theorem"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "confusing-impulse-with-work",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-disp-integral",
+            "targetId": "target-impulse-theorem"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec9-3-int-03",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Explain how extending collision duration reduces average force for a given momentum change in safety devices.",
+      "prompt": {
+        "en": "A passenger of mass m is brought to rest from highway speed during a frontal collision. Select ALL valid physical statements comparing an air bag collision to striking a rigid dashboard.",
+        "ms": "Seorang penumpang berjisim m diberhentikan daripada kelajuan lebuh raya semasa perlanggaran hadapan. Pilih SEMUA pernyataan fizik yang sah yang membandingkan perlanggaran beg udara dengan melanggar papan pemuka tegar.",
+        "zh": "一名质量为 m 的乘客在正面碰撞中从高速行驶状态减速至静止。请选出所有比较碰撞安全气囊与撞击刚性仪表板的正确物理陈述。"
+      },
+      "hints": [
+        {
+          "en": "Think about the total momentum change required to bring the passenger from the same initial speed to zero speed in both cases.",
+          "ms": "Fikirkan tentang jumlah perubahan momentum yang diperlukan untuk membawa penumpang daripada kelajuan awal yang sama kepada kelajuan sifar dalam kedua-dua kes.",
+          "zh": "思考在两种情况下将乘客从相同的初速度减速到静止所需的总动量改变量。"
+        },
+        {
+          "en": "Because impulse equals average force multiplied by time interval, achieving the same impulse with a longer time interval requires a smaller average force, not a larger one.",
+          "ms": "Oleh kerana impuls bersamaan dengan daya purata didarab dengan selang masa, mencapai impuls yang sama dengan selang masa yang lebih panjang memerlukan daya purata yang lebih kecil, bukannya lebih besar.",
+          "zh": "由于冲量等于平均力乘以时间间隔，在相同冲量下，时间间隔越长，所需的平均力就越小，而不是越大。"
+        }
+      ],
+      "feedback": {
+        "en": "Selections correct. The required impulse is identical because the passenger undergoes the exact same change in momentum. The air bag protects by extending contact time, which reduces the average force rather than increasing it.",
+        "ms": "Pilihan tepat. Impuls yang diperlukan adalah serupa kerana penumpang mengalami perubahan momentum yang sama persis. Beg udara melindungi dengan memanjangkan masa sentuhan, yang mengurangkan daya purata dan bukannya meningkatkannya.",
+        "zh": "选择正确。所需的冲量是相同的，因为乘客经历了完全相同的动量改变量。安全气囊通过延长接触时间来提供保护，从而减小了平均力，而不是增大它。"
+      },
+      "answerLogic": {
+        "en": "In both collisions, the passenger begins at speed v and ends at rest, so the momentum change and required impulse are identical. The air bag increases collision duration (Δt), and because average force equals impulse divided by time interval, the average force is reduced rather than increased.",
+        "ms": "Dalam kedua-dua perlanggaran, penumpang bermula pada kelajuan v dan berakhir dalam keadaan pegun, jadi perubahan momentum dan impuls yang diperlukan adalah serupa. Beg udara memanjangkan tempoh perlanggaran (Δt), dan kerana daya purata bersamaan dengan impuls dibahagikan dengan selang masa, daya purata dikurangkan dan bukannya ditingkatkan.",
+        "zh": "在这两种碰撞中，乘客均从初速度 v 减速至静止，因此动量变化和所需冲量完全相同。安全气囊延长了碰撞持续时间 (Δt)，并且由于平均力等于冲量除以时间间隔，平均力因而减小而不是增大。"
+      },
+      "explanation": {
+        "en": "Safety devices like air bags do not increase the impact force; by extending the duration of the impact for a fixed momentum change, they significantly decrease the average force exerted on the passenger, preventing severe injury.",
+        "ms": "Peranti keselamatan seperti beg udara tidak meningkatkan daya hentaman; dengan memanjangkan tempoh hentaman bagi perubahan momentum yang tetap, ia mengurangkan daya purata yang dikenakan ke atas penumpang secara ketara, sekali gus mengelakkan kecederaan parah.",
+        "zh": "像安全气囊这样的安全装置并不会增加冲击力；对于给定的动量变化，通过延长碰撞作用时间，它们显著减小了施加在乘客身上的平均力，从而避免造成严重伤害。"
+      },
+      "misconceptions": [
+        "cushioning-increases-impact-force"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law-momentum-form",
+        "prompt": {
+          "en": "Review the definition of time-averaged force: average net force equals total impulse divided by collision duration. Increasing duration for a constant impulse reduces force.",
+          "ms": "Semak semula takrifan daya purata masa: daya paduan purata bersamaan dengan jumlah impuls dibahagikan dengan tempoh perlanggaran. Meningkatkan tempoh bagi impuls yang malar akan mengurangkan daya.",
+          "zh": "复习时间平均力的定义：平均合力等于总冲量除以碰撞持续时间。在冲量恒定的情况下增加持续时间会减小受力。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multiple-selection activity with four statements comparing collision duration, impulse, and impact force for an air bag versus a rigid dashboard.",
+        "ms": "Aktiviti pelbagai pilihan dengan empat pernyataan yang membandingkan tempoh perlanggaran, impuls, dan daya hentaman bagi beg udara berbanding papan pemuka tegar.",
+        "zh": "一个多选活动，包含关于比较安全气囊与刚性仪表板的碰撞持续时间、冲量和冲击力的四个陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-equal-impulse",
+            "label": {
+              "en": "The total impulse required to bring the passenger to rest is the same whether an air bag or dashboard stops them.",
+              "ms": "Jumlah impuls yang diperlukan untuk memberhentikan penumpang adalah sama sama ada beg udara atau papan pemuka yang memberhentikan mereka.",
+              "zh": "无论是由安全气囊还是由仪表板使乘客停下，所需的总冲量都是相同的。"
+            }
+          },
+          {
+            "id": "item-prolonged-duration",
+            "label": {
+              "en": "The air bag increases the duration of the collision, resulting in a smaller average force on the passenger.",
+              "ms": "Beg udara memanjangkan tempoh perlanggaran, menghasilkan daya purata yang lebih kecil ke atas penumpang.",
+              "zh": "安全气囊增加了碰撞的持续时间，从而减小了施加在乘客身上的平均力。"
+            }
+          },
+          {
+            "id": "item-reduces-momentum-change",
+            "label": {
+              "en": "The air bag increases the average impact force on the passenger compared to striking the rigid dashboard.",
+              "ms": "Beg udara meningkatkan daya hentaman purata ke atas penumpang berbanding melanggar papan pemuka tegar.",
+              "zh": "与撞击刚性仪表板相比，安全气囊增加了施加在乘客身上的平均冲击力。"
+            },
+            "misconception": "cushioning-increases-impact-force"
+          },
+          {
+            "id": "item-shorter-time-safer",
+            "label": {
+              "en": "A shorter impact time interval is safer because the external force acts for less total time.",
+              "ms": "Selang masa hentaman yang lebih singkat adalah lebih selamat kerana daya luaran bertindak untuk jumlah masa yang lebih sedikit.",
+              "zh": "更短的碰撞时间间隔更安全，因为外力的总作用时间更短。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-equal-impulse",
+          "item-prolonged-duration"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "cushioning-increases-impact-force",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-reduces-momentum-change",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec9-3-int-04",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate impulse to momentum change for stopping versus rebounding trajectories.",
+      "prompt": {
+        "en": "Three identical carts approach a fixed rigid barrier with the same forward velocity. Each cart is equipped with a different bumper, resulting in a distinct motion after striking the barrier. Order the carts according to the magnitude of the impulse delivered to each by the barrier during the collision, from greatest impulse magnitude at the top to smallest impulse magnitude at the bottom.",
+        "ms": "Tiga troli yang serupa menghampiri penghadang tegar tetap dengan halaju ke hadapan yang sama. Setiap troli dilengkapi dengan bampar berbeza, menghasilkan pergerakan berbeza selepas melanggar penghadang. Susun troli mengikut magnitud impuls yang dikenakan ke atas setiap satu oleh penghadang semasa perlanggaran, dari magnitud impuls terbesar di bahagian atas ke magnitud impuls terkecil di bahagian bawah.",
+        "zh": "三辆完全相同的小车以相同的向前初速度驶向固定坚固屏障。每辆小车装有不同的保险杠，在撞击屏障后产生不同的运动状态。请按照碰撞过程中屏障施加给小车的冲量大小，将小车从大到小（冲量最大在最上方，冲量最小在最下方）进行排序。"
+      },
+      "hints": [
+        {
+          "en": "Recall the impulse-momentum theorem: the impulse delivered to an object equals its change in momentum, which is the final momentum vector minus the initial momentum vector.",
+          "ms": "Ingat kembali teorem impuls-momentum: impuls yang dikenakan kepada suatu objek bersamaan dengan perubahan momentumnya, iaitu vektor momentum akhir tolak vektor momentum awal.",
+          "zh": "回顾动量定理：施加在物体上的冲量等于其动量的变化量，即末动量矢量减去初动量矢量。"
+        },
+        {
+          "en": "Consider the vector signs: if forward is positive, a cart that rebounds backward has a negative final momentum, making the vector difference larger in magnitude than for a cart that simply stops with zero final momentum.",
+          "ms": "Pertimbangkan tanda vektor: jika arah ke hadapan adalah positif, troli yang melantun ke belakang mempunyai momentum akhir yang negatif, menjadikan perbezaan vektor lebih besar dalam magnitud berbanding troli yang sekadar berhenti dengan momentum akhir sifar.",
+          "zh": "考虑矢量方向的正负号：如果规定向前为正方向，向后反弹的小车具有负的末动量，其矢量差的大小将大于末动量为零的仅停止小车。"
+        }
+      ],
+      "feedback": {
+        "en": "Excellent! Rebounding requires reversing the initial momentum, which demands a greater vector momentum change and therefore a greater impulse magnitude than simply bringing the cart to rest.",
+        "ms": "Cemerlang! Melantun memerlukan pembalikan momentum awal, yang menuntut perubahan vektor momentum yang lebih besar dan oleh itu magnitud impuls yang lebih besar berbanding sekadar menghentikan troli.",
+        "zh": "太棒了！反弹需要逆转初始动量的方向，这比单纯让小车停下需要更大的动量矢量变化量，因此承受的冲量大小也更大。"
+      },
+      "answerLogic": {
+        "en": "Because impulse equals final momentum minus initial momentum, reversing direction adds velocity magnitudes along the axis of collision: the magnitude of impulse equals mass times (initial speed + rebound speed). For a cart brought to rest, final speed is zero, giving an impulse magnitude of mass times initial speed. Hence, Cart A (fast rebound) experiences the largest impulse, Cart B (slow rebound) experiences the next largest, and Cart C (stopping) experiences the smallest impulse.",
+        "ms": "Kerana impuls bersamaan momentum akhir tolak momentum awal, membalikkan arah menambah magnitud kelajuan di sepanjang paksi perlanggaran: magnitud impuls bersamaan jisim darab (kelajuan awal + kelajuan lantunan). Bagi troli yang dihentikan, kelajuan akhir ialah sifar, menghasilkan magnitud impuls bersamaan jisim darab kelajuan awal. Oleh itu, Troli A (lantunan laju) mengalami impuls terbesar, Troli B (lantunan perlahan) mengalami impuls kedua terbesar, dan Troli C (berhenti) mengalami impuls terkecil.",
+        "zh": "因为冲量等于末动量减去初动量，反弹改变了速度方向，沿碰撞轴的速度大小相加：冲量的大小等于质量乘以（初始速率 + 反弹速率）。对于停下的小车，末速度为零，冲量大小仅为质量乘以初始速率。因此，小车 A（快速反弹）受到的冲量最大，小车 B（慢速反弹）次之，小车 C（完全停下）受到的冲量最小。"
+      },
+      "explanation": {
+        "en": "A common misconception is that stopping an object requires more impulse than bouncing it. In reality, to bounce an object, the barrier must first supply enough impulse to bring the forward motion to zero, and then supply additional impulse in the reverse direction to propel it backward. The faster the rebound, the greater the total impulse required.",
+        "ms": "Salah faham yang lazim ialah menyangka bahawa menghentikan objek memerlukan impuls yang lebih besar daripada melantunkannya. Sebenarnya, untuk melantunkan objek, penghadang mesti terlebih dahulu membekalkan impuls yang mencukupi untuk menghentikan gerakan ke hadapan menjadi sifar, dan kemudian membekalkan impuls tambahan dalam arah bertentangan untuk menolaknya ke belakang. Semakin laju lantunan, semakin besar jumlah impuls yang diperlukan.",
+        "zh": "一个常见的误区是认为让物体停下比让它反弹需要更大的冲量。实际上，要让物体反弹，屏障必须首先提供足够的冲量将其向前的速度减至零，然后必须在反方向继续提供额外的冲量使其向后加速。反弹速率越高，所需要的总冲量就越大。"
+      },
+      "misconceptions": [
+        "rebound-involves-less-impulse"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-change-concept",
+        "prompt": {
+          "en": "Review vector subtraction: change in velocity is final velocity minus initial velocity. When the final velocity points opposite to the initial velocity, their vector difference has a magnitude equal to the sum of their individual speeds.",
+          "ms": "Kaji semula penolakan vektor: perubahan halaju ialah halaju akhir tolak halaju awal. Apabila halaju akhir berarah bertentangan dengan halaju awal, magnitud perbezaan vektor bersamaan dengan hasil tambah kelajuan masing-masing.",
+          "zh": "复习矢量减法：速度变化量等于末速度减去初速度。当末速度方向与初速度方向相反时，它们矢量差的大小等于各自速率之和。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Reorder three carts from greatest impulse magnitude received to smallest impulse magnitude received during an impact with a wall.",
+        "ms": "Susun semula tiga troli dari magnitud impuls diterima terbesar ke magnitud impuls diterima terkecil semasa perlanggaran dengan dinding.",
+        "zh": "将三辆小车按撞墙过程中所受冲量大小从大到小重新排序。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "cart-high-rebound",
+            "label": {
+              "en": "Cart A: Rebounds backward at a high speed after collision",
+              "ms": "Troli A: Melantun ke belakang pada kelajuan tinggi selepas perlanggaran",
+              "zh": "小车 A：碰撞后以高速度向后反弹"
+            }
+          },
+          {
+            "id": "cart-low-rebound",
+            "label": {
+              "en": "Cart B: Rebounds backward at a low speed after collision",
+              "ms": "Troli B: Melantun ke belakang pada kelajuan rendah selepas perlanggaran",
+              "zh": "小车 B：碰撞后以低速度向后反弹"
+            }
+          },
+          {
+            "id": "cart-stop",
+            "label": {
+              "en": "Cart C: Crumples and comes completely to rest against the barrier without rebounding",
+              "ms": "Troli C: Meremuk dan terhenti sepenuhnya pada penghadang tanpa melantun",
+              "zh": "小车 C：压溃并完全停在屏障前，没有任何反弹"
+            }
+          }
+        ],
+        "correctOrder": [
+          "cart-high-rebound",
+          "cart-low-rebound",
+          "cart-stop"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "rebound-involves-less-impulse",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "cart-stop",
+            "secondItemId": "cart-low-rebound"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec9-3-int-05",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply the impulse approximation by identifying dominant impulsive contact forces over brief collision intervals.",
+      "prompt": {
+        "en": "A baseball is struck in mid-air by a bat during a collision lasting only a hundredth of a second. Under the impulse approximation, forces acting on the objects during the brief contact interval are evaluated to determine their significance. Classify each force as either a dominant impulsive force or a negligible non-impulsive force.",
+        "ms": "Sebiji bola besbol dipukul di udara oleh bet semasa perlanggaran yang berlangsung hanya satu peratus saat. Di bawah anggaran impuls, daya yang bertindak ke atas objek semasa selang sentuhan yang singkat dinilai untuk menentukan kepentingannya. Kelaskan setiap daya sama ada sebagai daya impuls dominan atau daya bukan impuls yang boleh diabaikan.",
+        "zh": "棒球在空中被球棒击中，碰撞持续时间仅约百分之一秒。在冲量近似下，需要评估短暂接触期间作用在物体上的各种力的大小及重要性。请将下列各力归类为主要冲力或可忽略的非冲力。"
+      },
+      "hints": [
+        {
+          "en": "The impulse delivered by any force combines its average magnitude with the duration of contact. When the collision interval is extremely brief, only forces that reach immense magnitudes produce a significant change in momentum.",
+          "ms": "Impuls yang dikenakan oleh sebarang daya menggabungkan magnitud puratanya dengan tempoh sentuhan. Apabila selang masa perlanggaran amat singkat, hanya daya yang mencapai magnitud amat besar menghasilkan perubahan momentum yang ketara.",
+          "zh": "力所产生的冲量由其平均大小与接触时间共同决定。当碰撞过程极其短暂微小时，只有达到巨大强度的力才能造成显著的动量变化。"
+        },
+        {
+          "en": "Compare the contact forces (typically thousands of newtons) with ordinary forces like the weight of the ball or air drag over that tiny fraction of a second.",
+          "ms": "Bandingkan daya sentuhan (biasanya beribu-ribu newton) dengan daya biasa seperti berat bola atau seretan udara sepanjang pecahan saat yang amat kecil itu.",
+          "zh": "对比接触力（通常达数千牛顿）与普通力（如球的重力或空气阻力）在那微小的短暂瞬间所产生的冲量。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Contact forces between the colliding bodies reach thousands of newtons during the split second of impact, making their impulse overwhelmingly dominant while the impulse from gravity and air resistance is negligible.",
+        "ms": "Tepat! Daya sentuhan antara jasad yang berlanggar mencapai ribuan newton dalam pecahan saat impak, menjadikan impulsnya sangat dominan manakala impuls daripada graviti dan rintangan udara boleh diabaikan.",
+        "zh": "回答正确！碰撞物体之间的接触力在极短的瞬间达到数千牛顿，其冲量占据压倒性优势，而重力和空气阻力在极短时间内的冲量完全可以忽略不计。"
+      },
+      "answerLogic": {
+        "en": "The impulse approximation applies to collisions of very short duration. The contact interaction forces between bat and ball reach peak values of thousands of newtons, transferring almost the entire momentum change in 0.01 s. In contrast, the gravitational force and air drag are ordinary forces whose product with the tiny time interval produces an impulse several orders of magnitude smaller, allowing them to be neglected.",
+        "ms": "Anggaran impuls terpakai untuk perlanggaran yang berdurasi sangat singkat. Daya interaksi sentuhan antara bet dan bola mencapai nilai puncak beribu-ribu newton, memindahkan hampir keseluruhan perubahan momentum dalam 0.01 s. Sebaliknya, daya graviti dan seretan udara ialah daya biasa yang hasil darabnya dengan selang masa yang amat kecil menghasilkan impuls beberapa magnitud lebih kecil, membolehkannya diabaikan.",
+        "zh": "冲量近似适用于持续时间极短的碰撞过程。球棒与棒球之间的接触相互作用力峰值可达数千牛顿，在0.01秒内转移了几乎全部动量变化。相比之下，重力和空气阻力属于普通力，与极小时间间隔相乘产生的冲量比碰撞力小几个数量级，因此可以忽略不计。"
+      },
+      "explanation": {
+        "en": "Learners who ignore the role of the time interval often assume that because gravity acts continuously and unconditionally, it cannot be ignored. However, impulse is force integrated over time. Over a hundredth of a second, the momentum transferred by Earth's gravity to the ball is negligible compared to the thousands of newtons exerted by the bat.",
+        "ms": "Pelajar yang mengabaikan peranan selang masa sering menganggap bahawa kerana graviti bertindak secara berterusan tanpa henti, ia tidak boleh diabaikan. Walau bagaimanapun, impuls ialah kamiran daya terhadap masa. Sepanjang satu peratus saat, momentum yang dipindahkan oleh graviti Bumi kepada bola adalah amat kecil berbanding beribu-ribu newton yang dikenakan oleh bet.",
+        "zh": "忽略时间作用的学生常认为，由于重力始终存在且持续作用，因此绝不能被忽略。然而，冲量是力对时间的积分。在百分之一秒的时间跨度内，地球重力传递给棒球的动量与球棒施加的数千牛顿冲击力相比微不足道。"
+      },
+      "misconceptions": [
+        "ignoring-time-in-momentum-change"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law-momentum-form",
+        "prompt": {
+          "en": "Recall Newton's second law: net force equals the rate of change of momentum. Multiplying a modest force by a microscopic time interval yields a microscopic change in momentum.",
+          "ms": "Ingat kembali hukum kedua Newton: daya bersih bersamaan kadar perubahan momentum. Mendarabkan daya sederhana dengan selang masa yang sangat kecil menghasilkan perubahan momentum yang sangat kecil.",
+          "zh": "复习牛顿第二定律：合力等于动量对时间的变化率。有限大小的力乘以极微小的时间间隔，所产生的动量改变量同样极其微小。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classify four forces acting during a rapid baseball impact into dominant impulsive forces or negligible non-impulsive forces.",
+        "ms": "Kelaskan empat daya yang bertindak semasa impak besbol pantas kepada daya impuls dominan atau daya bukan impuls yang boleh diabaikan.",
+        "zh": "将快速棒球撞击过程中作用的四种力归类为主要冲力或可忽略的非冲力。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "dominant-impulsive",
+            "label": {
+              "en": "Dominant Impulsive Force (Retained in Model)",
+              "ms": "Daya Impuls Dominan (Dikekalkan dalam Model)",
+              "zh": "主要冲力（在模型中保留）"
+            }
+          },
+          {
+            "id": "negligible-non-impulsive",
+            "label": {
+              "en": "Negligible Non-Impulsive Force (Ignored During Collision)",
+              "ms": "Daya Bukan Impuls Boleh Diabaikan (Diabaikan Semasa Perlanggaran)",
+              "zh": "可忽略的非冲力（在碰撞期间忽略）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "force-bat-on-ball",
+            "label": {
+              "en": "Contact force exerted by the bat on the baseball during impact",
+              "ms": "Daya sentuhan yang dikenakan oleh bet ke atas bola besbol semasa impak",
+              "zh": "击球过程中球棒对棒球施加的接触力"
+            }
+          },
+          {
+            "id": "force-gravity-on-ball",
+            "label": {
+              "en": "Gravitational attraction exerted downward by Earth on the baseball during impact",
+              "ms": "Tarikan graviti ke bawah yang dikenakan oleh Bumi ke atas bola besbol semasa impak",
+              "zh": "击球过程中地球对棒球向下施加的重力"
+            }
+          },
+          {
+            "id": "force-air-resistance",
+            "label": {
+              "en": "Aerodynamic drag exerted by surrounding air on the baseball during impact",
+              "ms": "Seretan aerodinamik yang dikenakan oleh udara sekeliling ke atas bola besbol semasa impak",
+              "zh": "击球过程中周围空气对棒球施加的空气阻力"
+            }
+          },
+          {
+            "id": "force-ball-on-bat",
+            "label": {
+              "en": "Contact force exerted by the baseball on the bat during impact",
+              "ms": "Daya sentuhan yang dikenakan oleh bola besbol ke atas bet semasa impak",
+              "zh": "击球过程中棒球对球棒施加的反作用接触力"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "force-bat-on-ball",
+            "targetId": "dominant-impulsive"
+          },
+          {
+            "itemId": "force-gravity-on-ball",
+            "targetId": "negligible-non-impulsive"
+          },
+          {
+            "itemId": "force-air-resistance",
+            "targetId": "negligible-non-impulsive"
+          },
+          {
+            "itemId": "force-ball-on-bat",
+            "targetId": "dominant-impulsive"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "ignoring-time-in-momentum-change",
+          "condition": {
+            "kind": "placement",
+            "itemId": "force-gravity-on-ball",
+            "targetId": "dominant-impulsive"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec9-3-int-06",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between a time-varying force and its equivalent constant time-averaged force.",
+      "prompt": {
+        "en": "During an impact, the net force varies rapidly with time. Physicists model this event using the area under the force-time curve, an equivalent constant time-averaged force, and the peak force. Match each physical property or safety feature to the corresponding concept.",
+        "ms": "Semasa suatu impak, daya bersih berubah dengan pantas mengikut masa. Ahli fizik memodelkan peristiwa ini menggunakan luas di bawah lengkung daya-masa, daya purata masa malar yang setara, dan daya puncak. Padankan setiap sifat fizikal atau ciri keselamatan kepada konsep yang sepadan.",
+        "zh": "在冲击过程中，合外力随时间迅速变化。物理学中通常使用力-时间曲线下的面积、等效恒定时间平均力以及峰值力来对这一过程进行建模。请将下列各项物理性质或安全特征与相应的概念进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Recall that impulse is defined as the integral of force with respect to time, which corresponds geometrically to the area under the force-versus-time graph.",
+          "ms": "Ingat bahawa impuls ditakrifkan sebagai kamiran daya terhadap masa, yang sepadan secara geometri dengan luas di bawah graf daya-lawan-masa.",
+          "zh": "回顾冲量的定义是力对时间的积分，这在几何上对应于力-时间图像下方的总面积。"
+        },
+        {
+          "en": "For a passenger brought to rest from a specific speed, the momentum change (impulse) is fixed by initial velocity. Cushioning devices like airbags prolong the stopping time interval delta t, which lowers the time-averaged force (evaluated as impulse divided by delta t) and prevents dangerous peak forces.",
+          "ms": "Bagi penumpang yang dihentikan daripada kelajuan tertentu, perubahan momentum (impuls) ditetapkan oleh halaju awal. Peranti kusyen seperti beg udara memanjangkan selang masa pemberhentian delta t, yang merendahkan daya purata masa (dinilai sebagai impuls dibahagikan dengan delta t) dan mengelakkan daya puncak yang berbahaya.",
+          "zh": "对于从特定初速度减速至静止的乘客，其动量改变量（冲量）由初速度完全决定。像安全气囊这样的缓冲装置延长了减速时间间隔 delta t，从而降低了时间平均力（由冲量与时间间隔 delta t 之比确定）并避免了危险的峰值力。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! The area under the force-time curve represents total impulse (momentum change). The time-averaged force is the constant force yielding that identical impulse over delta t (or delta p divided by delta t), which cushioning moderates by prolonging contact time, while the peak force marks the single highest instantaneous stress.",
+        "ms": "Tepat! Luas di bawah lengkung daya-masa mewakili jumlah impuls (perubahan momentum). Daya purata masa ialah daya malar yang menghasilkan impuls yang sama sepanjang delta t (atau delta p dibahagikan dengan delta t), yang disederhanakan oleh kusyen dengan memanjangkan masa sentuhan, manakala daya puncak menandakan tegasan seketika tertinggi tunggal.",
+        "zh": "完全正确！力-时间曲线下的面积代表总冲量（动量改变量）。时间平均力是在 delta t 内产生相同冲量的恒定等效力（即 delta p 除以 delta t），缓冲装置通过延长接触时间来降低该力，而峰值力则代表单点最高瞬时应力。"
+      },
+      "answerLogic": {
+        "en": "Impulse is defined as the integral of force over time, represented geometrically by the area under the force-time curve. By the mean value theorem, the time-averaged force multiplied by collision duration gives this exact area; equivalently, it is the momentum change divided by the contact duration. When an airbag cushions an occupant, it prolongs delta t, yielding a much smaller time-averaged force. Peak instantaneous force represents the single maximum value on the force curve.",
+        "ms": "Impuls ditakrifkan sebagai kamiran daya terhadap masa, diwakili secara geometri oleh luas di bawah lengkung daya-masa. Mengikut teorem nilai purata, daya purata masa didarab dengan tempoh perlanggaran memberikan luas yang sama ini; secara setara, ia adalah perubahan momentum dibahagikan dengan tempoh sentuhan. Apabila beg udara mengusyen penumpang, ia memanjangkan delta t, menghasilkan daya purata masa yang jauh lebih kecil. Daya puncak seketika mewakili nilai maksimum tunggal pada lengkung daya.",
+        "zh": "冲量定义为力对时间的积分，在几何上由力-时间曲线下的面积表示。根据平均值定理，时间平均力乘以碰撞持续时间恰好等于该面积；等效地，它等于动量改变量除以接触持续时间。当安全气囊为乘员提供缓冲时，它延长了 delta t，从而产生小得多的时间平均力。峰值瞬时力则代表力曲线上的单个最大值。"
+      },
+      "explanation": {
+        "en": "A critical distinction in impact analysis is between impulse, average force, and peak force. A vehicle occupant stopping from speed v must undergo a fixed momentum change regardless of the stopping mechanism. Cushioning does not increase the force or change the required impulse; rather, it lengthens the time interval delta t, thereby reducing the average force (impulse divided by delta t) and flattening the peak force to survivable levels.",
+        "ms": "Perbezaan kritikal dalam analisis impak adalah antara impuls, daya purata, dan daya puncak. Penumpang kenderaan yang berhenti daripada kelajuan v mesti mengalami perubahan momentum yang tetap tanpa mengira mekanisme pemberhentian. Kusyen tidak meningkatkan daya atau mengubah impuls yang diperlukan; sebaliknya, ia memanjangkan selang masa delta t, lantas mengurangkan daya purata (impuls dibahagikan dengan delta t) dan meratakan daya puncak ke tahap yang selamat.",
+        "zh": "在碰撞分析中，区分冲量、平均力与峰值力至关重要。乘车人从速度 v 减速至静止，无论采用何种制动机制，必须承受的动量改变量是固定的。缓冲装置既不会增加冲击力，也不会改变所需的冲量；相反，它是通过延长作用时间间隔 delta t，从而降低平均力（冲量除以 delta t）并将峰值力削平至人体可承受的安全水平。"
+      },
+      "misconceptions": [
+        "ignoring-time-in-momentum-change",
+        "cushioning-increases-impact-force"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law-momentum-form",
+        "prompt": {
+          "en": "Revisit Newton's second law: net force equals the time rate of change of momentum. Re-expressing this as impulse equals average force times delta t shows how increasing collision time reduces the required force for a given momentum transfer.",
+          "ms": "Kaji semula hukum kedua Newton: daya bersih bersamaan kadar perubahan momentum terhadap masa. Menyatakan semula ini sebagai impuls bersamaan daya purata darab delta t menunjukkan bagaimana peningkatan masa perlanggaran mengurangkan daya yang diperlukan bagi pemindahan momentum tertentu.",
+          "zh": "重新温习牛顿第二定律：合外力等于动量对时间的变化率。将其改写为冲量等于平均力乘以时间间隔 delta t，表明在动量传递量给定的情况下，延长碰撞时间能有效减小所需的力。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Match four collision characteristics to their corresponding concepts: total impulse, time-averaged force, or peak instantaneous force.",
+        "ms": "Padankan empat ciri perlanggaran kepada konsep yang sepadan: jumlah impuls, daya purata masa, atau daya puncak seketika.",
+        "zh": "将四项碰撞特征与其对应的概念进行匹配：总冲量、时间平均力或峰值瞬时力。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-total-impulse",
+            "label": {
+              "en": "Total Impulse (Momentum Change)",
+              "ms": "Jumlah Impuls (Perubahan Momentum)",
+              "zh": "总冲量（动量改变量）"
+            }
+          },
+          {
+            "id": "target-average-force",
+            "label": {
+              "en": "Time-Averaged Force",
+              "ms": "Daya Purata Masa",
+              "zh": "时间平均力"
+            }
+          },
+          {
+            "id": "target-peak-force",
+            "label": {
+              "en": "Peak Instantaneous Force",
+              "ms": "Daya Puncak Seketika",
+              "zh": "峰值瞬时力"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-area-under-curve",
+            "label": {
+              "en": "The total geometric area enclosed beneath the force-versus-time curve during the collision",
+              "ms": "Jumlah luas geometri yang dilingkungi di bawah lengkung daya-lawan-masa semasa perlanggaran",
+              "zh": "碰撞期间力-时间曲线下方所围成的总几何面积"
+            }
+          },
+          {
+            "id": "item-constant-equivalent",
+            "label": {
+              "en": "The steady, constant force that would deliver the exact same impulse over the same time interval",
+              "ms": "Daya malar dan mantap yang akan memberikan impuls yang sama persis sepanjang selang masa yang sama",
+              "zh": "在相同时间间隔内能产生完全相同冲量的恒定稳态力"
+            }
+          },
+          {
+            "id": "item-cushion-reduced",
+            "label": {
+              "en": "The net force experienced by an occupant when a safety cushion extends the stopping time, evaluated as total momentum change divided by the interaction duration",
+              "ms": "Daya bersih yang dialami oleh penumpang apabila kusyen keselamatan memanjangkan masa pemberhentian, dinilai sebagai jumlah perubahan momentum dibahagikan dengan tempoh interaksi",
+              "zh": "当安全缓冲装置延长制动时间时乘员所承受的合力，由总动量改变量与相互作用持续时间之比给出"
+            }
+          },
+          {
+            "id": "item-maximum-instantaneous",
+            "label": {
+              "en": "The single highest point on the time-varying force graph, which typically causes maximum material stress",
+              "ms": "Titik tertinggi tunggal pada graf daya berubah mengikut masa, yang biasanya menyebabkan tegasan bahan maksimum",
+              "zh": "随时间变化的力图像上的最高单点，通常引起最大材料应力"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-area-under-curve",
+            "targetId": "target-total-impulse"
+          },
+          {
+            "itemId": "item-constant-equivalent",
+            "targetId": "target-average-force"
+          },
+          {
+            "itemId": "item-cushion-reduced",
+            "targetId": "target-average-force"
+          },
+          {
+            "itemId": "item-maximum-instantaneous",
+            "targetId": "target-peak-force"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "cushioning-increases-impact-force",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-cushion-reduced",
+            "targetId": "target-peak-force"
+          }
+        },
+        {
+          "misconception": "ignoring-time-in-momentum-change",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-maximum-instantaneous",
+            "targetId": "target-total-impulse"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec9-3-int-07",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Contrast momentum transfer across a system boundary with energy transfer mechanisms.",
+      "prompt": {
+        "en": "Select all statements that correctly distinguish how momentum crosses a system boundary compared to how energy crosses a system boundary in nonisolated systems.",
+        "ms": "Pilih semua pernyataan yang membezakan dengan betul cara momentum merentasi sempadan sistem berbanding cara tenaga merentasi sempadan sistem dalam sistem tidak terpencil.",
+        "zh": "选择所有能够正确区分非孤立系统中动量跨越系统边界与能量跨越系统边界方式的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Reflect on the single external process that allows momentum to cross a boundary, contrasting it with the multiple pathways recognized for energy transfer.",
+          "ms": "Fikirkan tentang proses luaran tunggal yang membolehkan momentum merentasi sempadan, membezakannya dengan pelbagai laluan yang diiktiraf bagi pemindahan tenaga.",
+          "zh": "思考允许动量跨越系统边界的唯一定义过程，并将其与已知的多种能量传递途径进行对比。"
+        },
+        {
+          "en": "Recall whether momentum transfer depends on vector orientation and whether impulse is an external transfer process or an internally stored property.",
+          "ms": "Ingat kembali sama ada pemindahan momentum bergantung pada orientasi vektor dan sama ada impuls ialah proses pemindahan luaran atau sifat tersimpan secara dalaman.",
+          "zh": "回想动量传递是否取决于矢量方向，以及冲量是外部传递过程还是内部储存的物理属性。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct. Momentum transfer into a system occurs through a single physical mechanism: a net external force acting over a duration of time (impulse). Furthermore, momentum transfer possesses directional vector properties, unlike scalar energy transfers. Impulse represents momentum crossing the system boundary rather than an internally stored property.",
+        "ms": "Tepat. Pemindahan momentum ke dalam sistem berlaku melalui satu mekanisme fizikal: daya bersih luaran yang bertindak dalam suatu tempoh masa (impuls). Tambahan pula, pemindahan momentum memiliki sifat vektor berarah, tidak seperti pemindahan tenaga skalar. Impuls mewakili momentum yang merentasi sempadan sistem dan bukannya sifat yang disimpan secara dalaman.",
+        "zh": "正确。动量传入系统仅通过一种物理机制进行：即在一段时间内作用的合外力（冲量）。此外，动量传递具有方向性（矢量），而能量传递则是纯标量。冲量代表跨越系统边界传递的动量，而非内部储存的固有属性。"
+      },
+      "answerLogic": {
+        "en": "Section 9.3 contrasts the nonisolated system model for momentum with that for energy: momentum can only cross a boundary through net external force acting over time, whereas energy transfers through work, mechanical waves, heat, matter transfer, electrical transmission, or electromagnetic radiation. Additionally, momentum transfer is intrinsically a vector with direction, while energy transfer is scalar, and impulse describes the external transfer rather than an intrinsic stored quantity.",
+        "ms": "Seksyen 9.3 membezakan model sistem tidak terpencil bagi momentum dengan model bagi tenaga: momentum hanya boleh merentasi sempadan melalui daya bersih luaran yang bertindak merentasi masa, manakala tenaga berpindah melalui kerja, gelombang mekanikal, haba, pemindahan jirim, penghantaran elektrik, atau sinaran elektromagnet. Selain itu, pemindahan momentum pada asasnya ialah vektor dengan arah, manakala pemindahan tenaga adalah skalar, dan impuls menerangkan pemindahan luaran dan bukannya kuantiti tersimpan intrinsik.",
+        "zh": "第 9.3 节将动量的非孤立系统模型与能量的非孤立系统模型进行了对比：动量只能通过随时间作用的合外力跨越边界，而能量可以通过做功、机械波、热、物质传递、电传输或电磁辐射等方式传递。此外，动量传递本质上是具有方向的矢量，而能量传递是标量，且冲量描述的是外部传递过程而非内部固有的储存量。"
+      },
+      "explanation": {
+        "en": "In the nonisolated system model, momentum changes solely when an external impulse (the integral of net force over time) crosses the boundary. Unlike energy, which can be stored in kinetic, potential, or internal forms, momentum has only one form of storage in a particle or system. Furthermore, work transfers energy across a spatial displacement, whereas impulse transfers momentum across an interval of time. Impulse is an interaction across the boundary, never a property possessed by a body.",
+        "ms": "Dalam model sistem tidak terpencil, momentum berubah hanya apabila impuls luaran (kamiran daya bersih terhadap masa) merentasi sempadan. Tidak seperti tenaga yang boleh disimpan dalam bentuk kinetik, keupayaan, atau dalaman, momentum hanya mempunyai satu bentuk penyimpanan dalam zarah atau sistem. Selain itu, kerja memindahkan tenaga merentasi sesaran ruang, manakala impuls memindahkan momentum merentasi selang masa. Impuls ialah interaksi merentasi sempadan, bukan sifat yang dimiliki oleh suatu jasad.",
+        "zh": "在非孤立系统模型中，动量仅在外力冲量（合外力对时间的积分）跨越边界时改变。能量可以动能、势能或内能的形式储存，而动量在粒子或系统中只有一种储存形式。此外，做功是在空间位移上累积以传递能量，而冲量则是在时间间隔上累积以传递动量。冲量是跨越边界的相互作用过程，绝不是物体自身所具有的固有属性。"
+      },
+      "misconceptions": [
+        "confusing-impulse-with-work",
+        "impulse-as-intrinsic-property"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "linear-momentum-definition",
+        "prompt": {
+          "en": "Remember that linear momentum is the vector product of mass and velocity. It represents the quantity of directional motion a particle possesses at an instant, whereas impulse represents the transfer of momentum across the boundary by an external force over time.",
+          "ms": "Ingat bahawa momentum linear ialah hasil darab vektor antara jisim dan halaju. Ia mewakili kuantiti gerakan berarah yang dimiliki oleh suatu zarah pada sesuatu ketika, manakala impuls mewakili pemindahan momentum merentasi sempadan oleh daya luaran merentasi masa.",
+          "zh": "请记住，线动量是质量与速度的矢量乘积。它代表粒子在某一时刻具有的有向运动量，而冲量则代表外力随时间跨越系统边界传递的动量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A multi-select conceptual question listing four statements about momentum transfer and energy transfer across system boundaries. Two statements are physically correct and two describe common physics misconceptions.",
+        "ms": "Soalan konseptual aneka pilihan yang menyenaraikan empat pernyataan tentang pemindahan momentum dan pemindahan tenaga merentasi sempadan sistem. Dua pernyataan adalah betul secara fizikal dan dua lagi menggambarkan salah faham fizik yang lazim.",
+        "zh": "一道多选概念题，列出关于跨越系统边界的动量传递与能量传递的四种陈述。其中两项陈述符合物理原理，两项陈述描述了常见的物理错误观念。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "sel-boundary-force-time",
+            "label": {
+              "en": "Momentum enters or leaves a system through a single mechanism: an external net force acting over a duration of time.",
+              "ms": "Momentum memasuki atau meninggalkan sistem melalui satu mekanisme sahaja: daya bersih luaran yang bertindak dalam suatu tempoh masa.",
+              "zh": "动量仅通过单一机制进入或离开系统：即合外力在一段持续时间内的作用。"
+            }
+          },
+          {
+            "id": "sel-boundary-vector-direction",
+            "label": {
+              "en": "Momentum transfer across a system boundary is a vector process with spatial direction, unlike energy transfer which is scalar.",
+              "ms": "Pemindahan momentum merentasi sempadan sistem ialah proses vektor dengan arah ruang, tidak seperti pemindahan tenaga yang bersifat skalar.",
+              "zh": "跨越系统边界的动量传递是具有空间方向的矢量过程，而能量传递则是标量过程。"
+            }
+          },
+          {
+            "id": "sel-work-displacement",
+            "label": {
+              "en": "Momentum is transferred into a system by a force acting across a spatial displacement, independent of how much time passes.",
+              "ms": "Momentum dipindahkan ke dalam sistem oleh daya yang bertindak merentasi sesaran ruang, tanpa bergantung pada berapa banyak masa yang berlalu.",
+              "zh": "动量是由力在空间位移上的作用传递进系统的，与经历多长时间无关。"
+            },
+            "misconception": "confusing-impulse-with-work"
+          },
+          {
+            "id": "sel-stored-internal-impulse",
+            "label": {
+              "en": "Impulse is an intrinsic property stored inside a moving body that accumulates as kinetic energy increases.",
+              "ms": "Impuls ialah sifat intrinsik yang tersimpan di dalam jasad yang bergerak dan terkumpul apabila tenaga kinetik meningkat.",
+              "zh": "冲量是储存在运动物体内部的固有属性，随着动能增加而累积。"
+            },
+            "misconception": "impulse-as-intrinsic-property"
+          }
+        ],
+        "correctSelections": [
+          "sel-boundary-force-time",
+          "sel-boundary-vector-direction"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "confusing-impulse-with-work",
+          "condition": {
+            "kind": "selection",
+            "itemId": "sel-work-displacement",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "impulse-as-intrinsic-property",
+          "condition": {
+            "kind": "selection",
+            "itemId": "sel-stored-internal-impulse",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec9-3-int-08",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Compare the impulse delivered by identical forces acting over equal distance versus equal time intervals.",
+      "prompt": {
+        "en": "Three frictionless gliders of different masses (heavy, medium, and light) start from rest. The same constant horizontal force F pushes each glider across the exact same spatial displacement d. Arrange the gliders in order of the magnitude of impulse delivered by force F, from GREATEST impulse to LEAST impulse.",
+        "ms": "Tiga peluncur tanpa geseran dengan jisim berbeza (berat, sederhana, dan ringan) bermula dari keadaan pegun. Daya mengufuk malar F yang sama menolak setiap peluncur merentasi sesaran ruang d yang sama persis. Susun peluncur mengikut urutan magnitud impuls yang disampaikan oleh daya F, daripada impuls PALING BESAR kepada impuls PALING KECIL.",
+        "zh": "三个不同质量（重型、中型和轻型）的无摩擦滑块均从静止开始。相同的恒定水平力 F 推动每个滑块通过完全相同的空间位移 d。将这些滑块按照力 F 所施加的冲量大小进行排序，从最大冲量到最小冲量。"
+      },
+      "hints": [
+        {
+          "en": "Recall that impulse is the product of the constant force and the elapsed time interval (I = F * delta t). How does each glider's mass affect its acceleration and the time it takes to travel distance d?",
+          "ms": "Ingat bahawa impuls ialah hasil darab daya malar dan selang masa yang berlalu (I = F * delta t). Bagaimanakah jisim setiap peluncur mempengaruhi pecutannya dan masa yang diambil untuk merentasi jarak d?",
+          "zh": "回想冲量是恒力与所经历时间间隔的乘积（I = F * delta t）。每个滑块的质量如何影响其加速度以及通过距离 d 所需的时间？"
+        },
+        {
+          "en": "Although the work done (F * d) is identical for all three gliders, the more massive glider accelerates more sluggishly and therefore spends significantly more time undergoing the push.",
+          "ms": "Walaupun kerja yang dilakukan (F * d) adalah serupa untuk ketiga-tiga peluncur, peluncur yang lebih berjisim memecut lebih perlahan dan oleh itu meluangkan lebih banyak masa semasa ditolak.",
+          "zh": "尽管对所有三个滑块所做的功（F * d）完全相同，但质量越大的滑块加速度越小，因此受力推动的时间显著更长。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct sequence. Because acceleration is inversely proportional to mass, the heavy glider accelerates slowest and takes the longest time to traverse distance d, receiving the greatest impulse. The light glider accelerates fastest, traverses distance d in the shortest time, and receives the least impulse.",
+        "ms": "Urutan betul. Oleh kerana pecutan berkadar songsang dengan jisim, peluncur berat memecut paling perlahan dan mengambil masa paling lama untuk merentasi jarak d, menerima impuls paling besar. Peluncur ringan memecut paling laju, merentasi jarak d dalam masa paling singkat, dan menerima impuls paling kecil.",
+        "zh": "排序正确。因为加速度与质量成反比，重型滑块的加速度最小，穿过位移 d 所需的时间最长，因而获得最大的冲量。轻型滑块加速度最大，在最短时间内穿过位移 d，获得最小的冲量。"
+      },
+      "answerLogic": {
+        "en": "For constant force F starting from rest, the time to travel distance d is delta t = sqrt(2 * d * m / F). Because delta t increases with mass, delta t_heavy > delta t_medium > delta t_light. Since impulse equals F * delta t, the delivered impulse directly follows the mass ordering: heavy > medium > light. If the interaction had been over equal time intervals instead of equal distance, all three would have received identical impulse.",
+        "ms": "Bagi daya malar F yang bermula dari pegun, masa untuk merentasi jarak d ialah delta t = sqrt(2 * d * m / F). Oleh kerana delta t meningkat mengikut jisim, delta t_berat > delta t_sederhana > delta t_ringan. Memandangkan impuls bersamaan F * delta t, impuls yang disampaikan mengikut terus urutan jisim: berat > sederhana > ringan. Jika interaksi ini berlaku dalam selang masa yang sama dan bukannya jarak yang sama, ketiga-tiganya akan menerima impuls yang serupa.",
+        "zh": "对于从静止开始的恒力 F，通过距离 d 的时间为 delta t = sqrt(2 * d * m / F)。因为 delta t 随质量增加而增加，所以 delta t_重 > delta t_中 > delta t_轻。由于冲量等于 F * delta t，传递的冲量直接遵循质量顺序：重型 > 中型 > 轻型。如果相互作用是在相等的‘时间间隔’而非相等的‘距离’内进行，则三者获得的冲量将完全相同。"
+      },
+      "explanation": {
+        "en": "This scenario directly illustrates the conceptual difference between work and impulse. Pushing each glider through the same distance d delivers the exact same work (F * d) to each glider, yielding identical changes in kinetic energy. However, impulse is force integrated over time, not distance. The heavier glider experiences a smaller acceleration and takes a longer duration to cross distance d. Consequently, the force acts for more time on the heavier glider, imparting a greater impulse and a larger final momentum.",
+        "ms": "Senario ini secara langsung menggambarkan perbezaan konseptual antara kerja dan impuls. Menolak setiap peluncur melalui jarak d yang sama menyampaikan kerja yang sama persis (F * d) kepada setiap peluncur, menghasilkan perubahan tenaga kinetik yang serupa. Walau bagaimanapun, impuls ialah kamiran daya terhadap masa, bukan jarak. Peluncur yang lebih berat mengalami pecutan yang lebih kecil dan memerlukan tempoh masa yang lebih lama untuk merentasi jarak d. Akibatnya, daya bertindak untuk masa yang lebih lama pada peluncur yang lebih berat, memberikan impuls yang lebih besar dan momentum akhir yang lebih tinggi.",
+        "zh": "该情景直接展现了功与冲量之间的本质区别。将每个滑块推过相同的距离 d 对每个滑块做功完全相同（F * d），因而动能改变相同。然而，冲量是力对时间的累积积分，而不是对距离的积分。较重的滑块加速度较小，穿过距离 d 需要更长的时间。因此，力在较重滑块上的作用时间更长，从而传递了更大的冲量并产生更大的末动量。"
+      },
+      "misconceptions": [
+        "confusing-impulse-with-work",
+        "ignoring-time-in-momentum-change"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "newtons-second-law-momentum-form",
+        "prompt": {
+          "en": "Recall Newton's second law: a constant net force produces an acceleration inversely proportional to mass (a = F / m). Lower acceleration means that covering a fixed distance takes a longer time interval.",
+          "ms": "Ingat kembali hukum kedua Newton: daya bersih malar menghasilkan pecutan yang berkadar songsang dengan jisim (a = F / m). Pecutan yang lebih rendah bermakna merentasi jarak tetap mengambil selang masa yang lebih lama.",
+          "zh": "温习牛顿第二定律：恒定合外力产生的加速度与质量成反比（a = F / m）。加速度较小意味着走过固定的空间距离需要更长的时间。"
+        }
+      },
+      "accessibilityText": {
+        "en": "An ordering activity with three items representing gliders of heavy, medium, and light mass pushed across equal distance. Users must arrange them from greatest to least impulse received.",
+        "ms": "Aktiviti penyusunan dengan tiga item yang mewakili peluncur berjisim berat, sederhana, dan ringan yang ditolak merentasi jarak yang sama. Pengguna mesti menyusunnya daripada impuls terbesar kepada terkecil yang diterima.",
+        "zh": "一个包含三个项的排序活动，分别代表推过相同距离的重型、中型和轻型滑块。用户必须按照接收到的冲量从大到小进行排序。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "ord-heavy-cart",
+            "label": {
+              "en": "Heavy glider (mass 3M) pushed through distance d",
+              "ms": "Peluncur berat (jisim 3M) ditolak merentasi jarak d",
+              "zh": "被推过距离 d 的重型滑块（质量 3M）"
+            }
+          },
+          {
+            "id": "ord-medium-cart",
+            "label": {
+              "en": "Medium glider (mass 2M) pushed through distance d",
+              "ms": "Peluncur sederhana (jisim 2M) ditolak merentasi jarak d",
+              "zh": "被推过距离 d 的中型滑块（质量 2M）"
+            }
+          },
+          {
+            "id": "ord-light-cart",
+            "label": {
+              "en": "Light glider (mass M) pushed through distance d",
+              "ms": "Peluncur ringan (jisim M) ditolak merentasi jarak d",
+              "zh": "被推过距离 d 的轻型滑块（质量 M）"
+            }
+          }
+        ],
+        "correctOrder": [
+          "ord-heavy-cart",
+          "ord-medium-cart",
+          "ord-light-cart"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "ignoring-time-in-momentum-change",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "ord-light-cart",
+            "secondItemId": "ord-heavy-cart"
+          }
+        },
+        {
+          "misconception": "confusing-impulse-with-work",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "ord-medium-cart",
+            "secondItemId": "ord-heavy-cart"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sec9-3-int-09",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish vector impulse components during glancing and oblique wall collisions.",
+      "prompt": {
+        "en": "A projectile approaches a frictionless vertical wall with horizontal velocity component +v_x (perpendicular to the wall) and vertical velocity component +v_y (parallel to the wall). Match each collision outcome to the correct description of the net impulse vector delivered by the wall.",
+        "ms": "Satu projektil menghampiri dinding menegak tanpa geseran dengan komponen halaju mengufuk +v_x (berserenjang dengan dinding) dan komponen halaju menegak +v_y (selari dengan dinding). Padankan setiap hasil perlanggaran dengan penerangan vektor impuls bersih yang betul yang disampaikan oleh dinding.",
+        "zh": "一个抛体以水平速度分量 +v_x（垂直于墙壁）和竖直速度分量 +v_y（平行于墙壁）接近无摩擦竖直墙面。请将每种碰撞结果与墙壁所施加的净冲量矢量的正确描述相匹配。"
+      },
+      "hints": [
+        {
+          "en": "Analyze the perpendicular and parallel directions independently using the impulse-momentum theorem: I_x = Delta p_x and I_y = Delta p_y.",
+          "ms": "Analisis arah berserenjang dan selari secara berasingan menggunakan teorem impuls-momentum: I_x = Delta p_x dan I_y = Delta p_y.",
+          "zh": "使用动量定理独立分析垂直和平行方向的动量变化：I_x = Delta p_x 且 I_y = Delta p_y。"
+        },
+        {
+          "en": "Because the wall is frictionless, it cannot exert any force parallel to its surface. Does stopping require more or less momentum change than reversing direction away from the wall?",
+          "ms": "Kerana dinding itu tidak bergeseran, ia tidak boleh mengenakan sebarang daya selari dengan permukaannya. Adakah tindakan menghentikan memerlukan perubahan momentum yang lebih banyak atau lebih sedikit berbanding membalikkan arah menjauhi dinding?",
+          "zh": "因为墙面是无摩擦的，所以它不能在平行于墙面的方向施加任何力。使得物体完全停止在垂直方向上所需的动量改变，比起弹跳反转方向所需的动量改变是更多还是更少？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct matches. The frictionless wall exerts normal force only perpendicular to its plane, so the parallel impulse is always zero. Rebounding horizontally reverses momentum from +m*v_x to -m*v_x, requiring an impulse of magnitude 2*m*v_x, which is double the impulse needed merely to bring the projectile to a halt horizontally.",
+        "ms": "Padanan betul. Dinding tanpa geseran mengenakan daya normal hanya berserenjang dengan satahnya, jadi impuls selari sentiasa sifar. Melantun secara mengufuk membalikkan momentum daripada +m*v_x kepada -m*v_x, memerlukan impuls bermagnitud 2*m*v_x, iaitu dua kali ganda impuls yang diperlukan sekadar untuk menghentikan projektil secara mengufuk.",
+        "zh": "匹配正确。无摩擦墙面仅沿垂直于墙面的法向施加力，因此平行方向的冲量始终为零。水平反弹使动量从 +m*v_x 变为 -m*v_x，需要的冲量大小为 2*m*v_x，这是仅仅在水平方向停下抛体所需冲量的两倍。"
+      },
+      "answerLogic": {
+        "en": "Vector impulse equals vector change in momentum: I = m*(v_fx - v_ix)*i + m*(v_fy - v_iy)*j. With no parallel friction, v_fy = v_iy, making I_y = 0 in all cases. For elastic rebound: v_fx = -v_x, so I_x = m*(-v_x - v_x) = -2*m*v_x (magnitude 2*m*v_x). For sticking/sliding horizontally: v_fx = 0, so I_x = m*(0 - v_x) = -m*v_x (magnitude m*v_x). For grazing parallel without contact: no force acts, so I = 0.",
+        "ms": "Impuls vektor bersamaan perubahan vektor dalam momentum: I = m*(v_fx - v_ix)*i + m*(v_fy - v_iy)*j. Tanpa geseran selari, v_fy = v_iy, menjadikan I_y = 0 dalam semua kes. Untuk lantunan kenyal: v_fx = -v_x, maka I_x = m*(-v_x - v_x) = -2*m*v_x (magnitud 2*m*v_x). Untuk melekat/meluncur mengufuk: v_fx = 0, maka I_x = m*(0 - v_x) = -m*v_x (magnitud m*v_x). Untuk ragutan selari tanpa sentuhan: tiada daya bertindak, maka I = 0.",
+        "zh": "矢量冲量等于动量的矢量改变：I = m*(v_fx - v_ix)*i + m*(v_fy - v_iy)*j。由于没有平行摩擦力，v_fy = v_iy，因此在所有情况下 I_y = 0。对于弹性反弹：v_fx = -v_x，所以 I_x = m*(-v_x - v_x) = -2*m*v_x（大小为 2*m*v_x）。对于完全贴墙在水平方向停下：v_fx = 0，所以 I_x = m*(0 - v_x) = -m*v_x（大小为 m*v_x）。对于完全平行掠过未接触：无外力作用，所以 I = 0。"
+      },
+      "explanation": {
+        "en": "As discussed in Example 9.3 ('What If?'), bringing an object to rest requires the wall to remove its incoming momentum. Rebounding requires the wall to both stop that incoming momentum AND accelerate the object back in the opposite direction. Therefore, rebounding delivers a larger impulse than coming to rest. Furthermore, resolving momentum into components shows that an ideal smooth wall only exerts force perpendicular to its surface, leaving the parallel component of velocity unchanged.",
+        "ms": "Seperti yang dibincangkan dalam Contoh 9.3 ('Bagaimana Jika?'), menghentikan suatu objek memerlukan dinding menyingkirkan momentum masuknya. Melantun pula memerlukan dinding menghentikan momentum masuk itu DAN memecutkan objek itu semula ke arah bertentangan. Oleh itu, melantun menyampaikan impuls yang lebih besar berbanding sekadar terhenti. Tambahan pula, meleraikan momentum kepada komponen menunjukkan bahawa dinding licin ideal hanya mengenakan daya berserenjang dengan permukaannya, membiarkan komponen halaju selari tidak berubah.",
+        "zh": "正如例题 9.3（‘What If?’）中所讨论的，使物体完全停下只需墙壁抵消其入射动量。而反弹不仅需要墙壁消除入射动量，还必须加速使物体沿相反方向飞离。因此，反弹所传递的冲量大于单纯停下所需的冲量。此外，将动量正交分解后表明，理想的光滑墙面只在其法向施加力，平行于墙面的速度分量保持不变。"
+      },
+      "misconceptions": [
+        "rebound-involves-less-impulse"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-change-concept",
+        "prompt": {
+          "en": "Remember that vector change is found by subtracting initial velocity from final velocity (Delta v = v_f - v_i). When a velocity of +v reverses to -v, the change is (-v) - (+v) = -2v, which is twice the magnitude of changing from +v to 0.",
+          "ms": "Ingat bahawa perubahan vektor didapati dengan menolak halaju awal daripada halaju akhir (Delta v = v_f - v_i). Apabila halaju +v berbalik kepada -v, perubahannya ialah (-v) - (+v) = -2v, iaitu dua kali ganda magnitud perubahan daripada +v kepada 0.",
+          "zh": "请记住，矢量变化是指末速度与初速度之间的矢量差（Delta v = v_f - v_i）。当速度从 +v 反转至 -v 时，其矢量变化的幅度是从 +v 变为 0 时的两倍。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A matching activity with three collision scenarios on the left and three vector impulse descriptions on the right. Match each scenario to its corresponding impulse magnitude and direction.",
+        "ms": "Aktiviti memadan dengan tiga senario perlanggaran di sebelah kiri dan tiga penerangan vektor impuls di sebelah kanan. Padankan setiap senario dengan magnitud dan arah impuls yang sepadan.",
+        "zh": "一个匹配活动，左侧包含三种碰撞情景，右侧包含三种矢量冲量描述。将每个情景与其对应的冲量大小和方向进行匹配。"
+      },
+      "provenance": {
+        "sourceLocation": "9.3 Analysis Model: Nonisolated System (Momentum); Complete controlled PDF for section 9.3",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "match-elastic-rebound",
+            "label": {
+              "en": "Oblique elastic rebound (reverses horizontal velocity to -v_x while keeping vertical velocity +v_y unchanged)",
+              "ms": "Lantunan kenyal serong (membalikkan halaju mengufuk kepada -v_x sambil mengekalkan halaju menegak +v_y tidak berubah)",
+              "zh": "斜向弹性反弹（水平速度反向为 -v_x，同时保持竖直速度 +v_y 不变）"
+            }
+          },
+          {
+            "id": "match-inelastic-capture",
+            "label": {
+              "en": "Oblique inelastic capture (horizontal velocity drops to zero while keeping vertical velocity +v_y unchanged)",
+              "ms": "Tangkapan tidak kenyal serong (halaju mengufuk turun kepada sifar sambil mengekalkan halaju menegak +v_y tidak berubah)",
+              "zh": "斜向非弹性贴墙（水平速度降为零，同时保持竖直速度 +v_y 不变）"
+            }
+          },
+          {
+            "id": "match-grazing-parallel",
+            "label": {
+              "en": "Parallel grazing trajectory (projectile flies alongside the wall at +v_y without making contact)",
+              "ms": "Trajektori ragutan selari (projektil terbang di sepanjang sisi dinding pada +v_y tanpa membuat sentuhan)",
+              "zh": "平行掠过轨迹（抛体以 +v_y 沿墙壁飞行且未发生接触）"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "tgt-large-perpendicular",
+            "label": {
+              "en": "Perpendicular impulse of magnitude 2*m*v_x away from wall; zero parallel impulse",
+              "ms": "Impuls berserenjang dengan magnitud 2*m*v_x menjauhi dinding; impuls selari sifar",
+              "zh": "垂直于墙面且大小为 2*m*v_x 指向墙外的冲量；平行方向冲量为零"
+            }
+          },
+          {
+            "id": "tgt-moderate-perpendicular",
+            "label": {
+              "en": "Perpendicular impulse of magnitude m*v_x away from wall; zero parallel impulse",
+              "ms": "Impuls berserenjang dengan magnitud m*v_x menjauhi dinding; impuls selari sifar",
+              "zh": "垂直于墙面且大小为 m*v_x 指向墙外的冲量；平行方向冲量为零"
+            }
+          },
+          {
+            "id": "tgt-zero-impulse",
+            "label": {
+              "en": "Zero perpendicular impulse and zero parallel impulse",
+              "ms": "Impuls berserenjang sifar dan impuls selari sifar",
+              "zh": "垂直和平行方向的冲量均为零"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "match-elastic-rebound",
+            "targetId": "tgt-large-perpendicular"
+          },
+          {
+            "itemId": "match-inelastic-capture",
+            "targetId": "tgt-moderate-perpendicular"
+          },
+          {
+            "itemId": "match-grazing-parallel",
+            "targetId": "tgt-zero-impulse"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "rebound-involves-less-impulse",
+          "condition": {
+            "kind": "placement",
+            "itemId": "match-elastic-rebound",
+            "targetId": "tgt-moderate-perpendicular"
+          }
+        },
+        {
+          "misconception": "rebound-involves-less-impulse",
+          "condition": {
+            "kind": "placement",
+            "itemId": "match-inelastic-capture",
+            "targetId": "tgt-large-perpendicular"
+          }
+        }
+      ]
+    }
+  ]
+}
