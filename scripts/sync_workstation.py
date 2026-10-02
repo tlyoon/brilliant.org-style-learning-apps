@@ -61,7 +61,10 @@ ALLOWED_PROJECT_KEYS = {
     "automation": {
         "selection_mode", "coordination_backend", "coordinator_url", "coordinator_token_env",
         "coordinator_timeout_seconds", "lease_seconds", "heartbeat_seconds",
-        "max_job_attempts",
+        "max_job_attempts", "public_deploy", "public_deploy_repository",
+        "public_deploy_base_url", "public_deploy_base_branch", "public_deploy_branch_prefix",
+        "public_deploy_auto_merge", "stall_check_seconds", "stall_after_seconds",
+        "stall_max_consecutive_checks", "stall_terminate_grace_seconds",
     },
     "repository": {"repo_root"},
     "paths": {

@@ -42,6 +42,8 @@ class RunPhase(StrEnum):
     FINAL_PACKAGE_REVERIFIED = "FINAL_PACKAGE_REVERIFIED"
     GIT_PUBLISHED = "GIT_PUBLISHED"
     GIT_MERGED = "GIT_MERGED"
+    PUBLIC_DEPLOYING = "PUBLIC_DEPLOYING"
+    PUBLIC_DEPLOYED = "PUBLIC_DEPLOYED"
     REVIEW_PENDING = "REVIEW_PENDING"
     COMPLETE = "COMPLETE"
     FAILED = "FAILED"
@@ -66,6 +68,11 @@ class RunState:
     commit: str | None = None
     pr_url: str | None = None
     merged: bool = False
+    public_deployment_branch: str | None = None
+    public_deployment_pr_url: str | None = None
+    public_deployment_url: str | None = None
+    public_package_sha256: str | None = None
+    public_deployed: bool = False
     error_code: str | None = None
     error_message: str | None = None
     history: list[dict[str, str]] = field(default_factory=list)

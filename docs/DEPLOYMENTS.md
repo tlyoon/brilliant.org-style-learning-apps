@@ -48,6 +48,12 @@ Each deployment has the form:
 
 Optional `variant` text may distinguish multiple routes backed by the same section package, such as historical and regenerated review variants.
 
+New automatic review deployments also record optional `packageSha256`, the SHA-256 of the exact `package.json` bundled for Pages. Older records without it remain readable, but an auto worker treats them as insufficient proof that its current package reached Pages. The Drive success event also records the public PR/URL/digest for cross-PC reconciliation.
+
+## Automatic draft/review deployment
+
+This project's enabled policy uses `tlyoon/section-8-1-learning-app` and routes a section as `section-{section_slug}/` (for example, `9.1` is `section-9-1/`). Workers build only the minimal static bundle, open/reuse a deterministic package-digest branch and PR in that public repository, and merge it automatically. Source PDFs, Drive marker data, run state, raw model responses, credentials, and source manifests never enter that repository. The deployment is explicitly a draft/review app, not human scientific approval.
+
 ## Maintenance rule
 
 When a public route is created, changed, or removed, update `config/deployments.json` in the same source-repository PR that records/authorizes that deployment. Keep only public, non-secret deployment metadata in the registry.

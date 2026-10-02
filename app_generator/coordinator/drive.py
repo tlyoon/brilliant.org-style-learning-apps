@@ -475,7 +475,17 @@ class DriveCoordinatorClient:
         self._release_claim(lease)
         return "failed" if lease.attempt_count >= self.max_job_attempts else "interrupted"
 
-    def mark_generated(self, lease: JobLease, *, branch: str = "", pr_url: str = "") -> str:
+    def mark_generated(
+        self,
+        lease: JobLease,
+        *,
+        branch: str = "",
+        pr_url: str = "",
+        public_branch: str = "",
+        public_pr_url: str = "",
+        public_url: str = "",
+        public_package_sha256: str = "",
+    ) -> str:
         current = self.heartbeat(lease)
         payload = {
             "schema": STATE_SCHEMA,
@@ -486,6 +496,10 @@ class DriveCoordinatorClient:
             "worker_id": current.worker_id,
             "branch": branch,
             "pr_url": pr_url,
+            "public_branch": public_branch,
+            "public_pr_url": public_pr_url,
+            "public_url": public_url,
+            "public_package_sha256": public_package_sha256,
         }
         self._create_json(
             "success",

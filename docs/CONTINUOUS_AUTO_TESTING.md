@@ -18,6 +18,8 @@ Each worker PC should have:
 
 Continuous auto mode requires `git_publish=true` and defaults to `coordination_backend = "drive"`.
 
+For this project it also requires the configured public draft/review deployment to merge before Drive records success. A package already in source `main` but missing its current digest-matched review deployment is recovered without reopening Gemini. Each live generation is supervised as a child process; the default watchdog uses three stale 600-second checks and preserves parsed Drive checkpoints on termination.
+
 The first run after upgrading from read-only Drive authorization may open Google consent once to grant writable Drive scope. No Apps Script bootstrap, Sheet, worker coordinator token, or coordinator health check is required.
 ## Verify each PC before a multi-PC run
 
@@ -47,7 +49,7 @@ Both PCs should report the same `main` SHA. Auto doctor is a non-generation queu
 3. Stop PC A with `Ctrl+C`, simulate a technical failure, or terminate the worker.
 4. On PC B run auto doctor, then start auto mode.
 
-Expected behavior: PC B can acquire the interrupted section after the old lease is no longer active, reconstruct parsed-stage checkpoints from Drive events, continue from the last valid stage, and publish through Git before Drive success is recorded.
+Expected behavior: PC B can acquire the interrupted section after the old lease is no longer active, reconstruct parsed-stage checkpoints from Drive events, continue from the last valid stage, and complete source plus public-review Git handoffs before Drive success is recorded. Checkpoints resume parsed stages only, never a partial model token response.
 ## Targeted auto test
 
 On PC A run a protected single target:

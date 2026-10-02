@@ -11,8 +11,11 @@ from app_generator.coordinator.client import JobLease, QueueSnapshot
 from app_generator.coordinator.drive import DriveCoordinatorClient
 from app_generator.errors import AutoJobExecutionError, AutoModeBlockedError, NoAvailableJob
 from app_generator.publishing.git import GitPublisher
+from app_generator.publishing.public import PublicPagesPublisher
+from app_generator.deployments import has_current_public_deployment
 from app_generator.runtime.orchestrator import run_generation
 from app_generator.runtime.run_context import RunContext
+from app_generator.runtime.watchdog import AutoAttemptSupervisor
 from app_generator.runtime.targeting import restrict_inventory_to_subchapter
 from app_generator.sources.google_drive import (
     DriveRestClient,
@@ -67,6 +70,12 @@ def _base_completed(config: GeneratorConfig, inventory: tuple[ResolvedDriveSourc
         source.job_key
         for source in inventory
         if config.for_subchapter(source.subchapter_id).package_path.exists()
+        and (
+            not getattr(config, "public_deploy", False)
+            or has_current_public_deployment(
+                config.repo_root, config.for_subchapter(source.subchapter_id)
+            )
+        )
     }
 
 
@@ -139,7 +148,9 @@ def reconcile_auto_publications(
     for source in inventory:
         if source.job_key in local_completed:
             continue
-        if not publisher.has_recoverable_handoff(
+        active_config = config.for_subchapter(source.subchapter_id)
+        source_in_base = active_config.package_path.exists()
+        if not source_in_base and not publisher.has_recoverable_handoff(
             subchapter_id=source.subchapter_id,
             job_key=source.job_key,
         ):
@@ -155,34 +166,56 @@ def reconcile_auto_publications(
         def ensure_lease() -> None:
             current_lease[0] = coordinator.heartbeat(current_lease[0])
 
-        active_config = config.for_subchapter(source.subchapter_id)
         try:
-            result = publisher.recover_handoff(
-                subchapter_id=source.subchapter_id,
-                job_key=source.job_key,
-                expected_paths=_expected_paths(active_config),
-                subchapter=active_config.subchapter,
-                package_id=active_config.package_id,
-                ensure_lease=ensure_lease,
-            )
-            if result is None:
-                coordinator.mark_failed(
-                    current_lease[0],
-                    error_code="GIT_HANDOFF_DISAPPEARED",
-                    error_message="A recoverable Git handoff disappeared before it could be finalized",
+            result = None
+            if not source_in_base:
+                result = publisher.recover_handoff(
+                    subchapter_id=source.subchapter_id,
+                    job_key=source.job_key,
+                    expected_paths=_expected_paths(active_config),
+                    subchapter=active_config.subchapter,
+                    package_id=active_config.package_id,
+                    ensure_lease=ensure_lease,
                 )
-                continue
+                if result is None:
+                    coordinator.mark_failed(
+                        current_lease[0],
+                        error_code="GIT_HANDOFF_DISAPPEARED",
+                        error_message="A recoverable Git handoff disappeared before it could be finalized",
+                    )
+                    continue
+                # Auto-merge may have advanced source main while this worker was
+                # finishing the source PR; build public review from durable main.
+                publisher.sync_base()
+            ensure_lease()
+            if getattr(active_config, "public_deploy", False):
+                public = PublicPagesPublisher(active_config).publish(
+                    package_path=active_config.package_path,
+                    subchapter_id=active_config.pdf_subchapter_path,
+                    ensure_lease=ensure_lease,
+                )
+                if not public.merged:
+                    raise AutoJobExecutionError(
+                        "Public review PR did not merge",
+                        status="interrupted",
+                        original_code="PUBLIC_DEPLOY_NOT_MERGED",
+                    )
+                print(f"AUTO_PUBLIC_DEPLOYED: section {source.subchapter_id} {public.public_url}")
             ensure_lease()
             coordinator.checkpoint_clear(current_lease[0])
             coordinator.mark_generated(
                 current_lease[0],
-                branch=result.branch,
-                pr_url=result.pr_url,
+                branch=result.branch if result is not None else "source-main",
+                pr_url=result.pr_url if result is not None else "",
+                public_branch=public.branch if getattr(active_config, "public_deploy", False) else "",
+                public_pr_url=public.pr_url if getattr(active_config, "public_deploy", False) else "",
+                public_url=public.public_url if getattr(active_config, "public_deploy", False) else "",
+                public_package_sha256=public.package_sha256 if getattr(active_config, "public_deploy", False) else "",
             )
             recovered += 1
             print(
                 f"AUTO_RECOVERED: section {source.subchapter_id} reused durable Git handoff "
-                f"{result.branch}; Gemini generation was skipped."
+                f"{result.branch if result is not None else 'source-main'}; Gemini generation was skipped."
             )
         except BaseException as exc:
             try:
@@ -210,6 +243,7 @@ def run_continuous_auto(
     snapshotter: Callable[..., QueueSnapshot] = inspect_auto_queue,
     reconciler: Callable[..., int] = reconcile_auto_publications,
     sleeper: Callable[[float], None] = time.sleep,
+    supervisor_factory: Callable[[GeneratorConfig], AutoAttemptSupervisor] = AutoAttemptSupervisor,
 ) -> int:
     """Run coordinated jobs globally, or only one explicitly targeted subchapter."""
 
@@ -231,11 +265,14 @@ def run_continuous_auto(
         reconciler(config)
     while True:
         try:
-            context = (
-                run_once(config, auto_target_subchapter_id=target_subchapter_id)
-                if target_subchapter_id
-                else run_once(config)
-            )
+            if run_once is run_generation:
+                context = supervisor_factory(config).run(target_subchapter_id)
+            else:
+                context = (
+                    run_once(config, auto_target_subchapter_id=target_subchapter_id)
+                    if target_subchapter_id
+                    else run_once(config)
+                )
             if on_completed is not None:
                 on_completed(context)
             if target_subchapter_id:

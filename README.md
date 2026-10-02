@@ -139,6 +139,8 @@ The targeted form acquires the same Drive-native lease for the requested section
 
 Generated content remains draft until qualified human review.
 
+For this project, validated auto jobs also publish an explicitly labelled draft/review bundle through a deterministic PR in `tlyoon/section-8-1-learning-app`. Section `9.1`, for example, is routed to `section-9-1/` under the Pages base URL. This automatic operational deployment is not human scientific, instructional, accessibility, or provenance approval.
+
 ## Configuration authority
 
 The tracked project authority is:

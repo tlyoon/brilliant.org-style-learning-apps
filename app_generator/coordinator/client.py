@@ -311,13 +311,27 @@ class CoordinatorClient:
             pr_url=pr_url,
         )
 
-    def mark_generated(self, lease: JobLease, *, branch: str = "", pr_url: str = "") -> None:
+    def mark_generated(
+        self,
+        lease: JobLease,
+        *,
+        branch: str = "",
+        pr_url: str = "",
+        public_branch: str = "",
+        public_pr_url: str = "",
+        public_url: str = "",
+        public_package_sha256: str = "",
+    ) -> None:
         self._post(
             "generated",
             worker_id=self.worker_id,
             job_key=lease.job_key,
             branch=branch,
             pr_url=pr_url,
+            public_branch=public_branch,
+            public_pr_url=public_pr_url,
+            public_url=public_url,
+            public_package_sha256=public_package_sha256,
         )
 
     def mark_failed(self, lease: JobLease, *, error_code: str, error_message: str) -> str:

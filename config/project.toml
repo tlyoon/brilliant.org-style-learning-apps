@@ -51,6 +51,16 @@ coordinator_timeout_seconds = 30
 lease_seconds = 3600
 heartbeat_seconds = 300
 max_job_attempts = 3
+public_deploy = true
+public_deploy_repository = "tlyoon/section-8-1-learning-app"
+public_deploy_base_url = "https://tlyoon.github.io/section-8-1-learning-app/"
+public_deploy_base_branch = "main"
+public_deploy_branch_prefix = "automation/public-review"
+public_deploy_auto_merge = true
+stall_check_seconds = 600
+stall_after_seconds = 600
+stall_max_consecutive_checks = 3
+stall_terminate_grace_seconds = 20
 
 [repository]
 repo_root = "${REPO_ROOT}"

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -21,6 +23,7 @@ class DeploymentRecord:
     public_url: str
     deployed: bool
     variant: str = ""
+    package_sha256: str = ""
 
 
 @dataclass(frozen=True)
@@ -87,6 +90,9 @@ def load_deployment_registry(
             seen_urls.add(public_url)
 
         variant = str(raw.get("variant", "")).strip()
+        package_sha256 = str(raw.get("packageSha256", "")).strip().casefold()
+        if package_sha256 and not re.fullmatch(r"[0-9a-f]{64}", package_sha256):
+            raise ConfigurationError(f"Deployment {app_id} packageSha256 must be a SHA-256 hex digest")
         records.append(
             DeploymentRecord(
                 app_id=app_id,
@@ -96,9 +102,43 @@ def load_deployment_registry(
                 public_url=public_url,
                 deployed=deployed,
                 variant=variant,
+                package_sha256=package_sha256,
             )
         )
     return tuple(records)
+
+
+def package_digest(path: Path) -> str:
+    """Return the exact source package digest used by an automatic public handoff."""
+
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def has_current_public_deployment(repo_root: Path, config: object) -> bool:
+    """Whether one active config package has a matching tracked review deployment.
+
+    Older registry entries without a digest remain readable, but intentionally do not
+    satisfy automatic-publication completion: source content alone is not evidence
+    that this exact package made it to Pages.
+    """
+
+    if not bool(getattr(config, "public_deploy", False)):
+        return True
+    package = getattr(config, "package_path")
+    if not package.is_file():
+        return False
+    digest = package_digest(package)
+    expected_url = f"{getattr(config, 'public_deploy_base_url')}{getattr(config, 'section_dir')}/"
+    for record in load_deployment_registry(repo_root):
+        if (
+            record.package_path == Path("content") / getattr(config, "chapter_dir") / getattr(config, "section_dir") / "package.json"
+            and record.deployed
+            and record.deployment_repository == getattr(config, "public_deploy_repository")
+            and record.public_url == expected_url
+            and record.package_sha256 == digest
+        ):
+            return True
+    return False
 
 
 def discover_generated_packages(repo_root: Path) -> tuple[Path, ...]:
