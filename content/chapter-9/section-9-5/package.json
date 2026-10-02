@@ -1,0 +1,2268 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-9-section-9-5",
+  "chapter": "Chapter 9",
+  "subchapter": "9.5 Collisions in Two Dimensions",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Apply momentum conservation along independent perpendicular axes in two-dimensional collisions.",
+    "Distinguish between elastic and inelastic collisions in two dimensions using kinetic energy criteria.",
+    "Analyze perfectly inelastic collisions in two dimensions where colliding bodies coalesce after impact.",
+    "Determine glancing angles and speeds for two-dimensional elastic collisions using momentum and energy equations.",
+    "Deduce that equal-mass elastic glancing collisions with a stationary target yield perpendicular final trajectories."
+  ],
+  "prerequisites": [
+    {
+      "id": "linear-momentum-definition",
+      "description": {
+        "en": "Definition of linear momentum as the product of mass and velocity vector.",
+        "ms": "Definisi momentum linear sebagai hasil darab jisim dan vektor halaju.",
+        "zh": "线动量定义为质量与速度矢量的乘积。"
+      },
+      "recovery": {
+        "en": "Review how momentum is calculated as p = mv and directed along the velocity vector.",
+        "ms": "Ulang kaji bagaimana momentum dikira sebagai p = mv dan berarah mengikut vektor halaju.",
+        "zh": "复习动量计算公式 p = mv 及其沿速度矢量的方向性。"
+      }
+    },
+    {
+      "id": "vector-components-resolution",
+      "description": {
+        "en": "Resolving two-dimensional vectors into orthogonal Cartesian components.",
+        "ms": "Meleraikan vektor dua dimensi kepada komponen Cartes yang berserenjang.",
+        "zh": "将二维矢量正交分解为直角坐标分量。"
+      },
+      "recovery": {
+        "en": "Practice breaking velocity and momentum vectors into x and y trigonometric components.",
+        "ms": "Latih tubi meleraikan vektor halaju dan momentum kepada komponen trigonometri x dan y.",
+        "zh": "练习使用三角函数将速度和动量矢量分解为 x 和 y 分量。"
+      }
+    },
+    {
+      "id": "one-dimensional-momentum-conservation",
+      "description": {
+        "en": "Conservation of linear momentum in an isolated system during one-dimensional collisions.",
+        "ms": "Keabadian momentum linear dalam sistem terpencil semasa perlanggaran satu dimensi.",
+        "zh": "孤立系统在一维碰撞中的线动量守恒。"
+      },
+      "recovery": {
+        "en": "Recall that total system momentum remains constant before and after a collision if no external forces act.",
+        "ms": "Ingat kembali bahawa jumlah momentum sistem kekal malar sebelum dan selepas perlanggaran jika tiada daya luar bertindak.",
+        "zh": "回顾在无外力作用下，系统碰撞前后的总动量保持不变。"
+      }
+    },
+    {
+      "id": "kinetic-energy-and-elasticity",
+      "description": {
+        "en": "Distinction between elastic and inelastic collisions based on kinetic energy conservation.",
+        "ms": "Perbezaan antara perlanggaran kenyal dan tak kenyal berdasarkan keabadian tenaga kinetik.",
+        "zh": "基于动能守恒区分弹性碰撞与非弹性碰撞。"
+      },
+      "recovery": {
+        "en": "Review that kinetic energy is conserved strictly in elastic collisions but transformed in inelastic collisions.",
+        "ms": "Ulang kaji bahawa tenaga kinetik diabadikan secara khusus dalam perlanggaran kenyal tetapi berubah dalam perlanggaran tak kenyal.",
+        "zh": "复习动能仅在弹性碰撞中守恒，而在非弹性碰撞中会发生转化的概念。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "scalar-momentum-addition",
+      "description": {
+        "en": "Believing that total momentum in two dimensions can be conserved by simply adding scalar magnitudes rather than vector components.",
+        "ms": "Percaya bahawa jumlah momentum dalam dua dimensi boleh diabadikan dengan hanya menambah magnitud skalar dan bukannya komponen vektor.",
+        "zh": "误以为二维碰撞中的动量守恒只需将标量大小相加，而无需按矢量分量守恒。"
+      }
+    },
+    {
+      "id": "one-dimensional-relative-velocity-in-2d",
+      "description": {
+        "en": "Applying the one-dimensional elastic relative velocity relationship directly to two-dimensional collisions.",
+        "ms": "Menggunakan hubungan halaju relatif kenyal satu dimensi secara langsung kepada perlanggaran dua dimensi.",
+        "zh": "将一维弹性碰撞的相对速度关系式错误地直接应用于二维碰撞。"
+      }
+    },
+    {
+      "id": "kinetic-energy-vector-components",
+      "description": {
+        "en": "Treating kinetic energy as a vector and attempting to conserve kinetic energy separately along perpendicular coordinate axes.",
+        "ms": "Menganggap tenaga kinetik sebagai vektor dan cuba mengabadikan tenaga kinetik secara berasingan di sepanjang paksi koordinat berserenjang.",
+        "zh": "将动能视为矢量，试图在相互垂直的坐标轴上分别守恒动能。"
+      }
+    },
+    {
+      "id": "transverse-momentum-neglect",
+      "description": {
+        "en": "Assuming momentum along an axis perpendicular to initial motion is always zero or independent of glancing deflection angles.",
+        "ms": "Menganggap momentum di sepanjang paksi yang berserenjang dengan gerakan awal sentiasa sifar atau tidak bergantung pada sudut pesongan sipi.",
+        "zh": "认为垂直于初速度方向的分动量始终为零，或与斜碰偏转角无关。"
+      }
+    },
+    {
+      "id": "universal-perpendicularity-assumption",
+      "description": {
+        "en": "Generalizing the 90-degree post-collision angle to all two-dimensional elastic collisions, regardless of target initial motion or unequal masses.",
+        "ms": "Menyamaratakan sudut 90 darjah selepas perlanggaran kepada semua perlanggaran kenyal dua dimensi, tanpa mengira gerakan awal sasaran atau jisim yang tidak sama.",
+        "zh": "将碰撞后呈 90 度夹角的结论错误推广到所有二维弹性碰撞，忽略了目标静止且两物体质量相等的前提。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-9/section-9-5/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-9-section-9-5.json",
+  "activities": [
+    {
+      "id": "act-mcq-easy-1",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply momentum conservation along independent perpendicular axes in two-dimensional collisions.",
+      "prompt": {
+        "en": "Two pucks on a frictionless horizontal surface undergo a glancing collision. Puck 1 initially moves in the positive x direction, while puck 2 is initially stationary. After colliding, both pucks move at angles relative to the x axis. How must linear momentum conservation be applied to analyze their motion?",
+        "ms": "Dua keping puk di atas permukaan mendatar tanpa geseran mengalami perlanggaran sipi. Puk 1 pada mulanya bergerak ke arah x positif, manakala puk 2 pada mulanya pegun. Selepas berlanggar, kedua-dua puk bergerak pada sudut tertentu relatif kepada paksi-x. Bagaimanakah keabadian momentum linear mesti diaplikasikan untuk menganalisis gerakan mereka?",
+        "zh": "两个冰球在光滑无摩擦的水平面上发生斜碰。冰球 1 最初沿 x 轴正方向运动，冰球 2 最初静止。碰撞后，两个冰球均沿与 x 轴成一定角度的方向运动。应如何应用动量守恒定律来分析它们的运动？"
+      },
+      "hints": [
+        {
+          "en": "Recall that linear momentum is a vector quantity having both magnitude and spatial direction.",
+          "ms": "Ingat kembali bahawa momentum linear ialah suatu kuantiti vektor yang mempunyai kedua-dua magnitud dan arah ruang.",
+          "zh": "回想一下，动量是一个同时具有大小和空间方向的矢量。"
+        },
+        {
+          "en": "For an isolated system in two dimensions, vector momentum conservation requires that components balance along each perpendicular coordinate axis independently.",
+          "ms": "Bagi suatu sistem terpencil dalam dua dimensi, keabadian momentum vektor memerlukan komponen seimbang di sepanjang setiap paksi koordinat berserenjang secara berasingan.",
+          "zh": "对于二维孤立系统，动量守恒的矢量性要求在每个互相垂直的坐标轴上，动量分量都必须各自独立地保持平衡。"
+        }
+      ],
+      "feedback": {
+        "en": "Because linear momentum is a vector, its conservation requires the x components to balance independently from the y components.",
+        "ms": "Oleh kerana momentum linear ialah vektor, keabadiannya memerlukan komponen x seimbang secara berasingan daripada komponen y.",
+        "zh": "因为动量是矢量，所以动量守恒要求 x 分量与 y 分量必须互相独立地保持平衡。"
+      },
+      "answerLogic": {
+        "en": "Linear momentum is a vector quantity. For an isolated system in a plane, the vector equation delta p = 0 decomposes into two independent scalar equations: total initial x-momentum equals total final x-momentum, and total initial y-momentum equals total final y-momentum. Adding scalar magnitudes ignores directional changes.",
+        "ms": "Momentum linear ialah kuantiti vektor. Bagi sistem terpencil dalam satu satah, persamaan vektor delta p = 0 terurai kepada dua persamaan skalar yang bebas: jumlah momentum x awal bersamaan dengan jumlah momentum x akhir, dan jumlah momentum y awal bersamaan dengan jumlah momentum y akhir. Menambah magnitud skalar mengabaikan perubahan arah.",
+        "zh": "动量是矢量。对于平面内的孤立系统，矢量方程 delta p = 0 可分解为两个独立的标量方程：初始 x 动量之和等于末态 x 动量之和，初始 y 动量之和等于末态 y 动量之和。直接将标量大小相加会忽略方向的变化。"
+      },
+      "explanation": {
+        "en": "In any two-dimensional collision of an isolated system, momentum is conserved in all directions. Resolving vectors onto Cartesian axes produces two independent component equations: m1*v1ix + m2*v2ix = m1*v1fx + m2*v2fx, and m1*v1iy + m2*v2iy = m1*v1fy + m2*v2fy. Adding scalar magnitudes fails because momentum vectors at different angles partially cancel when projected onto axes.",
+        "ms": "Dalam mana-mana perlanggaran dua dimensi bagi sistem terpencil, momentum diabadikan dalam semua arah. Meleraikan vektor kepada paksi Cartes menghasilkan dua persamaan komponen yang bebas: m1*v1ix + m2*v2ix = m1*v1fx + m2*v2fx, dan m1*v1iy + m2*v2iy = m1*v1fy + m2*v2fy. Menambah magnitud skalar adalah salah kerana vektor momentum pada sudut berbeza membatalkan satu sama lain sebahagiannya apabila diunjurkan pada paksi.",
+        "zh": "在孤立系统的任意二维碰撞中，所有方向上的动量均守恒。将矢量投影到直角坐标轴上可得到两个独立的分量方程：m1*v1ix + m2*v2ix = m1*v1fx + m2*v2fx 以及 m1*v1iy + m2*v2iy = m1*v1fy + m2*v2fy。直接相加标量大小是错误的，因为成角度的动量矢量在投影到坐标轴时会产生相互抵消的分量。"
+      },
+      "misconceptions": [
+        "scalar-momentum-addition"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components-resolution",
+        "prompt": {
+          "en": "Remember that any vector in a plane can be broken down into orthogonal x and y components using sine and cosine functions. Conservation applies to each component individually.",
+          "ms": "Ingat bahawa sebarang vektor dalam satu satah boleh dileraikan kepada komponen x dan y yang berserenjang menggunakan fungsi sinus dan kosinus. Keabadian terpakai kepada setiap komponen secara individu.",
+          "zh": "请记住，平面内的任何矢量都可以利用正弦和余弦函数分解为相互垂直的 x 和 y 分量。守恒定律分别独立适用于每个分量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options asking how linear momentum conservation is correctly applied to two-dimensional collisions.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang bertanyakan bagaimana keabadian momentum linear diaplikasikan dengan betul untuk perlanggaran dua dimensi.",
+        "zh": "包含四个选项的多项选择题，询问如何将动量守恒定律正确应用于二维碰撞。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "Apply momentum conservation separately along the x axis and along the y axis as independent vector component equations.",
+              "ms": "Gunakan keabadian momentum secara berasingan di sepanjang paksi-x dan di sepanjang paksi-y sebagai persamaan komponen vektor yang bebas.",
+              "zh": "分别沿 x 轴和 y 轴建立互相独立的分量方程来应用动量守恒。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "Equate the sum of initial scalar momentum magnitudes directly to the sum of final scalar momentum magnitudes, ignoring angles.",
+              "ms": "Samakan hasil tambah magnitud momentum skalar awal secara terus dengan hasil tambah magnitud momentum skalar akhir, mengabaikan sudut.",
+              "zh": "直接将碰撞前各物体的标量动量大小之和等于碰撞后的标量动量大小之和，忽略角度。"
+            },
+            "misconception": "scalar-momentum-addition"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "Conserve momentum only along the initial line of travel, because perpendicular momentum does not obey conservation laws.",
+              "ms": "Abadikan momentum hanya di sepanjang garis gerakan awal, kerana momentum serenjang tidak mematuhi hukum keabadian.",
+              "zh": "仅沿初始运动直线方向应用动量守恒，因为垂直方向的动量不遵循守恒定律。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "Combine momentum and kinetic energy into a single scalar equation since two-dimensional motion cannot be resolved into axes.",
+              "ms": "Gabungkan momentum dan tenaga kinetik menjadi satu persamaan skalar kerana gerakan dua dimensi tidak boleh dileraikan kepada paksi.",
+              "zh": "将动量和动能合并为一个标量方程，因为二维运动无法分解到坐标轴上。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-easy-2",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Determine glancing angles and speeds for two-dimensional elastic collisions using momentum and energy equations.",
+      "prompt": {
+        "en": "A moving disc collides obliquely with an identical target disc that is initially at rest on a frictionless table. The incoming disc initially travels strictly along the +x axis. Immediately after the collision, the incoming disc is observed moving with a positive y velocity component. What must be true regarding the motion of the target disc?",
+        "ms": "Satu cakera yang sedang bergerak berlanggar secara sipi dengan cakera sasaran serupa yang pada mulanya pegun di atas meja tanpa geseran. Cakera yang datang pada mulanya bergerak tepat di sepanjang paksi +x. Sejurus selepas perlanggaran, cakera yang datang diperhatikan bergerak dengan komponen halaju y yang positif. Apakah yang mesti benar mengenai gerakan cakera sasaran?",
+        "zh": "一个运动的圆盘在光滑无摩擦的水平桌面上斜碰另一个原本静止的相同目标圆盘。入射圆盘最初完全沿 +x 轴运动。碰撞后瞬间，观察到入射圆盘具有沿 +y 方向的速度分量。关于目标圆盘的运动，下列哪项说法必然正确？"
+      },
+      "hints": [
+        {
+          "en": "Consider the total initial momentum of the two-disc system along the direction perpendicular to the original line of motion (the y axis).",
+          "ms": "Pertimbangkan jumlah momentum awal bagi sistem dua cakera di sepanjang arah yang berserenjang dengan garis gerakan asal (paksi-y).",
+          "zh": "考虑两圆盘系统沿垂直于初始运动方向（即 y 轴）的总初动量。"
+        },
+        {
+          "en": "Since the initial total y-momentum is zero and the system is isolated, the sum of the final y-momenta of both discs must also equal zero.",
+          "ms": "Oleh kerana jumlah momentum y awal adalah sifar dan sistem ini terpencil, hasil tambah momentum y akhir bagi kedua-dua cakera juga mesti bersamaan dengan sifar.",
+          "zh": "由于初始 y 方向总动量为零且系统孤立，因此碰撞后两个圆盘的 y 动量之和也必须等于零。"
+        }
+      ],
+      "feedback": {
+        "en": "Because initial momentum in the y direction is zero, any positive y-momentum gained by one object must be exactly countered by negative y-momentum in the other.",
+        "ms": "Oleh kerana momentum awal dalam arah y adalah sifar, sebarang momentum y positif yang diperoleh oleh satu objek mesti diimbangi tepat oleh momentum y negatif pada objek yang satu lagi.",
+        "zh": "因为 y 方向的初始总动量为零，一个物体获得的任意正 y 方向动量都必须被另一个物体的负 y 方向动量精确抵消。"
+      },
+      "answerLogic": {
+        "en": "The initial momentum in the y direction is zero: piy = 0. According to momentum conservation in isolated systems, pfy = piy = 0. Therefore, m1*v1fy + m2*v2fy = 0. If disc 1 has v1fy > 0, then disc 2 must have v2fy < 0 so that their y components sum to zero.",
+        "ms": "Momentum awal dalam arah y ialah sifar: piy = 0. Mengikut keabadian momentum dalam sistem terpencil, pfy = piy = 0. Oleh itu, m1*v1fy + m2*v2fy = 0. Jika cakera 1 mempunyai v1fy > 0, maka cakera 2 mesti mempunyai v2fy < 0 supaya komponen y mereka berjumlah sifar.",
+        "zh": "y 方向的初始动量为零：piy = 0。根据孤立系统的动量守恒定律，pfy = piy = 0。因此，m1*v1fy + m2*v2fy = 0。如果圆盘 1 的 v1fy > 0，则圆盘 2 必然有 v2fy < 0，使得两者的 y 分量相加为零。"
+      },
+      "explanation": {
+        "en": "Before the glancing collision, neither object has motion along the y axis, giving a net initial transverse momentum of zero. By conservation of linear momentum along the y axis, the net final momentum in the y direction must remain zero. If the first object deflects upward (+y), the second object must deflect downward (-y) so their transverse momentum components cancel.",
+        "ms": "Sebelum perlanggaran sipi, tiada objek yang bergerak di sepanjang paksi-y, menghasilkan momentum melintang awal bersih sifar. Berdasarkan keabadian momentum linear di sepanjang paksi-y, momentum akhir bersih dalam arah y mesti kekal sifar. Jika objek pertama terpesong ke atas (+y), objek kedua mesti terpesong ke bawah (-y) supaya komponen momentum melintang mereka saling membatalkan.",
+        "zh": "在斜碰之前，两个物体沿 y 轴均无运动，因此净初始横向动量为零。根据 y 轴方向的动量守恒定律，y 方向的净末动量必须保持为零。若第一个物体向上偏转（+y），则第二个物体必然向下偏转（-y），使它们的横向动量分量相互抵消。"
+      },
+      "misconceptions": [
+        "transverse-momentum-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components-resolution",
+        "prompt": {
+          "en": "Review how to express components along a perpendicular axis. When the initial component is zero, the final components of interacting objects must sum to zero.",
+          "ms": "Ulang kaji cara menyatakan komponen di sepanjang paksi berserenjang. Apabila komponen awal adalah sifar, komponen akhir objek yang berinteraksi mesti berjumlah sifar.",
+          "zh": "复习如何在垂直坐标轴上表示分量。当初始分量为零时，相互作用物体的末分量之和必须为零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options asking for the required transverse motion of a target disc after an oblique collision.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang bertanyakan gerakan melintang yang diperlukan bagi cakera sasaran selepas perlanggaran sipi.",
+        "zh": "包含四个选项的多项选择题，询问斜碰后目标圆盘所必须具备的横向运动特征。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The target disc must have a negative y velocity component so that the total momentum along the y axis remains zero.",
+              "ms": "Cakera sasaran mesti mempunyai komponen halaju y yang negatif supaya jumlah momentum di sepanjang paksi-y kekal sifar.",
+              "zh": "目标圆盘必须具有沿 -y 方向的速度分量，以使 y 轴方向的总动量保持为零。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "The target disc must move purely along the x axis because the system possessed zero initial momentum along the y axis.",
+              "ms": "Cakera sasaran mesti bergerak sepenuhnya di sepanjang paksi-x kerana sistem mempunyai sifar momentum awal di sepanjang paksi-y.",
+              "zh": "目标圆盘必须纯粹沿 x 轴运动，因为系统在 y 轴上的初始动量为零。"
+            },
+            "misconception": "transverse-momentum-neglect"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The target disc must also have a positive y velocity component to match the deflection direction of the incident disc.",
+              "ms": "Cakera sasaran juga mesti mempunyai komponen halaju y yang positif untuk memadankan arah pesongan cakera yang datang.",
+              "zh": "目标圆盘也必须具有沿 +y 方向的速度分量，以与入射圆盘的偏转方向保持一致。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The direction of the target disc along the y axis is completely unconstrained because transverse momentum is not conserved.",
+              "ms": "Arah cakera sasaran di sepanjang paksi-y langsung tidak terikat kerana momentum melintang tidak diabadikan.",
+              "zh": "目标圆盘在 y 轴方向上的运动不受任何约束，因为横向动量并不守恒。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-easy-3",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between elastic and inelastic collisions in two dimensions using kinetic energy criteria.",
+      "prompt": {
+        "en": "Two curling stones collide obliquely on a frictionless ice sheet. A student wants to verify whether the collision is elastic. Which statement correctly identifies how kinetic energy must be treated in this two-dimensional collision?",
+        "ms": "Dua batu 'curling' berlanggar secara sipi di atas gelanggang ais tanpa geseran. Seorang murid ingin mengesahkan sama ada perlanggaran itu adalah kenyal. Pernyataan manakah yang mengenal pasti dengan betul bagaimana tenaga kinetik mesti dikendalikan dalam perlanggaran dua dimensi ini?",
+        "zh": "两个冰壶在光滑无摩擦的冰面上发生斜碰。一名学生想要验证这次碰撞是否为弹性碰撞。下列哪项陈述正确说明了在此二维碰撞中应如何处理动能？"
+      },
+      "hints": [
+        {
+          "en": "Recall whether kinetic energy is defined as a vector (possessing direction) or as a scalar (independent of spatial direction).",
+          "ms": "Ingat kembali sama ada tenaga kinetik ditakrifkan sebagai vektor (mempunyai arah) atau sebagai skalar (bebas daripada arah ruang).",
+          "zh": "回想一下，动能是被定义为矢量（具有方向）还是标量（与空间方向无关）。"
+        },
+        {
+          "en": "Because energy has no spatial direction, kinetic energy conservation evaluates the sum of (1/2)*m*v^2 for all particles as a single total scalar value.",
+          "ms": "Oleh kerana tenaga tidak mempunyai arah ruang, keabadian tenaga kinetik menilai hasil tambah (1/2)*m*v^2 untuk semua zarah sebagai satu nilai skalar tunggal.",
+          "zh": "由于能量没有空间方向，动能守恒只需将所有粒子的 (1/2)*m*v^2 作为单一标量总和进行评估。"
+        }
+      ],
+      "feedback": {
+        "en": "Kinetic energy is a scalar quantity based on speed squared; it is never broken down or conserved separately along directional axes.",
+        "ms": "Tenaga kinetik ialah kuantiti skalar berdasarkan laju kuasa dua; ia tidak pernah dileraikan atau diabadikan secara berasingan di sepanjang paksi berarah.",
+        "zh": "动能是基于速率平方的标量；它绝不能沿各个方向轴分解或分别守恒。"
+      },
+      "answerLogic": {
+        "en": "Kinetic energy K = (1/2)*m*v^2 depends on speed squared and is strictly a scalar quantity. In an elastic collision, total kinetic energy is conserved: Ki = Kf. Unlike vector momentum, kinetic energy does not possess directional components and cannot be conserved along axes independently.",
+        "ms": "Tenaga kinetik K = (1/2)*m*v^2 bergantung pada laju kuasa dua dan merupakan kuantiti skalar sepenuhnya. Dalam perlanggaran kenyal, jumlah tenaga kinetik diabadikan: Ki = Kf. Tidak seperti momentum vektor, tenaga kinetik tidak mempunyai komponen berarah dan tidak boleh diabadikan di sepanjang paksi secara berasingan.",
+        "zh": "动能 K = (1/2)*m*v^2 取决于速率的平方，严格属于标量。在弹性碰撞中，总动能守恒：Ki = Kf。与作为矢量的动量不同，动能不具备空间方向分量，不能沿各个坐标轴分别守恒。"
+      },
+      "explanation": {
+        "en": "Collisions are classified as elastic when the total kinetic energy of the system is conserved (Ki = Kf). Unlike momentum, which is a vector that must be resolved into x and y component equations, kinetic energy is a scalar. It is determined by the total speed squared of each object, regardless of the deflection angles, and evaluated as a single scalar equation.",
+        "ms": "Perlanggaran dikelaskan sebagai kenyal apabila jumlah tenaga kinetik sistem diabadikan (Ki = Kf). Tidak seperti momentum, yang merupakan vektor yang mesti dileraikan kepada persamaan komponen x dan y, tenaga kinetik ialah skalar. Ia ditentukan oleh jumlah laju kuasa dua setiap objek, tanpa mengira sudut pesongan, dan dinilai sebagai satu persamaan skalar tunggal.",
+        "zh": "当系统的总动能守恒（Ki = Kf）时，碰撞被归类为弹性碰撞。动量是矢量，必须分解为 x 和 y 方向的分量方程；动能则是标量，由每个物体的总速率平方决定，与偏转角度无关，只需作为单一标量方程来表述。"
+      },
+      "misconceptions": [
+        "kinetic-energy-vector-components"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-and-elasticity",
+        "prompt": {
+          "en": "Review the definition of an elastic collision: total mechanical kinetic energy is conserved before and after the interaction as a scalar quantity.",
+          "ms": "Ulang kaji definisi perlanggaran kenyal: jumlah tenaga kinetik mekanikal diabadikan sebelum dan selepas interaksi sebagai kuantiti skalar.",
+          "zh": "复习弹性碰撞的定义：相互作用前后的总机械动能作为一个标量保持守恒。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options asking how kinetic energy is evaluated to determine if a two-dimensional collision is elastic.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan yang bertanyakan bagaimana tenaga kinetik dinilai untuk menentukan sama ada perlanggaran dua dimensi adalah kenyal.",
+        "zh": "包含四个选项的多项选择题，询问应如何通过评估动能来判断二维碰撞是否为弹性碰撞。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "Kinetic energy is a scalar quantity, so the collision is elastic if total scalar kinetic energy before the collision equals total scalar kinetic energy after the collision.",
+              "ms": "Tenaga kinetik ialah suatu kuantiti skalar, maka perlanggaran adalah kenyal jika jumlah tenaga kinetik skalar sebelum perlanggaran bersamaan dengan jumlah tenaga kinetik skalar selepas perlanggaran.",
+              "zh": "动能是标量，因此若碰撞前的标量总动能等于碰撞后的标量总动能，该碰撞即为弹性碰撞。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "Kinetic energy is a vector quantity, so the collision is elastic only if kinetic energy is conserved separately along the x axis and along the y axis.",
+              "ms": "Tenaga kinetik ialah suatu kuantiti vektor, maka perlanggaran adalah kenyal hanya jika tenaga kinetik diabadikan secara berasingan di sepanjang paksi-x dan di sepanjang paksi-y.",
+              "zh": "动能是矢量，因此只有在 x 轴和 y 轴方向上分别独立守恒动能时，碰撞才是弹性的。"
+            },
+            "misconception": "kinetic-energy-vector-components"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "Kinetic energy cannot be used to categorize two-dimensional collisions because kinetic energy applies only to one-dimensional head-on motions.",
+              "ms": "Tenaga kinetik tidak boleh digunakan untuk mengkategorikan perlanggaran dua dimensi kerana tenaga kinetik hanya terpakai kepada gerakan berdepan satu dimensi.",
+              "zh": "动能无法用于对二维碰撞进行分类，因为动能仅适用于一维正碰运动。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The collision is elastic only if kinetic energy along the transverse direction is converted entirely into potential energy.",
+              "ms": "Perlanggaran adalah kenyal hanya jika tenaga kinetik di sepanjang arah melintang ditukarkan sepenuhnya kepada tenaga keupayaan.",
+              "zh": "只有当横向动能完全转化为势能时，碰撞才是弹性的。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-mod-1",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze perfectly inelastic collisions in two dimensions where colliding bodies coalesce after impact.",
+      "prompt": {
+        "en": "Two identical hockey pucks glide across a frictionless horizontal ice surface and stick together upon collision. Puck 1 was moving due east, while Puck 2 was moving due north. How does the magnitude of the total momentum of the combined pucks compare to the scalar sum of their individual initial momentum magnitudes immediately before the impact?",
+        "ms": "Dua kepingan hoki serupa meluncur di atas permukaan ais mendatar tanpa geseran dan melekat bersama semasa perlanggaran. Kepingan 1 bergerak tepat ke timur, manakala Kepingan 2 bergerak tepat ke utara. Bagaimanakah magnitud jumlah momentum kepingan yang bercantum itu berbanding dengan hasil tambah skalar bagi magnitud momentum awal individu masing-masing sejurus sebelum hentaman?",
+        "zh": "两个完全相同的冰球在无摩擦的水平冰面上滑行，并在碰撞后粘合在一起运动。冰球 1 原本正东方向运动，冰球 2 原本正北方向运动。碰撞后结合体的总动量大小与碰撞前两冰球各自初始动量大小的标量和相比，关系为何？"
+      },
+      "hints": [
+        {
+          "en": "Recall that linear momentum is a vector quantity with independent components along the x and y axes.",
+          "ms": "Ingat kembali bahawa momentum linear ialah kuantiti vektor dengan komponen bebas di sepanjang paksi x dan y.",
+          "zh": "回想一下，线动量是一个矢量，在 x 轴和 y 轴方向上具有独立的分量。"
+        },
+        {
+          "en": "In a right triangle formed by perpendicular vector components, the hypotenuse representing total momentum magnitude is always strictly less than the algebraic sum of the two perpendicular legs.",
+          "ms": "Dalam segi tiga bersudut tegak yang dibentuk oleh komponen vektor berserenjang, hipotenus yang mewakili magnitud jumlah momentum sentiasa lebih kecil secara ketat daripada hasil tambah algebra dua sisi berserenjang.",
+          "zh": "在由相互垂直的矢量分量构成的直角三角形中，代表总动量大小的斜边总是严格小于两个直角边的代数和。"
+        }
+      ],
+      "feedback": {
+        "en": "Because linear momentum is a vector, orthogonal momentum components do not add algebraically as scalars. By the Pythagorean theorem, the hypotenuse is strictly less than the sum of the two legs.",
+        "ms": "Kerana momentum linear ialah vektor, komponen momentum ortogon tidak ditambah secara algebra sebagai skalar. Melalui teorem Pythagoras, hipotenus adalah lebih kecil secara ketat daripada hasil tambah kedua-dua sisi berserenjang.",
+        "zh": "因为线动量是矢量，相互正交的动量分量不能像标量那样直接代数相加。根据勾股定理，斜边的长度严格小于两直角边之和。"
+      },
+      "answerLogic": {
+        "en": "The initial momenta lie along perpendicular axes (east and north). The total final momentum vector is the vector sum of these orthogonal vectors: p_final = sqrt(p_x^2 + p_y^2). By the triangle inequality, sqrt(p_x^2 + p_y^2) is strictly less than p_x + p_y whenever both components are non-zero.",
+        "ms": "Momentum awal terletak di sepanjang paksi berserenjang (timur dan utara). Vektor jumlah momentum akhir ialah hasil tambah vektor bagi vektor-vektor ortogon ini: p_akhir = sqrt(p_x^2 + p_y^2). Mengikut ketaksamaan segi tiga, sqrt(p_x^2 + p_y^2) adalah lebih kecil secara ketat daripada p_x + p_y apabila kedua-dua komponen bukan sifar.",
+        "zh": "初始动量分别位于相互垂直的坐标轴上（正东和正北）。最终总动量矢量是这两个正交矢量的矢量和：p_final = sqrt(p_x^2 + p_y^2)。由三角形不等式可知，只要两个分量都不为零，sqrt(p_x^2 + p_y^2) 就严格小于 p_x + p_y。"
+      },
+      "explanation": {
+        "en": "In any two-dimensional collision, momentum conservation must be satisfied independently for each spatial component: p_ix = p_fx and p_iy = p_fy. Because the initial velocities are perpendicular, the magnitude of the final momentum vector is given by the Pythagorean combination of the x and y components. Treating momentum as a scalar and summing the magnitudes ignores the directional nature of vectors and violates vector algebra.",
+        "ms": "Dalam mana-mana perlanggaran dua dimensi, keabadian momentum mesti dipenuhi secara bebas bagi setiap komponen ruang: p_ix = p_fx dan p_iy = p_fy. Oleh kerana halaju awal adalah berserenjang, magnitud vektor momentum akhir diberikan oleh gabungan Pythagoras bagi komponen x dan y. Menganggap momentum sebagai skalar dan menjumlahkan magnitudnya mengabaikan sifat berarah vektor dan melanggar algebra vektor.",
+        "zh": "在任何二维碰撞中，动量守恒都必须在每个空间分量上独立满足：p_ix = p_fx 且 p_iy = p_fy。由于初始速度相互垂直，最终动量矢量的大小由 x 和 y 分量的勾股组合给出。将动量视为标量并简单地将其大小相加忽略了矢量的方向性，违反了矢量代数原理。"
+      },
+      "misconceptions": [
+        "scalar-momentum-addition"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "one-dimensional-momentum-conservation",
+        "prompt": {
+          "en": "Review how linear momentum is conserved as a signed directional quantity in one dimension before extending conservation principles independently along multiple coordinate axes.",
+          "ms": "Ulang kaji bagaimana momentum linear diabadikan sebagai kuantiti berarah bertanda dalam satu dimensi sebelum memperluaskan prinsip keabadian secara bebas di sepanjang beberapa paksi koordinat.",
+          "zh": "在将守恒原理独立推广到多个坐标轴之前，先复习线动量在一维中如何作为带有正负号的有向物理量守恒。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question presenting a scenario of two identical pucks moving perpendicularly and sticking together. Select the option that correctly compares the final total momentum magnitude to the scalar sum of initial momentum magnitudes.",
+        "ms": "Soalan aneka pilihan yang membentangkan senario dua kepingan hoki serupa yang bergerak secara berserenjang dan bercantum. Pilih pilihan yang membandingkan magnitud jumlah momentum akhir dengan hasil tambah skalar magnitud momentum awal dengan betul.",
+        "zh": "多项选择题，描述了两个相同冰球垂直运动并粘合在一起的情景。请选择正确比较最终总动量大小与初始动量大小标量和的选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-1-a",
+        "options": [
+          {
+            "id": "opt-1-a",
+            "label": {
+              "en": "The magnitude of the final momentum is strictly less than the scalar sum of the initial momentum magnitudes because momentum is conserved vectorially across perpendicular components.",
+              "ms": "Magnitud momentum akhir adalah lebih kecil secara ketat daripada hasil tambah skalar magnitud momentum awal kerana momentum diabadikan secara vektor merentasi komponen yang berserenjang.",
+              "zh": "最终动量的大小严格小于初始动量大小的标量和，因为动量是在相互垂直的矢量分量上分别守恒的。"
+            }
+          },
+          {
+            "id": "opt-1-b",
+            "label": {
+              "en": "The magnitude of the final momentum equals the scalar sum of the initial momentum magnitudes because total momentum magnitude is conserved as a scalar.",
+              "ms": "Magnitud momentum akhir adalah sama dengan hasil tambah skalar magnitud momentum awal kerana jumlah magnitud momentum diabadikan sebagai kuantiti skalar.",
+              "zh": "最终动量的大小等于初始动量大小的标量和，因为总动量大小是标量，在任何情况下均守恒。"
+            },
+            "misconception": "scalar-momentum-addition"
+          },
+          {
+            "id": "opt-1-c",
+            "label": {
+              "en": "The magnitude of the final momentum is zero because perpendicular momentum components cancel each other out upon coalescence.",
+              "ms": "Magnitud momentum akhir adalah sifar kerana komponen momentum yang berserenjang membatalkan satu sama lain semasa percantuman.",
+              "zh": "最终动量的大小为零，因为相互垂直的动量分量在粘合时完全相互抵消。"
+            }
+          },
+          {
+            "id": "opt-1-d",
+            "label": {
+              "en": "The magnitude of the final momentum equals only the momentum of the faster puck because the perpendicular impact completely destroys the other puck's momentum.",
+              "ms": "Magnitud momentum akhir hanya sama dengan momentum kepingan yang lebih laju kerana hentaman berserenjang memusnahkan sepenuhnya momentum kepingan yang satu lagi.",
+              "zh": "最终动量的大小仅等于速度较快的冰球的动量，因为垂直碰撞完全消除了另一个冰球的动量。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-mod-2",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Deduce that equal-mass elastic glancing collisions with a stationary target yield perpendicular final trajectories.",
+      "prompt": {
+        "en": "In an experiment analyzing glancing elastic collisions, a moving projectile particle collides with a target particle. Under which precise set of conditions are the final velocities of the two particles guaranteed to be mutually perpendicular (at an angle of 90 degrees to each other)?",
+        "ms": "Dalam satu eksperimen yang menganalisis perlanggaran kenyal sipi, satu zarah projektil yang bergerak berlanggar dengan zarah sasaran. Di bawah set syarat tepat yang manakah halaju akhir kedua-dua zarah dijamin berserenjang antara satu sama lain (pada sudut 90 darjah)?",
+        "zh": "在分析斜向弹性碰撞的实验中，运动的入射粒子与目标粒子发生碰撞。在满足下列哪组确切条件时，两粒子的最终速度矢量必然相互垂直（彼此夹角为 90 度）？"
+      },
+      "hints": [
+        {
+          "en": "Combine the vector equation for momentum conservation with the scalar equation for kinetic energy conservation when one object is stationary.",
+          "ms": "Gabungkan persamaan vektor untuk keabadian momentum dengan persamaan skalar untuk keabadian tenaga kinetik apabila satu objek adalah pegun.",
+          "zh": "结合动量守恒的矢量方程与一个物体静止时的动能守恒标量方程进行分析。"
+        },
+        {
+          "en": "When the masses cancel out, the dot product of the two final velocity vectors becomes zero only if the target's initial velocity was zero and both masses were identical.",
+          "ms": "Apabila jisim dimansuhkan, hasil darab bintik bagi dua vektor halaju akhir menjadi sifar hanya jika halaju awal sasaran ialah sifar dan kedua-dua jisim adalah sama.",
+          "zh": "当质量约去后，仅当目标粒子的初始速度为零且两物体质量相等时，两最终速度矢量的点积才为零。"
+        }
+      ],
+      "feedback": {
+        "en": "Mutual perpendicularity after a collision requires three simultaneous conditions: identical masses (m1 = m2), an elastic collision (conserving kinetic energy), and a stationary target particle (v2i = 0).",
+        "ms": "Keadaan saling berserenjang selepas perlanggaran memerlukan tiga syarat serentak: jisim serupa (m1 = m2), perlanggaran kenyal (mengabadikan tenaga kinetik), dan zarah sasaran yang pegun (v2i = 0).",
+        "zh": "碰撞后轨迹相互垂直需要同时满足三个条件：质量相同（m1 = m2）、弹性碰撞（动能守恒）以及目标粒子初始静止（v2i = 0）。"
+      },
+      "answerLogic": {
+        "en": "For an elastic collision with m1 = m2 = m and v2i = 0, momentum conservation gives v1i = v1f + v2f. Squaring gives v1i^2 = v1f^2 + v2f^2 + 2(v1f . v2f). Kinetic energy conservation gives v1i^2 = v1f^2 + v2f^2. Comparing these yields 2(v1f . v2f) = 0, proving v1f is perpendicular to v2f (theta + phi = 90 degrees). If m1 != m2 or v2i != 0, this cancellation fails.",
+        "ms": "Bagi perlanggaran kenyal dengan m1 = m2 = m dan v2i = 0, keabadian momentum memberikan v1i = v1f + v2f. Mengkuasadua memberikan v1i^2 = v1f^2 + v2f^2 + 2(v1f . v2f). Keabadian tenaga kinetik memberikan v1i^2 = v1f^2 + v2f^2. Membandingkan kedua-duanya menghasilkan 2(v1f . v2f) = 0, membuktikan bahawa v1f berserenjang dengan v2f (theta + phi = 90 darjah). Jika m1 != m2 atau v2i != 0, pembatalan ini tidak berlaku.",
+        "zh": "对于 m1 = m2 = m 且 v2i = 0 的弹性碰撞，动量守恒给出 v1i = v1f + v2f。两边点乘自身得 v1i^2 = v1f^2 + v2f^2 + 2(v1f · v2f)。动能守恒给出 v1i^2 = v1f^2 + v2f^2。对比两式可得 2(v1f · v2f) = 0，证明 v1f 与 v2f 相互垂直（θ + φ = 90°）。若 m1 != m2 或 v2i != 0，则该点积为零的结论不成立。"
+      },
+      "explanation": {
+        "en": "A glancing elastic collision between two objects produces trajectories that diverge at an angle of 90 degrees only when the particles have identical mass and the target particle is initially at rest. Assuming that glancing elastic collisions always produce perpendicular trajectories regardless of mass ratio or target initial velocity is a common misconception.",
+        "ms": "Perlanggaran kenyal sipi antara dua objek menghasilkan trajektori yang berpisah pada sudut 90 darjah hanya apabila zarah-zarah tersebut mempunyai jisim yang sama dan zarah sasaran pada asalnya pegun. Menganggap bahawa perlanggaran kenyal sipi sentiasa menghasilkan trajektori berserenjang tanpa mengira nisbah jisim atau halaju awal sasaran ialah satu miskonsepsi yang lazim.",
+        "zh": "两物体间的弹性斜碰仅在两粒子质量相等且目标粒子初始静止时，碰撞后的轨迹才会呈 90 度角分开。误以为只要是弹性斜碰，不论质量比如何或目标初始速度为何轨迹都会垂直，是一种常见的错误观念。"
+      },
+      "misconceptions": [
+        "universal-perpendicularity-assumption"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-and-elasticity",
+        "prompt": {
+          "en": "Review how conservation of kinetic energy provides an extra constraint in elastic collisions that does not apply in inelastic collisions.",
+          "ms": "Ulang kaji bagaimana keabadian tenaga kinetik menyediakan kekangan tambahan dalam perlanggaran kenyal yang tidak wujud dalam perlanggaran tak kenyal.",
+          "zh": "复习动能守恒如何在弹性碰撞中提供额外的约束条件，而这一约束在非弹性碰撞中并不适用。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking for the specific conditions under which two particles emerge at a 90-degree angle after a glancing collision. Four option sets of physical conditions are listed.",
+        "ms": "Soalan aneka pilihan yang bertanyakan syarat khusus di mana dua zarah berpisah pada sudut 90 darjah selepas perlanggaran sipi. Empat pilihan set syarat fizikal disenaraikan.",
+        "zh": "多项选择题，询问两粒子在斜碰后呈 90 度角分开所必须满足的特定条件。列出了四组物理条件选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-2-a",
+        "options": [
+          {
+            "id": "opt-2-a",
+            "label": {
+              "en": "Both particles have equal mass, the collision is elastic, and the target particle is initially at rest.",
+              "ms": "Kedua-dua zarah mempunyai jisim yang sama, perlanggaran adalah kenyal, dan zarah sasaran berada dalam keadaan pegun pada awalnya.",
+              "zh": "两粒子具有相同的质量，碰撞为弹性碰撞，且目标粒子初始时处于静止状态。"
+            }
+          },
+          {
+            "id": "opt-2-b",
+            "label": {
+              "en": "The collision is elastic, regardless of whether the particles have equal mass or whether the target is moving.",
+              "ms": "Perlanggaran adalah kenyal, tanpa mengira sama ada zarah mempunyai jisim yang sama atau sasaran sedang bergerak.",
+              "zh": "只要碰撞为弹性碰撞即可，无论两粒子质量是否相等，或目标粒子初始是否运动。"
+            },
+            "misconception": "universal-perpendicularity-assumption"
+          },
+          {
+            "id": "opt-2-c",
+            "label": {
+              "en": "Both particles have equal mass and collide with equal and opposite initial velocities.",
+              "ms": "Kedua-dua zarah mempunyai jisim yang sama dan berlanggar dengan halaju awal yang sama magnitud tetapi bertentangan arah.",
+              "zh": "两粒子质量相等，并以大小相等、方向相反的初始速度相向碰撞。"
+            }
+          },
+          {
+            "id": "opt-2-d",
+            "label": {
+              "en": "Both particles have equal mass, but the collision must be perfectly inelastic so they stick together.",
+              "ms": "Kedua-dua zarah mempunyai jisim yang sama, tetapi perlanggaran mestilah tak kenyal sempurna sehingga mereka melekat bersama.",
+              "zh": "两粒子质量相等，但碰撞必须是完全非弹性碰撞以便粘合在一起。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-mod-3",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between elastic and inelastic collisions in two dimensions using kinetic energy criteria.",
+      "prompt": {
+        "en": "Two smooth pucks undergo a two-dimensional glancing collision on a frictionless horizontal table. A student wants to verify whether the collision is elastic. Which conceptual approach correctly tests for elasticity, and why can the one-dimensional relative velocity formula not be used?",
+        "ms": "Dua kepingan licin mengalami perlanggaran sipi dua dimensi di atas meja mendatar tanpa geseran. Seorang murid ingin mengesahkan sama ada perlanggaran itu adalah kenyal. Pendekatan konseptual manakah yang menguji kekenyalan dengan betul, dan mengapakah rumus halaju relatif satu dimensi tidak boleh digunakan?",
+        "zh": "两个光滑冰球在无摩擦的水平桌面上发生二维斜碰。学生希望验证该碰撞是否为弹性碰撞。哪种概念方法能够正确检验其是否为弹性碰撞？为什么不能使用一维相对速度公式？"
+      },
+      "hints": [
+        {
+          "en": "Recall the physical definition of an elastic collision: kinetic energy must be conserved, in addition to momentum.",
+          "ms": "Ingat kembali definisi fizikal bagi perlanggaran kenyal: tenaga kinetik mesti diabadikan, di samping momentum.",
+          "zh": "回顾弹性碰撞的物理定义：除了动量守恒外，动能必须完全守恒。"
+        },
+        {
+          "en": "The 1D relative velocity relationship (v1i - v2i = -(v1f - v2f)) is derived assuming all motion remains along a single line; in 2D collisions, velocity vectors diverge at angles.",
+          "ms": "Hubungan halaju relatif 1D (v1i - v2i = -(v1f - v2f)) diterbitkan dengan anggapan bahawa semua gerakan kekal di sepanjang satu garis; dalam perlanggaran 2D, vektor halaju mencapah pada sudut.",
+          "zh": "一维相对速度关系式 (v1i - v2i = -(v1f - v2f)) 的推导假设所有运动均在同一直线上；而在二维碰撞中，速度矢量发生成角偏转。"
+        }
+      ],
+      "feedback": {
+        "en": "Elasticity is strictly defined by the conservation of total kinetic energy: Ki = Kf. The one-dimensional relative velocity equation cannot be used in two dimensions because velocity vectors change direction in a plane.",
+        "ms": "Kekenyalan ditakrifkan secara khusus oleh keabadian jumlah tenaga kinetik: Ki = Kf. Persamaan halaju relatif satu dimensi tidak boleh digunakan dalam dua dimensi kerana vektor halaju berubah arah dalam suatu satah.",
+        "zh": "弹性碰撞严格由总动能守恒定义：Ki = Kf。一维相对速度公式不能在二维碰撞中使用，因为速度矢量在平面内改变了方向。"
+      },
+      "answerLogic": {
+        "en": "By definition, a collision is elastic if and only if total kinetic energy is conserved (sum of 1/2 m v^2 is equal before and after). The relation (v1i - v2i) = -(v1f - v2f) is strictly derived from 1D collinear geometry and does not hold for 2D vectors where components deflect across angles.",
+        "ms": "Secara takrifan, sesuatu perlanggaran adalah kenyal jika dan hanya jika jumlah tenaga kinetik diabadikan (jumlah 1/2 m v^2 adalah sama sebelum dan selepas). Hubungan (v1i - v2i) = -(v1f - v2f) diterbitkan secara khusus daripada geometri kolinear 1D dan tidak sah untuk vektor 2D di mana komponen terpesong merentasi sudut.",
+        "zh": "根据定义，当且仅当系统总动能守恒（碰撞前后的 1/2 m v^2 之和相等）时，碰撞才为弹性碰撞。关系式 (v1i - v2i) = -(v1f - v2f) 严格基于一维共线几何关系推导得出，不适用于速度分量发生角度偏转的二维矢量情况。"
+      },
+      "explanation": {
+        "en": "Momentum is conserved in all isolated collisions, both elastic and inelastic. To classify a collision as elastic in two dimensions, one must compare initial and final kinetic energies. Pitfall Prevention 9.4 explicitly warns that the 1D relative velocity formula must not be applied to 2D collisions because speed components in a plane do not satisfy the scalar 1D relative velocity identity.",
+        "ms": "Momentum diabadikan dalam semua perlanggaran terpencil, sama ada kenyal atau tak kenyal. Untuk mengelaskan perlanggaran sebagai kenyal dalam dua dimensi, seseorang mesti membandingkan tenaga kinetik awal dan akhir. Pencegahan Kesilapan 9.4 memberi amaran secara jelas bahawa rumus halaju relatif 1D tidak boleh digunakan untuk perlanggaran 2D kerana komponen laju dalam suatu satah tidak mematuhi identiti halaju relatif 1D skalar.",
+        "zh": "在所有孤立系统的碰撞中，无论是弹性碰撞还是非弹性碰撞，动量都是守恒的。若要在二维中判定碰撞是否为弹性碰撞，必须比较初始动能与最终动能。“避错提示 9.4”明确指出，切勿将一维相对速度公式应用于二维碰撞，因为平面内的速度分量并不满足一维标量相对速度恒等式。"
+      },
+      "misconceptions": [
+        "one-dimensional-relative-velocity-in-2d"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "one-dimensional-momentum-conservation",
+        "prompt": {
+          "en": "Review how linear momentum conservation applies universally across all collision types, whereas kinetic energy conservation distinguishes elastic from inelastic collisions.",
+          "ms": "Ulang kaji bagaimana keabadian momentum linear terpakai secara universal merentasi semua jenis perlanggaran, manakala keabadian tenaga kinetik membezakan perlanggaran kenyal daripada tak kenyal.",
+          "zh": "复习线动量守恒如何普遍适用于所有类型的碰撞，而动能守恒则是区分弹性碰撞与非弹性碰撞的决定性判据。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question asking how to determine if a two-dimensional collision is elastic and why the one-dimensional relative velocity equation cannot be used. Four conceptual options are provided.",
+        "ms": "Soalan aneka pilihan yang bertanyakan cara untuk menentukan sama ada perlanggaran dua dimensi adalah kenyal dan mengapa persamaan halaju relatif satu dimensi tidak boleh digunakan. Empat pilihan konseptual disediakan.",
+        "zh": "多项选择题，询问如何判断二维碰撞是否为弹性碰撞以及为何不能使用一维相对速度公式。提供了四个概念选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-3-a",
+        "options": [
+          {
+            "id": "opt-3-a",
+            "label": {
+              "en": "Compare total system kinetic energy before and after the collision; the one-dimensional relative velocity formula is invalid because velocity directions deflect in two dimensions.",
+              "ms": "Bandingkan jumlah tenaga kinetik sistem sebelum dan selepas perlanggaran; rumus halaju relatif satu dimensi tidak sah kerana arah halaju terpesong dalam dua dimensi.",
+              "zh": "比较碰撞前后系统的总动能；一维相对速度公式无效，因为速度方向在二维平面内发生了偏转。"
+            }
+          },
+          {
+            "id": "opt-3-b",
+            "label": {
+              "en": "Check if the difference in speeds along the initial line of motion before the collision equals the difference in speeds after; the one-dimensional relative velocity equation applies to all elastic collisions.",
+              "ms": "Semak sama ada perbezaan laju di sepanjang garis gerakan awal sebelum perlanggaran menyamai perbezaan laju selepas perlanggaran; persamaan halaju relatif satu dimensi terpakai untuk semua perlanggaran kenyal.",
+              "zh": "检查碰撞前沿初始运动方向的速度差是否等于碰撞后的速度差；一维相对速度公式适用于所有弹性碰撞。"
+            },
+            "misconception": "one-dimensional-relative-velocity-in-2d"
+          },
+          {
+            "id": "opt-3-c",
+            "label": {
+              "en": "Verify whether linear momentum is conserved in both x and y directions; if momentum is conserved along both axes, the collision is automatically elastic.",
+              "ms": "Sahkan sama ada momentum linear diabadikan dalam kedua-dua arah x dan y; jika momentum diabadikan di sepanjang kedua-dua paksi, perlanggaran adalah kenyal secara automatik.",
+              "zh": "验证 x 和 y 方向上的线动量是否都守恒；若两轴上的动量均守恒，则碰撞自动为弹性碰撞。"
+            }
+          },
+          {
+            "id": "opt-3-d",
+            "label": {
+              "en": "Check whether the deflection angles sum to 180 degrees; glancing elastic collisions always reverse the relative orientation of the two pucks.",
+              "ms": "Semak sama ada jumlah sudut pesongan bersamaan 180 darjah; perlanggaran kenyal sipi sentiasa menyongsangkan orientasi relatif kedua-dua kepingan.",
+              "zh": "检查两偏转角之和是否为 180 度；斜向弹性碰撞总是会使两冰球的相对取向完全反转。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-chal-1",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Determine glancing angles and speeds for two-dimensional elastic collisions using momentum and energy equations.",
+      "prompt": {
+        "en": "In a laboratory experiment, particle A moves along the positive x-axis and strikes an identical or non-identical stationary particle B in an oblique glancing collision. Afterward, particle A deflects into the upper half-plane (+y) at an angle theta above the x-axis, while particle B deflects into the lower half-plane (-y) at an angle phi below the x-axis. Which statement correctly describes the physical requirement governing their motion perpendicular to the original direction of travel?",
+        "ms": "Dalam satu eksperimen makmal, zarah A bergerak di sepanjang paksi-x positif dan melanggar zarah B pegun (sama ada serupa atau berbeza jisim) dalam perlanggaran sipi serong. Selepas itu, zarah A terpesong ke satah separuh atas (+y) pada sudut teta di atas paksi-x, manakala zarah B terpesong ke satah separuh bawah (-y) pada sudut fi di bawah paksi-x. Pernyataan manakah yang menerangkan dengan betul keperluan fizik yang mengawal gerakan mereka yang berserenjang dengan arah gerakan asal?",
+        "zh": "在一次实验室实验中，粒子 A 沿正 x 轴运动，斜向碰撞静止的粒子 B（两粒子质量可以相同或不同）。碰撞后，粒子 A 偏转进入上半平面（+y），偏转角为与 x 轴夹角 theta；粒子 B 偏转进入下半平面（-y），偏转角为与 x 轴夹角 phi。下列哪项陈述正确描述了它们垂直于初始运动方向（y 轴方向）所必须遵循的物理条件？"
+      },
+      "hints": [
+        {
+          "en": "Consider the total initial momentum of the two-particle system along the y-axis before the impact occurs.",
+          "ms": "Pertimbangkan jumlah momentum awal sistem dua zarah di sepanjang paksi-y sebelum perlanggaran berlaku.",
+          "zh": "考虑碰撞发生前，双粒子系统沿 y 轴方向的总初动量是多少。"
+        },
+        {
+          "en": "Because there are no external forces acting along the transverse direction, the net y-component of momentum immediately after the collision must equal its initial value.",
+          "ms": "Oleh kerana tiada daya luar bertindak di sepanjang arah melintang, komponen-y bersih momentum serta-merta selepas perlanggaran mestilah sama dengan nilai awalnya.",
+          "zh": "由于在横向方向没有外力作用，碰撞后瞬间沿 y 轴的净动量分量必须等于其初始值。"
+        }
+      ],
+      "feedback": {
+        "en": "Because the initial system momentum along the transverse y-axis is strictly zero, the y-momentum gained by particle A must be exactly cancelled by the opposing y-momentum gained by particle B: m_A * v_Af * sin(theta) = m_B * v_Bf * sin(phi).",
+        "ms": "Oleh kerana momentum awal sistem di sepanjang paksi-y melintang adalah tepat sifar, momentum-y yang diperoleh zarah A mesti dibatalkan dengan tepat oleh momentum-y bertentangan yang diperoleh zarah B: m_A * v_Af * sin(teta) = m_B * v_Bf * sin(fi).",
+        "zh": "由于系统最初沿横向 y 轴的总动量严格为零，粒子 A 获得的 y 方向动量必须与粒子 B 获得的相反方向 y 动量完全相消：m_A * v_Af * sin(theta) = m_B * v_Bf * sin(phi)。"
+      },
+      "answerLogic": {
+        "en": "The system begins with zero transverse momentum (p_iy = 0). Conservation of momentum along the y-axis requires p_fy = 0, which means m_A * v_Af * sin(theta) - m_B * v_Bf * sin(phi) = 0. Therefore, their transverse momentum components must have equal magnitudes and opposite signs.",
+        "ms": "Sistem bermula dengan sifar momentum melintang (p_iy = 0). Keabadian momentum di sepanjang paksi-y memerlukan p_fy = 0, yang bermaksud m_A * v_Af * sin(teta) - m_B * v_Bf * sin(fi) = 0. Oleh itu, komponen momentum melintang mereka mesti mempunyai magnitud yang sama dan tanda yang bertentangan.",
+        "zh": "系统初始横向动量为零（p_iy = 0）。由 y 轴方向动量守恒可知 p_fy = 0，即 m_A * v_Af * sin(theta) - m_B * v_Bf * sin(phi) = 0。因此，两者在横向上的动量分量大小必须严格相等、方向相反。"
+      },
+      "explanation": {
+        "en": "Momentum conservation in two dimensions operates independently along each orthogonal axis. Since the incident particle moves solely along the x-axis and the target is at rest, the initial y-momentum is zero. Following the collision, transverse momentum components must strictly cancel each other out, establishing m_A * v_Af * sin(theta) = m_B * v_Bf * sin(phi). This holds true whether kinetic energy is conserved or not.",
+        "ms": "Keabadian momentum dalam dua dimensi beroperasi secara bebas di sepanjang setiap paksi yang berserenjang. Memandangkan zarah tuju bergerak semata-mata di sepanjang paksi-x dan sasaran berada dalam keadaan pegun, momentum-y awal ialah sifar. Selepas perlanggaran, komponen momentum melintang mesti saling membatalkan secara tepat, menetapkan m_A * v_Af * sin(teta) = m_B * v_Bf * sin(fi). Ini kekal benar sama ada tenaga kinetik diabadikan atau tidak.",
+        "zh": "二维动量守恒在相互垂直的坐标轴上彼此独立成立。入射粒子初始时仅沿 x 轴运动且目标静止，故初始 y 方向总动量为零。碰撞后，两物体在横向（y 轴）的分动量必须完全抵消，即 m_A * v_Af * sin(theta) = m_B * v_Bf * sin(phi)。无论碰撞是弹性还是非弹性，这一条件均严格成立。"
+      },
+      "misconceptions": [
+        "transverse-momentum-neglect",
+        "scalar-momentum-addition"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components-resolution",
+        "prompt": {
+          "en": "Recall how to resolve vectors into components: along any chosen coordinate axis, the total component momentum before collision must equal the total component momentum after collision.",
+          "ms": "Ingat kembali cara meleraikan vektor kepada komponen: di sepanjang mana-mana paksi koordinat yang dipilih, jumlah komponen momentum sebelum perlanggaran mestilah sama dengan jumlah komponen momentum selepas perlanggaran.",
+          "zh": "复习矢量的正交分解：沿任意选定的坐标轴，碰撞前该轴上的总分动量必须等于碰撞后该轴上的总分动量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking for the physical rule governing the transverse velocity components of two particles deflecting above and below the horizontal axis after a collision.",
+        "ms": "Soalan pelbagai pilihan yang bertanyakan tentang hukum fizik yang mengawal komponen halaju melintang bagi dua zarah yang terpesong ke atas dan ke bawah paksi mengufuk selepas perlanggaran.",
+        "zh": "单选题，询问碰撞后在水平轴上下两侧偏转的两个粒子横向速度分量所遵循的物理规律。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-equal-opposite-transverse",
+        "options": [
+          {
+            "id": "opt-equal-opposite-transverse",
+            "label": {
+              "en": "The transverse momentum components of the two particles must be equal in magnitude and opposite in sign, so that their transverse magnitudes balance: m_A * v_Af * sin(theta) = m_B * v_Bf * sin(phi).",
+              "ms": "Komponen momentum melintang kedua-dua zarah mestilah sama magnitud dan bertentangan tanda, supaya magnitud melintang mereka seimbang: m_A * v_Af * sin(teta) = m_B * v_Bf * sin(fi).",
+              "zh": "两粒子的横向动量分量大小必须相等且符号相反，因而其横向动量大小平衡：m_A * v_Af * sin(theta) = m_B * v_Bf * sin(phi)。"
+            }
+          },
+          {
+            "id": "opt-scalar-balance",
+            "label": {
+              "en": "The scalar sum of their post-collision momenta must equal the initial incident momentum, regardless of the deflection angles theta and phi.",
+              "ms": "Hasil tambah skalar bagi momentum selepas perlanggaran mereka mestilah sama dengan momentum tuju awal, tanpa mengira sudut pesongan teta dan fi.",
+              "zh": "两粒子碰撞后的标量动量之和必须等于初始入射动量，与偏转角 theta 和 phi 无关。"
+            },
+            "misconception": "scalar-momentum-addition"
+          },
+          {
+            "id": "opt-transverse-neglected",
+            "label": {
+              "en": "Transverse momentum along the y-axis does not need to balance between the particles because conservation applies only along the original direction of incidence.",
+              "ms": "Momentum melintang di sepanjang paksi-y tidak perlu seimbang antara zarah-zarah tersebut kerana keabadian hanya terpakai di sepanjang arah tuju asal.",
+              "zh": "两粒子沿 y 轴的横向动量无需相互抵消，因为动量守恒仅适用于初始入射方向。"
+            },
+            "misconception": "transverse-momentum-neglect"
+          },
+          {
+            "id": "opt-equal-angles-required",
+            "label": {
+              "en": "The deflection angles theta and phi must always be equal so that the velocity directions are mirror reflections across the x-axis.",
+              "ms": "Sudut pesongan teta dan fi mestilah sentiasa sama supaya arah halaju merupakan pantulan cermin merentasi paksi-x.",
+              "zh": "偏转角 theta 与 phi 必须始终相等，以使速度方向关于 x 轴镜像对称。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-chal-2",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Deduce that equal-mass elastic glancing collisions with a stationary target yield perpendicular final trajectories.",
+      "prompt": {
+        "en": "A physicist analyzes a two-dimensional glancing collision by modeling momentum conservation as a closed velocity vector triangle (v_1i = v_1f + v_2f). Combining this with the kinetic energy conservation equation establishes a Pythagorean relationship (v_1i^2 = v_1f^2 + v_2f^2), proving that the post-collision paths are perpendicular (theta + phi = 90 degrees). Under which set of physical conditions is this entire deductive chain valid?",
+        "ms": "Seorang ahli fizik menganalisis perlanggaran sipi dua dimensi dengan memodelkan keabadian momentum sebagai suatu segi tiga vektor halaju tertutup (v_1i = v_1f + v_2f). Menggabungkan persamaan ini bersama keabadian tenaga kinetik membentuk hubungan Pythagoras (v_1i^2 = v_1f^2 + v_2f^2), membuktikan bahawa laluan selepas perlanggaran adalah berserenjang (teta + fi = 90 darjah). Di bawah set syarat fizikal yang manakah keseluruhan rantaian deduksi ini sah?",
+        "zh": "一位物理学家在分析二维斜碰时，将动量守恒表示为一个闭合的速度矢量三角形（v_1i = v_1f + v_2f）。通过将其与动能守恒方程相结合，建立了勾股关系（v_1i^2 = v_1f^2 + v_2f^2），从而推导出碰后轨迹必相互垂直（theta + phi = 90 度）。在下列哪一组物理条件下，整套演绎推导链才是完全成立的？"
+      },
+      "hints": [
+        {
+          "en": "Consider what physical constraints are required to factor out mass from the vector momentum equation (m1*v_1i = m1*v_1f + m2*v_2f) to obtain a direct velocity vector triangle.",
+          "ms": "Pertimbangkan kekangan fizikal yang diperlukan untuk membatalkan faktor jisim daripada persamaan momentum vektor (m1*v_1i = m1*v_1f + m2*v_2f) bagi memperoleh segi tiga vektor halaju secara langsung.",
+          "zh": "考虑需要满足什么物理约束，才能从动量矢量方程（m1*v_1i = m1*v_1f + m2*v_2f）中消去质量因子，从而直接构成速度矢量三角形。"
+        },
+        {
+          "en": "Recall why the Pythagorean condition (v_1i^2 = v_1f^2 + v_2f^2) matches the algebraic expansion of the vector sum: it requires both the absence of initial target momentum and strict conservation of kinetic energy.",
+          "ms": "Ingat kembali mengapa syarat Pythagoras (v_1i^2 = v_1f^2 + v_2f^2) sepadan dengan pengembangan algebra bagi hasil tambah vektor: ia memerlukan ketiadaan momentum awal sasaran dan keabadian tenaga kinetik yang ketat.",
+          "zh": "回忆为什么勾股条件（v_1i^2 = v_1f^2 + v_2f^2）能与矢量和的代数展开式相吻合：这要求目标初始动量为零且系统动能严格守恒。"
+        }
+      ],
+      "feedback": {
+        "en": "The velocity vector triangle and Pythagorean deduction require all three conditions simultaneously: equal mass (m1 = m2) to divide out mass from momentum, a stationary target (v_2i = 0) so initial momentum consists of a single vector, and an elastic collision to equate kinetic energy to the sum of squared speeds.",
+        "ms": "Segi tiga vektor halaju dan deduksi Pythagoras memerlukan ketiga-tiga syarat secara serentak: jisim sama (m1 = m2) untuk membahagi keluar jisim daripada momentum, sasaran pegun (v_2i = 0) supaya momentum awal terdiri daripada satu vektor sahaja, dan perlanggaran kenyal untuk menyamakan tenaga kinetik dengan hasil tambah kuasa dua laju.",
+        "zh": "速度矢量三角形和勾股定理推导必须同时满足三个物理条件：两粒子质量相等（m1 = m2）以消去动量中的质量因子；目标初始静止（v_2i = 0）使初动量仅由单个矢量构成；以及完全弹性碰撞使末态动能与速度平方和相对应。"
+      },
+      "answerLogic": {
+        "en": "The deduction combines two independent principles: (1) Vector momentum conservation: m1*v_1i + m2*v_2i = m1*v_1f + m2*v_2f. When m1 = m2 = m and v_2i = 0, dividing by m yields v_1i = v_1f + v_2f. Taking the dot product of this vector with itself gives v_1i^2 = v_1f^2 + v_2f^2 + 2*(v_1f dot v_2f). (2) Kinetic energy conservation: (1/2)*m*v_1i^2 = (1/2)*m*v_1f^2 + (1/2)*m*v_2f^2, which simplifies to v_1i^2 = v_1f^2 + v_2f^2. Comparing the two equations requires 2*(v_1f dot v_2f) = 0, which proves perpendicularity (cos(theta + phi) = 0). If masses are unequal, momentum cannot simplify into a velocity vector triangle; if the target is initially moving, the initial vector contains two terms; and if the collision is inelastic, kinetic energy is not conserved. Thus, all three conditions are strictly necessary.",
+        "ms": "Deduksi ini menggabungkan dua prinsip bebas: (1) Keabadian momentum vektor: m1*v_1i + m2*v_2i = m1*v_1f + m2*v_2f. Apabila m1 = m2 = m dan v_2i = 0, membahagi dengan m menghasilkan v_1i = v_1f + v_2f. Mengambil hasil darab bintik vektor ini dengan dirinya sendiri menghasilkan v_1i^2 = v_1f^2 + v_2f^2 + 2*(v_1f titik v_2f). (2) Keabadian tenaga kinetik: (1/2)*m*v_1i^2 = (1/2)*m*v_1f^2 + (1/2)*m*v_2f^2, yang dipermudah kepada v_1i^2 = v_1f^2 + v_2f^2. Membandingkan kedua-dua persamaan memerlukan 2*(v_1f titik v_2f) = 0, membuktikan bahawa ia berserenjang (kos(teta + fi) = 0). Jika jisim tidak sama, momentum tidak boleh dipermudah kepada segi tiga vektor halaju; jika sasaran bergerak pada awalnya, vektor awal mengandungi dua sebutan; dan jika perlanggaran tak kenyal, tenaga kinetik tidak diabadikan. Oleh itu, ketiga-tiga syarat adalah perlu secara ketat.",
+        "zh": "该演绎推导结合了两个独立原理：（1）矢量动量守恒：m1*v_1i + m2*v_2i = m1*v_1f + m2*v_2f。当且仅当 m1 = m2 = m 且目标初始静止 v_2i = 0 时，两端除以 m 得 v_1i = v_1f + v_2f。将该矢量式自乘点积得 v_1i^2 = v_1f^2 + v_2f^2 + 2*(v_1f 点乘 v_2f)。（2）动能守恒：(1/2)*m*v_1i^2 = (1/2)*m*v_1f^2 + (1/2)*m*v_2f^2，化简为 v_1i^2 = v_1f^2 + v_2f^2。联立两式必有 2*(v_1f 点乘 v_2f) = 0，从而严格证明两出射速度垂直（cos(theta + phi) = 0）。若质量不等，动量方程无法约化为速度矢量三角形；若目标初始运动，初动量包含双矢量；若碰撞非弹性，动能守恒方程不成立。因此三者缺一不可。"
+      },
+      "explanation": {
+        "en": "Mutually perpendicular scattering is a geometric consequence of vector addition and scalar energy conservation coinciding. The velocity vectors form a closed triangle with hypotenuse v_1i only when the mass can be eliminated (m1 = m2) and the target starts from rest (v_2i = 0). The side lengths satisfy the Pythagorean theorem (v_1i^2 = v_1f^2 + v_2f^2) strictly when mechanical kinetic energy is conserved. If any of these three conditions is violated, the resulting trajectory angle deviates from 90 degrees.",
+        "ms": "Serakan saling berserenjang ialah akibat geometri daripada penambahan vektor dan keabadian tenaga skalar yang bertepatan. Vektor halaju membentuk segi tiga tertutup dengan hipotenus v_1i hanya apabila jisim dapat dihapuskan (m1 = m2) dan sasaran bermula dari keadaan pegun (v_2i = 0). Panjang sisi mematuhi teorem Pythagoras (v_1i^2 = v_1f^2 + v_2f^2) secara ketat apabila tenaga kinetik mekanikal diabadikan. Jika mana-mana daripada tiga syarat ini dilanggar, sudut trajektori yang terhasil menyimpang daripada 90 darjah.",
+        "zh": "相互垂直的散射是矢量合成与标量动能守恒在几何上重合的直接结果。只有当质量可以约去（m1 = m2）且目标初始静止（v_2i = 0）时，出射速度矢量才能与初速度矢量构成以 v_1i 为斜边的闭合三角形；而只有当机械动能严格守恒时，三边长度才严格满足勾股定理（v_1i^2 = v_1f^2 + v_2f^2）。若这三个条件中的任意一个被打破，出射角都将偏离 90 度。"
+      },
+      "misconceptions": [
+        "universal-perpendicularity-assumption"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-and-elasticity",
+        "prompt": {
+          "en": "Review how kinetic energy conservation equates the sum of squared speeds before and after an elastic collision, and why momentum conservation operates as a vector sum.",
+          "ms": "Ulang kaji bagaimana keabadian tenaga kinetik menyamakan hasil tambah kuasa dua laju sebelum dan selepas perlanggaran kenyal, dan mengapa keabadian momentum beroperasi sebagai hasil tambah vektor.",
+          "zh": "复习弹性碰撞中动能守恒如何将碰撞前后的速度平方和联系起来，以及为什么动量守恒必须遵循矢量运算法则。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question with four options asking under what conditions a velocity vector triangle and Pythagorean theorem deduction validly proves that two scattered particles move at a 90-degree angle.",
+        "ms": "Soalan pelbagai pilihan dengan empat pilihan yang bertanyakan di bawah syarat apakah segi tiga vektor halaju dan deduksi teorem Pythagoras membuktikan secara sah bahawa dua zarah yang berserak bergerak pada sudut 90 darjah.",
+        "zh": "单选题，包含四个选项，询问在何种物理条件下速度矢量三角形结合勾股定理的演绎推理能有效证明两个散射粒子呈 90 度角出射。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-cond-elastic-equal-mass-rest",
+        "options": [
+          {
+            "id": "opt-cond-elastic-equal-mass-rest",
+            "label": {
+              "en": "The collision must be elastic, the two particles must have identical mass, and the target particle must initially be at rest.",
+              "ms": "Perlanggaran mestilah kenyal, kedua-dua zarah mestilah mempunyai jisim yang sama, dan zarah sasaran mestilah pegun pada awalnya.",
+              "zh": "碰撞必须为弹性碰撞，两粒子质量必须相同，且目标粒子初始时必须处于静止状态。"
+            }
+          },
+          {
+            "id": "opt-cond-any-elastic",
+            "label": {
+              "en": "The collision must be elastic; the velocity vector triangle and perpendicularity deduction hold for arbitrary mass ratios and regardless of initial target motion.",
+              "ms": "Perlanggaran mestilah kenyal; segi tiga vektor halaju dan deduksi serenjang sah untuk sebarang nisbah jisim dan tanpa mengira gerakan awal sasaran.",
+              "zh": "碰撞必须为弹性碰撞；只要碰撞是弹性的，无论两粒子质量比为何或目标初始是否运动，速度矢量三角形与垂直推导均成立。"
+            },
+            "misconception": "universal-perpendicularity-assumption"
+          },
+          {
+            "id": "opt-cond-any-mass-inelastic",
+            "label": {
+              "en": "The target must initially be at rest and masses must be equal, but the Pythagorean velocity relation holds regardless of whether kinetic energy is conserved or lost.",
+              "ms": "Sasaran mestilah pegun pada awalnya dan jisim mestilah sama, tetapi hubungan halaju Pythagoras sah tanpa mengira sama ada tenaga kinetik diabadikan atau hilang.",
+              "zh": "目标初始必须静止且质量必须相等，但无论机械动能是否守恒或发生损耗，勾股速度关系都必定成立。"
+            },
+            "misconception": "universal-perpendicularity-assumption"
+          },
+          {
+            "id": "opt-cond-unequal-masses",
+            "label": {
+              "en": "The incoming particle must be much heavier than the stationary target particle so that momentum dominance forces the target along a right-angle trajectory.",
+              "ms": "Zarah yang masuk mestilah jauh lebih berat daripada zarah sasaran pegun supaya dominasi momentum memaksa sasaran di sepanjang trajektori sudut tepat.",
+              "zh": "入射粒子必须远重于静止目标粒子，从而借助动量优势迫使目标粒子沿着直角轨迹出射。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-mcq-chal-3",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between elastic and inelastic collisions in two dimensions using kinetic energy criteria.",
+      "prompt": {
+        "en": "Two pucks undergo an oblique, glancing collision on a frictionless horizontal air table. A student wishes to determine whether the collision was elastic. Which procedure correctly applies conservation principles without committing common dimensional or scalar errors?",
+        "ms": "Dua keping puk mengalami perlanggaran sipi serong di atas meja udara mengufuk tanpa geseran. Seorang murid ingin menentukan sama ada perlanggaran tersebut adalah kenyal. Prosedur manakah yang menggunakan prinsip keabadian dengan betul tanpa melakukan kesilapan dimensi atau skalar yang lazim?",
+        "zh": "两枚冰球在光滑无摩擦的水平气垫导轨台面上发生斜向偏转碰撞。某同学希望判断该碰撞是否属于弹性碰撞。下列哪项分析步骤正确应用了守恒定律，且未引入常见的一维或标量分量误区？"
+      },
+      "hints": [
+        {
+          "en": "Review Pitfall Prevention 9.4: Does the one-dimensional relative velocity relationship apply directly to two-dimensional collisions?",
+          "ms": "Ulang kaji Pencegahan Kesilapan 9.4: Adakah hubungan halaju relatif satu dimensi terpakai secara langsung kepada perlanggaran dua dimensi?",
+          "zh": "复习常见易错提示 9.4：一维相对速度关系式是否可直接适用于二维碰撞？"
+        },
+        {
+          "en": "Recall that kinetic energy is a scalar quantity derived from full speed magnitudes, not a vector resolved into independent directional balances.",
+          "ms": "Ingat kembali bahawa tenaga kinetik ialah kuantiti skalar yang diperoleh daripada magnitud laju penuh, bukan vektor yang dileraikan kepada keseimbangan arah yang bebas.",
+          "zh": "回忆动能是取决于总速率大小的标量属性，而不是能在各坐标轴方向上独立守恒的矢量分量。"
+        }
+      ],
+      "feedback": {
+        "en": "Elasticity in two dimensions is determined solely by comparing the total scalar kinetic energy of all bodies before impact to that after impact. One-dimensional relative velocity formulas do not apply in 2D, and kinetic energy is not broken into orthogonal vector components.",
+        "ms": "Sifat kekenyalan dalam dua dimensi ditentukan semata-mata dengan membandingkan jumlah tenaga kinetik skalar semua jasad sebelum perlanggaran dengan selepas perlanggaran. Formula halaju relatif satu dimensi tidak terpakai dalam 2D, dan tenaga kinetik tidak dipecahkan kepada komponen vektor yang berserenjang.",
+        "zh": "二维碰撞中的弹性判定完全基于对比碰撞前后系统的总标量动能是否守恒。一维相对速度公式不能在二维中直接套用，且动能作为标量不能沿正交轴进行分量分解。"
+      },
+      "answerLogic": {
+        "en": "In two dimensions, kinetic energy is a single scalar quantity that depends on overall speed. It must be evaluated as a single system total before and after collision. Attempting to conserve kinetic energy separately along the x and y axes treats energy as a vector (misconception). Applying the 1D relative speed equation directly to 2D is explicitly prohibited by Pitfall Prevention 9.4.",
+        "ms": "Dalam dua dimensi, tenaga kinetik ialah kuantiti skalar tunggal yang bergantung pada laju keseluruhan. Ia mesti dinilai sebagai satu jumlah sistem sebelum dan selepas perlanggaran. Percubaan untuk mengabadikan tenaga kinetik secara berasingan di sepanjang paksi x dan y menganggap tenaga sebagai vektor (salah faham). Menggunakan persamaan laju relatif 1D secara langsung kepada 2D dilarang secara jelas oleh Pencegahan Kesilapan 9.4.",
+        "zh": "在二维碰撞中，动能是取决于总速率的标量，必须且仅能在全系统层面比较碰撞前后的总和。若试图在 x 轴与 y 轴分别检验动能守恒，则是把动能误当作矢量；若直接应用一维相对速度公式，则违反了常见易错提示 9.4 的明确说明。"
+      },
+      "explanation": {
+        "en": "To assess elasticity in two dimensions, one compares the total scalar kinetic energy of all participating particles before the collision to the total scalar kinetic energy after the collision. The 1D relative velocity shortcut cannot be used in two dimensions because motion occurs along changing planar directions. Additionally, kinetic energy has no directional components; it is a scalar that depends on total speed squared.",
+        "ms": "Untuk menilai kekenyalan dalam dua dimensi, seseorang mesti membandingkan jumlah tenaga kinetik skalar semua zarah sebelum perlanggaran dengan jumlah tenaga kinetik skalar selepas perlanggaran. Rumus pintas halaju relatif 1D tidak boleh digunakan dalam dua dimensi kerana gerakan berlaku di sepanjang arah satah yang berubah. Tambahan pula, tenaga kinetik tidak mempunyai komponen berarah; ia adalah skalar yang bergantung pada jumlah laju kuasa dua.",
+        "zh": "检验二维碰撞是否为弹性碰撞，唯一严谨的方法是对比所有物体在碰撞前的总标量动能与碰撞后的总标量动能是否守恒。一维相对速度关系式不能在二维分析中使用，因为物体在平面内发生了斜向偏转。此外，动能属于纯标量，不具有空间方向分量，不能按正交坐标轴分别讨论守恒。"
+      },
+      "misconceptions": [
+        "one-dimensional-relative-velocity-in-2d",
+        "kinetic-energy-vector-components"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-and-elasticity",
+        "prompt": {
+          "en": "Remember that kinetic energy depends on total speed squared and is a scalar quantity, whereas momentum is a directional vector quantity.",
+          "ms": "Ingat bahawa tenaga kinetik bergantung pada kuasa dua jumlah laju dan merupakan kuantiti skalar, manakala momentum ialah kuantiti vektor berarah.",
+          "zh": "请牢记：动能取决于总速率的平方，属于纯标量；而动量是具有空间方向的矢量。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking for the physically correct method to determine whether a two-dimensional collision is elastic.",
+        "ms": "Soalan pelbagai pilihan yang bertanyakan kaedah fizikal yang betul untuk menentukan sama ada perlanggaran dua dimensi adalah kenyal.",
+        "zh": "单选题，询问判断二维碰撞是否为弹性碰撞的正确物理方法。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-compare-total-scalar-ke",
+        "options": [
+          {
+            "id": "opt-compare-total-scalar-ke",
+            "label": {
+              "en": "Compare the total scalar kinetic energy of both pucks using their overall speeds before impact directly to the total scalar kinetic energy after impact.",
+              "ms": "Bandingkan jumlah tenaga kinetik skalar kedua-dua puk berdasarkan laju keseluruhan mereka sebelum hentaman secara langsung dengan jumlah tenaga kinetik skalar selepas hentaman.",
+              "zh": "将两冰球碰撞前基于总速率的标量动能总和，与碰撞后的标量动能总和直接进行比对。"
+            }
+          },
+          {
+            "id": "opt-use-1d-relative-speed",
+            "label": {
+              "en": "Verify whether the relative speed of separation between the two pucks equals their relative speed of approach, using the standard relative velocity rule.",
+              "ms": "Sahkan sama ada laju relatif pemisahan antara kedua-dua puk sama dengan laju relatif pendekatan mereka, menggunakan petua halaju relatif piawai.",
+              "zh": "利用标准相对速度规则，检验两冰球碰撞后的分离相对速率是否等于碰撞前的接近相对速率。"
+            },
+            "misconception": "one-dimensional-relative-velocity-in-2d"
+          },
+          {
+            "id": "opt-conserve-ke-components",
+            "label": {
+              "en": "Check whether kinetic energy is conserved independently along the x-axis and independently along the y-axis by decomposing energy into orthogonal directional components.",
+              "ms": "Periksa sama ada tenaga kinetik diabadikan secara bebas di sepanjang paksi-x dan secara bebas di sepanjang paksi-y dengan meleraikan tenaga kepada komponen berarah yang berserenjang.",
+              "zh": "将动能分解为正交方向分量，分别检验动能在 x 轴和 y 轴方向上是否各自独立守恒。"
+            },
+            "misconception": "kinetic-energy-vector-components"
+          },
+          {
+            "id": "opt-check-momentum-conservation",
+            "label": {
+              "en": "Confirm that the vector momentum is conserved along both coordinate axes, which automatically guarantees that kinetic energy must also be conserved.",
+              "ms": "Sahkan bahawa momentum vektor diabadikan di sepanjang kedua-dua paksi koordinat, yang secara automatik menjamin bahawa tenaga kinetik juga mesti diabadikan.",
+              "zh": "只要确认动量矢量在两个坐标轴上均守恒，就能自动保证动能必然守恒。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-int-easy-1",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply momentum conservation along independent perpendicular axes in two-dimensional collisions.",
+      "prompt": {
+        "en": "A moving particle collides glancingly with a target particle initially at rest on a frictionless surface. Classify each of the following statements as either a valid momentum conservation principle or an invalid claim.",
+        "ms": "Satu zarah yang bergerak berlanggar secara sipi dengan zarah sasaran yang pada mulanya pegun di atas permukaan tanpa geseran. Kelaskan setiap pernyataan berikut sama ada sebagai prinsip keabadian momentum yang sah atau dakwaan yang tidak sah.",
+        "zh": "一个运动中的质点在无摩擦表面上与一个最初静止的靶质点发生斜碰。将以下每个陈述分类为有效的动量守恒原理或无效断言。"
+      },
+      "hints": [
+        {
+          "en": "Remember that momentum is a vector quantity. In two dimensions, momentum must be conserved independently along the x-axis and along the y-axis.",
+          "ms": "Ingat bahawa momentum ialah kuantiti vektor. Dalam dua dimensi, momentum mesti diabadikan secara berasingan di sepanjang paksi-x dan di sepanjang paksi-y.",
+          "zh": "记住动量是矢量。在二维空间中，动量必须在 x 轴和 y 轴上分别独立守恒。"
+        },
+        {
+          "en": "Consider the perpendicular direction: since there was zero initial transverse momentum, the final transverse components must sum to zero rather than being ignored or added as simple scalars.",
+          "ms": "Pertimbangkan arah berserenjang: oleh sebab tiada momentum melintang awal, komponen melintang akhir mesti berjumlah sifar dan bukannya diabaikan atau ditambah sebagai skalar mudah.",
+          "zh": "考虑垂直方向：由于初始横向动量为零，最终的横向分量之和必须为零，而不能被忽略或作为简单标量相加。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Momentum in two dimensions must be analyzed as independent vector components along orthogonal axes. Vector components along the line of incidence conserve the initial forward momentum, while transverse components must cancel out to zero.",
+        "ms": "Tahniah, tepat! Momentum dalam dua dimensi mesti dianalisis sebagai komponen vektor bebas di sepanjang paksi ortogon. Komponen vektor di sepanjang garis tuju mengabadikan momentum ke hadapan awal, manakala komponen melintang mesti saling membatalkan kepada sifar.",
+        "zh": "正确！二维碰撞中的动量必须分解为正交轴上的独立矢量分量进行分析。沿入射线的分量守恒初始前进动量，而横向分量必须相互抵消为零。"
+      },
+      "answerLogic": {
+        "en": "The forward momentum components must sum to the initial momentum, and the transverse momentum components must sum to zero. Claims that momentum magnitudes add algebraically or that transverse momentum can be ignored violate vector conservation.",
+        "ms": "Komponen momentum ke hadapan mesti berjumlah sama dengan momentum awal, dan komponen momentum melintang mesti berjumlah sifar. Dakwaan bahawa magnitud momentum ditambah secara algebra atau momentum melintang boleh diabaikan melanggar keabadian vektor.",
+        "zh": "前进方向的分动量之和必须等于初动量，横向分动量之和必须为零。认为动量大小可直接代数相加或横向动量可以忽略的说法均违反了矢量守恒定律。"
+      },
+      "explanation": {
+        "en": "Because momentum is a vector, delta p = 0 requires both delta px = 0 and delta py = 0 independently. If the projectile travels along the x-axis before collision, pix = m1*v1i and piy = 0. Therefore, after collision, m1*v1fx + m2*v2fx = m1*v1i and m1*v1fy + m2*v2fy = 0. Magnitudes cannot be added directly as scalars, and transverse components cannot be neglected.",
+        "ms": "Oleh sebab momentum ialah vektor, delta p = 0 memerlukan kedua-dua delta px = 0 dan delta py = 0 secara bebas. Jika projektil bergerak di sepanjang paksi-x sebelum perlanggaran, pix = m1*v1i dan piy = 0. Oleh itu, selepas perlanggaran, m1*v1fx + m2*v2fx = m1*v1i dan m1*v1fy + m2*v2fy = 0. Magnitud tidak boleh ditambah secara langsung sebagai skalar, dan komponen melintang tidak boleh diabaikan.",
+        "zh": "由于动量是矢量，delta p = 0 要求 delta px = 0 和 delta py = 0 分别独立成立。如果入射质点在碰撞前沿 x 轴运动，则 pix = m1*v1i 且 piy = 0。因此碰撞后有 m1*v1fx + m2*v2fx = m1*v1i 以及 m1*v1fy + m2*v2fy = 0。动量大小不能作为标量直接相加，横向分量也不能忽略。"
+      },
+      "misconceptions": [
+        "scalar-momentum-addition",
+        "transverse-momentum-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components-resolution",
+        "prompt": {
+          "en": "Review vector resolution: every two-dimensional vector equation represents two completely independent one-dimensional equations along perpendicular axes.",
+          "ms": "Ulang kaji peleraian vektor: setiap persamaan vektor dua dimensi mewakili dua persamaan satu dimensi yang bebas sepenuhnya di sepanjang paksi berserenjang.",
+          "zh": "复习矢量分解：每个二维矢量方程都代表沿相互垂直的坐标轴的两个完全独立的一维方程。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Screen reader users: Classify four statements regarding two-dimensional collisions into two categories: Valid Momentum Conservation Principle or Invalid Claim.",
+        "ms": "Pengguna pembaca skrin: Kelaskan empat pernyataan mengenai perlanggaran dua dimensi kepada dua kategori: Prinsip Keabadian Momentum yang Sah atau Dakwaan Tidak Sah.",
+        "zh": "屏幕阅读器用户：将关于二维碰撞的四个陈述分类到两个类别中：有效的动量守恒原理或无效断言。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-transverse-zero",
+            "label": {
+              "en": "The vector sum of momentum components perpendicular to the initial trajectory must equal zero after collision.",
+              "ms": "Hasil tambah vektor bagi komponen momentum yang berserenjang dengan trajektori awal mesti bersamaan sifar selepas perlanggaran.",
+              "zh": "垂直于初速度方向的分动量矢量和在碰撞后必须等于零。"
+            }
+          },
+          {
+            "id": "item-forward-sum",
+            "label": {
+              "en": "The vector sum of momentum components parallel to the incident line equals the incoming projectile momentum.",
+              "ms": "Hasil tambah vektor bagi komponen momentum yang selari dengan garis tuju bersamaan dengan momentum projektil masuk.",
+              "zh": "平行于入射线方向的分动量矢量和等于入射质点的初动量。"
+            }
+          },
+          {
+            "id": "item-scalar-equality",
+            "label": {
+              "en": "The arithmetic sum of post-collision momentum magnitudes must equal the initial projectile momentum magnitude.",
+              "ms": "Hasil tambah aritmetik bagi magnitud momentum selepas perlanggaran mesti bersamaan dengan magnitud momentum projektil awal.",
+              "zh": "碰撞后动量大小的算术和必须等于入射质点初始动量的大小。"
+            },
+            "misconception": "scalar-momentum-addition"
+          },
+          {
+            "id": "item-transverse-omission",
+            "label": {
+              "en": "Perpendicular momentum can be omitted from collision equations whenever the target object was initially stationary.",
+              "ms": "Momentum berserenjang boleh ditinggalkan daripada persamaan perlanggaran apabila objek sasaran pada mulanya pegun.",
+              "zh": "只要靶物体最初处于静止状态，碰撞方程中就可以忽略垂直方向的动量。"
+            },
+            "misconception": "transverse-momentum-neglect"
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-valid-principle",
+            "label": {
+              "en": "Valid Momentum Conservation Principle",
+              "ms": "Prinsip Keabadian Momentum yang Sah",
+              "zh": "有效的动量守恒原理"
+            }
+          },
+          {
+            "id": "target-misconception-claim",
+            "label": {
+              "en": "Invalid Claim",
+              "ms": "Dakwaan Tidak Sah",
+              "zh": "无效断言"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-transverse-zero",
+            "targetId": "target-valid-principle"
+          },
+          {
+            "itemId": "item-forward-sum",
+            "targetId": "target-valid-principle"
+          },
+          {
+            "itemId": "item-scalar-equality",
+            "targetId": "target-misconception-claim"
+          },
+          {
+            "itemId": "item-transverse-omission",
+            "targetId": "target-misconception-claim"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "scalar-momentum-addition",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-scalar-equality",
+            "targetId": "target-valid-principle"
+          }
+        },
+        {
+          "misconception": "transverse-momentum-neglect",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-transverse-omission",
+            "targetId": "target-valid-principle"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-easy-2",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between elastic and inelastic collisions in two dimensions using kinetic energy criteria.",
+      "prompt": {
+        "en": "Match each physical energy relationship to its correct collision classification for a glancing two-dimensional interaction.",
+        "ms": "Padankan setiap hubungan tenaga fizikal kepada pengelasan perlanggaran yang betul bagi interaksi sipi dua dimensi.",
+        "zh": "将每个物理能量关系与其对应的二维斜碰分类进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Kinetic energy is a scalar quantity, not a vector. It does not have directional x or y components.",
+          "ms": "Tenaga kinetik ialah kuantiti skalar, bukan vektor. Ia tidak mempunyai komponen berarah x atau y.",
+          "zh": "动能是标量，不是矢量。它没有 x 或 y 方向分量。"
+        },
+        {
+          "en": "An elastic collision conserves the total scalar kinetic energy of the system, whereas an inelastic collision results in a loss of total kinetic energy.",
+          "ms": "Perlanggaran kenyal mengabadikan jumlah tenaga kinetik skalar sistem, manakala perlanggaran tak kenyal mengakibatkan kehilangan jumlah tenaga kinetik.",
+          "zh": "弹性碰撞守恒系统的总标量动能，而非弹性碰撞则会导致总动能损失。"
+        }
+      ],
+      "feedback": {
+        "en": "Well done! Kinetic energy is a scalar quantity evaluated as the sum over all particles. It is conserved as a whole scalar in elastic collisions and decreases in inelastic collisions. Attempting to conserve kinetic energy separately along coordinate axes is physically invalid.",
+        "ms": "Syabas! Tenaga kinetik ialah kuantiti skalar yang dinilai sebagai hasil tambah ke atas semua zarah. Ia diabadikan sebagai satu skalar keseluruhan dalam perlanggaran kenyal dan berkurang dalam perlanggaran tak kenyal. Percubaan untuk mengabadikan tenaga kinetik secara berasingan di sepanjang paksi koordinat adalah tidak sah dari segi fizik.",
+        "zh": "太棒了！动能是所有质点标量动能之和。在弹性碰撞中总标量动能守恒，而在非弹性碰撞中动能减少。试图沿坐标轴分别守恒动能是物理上无效的概念。"
+      },
+      "answerLogic": {
+        "en": "Total scalar kinetic energy equality defines an elastic collision. A reduction in total scalar kinetic energy defines an inelastic collision. Splitting kinetic energy into conserved perpendicular vector components is a misconception because kinetic energy has no direction.",
+        "ms": "Kesamaan jumlah tenaga kinetik skalar mentakrifkan perlanggaran kenyal. Pengurangan dalam jumlah tenaga kinetik skalar mentakrifkan perlanggaran tak kenyal. Membahagikan tenaga kinetik kepada komponen vektor berserenjang yang diabadikan ialah salah faham kerana tenaga kinetik tidak mempunyai arah.",
+        "zh": "总标量动能相等定义了弹性碰撞。总标量动能减少定义了非弹性碰撞。将动能拆分为守恒的正交矢量分量是一种错误观念，因为动能没有方向。"
+      },
+      "explanation": {
+        "en": "In two-dimensional collisions, momentum is conserved vectorially along independent axes. Kinetic energy, however, is a scalar (K = 0.5*m*v^2) and cannot be resolved into directional components. In an elastic glancing collision, Ki = Kf as a single scalar equation. In an inelastic collision, Kf < Ki. Postulating separate conservation of Kx and Ky is invalid.",
+        "ms": "Dalam perlanggaran dua dimensi, momentum diabadikan secara vektor di sepanjang paksi bebas. Walau bagaimanapun, tenaga kinetik ialah skalar (K = 0.5*m*v^2) dan tidak boleh dileraikan kepada komponen berarah. Dalam perlanggaran kenyal sipi, Ki = Kf sebagai satu persamaan skalar tunggal. Dalam perlanggaran tak kenyal, Kf < Ki. Mengandaikan keabadian berasingan bagi Kx dan Ky adalah tidak sah.",
+        "zh": "在二维碰撞中，动量在各独立坐标轴上按矢量守恒。然而动能是标量（K = 0.5*m*v^2），不能分解为有方向的分量。在斜向弹性碰撞中，Ki = Kf 是单一的标量方程。在非弹性碰撞中，Kf < Ki。假设 Kx 和 Ky 分别守恒在物理上是错误的。"
+      },
+      "misconceptions": [
+        "kinetic-energy-vector-components"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-and-elasticity",
+        "prompt": {
+          "en": "Review energy fundamentals: kinetic energy depends on the square of speed and has no direction, so energy conservation is always a single scalar relationship.",
+          "ms": "Ulang kaji asas tenaga: tenaga kinetik bergantung pada kuasa dua kelajuan dan tidak mempunyai arah, jadi keabadian tenaga sentiasa merupakan satu hubungan skalar tunggal.",
+          "zh": "复习能量基础：动能取决于速度大小的平方且没有方向，因此能量守恒始终是单一的标量关系。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Screen reader users: Match three energy descriptions to their corresponding collision categories: Glancing Elastic Collision, Glancing Inelastic Collision, or Physically Invalid Concept.",
+        "ms": "Pengguna pembaca skrin: Padankan tiga huraian tenaga kepada kategori perlanggaran yang sepadan: Perlanggaran Kenyal Sipi, Perlanggaran Tak Kenyal Sipi, atau Konsep yang Tidak Sah dari Segi Fizik.",
+        "zh": "屏幕阅读器用户：将三个能量描述与它们对应的碰撞类别进行匹配：斜向弹性碰撞、斜向非弹性碰撞或物理上无效的概念。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-ke-conserved",
+            "label": {
+              "en": "Total system kinetic energy after collision equals initial kinetic energy as a scalar sum (K1f + K2f = K1i).",
+              "ms": "Jumlah tenaga kinetik sistem selepas perlanggaran bersamaan dengan tenaga kinetik awal sebagai hasil tambah skalar (K1f + K2f = K1i).",
+              "zh": "碰撞后系统的总动能作为标量和等于初动能（K1f + K2f = K1i）。"
+            }
+          },
+          {
+            "id": "item-ke-reduced",
+            "label": {
+              "en": "Total system kinetic energy after impact is strictly less than initial kinetic energy due to internal transformations.",
+              "ms": "Jumlah tenaga kinetik sistem selepas hentaman adalah lebih rendah daripada tenaga kinetik awal disebabkan oleh perubahan dalaman.",
+              "zh": "由于内部转化，碰撞后系统的总动能严格小于初动能。"
+            }
+          },
+          {
+            "id": "item-ke-components",
+            "label": {
+              "en": "Kinetic energy must be conserved separately along the x-axis and along the y-axis (Kx,i = Kx,f and Ky,i = Ky,f).",
+              "ms": "Tenaga kinetik mesti diabadikan secara berasingan di sepanjang paksi-x dan paksi-y (Kx,i = Kx,f dan Ky,i = Ky,f).",
+              "zh": "动能必须分别沿 x 轴和 y 轴独立守恒（Kx,i = Kx,f 且 Ky,i = Ky,f）。"
+            },
+            "misconception": "kinetic-energy-vector-components"
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-elastic",
+            "label": {
+              "en": "Glancing Elastic Collision",
+              "ms": "Perlanggaran Kenyal Sipi",
+              "zh": "斜向弹性碰撞"
+            }
+          },
+          {
+            "id": "target-inelastic",
+            "label": {
+              "en": "Glancing Inelastic Collision",
+              "ms": "Perlanggaran Tak Kenyal Sipi",
+              "zh": "斜向非弹性碰撞"
+            }
+          },
+          {
+            "id": "target-invalid-concept",
+            "label": {
+              "en": "Physically Invalid Concept",
+              "ms": "Konsep yang Tidak Sah dari Segi Fizik",
+              "zh": "物理上无效的概念"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-ke-conserved",
+            "targetId": "target-elastic"
+          },
+          {
+            "itemId": "item-ke-reduced",
+            "targetId": "target-inelastic"
+          },
+          {
+            "itemId": "item-ke-components",
+            "targetId": "target-invalid-concept"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "kinetic-energy-vector-components",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-ke-components",
+            "targetId": "target-elastic"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-easy-3",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Determine glancing angles and speeds for two-dimensional elastic collisions using momentum and energy equations.",
+      "prompt": {
+        "en": "A projectile particle moves along the positive x-axis and strikes an identical target particle initially at rest. The collision is glancing and elastic. Select all statements that must be true regarding the scattering angles and momentum components.",
+        "ms": "Satu zarah projektil bergerak di sepanjang paksi-x positif dan melanggar zarah sasaran serupa yang pada mulanya pegun. Perlanggaran itu adalah sipi dan kenyal. Pilih semua pernyataan yang mesti benar mengenai sudut serakan dan komponen momentum.",
+        "zh": "一个入射质点沿正 x 轴运动，斜碰撞击一个最初静止的相同靶质点。碰撞为斜向弹性碰撞。选择所有关于散射角和分动量必须成立的正确陈述。"
+      },
+      "hints": [
+        {
+          "en": "Examine the transverse direction: what was the total momentum perpendicular to the initial line of motion before impact?",
+          "ms": "Periksa arah melintang: apakah jumlah momentum yang berserenjang dengan garis gerakan awal sebelum hentaman?",
+          "zh": "检查横向方向：碰撞前垂直于初始运动线的总动量是多少？"
+        },
+        {
+          "en": "Since the initial transverse momentum is zero, the particles must emerge on opposite sides of the incident line so their transverse momentum components can cancel.",
+          "ms": "Oleh sebab momentum melintang awal ialah sifar, zarah-zarah mesti keluar pada sisi bertentangan garis tuju supaya komponen momentum melintang mereka dapat saling membatalkan.",
+          "zh": "由于初始横向动量为零，两质点必须散射到入射线的相反两侧，以使它们的横向分动量能够相互抵消。"
+        }
+      ],
+      "feedback": {
+        "en": "Excellent selection! Because the system begins with zero momentum along the transverse y-axis, the post-collision transverse components must be equal in magnitude and opposite in direction. This requires the two particles to scatter on opposite sides of the forward incident axis.",
+        "ms": "Pilihan yang cemerlang! Oleh sebab sistem bermula dengan sifar momentum di sepanjang paksi-y melintang, komponen melintang selepas perlanggaran mesti sama dalam magnitud dan bertentangan arah. Ini memerlukan kedua-dua zarah menyerak pada sisi bertentangan paksi tuju ke hadapan.",
+        "zh": "选择非常出色！由于系统在横向 y 轴上的初始动量为零，碰撞后的横向分量大小必须相等且方向相反。这要求两质点必须散射到前进入射轴的相反两侧。"
+      },
+      "answerLogic": {
+        "en": "Zero initial y-momentum dictates m1*v1f*sin(theta) = m2*v2f*sin(phi), forcing deflection to opposite sides of the x-axis. Forward momentum components must sum to the initial momentum m1*v1i. Transverse momentum cannot be ignored or set independently.",
+        "ms": "Sifar momentum-y awal menetapkan m1*v1f*sin(theta) = m2*v2f*sin(phi), memaksa pesongan ke sisi bertentangan paksi-x. Komponen momentum ke hadapan mesti berjumlah sama dengan momentum awal m1*v1i. Momentum melintang tidak boleh diabaikan atau ditetapkan secara bebas.",
+        "zh": "初始 y 动量为零决定了 m1*v1f*sin(theta) = m2*v2f*sin(phi)，迫使质点偏转到 x 轴的相反两侧。前进分动量之和必须等于初动量 m1*v1i。横向动量绝不能被忽略或随意独立设定。"
+      },
+      "explanation": {
+        "en": "For glancing collisions with a stationary target, the initial conditions are pix = m1*v1i and piy = 0. By conservation of momentum along the y-axis, 0 = m1*v1fy - m2*v2fy, which means the particles must scatter on opposite sides of the initial trajectory. Along the x-axis, m1*v1i = m1*v1fx + m2*v2fx. Transverse momentum is strictly coupled to the scattering angles.",
+        "ms": "Bagi perlanggaran sipi dengan sasaran pegun, keadaan awal ialah pix = m1*v1i dan piy = 0. Melalui keabadian momentum di sepanjang paksi-y, 0 = m1*v1fy - m2*v2fy, bermakna zarah-zarah mesti menyerak pada sisi bertentangan trajektori awal. Di sepanjang paksi-x, m1*v1i = m1*v1fx + m2*v2fx. Momentum melintang terikat secara ketat dengan sudut serakan.",
+        "zh": "对于静止靶的斜碰，初始条件为 pix = m1*v1i 且 piy = 0。根据 y 轴方向的动量守恒，0 = m1*v1fy - m2*v2fy，这意味着质点必须散射到初始运动轨迹的相反两侧。沿 x 轴方向，m1*v1i = m1*v1fx + m2*v2fx。横向动量与散射角严格关联。"
+      },
+      "misconceptions": [
+        "transverse-momentum-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components-resolution",
+        "prompt": {
+          "en": "Recall that a vector quantity equal to zero requires every one of its orthogonal components to equal zero independently.",
+          "ms": "Ingat kembali bahawa kuantiti vektor yang bersamaan dengan sifar memerlukan setiap satu komponen ortogonnya bersamaan dengan sifar secara bebas.",
+          "zh": "回想一下，一个等于零的矢量要求其每个正交分量都分别独立等于零。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Screen reader users: Review four physical claims regarding a glancing collision and select the two correct statements that govern momentum conservation.",
+        "ms": "Pengguna pembaca skrin: Semak empat dakwaan fizik mengenai perlanggaran sipi dan pilih dua pernyataan betul yang mengawal keabadian momentum.",
+        "zh": "屏幕阅读器用户：查看关于斜向碰撞的四个物理断言，并选择支配动量守恒的两个正确陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "sel-y-opposite",
+            "label": {
+              "en": "The two particles must scatter to opposite sides of the initial trajectory so their transverse momentum components can sum to zero.",
+              "ms": "Kedua-dua zarah mesti menyerak ke sisi bertentangan trajektori awal supaya komponen momentum melintang mereka dapat berjumlah sifar.",
+              "zh": "两质点必须散射到初始轨迹的相反两侧，以使它们的横向分动量之和为零。"
+            }
+          },
+          {
+            "id": "sel-x-share",
+            "label": {
+              "en": "The sum of the forward momentum components of both particles along the x-axis must equal the incoming projectile momentum.",
+              "ms": "Hasil tambah komponen momentum ke hadapan bagi kedua-dua zarah di sepanjang paksi-x mesti bersamaan dengan momentum projektil masuk.",
+              "zh": "两质点沿 x 轴的前进分动量之和必须等于入射质点的初动量。"
+            }
+          },
+          {
+            "id": "sel-y-ignore",
+            "label": {
+              "en": "Because initial perpendicular velocity is zero, transverse momentum can be ignored and angles can be chosen without balancing transverse components.",
+              "ms": "Oleh sebab halaju berserenjang awal adalah sifar, momentum melintang boleh diabaikan dan sudut boleh dipilih tanpa mengimbangi komponen melintang.",
+              "zh": "因为初始垂直速度为零，所以横向动量可以忽略，角度的选择无需平衡横向分量。"
+            },
+            "misconception": "transverse-momentum-neglect"
+          },
+          {
+            "id": "sel-same-side",
+            "label": {
+              "en": "Both particles can deflect to the same side of the incident axis as long as total kinetic energy is conserved.",
+              "ms": "Kedua-dua zarah boleh terpesong ke sisi yang sama paksi tuju asalkan jumlah tenaga kinetik diabadikan.",
+              "zh": "只要总动能守恒，两质点都可以偏转到入射轴的同一侧。"
+            }
+          }
+        ],
+        "correctSelections": [
+          "sel-y-opposite",
+          "sel-x-share"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "transverse-momentum-neglect",
+          "condition": {
+            "kind": "selection",
+            "itemId": "sel-y-ignore",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-mod-1",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Apply momentum conservation along independent perpendicular axes in two-dimensional collisions.",
+      "prompt": {
+        "en": "A moving particle undergoes an isolated glancing collision with a stationary target in a plane. Arrange the systematic analytical steps in the correct logical sequence to solve for the final velocities using vector momentum conservation.",
+        "ms": "Satu zarah yang bergerak mengalami perlanggaran sipi terpencil dengan sasaran pegun pada satu satah. Susun langkah analisis sistematik mengikut urutan logik yang betul untuk menyelesaikan halaju akhir menggunakan keabadian momentum vektor.",
+        "zh": "一个运动粒子在平面内与静止目标发生孤立的斜碰。请按正确的逻辑顺序排列系统分析步骤，以便利用矢量动量守恒求解最终速度。"
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "step-coord",
+            "label": {
+              "en": "Establish an orthogonal Cartesian coordinate system with the x-axis aligned along the initial projectile direction.",
+              "ms": "Wujudkan sistem koordinat Cartes berserenjang dengan paksi-x diselaraskan sepanjang arah awal projektil.",
+              "zh": "建立正交直角坐标系，使 x 轴与入射物体的初始运动方向重合。"
+            }
+          },
+          {
+            "id": "step-resolve",
+            "label": {
+              "en": "Decompose all initial and scattered velocities into independent horizontal and vertical vector components using deflection angles.",
+              "ms": "Leraikan semua halaju awal dan terserak kepada komponen vektor mengufuk dan menegak yang bebas menggunakan sudut pesongan.",
+              "zh": "利用偏转角将所有初始速度与散射速度分解为独立的水平与垂直矢量分量。"
+            }
+          },
+          {
+            "id": "step-conserve",
+            "label": {
+              "en": "Equate total initial and final momentum independently along the x-axis and along the perpendicular y-axis.",
+              "ms": "Samakan jumlah momentum awal dan akhir secara berasingan di sepanjang paksi-x dan di sepanjang paksi-y yang berserenjang.",
+              "zh": "分别沿 x 轴和垂直的 y 轴独立建立初末动量守恒方程。"
+            }
+          },
+          {
+            "id": "step-combine",
+            "label": {
+              "en": "Synthesize the independently solved perpendicular momentum components to evaluate the final resultant velocity vectors.",
+              "ms": "Sintesiskan komponen momentum berserenjang yang diselesaikan secara bebas untuk menilai vektor halaju paduan akhir.",
+              "zh": "将独立求解的正交动量分量综合，确定最终的合速度矢量及其方向。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "step-coord",
+          "step-resolve",
+          "step-conserve",
+          "step-combine"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "scalar-momentum-addition",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "step-combine",
+            "secondItemId": "step-resolve"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "Two-dimensional momentum cannot be handled by simple scalar addition of speeds; it requires analyzing independent perpendicular directions separately.",
+          "ms": "Momentum dua dimensi tidak boleh dikendalikan melalui penambahan skalar laju yang mudah; ia memerlukan analisis arah berserenjang yang bebas secara berasingan.",
+          "zh": "二维动量不能通过简单的速率标量相加来处理；必须分别分析相互垂直的独立方向。"
+        },
+        {
+          "en": "You must establish axes and break vectors into components before writing conservation equations for each axis, and only combine perpendicular results after solving them.",
+          "ms": "Anda mesti menetapkan paksi dan meleraikan vektor kepada komponen sebelum menulis persamaan keabadian bagi setiap paksi, dan hanya menggabungkan hasil berserenjang selepas menyelesaikannya.",
+          "zh": "必须先建立坐标轴并将矢量分解为分量，才能为每个坐标轴列出守恒方程，并在求解后综合正交结果。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Solving two-dimensional collisions requires setting a reference frame, resolving all vectors into orthogonal components, applying momentum conservation independently along each axis, and finally combining the perpendicular results.",
+        "ms": "Tepat! Menyelesaikan perlanggaran dua dimensi memerlukan penetapan kerangka rujukan, meleraikan semua vektor kepada komponen berserenjang, menggunakan keabadian momentum secara bebas di sepanjang setiap paksi, dan akhirnya menggabungkan hasil berserenjang.",
+        "zh": "正确！求解二维碰撞需要先设立参考系，将所有矢量正交分解，在每个坐标轴上独立应用动量守恒，最后综合正交分量求解结果。"
+      },
+      "answerLogic": {
+        "en": "Vector momentum conservation in a plane requires decomposing vector equations into two independent scalar equations: total initial x-momentum equals total final x-momentum, and total initial y-momentum equals total final y-momentum. One cannot combine vector components before they are resolved and conserved independently.",
+        "ms": "Keabadian momentum vektor dalam satu satah memerlukan penguraian persamaan vektor kepada dua persamaan skalar yang bebas: jumlah momentum-x awal bersamaan jumlah momentum-x akhir, dan jumlah momentum-y awal bersamaan jumlah momentum-y akhir. Komponen vektor tidak boleh digabungkan sebelum ia dileraikan dan diabadikan secara bebas.",
+        "zh": "平面内的矢量动量守恒需要将矢量方程分解为两个独立的标量方程：x 方向总初动量等于总末动量，且 y 方向总初动量等于总末动量。在各分量被独立分解并守恒求解之前，绝不能将它们综合或作为标量相加。"
+      },
+      "explanation": {
+        "en": "Linear momentum is a vector quantity that is conserved in every spatial dimension independently. When analyzing a 2D glancing collision, scalar speeds cannot simply be added together. First, orient a coordinate system (conveniently along the projectile incident line). Second, resolve each velocity into x and y components using sine and cosine of deflection angles. Third, enforce total momentum conservation separately along the x-axis and y-axis. Fourth and finally, use the resulting orthogonal components via the Pythagorean relation and inverse tangent to construct the full final velocity vectors.",
+        "ms": "Momentum linear ialah kuantiti vektor yang diabadikan dalam setiap dimensi ruang secara bebas. Apabila menganalisis perlanggaran sipi 2D, laju skalar tidak boleh ditambah begitu sahaja. Pertama, orientasikan sistem koordinat (sebaik-baiknya sepanjang garis tuju projektil). Kedua, leraikan setiap halaju kepada komponen x dan y menggunakan sinus dan kosinus sudut pesongan. Ketiga, kuat kuasakan keabadian momentum jumlah secara berasingan di sepanjang paksi-x dan paksi-y. Keempat dan akhirnya, gunakan komponen berserenjang yang terhasil melalui teorem Pythagoras dan tangen songsang untuk membina vektor halaju akhir yang lengkap.",
+        "zh": "线动量是矢量，在每个空间维度上均独立守恒。分析二维斜碰时，绝不能将标量速率直接相加。第一步，建立坐标系（通常方便地使 x 轴沿入射方向）。第二步，利用偏转角的正弦和余弦将各速度分解为 x 和 y 分量。第三步，分别沿 x 轴和 y 轴独立列出总动量守恒方程。第四步，通过勾股定理与反正切函数将求得的正交分量合成为最终的矢量速度与方向。"
+      },
+      "misconceptions": [
+        "scalar-momentum-addition"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components-resolution",
+        "prompt": {
+          "en": "Review how to project a velocity vector at angle theta into orthogonal components: vx = v cos(theta) and vy = v sin(theta).",
+          "ms": "Ulang kaji cara memproyeksikan vektor halaju pada sudut theta kepada komponen berserenjang: vx = v kos(theta) dan vy = v sin(theta).",
+          "zh": "复习如何将夹角为 theta 的速度矢量投影为正交分量：vx = v cos(theta) 以及 vy = v sin(theta)。"
+        }
+      },
+      "accessibilityText": {
+        "en": "An ordering activity with four steps for analyzing a two-dimensional collision using vector momentum conservation. Arrange the four steps into the correct logical sequence from first to last.",
+        "ms": "Aktiviti susunan dengan empat langkah untuk menganalisis perlanggaran dua dimensi menggunakan keabadian momentum vektor. Susun empat langkah tersebut mengikut urutan logik yang betul dari awal hingga akhir.",
+        "zh": "一个排序活动，包含利用矢量动量守恒分析二维碰撞的四个步骤。请将这四个步骤按从先到后的正确逻辑顺序排列。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "act-int-mod-2",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Deduce that equal-mass elastic glancing collisions with a stationary target yield perpendicular final trajectories.",
+      "prompt": {
+        "en": "Classify each glancing two-dimensional collision scenario according to whether the outgoing trajectories of the two colliding bodies are strictly guaranteed to be mutually perpendicular (90-degree angle between final velocity vectors).",
+        "ms": "Kelaskan setiap senario perlanggaran sipi dua dimensi mengikut sama ada trajektori keluar kedua-dua jasad yang berlanggar dijamin berserenjang antara satu sama lain secara ketat (sudut 90 darjah antara vektor halaju akhir).",
+        "zh": "将下列二维斜碰场景分类：判断两物体碰撞后的出射轨迹是否必然相互垂直（出射速度矢量之间的夹角严格为 90 度）。"
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "items": [
+          {
+            "id": "case-identical-elastic-rest",
+            "label": {
+              "en": "A moving curling stone collides elastically at a glancing angle with an identical stationary stone on frictionless ice.",
+              "ms": "Satu batu 'curling' yang bergerak berlanggar secara kenyal pada sudut sipi dengan batu serupa yang pegun di atas ais tanpa geseran.",
+              "zh": "一个运动的冰壶在无摩擦冰面上与一个静止的相同冰壶发生斜向弹性碰撞。"
+            }
+          },
+          {
+            "id": "case-unequal-mass-elastic-rest",
+            "label": {
+              "en": "A bowling ball collides elastically at a glancing angle with a much lighter stationary billiard ball.",
+              "ms": "Satu bola boling berlanggar secara kenyal pada sudut sipi dengan bola biliard pegun yang jauh lebih ringan.",
+              "zh": "一个保龄球在斜偏角度下与一个质量小得多的静止台球发生弹性碰撞。"
+            },
+            "misconception": "universal-perpendicularity-assumption"
+          },
+          {
+            "id": "case-identical-inelastic-rest",
+            "label": {
+              "en": "Two identical clay spheres collide glancingly with one initially stationary, undergoing partial permanent deformation and heat generation.",
+              "ms": "Dua sfera tanah liat serupa berlanggar secara sipi dengan satu daripadanya pada asalnya pegun, mengalami perubahan bentuk kekal separa dan penghasilan haba.",
+              "zh": "两个完全相同的黏土球发生斜碰，其中一个初始静止，碰撞中发生部分永久形变并产生热量。"
+            }
+          },
+          {
+            "id": "case-identical-elastic-both-moving",
+            "label": {
+              "en": "Two identical hockey pucks, both initially moving at non-zero velocities in different directions, collide elastically on ice.",
+              "ms": "Dua keping hoki ais yang serupa, kedua-duanya pada asalnya bergerak dengan halaju bukan sifar dalam arah berbeza, berlanggar secara kenyal di atas ais.",
+              "zh": "两个完全相同的冰球在冰面上均以非零速度沿不同方向运动，随后发生弹性碰撞。"
+            },
+            "misconception": "universal-perpendicularity-assumption"
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-perpendicular",
+            "label": {
+              "en": "Guaranteed 90-Degree Trajectory Separation",
+              "ms": "Pemisahan Trajektori 90 Darjah Terjamin",
+              "zh": "出射轨迹必呈 90 度垂直夹角"
+            }
+          },
+          {
+            "id": "target-not-guaranteed",
+            "label": {
+              "en": "Not Guaranteed 90-Degree Trajectory Separation",
+              "ms": "Pemisahan Trajektori 90 Darjah Tidak Dijamin",
+              "zh": "出射轨迹不保证呈 90 度垂直夹角"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "case-identical-elastic-rest",
+            "targetId": "target-perpendicular"
+          },
+          {
+            "itemId": "case-unequal-mass-elastic-rest",
+            "targetId": "target-not-guaranteed"
+          },
+          {
+            "itemId": "case-identical-inelastic-rest",
+            "targetId": "target-not-guaranteed"
+          },
+          {
+            "itemId": "case-identical-elastic-both-moving",
+            "targetId": "target-not-guaranteed"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "universal-perpendicularity-assumption",
+          "condition": {
+            "kind": "placement",
+            "itemId": "case-unequal-mass-elastic-rest",
+            "targetId": "target-perpendicular"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "The 90-degree separation angle is a mathematical consequence of combining vector momentum conservation and kinetic energy conservation, but it relies on specific strict conditions.",
+          "ms": "Sudut pemisahan 90 darjah ialah akibat matematik daripada menggabungkan keabadian momentum vektor dan keabadian tenaga kinetik, tetapi ia bergantung pada syarat ketat yang khusus.",
+          "zh": "90 度出射夹角是矢量动量守恒与动能守恒联立的数学结论，但它依赖于严格的特定前提条件。"
+        },
+        {
+          "en": "Check three vital criteria: Are both masses exactly equal? Is mechanical kinetic energy strictly conserved (elastic)? And was the target initially stationary?",
+          "ms": "Periksa tiga kriteria penting: Adakah kedua-dua jisim sama persis? Adakah tenaga kinetik mekanikal diabadikan secara ketat (kenyal)? Dan adakah sasaran pada asalnya pegun?",
+          "zh": "请检查三个关键条件：两物体质量是否完全相等？机械动能是否严格守恒（弹性碰撞）？目标在碰撞前是否处于静止状态？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! The post-collision velocity vectors are mutually perpendicular if and only if the collision is elastic, the colliding bodies have identical masses, and one body was initially at rest.",
+        "ms": "Tepat! Vektor halaju selepas perlanggaran adalah berserenjang antara satu sama lain jika dan hanya jika perlanggaran adalah kenyal, jasad yang berlanggar mempunyai jisim yang serupa, dan satu jasad pada asalnya pegun.",
+        "zh": "正确！出射速度矢量相互垂直的充要条件是：碰撞为弹性碰撞、两物体质量完全相同，且其中一个物体初始时处于静止状态。"
+      },
+      "answerLogic": {
+        "en": "For an elastic glancing collision with target initial velocity equal to zero and equal masses (m1 = m2 = m), vector momentum conservation gives v1i_vec = v1f_vec + v2f_vec, which implies v1i^2 = v1f^2 + v2f^2 + 2(v1f_vec dot v2f_vec). Kinetic energy conservation gives v1i^2 = v1f^2 + v2f^2. Comparing equations yields 2(v1f_vec dot v2f_vec) = 0, proving perpendicular trajectories. If masses differ, energy is dissipated, or the target was initially moving, the dot product does not equal zero.",
+        "ms": "Bagi perlanggaran sipi kenyal dengan halaju awal sasaran sifar dan jisim yang sama (m1 = m2 = m), keabadian momentum vektor memberikan v1i_vektor = v1f_vektor + v2f_vektor, yang membayangkan v1i^2 = v1f^2 + v2f^2 + 2(v1f_vektor bintik v2f_vektor). Keabadian tenaga kinetik memberikan v1i^2 = v1f^2 + v2f^2. Membandingkan persamaan menghasilkan 2(v1f_vektor bintik v2f_vektor) = 0, membuktikan trajektori berserenjang. Jika jisim berbeza, tenaga dilesapkan, atau sasaran pada asalnya bergerak, hasil darab bintik tidak bersamaan sifar.",
+        "zh": "对于目标初始静止且质量相等的弹性斜碰（m1 = m2 = m），矢量动量守恒给出 v1i_vec = v1f_vec + v2f_vec，其自身点积展开可得 v1i^2 = v1f^2 + v2f^2 + 2(v1f_vec dot v2f_vec)。动能守恒给出 v1i^2 = v1f^2 + v2f^2。联立两式必得点积 v1f_vec dot v2f_vec = 0，证明出射方向相互垂直。若质量不等、动能损失或靶球初始运动，则点积不为零。"
+      },
+      "explanation": {
+        "en": "A widespread misconception in two-dimensional collisions is assuming that any glancing collision results in a 90-degree angle between the outgoing trajectories. However, this perpendicular outcome is unique to glancing collisions meeting three simultaneous requirements: (1) equal masses (m1 = m2), (2) zero initial velocity for the target, and (3) perfect elasticity (conservation of kinetic energy). If the masses differ, the mass factors do not cancel out in the momentum equation. If the collision is inelastic, kinetic energy is lost so v1i^2 does not equal v1f^2 + v2f^2. If both objects were initially moving, the initial momentum vector does not align solely with the incoming particle velocity.",
+        "ms": "Salah faham yang meluas dalam perlanggaran dua dimensi ialah menganggap sebarang perlanggaran sipi menghasilkan sudut 90 darjah antara trajektori yang keluar. Walau bagaimanapun, hasil berserenjang ini adalah khusus untuk perlanggaran sipi yang memenuhi tiga syarat serentak: (1) jisim yang sama (m1 = m2), (2) halaju awal sifar bagi sasaran, dan (3) kekenyalan sempurna (keabadian tenaga kinetik). Jika jisim berbeza, faktor jisim tidak saling membatalkan dalam persamaan momentum. Jika perlanggaran tidak kenyal, tenaga kinetik hilang maka v1i^2 tidak sama dengan v1f^2 + v2f^2. Jika kedua-dua objek pada asalnya bergerak, vektor momentum awal tidak hanya sejajar dengan halaju zarah yang datang.",
+        "zh": "二维碰撞中常见的误区是认为任何斜碰后两物体的出射方向都会呈 90 度夹角。事实上，两出射轨迹垂直这一结论必须同时满足三个严格条件：(1) 两物体质量相等（m1 = m2）；(2) 目标初始静止；(3) 碰撞为完全弹性碰撞（动能严格守恒）。若质量不等，动量方程中的质量项无法消去；若为非弹性碰撞，动能发生损失，导致 v1i^2 不等于 v1f^2 + v2f^2；若两物体碰撞前均在运动，初动量则不再由单一入射粒子的速度决定。"
+      },
+      "misconceptions": [
+        "universal-perpendicularity-assumption"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-and-elasticity",
+        "prompt": {
+          "en": "Review how elastic collisions conserve both mechanical kinetic energy and linear momentum, whereas inelastic collisions convert kinetic energy to internal forms.",
+          "ms": "Ulang kaji bagaimana perlanggaran kenyal mengabadikan kedua-dua tenaga kinetik mekanikal dan momentum linear, manakala perlanggaran tak kenyal menukarkan tenaga kinetik kepada bentuk dalaman.",
+          "zh": "复习弹性碰撞如何同时守恒机械动能与线动量，而非弹性碰撞则将部分动能转化为内能或其他形式。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A classification activity with four physical collision scenarios to sort into two categories: Guaranteed 90-Degree Trajectory Separation or Not Guaranteed 90-Degree Trajectory Separation.",
+        "ms": "Aktiviti pengelasan dengan empat senario perlanggaran fizikal untuk diisih ke dalam dua kategori: Pemisahan Trajektori 90 Darjah Terjamin atau Pemisahan Trajektori 90 Darjah Tidak Dijamin.",
+        "zh": "这是一个分类活动，包含四个物理碰撞场景，需归入两个类别之一：出射轨迹必呈 90 度垂直夹角，或出射轨迹不保证呈 90 度垂直夹角。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "act-int-mod-3",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze perfectly inelastic collisions in two dimensions where colliding bodies coalesce after impact.",
+      "prompt": {
+        "en": "An eastbound car and a northbound truck collide at a right-angled intersection and lock together, moving as a single combined mass across frictionless ice. Match each system property to its correct governing physical determination.",
+        "ms": "Sebuah kereta arah timur dan sebuah lori arah utara berlanggar di persimpangan bersudut tegak lalu terkunci bersama, bergerak sebagai satu jisim gabungan di atas ais tanpa geseran. Padankan setiap sifat sistem dengan penentuan fizikal kawalannya yang betul.",
+        "zh": "一辆向东行驶的汽车与一辆向北行驶的卡车在直角交叉路口相撞并锁在一起，在无摩擦冰面上作为整体运动。请将该系统的各项物理特征与其正确的物理决定法则相匹配。"
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-east-momentum",
+            "label": {
+              "en": "Total momentum component of the entangled wreckage along the east-west axis",
+              "ms": "Komponen momentum jumlah bagi bangkai kenderaan terbelit di sepanjang paksi timur-barat",
+              "zh": "纠缠残骸沿东西轴向的总动量分量"
+            }
+          },
+          {
+            "id": "item-north-momentum",
+            "label": {
+              "en": "Total momentum component of the entangled wreckage along the north-south axis",
+              "ms": "Komponen momentum jumlah bagi bangkai kenderaan terbelit di sepanjang paksi utara-selatan",
+              "zh": "纠缠残骸沿南北轴向的总动量分量"
+            },
+            "misconception": "transverse-momentum-neglect"
+          },
+          {
+            "id": "item-combined-speed",
+            "label": {
+              "en": "Resultant speed of the entangled wreckage immediately following impact",
+              "ms": "Laju paduan bagi bangkai terbelit serta-merta selepas hentaman",
+              "zh": "碰撞后纠缠残骸的最终合速度大小"
+            },
+            "misconception": "scalar-momentum-addition"
+          },
+          {
+            "id": "item-total-mass",
+            "label": {
+              "en": "Total mass (inertial scalar measure) of the combined entangled wreckage",
+              "ms": "Jumlah jisim (ukuran skalar inersia) bagi bangkai gabungan yang terbelit",
+              "zh": "纠缠结合残骸的总质量（标量惯性度量）"
+            }
+          },
+          {
+            "id": "item-car-north-momentum",
+            "label": {
+              "en": "Initial momentum component of the eastbound car along the north-south axis",
+              "ms": "Komponen momentum awal kereta arah timur di sepanjang paksi utara-selatan",
+              "zh": "向东行驶的汽车在碰撞前沿南北轴向的初始动量分量"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-east-isolated",
+            "label": {
+              "en": "Conserved independently along the east-west axis, originating solely from the eastbound car",
+              "ms": "Diabadikan secara bebas di sepanjang paksi timur-barat, berpunca semata-mata daripada kereta arah timur",
+              "zh": "沿东西轴独立守恒，完全且仅来源于向东行驶的汽车"
+            }
+          },
+          {
+            "id": "target-north-isolated",
+            "label": {
+              "en": "Conserved independently along the north-south axis, originating solely from the northbound truck",
+              "ms": "Diabadikan secara bebas di sepanjang paksi utara-selatan, berpunca semata-mata daripada lori arah utara",
+              "zh": "沿南北轴独立守恒，完全且仅来源于向北行驶的卡车"
+            }
+          },
+          {
+            "id": "target-vector-quadrature",
+            "label": {
+              "en": "Determined by compounding orthogonal momentum vectors in quadrature scaled by total mass",
+              "ms": "Ditentukan dengan menggabungkan vektor momentum berserenjang secara kuadratur diskalakan oleh jumlah jisim",
+              "zh": "由相互正交的动量矢量几何合成并结合总质量共同决定"
+            }
+          },
+          {
+            "id": "target-scalar-sum",
+            "label": {
+              "en": "Determined by direct scalar combination of the two individual vehicle scalar properties",
+              "ms": "Ditentukan melalui gabungan skalar langsung bagi sifat skalar kedua-dua kenderaan individu",
+              "zh": "由两辆车各自的标量物理属性直接标量叠加决定"
+            }
+          },
+          {
+            "id": "target-zero-transverse",
+            "label": {
+              "en": "Identically zero prior to impact because motion is purely perpendicular to this axis",
+              "ms": "Secara identik adalah sifar sebelum hentaman kerana gerakan adalah berserenjang sepenuhnya dengan paksi ini",
+              "zh": "在碰撞前恒等于零，因其运动完全垂直于该坐标轴"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-east-momentum",
+            "targetId": "target-east-isolated"
+          },
+          {
+            "itemId": "item-north-momentum",
+            "targetId": "target-north-isolated"
+          },
+          {
+            "itemId": "item-combined-speed",
+            "targetId": "target-vector-quadrature"
+          },
+          {
+            "itemId": "item-total-mass",
+            "targetId": "target-scalar-sum"
+          },
+          {
+            "itemId": "item-car-north-momentum",
+            "targetId": "target-zero-transverse"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "scalar-momentum-addition",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-combined-speed",
+            "targetId": "target-scalar-sum"
+          }
+        },
+        {
+          "misconception": "transverse-momentum-neglect",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-north-momentum",
+            "targetId": "target-zero-transverse"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "In an isolated two-dimensional collision, perpendicular axes (east-west and north-south) conserve linear momentum independently without cross-axis transfer.",
+          "ms": "Dalam perlanggaran dua dimensi yang terpencil, paksi berserenjang (timur-barat dan utara-selatan) mengabadikan momentum linear secara bebas tanpa pemindahan rentas paksi.",
+          "zh": "在孤立二维碰撞中，相互正交的坐标轴（东西向与南北向）各自独立守恒线动量，轴与轴之间不发生动量传递。"
+        },
+        {
+          "en": "Total momentum is a vector quantity formed by the orthogonal vector hypotenuse of both directional components, whereas mass is an intrinsic scalar quantity that combines directly.",
+          "ms": "Jumlah momentum ialah kuantiti vektor yang dibentuk oleh hipotenus vektor berserenjang bagi kedua-dua komponen arah, manakala jisim ialah kuantiti skalar intrinsik yang bergabung secara langsung.",
+          "zh": "总动量是矢量，由两个正交方向分量构成的几何矢量斜边确定；而质量是固有标量，可以直接标量叠加。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! Linear momentum is independently conserved along perpendicular axes (east and north), resultant velocity follows from vector composition scaled by mass, total mass is an ordinary scalar sum, and perpendicular transverse momentum prior to impact is zero.",
+        "ms": "Tepat! Momentum linear diabadikan secara bebas di sepanjang paksi berserenjang (timur dan utara), halaju paduan terhasil daripada gabungan vektor yang diskalakan oleh jisim, jumlah jisim ialah penambahan skalar biasa, manakala momentum melintang sebelum hentaman adalah sifar.",
+        "zh": "正确！线动量在相互垂直的正交轴（东和北）上各自独立守恒；最终合速度由正交矢量几何合成并结合总质量确定；总质量作为标量直接叠加；而向东车辆在碰撞前沿南北方向的横向动量为零。"
+      },
+      "answerLogic": {
+        "en": "Because the collision is isolated, total momentum change is zero along both the east-west and north-south axes independently. The wreckage x-momentum equals the eastbound car's initial momentum, and the wreckage y-momentum equals the northbound truck's initial momentum. The eastbound car had zero initial north-south momentum. By vector addition, the total momentum vector is the hypotenuse of the orthogonal components, and dividing by total scalar mass gives the resultant speed. Direct scalar addition of velocities violates vector conservation, and assuming transverse momentum vanishes violates Newton's laws.",
+        "ms": "Oleh sebab perlanggaran ini terpencil, perubahan momentum jumlah adalah sifar di sepanjang paksi timur-barat dan utara-selatan secara bebas. Momentum-x bangkai bersamaan momentum awal kereta arah timur, dan momentum-y bangkai bersamaan momentum awal lori arah utara. Kereta arah timur mempunyai momentum awal sifar di sepanjang paksi utara-selatan. Melalui penambahan vektor, vektor jumlah momentum ialah hipotenus bagi komponen berserenjang, dan membahagikan dengan jumlah jisim skalar menghasilkan laju paduan. Penambahan skalar langsung bagi halaju melanggar keabadian vektor, dan menganggap momentum melintang lenyap melanggar hukum Newton.",
+        "zh": "由于碰撞系统孤立，东西轴和南北轴方向上的总动量变化量各自独立为零。残骸的 x 分动量等于向东车辆的初始动量，y 分动量等于向北卡车的初始动量。向东车辆在碰撞前沿南北轴向的动量恒为零。根据矢量运算法则，总动量矢量为两个正交分量的直角三角形斜边，除以标量总质量可得合速度大小。将速度直接标量相加违背了矢量的守恒性，而假定横向动量消失则违背了牛顿运动定律。"
+      },
+      "explanation": {
+        "en": "When two vehicles stick together in a two-dimensional collision, the collision is perfectly inelastic. Mechanical kinetic energy is transformed into internal energy and deformation, but linear momentum is conserved vectorially. Because initial velocities are orthogonal (east and north), each coordinate axis carries momentum from exactly one vehicle: px = m1*v1i and py = m2*v2i. Neither component affects or cancels the other. The initial north-south momentum of the eastbound car is zero. The combined mass is the scalar combination of both masses (m1 + m2), and the resultant speed must be obtained from the vector magnitude of total momentum rather than scalar addition of individual speeds.",
+        "ms": "Apabila dua kenderaan melekat bersama dalam perlanggaran dua dimensi, perlanggaran tersebut adalah tak kenyal sempurna. Tenaga kinetik mekanikal diubah kepada tenaga dalaman dan perubahan bentuk, tetapi momentum linear diabadikan secara vektor. Oleh sebab halaju awal adalah berserenjang (timur dan utara), setiap paksi koordinat membawa momentum daripada tepat satu kenderaan: px = m1*v1i dan py = m2*v2i. Tiada komponen yang mempengaruhi atau membatalkan komponen yang lain. Momentum awal utara-selatan kereta arah timur adalah sifar. Jisim gabungan ialah gabungan skalar kedua-dua jisim (m1 + m2), dan laju paduan mesti diperoleh daripada magnitud vektor bagi jumlah momentum dan bukannya penambahan skalar bagi laju individu.",
+        "zh": "在二维碰撞中两车粘合在一起，属于完全非弹性碰撞。机械动能转化为内能和形变能，但系统的线动量作为矢量严格守恒。由于初始速度相互正交（正东与正北），各个坐标轴的动量完全独立来源于对应车辆：px = m1*v1i 以及 py = m2*v2i。这两个垂直分量互不干扰且互不削弱。向东车辆在碰撞前的南北分动量为零。碰撞后结合体的总质量为两车标量质量之和 (m1 + m2)，其最终合速度必须由合成总动量矢量的模除以总质量确定，绝不能直接对初始标量速率进行代数相加。"
+      },
+      "misconceptions": [
+        "scalar-momentum-addition",
+        "transverse-momentum-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "one-dimensional-momentum-conservation",
+        "prompt": {
+          "en": "Review how momentum conservation operates along a single coordinate axis during an isolated inelastic collision before extending to perpendicular axes.",
+          "ms": "Ulang kaji bagaimana keabadian momentum beroperasi di sepanjang satu paksi koordinat semasa perlanggaran tak kenyal terpencil sebelum meluaskannya ke paksi berserenjang.",
+          "zh": "在拓展到正交轴之前，先复习孤立系统在非弹性碰撞中沿单个坐标轴的动量守恒规律。"
+        }
+      },
+      "accessibilityText": {
+        "en": "A matching activity with five collision and system properties to pair with their governing physical determinations.",
+        "ms": "Aktiviti pemadanan dengan lima sifat perlanggaran dan sistem untuk dipadankan dengan penentuan fizikal kawalannya.",
+        "zh": "这是一个匹配活动，将五个碰撞与系统物理特征与其对应的物理决定法则进行配对。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "act-int-chal-1",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Determine glancing angles and speeds for two-dimensional elastic collisions using momentum and energy equations.",
+      "prompt": {
+        "en": "A moving projectile particle strikes an identical target particle initially at rest in a two-dimensional glancing elastic collision. Arrange the theoretical steps in the correct logical sequence to solve for the final speeds and scattering angles using conservation laws.",
+        "ms": "Suatu zarah projektil yang bergerak berlanggar secara sipi dan kenyal dalam dua dimensi dengan suatu zarah sasaran serupa yang pada asalnya pegun. Susun langkah teori mengikut urutan logik yang betul untuk menentukan laju akhir dan sudut serakan menggunakan hukum keabadian.",
+        "zh": "一个运动的入射粒子与一个原本静止的相同目标粒子发生二维斜向弹性碰撞。请按正确的逻辑顺序排列理论求解步骤，利用守恒定律求解末速度和散射角。"
+      },
+      "hints": [
+        {
+          "en": "Recall that in two dimensions, vector momentum must be resolved along two perpendicular coordinate axes before energy conservation can be effectively combined.",
+          "ms": "Ingat bahawa dalam dua dimensi, momentum vektor mesti dileraikan di sepanjang dua paksi koordinat berserenjang sebelum keabadian tenaga dapat digabungkan secara berkesan.",
+          "zh": "请记住，在二维情况下，必须先将矢量动量沿两个相互垂直的坐标轴分解，然后才能有效地结合动能守恒。"
+        },
+        {
+          "en": "To eliminate the unknown target deflection angle phi, isolate its sine and cosine expressions from the momentum components and sum their squares before substituting into the kinetic energy equation.",
+          "ms": "Untuk menghapuskan sudut pesongan sasaran phi yang tidak diketahui, asingkan ungkapan sinus dan kosinusnya daripada komponen momentum dan jumlahkan kuasa duanya sebelum menggantikan ke dalam persamaan tenaga kinetik.",
+          "zh": "若要消去未知的目标偏转角 phi，需先从动量分量中隔离出其正弦和余弦表达式，将二者平方相加，然后再代入动能方程。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! You correctly sequenced the derivation: resolve orthogonal momentum components, isolate target angle terms, square and add to eliminate the target angle, and finally couple with scalar kinetic energy conservation.",
+        "ms": "Tahniah, betul! Anda menyusun terbitan dengan tepat: leraikan komponen momentum berserenjang, asingkan sebutan sudut sasaran, kuasa duakan dan jumlahkan untuk menghapuskan sudut sasaran, dan akhirnya gabungkan dengan keabadian tenaga kinetik skalar.",
+        "zh": "回答正确！你正确排列了推导步骤：分解正交动量分量，隔离目标角表达式，平方相加消去目标角，最后与标量动能守恒结合。"
+      },
+      "answerLogic": {
+        "en": "The derivation begins by setting up orthogonal momentum components (x and y). Next, isolating the target's trigonometric terms allows them to be squared and summed, using sin^2(phi) + cos^2(phi) = 1 to eliminate the target angle. Finally, equating the result with scalar kinetic energy conservation yields the projectile's final speed and angle.",
+        "ms": "Terbitan bermula dengan menyediakan komponen momentum berserenjang (x dan y). Seterusnya, pengasingan sebutan trigonometri sasaran membolehkan ia dikuasaduakan dan dijumlahkan, menggunakan sin^2(phi) + cos^2(phi) = 1 untuk menghapuskan sudut sasaran. Akhir sekali, menyamakan hasil ini dengan keabadian tenaga kinetik skalar menghasilkan laju akhir dan sudut projektil.",
+        "zh": "推导首先建立正交动量分量（x 和 y）。接着，隔离目标粒子的三角函数项并平方求和，利用 sin^2(phi) + cos^2(phi) = 1 消去目标散射角。最后，将所得结果与标量动能守恒方程结合，求解出入射粒子的末速度和散射角。"
+      },
+      "explanation": {
+        "en": "In a two-dimensional glancing elastic collision, there are four kinematic unknowns (two speeds and two angles). Momentum conservation provides two independent component equations, and kinetic energy conservation provides one scalar equation. To solve this system without extraneous 1D approximations, one must first eliminate the unknown target angle by isolating and squaring its momentum components, then integrate the scalar kinetic energy condition.",
+        "ms": "Dalam perlanggaran sipi kenyal dua dimensi, terdapat empat pemboleh ubah kinematik yang tidak diketahui (dua laju dan dua sudut). Keabadian momentum membekalkan dua persamaan komponen bebas, dan keabadian tenaga kinetik membekalkan satu persamaan skalar. Untuk menyelesaikan sistem ini tanpa andaian 1D yang salah, seseorang mesti menghapuskan sudut sasaran yang tidak diketahui dengan mengasingkan dan menguasaduakan komponen momentumnya, kemudian menggabungkan syarat tenaga kinetik skalar.",
+        "zh": "在二维斜向弹性碰撞中，存在四个未知的运动学量（两个速率和两个角度）。动量守恒提供两个独立的分量方程，动能守恒提供一个标量方程。为了在不引入错误的一维假设下求解该系统，必须先通过隔离并平方动量分量消去未知的目标散射角，然后结合标量动能守恒条件进行求解。"
+      },
+      "misconceptions": [
+        "one-dimensional-relative-velocity-in-2d",
+        "transverse-momentum-neglect"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-components-resolution",
+        "prompt": {
+          "en": "Review how to write independent conservation of momentum equations for the incident x-axis and transverse y-axis.",
+          "ms": "Ulang kaji cara menulis persamaan keabadian momentum bebas bagi paksi-x tuju dan paksi-y rentas.",
+          "zh": "复习如何分别沿入射 x 轴和横向 y 轴列出独立的动量守恒方程。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Order four procedural steps in the theoretical derivation of a two-dimensional elastic glancing collision from first step to final step.",
+        "ms": "Susun empat langkah prosedur dalam terbitan teori perlanggaran sipi kenyal dua dimensi daripada langkah pertama hingga langkah terakhir.",
+        "zh": "按从第一步到最后一步的顺序，排列二维弹性斜碰理论推导中的四个步骤。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "step-resolve-orthogonal",
+            "label": {
+              "en": "Resolve linear momentum into orthogonal components along the incident axis (x) and transverse axis (y), setting initial transverse momentum to zero.",
+              "ms": "Leraikan momentum linear kepada komponen berserenjang di sepanjang paksi tuju (x) dan paksi rentas (y), dengan menetapkan momentum rentas awal kepada sifar.",
+              "zh": "将线动量分解为沿入射轴 (x) 和横向轴 (y) 的正交分量，并令初始横向动量为零。"
+            }
+          },
+          {
+            "id": "step-isolate-target",
+            "label": {
+              "en": "Rearrange the two component momentum equations to isolate the target particle's transverse and longitudinal trigonometric terms on one side.",
+              "ms": "Susun semula kedua-dua persamaan komponen momentum untuk mengasingkan sebutan trigonometri rentas dan membujur zarah sasaran pada satu sisi.",
+              "zh": "重新整理两个动量分量方程，将目标粒子的横向和纵向三角函数项隔离在等式一侧。"
+            }
+          },
+          {
+            "id": "step-eliminate-angle",
+            "label": {
+              "en": "Square and add the isolated component equations, applying the identity sin^2(phi) + cos^2(phi) = 1 to eliminate the target particle's scattering angle.",
+              "ms": "Kuasa duakan dan jumlahkan persamaan komponen yang diasingkan, menggunakan identiti sin^2(phi) + cos^2(phi) = 1 untuk menghapuskan sudut serakan zarah sasaran.",
+              "zh": "将隔离后的分量方程两边平方并相加，应用恒等式 sin^2(phi) + cos^2(phi) = 1 消去目标粒子的散射角。"
+            }
+          },
+          {
+            "id": "step-scalar-energy",
+            "label": {
+              "en": "Combine the resulting momentum equation with the scalar kinetic energy conservation equation to solve for the projectile's final speed and angle.",
+              "ms": "Gabungkan persamaan momentum yang terhasil dengan persamaan keabadian tenaga kinetik skalar untuk menyelesaikan laju akhir dan sudut projektil.",
+              "zh": "将所得的动量关系式与标量动能守恒方程结合，求解入射粒子的末速度与散射角。"
+            }
+          }
+        ],
+        "correctOrder": [
+          "step-resolve-orthogonal",
+          "step-isolate-target",
+          "step-eliminate-angle",
+          "step-scalar-energy"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "one-dimensional-relative-velocity-in-2d",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "step-scalar-energy",
+            "secondItemId": "step-resolve-orthogonal"
+          }
+        },
+        {
+          "misconception": "transverse-momentum-neglect",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "step-scalar-energy",
+            "secondItemId": "step-eliminate-angle"
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-chal-2",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish between elastic and inelastic collisions in two dimensions using kinetic energy criteria.",
+      "prompt": {
+        "en": "Two particles collide on a frictionless horizontal plane. Select all physically valid statements regarding kinetic energy and momentum conservation that distinguish elastic from inelastic collisions in two dimensions.",
+        "ms": "Dua zarah berlanggar di atas satah mendatar tanpa geseran. Pilih semua pernyataan yang sah dari segi fizikal mengenai keabadian tenaga kinetik dan momentum yang membezakan perlanggaran kenyal daripada tak kenyal dalam dua dimensi.",
+        "zh": "两个粒子在无摩擦水平面上发生碰撞。请选择所有从物理上正确区分二维弹性碰撞与非弹性碰撞的关于动能和动量守恒的陈述。"
+      },
+      "hints": [
+        {
+          "en": "Consider whether kinetic energy is a vector quantity that has directional components, or a scalar quantity that depends only on particle mass and speed.",
+          "ms": "Pertimbangkan sama ada tenaga kinetik merupakan kuantiti vektor yang mempunyai komponen arah, atau kuantiti skalar yang hanya bergantung pada jisim dan laju zarah.",
+          "zh": "请思考动能是具有方向分量的矢量，还是仅取决于粒子质量和速率的标量。"
+        },
+        {
+          "en": "Remember Pitfall Prevention 9.4: the one-dimensional relative velocity equation cannot be applied to two-dimensional collisions, even if applied along individual axes.",
+          "ms": "Ingat Pencegahan Kesilapan 9.4: persamaan halaju relatif satu dimensi tidak boleh digunakan untuk perlanggaran dua dimensi, walaupun digunakan di sepanjang paksi individu.",
+          "zh": "请记住“防错提醒 9.4”：一维相对速度方程不能应用于二维碰撞，即使沿各个坐标轴分别应用也不行。"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! You correctly identified that total kinetic energy is a scalar sum conserved across the whole system in elastic collisions, that vector momentum is conserved in both orthogonal directions even during inelastic collisions, and avoided treating kinetic energy as a vector or misapplying the 1D relative velocity formula.",
+        "ms": "Tahniah, betul! Anda mengenal pasti dengan tepat bahawa jumlah tenaga kinetik ialah hasil tambah skalar yang diabadikan merentasi keseluruhan sistem dalam perlanggaran kenyal, bahawa momentum vektor diabadikan dalam kedua-dua arah berserenjang walaupun semasa perlanggaran tak kenyal, dan mengelak daripada menganggap tenaga kinetik sebagai vektor atau menyalahgunakan formula halaju relatif 1D.",
+        "zh": "回答正确！你正确识别出：总动能是一个标量和，在弹性碰撞中全系统守恒；即使在非弹性碰撞中，矢量动量在两个正交方向上也均守恒；并且成功避免了将动能按分量分解或错误套用一维相对速度公式的误区。"
+      },
+      "answerLogic": {
+        "en": "Kinetic energy is a scalar quantity (sum of 1/2 m v^2), so it has no components and is conserved as a total scalar sum in elastic collisions. Momentum is a vector quantity, conserved along both x and y axes in both elastic and inelastic isolated collisions. Kinetic energy cannot be decomposed into vector axes, and the 1D relative speed equation is invalid in 2D.",
+        "ms": "Tenaga kinetik ialah kuantiti skalar (hasil tambah 1/2 m v^2), jadi ia tidak mempunyai komponen dan diabadikan sebagai jumlah skalar dalam perlanggaran kenyal. Momentum ialah kuantiti vektor, diabadikan di sepanjang kedua-dua paksi x dan y dalam kedua-dua perlanggaran kenyal dan tak kenyal terpencil. Tenaga kinetik tidak boleh dileraikan kepada paksi vektor, dan persamaan laju relatif 1D adalah tidak sah dalam 2D.",
+        "zh": "动能是标量（1/2 m v^2 的总和），因此没有方向分量，在弹性碰撞中作为标量总和守恒。动量是矢量，在孤立系统的弹性与非弹性碰撞中沿 x 轴和 y 轴分别守恒。动能不能沿坐标轴分解，且一维相对速度公式在二维中不成立。"
+      },
+      "explanation": {
+        "en": "Elasticity is strictly determined by whether total kinetic energy is conserved: Ki = Kf. Because kinetic energy is scalar, it does not possess vector components along coordinate axes; treating it as directional components is a conceptual category error. Furthermore, as noted in Pitfall Prevention 9.4, the relative velocity relation v1i - v2i = -(v1f - v2f) holds solely for one-dimensional elastic collisions and must not be used in two dimensions. In all isolated collisions, vector momentum is conserved independently along orthogonal directions regardless of whether kinetic energy is conserved.",
+        "ms": "Kekenyalan ditentukan secara ketat oleh sama ada jumlah tenaga kinetik diabadikan: Ki = Kf. Oleh sebab tenaga kinetik adalah skalar, ia tidak mempunyai komponen vektor di sepanjang paksi koordinat; menganggapnya sebagai komponen berarah ialah kesilapan kategori konsep. Tambahan pula, seperti yang dinyatakan dalam Pencegahan Kesilapan 9.4, hubungan halaju relatif v1i - v2i = -(v1f - v2f) hanya sah untuk perlanggaran kenyal satu dimensi dan tidak boleh digunakan dalam dua dimensi. Dalam semua perlanggaran terpencil, momentum vektor diabadikan secara bebas di sepanjang arah berserenjang tanpa mengira sama ada tenaga kinetik diabadikan.",
+        "zh": "碰撞的弹性严格由总动能是否守恒（Ki = Kf）决定。因为动能是标量，它在坐标轴上没有矢量分量；将其按坐标轴分解是概念范畴的错误。此外，正如“防错提醒 9.4”所指出的，相对速度关系式 v1i - v2i = -(v1f - v2f) 仅对一维弹性碰撞成立，绝不能用于二维分析。在所有孤立碰撞中，无论动能是否守恒，矢量动量沿正交方向都各自独立守恒。"
+      },
+      "misconceptions": [
+        "kinetic-energy-vector-components",
+        "one-dimensional-relative-velocity-in-2d"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-and-elasticity",
+        "prompt": {
+          "en": "Review the definition of elastic and inelastic collisions and the fundamental distinction between vector momentum and scalar kinetic energy.",
+          "ms": "Ulang kaji definisi perlanggaran kenyal dan tak kenyal serta perbezaan asas antara momentum vektor dan tenaga kinetik skalar.",
+          "zh": "复习弹性碰撞与非弹性碰撞的定义，以及矢量动量与标量动能之间的根本区别。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Select multiple statements from four options that correctly describe kinetic energy and momentum conservation in two-dimensional collisions.",
+        "ms": "Pilih beberapa pernyataan daripada empat pilihan yang menerangkan keabadian tenaga kinetik dan momentum dengan betul dalam perlanggaran dua dimensi.",
+        "zh": "从四个选项中选择多个正确描述二维碰撞中动能和动量守恒的陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-scalar-energy-sum",
+            "label": {
+              "en": "Total kinetic energy is a single scalar sum across all particles; in an elastic collision, this total scalar value is conserved without resolving energy into coordinate components.",
+              "ms": "Jumlah tenaga kinetik ialah satu hasil tambah skalar tunggal merentasi semua zarah; dalam perlanggaran kenyal, nilai skalar jumlah ini diabadikan tanpa meleraikan tenaga kepada komponen koordinat.",
+              "zh": "总动能是所有粒子标量动能的总和；在弹性碰撞中，该总标量值守恒，无需将动能分解为坐标分量。"
+            }
+          },
+          {
+            "id": "item-inelastic-momentum-conserved",
+            "label": {
+              "en": "In an inelastic collision, vector momentum remains conserved independently along both orthogonal axes even though total mechanical kinetic energy is not conserved.",
+              "ms": "Dalam perlanggaran tak kenyal, momentum vektor tetap diabadikan secara bebas di sepanjang kedua-dua paksi berserenjang walaupun jumlah tenaga kinetik mekanik tidak diabadikan.",
+              "zh": "在非弹性碰撞中，尽管总机械动能不守恒，矢量动量在两个正交轴上仍然各自独立守恒。"
+            }
+          },
+          {
+            "id": "item-vector-ke-components",
+            "label": {
+              "en": "An elastic collision requires kinetic energy to be conserved independently along the x-axis and along the y-axis.",
+              "ms": "Perlanggaran kenyal memerlukan tenaga kinetik diabadikan secara berasingan di sepanjang paksi-x dan di sepanjang paksi-y.",
+              "zh": "弹性碰撞要求动能在 x 轴和 y 轴方向上分别独立守恒。"
+            },
+            "misconception": "kinetic-energy-vector-components"
+          },
+          {
+            "id": "item-1d-relative-speed",
+            "label": {
+              "en": "A two-dimensional collision is elastic if the magnitude of relative approach velocity equals the magnitude of relative separation velocity along each coordinate axis.",
+              "ms": "Perlanggaran dua dimensi adalah kenyal jika magnitud halaju pendekatan relatif sama dengan magnitud halaju pemisahan relatif di sepanjang setiap paksi koordinat.",
+              "zh": "如果沿每个坐标轴的相对接近速度大小等于相对分离速度大小，则该二维碰撞为弹性碰撞。"
+            },
+            "misconception": "one-dimensional-relative-velocity-in-2d"
+          }
+        ],
+        "correctSelections": [
+          "item-scalar-energy-sum",
+          "item-inelastic-momentum-conserved"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "kinetic-energy-vector-components",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-vector-ke-components",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "one-dimensional-relative-velocity-in-2d",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-1d-relative-speed",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-int-chal-3",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Deduce that equal-mass elastic glancing collisions with a stationary target yield perpendicular final trajectories.",
+      "prompt": {
+        "en": "Analyze the vector momentum dot product and kinetic energy relation for each glancing collision case. Classify whether the algebraic deduction strictly enforces a zero dot product (guaranteeing mutually perpendicular final paths, theta + phi = 90 degrees) or yields a non-zero dot product (paths not perpendicular).",
+        "ms": "Analisis hasil darab bintik momentum vektor dan hubungan tenaga kinetik bagi setiap kes perlanggaran sipi. Kelaskan sama ada deduksi algebra secara ketat menetapkan hasil darab bintik sifar (menjamin laluan akhir saling berserenjang, theta + phi = 90 darjah) atau menghasilkan hasil darab bintik bukan sifar (laluan tidak berserenjang).",
+        "zh": "分析各个斜向碰撞情形下的矢量动量点积与动能关系。分类判断其代数推导是严格导出点积为零（从而保证末路径相互垂直，theta + phi = 90 度），还是导出非零点积（路径不垂直）。"
+      },
+      "hints": [
+        {
+          "en": "Start from the vector momentum relation p_tot,i = p_tot,f. Taking the dot product of total momentum with itself introduces cross terms of the form 2(p1 . p2). For an isolated collision, this squared magnitude must be compared directly against the scalar sum for kinetic energy.",
+          "ms": "Mulakan daripada hubungan momentum vektor p_tot,i = p_tot,f. Mengambil hasil darab bintik jumlah momentum dengan dirinya sendiri memperkenalkan sebutan silang berbentuk 2(p1 . p2). Bagi perlanggaran terpencil, magnitud kuasa dua ini mesti dibandingkan secara langsung dengan hasil tambah skalar untuk tenaga kinetik.",
+          "zh": "从矢量动量关系 p_tot,i = p_tot,f 出发。将总动量与自身求点积会引入形如 2(p1 · p2) 的交叉项。对于孤立碰撞，必须将此平方量直接与标量动能和进行对比。"
+        },
+        {
+          "en": "The dot product v1f . v2f equals zero if and only if three conditions are satisfied at once: equal masses cancel the mass factors, zero initial target momentum eliminates initial cross terms, and kinetic energy conservation eliminates all squared velocity magnitudes.",
+          "ms": "Hasil darab bintik v1f . v2f adalah bersamaan dengan sifar jika dan hanya jika tiga syarat dipenuhi serentak: jisim yang sama memansuhkan faktor jisim, momentum sasaran awal yang sifar menghapuskan sebutan silang awal, dan keabadian tenaga kinetik menghapuskan semua magnitud halaju kuasa dua.",
+          "zh": "点积 v1f · v2f 为零当且仅当同时满足三个条件：质量相等以消除质量因子、目标初动量为零以消除初始交叉项，以及动能守恒以完全抵消所有速度平方量。"
+        }
+      ],
+      "feedback": {
+        "en": "Excellent deduction! You proved that perpendicular trajectories (theta + phi = 90 degrees) emerge strictly when the vector dot product v1f . v2f vanishes. This cancellation requires equal masses (m1 = m2), elastic energy conservation (Ki = Kf), and a stationary target (v2i = 0). If masses differ, energy is dissipated, or the target was moving, residual algebraic terms keep v1f . v2f non-zero.",
+        "ms": "Deduksi yang cemerlang! Anda membuktikan bahawa trajektori berserenjang (theta + phi = 90 darjah) terhasil secara ketat hanya apabila hasil darab bintik vektor v1f . v2f menjadi sifar. Pemansuhan ini memerlukan jisim yang sama (m1 = m2), keabadian tenaga kenyal (Ki = Kf), dan sasaran yang pegun (v2i = 0). Sekiranya jisim berbeza, tenaga dilesapkan, atau sasaran sedang bergerak, sebutan algebra baki mengekalkan v1f . v2f bukan sifar.",
+        "zh": "极其出色的推导！你证明了仅当矢量点积 v1f · v2f 为零时，末轨迹才严格垂直（theta + phi = 90 度）。这一消除要求质量相等（m1 = m2）、弹性动能守恒（Ki = Kf）以及目标初始静止（v2i = 0）。若质量不同、动能耗散或目标初态在运动，代数剩余项会使 v1f · v2f 保持非零。"
+      },
+      "answerLogic": {
+        "en": "For an elastic glancing collision of equal masses with a stationary target, vector momentum conservation gives v1i = v1f + v2f. Squaring both sides yields v1i^2 = v1f^2 + v2f^2 + 2(v1f . v2f). Conservation of kinetic energy gives v1i^2 = v1f^2 + v2f^2. Subtracting these gives 2(v1f . v2f) = 0, which proves the final velocities are mutually perpendicular (theta + phi = 90 degrees). If m1 != m2, the mass coefficients prevent cancellation, leaving 2(v1f . v2f) != 0. If kinetic energy is lost (inelastic), v1i^2 > v1f^2 + v2f^2, leaving 2(v1f . v2f) > 0 (an acute angle). If v2i != 0, an initial cross term 2(v1i . v2i) remains, so v1f . v2f != 0 in general.",
+        "ms": "Bagi perlanggaran sipi kenyal zarah berjisim sama dengan sasaran pegun, keabadian momentum vektor memberikan v1i = v1f + v2f. Mengkuasaduakan kedua-dua belah menghasilkan v1i^2 = v1f^2 + v2f^2 + 2(v1f . v2f). Keabadian tenaga kinetik memberikan v1i^2 = v1f^2 + v2f^2. Menolak kedua-duanya memberikan 2(v1f . v2f) = 0, membuktikan bahawa halaju akhir adalah saling berserenjang (theta + phi = 90 darjah). Jika m1 != m2, pekali jisim menghalang pemansuhan, meninggalkan 2(v1f . v2f) != 0. Jika tenaga kinetik hilang (tak kenyal), v1i^2 > v1f^2 + v2f^2, meninggalkan 2(v1f . v2f) > 0 (sudut tirus). Jika v2i != 0, sebutan silang awal 2(v1i . v2i) kekal, jadi secara umumnya v1f . v2f != 0.",
+        "zh": "对于质量相同且目标初始静止的弹性斜碰，矢量动量守恒给出 v1i = v1f + v2f。两边平方得 v1i^2 = v1f^2 + v2f^2 + 2(v1f · v2f)。动能守恒给出 v1i^2 = v1f^2 + v2f^2。两式相减即得 2(v1f · v2f) = 0，从而证明末速度必相互垂直（theta + phi = 90 度）。若 m1 != m2，质量系数无法完全相消，导致 2(v1f · v2f) != 0；若发生动能损失（非弹性），v1i^2 > v1f^2 + v2f^2，导致 2(v1f · v2f) > 0（夹角为锐角）；若 v2i != 0，初态存在交叉项 2(v1i · v2i)，故通常 v1f · v2f != 0。"
+      },
+      "explanation": {
+        "en": "Section 9.5 analyzes glancing collisions in two dimensions. On page 230, the textbook derives that whenever two objects of equal mass collide elastically in a glancing collision with one initially at rest, their final velocities are perpendicular: theta + phi = 90 degrees. This property can be derived most elegantly using vector dot products: p1i = p1f + p2f. When m1 = m2 = m and v2i = 0, dividing by m gives v1i = v1f + v2f. Squaring gives |v1i|^2 = |v1f|^2 + |v2f|^2 + 2(v1f . v2f). Conservation of kinetic energy states (1/2)m v1i^2 = (1/2)m v1f^2 + (1/2)m v2f^2, which simplifies to v1i^2 = v1f^2 + v2f^2. Comparing the two equations proves that 2(v1f . v2f) = 0, which requires cos(angle) = 0, meaning the final paths are separated by exactly 90 degrees. If m1 != m2, the masses do not factor out evenly, so the dot product is non-zero. If the collision is inelastic, kinetic energy is lost, making v1i^2 > v1f^2 + v2f^2 and resulting in an acute angle (v1f . v2f > 0). If the target is initially moving, an initial dot product exists. Thus, the 90-degree separation is a strict signature requiring all three criteria.",
+        "ms": "Seksyen 9.5 menganalisis perlanggaran sipi dalam dua dimensi. Pada halaman 230, buku teks menerbitkan bahawa apabila dua objek berjisim sama berlanggar secara kenyal dalam perlanggaran sipi dengan satu objek pada asalnya pegun, halaju akhirnya adalah berserenjang: theta + phi = 90 darjah. Ciri ini boleh diterbitkan dengan paling elegan menggunakan hasil darab bintik vektor: p1i = p1f + p2f. Apabila m1 = m2 = m dan v2i = 0, membahagikan dengan m memberikan v1i = v1f + v2f. Mengkuasaduakan memberikan |v1i|^2 = |v1f|^2 + |v2f|^2 + 2(v1f . v2f). Keabadian tenaga kinetik menyatakan (1/2)m v1i^2 = (1/2)m v1f^2 + (1/2)m v2f^2, yang dipermudahkan kepada v1i^2 = v1f^2 + v2f^2. Membandingkan kedua-dua persamaan membuktikan bahawa 2(v1f . v2f) = 0, yang memerlukan kos(sudut) = 0, bermakna laluan akhir dipisahkan tepat pada 90 darjah. Jika m1 != m2, jisim tidak memansuh secara seimbang, jadi hasil darab bintik bukan sifar. Jika perlanggaran tak kenyal, tenaga kinetik hilang, menjadikan v1i^2 > v1f^2 + v2f^2 dan menghasilkan sudut tirus (v1f . v2f > 0). Jika sasaran pada asalnya bergerak, hasil darab bintik awal wujud. Oleh itu, pemisahan 90 darjah ialah sifat khusus ketat yang memerlukan ketiga-tiga kriteria.",
+        "zh": "第 9.5 节分析了二维斜向碰撞。在第 230 页，教材推导指出：只要两个质量相等的物体发生斜向弹性碰撞且其中一个初始静止，它们的末速度必定相互垂直，即 theta + phi = 90 度。利用矢量点积可以最优雅地推导该性质：p1i = p1f + p2f。当 m1 = m2 = m 且 v2i = 0 时，两边同除以 m 得 v1i = v1f + v2f。两边平方得 |v1i|^2 = |v1f|^2 + |v2f|^2 + 2(v1f · v2f)。动能守恒给出 (1/2)m v1i^2 = (1/2)m v1f^2 + (1/2)m v2f^2，即 v1i^2 = v1f^2 + v2f^2。联立对比两式可证 2(v1f · v2f) = 0，即余弦值为零，末速度矢量恰好成 90 度角。若 m1 != m2，质量因子无法约去，点积不为零；若碰撞非弹性，损失动能导致 v1i^2 > v1f^2 + v2f^2，点积大于零（分离角为锐角）；若目标初始在运动，初态点积项存在。因此，90 度分离角是同时满足这三个物理前提的严格特征。"
+      },
+      "misconceptions": [
+        "universal-perpendicularity-assumption",
+        "scalar-momentum-addition"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "kinetic-energy-and-elasticity",
+        "prompt": {
+          "en": "Review how kinetic energy conservation combines with vector momentum dot products in elastic collisions.",
+          "ms": "Ulang kaji bagaimana keabadian tenaga kinetik digabungkan dengan hasil darab bintik momentum vektor dalam perlanggaran kenyal.",
+          "zh": "复习在弹性碰撞中动能守恒如何与矢量动量的点积相结合。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classify four algebraic deductions of vector momentum and kinetic energy based on whether they enforce a zero velocity dot product (perpendicular trajectories) or a non-zero dot product (not perpendicular).",
+        "ms": "Kelaskan empat deduksi algebra momentum vektor dan tenaga kinetik berdasarkan sama ada ia menetapkan hasil darab bintik halaju sifar (trajektori berserenjang) atau hasil darab bintik bukan sifar (tidak berserenjang).",
+        "zh": "根据矢量动量与动能的四种代数推导是导出零速度点积（垂直轨迹）还是非零点积（非垂直），对其进行分类。"
+      },
+      "provenance": {
+        "sourceLocation": "9.5 Collisions in Two Dimensions; Complete controlled PDF for section 9.5",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-perpendicular",
+            "label": {
+              "en": "Enforces zero dot product: v1f . v2f = 0 (perpendicular trajectories, theta + phi = 90 degrees)",
+              "ms": "Menetapkan hasil darab bintik sifar: v1f . v2f = 0 (trajektori berserenjang, theta + phi = 90 darjah)",
+              "zh": "严格导出零点积：v1f · v2f = 0（轨迹相互垂直，theta + phi = 90 度）"
+            }
+          },
+          {
+            "id": "target-not-perpendicular",
+            "label": {
+              "en": "Yields non-zero dot product: v1f . v2f != 0 (trajectories not perpendicular, theta + phi != 90 degrees)",
+              "ms": "Menghasilkan hasil darab bintik bukan sifar: v1f . v2f != 0 (trajektori tidak berserenjang, theta + phi != 90 darjah)",
+              "zh": "导出非零点积：v1f · v2f != 0（轨迹不垂直，theta + phi != 90 度）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-equal-elastic-stationary",
+            "label": {
+              "en": "Identical particles (m1 = m2 = m) with v2i = 0 and Ki = Kf: momentum squaring yields v1i^2 = v1f^2 + v2f^2 + 2(v1f . v2f), which directly matches the scalar kinetic energy sum v1i^2 = v1f^2 + v2f^2.",
+              "ms": "Zarah serupa (m1 = m2 = m) dengan v2i = 0 dan Ki = Kf: pengkuasaduaan momentum menghasilkan v1i^2 = v1f^2 + v2f^2 + 2(v1f . v2f), yang secara langsung memadankan jumlah tenaga kinetik skalar v1i^2 = v1f^2 + v2f^2.",
+              "zh": "完全相同的粒子（m1 = m2 = m），且 v2i = 0 与 Ki = Kf：动量平方给出 v1i^2 = v1f^2 + v2f^2 + 2(v1f · v2f)，这与标量动能之和 v1i^2 = v1f^2 + v2f^2 直接一致。"
+            }
+          },
+          {
+            "id": "item-unequal-elastic-stationary",
+            "label": {
+              "en": "Different masses (m1 != m2) with v2i = 0 and Ki = Kf: comparing the squared momentum equation to kinetic energy leaves a residual term proportional to (m2 - m1)v2f^2, preventing 2(v1f . v2f) from isolating to zero.",
+              "ms": "Jisim berbeza (m1 != m2) dengan v2i = 0 dan Ki = Kf: membandingkan persamaan momentum kuasa dua dengan tenaga kinetik meninggalkan sebutan baki berkadar dengan (m2 - m1)v2f^2, menghalang 2(v1f . v2f) daripada menjadi sifar.",
+              "zh": "质量不同（m1 != m2），且 v2i = 0 与 Ki = Kf：对比平方后的动量方程与动能方程会留下与 (m2 - m1)v2f^2 成正比的剩余项，阻止 2(v1f · v2f) 孤立为零。"
+            },
+            "misconception": "universal-perpendicularity-assumption"
+          },
+          {
+            "id": "item-equal-inelastic-stationary",
+            "label": {
+              "en": "Identical particles (m1 = m2 = m) with v2i = 0, but inelastic (Ki > Kf): equating squared momentum to initial kinetic energy yields 2(v1f . v2f) = 2(Delta K_lost)/m > 0, forcing an acute angle rather than zero dot product.",
+              "ms": "Zarah serupa (m1 = m2 = m) dengan v2i = 0, tetapi tak kenyal (Ki > Kf): menyamakan momentum kuasa dua dengan tenaga kinetik awal menghasilkan 2(v1f . v2f) = 2(Delta K_lost)/m > 0, memaksa sudut tirus dan bukannya hasil darab bintik sifar.",
+              "zh": "完全相同的粒子（m1 = m2 = m），且 v2i = 0，但为非弹性碰撞（Ki > Kf）：将动量平方与初始动能联立得到 2(v1f · v2f) = 2(Delta K_lost)/m > 0，导致夹角为锐角而非零点积。"
+            },
+            "misconception": "universal-perpendicularity-assumption"
+          },
+          {
+            "id": "item-equal-elastic-both-moving",
+            "label": {
+              "en": "Identical particles (m1 = m2 = m) with Ki = Kf, but v2i != 0: squaring the initial vector sum (v1i + v2i) produces an initial dot-product term 2(v1i . v2i), resulting in v1f . v2f = v1i . v2i rather than vanishing.",
+              "ms": "Zarah serupa (m1 = m2 = m) dengan Ki = Kf, tetapi v2i != 0: mengkuasaduakan hasil tambah vektor awal (v1i + v2i) menghasilkan sebutan hasil darab bintik awal 2(v1i . v2i), menyebabkan v1f . v2f = v1i . v2i dan bukannya sifar.",
+              "zh": "完全相同的粒子（m1 = m2 = m），且 Ki = Kf，但 v2i != 0：初矢量和 (v1i + v2i) 平方会产生初始点积项 2(v1i · v2i)，导致末点积满足 v1f · v2f = v1i · v2i 而非恒为零。"
+            },
+            "misconception": "universal-perpendicularity-assumption"
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-equal-elastic-stationary",
+            "targetId": "target-perpendicular"
+          },
+          {
+            "itemId": "item-unequal-elastic-stationary",
+            "targetId": "target-not-perpendicular"
+          },
+          {
+            "itemId": "item-equal-inelastic-stationary",
+            "targetId": "target-not-perpendicular"
+          },
+          {
+            "itemId": "item-equal-elastic-both-moving",
+            "targetId": "target-not-perpendicular"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "universal-perpendicularity-assumption",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-unequal-elastic-stationary",
+            "targetId": "target-perpendicular"
+          }
+        },
+        {
+          "misconception": "scalar-momentum-addition",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-equal-elastic-stationary",
+            "targetId": "target-not-perpendicular"
+          }
+        }
+      ]
+    }
+  ]
+}
