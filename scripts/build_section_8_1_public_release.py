@@ -119,14 +119,11 @@ def _version_page(version: str, label: str, package_url: str) -> str:
   <body>
     <main class="shell">
       <header class="topbar">
-        <a class="brand" href="../">Section 8.1 — {label}</a>
-        <label>Language
-          <select id="locale" aria-label="Language">
+        <select id="locale" aria-label="Language">
             <option value="en">English</option>
             <option value="ms">Bahasa Melayu</option>
             <option value="zh">简体中文</option>
-          </select>
-        </label>
+        </select>
       </header>
       <section id="app" aria-live="polite" data-package-url="{package_url}">
         <p>Loading Section 8.1 {version}…</p>
@@ -151,14 +148,11 @@ def _section_eight_two_page() -> str:
   <body>
     <main class="shell">
       <header class="topbar">
-        <a class="brand" href="../">Section 8.2 - Analysis Model: Isolated System (Energy)</a>
-        <label>Language
-          <select id="locale" aria-label="Language">
+        <select id="locale" aria-label="Language">
             <option value="en">English</option>
             <option value="ms">Bahasa Melayu</option>
             <option value="zh">Simplified Chinese</option>
-          </select>
-        </label>
+        </select>
       </header>
       <section id="app" aria-live="polite" data-package-url="../content/section-8-2/package.json">
         <p>Loading Section 8.2...</p>
@@ -183,14 +177,11 @@ def _section_eight_three_page() -> str:
   <body>
     <main class="shell">
       <header class="topbar">
-        <a class="brand" href="../">Section 8.3 — Situations Involving Kinetic Friction</a>
-        <label>Language
-          <select id="locale" aria-label="Language">
+        <select id="locale" aria-label="Language">
             <option value="en">English</option>
             <option value="ms">Bahasa Melayu</option>
             <option value="zh">简体中文</option>
-          </select>
-        </label>
+        </select>
       </header>
       <section id="app" aria-live="polite" data-package-url="../content/section-8-3/package.json">
         <p>Loading Section 8.3…</p>
@@ -215,14 +206,11 @@ def _section_eight_four_page() -> str:
   <body>
     <main class="shell">
       <header class="topbar">
-        <a class="brand" href="../">Section 8.4 - Changes in Mechanical Energy for Nonconservative Forces</a>
-        <label>Language
-          <select id="locale" aria-label="Language">
+        <select id="locale" aria-label="Language">
             <option value="en">English</option>
             <option value="ms">Bahasa Melayu</option>
             <option value="zh">Simplified Chinese</option>
-          </select>
-        </label>
+        </select>
       </header>
       <section id="app" aria-live="polite" data-package-url="../content/section-8-4/package.json">
         <p>Loading Section 8.4...</p>
@@ -247,14 +235,11 @@ def _section_eight_five_page() -> str:
   <body>
     <main class="shell">
       <header class="topbar">
-        <a class="brand" href="../">Section 8.5 - Power</a>
-        <label>Language
-          <select id="locale" aria-label="Language">
+        <select id="locale" aria-label="Language">
             <option value="en">English</option>
             <option value="ms">Bahasa Melayu</option>
             <option value="zh">Simplified Chinese</option>
-          </select>
-        </label>
+        </select>
       </header>
       <section id="app" aria-live="polite" data-package-url="../content/section-8-5/package.json">
         <p>Loading Section 8.5...</p>

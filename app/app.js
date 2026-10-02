@@ -3,9 +3,9 @@ const state = { package: null, activityIndex: 0, locale: "en", response: null, c
 let loadGeneration = 0;
 
 const copy = {
-  en: { activity: "Activity", of: "of", check: "Check answer", next: "Next activity", tryAgain: "Try again", restart: "Start again", hint: "Show a hint", complete: "Journey complete", correct: "That reasoning fits.", retry: "Reconsider the relationship and try again.", moveUp: "Move up", moveDown: "Move down", position: "Position" },
-  ms: { activity: "Aktiviti", of: "daripada", check: "Semak jawapan", next: "Aktiviti seterusnya", tryAgain: "Cuba lagi", restart: "Mula semula", hint: "Tunjukkan petunjuk", complete: "Perjalanan selesai", correct: "Penaakulan itu sesuai.", retry: "Pertimbangkan semula hubungan itu dan cuba lagi.", moveUp: "Alih ke atas", moveDown: "Alih ke bawah", position: "Kedudukan" },
-  zh: { activity: "活动", of: "/", check: "检查答案", next: "下一个活动", tryAgain: "再试一次", restart: "重新开始", hint: "显示提示", complete: "学习旅程完成", correct: "这个推理是恰当的。", retry: "重新思考其中的关系，然后再试一次。", moveUp: "上移", moveDown: "下移", position: "位置" },
+  en: { activity: "Activity", of: "of", check: "Check answer", next: "Next activity", tryAgain: "Try again", restart: "Start again", hint: "Show a hint", complete: "Journey complete", correct: "That reasoning fits.", retry: "Reconsider the relationship and try again.", moveUp: "Move up", moveDown: "Move down", position: "Position", skip: "Skip" },
+  ms: { activity: "Aktiviti", of: "daripada", check: "Semak jawapan", next: "Aktiviti seterusnya", tryAgain: "Cuba lagi", restart: "Mula semula", hint: "Tunjukkan petunjuk", complete: "Perjalanan selesai", correct: "Penaakulan itu sesuai.", retry: "Pertimbangkan semula hubungan itu dan cuba lagi.", moveUp: "Alih ke atas", moveDown: "Alih ke bawah", position: "Kedudukan", skip: "Langkau" },
+  zh: { activity: "活动", of: "/", check: "检查答案", next: "下一个活动", tryAgain: "再试一次", restart: "重新开始", hint: "显示提示", complete: "学习旅程完成", correct: "这个推理是恰当的。", retry: "重新思考其中的关系，然后再试一次。", moveUp: "上移", moveDown: "下移", position: "位置", skip: "跳过" },
 };
 
 const localized = (value) => typeof value === "string" ? value : value?.[state.locale] ?? value?.en ?? "";
@@ -212,7 +212,7 @@ function render() {
   const progressBar = element("span");
   progressBar.style.width = `${((state.activityIndex + 1) / activities.length) * 100}%`;
   progress.append(progressBar);
-  card.append(progress, element("h1", { text: localized(activity.prompt) }));
+  card.append(progress, element("h1", { className: "question", text: localized(activity.prompt) }));
 
   renderResponse(card, activity);
 
@@ -226,7 +226,7 @@ function render() {
     }));
   }
 
-  const actions = element("div", { className: "choices" });
+  const actions = element("div", { className: "action-row" });
   const checkLabel = state.checked
     ? (responseCorrect(activity) ? labels.next : labels.tryAgain)
     : labels.check;
@@ -241,7 +241,13 @@ function render() {
   const hint = element("button", { className: "action secondary", text: labels.hint, attributes: { id: "hint" } });
   hint.addEventListener("click", () => { state.hint = true; render(); });
   actions.append(check, hint);
-  card.append(actions);
+  const skip = element("button", { className: "action secondary skip-action", text: labels.skip, attributes: { id: "skip" } });
+  skip.addEventListener("click", () => {
+    state.activityIndex += 1;
+    resetActivity();
+    render();
+  });
+  card.append(actions, skip);
   root.replaceChildren(card);
 }
 
