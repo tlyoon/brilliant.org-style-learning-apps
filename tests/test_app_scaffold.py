@@ -46,6 +46,22 @@ class AppScaffoldTests(unittest.TestCase):
         package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
         self.assertEqual("review", package["status"])
 
+    def test_visual_runtime_is_loaded_before_player_and_uses_physics_clean_style(self):
+        html = (APP / "index.html").read_text(encoding="utf-8")
+        renderer_position = html.index('src="visual-renderers.js"')
+        player_position = html.index('src="app.js"')
+        self.assertLess(renderer_position, player_position)
+        renderer = (APP / "visual-renderers.js").read_text(encoding="utf-8")
+        self.assertIn("mechanics.cart_collision_1d", renderer)
+        self.assertIn("mechanics.free_body_2d", renderer)
+        self.assertIn("graph.cartesian_qualitative", renderer)
+        self.assertIn("state.energy_bar", renderer)
+        self.assertNotIn("innerHTML", renderer)
+        css = (APP / "styles.css").read_text(encoding="utf-8")
+        self.assertIn("--visual-accent-1", css)
+        self.assertIn(".physics-visual__svg", css)
+        self.assertIn(".physics-visual__context", css)
+
     def test_player_does_not_use_inner_html(self):
         javascript = (APP / "app.js").read_text(encoding="utf-8")
         self.assertNotIn("innerHTML", javascript)

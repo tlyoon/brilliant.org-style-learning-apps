@@ -177,6 +177,26 @@ function renderResponse(card, activity) {
   else renderSelection(card, activity);
 }
 
+function renderVisual(card, activity) {
+  if (!activity.visualSpec) return;
+  const renderer = globalThis.PhysicsVisuals;
+  if (renderer?.renderVisualSpec) {
+    card.append(renderer.renderVisualSpec(activity.visualSpec, {
+      locale: state.locale,
+      plan: activity.visualPlan,
+    }));
+    return;
+  }
+  const fallback = element("div", { className: "physics-visual physics-visual--fallback" });
+  fallback.setAttribute("role", "img");
+  fallback.setAttribute("aria-label", localized(activity.visualSpec.accessibility?.description) || "Physics diagram");
+  fallback.append(element("p", {
+    className: "physics-visual__fallback-text",
+    text: localized(activity.visualSpec.accessibility?.description) || "Physics diagram",
+  }));
+  card.append(fallback);
+}
+
 function renderComplete(root) {
   syncActivityUrl(null);
   const card = element("section", { className: "card" });
@@ -214,6 +234,7 @@ function render() {
   progress.append(progressBar);
   card.append(progress, element("h1", { className: "question", text: localized(activity.prompt) }));
 
+  renderVisual(card, activity);
   renderResponse(card, activity);
 
   if (state.hint) card.append(element("div", { className: "feedback", text: localized(activity.hints[0]) }));

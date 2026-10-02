@@ -11,3 +11,9 @@ The registries are validated by `app_generator.visuals.validation.visual_registr
 Adding a new template or model is a code-review event, not a content-generation event. A simulation prototype produced in Replit or another external tool must be promoted into repository-owned, tested runtime code before its registry entry is considered production-capable.
 
 Provider names and model versions do not belong in generated activity content. Runtime configuration will map provider-neutral strategy/profile names to approved Gemini image models, independent verifiers such as Wolfram, and local deterministic renderer implementations.
+
+## Runtime availability
+
+`implementationStatus` distinguishes a contract that merely exists from a template that the learner runtime can actually render. `available` entries bind to an exact repository renderer ID and version. `planned` entries are not selectable for publishable generated content.
+
+The current deterministic runtime (`app/visual-renderers.js`, renderer version `1.0.0`) implements cart/collision, free-body/vector, qualitative Cartesian graph, and energy-bar templates. The motion-slider simulation remains planned for the next implementation slice.

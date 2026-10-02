@@ -24,11 +24,13 @@ class PublicReleaseTests(unittest.TestCase):
                 ".nojekyll",
                 "index.html",
                 "app/app.js",
+                "app/visual-renderers.js",
                 "app/styles.css",
                 "content/package.json",
             }, actual_files)
             index = (output / "index.html").read_text(encoding="utf-8")
             self.assertIn('href="app/styles.css"', index)
+            self.assertIn('src="app/visual-renderers.js"', index)
             self.assertIn('src="app/app.js"', index)
             self.assertIn('data-package-url="./content/package.json"', index)
             self.assertNotIn("Section 1.1", index)
