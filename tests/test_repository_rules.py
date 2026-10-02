@@ -10,6 +10,8 @@ class RepositoryRuleTests(unittest.TestCase):
         required = [
             "AGENTS.md", "docs/CONTEXT_INDEX.md", "docs/PRODUCT_REQUIREMENTS.md",
             "docs/CONTENT_RULES.md", "docs/LEARNING_DESIGN.md",
+            "docs/VISUAL_INTERACTION_DESIGN.md", "docs/VISUAL_GENERATION_PROMPT_SPEC.md",
+            "docs/decisions/0024-visual-first-physics-learning.md",
             "docs/SECURITY_AND_PRIVACY.md", "content/schema/content-package.schema.json",
             "content/schema/source-manifest.schema.json", "config/project.toml",
         ]

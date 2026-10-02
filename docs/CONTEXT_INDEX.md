@@ -31,6 +31,7 @@ Historical roadmaps, old branch-testing instructions, chat transcripts, and copi
 | Generator CLI/config/coordinator details | `app_generator/README.md`, `config/README.md` |
 | Product change | Product requirements and decision records |
 | Learning content | Content rules, learning design, schema, source-ingestion policy |
+| Visual/graphic/simulation activity work | Decision 0024, `docs/VISUAL_INTERACTION_DESIGN.md`, `docs/VISUAL_GENERATION_PROMPT_SPEC.md`, content rules, learning design, architecture |
 | AI tutor | AI workflow, learning design, security/privacy |
 | Application code | Architecture, product requirements, test plan |
 | Analytics/reporting | Security/privacy, learning design, relevant decisions |
@@ -76,6 +77,7 @@ Earlier decisions and PRs remain useful provenance, but interpret them against c
 - project-derived path/environment isolation remains active;
 - source-derived section title/scope and truthful automated-draft provenance remain active;
 - generated material may be published after automated validation; optional manual review does not gate publication;
+- Decision 0024 establishes visual-first physics learning: visual specs are declarative, trusted renderers are deterministic, and question/answer/visual consistency is validated;
 - public deployment remains separate from generation state;
 - Section 8.2 is explicitly approved for public draft-review deployment alongside the existing Chapter 8 review routes;
 - any historical statement that `config/project.toml` is the current user-facing authority is superseded by the actual current-main configuration path above unless/until a future explicitly merged migration changes it.

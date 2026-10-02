@@ -6,12 +6,13 @@ Use `Backlog → Ready → In Progress → Validation → Done`. Keep `main` sta
 
 ## Milestones
 
-1. **Section 1.1 Implementation Pack** — approved objectives, misconceptions, 18 original activities, translations, answer logic, and review record.
-2. **Clickable Student Prototype** — mobile-first journey demonstrating the activity loop and mastery presentation.
-3. **Functional Section 1.1 Vertical Slice** — persistence, adaptive routing, evidence separation, guarded tutor, and dashboards.
-4. **Small-Group Usability Test** — synthetic/consented test cohort, accessibility findings, and prioritised fixes.
-5. **Classroom Pilot** — institutional privacy approval, operations plan, success measures, and rollback path.
-6. **Sections 1.2–1.6 Expansion** — validated packages and regression coverage for the rest of the chapter.
+1. **Section 1.1 Implementation Pack** ? approved objectives, misconceptions, 18 original activities, translations, answer logic, and traceability records.
+2. **Visual-Interactive Foundation** ? Decision 0024 contract, versioned visual schema, deterministic renderer primitives, cross-modal validation, safe fallback, and at least one bounded simulation primitive.
+3. **Bounded Visual Pilot** ? regenerate a small representative set of real physics activities and verify scientific relevance, mobile/accessibility behavior, visual quality, caching, and contradiction detection before broad regeneration.
+4. **Clickable Student Prototype** ? mobile-first journey demonstrating prediction, visual interaction, hints/retries/skips, and mastery presentation.
+5. **Functional Vertical Slice** ? persistence, adaptive routing, evidence separation, guarded tutor, and dashboards.
+6. **Small-Group Usability Test** ? synthetic/consented test cohort, accessibility findings, representation-quality findings, and prioritised fixes.
+7. **Classroom Pilot** ? institutional privacy approval, operations plan, success measures, retention measures, and rollback path.
+8. **Broad Course Expansion** ? validated visual-interactive packages and regression coverage across additional chapters/topics.
 
-Do not begin broad content generation before the Section 1.1 format and validation process are accepted.
-
+Do not begin broad visual regeneration until the visual-interactive foundation and bounded real-topic pilot meet their acceptance criteria. Preserve the current working Stage-0 generator while those capabilities are introduced through independently reviewable PRs.
