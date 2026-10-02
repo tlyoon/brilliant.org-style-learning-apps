@@ -11,9 +11,12 @@ class RepositoryRuleTests(unittest.TestCase):
             "AGENTS.md", "docs/CONTEXT_INDEX.md", "docs/PRODUCT_REQUIREMENTS.md",
             "docs/CONTENT_RULES.md", "docs/LEARNING_DESIGN.md",
             "docs/VISUAL_INTERACTION_DESIGN.md", "docs/VISUAL_GENERATION_PROMPT_SPEC.md",
-            "docs/decisions/0024-visual-first-physics-learning.md",
+            "docs/VISUAL_TOOL_ORCHESTRATION.md", "docs/decisions/0024-visual-first-physics-learning.md",
             "docs/SECURITY_AND_PRIVACY.md", "content/schema/content-package.schema.json",
-            "content/schema/source-manifest.schema.json", "config/project.toml",
+            "content/schema/source-manifest.schema.json", "content/schema/visual-plan.schema.json",
+            "content/schema/visual-spec.schema.json", "content/visuals/template-registry.json",
+            "content/visuals/style-profiles.json", "content/visuals/simulation-model-registry.json",
+            "config/project.toml",
         ]
         for path in required:
             self.assertTrue((ROOT / path).is_file(), path)

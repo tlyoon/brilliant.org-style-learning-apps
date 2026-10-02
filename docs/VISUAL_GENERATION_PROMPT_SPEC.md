@@ -61,12 +61,45 @@ Then choose the simplest supported representation that preserves the learning va
   "selectedMode": "none|scene_diagram|vector_diagram|graph_plot|energy_bar|timeline|matching_board|classification_board|ordering_board|drag_label_diagram|hotspot_diagram|parameter_simulation",
   "selectedTemplate": "template.id.or.null",
   "fallbackMode": "...",
+  "renderStrategy": "deterministic_semantic|deterministic_simulation|hybrid_generated_base|gemini_illustration",
+  "aestheticIntent": {
+    "styleProfile": "physics-clean-v1",
+    "tone": "playful-academic",
+    "compositionPriority": "concept-first",
+    "backgroundComplexity": "minimal"
+  },
+  "generatedAssetPolicy": {
+    "imageRole": "none|decorative-support|contextual-illustration|hybrid-base",
+    "answerCriticalLayer": "none|deterministic-overlay|deterministic-renderer",
+    "requiresMultimodalAudit": false,
+    "allowSearchGrounding": false,
+    "imageModelProfile": "none|efficient|balanced|premium"
+  },
+  "verificationRequirements": {
+    "physicsComputation": "none|deterministic-engine|sandboxed-code|symbolic-crosscheck",
+    "referenceGrounding": "source-corpus|source-plus-url-context|source-plus-web-search",
+    "finalMultimodalAudit": false,
+    "requireIndependentCrosscheck": false
+  },
   "groundedFactsUsed": ["fact-id"],
   "learnerTask": "..."
 }
 ```
 
 If the best representation requires unsupported geometry or a missing template, choose a simpler supported mode or `none`; do not fabricate a one-off renderer.
+
+## Stage A2 - render and verification strategy
+
+The planner must explicitly choose the rendering path rather than implicitly asking the image model to decide.
+
+- Use `deterministic_semantic` whenever answer correctness depends on exact arrows, axes, topology, graph shape, labels, or geometry.
+- Use `deterministic_simulation` for parameter manipulation or state evolution.
+- Use `hybrid_generated_base` when contextual visual richness improves engagement but answer-critical content can be placed in a deterministic overlay.
+- Use `gemini_illustration` only for supportive/contextual imagery that cannot change the correct answer.
+
+When `hybrid_generated_base` or `gemini_illustration` is selected, require final multimodal audit. Never rasterize long multilingual text, equations, answer choices, critical vectors, graph axes, exact numeric scales, or correct-answer markings into the generated image.
+
+Use an independent symbolic/numerical verifier such as Wolfram when equations, trajectories, graph relations, conservation invariants, signs, limiting cases, or simulation reference values would benefit from a second computational check. The verification contract is provider-neutral.
 
 ## Stage B ? activity + visual-spec author
 
@@ -120,6 +153,24 @@ Create the full activity and semantic `visualSpec` from the accepted plan. Use o
 
 The production schema may refine these fields; provider prompts must follow the current schema exactly rather than this illustrative shape once implementation begins.
 
+## Stage B2 - aesthetic asset generation
+
+This stage runs only when `generatedAssetPolicy.imageRole` is not `none`. The image-generation model receives a **derived aesthetic prompt**, not authority to reinterpret the physics. The prompt is assembled from:
+
+- grounded scene entities that are safe to depict contextually;
+- the selected style profile and aesthetic intent;
+- composition/focal-hierarchy requirements;
+- mobile aspect-ratio constraints;
+- a negative list excluding answer-bearing arrows, axes, equations, labels, numbers, graph features, or invented apparatus.
+
+For `hybrid_generated_base`, explicitly reserve clean visual space for deterministic overlays and interactive controls. The generated base should contain stable, uncluttered silhouettes and context without implying a physics relation that belongs to the overlay.
+
+Example system instruction:
+
+> Produce an attractive educational base illustration for the supplied grounded scene. Preserve only the supplied entities and contextual relationships. Use the declared style profile, strong focal hierarchy, clean silhouettes, restrained detail, and mobile-friendly composition. Do not add text, equations, arrows, vector glyphs, graph axes, numerical scales, answer indicators, hidden apparatus, or physical effects not stated in the scene contract. Leave uncluttered space around the declared overlay anchors. The deterministic overlay, not this image, will carry answer-critical physics.
+
+The raw generated image is not publishable until the final composite has passed multimodal audit.
+
 ## Stage C ? deterministic validation before semantic audit
 
 The LLM is not responsible for replacing deterministic checks. Before semantic audit, code should validate at least:
@@ -139,7 +190,7 @@ Deterministic errors are repaired using structured error messages rather than as
 
 ### System instruction
 
-> Audit the activity, answer logic, visual specification, and trusted renderer semantics as one scientific object. Search specifically for contradictions, irrelevant visual elements, unsupported assumptions, answer leakage, misleading scale/geometry, translation mismatch, and cases where the representation fails to support the stated learning objective. Do not reward visual complexity. If a simpler supported representation is safer or clearer, recommend it.
+> Audit the activity, answer logic, visual specification, renderer semantics, and the **actual final rendered pixels** as one scientific object. Search specifically for contradictions, irrelevant or hallucinated visual elements, unsupported assumptions, answer leakage, misleading scale/geometry, overlay/base-image conflict, translation mismatch, and cases where the representation fails to support the stated learning objective. Do not reward visual complexity. If generated artwork conflicts with the semantic spec, prefer removing/regenerating that artwork or falling back to deterministic rendering.
 
 ### Required audit checks
 
@@ -198,4 +249,4 @@ Never instruct the model to:
 
 ## Implementation note
 
-When these prompt contracts are implemented, provider-specific resources must be versioned alongside the visual schema. Tests should seed known contradictions and unsupported-detail requests so prompt changes cannot silently weaken the anti-hallucination behavior.
+When these prompt contracts are implemented, provider-specific resources must be versioned alongside the visual schema. Gemini is the preferred content/image/multimodal provider, Wolfram is a preferred independent computational verifier when available, and Replit may be used only to incubate new simulation templates before they are promoted into repository-owned trusted code. Tests should seed known contradictions, bad generated-image cues, unsupported-detail requests, and verifier disagreements so prompt/tool changes cannot silently weaken the anti-hallucination behavior. See `docs/VISUAL_TOOL_ORCHESTRATION.md`.

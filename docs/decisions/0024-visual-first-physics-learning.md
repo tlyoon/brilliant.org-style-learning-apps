@@ -34,7 +34,7 @@ repair or safe fallback
 validated learning package
 ```
 
-The LLM may plan and parameterize a visual, but it shall not generate arbitrary executable JavaScript or free-form final physics artwork as the authoritative representation. Supported visuals and simulations are produced from declarative specifications by versioned, tested renderers and interaction primitives.
+The LLM may plan and parameterize a visual, but it shall not generate arbitrary executable JavaScript or use free-form generated artwork as the **authoritative answer-critical physics representation**. Supported diagrams and simulations are produced from declarative specifications by versioned, tested renderers and interaction primitives. A generated contextual/base image may be used for engagement when the answer-critical layer remains deterministic and the final composite passes multimodal consistency audit.
 
 ## Pedagogical rule
 
@@ -69,7 +69,7 @@ The vocabulary may grow through versioned schema changes. Unsupported modes must
 4. When geometry, apparatus, or state is ambiguous, simplify or fall back instead of inventing details.
 5. Direction, sign, ordering, graph shape, relative magnitude, units, and before/after state must agree with the question and answer logic.
 6. Source figures may be reused only when provenance, relevance, crop boundaries, and rights/usage rules are satisfied. Otherwise the concept should be reconstructed as an original schematic from grounded facts rather than copied.
-7. Decorative generative imagery must never be used as evidence for the answer.
+7. Decorative or contextual generative imagery must never be used as the sole evidence for the answer; answer-critical overlays remain deterministic and generated-image composites require multimodal audit.
 
 ## Rendering and efficiency
 

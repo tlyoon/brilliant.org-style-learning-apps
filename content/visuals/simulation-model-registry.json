@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "models": [
+    {
+      "id": "kinematics.motion_1d",
+      "purpose": "Bounded one-dimensional motion model for trusted slider simulations",
+      "variableIds": [
+        "position",
+        "velocity",
+        "time"
+      ],
+      "controllableVariableIds": [
+        "velocity"
+      ],
+      "verificationKinds": [
+        "trajectory_relation",
+        "sign_or_limit"
+      ]
+    }
+  ]
+}
