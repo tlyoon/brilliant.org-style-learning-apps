@@ -2,12 +2,13 @@ import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from app_generator.errors import GeneratorError, NoAvailableJob
 from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts
 from app_generator.runtime.orchestrator import (
     _log_generation_exception,
+    _repair_post_semantic_validation,
     _restart_automation_browser,
     run_generation,
 )
@@ -15,6 +16,55 @@ from app_generator.runtime.state import RunPhase, StateStore
 
 
 class GeneratorRuntimeTests(unittest.TestCase):
+    def test_post_semantic_validation_repairs_activity_errors_and_rechecks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            validation = root / "validation"
+            validation.mkdir()
+            context = SimpleNamespace(validation=validation, candidate=root / "candidate")
+            config = SimpleNamespace(max_repair_attempts=1)
+            protocol = MagicMock()
+            protocol.repair_validation_errors.return_value = {"activities": [{"id": "fixed"}]}
+            store = MagicMock()
+            package = {"activities": [{"id": "original"}]}
+            errors = ["content/x/package.json: activity[0].hints[0].zh appears to request calculation"]
+
+            with (
+                patch("app_generator.runtime.orchestrator._candidate_errors", side_effect=[errors, []]),
+                patch("app_generator.runtime.orchestrator._stage_complete_artifacts"),
+            ):
+                result = _repair_post_semantic_validation(
+                    config, context, package, {}, Path("content/x/package.json"), protocol, store
+                )
+
+            self.assertEqual({"activities": [{"id": "fixed"}]}, result)
+            protocol.repair_validation_errors.assert_called_once_with(package, errors, 2)
+            store.transition.assert_called_once_with(RunPhase.REPAIRING)
+            self.assertTrue((validation / "semantic-validation-00.json").is_file())
+            self.assertTrue((validation / "semantic-validation-01.json").is_file())
+
+    def test_post_semantic_validation_fails_after_repair_budget_is_exhausted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            validation = root / "validation"
+            validation.mkdir()
+            context = SimpleNamespace(validation=validation, candidate=root / "candidate")
+            config = SimpleNamespace(max_repair_attempts=1)
+            protocol = MagicMock()
+            protocol.repair_validation_errors.return_value = {"activities": [{"id": "still-bad"}]}
+            store = MagicMock()
+            package = {"activities": [{"id": "original"}]}
+            errors = ["content/x/package.json: activity[0].answerLogic.zh appears to request calculation"]
+
+            with (
+                patch("app_generator.runtime.orchestrator._candidate_errors", side_effect=[errors, errors]),
+                patch("app_generator.runtime.orchestrator._stage_complete_artifacts"),
+            ):
+                with self.assertRaisesRegex(Exception, "did not converge"):
+                    _repair_post_semantic_validation(
+                        config, context, package, {}, Path("content/x/package.json"), protocol, store
+                    )
+
     def test_transient_restart_reopens_automation_without_manual_sign_in(self):
         events = []
 
