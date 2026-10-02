@@ -17,6 +17,8 @@
 13. Question text, answer logic, visual specification, and rendered physical meaning must agree. Direction, sign, ordering, relative magnitude, units, axes, qualitative graph shape, before/after state, and simulation invariants must be checked wherever applicable.
 14. Source figures may be reused/cropped only when the activity-to-figure association, crop boundaries, provenance, and usage rules are reliable. Otherwise create an original grounded schematic or fall back to a non-figure representation.
 15. Visual labels and controls must be mobile-readable, keyboard/touch accessible, compatible with reduced-motion preferences, and understandable without relying on color alone. Long learner-facing prose should remain HTML/text rather than being baked into raster images.
+16. Generated imagery may improve context, composition, atmosphere, and engagement, but it may not be the sole carrier of answer-critical physics. Hybrid/generated-image strategies require deterministic answer-critical overlays where needed and a final multimodal audit of the actual rendered pixels.
+17. Independent symbolic/numerical verification should be requested for high-value physics relations when it materially reduces risk. A verifier such as Wolfram provides validation evidence; it does not author the learner-facing scientific diagram.
 
 ## Prohibited patterns
 
@@ -32,4 +34,4 @@
 
 Use `python scripts/validate_content.py` as part of the automated publication checks. Automated deterministic and semantic validation is required; optional manual review may be added but does not gate publication.
 
-See `docs/VISUAL_INTERACTION_DESIGN.md` and Decision 0024 for the visual-planning, rendering, fallback, and cross-modal validation contract.
+See `docs/VISUAL_INTERACTION_DESIGN.md`, `docs/VISUAL_GENERATION_PROMPT_SPEC.md`, `docs/VISUAL_TOOL_ORCHESTRATION.md`, and Decision 0024 for the visual-planning, rendering, aesthetic-generation, verification, fallback, and cross-modal validation contract.

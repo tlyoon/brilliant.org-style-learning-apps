@@ -1,0 +1,793 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/visual-spec.schema.json",
+  "title": "Declarative physics visual specification",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "mode",
+    "template",
+    "accessibility",
+    "grounding",
+    "fallback",
+    "validation"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "mode": {
+      "enum": [
+        "scene_diagram",
+        "vector_diagram",
+        "graph_plot",
+        "energy_bar",
+        "timeline",
+        "matching_board",
+        "classification_board",
+        "ordering_board",
+        "drag_label_diagram",
+        "hotspot_diagram",
+        "parameter_simulation"
+      ]
+    },
+    "template": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+    },
+    "semanticParameters": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "string",
+            "minLength": 1
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entity"
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relation"
+      }
+    },
+    "vectors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/vector"
+      }
+    },
+    "axes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/axis"
+      }
+    },
+    "controls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/control"
+      }
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/state"
+      }
+    },
+    "accessibility": {
+      "$ref": "#/$defs/accessibility"
+    },
+    "grounding": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/grounding"
+      }
+    },
+    "fallback": {
+      "$ref": "#/$defs/fallback"
+    },
+    "validation": {
+      "$ref": "#/$defs/validation"
+    },
+    "graphSeries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/graphSeries"
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/invariant"
+      }
+    },
+    "simulation": {
+      "$ref": "#/$defs/simulation"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "localized": {
+      "type": "object",
+      "required": [
+        "en",
+        "ms",
+        "zh"
+      ],
+      "properties": {
+        "en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ms": {
+          "type": "string",
+          "minLength": 1
+        },
+        "zh": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "semanticValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        }
+      ]
+    },
+    "entity": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "label": {
+          "$ref": "#/$defs/localized"
+        },
+        "properties": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/semanticValue"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "sourceId",
+        "targetId"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "sourceId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "targetId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "label": {
+          "$ref": "#/$defs/localized"
+        }
+      },
+      "additionalProperties": false
+    },
+    "vector": {
+      "type": "object",
+      "required": [
+        "id",
+        "entityId",
+        "quantity",
+        "direction"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "entityId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "quantity": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "direction": {
+          "enum": [
+            "left",
+            "right",
+            "up",
+            "down",
+            "up-left",
+            "up-right",
+            "down-left",
+            "down-right",
+            "radial-in",
+            "radial-out",
+            "tangent-cw",
+            "tangent-ccw",
+            "positive-x",
+            "negative-x",
+            "positive-y",
+            "negative-y"
+          ]
+        },
+        "relativeMagnitude": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "label": {
+          "$ref": "#/$defs/localized"
+        }
+      },
+      "additionalProperties": false
+    },
+    "axis": {
+      "type": "object",
+      "required": [
+        "id",
+        "role",
+        "quantity",
+        "label",
+        "scale"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "role": {
+          "enum": [
+            "x",
+            "y"
+          ]
+        },
+        "quantity": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "label": {
+          "$ref": "#/$defs/localized"
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scale": {
+          "enum": [
+            "qualitative",
+            "linear",
+            "logarithmic"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "control": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "variableId",
+        "label",
+        "min",
+        "max",
+        "default",
+        "step"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "kind": {
+          "const": "slider"
+        },
+        "variableId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "label": {
+          "$ref": "#/$defs/localized"
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "default": {
+          "type": "number"
+        },
+        "step": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "state": {
+      "type": "object",
+      "required": [
+        "id",
+        "values"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "label": {
+          "$ref": "#/$defs/localized"
+        },
+        "values": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/semanticValue"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "accessibility": {
+      "type": "object",
+      "required": [
+        "description",
+        "colorIndependent",
+        "reducedMotionStrategy"
+      ],
+      "properties": {
+        "description": {
+          "$ref": "#/$defs/localized"
+        },
+        "colorIndependent": {
+          "const": true
+        },
+        "reducedMotionStrategy": {
+          "enum": [
+            "not-applicable",
+            "static-equivalent",
+            "instant-state"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "grounding": {
+      "type": "object",
+      "required": [
+        "factId",
+        "origin",
+        "appliesTo"
+      ],
+      "properties": {
+        "factId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "origin": {
+          "enum": [
+            "source_fact",
+            "template_invariant",
+            "pedagogical_simplification"
+          ]
+        },
+        "appliesTo": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "fallback": {
+      "type": "object",
+      "required": [
+        "mode",
+        "reason"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "none",
+            "structured_interaction",
+            "scene_diagram",
+            "vector_diagram",
+            "graph_plot",
+            "energy_bar",
+            "timeline",
+            "matching_board",
+            "classification_board",
+            "ordering_board",
+            "drag_label_diagram",
+            "hotspot_diagram",
+            "parameter_simulation"
+          ]
+        },
+        "template": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "answerRelevantIds",
+        "forbidAnswerLeakage"
+      ],
+      "properties": {
+        "answerRelevantIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+          }
+        },
+        "forbidAnswerLeakage": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "graphSeries": {
+      "type": "object",
+      "required": [
+        "id",
+        "xAxisId",
+        "yAxisId",
+        "shape"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "xAxisId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "yAxisId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "shape": {
+          "enum": [
+            "constant",
+            "increasing-linear",
+            "decreasing-linear",
+            "proportional",
+            "parabolic-up",
+            "parabolic-down",
+            "inverse",
+            "sinusoidal",
+            "exponential-growth",
+            "exponential-decay",
+            "piecewise"
+          ]
+        },
+        "features": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "passes-origin",
+              "positive-slope",
+              "negative-slope",
+              "zero-slope",
+              "concave-up",
+              "concave-down",
+              "turning-point",
+              "asymptote",
+              "periodic",
+              "discontinuous"
+            ]
+          }
+        },
+        "label": {
+          "$ref": "#/$defs/localized"
+        }
+      },
+      "additionalProperties": false
+    },
+    "invariant": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "references"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "kind": {
+          "enum": [
+            "constant",
+            "conserved",
+            "equal",
+            "opposite",
+            "orthogonal",
+            "bounded",
+            "monotonic-increasing",
+            "monotonic-decreasing"
+          ]
+        },
+        "references": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+          }
+        },
+        "description": {
+          "$ref": "#/$defs/localized"
+        }
+      },
+      "additionalProperties": false
+    },
+    "simulation": {
+      "type": "object",
+      "required": [
+        "id",
+        "modelId",
+        "variableIds",
+        "invariantIds"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "modelId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "variableIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+          }
+        },
+        "invariantIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+          }
+        },
+        "parameters": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/semanticValue"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "scene_diagram"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "required": [
+          "entities"
+        ],
+        "properties": {
+          "entities": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "vector_diagram"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "required": [
+          "entities",
+          "vectors"
+        ],
+        "properties": {
+          "entities": {
+            "minItems": 1
+          },
+          "vectors": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "graph_plot"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "required": [
+          "axes",
+          "graphSeries"
+        ],
+        "properties": {
+          "axes": {
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "graphSeries": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "enum": [
+              "energy_bar",
+              "timeline"
+            ]
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "required": [
+          "states"
+        ],
+        "properties": {
+          "states": {
+            "minItems": 2
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "parameter_simulation"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "required": [
+          "controls",
+          "states",
+          "simulation"
+        ],
+        "properties": {
+          "controls": {
+            "minItems": 1
+          },
+          "states": {
+            "minItems": 1
+          },
+          "accessibility": {
+            "properties": {
+              "reducedMotionStrategy": {
+                "enum": [
+                  "static-equivalent",
+                  "instant-state"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@
 - Visual planner producing declarative, versioned visual specifications.
 - Trusted visual/interaction template registry and deterministic renderer runtime.
 - Cross-modal validator for question ? answer ? visual ? physics consistency.
+- Provider-neutral visual tool router separating aesthetic generation, deterministic physics rendering, independent computational verification, and development-time prototyping.
 - Progress, mastery, and recommendation service.
 - Guarded AI tutor with retrieval from approved content.
 - Teacher, student, and consented read-only supporter reporting views.
@@ -31,13 +32,15 @@ topic learning model and activity intent
         ?
 activity draft + visual-value assessment
         ?
-structured visual specification (when useful)
+structured visual specification + render/verification strategy (when useful)
         ?
-schema + renderer compatibility + deterministic physics checks
+schema + template compatibility + deterministic physics checks
         ?
-trusted deterministic render / interaction primitive
+independent symbolic/numerical cross-check when required
         ?
-question ? answer ? visual semantic audit and bounded repair
+deterministic render/simulation OR generated contextual base + deterministic answer-critical overlay
+        ?
+final multimodal question ? answer ? rendered-visual audit and bounded repair
         ?
 validated versioned learning package
         ?
@@ -57,6 +60,17 @@ The renderer consumes semantic parameters such as entity type, physical state, v
 Prefer SVG/HTML/CSS for diagrams and controls. Use Canvas or another rendering layer only where animation or repeated drawing makes it materially useful. Every simulation has bounded controls, a deterministic reset state, declared invariants, and a static/structured fallback.
 
 Visual specs and renderer versions are independently versioned and hashable so unchanged outputs can be cached and regenerated reproducibly.
+
+
+## Visual tool boundary
+
+Production content stays provider-neutral even when a preferred provider is configured. Gemini may generate a contextual/base illustration and may perform final multimodal audit, but generated pixels never become the sole authority for answer-critical vectors, axes, graph shape, geometry, labels, or simulation laws. Those remain repository-owned deterministic output.
+
+An approved independent computational verifier such as Wolfram may check equations, invariants, trajectories, signs, limits, graph relations, or reference values. The verifier contributes validation evidence rather than learner-facing artwork.
+
+Replit or another app-building environment may accelerate development of a new simulation primitive, but learner runtime and generated packages must not depend on that external prototyping service. Prototype code is promoted only after it becomes versioned, tested repository code in the trusted template registry.
+
+The detailed provider/capability policy is `docs/VISUAL_TOOL_ORCHESTRATION.md`.
 
 ## Reliability principles
 

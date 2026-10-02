@@ -1,0 +1,537 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/visual-plan.schema.json",
+  "title": "Physics activity visual plan",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "activityIntent",
+    "representationAssessment",
+    "selectedMode",
+    "selectedTemplate",
+    "fallbackMode",
+    "groundedFactsUsed",
+    "learnerTask",
+    "renderStrategy",
+    "aestheticIntent",
+    "generatedAssetPolicy",
+    "verificationRequirements"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "activityIntent": {
+      "type": "object",
+      "required": [
+        "learningObjective",
+        "reasoningTarget",
+        "misconceptionTargets",
+        "difficulty"
+      ],
+      "properties": {
+        "learningObjective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reasoningTarget": {
+          "type": "string",
+          "minLength": 1
+        },
+        "misconceptionTargets": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "difficulty": {
+          "enum": [
+            "easy",
+            "moderate",
+            "challenging"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "representationAssessment": {
+      "type": "object",
+      "required": [
+        "visualValue",
+        "simulationValue",
+        "hallucinationRisk",
+        "templateCoverage",
+        "visualRequired",
+        "rationale"
+      ],
+      "properties": {
+        "visualValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "simulationValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "hallucinationRisk": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "templateCoverage": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "visualRequired": {
+          "type": "boolean"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "selectedMode": {
+      "enum": [
+        "none",
+        "scene_diagram",
+        "vector_diagram",
+        "graph_plot",
+        "energy_bar",
+        "timeline",
+        "matching_board",
+        "classification_board",
+        "ordering_board",
+        "drag_label_diagram",
+        "hotspot_diagram",
+        "parameter_simulation"
+      ]
+    },
+    "selectedTemplate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+    },
+    "fallbackMode": {
+      "enum": [
+        "none",
+        "structured_interaction",
+        "scene_diagram",
+        "vector_diagram",
+        "graph_plot",
+        "energy_bar",
+        "timeline",
+        "matching_board",
+        "classification_board",
+        "ordering_board",
+        "drag_label_diagram",
+        "hotspot_diagram",
+        "parameter_simulation"
+      ]
+    },
+    "groundedFactsUsed": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+      }
+    },
+    "learnerTask": {
+      "type": "string",
+      "minLength": 1
+    },
+    "renderStrategy": {
+      "enum": [
+        "none",
+        "deterministic_semantic",
+        "hybrid_generated_base",
+        "gemini_illustration",
+        "deterministic_simulation"
+      ]
+    },
+    "aestheticIntent": {
+      "type": "object",
+      "required": [
+        "styleProfile",
+        "tone",
+        "compositionPriority",
+        "backgroundComplexity"
+      ],
+      "properties": {
+        "styleProfile": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+        },
+        "tone": {
+          "enum": [
+            "clean-academic",
+            "playful-academic",
+            "story-context",
+            "minimal-technical"
+          ]
+        },
+        "compositionPriority": {
+          "const": "concept-first"
+        },
+        "backgroundComplexity": {
+          "enum": [
+            "none",
+            "minimal",
+            "light-context"
+          ]
+        },
+        "attentionTargetIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "generatedAssetPolicy": {
+      "type": "object",
+      "required": [
+        "imageRole",
+        "answerCriticalLayer",
+        "requiresMultimodalAudit",
+        "allowSearchGrounding",
+        "imageModelProfile"
+      ],
+      "properties": {
+        "imageRole": {
+          "enum": [
+            "none",
+            "decorative-support",
+            "contextual-illustration",
+            "hybrid-base"
+          ]
+        },
+        "answerCriticalLayer": {
+          "enum": [
+            "none",
+            "deterministic-overlay",
+            "deterministic-renderer"
+          ]
+        },
+        "requiresMultimodalAudit": {
+          "type": "boolean"
+        },
+        "allowSearchGrounding": {
+          "type": "boolean"
+        },
+        "imageModelProfile": {
+          "enum": [
+            "none",
+            "efficient",
+            "balanced",
+            "premium"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "verificationRequirements": {
+      "type": "object",
+      "required": [
+        "physicsComputation",
+        "referenceGrounding",
+        "finalMultimodalAudit"
+      ],
+      "properties": {
+        "physicsComputation": {
+          "enum": [
+            "none",
+            "deterministic-engine",
+            "sandboxed-code",
+            "symbolic-crosscheck"
+          ]
+        },
+        "referenceGrounding": {
+          "enum": [
+            "source-corpus",
+            "source-plus-url-context",
+            "source-plus-web-search"
+          ]
+        },
+        "finalMultimodalAudit": {
+          "type": "boolean"
+        },
+        "requireIndependentCrosscheck": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "selectedMode": {
+            "const": "none"
+          }
+        },
+        "required": [
+          "selectedMode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "selectedTemplate": {
+            "type": "null"
+          },
+          "representationAssessment": {
+            "properties": {
+              "visualRequired": {
+                "const": false
+              }
+            }
+          },
+          "renderStrategy": {
+            "const": "none"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "selectedMode": {
+            "enum": [
+              "scene_diagram",
+              "vector_diagram",
+              "graph_plot",
+              "energy_bar",
+              "timeline",
+              "matching_board",
+              "classification_board",
+              "ordering_board",
+              "drag_label_diagram",
+              "hotspot_diagram",
+              "parameter_simulation"
+            ]
+          }
+        },
+        "required": [
+          "selectedMode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "selectedTemplate": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+          },
+          "renderStrategy": {
+            "enum": [
+              "deterministic_semantic",
+              "hybrid_generated_base",
+              "gemini_illustration",
+              "deterministic_simulation"
+            ]
+          }
+        },
+        "minProperties": 1
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "renderStrategy": {
+            "const": "deterministic_semantic"
+          }
+        },
+        "required": [
+          "renderStrategy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "generatedAssetPolicy": {
+            "properties": {
+              "imageRole": {
+                "const": "none"
+              },
+              "imageModelProfile": {
+                "const": "none"
+              },
+              "requiresMultimodalAudit": {
+                "const": false
+              },
+              "allowSearchGrounding": {
+                "const": false
+              },
+              "answerCriticalLayer": {
+                "const": "deterministic-renderer"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "renderStrategy": {
+            "const": "deterministic_simulation"
+          }
+        },
+        "required": [
+          "renderStrategy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "selectedMode": {
+            "const": "parameter_simulation"
+          },
+          "generatedAssetPolicy": {
+            "properties": {
+              "answerCriticalLayer": {
+                "const": "deterministic-renderer"
+              },
+              "allowSearchGrounding": {
+                "const": false
+              },
+              "imageRole": {
+                "const": "none"
+              },
+              "requiresMultimodalAudit": {
+                "const": false
+              },
+              "imageModelProfile": {
+                "const": "none"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "renderStrategy": {
+            "const": "hybrid_generated_base"
+          }
+        },
+        "required": [
+          "renderStrategy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "generatedAssetPolicy": {
+            "properties": {
+              "imageRole": {
+                "const": "hybrid-base"
+              },
+              "answerCriticalLayer": {
+                "const": "deterministic-overlay"
+              },
+              "requiresMultimodalAudit": {
+                "const": true
+              },
+              "imageModelProfile": {
+                "enum": [
+                  "efficient",
+                  "balanced",
+                  "premium"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "renderStrategy": {
+            "const": "gemini_illustration"
+          }
+        },
+        "required": [
+          "renderStrategy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "generatedAssetPolicy": {
+            "properties": {
+              "imageRole": {
+                "enum": [
+                  "decorative-support",
+                  "contextual-illustration"
+                ]
+              },
+              "answerCriticalLayer": {
+                "const": "none"
+              },
+              "requiresMultimodalAudit": {
+                "const": true
+              },
+              "imageModelProfile": {
+                "enum": [
+                  "efficient",
+                  "balanced",
+                  "premium"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "renderStrategy": {
+            "const": "none"
+          }
+        },
+        "required": [
+          "renderStrategy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "selectedMode": {
+            "const": "none"
+          },
+          "generatedAssetPolicy": {
+            "properties": {
+              "imageRole": {
+                "const": "none"
+              },
+              "answerCriticalLayer": {
+                "const": "none"
+              },
+              "requiresMultimodalAudit": {
+                "const": false
+              },
+              "allowSearchGrounding": {
+                "const": false
+              },
+              "imageModelProfile": {
+                "const": "none"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

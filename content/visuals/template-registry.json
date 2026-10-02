@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "templates": [
+    {
+      "id": "mechanics.cart_collision_1d",
+      "mode": "scene_diagram",
+      "semanticParameters": [
+        "phase",
+        "track_orientation"
+      ],
+      "renderStrategies": [
+        "deterministic_semantic",
+        "hybrid_generated_base",
+        "gemini_illustration"
+      ]
+    },
+    {
+      "id": "mechanics.free_body_2d",
+      "mode": "vector_diagram",
+      "semanticParameters": [
+        "reference_frame"
+      ],
+      "renderStrategies": [
+        "deterministic_semantic",
+        "hybrid_generated_base"
+      ]
+    },
+    {
+      "id": "graph.cartesian_qualitative",
+      "mode": "graph_plot",
+      "semanticParameters": [
+        "curve_family"
+      ],
+      "renderStrategies": [
+        "deterministic_semantic"
+      ]
+    },
+    {
+      "id": "state.energy_bar",
+      "mode": "energy_bar",
+      "semanticParameters": [
+        "energy_components"
+      ],
+      "renderStrategies": [
+        "deterministic_semantic"
+      ]
+    },
+    {
+      "id": "mechanics.motion_1d_slider",
+      "mode": "parameter_simulation",
+      "semanticParameters": [
+        "motion_model"
+      ],
+      "renderStrategies": [
+        "deterministic_simulation"
+      ],
+      "simulationModel": "kinematics.motion_1d"
+    }
+  ]
+}

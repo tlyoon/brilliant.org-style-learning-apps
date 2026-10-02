@@ -58,11 +58,29 @@ class VisualFirstDocumentationTests(unittest.TestCase):
         self.assertIn("Source-figure association prompt guardrail", text)
         self.assertIn("force a picture on every activity", text)
 
+    def test_visual_tool_orchestration_separates_provider_roles(self):
+        text = self.text("docs/VISUAL_TOOL_ORCHESTRATION.md")
+        for phrase in (
+            "Gemini",
+            "Wolfram",
+            "Replit",
+            "hybrid_generated_base",
+            "deterministic_simulation",
+            "final multimodal audit",
+            "answer-critical",
+            "A prettier image never outranks a correct one",
+        ):
+            self.assertIn(phrase, text)
+        self.assertIn("development-time template-incubation environment", text)
+        self.assertIn("not a per-activity production dependency", text)
+
     def test_architecture_and_ai_workflow_include_visual_pipeline(self):
         architecture = self.text("docs/ARCHITECTURE.md")
         workflow = self.text("docs/AI_WORKFLOW.md")
         self.assertIn("Visual planner producing declarative, versioned visual specifications", architecture)
-        self.assertIn("question ? answer ? visual semantic audit", architecture)
+        self.assertIn("final multimodal question ? answer ? rendered-visual audit", architecture)
+        self.assertIn("Wolfram", workflow)
+        self.assertIn("Replit", workflow)
         self.assertIn("visual-value/simulation-value assessment", workflow)
         self.assertIn("simplification or fallback rather than invention", workflow)
 

@@ -12,7 +12,12 @@ from typing import Any
 
 from jsonschema import Draft202012Validator, FormatChecker
 
+
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from app_generator.visuals.validation import visual_contract_errors, visual_registry_errors
 CONTENT = ROOT / "content"
 MANIFEST_ROOT = CONTENT / "source-manifests"
 PACKAGE_SCHEMA_PATH = CONTENT / "schema" / "content-package.schema.json"
@@ -135,6 +140,7 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
         return errors
 
     errors.extend(_manifest_errors(data["sourceManifest"], source))
+    errors.extend(visual_contract_errors(ROOT, data, source))
 
     if data["status"] in {"review", "publishable"}:
         required_review_fields = (
@@ -322,12 +328,13 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
 
 
 def package_paths() -> list[Path]:
-    excluded = {CONTENT / "schema", MANIFEST_ROOT, CONTENT / "templates"}
+    excluded = {CONTENT / "schema", MANIFEST_ROOT, CONTENT / "templates", CONTENT / "visuals"}
     return [path for path in CONTENT.rglob("*.json") if not any(parent in path.parents for parent in excluded)]
 
 
 def main() -> int:
     errors: list[str] = []
+    errors.extend(visual_registry_errors(ROOT))
     paths = package_paths()
     for path in paths:
         relative_path = str(path.relative_to(ROOT))

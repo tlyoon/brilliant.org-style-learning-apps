@@ -34,7 +34,7 @@ The current Stage-0 package contract remains 18 activities per publishable subch
 
 This quota is a compatibility requirement for the current baseline, not the long-term pedagogical target. Under the Stage-2 visual-interactive framework, activity type and quantity may become pedagogically selected once the richer schema, renderer library, validation, and pilot evidence are proven. Any such migration requires an explicit versioned schema/product decision rather than silently changing the current contract.
 
-Every generated activity must receive a visual-value assessment. When a visual is required, the learning package supplies a versioned declarative visual specification for a trusted renderer or interaction primitive; generated arbitrary executable visual code is not part of the content contract.
+Every generated activity must receive a visual-value assessment. When a visual is required, the learning package supplies a versioned declarative visual specification for a trusted renderer or interaction primitive; generated arbitrary executable visual code is not part of the content contract. The plan also declares an aesthetic/render strategy: generated imagery may provide polished context when useful, but answer-critical physics remains deterministic and generated-image composites must pass final multimodal audit.
 
 ## Out of scope for the foundation
 

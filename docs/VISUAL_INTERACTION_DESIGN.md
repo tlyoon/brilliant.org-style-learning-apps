@@ -52,7 +52,23 @@ A visual specification is declarative data, not executable code. A future schema
 }
 ```
 
-Fields not needed for a selected mode remain absent rather than being populated with invented detail. The exact production schema will be introduced in a later implementation PR and versioned independently.
+Fields not needed for a selected mode remain absent rather than being populated with invented detail. The production schema is versioned independently. The visual plan also declares a **render strategy**, aesthetic intent, generated-asset policy, and verification requirements so scientific semantics and visual polish remain separable.
+
+
+## Render strategy and tool orchestration
+
+A visual mode says *what pedagogical representation is needed*; the render strategy says *how that representation is safely materialized*. Supported strategies are:
+
+- `deterministic_semantic` - trusted renderer owns the complete visual;
+- `deterministic_simulation` - trusted simulation primitive owns state evolution and rendering;
+- `hybrid_generated_base` - Gemini may create an appealing contextual/base scene, while every answer-critical vector, label, axis, graph feature, geometry cue, and interaction handle is rendered deterministically on top;
+- `gemini_illustration` - generated imagery is supportive/contextual only and cannot be answer-critical.
+
+Every generated-image strategy requires inspection of the **final pixels** in a multimodal audit. The semantic specification remains the source of truth. A generated base that contradicts or visually competes with that specification is discarded, regenerated, simplified, or replaced by deterministic output.
+
+Where the physics relation benefits from independent verification, the plan may request a symbolic/numerical cross-check. Wolfram is a preferred verifier when available, but the contract is provider-neutral. Replit is useful for prototyping new simulation templates during development; it is not a learner-runtime dependency and no generated package may rely on a hosted Replit prototype.
+
+See `docs/VISUAL_TOOL_ORCHESTRATION.md` for the full capability matrix and promotion rules.
 
 ## Template registry
 
@@ -136,16 +152,20 @@ Deterministic checks are preferred. Semantic model checks complement rather than
 
 ## Visual quality and style
 
-Use a coherent, modern educational style:
+Use a coherent, modern educational style through a versioned style profile shared by deterministic and generated-image paths:
 
-- generous whitespace;
-- high contrast;
+- immediate focal hierarchy around the concept being tested;
+- generous whitespace and low visual density;
+- high contrast and semantic color roles;
 - rounded, touch-friendly controls;
-- restrained accent colors with consistent semantic meaning;
-- crisp vector geometry;
+- crisp vector geometry and readable silhouettes;
+- playful-academic rather than childish decoration;
 - short purposeful transitions;
 - no visual clutter or unnecessary realism;
-- stable layout across locale changes.
+- stable composition across locale changes and small screens;
+- no long learner-facing text baked into generated raster assets.
+
+Aesthetic generation is allowed to improve context, atmosphere, composition, and polish, but it must not invent answer-bearing physics. Generated imagery and deterministic overlays consume the same declared `aestheticIntent`/style profile so a topic feels visually coherent.
 
 The design should be appealing because the representation is clear and responsive, not because it imitates proprietary Brilliant assets or branding.
 

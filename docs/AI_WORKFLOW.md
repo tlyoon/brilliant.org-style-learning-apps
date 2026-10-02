@@ -8,10 +8,11 @@
 4. AI/source analysis produces or consumes the topic learning model: concepts, objectives, misconceptions, prerequisite relations, useful representations, and provenance-aware facts.
 5. AI drafts the activity intent, question, answer logic, hints, feedback, and a visual-value/simulation-value assessment.
 6. When a representation is useful, AI produces a **declarative visual plan/specification**, not final free-form physics artwork and not arbitrary executable code.
-7. Deterministic validation checks activity schema, distribution, languages, calculator-free rules, visual-spec schema, renderer compatibility, and available physics invariants.
-8. A trusted renderer/interactor materializes the visual or simulation from the specification.
-9. Automated semantic validation compares question, answer logic, visual meaning, translations, accessibility fields, and provenance. Contradictions trigger bounded repair of the activity/specification; unsupported detail triggers simplification or fallback rather than invention.
-10. Validated content receives a version and publication state. Optional manual review may be added when desired but is not a publication prerequisite.
+7. Deterministic validation checks activity schema, distribution, languages, calculator-free rules, visual-spec schema, template/render-strategy compatibility, and available physics invariants.
+8. When the plan requires an independent symbolic/numerical check, an approved verifier such as Wolfram cross-checks the relevant physics relation without becoming the source of learner-facing artwork.
+9. The tool router chooses a validated rendering path: fully deterministic, deterministic simulation, Gemini-generated contextual/base art plus deterministic answer-critical overlay, or non-answer-critical generated illustration.
+10. Generated-image paths receive a final multimodal audit comparing the actual rendered pixels with the prompt, answer logic, semantic spec, translations, and provenance. Contradictions trigger bounded repair; unsupported detail triggers simplification or fallback rather than invention.
+11. Validated content receives a version and publication state. Optional manual review may be added when desired but is not a publication prerequisite.
 
 ## Visual-planning prompt contract
 
@@ -27,6 +28,19 @@ Prompts used for visual planning must require the model to:
 - preserve mobile readability, multilingual labels, accessibility descriptions, and answer integrity.
 
 The authoritative detailed contracts are `docs/VISUAL_INTERACTION_DESIGN.md`, `docs/VISUAL_GENERATION_PROMPT_SPEC.md`, and Decision 0024.
+
+
+## Visual tool orchestration
+
+Use tools by capability rather than asking one model to solve every layer:
+
+- **Gemini**: activity/visual planning, optional contextual image generation, and final multimodal audit.
+- **Trusted repository renderer/simulation engine**: answer-critical geometry, vectors, labels, graphs, interactions, and deterministic state transitions.
+- **Wolfram or equivalent approved verifier**: independent symbolic/numerical checks where useful.
+- **Replit or equivalent development environment**: rapid prototyping of new simulation templates only; prototypes must be promoted into tested repository code before production use.
+- **Canva/Figma/canvas-style design tools**: optional style-system exploration or design review, never physics authority.
+
+External search/image grounding is off by default for textbook physics. Enable it only when real-world appearance is pedagogically useful and the plan explicitly records the broader grounding policy. See `docs/VISUAL_TOOL_ORCHESTRATION.md`.
 
 ## Repair policy
 
