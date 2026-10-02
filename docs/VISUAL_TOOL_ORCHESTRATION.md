@@ -20,6 +20,9 @@ Gemini-generated raster imagery is **not** authoritative for answer-critical phy
 
 ### Deterministic renderer and simulation engine
 
+For hybrid rendering, generated context artwork must not be required for interpreting answer-critical physics. The deterministic foreground must remain complete and meaningful if the contextual image is removed. This prevents visual misalignment or image-model invention from becoming scientific evidence.
+
+
 Trusted repository code owns answer-critical rendering and interaction behavior. It receives semantic parameters and materializes:
 
 - diagrams, vectors, axes, labels, states, and graph features;

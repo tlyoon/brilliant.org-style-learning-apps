@@ -757,6 +757,7 @@ def run_checks(
         if not node:
             raise WorkstationSyncError("Node.js is required for the JavaScript syntax check")
         _command([node, "--check", "app/app.js"], settings.repo_root)
+        _command([node, "--check", "app/visual-renderers.js"], settings.repo_root)
     if run_doctor:
         print("Running generator doctor (Drive and provenance checks; no Gemini upload)...")
         _command(

@@ -193,6 +193,19 @@ structured text/interaction fallback
 
 Fallback must preserve learning objective and answer logic. The system must log the fallback reason so template gaps can be improved later.
 
+## Current deterministic renderer foundation
+
+The first trusted renderer runtime is now repository-owned in `app/visual-renderers.js` and uses the `physics-clean-v1` style tokens in `app/styles.css`. Four templates are marked `available` in `content/visuals/template-registry.json` and bind to exact renderer IDs/versions:
+
+- `mechanics.cart_collision_1d` -> `cart-collision-v1`
+- `mechanics.free_body_2d` -> `free-body-v1`
+- `graph.cartesian_qualitative` -> `qualitative-graph-v1`
+- `state.energy_bar` -> `energy-bar-v1`
+
+The renderers derive geometry from semantic entities, directions, qualitative graph shapes, and normalized energy amounts; package content never supplies pixels, SVG markup, paths, or raw coordinates. Unknown templates fail to an accessible text fallback. A contextual base-art layer may sit behind the deterministic SVG, but the deterministic layer remains complete enough to carry all answer-critical meaning by itself.
+
+`mechanics.motion_1d_slider` remains explicitly `planned`; validation rejects planned templates in generated content until their tested runtime implementation is merged.
+
 ## Implementation sequence
 
 1. **Schema and validator foundation** ? visual-spec contract, planner output, validation errors, and compatibility behavior.

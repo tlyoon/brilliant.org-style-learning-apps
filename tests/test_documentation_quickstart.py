@@ -80,6 +80,7 @@ class DocumentationQuickstartTests(unittest.TestCase):
                 "index.html",
                 ".nojekyll",
                 "app/app.js",
+                "app/visual-renderers.js",
                 "app/styles.css",
                 "content/package.json",
             ):

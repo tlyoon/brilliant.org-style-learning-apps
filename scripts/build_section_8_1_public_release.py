@@ -129,6 +129,7 @@ def _version_page(version: str, label: str, package_url: str) -> str:
         <p>Loading Section 8.1 {version}…</p>
       </section>
     </main>
+    <script src="../app/visual-renderers.js"></script>
     <script type="module" src="../app/app.js"></script>
   </body>
 </html>
@@ -158,6 +159,7 @@ def _section_eight_two_page() -> str:
         <p>Loading Section 8.2...</p>
       </section>
     </main>
+    <script src="../app/visual-renderers.js"></script>
     <script type="module" src="../app/app.js"></script>
   </body>
 </html>
@@ -187,6 +189,7 @@ def _section_eight_three_page() -> str:
         <p>Loading Section 8.3…</p>
       </section>
     </main>
+    <script src="../app/visual-renderers.js"></script>
     <script type="module" src="../app/app.js"></script>
   </body>
 </html>
@@ -216,6 +219,7 @@ def _section_eight_four_page() -> str:
         <p>Loading Section 8.4...</p>
       </section>
     </main>
+    <script src="../app/visual-renderers.js"></script>
     <script type="module" src="../app/app.js"></script>
   </body>
 </html>
@@ -245,6 +249,7 @@ def _section_eight_five_page() -> str:
         <p>Loading Section 8.5...</p>
       </section>
     </main>
+    <script src="../app/visual-renderers.js"></script>
     <script type="module" src="../app/app.js"></script>
   </body>
 </html>
@@ -351,6 +356,7 @@ def build(output: Path) -> None:
 
     for source, relative in (
         (ROOT / "app" / "app.js", Path("app/app.js")),
+        (ROOT / "app" / "visual-renderers.js", Path("app/visual-renderers.js")),
         (ROOT / "app" / "styles.css", Path("app/styles.css")),
     ):
         target = output / relative

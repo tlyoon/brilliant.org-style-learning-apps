@@ -92,7 +92,7 @@ def plan(mode="scene_diagram", template="mechanics.cart_collision_1d") -> dict:
 def spec(mode="scene_diagram", template="mechanics.cart_collision_1d") -> dict:
     return {
         "schemaVersion": "1.0", "mode": mode, "template": template,
-        "semanticParameters": {"phase": "before-collision", "track_orientation": "horizontal"},
+        "semanticParameters": {"phase": "before", "track_orientation": "horizontal"},
         "entities": [
             {"id": "cart-a", "kind": "cart", "label": localized("Cart A")},
             {"id": "cart-b", "kind": "cart", "label": localized("Cart B")},
@@ -134,6 +134,60 @@ class VisualContractTests(unittest.TestCase):
             models_path.write_text(json.dumps(models), encoding="utf-8")
             errors = visual_registry_errors(temp_root)
             self.assertTrue(any("controllable variables" in error for error in errors), errors)
+
+    def test_available_visual_templates_bind_exact_trusted_renderers(self):
+        registry = json.loads((ROOT / "content" / "visuals" / "template-registry.json").read_text(encoding="utf-8"))
+        available = {item["id"]: item for item in registry["templates"] if item["implementationStatus"] == "available"}
+        self.assertEqual(
+            {
+                "mechanics.cart_collision_1d": ("cart-collision-v1", "1.0.0"),
+                "mechanics.free_body_2d": ("free-body-v1", "1.0.0"),
+                "graph.cartesian_qualitative": ("qualitative-graph-v1", "1.0.0"),
+                "state.energy_bar": ("energy-bar-v1", "1.0.0"),
+            },
+            {key: (value["rendererId"], value["rendererVersion"]) for key, value in available.items()},
+        )
+
+    def test_renderer_specific_semantic_contracts_fail_closed(self):
+        package = package_with_visual()
+        package["activities"][0]["visualSpec"]["entities"][0]["kind"] = "spaceship"
+        errors = validator.validate_package(package)
+        self.assertTrue(any("cart-collision renderer requires" in error for error in errors), errors)
+
+        package = package_with_visual()
+        item = package["activities"][0]
+        item["visualPlan"] = plan("energy_bar", "state.energy_bar")
+        item["visualSpec"] = {
+            "schemaVersion": "1.0", "mode": "energy_bar", "template": "state.energy_bar",
+            "entities": [
+                {"id": "kinetic", "kind": "energy-component", "label": localized("Kinetic"), "properties": {"relativeAmount": 1.4}}
+            ],
+            "accessibility": {"description": localized("An energy bar."), "colorIndependent": True, "reducedMotionStrategy": "not-applicable"},
+            "grounding": [{"factId": "fact-cart-a", "origin": "source_fact", "appliesTo": ["kinetic"]}],
+            "fallback": {"mode": "structured_interaction", "reason": "Use a textual energy comparison."},
+            "validation": {"answerRelevantIds": ["kinetic"], "forbidAnswerLeakage": True},
+        }
+        errors = validator.validate_package(package)
+        self.assertTrue(any("relativeAmount" in error for error in errors), errors)
+
+    def test_planned_renderer_template_cannot_be_selected_for_public_content(self):
+        package = package_with_visual()
+        item = package["activities"][0]
+        item["visualPlan"] = plan("parameter_simulation", "mechanics.motion_1d_slider")
+        item["visualPlan"]["renderStrategy"] = "deterministic_simulation"
+        item["visualSpec"] = {
+            "schemaVersion": "1.0", "mode": "parameter_simulation", "template": "mechanics.motion_1d_slider",
+            "entities": [{"id": "cart-a", "kind": "cart"}],
+            "controls": [{"id": "speed", "kind": "slider", "variableId": "velocity", "label": localized("Velocity"), "min": -2, "max": 2, "default": 1, "step": 0.5}],
+            "states": [{"id": "start", "values": {"position": 0, "velocity": 1, "time": 0}}],
+            "simulation": {"id": "motion", "modelId": "kinematics.motion_1d", "variableIds": ["position", "velocity", "time"], "invariantIds": []},
+            "accessibility": {"description": localized("A motion simulation."), "colorIndependent": True, "reducedMotionStrategy": "instant-state"},
+            "grounding": [{"factId": "fact-cart-a", "origin": "source_fact", "appliesTo": ["cart-a"]}],
+            "fallback": {"mode": "scene_diagram", "template": "mechanics.cart_collision_1d", "reason": "Use a static scene."},
+            "validation": {"answerRelevantIds": ["cart-a"], "forbidAnswerLeakage": True},
+        }
+        errors = validator.validate_package(package)
+        self.assertTrue(any("is not yet available" in error for error in errors), errors)
 
     def test_visual_schemas_are_valid_draft_2020_12(self):
         for name in ("visual-plan.schema.json", "visual-spec.schema.json"):

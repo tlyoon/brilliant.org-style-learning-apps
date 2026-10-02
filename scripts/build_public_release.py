@@ -34,6 +34,8 @@ def build(output: Path, package_path: Path, *, source_root: Path = ROOT) -> None
 
     source_index = (source_root / "app" / "index.html").read_text(encoding="utf-8")
     public_index = source_index.replace('href="styles.css"', 'href="app/styles.css"').replace(
+        'src="visual-renderers.js"', 'src="app/visual-renderers.js"'
+    ).replace(
         'src="app.js"', 'src="app/app.js"'
     ).replace(
         'data-package-url=""',
@@ -44,6 +46,7 @@ def build(output: Path, package_path: Path, *, source_root: Path = ROOT) -> None
 
     for source, relative_target in (
         (source_root / "app" / "app.js", Path("app/app.js")),
+        (source_root / "app" / "visual-renderers.js", Path("app/visual-renderers.js")),
         (source_root / "app" / "styles.css", Path("app/styles.css")),
         (source_package, Path("content/package.json")),
     ):

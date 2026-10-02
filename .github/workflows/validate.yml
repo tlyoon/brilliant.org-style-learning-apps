@@ -25,8 +25,11 @@ jobs:
         run: |
           python scripts/lint.py
           node --check app/app.js
+          node --check app/visual-renderers.js
           node tests/test_app_rendering.js
           node tests/test_app_loading.js
+          node tests/test_visual_renderers.js
+          node tests/test_visual_player_integration.js
       - name: Validate JSON and content rules
         run: |
           python -m json.tool content/schema/content-package.schema.json >/dev/null

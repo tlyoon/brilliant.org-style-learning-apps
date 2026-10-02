@@ -18,6 +18,13 @@ FORBIDDEN_FIELD_NAMES = {
 }
 FORBIDDEN_TEXT = re.compile(r"(?:javascript\s*:|<\s*(?:script|svg|style)\b|on(?:load|click|error)\s*=)", re.I)
 
+AVAILABLE_RENDERERS = {
+    "mechanics.cart_collision_1d": ("cart-collision-v1", "1.0.0"),
+    "mechanics.free_body_2d": ("free-body-v1", "1.0.0"),
+    "graph.cartesian_qualitative": ("qualitative-graph-v1", "1.0.0"),
+    "state.energy_bar": ("energy-bar-v1", "1.0.0"),
+}
+
 
 def _schema_validator(path: Path) -> Draft202012Validator:
     schema = json.loads(path.read_text(encoding="utf-8"))
@@ -150,6 +157,19 @@ def visual_registry_errors(repo_root: Path) -> list[str]:
     for template_id, template in templates.items():
         if template.get("mode") not in allowed_modes:
             errors.append(f"visual template {template_id}: unsupported mode {template.get('mode')!r}")
+        status = template.get("implementationStatus")
+        if status not in {"available", "planned"}:
+            errors.append(f"visual template {template_id}: implementationStatus must be available or planned")
+        expected_renderer = AVAILABLE_RENDERERS.get(template_id)
+        if status == "available":
+            if expected_renderer is None:
+                errors.append(f"visual template {template_id}: marked available without a trusted runtime renderer")
+            else:
+                renderer_id, renderer_version = expected_renderer
+                if template.get("rendererId") != renderer_id or template.get("rendererVersion") != renderer_version:
+                    errors.append(f"visual template {template_id}: renderer identity/version does not match trusted runtime code")
+        elif template.get("rendererId") is not None or template.get("rendererVersion") is not None:
+            errors.append(f"visual template {template_id}: planned templates must not claim an available renderer")
         strategies = template.get("renderStrategies")
         if not isinstance(strategies, list) or not strategies or len(strategies) != len(set(strategies)):
             errors.append(f"visual template {template_id}: renderStrategies must be a non-empty unique list")
@@ -285,6 +305,55 @@ def _mode_errors(spec: dict[str, Any], label: str) -> list[str]:
     return errors
 
 
+def _renderer_contract_errors(spec: dict[str, Any], label: str) -> list[str]:
+    """Validate the semantic contract consumed by the currently available deterministic renderers."""
+    errors: list[str] = []
+    template = spec.get("template")
+    entities = spec.get("entities", [])
+    vectors = spec.get("vectors", [])
+    parameters = spec.get("semanticParameters", {})
+
+    if template == "mechanics.cart_collision_1d":
+        carts = [entity for entity in entities if isinstance(entity, dict) and entity.get("kind") == "cart"]
+        if not 1 <= len(carts) <= 4 or len(carts) != len(entities):
+            errors.append(f"{label}.entities: cart-collision renderer requires one to four cart entities")
+        phase = parameters.get("phase")
+        if phase is not None and phase not in {"before", "during", "after"}:
+            errors.append(f"{label}.semanticParameters.phase: must be before, during, or after")
+        orientation = parameters.get("track_orientation")
+        if orientation is not None and orientation != "horizontal":
+            errors.append(f"{label}.semanticParameters.track_orientation: cart-collision v1 supports horizontal only")
+
+    elif template == "mechanics.free_body_2d":
+        bodies = [entity for entity in entities if isinstance(entity, dict) and entity.get("kind") == "body"]
+        if len(entities) != 1 or len(bodies) != 1:
+            errors.append(f"{label}.entities: free-body renderer requires exactly one body entity")
+        if not vectors:
+            errors.append(f"{label}.vectors: free-body renderer requires at least one vector")
+        elif bodies and any(vector.get("entityId") != bodies[0].get("id") for vector in vectors):
+            errors.append(f"{label}.vectors: every free-body vector must reference the body entity")
+
+    elif template == "graph.cartesian_qualitative":
+        series = spec.get("graphSeries", [])
+        if not 1 <= len(series) <= 4:
+            errors.append(f"{label}.graphSeries: qualitative graph renderer requires one to four series")
+
+    elif template == "state.energy_bar":
+        components = [
+            entity for entity in entities
+            if isinstance(entity, dict) and entity.get("kind") == "energy-component"
+        ]
+        if not 1 <= len(components) <= 4 or len(components) != len(entities):
+            errors.append(f"{label}.entities: energy-bar renderer requires one to four energy-component entities")
+        for index, component in enumerate(components):
+            amount = component.get("properties", {}).get("relativeAmount")
+            if isinstance(amount, bool) or not isinstance(amount, (int, float)) or not 0 <= amount <= 1:
+                errors.append(
+                    f"{label}.entities[{index}].properties.relativeAmount: must be a number from 0 to 1"
+                )
+    return errors
+
+
 def _template_errors(
     plan: dict[str, Any],
     spec: dict[str, Any] | None,
@@ -301,6 +370,8 @@ def _template_errors(
         if template is None:
             errors.append(f"{label}.visualPlan.selectedTemplate: unknown trusted template {template_id!r}")
         else:
+            if template.get("implementationStatus") != "available":
+                errors.append(f"{label}.visualPlan.selectedTemplate: trusted template {template_id!r} is not yet available")
             if template.get("mode") != mode:
                 errors.append(
                     f"{label}.visualPlan.selectedTemplate: template mode {template.get('mode')!r} does not match selected mode {mode!r}"
@@ -467,5 +538,6 @@ def visual_contract_errors(repo_root: Path, package: Any, label: str = "package"
                 errors.extend(_unique_id_errors(spec, f"{activity_label}.visualSpec"))
                 errors.extend(_reference_errors(spec, plan, f"{activity_label}.visualSpec"))
                 errors.extend(_mode_errors(spec, f"{activity_label}.visualSpec"))
+                errors.extend(_renderer_contract_errors(spec, f"{activity_label}.visualSpec"))
             errors.extend(_template_errors(plan, spec, templates, style_profiles, simulation_models, activity_label))
     return errors

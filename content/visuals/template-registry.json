@@ -12,7 +12,10 @@
         "deterministic_semantic",
         "hybrid_generated_base",
         "gemini_illustration"
-      ]
+      ],
+      "implementationStatus": "available",
+      "rendererId": "cart-collision-v1",
+      "rendererVersion": "1.0.0"
     },
     {
       "id": "mechanics.free_body_2d",
@@ -23,7 +26,10 @@
       "renderStrategies": [
         "deterministic_semantic",
         "hybrid_generated_base"
-      ]
+      ],
+      "implementationStatus": "available",
+      "rendererId": "free-body-v1",
+      "rendererVersion": "1.0.0"
     },
     {
       "id": "graph.cartesian_qualitative",
@@ -33,7 +39,10 @@
       ],
       "renderStrategies": [
         "deterministic_semantic"
-      ]
+      ],
+      "implementationStatus": "available",
+      "rendererId": "qualitative-graph-v1",
+      "rendererVersion": "1.0.0"
     },
     {
       "id": "state.energy_bar",
@@ -43,7 +52,10 @@
       ],
       "renderStrategies": [
         "deterministic_semantic"
-      ]
+      ],
+      "implementationStatus": "available",
+      "rendererId": "energy-bar-v1",
+      "rendererVersion": "1.0.0"
     },
     {
       "id": "mechanics.motion_1d_slider",
@@ -54,7 +66,8 @@
       "renderStrategies": [
         "deterministic_simulation"
       ],
-      "simulationModel": "kinematics.motion_1d"
+      "simulationModel": "kinematics.motion_1d",
+      "implementationStatus": "planned"
     }
   ]
 }

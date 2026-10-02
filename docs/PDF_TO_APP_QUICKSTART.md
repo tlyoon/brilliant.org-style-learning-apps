@@ -416,8 +416,11 @@ Validate:
 & $py scripts\lint.py
 & $py scripts\validate_content.py
 node --check app\app.js
+node --check app\visual-renderers.js
 node tests\test_app_loading.js
 node tests\test_app_rendering.js
+node tests\test_visual_renderers.js
+node tests\test_visual_player_integration.js
 node tests\test_interaction_rendering.js
 & $py -m unittest discover -s tests -v
 git diff --check
