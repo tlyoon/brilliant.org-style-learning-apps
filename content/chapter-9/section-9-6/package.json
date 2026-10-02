@@ -1,0 +1,2220 @@
+{
+  "schemaVersion": "1.1",
+  "packageId": "chapter-9-section-9-6",
+  "chapter": "Chapter 9",
+  "subchapter": "9.6 The Center of Mass",
+  "status": "draft",
+  "locales": [
+    "en",
+    "ms",
+    "zh"
+  ],
+  "learningObjectives": [
+    "Explain the center of mass as the mass-weighted average position of a system of particles or an extended body.",
+    "Predict how unequal mass distribution shifts the center of mass position toward the more massive component.",
+    "Determine the center of mass location for symmetric objects of uniform density using symmetry principles.",
+    "Distinguish rotational from pure translational motion when a force is applied at versus away from the center of mass.",
+    "Relate the center of gravity to the center of mass in a uniform gravitational field.",
+    "Analyze mass differences between segments when an inhomogeneous object is divided at its center of mass."
+  ],
+  "prerequisites": [
+    {
+      "id": "vector-position-and-coordinates",
+      "description": {
+        "en": "Understanding position vectors and Cartesian coordinate components in one, two, and three dimensions.",
+        "ms": "Memahami vektor kedudukan dan komponen koordinat Cartes dalam satu, dua, dan tiga dimensi.",
+        "zh": "理解一维、二维和三维空间中的位置矢量与笛卡尔坐标分量。"
+      },
+      "recovery": {
+        "en": "Review how coordinates (x, y, z) define a point relative to a chosen reference origin in space.",
+        "ms": "Ulang kaji bagaimana koordinat (x, y, z) mentakrifkan kedudukan titik relatif kepada asalan rujukan yang dipilih.",
+        "zh": "复习坐标 (x, y, z) 如何相对于空间中选定的参考原点确定点的位置。"
+      }
+    },
+    {
+      "id": "mass-and-density-distribution",
+      "description": {
+        "en": "Understanding mass distribution and differentiating uniform density from non-uniform density.",
+        "ms": "Memahami taburan jisim dan membezakan ketumpatan seragam daripada ketumpatan tidak seragam.",
+        "zh": "理解质量分布，并区分均匀密度与非均匀密度。"
+      },
+      "recovery": {
+        "en": "Review how mass is distributed across spatial dimensions and how varying density alters localized mass concentration.",
+        "ms": "Ulang kaji bagaimana jisim diagihkan merentasi dimensi ruang dan bagaimana ketumpatan yang berubah mengubah kepekatan jisim setempat.",
+        "zh": "复习质量如何在空间维度上分布，以及密度变化如何改变局部质量集中程度。"
+      }
+    },
+    {
+      "id": "line-of-action-and-rotation",
+      "description": {
+        "en": "Recognizing that the line of action of an applied force determines whether an extended body translates or rotates.",
+        "ms": "Mengenal pasti bahawa garis tindakan daya menentukan sama ada jasad lanjutan bertranslasi atau berputar.",
+        "zh": "认识到外力的作用线决定了刚体是发生平动还是发生转动。"
+      },
+      "recovery": {
+        "en": "Recall that a force directed along an object's balance point causes translation, whereas off-center forces induce rotation.",
+        "ms": "Ingat kembali bahawa daya yang ditujukan sepanjang titik imbangan menyebabkan translasi, manakala daya luar pusat menghasilkan putaran.",
+        "zh": "回顾通过平衡点的作用力只会引起平动，而偏离平衡点的力则会引起转动。"
+      }
+    }
+  ],
+  "misconceptionCatalogue": [
+    {
+      "id": "cm-always-at-geometric-center",
+      "description": {
+        "en": "Believing that the center of mass always coincides with the geometric center regardless of mass distribution.",
+        "ms": "Percaya bahawa pusat jisim sentiasa bertepatan dengan pusat geometri tanpa mengira taburan jisim.",
+        "zh": "认为无论质量分布如何，质心都必须始终与几何中心重合。"
+      }
+    },
+    {
+      "id": "equal-mass-split-at-cm",
+      "description": {
+        "en": "Believing that cutting an object through its center of mass separates it into two pieces of equal mass.",
+        "ms": "Percaya bahawa memotong sesuatu objek melalui pusat jisimnya akan membahagikannya kepada dua bahagian yang berjisim sama.",
+        "zh": "认为沿质心切开物体必然会将其分割为质量相等的两半。"
+      }
+    },
+    {
+      "id": "force-at-any-point-causes-rotation",
+      "description": {
+        "en": "Assuming that applying a single force anywhere on an extended body will always cause it to rotate.",
+        "ms": "Menganggap bahawa mengenakan satu daya di mana-mana titik pada jasad lanjutan akan sentiasa menyebabkannya berputar.",
+        "zh": "认为在刚体上的任意位置施加单力都会导致其发生转动。"
+      }
+    },
+    {
+      "id": "cg-differs-from-cm-in-uniform-gravity",
+      "description": {
+        "en": "Believing the center of gravity and center of mass are located at different points even in a uniform gravitational field.",
+        "ms": "Percaya bahawa pusat graviti dan pusat jisim terletak pada titik berbeza walaupun dalam medan graviti yang seragam.",
+        "zh": "认为即使在均匀重力场中，重心和质心也位于不同位置。"
+      }
+    },
+    {
+      "id": "cm-must-lie-within-material",
+      "description": {
+        "en": "Assuming that the center of mass must always reside within the solid physical material of the object.",
+        "ms": "Menganggap bahawa pusat jisim mesti sentiasa berada di dalam jirim fizikal pepejal sesuatu objek.",
+        "zh": "假设质心必须始终位于物体的实体材料结构内部。"
+      }
+    }
+  ],
+  "evidencePolicy": {
+    "preserveFirstAttempt": true,
+    "assistedSignals": [
+      "hint",
+      "retry",
+      "prerequisite-recovery"
+    ],
+    "assistedSuccessSeparate": true
+  },
+  "reviewRecord": "content/chapter-9/section-9-6/review-record.md",
+  "sourceManifest": "content/source-manifests/chapter-9-section-9-6.json",
+  "activities": [
+    {
+      "id": "mcq-easy-cm-def-balance",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Explain the center of mass as the mass-weighted average position of a system of particles or an extended body.",
+      "prompt": {
+        "en": "A sports paddle consists of a thin handle joined to a thick, dense blade. Which statement correctly describes the physical meaning of the center of mass for this continuous object?",
+        "ms": "Satu dayung sukan terdiri daripada pemegang nipis yang disambungkan kepada bilah yang tebal dan tumpat. Pernyataan manakah yang menerangkan maksud fizikal pusat jisim dengan betul bagi objek selanjar ini?",
+        "zh": "一块运动球拍由较细的握柄和厚实致密的拍面组成。下列哪个陈述正确描述了该连续物体质心的物理意义？"
+      },
+      "hints": [
+        {
+          "en": "Recall how the position of the center of mass accounts for both the location and the quantity of matter distributed across an object.",
+          "ms": "Ingat kembali bagaimana kedudukan pusat jisim mengambil kira kedua-dua lokasi dan kuantiti jirim yang tertabur merentasi suatu objek.",
+          "zh": "回忆质心的位置如何同时考虑物体各处的空间位置以及所分布的物质质量。"
+        },
+        {
+          "en": "Because the density and mass are not uniformly spread between the handle and the blade, the center of mass cannot simply be the spatial midpoint; it favors where more mass is concentrated.",
+          "ms": "Oleh kerana ketumpatan dan jisim tidak tersebar secara seragam antara pemegang dan bilah, pusat jisim tidak boleh menjadi titik tengah ruang semata-mata; ia memihak kepada tempat di mana lebih banyak jisim tertumpu.",
+          "zh": "由于握柄和拍面之间的密度与质量分布并不均匀，质心不仅是空间上的中点，它会偏向质量更集中的区域。"
+        }
+      ],
+      "feedback": {
+        "en": "The center of mass represents the mass-weighted average position of all parts of a system. For an object with non-uniform mass distribution, it is drawn toward regions containing greater mass rather than resting at the geometric center.",
+        "ms": "Pusat jisim mewakili kedudukan purata berwajaran jisim bagi semua bahagian dalam suatu sistem. Bagi objek dengan taburan jisim tidak seragam, ia beralih ke arah kawasan yang mengandungi lebih banyak jisim dan bukannya berada di pusat geometri.",
+        "zh": "质心代表系统中所有部分的质量加权平均位置。对于质量分布不均匀的物体，质心会偏向质量较大的区域，而不是停留在几何中心。"
+      },
+      "answerLogic": {
+        "en": "By definition, the center of mass of an extended object is the integral of position weighted by mass elements divided by total mass. Thus, it corresponds to the mass-weighted average coordinates, which differ from the geometric midpoint when density varies.",
+        "ms": "Secara takrifan, pusat jisim jasad lanjutan ialah kamiran kedudukan yang diwajarkan oleh unsur jisim dibahagikan dengan jumlah jisim. Oleh itu, ia sepadan dengan koordinat purata berwajaran jisim, yang berbeza daripada titik tengah geometri apabila ketumpatan berbeza.",
+        "zh": "根据定义，刚体的质心是空间位置对质量微元的积分除以总质量。因此，它对应于质量加权平均坐标；当密度不均匀时，它与几何中点并不重合。"
+      },
+      "explanation": {
+        "en": "The center of mass is defined as the average position of an object's mass. Each element of mass contributes to this average in direct proportion to its mass and location. Consequently, in an object with a heavy blade and a light handle, the center of mass lies closer to the blade. Believing it must remain at the exact spatial center overlooks how non-uniform density shifts this mass-weighted balance point.",
+        "ms": "Pusat jisim ditakrifkan sebagai kedudukan purata bagi jisim suatu objek. Setiap unsur jisim menyumbang kepada purata ini berkadar terus dengan jisim dan lokasinya. Oleh itu, bagi objek dengan bilah yang berat dan pemegang yang ringan, pusat jisim terletak lebih dekat dengan bilah. Anggapan bahawa ia mesti kekal di pusat ruang yang tepat mengabaikan cara ketumpatan tidak seragam mengalihkan titik imbangan berwajaran jisim ini.",
+        "zh": "质心被定义为物体质量的平均位置。每个质量微元对其位置平均值的贡献与其质量和位置成正比。因此，对于具有重拍面和轻握柄的物体，质心更靠近拍面。认为质心必须始终位于空间几何正中心的观点，忽略了非均匀密度对质量加权平衡点的移动作用。"
+      },
+      "misconceptions": [
+        "cm-always-at-geometric-center"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "mass-and-density-distribution",
+        "prompt": {
+          "en": "Review mass density: how does varying concentration of material across a body change where most of its inertia resides compared to a uniform object?",
+          "ms": "Ulang kaji ketumpatan jisim: bagaimanakah kepekatan bahan yang berbeza-beza merentasi jasad mengubah kedudukan sebahagian besar inersianya berbanding objek seragam?",
+          "zh": "复习质量密度：与均匀物体相比，物体各处材料密度的变化如何改变其大部分惯性所在的区域？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking for the correct physical definition of the center of mass of a paddle with a light handle and heavy blade.",
+        "ms": "Soalan aneka pilihan yang bertanyakan takrif fizikal yang betul bagi pusat jisim suatu dayung dengan pemegang ringan dan bilah berat.",
+        "zh": "一道多项选择题，询问握柄较轻、拍面较重的球拍质心的正确物理定义。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-weighted-avg",
+        "options": [
+          {
+            "id": "opt-weighted-avg",
+            "label": {
+              "en": "It is the average position of all mass elements in the object, weighted by each element's mass.",
+              "ms": "Ia ialah kedudukan purata bagi semua unsur jisim dalam objek tersebut, diwajarkan mengikut jisim setiap unsur.",
+              "zh": "它是物体中所有质量微元的平均位置，并按各微元的质量进行加权。"
+            }
+          },
+          {
+            "id": "opt-geometric-mid",
+            "label": {
+              "en": "It is the geometric midpoint located exactly halfway along the total length of the paddle.",
+              "ms": "Ia ialah titik tengah geometri yang terletak tepat di separuh daripada jumlah panjang dayung tersebut.",
+              "zh": "它是位于球拍总长度正中间的几何中点。"
+            },
+            "misconception": "cm-always-at-geometric-center"
+          },
+          {
+            "id": "opt-equal-volume",
+            "label": {
+              "en": "It is the boundary where the paddle's total volume is divided into two identical shapes.",
+              "ms": "Ia ialah sempadan di mana jumlah isi padu dayung dibahagikan kepada dua bentuk yang serupa.",
+              "zh": "它是将球拍总体积分成两个形状完全相同的分界处。"
+            }
+          },
+          {
+            "id": "opt-widest-point",
+            "label": {
+              "en": "It is the point where the paddle reaches its widest physical width.",
+              "ms": "Ia ialah titik di mana dayung mencapai lebar fizikal terbesarnya.",
+              "zh": "它是球拍达到其最大物理宽度的位置。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-easy-two-unequal-particles",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict how unequal mass distribution shifts the center of mass position toward the more massive component.",
+      "prompt": {
+        "en": "Two spheres, Sphere 1 and Sphere 2, are attached to opposite ends of a straight, rigid rod of negligible mass. Sphere 1 is significantly more massive than Sphere 2. Where is the center of mass of this two-sphere system located?",
+        "ms": "Dua sfera, Sfera 1 dan Sfera 2, dipasang pada hujung bertentangan bagi satu rod tegar yang lurus dengan jisim yang boleh diabaikan. Sfera 1 adalah jauh lebih berjisim daripada Sfera 2. Di manakah pusat jisim bagi sistem dua sfera ini terletak?",
+        "zh": "球体 1 和球体 2 分别连接在一根质量可忽略的平直刚性轻杆的两端。球体 1 的质量显著大于球体 2。该双球系统的质心位于何处？"
+      },
+      "hints": [
+        {
+          "en": "Consider the definition of the center of mass as an average position weighted by mass: which sphere carries greater weight in that average?",
+          "ms": "Pertimbangkan takrif pusat jisim sebagai kedudukan purata yang diwajarkan oleh jisim: sfera manakah yang membawa wajaran lebih besar dalam purata tersebut?",
+          "zh": "考虑质心作为质量加权平均位置的定义：在加权平均中，哪颗球体的权重更大？"
+        },
+        {
+          "en": "When two connected particles have equal masses, the center of mass is midway between them; increasing the mass of one particle draws the balance point toward that particle.",
+          "ms": "Apabila dua zarah yang disambungkan mempunyai jisim yang sama, pusat jisim berada di tengah-tengah antara mereka; peningkatan jisim satu zarah menarik titik imbangan ke arah zarah tersebut.",
+          "zh": "当连接的两个粒子质量相等时，质心位于它们正中间；增加其中一个粒子的质量会使平衡点向该粒子偏移。"
+        }
+      ],
+      "feedback": {
+        "en": "Because the center of mass is the mass-weighted average of the positions, it always lies along the connecting segment closer to the particle with the larger mass.",
+        "ms": "Kerana pusat jisim ialah purata kedudukan yang diwajarkan oleh jisim, ia sentiasa terletak di sepanjang tembereng penyambung lebih dekat dengan zarah yang mempunyai jisim lebih besar.",
+        "zh": "因为质心是位置的质量加权平均值，所以它始终位于两粒子连接线段上更靠近质量较大粒子的一侧。"
+      },
+      "answerLogic": {
+        "en": "The formula for the center of mass of two particles along a line gives a position divided in inverse proportion to their masses. Since Sphere 1 has greater mass, the center of mass lies between them and is shifted closer to Sphere 1.",
+        "ms": "Formula bagi pusat jisim dua zarah sepanjang satu garis memberikan kedudukan yang dibahagikan secara berkadar songsang dengan jisimnya. Oleh kerana Sfera 1 mempunyai jisim yang lebih besar, pusat jisim terletak di antara mereka dan berganjak lebih dekat kepada Sfera 1.",
+        "zh": "沿直线分布的两粒子质心公式表明，质心位置按质量反比内分该线段。由于球体 1 质量更大，质心必定位于两球之间且偏向球体 1。"
+      },
+      "explanation": {
+        "en": "The center of mass of a pair of particles connected by a light rod lies on the line segment connecting them. If both particles were of equal mass, the center of mass would be precisely at the spatial midpoint. However, when one particle is more massive, it contributes more heavily to the mass-weighted position sum, shifting the center of mass toward that heavier particle.",
+        "ms": "Pusat jisim bagi sepasang zarah yang disambungkan oleh rod ringan terletak pada tembereng garis yang menyambungkannya. Sekiranya kedua-dua zarah mempunyai jisim yang sama, pusat jisim akan berada tepat pada titik tengah ruang. Walau bagaimanapun, apabila satu zarah lebih berjisim, ia menyumbang lebih banyak kepada jumlah kedudukan berwajaran jisim, mengalihkan pusat jisim ke arah zarah yang lebih berat itu.",
+        "zh": "由轻杆连接的一对粒子的质心位于连接它们的线段上。如果两个粒子的质量相等，质心恰好在空间几何中点。然而，当一个粒子的质量更大时，它对质量加权位置和的贡献更大，从而将质心拉向质量更重的一侧。"
+      },
+      "misconceptions": [
+        "cm-always-at-geometric-center"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-position-and-coordinates",
+        "prompt": {
+          "en": "Review coordinate representations: how do individual position coordinates combine with mass values to determine a composite coordinate on a number line?",
+          "ms": "Ulang kaji perwakilan koordinat: bagaimanakah koordinat kedudukan individu digabungkan dengan nilai jisim untuk menentukan koordinat komposit pada garis nombor?",
+          "zh": "复习坐标表示：在数轴上，各个位置坐标如何与质量值结合以确定复合坐标？"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking for the location of the center of mass of two unequal masses joined by a light rod.",
+        "ms": "Soalan aneka pilihan yang bertanyakan lokasi pusat jisim bagi dua jisim tidak sama yang disambungkan oleh satu rod ringan.",
+        "zh": "一道多项选择题，询问由轻杆连接的两个质量不等的球体的质心位置。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-closer-sphere-1",
+        "options": [
+          {
+            "id": "opt-closer-sphere-1",
+            "label": {
+              "en": "Along the connecting line between the spheres, closer to Sphere 1.",
+              "ms": "Sepanjang garis penyambung antara sfera-sfera tersebut, lebih dekat dengan Sfera 1.",
+              "zh": "在连接两球的线段上，更靠近球体 1。"
+            }
+          },
+          {
+            "id": "opt-exact-midpoint",
+            "label": {
+              "en": "Exactly at the geometric midpoint between the spheres, regardless of their masses.",
+              "ms": "Tepat di titik tengah geometri antara sfera-sfera tersebut, tanpa mengira jisim masing-masing.",
+              "zh": "无论两球质量如何，都恰好位于两球之间的几何中点。"
+            },
+            "misconception": "cm-always-at-geometric-center"
+          },
+          {
+            "id": "opt-closer-sphere-2",
+            "label": {
+              "en": "Along the connecting line between the spheres, closer to Sphere 2.",
+              "ms": "Sepanjang garis penyambung antara sfera-sfera tersebut, lebih dekat dengan Sfera 2.",
+              "zh": "在连接两球的线段上，更靠近球体 2。"
+            }
+          },
+          {
+            "id": "opt-beyond-sphere-1",
+            "label": {
+              "en": "At an external position along the line beyond Sphere 1.",
+              "ms": "Pada kedudukan luar di sepanjang garis melangkaui Sfera 1.",
+              "zh": "在线段延长线上、位于球体 1 之外的位置。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-easy-force-through-cm",
+      "type": "mcq",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish rotational from pure translational motion when a force is applied at versus away from the center of mass.",
+      "prompt": {
+        "en": "A free, unpinned rigid bar rests at rest on a frictionless horizontal table. A single horizontal force is applied such that its line of action passes directly through the bar's center of mass. How does the bar respond to this force?",
+        "ms": "Satu palang tegar bebas tanpa pin berada dalam keadaan rehat di atas meja mendatar tanpa geseran. Satu daya mendatar tunggal dikenakan sedemikian rupa sehingga garis tindakannya melalui tepat pusat jisim palang tersebut. Bagaimanakah palang itu bertindak balas terhadap daya ini?",
+        "zh": "一根自由放置且未铰接的刚性杆静止在光滑无摩擦的水平桌面上。施加一个单一水平力，其作用线恰好穿过杆的质心。该杆对该力将作何响应？"
+      },
+      "hints": [
+        {
+          "en": "Think about the line of action of the force relative to the center of mass: does a force directed straight through the balance point produce a rotational turning effect?",
+          "ms": "Fikirkan tentang garis tindakan daya relatif kepada pusat jisim: adakah daya yang ditujukan terus melalui titik imbangan menghasilkan kesan pusingan putaran?",
+          "zh": "思考力的作用线相对于质心的位置：直接穿过平衡点的力是否会产生转动扭矩效果？"
+        },
+        {
+          "en": "A force applied away from the center of mass produces torque and rotation, but a force acting directly through the center of mass produces pure acceleration of the center of mass with no torque.",
+          "ms": "Daya yang dikenakan jauh dari pusat jisim menghasilkan tork dan putaran, tetapi daya yang bertindak terus melalui pusat jisim menghasilkan pecutan tulen bagi pusat jisim tanpa tork.",
+          "zh": "偏离质心施加的力会产生力矩并引起转动，但直接穿过质心的力只会使质心产生纯平动加速度，不产生力矩。"
+        }
+      ],
+      "feedback": {
+        "en": "When a single force acts through the center of mass, the net torque about the center of mass is zero, resulting in pure translational acceleration without rotation.",
+        "ms": "Apabila daya tunggal bertindak melalui pusat jisim, jumlah tork pada pusat jisim adalah sifar, menghasilkan pecutan translasi tulen tanpa putaran.",
+        "zh": "当单一外力通过质心时，对质心的净力矩为零，从而只产生纯平动加速度而不引起转动。"
+      },
+      "answerLogic": {
+        "en": "Section 9.6 establishes that applying a force directly at the center of mass causes the system to move in the direction of the force without rotating. Forces applied away from the center of mass cause clockwise or counterclockwise rotation.",
+        "ms": "Seksyen 9.6 menetapkan bahawa mengenakan daya tepat pada pusat jisim menyebabkan sistem bergerak mengikut arah daya tanpa berputar. Daya yang dikenakan jauh dari pusat jisim menyebabkan putaran mengikut arah jam atau lawan arah jam.",
+        "zh": "第 9.6 节指出，直接在质心处施加力会使系统沿力的方向平动而不发生转动。只有偏离质心施加的外力才会引起顺时针或逆时针转动。"
+      },
+      "explanation": {
+        "en": "The center of mass is the unique point at which a single applied force produces pure translation. If a force is applied off-center (above or below the center of mass), the offset creates a torque that causes the object to rotate while translating. However, when the line of action passes exactly through the center of mass, there is no lever arm to produce rotation, so the object accelerates purely translationally. The belief that a single force anywhere on an extended body must cause rotation fails to recognize this special property of the center of mass.",
+        "ms": "Pusat jisim ialah titik unik di mana satu daya yang dikenakan menghasilkan translasi tulen. Sekiranya daya dikenakan di luar pusat (di atas atau di bawah pusat jisim), anjakan tersebut menghasilkan tork yang menyebabkan objek berputar semasa bertranslasi. Walau bagaimanapun, apabila garis tindakan melalui tepat pusat jisim, tiada lengan tuas untuk menghasilkan putaran, jadi objek memecut secara translasi tulen sahaja. Kepercayaan bahawa daya tunggal di mana-mana titik pada jasad lanjutan mesti menyebabkan putaran gagal mengenali sifat istimewa pusat jisim ini.",
+        "zh": "质心是刚体上施加单一外力产生纯平动的唯一特殊点。如果力偏离质心（例如在质心上方或下方）施加，力臂会产生力矩，使物体在平动的同时发生转动。然而，当力的作用线恰好穿过质心时，没有力臂产生转动力矩，因此物体仅发生纯平动加速。认为在刚体任意位置施力都必然产生转动的观点，忽略了质心的这一核心性质。"
+      },
+      "misconceptions": [
+        "force-at-any-point-causes-rotation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "line-of-action-and-rotation",
+        "prompt": {
+          "en": "Review line of action and rotational effects: recall how the perpendicular distance from a pivot or center of mass to a force determines whether rotation occurs.",
+          "ms": "Ulang kaji garis tindakan dan kesan putaran: ingat kembali bagaimana jarak serenjang dari pangsi atau pusat jisim ke suatu daya menentukan sama ada putaran berlaku.",
+          "zh": "复习力的作用线与转动效应：回顾从转轴或质心到力作用线的垂直距离如何决定是否发生转动。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking what motion occurs when a force acts directly through the center of mass of an unpinned rigid bar.",
+        "ms": "Soalan aneka pilihan yang bertanyakan pergerakan yang berlaku apabila suatu daya bertindak tepat melalui pusat jisim sebatang palang tegar bebas.",
+        "zh": "一道多项选择题，询问当外力直接穿过自由刚性杆的质心时会发生何种运动。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-pure-translation",
+        "options": [
+          {
+            "id": "opt-pure-translation",
+            "label": {
+              "en": "It translates in the direction of the applied force without rotating.",
+              "ms": "Ia bertranslasi mengikut arah daya yang dikenakan tanpa berputar.",
+              "zh": "它沿所施加力的方向发生平动，而不发生转动。"
+            }
+          },
+          {
+            "id": "opt-always-rotates",
+            "label": {
+              "en": "It must rotate while translating, because a single force applied anywhere on an extended object always induces rotation.",
+              "ms": "Ia pasti berputar sambil bertranslasi, kerana daya tunggal yang dikenakan di mana-mana pada objek lanjutan sentiasa menghasilkan putaran.",
+              "zh": "它必然在平动的同时发生转动，因为在刚体上任意点施加单力都会引起转动。"
+            },
+            "misconception": "force-at-any-point-causes-rotation"
+          },
+          {
+            "id": "opt-pure-rotation",
+            "label": {
+              "en": "It rotates purely in place about its geometric center without any overall translational displacement.",
+              "ms": "Ia berputar sepenuhnya di tempatnya mengelilingi pusat geometri tanpa sebarang sesaran translasi keseluruhan.",
+              "zh": "它完全绕其几何中心原地转动，没有任何整体平动位移。"
+            }
+          },
+          {
+            "id": "opt-no-motion",
+            "label": {
+              "en": "It remains completely stationary because a force at the center of mass is cancelled out internally.",
+              "ms": "Ia kekal pegun sepenuhnya kerana daya pada pusat jisim dimansuhkan secara dalaman.",
+              "zh": "它保持完全静止，因为施加在质心处的力在内部被抵消。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-mod-symmetry-center",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Determine the center of mass location for symmetric objects of uniform density using symmetry principles.",
+      "prompt": {
+        "en": "A flat, circular washer made of uniform metal has an open hole at its center. Based on the principles of symmetry for an object of uniform density, where is the center of mass of the washer located?",
+        "ms": "Satu sesendal bulat rata yang diperbuat daripada logam seragam mempunyai lubang terbuka di pusatnya. Berdasarkan prinsip simetri bagi suatu objek yang berketumpatan seragam, di manakah terletaknya pusat jisim sesendal tersebut?",
+        "zh": "一个由均匀金属制成的扁平圆形垫圈中心有一个开孔。根据均匀密度物体的对称性原理，该垫圈的质心位于何处？"
+      },
+      "hints": [
+        {
+          "en": "Recall that for any symmetric object of uniform density, the center of mass must lie along every axis and plane of symmetry.",
+          "ms": "Ingat kembali bahawa bagi mana-mana objek simetri yang berketumpatan seragam, pusat jisim mesti terletak di sepanjang setiap paksi dan satah simetri.",
+          "zh": "回顾对于任何均匀密度的对称物体，质心必须位于物体的每条对称轴和每个对称面上。"
+        },
+        {
+          "en": "Consider the symmetry axes passing through the center of the washer. Where do all these axes intersect, and does that point require physical material to exist there?",
+          "ms": "Pertimbangkan paksi simetri yang melalui bahagian tengah sesendal. Di manakah semua paksi ini bersilang, dan adakah titik itu memerlukan jirim fizikal wujud di situ?",
+          "zh": "考虑穿过垫圈中心的对称轴。所有这些对称轴在何处相交？该点处是否必须存在实体材料？"
+        }
+      ],
+      "feedback": {
+        "en": "Symmetry dictates that the center of mass of a uniform circular washer lies at the geometric center of its concentric circles. Even though this point is located in the open central hole where no metal exists, the center of mass is a mass-weighted average position and does not need to lie within the physical material of the body.",
+        "ms": "Simetri menentukan bahawa pusat jisim bagi sesendal bulat seragam terletak pada pusat geometri bulatan sepusatnya. Walaupun titik ini terletak di dalam lubang tengah yang terbuka di mana tiada logam wujud, pusat jisim ialah kedudukan purata berpemberat jisim dan tidak semestinya berada di dalam jirim fizikal jasad tersebut.",
+        "zh": "对称性决定了均匀圆形垫圈的质心位于其同心圆的几何中心。尽管该点位于没有任何金属的中心开孔中，但质心是质量的加权平均位置，并不需要位于物体的实体材料内部。"
+      },
+      "answerLogic": {
+        "en": "By symmetry, every diameter passing through the center of the washer is a line of symmetry. The intersection of all these lines is the geometric center of the concentric circles. Because mass is distributed symmetrically in every radial direction around this central point, the weighted average position of the mass is at this exact geometric center, which lies in the open hole.",
+        "ms": "Secara simetri, setiap diameter yang melalui pusat sesendal ialah garis simetri. Persilangan semua garis ini ialah pusat geometri bulatan sepusat tersebut. Oleh kerana jisim diagihkan secara simetri dalam setiap arah jejari mengelilingi titik pusat ini, kedudukan purata berpemberat bagi jisim berada tepat pada pusat geometri ini, yang terletak di dalam lubang terbuka.",
+        "zh": "根据对称性，穿过垫圈中心的每条直径都是一条对称线。所有这些对称线的交点即为同心圆的几何中心。由于质量沿中心点在所有径向方向上对称分布，因此质量的加权平均位置恰好落在此几何中心，而该中心位于中心开孔中。"
+      },
+      "explanation": {
+        "en": "The center of mass is the mass-weighted average coordinate of all elements composing a body. For any object possessing uniform density and geometric symmetry, the center of mass must lie on every plane and axis of symmetry, placing it at the geometric center. In hollow, annular, or curved structures such as rings, hollow cylinders, and washers, this symmetry point frequently resides in empty space outside the solid material.",
+        "ms": "Pusat jisim ialah koordinat purata berpemberat jisim bagi semua unsur yang membentuk sesuatu jasad. Bagi mana-mana objek yang mempunyai ketumpatan seragam dan simetri geometri, pusat jisim mesti terletak pada setiap satah dan paksi simetri, meletakkannya pada pusat geometri. Dalam struktur berongga, anulus, atau melengkung seperti cincin, silinder berongga, dan sesendal, titik simetri ini sering berada di ruang kosong di luar bahan pepejal.",
+        "zh": "质心是构成物体的所有微元的质量加权平均坐标。对于任何具有均匀密度和几何对称性的物体，质心必须位于每个对称面和对称轴上，从而使其处于几何中心。在空心、环形或弯曲结构（例如圆环、空心圆柱体和垫圈）中，该对称点通常位于实体材料外部的空隙空间中。"
+      },
+      "misconceptions": [
+        "cm-must-lie-within-material"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-position-and-coordinates",
+        "prompt": {
+          "en": "Review how the position vector of the center of mass represents the mass-weighted average position of a system. When mass is distributed symmetrically about a central point, the balance position lies at that center by symmetry, regardless of whether physical matter occupies that coordinate.",
+          "ms": "Ulang kaji bagaimana vektor kedudukan pusat jisim mewakili kedudukan purata berpemberat jisim bagi suatu sistem. Apabila jisim diagihkan secara simetri di sekitar suatu titik pusat, kedudukan keseimbangan terletak pada pusat tersebut secara simetri, tanpa mengira sama ada jirim fizikal menduduki koordinat tersebut.",
+          "zh": "复习质心位置矢量的物理意义：质心代表系统质量的加权平均分布位置。当质量围绕中心点对称分布时，根据对称性，平衡位置必定位于该对称中心，而不论该坐标处是否存在实体物质。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking for the location of the center of mass of a uniform circular washer with a central hole, with four conceptual options.",
+        "ms": "Soalan aneka pilihan yang bertanyakan lokasi pusat jisim bagi sesendal bulat seragam yang mempunyai lubang tengah, dengan empat pilihan konseptual.",
+        "zh": "单选题，询问中心带孔的均匀圆形垫圈质心的位置，包含四个概念性选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-geom-center-empty",
+        "options": [
+          {
+            "id": "opt-geom-center-empty",
+            "label": {
+              "en": "At the geometric center of the central hole, in the empty space where no metal is present.",
+              "ms": "Pada pusat geometri lubang tengah, di ruang kosong di mana tiada logam wujud.",
+              "zh": "在中心孔的几何中心处，即没有任何金属存在的空隙空间中。"
+            }
+          },
+          {
+            "id": "opt-inside-metal-ring",
+            "label": {
+              "en": "At a point within the solid metal ring, because the center of mass must reside within the physical material of an object.",
+              "ms": "Pada suatu titik di dalam gelang logam pepejal, kerana pusat jisim mesti berada di dalam jirim fizikal sesuatu objek.",
+              "zh": "在实体金属环内的某个点上，因为质心必须位于物体的实体材料内部。"
+            },
+            "misconception": "cm-must-lie-within-material"
+          },
+          {
+            "id": "opt-outer-edge",
+            "label": {
+              "en": "Along the outer perimeter of the washer, where the mass elements have the largest radii.",
+              "ms": "Sepanjang perimeter luar sesendal, di mana unsur-unsur jisim mempunyai jejari terbesar.",
+              "zh": "沿着垫圈的外圆周边缘，因为该处质量元的半径最大。"
+            }
+          },
+          {
+            "id": "opt-undefined-hollow",
+            "label": {
+              "en": "The center of mass is undefined because an object with empty internal regions cannot possess a single balance point.",
+              "ms": "Pusat jisim tidak tertakrif kerana objek yang mempunyai rongga dalaman tidak boleh memiliki satu titik keseimbangan.",
+              "zh": "质心未定义，因为内部具有空隙区域的物体不能具有单一的平衡点。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-mod-cg-vs-cm-uniform-field",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate the center of gravity to the center of mass in a uniform gravitational field.",
+      "prompt": {
+        "en": "An irregularly shaped solid sculpture is suspended in an experimental chamber where the gravitational acceleration is strictly constant in both magnitude and direction throughout the entire volume. How does the position of the sculpture's center of gravity compare to the position of its center of mass?",
+        "ms": "Satu arca pepejal dengan bentuk tidak sekata digantung di dalam sebuah kebuk eksperimen di mana pecutan graviti adalah malar sepenuhnya dari segi magnitud dan arah di seluruh isi padu tersebut. Bagaimanakah kedudukan pusat graviti arca tersebut dibandingkan dengan kedudukan pusat jisimnya?",
+        "zh": "一座不规则形状的实心雕塑悬挂在一个实验室内，在该空间整个体积范围内，重力加速度的大小和方向均严格保持恒定。该雕塑的重心位置与质心位置之间有何关系？"
+      },
+      "hints": [
+        {
+          "en": "Recall the definition of the center of gravity: it is the single point through which the resultant gravitational force acts on an extended body.",
+          "ms": "Ingat kembali takrif pusat graviti: ia merupakan satu titik tunggal yang melaluinya daya graviti paduan bertindak ke atas suatu jasad lanjutan.",
+          "zh": "回顾重心的定义：它是合重力作用于刚体上的单一作用点。"
+        },
+        {
+          "en": "Each tiny mass element experiences a gravitational force equal to its mass multiplied by the local gravitational acceleration. If the gravitational acceleration is identical for every mass element, can that constant acceleration factor out of the net gravitational force and torque equations?",
+          "ms": "Setiap unsur jisim kecil mengalami daya graviti bersamaan dengan jisimnya didarabkan dengan pecutan graviti setempat. Jika pecutan graviti adalah sama bagi setiap unsur jisim, bolehkah pecutan malar itu dikeluarkan sebagai faktor sepunya daripada persamaan daya graviti dan tork bersih?",
+          "zh": "每个微小质量元所受的重力等于其质量乘以当地的重力加速度。如果每个质量元的重力加速度完全相同，该恒定加速度能否从合重力和合力矩方程中作为公因子提出？"
+        }
+      ],
+      "feedback": {
+        "en": "When the gravitational acceleration is uniform across an object, the gravitational force on each mass element is directly proportional to its mass by the same constant factor. Consequently, the effective point of action of the total gravitational force coincides exactly with the mass-weighted average position, meaning the center of gravity and the center of mass are at the identical location.",
+        "ms": "Apabila pecutan graviti adalah seragam merentasi suatu objek, daya graviti pada setiap unsur jisim adalah berkadar terus dengan jisimnya melalui faktor malar yang sama. Akibatnya, titik tindakan berkesan bagi jumlah daya graviti bertepatan tepat dengan kedudukan purata berpemberat jisim, yang bermaksud pusat graviti dan pusat jisim berada pada lokasi yang serupa.",
+        "zh": "当物体各处的重力加速度均匀时，每个质量元所受的重力都通过相同的恒定常数与其质量成正比。因此，总重力的有效作用点与质量加权平均位置完全重合，这意味着重心和质心位于完全相同的位置。"
+      },
+      "answerLogic": {
+        "en": "The total gravitational force is the integral of g dm, and the gravitational torque about the center of mass is the integral of r cross g dm. Because the vector g is constant everywhere throughout the object, it factors out of both integrals. The gravitational torque about the center of mass evaluates to zero, establishing that the center of gravity coincides exactly with the center of mass.",
+        "ms": "Jumlah daya graviti ialah kamiran g dm, dan tork graviti di sekitar pusat jisim ialah kamiran r darab silang g dm. Oleh kerana vektor g adalah malar di seluruh objek, ia dikeluarkan sebagai faktor daripada kedua-dua kamiran. Tork graviti di sekitar pusat jisim bernilai sifar, membuktikan bahawa pusat graviti bertepatan tepat dengan pusat jisim.",
+        "zh": "总重力是 g dm 的积分，绕质心的重力矩是 r 叉乘 g dm 的积分。因为矢量 g 在整个物体内处处恒定，所以它可以从两个积分中提出。绕质心的净重力矩为零，从而证明重心与质心完全重合。"
+      },
+      "explanation": {
+        "en": "The center of gravity is defined as the unique point through which the single equivalent gravitational force acts on an object. In any uniform gravitational field where the acceleration due to gravity is constant across the entire body, the gravitational weighting on every element is strictly proportional to mass alone. Therefore, the center of gravity is identical to the center of mass. Only across immense structures where the gravitational field varies significantly from one region to another do the center of gravity and center of mass diverge.",
+        "ms": "Pusat graviti ditakrifkan sebagai titik unik yang melaluinya daya graviti setara tunggal bertindak ke atas suatu objek. Dalam mana-mana medan graviti seragam di mana pecutan disebabkan graviti adalah malar di seluruh jasad, pemberat graviti pada setiap unsur adalah berkadar semata-mata dengan jisim. Oleh itu, pusat graviti adalah serupa dengan pusat jisim. Hanya merentasi struktur yang amat besar di mana medan graviti berbeza dengan ketara dari satu bahagian ke bahagian lain barulah pusat graviti dan pusat jisim berbeza.",
+        "zh": "重心定义为单一等效重力作用于物体上的唯一点。在重力加速度在整个物体上恒定的任何均匀重力场中，每个微元的重力权重严格仅与质量成正比。因此，重心与质心是完全相同的。只有在跨越重力场发生显著变化的宏大尺度结构中，重心和质心才会发生分离。"
+      },
+      "misconceptions": [
+        "cg-differs-from-cm-in-uniform-gravity"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "line-of-action-and-rotation",
+        "prompt": {
+          "en": "Recall that when an extended object is supported at a single point, it balances in any orientation without rotating only if the line of action of the supporting force passes through the point where gravity acts. In a uniform field, supporting an object at its center of mass eliminates all gravitational torque.",
+          "ms": "Ingat kembali bahawa apabila suatu objek lanjutan disokong pada satu titik tunggal, ia seimbang dalam sebarang orientasi tanpa berputar hanya jika garis tindakan daya sokongan melalui titik di mana graviti bertindak. Dalam medan yang seragam, menyokong objek pada pusat jisimnya menghapuskan semua tork graviti.",
+          "zh": "回顾当刚体在单点被支撑时，只有当支撑力的作用线穿过重力作用点时，刚体才能在任何取向下保持平衡而不发生转动。在均匀重力场中，在质心处支撑物体可在所有方向上消除重力矩。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking how the position of the center of gravity compares to the center of mass in a uniform gravitational field, with four conceptual choices.",
+        "ms": "Soalan aneka pilihan yang bertanyakan perbandingan kedudukan pusat graviti dengan pusat jisim dalam medan graviti seragam, dengan empat pilihan konseptual.",
+        "zh": "单选题，询问在均匀重力场中重心与质心位置的对比关系，包含四个概念性选项。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-coincide-uniform",
+        "options": [
+          {
+            "id": "opt-coincide-uniform",
+            "label": {
+              "en": "The center of gravity coincides exactly with the center of mass throughout the sculpture.",
+              "ms": "Pusat graviti bertepatan tepat dengan pusat jisim di seluruh arca tersebut.",
+              "zh": "在整个雕塑中，重心与质心完全重合。"
+            }
+          },
+          {
+            "id": "opt-cg-below-cm",
+            "label": {
+              "en": "The center of gravity is positioned distinctly lower than the center of mass because gravitational force pulls mass downward.",
+              "ms": "Pusat graviti berada lebih rendah dengan ketara daripada pusat jisim kerana daya graviti menarik jisim ke bawah.",
+              "zh": "重心明显低于质心，因为重力将质量向下拉动。"
+            },
+            "misconception": "cg-differs-from-cm-in-uniform-gravity"
+          },
+          {
+            "id": "opt-cg-above-cm",
+            "label": {
+              "en": "The center of gravity shifts above the center of mass to counteract rotation and maintain mechanical balance.",
+              "ms": "Pusat graviti beralih ke atas pusat jisim untuk menentang putaran dan mengekalkan keseimbangan mekanikal.",
+              "zh": "重心移至质心上方以抵消转动并保持机械平衡。"
+            }
+          },
+          {
+            "id": "opt-orientation-dependent",
+            "label": {
+              "en": "The center of gravity relocates to different internal coordinates whenever the sculpture is tilted, while the center of mass remains fixed.",
+              "ms": "Pusat graviti beralih ke koordinat dalaman yang berbeza setiap kali arca disengetkan, manakala pusat jisim kekal tidak berubah.",
+              "zh": "每当雕塑倾斜时，重心都会移动到不同的内部坐标位置，而质心保持固定。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-mod-bat-cut-mass-comparison",
+      "type": "mcq",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze mass differences between segments when an inhomogeneous object is divided at its center of mass.",
+      "prompt": {
+        "en": "A solid bronze alignment pin of uniform material density is machined with an asymmetric profile: one end forms a short, thick cylindrical head, while the other end extends into a long, slender guide rod. The pin balances horizontally when placed on a narrow support directly beneath its center of mass. If a technician cuts the pin vertically into two pieces along this balance line, how do the masses of the two segments compare?",
+        "ms": "Satu pin penjajaran gangsa pepejal dengan ketumpatan bahan seragam dimesin dengan profil tidak simetri: satu hujung membentuk kepala silinder yang pendek dan tebal, manakala satu hujung lagi memanjang menjadi rod panduan yang panjang dan langsing. Pin itu seimbang secara mendatar apabila diletakkan di atas sokongan sempit tepat di bawah pusat jisimnya. Jika seorang juruteknik memotong pin itu secara menegak kepada dua bahagian di sepanjang garisan keseimbangan ini, bagaimanakah perbandingan jisim kedua-dua segmen tersebut?",
+        "zh": "一个材质密度均匀的实心青铜定位销经过机械加工呈现出非对称轮廓：其一端为一个较短且粗的圆柱形头部，而另一端延伸为长而细长的导向杆。当把该定位销放置在其质心正下方的狭窄支架上时，它能保持水平平衡。如果技术人员沿着这条平衡线将定位销垂直切成两段，那么这两个部分的质量大小关系如何？"
+      },
+      "hints": [
+        {
+          "en": "Recall the condition for rotational balance about the center of mass: the sum of the mass moments (mass multiplied by distance from the pivot) on one side of the pivot must equal the sum on the opposite side.",
+          "ms": "Ingat kembali syarat bagi keseimbangan putaran di sekitar pusat jisim: hasil tambah momen jisim (jisim didarab dengan jarak dari pangsi) pada satu sisi pangsi mestilah sama dengan hasil tambah pada sisi yang bertentangan.",
+          "zh": "回忆绕质心转动平衡的条件：支点一侧的质量矩（质量乘以距支点的距离）之和必须等于另一侧的质量矩之和。"
+        },
+        {
+          "en": "Because the slender guide rod is much longer, its mass elements are distributed at a larger average distance from the cut line than those in the compact, thick head. To achieve equal balancing moments, does the piece with larger lever arms require more or less mass?",
+          "ms": "Oleh kerana rod panduan yang langsing adalah jauh lebih panjang, unsur-unsur jisimnya diagihkan pada jarak purata yang lebih besar dari garisan potongan berbanding unsur-unsur dalam kepala yang padat dan tebal. Untuk mencapai momen pengimbang yang sama, adakah bahagian dengan lengan tuas yang lebih besar memerlukan lebih banyak atau kurang jisim?",
+          "zh": "由于细长的导向杆要长得多，其质量元分布在距切割线更大的平均距离处，而紧凑粗大的头部则不然。为了达到相等的平衡力矩，具有更大平均力臂的那一段需要较多还是较少的质量？"
+        }
+      ],
+      "feedback": {
+        "en": "Because the pin balances at its center of mass, the net mass moment about the cut must be zero: the product of mass and average distance from the pivot is equal for both sides. The slender rod extends far from the cut, giving its mass a larger average lever arm. Consequently, a smaller mass on the slender side balances the larger mass of the compact, thick head situated closer to the cut.",
+        "ms": "Oleh kerana pin itu seimbang pada pusat jisimnya, momen jisim bersih di sekitar potongan mestilah sifar: hasil darab jisim dan jarak purata dari pangsi adalah sama bagi kedua-dua belah pihak. Rod yang langsing menjangkau jauh dari potongan, memberikan jisimnya lengan tuas purata yang lebih besar. Akibatnya, jisim yang lebih kecil pada sisi yang langsing mengimbangi jisim yang lebih besar bagi kepala yang padat dan tebal yang terletak lebih dekat dengan potongan.",
+        "zh": "因为定位销在其质心处保持平衡，所以绕切口的净质量矩必须为零：两侧的质量与其到支点平均距离的乘积相等。细长的杆延伸至距切口很远的地方，使其质量具有更大的平均力臂。因此，细长侧只需较小的质量，即可平衡距离切口更近、质量更大的紧凑粗大头部。"
+      },
+      "answerLogic": {
+        "en": "The center of mass is defined such that the integral of x dm relative to the balance point equals zero. Dividing the object at this point separates it into two pieces whose mass moments must balance: (M_thick)(d_thick) = (M_slender)(d_slender), where d represents the distance from the cut to each segment's individual center of mass. Because the slender rod is longer and extends further, d_slender is greater than d_thick. Therefore, M_thick must be greater than M_slender.",
+        "ms": "Pusat jisim ditakrifkan sedemikian rupa sehingga kamiran x dm relatif kepada titik keseimbangan adalah bersamaan dengan sifar. Membahagikan objek pada titik ini memisahkannya kepada dua bahagian yang momen jisimnya mesti seimbang: (M_tebal)(d_tebal) = (M_langsing)(d_langsing), dengan d mewakili jarak dari potongan ke pusat jisim individu bagi setiap segmen. Oleh kerana rod yang langsing adalah lebih panjang dan menjangkau lebih jauh, d_langsing adalah lebih besar daripada d_tebal. Oleh itu, M_tebal mestilah lebih besar daripada M_langsing.",
+        "zh": "质心的定义使得相对于平衡点的 x dm 积分等于零。在此点将物体切开会将其分为两段，两段的质量矩必须平衡：(M_粗)(d_粗) = (M_细)(d_细)，其中 d 代表从切口到各段各自质心的距离。由于细长杆更长且延伸更远，d_细 大于 d_粗。因此，M_粗 必须大于 M_细。"
+      },
+      "explanation": {
+        "en": "A common misconception is that dividing an object through its center of mass splits it into two pieces of equal mass. This is true only when an object exhibits geometric symmetry across the cut. The center of mass represents the balance point of mass moments (mass times position), not a median of total mass. A segment whose mass is clustered near the pivot requires greater total mass to produce the same torque as a segment whose mass is distributed far from the pivot.",
+        "ms": "Salah faham yang lazim ialah membahagikan sesuatu objek melalui pusat jisimnya akan membelahnya kepada dua bahagian yang sama jisim. Ini hanya benar apabila objek menunjukkan simetri geometri merentasi potongan tersebut. Pusat jisim mewakili titik keseimbangan momen jisim (jisim didarab kedudukan), bukannya median bagi jumlah jisim. Segmen yang jisimnya berkelompok berhampiran pangsi memerlukan jumlah jisim yang lebih besar untuk menghasilkan tork yang sama dengan segmen yang jisimnya diagihkan jauh dari pangsi.",
+        "zh": "一种常见的误区是认为穿过物体的质心切割必然会将其分成两个质量相等的部分。这仅在物体关于切面具有几何对称性时才成立。质心代表的是质量矩（质量乘以位置）的平衡点，而不是总质量的中位数。质量集中在靠近支点附近的区段需要更大的总质量，才能产生与质量分布在远离支点处的区段相同的力矩。"
+      },
+      "misconceptions": [
+        "equal-mass-split-at-cm"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "mass-and-density-distribution",
+        "prompt": {
+          "en": "Review how mass distribution and lever arm length affect rotational balance. Two masses on opposite sides of a pivot do not need to be equal if one is situated further from the pivot than the other.",
+          "ms": "Ulang kaji bagaimana taburan jisim dan panjang lengan tuas mempengaruhi keseimbangan putaran. Dua jisim pada sisi bertentangan pangsi tidak perlu sama jika satu jisim terletak lebih jauh dari pangsi berbanding yang satu lagi.",
+          "zh": "复习质量分布与力臂长度如何影响转动平衡。如果支点两侧的两个质量之一距离支点比另一个更远，则它们不需要相等就能保持平衡。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple choice question asking for a conceptual comparison between the masses of the two segments of an asymmetric brass pin cut at its center of mass.",
+        "ms": "Soalan aneka pilihan yang meminta perbandingan konseptual antara jisim dua segmen bagi pin gangsa tidak simetri yang dipotong pada pusat jisimnya.",
+        "zh": "单项选择题，要求对沿质心切开的非对称青铜定位销的两部分质量进行概念性比较。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-thicker-larger",
+        "options": [
+          {
+            "id": "opt-thicker-larger",
+            "label": {
+              "en": "The shorter, thick head has a larger mass than the longer, slender rod.",
+              "ms": "Kepala tebal yang pendek mempunyai jisim yang lebih besar daripada rod langsing yang panjang.",
+              "zh": "较短且粗的头部比长而细长的杆具有更大的质量。"
+            }
+          },
+          {
+            "id": "opt-equal-mass",
+            "label": {
+              "en": "Both segments have identical mass because the cut was made precisely at the center of mass.",
+              "ms": "Kedua-dua segmen mempunyai jisim yang serupa kerana potongan dibuat tepat pada pusat jisim.",
+              "zh": "两部分的质量完全相同，因为切口正好位于质心处。"
+            },
+            "misconception": "equal-mass-split-at-cm"
+          },
+          {
+            "id": "opt-slender-larger",
+            "label": {
+              "en": "The longer, slender rod has a larger mass because it spans a greater length.",
+              "ms": "Rod langsing yang panjang mempunyai jisim yang lebih besar kerana ia merentasi panjang yang lebih besar.",
+              "zh": "长而细长的杆具有更大的质量，因为它的长度更长。"
+            }
+          },
+          {
+            "id": "opt-impossible-to-tell",
+            "label": {
+              "en": "The mass comparison cannot be determined without additional geometric information about each segment.",
+              "ms": "Perbandingan jisim tidak dapat ditentukan tanpa maklumat geometri tambahan tentang setiap segmen.",
+              "zh": "若没有关于各部分的额外几何信息，则无法判断两者的质量大小。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-chal-nonuniform-density-rod",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict how unequal mass distribution shifts the center of mass position toward the more massive component.",
+      "prompt": {
+        "en": "A straight solid shaft of length L has a non-uniform composition such that its linear mass density increases steadily from the left end to the right end. If the shaft is balanced horizontally on a knife-edge pivot placed at its center of mass, where is this balance point located relative to the midpoint (geometric center), and how does the mass of the segment to the left of the pivot compare to the mass of the segment to the right?",
+        "ms": "Satu aci pepejal lurus dengan panjang L mempunyai komposisi tidak seragam yang mana ketumpatan jisim linearnya meningkat secara berterusan dari hujung kiri ke hujung kanan. Jika aci tersebut diimbangi secara mendatar di atas pivot tepi pisau yang diletakkan pada pusat jisimnya, di manakah titik imbangan ini terletak relatif kepada titik tengah (pusat geometri), dan bagaimanakah jisim segmen di sebelah kiri pivot berbanding dengan jisim segmen di sebelah kanan?",
+        "zh": "一根长度为 L 的直实体轴具有非均匀的组成结构，其线质量密度从左端向右端持续稳定增大。如果将该轴水平平衡放置在其质心处的刀口支点上，则该平衡点相对于中点（几何中心）位于何处？支点左侧轴段的质量与右侧轴段的质量相比又如何？"
+      },
+      "hints": [
+        {
+          "en": "Recall that the center of mass is a mass-weighted average position. Since the right half of the shaft contains heavier mass elements per unit length than the left half, in which direction must the weighted average shift?",
+          "ms": "Ingat kembali bahawa pusat jisim ialah kedudukan purata yang berwajaran jisim. Memandangkan separuh bahagian kanan aci mengandungi unsur jisim per unit panjang yang lebih berat daripada separuh bahagian kiri, ke arah manakah purata wajaran mesti beralih?",
+          "zh": "回顾质心是按质量加权的平均位置。由于轴的右半部分每单位长度包含比左半部分更重的质量微元，加权平均位置必然向哪个方向移动？"
+        },
+        {
+          "en": "At the balance pivot, the gravitational torque must balance. Mass elements on the shorter right segment are located closer to the pivot (smaller lever arms on average) than mass elements on the longer left segment. To produce an equal balance of moments, which side must have the greater total mass?",
+          "ms": "Pada pivot imbangan, tork graviti mesti seimbang. Unsur jisim pada segmen kanan yang lebih pendek terletak lebih dekat dengan pivot (lengan tuas purata lebih kecil) berbanding unsur jisim pada segmen kiri yang lebih panjang. Untuk menghasilkan imbangan momen yang sama, pihak manakah yang mesti mempunyai jumlah jisim yang lebih besar?",
+          "zh": "在平衡支点处，重力力矩必须平衡。与较长的左侧轴段上的质量微元相比，较短的右侧轴段上的微元距离支点更近（平均力臂更小）。为了产生相等的力矩平衡，哪一侧必须具有更大的总质量？"
+        }
+      ],
+      "feedback": {
+        "en": "The center of mass is shifted toward the denser end, placing it to the right of the midpoint. Furthermore, because mass elements on the longer left segment have larger average lever arms from the pivot, torque balance requires the shorter right segment to have a greater total mass.",
+        "ms": "Pusat jisim beralih ke arah hujung yang lebih tumpat, menempatkannya di sebelah kanan titik tengah. Tambahan pula, oleh sebab unsur-unsur jisim pada segmen kiri yang lebih panjang mempunyai lengan tuas purata yang lebih besar dari pivot, keseimbangan tork memerlukan segmen kanan yang lebih pendek mempunyai jumlah jisim yang lebih besar.",
+        "zh": "质心向密度更大的一端偏移，位于中点右侧。此外，由于较长左侧轴段上的质量微元到支点的平均力臂更大，力矩平衡要求较短的右侧轴段必须拥有更大的总质量。"
+      },
+      "answerLogic": {
+        "en": "The center of mass represents the mass-weighted average position. Because linear density increases monotonically toward the right, the center of mass lies to the right of the midpoint (x_CM > L/2). Balancing about this point requires the integral of distance times mass on each side to balance. Because the mass of the right segment is concentrated over a shorter distance from the pivot, its total mass must exceed that of the left segment to produce equal torque.",
+        "ms": "Pusat jisim mewakili kedudukan purata berwajaran jisim. Oleh sebab ketumpatan linear meningkat secara monotonik ke arah kanan, pusat jisim terletak di sebelah kanan titik tengah (x_CM > L/2). Mengimbangi sekitar titik ini memerlukan kamiran jarak didarab jisim pada setiap sisi adalah seimbang. Oleh sebab jisim segmen kanan tertumpu pada jarak yang lebih pendek dari pivot, jumlah jisimnya mesti melebihi jisim segmen kiri untuk menghasilkan tork yang sama.",
+        "zh": "质心代表按质量加权的平均位置。由于线密度向右单调增加，质心必然位于中点的右侧（x_CM > L/2）。绕该点平衡要求两侧距离乘以质量的积分保持平衡。由于右侧轴段的质量集中在距离支点更短的距离内，其总质量必须大于左侧轴段的质量，以产生相等的力矩。"
+      },
+      "explanation": {
+        "en": "A common misconception is that dividing an object at its center of mass separates it into two pieces of equal mass. In reality, the center of mass defines the balance point of gravitational torques. In any system with non-uniform density, the portion with mass elements clustered closer to the pivot must contain more total mass to balance the smaller mass acting along the longer lever arms on the opposite side.",
+        "ms": "Salah faham yang lazim ialah mempercayai bahawa membahagikan objek pada pusat jisimnya memisahkannya kepada dua bahagian dengan jisim yang sama. Realitinya, pusat jisim mentakrifkan titik imbangan bagi tork graviti. Dalam mana-mana sistem dengan ketumpatan tidak seragam, bahagian dengan unsur jisim yang berkelompok lebih dekat dengan pivot mesti mengandungi lebih banyak jumlah jisim untuk mengimbangi jisim yang lebih kecil yang bertindak sepanjang lengan tuas yang lebih panjang di sisi bertentangan.",
+        "zh": "常见的误解是认为在质心处将物体切开会将其分为质量相等的两块。事实上，质心定义的是重力矩的平衡点。在任何密度不均匀的系统中，质量微元更靠近支点的那一部分必须包含更大的总质量，以平衡另一侧在较长力臂上作用的较小质量。"
+      },
+      "misconceptions": [
+        "cm-always-at-geometric-center",
+        "equal-mass-split-at-cm"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "mass-and-density-distribution",
+        "prompt": {
+          "en": "Review how linear mass density represents varying mass distribution along an object and how unequal distribution shifts the balance point toward denser regions.",
+          "ms": "Ulang kaji bagaimana ketumpatan jisim linear mewakili taburan jisim yang berbeza sepanjang sesuatu objek dan bagaimana taburan tidak seragam mengalihkan titik imbangan ke arah kawasan yang lebih tumpat.",
+          "zh": "复习线质量密度如何表示沿物体的可变质量分布，以及不均匀分布如何将平衡点移向更密集的区域。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four conceptual options evaluating the position of the center of mass and the mass division for a shaft with linear mass density increasing from left to right.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan konseptual yang menilai kedudukan pusat jisim dan pembahagian jisim bagi aci dengan ketumpatan jisim linear yang meningkat dari kiri ke kanan.",
+        "zh": "包含四个概念选项的多项选择题，用于评估线质量密度从左向右递增的轴的质心位置及两侧质量划分。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "The center of mass is to the right of the midpoint, and the portion to the right of the center of mass has a greater mass than the portion to the left.",
+              "ms": "Pusat jisim berada di sebelah kanan titik tengah, dan bahagian di sebelah kanan pusat jisim mempunyai jisim yang lebih besar daripada bahagian di sebelah kiri.",
+              "zh": "质心位于中点的右侧，且质心右侧部分的质量大于左侧部分的质量。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "The center of mass is located precisely at the midpoint, dividing the shaft into two segments of identical mass.",
+              "ms": "Pusat jisim terletak tepat di titik tengah, membahagikan aci kepada dua segmen dengan jisim yang sama.",
+              "zh": "质心精确位于中点处，将轴平分为两段质量完全相等的部分。"
+            },
+            "misconception": "cm-always-at-geometric-center"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The center of mass is to the right of the midpoint, but it divides the shaft into two segments of identical mass.",
+              "ms": "Pusat jisim berada di sebelah kanan titik tengah, tetapi ia membahagikan aci kepada dua segmen dengan jisim yang sama.",
+              "zh": "质心位于中点的右侧，但它将轴分成了两段质量完全相等的部分。"
+            },
+            "misconception": "equal-mass-split-at-cm"
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The center of mass is to the left of the midpoint, and the portion to the left has a greater mass than the portion to the right.",
+              "ms": "Pusat jisim berada di sebelah kiri titik tengah, dan bahagian di sebelah kiri mempunyai jisim yang lebih besar daripada bahagian di sebelah kanan.",
+              "zh": "质心位于中点的左侧，且左侧部分的质量大于右侧部分的质量。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-chal-hollow-geometry-cm",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Determine the center of mass location for symmetric objects of uniform density using symmetry principles.",
+      "prompt": {
+        "en": "Consider two objects of uniform density: a thin circular hoop and a bracket formed by bending a uniform metallic strip into a symmetric U-shape. By applying symmetry principles, what can be concluded about the location of the center of mass for each object?",
+        "ms": "Pertimbangkan dua objek dengan ketumpatan seragam: gelung bulat nipis dan pendakap yang dibentuk dengan membengkokkan jalur logam seragam menjadi bentuk U yang simetri. Dengan menggunakan prinsip simetri, apakah yang boleh disimpulkan tentang lokasi pusat jisim bagi setiap objek?",
+        "zh": "考虑两个密度均匀的物体：一个细圆环和一个由均匀金属条弯曲成对称U形的支架。应用对称性原理，关于每个物体的质心位置可以得出什么结论？"
+      },
+      "hints": [
+        {
+          "en": "Recall the symmetry principle: the center of mass of any symmetric object of uniform density must lie on every line and plane of symmetry.",
+          "ms": "Ingat kembali prinsip simetri: pusat jisim bagi mana-mana objek simetri dengan ketumpatan seragam mesti terletak pada setiap garis dan satah simetri.",
+          "zh": "回忆对称性原理：任何均匀密度的对称物体的质心必须位于每条对称线和每个对称面上。"
+        },
+        {
+          "en": "Determine where the symmetry axes intersect for the circular hoop and where the bilateral symmetry axis lies for the U-shaped bracket. Must that intersection point coincide with physical atoms of the body?",
+          "ms": "Tentukan di mana paksi simetri bersilang bagi gelung bulat dan di mana paksi simetri dua hala terletak bagi pendakap berbentuk U. Adakah titik persilangan itu mesti bertepatan dengan atom fizikal jasad?",
+          "zh": "确定圆环的对称轴在何处相交，以及U形支架的左右对称轴位于何处。该交点是否必须与物体的物理原子重合？"
+        }
+      ],
+      "feedback": {
+        "en": "The center of mass is dictated by symmetry and lies at the intersection of all symmetry axes and planes. For both the uniform circular hoop and the U-shaped bracket, this intersection falls in empty space outside the solid material.",
+        "ms": "Pusat jisim ditentukan oleh simetri dan terletak pada persilangan semua paksi dan satah simetri. Bagi kedua-dua gelung bulat seragam dan pendakap berbentuk U, persilangan ini berada di ruang kosong di luar jirim pepejal.",
+        "zh": "质心由对称性决定，并位于所有对称轴和对称面的交点处。对于均匀细圆环和U形支架，该交点均落在实体材料外部的空隙空间中。"
+      },
+      "answerLogic": {
+        "en": "For a uniform circular hoop, every diameter is an axis of symmetry, meaning the center of mass must lie at the geometric center of the circle, where no physical matter is present. For a symmetric U-shaped bracket, the plane of symmetry runs halfway between the two parallel legs, and the weighted average position of the mass elements places the center of mass along this axis in the open space between the arms. Hence, neither center of mass is required to lie inside solid material.",
+        "ms": "Bagi gelung bulat seragam, setiap diameter ialah paksi simetri, bermakna pusat jisim mesti terletak di pusat geometri bulatan, di mana tiada jirim fizikal wujud. Bagi pendakap berbentuk U yang simetri, satah simetri berada di tengah-tengah antara dua lengan selari, dan kedudukan purata berwajaran unsur-unsur jisim meletakkan pusat jisim sepanjang paksi ini di ruang terbuka antara lengan. Oleh itu, kedua-dua pusat jisim tidak perlu berada di dalam jirim pepejal.",
+        "zh": "对于均匀细圆环，每条直径都是对称轴，这意味着质心必须位于圆的几何中心，而那里不存在任何物理物质。对于对称的U形支架，对称面位于两个平行侧臂正中间，质量微元的加权平均位置使质心沿该对称轴落在两臂之间的开阔空间中。因此，这两个物体的质心都不需要位于实体材料内部。"
+      },
+      "explanation": {
+        "en": "The center of mass is an average mathematical coordinate representing how an object's mass is distributed in space. It is not an actual particle or physical anchor point. In curved, hollow, or ring-shaped bodies of uniform density, the symmetry axes frequently intersect in regions where no solid matter exists, yet the object translates as though its entire mass were concentrated at that empty point.",
+        "ms": "Pusat jisim ialah koordinat matematik purata yang mewakili bagaimana jisim sesuatu objek diagihkan di dalam ruang. Ia bukannya zarah sebenar atau titik sauh fizikal. Dalam jasad melengkung, berongga, atau berbentuk cincin dengan ketumpatan seragam, paksi simetri sering bersilang di kawasan di mana tiada jirim pepejal wujud, namun jasad tersebut bertranslasi seolah-olah keseluruhan jisimnya tertumpu pada titik kosong tersebut.",
+        "zh": "质心是一个表示物体质量在空间中如何分布的数学平均坐标。它不是一个实际的粒子或物理固定点。在均匀密度的弯曲、中空或环形物体中，对称轴经常相交在不存在实体物质的区域，然而物体的平动行为就如同其全部质量都集中在该空无一物的点上一样。"
+      },
+      "misconceptions": [
+        "cm-must-lie-within-material"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-position-and-coordinates",
+        "prompt": {
+          "en": "Review how position vectors define spatial points relative to an origin and how the weighted average of multiple coordinates can yield a location in open space outside the objects themselves.",
+          "ms": "Ulang kaji bagaimana vektor kedudukan mentakrifkan titik ruang relatif kepada asalan dan bagaimana purata berwajaran beberapa koordinat boleh menghasilkan lokasi di ruang terbuka di luar objek itu sendiri.",
+          "zh": "复习位置矢量如何相对于原点定义空间点，以及多个坐标的加权平均如何得出位于物体本身外部的开阔空间中的位置。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four conceptual options asking whether the center of mass of a uniform circular hoop and a uniform U-shaped bracket must reside within the physical material.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan konseptual yang bertanyakan sama ada pusat jisim bagi gelung bulat seragam dan pendakap berbentuk U seragam mesti berada di dalam jirim fizikal.",
+        "zh": "包含四个概念选项的多项选择题，询问均匀细圆环和均匀U形支架的质心是否必须位于物理材料内部。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "Each object has a center of mass whose location is dictated by its symmetry, and for both objects this point lies in empty space entirely outside the solid material.",
+              "ms": "Setiap objek mempunyai pusat jisim yang lokasinya ditentukan oleh simetrinya, dan bagi kedua-dua objek titik ini terletak di ruang kosong sepenuhnya di luar jirim pepejal.",
+              "zh": "每个物体的质心位置均由其对称性决定，且对于这两个物体，该点都位于完全在实体材料外部的空隙空间中。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "Both objects must have their center of mass situated within their solid physical material, because mass cannot average to a point where no matter exists.",
+              "ms": "Kedua-dua objek mesti mempunyai pusat jisim yang terletak di dalam jirim fizikal pepejalnya, kerana jisim tidak boleh dipuratakan kepada titik di mana tiada jirim wujud.",
+              "zh": "两个物体的质心都必须位于其实体物理材料内部，因为质量不可能平均到不存在物质的点上。"
+            },
+            "misconception": "cm-must-lie-within-material"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The circular hoop has its center of mass at its empty center due to complete radial symmetry, but the open U-shape forces its center of mass to remain inside the solid base of the bracket.",
+              "ms": "Gelung bulat mempunyai pusat jisim di pusat kosongnya disebabkan oleh simetri jejari yang lengkap, tetapi bentuk U yang terbuka memaksa pusat jisimnya kekal di dalam tapak pepejal pendakap.",
+              "zh": "由于完全的径向对称性，圆环的质心位于其空的中心，但开放的U形迫使其质心必须保留在支架的实体基底内部。"
+            }
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "Neither object has a well-defined center of mass because symmetry principles only apply to solid continuous objects without hollow openings.",
+              "ms": "Kedua-dua objek tidak mempunyai pusat jisim yang tertakrif dengan baik kerana prinsip simetri hanya terpakai kepada objek pepejal berterusan tanpa bukaan berongga.",
+              "zh": "这两个物体都没有明确定义的质心，因为对称性原理仅适用于没有中空开口的实体连续物体。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mcq-chal-suspension-lines-cg",
+      "type": "mcq",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate the center of gravity to the center of mass in a uniform gravitational field.",
+      "prompt": {
+        "en": "A researcher suspends an irregularly shaped flat metal plate freely from point A and draws a vertical plumb line through it. She then suspends it freely from point B and draws a second vertical plumb line. The plate is next rested on a frictionless horizontal table. What is true regarding the intersection of these two lines and the plate's motion when a single horizontal force is applied along a line passing through this intersection?",
+        "ms": "Seorang penyelidik menggantung plat logam rata yang berbentuk tidak sekata secara bebas dari titik A dan melukis garis ladung menegak melaluinya. Dia kemudian menggantungnya secara bebas dari titik B dan melukis garis ladung menegak kedua. Plat itu seterusnya diletakkan di atas meja mendatar tanpa geseran. Apakah yang benar mengenai persilangan kedua-dua garis ini dan gerakan plat apabila satu daya mendatar dikenakan di sepanjang garis yang melalui persilangan ini?",
+        "zh": "一名研究人员将一块形状不规则的平金属板从 A 点自由悬挂，并画出一条穿过该点的铅垂线。然后她将其从 B 点自由悬挂并画出第二条铅垂线。接着将该板平放在无摩擦的水平桌面上。关于这两条线的交点以及当沿着穿过该交点的直线施加单一水平力时金属板的运动，下列哪项说法是正确的？"
+      },
+      "hints": [
+        {
+          "en": "Recall the condition under which the center of gravity coincides with the center of mass: when the acceleration due to gravity g is constant across the entire body.",
+          "ms": "Ingat kembali syarat yang membolehkan pusat graviti bertepatan dengan pusat jisim: apabila pecutan akibat graviti g adalah malar merentasi keseluruhan jasad.",
+          "zh": "回忆重心与质心重合的条件：当整个物体上的重力加速度 g 恒定时。"
+        },
+        {
+          "en": "Consider how an unconstrained object responds to an applied force: if the line of action passes directly through the center of mass, what happens to rotational motion?",
+          "ms": "Pertimbangkan bagaimana objek yang tidak terikat bertindak balas terhadap daya yang dikenakan: jika garis tindakan melalui tepat pusat jisim, apakah yang berlaku kepada gerakan putaran?",
+          "zh": "考虑未受约束的物体对施加的外力如何响应：如果力的作用线直接穿过质心，转动运动会发生什么？"
+        }
+      ],
+      "feedback": {
+        "en": "In a uniform gravitational field, the center of gravity coincides with the center of mass. An external force whose line of action passes directly through this point creates no torque about the center of mass, resulting in pure translational acceleration without rotation.",
+        "ms": "Dalam medan graviti yang seragam, pusat graviti bertepatan dengan pusat jisim. Daya luar yang garis tindakannya melalui tepat titik ini tidak menghasilkan tork sekitar pusat jisim, menghasilkan pecutan translasi tulen tanpa putaran.",
+        "zh": "在均匀重力场中，重心与质心完全重合。作用线直接穿过该点的外力对质心不产生任何力矩，从而产生纯平动加速而不会引起转动。"
+      },
+      "answerLogic": {
+        "en": "When an object is hung freely from any pivot point, the vertical plumb line through the pivot passes through the center of gravity because the gravitational torque vanishes only when the center of gravity lies directly beneath the support. Two non-parallel lines intersect at the center of gravity. Since the gravitational field is uniform across the plate, the center of gravity is identical to the center of mass. When an external force is applied on a flat surface along a line passing through the center of mass, its lever arm relative to the center of mass is zero, so the net torque is zero and the plate moves with purely translational motion.",
+        "ms": "Apabila sesuatu objek digantung secara bebas dari mana-mana titik pivot, garis ladung menegak melalui pivot melalui pusat graviti kerana tork graviti menjadi sifar hanya apabila pusat graviti berada tepat di bawah sokongan. Dua garis yang tidak selari bersilang pada pusat graviti. Memandangkan medan graviti adalah seragam merentasi plat, pusat graviti adalah sama dengan pusat jisim. Apabila daya luar dikenakan di atas permukaan mendatar sepanjang garis yang melalui pusat jisim, lengan tuasnya relatif kepada pusat jisim adalah sifar, jadi tork bersih adalah sifar dan plat bergerak dengan gerakan translasi tulen.",
+        "zh": "当物体从任意支点自由悬挂时，穿过支点的铅垂线必定穿过重心，因为只有当重心直接位于支点正下方时重力力矩才为零。两条不平行的铅垂线相交于重心。由于整个平板上的重力场是均匀的，重心与质心完全一致。当在水平表面上沿穿过质心的直线施加外力时，其相对于质心的力臂为零，因此净力矩为零，平板进行纯平动运动。"
+      },
+      "explanation": {
+        "en": "Gravity acts on each infinitesimal mass element dm with a force of (dm)g. When g is constant across the entire body, the resultant gravitational force behaves as if total weight acts at the center of mass, meaning the center of gravity and center of mass coincide. Furthermore, applying an external force directed through the center of mass produces linear acceleration of the center of mass without exerting any torque, proving that not all applied forces induce rotation.",
+        "ms": "Graviti bertindak pada setiap unsur jisim infinitesimal dm dengan daya (dm)g. Apabila g adalah malar merentasi keseluruhan jasad, daya graviti paduan bertindak seolah-olah berat keseluruhan bertindak pada pusat jisim, bermakna pusat graviti dan pusat jisim bertepatan. Tambahan pula, mengenakan daya luar yang ditujukan melalui pusat jisim menghasilkan pecutan linear pusat jisim tanpa mengenakan sebarang tork, membuktikan bahawa tidak semua daya yang dikenakan menyebabkan putaran.",
+        "zh": "重力以大小为 (dm)g 的力作用于每个无限小质量微元 dm。当整个物体上的 g 恒定时，合重力的表现就如同总重力作用在质心上一样，这意味着重心和质心完全重合。此外，施加穿过质心的外力会产生质心的线加速度而不产生任何力矩，这证明并非所有施加的外力都会引起转动。"
+      },
+      "misconceptions": [
+        "cg-differs-from-cm-in-uniform-gravity",
+        "force-at-any-point-causes-rotation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "line-of-action-and-rotation",
+        "prompt": {
+          "en": "Recall how the line of action of an applied force relative to the center of mass determines whether an extended body translates purely or undergoes rotation.",
+          "ms": "Ingat kembali bagaimana garis tindakan daya yang dikenakan relatif kepada pusat jisim menentukan sama ada jasad lanjutan bertranslasi secara tulen atau mengalami putaran.",
+          "zh": "回顾施加的外力相对于质心的作用线如何决定刚体是进行纯平动还是发生转动。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Multiple-choice question with four conceptual options relating the intersection of suspension plumb lines to the center of gravity and center of mass, and evaluating the rotational outcome of a directed force.",
+        "ms": "Soalan aneka pilihan dengan empat pilihan konseptual yang mengaitkan persilangan garis ladung penggantungan dengan pusat graviti dan pusat jisim, serta menilai hasil putaran bagi daya terarah.",
+        "zh": "包含四个概念选项的多项选择题，涉及悬挂铅垂线交点与重心、质心的关系，并评估定向作用力下的转动结果。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "answerKey": {
+        "correct": "opt-a",
+        "options": [
+          {
+            "id": "opt-a",
+            "label": {
+              "en": "Because the gravitational field is uniform across the plate, the center of gravity coincides identically with the center of mass, and a horizontal force directed along a line through this point accelerates the plate translationally without causing any rotation.",
+              "ms": "Oleh sebab medan graviti adalah seragam merentasi plat, pusat graviti bertepatan sepenuhnya dengan pusat jisim, dan daya mendatar yang ditujukan sepanjang garis melalui titik ini memecutkan plat secara translasi tanpa menyebabkan sebarang putaran.",
+              "zh": "由于整个平板上的重力场是均匀的，重心与质心完全重合，且沿着穿过该点的直线施加的水平力会使平板发生纯平动加速而不产生任何转动。"
+            }
+          },
+          {
+            "id": "opt-b",
+            "label": {
+              "en": "The plumb lines locate only the center of gravity, which remains physically distinct and separated from the center of mass even in a uniform field, so pushing through this point will still induce rotation.",
+              "ms": "Garis-garis ladung hanya mencari pusat graviti, yang kekal berbeza secara fizikal dan terpisah daripada pusat jisim walaupun dalam medan seragam, jadi menolak melalui titik ini masih akan menghasilkan putaran.",
+              "zh": "铅垂线仅能确定重心，即使在均匀重力场中重心与质心在物理上仍然不同且分离，因此沿该点推动仍会引起转动。"
+            },
+            "misconception": "cg-differs-from-cm-in-uniform-gravity"
+          },
+          {
+            "id": "opt-c",
+            "label": {
+              "en": "The intersection correctly locates the center of mass in a uniform field, but applying a single external force anywhere on an unpivoted extended body will always cause it to rotate.",
+              "ms": "Persilangan tersebut mencari pusat jisim dengan betul dalam medan seragam, tetapi mengenakan satu daya luar di mana-mana titik pada jasad lanjutan yang tidak berpasak akan sentiasa menyebabkannya berputar.",
+              "zh": "在均匀场中该交点确实精确确定了质心，但在未固定的刚体上的任意位置施加单外力都会始终导致其发生转动。"
+            },
+            "misconception": "force-at-any-point-causes-rotation"
+          },
+          {
+            "id": "opt-d",
+            "label": {
+              "en": "The plumb-line intersection method works only for symmetric objects, meaning the intersection for this irregular plate corresponds to neither the center of mass nor the center of gravity.",
+              "ms": "Kaedah persilangan garis ladung hanya berfungsi untuk objek simetri, bermakna persilangan bagi plat tidak sekata ini tidak sepadan dengan pusat jisim mahupun pusat graviti.",
+              "zh": "铅垂线相交法仅适用于对称物体，这意味着对于这种不规则板，该交点既不对应质心也不对应重心。"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "int-easy-line-of-action-motion",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish rotational from pure translational motion when a force is applied at versus away from the center of mass.",
+      "prompt": {
+        "en": "A rigid object rests on a frictionless horizontal floor. Classify each applied force scenario by the type of motion it produces.",
+        "ms": "Satu jasad tegar berada dalam keadaan pegun di atas lantai mendatar tanpa geseran. Kelaskan setiap senario daya yang dikenakan mengikut jenis gerakan yang dihasilkannya.",
+        "zh": "一个刚体静止在无摩擦的水平地面上。根据所产生的运动类型对每种施加外力的情形进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Consider whether an external force directed through the center of mass can exert any turning effect about that point.",
+          "ms": "Pertimbangkan sama ada daya luar yang ditujukan melalui pusat jisim boleh mengenakan sebarang kesan pemutaran pada titik tersebut.",
+          "zh": "考虑穿过质心的外力是否会对该点产生任何转动效应。"
+        },
+        {
+          "en": "A force produces rotation about the center of mass only when its line of action is separated from the center of mass by a non-zero perpendicular distance.",
+          "ms": "Daya menghasilkan putaran pada pusat jisim hanya apabila garis tindakannya dipisahkan daripada pusat jisim oleh suatu jarak serenjang bukan sifar.",
+          "zh": "只有当外力的作用线与质心之间存在非零垂直距离时，力才会使物体绕质心发生转动。"
+        }
+      ],
+      "feedback": {
+        "en": "Forces directed through the center of mass produce pure translation without rotation, whereas forces applied off-center produce both translational acceleration and rotation.",
+        "ms": "Daya yang ditujukan melalui pusat jisim menghasilkan translasi tulen tanpa putaran, manakala daya yang dikenakan di luar pusat menghasilkan kedua-dua pecutan translasi dan putaran.",
+        "zh": "通过质心的力仅产生纯平动而无转动，而偏离质心施加的力则同时产生平动加速度和转动。"
+      },
+      "answerLogic": {
+        "en": "When a force acts directly along a line passing through the center of mass, its lever arm is zero, resulting in zero torque and pure translational motion. When a force acts along a line above or below the center of mass, the non-zero lever arm produces a net torque that induces rotation alongside translation.",
+        "ms": "Apabila daya bertindak tepat di sepanjang garis yang melalui pusat jisim, lengan tuasnya adalah sifar, menghasilkan tork sifar dan gerakan translasi tulen. Apabila daya bertindak di sepanjang garis di atas atau di bawah pusat jisim, lengan tuas bukan sifar menghasilkan tork bersih yang mendorong putaran di samping translasi.",
+        "zh": "当力直接沿着穿过质心的直线作用时，其力臂为零，因此力矩为零，产生纯平动。当力沿着质线上方或下方的直线作用时，非零力臂会产生净力矩，从而在平动的同时诱发转动。"
+      },
+      "explanation": {
+        "en": "According to the particle model of a system, an external force always accelerates the center of mass as if all mass were concentrated there. If the force acts along a line passing through the center of mass, no torque is created about that point, so the body moves linearly in the direction of the force without rotating. If the line of action does not pass through the center of mass, the resulting torque causes the object to rotate as its center of mass accelerates.",
+        "ms": "Menurut model zarah bagi suatu sistem, daya luar sentiasa memecutkan pusat jisim seolah-olah semua jisim tertumpu di situ. Jika daya bertindak di sepanjang garis yang melalui pusat jisim, tiada tork dihasilkan pada titik itu, jadi jasad bergerak secara linear dalam arah daya tanpa berputar. Jika garis tindakan tidak melalui pusat jisim, tork yang terhasil menyebabkan objek berputar semasa pusat jisimnya memecut.",
+        "zh": "根据系统的质点模型，外力总是使质心加速，如同所有质量都集中在质心一样。如果力的作用线穿过质心，对该点不会产生力矩，因此物体沿力的方向作直线平动而不发生转动。如果作用线未穿过质心，所产生的力矩会导致物体在质心加速的同时发生转动。"
+      },
+      "misconceptions": [
+        "force-at-any-point-causes-rotation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "line-of-action-and-rotation",
+        "prompt": {
+          "en": "Review how the perpendicular distance between the line of action of a force and the center of mass determines whether rotation occurs.",
+          "ms": "Ulang kaji bagaimana jarak serenjang antara garis tindakan daya dengan pusat jisim menentukan sama ada putaran berlaku.",
+          "zh": "复习力的作用线与质心之间的垂直距离如何决定是否发生转动。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Classify three force application scenarios into two categories: pure translational motion without rotation, and combined translational and rotational motion.",
+        "ms": "Kelaskan tiga senario aplikasi daya kepada dua kategori: gerakan translasi tulen tanpa putaran, dan gabungan gerakan translasi dan putaran.",
+        "zh": "将三种施力情境分入两个类别：纯平动无转动，以及平动与转动的结合运动。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-pure-translation",
+            "label": {
+              "en": "Pure translational motion (no rotation)",
+              "ms": "Gerakan translasi tulen (tanpa putaran)",
+              "zh": "纯平动（无转动）"
+            }
+          },
+          {
+            "id": "target-translation-and-rotation",
+            "label": {
+              "en": "Combined translational and rotational motion",
+              "ms": "Gabungan gerakan translasi dan putaran",
+              "zh": "平动与转动的结合运动"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-force-through-cm",
+            "label": {
+              "en": "A single horizontal force applied directly along a line passing through the center of mass",
+              "ms": "Satu daya mendatar yang dikenakan tepat di sepanjang garis yang melalui pusat jisim",
+              "zh": "沿着直接穿过质心的直线施加的单个水平力"
+            }
+          },
+          {
+            "id": "item-force-above-cm",
+            "label": {
+              "en": "A single horizontal force applied along a line passing above the center of mass",
+              "ms": "Satu daya mendatar yang dikenakan di sepanjang garis yang melalui bahagian atas pusat jisim",
+              "zh": "沿着穿过质线上方的直线施加的单个水平力"
+            }
+          },
+          {
+            "id": "item-force-below-cm",
+            "label": {
+              "en": "A single horizontal force applied along a line passing below the center of mass",
+              "ms": "Satu daya mendatar yang dikenakan di sepanjang garis yang melalui bahagian bawah pusat jisim",
+              "zh": "沿着穿过质线下方的直线施加的单个水平力"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-force-through-cm",
+            "targetId": "target-pure-translation"
+          },
+          {
+            "itemId": "item-force-above-cm",
+            "targetId": "target-translation-and-rotation"
+          },
+          {
+            "itemId": "item-force-below-cm",
+            "targetId": "target-translation-and-rotation"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "force-at-any-point-causes-rotation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-force-through-cm",
+            "targetId": "target-translation-and-rotation"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-easy-two-body-cm-shift",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict how unequal mass distribution shifts the center of mass position toward the more massive component.",
+      "prompt": {
+        "en": "A light, rigid horizontal rod extends along the x-axis from position x = 0 at its left end to position x = L at its right end. Two particles are fixed to the rod: Particle 1 at x = 0 and Particle 2 at x = L. Arrange the following mass configurations in order of the x-coordinate of the center of mass, from smallest value (closest to x = 0) to largest value (closest to x = L).",
+        "ms": "Satu rod mendatar tegar yang ringan membentang di sepanjang paksi-x dari kedudukan x = 0 pada hujung kirinya ke kedudukan x = L pada hujung kanannya. Dua zarah dipasang pada rod tersebut: Zarah 1 pada x = 0 dan Zarah 2 pada x = L. Susun konfigurasi jisim berikut mengikut tertib koordinat-x pusat jisim, daripada nilai terkecil (paling hampir dengan x = 0) kepada nilai terbesar (paling hampir dengan x = L).",
+        "zh": "一根轻质刚性水平杆沿 x 轴延伸，左端位于 x = 0，右端位于 x = L。两个质点固定在杆上：质点 1 位于 x = 0，质点 2 位于 x = L。将以下质量配置按质心 x 坐标从小到大（从最靠近 x = 0 到最靠近 x = L）进行排序。"
+      },
+      "hints": [
+        {
+          "en": "Recall that the center of mass of a pair of particles always lies on the line connecting them and is closer to the particle with greater mass.",
+          "ms": "Ingat kembali bahawa pusat jisim bagi sepasang zarah sentiasa terletak pada garis yang menyambungkannya dan lebih dekat dengan zarah yang mempunyai jisim lebih besar.",
+          "zh": "回顾两质点系统的质心始终位于连接它们的直线上，且更靠近质量较大的质点。"
+        },
+        {
+          "en": "When the two masses are equal, the center of mass is midway at x = L/2. If one particle is heavier, the center of mass is shifted toward that particle.",
+          "ms": "Apabila kedua-dua jisim adalah sama, pusat jisim berada di tengah-tengah pada x = L/2. Jika satu zarah lebih berat, pusat jisim beralih ke arah zarah tersebut.",
+          "zh": "当两个质量相等时，质心位于中点 x = L/2。如果某个质点更重，质心就会向该质点偏移。"
+        }
+      ],
+      "feedback": {
+        "en": "The center of mass represents the average position of the system's mass. When Particle 1 is heavier, the center of mass shifts toward x = 0; when both masses are equal, it sits at x = L/2; when Particle 2 is heavier, it shifts toward x = L.",
+        "ms": "Pusat jisim mewakili kedudukan purata jisim sistem. Apabila Zarah 1 lebih berat, pusat jisim beralih ke arah x = 0; apabila kedua-dua jisim sama, ia berada pada x = L/2; apabila Zarah 2 lebih berat, ia beralih ke arah x = L.",
+        "zh": "质心代表系统质量的平均位置。当质点 1 较重时，质心偏向 x = 0；两质量相等时，质心位于 x = L/2；当质点 2 较重时，质心偏向 x = L。"
+      },
+      "answerLogic": {
+        "en": "The center of mass position is the mass-weighted average of the individual coordinates. Having Particle 1 substantially heavier than Particle 2 places the center of mass closest to x = 0. Equal masses place the center of mass at the geometric center x = L/2. Having Particle 2 substantially heavier than Particle 1 places the center of mass closest to x = L.",
+        "ms": "Kedudukan pusat jisim ialah purata berpemberat jisim bagi koordinat individu. Menjadikan Zarah 1 jauh lebih berat daripada Zarah 2 meletakkan pusat jisim paling hampir dengan x = 0. Jisim yang sama meletakkan pusat jisim pada pusat geometri x = L/2. Menjadikan Zarah 2 jauh lebih berat daripada Zarah 1 meletakkan pusat jisim paling hampir dengan x = L.",
+        "zh": "质心位置是各坐标的质量加权平均值。质点 1 远重于质点 2 时，质心最靠近 x = 0。两质量相等时，质心位于几何中心 x = L/2。质点 2 远重于质点 1 时，质心最靠近 x = L。"
+      },
+      "explanation": {
+        "en": "For two particles along a line, the center of mass is located at the mass-weighted average position. If both masses are equal, the center of mass lies exactly midway between them. When the masses are unequal, the center of mass always shifts toward the more massive particle. Consequently, placing greater mass on the left shifts the center of mass toward x = 0, while placing greater mass on the right shifts it toward x = L.",
+        "ms": "Bagi dua zarah di sepanjang satu garis, pusat jisim terletak pada kedudukan purata berpemberat jisim. Jika kedua-dua jisim adalah sama, pusat jisim terletak tepat di tengah-tengah antara mereka. Apabila jisim tidak sama, pusat jisim sentiasa beralih ke arah zarah yang lebih besar jisimnya. Oleh itu, meletakkan jisim yang lebih besar di sebelah kiri mengalihkan pusat jisim ke arah x = 0, manakala meletakkan jisim yang lebih besar di sebelah kanan mengalihkannya ke arah x = L.",
+        "zh": "对于线上的两个质点，质心位于质量加权平均位置。若两质量相等，质心恰好位于正中。当质量不相等时，质心总是向质量较大的质点偏移。因此，在左侧放置较大质量会将质心推向 x = 0，而在右侧放置较大质量则会将质心推向 x = L。"
+      },
+      "misconceptions": [
+        "cm-always-at-geometric-center"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-position-and-coordinates",
+        "prompt": {
+          "en": "Review how coordinates on an axis define positions and how mass distribution influences the average location along that axis.",
+          "ms": "Ulang kaji bagaimana koordinat pada suatu paksi mentakrifkan kedudukan dan bagaimana taburan jisim mempengaruhi kedudukan purata di sepanjang paksi tersebut.",
+          "zh": "复习轴上的坐标如何确定位置，以及质量分布如何影响沿该轴的平均位置。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Order three two-particle configurations along a horizontal rod from smallest x-coordinate of the center of mass (left) to largest x-coordinate (right).",
+        "ms": "Susun tiga konfigurasi dua zarah di sepanjang rod mendatar daripada koordinat-x pusat jisim terkecil (kiri) kepada koordinat-x terbesar (kanan).",
+        "zh": "将水平杆上双质点的三种质量配置按质心 x 坐标从小到大（从左到右）进行排序。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "config-heavy-left",
+            "label": {
+              "en": "Particle 1 has significantly greater mass than Particle 2",
+              "ms": "Zarah 1 mempunyai jisim yang jauh lebih besar daripada Zarah 2",
+              "zh": "质点 1 的质量显著大于质点 2"
+            }
+          },
+          {
+            "id": "config-equal-mass",
+            "label": {
+              "en": "Particle 1 and Particle 2 have identical masses",
+              "ms": "Zarah 1 dan Zarah 2 mempunyai jisim yang serupa",
+              "zh": "质点 1 与质点 2 的质量相同"
+            }
+          },
+          {
+            "id": "config-heavy-right",
+            "label": {
+              "en": "Particle 2 has significantly greater mass than Particle 1",
+              "ms": "Zarah 2 mempunyai jisim yang jauh lebih besar daripada Zarah 1",
+              "zh": "质点 2 的质量显著大于质点 1"
+            }
+          }
+        ],
+        "correctOrder": [
+          "config-heavy-left",
+          "config-equal-mass",
+          "config-heavy-right"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "cm-always-at-geometric-center",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "config-heavy-right",
+            "secondItemId": "config-equal-mass"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-easy-symmetry-properties",
+      "type": "interactive",
+      "difficulty": "easy",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Determine the center of mass location for symmetric objects of uniform density using symmetry principles.",
+      "prompt": {
+        "en": "Examine the following objects, each possessing a geometrically symmetric outer shape. Match each object to the correct description of its center of mass location based on its mass density distribution.",
+        "ms": "Perhatikan objek-objek berikut, setiap satu mempunyai bentuk luar geometri yang simetri. Padankan setiap objek dengan huraian yang betul tentang lokasi pusat jisimnya berdasarkan taburan ketumpatan jisimnya.",
+        "zh": "观察以下物体，每个物体都具有几何对称的外形。根据其质量密度分布，将每个物体与其质心位置的正确描述进行匹配。"
+      },
+      "hints": [
+        {
+          "en": "Symmetry principles ensure that the center of mass coincides with the geometric center only when density is constant throughout the entire volume.",
+          "ms": "Prinsip simetri memastikan bahawa pusat jisim bertepatan dengan pusat geometri hanya apabila ketumpatan adalah malar di seluruh isi padu.",
+          "zh": "对称性原理仅在整个体积内密度恒定时，才能保证质心与几何中心重合。"
+        },
+        {
+          "en": "If density varies across a geometrically symmetric object, mass is concentrated unequally, pulling the center of mass away from the geometric center.",
+          "ms": "Jika ketumpatan berubah-ubah merentasi objek yang simetri secara geometri, jisim tertumpu secara tidak sama rata, menarik pusat jisim menjauhi pusat geometri.",
+          "zh": "如果几何对称物体的密度发生变化，质量分布就会不均匀，从而将质心拉离几何中心。"
+        }
+      ],
+      "feedback": {
+        "en": "For objects with both geometric symmetry and uniform density, the center of mass lies at the geometric center. If the density is non-uniform, the center of mass is displaced toward the region of higher density despite the symmetric shape.",
+        "ms": "Bagi objek yang mempunyai kedua-dua simetri geometri dan ketumpatan seragam, pusat jisim terletak di pusat geometri. Jika ketumpatannya tidak seragam, pusat jisim tersesar ke arah kawasan berketumpatan lebih tinggi walaupun bentuknya simetri.",
+        "zh": "对于兼具几何对称性与均匀密度的物体，质心位于几何中心。如果密度不均匀，尽管外形对称，质心仍会向密度较高的区域偏移。"
+      },
+      "answerLogic": {
+        "en": "The solid cube and cylindrical rod with uniform composition have uniform mass density throughout, meaning their centers of mass lie on all planes of symmetry and coincide with their geometric centers. The cylindrical rod with graded density and the spherical shell with localized lining have uneven mass distributions, pulling their centers of mass away from the geometric center toward the denser side.",
+        "ms": "Kiub pepejal dan rod silinder dengan komposisi seragam mempunyai ketumpatan jisim seragam di seluruhnya, bermakna pusat jisim mereka terletak pada semua satah simetri dan bertepatan dengan pusat geometri. Rod silinder dengan ketumpatan bergred dan petala sfera dengan lapisan setempat mempunyai taburan jisim yang tidak sekata, menarik pusat jisim mereka menjauhi pusat geometri ke arah bahagian yang lebih tumpat.",
+        "zh": "组成均匀的实心立方体和圆柱形细杆在整个物体中具有均匀的质量密度，这意味着它们的质心位于所有对称面上，并与几何中心重合。密度渐变的圆柱形细杆和具有局部铅衬层的球壳质量分布不均匀，从而将其质心拉离几何中心并偏向较密的一侧。"
+      },
+      "explanation": {
+        "en": "The center of mass of any symmetric object of uniform density lies on every line and plane of symmetry, placing it at the geometric center. However, geometric symmetry alone does not guarantee this location if density is non-uniform. When density increases toward one section of an object, mass elements in that region contribute more heavily to the mass-weighted average position, displacing the center of mass away from the geometric center.",
+        "ms": "Pusat jisim mana-mana objek simetri dengan ketumpatan seragam terletak pada setiap garis dan satah simetri, meletakkannya di pusat geometri. Walau bagaimanapun, simetri geometri sahaja tidak menjamin lokasi ini jika ketumpatan tidak seragam. Apabila ketumpatan meningkat ke arah satu bahagian objek, unsur jisim di kawasan itu menyumbang lebih banyak kepada kedudukan purata berpemberat jisim, menyesarkan pusat jisim menjauhi pusat geometri.",
+        "zh": "任何密度均匀的对称物体的质心都位于每条对称线和每个对称面上，因此位于几何中心。然而，如果密度不均匀，仅凭几何对称性无法保证质心在中心。当密度向物体的某一部分增加时，该区域的质量微元在质量加权平均位置中占比更高，从而使质心偏离几何中心。"
+      },
+      "misconceptions": [
+        "cm-always-at-geometric-center"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "mass-and-density-distribution",
+        "prompt": {
+          "en": "Review how uniform and non-uniform density distributions affect the concentration of mass within a geometric boundary.",
+          "ms": "Ulang kaji bagaimana taburan ketumpatan seragam dan tidak seragam mempengaruhi kepekatan jisim dalam sempadan geometri.",
+          "zh": "复习均匀与非均匀密度分布如何影响几何边界内质量的集中程度。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Match four geometrically symmetric objects to one of two locations for their center of mass: at the geometric center, or displaced toward the higher-density region.",
+        "ms": "Padankan empat objek yang simetri secara geometri kepada salah satu daripada dua lokasi untuk pusat jisim mereka: di pusat geometri, atau tersesar ke arah kawasan berketumpatan lebih tinggi.",
+        "zh": "将四个具有几何对称外形的物体分别与其质心的两种可能位置进行匹配：位于几何中心，或向较高密度区域偏移。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-at-geometric-center",
+            "label": {
+              "en": "Located precisely at the geometric center",
+              "ms": "Terletak tepat di pusat geometri",
+              "zh": "恰好位于几何中心"
+            }
+          },
+          {
+            "id": "target-away-from-geometric-center",
+            "label": {
+              "en": "Displaced away from the geometric center toward the higher-density region",
+              "ms": "Tersesar dari pusat geometri ke arah kawasan berketumpatan lebih tinggi",
+              "zh": "偏离几何中心并向较高密度区域偏移"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-uniform-solid-cube",
+            "label": {
+              "en": "A solid cube constructed from a single material with completely uniform density throughout",
+              "ms": "Sebuah kiub pepejal yang dibina daripada satu bahan dengan ketumpatan yang seragam sepenuhnya",
+              "zh": "由单一材料制成、各处密度完全均匀的实心立方体"
+            }
+          },
+          {
+            "id": "item-uniform-cylindrical-rod",
+            "label": {
+              "en": "A straight cylindrical rod with constant cross-section and uniform density along its entire length",
+              "ms": "Sebuah rod silinder lurus dengan keratan rentas malar dan ketumpatan seragam di sepanjang keseluruhannya",
+              "zh": "截面恒定且沿全长密度均匀的平直圆柱形细杆"
+            }
+          },
+          {
+            "id": "item-graded-density-rod",
+            "label": {
+              "en": "A straight cylindrical rod whose density increases steadily from one end to the other",
+              "ms": "Sebuah rod silinder lurus yang ketumpatannya meningkat secara berterusan dari satu hujung ke hujung yang lain",
+              "zh": "密度从一端到另一端平稳增加的平直圆柱形杆"
+            }
+          },
+          {
+            "id": "item-weighted-hollow-sphere",
+            "label": {
+              "en": "A hollow spherical shell with extra dense lining embedded along only one side of its interior",
+              "ms": "Sebuah petala sfera berongga dengan lapisan tambahan tumpat yang tertanam di sepanjang satu sisi bahagian dalamnya sahaja",
+              "zh": "仅在其内部一侧嵌入额外致密衬层的空心球壳"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-uniform-solid-cube",
+            "targetId": "target-at-geometric-center"
+          },
+          {
+            "itemId": "item-uniform-cylindrical-rod",
+            "targetId": "target-at-geometric-center"
+          },
+          {
+            "itemId": "item-graded-density-rod",
+            "targetId": "target-away-from-geometric-center"
+          },
+          {
+            "itemId": "item-weighted-hollow-sphere",
+            "targetId": "target-away-from-geometric-center"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "cm-always-at-geometric-center",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-graded-density-rod",
+            "targetId": "target-at-geometric-center"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-mod-plumb-line-balance",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Relate the center of gravity to the center of mass in a uniform gravitational field.",
+      "prompt": {
+        "en": "An irregularly shaped rigid metal plate is freely suspended from various attachment points in a uniform gravitational field near Earth's surface to determine its balance point. Which of the following statements correctly describe the behavior of the plate and the relationship between its center of gravity and center of mass? Select all that apply.",
+        "ms": "Sekeping plat logam tegar berbentuk tidak sekata digantung bebas dari pelbagai titik sambungan dalam medan graviti seragam berhampiran permukaan Bumi untuk menentukan titik imbangannya. Pernyataan manakah yang menerangkan dengan betul kelakuan plat tersebut dan hubungan antara pusat graviti dengan pusat jisimnya? Pilih semua yang berkaitan.",
+        "zh": "在地球表面附近的均匀重力场中，将一块形状不规则的刚性金属板分别从不同连接点自由悬挂以确定其平衡点。下列哪些表述正确描述了该金属板的行为以及其重心与质心之间的关系？请选择所有正确的选项。"
+      },
+      "hints": [
+        {
+          "en": "Recall that the total gravitational force on an extended body can be modeled as acting through a single point called the center of gravity. How does this point compare to the center of mass when the acceleration due to gravity is uniform across the entire object?",
+          "ms": "Ingat kembali bahawa jumlah daya graviti ke atas jasad lanjutan boleh dimodelkan sebagai bertindak melalui satu titik tunggal yang dipanggil pusat graviti. Bagaimanakah titik ini dibandingkan dengan pusat jisim apabila pecutan disebabkan oleh graviti adalah seragam merentasi keseluruhan objek?",
+          "zh": "回想一下，作用在延伸刚体上的合重力可以等效为作用在称为重心的单一点上。当整个物体各处的重力加速度均匀一致时，该点与质心之间有何关系？"
+        },
+        {
+          "en": "When suspended freely from a pivot, an object rotates until the gravitational torque about that pivot is zero, which happens when the center of gravity hangs directly along the vertical plumb line below the pivot. When supported exactly at this point, gravity produces no rotation in any orientation.",
+          "ms": "Apabila digantung bebas dari satu pangsi, objek berputar sehingga tork graviti pada pangsi itu menjadi sifar, iaitu apabila pusat graviti tergantung tepat di sepanjang garis ladung menegak di bawah pangsi. Apabila disokong tepat pada titik ini, graviti tidak menghasilkan putaran dalam sebarang orientasi.",
+          "zh": "当物体从支点自由悬挂时，它会转动直至关于该支点的重力力矩为零，此时重心必定落在支点正下方的铅垂线上。若恰好在该点处支撑物体，重力在任何取向下都不会产生转动。"
+        }
+      ],
+      "feedback": {
+        "en": "Well done! In a uniform gravitational field, the center of gravity coincides exactly with the center of mass. Vertical plumb lines dropped from different suspension points intersect precisely at this point, and supporting the plate at this point allows it to balance in any orientation without rotating.",
+        "ms": "Syabas! Dalam medan graviti seragam, pusat graviti bertepatan tepat dengan pusat jisim. Garis ladung menegak yang dijatuhkan dari titik gantungan berbeza bersilang tepat pada titik ini, dan menyokong plat pada titik ini membolehkannya seimbang dalam sebarang orientasi tanpa berputar.",
+        "zh": "太棒了！在均匀重力场中，重心与质心完全重合。从不同悬挂点垂下的铅垂线恰好相交于该点，在该点支撑金属板可使其在任何方位下均保持平衡而不发生转动。"
+      },
+      "answerLogic": {
+        "en": "The total gravitational force on an object equals the mass times the gravitational field vector acting through the center of gravity. If the gravitational acceleration is constant across the entire body, the center of gravity is mathematically identical to the center of mass. A freely suspended body comes to rest with its center of gravity directly below the pivot along the vertical plumb line because any misalignment creates a restoring gravitational torque. Supporting the body at its center of gravity eliminates gravitational torque entirely in every orientation. Believing that uniform gravity shifts the center of gravity away from the center of mass is incorrect.",
+        "ms": "Jumlah daya graviti pada suatu objek bersamaan dengan jisim didarabkan dengan vektor medan graviti yang bertindak melalui pusat graviti. Jika pecutan graviti adalah malar merentasi keseluruhan jasad, pusat graviti secara matematik adalah seiras dengan pusat jisim. Jasad yang digantung bebas akan berhenti dengan pusat gravitinya berada tepat di bawah pangsi sepanjang garis ladung menegak kerana sebarang ketidaksejajaran menghasilkan tork graviti pemulih. Menyokong jasad pada pusat gravitinya menghapuskan tork graviti sepenuhnya dalam setiap orientasi. Kepercayaan bahawa graviti seragam mengalih pusat graviti dari pusat jisim adalah tidak betul.",
+        "zh": "作用在物体上的总重力等于质量乘以重力场矢量，其等效作用点为重心。如果重力加速度在整个物体范围内恒定，则重心在数学上与质心严格同一。自由悬挂的刚体静止时，重心必定处于支点正下方的铅垂线上，因为偏离铅垂线会产生重力恢复力矩。在重心处支撑刚体可在所有方向上完全消除重力力矩。认为均匀重力会导致重心与质心分离的观点是错误的。"
+      },
+      "explanation": {
+        "en": "Every tiny mass element of an extended body experiences a downward gravitational force. The net effect of these parallel forces is equivalent to a single concentrated force acting through the center of gravity. When the gravitational field is uniform, the weighting of each mass element is strictly proportional to its mass, causing the center of gravity and the center of mass to be located at the exact same point. Suspending the plate from two distinct pivot points creates two vertical reference lines whose intersection pinpoints this point, where balancing on a pivot yields neutral equilibrium in any orientation.",
+        "ms": "Setiap elemen jisim kecil pada jasad lanjutan mengalami daya graviti ke bawah. Kesan bersih daripada daya selari ini adalah bersamaan dengan daya tertumpu tunggal yang bertindak melalui pusat graviti. Apabila medan graviti adalah seragam, pemberat setiap elemen jisim berkadar secara tepat dengan jisimnya, menyebabkan pusat graviti dan pusat jisim berada pada titik yang sama tepat. Menggantung plat dari dua titik pangsi yang berbeza menghasilkan dua garis rujukan menegak yang persilangannya menunjukkan titik ini, di mana imbangan pada satu pangsi menghasilkan keseimbangan neutral dalam sebarang orientasi.",
+        "zh": "延伸刚体中的每个微小质量元都受到竖直向下的重力。这些平行力的合效应等价于集中作用在重心处的单个合力。当重力场均匀恒定时，每个质量微元的加权与其实际质量严格成正比，使得重心与质心完全位于同一点。将金属板分别从两个不同支点悬挂会产生两条竖直基准线，其交点即为此点；在此点支撑刚体可在任意方位下获得中性平衡。"
+      },
+      "misconceptions": [
+        "cg-differs-from-cm-in-uniform-gravity"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "line-of-action-and-rotation",
+        "prompt": {
+          "en": "Recall that when an external force acts along a line passing through a body's balance point, it produces zero torque and causes pure translational motion, whereas forces applied away from this point generate rotation.",
+          "ms": "Ingat kembali bahawa apabila daya luar bertindak di sepanjang garis yang melalui titik imbangan jasad, ia menghasilkan tork sifar dan menyebabkan gerakan translasi tulen, manakala daya yang dikenakan jauh dari titik ini menghasilkan putaran.",
+          "zh": "回顾当外力的作用线通过刚体的平衡点时，产生的力矩为零且仅引起纯平动；而作用在偏离该点位置的力则会产生转动。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive multi-selection task containing five physical statements about suspending an irregular plate to find its center of gravity. Use checkboxes to select all valid physical statements.",
+        "ms": "Tugasan interaktif pelbagai pilihan mengandungi lima pernyataan fizikal mengenai penggantungan plat tidak sekata untuk mencari pusat gravitinya. Gunakan kotak pilihan untuk memilih semua pernyataan fizikal yang sah.",
+        "zh": "多选交互任务：包含关于悬挂不规则金属板以寻找其重心的五条物理陈述。使用复选框选择所有符合物理规律的有效陈述。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "stmt-plumb-line",
+            "label": {
+              "en": "A vertical plumb line drawn downward from any free suspension point passes directly through the center of gravity.",
+              "ms": "Garis ladung menegak yang dilukis ke bawah dari mana-mana titik gantungan bebas melalui tepat pusat graviti.",
+              "zh": "从任何自由悬挂点向下引出的竖直铅垂线都必然直接穿过重心。"
+            }
+          },
+          {
+            "id": "stmt-coincide",
+            "label": {
+              "en": "Because the local gravitational acceleration is uniform across the plate, its center of gravity coincides precisely with its center of mass.",
+              "ms": "Oleh sebab pecutan graviti setempat adalah seragam merentasi plat, pusat gravitinya bertepatan tepat dengan pusat jisimnya.",
+              "zh": "由于金属板各处的局部重力加速度均匀一致，其重心与质心精确重合。"
+            }
+          },
+          {
+            "id": "stmt-balance",
+            "label": {
+              "en": "When supported on a pivot placed directly at the center of gravity, the plate balances in any orientation without rotating.",
+              "ms": "Apabila disokong pada satu pangsi yang diletakkan tepat pada pusat graviti, plat seimbang dalam sebarang orientasi tanpa berputar.",
+              "zh": "当在重心处放置支点进行支撑时，金属板在任何取向下均保持平衡而不发生转动。"
+            }
+          },
+          {
+            "id": "stmt-cg-lower",
+            "label": {
+              "en": "The center of gravity always lies significantly lower than the center of mass in a uniform field because gravity pulls the lower sections downward more strongly.",
+              "ms": "Pusat graviti sentiasa terletak jauh lebih rendah daripada pusat jisim dalam medan seragam kerana graviti menarik bahagian bawah ke bawah dengan lebih kuat.",
+              "zh": "在均匀重力场中重心总是显著低于质心，因为重力对较低部分的向下拉力更强。"
+            },
+            "misconception": "cg-differs-from-cm-in-uniform-gravity"
+          },
+          {
+            "id": "stmt-independent-point",
+            "label": {
+              "en": "The center of gravity is an independent point determined purely by boundary shape and never coincides with the center of mass under gravity.",
+              "ms": "Pusat graviti ialah titik bebas yang ditentukan semata-mata oleh bentuk sempadan dan tidak pernah bertepatan dengan pusat jisim di bawah pengaruh graviti.",
+              "zh": "重心是由边界外形决定的独立点，在重力作用下绝不会与质心重合。"
+            },
+            "misconception": "cg-differs-from-cm-in-uniform-gravity"
+          }
+        ],
+        "correctSelections": [
+          "stmt-plumb-line",
+          "stmt-coincide",
+          "stmt-balance"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "cg-differs-from-cm-in-uniform-gravity",
+          "condition": {
+            "kind": "selection",
+            "itemId": "stmt-cg-lower",
+            "selected": true
+          }
+        },
+        {
+          "misconception": "cg-differs-from-cm-in-uniform-gravity",
+          "condition": {
+            "kind": "selection",
+            "itemId": "stmt-independent-point",
+            "selected": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-mod-tapered-sections-mass",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Analyze mass differences between segments when an inhomogeneous object is divided at its center of mass.",
+      "prompt": {
+        "en": "Solid objects of uniform density are sliced cleanly along a flat cross section passing directly through their center of mass. Classify each resulting segment based on how its mass compares to its companion segment on the other side of the cut.",
+        "ms": "Objek padu dengan ketumpatan seragam dipotong bersih di sepanjang keratan rentas rata yang melalui tepat pusat jisimnya. Kelaskan setiap segmen yang terhasil berdasarkan perbandingan jisimnya dengan segmen pasangannya di sebelah potongan yang lain.",
+        "zh": "将几种密度均匀的实心物体沿恰好穿过其质心的平整截面完整切开。根据切开后各分段相对于截面另一侧对应分段的质量大小关系进行分类。"
+      },
+      "hints": [
+        {
+          "en": "Consider how the center of mass represents a balance of position and mass: it is the mass-weighted average location. Mass on opposite sides must balance its weighted distance from the plane, rather than simply having identical mass.",
+          "ms": "Pertimbangkan bagaimana pusat jisim mewakili keseimbangan kedudukan dan jisim: ia merupakan lokasi purata berpemberat jisim. Jisim pada sisi yang bertentangan mesti mengimbangi jarak berpemberatnya dari satah, dan bukannya sekadar mempunyai jisim yang serupa.",
+          "zh": "从概念上理解质心：它是物体质量空间分布的加权平衡位置。截面两侧的部分必须平衡其相对于切面的质量加权距离，而不意味着两边的总质量必然相同。"
+        },
+        {
+          "en": "For an asymmetrical or tapered object like a cone cut at its center of mass, the mass elements on the elongated apex side are situated at a larger average distance from the cut than elements in the wide base. To maintain balance about the center of mass, which side must have the greater mass?",
+          "ms": "Bagi objek tidak simetri atau menirus seperti kon yang dipotong pada pusat jisimnya, elemen jisim pada sisi puncak yang memanjang terletak pada jarak purata yang lebih besar dari potongan berbanding elemen di tapak yang lebar. Untuk mengekalkan keseimbangan pada pusat jisim, bahagian manakah yang mesti mempunyai jisim yang lebih besar?",
+          "zh": "对于像圆锥这样在质心处切开的非对称渐细物体，细长尖顶一侧的各部分距离截面具有更大的平均距离。为了维持质心处的平衡，哪一侧必须具有更大的质量？"
+        }
+      ],
+      "feedback": {
+        "en": "Excellent analysis! Cutting an object through its center of mass only produces equal masses if the object exhibits symmetry across that plane. For tapered bodies, the shorter, wider piece closer to the center of mass must have a greater mass to counterbalance the larger distance of the slender, distant piece.",
+        "ms": "Analisis yang cemerlang! Memotong objek melalui pusat jisimnya hanya menghasilkan jisim yang sama jika objek menunjukkan simetri merentasi satah tersebut. Bagi jasad menirus, bahagian yang lebih pendek dan lebar yang lebih dekat dengan pusat jisim mesti mempunyai jisim yang lebih besar untuk mengimbangi jarak yang lebih jauh bagi bahagian yang tirus.",
+        "zh": "出色的分析！仅当物体关于切割面对称时，沿质心截断才会产生质量相等的两部分。对于渐变截面的锥形物体，更靠近质心且短而粗的一段必须具有更大的质量，以平衡细长端更远距离产生的质量矩。"
+      },
+      "answerLogic": {
+        "en": "The center of mass location is defined such that the mass-weighted displacements from the dividing plane balance completely. For symmetrical objects like uniform cylinders and rectangular prisms cut along their central plane of symmetry, the geometry is identical on both sides, yielding equal masses. In a tapered cone, the center of mass lies closer to the wide base. Mass elements in the slender apex are located at a larger average distance from the center of mass than elements in the base. Because the average position times mass must balance on each side, the base segment must possess a greater mass and the apex segment must have a lesser mass. The misconception that slicing through the center of mass always bisects mass equally ignores the distance weighting.",
+        "ms": "Kedudukan pusat jisim ditakrifkan supaya sesaran berpemberat jisim dari satah pembahagi seimbang sepenuhnya. Bagi objek simetri seperti silinder dan prisma segi empat tepat seragam yang dipotong di sepanjang satah simetri tengahnya, geometrinya adalah seiras di kedua-dua belah, menghasilkan jisim yang sama. Dalam kon menirus, pusat jisim terletak lebih dekat dengan tapak yang lebar. Elemen jisim dalam puncak yang tirus terletak pada jarak purata yang lebih besar dari pusat jisim berbanding elemen di tapak. Oleh sebab kedudukan purata didarabkan dengan jisim mesti seimbang pada setiap sisi, segmen tapak mesti memiliki jisim yang lebih besar dan segmen puncak mesti mempunyai jisim yang lebih kecil. Salah tanggapan bahawa memotong melalui pusat jisim sentiasa membahagi dua jisim secara sama rata mengabaikan pemberat jarak.",
+        "zh": "质心位置的定义要求关于质心的位置偏差质量矩代数和为零。对于在对称中心面切开的对称圆柱体和矩形棱柱，两侧几何构型完全相同，因而质量完全相等。在渐细圆锥体中，质心偏向宽阔底面。尖顶一侧的微元距离质心的平均力臂显著大于底面一侧。因为两侧平均距离与质量的作用效果必须相互平衡，所以短粗底面段必须具有更大的质量，而细长尖顶段则质量较小。认为沿质心切开必然平分质量的误区完全忽略了距离加权因子的作用。"
+      },
+      "explanation": {
+        "en": "The center of mass is the average position of an object's mass, not its geometric midpoint or a median dividing line of equal masses. When an object is balanced at its center of mass, each differential mass element contributes proportionally to its displacement from the balance plane: dm multiplied by distance. Because the pointed apex of a tapered cone extends much farther away from the cut than the broad base, its mass elements have a larger leverage. Consequently, less mass is needed in the apex segment to balance the mass-weighted torque of the compact, heavier base segment.",
+        "ms": "Pusat jisim ialah kedudukan purata bagi jisim suatu objek, bukan titik tengah geometrinya atau garis pembahagi median bagi jisim yang sama. Apabila suatu objek diimbangi pada pusat jisimnya, setiap elemen jisim pembeza menyumbang secara berkadar dengan sesarannya dari satah imbangan: dm didarabkan dengan jarak. Oleh sebab puncak runcing bagi kon menirus menjangkau jauh lebih jauh dari potongan berbanding tapak yang lebar, elemen jisimnya mempunyai tuasan yang lebih besar. Akibatnya, jisim yang lebih sedikit diperlukan dalam segmen puncak untuk mengimbangi tork berpemberat jisim bagi segmen tapak yang padat dan lebih berat.",
+        "zh": "质心是物体质量的加权平均位置，而非几何中点，更不是平分质量的质量中位数线。当物体在质心处取得平衡时，每个质量微元产生的效果与其距平衡面的位移成正比：即微元质量 dm 乘以距离。由于圆锥尖端延伸的距离远大于平直底端距切面的距离，尖端质量微元具有更大的平均力臂。因此，尖端分段只需较小的质量，即可平衡紧凑粗大底端分段所产生的加权质量矩。"
+      },
+      "misconceptions": [
+        "equal-mass-split-at-cm"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "mass-and-density-distribution",
+        "prompt": {
+          "en": "Review how non-uniform geometry causes localized mass concentrations and why the center of mass shifts toward regions of greater mass per unit length.",
+          "ms": "Ulang kaji bagaimana geometri tidak seragam menyebabkan kepekatan jisim setempat dan mengapa pusat jisim beralih ke arah kawasan yang mempunyai jisim per unit panjang yang lebih besar.",
+          "zh": "复习非均匀几何外形如何导致局部质量聚集，以及为什么质心总是向单位长度质量较大的区域偏移。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive classification activity. Classify four object segments into three categories based on mass comparison with their opposite piece: greater mass, lesser mass, or equal mass.",
+        "ms": "Aktiviti pengelasan interaktif. Kelaskan empat segmen objek ke dalam tiga kategori berdasarkan perbandingan jisim dengan bahagian pasangannya: jisim lebih besar, jisim lebih kecil, atau jisim sama.",
+        "zh": "交互分类任务：根据与对应另一半的质量对比，将四个物体分段归类为三个类别：质量较大、质量较小或质量相等。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-cone-base",
+            "label": {
+              "en": "The short, wide base portion of a uniform solid cone cut transversely at its center of mass",
+              "ms": "Bahagian tapak yang pendek dan lebar bagi kon padu seragam yang dipotong merentas pada pusat jisimnya",
+              "zh": "沿质心横向切开的均匀实心圆锥体较短且宽的底端部分"
+            }
+          },
+          {
+            "id": "item-cone-apex",
+            "label": {
+              "en": "The elongated, slender apex portion of a uniform solid cone cut transversely at its center of mass",
+              "ms": "Bahagian puncak yang memanjang dan tirus bagi kon padu seragam yang dipotong merentas pada pusat jisimnya",
+              "zh": "沿质心横向切开的均匀实心圆锥体细长尖顶部分"
+            }
+          },
+          {
+            "id": "item-cylinder-half",
+            "label": {
+              "en": "Either half of a uniform solid cylinder cut transversely through its center of mass",
+              "ms": "Mana-mana separuh bahagian silinder padu seragam yang dipotong merentas melalui pusat jisimnya",
+              "zh": "沿质心横向截开的均匀实心圆柱体的任一半段"
+            }
+          },
+          {
+            "id": "item-prism-half",
+            "label": {
+              "en": "Either half of a uniform rectangular prism cut through its central plane of symmetry",
+              "ms": "Mana-mana separuh bahagian prisma segi empat tepat seragam yang dipotong melalui satah simetri tengahnya",
+              "zh": "沿中心对称面切开的均匀矩形棱柱的任一半段"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-greater-mass",
+            "label": {
+              "en": "Greater mass than companion segment",
+              "ms": "Jisim lebih besar daripada segmen pasangan",
+              "zh": "质量大于对应分段"
+            }
+          },
+          {
+            "id": "target-lesser-mass",
+            "label": {
+              "en": "Lesser mass than companion segment",
+              "ms": "Jisim lebih kecil daripada segmen pasangan",
+              "zh": "质量小于对应分段"
+            }
+          },
+          {
+            "id": "target-equal-mass",
+            "label": {
+              "en": "Equal mass to companion segment",
+              "ms": "Jisim sama dengan segmen pasangan",
+              "zh": "质量与对应分段相等"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-cone-base",
+            "targetId": "target-greater-mass"
+          },
+          {
+            "itemId": "item-cone-apex",
+            "targetId": "target-lesser-mass"
+          },
+          {
+            "itemId": "item-cylinder-half",
+            "targetId": "target-equal-mass"
+          },
+          {
+            "itemId": "item-prism-half",
+            "targetId": "target-equal-mass"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "equal-mass-split-at-cm",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-cone-base",
+            "targetId": "target-equal-mass"
+          }
+        },
+        {
+          "misconception": "equal-mass-split-at-cm",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-cone-apex",
+            "targetId": "target-equal-mass"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-mod-composite-particle-quadrants",
+      "type": "interactive",
+      "difficulty": "moderate",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Explain the center of mass as the mass-weighted average position of a system of particles or an extended body.",
+      "prompt": {
+        "en": "Four particles are arranged at the four corners of a square centered at the coordinate origin (0, 0): corner 1 in Quadrant I (+d, +d), corner 2 in Quadrant II (-d, +d), corner 3 in Quadrant III (-d, -d), and corner 4 in Quadrant IV (+d, -d). Match each mass configuration to the resulting location or quadrant containing the system's center of mass.",
+        "ms": "Empat zarah disusun pada empat bucu sebuah segi empat sama yang berpusat di asalan koordinat (0, 0): bucu 1 dalam Sukuan I (+d, +d), bucu 2 dalam Sukuan II (-d, +d), bucu 3 dalam Sukuan III (-d, -d), dan bucu 4 dalam Sukuan IV (+d, -d). Padankan setiap konfigurasi jisim dengan lokasi atau sukuan yang mengandungi pusat jisim sistem tersebut.",
+        "zh": "四个质点分别置于以坐标原点 (0, 0) 为中心的正方形的四个角点上：角点 1 位于第一象限 (+d, +d)，角点 2 位于第二象限 (-d, +d)，角点 3 位于第三象限 (-d, -d)，角点 4 位于第四象限 (+d, -d)。请将每种质量配置与其系统质心所在的正确位置或象限进行配对。"
+      },
+      "hints": [
+        {
+          "en": "The position vector of the center of mass is the mass-weighted average: r_CM = (1/M) * sum(m_i * r_i). Does the center of mass simply remain at the geometric midpoint regardless of how mass is distributed among the corners?",
+          "ms": "Vektor kedudukan bagi pusat jisim ialah purata berpemberat jisim: r_CM = (1/M) * jumlah(m_i * r_i). Adakah pusat jisim kekal berada di titik tengah geometri tanpa mengira bagaimana jisim diagihkan dalam kalangan bucu?",
+          "zh": "质心的位置矢量是质量加权平均值：r_CM = (1/M) * sum(m_i * r_i)。无论质量如何在各个角点之间分布，质心都会始终留在几何中点吗？"
+        },
+        {
+          "en": "When one vertex has a mass that is vastly larger than all the other particles combined, the product of mass and position for that single vertex completely dominates the summation. In which quadrant will the mass-weighted average position then lie?",
+          "ms": "Apabila satu bucu mempunyai jisim yang jauh lebih besar daripada gabungan semua zarah lain, hasil darab jisim dan kedudukan bagi bucu tunggal itu mendominasi hasil tambah sepenuhnya. Dalam sukuan manakah kedudukan purata berpemberat jisim akan berada?",
+          "zh": "当某个顶点的质量远大于其他所有质点的总和时，该单顶点的质量与位置乘积在求和中占据绝对支配地位。此时质量加权平均位置将落在哪个象限？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct matching! The center of mass is the mass-weighted average position of the system. Concentrating the dominant mass at a specific corner shifts the center of mass into that particle's quadrant. The center of mass only sits at the origin (geometric center) when the mass distribution is fully symmetrical.",
+        "ms": "Padanan yang betul! Pusat jisim ialah kedudukan purata berpemberat jisim bagi sistem. Menumpukan jisim dominan pada bucu tertentu mengalihkan pusat jisim ke dalam sukuan zarah tersebut. Pusat jisim hanya berada di asalan (pusat geometri) apabila taburan jisim adalah simetri sepenuhnya.",
+        "zh": "配对正确！质心是系统的质量加权平均位置。将主要质量集中在特定角点时，质心会强烈偏向该质点所在的象限。只有当质量分布完全对称时，质心才会落在原点（几何中心）。"
+      },
+      "answerLogic": {
+        "en": "According to the defining equation r_CM = (1/M) * sum(m_i * r_i), each coordinate component of the center of mass is computed by summing the products of mass and position component divided by total mass. When all four particles possess identical mass, the opposite coordinates (+d and -d) cancel out symmetrically for both x and y, placing the center of mass precisely at the origin (0, 0). However, if one corner has a massive lead sphere while the other three have negligible mass, that corner's mass dominates the sum, shifting the center of mass directly into that corner's quadrant (+d, +d for Quadrant I; -d, +d for Quadrant II; -d, -d for Quadrant III). Believing that the center of mass must always stay at the origin confuses the geometric center with the mass-weighted average.",
+        "ms": "Mengikut persamaan takrifan r_CM = (1/M) * jumlah(m_i * r_i), setiap komponen koordinat pusat jisim dikira dengan menjumlahkan hasil darab komponen jisim dan kedudukan dibahagikan dengan jumlah jisim. Apabila keempat-empat zarah mempunyai jisim yang seiras, koordinat bertentangan (+d dan -d) membatalkan satu sama lain secara simetri bagi kedua-dua x dan y, meletakkan pusat jisim tepat pada asalan (0, 0). Walau bagaimanapun, jika satu bucu mempunyai sfera plumbum yang sangat berjisim manakala tiga lagi mempunyai jisim yang boleh diabaikan, jisim bucu itu mendominasi hasil tambah, mengalihkan pusat jisim terus ke dalam sukuan bucu tersebut (+d, +d untuk Sukuan I; -d, +d untuk Sukuan II; -d, -d untuk Sukuan III). Kepercayaan bahawa pusat jisim mesti sentiasa berada di asalan mengelirukan pusat geometri dengan purata berpemberat jisim.",
+        "zh": "依据定义关系式 r_CM = (1/M) * sum(m_i * r_i)，质心的各个坐标分量反映了系统质量加权后的平均空间位置。当四个粒子质量完全相等时，相反的坐标分量（+d 与 -d）在 x 和 y 方向上对称抵消，使质心严格位于原点 (0, 0)。然而，如果某一角点放置了大质量铅球而其余三点质量可忽略，该角点的质量便主导整个矢量叠加分布，直接将质心拉向该角点所在的象限（第一象限为 (+d, +d)；第二象限为 (-d, +d)；第三象限为 (-d, -d)）。认为质心必定始终保持在原点的想法混淆了纯几何中心与质量加权平均位置的概念。"
+      },
+      "explanation": {
+        "en": "The particle model treats the translational motion of a system as if all mass were concentrated at the center of mass. Because the center of mass represents the average position of the system's mass, it is pulled toward regions containing greater amounts of mass. A symmetrical arrangement of identical particles yields a center of mass at the geometric symmetry center. When the symmetry is broken by concentrating mass disproportionately at one location, the mass-weighted average position shifts toward that concentrated mass.",
+        "ms": "Model zarah merawat gerakan translasi suatu sistem seolah-olah semua jisim tertumpu pada pusat jisim. Oleh sebab pusat jisim mewakili kedudukan purata bagi jisim sistem, ia ditarik ke arah kawasan yang mengandungi jumlah jisim yang lebih besar. Susunan simetri bagi zarah yang seiras menghasilkan pusat jisim pada pusat simetri geometri. Apabila simetri dipecahkan dengan menumpukan jisim secara tidak berkadar pada satu lokasi, kedudukan purata berpemberat jisim beralih ke arah jisim yang tertumpu itu.",
+        "zh": "质点模型将系统的平动视为所有质量都集中在质心处。因为质心代表系统质量的平均位置，所以它总是偏向包含较多质量的区域。相同质点的对称排列会使质心位于几何对称中心。当质量不成比例地聚集在某处从而打破对称性时，质量加权平均位置就会显著向集中质量所在之处偏移。"
+      },
+      "misconceptions": [
+        "cm-always-at-geometric-center"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-position-and-coordinates",
+        "prompt": {
+          "en": "Review how Cartesian coordinate signs define the four quadrants in a plane and how coordinates are weighted and combined in vector summation.",
+          "ms": "Ulang kaji bagaimana tanda koordinat Cartes mentakrifkan empat sukuan dalam satah dan bagaimana koordinat dipemberatkan dan digabungkan dalam penambahan vektor.",
+          "zh": "复习笛卡尔坐标正负符号如何界定平面中的四个象限，以及坐标分量如何在矢量合成中表达加权平均位置。"
+        }
+      },
+      "accessibilityText": {
+        "en": "Interactive matching task. Match four corner-mass configurations on a coordinate square to the correct center-of-mass quadrant or the coordinate origin.",
+        "ms": "Tugasan pemadanan interaktif. Padankan empat konfigurasi jisim bucu pada segi empat sama koordinat dengan sukuan pusat jisim yang betul atau asalan koordinat.",
+        "zh": "交互匹配任务：将坐标正方形上的四个角点质量配置与对应的质心象限或坐标原点进行配对。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      },
+      "interactionMode": "matching",
+      "interaction": {
+        "items": [
+          {
+            "id": "cfg-heavy-q1",
+            "label": {
+              "en": "A massive particle at corner 1 (+d, +d) with negligible equal masses at the other three corners",
+              "ms": "Zarah sangat berjisim di bucu 1 (+d, +d) dengan jisim kecil yang sama di tiga bucu yang lain",
+              "zh": "位于角点 1 (+d, +d) 处的大质量质点，其余三个角点为可忽略的微小相等质量"
+            }
+          },
+          {
+            "id": "cfg-heavy-q2",
+            "label": {
+              "en": "A massive particle at corner 2 (-d, +d) with negligible equal masses at the other three corners",
+              "ms": "Zarah sangat berjisim di bucu 2 (-d, +d) dengan jisim kecil yang sama di tiga bucu yang lain",
+              "zh": "位于角点 2 (-d, +d) 处的大质量质点，其余三个角点为可忽略的微小相等质量"
+            }
+          },
+          {
+            "id": "cfg-heavy-q3",
+            "label": {
+              "en": "A massive particle at corner 3 (-d, -d) with negligible equal masses at the other three corners",
+              "ms": "Zarah sangat berjisim di bucu 3 (-d, -d) dengan jisim kecil yang sama di tiga bucu yang lain",
+              "zh": "位于角点 3 (-d, -d) 处的大质量质点，其余三个角点为可忽略的微小相等质量"
+            }
+          },
+          {
+            "id": "cfg-four-equal",
+            "label": {
+              "en": "Four identical particles of equal mass placed symmetrically at all four corners (+/-d, +/-d)",
+              "ms": "Empat zarah seiras dengan jisim sama diletakkan secara simetri pada keempat-empat bucu (+/-d, +/-d)",
+              "zh": "四个质量完全相同的质点对称放置在所有四个角点 (+/-d, +/-d) 处"
+            }
+          }
+        ],
+        "targets": [
+          {
+            "id": "target-quadrant-1",
+            "label": {
+              "en": "In Quadrant I (both x and y coordinates are positive)",
+              "ms": "Dalam Sukuan I (kedua-dua koordinat x dan y adalah positif)",
+              "zh": "在第一象限内（x 与 y 坐标均为正值）"
+            }
+          },
+          {
+            "id": "target-quadrant-2",
+            "label": {
+              "en": "In Quadrant II (negative x coordinate and positive y coordinate)",
+              "ms": "Dalam Sukuan II (koordinat x negatif dan koordinat y positif)",
+              "zh": "在第二象限内（x 坐标为负值且 y 坐标为正值）"
+            }
+          },
+          {
+            "id": "target-quadrant-3",
+            "label": {
+              "en": "In Quadrant III (both x and y coordinates are negative)",
+              "ms": "Dalam Sukuan III (kedua-dua koordinat x dan y adalah negatif)",
+              "zh": "在第三象限内（x 与 y 坐标均为负值）"
+            }
+          },
+          {
+            "id": "target-origin",
+            "label": {
+              "en": "At the coordinate origin (0, 0), the geometric center",
+              "ms": "Pada asalan koordinat (0, 0), iaitu pusat geometri",
+              "zh": "在坐标原点 (0, 0) 处，即几何中心"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "cfg-heavy-q1",
+            "targetId": "target-quadrant-1"
+          },
+          {
+            "itemId": "cfg-heavy-q2",
+            "targetId": "target-quadrant-2"
+          },
+          {
+            "itemId": "cfg-heavy-q3",
+            "targetId": "target-quadrant-3"
+          },
+          {
+            "itemId": "cfg-four-equal",
+            "targetId": "target-origin"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "cm-always-at-geometric-center",
+          "condition": {
+            "kind": "placement",
+            "itemId": "cfg-heavy-q1",
+            "targetId": "target-origin"
+          }
+        },
+        {
+          "misconception": "cm-always-at-geometric-center",
+          "condition": {
+            "kind": "placement",
+            "itemId": "cfg-heavy-q2",
+            "targetId": "target-origin"
+          }
+        },
+        {
+          "misconception": "cm-always-at-geometric-center",
+          "condition": {
+            "kind": "placement",
+            "itemId": "cfg-heavy-q3",
+            "targetId": "target-origin"
+          }
+        }
+      ]
+    },
+    {
+      "id": "int-chal-density-gradient-ranking",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Predict how unequal mass distribution shifts the center of mass position toward the more massive component.",
+      "misconceptions": [
+        "cm-always-at-geometric-center",
+        "equal-mass-split-at-cm"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "mass-and-density-distribution",
+        "prompt": {
+          "en": "Recall that when density is non-uniform, mass elements closer to the denser side contribute more heavily to the weighted average position, shifting the center of mass away from the geometric midpoint.",
+          "ms": "Ingat kembali bahawa apabila ketumpatan tidak seragam, unsur jisim yang lebih dekat dengan bahagian yang lebih tumpat menyumbang lebih banyak kepada kedudukan purata berpemberat, mengalihkan pusat jisim menjauhi titik tengah geometri.",
+          "zh": "回顾当密度不均匀时，靠近较密一侧的质量微元对加权平均位置的贡献更大，从而使质心偏离几何中点向较重的一端移动。"
+        }
+      },
+      "prompt": {
+        "en": "A non-uniform wooden club of length L lies along the x-axis from x = 0 (thin grip handle) to x = L (wide heavy barrel). Its linear density increases continuously from left to right. Order the following four landmark x-axis positions from left to right (from smallest coordinate to largest coordinate).",
+        "ms": "Sebuah belantan kayu tidak seragam dengan panjang L terletak di sepanjang paksi-x dari x = 0 (pemegang nipis) ke x = L (hujung tong yang lebar dan berat). Ketumpatan jisim linearnya meningkat secara berterusan dari kiri ke kanan. Susun empat kedudukan mercu tanda paksi-x berikut dari kiri ke kanan (daripada koordinat terkecil kepada koordinat terbesar).",
+        "zh": "一根长度为 L 的非均匀木棒沿 x 轴放置，从 x = 0（纤细握柄）延伸到 x = L（粗重棒头）。其线质量密度从左向右连续增加。请将以下四个沿 x 轴的地标位置从左到右（从坐标最小到坐标最大）进行排序。"
+      },
+      "interactionMode": "ordering",
+      "interaction": {
+        "items": [
+          {
+            "id": "pos-geometric-midpoint",
+            "label": {
+              "en": "The geometric midpoint of the club length (x = 0.5 L)",
+              "ms": "Titik tengah geometri bagi panjang belantan (x = 0.5 L)",
+              "zh": "木棒长度的几何中点 (x = 0.5 L)"
+            }
+          },
+          {
+            "id": "pos-center-of-mass",
+            "label": {
+              "en": "The center of mass (the balance point where gravitational torques balance)",
+              "ms": "Pusat jisim (titik imbangan di mana tork graviti saling mengimbangi)",
+              "zh": "质心（重力力矩相互平衡的平衡点）"
+            }
+          },
+          {
+            "id": "pos-equal-mass-cut",
+            "label": {
+              "en": "The cut line dividing the club into two pieces of exactly equal mass",
+              "ms": "Garis potongan yang membahagikan belantan kepada dua bahagian berjisim sama tepat",
+              "zh": "将木棒分割为两个质量完全相等部分的切割线"
+            }
+          },
+          {
+            "id": "pos-heavy-barrel-core",
+            "label": {
+              "en": "A point in the thickest section near the extreme barrel tip (near x = L)",
+              "ms": "Satu titik di bahagian paling tebal berhampiran hujung tong (berhampiran x = L)",
+              "zh": "靠近木棒最右端粗重棒头核心区域的点（接近 x = L）"
+            }
+          }
+        ],
+        "correctOrder": [
+          "pos-geometric-midpoint",
+          "pos-center-of-mass",
+          "pos-equal-mass-cut",
+          "pos-heavy-barrel-core"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "cm-always-at-geometric-center",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "pos-center-of-mass",
+            "secondItemId": "pos-geometric-midpoint"
+          }
+        },
+        {
+          "misconception": "equal-mass-split-at-cm",
+          "condition": {
+            "kind": "precedes",
+            "firstItemId": "pos-equal-mass-cut",
+            "secondItemId": "pos-center-of-mass"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "Consider where the mass is concentrated. Because the club is heavier toward the right, more than half of its total length on the left contains less mass than the shorter, heavier right side.",
+          "ms": "Pertimbangkan di mana jisim tertumpu. Oleh kerana belantan lebih berat ke arah kanan, lebih daripada separuh panjang asalnya di sebelah kiri mengandungi jisim yang kurang berbanding bahagian kanan yang lebih pendek dan berat.",
+          "zh": "考虑质量集中在哪里。因为木棒向右侧更重，所以左侧超过一半长度所包含的质量比右侧更短更重的部分要少。"
+        },
+        {
+          "en": "To balance at the center of mass, the torque from the longer, lighter handle side must equal the torque from the shorter, heavier barrel side. Because the handle elements have larger lever arms, the handle piece has less mass than the barrel piece. Where must you cut to achieve equal mass?",
+          "ms": "Untuk mengimbangi pada pusat jisim, tork daripada bahagian pemegang yang lebih panjang dan ringan mesti sama dengan tork daripada bahagian tong yang lebih pendek dan berat. Oleh kerana unsur pemegang mempunyai lengan tuas yang lebih besar, bahagian pemegang mempunyai kurang jisim daripada bahagian tong. Di manakah anda mesti memotong untuk mendapatkan jisim yang sama?",
+          "zh": "若要在质心处达到力矩平衡，较长且较轻的握柄侧力矩必须等于较短且较重的棒头侧力矩。由于握柄微元具有更大的力臂，因此握柄侧的质量必然小于棒头侧。要在哪里切割才能获得相等的质量？"
+        }
+      ],
+      "feedback": {
+        "en": "Excellent ranking! The center of mass lies to the right of the geometric midpoint because the mass is concentrated toward x = L. Furthermore, because the longer handle provides greater lever arms, a cut at the center of mass leaves less mass on the left than on the right. Thus, the equal-mass cut line must lie even further to the right.",
+        "ms": "Susunan yang cemerlang! Pusat jisim terletak di sebelah kanan titik tengah geometri kerana jisim tertumpu ke arah x = L. Tambahan pula, oleh kerana pemegang yang lebih panjang memberikan lengan tuas yang lebih besar, potongan pada pusat jisim meninggalkan kurang jisim di sebelah kiri berbanding sebelah kanan. Oleh itu, garis potongan jisim sama mesti terletak lebih jauh ke kanan.",
+        "zh": "出色的排序！质心位于几何中点的右侧，因为质量集中在 x = L 处。此外，由于较长的握柄提供了更大的力臂，在质心处切开会导致左侧质量少于右侧。因此，等质量切割线必须位于质心的更右侧。"
+      },
+      "answerLogic": {
+        "en": "1. The geometric midpoint is at x = 0.5 L. 2. Because density increases toward x = L, the center of mass is shifted rightward (x_CM > 0.5 L). 3. At x_CM, torques balance: integral of (x_CM - x) dm_left = integral of (x - x_CM) dm_right. Because distances on the left are larger (up to x_CM), the total mass on the left is strictly less than the total mass on the right. To divide the mass equally (50/50), the cut must move further rightward into the heavy barrel (x_equal_mass > x_CM). 4. Finally, the barrel tip core lies furthest to the right.",
+        "ms": "1. Titik tengah geometri berada pada x = 0.5 L. 2. Oleh kerana ketumpatan meningkat ke arah x = L, pusat jisim beralih ke kanan (x_CM > 0.5 L). 3. Pada x_CM, tork mengimbangi: kamiran (x_CM - x) dm_kiri = kamiran (x - x_CM) dm_kanan. Oleh kerana jarak di sebelah kiri lebih besar, jumlah jisim di sebelah kiri adalah kurang daripada jumlah jisim di sebelah kanan. Untuk membahagikan jisim secara sama rata, potongan mesti beralih lebih jauh ke kanan ke bahagian tong yang berat (x_jisim_sama > x_CM). 4. Akhir sekali, teras hujung tong terletak paling jauh ke kanan.",
+        "zh": "1. 几何中点位于 x = 0.5 L。2. 由于密度向 x = L 方向递增，质心向右偏移（x_CM > 0.5 L）。3. 在质心处，两侧力矩平衡：左侧力臂普遍大于右侧力臂，因此平衡时左侧物体的总质量严格小于右侧物体的总质量。若要将质量均分（50/50），切割位置必须进一步向右移入粗重棒头内（x_等质量 > x_CM）。4. 最后，最右侧的棒头核心位于最右端。"
+      },
+      "explanation": {
+        "en": "The center of mass represents the mass-weighted average coordinate, so it shifts toward regions of higher mass density. When an object with non-uniform density is supported at its center of mass, the longer side has smaller mass acting at larger distances to balance the larger mass acting at shorter distances on the heavier side. Therefore, cutting an asymmetrical object at its center of mass does not divide it into two equal-mass halves; the shorter piece has more mass, placing the equal-mass partition line further into the dense end.",
+        "ms": "Pusat jisim mewakili koordinat purata berpemberat jisim, jadi ia beralih ke arah kawasan yang mempunyai ketumpatan jisim yang lebih tinggi. Apabila objek dengan ketumpatan tidak seragam disokong pada pusat jisimnya, bahagian yang lebih panjang mempunyai jisim yang lebih kecil yang bertindak pada jarak yang lebih besar untuk mengimbangi jisim yang lebih besar yang bertindak pada jarak yang lebih pendek di bahagian yang lebih berat. Oleh itu, memotong objek tidak simetri pada pusat jisimnya tidak membahagikannya kepada dua bahagian berjisim sama; bahagian yang lebih pendek mempunyai lebih banyak jisim, meletakkan garis pembahagian jisim sama lebih jauh ke dalam hujung yang tumpat.",
+        "zh": "质心代表质量加权平均坐标，因此它会向质量密度较高的区域偏移。当密度不均匀的物体在其质心处受支撑平衡时，较长一侧以较小的质量在较大距离处产生力矩，以平衡较重一侧在较小距离处的较大质量。因此，沿质心切开非对称物体不会将其分成质量相等的两半；较短的一截质量更大，使得等质量分割线进一步位于较密集的一端。"
+      },
+      "accessibilityText": {
+        "en": "Order four landmark positions along a tapered club from left to right: geometric midpoint at half-length, center of mass balance point, equal-mass cut line, and barrel tip point.",
+        "ms": "Susun empat kedudukan mercu tanda di sepanjang belantan tirus dari kiri ke kanan: titik tengah geometri pada separuh panjang, titik imbangan pusat jisim, garis potongan jisim sama, dan titik hujung tong.",
+        "zh": "将锥形棒上的四个地标位置从左到右排序：半长处的几何中点、质心平衡点、等质量切割线和棒头尖端点。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "int-chal-non-material-cm-features",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Determine the center of mass location for symmetric objects of uniform density using symmetry principles.",
+      "misconceptions": [
+        "cm-must-lie-within-material"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "vector-position-and-coordinates",
+        "prompt": {
+          "en": "Review how the center of mass vector is defined mathematically as the average of position vectors across the entire mass distribution, which can fall in a region containing no matter.",
+          "ms": "Ulang kaji bagaimana vektor pusat jisim ditakrifkan secara matematik sebagai purata vektor kedudukan merentasi seluruh taburan jisim, yang boleh berada di kawasan yang tidak mengandungi sebarang jirim.",
+          "zh": "复习质心矢量在数学上是如何被定义为整个质量分布的位置矢量平均值的，该点完全可以落在不含任何物质的区域。"
+        }
+      },
+      "prompt": {
+        "en": "Symmetry principles show that the center of mass of a uniform object must lie on every plane and axis of symmetry. Based on this, select all uniform-density objects below whose center of mass lies in empty space entirely outside the solid material.",
+        "ms": "Prinsip simetri menunjukkan bahawa pusat jisim bagi objek seragam mesti terletak pada setiap satah dan paksi simetri. Berdasarkan prinsip ini, pilih semua objek berketumpatan seragam di bawah yang pusat jisimnya terletak di ruang kosong sepenuhnya di luar jirim pepejal.",
+        "zh": "对称性原理表明，均匀物体的质心必须位于其每一个对称平面和对称轴上。根据这一原理，请选出以下所有质心完全位于实体材料外部的空心/空白区域的均匀密度物体（多选）。"
+      },
+      "interactionMode": "selection",
+      "interaction": {
+        "items": [
+          {
+            "id": "item-thin-ring",
+            "label": {
+              "en": "A uniform circular hoop (thin metallic ring)",
+              "ms": "Gelung bulat seragam (cincin logam nipis)",
+              "zh": "均匀圆环（细金属环）"
+            }
+          },
+          {
+            "id": "item-u-channel",
+            "label": {
+              "en": "A uniform thin bar bent into a symmetrical horseshoe or U-shape",
+              "ms": "Bar nipis seragam yang dibengkokkan menjadi bentuk ladam atau huruf U yang simetri",
+              "zh": "弯折成对称马蹄形或U形的均匀细杆"
+            }
+          },
+          {
+            "id": "item-solid-sphere",
+            "label": {
+              "en": "A solid uniform billiard ball (sphere)",
+              "ms": "Bola biliard seragam pepejal (sfera)",
+              "zh": "实心均匀台球（球体）"
+            }
+          },
+          {
+            "id": "item-solid-disk",
+            "label": {
+              "en": "A solid uniform circular coin (flat disk)",
+              "ms": "Syiling bulat seragam pepejal (cakera rata)",
+              "zh": "实心均匀硬币（扁平圆盘）"
+            }
+          }
+        ],
+        "correctSelections": [
+          "item-thin-ring",
+          "item-u-channel"
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "cm-must-lie-within-material",
+          "condition": {
+            "kind": "selection",
+            "itemId": "item-thin-ring",
+            "selected": false
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "Recall that the center of mass is a mathematical point representing the average location of mass. It does not need to coincide with actual physical atoms.",
+          "ms": "Ingat kembali bahawa pusat jisim ialah satu titik matematik yang mewakili kedudukan purata jisim. Ia tidak semestinya bertindih dengan atom fizikal sebenar.",
+          "zh": "回顾质心是代表质量平均位置的数学点。它不需要与实际的实体原子重合。"
+        },
+        {
+          "en": "Identify the symmetry axes. For a circular hoop, the intersection of all reflection axes lies at the geometric center of the circle. Is there any solid material at that center?",
+          "ms": "Kenal pasti paksi-paksi simetri. Bagi gelung bulat, persilangan semua paksi pantulan terletak di pusat geometri bulatan. Adakah terdapat sebarang jirim pepejal di pusat tersebut?",
+          "zh": "找出对称轴。对于圆环，所有反射对称轴的交点位于圆的几何中心。在该中心处是否有任何实体材料？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct! The center of mass of both the circular hoop and the U-shaped bar lies at their geometric symmetry intersection, which is located in empty space outside the solid material. For solid objects like the billiard ball and coin, the symmetry center lies inside the material.",
+        "ms": "Betul! Pusat jisim bagi kedua-dua gelung bulat dan bar berbentuk U terletak pada persilangan simetri geometri mereka, yang berada di ruang kosong di luar jirim pepejal. Bagi objek pepejal seperti bola biliard dan syiling, pusat simetri berada di dalam bahan.",
+        "zh": "正确！圆环和U形杆的质心都位于其几何对称交点上，这些交点位于实体材料外部的空白空间中。而对于实心台球和硬币等实心物体，对称中心则位于材料内部。"
+      },
+      "answerLogic": {
+        "en": "The center of mass is defined as (1/M) * integral of r dm. By symmetry, the center of mass must lie at the intersection of symmetry planes. For a uniform thin circular hoop, symmetry dictates that the center of mass is at the center of the circle, where there is only empty space. For a uniform U-shaped bar, reflection symmetry across the central vertical line and mass distribution balance place the center of mass in the open air gap between the legs. In contrast, a solid sphere and a solid disk have material present at their geometric centers.",
+        "ms": "Pusat jisim ditakrifkan sebagai (1/M) * kamiran r dm. Melalui simetri, pusat jisim mesti terletak pada persilangan satah simetri. Bagi gelung bulat nipis yang seragam, simetri menetapkan bahawa pusat jisim berada di pusat bulatan, di mana hanya terdapat ruang kosong. Bagi bar seragam berbentuk U, simetri pantulan merentasi garis menegak tengah dan imbangan taburan jisim meletakkan pusat jisim di ruang udara terbuka antara kedua-dua kakinya. Sebaliknya, sfera pepejal dan cakera pepejal mempunyai bahan di pusat geometri mereka.",
+        "zh": "质心定义为 (1/M) * 积分 r dm。根据对称性，质心必须位于对称平面的交线上。对于均匀细圆环，对称性决定了质心位于圆心处，那里只有空无一物的空间。对于均匀U形杆，沿中央垂线的镜像对称性与质量分布平衡将质心置于两腿之间的开放空气间隙中。相比之下，实心球体和实心圆盘在其几何中心处均存在实体材料。"
+      },
+      "explanation": {
+        "en": "Because the center of mass is the weighted average position of all mass elements, it is a geometric and physical property of the system rather than a material particle. In hollow, curved, or open geometry objects (such as hoops, rings, hollow boxes, or bent bars), symmetry places the center of mass in the hollow interior or external space where no physical substance exists.",
+        "ms": "Oleh kerana pusat jisim ialah kedudukan purata berpemberat bagi semua unsur jisim, ia merupakan sifat geometri dan fizikal sistem dan bukannya zarah bahan. Dalam objek bergeometri berongga, melengkung atau terbuka (seperti gelung, cincin, kotak berongga, atau bar bengkok), simetri meletakkan pusat jisim di bahagian dalam berongga atau ruang luaran di mana tiada bahan fizikal wujud.",
+        "zh": "由于质心是所有质量微元的加权平均位置，它是系统的一个几何和物理属性，而不是一个实体质点。在空心、弯曲或开放几何结构的物体（如圆环、空心盒或弯曲杆件）中，对称性使得质心恰好落在空心内部或没有实体物质的外部空间中。"
+      },
+      "accessibilityText": {
+        "en": "Select multiple items from a list of four objects that have their center of mass located in empty space: circular hoop, U-shaped bar, solid billiard ball, and solid coin.",
+        "ms": "Pilih beberapa item daripada senarai empat objek yang mempunyai pusat jisim terletak di ruang kosong: gelung bulat, bar berbentuk U, bola biliard pepejal, dan syiling pepejal.",
+        "zh": "从包含四个物体的列表中多选出质心位于空白空间中的物体：细圆环、U形杆、实心台球和实心硬币。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      }
+    },
+    {
+      "id": "int-chal-multi-force-dynamic-response",
+      "type": "interactive",
+      "difficulty": "challenging",
+      "calculatorFree": true,
+      "numericAnswerRequired": false,
+      "objective": "Distinguish rotational from pure translational motion when a force is applied at versus away from the center of mass.",
+      "misconceptions": [
+        "force-at-any-point-causes-rotation"
+      ],
+      "prerequisiteRecovery": {
+        "prerequisiteId": "line-of-action-and-rotation",
+        "prompt": {
+          "en": "Review that a single force produces torque about the center of mass only if its line of action does not pass through the center of mass.",
+          "ms": "Ulang kaji bahawa satu daya menghasilkan tork terhadap pusat jisim hanya jika garis tindakannya tidak melalui pusat jisim.",
+          "zh": "复习只有当外力的作用线不通过质心时，该力才会对质心产生力矩并引起转动。"
+        }
+      },
+      "prompt": {
+        "en": "An unconstrained rigid body floats at rest in zero-gravity deep space. Classify each single applied force scenario by the resulting initial motion of the body.",
+        "ms": "Sebuah jasad tegar yang bebas terapung dalam keadaan pegun di angkasa lepas tanpa graviti. Kelaskan setiap senario daya tunggal yang dikenakan mengikut gerakan awal jasad yang terhasil.",
+        "zh": "一个不受约束的刚体静止漂浮在失重的深空中。请根据刚体产生的初始运动类型，对以下各种施加单力的场景进行分类。"
+      },
+      "interactionMode": "classification",
+      "interaction": {
+        "targets": [
+          {
+            "id": "target-pure-translation",
+            "label": {
+              "en": "Pure translation (accelerates linearly with zero rotation)",
+              "ms": "Translasi tulen (memecut secara linear tanpa sebarang putaran)",
+              "zh": "纯平动（沿直线加速且完全不发生转动）"
+            }
+          },
+          {
+            "id": "target-combined-motion",
+            "label": {
+              "en": "Combined translation and rotation (accelerates linearly while rotating)",
+              "ms": "Translasi dan putaran gabungan (memecut secara linear sambil berputar)",
+              "zh": "平动加转动的复合运动（在线性加速的同时发生转动）"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "item-force-through-cm",
+            "label": {
+              "en": "A horizontal force whose line of action passes directly through the center of mass",
+              "ms": "Daya mendatar yang garis tindakannya melalui tepat pada pusat jisim",
+              "zh": "一条作用线直接穿过质心的水平外力"
+            }
+          },
+          {
+            "id": "item-force-offset-above",
+            "label": {
+              "en": "A horizontal force applied parallel to the center line but shifted upward near the top edge",
+              "ms": "Daya mendatar yang dikenakan selari dengan garis pusat tetapi dialihkan ke atas berhampiran tepi atas",
+              "zh": "一条平行于中心线施加、但向上偏离靠近顶边缘的水平外力"
+            }
+          },
+          {
+            "id": "item-force-offset-below",
+            "label": {
+              "en": "A horizontal force applied parallel to the center line but shifted downward near the bottom edge",
+              "ms": "Daya mendatar yang dikenakan selari dengan garis pusat tetapi dialihkan ke bawah berhampiran tepi bawah",
+              "zh": "一条平行于中心线施加、但向下偏离靠近底边缘的水平外力"
+            }
+          },
+          {
+            "id": "item-angled-force-through-cm",
+            "label": {
+              "en": "A diagonal force directed at 45 degrees whose line of action passes precisely through the center of mass",
+              "ms": "Daya pepenjuru pada sudut 45 darjah yang garis tindakannya melalui tepat pada pusat jisim",
+              "zh": "一条方向为 45 度角、其作用线精确穿过质心的斜向外力"
+            }
+          }
+        ],
+        "placements": [
+          {
+            "itemId": "item-force-through-cm",
+            "targetId": "target-pure-translation"
+          },
+          {
+            "itemId": "item-force-offset-above",
+            "targetId": "target-combined-motion"
+          },
+          {
+            "itemId": "item-force-offset-below",
+            "targetId": "target-combined-motion"
+          },
+          {
+            "itemId": "item-angled-force-through-cm",
+            "targetId": "target-pure-translation"
+          }
+        ]
+      },
+      "diagnosticRules": [
+        {
+          "misconception": "force-at-any-point-causes-rotation",
+          "condition": {
+            "kind": "placement",
+            "itemId": "item-force-through-cm",
+            "targetId": "target-combined-motion"
+          }
+        }
+      ],
+      "hints": [
+        {
+          "en": "Recall Figure 9.14 in the text: what happens when a force is applied directly along the line of the center of mass versus above or below it?",
+          "ms": "Ingat kembali Rajah 9.14 dalam teks: apakah yang berlaku apabila daya dikenakan terus sepanjang garis pusat jisim berbanding di atas atau di bawahnya?",
+          "zh": "回忆课本中的图 9.14：当力直接沿着质心作用线施加，与施加在质心上方或下方时，分别会发生什么？"
+        },
+        {
+          "en": "Any force whose line of action passes directly through the center of mass produces zero lever arm and therefore zero torque about the center of mass. Without torque, can rotation occur?",
+          "ms": "Sebarang daya yang garis tindakannya melalui terus pada pusat jisim menghasilkan lengan tuas sifar dan oleh itu tork sifar terhadap pusat jisim. Tanpa tork, bolehkah putaran berlaku?",
+          "zh": "任何作用线直接穿过质心的外力，对质心的力臂都为零，因此对质心产生的力矩为零。没有力矩，物体会发生转动吗？"
+        }
+      ],
+      "feedback": {
+        "en": "Correct classification! Forces whose lines of action pass directly through the center of mass exert no torque about the center of mass, resulting in pure translational acceleration without rotation. Forces applied with an offset create a non-zero lever arm, producing torque that induces rotation simultaneously with translation.",
+        "ms": "Pengelasan yang betul! Daya yang garis tindakannya melalui terus pada pusat jisim tidak mengenakan sebarang tork terhadap pusat jisim, menghasilkan pecutan translasi tulen tanpa putaran. Daya yang dikenakan secara teranjak menghasilkan lengan tuas bukan sifar, menjana tork yang mencetuskan putaran serentak dengan translasi.",
+        "zh": "分类正确！作用线直接穿过质心的外力对质心不产生任何力矩，因此物体仅产生纯平动加速度而不发生转动。偏离质心施加的外力具有非零力臂，会产生力矩，从而引起平动的同时伴随转动。"
+      },
+      "answerLogic": {
+        "en": "Under Newton's second law for a system of particles (Sigma F_ext = M * a_CM), any net external force causes the center of mass to accelerate linearly. Rotation about the center of mass depends on the net torque (tau = r x F). When a force's line of action passes through the center of mass (r = 0), tau = 0, so the body undergoes pure translation regardless of the force's direction. When the line of action is offset (above or below the center of mass), r is non-zero, creating torque that produces angular acceleration alongside linear acceleration.",
+        "ms": "Di bawah hukum kedua Newton untuk sistem zarah (Sigma F_ext = M * a_CM), sebarang daya luar bersih menyebabkan pusat jisim memecut secara linear. Putaran terhadap pusat jisim bergantung kepada tork bersih (tau = r x F). Apabila garis tindakan daya melalui pusat jisim (r = 0), tau = 0, jadi jasad mengalami translasi tulen tanpa mengira arah daya. Apabila garis tindakan teranjak (di atas atau di bawah pusat jisim), r adalah bukan sifar, mewujudkan tork yang menghasilkan pecutan sudut bersama pecutan linear.",
+        "zh": "根据质点系的牛顿第二定律（Sigma F_ext = M * a_CM），任何合外力都会导致质心产生线性加速度。绕质心的转动则取决于合力矩（tau = r x F）。当外力的作用线穿过质心时（r = 0），力矩 tau = 0，因此无论力的方向如何，刚体均只进行纯平动。当作用线偏离质心（在质心上方或下方）时，r 非零，产生力矩从而在引起线加速度的同时产生角加速度（平动与转动复合）。"
+      },
+      "explanation": {
+        "en": "Applying a force whose line of action intersects the center of mass causes the extended body to behave exactly like a point particle located at that center of mass, moving purely translationally in the direction of the force. Rotation occurs only when an applied force has an offset line of action that exerts a torque about the center of mass.",
+        "ms": "Mengenakan daya yang garis tindakannya menyilang pusat jisim menyebabkan jasad lanjutan bertindak sama seperti zarah titik yang terletak pada pusat jisim tersebut, bergerak secara translasi tulen dalam arah daya. Putaran hanya berlaku apabila daya yang dikenakan mempunyai garis tindakan teranjak yang mengenakan tork terhadap pusat jisim.",
+        "zh": "当施加的外力作用线穿过质心时，刚体的整体平动行为完全等效于位于质心处的单个质点，仅沿受力方向进行纯平动。只有当外力的作用线偏离质心、从而对质心施加了力矩时，才会产生绕质心的转动。"
+      },
+      "accessibilityText": {
+        "en": "Classify four force scenarios into two categories: pure translation or combined translation and rotation. The scenarios include forces passing directly through the center of mass and forces offset above or below it.",
+        "ms": "Kelaskan empat senario daya kepada dua kategori: translasi tulen atau translasi dan putaran gabungan. Senario merangkumi daya yang melalui terus pada pusat jisim dan daya yang teranjak di atas atau di bawahnya.",
+        "zh": "将四种受力场景分类到两个类别中：纯平动，或平动加转动的复合运动。场景包括直接穿过质心的力和在质心上方或下方偏离的力。"
+      },
+      "provenance": {
+        "sourceLocation": "9.6 The Center of Mass; Complete controlled PDF for section 9.6",
+        "originalContent": true
+      }
+    }
+  ]
+}
