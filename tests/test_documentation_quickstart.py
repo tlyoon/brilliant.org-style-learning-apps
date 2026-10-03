@@ -50,6 +50,8 @@ class DocumentationQuickstartTests(unittest.TestCase):
             "source PDFs",
             "OAuth client",
             "manual review is optional",
+            "DOMAIN_PROFILE_REQUIRED",
+            "docs/DOMAIN_PROFILES.md",
         )
         for phrase in required:
             self.assertIn(phrase, text, phrase)

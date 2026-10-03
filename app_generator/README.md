@@ -59,6 +59,16 @@ where the immediate parent looks like `8.1`. Jobs are ordered numerically by cha
 
 Source-manifest version 1.1 records primary/supplementary PDFs and corpus provenance. Drive generation discovers sibling PDFs beneath the selected topic; direct local `source_files` configuration still accepts only one PDF.
 
+## Stage-0 textbook domain gate
+
+Every Google Drive run resolves a textbook-level subject domain before content generation. The gate always inventories the complete configured Source Root first; an explicit target such as `--chapter 9` or `--pdf-subchapter-path 9.2` is applied only after the textbook domain is verified. The inventory fingerprint covers all topic corpora, and each topic corpus key covers every sibling PDF in that topic folder.
+
+With `[domain] domain_id = "auto"`, Stage 0 deterministically selects representative subchapters (three by default), downloads only those representative PDFs to temporary state storage, and sends them to the configured Gemini API model using the strict `domain-discovery` response schema. A whole-textbook decision must meet `domain_min_confidence` and agree with the per-sample evidence. The result is matched only against active entries in `domains/registry.json`.
+
+A successful result is cached at `${STATE_ROOT}/domain-binding.json` with the whole-root fingerprint and selected profile version. The cache is reused only while both identities remain current. An explicit `domain_id`/`--domain-id` is a deliberate override and is recorded as such. An unsupported textbook exits with `DOMAIN_PROFILE_REQUIRED`; ambiguous/inconsistent/low-confidence evidence exits with `DOMAIN_DISCOVERY_FAILED`. Diagnostic state is stored at `${STATE_ROOT}/domain-discovery-status.json`. No content lease is claimed before this gate passes.
+
+This PR establishes selection/binding only. The next bounded implementation step is to compose each generation stage with the selected profile's source-analysis, activity-generation, visual-generation, semantic-audit, and repair instructions.
+
 ## Selection modes
 
 Three modes are supported:
@@ -84,7 +94,7 @@ python -m app_generator run --config .\<generated-local-config>.toml --selection
 
 Targeted auto is activated only when the operator explicitly supplies `--pdf-subchapter-path` together with `--selection-mode auto`. The tracked/configured default `placeholders.pdf_subchapter_path` remains useful for specific-mode defaults and does **not** silently pin ordinary auto mode.
 
-For a target such as `8.6`, the runtime filters Drive inventory to that exact section before queue preview, durable-handoff reconciliation, and Drive claim election. The worker:
+For a target such as `8.6`, Stage 0 first verifies the domain against the **complete Source Root**. Only after that textbook-level gate passes does the runtime filter the inventory to exact section `8.6` for queue preview, durable-handoff reconciliation, and Drive claim election. The worker:
 
 - acquires the normal Drive-native lease for 8.6;
 - waits if another worker currently owns 8.6;
@@ -198,10 +208,10 @@ node tests\test_interaction_rendering.js
 python scripts\check_documentation_impact.py
 ```
 
-`doctor` exercises configuration/Drive/provenance and coordinated queue inspection where relevant, but does not upload a PDF to Gemini.
+`doctor` exercises configuration/Drive/provenance and coordinated queue inspection where relevant. When no current Source-Root/domain binding exists, doctor may upload only the bounded representative textbook PDFs required for Stage-0 domain discovery to the configured Gemini API; it does **not** start activity/content generation or claim an auto content job.
 
 ## Failure handling
 
-Drive ambiguity, wrong accounts, bad downloads, dirty/diverged Git, invalid generated content, lease loss, coordinator health failure, or unsafe publication stop the affected operation. Auto mode preserves recoverable state/checkpoints where possible and does not claim global success when terminal failures remain.
+Drive ambiguity, wrong accounts, bad downloads, domain-profile absence/ambiguity, dirty/diverged Git, invalid generated content, lease loss, coordinator health failure, or unsafe publication stop the affected operation. Auto mode preserves recoverable state/checkpoints where possible and does not claim global success when terminal failures remain.
 
 Network-facing Git synchronization/publication operations use bounded retries for recognized transient transport failures such as connection resets, temporary DNS/connectivity failures, timeouts, selected HTTP 502/503/504 responses, and common curl/TLS transport errors. Retry backoff is 2, 5, then 10 seconds after the initial attempt. Deterministic failures such as authentication errors, dirty worktrees, non-fast-forward updates, invalid refs, or merge conflicts still fail immediately. Read-only GitHub CLI checks may use the same transient retry path; non-idempotent PR actions retain their existing explicit reconciliation behavior rather than being blindly retried.

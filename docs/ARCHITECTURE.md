@@ -9,8 +9,8 @@
 - Versioned subject-domain profile registry separating disciplinary knowledge from the generic engine.
 - Visual planner producing declarative, versioned visual specifications.
 - Trusted visual/interaction template registry and deterministic renderer runtime.
-- Cross-modal validator for question ? answer ? visual ? physics consistency.
-- Provider-neutral visual tool router separating aesthetic generation, deterministic physics rendering, independent computational verification, and development-time prototyping.
+- Cross-modal validator for question ? answer ? visual ? domain consistency.
+- Provider-neutral visual tool router separating aesthetic generation, deterministic domain rendering, independent computational verification, and development-time prototyping.
 - Progress, mastery, and recommendation service.
 - Guarded AI tutor with retrieval from approved content.
 - Teacher, student, and consented read-only supporter reporting views.
@@ -23,6 +23,8 @@ Repository content is provider-neutral. Application, database, model, and hostin
 Generated educational content and visual specifications remain data. Reusable renderer/simulation primitives are trusted runtime code. The generator must not create arbitrary per-activity executable JavaScript as a shortcut around the visual-spec contract.
 
 The repository has three explicit layers: generic engine, active domain profile, and project/course policy. Domain profiles live beneath `domains/`; the current `university-level-physics` profile is stored at `domains/university-level physics/`. Generic code resolves domain manifests and must not hard-code physics template IDs, simulation laws, or disciplinary validators. Decision 0025 and `docs/DOMAIN_PROFILES.md` define this boundary.
+
+Stage 0 resolves which active domain profile is allowed **before content-job leasing/generation**. For Drive projects, it discovers the complete Source Root, computes a deterministic fingerprint from every topic corpus identity, classifies representative PDFs at textbook level, validates consistency/confidence, and caches the binding outside Git at `${STATE_ROOT}/domain-binding.json`. The binding includes the profile version, so either source-corpus changes or profile changes force reclassification. Unsupported/ambiguous textbooks fail closed. Decision 0026 defines this gate.
 
 ## Data flow
 

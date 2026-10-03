@@ -31,7 +31,8 @@ Historical roadmaps, old branch-testing instructions, chat transcripts, and copi
 | Generator CLI/config/coordinator details | `app_generator/README.md`, `config/README.md` |
 | Product change | Product requirements and decision records |
 | Learning content | Content rules, learning design, schema, source-ingestion policy |
-| Add or change a subject domain | Decision 0025, `docs/DOMAIN_PROFILES.md`, then the target `domains/<domain>/` manifest/rules |
+| Diagnose Stage-0 textbook domain selection/binding | Decision 0026, `docs/DOMAIN_PROFILES.md`, `config/README.md`, then `app_generator/README.md` |
+| Add or change a subject domain | Decisions 0025-0026, `docs/DOMAIN_PROFILES.md`, then the target `domains/<domain>/` manifest/rules |
 | Visual/graphic/simulation activity work | Decision 0024, `docs/VISUAL_INTERACTION_DESIGN.md`, `docs/VISUAL_GENERATION_PROMPT_SPEC.md`, `docs/VISUAL_TOOL_ORCHESTRATION.md`, content rules, learning design, architecture |
 | AI tutor | AI workflow, learning design, security/privacy |
 | Application code | Architecture, product requirements, test plan |
@@ -48,7 +49,7 @@ config/configure_project.toml
 
 `config/project.toml` remains a compatibility artifact during migration and is **not** the normal authority selected by `sync-workstation.cmd` on current `main`.
 
-Google Drive/coordinator authorization uses tracked `google.oauth_login`; the Gemini browser uses independent `gemini.login_name`, `gem_url`, and `gem_edit_url`. A preserved `[local_gemini]` table in the generated local TOML permits workstation-only Gemini overrides. The Gem display name is not synchronized. Topic generation retains `main`'s multi-PDF corpus support beneath the single `sourcepath` root.
+Google Drive/coordinator authorization uses tracked `google.oauth_login`; the Gemini browser uses independent `gemini.login_name`, `gem_url`, and `gem_edit_url`. A preserved `[local_gemini]` table in the generated local TOML permits workstation-only Gemini overrides. The Gem display name is not synchronized. Topic generation retains `main`'s multi-PDF corpus support beneath the single `sourcepath` root. Stage 0 also binds the complete Source-Root fingerprint to a compatible active domain profile before any Drive generation job is claimed; automatic classification is the default and fails closed for unsupported or ambiguous textbooks.
 
 Current workstation behavior derives the environment namespace and local state root from `project.project_name`, normally:
 

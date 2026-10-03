@@ -77,6 +77,9 @@ class GeneratorConfigTests(unittest.TestCase):
             self.assertEqual("DEBUG", config.log_level)
             self.assertEqual(4, config.max_repair_attempts)
             self.assertEqual(2, config.max_gemini_session_restarts)
+            self.assertEqual("auto", config.domain_id)
+            self.assertEqual(3, config.domain_sample_count)
+            self.assertEqual(0.85, config.domain_min_confidence)
             self.assertEqual("EXAMPLE_PROJECT_GENERATOR_", config.env_prefix)
 
     def test_workstation_binding_rejects_wrong_repository(self):
@@ -210,6 +213,20 @@ class GeneratorConfigTests(unittest.TestCase):
             )
             config = load_config(path, environ={})
             self.assertTrue(config.git_auto_merge)
+
+    def test_domain_discovery_configuration_is_bounded(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.pdf"
+            source.write_bytes(b"synthetic")
+            path = self.make_config(root, [source])
+            original = path.read_text(encoding="utf-8")
+            path.write_text(original + "[domain]\ndomain_sample_count = 6\n", encoding="utf-8")
+            with self.assertRaisesRegex(ConfigurationError, "domain_sample_count"):
+                load_config(path, environ={})
+            path.write_text(original + "[domain]\ndomain_min_confidence = 0.4\n", encoding="utf-8")
+            with self.assertRaisesRegex(ConfigurationError, "domain_min_confidence"):
+                load_config(path, environ={})
 
     def test_project_specific_values_have_no_python_defaults(self):
         for key in (

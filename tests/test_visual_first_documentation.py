@@ -95,8 +95,26 @@ class VisualFirstDocumentationTests(unittest.TestCase):
         self.assertIn("Alternative B - minimal text-first domain", guide)
         self.assertIn("Alternative C - clone the closest installed domain structurally", guide)
         self.assertIn("Alternative D - expert-authored profile", guide)
-        self.assertIn("Automatic textbook-domain classification is the next bounded Stage-0 implementation slice", guide)
+        self.assertIn("Stage 0 now performs textbook-level domain discovery", guide)
+        self.assertIn("DOMAIN_PROFILE_REQUIRED", guide)
+        self.assertIn("domain-binding.json", guide)
         self.assertIn("generic engine, active domain profile, and project/course policy", architecture)
+
+    def test_stage_zero_domain_discovery_decision_is_accepted_and_fail_closed(self):
+        decision = self.text("docs/decisions/0026-stage0-textbook-domain-discovery.md")
+        blueprint = self.text("docs/10_STAGE_BLUEPRINT.md")
+        config = self.text("config/README.md")
+        generator = self.text("app_generator/README.md")
+        self.assertIn("## Status\n\nAccepted.", decision)
+        self.assertIn("before any content job is claimed or generated", decision)
+        self.assertIn("whole-root fingerprint", decision)
+        self.assertIn("DOMAIN_PROFILE_REQUIRED", decision)
+        self.assertIn("DOMAIN_DISCOVERY_FAILED", decision)
+        self.assertIn("Stage 0 now performs textbook-level domain discovery", blueprint)
+        self.assertIn('domain_id = "auto"', config)
+        self.assertIn("domain_min_confidence = 0.85", config)
+        self.assertIn("domain-discovery-status.json", generator)
+        self.assertIn("does **not** start activity/content generation", generator)
 
     def test_architecture_and_ai_workflow_include_visual_pipeline(self):
         architecture = self.text("docs/ARCHITECTURE.md")

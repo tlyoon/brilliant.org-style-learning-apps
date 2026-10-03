@@ -28,6 +28,24 @@ Project-owned Gemini text is tracked in:
 
 The Gem display name is deliberately **not** part of the configuration contract. The configured Gemini account plus Gem URL/edit URL identify the Gem. Before live generation, the generator reconciles Description and Instructions and verifies persistence without renaming the Gem.
 
+
+## Stage-0 textbook domain binding
+
+The `[domain]` table controls the pre-generation subject-domain gate:
+
+```toml
+[domain]
+domain_id = "auto"
+domain_sample_count = 3
+domain_min_confidence = 0.85
+```
+
+`auto` is the normal mode. Stage 0 inventories the **entire** configured Source Root before applying a chapter/subchapter selector, fingerprints every discovered topic corpus, samples representative subchapters across the textbook, and asks the configured Gemini API model for a strict subject/academic-level classification against the active profiles in `domains/registry.json`. It then checks whole-textbook confidence and per-sample consistency.
+
+A successful binding is cached outside Git at `${STATE_ROOT}/domain-binding.json` and includes the Source-Root fingerprint plus the domain-profile version. Any change to a primary/supplementary topic PDF changes the inventory fingerprint; a profile-version change also invalidates the binding. `DOMAIN_PROFILE_REQUIRED` means the textbook is confidently outside the installed profile set. `DOMAIN_DISCOVERY_FAILED` means the evidence is ambiguous/inconsistent/below threshold. Both stop generation before a Drive lease is claimed.
+
+Set `domain_id` to a registered active ID, or pass `--domain-id`, only as a deliberate manual override. An explicit override still creates a fingerprint/version binding but bypasses classification. Auto workers never create or activate new domain profiles.
+
 ## Important project-dependent values
 
 Review these when creating/recycling a project:
@@ -40,6 +58,7 @@ Review these when creating/recycling a project:
 - `gemini.login_name` — Gemini browser Google account;
 - `gemini.gem_url` and `gemini.gem_edit_url`;
 - source/provenance metadata;
+- `domain.domain_id`, representative sample count, and minimum classification confidence;
 - automation selection/coordinator policy;
 - Git publication/PR/merge policy;
 - model preference policy.
@@ -123,6 +142,9 @@ The current Stage-0 baseline retains these contracts while establishing the sing
 - one configured Google Drive Source Root;
 - one selected topic corpus per generated package, with `source.pdf` as the primary PDF and sibling PDFs as supplementary sources;
 - selectors resolve beneath the Source Root;
+- textbook-level domain discovery/binding runs over the complete Source Root before a Drive job is claimed;
+- a source/profile mismatch invalidates the cached binding and forces reclassification;
+- unsupported or ambiguous domains fail closed rather than inheriting the default physics profile;
 - supported interaction modes;
 - deterministic validation/provenance rules;
 - current activity/type/difficulty distribution;

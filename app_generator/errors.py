@@ -48,6 +48,14 @@ class AutoModeBlockedError(GeneratorError):
     code = "AUTO_MODE_BLOCKED"
 
 
+class DomainDiscoveryError(GeneratorError):
+    code = "DOMAIN_DISCOVERY_FAILED"
+
+
+class DomainProfileRequiredError(GeneratorError):
+    code = "DOMAIN_PROFILE_REQUIRED"
+
+
 class BrowserError(GeneratorError):
     code = "BROWSER_ERROR"
 

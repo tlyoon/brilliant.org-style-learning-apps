@@ -32,5 +32,6 @@
   "verification": {
     "policy": "verification/verification-policy.json"
   },
-  "trustedRenderers": {}
+  "trustedRenderers": {},
+  "profileVersion": "1.0.0"
 }

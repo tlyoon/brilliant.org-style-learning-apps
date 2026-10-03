@@ -13,6 +13,7 @@ class RepositoryRuleTests(unittest.TestCase):
             "docs/VISUAL_INTERACTION_DESIGN.md", "docs/VISUAL_GENERATION_PROMPT_SPEC.md",
             "docs/VISUAL_TOOL_ORCHESTRATION.md", "docs/DOMAIN_PROFILES.md",
             "docs/decisions/0024-visual-first-physics-learning.md", "docs/decisions/0025-domain-profile-architecture.md",
+            "docs/decisions/0026-stage0-textbook-domain-discovery.md", "app_generator/domains/discovery.py",
             "docs/SECURITY_AND_PRIVACY.md", "app/visual-renderers.js",
             "content/schema/content-package.schema.json",
             "content/schema/source-manifest.schema.json", "content/schema/visual-plan.schema.json",

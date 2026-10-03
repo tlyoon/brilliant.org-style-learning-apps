@@ -1,6 +1,6 @@
 # Recycle the generator for another textbook project
 
-> **Subject-domain note:** Changing the textbook/source root does not make the current physics profile suitable for another discipline. Read `docs/DOMAIN_PROFILES.md`. On this revision, a different subject requires manual domain onboarding/activation; textbook-level automatic domain discovery is the next Stage-0 implementation slice.
+> **Subject-domain note:** Changing the textbook/source root triggers Stage-0 textbook-level domain discovery before generation. Read `docs/DOMAIN_PROFILES.md`. If the new textbook matches an installed active profile, Stage 0 binds it automatically. If no compatible profile exists, generation stops with `DOMAIN_PROFILE_REQUIRED` and the new domain must be onboarded/activated explicitly.
 
 Use `docs/PDF_TO_APP_QUICKSTART.md` for the complete normal workflow. This file is the specialist guide for turning the repository into a new project without leaking state or credentials from another project.
 

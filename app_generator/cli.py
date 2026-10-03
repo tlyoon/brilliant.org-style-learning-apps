@@ -9,6 +9,7 @@ import tempfile
 from pathlib import Path
 
 from app_generator.config import GeneratorConfig, load_config
+from app_generator.domains import ensure_drive_domain
 from app_generator.deployments import (
     DEFAULT_DEPLOYMENT_REGISTRY,
     deployment_rows,
@@ -25,6 +26,7 @@ from app_generator.runtime.auto import inspect_auto_queue, retry_failed_auto_job
 from app_generator.sources.google_drive import (
     DriveRestClient,
     discover_drive_sources,
+    discover_drive_sources_with_corpus_keys,
     discover_topic_corpus,
     resolve_drive_source,
 )
@@ -70,6 +72,7 @@ def _add_config_arguments(command: argparse.ArgumentParser) -> None:
     command.add_argument("--pdf-subchapter-path")
     command.add_argument("--drive-oauth-client-file", type=Path)
     command.add_argument("--selection-mode", choices=("specific", "auto", "distributed"))
+    command.add_argument("--domain-id", help="auto or an explicitly registered active domain id")
     command.add_argument(
         "--chapter",
         type=_chapter_number,
@@ -134,6 +137,7 @@ def _load(args: argparse.Namespace) -> GeneratorConfig:
         "pdf_subchapter_path": getattr(args, "pdf_subchapter_path", None),
         "drive_oauth_client_file": getattr(args, "drive_oauth_client_file", None),
         "selection_mode": getattr(args, "selection_mode", None),
+        "domain_id": getattr(args, "domain_id", None),
     }
     return load_config(args.config, cli_overrides=overrides)
 
@@ -190,6 +194,17 @@ def doctor(
         if config.uses_google_drive:
             authorization = authorize_google_drive(config)
             drive_client = DriveRestClient(authorization.session, config.drive_api_timeout_seconds)
+            domain_inventory = discover_drive_sources_with_corpus_keys(
+                drive_client,
+                sourcepath=config.sourcepath,
+                target_filename=config.target_filename,
+                max_folders=config.max_drive_folders,
+            )
+            domain_profile = ensure_drive_domain(config, drive_client, domain_inventory)
+            print(
+                f"Stage 0 domain: {domain_profile.id} "
+                f"(profile {domain_profile.profile_version}; textbook-level Source Root binding verified)"
+            )
             if config.selection_mode == "distributed":
                 config = ensure_coordinator_ready(config)
                 inventory = discover_drive_sources(

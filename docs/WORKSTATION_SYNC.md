@@ -172,7 +172,7 @@ The synchronizer:
 9. verifies project/workstation Google account consistency;
 10. in full mode runs lint, content validation, unit tests, JavaScript syntax checks, and generator doctor.
 
-`doctor` does not upload a source PDF or generate content. When `llm.backend = "gemini_api"`, it does preflight Gemini API authentication; on a workstation without a cached Vertex token, this is the intentional one-time OAuth authorization step before unattended generation.
+`doctor` does not generate activity/content or claim an auto content job. It now verifies the Stage-0 textbook-domain binding as part of the Drive/provenance preflight; when no current binding exists, it may upload only the bounded representative textbook PDFs needed for domain discovery. When `llm.backend = "gemini_api"`, doctor also preflights Gemini API authentication; on a workstation without a cached Vertex token, this is the intentional one-time OAuth authorization step before unattended generation.
 
 ## Live run shortcut
 

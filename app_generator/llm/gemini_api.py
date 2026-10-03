@@ -136,6 +136,34 @@ def _localized_schema() -> dict[str, Any]:
 def response_schema_for_stage(stage: str) -> dict[str, Any] | None:
     """Return strict schemas for high-value stages; repository validators remain authoritative."""
 
+    if stage == "domain-discovery":
+        assessment = {
+            "type": "object",
+            "properties": {
+                "subchapterId": {"type": "string"},
+                "subject": {"type": "string"},
+                "academicLevel": {"type": "string"},
+                "matchedDomainId": {"type": "string"},
+                "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+            },
+            "required": ["subchapterId", "subject", "academicLevel", "matchedDomainId", "confidence"],
+            "additionalProperties": False,
+        }
+        return {
+            "type": "object",
+            "properties": {
+                "subject": {"type": "string"},
+                "academicLevel": {"type": "string"},
+                "matchedDomainId": {"type": "string"},
+                "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+                "consistency": {"type": "string", "enum": ["consistent", "mixed", "ambiguous"]},
+                "sampleAssessments": {"type": "array", "minItems": 1, "items": assessment},
+            },
+            "required": [
+                "subject", "academicLevel", "matchedDomainId", "confidence", "consistency", "sampleAssessments"
+            ],
+            "additionalProperties": False,
+        }
     if stage == "source-analysis":
         localized = _localized_schema()
         return {

@@ -199,7 +199,7 @@ Stage 0 therefore establishes the source universe that Stage 1 will later discov
 
 The code package is domain-aware rather than physics-hard-coded. Shared source discovery, orchestration, schemas, publication, and learner-shell behavior remain generic; subject-specific instructions, renderers/simulations, validators, and verifier policy live under `domains/`. The current active profile is `university-level-physics` at `domains/university-level physics/`.
 
-Stage 0 will next add textbook-level domain discovery over representative samples from the single Source Root. All subchapters beneath one configured root are assumed to belong to the same textbook. A confident subject for which no compatible active profile exists, or an ambiguous classification, must pause generation and require manual domain onboarding. It must never silently apply the physics profile to another discipline. Decision 0025 and `docs/DOMAIN_PROFILES.md` define the onboarding alternatives and profile contract.
+Stage 0 now performs textbook-level domain discovery over representative samples from the single Source Root before any generation job is claimed. All subchapters beneath one configured root are treated as one textbook. The system fingerprints the complete discovered source inventory, checks cross-sample consistency/confidence, binds the fingerprint to an installed domain ID/profile version, and re-runs discovery when the source inventory or profile version changes. A confident subject for which no compatible active profile exists stops with `DOMAIN_PROFILE_REQUIRED`; ambiguous or low-confidence classification stops with `DOMAIN_DISCOVERY_FAILED`. It never silently applies the physics profile to another discipline. Decisions 0025-0026 and `docs/DOMAIN_PROFILES.md` define the profile and discovery contracts.
 
 ## Starting capability
 
@@ -220,7 +220,7 @@ Before Stage 0 is considered fully aligned with this blueprint, the current conf
 
 ## Exit condition
 
-Stage 0 is considered established when the current baseline is reproducible, documented, tested, and can be referenced as the pre-blueprint implementation state **with all source selection resolving from the one configured project Source Root**.
+Stage 0 is considered established when the current baseline is reproducible, documented, tested, all source selection resolves from the one configured project Source Root, and that Source Root is safely bound to a compatible installed subject-domain profile before generation.
 
 ---
 

@@ -23,6 +23,10 @@ class CliParserTests(unittest.TestCase):
 
         self.assertEqual(args.config, config)
 
+    def test_domain_override_is_exposed(self):
+        args = _parser().parse_args(["run", "--domain-id", "university-level-physics"])
+        self.assertEqual("university-level-physics", args.domain_id)
+
     def test_auto_selection_mode_is_exposed(self):
         args = _parser().parse_args(["run", "--selection-mode", "auto"])
         self.assertEqual("auto", args.selection_mode)
