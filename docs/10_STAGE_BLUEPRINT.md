@@ -194,6 +194,13 @@ learner application
 
 Stage 0 therefore establishes the source universe that Stage 1 will later discover and model more comprehensively. Stage 1 must generalize the behavior below this root rather than create a parallel source system.
 
+
+## Domain-profile boundary
+
+The code package is domain-aware rather than physics-hard-coded. Shared source discovery, orchestration, schemas, publication, and learner-shell behavior remain generic; subject-specific instructions, renderers/simulations, validators, and verifier policy live under `domains/`. The current active profile is `university-level-physics` at `domains/university-level physics/`.
+
+Stage 0 will next add textbook-level domain discovery over representative samples from the single Source Root. All subchapters beneath one configured root are assumed to belong to the same textbook. A confident subject for which no compatible active profile exists, or an ambiguous classification, must pause generation and require manual domain onboarding. It must never silently apply the physics profile to another discipline. Decision 0025 and `docs/DOMAIN_PROFILES.md` define the onboarding alternatives and profile contract.
+
 ## Starting capability
 
 The repository already provides a PDF/source-driven generation workflow, structured content packages, schemas and validation, a learner scaffold, multilingual learner-facing content, formative hints and retries, prerequisite routing, difficulty levels, assisted/independent evidence, review controls, and deployment/generation infrastructure.
@@ -328,7 +335,7 @@ Given the single configured Source Root containing multiple chapter/topic folder
 
 ## Goal
 
-Move beyond MCQ-dominant and text-card interaction by giving the learner multiple ways to **see, predict, manipulate, construct, compare, classify, and explore** physics concepts. Visual representation is instructional content when it carries spatial, graphical, vectorial, causal, or dynamical meaning.
+Move beyond MCQ-dominant and text-card interaction by giving the learner multiple ways to **see, predict, manipulate, construct, compare, classify, and explore** concepts using the native representations of the active subject domain. The current pilot domain is physics. Visual representation is instructional content when it carries spatial, graphical, vectorial, causal, or dynamical meaning.
 
 ## Core architecture
 
@@ -347,7 +354,7 @@ declarative visual specification
         ?
 trusted renderer / interaction primitive
         ?
-question ? answer ? visual ? physics validation
+question ? answer ? visual ? domain validation
         ?
 repair or safe fallback
         ?
@@ -364,7 +371,7 @@ Every activity receives a visual-value assessment. A visual is required when it 
 
 Visual specifications are declarative data. Trusted runtime components own geometry, rendering, animation, and interaction behavior. Every significant entity, label, vector, axis, state, and relation must be justified by the activity, a trusted template invariant, or grounded evidence. Unsupported or ambiguous detail is simplified or falls back rather than being invented.
 
-The detailed contract is Decision 0024 and `docs/VISUAL_INTERACTION_DESIGN.md`.
+The detailed visual contract is Decision 0024 and `docs/VISUAL_INTERACTION_DESIGN.md`; Decision 0025 governs which domain supplies subject-specific templates, simulations, and validators.
 
 ## Activity-mix transition
 

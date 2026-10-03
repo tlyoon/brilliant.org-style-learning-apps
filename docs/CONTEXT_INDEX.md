@@ -11,7 +11,7 @@ When documents conflict, use this order:
 5. `docs/CONTENT_RULES.md` and `content/schema/content-package.schema.json` — learning-package rules.
 6. `docs/LEARNING_DESIGN.md` — pedagogy, mastery, progression, and feedback.
 7. `docs/SECURITY_AND_PRIVACY.md` — data handling and access requirements.
-8. `docs/ARCHITECTURE.md` and `docs/AI_WORKFLOW.md` — technical design.
+8. `docs/DOMAIN_PROFILES.md`, `docs/ARCHITECTURE.md` and `docs/AI_WORKFLOW.md` — technical design.
 9. `docs/DEVELOPMENT_ROADMAP.md`, issues, and pull requests — delivery planning/provenance.
 
 `docs/PDF_TO_APP_QUICKSTART.md` is the canonical current operational walkthrough. `docs/DOCUMENTATION_MAINTENANCE.md` requires operator-visible changes to update canonical documentation in the same PR and adds a CI documentation-impact gate.
@@ -25,12 +25,13 @@ Historical roadmaps, old branch-testing instructions, chat transcripts, and copi
 | Short fresh-PC setup and settings editing | `docs/FRESH_PC_QUICKSTART.md`, then `docs/PDF_TO_APP_QUICKSTART.md` |
 | Install/setup and first PDF → draft workflow | `docs/PDF_TO_APP_QUICKSTART.md` |
 | Verify documentation freshness policy | `docs/DOCUMENTATION_MAINTENANCE.md` |
-| Recycle repository for another textbook/project | `docs/GENERIC_PROJECT_SETUP.md`, then `config/README.md` |
+| Recycle repository for another textbook/project | `docs/GENERIC_PROJECT_SETUP.md`, `docs/DOMAIN_PROFILES.md`, then `config/README.md` |
 | Workstation setup/sync troubleshooting | `docs/WORKSTATION_SYNC.md` |
 | Continuous auto / multi-PC verification | `docs/CONTINUOUS_AUTO_TESTING.md`, then `app_generator/README.md` |
 | Generator CLI/config/coordinator details | `app_generator/README.md`, `config/README.md` |
 | Product change | Product requirements and decision records |
 | Learning content | Content rules, learning design, schema, source-ingestion policy |
+| Add or change a subject domain | Decision 0025, `docs/DOMAIN_PROFILES.md`, then the target `domains/<domain>/` manifest/rules |
 | Visual/graphic/simulation activity work | Decision 0024, `docs/VISUAL_INTERACTION_DESIGN.md`, `docs/VISUAL_GENERATION_PROMPT_SPEC.md`, `docs/VISUAL_TOOL_ORCHESTRATION.md`, content rules, learning design, architecture |
 | AI tutor | AI workflow, learning design, security/privacy |
 | Application code | Architecture, product requirements, test plan |

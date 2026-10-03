@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "profiles": [
+    {
+      "id": "replace-domain-clean-v1",
+      "purpose": "Default concept-first visual language for this domain",
+      "tone": "playful-academic",
+      "compositionPriority": "concept-first",
+      "visualDensity": "low",
+      "backgroundComplexity": "minimal",
+      "colorStrategy": "semantic-high-contrast",
+      "geometryStyle": "crisp-rounded",
+      "motionStyle": "restrained-purposeful",
+      "rasterTextPolicy": "forbidden",
+      "mobileFirst": true,
+      "colorIndependentMeaning": true
+    }
+  ]
+}

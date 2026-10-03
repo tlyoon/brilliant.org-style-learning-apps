@@ -5,10 +5,15 @@ from __future__ import annotations
 
 import argparse
 import shutil
+import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from app_generator.domains import resolve_domain
 
 
 def _resolve_package(package_path: Path, source_root: Path = ROOT) -> Path:
@@ -30,10 +35,15 @@ def build(output: Path, package_path: Path, *, source_root: Path = ROOT) -> None
         raise ValueError(f"Output directory must be empty: {output}")
     source_root = source_root.resolve()
     source_package = _resolve_package(package_path, source_root)
+    domain = resolve_domain(source_root)
     output.mkdir(parents=True, exist_ok=True)
 
     source_index = (source_root / "app" / "index.html").read_text(encoding="utf-8")
     public_index = source_index.replace('href="styles.css"', 'href="app/styles.css"').replace(
+        'href="domain-styles.css"', 'href="app/domain-styles.css"'
+    ).replace(
+        'src="domain-renderers.js"', 'src="app/domain-renderers.js"'
+    ).replace(
         'src="visual-renderers.js"', 'src="app/visual-renderers.js"'
     ).replace(
         'src="app.js"', 'src="app/app.js"'
@@ -46,8 +56,10 @@ def build(output: Path, package_path: Path, *, source_root: Path = ROOT) -> None
 
     for source, relative_target in (
         (source_root / "app" / "app.js", Path("app/app.js")),
+        (domain.path("visuals", "rendererScript"), Path("app/domain-renderers.js")),
         (source_root / "app" / "visual-renderers.js", Path("app/visual-renderers.js")),
         (source_root / "app" / "styles.css", Path("app/styles.css")),
+        (domain.path("visuals", "stylesheet"), Path("app/domain-styles.css")),
         (source_package, Path("content/package.json")),
     ):
         target = output / relative_target

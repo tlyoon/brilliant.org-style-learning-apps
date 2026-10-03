@@ -80,8 +80,10 @@ class DocumentationQuickstartTests(unittest.TestCase):
                 "index.html",
                 ".nojekyll",
                 "app/app.js",
+                "app/domain-renderers.js",
                 "app/visual-renderers.js",
                 "app/styles.css",
+                "app/domain-styles.css",
                 "content/package.json",
             ):
                 self.assertTrue((output / relative).is_file(), relative)

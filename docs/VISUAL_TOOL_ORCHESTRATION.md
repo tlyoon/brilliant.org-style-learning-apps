@@ -2,7 +2,10 @@
 
 ## Purpose
 
-Visual-first physics learning needs two qualities at once: **scientific fidelity** and **visual appeal**. No single generative tool is trusted to supply both. The production architecture therefore separates semantic physics, rendering, aesthetic generation, independent verification, and final multimodal audit.
+Visual-first learning needs two qualities at once: **disciplinary fidelity** and **visual appeal**. No single generative tool is trusted to supply both. The production architecture therefore separates domain semantics, rendering, aesthetic generation, independent verification, and final multimodal audit.
+
+
+The current installed implementation examples are physics-specific because `university-level-physics` is the first active domain. Other domains may use different verification providers and renderer families while preserving the same provider-separation principle. See `docs/DOMAIN_PROFILES.md`.
 
 ## Capability roles
 
@@ -16,11 +19,11 @@ Gemini remains the primary content-generation family. The configured **image-cap
 - inspect the final rendered activity in a multimodal consistency audit;
 - use source context and, only when explicitly allowed, external grounding tools.
 
-Gemini-generated raster imagery is **not** authoritative for answer-critical physics. It must not be the sole source for vector direction, graph axes/shape, force labels, state transitions, numeric scales, answer-relevant geometry, or simulation laws.
+Gemini-generated raster imagery is **not** authoritative for answer-critical domain meaning. It must not be the sole source for vector direction, graph axes/shape, force labels, state transitions, numeric scales, answer-relevant geometry, or simulation laws.
 
 ### Deterministic renderer and simulation engine
 
-For hybrid rendering, generated context artwork must not be required for interpreting answer-critical physics. The deterministic foreground must remain complete and meaningful if the contextual image is removed. This prevents visual misalignment or image-model invention from becoming scientific evidence.
+For hybrid rendering, generated context artwork must not be required for interpreting answer-critical domain meaning. The deterministic foreground must remain complete and meaningful if the contextual image is removed. This prevents visual misalignment or image-model invention from becoming scientific evidence.
 
 
 Trusted repository code owns answer-critical rendering and interaction behavior. It receives semantic parameters and materializes:
@@ -61,7 +64,7 @@ This preserves reproducibility, offline tolerance, and repository ownership.
 
 ### Canva and design-canvas tools
 
-Design tools such as Canva, Figma, tldraw, MagicPath, Miro, or Whimsical can help develop visual-language references, compare layout directions, and review hierarchy/readability. They are not physics validators and must not define answer-critical scientific geometry. Their useful outputs are style guidance or design-system assets that are deliberately promoted into repository-owned tokens/components.
+Design tools such as Canva, Figma, tldraw, MagicPath, Miro, or Whimsical can help develop visual-language references, compare layout directions, and review hierarchy/readability. They are not physics validators and must not define answer-critical disciplinary geometry or structure. Their useful outputs are style guidance or design-system assets that are deliberately promoted into repository-owned tokens/components.
 
 ### Generative video/image tools
 

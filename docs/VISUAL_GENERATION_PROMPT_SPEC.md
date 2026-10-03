@@ -6,13 +6,16 @@ This document specifies the prompt contracts that future generator implementatio
 
 All prompt stages return structured data. They may propose semantic visual content, but renderer geometry and executable interaction behavior remain owned by trusted code.
 
+
+The shared prompt contract is domain-neutral. At runtime it is combined with the active domain instructions. The current physics-specific extension is versioned at `domains/university-level physics/instructions/visual-generation.md`; a new discipline must provide its own extension instead of reusing physics semantics.
+
 ## Shared system instruction
 
 Use the following principles in every visual-generation stage:
 
-> You are designing an original university-physics learning experience. Scientific correctness, relevance to the learning objective, and consistency with the answer logic are more important than decorative richness. Treat supplied source analysis and trusted template definitions as evidence; do not invent unsupported apparatus, labels, vectors, geometry, units, graph features, or physical states. Prefer a simple schematic or a declared fallback when information is ambiguous. Do not emit executable JavaScript, SVG markup, HTML, CSS, image pixels, or animation frames. Emit only the requested structured semantic specification.
+> You are designing an original learning experience for the active subject domain. Scientific correctness, relevance to the learning objective, and consistency with the answer logic are more important than decorative richness. Treat supplied source analysis and trusted template definitions as evidence; do not invent unsupported apparatus, labels, domain entities, labels, structures, geometry, units, graph features, chronology, or states. Prefer a simple schematic or a declared fallback when information is ambiguous. Do not emit executable JavaScript, SVG markup, HTML, CSS, image pixels, or animation frames. Emit only the requested structured semantic specification.
 
-> The activity should feel interactive because the learner predicts, manipulates, compares, classifies, constructs, or observes a meaningful physical relationship. Do not attach a picture merely to satisfy a visual quota. A text-first activity is acceptable when a visual adds little learning value.
+> The activity should feel interactive because the learner predicts, manipulates, compares, classifies, constructs, or observes a meaningful domain relationship. Do not attach a picture merely to satisfy a visual quota. A text-first activity is acceptable when a visual adds little learning value.
 
 > English, Malay, and Simplified Chinese learner-facing content must remain semantically aligned. Keep long prose outside raster/image content. Preserve calculator-free constraints and do not change the intended answer logic to make a visual easier to render.
 
@@ -76,7 +79,7 @@ Then choose the simplest supported representation that preserves the learning va
     "imageModelProfile": "none|efficient|balanced|premium"
   },
   "verificationRequirements": {
-    "physicsComputation": "none|deterministic-engine|sandboxed-code|symbolic-crosscheck",
+    "domainComputation": "none|deterministic-engine|sandboxed-code|symbolic-crosscheck",
     "referenceGrounding": "source-corpus|source-plus-url-context|source-plus-web-search",
     "finalMultimodalAudit": false,
     "requireIndependentCrosscheck": false

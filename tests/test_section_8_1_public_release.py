@@ -30,8 +30,10 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
                 ".nojekyll",
                 "index.html",
                 "app/app.js",
+                "app/domain-renderers.js",
                 "app/visual-renderers.js",
                 "app/styles.css",
+                "app/domain-styles.css",
                 "v1/index.html",
                 "v2/index.html",
                 "section-8-2/index.html",
@@ -152,7 +154,9 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
                 self.assertNotIn("not approved for publication", page)
                 self.assertNotIn("prototype-notice", page)
                 if relative != "index.html":
+                    self.assertIn("../app/domain-renderers.js", page)
                     self.assertIn("../app/visual-renderers.js", page)
+                    self.assertIn("../app/domain-styles.css", page)
             self.assertIn('data-package-url="../content/v1/package.json"', (output / "v1/index.html").read_text(encoding="utf-8"))
             self.assertIn('data-package-url="../content/section-8-5/package.json"', (output / "section-8-5/index.html").read_text(encoding="utf-8"))
 

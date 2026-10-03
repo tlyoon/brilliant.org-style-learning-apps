@@ -15,6 +15,6 @@ Use `Backlog → Ready → In Progress → Validation → Done`. Keep `main` sta
 7. **Classroom Pilot** ? institutional privacy approval, operations plan, success measures, retention measures, and rollback path.
 8. **Broad Course Expansion** ? validated visual-interactive packages and regression coverage across additional chapters/topics.
 
-Visual-interactive foundation status: the visual schema/validator, four deterministic SVG renderer primitives, and the first bounded deterministic simulation (`mechanics.motion_1d_slider`) are implemented. The next implementation slice is generation-pipeline integration so Gemini can author validated visual plans/specifications that select these trusted primitives.
+Visual-interactive foundation status: the visual schema/validator, four deterministic SVG renderer primitives, and the first bounded deterministic simulation (`mechanics.motion_1d_slider`) are implemented. The domain-profile architecture now isolates those physics-specific assets under `domains/university-level physics/` while the core remains reusable. The next bounded slices are textbook-level domain discovery/onboarding and then domain-aware generation-pipeline integration.
 
 Do not begin broad visual regeneration until the visual-interactive foundation and bounded real-topic pilot meet their acceptance criteria. Preserve the current working Stage-0 generator while those capabilities are introduced through independently reviewable PRs.

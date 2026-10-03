@@ -18,6 +18,8 @@ Generation does **not** mean that content is approved, publishable, merged, or p
 
 The generator processes one topic corpus per subchapter. Each subchapter has a primary `source.pdf`; any sibling PDFs are supplementary sources and are attached in the same fresh Gem conversation. A supported Google Drive tree looks like:
 
+Before reusing this workflow for a textbook from a **different discipline**, read `docs/DOMAIN_PROFILES.md`. The current revision has `university-level-physics` as the default active profile for backward-compatible physics generation; it does not yet automatically classify a new textbook. A chemistry, mathematics, biology, history, or other source tree therefore requires manual domain onboarding/activation before generation. The next Stage-0 slice will automate textbook-level domain discovery and pause safely when a compatible profile is absent.
+
 ```text
 Textbook-or-source-root/
 └── 8/

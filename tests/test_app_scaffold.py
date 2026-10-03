@@ -46,21 +46,25 @@ class AppScaffoldTests(unittest.TestCase):
         package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
         self.assertEqual("review", package["status"])
 
-    def test_visual_runtime_is_loaded_before_player_and_uses_physics_clean_style(self):
+    def test_visual_runtime_loads_domain_assets_before_generic_bridge_and_player(self):
         html = (APP / "index.html").read_text(encoding="utf-8")
-        renderer_position = html.index('src="visual-renderers.js"')
+        domain_position = html.index('src="domain-renderers.js"')
+        bridge_position = html.index('src="visual-renderers.js"')
         player_position = html.index('src="app.js"')
-        self.assertLess(renderer_position, player_position)
-        renderer = (APP / "visual-renderers.js").read_text(encoding="utf-8")
-        self.assertIn("mechanics.cart_collision_1d", renderer)
-        self.assertIn("mechanics.free_body_2d", renderer)
-        self.assertIn("graph.cartesian_qualitative", renderer)
-        self.assertIn("state.energy_bar", renderer)
+        self.assertLess(domain_position, bridge_position)
+        self.assertLess(bridge_position, player_position)
+        bridge = (APP / "visual-renderers.js").read_text(encoding="utf-8")
+        self.assertIn("DomainVisuals", bridge)
+        self.assertNotIn("mechanics.cart_collision_1d", bridge)
+        renderer = (ROOT / "domains" / "university-level physics" / "visuals" / "physics-renderers.js").read_text(encoding="utf-8")
+        for template in ("mechanics.cart_collision_1d", "mechanics.free_body_2d", "graph.cartesian_qualitative", "state.energy_bar"):
+            self.assertIn(template, renderer)
         self.assertNotIn("innerHTML", renderer)
-        css = (APP / "styles.css").read_text(encoding="utf-8")
-        self.assertIn("--visual-accent-1", css)
-        self.assertIn(".physics-visual__svg", css)
-        self.assertIn(".physics-visual__context", css)
+        generic_css = (APP / "styles.css").read_text(encoding="utf-8")
+        domain_css = (ROOT / "domains" / "university-level physics" / "visuals" / "physics-styles.css").read_text(encoding="utf-8")
+        self.assertNotIn(".physics-visual__svg", generic_css)
+        self.assertIn("--visual-accent-1", domain_css)
+        self.assertIn(".physics-visual__svg", domain_css)
 
     def test_player_does_not_use_inner_html(self):
         javascript = (APP / "app.js").read_text(encoding="utf-8")

@@ -37,6 +37,8 @@ Specialist references:
 6. `config/README.md` — configuration reference;
 7. `app_generator/README.md` — generator technical reference.
 
+8. `docs/DOMAIN_PROFILES.md` ? multi-domain architecture and new-subject onboarding.
+
 ## Workstation baseline
 
 A normal Windows workstation starts from current `main`:

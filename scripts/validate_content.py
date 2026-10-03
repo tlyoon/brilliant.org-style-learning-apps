@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from app_generator.domains import domain_registry_errors
 from app_generator.visuals.validation import visual_contract_errors, visual_registry_errors
 CONTENT = ROOT / "content"
 MANIFEST_ROOT = CONTENT / "source-manifests"
@@ -334,6 +335,7 @@ def package_paths() -> list[Path]:
 
 def main() -> int:
     errors: list[str] = []
+    errors.extend(domain_registry_errors(ROOT))
     errors.extend(visual_registry_errors(ROOT))
     paths = package_paths()
     for path in paths:

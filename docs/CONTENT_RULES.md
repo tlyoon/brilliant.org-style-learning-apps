@@ -12,20 +12,20 @@
 8. Generated variants must preserve the same concept, difficulty, answer logic, grounding, and calculator-free status.
 9. Every activity receives a visual-value assessment. A diagram, graph, animation, state representation, or simulation is required when it materially supports spatial, graphical, vectorial, causal, or dynamical reasoning. Text-first presentation is permitted when a visual would add little learning value.
 10. Visuals are instructional content, not decoration. Every important visible entity, label, vector, axis, graph feature, state, or relation must be justified by the activity, a trusted template invariant, or grounded source evidence.
-11. Visual content is declarative. Generated packages parameterize trusted, versioned renderers and interaction primitives; they do not supply arbitrary generated executable JavaScript for one-off physics visuals.
+11. Visual content is declarative. Generated packages parameterize trusted, versioned renderers and interaction primitives; they do not supply arbitrary generated executable JavaScript for one-off domain visuals.
 12. Visual specifications use the minimum entities needed. When geometry, apparatus, or state is ambiguous, simplify or use a safe fallback rather than inventing unsupported detail.
-13. Question text, answer logic, visual specification, and rendered physical meaning must agree. Direction, sign, ordering, relative magnitude, units, axes, qualitative graph shape, before/after state, and simulation invariants must be checked wherever applicable.
+13. Question text, answer logic, visual specification, and rendered domain meaning must agree. Direction, sign, ordering, relative magnitude, units, axes, qualitative graph shape, before/after state, and simulation invariants must be checked wherever applicable.
 14. Source figures may be reused/cropped only when the activity-to-figure association, crop boundaries, provenance, and usage rules are reliable. Otherwise create an original grounded schematic or fall back to a non-figure representation.
 15. Visual labels and controls must be mobile-readable, keyboard/touch accessible, compatible with reduced-motion preferences, and understandable without relying on color alone. Long learner-facing prose should remain HTML/text rather than being baked into raster images.
-16. Generated imagery may improve context, composition, atmosphere, and engagement, but it may not be the sole carrier of answer-critical physics. Hybrid/generated-image strategies require deterministic answer-critical overlays where needed and a final multimodal audit of the actual rendered pixels.
-17. Independent symbolic/numerical verification should be requested for high-value physics relations when it materially reduces risk. A verifier such as Wolfram provides validation evidence; it does not author the learner-facing scientific diagram.
+16. Generated imagery may improve context, composition, atmosphere, and engagement, but it may not be the sole carrier of answer-critical domain meaning. Hybrid/generated-image strategies require deterministic answer-critical overlays where needed and a final multimodal audit of the actual rendered pixels.
+17. Independent computational or evidence verification should be requested for high-value domain relations when it materially reduces risk. A domain profile selects appropriate verification tools; a verifier supplies validation evidence rather than silently authoring answer-critical learner content.
 
 ## Prohibited patterns
 
 - Prompts requesting a calculated value, decimal, percentage, unit conversion, or equation evaluation.
 - Decorative imagery unrelated to the learning objective.
 - Visual elements that reveal an answer accidentally or contradict the question.
-- Invented apparatus, labels, vectors, geometry, units, or graph features used as if they were source-grounded facts.
+- Invented domain entities, apparatus, labels, vectors, geometry, chronology, units, structures, or graph features used as if they were source-grounded facts.
 - Unbounded or non-deterministic simulation controls that change answer logic unpredictably.
 - False precision in mastery or cohort comparisons.
 - Punitive lives or engagement mechanics that block learning.
@@ -35,3 +35,7 @@
 Use `python scripts/validate_content.py` as part of the automated publication checks. Automated deterministic and semantic validation is required; optional manual review may be added but does not gate publication.
 
 See `docs/VISUAL_INTERACTION_DESIGN.md`, `docs/VISUAL_GENERATION_PROMPT_SPEC.md`, `docs/VISUAL_TOOL_ORCHESTRATION.md`, and Decision 0024 for the visual-planning, rendering, aesthetic-generation, verification, fallback, and cross-modal validation contract.
+
+## Domain extensions
+
+These repository-wide rules are combined with the active subject-domain profile. Domain-specific requirements belong under `domains/<domain>/rules/`, not in generic validator/runtime code. The current physics extension is `domains/university-level physics/rules/`. See Decision 0025 and `docs/DOMAIN_PROFILES.md` before using a source tree from another discipline.

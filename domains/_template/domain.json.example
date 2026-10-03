@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "id": "replace-with-stable-domain-id",
+  "displayName": "Replace With Domain Name",
+  "subject": "replace-subject",
+  "academicLevel": "replace-level",
+  "status": "draft",
+  "instructions": {
+    "sourceAnalysis": "instructions/source-analysis.md",
+    "activityGeneration": "instructions/activity-generation.md",
+    "visualGeneration": "instructions/visual-generation.md",
+    "semanticAudit": "instructions/semantic-audit.md",
+    "repair": "instructions/repair.md"
+  },
+  "rules": {
+    "content": "rules/content-rules.md",
+    "visual": "rules/visual-rules.md"
+  },
+  "visuals": {
+    "templateRegistry": "visuals/template-registry.json",
+    "styleProfiles": "visuals/style-profiles.json",
+    "rendererScript": "visuals/domain-renderers.js",
+    "stylesheet": "visuals/domain-styles.css"
+  },
+  "simulations": {
+    "modelRegistry": "simulations/model-registry.json",
+    "modelsModule": "simulations/models.py"
+  },
+  "validation": {
+    "visualValidatorModule": "validators/visual_validation.py"
+  },
+  "verification": {
+    "policy": "verification/verification-policy.json"
+  },
+  "trustedRenderers": {}
+}

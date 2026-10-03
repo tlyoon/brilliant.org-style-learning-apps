@@ -1,0 +1,11 @@
+"""Domain-specific visual semantic validation hooks."""
+
+from typing import Any
+
+
+def visual_plan_errors(plan: dict[str, Any], label: str) -> list[str]:
+    return []
+
+
+def visual_spec_errors(spec: dict[str, Any], label: str) -> list[str]:
+    return []

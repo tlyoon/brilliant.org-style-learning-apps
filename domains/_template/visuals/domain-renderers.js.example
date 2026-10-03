@@ -1,0 +1,7 @@
+(function (global) {
+  "use strict";
+  global.DomainVisuals = Object.freeze({
+    rendererVersion: "0.0.0-draft",
+    supportedTemplates: Object.freeze([]),
+  });
+})(globalThis);

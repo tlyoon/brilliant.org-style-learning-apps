@@ -179,7 +179,7 @@ function renderResponse(card, activity) {
 
 function renderVisual(card, activity) {
   if (!activity.visualSpec) return;
-  const renderer = globalThis.PhysicsVisuals;
+  const renderer = globalThis.LearningVisuals ?? globalThis.PhysicsVisuals;
   if (renderer?.renderVisualSpec) {
     card.append(renderer.renderVisualSpec(activity.visualSpec, {
       locale: state.locale,
@@ -187,12 +187,12 @@ function renderVisual(card, activity) {
     }));
     return;
   }
-  const fallback = element("div", { className: "physics-visual physics-visual--fallback" });
+  const fallback = element("div", { className: "learning-visual learning-visual--fallback" });
   fallback.setAttribute("role", "img");
-  fallback.setAttribute("aria-label", localized(activity.visualSpec.accessibility?.description) || "Physics diagram");
+  fallback.setAttribute("aria-label", localized(activity.visualSpec.accessibility?.description) || "Learning visual");
   fallback.append(element("p", {
-    className: "physics-visual__fallback-text",
-    text: localized(activity.visualSpec.accessibility?.description) || "Physics diagram",
+    className: "learning-visual__fallback-text",
+    text: localized(activity.visualSpec.accessibility?.description) || "Learning visual",
   }));
   card.append(fallback);
 }

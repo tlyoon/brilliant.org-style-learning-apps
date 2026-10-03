@@ -16,6 +16,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
+from app_generator.domains import resolve_domain
 from app_generator.project import (
     ProjectIdentity,
     ProjectIdentityError,
@@ -758,6 +759,8 @@ def run_checks(
             raise WorkstationSyncError("Node.js is required for the JavaScript syntax check")
         _command([node, "--check", "app/app.js"], settings.repo_root)
         _command([node, "--check", "app/visual-renderers.js"], settings.repo_root)
+        active_domain = resolve_domain(settings.repo_root)
+        _command([node, "--check", str(active_domain.path("visuals", "rendererScript"))], settings.repo_root)
     if run_doctor:
         print("Running generator doctor (Drive and provenance checks; no Gemini upload)...")
         _command(

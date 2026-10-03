@@ -8,6 +8,7 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
+from app_generator.domains import resolve_domain
 from app_generator.validation.schema_validation import validate_schemas
 from app_generator.visuals.validation import visual_contract_errors, visual_registry_errors
 from app_generator.visuals.verification import (
@@ -79,7 +80,7 @@ def plan(mode="scene_diagram", template="mechanics.cart_collision_1d") -> dict:
             "imageModelProfile": "none",
         },
         "verificationRequirements": {
-            "physicsComputation": "deterministic-engine",
+            "domainComputation": "deterministic-engine",
             "referenceGrounding": "source-corpus",
             "finalMultimodalAudit": False,
             "requireIndependentCrosscheck": True,
@@ -126,9 +127,8 @@ class VisualContractTests(unittest.TestCase):
         self.assertEqual([], visual_registry_errors(ROOT))
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
             temp_root = Path(directory)
-            (temp_root / "content").mkdir()
-            shutil.copytree(ROOT / "content" / "visuals", temp_root / "content" / "visuals")
-            models_path = temp_root / "content" / "visuals" / "simulation-model-registry.json"
+            shutil.copytree(ROOT / "domains", temp_root / "domains")
+            models_path = resolve_domain(temp_root).path("simulations", "modelRegistry")
             models = json.loads(models_path.read_text(encoding="utf-8"))
             models["models"][0]["controllableVariableIds"] = ["imaginary-variable"]
             models_path.write_text(json.dumps(models), encoding="utf-8")
@@ -136,7 +136,7 @@ class VisualContractTests(unittest.TestCase):
             self.assertTrue(any("controllable variables" in error for error in errors), errors)
 
     def test_available_visual_templates_bind_exact_trusted_renderers(self):
-        registry = json.loads((ROOT / "content" / "visuals" / "template-registry.json").read_text(encoding="utf-8"))
+        registry = json.loads(resolve_domain(ROOT).path("visuals", "templateRegistry").read_text(encoding="utf-8"))
         available = {item["id"]: item for item in registry["templates"] if item["implementationStatus"] == "available"}
         self.assertEqual(
             {
@@ -441,13 +441,24 @@ class VisualContractTests(unittest.TestCase):
             "imageModelProfile": "none",
         }
         visual_plan["verificationRequirements"] = {
-            "physicsComputation": "none",
+            "domainComputation": "none",
             "referenceGrounding": "source-corpus",
             "finalMultimodalAudit": False,
             "requireIndependentCrosscheck": False,
         }
         del item["visualSpec"]
         self.assertEqual([], validator.validate_package(package))
+
+    def test_legacy_physics_computation_field_remains_compatible(self):
+        package = package_with_visual()
+        verification = package["activities"][0]["visualPlan"]["verificationRequirements"]
+        value = verification.pop("domainComputation")
+        verification["physicsComputation"] = value
+        self.assertEqual([], validator.validate_package(package))
+
+        verification["domainComputation"] = value
+        errors = validator.validate_package(package)
+        self.assertTrue(any("not valid under any of the given schemas" in error or "should not be valid" in error for error in errors), errors)
 
     def test_provider_neutral_verifier_contract_links_request_and_result(self):
         request = PhysicsVerificationRequest(
@@ -472,7 +483,7 @@ class VisualContractTests(unittest.TestCase):
             )
         with self.assertRaises(ValueError):
             PhysicsVerificationRequest(
-                activity_id="visual-test", check_id="bad", kind="draw-pretty-image", statement="Bad kind"
+                activity_id="visual-test", check_id="bad", kind="draw pretty image", statement="Bad kind"
             )
 
     def test_generation_schema_validation_enforces_visual_contract(self):

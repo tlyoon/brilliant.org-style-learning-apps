@@ -1,5 +1,7 @@
 # Automated learning-content generator
 
+The generator core is domain-independent. Subject-specific instructions, renderer/simulation assets, validators, and verification policy are resolved through `domains/registry.json`; the current default profile is `university-level-physics` at `domains/university-level physics/`. See `docs/DOMAIN_PROFILES.md` before pointing a recycled project at a textbook from another discipline.
+
 This Python 3.12 package turns a controlled Google Drive topic corpus (`source.pdf` plus supplementary sibling PDFs) into one repository-compatible subchapter draft. It supports controlled specific-subchapter generation and coordinated multi-PC operation, including continuous `auto` mode.
 
 For the current installation/operating procedure, start with `docs/PDF_TO_APP_QUICKSTART.md`. Documentation is versioned with the code; `docs/DOCUMENTATION_MAINTENANCE.md` defines the same-PR update rule.

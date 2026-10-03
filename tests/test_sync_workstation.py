@@ -182,6 +182,12 @@ class WorkstationSyncTests(unittest.TestCase):
                 patch("scripts.sync_workstation._command") as command,
                 patch("scripts.sync_workstation.shutil.which", return_value="node"),
                 patch("scripts.sync_workstation.record_current_validation"),
+                patch(
+                    "scripts.sync_workstation.resolve_domain",
+                    return_value=SimpleNamespace(
+                        path=lambda section, key: settings.repo_root / "domains" / "test-renderer.js"
+                    ),
+                ),
             ):
                 run_checks(settings, Path("python"), run_generator=True)
 
