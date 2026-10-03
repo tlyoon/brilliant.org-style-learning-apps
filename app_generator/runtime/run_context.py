@@ -98,10 +98,19 @@ class RunContext:
         if self.checkpoint is not None:
             self.checkpoint.delete(name)
 
-    def discard_parsed_stages(self) -> None:
-        """Remove generated parsed caches while retaining raw responses."""
+    def discard_parsed_stages(self, *, preserve: set[str] | None = None) -> None:
+        """Remove generated parsed caches while retaining raw responses and optional identity markers."""
 
+        preserved = preserve or set()
+        retained: dict[str, object] = {}
+        for name in preserved:
+            document = self.load_stage(name)
+            if document is not None:
+                retained[name] = document
         for path in self.batches.glob("*.json"):
-            path.unlink()
+            if path.stem not in preserved:
+                path.unlink()
         if self.checkpoint is not None:
             self.checkpoint.clear()
+            for name, document in retained.items():
+                self.checkpoint.save(name, document)

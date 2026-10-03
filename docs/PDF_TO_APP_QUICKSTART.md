@@ -18,7 +18,7 @@ Generation does **not** mean that content is approved, publishable, merged, or p
 
 The generator processes one topic corpus per subchapter. Each subchapter has a primary `source.pdf`; any sibling PDFs are supplementary sources and are attached in the same fresh Gem conversation. A supported Google Drive tree looks like:
 
-Before reusing this workflow for a textbook from a **different discipline**, read `docs/DOMAIN_PROFILES.md`. Stage 0 now automatically classifies representative PDFs from the complete Source Root and binds the source inventory to a compatible installed profile before any generation job is claimed. A chemistry, mathematics, biology, history, or other textbook with no compatible active profile stops safely with `DOMAIN_PROFILE_REQUIRED`; onboard/activate that domain before generation.
+Before reusing this workflow for a textbook from a **different discipline**, read `docs/DOMAIN_PROFILES.md`. Stage 0 now automatically classifies representative PDFs from the complete Source Root and binds the source inventory to a compatible installed profile before any generation job is claimed. A chemistry, mathematics, biology, history, or other textbook with no compatible active profile stops safely with `DOMAIN_PROFILE_REQUIRED`; onboard/activate that domain before generation. The selected profile then governs the subject-specific generation instructions. New packages record its ID/version, and validation/public release use that recorded identity; older packages without it retain default-profile compatibility.
 
 ```text
 Textbook-or-source-root/

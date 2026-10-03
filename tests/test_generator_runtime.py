@@ -183,8 +183,9 @@ class GeneratorRuntimeTests(unittest.TestCase):
                     events.append(("api-prepare", self.paths))
 
             class Protocol:
-                def __init__(self, client, context):
+                def __init__(self, client, context, *, domain_profile=None):
                     events.append(("protocol-client", client))
+                    events.append(("protocol-domain", domain_profile))
 
                 def generate(self, **kwargs):
                     return {"activities": []}, {"sectionTitle": "Test"}, []
@@ -203,6 +204,16 @@ class GeneratorRuntimeTests(unittest.TestCase):
             with (
                 patch("app_generator.runtime.orchestrator.configure_logging", return_value=None),
                 patch("app_generator.runtime.orchestrator.inspect_sources", return_value=(fake_source,)),
+                patch("app_generator.runtime.orchestrator.resolve_domain", return_value=SimpleNamespace(
+                    id="university-level-physics",
+                    profile_version="1.0.0",
+                    identity=lambda: {
+                        "id": "university-level-physics",
+                        "profileVersion": "1.0.0",
+                        "subject": "physics",
+                        "academicLevel": "university",
+                    },
+                )),
                 patch("app_generator.runtime.orchestrator.GenerationProtocol", Protocol),
                 patch("app_generator.runtime.orchestrator.materialize_source_metadata", side_effect=lambda cfg, analysis: cfg),
                 patch("app_generator.runtime.orchestrator.apply_source_metadata", side_effect=lambda package, cfg: package),
@@ -225,6 +236,7 @@ class GeneratorRuntimeTests(unittest.TestCase):
             self.assertEqual("prompt-sha", context.store.state.prompt_sha256)
             self.assertEqual(("api-prepare", (source_pdf,)), events[0])
             self.assertIsInstance(events[1][1], ApiClient)
+            self.assertEqual("university-level-physics", events[2][1].id)
 
     def test_artifact_install_refuses_overwrite_and_rolls_back_failed_verification(self):
         with tempfile.TemporaryDirectory() as directory:

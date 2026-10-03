@@ -17,6 +17,7 @@
     "evidencePolicy": {"$ref": "#/$defs/evidencePolicy"},
     "reviewRecord": {"type": "string", "pattern": "^content/chapter-[a-z0-9-]+/section-[a-z0-9-]+/[a-z0-9-]+\\.md$"},
     "sourceManifest": {"type": "string", "pattern": "^content/source-manifests/[a-z0-9]+(?:[.-][a-z0-9]+)*\\.json$"},
+    "domain": {"$ref": "#/$defs/domainIdentity"},
     "activities": {
       "type": "array",
       "items": {"$ref": "#/$defs/activity"}
@@ -24,6 +25,17 @@
   },
   "additionalProperties": false,
   "$defs": {
+    "domainIdentity": {
+      "type": "object",
+      "required": ["id", "profileVersion", "subject", "academicLevel"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "profileVersion": {"type": "string", "minLength": 1},
+        "subject": {"type": "string", "minLength": 1},
+        "academicLevel": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
     "localized": {
       "type": "object",
       "required": ["en", "ms", "zh"],
