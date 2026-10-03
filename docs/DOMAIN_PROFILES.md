@@ -79,6 +79,18 @@ If the textbook is confidently recognized but no compatible active profile is in
 
 Domain onboarding remains explicit. A worker may diagnose that a new profile is required, but it must not automatically create, register, or activate one during an auto run.
 
+## Generation, validation, and publication binding
+
+After Stage 0 resolves a profile, that identity now remains authoritative throughout the run. The generator composes the profile's `sourceAnalysis`, `activityGeneration`, `semanticAudit`, and `repair` instruction files into the corresponding live stages. The generic stage prompt remains authoritative for response framing, schema shape, stable identifiers, multilingual/calculator rules, security boundaries, and deterministic validation. This prevents a subject extension from weakening the shared contract.
+
+The composer also maps stage names beginning with `visual-` to the profile's `visualGeneration` instruction. This is forward wiring only: the present baseline does **not** yet add a visual-plan/spec authoring stage to ordinary generation. That remains a bounded visual-pipeline/pilot task.
+
+New packages include a portable `domain` object containing the profile ID, profile version, subject, and academic level. Repository validation rejects a declared identity that no longer matches an active installed profile. Domain-specific visual registries and semantic validators are resolved from that package identity, and the public-release builder copies the renderer and stylesheet from the same profile. Packages created before this field existed remain valid and resolve through the registry default for backward compatibility.
+
+Auto-mode parsed checkpoints also store a `domain-context` marker. If a resumed checkpoint set was authored under another profile/version, the parsed generated stages are discarded before reuse; the trusted domain marker is re-published after a checkpoint clear. Thus multi-PC recovery cannot mix generated stages from different domain versions.
+
+`profileVersion` is therefore operational, not decorative. Increment it whenever a change to domain instructions, disciplinary rules, validators, trusted registries/models, verification policy, or runtime assets would make previously generated/cached domain-bound work semantically stale. A version bump invalidates Stage-0 bindings and prevents stale generated-stage reuse.
+
 ## Creating a new domain today
 
 Until the planned `domain bootstrap` workflow is implemented, domain onboarding is deliberately manual. Use one of the alternatives below and keep the new profile unregistered until it is complete enough to validate.

@@ -23,6 +23,7 @@ def _load_validator(repo_root: Path):
 def validate_candidate(repo_root: Path, candidate_root: Path, package_relative_path: Path) -> list[str]:
     validator = _load_validator(repo_root)
     validator.ROOT = candidate_root
+    validator.DOMAIN_ROOT = repo_root
     validator.CONTENT = candidate_root / "content"
     validator.MANIFEST_ROOT = validator.CONTENT / "source-manifests"
     package = json.loads((candidate_root / package_relative_path).read_text(encoding="utf-8"))

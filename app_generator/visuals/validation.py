@@ -9,7 +9,7 @@ from typing import Any, Iterable
 
 from jsonschema import Draft202012Validator
 
-from app_generator.domains import resolve_domain
+from app_generator.domains import DomainProfile, resolve_domain, resolve_package_domain
 
 FORBIDDEN_FIELD_NAMES = {
     "javascript", "script", "html", "css", "svg", "markup", "executable", "code",
@@ -59,8 +59,8 @@ def _code_and_coordinate_errors(value: Any, label: str) -> list[str]:
     return errors
 
 
-def _template_registry(repo_root: Path) -> dict[str, dict[str, Any]]:
-    path = resolve_domain(repo_root).path("visuals", "templateRegistry")
+def _template_registry(domain: DomainProfile) -> dict[str, dict[str, Any]]:
+    path = domain.path("visuals", "templateRegistry")
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schemaVersion") != "1.0":
         raise ValueError("Unsupported visual template registry version")
@@ -78,8 +78,8 @@ def _template_registry(repo_root: Path) -> dict[str, dict[str, Any]]:
     return by_id
 
 
-def _style_profiles(repo_root: Path) -> set[str]:
-    path = resolve_domain(repo_root).path("visuals", "styleProfiles")
+def _style_profiles(domain: DomainProfile) -> set[str]:
+    path = domain.path("visuals", "styleProfiles")
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schemaVersion") != "1.0":
         raise ValueError("Unsupported visual style registry version")
@@ -110,8 +110,8 @@ def _style_profiles(repo_root: Path) -> set[str]:
     return set(ids)
 
 
-def _simulation_models(repo_root: Path) -> dict[str, dict[str, Any]]:
-    path = resolve_domain(repo_root).path("simulations", "modelRegistry")
+def _simulation_models(domain: DomainProfile) -> dict[str, dict[str, Any]]:
+    path = domain.path("simulations", "modelRegistry")
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schemaVersion") != "1.0":
         raise ValueError("Unsupported simulation model registry version")
@@ -129,8 +129,8 @@ def _simulation_models(repo_root: Path) -> dict[str, dict[str, Any]]:
     return by_id
 
 
-def _verification_kinds(repo_root: Path) -> set[str]:
-    path = resolve_domain(repo_root).path("verification", "policy")
+def _verification_kinds(domain: DomainProfile) -> set[str]:
+    path = domain.path("verification", "policy")
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schemaVersion") != "1.0":
         raise ValueError("Unsupported domain verification policy version")
@@ -140,15 +140,15 @@ def _verification_kinds(repo_root: Path) -> set[str]:
     return set(kinds)
 
 
-def visual_registry_errors(repo_root: Path) -> list[str]:
+def visual_registry_errors(repo_root: Path, domain_id: str | None = None) -> list[str]:
     """Validate trusted visual/style/simulation registries independent of any package."""
     errors: list[str] = []
     try:
-        domain = resolve_domain(repo_root)
-        templates = _template_registry(repo_root)
-        styles = _style_profiles(repo_root)
-        models = _simulation_models(repo_root)
-        verification_kinds = _verification_kinds(repo_root)
+        domain = resolve_domain(repo_root, domain_id)
+        templates = _template_registry(domain)
+        styles = _style_profiles(domain)
+        models = _simulation_models(domain)
+        verification_kinds = _verification_kinds(domain)
         trusted_renderers = domain.trusted_renderers
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         return [f"visual registries: {exc}"]
@@ -330,8 +330,7 @@ def _mode_errors(spec: dict[str, Any], label: str) -> list[str]:
     return errors
 
 
-def _domain_visual_spec_errors(repo_root: Path, spec: dict[str, Any], label: str) -> list[str]:
-    domain = resolve_domain(repo_root)
+def _domain_visual_spec_errors(domain: DomainProfile, spec: dict[str, Any], label: str) -> list[str]:
     module = domain.load_module("validation", "visualValidatorModule")
     validator = getattr(module, "visual_spec_errors", None)
     if not callable(validator):
@@ -339,8 +338,7 @@ def _domain_visual_spec_errors(repo_root: Path, spec: dict[str, Any], label: str
     return list(validator(spec, label))
 
 
-def _domain_visual_plan_errors(repo_root: Path, plan: dict[str, Any], label: str) -> list[str]:
-    domain = resolve_domain(repo_root)
+def _domain_visual_plan_errors(domain: DomainProfile, plan: dict[str, Any], label: str) -> list[str]:
     module = domain.load_module("validation", "visualValidatorModule")
     validator = getattr(module, "visual_plan_errors", None)
     if not callable(validator):
@@ -487,15 +485,19 @@ def visual_contract_errors(repo_root: Path, package: Any, label: str = "package"
         for activity in package["activities"]
     ):
         return []
-    registry_errors = visual_registry_errors(repo_root)
+    try:
+        domain = resolve_package_domain(repo_root, package)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [f"{label}.domain: {exc}"]
+    registry_errors = visual_registry_errors(repo_root, domain.id)
     if registry_errors:
         return [f"{label}: {error}" for error in registry_errors]
     schema_root = repo_root / "content" / "schema"
     plan_validator = _schema_validator(schema_root / "visual-plan.schema.json")
     spec_validator = _schema_validator(schema_root / "visual-spec.schema.json")
-    templates = _template_registry(repo_root)
-    style_profiles = _style_profiles(repo_root)
-    simulation_models = _simulation_models(repo_root)
+    templates = _template_registry(domain)
+    style_profiles = _style_profiles(domain)
+    simulation_models = _simulation_models(domain)
     errors: list[str] = []
     for index, activity in enumerate(package["activities"]):
         if not isinstance(activity, dict):
@@ -522,12 +524,12 @@ def visual_contract_errors(repo_root: Path, package: Any, label: str = "package"
             continue
         if not plan_schema_errors and not spec_schema_errors:
             errors.extend(_verification_policy_errors(plan, f"{activity_label}.visualPlan"))
-            errors.extend(_domain_visual_plan_errors(repo_root, plan, f"{activity_label}.visualPlan"))
+            errors.extend(_domain_visual_plan_errors(domain, plan, f"{activity_label}.visualPlan"))
             errors.extend(_cross_contract_errors(activity, activity_label))
             if spec is not None:
                 errors.extend(_unique_id_errors(spec, f"{activity_label}.visualSpec"))
                 errors.extend(_reference_errors(spec, plan, f"{activity_label}.visualSpec"))
                 errors.extend(_mode_errors(spec, f"{activity_label}.visualSpec"))
-                errors.extend(_domain_visual_spec_errors(repo_root, spec, f"{activity_label}.visualSpec"))
+                errors.extend(_domain_visual_spec_errors(domain, spec, f"{activity_label}.visualSpec"))
             errors.extend(_template_errors(plan, spec, templates, style_profiles, simulation_models, activity_label))
     return errors

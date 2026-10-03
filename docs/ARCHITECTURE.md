@@ -26,6 +26,8 @@ The repository has three explicit layers: generic engine, active domain profile,
 
 Stage 0 resolves which active domain profile is allowed **before content-job leasing/generation**. For Drive projects, it discovers the complete Source Root, computes a deterministic fingerprint from every topic corpus identity, classifies representative PDFs at textbook level, validates consistency/confidence, and caches the binding outside Git at `${STATE_ROOT}/domain-binding.json`. The binding includes the profile version, so either source-corpus changes or profile changes force reclassification. Unsupported/ambiguous textbooks fail closed. Decision 0026 defines this gate.
 
+That resolved profile is now a run-scoped dependency rather than a discovery-only label. Live source-analysis, activity-generation, semantic-audit, and repair stages prepend the relevant profile instruction to the generic prompt contract. Resumable parsed checkpoints carry a `domain-context` identity and are invalidated if the domain/profile version changes. Newly generated packages persist the same identity; deterministic visual validation and public release resolve the package's declared profile instead of silently using the registry default. Legacy packages without this field retain default-domain compatibility.
+
 ## Data flow
 
 ```text
@@ -66,7 +68,7 @@ Prefer SVG/HTML/CSS for diagrams and controls. Use Canvas or another rendering l
 
 Visual specs and renderer versions are independently versioned and hashable so unchanged outputs can be cached and regenerated reproducibly.
 
-The generic browser runtime loads the active domain renderer before the generic visual-runtime bridge and player. Public release builders copy the selected domain renderer/style assets into the bundle. The current university-level physics profile supplies cart/collision scenes, free-body/vector diagrams, qualitative Cartesian graphs, energy bars, and the bounded one-dimensional constant-velocity simulation. Template-registry entries marked `planned` are rejected until the active domain contains trusted runtime code. The physics motion primitive exposes bounded velocity/time controls, derives position from `x = x0 + v t`, uses deterministic instant-state updates, and has a static cart-scene fallback.
+The generic browser runtime loads the active domain renderer before the generic visual-runtime bridge and player. Public release builders resolve newly generated packages' declared domain identity and copy that profile's renderer/style assets into the bundle; legacy packages without domain identity use the registry default. The current university-level physics profile supplies cart/collision scenes, free-body/vector diagrams, qualitative Cartesian graphs, energy bars, and the bounded one-dimensional constant-velocity simulation. Template-registry entries marked `planned` are rejected until the active domain contains trusted runtime code. The physics motion primitive exposes bounded velocity/time controls, derives position from `x = x0 + v t`, uses deterministic instant-state updates, and has a static cart-scene fallback.
 
 Hybrid contextual imagery is composited as a non-authoritative background layer. The deterministic SVG foreground remains scientifically self-sufficient, so removal or failure of generated base art cannot change the answer logic.
 

@@ -66,6 +66,16 @@ class DomainProfile:
             result[template_id] = (pair[0], pair[1])
         return result
 
+    def identity(self) -> dict[str, str]:
+        """Portable package identity for validation and public-runtime selection."""
+
+        return {
+            "id": self.id,
+            "profileVersion": self.profile_version,
+            "subject": str(self.manifest["subject"]),
+            "academicLevel": str(self.manifest["academicLevel"]),
+        }
+
     def load_module(self, section: str, key: str) -> ModuleType:
         path = self.path(section, key)
         if not path.is_file():
@@ -184,3 +194,35 @@ def domain_registry_errors(repo_root: Path) -> list[str]:
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             errors.append(f"domain {domain_id}: {exc}")
     return errors
+
+def resolve_package_domain(repo_root: Path, package: dict[str, Any]) -> DomainProfile:
+    """Resolve a package's declared domain, falling back only for legacy packages."""
+
+    identity = package.get("domain")
+    if identity is None:
+        return resolve_domain(repo_root)
+    if not isinstance(identity, dict):
+        raise ValueError("Package domain identity must be an object")
+    domain_id = identity.get("id")
+    if not isinstance(domain_id, str) or not domain_id:
+        raise ValueError("Package domain identity requires a non-empty id")
+    profile = resolve_domain(repo_root, domain_id)
+    expected = profile.identity()
+    for key, value in expected.items():
+        if identity.get(key) != value:
+            raise ValueError(
+                f"Package domain {key} {identity.get(key)!r} does not match active profile {value!r}"
+            )
+    return profile
+
+
+def package_domain_errors(repo_root: Path, package: Any, label: str = "package") -> list[str]:
+    """Return package/domain binding errors while accepting pre-domain legacy packages."""
+
+    if not isinstance(package, dict) or package.get("domain") is None:
+        return []
+    try:
+        resolve_package_domain(repo_root, package)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [f"{label}.domain: {exc}"]
+    return []

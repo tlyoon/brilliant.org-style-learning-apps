@@ -67,7 +67,9 @@ With `[domain] domain_id = "auto"`, Stage 0 deterministically selects representa
 
 A successful result is cached at `${STATE_ROOT}/domain-binding.json` with the whole-root fingerprint and selected profile version. The cache is reused only while both identities remain current. An explicit `domain_id`/`--domain-id` is a deliberate override and is recorded as such. An unsupported textbook exits with `DOMAIN_PROFILE_REQUIRED`; ambiguous/inconsistent/low-confidence evidence exits with `DOMAIN_DISCOVERY_FAILED`. Diagnostic state is stored at `${STATE_ROOT}/domain-discovery-status.json`. No content lease is claimed before this gate passes.
 
-This PR establishes selection/binding only. The next bounded implementation step is to compose each generation stage with the selected profile's source-analysis, activity-generation, visual-generation, semantic-audit, and repair instructions.
+The selected profile now follows the run into the generation pipeline. Source analysis, activity planning/batches, semantic audit, and repair prompts are composed with the matching repository-owned domain instruction while the generic JSON/schema/security contract remains authoritative. The composition map also reserves `visual-*` stages for the profile's `visualGeneration` instruction; this PR does not itself activate a new visual-plan/spec authoring stage.
+
+Newly generated packages carry a `domain` identity (`id`, `profileVersion`, `subject`, `academicLevel`). Parsed auto-mode checkpoints are fenced by the same identity so a profile change cannot reuse stages authored under a stale domain version. Deterministic validation and public release resolve domain validators/registries/runtime assets from the package identity. Existing packages without a `domain` field remain backward-compatible and use the registry default.
 
 ## Selection modes
 

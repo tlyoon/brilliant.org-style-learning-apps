@@ -8,6 +8,7 @@ from copy import deepcopy
 import re
 from typing import Any, Protocol
 
+from app_generator.domains import DomainProfile, compose_domain_prompt
 from app_generator.generation.assembler import assemble_package, validate_activity_batch, validate_plan
 from app_generator.generation.extraction import parse_json_response
 from app_generator.errors import ResponseContractError, ValidationFailure
@@ -27,15 +28,21 @@ class ConversationPort(Protocol):
 
 
 class GenerationProtocol:
-    def __init__(self, conversation: ConversationPort, context: RunContext) -> None:
+    def __init__(
+        self, conversation: ConversationPort, context: RunContext, *, domain_profile: DomainProfile | None = None
+    ) -> None:
         self.conversation = conversation
         self.context = context
+        self.domain_profile = domain_profile
 
     def _stage(self, name: str, prompt_factory: Callable[[], str]) -> Any:
         existing = self.context.load_stage(name)
         if existing is not None:
             return existing
-        response = self.conversation.ask(prompt_factory(), stage=name)
+        prompt = prompt_factory()
+        if self.domain_profile is not None:
+            prompt = compose_domain_prompt(self.domain_profile, name, prompt)
+        response = self.conversation.ask(prompt, stage=name)
         self.context.save_raw_response(name, response)
         parsed = parse_json_response(response)
         self.context.save_stage(name, parsed)
@@ -135,7 +142,7 @@ class GenerationProtocol:
             # A wrong-but-valid JSON response must not poison the plan and all
             # later resumed stages. Retain raw responses, but rebuild every
             # parsed stage from the corrected source analysis.
-            self.context.discard_parsed_stages()
+            self.context.discard_parsed_stages(preserve={"domain-context"})
             if attempt == 1:
                 break
         raise ResponseContractError("Source analysis did not satisfy its exact stage contract")
@@ -334,7 +341,7 @@ class GenerationProtocol:
                 name = f"{activity_type}-{difficulty}"
                 batch = self._activity_batch(name, analysis, slice_, source_location)
                 batches.append(batch)
-        package = assemble_package(config, analysis, plan, batches)
+        package = assemble_package(config, analysis, plan, batches, domain_profile=self.domain_profile)
         return package, analysis, batches
 
     def audit_and_repair(self, package: dict[str, Any]) -> tuple[dict[str, Any], list[dict[str, Any]]]:
