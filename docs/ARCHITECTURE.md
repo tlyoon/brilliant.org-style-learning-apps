@@ -61,7 +61,7 @@ Prefer SVG/HTML/CSS for diagrams and controls. Use Canvas or another rendering l
 
 Visual specs and renderer versions are independently versioned and hashable so unchanged outputs can be cached and regenerated reproducibly.
 
-The current browser runtime loads `app/visual-renderers.js` before `app/app.js`. The available v1 renderer set covers cart/collision scenes, free-body/vector diagrams, qualitative Cartesian graphs, and energy bars. Public release builders copy the renderer runtime alongside the player. Template-registry entries marked `planned` are rejected until trusted runtime code exists.
+The current browser runtime loads `app/visual-renderers.js` before `app/app.js`. The available v1 renderer set covers cart/collision scenes, free-body/vector diagrams, qualitative Cartesian graphs, energy bars, and the first bounded one-dimensional constant-velocity simulation. Public release builders copy the renderer runtime alongside the player. Template-registry entries marked `planned` are rejected until trusted runtime code exists. The motion primitive exposes bounded velocity/time controls, derives position from `x = x0 + v t`, uses deterministic instant-state updates, and has a static cart-scene fallback.
 
 Hybrid contextual imagery is composited as a non-authoritative background layer. The deterministic SVG foreground remains scientifically self-sufficient, so removal or failure of generated base art cannot change the answer logic.
 

@@ -23,6 +23,7 @@ AVAILABLE_RENDERERS = {
     "mechanics.free_body_2d": ("free-body-v1", "1.0.0"),
     "graph.cartesian_qualitative": ("qualitative-graph-v1", "1.0.0"),
     "state.energy_bar": ("energy-bar-v1", "1.0.0"),
+    "mechanics.motion_1d_slider": ("motion-1d-sim-v1", "1.0.0"),
 }
 
 
@@ -202,6 +203,24 @@ def visual_registry_errors(repo_root: Path) -> list[str]:
             errors.append(f"simulation model {model_id}: controllable variables must be declared in variableIds")
         if not isinstance(kinds, list) or any(kind not in VERIFICATION_KINDS for kind in kinds):
             errors.append(f"simulation model {model_id}: contains an unsupported verification kind")
+        if not isinstance(model.get("modelVersion"), str) or not model.get("modelVersion"):
+            errors.append(f"simulation model {model_id}: modelVersion is required")
+        if not isinstance(model.get("law"), str) or not model.get("law").strip():
+            errors.append(f"simulation model {model_id}: law is required")
+        derived = model.get("derivedVariableIds", [])
+        if not isinstance(derived, list) or any(variable not in variable_set for variable in derived):
+            errors.append(f"simulation model {model_id}: derivedVariableIds must be declared variables")
+        required_invariants = model.get("requiredInvariantKinds", [])
+        if not isinstance(required_invariants, list) or any(kind not in {"constant", "conserved", "equal", "opposite", "orthogonal", "bounded", "monotonic-increasing", "monotonic-decreasing"} for kind in required_invariants):
+            errors.append(f"simulation model {model_id}: contains an unsupported required invariant kind")
+        bounds = model.get("bounds", {})
+        if not isinstance(bounds, dict):
+            errors.append(f"simulation model {model_id}: bounds must be an object")
+        else:
+            for variable in controllable if isinstance(controllable, list) else []:
+                bound = bounds.get(variable)
+                if not isinstance(bound, list) or len(bound) != 2 or any(isinstance(value, bool) or not isinstance(value, (int, float)) for value in bound) or bound[0] >= bound[1]:
+                    errors.append(f"simulation model {model_id}: controllable variable {variable} requires numeric increasing bounds")
     return errors
 
 
@@ -351,6 +370,50 @@ def _renderer_contract_errors(spec: dict[str, Any], label: str) -> list[str]:
                 errors.append(
                     f"{label}.entities[{index}].properties.relativeAmount: must be a number from 0 to 1"
                 )
+
+    elif template == "mechanics.motion_1d_slider":
+        carts = [entity for entity in entities if isinstance(entity, dict) and entity.get("kind") == "cart"]
+        if len(entities) != 1 or len(carts) != 1:
+            errors.append(f"{label}.entities: motion-1d simulation requires exactly one cart entity")
+        if parameters.get("motion_model") != "constant-velocity":
+            errors.append(f"{label}.semanticParameters.motion_model: must be constant-velocity")
+        simulation = spec.get("simulation")
+        if not isinstance(simulation, dict) or simulation.get("modelId") != "kinematics.motion_1d":
+            errors.append(f"{label}.simulation.modelId: motion-1d simulation requires kinematics.motion_1d")
+        elif set(simulation.get("variableIds", [])) != {"position", "velocity", "time"}:
+            errors.append(f"{label}.simulation.variableIds: motion-1d simulation requires position, velocity, and time")
+        states = spec.get("states", [])
+        initial = next((state for state in states if isinstance(state, dict) and state.get("id") == "initial-state"), None)
+        values = initial.get("values", {}) if initial else {}
+        if initial is None or any(isinstance(values.get(name), bool) or not isinstance(values.get(name), (int, float)) for name in ("position", "velocity", "time")):
+            errors.append(f"{label}.states: motion-1d simulation requires numeric position, velocity, and time in initial-state")
+        elif values.get("time") != 0:
+            errors.append(f"{label}.states.initial-state.values.time: must start at 0")
+        controls = [control for control in spec.get("controls", []) if isinstance(control, dict)]
+        control_by_variable = {control.get("variableId"): control for control in controls}
+        if set(control_by_variable) != {"velocity", "time"} or len(controls) != 2:
+            errors.append(f"{label}.controls: motion-1d simulation requires exactly velocity and time sliders")
+        else:
+            velocity = control_by_variable["velocity"]
+            time = control_by_variable["time"]
+            if velocity.get("min", -21) < -20 or velocity.get("max", 21) > 20:
+                errors.append(f"{label}.controls: velocity slider must remain within -20 to 20")
+            if time.get("min") != 0 or time.get("max", 21) > 20:
+                errors.append(f"{label}.controls: time slider must start at 0 and end at or before 20")
+        fallback = spec.get("fallback", {})
+        if fallback.get("mode") != "scene_diagram" or fallback.get("template") != "mechanics.cart_collision_1d":
+            errors.append(f"{label}.fallback: motion-1d simulation requires the static mechanics.cart_collision_1d fallback")
+        if spec.get("accessibility", {}).get("reducedMotionStrategy") != "instant-state":
+            errors.append(f"{label}.accessibility.reducedMotionStrategy: motion-1d simulation requires instant-state")
+        invariant_by_id = {item.get("id"): item for item in spec.get("invariants", []) if isinstance(item, dict)}
+        invariant_ids = simulation.get("invariantIds", []) if isinstance(simulation, dict) else []
+        constant_velocity = [
+            invariant_by_id.get(invariant_id) for invariant_id in invariant_ids
+            if invariant_by_id.get(invariant_id, {}).get("kind") == "constant"
+            and simulation.get("id") in invariant_by_id.get(invariant_id, {}).get("references", [])
+        ] if isinstance(simulation, dict) else []
+        if not constant_velocity:
+            errors.append(f"{label}.invariants: motion-1d simulation requires a declared constant-velocity invariant tied to the simulation")
     return errors
 
 

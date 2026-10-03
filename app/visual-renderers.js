@@ -11,6 +11,7 @@
     "mechanics.free_body_2d": renderFreeBody,
     "graph.cartesian_qualitative": renderQualitativeGraph,
     "state.energy_bar": renderEnergyBars,
+    "mechanics.motion_1d_slider": renderMotion1DSimulation,
   });
 
   function localized(value, locale) {
@@ -243,6 +244,144 @@
     return Number.isFinite(value) ? clamp(value, 0, 1) : 0;
   }
 
+  function motionInitialState(spec) {
+    const initial = (spec.states ?? []).find((state) => state.id === "initial-state");
+    const values = initial?.values ?? {};
+    return {
+      position: Number(values.position ?? 0),
+      velocity: Number(values.velocity ?? 0),
+      time: Number(values.time ?? 0),
+    };
+  }
+
+  function motionControl(spec, variableId) {
+    return (spec.controls ?? []).find((control) => control.variableId === variableId);
+  }
+
+  function evaluateMotion1D(initialPosition, velocity, time) {
+    const x0 = Number(initialPosition);
+    const v = Number(velocity);
+    const t = Number(time);
+    if (![x0, v, t].every(Number.isFinite)) throw new Error("Motion state must be finite");
+    return Object.freeze({ position: x0 + v * t, velocity: v, time: t });
+  }
+
+  function motionDomain(initialPosition, velocityControl, timeControl) {
+    const vMin = Number(velocityControl?.min ?? 0);
+    const vMax = Number(velocityControl?.max ?? 0);
+    const tMin = Number(timeControl?.min ?? 0);
+    const tMax = Number(timeControl?.max ?? 0);
+    const candidates = [
+      initialPosition,
+      initialPosition + vMin * tMin,
+      initialPosition + vMin * tMax,
+      initialPosition + vMax * tMin,
+      initialPosition + vMax * tMax,
+    ].filter(Number.isFinite);
+    let low = Math.min(...candidates);
+    let high = Math.max(...candidates);
+    if (low === high) { low -= 1; high += 1; }
+    const padding = Math.max((high - low) * 0.08, 0.5);
+    return [low - padding, high + padding];
+  }
+
+  function motionX(position, domain) {
+    const fraction = (position - domain[0]) / (domain[1] - domain[0]);
+    return 90 + clamp(fraction, 0, 1) * 460;
+  }
+
+  function appendMotionScene(svg, documentRef, spec, options, state, domain, prefix) {
+    addMarkerDefinitions(svg, documentRef, prefix);
+    svg.append(createSvgElement(documentRef, "line", { x1: "65", y1: "250", x2: "575", y2: "250", class: "physics-visual__track" }));
+    for (let x = 80; x <= 555; x += 34) svg.append(createSvgElement(documentRef, "line", { x1: x, y1: "258", x2: x + 14, y2: "270", class: "physics-visual__track-tie" }));
+    const cart = (spec.entities ?? [])[0];
+    const x = motionX(state.position, domain);
+    const group = createSvgElement(documentRef, "g", { "data-semantic-id": cart?.id ?? "cart", class: "physics-visual__cart" });
+    group.append(createSvgElement(documentRef, "rect", { x: x - 50, y: "180", width: "100", height: "50", rx: "15", class: "physics-visual__cart-body" }));
+    group.append(createSvgElement(documentRef, "circle", { cx: x - 29, cy: "237", r: "11", class: "physics-visual__wheel" }));
+    group.append(createSvgElement(documentRef, "circle", { cx: x + 29, cy: "237", r: "11", class: "physics-visual__wheel" }));
+    svg.append(group);
+    addSvgText(svg, documentRef, x, 158, semanticLabel(cart, options.locale, "cart"), "physics-visual__entity-label");
+    if (Math.abs(state.velocity) > 1e-12) {
+      const direction = state.velocity > 0 ? "right" : "left";
+      drawVector(svg, documentRef, {
+        id: "motion-velocity-vector", entityId: cart?.id ?? "cart", quantity: "velocity",
+        direction, relativeMagnitude: clamp(Math.abs(state.velocity) / 20, 0.2, 1),
+        label: { en: "v", ms: "v", zh: "v" },
+      }, [x, 165], prefix, options.locale, 0);
+    }
+    addSvgText(svg, documentRef, 78, 38, `x = ${state.position.toFixed(2)}`, "physics-visual__readout", "start");
+    addSvgText(svg, documentRef, 78, 64, `v = ${state.velocity.toFixed(2)}`, "physics-visual__readout", "start");
+    addSvgText(svg, documentRef, 78, 90, `t = ${state.time.toFixed(2)}`, "physics-visual__readout", "start");
+  }
+
+  function renderMotion1DStatic(spec, options = {}) {
+    const { documentRef, figure, svg } = makeSurface(spec, options);
+    figure.setAttribute("data-simulation-fallback", "static");
+    const initial = motionInitialState(spec);
+    const velocityControl = motionControl(spec, "velocity");
+    const timeControl = motionControl(spec, "time");
+    const domain = motionDomain(initial.position, velocityControl, timeControl);
+    appendMotionScene(svg, documentRef, spec, options, evaluateMotion1D(initial.position, initial.velocity, initial.time), domain, `pv-${++renderSequence}`);
+    return figure;
+  }
+
+  function makeRangeControl(documentRef, control, locale, onInput) {
+    const wrapper = createElement(documentRef, "div", "physics-sim__control");
+    const label = createElement(documentRef, "label", "physics-sim__label");
+    const inputId = `physics-sim-${++renderSequence}-${control.id}`;
+    label.setAttribute("for", inputId);
+    label.textContent = semanticLabel(control, locale, control.variableId);
+    const value = createElement(documentRef, "output", "physics-sim__value");
+    const input = createElement(documentRef, "input", "physics-sim__range");
+    input.setAttribute("id", inputId);
+    input.setAttribute("type", "range");
+    input.setAttribute("min", control.min);
+    input.setAttribute("max", control.max);
+    input.setAttribute("step", control.step);
+    input.value = String(control.default);
+    input.setAttribute("aria-label", semanticLabel(control, locale, control.variableId));
+    const sync = () => {
+      const numeric = Number(input.value);
+      value.textContent = `${Number.isFinite(numeric) ? numeric : control.default}${control.unit ? ` ${control.unit}` : ""}`;
+      onInput(Number.isFinite(numeric) ? numeric : Number(control.default));
+    };
+    input.addEventListener("input", sync);
+    value.textContent = `${control.default}${control.unit ? ` ${control.unit}` : ""}`;
+    wrapper.append(label, value, input);
+    return { wrapper, input, value };
+  }
+
+  function renderMotion1DSimulation(spec, options) {
+    if (options.forceStatic) return renderMotion1DStatic(spec, options);
+    const { documentRef, figure, svg } = makeSurface(spec, options);
+    figure.setAttribute("data-simulation-model", spec.simulation?.modelId ?? "");
+    figure.setAttribute("data-simulation-version", "1.0.0");
+    const initial = motionInitialState(spec);
+    const velocityControl = motionControl(spec, "velocity");
+    const timeControl = motionControl(spec, "time");
+    const domain = motionDomain(initial.position, velocityControl, timeControl);
+    const live = { velocity: Number(velocityControl?.default ?? initial.velocity), time: Number(timeControl?.default ?? initial.time) };
+    const redraw = () => {
+      if (typeof svg.replaceChildren === "function") svg.replaceChildren();
+      else while (svg.children?.length) svg.children.pop();
+      const state = evaluateMotion1D(initial.position, live.velocity, live.time);
+      appendMotionScene(svg, documentRef, spec, options, state, domain, `pv-${++renderSequence}`);
+      figure.setAttribute("data-position", state.position.toFixed(6));
+      figure.setAttribute("data-velocity", state.velocity.toFixed(6));
+      figure.setAttribute("data-time", state.time.toFixed(6));
+    };
+    const controls = createElement(documentRef, "div", "physics-sim__controls");
+    controls.setAttribute("role", "group");
+    controls.setAttribute("aria-label", localized(spec.accessibility?.description, options.locale ?? "en") || "Motion controls");
+    const velocityUI = makeRangeControl(documentRef, velocityControl, options.locale, (value) => { live.velocity = value; redraw(); });
+    const timeUI = makeRangeControl(documentRef, timeControl, options.locale, (value) => { live.time = value; redraw(); });
+    controls.append(velocityUI.wrapper, timeUI.wrapper);
+    figure.append(controls);
+    redraw();
+    return figure;
+  }
+
   function renderEnergyBars(spec, options) {
     const { documentRef, figure, svg } = makeSurface(spec, options);
     const prefix = `pv-${++renderSequence}`;
@@ -293,6 +432,9 @@
     try {
       return renderer(spec, options);
     } catch (_error) {
+      if (spec.template === "mechanics.motion_1d_slider" && !options.forceStatic) {
+        try { return renderMotion1DStatic(spec, options); } catch (_fallbackError) { /* use text fallback below */ }
+      }
       return renderFallback(spec, options, "Visual representation unavailable");
     }
   }
@@ -306,5 +448,6 @@
     supportedTemplates: Object.freeze(Object.keys(TEMPLATE_RENDERERS)),
     renderVisualSpec,
     renderDeterministicOverlay,
+    evaluateMotion1D,
   });
 })(globalThis);

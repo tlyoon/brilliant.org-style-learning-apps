@@ -77,7 +77,7 @@ Use a trusted renderer for the full visual. This is the default for graphs, free
 
 ### `deterministic_simulation`
 
-Use a trusted bounded simulation primitive. The same state and controls must produce the same output. An explicit static/structured fallback is mandatory.
+Use a trusted bounded simulation primitive. The same state and controls must produce the same output. An explicit static/structured fallback is mandatory. The first production primitive is `mechanics.motion_1d_slider`: constant-velocity motion with bounded velocity/time sliders, deterministic `x = x0 + v t` state updates, an instant-state reduced-motion strategy, and a static cart-scene fallback. Its defining relation is suitable for independent symbolic verification through the provider-neutral verifier boundary.
 
 ### `hybrid_generated_base`
 

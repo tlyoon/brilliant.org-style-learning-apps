@@ -30,6 +30,7 @@ jobs:
           node tests/test_app_loading.js
           node tests/test_visual_renderers.js
           node tests/test_visual_player_integration.js
+          node tests/test_motion_1d_simulation.js
       - name: Validate JSON and content rules
         run: |
           python -m json.tool content/schema/content-package.schema.json >/dev/null
