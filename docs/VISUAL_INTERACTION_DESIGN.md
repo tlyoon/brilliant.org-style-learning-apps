@@ -2,11 +2,14 @@
 
 ## Purpose
 
-This document is the canonical design contract for visual and simulation-enhanced physics activities. The companion prompt contract is `docs/VISUAL_GENERATION_PROMPT_SPEC.md`. It operationalizes Decision 0024 without claiming that every capability described here is already implemented on `main`.
+This document is the canonical domain-independent design contract for visual and simulation-enhanced learning activities. The companion prompt contract is `docs/VISUAL_GENERATION_PROMPT_SPEC.md`. It operationalizes Decision 0024 without claiming that every capability described here is already implemented on `main`.
 
 The core rule is:
 
-> Design the physics reasoning experience and its representation together. Use visuals when they carry learning value; do not add decoration merely to make a text question look richer.
+> Design the domain reasoning experience and its representation together. Use visuals when they carry learning value; do not add decoration merely to make a text question look richer.
+
+
+Domain-specific examples below use the current university-level physics profile. Other disciplines should supply their own native representations through Decision 0025 rather than treating physics examples as universal.
 
 ## Activity-planning algorithm
 
@@ -66,7 +69,7 @@ A visual mode says *what pedagogical representation is needed*; the render strat
 
 Every generated-image strategy requires inspection of the **final pixels** in a multimodal audit. The semantic specification remains the source of truth. A generated base that contradicts or visually competes with that specification is discarded, regenerated, simplified, or replaced by deterministic output.
 
-Where the physics relation benefits from independent verification, the plan may request a symbolic/numerical cross-check. Wolfram is a preferred verifier when available, but the contract is provider-neutral. Replit is useful for prototyping new simulation templates during development; it is not a learner-runtime dependency and no generated package may rely on a hosted Replit prototype.
+Where a domain relation benefits from independent verification, the plan may request a symbolic/numerical cross-check. Wolfram is a preferred verifier when available, but the contract is provider-neutral. Replit is useful for prototyping new simulation templates during development; it is not a learner-runtime dependency and no generated package may rely on a hosted Replit prototype.
 
 See `docs/VISUAL_TOOL_ORCHESTRATION.md` for the full capability matrix and promotion rules.
 
@@ -122,7 +125,7 @@ A simulation is justified only when manipulation teaches something that a static
 - reduced-motion behavior;
 - fallback static representation.
 
-The learner should not need to discover hidden UI mechanics before reasoning about the physics.
+The learner should not need to discover hidden UI mechanics before reasoning about the target concept.
 
 ## Grounding and source figures
 
@@ -165,7 +168,7 @@ Use a coherent, modern educational style through a versioned style profile share
 - stable composition across locale changes and small screens;
 - no long learner-facing text baked into generated raster assets.
 
-Aesthetic generation is allowed to improve context, atmosphere, composition, and polish, but it must not invent answer-bearing physics. Generated imagery and deterministic overlays consume the same declared `aestheticIntent`/style profile so a topic feels visually coherent.
+Aesthetic generation is allowed to improve context, atmosphere, composition, and polish, but it must not invent answer-bearing domain facts or relations. Generated imagery and deterministic overlays consume the same declared `aestheticIntent`/style profile so a topic feels visually coherent.
 
 The design should be appealing because the representation is clear and responsive, not because it imitates proprietary Brilliant assets or branding.
 
@@ -177,7 +180,7 @@ The design should be appealing because the representation is clear and responsiv
 - Controls are keyboard reachable and touch sized.
 - Important labels survive zoom and small screens.
 - English, Malay, and Simplified Chinese labels remain semantically aligned.
-- Symbolic physics notation should remain language-neutral where appropriate.
+- Symbolic/domain notation should remain language-neutral where appropriate.
 
 ## Failure and fallback policy
 
@@ -195,7 +198,7 @@ Fallback must preserve learning objective and answer logic. The system must log 
 
 ## Current deterministic renderer foundation
 
-The first trusted renderer runtime is now repository-owned in `app/visual-renderers.js` and uses the `physics-clean-v1` style tokens in `app/styles.css`. Four templates are marked `available` in `content/visuals/template-registry.json` and bind to exact renderer IDs/versions:
+The first trusted subject runtime is now the `university-level-physics` domain. Its renderer lives in `domains/university-level physics/visuals/physics-renderers.js`, its style tokens in `domains/university-level physics/visuals/physics-styles.css`, and its registries under the same domain directory. The generic `app/visual-renderers.js` is only a domain-runtime bridge. Four physics templates are marked `available` and bind to exact renderer IDs/versions:
 
 - `mechanics.cart_collision_1d` -> `cart-collision-v1`
 - `mechanics.free_body_2d` -> `free-body-v1`
@@ -209,7 +212,7 @@ The renderers derive geometry from semantic entities, directions, qualitative gr
 ## Implementation sequence
 
 1. **Schema and validator foundation** ? visual-spec contract, planner output, validation errors, and compatibility behavior.
-2. **Deterministic renderer library** ? core SVG/HTML physics templates and graph primitives.
+2. **Deterministic renderer library** ? domain-owned SVG/HTML templates and graph/representation primitives.
 3. **Simulation primitives** ? bounded slider/manipulation components with deterministic state.
 4. **Generation integration** ? activity intent ? visual plan ? visual spec ? render ? cross-modal audit ? repair.
 5. **Player and QA integration** ? responsive rendering, accessibility, multilingual labels, performance, fallback, and analytics events.
@@ -222,7 +225,7 @@ Each implementation step must preserve a working repository and should be indepe
 The foundation is ready for broad generation only when:
 
 - visual specifications are schema-valid and versioned;
-- at least several distinct physics renderer templates are tested;
+- at least several distinct renderer templates in the active domain are tested;
 - at least one manipulable simulation primitive has deterministic behavior and fallback;
 - question/answer/visual consistency validation can detect seeded contradictions;
 - unsupported visual requests fail safely;

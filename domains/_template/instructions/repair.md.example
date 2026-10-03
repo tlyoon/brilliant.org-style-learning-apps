@@ -1,0 +1,3 @@
+# Domain repair extension
+
+Define the smallest safe domain-specific repairs and the conditions that require regeneration or fallback instead of invented detail.

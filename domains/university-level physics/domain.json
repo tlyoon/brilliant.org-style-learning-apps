@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0",
+  "id": "university-level-physics",
+  "displayName": "University-level Physics",
+  "subject": "physics",
+  "academicLevel": "university",
+  "status": "active",
+  "instructions": {
+    "sourceAnalysis": "instructions/source-analysis.md",
+    "activityGeneration": "instructions/activity-generation.md",
+    "visualGeneration": "instructions/visual-generation.md",
+    "semanticAudit": "instructions/semantic-audit.md",
+    "repair": "instructions/repair.md"
+  },
+  "rules": {
+    "content": "rules/content-rules.md",
+    "visual": "rules/visual-rules.md"
+  },
+  "visuals": {
+    "templateRegistry": "visuals/template-registry.json",
+    "styleProfiles": "visuals/style-profiles.json",
+    "rendererScript": "visuals/physics-renderers.js",
+    "stylesheet": "visuals/physics-styles.css"
+  },
+  "simulations": {
+    "modelRegistry": "simulations/model-registry.json",
+    "modelsModule": "simulations/models.py"
+  },
+  "validation": {
+    "visualValidatorModule": "validators/visual_validation.py"
+  },
+  "verification": {
+    "policy": "verification/verification-policy.json"
+  },
+  "trustedRenderers": {
+    "mechanics.cart_collision_1d": [
+      "cart-collision-v1",
+      "1.0.0"
+    ],
+    "mechanics.free_body_2d": [
+      "free-body-v1",
+      "1.0.0"
+    ],
+    "graph.cartesian_qualitative": [
+      "qualitative-graph-v1",
+      "1.0.0"
+    ],
+    "state.energy_bar": [
+      "energy-bar-v1",
+      "1.0.0"
+    ],
+    "mechanics.motion_1d_slider": [
+      "motion-1d-sim-v1",
+      "1.0.0"
+    ]
+  }
+}

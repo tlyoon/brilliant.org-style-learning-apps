@@ -6,6 +6,7 @@
 - Instructor content workspace and validation pipeline.
 - Versioned learning-package store.
 - Topic/course learning-model layer derived from controlled sources.
+- Versioned subject-domain profile registry separating disciplinary knowledge from the generic engine.
 - Visual planner producing declarative, versioned visual specifications.
 - Trusted visual/interaction template registry and deterministic renderer runtime.
 - Cross-modal validator for question ? answer ? visual ? physics consistency.
@@ -20,6 +21,8 @@
 Repository content is provider-neutral. Application, database, model, and hosting choices remain open until the relevant vertical slice defines them. Production dependencies require approval.
 
 Generated educational content and visual specifications remain data. Reusable renderer/simulation primitives are trusted runtime code. The generator must not create arbitrary per-activity executable JavaScript as a shortcut around the visual-spec contract.
+
+The repository has three explicit layers: generic engine, active domain profile, and project/course policy. Domain profiles live beneath `domains/`; the current `university-level-physics` profile is stored at `domains/university-level physics/`. Generic code resolves domain manifests and must not hard-code physics template IDs, simulation laws, or disciplinary validators. Decision 0025 and `docs/DOMAIN_PROFILES.md` define this boundary.
 
 ## Data flow
 
@@ -61,7 +64,7 @@ Prefer SVG/HTML/CSS for diagrams and controls. Use Canvas or another rendering l
 
 Visual specs and renderer versions are independently versioned and hashable so unchanged outputs can be cached and regenerated reproducibly.
 
-The current browser runtime loads `app/visual-renderers.js` before `app/app.js`. The available v1 renderer set covers cart/collision scenes, free-body/vector diagrams, qualitative Cartesian graphs, energy bars, and the first bounded one-dimensional constant-velocity simulation. Public release builders copy the renderer runtime alongside the player. Template-registry entries marked `planned` are rejected until trusted runtime code exists. The motion primitive exposes bounded velocity/time controls, derives position from `x = x0 + v t`, uses deterministic instant-state updates, and has a static cart-scene fallback.
+The generic browser runtime loads the active domain renderer before the generic visual-runtime bridge and player. Public release builders copy the selected domain renderer/style assets into the bundle. The current university-level physics profile supplies cart/collision scenes, free-body/vector diagrams, qualitative Cartesian graphs, energy bars, and the bounded one-dimensional constant-velocity simulation. Template-registry entries marked `planned` are rejected until the active domain contains trusted runtime code. The physics motion primitive exposes bounded velocity/time controls, derives position from `x = x0 + v t`, uses deterministic instant-state updates, and has a static cart-scene fallback.
 
 Hybrid contextual imagery is composited as a non-authoritative background layer. The deterministic SVG foreground remains scientifically self-sufficient, so removal or failure of generated base art cannot change the answer logic.
 

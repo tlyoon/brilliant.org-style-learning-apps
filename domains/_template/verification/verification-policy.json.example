@@ -1,0 +1,6 @@
+{
+  "schemaVersion": "1.0",
+  "preferredIndependentVerifier": "none",
+  "verificationKinds": [],
+  "notes": "Add only domain-appropriate verification kinds and providers."
+}

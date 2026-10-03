@@ -28,7 +28,7 @@ class VisualFirstDocumentationTests(unittest.TestCase):
         text = self.text("docs/CONTENT_RULES.md")
         self.assertIn("Visuals are instructional content, not decoration", text)
         self.assertIn("simplify or use a safe fallback rather than inventing unsupported detail", text)
-        self.assertIn("Question text, answer logic, visual specification, and rendered physical meaning must agree", text)
+        self.assertIn("Question text, answer logic, visual specification, and rendered domain meaning must agree", text)
         self.assertIn("Source figures may be reused/cropped only", text)
 
     def test_blueprint_stage_two_is_visual_interactive(self):
@@ -77,12 +77,26 @@ class VisualFirstDocumentationTests(unittest.TestCase):
     def test_renderer_and_first_simulation_foundation_are_documented_as_available(self):
         design = self.text("docs/VISUAL_INTERACTION_DESIGN.md")
         architecture = self.text("docs/ARCHITECTURE.md")
-        self.assertIn("app/visual-renderers.js", design)
+        self.assertIn("domains/university-level physics/visuals/physics-renderers.js", design)
         self.assertIn("cart-collision-v1", design)
         self.assertIn("qualitative-graph-v1", design)
         self.assertIn("mechanics.motion_1d_slider` is now an available bounded deterministic simulation", design)
         self.assertIn("x = x0 + v t", design)
         self.assertIn("Hybrid contextual imagery is composited as a non-authoritative background layer", architecture)
+
+
+    def test_domain_profile_architecture_and_onboarding_are_documented(self):
+        decision = self.text("docs/decisions/0025-domain-profile-architecture.md")
+        guide = self.text("docs/DOMAIN_PROFILES.md")
+        architecture = self.text("docs/ARCHITECTURE.md")
+        self.assertIn("## Status\n\nAccepted.", decision)
+        self.assertIn("domains/university-level physics/", decision)
+        self.assertIn("Alternative A - LLM-assisted domain authoring", guide)
+        self.assertIn("Alternative B - minimal text-first domain", guide)
+        self.assertIn("Alternative C - clone the closest installed domain structurally", guide)
+        self.assertIn("Alternative D - expert-authored profile", guide)
+        self.assertIn("Automatic textbook-domain classification is the next bounded Stage-0 implementation slice", guide)
+        self.assertIn("generic engine, active domain profile, and project/course policy", architecture)
 
     def test_architecture_and_ai_workflow_include_visual_pipeline(self):
         architecture = self.text("docs/ARCHITECTURE.md")

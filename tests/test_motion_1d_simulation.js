@@ -30,8 +30,9 @@ const document = {
 };
 const context = { console, document, globalThis: null };
 context.globalThis = context;
+vm.runInNewContext(fs.readFileSync("domains/university-level physics/visuals/physics-renderers.js", "utf8"), context, { filename: "physics-renderers.js" });
 vm.runInNewContext(fs.readFileSync("app/visual-renderers.js", "utf8"), context, { filename: "app/visual-renderers.js" });
-const visuals = context.PhysicsVisuals;
+const visuals = context.LearningVisuals;
 
 const spec = {
   schemaVersion: "1.0",

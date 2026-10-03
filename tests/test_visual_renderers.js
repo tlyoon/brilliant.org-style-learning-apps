@@ -1,4 +1,4 @@
-﻿const assert = require("node:assert/strict");
+const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const vm = require("node:vm");
 
@@ -31,10 +31,11 @@ const document = {
 };
 const context = { console, document, globalThis: null };
 context.globalThis = context;
-const rendererSource = fs.readFileSync("app/visual-renderers.js", "utf8");
+const rendererSource = fs.readFileSync("domains/university-level physics/visuals/physics-renderers.js", "utf8");
 assert.equal(rendererSource.includes("innerHTML"), false, "renderer must not use innerHTML");
-vm.runInNewContext(rendererSource, context, { filename: "app/visual-renderers.js" });
-const visuals = context.PhysicsVisuals;
+vm.runInNewContext(rendererSource, context, { filename: "physics-renderers.js" });
+vm.runInNewContext(fs.readFileSync("app/visual-renderers.js", "utf8"), context, { filename: "app/visual-renderers.js" });
+const visuals = context.LearningVisuals;
 assert.ok(visuals);
 assert.equal(visuals.rendererVersion, "1.0.0");
 assert.deepEqual(Array.from(visuals.supportedTemplates), [

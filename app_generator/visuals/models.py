@@ -1,24 +1,17 @@
-"""Trusted deterministic physics models used to verify simulation primitives."""
+"""Compatibility facade for the original physics motion-model import path.
 
-from __future__ import annotations
+The implementation now belongs to the active domain profile. Existing callers keep
+working while new domain-aware code resolves models from the domain manifest.
+"""
 
-from dataclasses import dataclass
-import math
+from pathlib import Path
 
+from app_generator.domains import resolve_domain
 
-@dataclass(frozen=True)
-class Motion1DState:
-    position: float
-    velocity: float
-    time: float
+_ROOT = Path(__file__).resolve().parents[2]
+_DOMAIN_MODELS = resolve_domain(_ROOT).load_module("simulations", "modelsModule")
 
+Motion1DState = _DOMAIN_MODELS.Motion1DState
+evaluate_motion_1d = _DOMAIN_MODELS.evaluate_motion_1d
 
-def evaluate_motion_1d(initial_position: float, velocity: float, time: float) -> Motion1DState:
-    """Evaluate bounded constant-velocity motion x = x0 + v t."""
-    values = tuple(float(value) for value in (initial_position, velocity, time))
-    if not all(math.isfinite(value) for value in values):
-        raise ValueError("motion inputs must be finite")
-    x0, v, t = values
-    if t < 0:
-        raise ValueError("motion time must be non-negative")
-    return Motion1DState(position=x0 + v * t, velocity=v, time=t)
+__all__ = ["Motion1DState", "evaluate_motion_1d"]

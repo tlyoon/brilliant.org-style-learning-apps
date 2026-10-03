@@ -7,10 +7,15 @@ import argparse
 import json
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from app_generator.domains import resolve_domain
 PACKAGE_PATH = Path("content/chapter-8/section-8-1/package.json")
 VERSION_ONE_COMMIT = "38b6b59d4d5c0fc408406721c445baf78c00980d"
 EXPECTED_PACKAGE_ID = "chapter-8-section-8-1"
@@ -115,6 +120,7 @@ def _version_page(version: str, label: str, package_url: str) -> str:
     <meta name="robots" content="noindex, nofollow">
     <title>Section 8.1 {label}</title>
     <link rel="stylesheet" href="../app/styles.css">
+    <link rel="stylesheet" href="../app/domain-styles.css">
   </head>
   <body>
     <main class="shell">
@@ -129,6 +135,7 @@ def _version_page(version: str, label: str, package_url: str) -> str:
         <p>Loading Section 8.1 {version}…</p>
       </section>
     </main>
+    <script src="../app/domain-renderers.js"></script>
     <script src="../app/visual-renderers.js"></script>
     <script type="module" src="../app/app.js"></script>
   </body>
@@ -145,6 +152,7 @@ def _section_eight_two_page() -> str:
     <meta name="robots" content="noindex, nofollow">
     <title>Section 8.2 Analysis Model: Isolated System (Energy)</title>
     <link rel="stylesheet" href="../app/styles.css">
+    <link rel="stylesheet" href="../app/domain-styles.css">
   </head>
   <body>
     <main class="shell">
@@ -159,6 +167,7 @@ def _section_eight_two_page() -> str:
         <p>Loading Section 8.2...</p>
       </section>
     </main>
+    <script src="../app/domain-renderers.js"></script>
     <script src="../app/visual-renderers.js"></script>
     <script type="module" src="../app/app.js"></script>
   </body>
@@ -175,6 +184,7 @@ def _section_eight_three_page() -> str:
     <meta name="robots" content="noindex, nofollow">
     <title>Section 8.3 Situations Involving Kinetic Friction</title>
     <link rel="stylesheet" href="../app/styles.css">
+    <link rel="stylesheet" href="../app/domain-styles.css">
   </head>
   <body>
     <main class="shell">
@@ -189,6 +199,7 @@ def _section_eight_three_page() -> str:
         <p>Loading Section 8.3…</p>
       </section>
     </main>
+    <script src="../app/domain-renderers.js"></script>
     <script src="../app/visual-renderers.js"></script>
     <script type="module" src="../app/app.js"></script>
   </body>
@@ -205,6 +216,7 @@ def _section_eight_four_page() -> str:
     <meta name="robots" content="noindex, nofollow">
     <title>Section 8.4 Changes in Mechanical Energy for Nonconservative Forces</title>
     <link rel="stylesheet" href="../app/styles.css">
+    <link rel="stylesheet" href="../app/domain-styles.css">
   </head>
   <body>
     <main class="shell">
@@ -219,6 +231,7 @@ def _section_eight_four_page() -> str:
         <p>Loading Section 8.4...</p>
       </section>
     </main>
+    <script src="../app/domain-renderers.js"></script>
     <script src="../app/visual-renderers.js"></script>
     <script type="module" src="../app/app.js"></script>
   </body>
@@ -235,6 +248,7 @@ def _section_eight_five_page() -> str:
     <meta name="robots" content="noindex, nofollow">
     <title>Section 8.5 Power</title>
     <link rel="stylesheet" href="../app/styles.css">
+    <link rel="stylesheet" href="../app/domain-styles.css">
   </head>
   <body>
     <main class="shell">
@@ -249,6 +263,7 @@ def _section_eight_five_page() -> str:
         <p>Loading Section 8.5...</p>
       </section>
     </main>
+    <script src="../app/domain-renderers.js"></script>
     <script src="../app/visual-renderers.js"></script>
     <script type="module" src="../app/app.js"></script>
   </body>
@@ -265,6 +280,7 @@ def _landing_page() -> str:
     <meta name="robots" content="noindex, nofollow">
     <title>Chapter 8 Learning</title>
     <link rel="stylesheet" href="app/styles.css">
+    <link rel="stylesheet" href="app/domain-styles.css">
     <style>
       .version-grid { display: grid; gap: 1rem; margin: 1rem 0 3rem; }
       .version-link { display: block; margin-top: 1rem; text-decoration: none; }
@@ -354,10 +370,13 @@ def build(output: Path) -> None:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(payload)
 
+    domain = resolve_domain(ROOT)
     for source, relative in (
         (ROOT / "app" / "app.js", Path("app/app.js")),
+        (domain.path("visuals", "rendererScript"), Path("app/domain-renderers.js")),
         (ROOT / "app" / "visual-renderers.js", Path("app/visual-renderers.js")),
         (ROOT / "app" / "styles.css", Path("app/styles.css")),
+        (domain.path("visuals", "stylesheet"), Path("app/domain-styles.css")),
     ):
         target = output / relative
         target.parent.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,3 @@
+# Domain semantic-audit extension
+
+Define cross-checks that must agree across question, answer, explanation, representation, evidence, and any domain-specific invariants or chronology/structure rules.

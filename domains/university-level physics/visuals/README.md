@@ -1,6 +1,6 @@
-# Trusted visual registries
+# University-level physics visual registries
 
-This directory contains repository-owned registries used by the visual-first activity contract. Generated packages may reference these IDs but may not define arbitrary renderer or simulation code.
+This domain directory contains the repository-owned university-physics registries used by the visual-first activity contract. Generated packages may reference these IDs but may not define arbitrary renderer or simulation code.
 
 - `template-registry.json` - supported representation templates, visual modes, allowed render strategies, and trusted simulation-model bindings.
 - `style-profiles.json` - versioned aesthetic intent shared by deterministic renderers and generated-image prompts.
@@ -16,4 +16,4 @@ Provider names and model versions do not belong in generated activity content. R
 
 `implementationStatus` distinguishes a contract that merely exists from a template that the learner runtime can actually render. `available` entries bind to an exact repository renderer ID and version. `planned` entries are not selectable for publishable generated content.
 
-The current deterministic runtime (`app/visual-renderers.js`, renderer version `1.0.0`) implements cart/collision, free-body/vector, qualitative Cartesian graph, and energy-bar templates. The motion-slider simulation remains planned for the next implementation slice.
+The current deterministic runtime (`physics-renderers.js`, renderer version `1.0.0`) implements cart/collision, free-body/vector, qualitative Cartesian graph, and energy-bar templates. The motion-slider simulation is available as `mechanics.motion_1d_slider` with the trusted `kinematics.motion_1d` model.

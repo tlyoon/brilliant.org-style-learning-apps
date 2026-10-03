@@ -245,7 +245,6 @@
     "verificationRequirements": {
       "type": "object",
       "required": [
-        "physicsComputation",
         "referenceGrounding",
         "finalMultimodalAudit"
       ],
@@ -256,7 +255,8 @@
             "deterministic-engine",
             "sandboxed-code",
             "symbolic-crosscheck"
-          ]
+          ],
+          "description": "Deprecated compatibility alias for domainComputation; do not use in new domain instructions."
         },
         "referenceGrounding": {
           "enum": [
@@ -270,9 +270,39 @@
         },
         "requireIndependentCrosscheck": {
           "type": "boolean"
+        },
+        "domainComputation": {
+          "enum": [
+            "none",
+            "deterministic-engine",
+            "sandboxed-code",
+            "symbolic-crosscheck"
+          ]
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "domainComputation"
+          ],
+          "not": {
+            "required": [
+              "physicsComputation"
+            ]
+          }
+        },
+        {
+          "required": [
+            "physicsComputation"
+          ],
+          "not": {
+            "required": [
+              "domainComputation"
+            ]
+          }
+        }
+      ]
     }
   },
   "additionalProperties": false,

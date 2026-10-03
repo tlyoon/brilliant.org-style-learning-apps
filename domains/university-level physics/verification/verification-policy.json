@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "preferredIndependentVerifier": "wolfram",
+  "verificationKinds": [
+    "symbolic_equivalence",
+    "conservation_invariant",
+    "trajectory_relation",
+    "graph_relation",
+    "sign_or_limit",
+    "dimensional_consistency",
+    "reference_values"
+  ],
+  "notes": "The verifier supplies evidence only; learner-facing physics remains repository-owned deterministic output."
+}

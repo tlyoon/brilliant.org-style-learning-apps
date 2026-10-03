@@ -9,7 +9,7 @@ from typing import Any, Iterable
 
 from jsonschema import Draft202012Validator
 
-from app_generator.visuals.verification import VERIFICATION_KINDS
+from app_generator.domains import resolve_domain
 
 FORBIDDEN_FIELD_NAMES = {
     "javascript", "script", "html", "css", "svg", "markup", "executable", "code",
@@ -17,14 +17,6 @@ FORBIDDEN_FIELD_NAMES = {
     "x", "y", "x1", "x2", "y1", "y2", "cx", "cy", "widthPx", "heightPx",
 }
 FORBIDDEN_TEXT = re.compile(r"(?:javascript\s*:|<\s*(?:script|svg|style)\b|on(?:load|click|error)\s*=)", re.I)
-
-AVAILABLE_RENDERERS = {
-    "mechanics.cart_collision_1d": ("cart-collision-v1", "1.0.0"),
-    "mechanics.free_body_2d": ("free-body-v1", "1.0.0"),
-    "graph.cartesian_qualitative": ("qualitative-graph-v1", "1.0.0"),
-    "state.energy_bar": ("energy-bar-v1", "1.0.0"),
-    "mechanics.motion_1d_slider": ("motion-1d-sim-v1", "1.0.0"),
-}
 
 
 def _schema_validator(path: Path) -> Draft202012Validator:
@@ -68,7 +60,7 @@ def _code_and_coordinate_errors(value: Any, label: str) -> list[str]:
 
 
 def _template_registry(repo_root: Path) -> dict[str, dict[str, Any]]:
-    path = repo_root / "content" / "visuals" / "template-registry.json"
+    path = resolve_domain(repo_root).path("visuals", "templateRegistry")
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schemaVersion") != "1.0":
         raise ValueError("Unsupported visual template registry version")
@@ -87,7 +79,7 @@ def _template_registry(repo_root: Path) -> dict[str, dict[str, Any]]:
 
 
 def _style_profiles(repo_root: Path) -> set[str]:
-    path = repo_root / "content" / "visuals" / "style-profiles.json"
+    path = resolve_domain(repo_root).path("visuals", "styleProfiles")
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schemaVersion") != "1.0":
         raise ValueError("Unsupported visual style registry version")
@@ -119,7 +111,7 @@ def _style_profiles(repo_root: Path) -> set[str]:
 
 
 def _simulation_models(repo_root: Path) -> dict[str, dict[str, Any]]:
-    path = repo_root / "content" / "visuals" / "simulation-model-registry.json"
+    path = resolve_domain(repo_root).path("simulations", "modelRegistry")
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schemaVersion") != "1.0":
         raise ValueError("Unsupported simulation model registry version")
@@ -137,13 +129,27 @@ def _simulation_models(repo_root: Path) -> dict[str, dict[str, Any]]:
     return by_id
 
 
+def _verification_kinds(repo_root: Path) -> set[str]:
+    path = resolve_domain(repo_root).path("verification", "policy")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("schemaVersion") != "1.0":
+        raise ValueError("Unsupported domain verification policy version")
+    kinds = data.get("verificationKinds")
+    if not isinstance(kinds, list) or len(kinds) != len(set(kinds)) or any(not isinstance(kind, str) or not kind for kind in kinds):
+        raise ValueError("Domain verification policy must contain a unique verificationKinds list")
+    return set(kinds)
+
+
 def visual_registry_errors(repo_root: Path) -> list[str]:
     """Validate trusted visual/style/simulation registries independent of any package."""
     errors: list[str] = []
     try:
+        domain = resolve_domain(repo_root)
         templates = _template_registry(repo_root)
         styles = _style_profiles(repo_root)
         models = _simulation_models(repo_root)
+        verification_kinds = _verification_kinds(repo_root)
+        trusted_renderers = domain.trusted_renderers
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         return [f"visual registries: {exc}"]
 
@@ -161,7 +167,7 @@ def visual_registry_errors(repo_root: Path) -> list[str]:
         status = template.get("implementationStatus")
         if status not in {"available", "planned"}:
             errors.append(f"visual template {template_id}: implementationStatus must be available or planned")
-        expected_renderer = AVAILABLE_RENDERERS.get(template_id)
+        expected_renderer = trusted_renderers.get(template_id)
         if status == "available":
             if expected_renderer is None:
                 errors.append(f"visual template {template_id}: marked available without a trusted runtime renderer")
@@ -201,7 +207,7 @@ def visual_registry_errors(repo_root: Path) -> list[str]:
             errors.append(f"simulation model {model_id}: controllableVariableIds must be a unique list")
         elif any(variable not in variable_set for variable in controllable):
             errors.append(f"simulation model {model_id}: controllable variables must be declared in variableIds")
-        if not isinstance(kinds, list) or any(kind not in VERIFICATION_KINDS for kind in kinds):
+        if not isinstance(kinds, list) or any(kind not in verification_kinds for kind in kinds):
             errors.append(f"simulation model {model_id}: contains an unsupported verification kind")
         if not isinstance(model.get("modelVersion"), str) or not model.get("modelVersion"):
             errors.append(f"simulation model {model_id}: modelVersion is required")
@@ -324,98 +330,22 @@ def _mode_errors(spec: dict[str, Any], label: str) -> list[str]:
     return errors
 
 
-def _renderer_contract_errors(spec: dict[str, Any], label: str) -> list[str]:
-    """Validate the semantic contract consumed by the currently available deterministic renderers."""
-    errors: list[str] = []
-    template = spec.get("template")
-    entities = spec.get("entities", [])
-    vectors = spec.get("vectors", [])
-    parameters = spec.get("semanticParameters", {})
+def _domain_visual_spec_errors(repo_root: Path, spec: dict[str, Any], label: str) -> list[str]:
+    domain = resolve_domain(repo_root)
+    module = domain.load_module("validation", "visualValidatorModule")
+    validator = getattr(module, "visual_spec_errors", None)
+    if not callable(validator):
+        raise ValueError(f"Domain {domain.id!r} visual validator has no visual_spec_errors function")
+    return list(validator(spec, label))
 
-    if template == "mechanics.cart_collision_1d":
-        carts = [entity for entity in entities if isinstance(entity, dict) and entity.get("kind") == "cart"]
-        if not 1 <= len(carts) <= 4 or len(carts) != len(entities):
-            errors.append(f"{label}.entities: cart-collision renderer requires one to four cart entities")
-        phase = parameters.get("phase")
-        if phase is not None and phase not in {"before", "during", "after"}:
-            errors.append(f"{label}.semanticParameters.phase: must be before, during, or after")
-        orientation = parameters.get("track_orientation")
-        if orientation is not None and orientation != "horizontal":
-            errors.append(f"{label}.semanticParameters.track_orientation: cart-collision v1 supports horizontal only")
 
-    elif template == "mechanics.free_body_2d":
-        bodies = [entity for entity in entities if isinstance(entity, dict) and entity.get("kind") == "body"]
-        if len(entities) != 1 or len(bodies) != 1:
-            errors.append(f"{label}.entities: free-body renderer requires exactly one body entity")
-        if not vectors:
-            errors.append(f"{label}.vectors: free-body renderer requires at least one vector")
-        elif bodies and any(vector.get("entityId") != bodies[0].get("id") for vector in vectors):
-            errors.append(f"{label}.vectors: every free-body vector must reference the body entity")
-
-    elif template == "graph.cartesian_qualitative":
-        series = spec.get("graphSeries", [])
-        if not 1 <= len(series) <= 4:
-            errors.append(f"{label}.graphSeries: qualitative graph renderer requires one to four series")
-
-    elif template == "state.energy_bar":
-        components = [
-            entity for entity in entities
-            if isinstance(entity, dict) and entity.get("kind") == "energy-component"
-        ]
-        if not 1 <= len(components) <= 4 or len(components) != len(entities):
-            errors.append(f"{label}.entities: energy-bar renderer requires one to four energy-component entities")
-        for index, component in enumerate(components):
-            amount = component.get("properties", {}).get("relativeAmount")
-            if isinstance(amount, bool) or not isinstance(amount, (int, float)) or not 0 <= amount <= 1:
-                errors.append(
-                    f"{label}.entities[{index}].properties.relativeAmount: must be a number from 0 to 1"
-                )
-
-    elif template == "mechanics.motion_1d_slider":
-        carts = [entity for entity in entities if isinstance(entity, dict) and entity.get("kind") == "cart"]
-        if len(entities) != 1 or len(carts) != 1:
-            errors.append(f"{label}.entities: motion-1d simulation requires exactly one cart entity")
-        if parameters.get("motion_model") != "constant-velocity":
-            errors.append(f"{label}.semanticParameters.motion_model: must be constant-velocity")
-        simulation = spec.get("simulation")
-        if not isinstance(simulation, dict) or simulation.get("modelId") != "kinematics.motion_1d":
-            errors.append(f"{label}.simulation.modelId: motion-1d simulation requires kinematics.motion_1d")
-        elif set(simulation.get("variableIds", [])) != {"position", "velocity", "time"}:
-            errors.append(f"{label}.simulation.variableIds: motion-1d simulation requires position, velocity, and time")
-        states = spec.get("states", [])
-        initial = next((state for state in states if isinstance(state, dict) and state.get("id") == "initial-state"), None)
-        values = initial.get("values", {}) if initial else {}
-        if initial is None or any(isinstance(values.get(name), bool) or not isinstance(values.get(name), (int, float)) for name in ("position", "velocity", "time")):
-            errors.append(f"{label}.states: motion-1d simulation requires numeric position, velocity, and time in initial-state")
-        elif values.get("time") != 0:
-            errors.append(f"{label}.states.initial-state.values.time: must start at 0")
-        controls = [control for control in spec.get("controls", []) if isinstance(control, dict)]
-        control_by_variable = {control.get("variableId"): control for control in controls}
-        if set(control_by_variable) != {"velocity", "time"} or len(controls) != 2:
-            errors.append(f"{label}.controls: motion-1d simulation requires exactly velocity and time sliders")
-        else:
-            velocity = control_by_variable["velocity"]
-            time = control_by_variable["time"]
-            if velocity.get("min", -21) < -20 or velocity.get("max", 21) > 20:
-                errors.append(f"{label}.controls: velocity slider must remain within -20 to 20")
-            if time.get("min") != 0 or time.get("max", 21) > 20:
-                errors.append(f"{label}.controls: time slider must start at 0 and end at or before 20")
-        fallback = spec.get("fallback", {})
-        if fallback.get("mode") != "scene_diagram" or fallback.get("template") != "mechanics.cart_collision_1d":
-            errors.append(f"{label}.fallback: motion-1d simulation requires the static mechanics.cart_collision_1d fallback")
-        if spec.get("accessibility", {}).get("reducedMotionStrategy") != "instant-state":
-            errors.append(f"{label}.accessibility.reducedMotionStrategy: motion-1d simulation requires instant-state")
-        invariant_by_id = {item.get("id"): item for item in spec.get("invariants", []) if isinstance(item, dict)}
-        invariant_ids = simulation.get("invariantIds", []) if isinstance(simulation, dict) else []
-        constant_velocity = [
-            invariant_by_id.get(invariant_id) for invariant_id in invariant_ids
-            if invariant_by_id.get(invariant_id, {}).get("kind") == "constant"
-            and simulation.get("id") in invariant_by_id.get(invariant_id, {}).get("references", [])
-        ] if isinstance(simulation, dict) else []
-        if not constant_velocity:
-            errors.append(f"{label}.invariants: motion-1d simulation requires a declared constant-velocity invariant tied to the simulation")
-    return errors
-
+def _domain_visual_plan_errors(repo_root: Path, plan: dict[str, Any], label: str) -> list[str]:
+    domain = resolve_domain(repo_root)
+    module = domain.load_module("validation", "visualValidatorModule")
+    validator = getattr(module, "visual_plan_errors", None)
+    if not callable(validator):
+        return []
+    return list(validator(plan, label))
 
 def _template_errors(
     plan: dict[str, Any],
@@ -497,10 +427,6 @@ def _verification_policy_errors(plan: dict[str, Any], label: str) -> list[str]:
     if strategy in {"hybrid_generated_base", "gemini_illustration"} and verification.get("finalMultimodalAudit") is not True:
         errors.append(
             f"{label}.verificationRequirements.finalMultimodalAudit: generated imagery must receive final multimodal audit"
-        )
-    if verification.get("physicsComputation") == "symbolic-crosscheck" and verification.get("requireIndependentCrosscheck") is not True:
-        errors.append(
-            f"{label}.verificationRequirements.requireIndependentCrosscheck: symbolic-crosscheck must be independent"
         )
     if generated.get("allowSearchGrounding") is True and verification.get("referenceGrounding") == "source-corpus":
         errors.append(
@@ -596,11 +522,12 @@ def visual_contract_errors(repo_root: Path, package: Any, label: str = "package"
             continue
         if not plan_schema_errors and not spec_schema_errors:
             errors.extend(_verification_policy_errors(plan, f"{activity_label}.visualPlan"))
+            errors.extend(_domain_visual_plan_errors(repo_root, plan, f"{activity_label}.visualPlan"))
             errors.extend(_cross_contract_errors(activity, activity_label))
             if spec is not None:
                 errors.extend(_unique_id_errors(spec, f"{activity_label}.visualSpec"))
                 errors.extend(_reference_errors(spec, plan, f"{activity_label}.visualSpec"))
                 errors.extend(_mode_errors(spec, f"{activity_label}.visualSpec"))
-                errors.extend(_renderer_contract_errors(spec, f"{activity_label}.visualSpec"))
+                errors.extend(_domain_visual_spec_errors(repo_root, spec, f"{activity_label}.visualSpec"))
             errors.extend(_template_errors(plan, spec, templates, style_profiles, simulation_models, activity_label))
     return errors
