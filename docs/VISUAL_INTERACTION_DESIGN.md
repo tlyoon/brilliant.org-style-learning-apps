@@ -204,7 +204,7 @@ The first trusted renderer runtime is now repository-owned in `app/visual-render
 
 The renderers derive geometry from semantic entities, directions, qualitative graph shapes, and normalized energy amounts; package content never supplies pixels, SVG markup, paths, or raw coordinates. Unknown templates fail to an accessible text fallback. A contextual base-art layer may sit behind the deterministic SVG, but the deterministic layer remains complete enough to carry all answer-critical meaning by itself.
 
-`mechanics.motion_1d_slider` remains explicitly `planned`; validation rejects planned templates in generated content until their tested runtime implementation is merged.
+`mechanics.motion_1d_slider` is now an available bounded deterministic simulation. It implements constant-velocity motion with repository-owned state evolution `x = x0 + v t`, exposes only bounded velocity and time sliders, derives position deterministically, uses instant-state updates rather than decorative animation, and provides `mechanics.cart_collision_1d` as the explicit static fallback. The local Python reference model and runtime tests cover nominal, sign, stationary, initial-state, and invalid-input cases; the defining relation was also independently cross-checked symbolically during promotion.
 
 ## Implementation sequence
 

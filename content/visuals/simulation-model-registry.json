@@ -10,11 +10,30 @@
         "time"
       ],
       "controllableVariableIds": [
-        "velocity"
+        "velocity",
+        "time"
       ],
       "verificationKinds": [
         "trajectory_relation",
         "sign_or_limit"
+      ],
+      "modelVersion": "1.0.0",
+      "law": "position = initial_position + velocity * time",
+      "derivedVariableIds": [
+        "position"
+      ],
+      "bounds": {
+        "velocity": [
+          -20,
+          20
+        ],
+        "time": [
+          0,
+          20
+        ]
+      },
+      "requiredInvariantKinds": [
+        "constant"
       ]
     }
   ]

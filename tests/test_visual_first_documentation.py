@@ -74,13 +74,14 @@ class VisualFirstDocumentationTests(unittest.TestCase):
         self.assertIn("development-time template-incubation environment", text)
         self.assertIn("not a per-activity production dependency", text)
 
-    def test_renderer_foundation_is_documented_as_available_and_simulation_as_planned(self):
+    def test_renderer_and_first_simulation_foundation_are_documented_as_available(self):
         design = self.text("docs/VISUAL_INTERACTION_DESIGN.md")
         architecture = self.text("docs/ARCHITECTURE.md")
         self.assertIn("app/visual-renderers.js", design)
         self.assertIn("cart-collision-v1", design)
         self.assertIn("qualitative-graph-v1", design)
-        self.assertIn("mechanics.motion_1d_slider` remains explicitly `planned", design)
+        self.assertIn("mechanics.motion_1d_slider` is now an available bounded deterministic simulation", design)
+        self.assertIn("x = x0 + v t", design)
         self.assertIn("Hybrid contextual imagery is composited as a non-authoritative background layer", architecture)
 
     def test_architecture_and_ai_workflow_include_visual_pipeline(self):

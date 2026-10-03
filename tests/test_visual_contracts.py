@@ -144,6 +144,7 @@ class VisualContractTests(unittest.TestCase):
                 "mechanics.free_body_2d": ("free-body-v1", "1.0.0"),
                 "graph.cartesian_qualitative": ("qualitative-graph-v1", "1.0.0"),
                 "state.energy_bar": ("energy-bar-v1", "1.0.0"),
+                "mechanics.motion_1d_slider": ("motion-1d-sim-v1", "1.0.0"),
             },
             {key: (value["rendererId"], value["rendererVersion"]) for key, value in available.items()},
         )
@@ -170,24 +171,28 @@ class VisualContractTests(unittest.TestCase):
         errors = validator.validate_package(package)
         self.assertTrue(any("relativeAmount" in error for error in errors), errors)
 
-    def test_planned_renderer_template_cannot_be_selected_for_public_content(self):
+    def test_motion_renderer_template_is_available_with_bounded_contract(self):
         package = package_with_visual()
         item = package["activities"][0]
         item["visualPlan"] = plan("parameter_simulation", "mechanics.motion_1d_slider")
         item["visualPlan"]["renderStrategy"] = "deterministic_simulation"
         item["visualSpec"] = {
             "schemaVersion": "1.0", "mode": "parameter_simulation", "template": "mechanics.motion_1d_slider",
-            "entities": [{"id": "cart-a", "kind": "cart"}],
-            "controls": [{"id": "speed", "kind": "slider", "variableId": "velocity", "label": localized("Velocity"), "min": -2, "max": 2, "default": 1, "step": 0.5}],
-            "states": [{"id": "start", "values": {"position": 0, "velocity": 1, "time": 0}}],
-            "simulation": {"id": "motion", "modelId": "kinematics.motion_1d", "variableIds": ["position", "velocity", "time"], "invariantIds": []},
-            "accessibility": {"description": localized("A motion simulation."), "colorIndependent": True, "reducedMotionStrategy": "instant-state"},
+            "semanticParameters": {"motion_model": "constant-velocity"},
+            "entities": [{"id": "cart-a", "kind": "cart", "label": localized("Cart A")}],
+            "controls": [
+                {"id": "velocity-control", "kind": "slider", "variableId": "velocity", "label": localized("Velocity"), "min": -4, "max": 4, "default": 1, "step": 0.5, "unit": "m/s"},
+                {"id": "time-control", "kind": "slider", "variableId": "time", "label": localized("Time"), "min": 0, "max": 5, "default": 0, "step": 0.5, "unit": "s"},
+            ],
+            "states": [{"id": "initial-state", "values": {"position": 0, "velocity": 1, "time": 0}}],
+            "invariants": [{"id": "constant-velocity", "kind": "constant", "references": ["motion"], "description": localized("Velocity remains constant during the selected interval.")}],
+            "simulation": {"id": "motion", "modelId": "kinematics.motion_1d", "variableIds": ["position", "velocity", "time"], "invariantIds": ["constant-velocity"]},
+            "accessibility": {"description": localized("A bounded constant-velocity motion simulation."), "colorIndependent": True, "reducedMotionStrategy": "instant-state"},
             "grounding": [{"factId": "fact-cart-a", "origin": "source_fact", "appliesTo": ["cart-a"]}],
-            "fallback": {"mode": "scene_diagram", "template": "mechanics.cart_collision_1d", "reason": "Use a static scene."},
+            "fallback": {"mode": "scene_diagram", "template": "mechanics.cart_collision_1d", "reason": "Use the initial static motion state."},
             "validation": {"answerRelevantIds": ["cart-a"], "forbidAnswerLeakage": True},
         }
-        errors = validator.validate_package(package)
-        self.assertTrue(any("is not yet available" in error for error in errors), errors)
+        self.assertEqual([], validator.validate_package(package))
 
     def test_visual_schemas_are_valid_draft_2020_12(self):
         for name in ("visual-plan.schema.json", "visual-spec.schema.json"):
@@ -308,7 +313,7 @@ class VisualContractTests(unittest.TestCase):
         item["visualSpec"] = {
             "schemaVersion": "1.0", "mode": "parameter_simulation", "template": "mechanics.motion_1d_slider",
             "entities": [{"id": "cart-a", "kind": "cart"}],
-            "controls": [{"id": "time-control", "kind": "slider", "variableId": "time", "label": localized("Time"), "min": 0, "max": 10, "default": 0, "step": 1}],
+            "controls": [{"id": "position-control", "kind": "slider", "variableId": "position", "label": localized("Time"), "min": 0, "max": 10, "default": 0, "step": 1}],
             "states": [{"id": "initial-state", "values": {"position": 0, "velocity": 1, "time": 0}}],
             "simulation": {"id": "motion-sim", "modelId": "kinematics.motion_1d", "variableIds": ["position", "velocity", "time"], "invariantIds": []},
             "accessibility": {"description": localized("A one-dimensional motion scene."), "colorIndependent": True, "reducedMotionStrategy": "instant-state"},

@@ -67,7 +67,9 @@
         "deterministic_simulation"
       ],
       "simulationModel": "kinematics.motion_1d",
-      "implementationStatus": "planned"
+      "implementationStatus": "available",
+      "rendererId": "motion-1d-sim-v1",
+      "rendererVersion": "1.0.0"
     }
   ]
 }

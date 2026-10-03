@@ -99,6 +99,15 @@ h1 { margin: .5rem 0; font-size: clamp(1.8rem, 6vw, 3rem); line-height: 1.05; }
 .physics-visual--fallback { padding: 1rem 1.1rem; border-style: dashed; box-shadow: none; background: var(--visual-surface); }
 .physics-visual__fallback-text { margin: 0; color: var(--visual-muted); font-size: .95rem; }
 
+
+.physics-sim__controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem; padding: 1rem; border-top: 1px solid #d9e4dd; background: #f8fbf9; }
+.physics-sim__control { display: grid; grid-template-columns: 1fr auto; gap: .45rem .75rem; align-items: center; }
+.physics-sim__label { font-weight: 800; color: #29483a; }
+.physics-sim__value { min-width: 4.5rem; text-align: right; font-variant-numeric: tabular-nums; color: #466658; }
+.physics-sim__range { grid-column: 1 / -1; width: 100%; min-height: 44px; accent-color: var(--pv-accent); cursor: pointer; }
+.physics-sim__range:focus-visible { outline: 3px solid rgb(29 134 97 / 25%); outline-offset: 2px; }
+.physics-visual__readout { fill: #29483a; font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+
 @media (max-width: 32rem) {
   .topbar { align-items: flex-start; }
   .card { border-radius: 1rem; }

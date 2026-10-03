@@ -15,6 +15,6 @@ Use `Backlog → Ready → In Progress → Validation → Done`. Keep `main` sta
 7. **Classroom Pilot** ? institutional privacy approval, operations plan, success measures, retention measures, and rollback path.
 8. **Broad Course Expansion** ? validated visual-interactive packages and regression coverage across additional chapters/topics.
 
-Renderer foundation status: the visual schema/validator and four deterministic SVG renderer primitives are implemented; the next foundation slice is the first bounded deterministic simulation primitive.
+Visual-interactive foundation status: the visual schema/validator, four deterministic SVG renderer primitives, and the first bounded deterministic simulation (`mechanics.motion_1d_slider`) are implemented. The next implementation slice is generation-pipeline integration so Gemini can author validated visual plans/specifications that select these trusted primitives.
 
 Do not begin broad visual regeneration until the visual-interactive foundation and bounded real-topic pilot meet their acceptance criteria. Preserve the current working Stage-0 generator while those capabilities are introduced through independently reviewable PRs.

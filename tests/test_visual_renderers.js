@@ -42,6 +42,7 @@ assert.deepEqual(Array.from(visuals.supportedTemplates), [
   "mechanics.free_body_2d",
   "graph.cartesian_qualitative",
   "state.energy_bar",
+  "mechanics.motion_1d_slider",
 ]);
 
 const common = (mode, template, description) => ({
