@@ -58,6 +58,8 @@ class RunState:
     actual_model: str | None = None
     llm_backend: str | None = None
     prompt_sha256: str | None = None
+    domain_id: str | None = None
+    domain_profile_version: str | None = None
     job_key: str | None = None
     worker_id: str | None = None
     lease_expires_at: str | None = None

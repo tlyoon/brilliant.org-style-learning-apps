@@ -28,6 +28,7 @@ from app_generator.logging_setup import configure_logging
 from app_generator.publishing.git import GitPublisher
 from app_generator.publishing.public import PublicPagesPublisher
 from app_generator.deployments import has_current_public_deployment
+from app_generator.domains import ensure_drive_domain
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.state import RunPhase
 from app_generator.runtime.targeting import restrict_auto_inventory
@@ -280,14 +281,17 @@ def run_generation(
                 authorization = drive_authorizer(config)
                 store.transition(RunPhase.DRIVE_AUTHENTICATED)
                 drive_client = drive_client_factory(authorization.session, config.drive_api_timeout_seconds)
+                domain_inventory = discover_drive_sources_with_corpus_keys(
+                    drive_client,
+                    sourcepath=config.sourcepath,
+                    target_filename=config.target_filename,
+                    max_folders=config.max_drive_folders,
+                )
+                domain_profile = ensure_drive_domain(config, drive_client, domain_inventory)
+                store.update(domain_id=domain_profile.id, domain_profile_version=domain_profile.profile_version)
                 if config.selection_mode in {"auto", "distributed"}:
                     inventory = (
-                        discover_drive_sources_with_corpus_keys(
-                            drive_client,
-                            sourcepath=config.sourcepath,
-                            target_filename=config.target_filename,
-                            max_folders=config.max_drive_folders,
-                        )
+                        domain_inventory
                         if config.selection_mode == "auto"
                         else discover_drive_sources(
                             drive_client,

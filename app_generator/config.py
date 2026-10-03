@@ -46,6 +46,9 @@ DEFAULTS: dict[str, Any] = {
     "gemini_api_token_file": "",
     "drive_api_timeout_seconds": 60,
     "max_drive_folders": 10000,
+    "domain_id": "auto",
+    "domain_sample_count": 3,
+    "domain_min_confidence": 0.85,
     "log_level": "INFO",
     "selection_mode": "specific",
     "worker_id": socket.gethostname().casefold(),
@@ -116,6 +119,9 @@ class GeneratorConfig:
     drive_token_file: Path
     drive_api_timeout_seconds: int
     max_drive_folders: int
+    domain_id: str
+    domain_sample_count: int
+    domain_min_confidence: float
     package_id: str
     chapter: str
     subchapter: str
@@ -295,6 +301,7 @@ def _coerce_env(key: str, value: str) -> Any:
         "gemini_api_retry_backoff_seconds",
         "drive_api_timeout_seconds",
         "max_drive_folders",
+        "domain_sample_count",
         "coordinator_ensure_timeout_seconds",
         "coordinator_timeout_seconds",
         "lease_seconds",
@@ -306,6 +313,8 @@ def _coerce_env(key: str, value: str) -> Any:
         "stall_terminate_grace_seconds",
     }:
         return int(value)
+    if key == "domain_min_confidence":
+        return float(value)
     if key in {
         "allow_unknown_model_fallback", "git_publish", "git_create_draft_pr", "git_run_full_tests",
         "git_auto_merge", "public_deploy", "public_deploy_auto_merge",
@@ -576,6 +585,22 @@ def load_config(
     if drive_api_timeout_seconds < 1 or max_drive_folders < 1:
         raise ConfigurationError("Drive timeout and folder limit must be positive integers")
 
+    domain_id = str(values.get("domain_id", "auto")).strip()
+    if not domain_id:
+        raise ConfigurationError("domain_id must be 'auto' or a registered domain id")
+    domain_sample_count = int(values.get("domain_sample_count", 3))
+    domain_min_confidence = float(values.get("domain_min_confidence", 0.85))
+    if not 1 <= domain_sample_count <= 5:
+        raise ConfigurationError("domain_sample_count must be between 1 and 5")
+    if not 0.5 <= domain_min_confidence <= 1.0:
+        raise ConfigurationError("domain_min_confidence must be between 0.5 and 1.0")
+    if domain_id.casefold() != "auto":
+        try:
+            from app_generator.domains.registry import resolve_domain
+            resolve_domain(repo_root, domain_id)
+        except (OSError, ValueError) as exc:
+            raise ConfigurationError(f"Configured domain_id {domain_id!r} is not an active registered domain") from exc
+
     selection_mode = str(values["selection_mode"]).strip().casefold()
     if selection_mode not in {"specific", "auto", "distributed"}:
         raise ConfigurationError("selection_mode must be specific, auto, or distributed")
@@ -696,6 +721,9 @@ def load_config(
         drive_token_file=drive_token_file,
         drive_api_timeout_seconds=drive_api_timeout_seconds,
         max_drive_folders=max_drive_folders,
+        domain_id=domain_id,
+        domain_sample_count=domain_sample_count,
+        domain_min_confidence=domain_min_confidence,
         package_id=str(_required(values, "package_id")).strip(),
         chapter=str(_required(values, "chapter")).strip(),
         subchapter=str(_required(values, "subchapter")).strip(),

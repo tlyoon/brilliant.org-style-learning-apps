@@ -15,7 +15,7 @@
 11. Validated content receives a version and publication state. Optional manual review may be added when desired but is not a publication prerequisite.
 
 
-Before subject-specific generation, the generic workflow resolves an active domain profile from `domains/registry.json`. The current profile is university-level physics; future Stage-0 domain discovery will classify the textbook-level source corpus and pause when no compatible active profile exists. Domain-specific prompt extensions, validators, renderers, simulations, and verifier policy are loaded from the selected domain rather than embedded in the generic orchestration. See Decision 0025 and `docs/DOMAIN_PROFILES.md`.
+Before subject-specific generation, Stage 0 fingerprints the complete discovered Source Root, classifies representative textbook PDFs, checks cross-sample consistency/confidence, and resolves an active domain profile from `domains/registry.json`. The result is bound to the Source-Root fingerprint and domain-profile version; source/profile changes invalidate the binding. Unsupported domains stop with `DOMAIN_PROFILE_REQUIRED`, while ambiguous/low-confidence classification stops with `DOMAIN_DISCOVERY_FAILED`, before a generation job is claimed. Domain-specific prompt extensions, validators, renderers, simulations, and verifier policy remain profile-owned; composing every generation stage with those profile instructions is the next bounded integration slice. See Decisions 0025-0026 and `docs/DOMAIN_PROFILES.md`.
 
 ## Visual-planning prompt contract
 

@@ -39,25 +39,45 @@ domains/
 
 `domain.json` is the domain contract. It declares the domain identity and the paths to its instructions, rules, renderer/style assets, simulation registry/model module, validation hook, verification policy, and trusted renderer identities. The generic core resolves those paths; it does not hard-code physics template IDs.
 
-## Current behavior and next Stage-0 behavior
+## Current Stage-0 domain discovery behavior
 
-On the revision that introduced this architecture, `university-level-physics` remains the default active domain so the existing physics generator is behavior-compatible. Automatic textbook-domain classification is the next bounded Stage-0 implementation slice; it must not be falsely described as already active.
+Stage 0 now performs textbook-level domain discovery **before any Drive generation job is claimed**. The configured `sourcepath` remains the one project-level Source Root. All discoverable subchapter anchors beneath that root are treated as one textbook for domain-selection purposes.
 
-The target Stage-0 flow is:
+The implemented flow is:
 
 ```text
-single source root
-  -> discover all subchapter source corpora
-  -> infer one textbook-level subject/academic level from representative samples
-  -> cross-sample consistency/confidence check
-  -> resolve an installed active domain profile
-  -> bind source-corpus fingerprint to domain ID/version
-  -> continue generation
+single Source Root
+  -> discover every controlled subchapter corpus
+  -> compute one deterministic Source-Root fingerprint
+  -> choose representative subchapters spread across the textbook
+  -> attach those representative PDFs to Gemini API domain discovery
+  -> classify each sample and the textbook as a whole
+  -> enforce cross-sample consistency and confidence thresholds
+  -> resolve exactly one compatible installed active domain profile
+  -> bind Source-Root fingerprint to domain ID + profile version
+  -> only then inspect/claim/generate a subchapter job
 ```
 
-All subchapter sources beneath one configured source root are assumed to belong to the same textbook. Classification is therefore textbook-level, not per-subchapter. A mathematics-heavy chapter in a physics textbook must not silently switch the project to a mathematics domain.
+The Source-Root fingerprint includes every discovered topic corpus job identity. Because each topic corpus identity includes all sibling PDFs in its subchapter folder, changing `source.pdf` **or any supplementary PDF** invalidates the textbook-domain binding and causes domain discovery to run again. Changing the active profile version also invalidates the cached binding.
 
-If the classifier is ambiguous, or if a confident domain has no installed active profile, automatic/distributed generation must stop safely rather than falling back to the current physics rules. Interactive operation should explain the detected domain and request manual domain onboarding. Auto workers must record a domain-profile-required state and exit/wait cleanly rather than blocking for keyboard input or creating competing profiles on several PCs.
+Representative sampling is deterministic and spread across the numerically ordered textbook inventory. The default is three samples; it is deliberately bounded to 1-5. The classifier receives only the installed active profiles as legal matches. It may return `unsupported` rather than forcing a match. A mathematics-heavy chapter in a physics textbook must not silently switch the project to mathematics: the decision is made at textbook level, with per-sample evidence checked against the whole-textbook result.
+
+The default tracked configuration is:
+
+```toml
+[domain]
+domain_id = "auto"
+domain_sample_count = 3
+domain_min_confidence = 0.85
+```
+
+`domain_id = "auto"` is the normal safe mode. An explicit installed domain ID is a deliberate manual override and bypasses classification; the resulting binding records `selection = "explicit"`. The same override is available as `--domain-id <registered-domain-id>`. Invalid or inactive profile IDs are rejected at configuration load.
+
+Successful discovery is cached outside Git at `${STATE_ROOT}/domain-binding.json`. The binding records the whole-root fingerprint, selected domain ID, profile version, detected subject/academic level, confidence, representative subchapters, classifier model, and whether selection was automatic or explicit. This is workstation-local operational state; each worker independently verifies the same shared Source Root before generation. It does not cause workers to invent or activate domain profiles.
+
+If the textbook is confidently recognized but no compatible active profile is installed, generation stops with `DOMAIN_PROFILE_REQUIRED`. If classification is ambiguous, internally inconsistent, or below the configured threshold, it stops with `DOMAIN_DISCOVERY_FAILED`. Diagnostic state is written to `${STATE_ROOT}/domain-discovery-status.json`. Auto mode reaches this gate before Drive lease claiming, so an unsupported textbook cannot consume a content-generation attempt or silently fall back to physics.
+
+Domain onboarding remains explicit. A worker may diagnose that a new profile is required, but it must not automatically create, register, or activate one during an auto run.
 
 ## Creating a new domain today
 
@@ -120,6 +140,6 @@ Before registering a new domain as active:
 
 ## Source-tree changes
 
-Changing the configured source root to another textbook will eventually trigger the textbook-domain discovery step. The planned corpus/domain lock will bind a source-corpus fingerprint to the selected domain ID/version so a stale physics profile cannot silently be applied to a chemistry, mathematics, biology, history, or other textbook.
+Changing the configured Source Root to another textbook changes the discovered inventory fingerprint and therefore invalidates the prior domain binding. Stage 0 then re-runs textbook-level discovery before any generation job can be claimed. A stale physics binding cannot silently carry over to chemistry, mathematics, biology, history, or another textbook.
 
-Until automatic discovery lands, changing to a different-subject source root requires manual domain selection/onboarding rather than assuming the default physics profile is appropriate.
+If the new textbook maps to an installed active profile, generation may proceed after a new binding is written. If it belongs to a domain with no active profile, Stage 0 stops with `DOMAIN_PROFILE_REQUIRED`; create and validate that domain using one of the onboarding alternatives above, then rerun doctor/generation.

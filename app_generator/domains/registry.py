@@ -35,6 +35,14 @@ class DomainProfile:
     def display_name(self) -> str:
         return str(self.manifest["displayName"])
 
+    @property
+    def profile_version(self) -> str:
+        return str(self.manifest["profileVersion"])
+
+    @property
+    def status(self) -> str:
+        return str(self.manifest.get("status", ""))
+
     def path(self, section: str, key: str) -> Path:
         section_data = self.manifest.get(section)
         if not isinstance(section_data, dict) or not isinstance(section_data.get(key), str):
@@ -164,6 +172,10 @@ def domain_registry_errors(repo_root: Path) -> list[str]:
                 errors.append(f"domain {domain_id}: subject must be non-empty")
             if not isinstance(profile.manifest.get("academicLevel"), str) or not profile.manifest["academicLevel"].strip():
                 errors.append(f"domain {domain_id}: academicLevel must be non-empty")
+            if not isinstance(profile.manifest.get("profileVersion"), str) or not profile.manifest["profileVersion"].strip():
+                errors.append(f"domain {domain_id}: profileVersion must be non-empty")
+            if profile.status != "active":
+                errors.append(f"domain {domain_id}: registered domain status must be active")
             for section, key in required_paths:
                 path = profile.path(section, key)
                 if not path.is_file():

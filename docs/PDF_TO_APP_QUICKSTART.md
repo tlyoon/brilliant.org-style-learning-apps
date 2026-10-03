@@ -18,7 +18,7 @@ Generation does **not** mean that content is approved, publishable, merged, or p
 
 The generator processes one topic corpus per subchapter. Each subchapter has a primary `source.pdf`; any sibling PDFs are supplementary sources and are attached in the same fresh Gem conversation. A supported Google Drive tree looks like:
 
-Before reusing this workflow for a textbook from a **different discipline**, read `docs/DOMAIN_PROFILES.md`. The current revision has `university-level-physics` as the default active profile for backward-compatible physics generation; it does not yet automatically classify a new textbook. A chemistry, mathematics, biology, history, or other source tree therefore requires manual domain onboarding/activation before generation. The next Stage-0 slice will automate textbook-level domain discovery and pause safely when a compatible profile is absent.
+Before reusing this workflow for a textbook from a **different discipline**, read `docs/DOMAIN_PROFILES.md`. Stage 0 now automatically classifies representative PDFs from the complete Source Root and binds the source inventory to a compatible installed profile before any generation job is claimed. A chemistry, mathematics, biology, history, or other textbook with no compatible active profile stops safely with `DOMAIN_PROFILE_REQUIRED`; onboard/activate that domain before generation.
 
 ```text
 Textbook-or-source-root/
@@ -246,7 +246,7 @@ For a specific section:
 & $py -m app_generator doctor --config $config --selection-mode specific --pdf-subchapter-path 8.5
 ```
 
-Doctor checks configuration, Drive authorization, PDF discovery/download, checksum, and provenance. It does not upload a PDF to Gemini.
+Doctor checks configuration, Drive authorization, Source-Root/domain binding, PDF discovery/download, checksum, and provenance. If the current Source Root has no valid domain binding, doctor may upload only the bounded representative textbook PDFs needed for Stage-0 Gemini API domain discovery; it does not start activity/content generation or claim an auto content job.
 
 The first Drive authorization on a PC may open a Google browser consent flow and create that PC/project's `drive-oauth-token.json`.
 

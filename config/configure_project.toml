@@ -42,6 +42,13 @@ browser_mode = "controlled"
 drive_api_timeout_seconds = 60
 max_drive_folders = 10000
 
+[domain]
+# Stage 0 classifies the textbook-level Source Root before any generation job is claimed.
+# Set domain_id to an installed profile id only for a deliberate manual override.
+domain_id = "auto"
+domain_sample_count = 3
+domain_min_confidence = 0.85
+
 [source_tree]
 source_id_prefix = "${PROJECT_SLUG}"
 

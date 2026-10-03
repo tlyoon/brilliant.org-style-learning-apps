@@ -128,6 +128,10 @@ class GeminiApiClientTests(unittest.TestCase):
             self.assertEqual(1, len(sdk.models.calls))
 
     def test_high_value_stage_schemas_are_explicit(self):
+        domain = response_schema_for_stage("domain-discovery")
+        self.assertEqual("object", domain["type"])
+        self.assertIn("sampleAssessments", domain["required"])
+        self.assertEqual(["consistent", "mixed", "ambiguous"], domain["properties"]["consistency"]["enum"])
         source = response_schema_for_stage("source-analysis")
         self.assertEqual("object", source["type"])
         self.assertIn("scopeNotes", source["required"])

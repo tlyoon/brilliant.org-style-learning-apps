@@ -59,6 +59,7 @@ ALLOWED_PROJECT_KEYS = {
         "gemini_api_max_attempts", "gemini_api_retry_backoff_seconds",
     },
     "google_drive": {"drive_api_timeout_seconds", "max_drive_folders"},
+    "domain": {"domain_id", "domain_sample_count", "domain_min_confidence"},
     "source_tree": {"source_id_prefix"},
     "automation": {
         "selection_mode", "coordination_backend", "coordinator_url", "coordinator_token_env",
@@ -762,7 +763,7 @@ def run_checks(
         active_domain = resolve_domain(settings.repo_root)
         _command([node, "--check", str(active_domain.path("visuals", "rendererScript"))], settings.repo_root)
     if run_doctor:
-        print("Running generator doctor (Drive and provenance checks; no Gemini upload)...")
+        print("Running generator doctor (Drive/provenance/domain checks; bounded domain discovery may use Gemini API)...")
         _command(
             [str(python), "-m", "app_generator", "doctor", "--config", str(settings.generated_config_file)],
             settings.repo_root,

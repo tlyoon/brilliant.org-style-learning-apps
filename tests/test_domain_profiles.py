@@ -16,6 +16,7 @@ class DomainProfileTests(unittest.TestCase):
         profile = resolve_domain(ROOT)
         self.assertEqual("university-level-physics", profile.id)
         self.assertEqual("University-level Physics", profile.display_name)
+        self.assertEqual("1.0.0", profile.profile_version)
         self.assertEqual(ROOT / "domains" / "university-level physics", profile.directory)
 
     def test_registered_domain_assets_are_complete(self):
@@ -58,6 +59,17 @@ class DomainProfileTests(unittest.TestCase):
         self.assertNotIn("_template", {item["path"] for item in registry["domains"]})
         draft = json.loads((ROOT / "domains" / "_template" / "domain.json.example").read_text(encoding="utf-8"))
         self.assertEqual("draft", draft["status"])
+
+    def test_registered_draft_domain_is_rejected(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+            temp_root = Path(directory)
+            shutil.copytree(ROOT / "domains", temp_root / "domains")
+            profile_path = temp_root / "domains" / "university-level physics" / "domain.json"
+            profile = json.loads(profile_path.read_text(encoding="utf-8"))
+            profile["status"] = "draft"
+            profile_path.write_text(json.dumps(profile), encoding="utf-8")
+            errors = domain_registry_errors(temp_root)
+            self.assertTrue(any("not active" in error or "status must be active" in error for error in errors), errors)
 
     def test_registry_rejects_path_escape(self):
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:

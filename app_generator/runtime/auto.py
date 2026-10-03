@@ -13,6 +13,7 @@ from app_generator.errors import AutoJobExecutionError, AutoModeBlockedError, No
 from app_generator.publishing.git import GitPublisher
 from app_generator.publishing.public import PublicPagesPublisher
 from app_generator.deployments import has_current_public_deployment
+from app_generator.domains import ensure_drive_domain
 from app_generator.runtime.orchestrator import run_generation
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.watchdog import AutoAttemptSupervisor
@@ -61,6 +62,7 @@ def _drive_inventory(
         target_filename=config.target_filename,
         max_folders=config.max_drive_folders,
     )
+    ensure_drive_domain(config, drive_client, inventory)
     return restrict_auto_inventory(
         inventory,
         target_subchapter_id=target_subchapter_id,
