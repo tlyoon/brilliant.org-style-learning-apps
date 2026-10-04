@@ -128,6 +128,10 @@ class RepairLimitExceeded(GeneratorError):
     code = "REPAIR_LIMIT_EXCEEDED"
 
 
+class PackageAlreadyExistsError(GeneratorError):
+    code = "PACKAGE_ALREADY_EXISTS"
+
+
 class OutputWriteError(GeneratorError):
     code = "OUTPUT_WRITE_FAILED"
 

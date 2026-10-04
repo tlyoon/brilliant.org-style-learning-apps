@@ -17,7 +17,7 @@ from app_generator.coordinator.drive import DriveCoordinatorClient
 from app_generator.coordinator.heartbeat import LeaseGuard
 from app_generator.coordinator.checkpoints import CoordinatorCheckpointStore
 from app_generator.errors import AutoJobExecutionError, GitPublishError, NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, UiContractError, ValidationFailure
-from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts, write_json_atomic
+from app_generator.filesystem.outputs import Artifact, install_new_artifacts, preflight_artifact_install, stage_artifacts, write_json_atomic
 from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
 from app_generator.llm.gemini_api import GeminiApiClient
 from app_generator.generation.documents import render_learning_design, render_review_record, render_section_readme
@@ -247,6 +247,7 @@ def run_generation(
     config: GeneratorConfig,
     *,
     resume_run_id: str | None = None,
+    replace_existing: bool = False,
     auto_target_subchapter_id: str | None = None,
     auto_target_chapter: str | int | None = None,
     chrome_factory: Callable[[GeneratorConfig], ChromeSession] = ChromeSession,
@@ -259,6 +260,11 @@ def run_generation(
     publisher_factory: Callable[[GeneratorConfig], GitPublisher] = GitPublisher,
     public_publisher_factory: Callable[[GeneratorConfig], PublicPagesPublisher] = PublicPagesPublisher,
 ) -> RunContext:
+    if replace_existing and config.selection_mode != "specific":
+        raise ValidationFailure(
+            "Explicit regeneration is supported only in specific selection mode",
+            ["Use --selection-mode specific together with --regenerate."],
+        )
     if resume_run_id and (config.selection_mode in {"auto", "distributed"} or config.git_publish):
         raise ValidationFailure(
             "Automatic resume is disabled for leased or Git-published runs",
@@ -405,6 +411,12 @@ def run_generation(
                 configured_domain = configured_domain_value if configured_domain_value.casefold() != "auto" else None
                 domain_profile = resolve_domain(config.repo_root, configured_domain)
                 store.update(domain_id=domain_profile.id, domain_profile_version=domain_profile.profile_version)
+
+            preflight_artifact_install(
+                active_config.repo_root,
+                _relative_paths(active_config),
+                replace_existing=replace_existing,
+            )
 
             if domain_profile is None:
                 raise ValidationFailure("No active subject-domain profile was resolved for generation", [])
@@ -638,6 +650,7 @@ def run_generation(
                     context.candidate,
                     _relative_paths(active_config),
                     verify=lambda: run_repository_validator(active_config.repo_root),
+                    replace_existing=replace_existing,
                 )
                 store.transition(RunPhase.FINAL_PACKAGE_WRITTEN, installed_paths=[str(path) for path in installed])
                 json.loads(active_config.package_path.read_text(encoding="utf-8"))

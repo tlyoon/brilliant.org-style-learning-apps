@@ -31,6 +31,14 @@ class CliParserTests(unittest.TestCase):
         args = _parser().parse_args(["run", "--selection-mode", "auto"])
         self.assertEqual("auto", args.selection_mode)
 
+    def test_regenerate_flag_is_explicit_and_run_only(self):
+        args = _parser().parse_args([
+            "run", "--selection-mode", "specific", "--regenerate"
+        ])
+        self.assertTrue(args.regenerate)
+        with self.assertRaises(SystemExit):
+            _parser().parse_args(["doctor", "--regenerate"])
+
     def test_auto_can_accept_explicit_target_subchapter(self):
         args = _parser().parse_args([
             "run",

@@ -86,11 +86,17 @@ CLI examples using an explicit local config:
 ```powershell
 python -m app_generator doctor --config .\<generated-local-config>.toml --selection-mode specific --pdf-subchapter-path 8.5
 python -m app_generator run --config .\<generated-local-config>.toml --selection-mode specific --pdf-subchapter-path 8.5
+# Existing generated sections fail fast by default. Regenerate only when replacement is deliberate:
+python -m app_generator run --config .\<generated-local-config>.toml --selection-mode specific --pdf-subchapter-path 8.5 --regenerate
 python -m app_generator doctor --config .\<generated-local-config>.toml --selection-mode auto
 python -m app_generator run --config .\<generated-local-config>.toml --selection-mode auto
 python -m app_generator doctor --config .\<generated-local-config>.toml --selection-mode auto --pdf-subchapter-path 8.6
 python -m app_generator run --config .\<generated-local-config>.toml --selection-mode auto --pdf-subchapter-path 8.6
 ```
+
+### Existing-package safety and explicit regeneration
+
+Specific mode never overwrites an existing generated section implicitly. If any destination artifact already exists, the run stops before content generation with `PACKAGE_ALREADY_EXISTS`. `--regenerate` is an explicit specific-mode-only replacement request: the candidate is generated and validated first, existing artifacts are backed up, replacement is performed atomically, repository validation runs against the replacement, and the originals are restored if installation or verification fails. Auto/distributed modes do not accept this flag and retain their existing completed/skip semantics.
 
 ### Targeted auto semantics
 

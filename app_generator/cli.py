@@ -88,6 +88,14 @@ def _parser() -> argparse.ArgumentParser:
         _add_config_arguments(command)
         if name == "run":
             command.add_argument("--resume", metavar="RUN_ID")
+            command.add_argument(
+                "--regenerate",
+                action="store_true",
+                help=(
+                    "explicitly replace existing generated artifacts only after a fully "
+                    "validated candidate succeeds; supported only with --selection-mode specific"
+                ),
+            )
     complete = subparsers.add_parser("coordinator-complete")
     _add_config_arguments(complete)
     complete.add_argument("--job-key", required=True)
@@ -292,6 +300,8 @@ def main(argv: list[str] | None = None) -> int:
         config = _load(args)
         requested_subchapter = getattr(args, "pdf_subchapter_path", None)
         requested_chapter = getattr(args, "chapter", None)
+        if args.command == "run" and getattr(args, "regenerate", False) and config.selection_mode != "specific":
+            raise GeneratorError("--regenerate requires --selection-mode specific")
         if args.command in {"doctor", "run"} and requested_chapter is not None:
             if config.selection_mode != "auto":
                 raise GeneratorError("--chapter is supported only with --selection-mode auto")
@@ -368,7 +378,11 @@ def main(argv: list[str] | None = None) -> int:
         if config.selection_mode == "distributed":
             config = ensure_coordinator_ready(config)
 
-        context = run_generation(config, resume_run_id=args.resume)
+        context = run_generation(
+            config,
+            resume_run_id=args.resume,
+            replace_existing=getattr(args, "regenerate", False),
+        )
         report_context(context)
         return 0
     except KeyboardInterrupt:

@@ -5,7 +5,7 @@ from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 from app_generator.errors import GeneratorError, NoAvailableJob
-from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts
+from app_generator.filesystem.outputs import Artifact, install_new_artifacts, preflight_artifact_install, stage_artifacts
 from app_generator.runtime.orchestrator import (
     _log_generation_exception,
     _repair_post_semantic_validation,
@@ -142,6 +142,46 @@ class GeneratorRuntimeTests(unittest.TestCase):
         logger.exception.assert_called_once()
         logger.info.assert_not_called()
 
+    def test_specific_run_fails_before_source_inspection_when_package_already_exists(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            repo = root / "repo"
+            state = root / "state"
+            source_pdf = root / "source.pdf"
+            source_pdf.write_bytes(b"%PDF-test")
+            package_path = repo / "content" / "chapter-8" / "section-8-4" / "package.json"
+            package_path.parent.mkdir(parents=True, exist_ok=True)
+            package_path.write_text("reviewed", encoding="utf-8")
+
+            class Config(SimpleNamespace):
+                def for_subchapter(self, subchapter_id):
+                    self.pdf_subchapter_path = subchapter_id
+                    return self
+
+            config = Config(
+                state_dir=state, log_level="INFO", gem_url="https://gemini.example/gem",
+                selection_mode="specific", git_publish=False, uses_google_drive=False,
+                pdf_subchapter_path="8.4", source_files=(source_pdf,), llm_backend="gemini_api",
+                package_id="section-8-4", repo_root=repo, max_repair_attempts=0,
+                package_path=package_path, subchapter="8.4", chapter_dir="chapter-8",
+                section_dir="section-8-4",
+                manifest_relative_path=Path("content/source-manifests/chapter-8-section-8-4.json"),
+                domain_id="university-level-physics",
+            )
+
+            with (
+                patch("app_generator.runtime.orchestrator.configure_logging", return_value=None),
+                patch("app_generator.runtime.orchestrator.resolve_domain", return_value=SimpleNamespace(
+                    id="university-level-physics", profile_version="1.0.0"
+                )),
+                patch("app_generator.runtime.orchestrator.inspect_sources") as inspect_sources_mock,
+            ):
+                with self.assertRaises(Exception) as failure:
+                    run_generation(config)
+
+            self.assertEqual("PACKAGE_ALREADY_EXISTS", failure.exception.code)
+            inspect_sources_mock.assert_not_called()
+
     def test_run_generation_uses_api_backend_without_opening_chrome(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -237,6 +277,51 @@ class GeneratorRuntimeTests(unittest.TestCase):
             self.assertEqual(("api-prepare", (source_pdf,)), events[0])
             self.assertIsInstance(events[1][1], ApiClient)
             self.assertEqual("university-level-physics", events[2][1].id)
+
+    def test_preflight_fails_fast_for_existing_outputs_unless_regeneration_is_explicit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            repo = root / "repo"
+            relative = Path("content/chapter-8/section-8-4/package.json")
+            target = repo / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("reviewed", encoding="utf-8")
+
+            with self.assertRaisesRegex(Exception, "--regenerate") as failure:
+                preflight_artifact_install(repo, [relative])
+            self.assertEqual("PACKAGE_ALREADY_EXISTS", failure.exception.code)
+            self.assertEqual([target], preflight_artifact_install(repo, [relative], replace_existing=True))
+
+    def test_regeneration_replaces_only_after_verification_and_restores_on_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            repo = root / "repo"
+            candidate = root / "candidate"
+            existing = Path("content/chapter-8/section-8-4/package.json")
+            new_file = Path("content/chapter-8/section-8-4/review-record.md")
+            (repo / existing).parent.mkdir(parents=True, exist_ok=True)
+            (repo / existing).write_text("reviewed-original", encoding="utf-8")
+            stage_artifacts(candidate, [
+                Artifact(existing, '{"draft": true}'),
+                Artifact(new_file, "new review"),
+            ])
+
+            with self.assertRaisesRegex(Exception, "repository artifacts were restored"):
+                install_new_artifacts(
+                    repo, candidate, [existing, new_file],
+                    verify=lambda: (_ for _ in ()).throw(RuntimeError("invalid")),
+                    replace_existing=True,
+                )
+            self.assertEqual("reviewed-original", (repo / existing).read_text(encoding="utf-8"))
+            self.assertFalse((repo / new_file).exists())
+
+            installed = install_new_artifacts(
+                repo, candidate, [existing, new_file],
+                verify=lambda: None, replace_existing=True,
+            )
+            self.assertEqual([repo / existing, repo / new_file], installed)
+            self.assertIn('"draft": true', (repo / existing).read_text(encoding="utf-8"))
+            self.assertEqual("new review\n", (repo / new_file).read_text(encoding="utf-8"))
 
     def test_artifact_install_refuses_overwrite_and_rolls_back_failed_verification(self):
         with tempfile.TemporaryDirectory() as directory:
