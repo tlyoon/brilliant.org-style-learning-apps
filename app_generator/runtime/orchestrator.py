@@ -17,7 +17,7 @@ from app_generator.coordinator.drive import DriveCoordinatorClient
 from app_generator.coordinator.heartbeat import LeaseGuard
 from app_generator.coordinator.checkpoints import CoordinatorCheckpointStore
 from app_generator.errors import AutoJobExecutionError, GitPublishError, NoAvailableJob, RepairLimitExceeded, SourceSetMismatch, UiContractError, ValidationFailure
-from app_generator.filesystem.outputs import Artifact, install_new_artifacts, stage_artifacts, write_json_atomic
+from app_generator.filesystem.outputs import Artifact, install_new_artifacts, preflight_artifact_install, stage_artifacts, write_json_atomic
 from app_generator.gemini.client import GeminiClient, RecoveringGeminiClient
 from app_generator.llm.gemini_api import GeminiApiClient
 from app_generator.generation.documents import render_learning_design, render_review_record, render_section_readme
@@ -28,7 +28,7 @@ from app_generator.logging_setup import configure_logging
 from app_generator.publishing.git import GitPublisher
 from app_generator.publishing.public import PublicPagesPublisher
 from app_generator.deployments import has_current_public_deployment
-from app_generator.domains import ensure_drive_domain
+from app_generator.domains import DomainProfile, ensure_drive_domain, resolve_domain
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.state import RunPhase
 from app_generator.runtime.targeting import restrict_auto_inventory
@@ -231,10 +231,23 @@ def _configure_gem_with_session_recovery(
         return replacement_browser, replacement
 
 
+def _bind_domain_context(context: RunContext, profile: DomainProfile) -> None:
+    """Fence resumable parsed stages to the exact domain profile that authored them."""
+
+    stage = "domain-context"
+    current = profile.identity()
+    cached = context.load_stage(stage)
+    other_cached = any(path.stem != stage for path in context.batches.glob("*.json"))
+    if (cached is not None and cached != current) or (cached is None and other_cached):
+        context.discard_parsed_stages()
+    context.save_stage(stage, current)
+
+
 def run_generation(
     config: GeneratorConfig,
     *,
     resume_run_id: str | None = None,
+    replace_existing: bool = False,
     auto_target_subchapter_id: str | None = None,
     auto_target_chapter: str | int | None = None,
     chrome_factory: Callable[[GeneratorConfig], ChromeSession] = ChromeSession,
@@ -247,6 +260,11 @@ def run_generation(
     publisher_factory: Callable[[GeneratorConfig], GitPublisher] = GitPublisher,
     public_publisher_factory: Callable[[GeneratorConfig], PublicPagesPublisher] = PublicPagesPublisher,
 ) -> RunContext:
+    if replace_existing and config.selection_mode != "specific":
+        raise ValidationFailure(
+            "Explicit regeneration is supported only in specific selection mode",
+            ["Use --selection-mode specific together with --regenerate."],
+        )
     if resume_run_id and (config.selection_mode in {"auto", "distributed"} or config.git_publish):
         raise ValidationFailure(
             "Automatic resume is disabled for leased or Git-published runs",
@@ -270,6 +288,7 @@ def run_generation(
         lease: JobLease | None = None
         lease_guard: LeaseGuard | None = None
         active_config = config
+        domain_profile: DomainProfile | None = None
         branch = ""
         try:
             if config.git_publish:
@@ -388,6 +407,20 @@ def run_generation(
             else:
                 subchapter_id = config.pdf_subchapter_path.replace("\\", "/").split("/")[-1]
                 active_config = config.for_subchapter(subchapter_id)
+                configured_domain_value = str(getattr(config, "domain_id", "auto")).strip()
+                configured_domain = configured_domain_value if configured_domain_value.casefold() != "auto" else None
+                domain_profile = resolve_domain(config.repo_root, configured_domain)
+                store.update(domain_id=domain_profile.id, domain_profile_version=domain_profile.profile_version)
+
+            preflight_artifact_install(
+                active_config.repo_root,
+                _relative_paths(active_config),
+                replace_existing=replace_existing,
+            )
+
+            if domain_profile is None:
+                raise ValidationFailure("No active subject-domain profile was resolved for generation", [])
+            _bind_domain_context(context, domain_profile)
 
             guard_context = lease_guard if lease_guard is not None else nullcontext()
             with guard_context:
@@ -532,7 +565,7 @@ def run_generation(
                         diagnostics_dir=context.diagnostics,
                     )
                     store.update(llm_backend="gemini_browser")
-                protocol = GenerationProtocol(generation_client, context)
+                protocol = GenerationProtocol(generation_client, context, domain_profile=domain_profile)
                 store.transition(RunPhase.GENERATING)
                 run_metadata = {
                     "packageId": active_config.package_id,
@@ -617,6 +650,7 @@ def run_generation(
                     context.candidate,
                     _relative_paths(active_config),
                     verify=lambda: run_repository_validator(active_config.repo_root),
+                    replace_existing=replace_existing,
                 )
                 store.transition(RunPhase.FINAL_PACKAGE_WRITTEN, installed_paths=[str(path) for path in installed])
                 json.loads(active_config.package_path.read_text(encoding="utf-8"))

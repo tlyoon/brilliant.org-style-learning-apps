@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import sys
 from pathlib import Path
@@ -13,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from app_generator.domains import resolve_domain
+from app_generator.domains import resolve_package_domain
 
 
 def _resolve_package(package_path: Path, source_root: Path = ROOT) -> Path:
@@ -35,7 +36,10 @@ def build(output: Path, package_path: Path, *, source_root: Path = ROOT) -> None
         raise ValueError(f"Output directory must be empty: {output}")
     source_root = source_root.resolve()
     source_package = _resolve_package(package_path, source_root)
-    domain = resolve_domain(source_root)
+    package = json.loads(source_package.read_text(encoding="utf-8"))
+    if not isinstance(package, dict):
+        raise ValueError("Selected public package must contain a JSON object")
+    domain = resolve_package_domain(source_root, package)
     output.mkdir(parents=True, exist_ok=True)
 
     source_index = (source_root / "app" / "index.html").read_text(encoding="utf-8")

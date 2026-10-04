@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable
 
-from app_generator.errors import OutputWriteError
+from app_generator.errors import OutputWriteError, PackageAlreadyExistsError
 
 
 def write_text_atomic(path: Path, text: str) -> None:
@@ -53,18 +53,55 @@ def stage_artifacts(candidate_root: Path, artifacts: Iterable[Artifact]) -> list
     return staged
 
 
+def preflight_artifact_install(
+    repo_root: Path,
+    relative_paths: Iterable[Path],
+    *,
+    replace_existing: bool = False,
+) -> list[Path]:
+    """Fail before generation when output collisions are not explicitly replaceable."""
+
+    destinations = [repo_root / path for path in relative_paths]
+    existing = [path for path in destinations if path.exists()]
+    if existing and not replace_existing:
+        raise PackageAlreadyExistsError(
+            "Generated artifacts already exist; refusing to regenerate without --regenerate: "
+            + ", ".join(map(str, existing))
+        )
+    return existing
+
+
+def _write_bytes_atomic(path: Path, data: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
+    try:
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    except BaseException:
+        try:
+            os.unlink(temporary)
+        except FileNotFoundError:
+            pass
+        raise
+
+
 def install_new_artifacts(
     repo_root: Path,
     candidate_root: Path,
     relative_paths: Iterable[Path],
     *,
     verify: Callable[[], None],
+    replace_existing: bool = False,
 ) -> list[Path]:
     paths = list(relative_paths)
     destinations = [repo_root / path for path in paths]
-    existing = [path for path in destinations if path.exists()]
-    if existing:
-        raise OutputWriteError("Refusing to overwrite existing repository artifacts: " + ", ".join(map(str, existing)))
+    existing = preflight_artifact_install(
+        repo_root, paths, replace_existing=replace_existing
+    )
+    backups = {path: path.read_bytes() for path in existing} if replace_existing else {}
     installed: list[Path] = []
     try:
         for relative, destination in zip(paths, destinations, strict=True):
@@ -74,10 +111,19 @@ def install_new_artifacts(
             installed.append(destination)
         verify()
     except BaseException as exc:
+        restore_errors: list[str] = []
         for path in reversed(installed):
             try:
-                path.unlink()
-            except FileNotFoundError:
-                pass
-        raise OutputWriteError(f"Artifact installation failed and newly created files were rolled back: {exc}") from exc
+                if path in backups:
+                    _write_bytes_atomic(path, backups[path])
+                else:
+                    path.unlink(missing_ok=True)
+            except BaseException as restore_exc:
+                restore_errors.append(f"{path}: {restore_exc}")
+        detail = ""
+        if restore_errors:
+            detail = "; restore errors: " + "; ".join(restore_errors)
+        raise OutputWriteError(
+            f"Artifact installation failed and repository artifacts were restored: {exc}{detail}"
+        ) from exc
     return installed

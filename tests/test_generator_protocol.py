@@ -5,11 +5,14 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from app_generator.domains import resolve_domain
 from app_generator.errors import ResponseContractError
 from app_generator.generation.assembler import assemble_package, validate_activity_batch, validate_plan
 from app_generator.generation.extraction import parse_json_response
 from app_generator.generation.protocol import GenerationProtocol
 from app_generator.runtime.run_context import RunContext
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class GeneratorProtocolTests(unittest.TestCase):
@@ -172,7 +175,9 @@ class GeneratorProtocolTests(unittest.TestCase):
             review_relative_path=Path("content/chapter-8/section-8-1/review-record.md"),
             manifest_relative_path=Path("content/source-manifests/chapter-8-section-8-1.json"),
         )
-        package = assemble_package(config, analysis, plan, [{"activities": generated}])
+        profile = resolve_domain(ROOT)
+        package = assemble_package(config, analysis, plan, [{"activities": generated}], domain_profile=profile)
+        self.assertEqual(profile.identity(), package["domain"])
         self.assertEqual([item["id"] for item in plan["activities"]], [item["id"] for item in package["activities"]])
         self.assertEqual("draft", package["status"])
 

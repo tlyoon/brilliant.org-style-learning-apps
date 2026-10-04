@@ -17,8 +17,9 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from app_generator.domains import domain_registry_errors
+from app_generator.domains import domain_registry_errors, package_domain_errors
 from app_generator.visuals.validation import visual_contract_errors, visual_registry_errors
+DOMAIN_ROOT = ROOT
 CONTENT = ROOT / "content"
 MANIFEST_ROOT = CONTENT / "source-manifests"
 PACKAGE_SCHEMA_PATH = CONTENT / "schema" / "content-package.schema.json"
@@ -141,7 +142,8 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
         return errors
 
     errors.extend(_manifest_errors(data["sourceManifest"], source))
-    errors.extend(visual_contract_errors(ROOT, data, source))
+    errors.extend(package_domain_errors(DOMAIN_ROOT, data, source))
+    errors.extend(visual_contract_errors(DOMAIN_ROOT, data, source))
 
     if data["status"] in {"review", "publishable"}:
         required_review_fields = (
@@ -335,8 +337,8 @@ def package_paths() -> list[Path]:
 
 def main() -> int:
     errors: list[str] = []
-    errors.extend(domain_registry_errors(ROOT))
-    errors.extend(visual_registry_errors(ROOT))
+    errors.extend(domain_registry_errors(DOMAIN_ROOT))
+    errors.extend(visual_registry_errors(DOMAIN_ROOT))
     paths = package_paths()
     for path in paths:
         relative_path = str(path.relative_to(ROOT))

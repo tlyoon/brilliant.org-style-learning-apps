@@ -12,6 +12,7 @@ from typing import Any, Iterable
 from jsonschema import Draft202012Validator
 
 from app_generator.config import GeneratorConfig
+from app_generator.domains import DomainProfile
 from app_generator.errors import ResponseContractError
 
 EXPECTED = Counter(
@@ -163,6 +164,8 @@ def assemble_package(
     analysis: dict[str, Any],
     plan: dict[str, Any],
     batch_documents: Iterable[dict[str, Any]],
+    *,
+    domain_profile: DomainProfile | None = None,
 ) -> dict[str, Any]:
     planned = validate_plan(plan)
     generated: dict[str, dict[str, Any]] = {}
@@ -198,7 +201,7 @@ def assemble_package(
     for key in ("learningObjectives", "prerequisites", "misconceptionCatalogue"):
         if not isinstance(analysis.get(key), list) or not analysis[key]:
             raise ResponseContractError(f"Source analysis must provide non-empty {key}")
-    return {
+    package = {
         "schemaVersion": "1.1",
         "packageId": config.package_id,
         "chapter": config.chapter,
@@ -217,3 +220,6 @@ def assemble_package(
         "sourceManifest": config.manifest_relative_path.as_posix(),
         "activities": ordered,
     }
+    if domain_profile is not None:
+        package["domain"] = domain_profile.identity()
+    return package
