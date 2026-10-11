@@ -627,6 +627,11 @@ def load_config(
             )
     if selection_mode == "auto" and coordination_backend != "drive":
         raise ConfigurationError("Auto mode requires coordination_backend=drive; legacy cloud coordination is retained for distributed mode")
+    if selection_mode == "auto" and llm_backend != "gemini_api":
+        raise ConfigurationError(
+            "Auto mode requires llm_backend=gemini_api so each worker has an independent model session; "
+            "gemini_browser is retained only for specific/manual legacy runs"
+        )
     if selection_mode == "distributed":
         if coordinator_management == "external" or coordinator_url:
             parsed_coordinator = urlparse(coordinator_url)

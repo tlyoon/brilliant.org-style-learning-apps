@@ -331,6 +331,18 @@ def run_continuous_auto(
                 reconciler(config, target_chapter=target_chapter)
             else:
                 reconciler(config)
+            if target_subchapter_id:
+                raise AutoModeBlockedError(
+                    f"Target section {target_subchapter_id} attempt ended with {exc.original_code} "
+                    f"({exc.status}); targeted auto exits after one failed attempt instead of "
+                    "immediately reclaiming the same job. Inspect the failure, correct the cause, "
+                    "then rerun the target."
+                ) from exc
+            print(
+                f"AUTO_RETRY_DELAY: released failed attempt; waiting {poll_seconds}s before "
+                "re-entering the queue so another worker can claim it."
+            )
+            sleeper(float(poll_seconds))
             continue
         except NoAvailableJob:
             if target_subchapter_id:

@@ -82,6 +82,21 @@ class GeneratorConfigTests(unittest.TestCase):
             self.assertEqual(0.85, config.domain_min_confidence)
             self.assertEqual("EXAMPLE_PROJECT_GENERATOR_", config.env_prefix)
 
+    def test_auto_mode_rejects_browser_backend(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = self.make_config(root, [])
+            with self.assertRaisesRegex(ConfigurationError, "Auto mode requires llm_backend=gemini_api"):
+                load_config(
+                    path,
+                    cli_overrides={
+                        "selection_mode": "auto",
+                        "llm_backend": "gemini_browser",
+                        "git_publish": True,
+                    },
+                    environ={},
+                )
+
     def test_workstation_binding_rejects_wrong_repository(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
