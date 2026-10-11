@@ -16,7 +16,9 @@ Each worker PC should have:
 - a clean Git checkout;
 - the local generated config filename printed by synchronization.
 
-Continuous auto mode requires `git_publish=true` and defaults to `coordination_backend = "drive"`.
+Continuous auto mode requires git_publish=true, coordination_backend = "drive", and llm_backend = "gemini_api". The API requirement is deliberate: each PC gets an independent model session, so parallel workers never edit or depend on the same browser-based Gemini Gem. gemini_browser remains available only for specific/manual legacy runs.
+
+Before an auto run enters the coordinator loop, it preflights Gemini API authentication. A PC with missing or stale API credentials therefore fails before it can consume a Drive job attempt.
 
 For this project it also requires the configured public deployment to merge before Drive records success. A package already in source `main` but missing its current digest-matched public deployment is recovered without reopening Gemini. Each live generation is supervised as a child process; the default watchdog uses three stale 600-second checks and preserves parsed Drive checkpoints on termination.
 
@@ -68,7 +70,8 @@ Expected behavior:
 - if PC B already owns 8.6, PC A waits for that exact target;
 - compatible checkpoints remain recoverable across machines;
 - already successful 8.6 exits without regeneration;
-- a missing or terminally failed target is reported instead of substituted.
+- a missing or terminally failed target is reported instead of substituted;
+- if the target attempt itself fails, targeted auto exits after that one failed attempt instead of immediately reclaiming the same target.
 
 Use targeted auto rather than ordinary `specific` mode whenever another auto worker may be active, because specific mode intentionally does not reserve a shared lease.
 
@@ -124,7 +127,7 @@ The command name is retained for compatibility; under the Drive backend it write
 - no job is claimable but work remains — another active Drive lease may own it; auto waits and polls.
 - `LEASE_LOST` — the worker is no longer the elected unexpired owner; do not force publication from that process.
 - dirty/diverged Git — resolve intentionally before auto mode; do not reset blindly.
-- transient Gemini restart — recovery uses parsed-stage checkpoints and the authenticated automation browser profile.
+- Gemini API failure in auto mode ? the failed lease is released and parsed-stage checkpoints remain available; chapter/global workers wait one coordinator poll interval before re-entering the queue so another PC has a fair chance to claim the job.
 ## Chapter-scoped multi-PC guard test
 
 After every PC has run `--init-settings-only` from its intended local checkout, start the same scoped worker on two or more PCs:
