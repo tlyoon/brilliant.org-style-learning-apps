@@ -99,3 +99,9 @@ Each workstation is also bound locally to one PC hostname and one absolute repos
 ## Operational commands
 
 Normal auto operation no longer needs `coordinator-bootstrap`, `coordinator-ensure`, a worker coordinator token, or an Apps Script URL. Existing coordinator administration commands are retained only for legacy cloud/distributed operation.
+
+## Multi-PC LLM isolation
+
+Continuous auto mode requires llm_backend = "gemini_api". Each workstation therefore uses an independent API model session and never edits the shared Gemini Gem while holding a Drive lease. The browser backend remains available only for specific/manual legacy runs.
+
+The run command preflights Gemini API authentication before entering the coordinator loop, so missing credentials cannot consume a job attempt. After a failed chapter/global attempt, the worker waits one coordinator poll interval before re-entering the queue, giving another workstation a fair chance to claim the released job. Exact-target auto mode exits after its first failed attempt instead of immediately reclaiming the same target.

@@ -76,18 +76,45 @@ class ContinuousAutoTests(unittest.TestCase):
             raise NoAvailableJob("none")
 
         seen = []
+        sleeps = []
         result = run_continuous_auto(
             self.config(),
             run_once=run_once,
             snapshotter=lambda config: self.snapshot(),
             reconciler=lambda config: reconciles.append("reconcile") or 0,
             on_completed=seen.append,
-            sleeper=lambda seconds: self.fail("should not sleep"),
+            sleeper=sleeps.append,
         )
         self.assertEqual(0, result)
         self.assertEqual([completed], seen)
         self.assertEqual(3, len(calls))
         self.assertEqual(["reconcile", "reconcile"], reconciles)
+        self.assertEqual([30.0], sleeps)
+
+    def test_targeted_worker_stops_after_one_failed_attempt(self):
+        calls = []
+        reconciles = []
+
+        def run_once(config, *, auto_target_subchapter_id=None):
+            calls.append(auto_target_subchapter_id)
+            raise AutoJobExecutionError(
+                "unrecoverable target failure",
+                status="interrupted",
+                original_code="GEMINI_API_ERROR",
+            )
+
+        with self.assertRaisesRegex(AutoModeBlockedError, "exits after one failed attempt"):
+            run_continuous_auto(
+                self.config(),
+                target_subchapter_id="8.6",
+                run_once=run_once,
+                snapshotter=lambda config, **kwargs: self.fail("snapshot should not be needed"),
+                reconciler=lambda config, **kwargs: reconciles.append(kwargs.get("target_subchapter_id")) or 0,
+                sleeper=lambda seconds: self.fail("targeted failure must not sleep and retry"),
+            )
+
+        self.assertEqual(["8.6"], calls)
+        self.assertEqual(["8.6", "8.6"], reconciles)
 
     def test_worker_waits_when_only_remaining_work_is_leased(self):
         attempts = {"run": 0, "snapshot": 0}

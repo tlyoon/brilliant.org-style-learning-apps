@@ -150,15 +150,21 @@ def _load(args: argparse.Namespace) -> GeneratorConfig:
     return load_config(args.config, cli_overrides=overrides)
 
 
+def _preflight_llm(config: GeneratorConfig) -> None:
+    """Validate API authentication before auto workers are allowed to claim jobs."""
+
+    if getattr(config, "llm_backend", "gemini_browser") == "gemini_api":
+        build_gemini_sdk_client(config)
+        print("Gemini API authentication: ready")
+
+
 def doctor(
     config: GeneratorConfig,
     *,
     auto_target_subchapter_id: str | None = None,
     auto_target_chapter: int | None = None,
 ) -> int:
-    if getattr(config, "llm_backend", "gemini_browser") == "gemini_api":
-        build_gemini_sdk_client(config)
-        print("Gemini API authentication: ready")
+    _preflight_llm(config)
 
     if config.selection_mode == "auto":
         snapshot = inspect_auto_queue(
@@ -369,6 +375,7 @@ def main(argv: list[str] | None = None) -> int:
         if config.selection_mode == "auto":
             if args.resume:
                 raise GeneratorError("--resume is not supported with continuous auto mode")
+            _preflight_llm(config)
             return run_continuous_auto(
                 config,
                 target_subchapter_id=auto_target_subchapter_id,

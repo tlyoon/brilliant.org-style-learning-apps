@@ -22,6 +22,7 @@ class AutoConfigurationTests(unittest.TestCase):
 gem_url = "https://gemini.google.com/gem/test"
 oauth_login = "authorized@example.com"
 login_name = "authorized@example.com"
+llm_backend = "gemini_api"
 chrome_profile_dir = "{(state / 'chrome').as_posix()}"
 state_dir = "{(state / 'runs').as_posix()}"
 repo_root = "{repo.as_posix()}"

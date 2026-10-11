@@ -33,6 +33,8 @@ class ManagedCoordinatorTests(unittest.TestCase):
             "[gemini]\n"
             'gem_url = "https://gemini.google.com/gem/test"\n'
             'login_name = "owner@example.com"\n'
+            "[llm]\n"
+            'backend = "gemini_api"\n'
             "[paths]\n"
             f"chrome_profile_dir = {json.dumps(str(root / 'state' / 'chrome-profile'))}\n"
             f"state_dir = {json.dumps(str(root / 'state' / 'runs'))}\n"
