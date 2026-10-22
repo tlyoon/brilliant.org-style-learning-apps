@@ -18,9 +18,16 @@ from app_generator.prompts import (
     repair_activity_prompt,
     semantic_audit_prompt,
     source_analysis_prompt,
+    visual_plans_prompt,
+    visual_specs_prompt,
     whole_package_audit_prompt,
 )
 from app_generator.runtime.run_context import RunContext
+from app_generator.visuals.generation import (
+    attach_visual_documents,
+    selected_visual_activity_ids,
+    visual_generation_catalog,
+)
 
 
 class ConversationPort(Protocol):
@@ -308,6 +315,58 @@ class GenerationProtocol:
         except ResponseContractError:
             raise
 
+    def _visualize_package(self, package: dict[str, Any]) -> dict[str, Any]:
+        """Generate and validate visual plans/specs after text semantic repair."""
+
+        if self.domain_profile is None:
+            return package
+        analysis = self.context.load_stage("source-analysis")
+        if not isinstance(analysis, dict):
+            raise ResponseContractError("Visual generation requires a valid source-analysis checkpoint")
+        catalog = visual_generation_catalog(self.domain_profile)
+        correction_errors: list[str] = []
+
+        for attempt in range(2):
+            try:
+                plans = self._stage(
+                    "visual-plans",
+                    lambda: visual_plans_prompt(
+                        package,
+                        analysis,
+                        catalog,
+                        correction_errors=correction_errors,
+                    ),
+                )
+                selected_ids = selected_visual_activity_ids(package, plans)
+                if selected_ids:
+                    specs = self._stage(
+                        "visual-specs",
+                        lambda: visual_specs_prompt(
+                            package,
+                            plans,
+                            catalog,
+                            correction_errors=correction_errors,
+                        ),
+                    )
+                else:
+                    specs = {"activities": []}
+                    self.context.save_stage("visual-specs", specs)
+                return attach_visual_documents(
+                    self.domain_profile.repo_root,
+                    package,
+                    plans,
+                    specs,
+                )
+            except ResponseContractError as exc:
+                correction_errors = [str(exc)]
+                self.context.discard_stage("visual-plans")
+                self.context.discard_stage("visual-specs")
+                if attempt == 1:
+                    raise ResponseContractError(
+                        "Visual generation did not converge within two validated batch attempts"
+                    ) from exc
+        raise AssertionError("unreachable")
+
     def generate(
         self,
         *,
@@ -376,6 +435,7 @@ class GenerationProtocol:
             )
             by_id[activity_id] = replacement
         package["activities"] = [by_id[item["id"]] for item in package["activities"]]
+        package = self._visualize_package(package)
         return package, findings
 
     def repair_validation_errors(self, package: dict[str, Any], errors: list[str], attempt: int) -> dict[str, Any]:
