@@ -138,3 +138,7 @@ After every PC has run `--init-settings-only` from its intended local checkout, 
 ```
 
 Verify that simultaneous workers claim different `10.*` jobs, never claim `11.*`, and exit only after the Chapter 10 queue is complete. As a negative test, copying or invoking another PC's generated `project.local.toml` must fail with a workstation-binding error before source discovery or generation begins.
+
+## Production gate
+
+Before broad multi-PC generation, follow `docs/MULTI_PC_PRODUCTION_GATE.md`. The deterministic three-worker gate must pass on the same revision used by the real workstations.
