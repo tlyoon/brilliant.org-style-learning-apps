@@ -183,3 +183,107 @@ def repair_activity_prompt(activity: dict[str, Any], errors: list[str]) -> str:
         "FINDINGS:\n" + json.dumps(errors, ensure_ascii=False, indent=2) + "\n\n"
         "ACTIVITY:\n" + json.dumps(activity, ensure_ascii=False, indent=2)
     )
+
+
+def visual_plans_prompt(
+    package: dict[str, Any],
+    analysis: dict[str, Any],
+    catalog: dict[str, Any],
+    *,
+    correction_errors: list[str] | None = None,
+) -> str:
+    """Plan visuals for all activities in one bounded model call."""
+
+    activities = []
+    for activity in package.get("activities", []):
+        activities.append({
+            "id": activity.get("id"),
+            "type": activity.get("type"),
+            "difficulty": activity.get("difficulty"),
+            "objective": activity.get("objective"),
+            "misconceptions": activity.get("misconceptions"),
+            "prompt": activity.get("prompt"),
+            "answerKey": activity.get("answerKey"),
+            "interactionMode": activity.get("interactionMode"),
+            "interaction": activity.get("interaction"),
+            "answerLogic": activity.get("answerLogic"),
+            "provenance": activity.get("provenance"),
+            "accessibilityText": activity.get("accessibilityText"),
+        })
+    correction = ""
+    if correction_errors:
+        correction = (
+            "\n\nTHE PREVIOUS VISUAL BATCH FAILED DETERMINISTIC VALIDATION. "
+            "Correct only the visual planning data; do not change activity IDs or content.\n"
+            + "\n".join(f"- {error}" for error in correction_errors[:12])
+        )
+    return _contract(
+        "Create one visualPlan for every supplied activity. Return exactly "
+        "{\"activities\":[{\"activityId\":\"...\",\"visualPlan\":{...}}, ...]}. "
+        "Every activity ID must appear exactly once and no extra IDs are allowed. "
+        "Use only templates marked available in the trusted catalog. Prefer selectedMode=none when a visual does not "
+        "materially improve reasoning or when no supported template safely represents the activity. "
+        "For selectedMode=none use selectedTemplate=null and renderStrategy=none; do not fabricate a template. "
+        "Do not rewrite any activity text, answer logic, misconception, difficulty, or provenance. "
+        "The controlled source corpus attached to this conversation remains the factual authority.\n\n"
+        "SOURCE ANALYSIS:\n" + json.dumps(analysis, ensure_ascii=False, indent=2) + "\n\n"
+        "TRUSTED VISUAL CATALOG:\n" + json.dumps(catalog, ensure_ascii=False, indent=2) + "\n\n"
+        "ACTIVITIES:\n" + json.dumps(activities, ensure_ascii=False, indent=2)
+        + correction
+    )
+
+
+def visual_specs_prompt(
+    package: dict[str, Any],
+    plans_document: dict[str, Any],
+    catalog: dict[str, Any],
+    *,
+    correction_errors: list[str] | None = None,
+) -> str:
+    """Author semantic visual specs only for plans that selected a visual."""
+
+    plan_by_id = {
+        item.get("activityId"): item.get("visualPlan")
+        for item in plans_document.get("activities", [])
+        if isinstance(item, dict)
+    }
+    targets = []
+    for activity in package.get("activities", []):
+        plan = plan_by_id.get(activity.get("id"))
+        if not isinstance(plan, dict) or plan.get("selectedMode") == "none":
+            continue
+        targets.append({
+            "activity": {
+                "id": activity.get("id"),
+                "type": activity.get("type"),
+                "difficulty": activity.get("difficulty"),
+                "objective": activity.get("objective"),
+                "prompt": activity.get("prompt"),
+                "answerKey": activity.get("answerKey"),
+                "interactionMode": activity.get("interactionMode"),
+                "interaction": activity.get("interaction"),
+                "answerLogic": activity.get("answerLogic"),
+                "misconceptions": activity.get("misconceptions"),
+                "provenance": activity.get("provenance"),
+            },
+            "visualPlan": plan,
+        })
+    correction = ""
+    if correction_errors:
+        correction = (
+            "\n\nTHE PREVIOUS VISUAL BATCH FAILED DETERMINISTIC VALIDATION. "
+            "Repair only visualSpec data while preserving each accepted visualPlan.\n"
+            + "\n".join(f"- {error}" for error in correction_errors[:12])
+        )
+    return _contract(
+        "Create one declarative visualSpec for every supplied target and no others. Return exactly "
+        "{\"activities\":[{\"activityId\":\"...\",\"visualSpec\":{...}}, ...]}. "
+        "The visualSpec mode and template must exactly match the accepted visualPlan. "
+        "Use only semantic parameters supported by the trusted template; never emit screen coordinates, SVG, HTML, "
+        "CSS, JavaScript, image pixels, animation frames, or arbitrary executable code. "
+        "Answer-critical arrows, axes, relations, labels, graph shapes, geometry, and simulation laws must remain "
+        "deterministic. Keep the visual scientifically self-sufficient without generated artwork.\n\n"
+        "TRUSTED VISUAL CATALOG:\n" + json.dumps(catalog, ensure_ascii=False, indent=2) + "\n\n"
+        "TARGETS:\n" + json.dumps(targets, ensure_ascii=False, indent=2)
+        + correction
+    )

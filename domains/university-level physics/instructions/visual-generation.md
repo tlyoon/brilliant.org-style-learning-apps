@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document specifies the prompt contracts that future generator implementation should materialize in the provider-specific prompt resources. It is documentation, not a claim that the visual pipeline is already implemented.
+This document specifies the trusted domain extension used by the live visual-planning and visual-specification stages. Generic provider prompts remain responsible for exact response framing and batch envelopes; this domain contract refines the physics semantics without weakening repository validation.
 
 All prompt stages return structured data. They may propose semantic visual content, but renderer geometry and executable interaction behavior remain owned by trusted code.
 
