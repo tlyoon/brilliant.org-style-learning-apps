@@ -104,6 +104,23 @@ When `hybrid_generated_base` or `gemini_illustration` is selected, require final
 
 Use an independent symbolic/numerical verifier such as Wolfram when equations, trajectories, graph relations, conservation invariants, signs, limiting cases, or simulation reference values would benefit from a second computational check. The verification contract is provider-neutral.
 
+## Live schema-guided visual retries
+
+The implemented visual-spec author receives the exact versioned
+content/schema/visual-spec.schema.json from the active repository, not an
+approximate field list. Its required fields, enums, property restrictions, and
+referenced definitions govern the output. Domain catalog entries still restrict
+the actual available templates and semantic parameters. Unsupported renderer
+geometry or speculative fields must be rejected rather than silently
+normalized.
+
+A visual-spec-only validation failure retains the accepted visual-plan
+checkpoint and retries the specification with deterministic findings. Failures
+that might involve visual planning invalidate both visual stages. The retry
+budget remains bounded to two batch attempts, and final errors include the
+last deterministic finding for diagnosis. Existing text activities and source
+provenance must not be changed to make a visual pass validation.
+
 ## Stage B ? activity + visual-spec author
 
 ### Task
@@ -253,3 +270,15 @@ Never instruct the model to:
 ## Implementation note
 
 When these prompt contracts are implemented, provider-specific resources must be versioned alongside the visual schema. Gemini is the preferred content/image/multimodal provider, Wolfram is a preferred independent computational verifier when available, and Replit may be used only to incubate new simulation templates before they are promoted into repository-owned trusted code. Tests should seed known contradictions, bad generated-image cues, unsupported-detail requests, and verifier disagreements so prompt/tool changes cannot silently weaken the anti-hallucination behavior. See `docs/VISUAL_TOOL_ORCHESTRATION.md`.
+
+## Renderer-aware partial repair (October 2026)
+
+Visual-spec prompts include the exact JSON schema and domain-owned renderer guidance for active templates. Per-activity renderer validation separates accepted visual specifications from failing ones; subsequent bounded requests target only failing activity IDs. Accepted specifications are checkpointed and revalidated before reuse. Original activities, answer logic and source provenance are never rewritten by this stage.
+
+## Case-sensitive energy-bar semantic properties
+
+The entity.properties schema now permits camelCase semantic map keys,
+which were previously rejected despite the renderer requiring relativeAmount.
+Strict lowercase/kebab-case entity identifiers remain unchanged.
+
+The trusted state.energy_bar renderer requires the exact camelCase entity key properties.relativeAmount with a JSON numeric value between 0 and 1. Model-authored snake_case properties.relative_amount is not an equivalent and must be rejected with an actionable error, not silently renamed. Schema-valid but renderer-incompatible model replies remain unpublishable. For a failed targeted spec, the generator retains independently verified visuals and requests correction of only the failing activity.

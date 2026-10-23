@@ -52,9 +52,18 @@ def visual_spec_errors(spec: dict[str, Any], label: str) -> list[str]:
         if not 1 <= len(components) <= 4 or len(components) != len(entities):
             errors.append(f"{label}.entities: energy-bar renderer requires one to four energy-component entities")
         for index, component in enumerate(components):
-            amount = component.get("properties", {}).get("relativeAmount")
+            properties = component.get("properties", {})
+            if "relative_amount" in properties:
+                errors.append(
+                    f"{label}.entities[{index}].properties.relative_amount: invalid alias; "
+                    "use exactly properties.relativeAmount (camelCase)"
+                )
+            amount = properties.get("relativeAmount")
             if isinstance(amount, bool) or not isinstance(amount, (int, float)) or not 0 <= amount <= 1:
-                errors.append(f"{label}.entities[{index}].properties.relativeAmount: must be a number from 0 to 1")
+                errors.append(
+                    f"{label}.entities[{index}].properties.relativeAmount: "
+                    "required JSON number from 0 to 1 (camelCase; not relative_amount)"
+                )
 
     elif template == "mechanics.motion_1d_slider":
         carts = [entity for entity in entities if isinstance(entity, dict) and entity.get("kind") == "cart"]

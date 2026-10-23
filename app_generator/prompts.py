@@ -238,9 +238,11 @@ def visual_specs_prompt(
     plans_document: dict[str, Any],
     catalog: dict[str, Any],
     *,
+    visual_spec_schema: dict[str, Any],
+    target_activity_ids: set[str] | None = None,
     correction_errors: list[str] | None = None,
 ) -> str:
-    """Author semantic visual specs only for plans that selected a visual."""
+    """Author semantic visual specs against the exact repository schema."""
 
     plan_by_id = {
         item.get("activityId"): item.get("visualPlan")
@@ -251,6 +253,8 @@ def visual_specs_prompt(
     for activity in package.get("activities", []):
         plan = plan_by_id.get(activity.get("id"))
         if not isinstance(plan, dict) or plan.get("selectedMode") == "none":
+            continue
+        if target_activity_ids is not None and activity.get("id") not in target_activity_ids:
             continue
         targets.append({
             "activity": {
@@ -282,7 +286,20 @@ def visual_specs_prompt(
         "Use only semantic parameters supported by the trusted template; never emit screen coordinates, SVG, HTML, "
         "CSS, JavaScript, image pixels, animation frames, or arbitrary executable code. "
         "Answer-critical arrows, axes, relations, labels, graph shapes, geometry, and simulation laws must remain "
-        "deterministic. Keep the visual scientifically self-sufficient without generated artwork.\n\n"
+        "deterministic. Keep the visual scientifically self-sufficient without generated artwork. "
+        "The authoritative JSON Schema below is mandatory, not illustrative. Obey all required fields, "
+        "additionalProperties restrictions, enum values, patterns, and $ref/$defs; never invent fields "
+        "such as entity.role/type when the schema instead requires entity.kind. "
+        "Use optional fields only where the chosen template and learner task justify them. "
+        "All JSON field names are case-sensitive and exact: never replace camelCase keys with snake_case, "
+        "invent synonymous property keys, or quote numeric quantities as strings. "
+        "For state.energy_bar, each energy-component entity MUST have properties.relativeAmount as a "
+        "JSON number within [0,1], e.g. \"properties\":{\"relativeAmount\":0.6}. "
+        "The field properties.relative_amount is INVALID, even when its numerical value is valid. "
+        "Follow the domain rendererGuidance requiredEntityProperties and exampleEntities literally "
+        "for field spelling, but select physically sound energy values using the controlled source.\n\n"
+        "AUTHORITATIVE VISUAL SPEC SCHEMA:\n"
+        + json.dumps(visual_spec_schema, ensure_ascii=False, separators=(",", ":")) + "\n\n"
         "TRUSTED VISUAL CATALOG:\n" + json.dumps(catalog, ensure_ascii=False, indent=2) + "\n\n"
         "TARGETS:\n" + json.dumps(targets, ensure_ascii=False, indent=2)
         + correction
