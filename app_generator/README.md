@@ -254,3 +254,7 @@ For a complete local teaching package, run `python scripts/audit_browser_visual.
 ### Visual review evidence capture
 
 Pass `--evidence-root NEW_PRIVATE_DIRECTORY` to `scripts/audit_browser_visual.py` to capture element-level PNGs for all real-browser locale/viewport checks. Evidence files are stored outside the repository and original production package; the manifest retains package SHA-256, individual PNG SHA-256, and explicit `unreviewed` status. This is evidence for later academic/pixel/accessibility inspection, **not** an automated pass of those review gates. The directory must not already exist and the tool refuses evidence paths inside the source repository or installed package folder.
+
+### Keyboard focus continuity
+
+MCQ button activation regenerates the activity card; the player now restores keyboard focus to the selected replacement button. The headless Chrome visual pilot checks Enter-key selection, `aria-pressed`, check-answer enablement, and focus continuity for every visual MCQ in three locales at two viewport widths. This is a bounded keyboard smoke check, not a full screen-reader/WCAG audit.

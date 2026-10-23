@@ -77,12 +77,15 @@ def capture_review_frame(figure, output: Path, activity_id: str, locale: str, wi
 def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = None) -> dict:
     from selenium import webdriver
     from selenium.webdriver.common.by import By
+    from selenium.webdriver.common.keys import Keys
     from selenium.webdriver.support.ui import Select, WebDriverWait
 
     data = json.loads(package.read_text(encoding="utf-8"))
     ids = [item["id"] for item in data.get("activities", []) if item.get("visualSpec")]
     problems = []
     checks = 0
+    keyboard_checks = 0
+    mcq_ids = {item["id"] for item in data.get("activities", []) if item.get("type") == "mcq"}
     frames = []
     if evidence_root is not None:
         evidence_root = evidence_root.resolve()
@@ -139,6 +142,22 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
                                     frames.append(capture_review_frame(
                                         figure, evidence_root, activity_id, locale, width, checks,
                                     ))
+                                if activity_id in mcq_ids:
+                                    choice = driver.find_element(By.CSS_SELECTOR, ".choices button")
+                                    choice.send_keys(Keys.ENTER)
+                                    WebDriverWait(driver, 4).until(
+                                        lambda d: len(d.find_elements(
+                                            By.CSS_SELECTOR, ".choices button[aria-pressed='true']"
+                                        )) > 0
+                                    )
+                                    if not driver.find_element(By.ID, "check").is_enabled():
+                                        raise ValueError("keyboard-selected MCQ does not enable check answer")
+                                    if not driver.execute_script(
+                                        "return document.activeElement?.classList.contains('choice') "
+                                        "&& document.activeElement?.getAttribute('aria-pressed') === 'true';"
+                                    ):
+                                        raise ValueError("MCQ keyboard activation loses answer-button focus")
+                                    keyboard_checks += 1
                             except Exception as exc:
                                 problems.append({
                                     "activityId": activity_id, "locale": locale,
@@ -158,6 +177,7 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
             json.dumps(evidence, ensure_ascii=False, indent=2), encoding="utf-8"
         )
     return {
+        "keyboardSelectionChecks": keyboard_checks,
         "screenshotsCaptured": len(frames),
         "outcome": "fail" if problems else "browser_dom_smoke_pass",
         "visualActivities": len(ids),
