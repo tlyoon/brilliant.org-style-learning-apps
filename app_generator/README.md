@@ -238,3 +238,7 @@ Visual-spec generation also reads physics renderer guidance in the active domain
 ### Offline visual pilot audit
 
 Run `python scripts/audit_visual_run.py --run-root PATH_TO_SAVED_RUN` to inspect saved plans and visual specifications without invoking Gemini or changing files. For a COMPLETE run, it verifies the installed package recorded by the run state, independently reconstructing and comparing visual fields against current renderer contracts. An offline `contract_pass` is NOT proof of source accuracy, visual pixel quality, browser accessibility, or publication readiness. Non-complete or inconsistent runs exit with a failure status and diagnostics.
+
+### Semantic visual-render smoke test
+
+Run `node scripts/audit_visual_rendering.js --package PATH` to instantiate every visual in en/ms/zh through the trusted JavaScript renderer without modifying the package. The test checks semantic SVG/figure output, accessible descriptions, expected template identities and finite geometry attributes. It deliberately does **not** verify actual browser pixels, academic correctness, device layout or WCAG compliance. Use real browser, source-grounding, and accessibility review before release.
