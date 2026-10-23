@@ -286,3 +286,7 @@ The trusted state.energy_bar renderer requires the exact camelCase entity key pr
 ### Guidance/schema preflight
 
 Before trusting a renderer-guidance manifest, repository validation verifies example entities and required numerical semantic keys against the current visual-spec schema. Inconsistent examples, unknown renderer IDs, and missing available template guidance fail the validation gate instead of becoming repeated model-generation failures.
+
+### Conservation-law coherence in energy bars
+
+Where the domain visualSpec declares a conserved energy invariant referencing energy-component entities, all declared physical states must contain finite nonnegative values for those components and agree on their summed total to numerical tolerance. This is a deterministic *internal consistency* test; it is not independent verification that the source supports a conservation assumption. Missing measurements and nonconserved systems must not be silently repaired into conservation.

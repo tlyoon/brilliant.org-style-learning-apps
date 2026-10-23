@@ -247,6 +247,40 @@ class VisualContractTests(unittest.TestCase):
         self.assertEqual([], validator.validate_package(legacy))
         self.assertEqual([], visual_contract_errors(ROOT, legacy))
 
+    def test_energy_conservation_invariants_fail_closed_on_contradictory_states(self):
+        from app_generator.domains import resolve_domain
+        physics = resolve_domain(ROOT).load_module(
+            "validation", "visualValidatorModule"
+        ).visual_spec_errors
+        visual = {
+            "template": "state.energy_bar",
+            "entities": [
+                {"id": "kinetic", "kind": "energy-component", "properties": {"relativeAmount": 0.6}},
+                {"id": "elastic", "kind": "energy-component", "properties": {"relativeAmount": 0.4}},
+            ],
+            "states": [
+                {"id": "initial", "values": {"kinetic": 1, "elastic": 0}},
+                {"id": "compressed", "values": {"kinetic": 0.6, "elastic": 0.4}},
+            ],
+            "invariants": [{
+                "id": "total-mechanical-energy",
+                "kind": "conserved",
+                "references": ["kinetic", "elastic"],
+            }],
+        }
+        self.assertEqual([], physics(visual, "visual"))
+        contradiction = copy.deepcopy(visual)
+        contradiction["states"][1]["values"]["elastic"] = 0.5
+        errors = physics(contradiction, "visual")
+        self.assertTrue(any("different state totals" in e for e in errors), errors)
+        missing = copy.deepcopy(visual)
+        missing["states"][1]["values"].pop("elastic")
+        errors = physics(missing, "visual")
+        self.assertTrue(any("finite nonnegative energy value" in e for e in errors), errors)
+        invalid = copy.deepcopy(visual)
+        invalid["states"][0]["values"]["kinetic"] = float("nan")
+        self.assertTrue(physics(invalid, "visual"))
+
     def test_energy_bar_camelcase_amount_passes_schema_and_renderer(self):
         candidate = package_with_visual()
         item = candidate["activities"][0]

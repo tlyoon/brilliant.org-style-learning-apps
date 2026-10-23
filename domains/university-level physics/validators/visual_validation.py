@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 
@@ -64,6 +65,40 @@ def visual_spec_errors(spec: dict[str, Any], label: str) -> list[str]:
                     f"{label}.entities[{index}].properties.relativeAmount: "
                     "required JSON number from 0 to 1 (camelCase; not relative_amount)"
                 )
+
+        component_ids = {item.get("id") for item in components}
+        states = spec.get("states", [])
+        for state_index, state in enumerate(states):
+            values = state.get("values", {}) if isinstance(state, dict) else {}
+            for component_id in component_ids:
+                amount = values.get(component_id)
+                if (
+                    isinstance(amount, bool) or not isinstance(amount, (int, float))
+                    or not math.isfinite(amount) or amount < 0
+                ):
+                    errors.append(
+                        f"{label}.states[{state_index}].values.{component_id}: "
+                        "every energy component needs a finite nonnegative energy value"
+                    )
+        for invariant in spec.get("invariants", []):
+            if not isinstance(invariant, dict) or invariant.get("kind") != "conserved":
+                continue
+            refs = invariant.get("references", [])
+            if not isinstance(refs, list) or not refs or any(ref not in component_ids for ref in refs):
+                continue
+            totals = []
+            for state in states:
+                values = state.get("values", {}) if isinstance(state, dict) else {}
+                amounts = [values.get(ref) for ref in refs]
+                if all(type(amount) in (int, float) and math.isfinite(amount) and amount >= 0 for amount in amounts):
+                    totals.append(sum(amounts))
+            if len(totals) == len(states) and len(totals) >= 2:
+                tolerance = 1e-8 * max(1, *totals)
+                if max(totals) - min(totals) > tolerance:
+                    errors.append(
+                        f"{label}.invariants.{invariant.get('id', 'conservation')}: "
+                        "stated conserved energy components have different state totals"
+                    )
 
     elif template == "mechanics.motion_1d_slider":
         carts = [entity for entity in entities if isinstance(entity, dict) and entity.get("kind") == "cart"]
