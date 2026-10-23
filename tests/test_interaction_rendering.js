@@ -97,6 +97,10 @@ function moveDown(app, itemLabel) {
   const row = find(app, (node) => node.className === "order-row" && node.textContent.includes(itemLabel));
   const controls = find(row, (node) => node.className === "order-controls");
   controls.children[1].click();
+  assert.ok(
+    findAll(app, (node) => node.className === "secondary order-control").some((node) => node.wasFocused),
+    "ordering move must restore focus to a valid control on the new row",
+  );
 }
 
 const app = new FakeElement("section");
@@ -110,6 +114,7 @@ const context = {
     querySelectorAll: (selector) => {
       if (selector === "#app .target-choice") return findAll(app, (node) => node.className === "choice target-choice");
       if (selector === "#app .choices button") return findAll(app, (node) => node.className === "choice");
+      if (selector === "#app .order-control") return findAll(app, (node) => node.className === "secondary order-control");
       return [];
     },
   },
@@ -126,6 +131,9 @@ setImmediate(() => {
 
   moveDown(app, "C");
   moveDown(app, "C");
+  const cRow = find(app, (node) => node.className === "order-row" && node.dataset?.itemId === "c");
+  const focusedAtBoundary = find(cRow, (node) => node.wasFocused === true);
+  assert.equal(focusedAtBoundary.dataset.delta, "-1", "last item must focus enabled reverse-direction control");
   moveDown(app, "B");
   checkAndAdvance(app);
 

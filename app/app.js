@@ -53,8 +53,9 @@ function focusUpdatedChoice(selector, matches) {
   // same semantic control on the new card rather than the document body.
   const controls = document.querySelectorAll?.(selector) ?? [];
   for (const control of controls) {
-    if (matches(control)) { control.focus?.(); return; }
+    if (matches(control)) { control.focus?.(); return true; }
   }
+  return false;
 }
 
 function resetActivity() {
@@ -172,10 +173,13 @@ function renderOrdering(card, activity) {
   const list = element("div", { className: "ordering", attributes: { role: "list", "aria-label": localized(activity.prompt) } });
   state.response.forEach((itemId, index) => {
     const row = element("div", { className: "order-row", attributes: { role: "listitem" } });
+    row.dataset.itemId = itemId;
     row.append(element("p", { className: "interaction-item", text: `${labels.position} ${index + 1}: ${localized(byId[itemId].label)}` }));
     const controls = element("div", { className: "order-controls" });
     for (const [text, delta] of [[labels.moveUp, -1], [labels.moveDown, 1]]) {
       const button = element("button", { className: "secondary order-control", text, attributes: { "aria-label": `${text}: ${localized(byId[itemId].label)}` } });
+      button.dataset.itemId = itemId;
+      button.dataset.delta = String(delta);
       button.disabled = index + delta < 0 || index + delta >= state.response.length;
       button.addEventListener("click", () => {
         const reordered = [...state.response];
@@ -183,6 +187,13 @@ function renderOrdering(card, activity) {
         state.response = reordered;
         state.checked = false;
         render();
+        const selector = "#app .order-control";
+        const sameDirection = focusUpdatedChoice(selector, (control) =>
+          control.dataset?.itemId === itemId && control.dataset?.delta === String(delta) && !control.disabled
+        );
+        if (!sameDirection) focusUpdatedChoice(selector, (control) =>
+          control.dataset?.itemId === itemId && control.dataset?.delta === String(-delta) && !control.disabled
+        );
       });
       controls.append(button);
     }
