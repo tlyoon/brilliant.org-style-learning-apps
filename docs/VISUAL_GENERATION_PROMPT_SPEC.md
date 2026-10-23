@@ -282,3 +282,7 @@ which were previously rejected despite the renderer requiring relativeAmount.
 Strict lowercase/kebab-case entity identifiers remain unchanged.
 
 The trusted state.energy_bar renderer requires the exact camelCase entity key properties.relativeAmount with a JSON numeric value between 0 and 1. Model-authored snake_case properties.relative_amount is not an equivalent and must be rejected with an actionable error, not silently renamed. Schema-valid but renderer-incompatible model replies remain unpublishable. For a failed targeted spec, the generator retains independently verified visuals and requests correction of only the failing activity.
+
+### Guidance/schema preflight
+
+Before trusting a renderer-guidance manifest, repository validation verifies example entities and required numerical semantic keys against the current visual-spec schema. Inconsistent examples, unknown renderer IDs, and missing available template guidance fail the validation gate instead of becoming repeated model-generation failures.
