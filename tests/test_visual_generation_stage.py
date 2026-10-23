@@ -123,6 +123,32 @@ class VisualGenerationStageTests(unittest.TestCase):
         self.assertIn("visualPlan", result["activities"][0])
         self.assertIn("visualSpec", result["activities"][0])
 
+    def test_invalid_spec_retries_without_replanning_and_uses_exact_schema(self):
+        with tempfile.TemporaryDirectory() as directory:
+            context = RunContext.create(Path(directory))
+            context.save_stage("source-analysis", {"sectionTitle": "Synthetic"})
+            invalid_specs = specs()
+            invalid_specs["activities"][0]["visualSpec"]["accessibility"]["reducedMotionStrategy"] = (
+                "static_fallback"
+            )
+            conversation = Conversation([plans(), invalid_specs, specs()])
+            protocol = GenerationProtocol(
+                conversation,
+                context,
+                domain_profile=resolve_domain(ROOT),
+            )
+            result = protocol._visualize_package(package())
+
+        self.assertEqual(
+            ["visual-plans", "visual-specs", "visual-specs"],
+            conversation.stages,
+        )
+        self.assertEqual(spec(), result["activities"][0]["visualSpec"])
+        self.assertIn("AUTHORITATIVE VISUAL SPEC SCHEMA:", conversation.prompts[1])
+        self.assertIn('"reducedMotionStrategy"', conversation.prompts[1])
+        self.assertIn('"kind"', conversation.prompts[1])
+        self.assertIn("static_fallback", conversation.prompts[2])
+
     def test_visual_generation_runs_after_text_semantic_audit(self):
         with tempfile.TemporaryDirectory() as directory:
             context = RunContext.create(Path(directory))

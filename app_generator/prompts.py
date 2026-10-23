@@ -238,9 +238,10 @@ def visual_specs_prompt(
     plans_document: dict[str, Any],
     catalog: dict[str, Any],
     *,
+    visual_spec_schema: dict[str, Any],
     correction_errors: list[str] | None = None,
 ) -> str:
-    """Author semantic visual specs only for plans that selected a visual."""
+    """Author semantic visual specs against the exact repository schema."""
 
     plan_by_id = {
         item.get("activityId"): item.get("visualPlan")
@@ -282,7 +283,13 @@ def visual_specs_prompt(
         "Use only semantic parameters supported by the trusted template; never emit screen coordinates, SVG, HTML, "
         "CSS, JavaScript, image pixels, animation frames, or arbitrary executable code. "
         "Answer-critical arrows, axes, relations, labels, graph shapes, geometry, and simulation laws must remain "
-        "deterministic. Keep the visual scientifically self-sufficient without generated artwork.\n\n"
+        "deterministic. Keep the visual scientifically self-sufficient without generated artwork. "
+        "The authoritative JSON Schema below is mandatory, not illustrative. Obey all required fields, "
+        "additionalProperties restrictions, enum values, patterns, and $ref/$defs; never invent fields "
+        "such as entity.role/type when the schema instead requires entity.kind. "
+        "Use optional fields only where the chosen template and learner task justify them.\n\n"
+        "AUTHORITATIVE VISUAL SPEC SCHEMA:\n"
+        + json.dumps(visual_spec_schema, ensure_ascii=False, separators=(",", ":")) + "\n\n"
         "TRUSTED VISUAL CATALOG:\n" + json.dumps(catalog, ensure_ascii=False, indent=2) + "\n\n"
         "TARGETS:\n" + json.dumps(targets, ensure_ascii=False, indent=2)
         + correction

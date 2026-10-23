@@ -104,6 +104,23 @@ When `hybrid_generated_base` or `gemini_illustration` is selected, require final
 
 Use an independent symbolic/numerical verifier such as Wolfram when equations, trajectories, graph relations, conservation invariants, signs, limiting cases, or simulation reference values would benefit from a second computational check. The verification contract is provider-neutral.
 
+## Live schema-guided visual retries
+
+The implemented visual-spec author receives the exact versioned
+content/schema/visual-spec.schema.json from the active repository, not an
+approximate field list. Its required fields, enums, property restrictions, and
+referenced definitions govern the output. Domain catalog entries still restrict
+the actual available templates and semantic parameters. Unsupported renderer
+geometry or speculative fields must be rejected rather than silently
+normalized.
+
+A visual-spec-only validation failure retains the accepted visual-plan
+checkpoint and retries the specification with deterministic findings. Failures
+that might involve visual planning invalidate both visual stages. The retry
+budget remains bounded to two batch attempts, and final errors include the
+last deterministic finding for diagnosis. Existing text activities and source
+provenance must not be changed to make a visual pass validation.
+
 ## Stage B ? activity + visual-spec author
 
 ### Task

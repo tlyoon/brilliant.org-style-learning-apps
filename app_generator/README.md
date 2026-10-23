@@ -218,6 +218,15 @@ python scripts\check_documentation_impact.py
 
 `doctor` exercises configuration/Drive/provenance and coordinated queue inspection where relevant. When no current Source-Root/domain binding exists, doctor may upload only the bounded representative textbook PDFs required for Stage-0 domain discovery to the configured Gemini API; it does **not** start activity/content generation or claim an auto content job.
 
+Visual-plan and visual-spec generation is schema-gated. Specification prompts
+embed the exact repository visual-spec schema. For specification-only validation
+errors, the generator reuses the valid planning checkpoint and makes one bounded
+specification retry with the deterministic findings. A failed pilot can be
+resumed using --resume RUN_ID in specific mode only when Git publication is
+disabled; check the preserved run/candidate and unchanged source identity
+before resuming. Do not delete saved stage responses or overwrite the
+previously installed package to bypass a failed visual gate.
+
 ## Failure handling
 
 Drive ambiguity, wrong accounts, bad downloads, domain-profile absence/ambiguity, dirty/diverged Git, invalid generated content, lease loss, coordinator health failure, or unsafe publication stop the affected operation. Auto mode preserves recoverable state/checkpoints where possible and does not claim global success when terminal failures remain.

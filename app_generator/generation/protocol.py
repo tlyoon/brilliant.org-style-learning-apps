@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter
 from collections.abc import Callable
 from copy import deepcopy
+import json
 import re
 from typing import Any, Protocol
 
@@ -324,6 +325,8 @@ class GenerationProtocol:
         if not isinstance(analysis, dict):
             raise ResponseContractError("Visual generation requires a valid source-analysis checkpoint")
         catalog = visual_generation_catalog(self.domain_profile)
+        schema_path = self.domain_profile.repo_root / "content" / "schema" / "visual-spec.schema.json"
+        visual_spec_schema = json.loads(schema_path.read_text(encoding="utf-8"))
         correction_errors: list[str] = []
 
         for attempt in range(2):
@@ -345,6 +348,7 @@ class GenerationProtocol:
                             package,
                             plans,
                             catalog,
+                            visual_spec_schema=visual_spec_schema,
                             correction_errors=correction_errors,
                         ),
                     )
@@ -358,12 +362,23 @@ class GenerationProtocol:
                     specs,
                 )
             except ResponseContractError as exc:
-                correction_errors = [str(exc)]
-                self.context.discard_stage("visual-plans")
+                finding = str(exc)
+                correction_errors = [finding]
+                # When all reported problems concern the authored specs, reuse
+                # the already parsed plan batch rather than paying to re-plan
+                # every activity. Any other failure invalidates both batches.
+                spec_only = (
+                    finding.startswith("Generated visual contract failed:")
+                    and ".visualSpec" in finding
+                    and ".visualPlan" not in finding
+                )
+                if not spec_only:
+                    self.context.discard_stage("visual-plans")
                 self.context.discard_stage("visual-specs")
                 if attempt == 1:
                     raise ResponseContractError(
-                        "Visual generation did not converge within two validated batch attempts"
+                        "Visual generation did not converge within two validated batch attempts. "
+                        f"Last deterministic finding: {finding[:1200]}"
                     ) from exc
         raise AssertionError("unreachable")
 
