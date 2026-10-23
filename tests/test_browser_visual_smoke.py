@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.audit_browser_visual import stage_bundle, local_server
+from scripts.audit_browser_visual import stage_bundle, local_server, capture_review_frame
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,6 +25,18 @@ class BrowserBundleTests(unittest.TestCase):
             self.assertTrue((output / "domain-renderers.js").is_file())
             self.assertTrue((output / "domain-styles.css").is_file())
             self.assertEqual(json.loads((output / "package.json").read_text(encoding="utf-8")), {"activities": []})
+
+    def test_review_screenshot_evidence_is_hashed_and_never_approved(self):
+        class FakeFigure:
+            screenshot_as_png = bytes.fromhex("89504E470D0A1A0A") + b"fixture"
+        with tempfile.TemporaryDirectory() as dirname:
+            root = Path(dirname)
+            result = capture_review_frame(FakeFigure(), root, "motion/a", "ms", 390, 1)
+            data = (root / result["file"]).read_bytes()
+            self.assertEqual(len(data), result["bytes"])
+            self.assertEqual(result["reviewStatus"], "unreviewed")
+            self.assertEqual(64, len(result["sha256"]))
+            self.assertNotIn("/", result["file"])
 
     def test_local_server_is_bound_to_loopback(self):
         with tempfile.TemporaryDirectory() as dirname:

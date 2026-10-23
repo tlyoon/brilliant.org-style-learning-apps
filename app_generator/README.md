@@ -250,3 +250,7 @@ Run `python scripts/visual_pilot_gate.py --run-root PATH_TO_SAVED_RUN` to combin
 ### Isolated browser-level visual smoke test
 
 For a complete local teaching package, run `python scripts/audit_browser_visual.py --package PATH`. The tool copies only needed static assets to a temporary local directory, launches a private-profile headless Chrome, serves content on 127.0.0.1, and tests every visual in en/ms/zh at desktop/mobile viewport sizes. It checks SVG nodes, aria descriptions, response controls and visual horizontal overflow, then destroys its temporary browser/profile and server. A browser DOM smoke pass is not proof of final pixel quality, WCAG screenreader compliance or academic correctness, and cannot authorize publication. Selenium and a compatible Chrome driver are needed only for this optional QA tool.
+
+### Visual review evidence capture
+
+Pass `--evidence-root NEW_PRIVATE_DIRECTORY` to `scripts/audit_browser_visual.py` to capture element-level PNGs for all real-browser locale/viewport checks. Evidence files are stored outside the repository and original production package; the manifest retains package SHA-256, individual PNG SHA-256, and explicit `unreviewed` status. This is evidence for later academic/pixel/accessibility inspection, **not** an automated pass of those review gates. The directory must not already exist and the tool refuses evidence paths inside the source repository or installed package folder.

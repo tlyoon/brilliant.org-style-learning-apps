@@ -6,11 +6,13 @@ HTTP. Does not access Gemini, production browsers, publication or user assets.
 from __future__ import annotations
 
 import argparse
+import hashlib
 from contextlib import contextmanager
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
+import re
 import shutil
 import tempfile
 from threading import Thread
@@ -53,7 +55,26 @@ def local_server(directory: Path):
         thread.join(timeout=5)
 
 
-def audit_browser(root: Path, package: Path) -> dict:
+def capture_review_frame(figure, output: Path, activity_id: str, locale: str, width: int, index: int) -> dict:
+    """Save unreviewed real-browser visual evidence, never marking it approved."""
+    safe = re.sub(r"[^a-zA-Z0-9_.-]", "_", activity_id)[:65]
+    file = f"{index:03d}-{safe}-{locale}-{width}.png"
+    data = figure.screenshot_as_png
+    if not data.startswith(b"\x89PNG"):
+        raise ValueError("browser screenshot was not PNG")
+    (output / file).write_bytes(data)
+    return {
+        "activityId": activity_id,
+        "locale": locale,
+        "viewportWidth": width,
+        "file": file,
+        "bytes": len(data),
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "reviewStatus": "unreviewed",
+    }
+
+
+def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = None) -> dict:
     from selenium import webdriver
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.ui import Select, WebDriverWait
@@ -62,6 +83,12 @@ def audit_browser(root: Path, package: Path) -> dict:
     ids = [item["id"] for item in data.get("activities", []) if item.get("visualSpec")]
     problems = []
     checks = 0
+    frames = []
+    if evidence_root is not None:
+        evidence_root = evidence_root.resolve()
+        if evidence_root.is_relative_to(root.resolve()) or evidence_root.is_relative_to(package.parent.resolve()):
+            raise ValueError("QA evidence must not overwrite repository or installed teaching assets")
+        evidence_root.mkdir(parents=True, exist_ok=False)
     with tempfile.TemporaryDirectory(prefix="visual-browser-audit-") as scratch:
         base = Path(scratch)
         bundle = base / "site"
@@ -107,6 +134,11 @@ def audit_browser(root: Path, package: Path) -> dict:
                                     raise ValueError("visual viewport horizontal overflow")
                                 if not status["choices"]:
                                     raise ValueError("visual activity lost response controls")
+                                if evidence_root is not None:
+                                    figure = driver.find_element(By.CSS_SELECTOR, "figure.physics-visual")
+                                    frames.append(capture_review_frame(
+                                        figure, evidence_root, activity_id, locale, width, checks,
+                                    ))
                             except Exception as exc:
                                 problems.append({
                                     "activityId": activity_id, "locale": locale,
@@ -114,7 +146,19 @@ def audit_browser(root: Path, package: Path) -> dict:
                                 })
             finally:
                 driver.quit()
+    if evidence_root is not None:
+        evidence = {
+            "packageSha256": hashlib.sha256(package.read_bytes()).hexdigest(),
+            "screenshots": frames,
+            "pixelQualityReviewed": False,
+            "academicAccuracyReviewed": False,
+            "approval": "pending_independent_review",
+        }
+        (evidence_root / "review-manifest.json").write_text(
+            json.dumps(evidence, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
     return {
+        "screenshotsCaptured": len(frames),
         "outcome": "fail" if problems else "browser_dom_smoke_pass",
         "visualActivities": len(ids),
         "checks": checks,
@@ -130,9 +174,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--package", required=True, type=Path)
     parser.add_argument("--repo-root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--evidence-root", type=Path, help="New private directory for unreviewed visual PNGs")
     opts = parser.parse_args()
     try:
-        report = audit_browser(opts.repo_root.resolve(), opts.package.resolve())
+        report = audit_browser(
+            opts.repo_root.resolve(), opts.package.resolve(),
+            evidence_root=opts.evidence_root,
+        )
         print(json.dumps(report, ensure_ascii=False, indent=2))
         return 0 if report["outcome"] == "browser_dom_smoke_pass" else 1
     except Exception as exc:
