@@ -242,3 +242,7 @@ Run `python scripts/audit_visual_run.py --run-root PATH_TO_SAVED_RUN` to inspect
 ### Semantic visual-render smoke test
 
 Run `node scripts/audit_visual_rendering.js --package PATH` to instantiate every visual in en/ms/zh through the trusted JavaScript renderer without modifying the package. The test checks semantic SVG/figure output, accessible descriptions, expected template identities and finite geometry attributes. It deliberately does **not** verify actual browser pixels, academic correctness, device layout or WCAG compliance. Use real browser, source-grounding, and accessibility review before release.
+
+### Visual pilot technical gate
+
+Run `python scripts/visual_pilot_gate.py --run-root PATH_TO_SAVED_RUN` to combine the read-only installed-package audit with semantic renderer tests. Output `technicalEvidenceReady=true` means only deterministic contract and synthetic DOM checks passed, not that the app is release-ready. The report *always* leaves actual browser/pixel, classroom accessibility, source-grounded academic review, and learner review as pending; publication is never authorized by this tool.
