@@ -22,6 +22,7 @@ class FakeElement {
   replaceChildren(...children) { this._text = ""; this.children = [...children]; }
   setAttribute(name, value) { this.attributes[name] = String(value); if (name === "id") this.id = String(value); }
   addEventListener(name, listener) { this.listeners[name] = listener; }
+  focus() { this.wasFocused = true; }
   click() { if (!this.disabled) this.listeners.click?.({ target: this }); }
 }
 
@@ -86,6 +87,10 @@ function choosePlacements(app, targetLabels) {
   assert.equal(groups.length, targetLabels.length);
   groups.forEach((group, index) => {
     find(group, (node) => node.tagName === "BUTTON" && node.textContent === targetLabels[index]).click();
+    assert.ok(
+      findAll(app, (node) => node.className === "choice target-choice").some((node) => node.wasFocused),
+      "classification/matching focus must survive rerender",
+    );
   });
 }
 function moveDown(app, itemLabel) {
@@ -102,6 +107,11 @@ const context = {
   document: {
     createElement: (tagName) => new FakeElement(tagName),
     querySelector: (selector) => selector === "#app" ? app : locale,
+    querySelectorAll: (selector) => {
+      if (selector === "#app .target-choice") return findAll(app, (node) => node.className === "choice target-choice");
+      if (selector === "#app .choices button") return findAll(app, (node) => node.className === "choice");
+      return [];
+    },
   },
   fetch: async () => ({ ok: true, json: async () => packageData }),
 };
@@ -120,7 +130,9 @@ setImmediate(() => {
   checkAndAdvance(app);
 
   find(app, (node) => node.tagName === "BUTTON" && node.textContent === "KEEP-ONE").click();
+  assert.equal(find(app, (node) => node.dataset?.value === "keep-one").wasFocused, true);
   find(app, (node) => node.tagName === "BUTTON" && node.textContent === "KEEP-TWO").click();
+  assert.equal(find(app, (node) => node.dataset?.value === "keep-two").wasFocused, true);
   checkAndAdvance(app);
 
   assert.equal(find(app, (node) => node.tagName === "H1").textContent, "Journey complete");

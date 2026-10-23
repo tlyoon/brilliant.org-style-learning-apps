@@ -258,3 +258,7 @@ Pass `--evidence-root NEW_PRIVATE_DIRECTORY` to `scripts/audit_browser_visual.py
 ### Keyboard focus continuity
 
 MCQ button activation regenerates the activity card; the player now restores keyboard focus to the selected replacement button. The headless Chrome visual pilot checks Enter-key selection, `aria-pressed`, check-answer enablement, and focus continuity for every visual MCQ in three locales at two viewport widths. This is a bounded keyboard smoke check, not a full screen-reader/WCAG audit.
+
+### Interactive answer-button focus after rerender
+
+For classification, matching and multi-selection activities, the player records stable item/target IDs on answer buttons and restores focus to the corresponding control after updating the activity card. This complements the MCQ focus repair. Test coverage checks actual re-rendered focus, not just answer correctness; keyboard and screenreader validation in a real browser remains a separate acceptance gate.

@@ -48,6 +48,15 @@ function element(tag, { className, text, attributes } = {}) {
   return node;
 }
 
+function focusUpdatedChoice(selector, matches) {
+  // Interaction updates rebuild the card. Return keyboard focus to the
+  // same semantic control on the new card rather than the document body.
+  const controls = document.querySelectorAll?.(selector) ?? [];
+  for (const control of controls) {
+    if (matches(control)) { control.focus?.(); return; }
+  }
+}
+
 function resetActivity() {
   state.response = null;
   state.checked = false;
@@ -118,10 +127,15 @@ function renderPlacements(card, activity) {
         text: localized(target.label),
         attributes: { "aria-pressed": String(state.response[item.id] === target.id) },
       });
+      button.dataset.itemId = item.id;
+      button.dataset.targetId = target.id;
       button.addEventListener("click", () => {
         state.response = { ...state.response, [item.id]: target.id };
         state.checked = false;
         render();
+        focusUpdatedChoice("#app .target-choice", (candidate) =>
+          candidate.dataset?.itemId === item.id && candidate.dataset?.targetId === target.id
+        );
       });
       targets.append(button);
     }
@@ -140,10 +154,12 @@ function renderSelection(card, activity) {
       text: localized(item.label),
       attributes: { "aria-pressed": String(selected) },
     });
+    button.dataset.value = item.id;
     button.addEventListener("click", () => {
       state.response = selected ? state.response.filter((id) => id !== item.id) : [...state.response, item.id];
       state.checked = false;
       render();
+      focusUpdatedChoice("#app .choices button", (candidate) => candidate.dataset?.value === item.id);
     });
     choices.append(button);
   }
