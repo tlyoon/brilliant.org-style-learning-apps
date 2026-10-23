@@ -239,6 +239,7 @@ def visual_specs_prompt(
     catalog: dict[str, Any],
     *,
     visual_spec_schema: dict[str, Any],
+    target_activity_ids: set[str] | None = None,
     correction_errors: list[str] | None = None,
 ) -> str:
     """Author semantic visual specs against the exact repository schema."""
@@ -252,6 +253,8 @@ def visual_specs_prompt(
     for activity in package.get("activities", []):
         plan = plan_by_id.get(activity.get("id"))
         if not isinstance(plan, dict) or plan.get("selectedMode") == "none":
+            continue
+        if target_activity_ids is not None and activity.get("id") not in target_activity_ids:
             continue
         targets.append({
             "activity": {

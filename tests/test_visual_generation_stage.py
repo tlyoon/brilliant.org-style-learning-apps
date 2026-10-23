@@ -1,3 +1,4 @@
+import copy
 import json
 import tempfile
 import unittest
@@ -9,6 +10,7 @@ from app_generator.generation.protocol import GenerationProtocol
 from app_generator.runtime.run_context import RunContext
 from app_generator.visuals.generation import (
     attach_visual_documents,
+    partition_visual_specs,
     selected_visual_activity_ids,
     visual_generation_catalog,
 )
@@ -71,6 +73,14 @@ class VisualGenerationStageTests(unittest.TestCase):
         )
         self.assertTrue(catalog["styleProfiles"])
         self.assertTrue(catalog["simulationModels"])
+        self.assertEqual(
+            {item["id"] for item in catalog["availableTemplates"]},
+            set(catalog["rendererGuidance"]),
+        )
+        self.assertEqual(
+            "energy-component",
+            catalog["rendererGuidance"]["state.energy_bar"]["requiredEntities"]["kind"],
+        )
 
     def test_visual_documents_attach_without_rewriting_activity_content(self):
         original = package()
@@ -148,6 +158,72 @@ class VisualGenerationStageTests(unittest.TestCase):
         self.assertIn('"reducedMotionStrategy"', conversation.prompts[1])
         self.assertIn('"kind"', conversation.prompts[1])
         self.assertIn("static_fallback", conversation.prompts[2])
+
+    def test_saved_energy_bar_failure_is_rejected_by_renderer(self):
+        item = activity()
+        item["visualPlan"] = plan("energy_bar", "state.energy_bar")
+        item["visualSpec"] = spec("energy_bar", "state.energy_bar")
+        item["visualSpec"]["states"] = [
+            {"id": "state-initial", "values": {"kinetic": 0.6}},
+            {"id": "state-later", "values": {"kinetic": 0.4}},
+        ]
+        # Matches the real Section 9.4 failure class: structurally plausible
+        # output with no energy-component entities for the energy-bar renderer.
+        item["visualSpec"]["entities"] = [
+            {"id": "kinetic", "kind": "cart", "label": {"en": "Kinetic", "ms": "Kinetik", "zh": "??"}}
+        ]
+        candidate = package()
+        candidate["activities"] = [item]
+        from app_generator.visuals.validation import visual_contract_errors
+        errors = visual_contract_errors(ROOT, candidate)
+        self.assertTrue(
+            any("energy-bar renderer requires one to four energy-component entities" in e for e in errors),
+            errors,
+        )
+
+    def test_repair_only_invalid_visual_and_reuse_other_valid_spec(self):
+        first = activity()
+        second = copy.deepcopy(first)
+        second["id"] = "visual-test-second"
+        base = package()
+        base["activities"] = [first, second]
+        first_plan = plan()
+        second_plan = plan()
+        all_plans = {"activities": [
+            {"activityId": first["id"], "visualPlan": first_plan},
+            {"activityId": second["id"], "visualPlan": second_plan},
+        ]}
+        correct_first = spec()
+        correct_second = spec()
+        invalid_second = copy.deepcopy(correct_second)
+        invalid_second["entities"][0]["kind"] = "body"
+        batch = {"activities": [
+            {"activityId": first["id"], "visualSpec": correct_first},
+            {"activityId": second["id"], "visualSpec": invalid_second},
+        ]}
+        valid, failures = partition_visual_specs(ROOT, base, all_plans, batch)
+        self.assertEqual({first["id"]}, set(valid))
+        self.assertEqual(1, len(failures))
+        self.assertIn("cart-collision renderer", failures[0])
+
+        correction = {"activities": [
+            {"activityId": second["id"], "visualSpec": correct_second},
+        ]}
+        with tempfile.TemporaryDirectory() as directory:
+            context = RunContext.create(Path(directory))
+            context.save_stage("source-analysis", {"sectionTitle": "Synthetic"})
+            conversation = Conversation([all_plans, batch, correction])
+            protocol = GenerationProtocol(
+                conversation, context, domain_profile=resolve_domain(ROOT),
+            )
+            result = protocol._visualize_package(base)
+            self.assertEqual(["visual-plans", "visual-specs", "visual-specs-repair"], conversation.stages)
+            self.assertIn(first["id"], conversation.prompts[2])
+            self.assertIn(second["id"], conversation.prompts[2])
+            self.assertNotIn('"id": "' + first["id"] + '"', conversation.prompts[2])
+            self.assertEqual(correct_first, result["activities"][0]["visualSpec"])
+            self.assertEqual(correct_second, result["activities"][1]["visualSpec"])
+            self.assertIsNone(context.load_stage("visual-specs-validated"))
 
     def test_visual_generation_runs_after_text_semantic_audit(self):
         with tempfile.TemporaryDirectory() as directory:

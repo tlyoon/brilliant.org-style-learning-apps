@@ -26,6 +26,7 @@ from app_generator.prompts import (
 from app_generator.runtime.run_context import RunContext
 from app_generator.visuals.generation import (
     attach_visual_documents,
+    partition_visual_specs,
     selected_visual_activity_ids,
     visual_generation_catalog,
 )
@@ -328,8 +329,13 @@ class GenerationProtocol:
         schema_path = self.domain_profile.repo_root / "content" / "schema" / "visual-spec.schema.json"
         visual_spec_schema = json.loads(schema_path.read_text(encoding="utf-8"))
         correction_errors: list[str] = []
+        validated_records: dict[str, dict[str, Any]] = {}
 
         for attempt in range(2):
+            plans = None
+            specs = None
+            selected_ids: list[str] = []
+            current_stage = "visual-specs"
             try:
                 plans = self._stage(
                     "visual-plans",
@@ -341,40 +347,75 @@ class GenerationProtocol:
                     ),
                 )
                 selected_ids = selected_visual_activity_ids(package, plans)
+                if not validated_records:
+                    cached = self.context.load_stage("visual-specs-validated")
+                    if isinstance(cached, dict) and isinstance(cached.get("activities"), list):
+                        # Never blindly trust a checkpoint: verify its items
+                        # against the present plans, package, and domain renderer.
+                        validated_records, _ = partition_visual_specs(
+                            self.domain_profile.repo_root, package, plans, cached
+                        )
                 if selected_ids:
-                    specs = self._stage(
-                        "visual-specs",
-                        lambda: visual_specs_prompt(
-                            package,
-                            plans,
-                            catalog,
-                            visual_spec_schema=visual_spec_schema,
-                            correction_errors=correction_errors,
-                        ),
-                    )
+                    # Keep already validated individual specifications, and
+                    # request only the remaining set on the bounded retry.
+                    remaining = set(selected_ids) - set(validated_records)
+                    if remaining:
+                        current_stage = "visual-specs-repair" if validated_records else "visual-specs"
+                        reply = self._stage(
+                            current_stage,
+                            lambda: visual_specs_prompt(
+                                package,
+                                plans,
+                                catalog,
+                                visual_spec_schema=visual_spec_schema,
+                                target_activity_ids=remaining if validated_records else None,
+                                correction_errors=correction_errors,
+                            ),
+                        )
+                        if validated_records:
+                            if not isinstance(reply, dict) or not isinstance(reply.get("activities"), list):
+                                raise ResponseContractError("Targeted visual-spec reply must contain activities")
+                            ids = [record.get("activityId") for record in reply["activities"] if isinstance(record, dict)]
+                            if len(ids) != len(remaining) or len(ids) != len(set(ids)) or set(ids) != remaining:
+                                raise ResponseContractError("Targeted visual-spec reply must cover only the failed IDs")
+                            specs = {"activities": list(validated_records.values()) + reply["activities"]}
+                        else:
+                            specs = reply
+                    else:
+                        specs = {"activities": list(validated_records.values())}
                 else:
                     specs = {"activities": []}
                     self.context.save_stage("visual-specs", specs)
-                return attach_visual_documents(
-                    self.domain_profile.repo_root,
-                    package,
-                    plans,
-                    specs,
-                )
+                result = attach_visual_documents(self.domain_profile.repo_root, package, plans, specs)
+                self.context.discard_stage("visual-specs-validated")
+                return result
             except ResponseContractError as exc:
                 finding = str(exc)
                 correction_errors = [finding]
-                # When all reported problems concern the authored specs, reuse
-                # the already parsed plan batch rather than paying to re-plan
-                # every activity. Any other failure invalidates both batches.
                 spec_only = (
                     finding.startswith("Generated visual contract failed:")
                     and ".visualSpec" in finding
                     and ".visualPlan" not in finding
-                )
+                ) or finding.startswith(("visual-specs ", "Targeted visual-spec "))
+                if spec_only and isinstance(plans, dict) and isinstance(specs, dict):
+                    try:
+                        accepted, failures = partition_visual_specs(
+                            self.domain_profile.repo_root, package, plans, specs,
+                        )
+                    except ResponseContractError:
+                        accepted, failures = {}, []
+                    if accepted and len(accepted) < len(selected_ids):
+                        validated_records = accepted
+                        self.context.save_stage(
+                            "visual-specs-validated",
+                            {"activities": list(accepted.values())},
+                        )
+                    correction_errors = failures[:12] or correction_errors
                 if not spec_only:
                     self.context.discard_stage("visual-plans")
-                self.context.discard_stage("visual-specs")
+                    self.context.discard_stage("visual-specs-validated")
+                    validated_records = {}
+                self.context.discard_stage(current_stage)
                 if attempt == 1:
                     raise ResponseContractError(
                         "Visual generation did not converge within two validated batch attempts. "

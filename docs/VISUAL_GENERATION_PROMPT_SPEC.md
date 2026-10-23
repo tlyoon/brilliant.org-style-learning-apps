@@ -270,3 +270,7 @@ Never instruct the model to:
 ## Implementation note
 
 When these prompt contracts are implemented, provider-specific resources must be versioned alongside the visual schema. Gemini is the preferred content/image/multimodal provider, Wolfram is a preferred independent computational verifier when available, and Replit may be used only to incubate new simulation templates before they are promoted into repository-owned trusted code. Tests should seed known contradictions, bad generated-image cues, unsupported-detail requests, and verifier disagreements so prompt/tool changes cannot silently weaken the anti-hallucination behavior. See `docs/VISUAL_TOOL_ORCHESTRATION.md`.
+
+## Renderer-aware partial repair (October 2026)
+
+Visual-spec prompts include the exact JSON schema and domain-owned renderer guidance for active templates. Per-activity renderer validation separates accepted visual specifications from failing ones; subsequent bounded requests target only failing activity IDs. Accepted specifications are checkpointed and revalidated before reuse. Original activities, answer logic and source provenance are never rewritten by this stage.
