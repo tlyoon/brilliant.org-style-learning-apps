@@ -246,3 +246,7 @@ Run `node scripts/audit_visual_rendering.js --package PATH` to instantiate every
 ### Visual pilot technical gate
 
 Run `python scripts/visual_pilot_gate.py --run-root PATH_TO_SAVED_RUN` to combine the read-only installed-package audit with semantic renderer tests. Output `technicalEvidenceReady=true` means only deterministic contract and synthetic DOM checks passed, not that the app is release-ready. The report *always* leaves actual browser/pixel, classroom accessibility, source-grounded academic review, and learner review as pending; publication is never authorized by this tool.
+
+### Isolated browser-level visual smoke test
+
+For a complete local teaching package, run `python scripts/audit_browser_visual.py --package PATH`. The tool copies only needed static assets to a temporary local directory, launches a private-profile headless Chrome, serves content on 127.0.0.1, and tests every visual in en/ms/zh at desktop/mobile viewport sizes. It checks SVG nodes, aria descriptions, response controls and visual horizontal overflow, then destroys its temporary browser/profile and server. A browser DOM smoke pass is not proof of final pixel quality, WCAG screenreader compliance or academic correctness, and cannot authorize publication. Selenium and a compatible Chrome driver are needed only for this optional QA tool.
