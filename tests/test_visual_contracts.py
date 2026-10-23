@@ -123,6 +123,44 @@ def package_with_visual() -> dict:
 
 
 class VisualContractTests(unittest.TestCase):
+    def test_renderer_guidance_detects_schema_and_example_disagreement(self):
+        from app_generator.visuals.guidance import renderer_guidance_errors
+        original = ROOT / "domains/university-level physics/visuals/renderer-guidance.json"
+        schema_file = ROOT / "content/schema/visual-spec.schema.json"
+        with tempfile.TemporaryDirectory() as dirname:
+            root = Path(dirname)
+            (root / "content/schema").mkdir(parents=True)
+            local_schema = root / "content/schema/visual-spec.schema.json"
+            local_schema.write_bytes(schema_file.read_bytes())
+            guidance = root / "renderer-guidance.json"
+            guidance.write_bytes(original.read_bytes())
+            all_ids = set(json.loads(guidance.read_text(encoding="utf-8"))["templates"])
+            self.assertEqual([], renderer_guidance_errors(root, guidance, all_ids))
+
+            # Regression for the real Oct-2026 energy bar failure: a schema
+            # that forbids camelCase contradicts the required example entities.
+            schema = json.loads(local_schema.read_text(encoding="utf-8"))
+            schema["$defs"]["entity"]["properties"]["properties"]["propertyNames"]["pattern"] = (
+                "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+            )
+            local_schema.write_text(json.dumps(schema), encoding="utf-8")
+            errors = renderer_guidance_errors(root, guidance, all_ids)
+            self.assertTrue(any("relativeAmount" in e for e in errors), errors)
+
+            local_schema.write_bytes(schema_file.read_bytes())
+            document = json.loads(guidance.read_text(encoding="utf-8"))
+            document["templates"]["state.energy_bar"]["exampleEntities"][0]["properties"] = {
+                "relative_amount": 0.6
+            }
+            guidance.write_text(json.dumps(document), encoding="utf-8")
+            errors = renderer_guidance_errors(root, guidance, all_ids)
+            self.assertTrue(any("missing relativeAmount" in e for e in errors), errors)
+
+            document["templates"]["unimplemented.template"] = {}
+            guidance.write_text(json.dumps(document), encoding="utf-8")
+            errors = renderer_guidance_errors(root, guidance, all_ids)
+            self.assertTrue(any("unimplemented.template" in e for e in errors), errors)
+
     def test_visual_registries_are_valid_and_fail_closed(self):
         self.assertEqual([], visual_registry_errors(ROOT))
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:

@@ -10,6 +10,7 @@ from typing import Any, Iterable
 from jsonschema import Draft202012Validator
 
 from app_generator.domains import DomainProfile, resolve_domain, resolve_package_domain
+from app_generator.visuals.guidance import renderer_guidance_errors
 
 FORBIDDEN_FIELD_NAMES = {
     "javascript", "script", "html", "css", "svg", "markup", "executable", "code",
@@ -190,6 +191,12 @@ def visual_registry_errors(repo_root: Path, domain_id: str | None = None) -> lis
             errors.append(f"visual template {template_id}: parameter_simulation requires a trusted simulationModel")
         if model_id is not None and model_id not in models:
             errors.append(f"visual template {template_id}: unknown simulationModel {model_id!r}")
+
+    guidance_path = domain.path("visuals", "templateRegistry").with_name("renderer-guidance.json")
+    errors.extend(renderer_guidance_errors(
+        repo_root, guidance_path,
+        {name for name, item in templates.items() if item.get("implementationStatus") == "available"},
+    ))
 
     if not styles:
         errors.append("visual style registry: at least one style profile is required")
