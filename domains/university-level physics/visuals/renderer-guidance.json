@@ -61,6 +61,8 @@
       },
       "rules": [
         "Each energy-component entity requires properties.relativeAmount between 0 and 1 inclusive",
+        "Exact case-sensitive field name is properties.relativeAmount (camelCase); properties.relative_amount (snake_case) is INVALID even when the value is between 0 and 1",
+        "Emit properties.relativeAmount as a JSON number, e.g. 0.6, not as a string and never omit it",
         "An energy state must be internally consistent with conservation laws; do not represent state values using entities of unrelated kinds",
         "Use source-justified qualitative relative energy bars, not arbitrary measured joules"
       ],
@@ -89,6 +91,16 @@
             "relativeAmount": 0.4
           }
         }
+      ],
+      "requiredEntityProperties": {
+        "relativeAmount": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "forbiddenPropertyAliases": [
+        "relative_amount"
       ]
     },
     "mechanics.motion_1d_slider": {

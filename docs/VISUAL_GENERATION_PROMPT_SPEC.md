@@ -274,3 +274,11 @@ When these prompt contracts are implemented, provider-specific resources must be
 ## Renderer-aware partial repair (October 2026)
 
 Visual-spec prompts include the exact JSON schema and domain-owned renderer guidance for active templates. Per-activity renderer validation separates accepted visual specifications from failing ones; subsequent bounded requests target only failing activity IDs. Accepted specifications are checkpointed and revalidated before reuse. Original activities, answer logic and source provenance are never rewritten by this stage.
+
+## Case-sensitive energy-bar semantic properties
+
+The entity.properties schema now permits camelCase semantic map keys,
+which were previously rejected despite the renderer requiring relativeAmount.
+Strict lowercase/kebab-case entity identifiers remain unchanged.
+
+The trusted state.energy_bar renderer requires the exact camelCase entity key properties.relativeAmount with a JSON numeric value between 0 and 1. Model-authored snake_case properties.relative_amount is not an equivalent and must be rejected with an actionable error, not silently renamed. Schema-valid but renderer-incompatible model replies remain unpublishable. For a failed targeted spec, the generator retains independently verified visuals and requests correction of only the failing activity.

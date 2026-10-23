@@ -163,6 +163,10 @@ class VisualContractTests(unittest.TestCase):
             "entities": [
                 {"id": "kinetic", "kind": "energy-component", "label": localized("Kinetic"), "properties": {"relativeAmount": 1.4}}
             ],
+            "states": [
+                {"id": "initial", "values": {"kinetic": 1}},
+                {"id": "final", "values": {"kinetic": 0.5}},
+            ],
             "accessibility": {"description": localized("An energy bar."), "colorIndependent": True, "reducedMotionStrategy": "not-applicable"},
             "grounding": [{"factId": "fact-cart-a", "origin": "source_fact", "appliesTo": ["kinetic"]}],
             "fallback": {"mode": "structured_interaction", "reason": "Use a textual energy comparison."},
@@ -204,6 +208,44 @@ class VisualContractTests(unittest.TestCase):
         legacy["activities"] = [activity()]
         self.assertEqual([], validator.validate_package(legacy))
         self.assertEqual([], visual_contract_errors(ROOT, legacy))
+
+    def test_energy_bar_camelcase_amount_passes_schema_and_renderer(self):
+        candidate = package_with_visual()
+        item = candidate["activities"][0]
+        item["visualPlan"] = plan("energy_bar", "state.energy_bar")
+        item["visualSpec"] = {
+            "schemaVersion": "1.0",
+            "mode": "energy_bar",
+            "template": "state.energy_bar",
+            "entities": [
+                {"id": "kinetic", "kind": "energy-component",
+                 "label": localized("Kinetic energy"),
+                 "properties": {"relativeAmount": 0.6}},
+                {"id": "elastic", "kind": "energy-component",
+                 "label": localized("Elastic potential energy"),
+                 "properties": {"relativeAmount": 0.4}},
+            ],
+            "states": [
+                {"id": "initial", "values": {"kinetic": 1, "elastic": 0}},
+                {"id": "compressed", "values": {"kinetic": 0.6, "elastic": 0.4}},
+            ],
+            "accessibility": {
+                "description": localized("Energy transfers from kinetic to elastic potential."),
+                "colorIndependent": True, "reducedMotionStrategy": "not-applicable",
+            },
+            "grounding": [
+                {"factId": "fact-cart-a", "origin": "source_fact", "appliesTo": ["kinetic"]},
+                {"factId": "fact-cart-b", "origin": "source_fact", "appliesTo": ["elastic"]},
+            ],
+            "fallback": {"mode": "structured_interaction", "reason": "Use a textual energy comparison."},
+            "validation": {"answerRelevantIds": ["kinetic", "elastic"], "forbidAnswerLeakage": True},
+        }
+        self.assertEqual([], validator.validate_package(candidate))
+        broken = copy.deepcopy(candidate)
+        for entry in broken["activities"][0]["visualSpec"]["entities"]:
+            entry["properties"]["relative_amount"] = entry["properties"].pop("relativeAmount")
+        failures = validator.validate_package(broken)
+        self.assertTrue(any("relative_amount: invalid alias" in e for e in failures), failures)
 
     def test_valid_visual_plan_and_spec_pass_repository_validation(self):
         self.assertEqual([], validator.validate_package(package_with_visual()))

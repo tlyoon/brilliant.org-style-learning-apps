@@ -181,6 +181,49 @@ class VisualGenerationStageTests(unittest.TestCase):
             errors,
         )
 
+    def test_energy_bar_snake_case_alias_fails_with_actionable_diagnostic(self):
+        domain = resolve_domain(ROOT)
+        validator = domain.load_module("validation", "visualValidatorModule").visual_spec_errors
+        good_spec = {
+            "template": "state.energy_bar",
+            "entities": [
+                {"id": "kinetic", "kind": "energy-component", "properties": {"relativeAmount": 0.6}},
+                {"id": "elastic", "kind": "energy-component", "properties": {"relativeAmount": 0.4}},
+            ],
+        }
+        self.assertEqual([], validator(good_spec, "visualSpec"))
+        invalid_spec = copy.deepcopy(good_spec)
+        # Distilled from the actual Section 9.4 model reply, without storing
+        # unreviewed generated academic content or private run artifacts.
+        for entity in invalid_spec["entities"]:
+            entity["properties"]["relative_amount"] = entity["properties"].pop("relativeAmount")
+        failures = validator(invalid_spec, "visualSpec")
+        self.assertEqual(4, len(failures), failures)
+        self.assertEqual(2, sum("invalid alias" in e for e in failures))
+        self.assertTrue(all("relativeAmount" in e for e in failures))
+        self.assertTrue(all("camelCase" in e for e in failures))
+
+    def test_energy_bar_prompt_requires_exact_case_sensitive_field_name(self):
+        from app_generator.prompts import visual_specs_prompt
+        catalog = visual_generation_catalog(resolve_domain(ROOT))
+        schema = json.loads((ROOT / "content/schema/visual-spec.schema.json").read_text(encoding="utf-8"))
+        instruction = visual_specs_prompt(
+            package(),
+            {"activities": [{"activityId": "visual-test", "visualPlan": plan("energy_bar", "state.energy_bar")}]},
+            catalog,
+            visual_spec_schema=schema,
+            target_activity_ids={"visual-test"},
+            correction_errors=[
+                "visualSpec.entities[0].properties.relative_amount: invalid alias; "
+                "use exactly properties.relativeAmount (camelCase)"
+            ],
+        )
+        self.assertIn("properties.relativeAmount", instruction)
+        self.assertIn("properties.relative_amount is INVALID", instruction)
+        self.assertIn('"relativeAmount":0.6', instruction)
+        self.assertIn('"requiredEntityProperties"', instruction)
+        self.assertIn("invalid alias", instruction)
+
     def test_repair_only_invalid_visual_and_reuse_other_valid_spec(self):
         first = activity()
         second = copy.deepcopy(first)

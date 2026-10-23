@@ -21,3 +21,5 @@ The current deterministic runtime (`physics-renderers.js`, renderer version `1.0
 ## Renderer-specific generation guidance
 
 renderer-guidance.json documents exact entity types, counts and parameter constraints for the five trusted physics renderers. Its constraints mirror validators/visual_validation.py and must be updated together with the validator and renderer. The validator remains authoritative; unsafe or scientifically inconsistent output always fails closed.
+
+The entity-properties JSON schema now accepts camelCase semantic keys while preserving strict entity-ID validation. For energy bars, the manifest explicitly requires case-sensitive properties.relativeAmount (not relative_amount), with numeric values in the inclusive range 0..1. The physics validator reports aliases as failures; correcting model instructions is preferred over silently rewriting untrusted semantic specifications.
