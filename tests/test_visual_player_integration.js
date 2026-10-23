@@ -25,6 +25,7 @@ class FakeElement {
     if (name === "id") this.id = String(value);
   }
   addEventListener(name, listener) { this.listeners[name] = listener; }
+  focus() { this.wasFocused = true; }
   click() { if (!this.disabled) this.listeners.click?.({ target: this }); }
 }
 function descendants(root) { return [root, ...root.children.flatMap(descendants)]; }
@@ -73,7 +74,13 @@ const packageData = {
 const document = {
   createElement: (tag) => new FakeElement(tag),
   createElementNS: (_namespace, tag) => new FakeElement(tag),
-  querySelector: (selector) => selector === "#app" ? app : locale,
+  querySelector: (selector) => {
+    if (selector === "#app") return app;
+    if (selector === "#app .choices button[aria-pressed='true']") {
+      return find(app, (node) => node.tagName === "BUTTON" && node.attributes["aria-pressed"] === "true");
+    }
+    return locale;
+  },
 };
 const context = {
   console,
@@ -96,5 +103,11 @@ setImmediate(() => {
   assert.ok(card.children.indexOf(visual) < card.children.indexOf(choices), "visual should appear before answer controls");
   assert.ok(find(visual, (node) => node.attributes["data-semantic-id"] === "va"));
   assert.equal(find(app, (node) => node.className === "question").textContent, "Which cart is moving to the right?");
-  console.log("Player renders deterministic visual content before the response controls without changing question flow.");
+  const firstChoice = find(app, (node) => node.className === "choice");
+  firstChoice.click();
+  const replacementChoice = find(app, (node) =>
+    node.className === "choice" && node.attributes["aria-pressed"] === "true"
+  );
+  assert.equal(replacementChoice.wasFocused, true, "MCQ rerender restores focus to selected answer");
+  console.log("Player preserves keyboard focus on the selected answer after visual MCQ rerender.");
 });

@@ -92,7 +92,14 @@ function renderMcq(card, activity) {
       attributes: { "aria-pressed": String(state.response === option.id) },
     });
     button.dataset.value = option.id;
-    button.addEventListener("click", () => { state.response = option.id; state.checked = false; render(); });
+    button.addEventListener("click", () => {
+      state.response = option.id;
+      state.checked = false;
+      render();
+      // Rerendering replaces the activated button. Restore focus to its
+      // selected replacement so keyboard users keep their place.
+      document.querySelector("#app .choices button[aria-pressed='true']")?.focus?.();
+    });
     choices.append(button);
   }
   card.append(choices);
