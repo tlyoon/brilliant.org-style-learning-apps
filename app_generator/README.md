@@ -262,3 +262,7 @@ MCQ button activation regenerates the activity card; the player now restores key
 ### Interactive answer-button focus after rerender
 
 For classification, matching and multi-selection activities, the player records stable item/target IDs on answer buttons and restores focus to the corresponding control after updating the activity card. This complements the MCQ focus repair. Test coverage checks actual re-rendered focus, not just answer correctness; keyboard and screenreader validation in a real browser remains a separate acceptance gate.
+
+### Keyboard focus after ordering moves
+
+Moving an item up or down replaces its entire ordering row. The player now maintains semantic item/direction identifiers and focuses the new enabled direction control for that item. When the original move direction becomes disabled at a list boundary, the opposite enabled move button receives focus. DOM tests exercise repeated reorders, focus continuity and this boundary fallback without changing ordering answer scoring.
