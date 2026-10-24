@@ -270,3 +270,7 @@ Moving an item up or down replaces its entire ordering row. The player now maint
 ### Autonomous academic QA decision policy
 
 Academic verification gates use PASS, FAIL, or REVIEW_REQUIRED. PASS requires explicit independent deterministic or source-verified evidence, never only the original generation model report. Missing evidence remains REVIEW_REQUIRED; a verified failure takes precedence. This evaluation never marks human review as performed or authorizes publication. See app_generator/validation/academic_qa.py.
+
+### Independent academic QA triage (Section 9.4 pilot)
+
+Run `python scripts/audit_academic_qa.py --package PATH_TO_INSTALLED_PACKAGE`. An optional `--source-pdf PRIVATE_CONTROLLED_PDF_PATH` permits read-only SHA-256 identity checking; it does NOT upload or publish the PDF. The tool checks source-file identity, structural answer integrity, numerical collision witness availability, multilingual completeness and visual renderer contracts. PASS requires independently verified evidence for every academic gate; incomplete evidence is REVIEW_REQUIRED. A verified contradiction is FAIL. The report explicitly preserves humanReviewed=false and publicationAuthorized=false. It does not claim that syntactic validation, file hashes or model-based semantic reviews establish textbook accuracy. Next development work must provide trusted source-bound crosschecks and independent scientific/translation verification before academic PASS can be claimed.
