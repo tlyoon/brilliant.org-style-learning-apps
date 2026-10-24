@@ -59,3 +59,12 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Targeted temporary-Git corruption and missing-evidence tests pass. Full suite: 476 Python tests OK, one intentional skip; lint and 16 packages passed.
 - Controlled Section 9.4 Drive source ID 1qFtZ7ZR5RFqLSkVl3VExo_-z9rXzNP0j is accessible as source.pdf (985648 bytes according to metadata); exact bytes, SHA and academic claims remain to be independently checked.
 - Next: obtain exact source PDF read-only, verify SHA and develop independent source-grounded academic checks. Preserve source outside public repository.
+
+
+## Source retrieval and page anchor verification (24 Oct 2026)
+- Source PDF recovered **read-only** from exact manifest Drive file ID 1qFtZ7ZR5RFqLSkVl3VExo_-z9rXzNP0j using existing authorized account/session (noninteractive memory-only refresh; no token file overwritten). Private Yoga6 path: %LOCALAPPDATA%/BrilliantContentGenerator/academic-source-evidence/section94-08c450e780e95aab.pdf.
+- Actual PDF size 985648 bytes and computed SHA-256 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578 exactly match the controlled source manifest. This proves source identity, **not the correctness of any activity**.
+- Local pdftotext extraction: 9 pages (some font warnings), no source text was committed. Additional semantic/photo verification is still necessary for equations and figures.
+- The next stacked draft branch feature/source-passage-anchor-qa-20261024 adds exact-hash and 1-based PDF-page quotation matching in app_generator/validation/source_passages.py and scripts/audit_source_passages.py, with negative tests and no raw book text in standard output.
+- Real installed pilot assessment: 18 activities, **0 passage anchors available**, 18 REVIEW_REQUIRED for source passage verification, 0 proved citation FAIL; no academic pass. Future autonomous generation should provide source-specific evidence without public copyrighted quotations.
+- Parent PR #127 head 79bfc3105391958a43303b747eb769149392a181. Verify new PR and hosted CI after push; normal release still off.
