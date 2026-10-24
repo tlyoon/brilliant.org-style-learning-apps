@@ -15,3 +15,5 @@
 - Authorization: Yoga6 RDC + GitHub draft PRs, no paid API calls or public release without verified project gate.
 
 | BSA-20261024-003 | Standalone PublicPagesPublisher.publish can be reached from auto-recovery outside run_generation's academic gate | Independent exact-package check at public publisher entry point, before any network mutation; replay of actual unapproved 9.4 package fails and captures SHA-bound receipt | Tested locally (472 Python tests, 1 skip); draft PR awaiting hosted CI; source Git auto-merge recovery still requires separate guard |
+
+| BSA-20261024-004 | Source-branch GitPublisher.recover_handoff could auto-merge without independent academic verification | Common _finalize_pr guard binds package and manifest to candidate Git blobs and requires academic PASS; missing/altered temp-Git tests | Tested locally; hosted CI pending. Missing branch package blocks automatic recovery, not a completed publish |

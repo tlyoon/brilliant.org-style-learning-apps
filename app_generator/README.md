@@ -300,3 +300,14 @@ state directory. A missing state directory or unresolved result blocks public
 merge *before* remote Git operations. Test-only fake publisher/recovery
 fixtures may mock independently validated academic evidence to isolate Git
 idempotency, but production may never substitute such fixtures for proof.
+
+
+### Academic gate for source-branch handoff recovery
+
+An interrupted distributed run can leave a committed source job branch without
+a completed publish phase. Automatic Git merge is now gated at the common
+PR-finalization path, not just at the normal generator or Pages publisher. Both
+the candidate branch's package and source-manifest Git blobs must match local
+files before independent academic QA is consulted. Unresolved or mismatched
+source handoffs cannot be auto-merged. Draft review branches remain available.
+Blocked recovery must not blindly regenerate an ambiguous Gemini request.
