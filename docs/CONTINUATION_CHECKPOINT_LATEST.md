@@ -95,3 +95,15 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Reused controlled source PDF SHA 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578 and exact immutable installed package binding. Private versioned witness path academic-source-evidence/section94-independent-physics-witnesses-v2-20261024.json (never Git commit).
 - Actual private report source: academic-source-evidence/section94-bounded-physics-report-v2-20261024.json, 9/9 MCQ propositions verified, 0 failed witnesses, 0/18 full academic activity PASS. Nine interactive questions remain to be model-verified.
 - Main safety invariant: no model self-certification or domain-wide PASS. All five academic QA gate categories remain REVIEW_REQUIRED; protected release disabled.
+
+
+## Interactive model verification milestone ? 24 October 2026
+- Branch feature/interactive-physics-model-audit-20261024 on Yoga6, descendant of PR #131 head 9415760becfc1228954b0da5130698c6872eae75. Verify new draft PR/head SHA and hosted CI after push. Isolated checkout only; original materials unchanged.
+- Exact controlled PDF SHA 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578; installed package canonical SHA 2ffe799784c5492b5b8cf2062f7ffaa40264e3933820349b506c39fb651a01f7.
+- Reference engine app_generator/validation/interactive_physics.py computes exact collision models and checks all nine installed classification, selection, matching, ordering keys. Real private receipts verify exact PDF page/source passage and localized narrative text hash.
+- Real evidence: 8/9 bounded interaction model agreements, 1/9 physics qualifier REVIEW_REQUIRED, 0 mapping discrepancies; nine earlier MCQ bounded subclaims pass. All 18 installed activities remain REVIEW_REQUIRED for complete academic approval, publicationAuthorized=false.
+- Private integrated QA output: %LOCALAPPDATA%/BrilliantContentGenerator/academic-source-evidence/section94-integrated-physics-mcq-interactions-20261024.json. Do not commit private quotes/source/credentials.
+- Incident BSA-20261024-007: checked-in repository Section9.4 fixture IDs do not match installed pilot. Synthetic test fixtures constructed independently; actual installed evidence checked separately.
+- Incident BSA-20261024-008: impulse approximation question feedback says momentum strictly conserved despite nonzero external impulses; exact counterexample gives impulse 1/100000. Candidate fix is pending, not a full academic PASS.
+- Incident BSA-20261024-009: potential recertification of changed multilingual wording via newly signed receipts is blocked by immutable localized narrative SHA reference digests; new wording requires new review.
+- Next smallest safe action: source-grounded review-only candidate for qualifier and meaningful EN/MS/ZH/visual QA. Preserve installed package and release restrictions.
