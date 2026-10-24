@@ -101,6 +101,7 @@ class PublicPublisherTests(unittest.TestCase):
             public_deploy_base_url="https://example.github.io/pages/",
             public_deploy_base_branch="main",
             public_deploy_branch_prefix="automation/public-release",
+            state_dir=Path(tempfile.gettempdir()) / "academic-publisher-test-state",
         )
 
         class Publisher(PublicPagesPublisher):
@@ -109,9 +110,13 @@ class PublicPublisherTests(unittest.TestCase):
                     return '[{"url":"https://github.com/example/pages/pull/7","state":"MERGED","mergedAt":"2026-10-02T00:00:00Z"}]'
                 raise AssertionError(arguments)
 
-        result = Publisher(config).publish(
-            package_path=package, subchapter_id="9.1", ensure_lease=lambda: None,
-        )
+        # This fixture tests deterministic already-merged PR recovery, not
+        # whether a toy source package can independently pass academic QA.
+        with patch("app_generator.publishing.public.enforce_academic_release_gate") as academic_gate:
+            result = Publisher(config).publish(
+                package_path=package, subchapter_id="9.1", ensure_lease=lambda: None,
+            )
+        academic_gate.assert_called_once()
         self.assertTrue(result.merged)
         self.assertEqual("automation/public-release/section-9-1-" + result.package_sha256[:12], result.branch)
         self.assertEqual("https://example.github.io/pages/section-9-1/", result.public_url)
