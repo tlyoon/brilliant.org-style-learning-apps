@@ -266,3 +266,7 @@ For classification, matching and multi-selection activities, the player records 
 ### Keyboard focus after ordering moves
 
 Moving an item up or down replaces its entire ordering row. The player now maintains semantic item/direction identifiers and focuses the new enabled direction control for that item. When the original move direction becomes disabled at a list boundary, the opposite enabled move button receives focus. DOM tests exercise repeated reorders, focus continuity and this boundary fallback without changing ordering answer scoring.
+
+### Autonomous academic QA decision policy
+
+Academic verification gates use PASS, FAIL, or REVIEW_REQUIRED. PASS requires explicit independent deterministic or source-verified evidence, never only the original generation model report. Missing evidence remains REVIEW_REQUIRED; a verified failure takes precedence. This evaluation never marks human review as performed or authorizes publication. See app_generator/validation/academic_qa.py.
