@@ -13,6 +13,7 @@ from typing import Callable, Iterable
 
 from app_generator.config import GeneratorConfig
 from app_generator.errors import GitPublishError
+from app_generator.runtime.academic_release import enforce_academic_release_gate
 
 
 _REMOTE_RETRY_DELAYS = (0, 2, 5, 10)
@@ -267,7 +268,59 @@ class GitPublisher:
         if status.get("state") != "MERGED" or not status.get("mergedAt"):
             raise GitPublishError("GitHub did not confirm that the generated-content pull request merged")
 
+    def _require_academic_source_merge_evidence(self, branch: str) -> None:
+        """Refuse an automatic source merge without exact branch-bound academic proof.
+
+        A local package from another run or the base branch cannot stand in
+        for the recoverable handoff. The checked-out source and source
+        manifest must both match the candidate Git branch's exact blobs.
+        """
+        package = getattr(self.config, "package_path", None)
+        state_dir = getattr(self.config, "state_dir", None)
+        if not isinstance(package, Path) or not package.is_file() or not isinstance(state_dir, Path):
+            raise GitPublishError(
+                "Automatic source merge blocked: exact local package/state evidence unavailable"
+            )
+        try:
+            relative = package.resolve().relative_to(self.repo.resolve()).as_posix()
+        except ValueError as exc:
+            raise GitPublishError("Automatic source merge package is outside repository") from exc
+
+        try:
+            data = json.loads(package.read_text(encoding="utf-8"))
+            manifest_path = (self.repo / data["sourceManifest"]).resolve()
+            manifest_relative = manifest_path.relative_to(self.repo.resolve()).as_posix()
+        except (ValueError, KeyError, TypeError, json.JSONDecodeError, OSError) as exc:
+            raise GitPublishError("Automatic source merge has invalid or unsafe manifest identity") from exc
+        if not manifest_path.is_file():
+            raise GitPublishError("Automatic source merge lacks the exact source manifest")
+
+        for local_path, git_relative in ((package, relative), (manifest_path, manifest_relative)):
+            local_blob = self._run(["git", "hash-object", "--", str(local_path)]).strip()
+            # Prefer the remote branch whenever its tracking ref exists.
+            # A matching local branch must not override a mismatching
+            # remotely submitted handoff.
+            remote_ref = f"refs/remotes/{self.config.git_remote}/{branch}"
+            local_ref = f"refs/heads/{branch}"
+            remote_sha = self._run(["git", "rev-parse", "--verify", "--quiet", remote_ref], check=False).strip()
+            candidate_ref = remote_ref if remote_sha and "fatal:" not in remote_sha else local_ref
+            committed_blob = self._run(
+                ["git", "rev-parse", "--verify", f"{candidate_ref}:{git_relative}"],
+                check=False,
+            ).strip()
+            if committed_blob != local_blob:
+                raise GitPublishError(
+                    f"Automatic source merge blocked: exact branch content unavailable or mismatched: {git_relative}"
+                )
+        enforce_academic_release_gate(
+            self.repo, package, state_dir / "academic-source-merge-gates" / branch.replace("/", "_")
+        )
+
     def _finalize_pr(self, branch: str, *, subchapter: str, package_id: str) -> tuple[str, bool]:
+        # Recovery and ordinary auto publishing converge here. Prevent a
+        # remote PR create/reopen/merge before exact branch-bound verification.
+        if self.config.git_auto_merge:
+            self._require_academic_source_merge_evidence(branch)
         info = self._ensure_pr(branch, subchapter=subchapter, package_id=package_id)
         pr_url = str(info.get("url", "")).strip()
         if not pr_url:

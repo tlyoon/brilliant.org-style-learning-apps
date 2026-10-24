@@ -48,3 +48,14 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Actual Section 9.4 negative direct-publisher test proves rejection before remote command and records exact-package QA status; success-path PR-recovery fixture explicitly mocks independent QA to isolate PR idempotency logic.
 - Local full suite: 472 Python tests, one skipped; lint and 16-package validation pass. This branch was developed with publication disabled, no original package edits and no remote merge.
 - Source-branch recovery path in app_generator/runtime/auto.py may auto-merge source content through GitPublisher.recover_handoff before the later public publisher guard; inspect separately, do not claim it resolved.
+
+
+## New owned unit: source-handoff merge guard (24 Oct 2026)
+- Parent: PR #126, head 62f4f6b42bfdd9298de4f959f9d41656dd6509cc; CI successful.
+- New isolated descendant: feature/guard-source-handoff-automerge-20261024. Verify draft PR and hosted CI after push; no original teaching or public assets changed.
+- Incident BSA-20261024-004: GitPublisher.recover_handoff converges into _finalize_pr, potentially auto-merging a previously generated source branch before academic verification. The guard now runs at the normal and recovery source PR finalization boundary.
+- For automatic source merge, exact local package and manifest must match Git blob identities on the candidate branch (remote tracking ref preferred). Enforce academic PASS for that package before any create/reopen/merge PR call. Absent, mismatched or REVIEW_REQUIRED evidence blocks.
+- Draft-only handoffs remain possible. Recovery without a locally available exact package remains safely blocked and may require branch-bound verification; never blindly repeat the Gemini request or declare generated.
+- Targeted temporary-Git corruption and missing-evidence tests pass. Full suite: 476 Python tests OK, one intentional skip; lint and 16 packages passed.
+- Controlled Section 9.4 Drive source ID 1qFtZ7ZR5RFqLSkVl3VExo_-z9rXzNP0j is accessible as source.pdf (985648 bytes according to metadata); exact bytes, SHA and academic claims remain to be independently checked.
+- Next: obtain exact source PDF read-only, verify SHA and develop independent source-grounded academic checks. Preserve source outside public repository.
