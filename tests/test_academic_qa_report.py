@@ -17,6 +17,15 @@ class AcademicReportTests(unittest.TestCase):
         self.assertEqual(18,result["activityCount"])
         self.assertEqual("REVIEW_REQUIRED",result["gates"]["source_fidelity"])
 
+    def test_bounded_evidence_does_not_override_full_academic_qa(self):
+        from unittest.mock import patch
+        source=ROOT / "content/chapter-9/section-9-4/package.json"
+        evidence={"boundedPropositionsVerified":6,"failedWitnesses":0,"academicActivitiesPassed":0}
+        with patch("scripts.audit_academic_qa.audit_proofs",return_value=evidence):
+            result=academic_triage(ROOT,source,ROOT / "tests/test_academic_qa_report.py",physics_receipts={})
+        self.assertEqual(6,result["boundedPhysicsEvidence"]["boundedPropositionsVerified"])
+        self.assertNotEqual("PASS",result["academicQA"])
+        self.assertFalse(result["publicationAuthorized"])
     def test_bad_mcq_fails_without_touching_files(self):
         source=ROOT/"content/chapter-9/section-9-4/package.json"
         with tempfile.TemporaryDirectory() as d:

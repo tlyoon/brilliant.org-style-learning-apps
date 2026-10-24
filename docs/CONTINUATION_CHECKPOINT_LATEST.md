@@ -76,3 +76,14 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Incident BSA-20261024-006: directly invoking new scripts by filename loaded an older editable package rather than current checkout and failed with ModuleNotFoundError. Both source-audit CLIs now prepend current repository root to sys.path; isolated (-I) direct execution regression added. Actual private output produced successfully after fix.
 - Private report: %LOCALAPPDATA%/BrilliantContentGenerator/academic-source-evidence/section94-page-candidates-20261024.json. Use only for navigation; never treat lexical similarity as source or academic PASS.
 - Verify new draft PR URL/head/CI after commit and push. Continue toward independently verified source passages and mathematical/translation proofs.
+
+
+## Bounded independent Section 9.4 mathematical evidence (24 Oct 2026)
+- New isolated branch: feature/physics-proof-receipts-section94-20261024, based on PR #129, head 52fba0e4cc52b34bbabbe155a0a91baec07a3aef; verify descendant PR and hosted CI after push.
+- Controlled original 985648-byte PDF matched SHA 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578. Actual installed package was bound by canonical JSON SHA 2ffe799784c5492b5b8cf2062f7ffaa40264e3933820349b506c39fb651a01f7.
+- Private witness file in academic-source-evidence/section94-independent-physics-witnesses-20261024.json contains 6 curated numeric cases with page-localized original PDF quotations; it must NOT be committed.
+- app_generator/validation/physics_proofs.py uses exact rational numbers, validates model inputs, source quotations and package/content identities, and computes independent claims for equal-mass sticking and elastic exchange, Newton cradle, extreme mass ratio embedding, ballistic pendulum two-phase mechanics, and ideal spring energy transfer.
+- Actual run: **6/18 bounded propositions verified, 0 failed witnesses, 0/18 full academic PASS**. This is evidence of mathematical consistency of selected propositions only, not validation of every answer, distractor, translation or visual, and does not change release authorization.
+- scripts/audit_physics_proofs.py and optional --physics-receipts on scripts/audit_academic_qa.py reproduce and integrate bounded results. CLI output and saved report never expose textbook excerpts.
+- Portable adversarial tests cover invalid masses, numeric limits, altered source hashes, changed exact package, wrong source page and broken witnesses. Integrated real QA report remains academicQA REVIEW_REQUIRED and publicationAuthorized=false.
+- Remaining substantive work: independently verify remaining 12 activities and complete source-backed English/distractor, visual-semantic and Malay/Chinese meaning checks. Do not infer any activity-wide PASS from these bounded proofs.
