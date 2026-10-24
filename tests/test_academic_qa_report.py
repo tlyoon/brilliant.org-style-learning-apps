@@ -53,6 +53,25 @@ class AcademicReportTests(unittest.TestCase):
         self.assertEqual("FAIL",report["academicQA"])
         self.assertFalse(report["publicationAuthorized"])
 
+    def test_impulse_semantic_evidence_keeps_full_academic_qa_unresolved(self):
+        from unittest.mock import patch
+        source=ROOT/"content/chapter-9/section-9-4/package.json"
+        with patch("scripts.audit_academic_qa.audit_impulse_candidate",return_value={
+            "boundedOptionModelsVerified":4,
+            "optionQualifiersReviewRequired":1,
+            "completeMultilingualSemanticAgreement":False,
+            "academicQA":"REVIEW_REQUIRED",
+            "publicationAuthorized":False,
+        }):
+            report=academic_triage(
+                ROOT,source,ROOT/"tests/test_academic_qa_report.py",
+                impulse_review_path=ROOT/"tests/test_academic_qa_report.py",
+            )
+        self.assertEqual(4,report["trilingualDistractorEvidence"]["boundedOptionModelsVerified"])
+        self.assertEqual(1,report["trilingualDistractorEvidence"]["optionQualifiersReviewRequired"])
+        self.assertNotEqual("PASS",report["academicQA"])
+        self.assertFalse(report["publicationAuthorized"])
+
     def test_bad_mcq_fails_without_touching_files(self):
         source=ROOT/"content/chapter-9/section-9-4/package.json"
         with tempfile.TemporaryDirectory() as d:

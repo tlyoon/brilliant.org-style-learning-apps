@@ -119,3 +119,13 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - v2 real-pilot validation: 18 activities, 17 untouched, correct answer selections unchanged, original objective and visual plan untouched, prior semantic digest invalidated, all visual-contract errors zero; tri-lingual surface remains REVIEW_REQUIRED (no fabricated semantic approval).
 - Current global QA remains 9/9 MCQ bounded proofs, 8/9 interactive bounded models, 1 impulse qualifier held for new-content review. 0/18 full academic PASS; protected merge/publication remain disabled.
 - Smallest safe next action: inspect the private v2 candidate's complete localized semantics, distractors and visual output; create new source-bound proof receipts tied to v2 canonical hash and content digest (do not reuse the old approvals), and promote only when independent per-activity evidence suffices. No manual academic approval is automatically required.
+
+
+## New bounded multilingual/distractor QA unit ? 2026-10-25 Asia/Kuala_Lumpur
+- Parent PR #133 exact head 1c206e5de04f493eabfad25ed203870447b9953d, CI success. New owned branch feature/impulse-multilingual-distractor-check-20261025 on Yoga6; verify descendant PR and hosted CI after push.
+- Exact controlled PDF SHA 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578; private review-only v2 candidate file SHA 31a52ab461c62d0d9c7e244290b8ec94f3dd105f8056f2a8bb7db2b61cd5967a.
+- Added independent exact-rational counterexamples for momentum/KE/impulse, item-by-item selected and distractor checks, and 21 bounded EN/MS/ZH narrative concept/formula checks. Verified 4/5 bounded item models, one item-large-internal-forces REVIEW_REQUIRED due overstrong universal individual-force comparison; 21/21 localized concept checks present, complete translation meaning unverified.
+- Private report: %LOCALAPPDATA%/BrilliantContentGenerator/academic-source-evidence/impulse-v2-multilingual-distractor-audit-20261025.json. No private PDF, source excerpts, candidate content, or auth files committed.
+- Integrated optional --impulse-review into academic triage without altering the FAIL > REVIEW_REQUIRED > PASS precedence. Real private v2 package returns academicQA=REVIEW_REQUIRED, publicationAuthorized=false, 0/18 full academic PASS.
+- Known false-positive patterns fixed: Malay perlanggaran contains anggaran substring, and Greek delta changes case under Unicode normalization. Do not treat bounded lexical checks as complete language equivalence.
+- Next smallest safe action is an immutable private trilingual v3 correction of item-large-internal-forces, with new version-bound academic proofs; retain old v2 evidence, never overwrite installed package or auto-publish.
