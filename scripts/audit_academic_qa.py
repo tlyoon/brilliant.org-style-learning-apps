@@ -19,11 +19,12 @@ from app_generator.validation.collision_crosscheck import check_collision_witnes
 from app_generator.validation.language_qa import check_multilingual_surface
 from app_generator.validation.source_identity import verify_source_identity
 from app_generator.validation.physics_proofs import audit_proofs
+from app_generator.validation.interactive_physics import audit_interaction_models
 from app_generator.visuals.validation import visual_contract_errors
 
 def academic_triage(
     repo: Path, package_path: Path, source_pdf: Path | None = None,
-    *, physics_receipts: dict | None = None,
+    *, physics_receipts: dict | None = None, interaction_receipts: dict | None = None,
 ) -> dict:
     package = json.loads(package_path.read_text(encoding="utf-8"))
     activities = package.get("activities", [])
@@ -74,6 +75,21 @@ def academic_triage(
             else result["academicQA"]
         )
         result["publicationAuthorized"] = False
+    if interaction_receipts is not None:
+        if not source_pdf or not source_pdf.is_file():
+            raise ValueError("interactive physics models require controlled source PDF")
+        manifest=json.loads(manifest_path.read_text(encoding="utf-8"))
+        if (len(manifest.get("sources",[])) != 1 or
+            manifest["sources"][0].get("sha256") != manifest.get("sha256")):
+            raise ValueError("academic QA source manifest ambiguous for interactive evidence")
+        evidence=audit_interaction_models(package,source_pdf,manifest["sha256"],
+                                          interaction_receipts)
+        result["interactivePhysicsEvidence"]=evidence
+        if evidence["modelDiscrepancies"]:
+            result["academicQA"]="FAIL"
+        # Bounded physics models never by themselves imply correctness of
+        # question prose, distractor meaning, visual content or translations.
+        result["publicationAuthorized"]=False
     result["nextAction"] = ("Correct confirmed defects before any release" if result["academicQA"] == "FAIL" else
         "Supply independent textbook-grounding, answer and multilingual evidence for unresolved gates")
     return result
@@ -85,12 +101,16 @@ def main() -> int:
     parser.add_argument("--source-pdf",type=Path,default=None)
     parser.add_argument("--physics-receipts",type=Path,default=None,
                         help="private source-bound exact-arithmetic proof receipts")
+    parser.add_argument("--interaction-receipts",type=Path,default=None,
+                        help="private source-bound interactive answer model receipts")
     args=parser.parse_args()
     try:
         receipt_data=(json.loads(args.physics_receipts.read_text(encoding="utf-8"))
                       if args.physics_receipts else None)
+        interactions=(json.loads(args.interaction_receipts.read_text(encoding="utf-8"))
+                      if args.interaction_receipts else None)
         report=academic_triage(args.repo_root.resolve(),args.package.resolve(),args.source_pdf,
-                               physics_receipts=receipt_data)
+                               physics_receipts=receipt_data,interaction_receipts=interactions)
     except (OSError,ValueError,TypeError,json.JSONDecodeError) as exc:
         print(json.dumps({"academicQA":"REVIEW_REQUIRED","publicationAuthorized":False,
                           "error":str(exc)[:600]}))

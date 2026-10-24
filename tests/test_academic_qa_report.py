@@ -26,6 +26,33 @@ class AcademicReportTests(unittest.TestCase):
         self.assertEqual(6,result["boundedPhysicsEvidence"]["boundedPropositionsVerified"])
         self.assertNotEqual("PASS",result["academicQA"])
         self.assertFalse(result["publicationAuthorized"])
+    def test_interaction_model_evidence_does_not_fabricate_academic_pass(self):
+        from unittest.mock import patch
+        source=ROOT/"content/chapter-9/section-9-4/package.json"
+        with patch("scripts.audit_academic_qa.audit_interaction_models",return_value={
+            "boundedModelsVerified":8,"qualifierReviewRequired":1,
+            "modelDiscrepancies":0,"fullAcademicActivitiesPassed":0,
+            "academicQA":"REVIEW_REQUIRED",
+        }):
+            report=academic_triage(ROOT,source,ROOT/"tests/test_academic_qa_report.py",
+                                   interaction_receipts={"private":"fixture"})
+        self.assertEqual(8,report["interactivePhysicsEvidence"]["boundedModelsVerified"])
+        self.assertEqual(1,report["interactivePhysicsEvidence"]["qualifierReviewRequired"])
+        self.assertNotEqual("PASS",report["academicQA"])
+        self.assertFalse(report["publicationAuthorized"])
+
+    def test_confirmed_interaction_model_disagreement_fails_academic_qa(self):
+        from unittest.mock import patch
+        source=ROOT/"content/chapter-9/section-9-4/package.json"
+        with patch("scripts.audit_academic_qa.audit_interaction_models",return_value={
+            "boundedModelsVerified":7,"qualifierReviewRequired":1,
+            "modelDiscrepancies":1,"fullAcademicActivitiesPassed":0,
+        }):
+            report=academic_triage(ROOT,source,ROOT/"tests/test_academic_qa_report.py",
+                                   interaction_receipts={"private":"fixture"})
+        self.assertEqual("FAIL",report["academicQA"])
+        self.assertFalse(report["publicationAuthorized"])
+
     def test_bad_mcq_fails_without_touching_files(self):
         source=ROOT/"content/chapter-9/section-9-4/package.json"
         with tempfile.TemporaryDirectory() as d:
