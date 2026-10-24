@@ -17,3 +17,22 @@ The private optional anchors file is a JSON array of records such as:
 - The tool emits only activity identifiers, page indexes, excerpt hashes and status; never raw controlled PDF excerpts. Do not commit the controlled textbook or private quotation files.
 - For Section 9.4, the exact 985,648-byte controlled PDF was independently fetched read-only from Drive and SHA-256 matched the source manifest: 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578. Text extraction gave nine pages. The installed package has 18 activities but no page-specific quotation receipts, hence 0 VERIFIED_TEXT_ONLY, 18 REVIEW_REQUIRED and zero demonstrated citation defects.
 - The smallest next step is to derive passage-level activity citations from the controlled source and verify each under this contract. Do not substitute broad sourceLocation fields or generative model self-attestation.
+
+
+## Automated page candidates, not academic citations
+
+When no source page annotations exist, use the local command:
+    python scripts/suggest_source_pages.py --package PACKAGE --source-manifest MANIFEST --pdf PRIVATE_SOURCE --out PRIVATE_REPORT
+
+This ranks up to three likely PDF page indexes for each English activity
+using deterministic keyword overlap/BM25 on the hash-verified source. It
+does NOT create a quoted source anchor, does not check an answer's
+physics or translation, and never grants academic PASS. It emits no raw
+copyrighted text. The report must be stored outside the Git repository;
+an existing report will not be overwritten.
+
+Real Section 9.4 QA, 2026-10-24: all 18 generated activities received
+candidate pages; 0/18 academic results were verified. Next workflow:
+find a specific supporting passage, confirm page/exact quote with the
+page-bound verifier, and independently check the interpretation and answer.
+Candidate pages are navigation aids, not affirmative evidence.
