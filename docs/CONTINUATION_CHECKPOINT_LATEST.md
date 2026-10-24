@@ -68,3 +68,11 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - The next stacked draft branch feature/source-passage-anchor-qa-20261024 adds exact-hash and 1-based PDF-page quotation matching in app_generator/validation/source_passages.py and scripts/audit_source_passages.py, with negative tests and no raw book text in standard output.
 - Real installed pilot assessment: 18 activities, **0 passage anchors available**, 18 REVIEW_REQUIRED for source passage verification, 0 proved citation FAIL; no academic pass. Future autonomous generation should provide source-specific evidence without public copyrighted quotations.
 - Parent PR #127 head 79bfc3105391958a43303b747eb769149392a181. Verify new PR and hosted CI after push; normal release still off.
+
+
+## Source-page retrieval pilot and direct-CLI regression (24 Oct 2026)
+- Descendant branch feature/private-source-page-candidates-20261024 stacked on PR #128 head e91a1b15c2f54e7185ed5d8fc9471ef07583d18c.
+- Source-page suggester uses the exact SHA-verified private Section 9.4 PDF, per-page lexical overlap and deterministic ranking; saves hints outside Git. All 18 activities received page suggestions; zero academic verdicts passed. No quoted textbook excerpts, source content or credentials written into the repository.
+- Incident BSA-20261024-006: directly invoking new scripts by filename loaded an older editable package rather than current checkout and failed with ModuleNotFoundError. Both source-audit CLIs now prepend current repository root to sys.path; isolated (-I) direct execution regression added. Actual private output produced successfully after fix.
+- Private report: %LOCALAPPDATA%/BrilliantContentGenerator/academic-source-evidence/section94-page-candidates-20261024.json. Use only for navigation; never treat lexical similarity as source or academic PASS.
+- Verify new draft PR URL/head/CI after commit and push. Continue toward independently verified source passages and mathematical/translation proofs.
