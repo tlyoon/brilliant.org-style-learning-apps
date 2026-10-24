@@ -20,11 +20,13 @@ from app_generator.validation.language_qa import check_multilingual_surface
 from app_generator.validation.source_identity import verify_source_identity
 from app_generator.validation.physics_proofs import audit_proofs
 from app_generator.validation.interactive_physics import audit_interaction_models
+from app_generator.validation.impulse_semantics import audit_impulse_candidate
 from app_generator.visuals.validation import visual_contract_errors
 
 def academic_triage(
     repo: Path, package_path: Path, source_pdf: Path | None = None,
     *, physics_receipts: dict | None = None, interaction_receipts: dict | None = None,
+    impulse_review_path: Path | None = None,
 ) -> dict:
     package = json.loads(package_path.read_text(encoding="utf-8"))
     activities = package.get("activities", [])
@@ -90,6 +92,18 @@ def academic_triage(
         # Bounded physics models never by themselves imply correctness of
         # question prose, distractor meaning, visual content or translations.
         result["publicationAuthorized"]=False
+    if impulse_review_path is not None:
+        if source_pdf is None or not source_pdf.is_file():
+            raise ValueError("controlled source PDF is required for impulse semantic evidence")
+        # Independently verify that the evaluated file is exactly the
+        # source-version-bound private candidate, not any other installed
+        # package, before attaching an optional semantic/distractor receipt.
+        screening=audit_impulse_candidate(package_path,impulse_review_path,source_pdf)
+        result["trilingualDistractorEvidence"]=screening
+        result["publicationAuthorized"]=False
+        # Bounded lexical/physics evidence cannot confer full academic PASS.
+        if result["academicQA"]=="PASS":
+            result["academicQA"]="REVIEW_REQUIRED"
     result["nextAction"] = ("Correct confirmed defects before any release" if result["academicQA"] == "FAIL" else
         "Supply independent textbook-grounding, answer and multilingual evidence for unresolved gates")
     return result
@@ -103,6 +117,8 @@ def main() -> int:
                         help="private source-bound exact-arithmetic proof receipts")
     parser.add_argument("--interaction-receipts",type=Path,default=None,
                         help="private source-bound interactive answer model receipts")
+    parser.add_argument("--impulse-review",type=Path,default=None,
+                        help="private v2 candidate review.json for bounded multilingual/distractor checks")
     args=parser.parse_args()
     try:
         receipt_data=(json.loads(args.physics_receipts.read_text(encoding="utf-8"))
@@ -110,7 +126,8 @@ def main() -> int:
         interactions=(json.loads(args.interaction_receipts.read_text(encoding="utf-8"))
                       if args.interaction_receipts else None)
         report=academic_triage(args.repo_root.resolve(),args.package.resolve(),args.source_pdf,
-                               physics_receipts=receipt_data,interaction_receipts=interactions)
+                               physics_receipts=receipt_data,interaction_receipts=interactions,
+                               impulse_review_path=args.impulse_review)
     except (OSError,ValueError,TypeError,json.JSONDecodeError) as exc:
         print(json.dumps({"academicQA":"REVIEW_REQUIRED","publicationAuthorized":False,
                           "error":str(exc)[:600]}))
