@@ -288,3 +288,15 @@ academic gate has trusted independent PASS evidence. This supersedes the
 older assumption that Gemini semantic review and green structural checks
 alone warrant public release. A false/ambiguous QA result never grants
 publication permission. See the continuation checkpoint and failure ledger.
+
+
+### Direct public publisher release safety
+
+The public Pages publisher is also called from auto-recovery, not only the
+normal generation orchestrator. Its publish entrypoint now independently
+requires matching, trusted academic PASS for the exact installed package.
+A private SHA-bound academic validation receipt is saved in the configured
+state directory. A missing state directory or unresolved result blocks public
+merge *before* remote Git operations. Test-only fake publisher/recovery
+fixtures may mock independently validated academic evidence to isolate Git
+idempotency, but production may never substitute such fixtures for proof.

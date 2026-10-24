@@ -26,9 +26,9 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 
 ## Current hardening unit
 - Incident BSA-20261024-001: runtime previously entered Git auto-merge / public deployment after technical/semantic validation without consulting #124 independent academic QA.
-- New code: app_generator/runtime/academic_release.py plus integration into app_generator/runtime/orchestrator.py BEFORE Git publisher/public deploy. Unresolved academic QA blocks automatic merge/public release, preserves draft review and local installation, writes per-run academic-release-gate.json, and rejects stale artifact hashes.
+- New code: app_generator/runtime/academic_release.py plus integration into app_generator/runtime/orchestrator.py BEFORE Git publisher/public deploy. The adjacent standalone public publisher entrypoint is also guarded in the following stacked draft. Unresolved academic QA blocks automatic merge/public release, preserves draft review and local installation, writes per-run academic-release-gate.json, and rejects stale artifact hashes.
 - Focused regression tests: tests/test_academic_publication_gate.py (real Section 9.4 denial, missing evidence, digest mismatch, mode matrix). Full regression 470 tests OK, 1 skip. CI/PR to be verified after push.
-- Containment limitation: source-grounded independent answers/translation still missing; direct calls to publisher outside run_generation require a separate bypass audit.
+- Containment limitation: source-grounded independent answers/translation still missing. Standalone PublicPagesPublisher.publish now has an independent exact-package academic guard. Audit source-branch auto-recovery Git auto-merge as the next adjacent bypass risk.
 
 ## Failure and acceptance records
 - See docs/FAILURE_TO_FIX_LEDGER.md for dated incident/root-cause records and pending generalizations.
@@ -40,3 +40,11 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 3. When authorized source bytes are available, implement strict source-anchored physics and translation evidence, with adversarial false-positive checks, and reduce REVIEW_REQUIRED only for independently proven activities.
 4. If PDF unavailable, examine direct publisher bypass and exact-version receipts offline; do not falsely pass QA or issue paid Gemini requests.
 5. No protected merge, public publication, original-content overwrite or silent background work. Latest owner authorization permits autonomous ordinary coding and draft PRs only.
+
+
+## Next stack unit: standalone public publisher boundary
+- Parent draft PR #125: branch feature/block-unverified-academic-release-20261024, head 61e6de7a0f4750a73df2eb9c55e65d18a1c90c7e, parent 128b618e6dbb6288bda788b66bccb9f3c88a8723. GitHub Actions Validate repository: success.
+- This descendant branch: feature/guard-direct-public-pages-publisher-20261024. PublicPagesPublisher.publish enforces academic QA before even looking up an existing merged release PR or invoking any external Git command, using state_dir/academic-publication-gates/{package_digest} for private receipts. A missing state_dir fails closed.
+- Actual Section 9.4 negative direct-publisher test proves rejection before remote command and records exact-package QA status; success-path PR-recovery fixture explicitly mocks independent QA to isolate PR idempotency logic.
+- Local full suite: 472 Python tests, one skipped; lint and 16-package validation pass. This branch was developed with publication disabled, no original package edits and no remote merge.
+- Source-branch recovery path in app_generator/runtime/auto.py may auto-merge source content through GitPublisher.recover_handoff before the later public publisher guard; inspect separately, do not claim it resolved.

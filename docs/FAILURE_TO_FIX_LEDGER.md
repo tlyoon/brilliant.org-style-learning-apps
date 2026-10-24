@@ -13,3 +13,5 @@
 - The completed generation was historical, with no new request submitted in this continuation. No owned active generator seen at start.
 - The original generation checkout has uncommitted produced artifacts; use isolated new worktrees only.
 - Authorization: Yoga6 RDC + GitHub draft PRs, no paid API calls or public release without verified project gate.
+
+| BSA-20261024-003 | Standalone PublicPagesPublisher.publish can be reached from auto-recovery outside run_generation's academic gate | Independent exact-package check at public publisher entry point, before any network mutation; replay of actual unapproved 9.4 package fails and captures SHA-bound receipt | Tested locally (472 Python tests, 1 skip); draft PR awaiting hosted CI; source Git auto-merge recovery still requires separate guard |

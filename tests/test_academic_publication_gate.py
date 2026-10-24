@@ -47,6 +47,40 @@ class AcademicPublicationGateTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValidationFailure,"another package version"):
                     enforce_academic_release_gate(ROOT,package,Path(tmp))
 
+    def test_direct_public_publisher_refuses_real_unverified_section94_without_git_calls(self):
+        from app_generator.publishing.public import PublicPagesPublisher
+        with tempfile.TemporaryDirectory() as tmp:
+            package=ROOT/"content/chapter-9/section-9-4/package.json"
+            config=SimpleNamespace(repo_root=ROOT, state_dir=Path(tmp))
+            class NeverRemote(PublicPagesPublisher):
+                def _run(self, arguments, *, cwd=None, check=True):
+                    raise AssertionError("no remote publication commands permitted")
+            publisher=NeverRemote(config)
+            with self.assertRaisesRegex(ValidationFailure, "unresolved academic QA"):
+                publisher.publish(
+                    package_path=package, subchapter_id="9.4",
+                    ensure_lease=lambda: None,
+                )
+            digest=hashlib.sha256(package.read_bytes()).hexdigest()
+            record=Path(tmp)/"academic-publication-gates"/digest/"academic-release-gate.json"
+            report=json.loads(record.read_text(encoding="utf-8"))
+            self.assertEqual("REVIEW_REQUIRED",report["academicQA"])
+            self.assertEqual(digest,report["artifactSha256"])
+
+    def test_public_publisher_missing_state_receipt_directory_fails_before_remote(self):
+        from app_generator.publishing.public import PublicPagesPublisher
+        with tempfile.TemporaryDirectory() as tmp:
+            package=Path(tmp)/"package.json"
+            package.write_text("{}",encoding="utf-8")
+            class NeverRemote(PublicPagesPublisher):
+                def _run(self, arguments, *, cwd=None, check=True):
+                    raise AssertionError("no remote publication commands permitted")
+            config=SimpleNamespace(repo_root=ROOT)
+            with self.assertRaisesRegex(Exception, "state_dir"):
+                NeverRemote(config).publish(
+                    package_path=package,subchapter_id="9.4",ensure_lease=lambda: None,
+                )
+
     def test_verifier_failure_is_fail_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
             package=Path(tmp)/"package.json"
