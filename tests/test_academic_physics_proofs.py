@@ -11,6 +11,8 @@ from app_generator.validation.physics_proofs import audit_proofs, prove_case, KN
 class AcademicPhysicsProofTests(unittest.TestCase):
     def test_all_supported_exact_arithmetic_models(self):
         examples = {
+            "ordinary_inelastic_restitution":{"m1":"2","m2":"3","u":"5","e":"1/2"},
+            "impulse_approximation_scale":{"f_internal":"1000","f_external":"1","duration":"1/100"},
             "equal_mass_sticking": {"m":"2","u":"4"},
             "equal_mass_exchange": {"m":"2","u":"4"},
             "newton_two_out": {"m":"1","u":"6"},
@@ -37,8 +39,22 @@ class AcademicPhysicsProofTests(unittest.TestCase):
         self.assertEqual(0,result.returncode,result.stderr)
         self.assertIn("--receipts",result.stdout)
 
+    def test_exact_restitution_impulse_and_relative_velocity_results(self):
+        a=prove_case("ordinary_inelastic_restitution", {"m1":"2","m2":"3","u":"5","e":"1/2"})
+        self.assertEqual("11/20",a["kineticEnergyRatio"])
+        self.assertEqual("true",a["momentumConserved"])
+        b=prove_case("impulse_approximation_scale", {"f_internal":"1000","f_external":"1","duration":"1/100"})
+        self.assertEqual("1000",b["internalToExternalImpulseRatio"])
+        self.assertEqual("approximate_not_exact",b["momentumConservation"])
+        c=prove_case("elastic_relative_velocity",{"m1":"2","m2":"3","u1":"4","u2":"0"})
+        self.assertEqual("-4/5",c["elasticFinalV1"])
+        self.assertEqual("16/5",c["elasticFinalV2"])
     def test_adversarial_values_do_not_create_false_proofs(self):
         for model, params in (
+            ("ordinary_inelastic_restitution",{"m1":"2","m2":"3","u":"5","e":"1"}),
+            ("ordinary_inelastic_restitution",{"m1":"2","m2":"3","u":"5","e":"0"}),
+            ("impulse_approximation_scale",{"f_internal":"90","f_external":"1","duration":"1/100"}),
+            ("impulse_approximation_scale",{"f_internal":"1000","f_external":"0","duration":"1/100"}),
             ("equal_mass_sticking",{"m":"0","u":"4"}),
             ("equal_mass_exchange",{"m":"2","u":"0"}),
             ("newton_two_out",{"m":"-1","u":"3"}),

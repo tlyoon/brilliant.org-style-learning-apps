@@ -87,3 +87,11 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - scripts/audit_physics_proofs.py and optional --physics-receipts on scripts/audit_academic_qa.py reproduce and integrate bounded results. CLI output and saved report never expose textbook excerpts.
 - Portable adversarial tests cover invalid masses, numeric limits, altered source hashes, changed exact package, wrong source page and broken witnesses. Integrated real QA report remains academicQA REVIEW_REQUIRED and publicationAuthorized=false.
 - Remaining substantive work: independently verify remaining 12 activities and complete source-backed English/distractor, visual-semantic and Malay/Chinese meaning checks. Do not infer any activity-wide PASS from these bounded proofs.
+
+
+## Remaining Section 9.4 MCQ proposition proofs (24 Oct 2026)
+- New draft branch feature/remaining-mcq-physics-checks-20261024 is stacked on PR #130, head 527b09b3e05db39bad6fbfa4cb76bce7fd498103. Verify PR and hosted CI after pushing.
+- Added independent exact-restitution inelastic example, nonzero-external-force impulse approximation (correctly APPROXIMATE momentum conservation) and one-dimensional elastic relative-velocity exact-identity proof. Verifies three remaining multiple-choice subclaims.
+- Reused controlled source PDF SHA 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578 and exact immutable installed package binding. Private versioned witness path academic-source-evidence/section94-independent-physics-witnesses-v2-20261024.json (never Git commit).
+- Actual private report source: academic-source-evidence/section94-bounded-physics-report-v2-20261024.json, 9/9 MCQ propositions verified, 0 failed witnesses, 0/18 full academic activity PASS. Nine interactive questions remain to be model-verified.
+- Main safety invariant: no model self-certification or domain-wide PASS. All five academic QA gate categories remain REVIEW_REQUIRED; protected release disabled.

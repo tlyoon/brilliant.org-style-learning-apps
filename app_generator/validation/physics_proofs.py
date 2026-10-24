@@ -13,6 +13,8 @@ from typing import Any
 from app_generator.validation.source_passages import check_anchor, extract_pages
 
 KNOWN_CASES = {
+    "mcq-collision-types-concept": ("ordinary_inelastic_restitution", "opt-momentum-conserved-ke-decreases"),
+    "mcq-impulse-approximation-basis": ("impulse_approximation_scale", "opt-internal-forces-dominate"),
     "mcq-perfectly-inelastic-outcome": ("equal_mass_sticking", "opt-perfectly-inelastic-forward"),
     "mcq-equal-mass-elastic-transfer": ("equal_mass_exchange", "opt-elastic-condition"),
     "mcq-newton-cradle-multi-ball": ("newton_two_out", "opt-violates-ke"),
@@ -41,6 +43,32 @@ def prove_case(name: str, parameters: dict[str, Any]) -> dict[str, str]:
     def require(ok: bool, explanation: str) -> None:
         if not ok:
             raise ValueError("witness fails independently computed identity: " + explanation)
+
+    if name == "ordinary_inelastic_restitution":
+        positive("m1","m2","u")
+        m1,m2,u,e=(p[z] for z in ("m1","m2","u","e"))
+        require(Fraction(0)<e<Fraction(1), "restitution must be strictly between zero and one")
+        v1=(m1-e*m2)*u/(m1+m2)
+        v2=(m1*(1+e))*u/(m1+m2)
+        initial_ke=m1*u*u/2
+        final_ke=(m1*v1*v1+m2*v2*v2)/2
+        require(m1*v1+m2*v2==m1*u, "inelastic momentum conservation")
+        require(v1!=v2 and final_ke<initial_ke and final_ke>0, "inelastic but not perfectly inelastic")
+        return {"model":name,"finalV1":str(v1),"finalV2":str(v2),
+                "kineticEnergyRatio":str(final_ke/initial_ke),
+                "momentumConserved":"true"}
+
+    if name == "impulse_approximation_scale":
+        positive("f_internal","f_external","duration")
+        internal,external,dt=(p[z] for z in ("f_internal","f_external","duration"))
+        ratio=internal/external
+        require(ratio>=100,"negligible external impulse witness")
+        ext_impulse=external*dt
+        require(ext_impulse>0 and internal*dt/ext_impulse==ratio, "impulse ratio")
+        # Approximate system isolation, not exact zero external impulse.
+        return {"model":name,"internalToExternalImpulseRatio":str(ratio),
+                "externalImpulse":str(ext_impulse),
+                "momentumConservation":"approximate_not_exact"}
 
     if name == "equal_mass_sticking":
         positive("m","u")

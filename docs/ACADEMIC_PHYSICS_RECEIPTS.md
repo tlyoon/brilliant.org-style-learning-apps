@@ -20,3 +20,15 @@ Use python -I scripts/audit_physics_proofs.py with --package, --pdf, --manifest,
 
 ## Next step
 Build independent source-and-proof checks for the 12 remaining activities, then independently validate correct/distractor meaning and EN/MS/ZH translations. A bounded mathematical proof is useful evidence, not a blanket academic pass.
+
+
+## Extension: remaining three multiple-choice physics claims
+
+The second model increment adds:
+- Inelastic but *not* perfectly inelastic collision. For restitution e=1/2, m1=2, m2=3, and initial speed 5, exact momentum is conserved and total kinetic energy is 11/20 of initial energy; the bodies do not stick.
+- Impulse approximation. A finite, nonzero external impulse is 1/1000 of a representative internal impulse. Thus momentum conservation is explicitly **approximate, not exact** when external forces are present.
+- One-dimensional elastic collision. The exact two-body formulas conserve both momentum and kinetic energy and reverse the relative velocity: for m1=2,m2=3,u1=4,u2=0, final velocities are -4/5 and 16/5.
+
+Private source passages from the verified PDF were located on PDF pages 2, 2 and 3 respectively. The immutable witness file has a new version, rather than overwriting the six-witness evidence.
+
+**Current Section 9.4 bounded academic result: 9/9 multiple-choice activity propositions verified, 0 failed witnesses.** The other nine interactive activities still lack this mathematical proof coverage. Full academic activity approval remains 0/18 and publication remains blocked.
