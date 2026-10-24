@@ -274,3 +274,17 @@ Academic verification gates use PASS, FAIL, or REVIEW_REQUIRED. PASS requires ex
 ### Independent academic QA triage (Section 9.4 pilot)
 
 Run `python scripts/audit_academic_qa.py --package PATH_TO_INSTALLED_PACKAGE`. An optional `--source-pdf PRIVATE_CONTROLLED_PDF_PATH` permits read-only SHA-256 identity checking; it does NOT upload or publish the PDF. The tool checks source-file identity, structural answer integrity, numerical collision witness availability, multilingual completeness and visual renderer contracts. PASS requires independently verified evidence for every academic gate; incomplete evidence is REVIEW_REQUIRED. A verified contradiction is FAIL. The report explicitly preserves humanReviewed=false and publicationAuthorized=false. It does not claim that syntactic validation, file hashes or model-based semantic reviews establish textbook accuracy. Next development work must provide trusted source-bound crosschecks and independent scientific/translation verification before academic PASS can be claimed.
+
+
+### Academic public-release gate
+
+Normal generation, local installation and draft GitHub review remain possible
+while independent academic evidence is REVIEW_REQUIRED. Automatic Git merge
+and public deployment now invoke the academic release guard only after
+the installed package has been revalidated. It recomputes the academic report
+for the exact installed package SHA-256, saves a durable
+validation/academic-release-gate.json record and fails closed unless every
+academic gate has trusted independent PASS evidence. This supersedes the
+older assumption that Gemini semantic review and green structural checks
+alone warrant public release. A false/ambiguous QA result never grants
+publication permission. See the continuation checkpoint and failure ledger.

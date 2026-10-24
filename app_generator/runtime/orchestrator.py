@@ -29,6 +29,7 @@ from app_generator.publishing.git import GitPublisher
 from app_generator.publishing.public import PublicPagesPublisher
 from app_generator.deployments import has_current_public_deployment
 from app_generator.domains import DomainProfile, ensure_drive_domain, resolve_domain
+from app_generator.runtime.academic_release import enforce_academic_release_gate, public_release_requested
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.state import RunPhase
 from app_generator.runtime.targeting import restrict_auto_inventory
@@ -656,6 +657,16 @@ def run_generation(
                 json.loads(active_config.package_path.read_text(encoding="utf-8"))
                 run_repository_validator(active_config.repo_root)
                 store.transition(RunPhase.FINAL_PACKAGE_REVERIFIED)
+
+                # Draft review PRs may be created with pending academic QA.
+                # Automatic protected-branch merge and public deployment
+                # require independently supported academic PASS for these
+                # exact installed package bytes. Never treat Gemini's own
+                # semantic audit or a green repository test as that PASS.
+                if public_release_requested(active_config):
+                    enforce_academic_release_gate(
+                        active_config.repo_root, active_config.package_path, context.validation
+                    )
 
                 if publisher is not None:
                     ensure_lease = lease_guard.ensure_owned if lease_guard is not None else (lambda: None)
