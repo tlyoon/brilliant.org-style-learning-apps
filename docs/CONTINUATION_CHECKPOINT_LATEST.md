@@ -142,3 +142,28 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Contract: ordinary QA coding/draft PRs allowed; no protected merge, paid API, Moodle/publication, external textbook upload or protected source edits.
 - Single next safe action: independently verify complete multilingual semantic and physical visual meanings against exact v3 source before any activity PASS or publication. When starting new session, independently inspect PR head/CI, owned worktrees and active processes, then exact private SHA and continuation ledger.
 - Final local execution on Yoga6: Python unittest discover 522 run, 1 intentional skip, zero failures, exit 0; repository lint passed; content validator checked 16 packages; Node interaction rendering and semantic visual audit passed. These technical checks do not establish full academic PASS.
+
+
+## 25 October 2026 ? owner contract: human-free academic review
+- Academic reviewer human sign-off is not required. Authority now documented
+  in docs/decisions/0024-autonomous-ai-academic-review.md and autonomous
+  AI QA workflow explained in docs/AUTONOMOUS_AI_ACADEMIC_QA.md.
+- This development branch feature/autonomous-ai-academic-review-contract-20261025
+  is stacked on verified PR #135 head 2978789ebdc875075363da733ac104b9ebff2874.
+- New provider-neutral academic AI review contract takes two separately
+  provisioned reviewer sessions per activity; rejects bogus source context,
+  returns automatic repair, source check or safe retry instructions; records
+  per-reviewer IN_FLIGHT, COMPLETE and AMBIGUOUS checkpoints.
+- Two model approvals alone never authorize academic PASS. Full source
+  interpretation, diagram meaning and translation equivalence still need
+  independent verification. QA state remains review required if insufficient.
+- Only source-free simulated reviewer tests executed in this segment, no
+  paid model calls or live Gemini academic session; integration into the
+  normal generator coordinator remains the next milestone.
+- Private PDFs, original pilot, historical outputs, and release settings
+  untouched, with git_publish=false and git_auto_merge=false.
+- Before resuming inspect live GitHub PRs, exact head, latest CI, Yoga6
+  worktrees, current locks and source SHA. Next action: wire independent
+  Gemini browser reviewer sessions to the normal generation run, then test
+  one private 9.4 v3 item with controlled PDF and exact output hash.
+- Final local evidence on Yoga6: full unittest suite ran 530 tests, one intentional skip and zero failures; scripts/lint.py passed, scripts/validate_content.py checked 16 packages, JavaScript interaction and visual audits passed. Simulated reviewers, not real Gemini independent academic sessions.
