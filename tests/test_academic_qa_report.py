@@ -72,6 +72,35 @@ class AcademicReportTests(unittest.TestCase):
         self.assertNotEqual("PASS",report["academicQA"])
         self.assertFalse(report["publicationAuthorized"])
 
+    def test_v3_evidence_never_upgrades_existing_academic_gates(self):
+        from unittest.mock import patch
+        source=ROOT/"content/chapter-9/section-9-4/package.json"
+        with patch("scripts.audit_academic_qa.audit_v3",return_value={
+            "boundedOptionsVerified":5,
+            "optionReviewsRequired":0,
+            "fullSemanticEquivalenceVerified":False,
+            "academicQA":"REVIEW_REQUIRED",
+            "publicationAuthorized":False,
+        }):
+            result=academic_triage(ROOT,source,ROOT/"tests/test_academic_qa_report.py",
+                                   impulse_v3_review=source,
+                                   impulse_v3_parent=source,
+                                   impulse_v3_parent_review=source)
+        self.assertEqual(5,result["impulseV3Evidence"]["boundedOptionsVerified"])
+        self.assertNotEqual("PASS",result["academicQA"])
+        self.assertFalse(result["publicationAuthorized"])
+
+    def test_v3_disallows_conflicting_or_missing_version_receipts(self):
+        source=ROOT/"content/chapter-9/section-9-4/package.json"
+        with self.assertRaisesRegex(ValueError,"exact private v2"):
+            academic_triage(ROOT,source,ROOT/"tests/test_academic_qa_report.py",
+                            impulse_v3_review=source)
+        with self.assertRaisesRegex(ValueError,"conflicting"):
+            academic_triage(ROOT,source,ROOT/"tests/test_academic_qa_report.py",
+                            impulse_v3_review=source,impulse_v3_parent=source,
+                            impulse_v3_parent_review=source,
+                            impulse_review_path=source)
+
     def test_bad_mcq_fails_without_touching_files(self):
         source=ROOT/"content/chapter-9/section-9-4/package.json"
         with tempfile.TemporaryDirectory() as d:
