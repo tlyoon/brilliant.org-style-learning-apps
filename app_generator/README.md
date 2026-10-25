@@ -348,3 +348,17 @@ requiring fresh independent verification, never academic PASS.
 A missing reviewer or repair profile creates a recoverable automatic task
 without requiring manual academic sign-off. Publication remains separately
 disabled unless authorized.
+
+
+### Complete per-activity academic acceptance audit
+
+The standalone private script scripts/audit_activity_acceptance_matrix.py
+examines the exact source PDF and candidate package, covering MCQ and
+interactive answer references, English/Malay/Chinese text presence and
+declarative visual schemas. It creates an immutable private report with
+one record and automated follow-up action per activity. Source passages
+must be independently re-located on the controlled PDF. This report
+distinguishes mechanical checks from full scientific/semantic review;
+no human academic sign-off is required and no incomplete evidence
+automatically becomes academic PASS or release permission.
+See docs/AUTONOMOUS_ACTIVITY_ACCEPTANCE.md.

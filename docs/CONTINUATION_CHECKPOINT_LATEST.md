@@ -213,3 +213,26 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
   before checking their original checkpoint. Corrected and tested recovery.
 - Real independent Gemini profiles remain unprovisioned on Yoga6; no real
   independent academic review or completed AI repair is claimed.
+
+
+## PR142 full-activity acceptance matrix ? 25 October 2026
+- Parent PR #141 exact head ea11f7dac7ee439a51855a71e5d0f9a824c0ba74,
+  GitHub CI SUCCESS; authorized isolated Yoga6 checkout academic-ai-pr142-20261025.
+- New per-activity original-PDF/MCQ/interaction/EN-MS-ZH/visual QA matrix
+  is source- and package-SHA-bound. No mandatory human academic approval.
+  Genuine independent in-process deterministic science/source proof required
+  for PASS; mere Gemini consensus, source quote location or valid JSON
+  schemas never grants complete PASS.
+- Real protected Section 9.4 v3 candidate audited: 18 activities, 9 MCQ
+  and 9 interactive, 0 structural answer defects, 0 visual-contract
+  errors. Reverified 1 source location on textbook PDF physical page 2.
+  Full PASS 0; REVIEW_REQUIRED 18; FAIL 0; publicationAuthorized=false.
+- Real private report academic-source-evidence/
+  section94-v3-full-activity-matrix-source1-20261025.json and exact
+  private source packet section94-v3-source-packets-one-20261025.json.
+  Do not commit any private textbook passages or candidate package.
+- Next: automated source-page packets for remaining 17 activities,
+  independent science/distractor models and meaning/visual browser reviews
+  when separately authorized Gemini browser profiles are provisioned.
+  No source overwrites, protected merges, publication or paid APIs.
+- PR142 full Yoga6 regression: 562 Python unittest cases run, one intentional skip, zero failures; lint, 16 content package validation, Node interaction and visual audits passed.
