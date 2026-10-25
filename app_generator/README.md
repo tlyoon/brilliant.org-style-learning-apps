@@ -362,3 +362,19 @@ distinguishes mechanical checks from full scientific/semantic review;
 no human academic sign-off is required and no incomplete evidence
 automatically becomes academic PASS or release permission.
 See docs/AUTONOMOUS_ACTIVITY_ACCEPTANCE.md.
+## Full original-PDF source packet migration
+
+Use scripts/migrate_review_source_anchors.py to combine private prior proof
+receipts with the exact prior package, current target package, and
+SHA256-matched original PDF. Every passage is independently re-located on
+its physical PDF page before generating a NEW private packet compatible
+with academic-review-source-packets.json in the run validation directory.
+Duplicate, missing, wrong-version or wrong-page receipts fail closed.
+
+The output records which activities changed since the prior package. A
+reverified source passage provides location/provenance evidence only; it
+does not approve changed question wording, correct choices, translations,
+diagrams, or publication. Keep all private source excerpts and output
+packets outside Git. Follow the automatic QA stage with independent math
+and multilingual/visual meaning checks. No human academic sign-off is
+required.
