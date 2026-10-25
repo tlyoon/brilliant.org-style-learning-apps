@@ -15,6 +15,8 @@ from app_generator.filesystem.outputs import write_json_atomic
 from app_generator.gemini.academic_reviewers import IndependentReviewerFactory
 from app_generator.runtime.autonomous_academic import review_batch_autonomously
 from app_generator.runtime.run_context import RunContext
+from app_generator.runtime.academic_repair_stage import dispatch_repair_queue
+from app_generator.validation.autonomous_ai_review import canonical_digest
 from app_generator.validation.reviewer_source_packets import verified_source_packet
 
 NEUTRAL_CHAT = "https://gemini.google.com/app"
@@ -117,7 +119,17 @@ def run_academic_stage(
                         package_sha256=package_sha,source_sha256=source_sha,
                         authorized_source=contexts,reviewer_factory=sessions,
                     )
+                # Bind model objections back to the actual installed
+                # activity, not model-generated/reconstructed question text.
+                for reviewed in report["receipts"]:
+                    actual=next((a for a in eligible if a["id"]==reviewed["activityId"]),None)
+                    if actual is None or canonical_digest(actual)!=reviewed["activityCanonicalSha256"]:
+                        raise ValueError("AI repair claim does not match exact installed activity")
+                    reviewed["originalActivity"]=actual
                 queue.extend(report["followups"])
+                queue.extend(dispatch_repair_queue(
+                    review_config,context,report,contexts,source_pdf,
+                ))
             except Exception as exc:
                 # In-flight requests are preserved by RunContext. Do not
                 # automatically submit again after provider state ambiguity.
