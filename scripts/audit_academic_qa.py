@@ -21,12 +21,16 @@ from app_generator.validation.source_identity import verify_source_identity
 from app_generator.validation.physics_proofs import audit_proofs
 from app_generator.validation.interactive_physics import audit_interaction_models
 from app_generator.validation.impulse_semantics import audit_impulse_candidate
+from app_generator.validation.impulse_v3_audit import audit_v3
 from app_generator.visuals.validation import visual_contract_errors
 
 def academic_triage(
     repo: Path, package_path: Path, source_pdf: Path | None = None,
     *, physics_receipts: dict | None = None, interaction_receipts: dict | None = None,
     impulse_review_path: Path | None = None,
+    impulse_v3_review: Path | None = None,
+    impulse_v3_parent: Path | None = None,
+    impulse_v3_parent_review: Path | None = None,
 ) -> dict:
     package = json.loads(package_path.read_text(encoding="utf-8"))
     activities = package.get("activities", [])
@@ -61,6 +65,8 @@ def academic_triage(
     result["activities"] = rows
     result["artifactSha256"] = hashlib.sha256(package_path.read_bytes()).hexdigest()
     result["sourcePdfWasRead"] = bool(source_pdf and source_pdf.is_file())
+    if impulse_review_path is not None and impulse_v3_review is not None:
+        raise ValueError("conflicting v2 and v3 academic evidence options")
     if physics_receipts is not None:
         if not source_pdf or not source_pdf.is_file():
             raise ValueError("bounded physics proofs require the exact controlled source PDF")
@@ -104,6 +110,18 @@ def academic_triage(
         # Bounded lexical/physics evidence cannot confer full academic PASS.
         if result["academicQA"]=="PASS":
             result["academicQA"]="REVIEW_REQUIRED"
+    if impulse_v3_review is not None:
+        if not source_pdf or not source_pdf.is_file():
+            raise ValueError("controlled source PDF required for v3 academic evidence")
+        if not impulse_v3_parent or not impulse_v3_parent_review:
+            raise ValueError("exact private v2 package and review receipt required for v3")
+        result["impulseV3Evidence"]=audit_v3(
+            package_path,impulse_v3_review,impulse_v3_parent,
+            impulse_v3_parent_review,source_pdf,
+        )
+        if result["academicQA"]=="PASS":
+            result["academicQA"]="REVIEW_REQUIRED"
+        result["publicationAuthorized"]=False
     result["nextAction"] = ("Correct confirmed defects before any release" if result["academicQA"] == "FAIL" else
         "Supply independent textbook-grounding, answer and multilingual evidence for unresolved gates")
     return result
@@ -119,6 +137,9 @@ def main() -> int:
                         help="private source-bound interactive answer model receipts")
     parser.add_argument("--impulse-review",type=Path,default=None,
                         help="private v2 candidate review.json for bounded multilingual/distractor checks")
+    parser.add_argument("--impulse-v3-review",type=Path,default=None)
+    parser.add_argument("--impulse-v3-parent",type=Path,default=None)
+    parser.add_argument("--impulse-v3-parent-review",type=Path,default=None)
     args=parser.parse_args()
     try:
         receipt_data=(json.loads(args.physics_receipts.read_text(encoding="utf-8"))
@@ -127,7 +148,10 @@ def main() -> int:
                       if args.interaction_receipts else None)
         report=academic_triage(args.repo_root.resolve(),args.package.resolve(),args.source_pdf,
                                physics_receipts=receipt_data,interaction_receipts=interactions,
-                               impulse_review_path=args.impulse_review)
+                               impulse_review_path=args.impulse_review,
+                               impulse_v3_review=args.impulse_v3_review,
+                               impulse_v3_parent=args.impulse_v3_parent,
+                               impulse_v3_parent_review=args.impulse_v3_parent_review)
     except (OSError,ValueError,TypeError,json.JSONDecodeError) as exc:
         print(json.dumps({"academicQA":"REVIEW_REQUIRED","publicationAuthorized":False,
                           "error":str(exc)[:600]}))
