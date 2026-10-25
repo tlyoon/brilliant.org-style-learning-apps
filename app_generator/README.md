@@ -311,3 +311,28 @@ the candidate branch's package and source-manifest Git blobs must match local
 files before independent academic QA is consulted. Unresolved or mismatched
 source handoffs cannot be auto-merged. Draft review branches remain available.
 Blocked recovery must not blindly regenerate an ambiguous Gemini request.
+
+## Autonomous academic AI review after package generation
+
+The generator now runs source-bound academic review after final package
+verification and before protected release. It reads the private
+academic-review-source-packets.json in the owned validation run directory.
+The source packet must match the generated package SHA and controlled local
+PDF SHA. Literal page evidence is independently re-extracted from the PDF.
+
+When pre-provisioned dedicated controlled Gemini reviewer profiles exist
+for the physics and semantics roles, the stage uses independent browser
+sessions with version-bound claims. The authoring browser and Gem are not
+reused, and source passages and credentials never go into Git.
+
+When evidence or independent reviewer authentication is unavailable, the
+stage writes autonomous-academic-queue.json to the private validation
+directory with AUTO_SOURCE_CHECK or AUTO_RETRY instructions. Missing
+learner-facing activities produce a PACKAGE follow-up rather than
+breaking legacy local generation. No manual academic reviewer approval is
+required.
+
+This stage is not an academic PASS or public-release authorization.
+Unresolved evidence stays REVIEW_REQUIRED; protected publication and
+merge permissions remain unchanged. See docs/AUTONOMOUS_AI_ACADEMIC_QA.md
+and docs/decisions/0024-autonomous-ai-academic-review.md.

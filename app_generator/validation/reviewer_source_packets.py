@@ -73,6 +73,10 @@ def verified_source_packet(
         "sourceSha256":expected_sha256,
         "verifiedPages":sorted({entry["page"] for entry in verified}),
         "sourceEvidence":evidence,
+        "sourceAnchors":[
+            {"activityId":activity_id,"pageIndex":anchor["pageIndex"],
+             "quotedText":anchor["quotedText"]} for anchor in anchors
+        ],
         "passageCount":len(verified),
         "passageSha256":[entry["quoteSha256"] for entry in verified],
         "sourceInterpretationVerified":False,
