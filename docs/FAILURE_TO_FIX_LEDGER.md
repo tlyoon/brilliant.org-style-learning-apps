@@ -48,3 +48,6 @@
 
 | BSA-20261025-013 | Old API backend fixture installed an empty activities payload; an added AI QA call incorrectly crashed an otherwise safe generator run | New stage records an automatic PACKAGE source-check queue when activities are missing rather than requiring human signoff or aborting local generation | Fixed, generator runtime focused tests and full repository regression pass |
 | BSA-20261025-014 | A forged private source packet could appear consistent by declaring matching SHA fields even though the quote never appeared on the physical PDF page | Runtime reconstructs literal quote evidence against exact original PDF immediately before submitting to AI reviewer | Adversarial tests verify rejection and AUTO_SOURCE_CHECK fallback |
+
+| BSA-20261025-015 | Academic contradictions previously had no targeted automatic correction path, encouraging manual intervention | Added dedicated repair role, immutable source-bound trilingual candidates, and automatic dispatcher with exact installed-activity identity | Offline repair and dispatch regression pass; real browser repair profile unavailable |
+| BSA-20261025-016 | Already-saved candidate was mistakenly rejected before replay-safe checkpoint reconciliation | Reorder full claim identity comparison before private overwrite guard; explicit no-resubmit tests | Fixed with repeat-request regression |

@@ -23,7 +23,7 @@ class ReviewerBrowser:
     def __init__(self, role: str, config: GeneratorConfig, source_pdf: Path,
                  *, chrome_factory: Callable[..., Any] = ChromeSession,
                  client_factory: Callable[..., Any] = GeminiClient):
-        if role not in ("physics", "semantics"):
+        if role not in ("physics", "semantics", "repair"):
             raise ValueError("unknown independent academic reviewer role")
         if config.browser_mode != "controlled":
             raise ValueError("academic reviewers require separate controlled Chrome profiles")

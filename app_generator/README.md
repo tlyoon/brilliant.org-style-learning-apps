@@ -336,3 +336,15 @@ This stage is not an academic PASS or public-release authorization.
 Unresolved evidence stays REVIEW_REQUIRED; protected publication and
 merge permissions remain unchanged. See docs/AUTONOMOUS_AI_ACADEMIC_QA.md
 and docs/decisions/0024-autonomous-ai-academic-review.md.
+## Automatic private academic repair
+
+After independent reviewers identify a concrete contradiction, the runtime
+may dispatch a limited AI repair in a dedicated controlled browser context.
+The correction is restricted to existing three-language learner-facing text
+and answer explanations. It cannot alter grading keys, visual structure,
+other activities, or the installed package. Attempts are checkpointed prior
+to submitting the model request. The successful result is a private candidate
+requiring fresh independent verification, never academic PASS.
+A missing reviewer or repair profile creates a recoverable automatic task
+without requiring manual academic sign-off. Publication remains separately
+disabled unless authorized.
