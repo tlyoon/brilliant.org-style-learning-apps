@@ -30,6 +30,7 @@ from app_generator.publishing.public import PublicPagesPublisher
 from app_generator.deployments import has_current_public_deployment
 from app_generator.domains import DomainProfile, ensure_drive_domain, resolve_domain
 from app_generator.runtime.academic_release import enforce_academic_release_gate, public_release_requested
+from app_generator.runtime.academic_generation_stage import run_academic_stage
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.state import RunPhase
 from app_generator.runtime.targeting import restrict_auto_inventory
@@ -657,6 +658,13 @@ def run_generation(
                 json.loads(active_config.package_path.read_text(encoding="utf-8"))
                 run_repository_validator(active_config.repo_root)
                 store.transition(RunPhase.FINAL_PACKAGE_REVERIFIED)
+                # AI-only academic QA is not a manual approval gate.
+                # Missing review evidence becomes an automatic followup queue.
+                academic_queue = run_academic_stage(
+                    active_config,context,active_config.package_path,
+                    sources[0].path if len(sources)==1 else None,
+                )
+                LOGGER.info("Academic QA pending tasks: %d",len(academic_queue["queue"]))
 
                 # Draft review PRs may be created with pending academic QA.
                 # Automatic protected-branch merge and public deployment
