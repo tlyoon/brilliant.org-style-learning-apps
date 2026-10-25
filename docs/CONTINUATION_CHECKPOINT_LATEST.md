@@ -236,3 +236,33 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
   when separately authorized Gemini browser profiles are provisioned.
   No source overwrites, protected merges, publication or paid APIs.
 - PR142 full Yoga6 regression: 562 Python unittest cases run, one intentional skip, zero failures; lint, 16 content package validation, Node interaction and visual audits passed.
+## Original Section 9.4 full source-location recovery, 26 October 2026
+- Project: tlyoon/brilliant.org-style-learning-apps. Parent PR #142 at
+  115a865c6c0e870f3a6c46da5459d88e29698b47, all six #137–142 CI
+  checks passed. Owned Yoga6 isolated development worktree
+  academic-ai-pr143-20261026 on branch
+  feature/source-packet-migration-all-activities-20261026.
+- New source migration from two PREVIOUS versioned proof receipts: nine MCQ
+  and nine interactive anchors, all explicitly bound to original generated
+  package canonical hash 2ffe799784c5492b5b8cf2062f7ffaa40264e3933820349b506c39fb651a01f7.
+  Every one of 18 separate quoted passages independently re-located
+  on the exact original controlled textbook PDF, SHA
+  08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578.
+- Current v3 package file hash cd2c17864e155cc870e5ba8f6d3013a0c73e3bf3aa2d22a91834030eaf047fbc,
+  canonical SHA 33828329938512a661fbebd71ef04a830545981878555173bab50c86c3bb5f56.
+  Exactly ONE activity was changed from the original package:
+  int-select-isolated-conditions. The source location is re-verified
+  but semantic correctness NOT inherited from the original version.
+- New private packet academic-source-evidence/
+  section94-v3-source-packets-full18-20261026.json. Complete genuine
+  source-location 18/18 QA report academic-source-evidence/
+  section94-v3-academic-matrix-source18-20261026.json. All 18 activities
+  still REVIEW_REQUIRED: original passage location is not complete proof
+  of source fidelity, distractor truth, EN/MS/ZH meaning or visual science.
+  No public publication and no human academic signoff.
+- New CLI and regression reject stale provenance, duplicate or missing
+  anchors, incorrect PDF page, changed activity sets and wrong source.
+- Next safe action: connect verified private packet to run's academic QA
+  validation directory; provision fresh independent Gemini sessions without
+  copying browser credentials, and perform actual trilingual/physical
+  semantic reviews, while preserving separate release authorization.
