@@ -175,3 +175,11 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Browser login/auth remains a prerequisite: no reuse of generator cookies, no interactive sign-in in CI, no paid API. Factory fails closed if dedicated reviewer profiles are not authenticated. Real independent review is not yet reported as executed.
 - Source-bound reviewer contract decision 0024 remains; no manual academic approval required. No merge/publication permission granted, and no textbook/private package or historical output altered.
 - Next: independently extract/verify per-activity source passage packets, then run a genuine two-reviewer pilot when dedicated authorized browser sessions are verifiably ready.
+
+
+## PR138 private source passage packets ? 25 October 2026
+- Parent #137, branch feature/source-bound-academic-review-packets-20261025, owned isolated Yoga6 checkout academic-ai-pr138-20261025.
+- Added independently verifiable PDF passage packets using exact source SHA, literal page-specific quote, unique physical page and quote digests. Empty, ambiguous, duplicate, truncated, misassigned, mismatched and unrelated anchors refuse approval. No claim of full academic correctness from literal text presence.
+- Verified one ACTUAL protected Section 9.4 original-package packet on private PDF: int-select-isolated-conditions, physical PDF page 2. Exact controlled PDF SHA 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578, installed package SHA cc45e32383da53ecad4457418a234e54c6f70ae5ba3506203b13b79c717d9620. Private packet academic-source-evidence/section94-reviewer-source-packet-original-20261025.json, never Git.
+- Earlier source anchor receipts bind the original generated package, NOT the private v3 candidate. Reuse only after independently re-verifying literal source location for the exact revised package; do not silently promote source-to-claim semantic fidelity.
+- AI academic and public release status REVIEW_REQUIRED and publicationAuthorized=false. Next: live independent Gemini review pilot with fresh authenticated reviewer sessions or documented technical blocker; never invent model responses.
