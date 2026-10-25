@@ -266,3 +266,30 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
   validation directory; provision fresh independent Gemini sessions without
   copying browser credentials, and perform actual trilingual/physical
   semantic reviews, while preserving separate release authorization.
+
+
+## Section 9.4 bounded physics v3 transfer (26 October 2026)
+- PR144 branch feature/physics-witness-v3-transfer-20261026 stacked on
+  PR143 head 65ca02fa16a41764d9dd32204a186439ea03119d; Yoga6 worktree
+  academic-ai-pr144-20261026.
+- Original controlled textbook PDF SHA
+  08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578;
+  v3 file SHA cd2c17864e155cc870e5ba8f6d3013a0c73e3bf3aa2d22a91834030eaf047fbc.
+- 18/18 finite, exact-rational bounded physics model checks verified:
+  9 original MCQ models, 8 content-unchanged interactive models, plus
+  one independently source-bound v3 impulse correction (5/5 bounded
+  selected/distractor option checks). The prior uncorrected impulse
+  activity is NOT accepted as unchanged; its qualification is replaced
+  only after the new exact v3 counterexamples and receipts are verified.
+- Mathematical subclaim evidence is not universal physics/translation/
+  scientific diagram QA. Academic PASS 0/18, 18 REVIEW_REQUIRED and
+  publicationAuthorized=false. No human academic review needed.
+- Private proof report academic-source-evidence/
+  section94-v3-bounded-physics-full18-20261026.json. Never commit PDF,
+  private original content, proofs with protected source quotes or
+  generated candidate bytes. Original source and dirty working tree
+  remain untouched; git_publish and git_auto_merge remain disabled.
+- Next: use verified original-source passage packets and bounded physics
+  subclaims as input to genuine independent Gemini EN/MS/ZH semantics and
+  scientific visual QA, resolving reviewer authentication while preserving
+  authored conversation isolation, uncertain request claims, and release.
