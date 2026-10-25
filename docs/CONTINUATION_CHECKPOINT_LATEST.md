@@ -167,3 +167,11 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
   Gemini browser reviewer sessions to the normal generation run, then test
   one private 9.4 v3 item with controlled PDF and exact output hash.
 - Final local evidence on Yoga6: full unittest suite ran 530 tests, one intentional skip and zero failures; scripts/lint.py passed, scripts/validate_content.py checked 16 packages, JavaScript interaction and visual audits passed. Simulated reviewers, not real Gemini independent academic sessions.
+
+
+## PR137 independent Gemini browser reviewer integration ? 25 October 2026
+- Parent PR #136 exact head b9ea013a97e47e4371be6db1496584f3d826888d. Isolated owned Yoga6 worktree %LOCALAPPDATA%/BrilliantContentGenerator/academic-ai-pr137-20261025, branch feature/independent-gemini-reviewer-sessions-20261025. Verify new PR/CI after push.
+- Added app_generator/gemini/academic_reviewers.py connecting real GeminiClient and ChromeSession interfaces to two separate reviewer roles. Controlled independent Chrome profiles prevent reusing the author's browser and Gemini Gem editor, and each reviewer opens a new PDF-attached conversation. A direct single-submit conversation adapter prevents post-submit model fallback duplication.
+- Browser login/auth remains a prerequisite: no reuse of generator cookies, no interactive sign-in in CI, no paid API. Factory fails closed if dedicated reviewer profiles are not authenticated. Real independent review is not yet reported as executed.
+- Source-bound reviewer contract decision 0024 remains; no manual academic approval required. No merge/publication permission granted, and no textbook/private package or historical output altered.
+- Next: independently extract/verify per-activity source passage packets, then run a genuine two-reviewer pilot when dedicated authorized browser sessions are verifiably ready.
