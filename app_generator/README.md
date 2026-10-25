@@ -378,3 +378,22 @@ diagrams, or publication. Keep all private source excerpts and output
 packets outside Git. Follow the automatic QA stage with independent math
 and multilingual/visual meaning checks. No human academic sign-off is
 required.
+
+
+## Section 9.4 exact-content bounded physics verification
+
+The private script scripts/reverify_section94_bounded_physics.py recomputes
+the independent rational-math witnesses against the original controlled
+PDF and old version-bound proof receipts. Only activities whose COMPLETE
+canonical text and answer structures remain unchanged may carry forward
+those bounded proofs. Exactly changed v3 impulse content must instead pass
+its separately independently reconstructed original-PDF counterexample and
+five-option review. The new private candidate, old content, receipts and
+original source are all SHA bound.
+
+It produces a new private mathematical evidence report, NOT full academic
+PASS. Literal source locations, true finite arithmetic and correct IDs
+cannot establish all EN/MS/ZH translations, all distractor nuances,
+rendered scientific visuals or permission for public release. No manual
+academic signoff is required; unresolved meaning must remain in the
+autonomous follow-up queue.
