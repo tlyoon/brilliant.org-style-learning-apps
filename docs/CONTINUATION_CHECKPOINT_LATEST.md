@@ -183,3 +183,12 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Verified one ACTUAL protected Section 9.4 original-package packet on private PDF: int-select-isolated-conditions, physical PDF page 2. Exact controlled PDF SHA 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578, installed package SHA cc45e32383da53ecad4457418a234e54c6f70ae5ba3506203b13b79c717d9620. Private packet academic-source-evidence/section94-reviewer-source-packet-original-20261025.json, never Git.
 - Earlier source anchor receipts bind the original generated package, NOT the private v3 candidate. Reuse only after independently re-verifying literal source location for the exact revised package; do not silently promote source-to-claim semantic fidelity.
 - AI academic and public release status REVIEW_REQUIRED and publicationAuthorized=false. Next: live independent Gemini review pilot with fresh authenticated reviewer sessions or documented technical blocker; never invent model responses.
+
+
+## PR139 private independent Gemini pilot runner ? 25 October 2026
+- Parent PR #138 exact head 6a6bdc11d5c25c3272919de49a05ebb79c1c7c21; owned isolated Yoga6 checkout academic-ai-pr139-20261025, branch feature/private-gemini-review-pilot-20261025.
+- Added private pilot script and preflight that reconstructs corrected v3 EXACT content from v2/private original PDF, rechecks literal source passages (not academic meaning) against original source page, and requires two separately provisioned authenticated reviewer browser profiles.
+- Pilot intentionally chooses neutral Gemini chat instead of the generator's author-customized Gem. No manual academic signoff, no paid API, no sharing or copying existing authoring browser credentials.
+- At development preflight the two dedicated reviewer role profile directories were absent from Yoga6. Real Gemini independent review CANNOT be claimed. Readiness returns BLOCKED_NO_INDEPENDENT_BROWSER_PROFILE; simulated reviewer tests are not a real AI review.
+- The pilot can launch only if pre-existing dedicated role profiles are provisioned; source and package hashes must match. Every request remains version-bound and crash-recoverable, with private output directories and REVIEW_REQUIRED until independently validated.
+- Owner goal does not depend on waiting for model access: proceed with safe code integration and repair loops while provider authentication is unresolved. No publication, protected merges, original asset modification or credential copying.
