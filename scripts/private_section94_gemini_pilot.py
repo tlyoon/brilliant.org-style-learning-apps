@@ -15,6 +15,7 @@ ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 
 from app_generator.config import load_config
+from app_generator.gemini.existing_login_reviewers import ExistingLoginReviewerFactory
 from app_generator.runtime.private_gemini_pilot import (
     ACTIVITY_ID,exact_v3_context,run_private_pilot,readiness
 )
@@ -34,6 +35,8 @@ def main():
     for k in ("config","v3","v2","pdf","proofs","out"):
         p.add_argument("--"+k,required=True,type=Path)
     p.add_argument("--execute",action="store_true")
+    p.add_argument("--existing-login",action="store_true",
+                   help="reuse verified authorized Google login in two FRESH independent Gemini chat tabs, not cookies")
     args=p.parse_args()
     try:
         # The source-generator might normally use a paid API backend.
@@ -44,9 +47,15 @@ def main():
         path=args.out.resolve()
         if path.is_relative_to(ROOT.resolve()) or path.exists():
             raise ValueError("private immutable pilot output path invalid or already exists")
-        status=run_private_pilot(config,args.v3/"package.json",args.pdf,context,
-                     run_directory=path/"review-run") if args.execute else (
-            readiness(config,args.v3/"package.json",args.pdf,context)
+        status=run_private_pilot(
+            config,args.v3/"package.json",args.pdf,context,
+            run_directory=path/"review-run",
+            reviewer_factory_type=(ExistingLoginReviewerFactory
+                                   if args.existing_login else IndependentReviewerFactory),
+            existing_login=args.existing_login,
+        ) if args.execute else readiness(
+            config,args.v3/"package.json",args.pdf,context,
+            existing_login=args.existing_login,
         )
         if not path.exists():path.mkdir(parents=True,exist_ok=False)
         evidence={

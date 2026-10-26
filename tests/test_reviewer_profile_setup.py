@@ -128,8 +128,9 @@ class ProfilesTests(unittest.TestCase):
                 "--out",str(dest),
             ]
             seen=[]
-            def preflight(cfg,pkg,pdf,source):
+            def preflight(cfg,pkg,pdf,source,*,existing_login=False):
                 seen.append(cfg.llm_backend)
+                self.assertFalse(existing_login)
                 return {"readyToAttemptBrowserReview":False,
                         "authenticated":False,
                         "academicQA":"REVIEW_REQUIRED",

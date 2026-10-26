@@ -61,6 +61,7 @@ class ChromeSession:
     config: GeneratorConfig
     driver: Any | None = None
     _manual_process: Any | None = None
+    _automation_process: Any | None = None
     _launched_address: str = ""
 
     def open_window(self) -> str:
@@ -122,7 +123,7 @@ class ChromeSession:
         profile = self.config.chrome_profile_dir / "gemini-browser"
         profile.mkdir(parents=True, exist_ok=True)
         try:
-            subprocess.Popen(
+            self._automation_process = subprocess.Popen(
                 [executable, f"--user-data-dir={profile}", "--remote-debugging-port=0",
                  "--remote-debugging-address=127.0.0.1", "--new-window", "--start-maximized",
                  "--no-first-run", "--no-default-browser-check", "--disable-notifications",
@@ -163,20 +164,35 @@ class ChromeSession:
         return self.driver
 
     def close(self) -> None:
-        if self.driver is not None:
-            try:
-                if self.config.browser_mode == "controlled":
-                    try:
-                        self.driver.execute_cdp_cmd("Browser.close", {})
-                    except Exception:
-                        # Chrome may already have been closed by the operator.
-                        pass
-                    self.driver.quit()
-                elif getattr(self.driver, "service", None) is not None:
-                    self.driver.service.stop()
-            finally:
-                self.driver = None
-                self._launched_address = ""
+        try:
+            if self.driver is not None:
+                try:
+                    if self.config.browser_mode == "controlled":
+                        try:
+                            self.driver.execute_cdp_cmd("Browser.close", {})
+                        except Exception:
+                            # Chrome may already have been closed by the operator.
+                            pass
+                        self.driver.quit()
+                    elif getattr(self.driver, "service", None) is not None:
+                        self.driver.service.stop()
+                finally:
+                    self.driver = None
+        finally:
+            self._launched_address = ""
+            process = self._automation_process
+            self._automation_process = None
+            # Never touch manually opened sign-in Chrome, attach-mode
+            # browsers, or any process we did not launch ourselves.
+            if process is not None and self.config.browser_mode == "controlled":
+                try:
+                    if process.poll() is None:
+                        process.terminate()
+                        process.wait(timeout=5)
+                except (OSError, AttributeError, subprocess.TimeoutExpired):
+                    # A remaining independent Chrome process must be
+                    # diagnosed/guarded, not killed by broad PID search.
+                    pass
 
     def __enter__(self) -> Any:
         return self.start()
