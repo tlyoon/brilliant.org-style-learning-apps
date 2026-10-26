@@ -16,6 +16,8 @@ from app_generator.gemini.academic_reviewers import IndependentReviewerFactory
 from app_generator.runtime.autonomous_academic import review_batch_autonomously
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.academic_repair_stage import dispatch_repair_queue
+from app_generator.runtime.academic_source_provision import provision_run_source_packets
+from app_generator.validation.source_passages import extract_pages
 from app_generator.validation.autonomous_ai_review import canonical_digest
 from app_generator.validation.reviewer_source_packets import verified_source_packet
 
@@ -59,18 +61,35 @@ def run_academic_stage(
     if len(set(ids))!=len(ids):
         raise ValueError("duplicated installed academic activity identifiers")
     packet_path=context.validation/"academic-review-source-packets.json"
+    provision={"status":"NO_PRIVATE_PROVENANCE_REGISTRY","packetCreated":False}
+    if hasattr(config,"state_dir"):
+        try:
+            provision=provision_run_source_packets(config,context,package_file,source_pdf)
+        except (ValueError,OSError,TypeError,KeyError,json.JSONDecodeError) as exc:
+            provision={"status":"AUTO_SOURCE_CHECK","packetCreated":False,
+                       "errorType":type(exc).__name__}
     queue=[]
     eligible=[]
     contexts={}
     source_sha=None
     if packet_path.is_file():
-        packets=json.loads(packet_path.read_text(encoding="utf-8"))
+        try:
+            packets=json.loads(packet_path.read_text(encoding="utf-8"))
+        except (ValueError,OSError,TypeError):
+            packets={}
         if (packets.get("packageSha256")!=package_sha or
             not isinstance(packets.get("packets"),dict)):
             # Stale source evidence is a source-recovery action, not a PASS.
             packets={}
         else:
             source_sha=packets.get("sourceSha256")
+            page_cache=None
+            if source_pdf is not None and source_pdf.is_file():
+                try:
+                    if sha256(source_pdf.read_bytes()).hexdigest()==source_sha:
+                        page_cache=extract_pages(source_pdf)
+                except (ValueError,OSError):
+                    page_cache=None
             for a in activities:
                 packet=packets["packets"].get(a["id"])
                 if (isinstance(packet,dict) and packet.get("sourceSha256")==source_sha and
@@ -82,11 +101,12 @@ def run_academic_stage(
                     # The received private packet is still untrusted.
                     # Revalidate its literal quote against the exact PDF
                     # before any new AI submission, never just hash JSON.
-                    if source_pdf is not None and source_pdf.is_file():
+                    if page_cache is not None:
                         try:
                             trusted=verified_source_packet(
                                 source_pdf,source_sha,a["id"],
                                 packet.get("sourceAnchors",[]),
+                                extractor=lambda _:page_cache,
                             )
                         except (ValueError,OSError):
                             trusted=None
@@ -153,6 +173,7 @@ def run_academic_stage(
         "activitiesTotal":len(ids),
         "sourceReady":len(eligible),
         "queue":queue,
+        "automaticSourceProvisioning":provision,
         "humanAcademicApprovalRequired":False,
         "academicQA":"REVIEW_REQUIRED",
         "publicationAuthorized":False,

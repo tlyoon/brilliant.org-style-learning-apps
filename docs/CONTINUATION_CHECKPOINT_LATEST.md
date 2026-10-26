@@ -293,3 +293,35 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
   subclaims as input to genuine independent Gemini EN/MS/ZH semantics and
   scientific visual QA, resolving reviewer authentication while preserving
   authored conversation isolation, uncertain request claims, and release.
+
+
+## PR145 autonomous source-packet provisioning, 26 October 2026
+- Parent PR144 head 7d530e3d2795966508778078d0b22832bddbe079,
+  GitHub CI SUCCESS. Only authorized Yoga6 isolated worktree
+  academic-ai-pr145-20261026 is involved.
+- The existing normal generator academic-QA stage now loads a PRIVATE
+  state-dir provenance registry indexed by exact original source PDF SHA.
+  The registry points to a read-only historical generated package and two
+  distinct private mathematical source witness receipts. Automatic
+  migration checks 18/18 real original-textbook source passages, binds
+  a new packet to exact v3 candidate hash and records any changed items.
+- The runtime re-verifies the packet against the original PDF, using
+  one cached PDF text extraction for the entire run, then automatically
+  queues independent AI reviews. Missing or invalid provenance becomes
+  AUTO_SOURCE_CHECK, absent reviewer browser profiles become AUTO_RETRY.
+  No manual academic approval stage and no publication.
+- ACTUAL private Yoga6 run generated in
+  runs/academic-qa-private-pilots-20261026/20261026T011411Z-223e89f12d:
+  SOURCE_PACKET_VERIFIED_AND_SAVED; sourceReady=18/18 and all 18
+  automatic AUTO_RETRY awaiting separate browser profiles. No Gemini
+  academic request was submitted. The source-specific private registry
+  was created under runs/academic-review-provenance by its original
+  64-character PDF SHA name. No source quotes are committed to Git.
+- Source PDF SHA 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578.
+  v3 package file SHA cd2c17864e155cc870e5ba8f6d3013a0c73e3bf3aa2d22a91834030eaf047fbc.
+  Full academic PASS=0 and REVIEW_REQUIRED=18; publicationAuthorized=false.
+- Original protected working tree/controlled textbook unchanged.
+  git_publish and git_auto_merge remain false.
+- Next: test separate Gemini browser readiness and actual source-bound
+  model responses when legitimate authentication becomes available,
+  while advancing source-bound multilingual/visual QA in parallel.

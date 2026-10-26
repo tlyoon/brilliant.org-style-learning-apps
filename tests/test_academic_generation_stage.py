@@ -62,7 +62,9 @@ class StageTests(unittest.TestCase):
 
     def test_validated_packet_but_missing_independent_browser_profiles_queues_retry(self):
         self.save_packet()
-        with patch("app_generator.runtime.academic_generation_stage.verified_source_packet",
+        with patch("app_generator.runtime.academic_generation_stage.extract_pages",
+                   return_value=("Private synthetic scientific passage.",)), patch(
+                   "app_generator.runtime.academic_generation_stage.verified_source_packet",
                    return_value=self.trusted):
             result=run_academic_stage(self.config,self.context,self.package,self.pdf)
         self.assertEqual(1,result["sourceReady"])
@@ -71,7 +73,9 @@ class StageTests(unittest.TestCase):
 
     def test_forged_source_packet_is_not_passed_to_model(self):
         self.save_packet()
-        with patch("app_generator.runtime.academic_generation_stage.verified_source_packet",
+        with patch("app_generator.runtime.academic_generation_stage.extract_pages",
+                   return_value=("Private synthetic scientific passage.",)), patch(
+                   "app_generator.runtime.academic_generation_stage.verified_source_packet",
                    side_effect=ValueError("wrong original textbook passage")):
             result=run_academic_stage(self.config,self.context,self.package,self.pdf)
         self.assertEqual("AUTO_SOURCE_CHECK",result["queue"][0]["nextAction"])
