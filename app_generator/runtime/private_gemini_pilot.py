@@ -37,7 +37,8 @@ def exact_v3_context(v3_package:Path,v3_review:Path,v2_package:Path,
 
 
 def readiness(config:GeneratorConfig,package:Path,
-              source_pdf:Path,source_context:dict[str,Any]) -> dict[str,Any]:
+              source_pdf:Path,source_context:dict[str,Any],
+              *, existing_login:bool=False) -> dict[str,Any]:
     if config.browser_mode!="controlled" or config.llm_backend!="gemini_browser":
         raise ValueError("pilot needs isolated, non-API controlled Gemini browser mode")
     if sha256(source_pdf.read_bytes()).hexdigest()!=source_context.get("sourceSha256"):
@@ -51,12 +52,22 @@ def readiness(config:GeneratorConfig,package:Path,
         config.chrome_profile_dir/"academic-reviewers"/role/"gemini-browser"
         for role in ("physics","semantics")
     ]
-    provisioned=[path.is_dir() for path in expected_paths]
+    if existing_login:
+        # Existing authorized original Chrome profile is an eligible
+        # candidate only. Its authentication is verified LIVE by
+        # ExistingLoginReviewerFactory, not inferred from Preferences.
+        root=config.chrome_profile_dir/"gemini-browser"
+        provisioned=[root.is_dir(),(root/"Default"/"Preferences").is_file()]
+    else:
+        provisioned=[path.is_dir() for path in expected_paths]
     return {
         "sourceSha256":source_context["sourceSha256"],
         "packageSha256":sha256(package.read_bytes()).hexdigest(),
         "activityId":ACTIVITY_ID,
-        "distinctReviewerProfilesProvisioned":provisioned,
+        "distinctReviewerProfilesProvisioned":provisioned if not existing_login else [False,False],
+        "existingAuthorizedProfileEvidence":provisioned if existing_login else [],
+        "reviewerIsolation":"separate_new_conversations_same_google_account" if existing_login else "separate_browser_profiles",
+        "independentGoogleAccounts":False if existing_login else None,
         "readyToAttemptBrowserReview":all(provisioned),
         "authenticated":False,  # directory presence alone proves no login
         "academicQA":"REVIEW_REQUIRED",
@@ -69,8 +80,10 @@ def run_private_pilot(
     *,
     run_directory:Path,
     reviewer_factory_type=IndependentReviewerFactory,
+    existing_login:bool=False,
 ) -> dict[str,Any]:
-    preflight=readiness(config,package,source_pdf,source_context)
+    preflight=readiness(config,package,source_pdf,source_context,
+                        existing_login=existing_login)
     if not preflight["readyToAttemptBrowserReview"]:
         return {**preflight,"status":"BLOCKED_NO_INDEPENDENT_BROWSER_PROFILE",
                 "aiReviewedActivities":0,
