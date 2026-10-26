@@ -325,3 +325,14 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Next: test separate Gemini browser readiness and actual source-bound
   model responses when legitimate authentication becomes available,
   while advancing source-bound multilingual/visual QA in parallel.
+
+
+## PR146 browser-only independent academic reviewer sign-in preflight ? 26 October 2026 Asia/Kuching
+- Latest verified parent: PR #145 head c00e0df62a5bb795ac4e6e372ad7af10d30fd2d2, GitHub Actions successful, draft open. New owned isolated Yoga6 checkout academic-reviewer-ready-pr146-20261026 on branch feature/independent-reviewer-signin-preflight-20261026. Verify new PR head/CI live after push; no HP/Dell/Zenbook work.
+- Owner's local TOML configuration currently reports llm_backend=gemini_api; isolated academic pilot now explicitly uses llm_backend=gemini_browser in memory. No paid API, credential copying, authoring Chrome reuse or local file rewrite.
+- In actual Yoga6, read-only inspect initially showed both role-specific Chrome profiles absent. New neutral Gemini sign-in windows launched independently for physics and semantics under the dedicated role directories. Later read-only check confirmed both Chrome Preferences files exist and new role Chrome processes. Google authentication has NOT been verified, and no reviewer/model answer was captured. SourceReady18/18 from PR145 remains; 18 AUTO_RETRY and 0 real completed AI activity reviews.
+- Profile bootstrapping checks isolated roles without reading cookies/tokens, blocks suspicious partial directories and repository-located profiles, does not infer login from Chrome Preferences, never submits prompts, source PDF or publications. Idempotent existing profiles are preserved; no new external model requests this milestone.
+- Absolute private corrected v3 package SHA cd2c17864e155cc870e5ba8f6d3013a0c73e3bf3aa2d22a91834030eaf047fbc. Original controlled PDF SHA 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578; both strictly private and unchanged.
+- Next smallest eligibility condition: owner signs in via normal Google UI in TWO existing dedicated Yoga6 windows and closes both windows. Once verified, safely prove a neutral source-free Gemini roundtrip before submitting exact source-grounded academic pilot in a new owned run, recovering ambiguous claims before any retry.
+- Academic acceptance remains 0/18 full PASS and 18 REVIEW_REQUIRED; no human academic signoff mandatory, publication remains unauthorized. See docs/INDEPENDENT_REVIEWER_SIGNIN_BOOTSTRAP.md.
+- Verified Yoga6 complete local regression: 587 Python unittest cases (1 intentional skip), 0 failures, process exit code 0; repository lint passed, 16 content packages checked, Node interaction and visual audits passed. No live Gemini reviewer response was captured.
