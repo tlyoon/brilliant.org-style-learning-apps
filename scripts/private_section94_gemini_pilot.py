@@ -5,6 +5,7 @@ independent reviewer profiles, never an authoring Chrome profile.
 """
 from __future__ import annotations
 import argparse
+from dataclasses import replace
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -35,7 +36,10 @@ def main():
     p.add_argument("--execute",action="store_true")
     args=p.parse_args()
     try:
-        config=load_config(args.config)
+        # The source-generator might normally use a paid API backend.
+        # This private pilot explicitly uses no-API Selenium, never
+        # overwriting the owner's generator configuration.
+        config=replace(load_config(args.config),llm_backend="gemini_browser")
         context=prepare_context(args.pdf,args.v3,args.v2,args.proofs)
         path=args.out.resolve()
         if path.is_relative_to(ROOT.resolve()) or path.exists():
