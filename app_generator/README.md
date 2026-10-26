@@ -397,3 +397,37 @@ cannot establish all EN/MS/ZH translations, all distractor nuances,
 rendered scientific visuals or permission for public release. No manual
 academic signoff is required; unresolved meaning must remain in the
 autonomous follow-up queue.
+
+
+### Automatic original-textbook source packet provisioning
+
+After generating a validated package, the normal academic QA stage looks
+for a source-specific private provenance registry at:
+  state_dir/academic-review-provenance/<PDF SHA256>.json
+The private registry must be JSON with exactly four keys:
+  version = 1, sourceSha256, priorPackage, proofReceipts.
+The priorPackage value is an absolute path to the READ-ONLY original
+generated package; proofReceipts is a list of exactly two absolute paths
+to separate source-bound MCQ and interaction physics witness JSON files.
+The registry and private proof receipts must remain outside the public
+repository. No original learning materials are modified.
+
+The generator verifies PDF SHA256, the prior package canonical hash, every
+source receipt and all activity IDs. It re-extracts all cited text from
+the controlled original PDF, creates a new exact-version source packet in
+the private run's validation directory, then rechecks it immediately
+before any independent Gemini AI review. It extracts PDF text just once
+for all review activity page checks. An existing run packet is never
+overwritten without independent matching-version verification.
+
+No registry for an unrelated chapter can be reused: registry lookup is
+indexed by the actual PDF SHA. Invalid evidence or unavailable independent
+Gemini reviewer profiles produces machine-actionable source-check or retry
+tasks, not a mandatory human academic review. Scientific meaning,
+distractor validity, translation equivalence and rendered visual semantics
+are NOT established by original-PDF literal passage presence.
+
+Real Section 9.4 Yoga6 v3 integration: 18/18 source locations ready and
+18 automatic Gemini reviewer retries, because both independent
+browser profiles are not yet authenticated/provisioned. There was no
+live model review and nothing was published.
