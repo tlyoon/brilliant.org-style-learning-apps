@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from hashlib import sha256
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -32,16 +33,55 @@ NEW_ITEM_MARKERS = {
 }
 
 
+# Negative controls for a known lexical-marker false-positive failure mode.
+# Deliberately narrow to explicit, scientifically falsifiable contradictions.
+# Absence of a conflict NEVER establishes translation equivalence.
+EXPLICIT_CONTRADICTIONS = {
+    "en": (
+        ("individual-forces-must-be-small",
+         r"\b(?:each|every|all)\s+external\s+forces?\b.{0,48}\b(?:must|need|have to)\s+(?:be\s+)?(?:small|negligible)\b"),
+        ("net-external-impulse-not-negligible",
+         r"\bnet\s+external\s+impulse\b.{0,40}\b(?:not|never)\s+(?:be\s+)?(?:negligible|small)\b"),
+    ),
+    "ms": (
+        ("individual-forces-must-be-small",
+         r"\b(?:setiap|semua)\s+daya\s+luar\b.{0,48}\b(?:mesti|harus|wajib)\s+(?:menjadi\s+)?kecil\b"),
+        ("net-external-impulse-not-negligible",
+         r"\bimpuls\s+luar\s+bersih\b.{0,40}\btidak\s+(?:boleh\s+diabaikan|kecil)\b"),
+    ),
+    "zh": (
+        ("individual-forces-must-be-small",
+         r"(?:\u6bcf\u4e00\u4e2a|\u6bcf\u4e2a)\u5916\u529b.{0,20}(?:\u90fd)?\u5fc5\u987b.{0,16}(?:\u5f88\u5c0f|\u5fae\u5c0f|\u8f83\u5c0f)"),
+        ("net-external-impulse-not-negligible",
+         r"\u51c0\u5916\u529b\u51b2\u91cf.{0,20}(?:\u4e0d\u53ef\u5ffd\u7565|\u4e0d\u80fd\u5ffd\u7565|\u5fc5\u987b\u5f88\u5927)"),
+    ),
+}
+
+
+def net_impulse_scope_conflicts(text: str, language: str) -> list[str]:
+    if language not in EXPLICIT_CONTRADICTIONS or not isinstance(text,str):
+        raise ValueError("unsupported localized net-impulse proposition")
+    normalized=" ".join(text.casefold().split())
+    return [code for code,regex in EXPLICIT_CONTRADICTIONS[language]
+            if re.search(regex,normalized) is not None]
+
+
 def check_first_option(option: dict[str,Any]) -> dict[str,Any]:
     labels = option.get("label",{})
     flags={}
     for lang, markers in NEW_ITEM_MARKERS.items():
         text = labels.get(lang,"") if isinstance(labels,dict) else ""
         missing = [marker for marker in markers if marker not in text.casefold()]
+        conflicts = net_impulse_scope_conflicts(text,lang)
         flags[lang] = {
-            "status":"BOUNDED_CONCEPT_PRESENT" if not missing else "REVIEW_REQUIRED",
-            "reason":"net external impulse, relative collision impulse and scope markers present"
-                    if not missing else "missing source-bound conditional meaning: "+",".join(missing),
+            "status":"BOUNDED_CONCEPT_PRESENT" if not (missing or conflicts)
+                     else "REVIEW_REQUIRED",
+            "reason":("explicit conflicting net-impulse proposition: "+",".join(conflicts)
+                      if conflicts else
+                      "missing bounded source-condition markers"
+                      if missing else
+                      "bounded scope markers present; semantic equivalence unverified"),
+            "explicitContradictionCodes":conflicts,
         }
     return flags
 
