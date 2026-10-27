@@ -86,6 +86,25 @@ class StageTests(unittest.TestCase):
         r=run_academic_stage(self.config,self.context,self.package,self.pdf)
         self.assertEqual("AUTO_SOURCE_CHECK",r["queue"][0]["nextAction"])
 
+    def test_busy_chrome_profiles_defer_model_without_browser_factory(self):
+        self.save_packet()
+        for role in ("physics","semantics"):
+            (self.config.chrome_profile_dir/"academic-reviewers"/role/"gemini-browser").mkdir(parents=True)
+        def forbidden_factory(*args,**kwargs):
+            raise AssertionError("occupied profile must never open a browser")
+        with patch("app_generator.runtime.academic_generation_stage.extract_pages",
+                   return_value=("Private synthetic scientific passage.",)), patch(
+                   "app_generator.runtime.academic_generation_stage.verified_source_packet",
+                   return_value=self.trusted), patch(
+                   "app_generator.runtime.academic_generation_stage.reviewer_ownership_preflight",
+                   return_value={"canAttemptIndependentBrowserReview":False}):
+            output=run_academic_stage(self.config,self.context,self.package,self.pdf,
+                                      reviewer_factory_type=forbidden_factory)
+        self.assertEqual(1,output["sourceReady"])
+        self.assertEqual("AUTO_RETRY",output["queue"][0]["nextAction"])
+        self.assertIn("occupied",output["queue"][0]["reason"])
+        self.assertFalse(output["publicationAuthorized"])
+
     def test_protected_repo_cannot_receive_qa_receipts(self):
         self.config.repo_root=self.root
         with self.assertRaisesRegex(ValueError,"public repository"):
