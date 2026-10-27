@@ -69,3 +69,32 @@ expand only after one activity is fully independently verified.
 All 18 activities stay REVIEW_REQUIRED until reliable complete evidence;
 no human academic approval is required. Public release, protected merges,
 paid API use, and edits to original source remain unauthorized.
+
+
+## PR148 fail-closed original-profile probe recovery, 27 October 2026
+The first real source-free PR147 attempt remains AMBIGUOUS (physics
+POSSIBLY_SENT; no valid response captured; semantics not sent). That prior
+receipt stays immutable and is NOT an academic model response.
+A subsequent read-only Windows process scan showed currently active
+original-profile Chrome processes whose specific owner cannot safely
+be identified. Do not attach to or terminate that browser, and do not
+replay the previous prompt.
+
+The source-free probe now enforces a Windows original-profile busy-process
+check BEFORE any private PREPARED request state is persisted or a Chrome
+session opens. A busy profile blocks with no new Gemini request.
+
+Future possibly-sent requests failing valid JSON are recorded AMBIGUOUS
+with PRIVACY-SAFE UI diagnostics: response element counts, maximum
+character length, parseable JSON count, generation and completion signals.
+No raw model text, authoring conversation, PDF source, browser cookies,
+account data or credentials enter the receipt. Indicators can help isolate
+a UI/parsing problem but do not establish completion, provider failure,
+academic approval or safe automatic resubmission. If UI inspection fails,
+the diagnostics read UNAVAILABLE.
+
+Limitation: process-state detection is point-in-time preflight, not an
+exclusive operating-system lock. Future work may add an owned-profile
+lease and provider-specific read-only reconciliation of the exact
+conversation before any previously ambiguous request can be safely
+handled. Continue deterministic offline QA when browser is in use.
