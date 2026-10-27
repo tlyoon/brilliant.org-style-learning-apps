@@ -127,20 +127,32 @@ def audit_activity_matrix(
             "deterministic",f"source:{aid}",
             "original source passage location verified, scientific claim interpretation pending"
             if source else "original-source passage not independently verified for exact package"))
-        errors=_answer_shape_defects(a)
+        try:
+            errors=_answer_shape_defects(a)
+        except (AttributeError, KeyError, TypeError, ValueError) as exc:
+            # Malformed generated JSON must not abort the other activity audits.
+            # Only an exception class is persisted, never sensitive content.
+            errors=[f"invalid answer structure ({type(exc).__name__})"]
         findings.append(Finding("answer_correctness","FAIL" if errors else "REVIEW_REQUIRED",
             "deterministic",f"answer:{aid}",
             "; ".join(errors) if errors else "answer identifiers structurally consistent, physics of options not fully verified"))
         try:
             vis_errors=visual_contract_errors(repo_root,{**package,"activities":[a]},
                                                label=f"activity:{aid}")
-        except (ValueError,OSError,KeyError) as exc:
+        except (ValueError,OSError,KeyError,TypeError,AttributeError) as exc:
             vis_errors=["visual validation unavailable: "+type(exc).__name__]
         findings.append(Finding("visual_semantics","FAIL" if vis_errors else "REVIEW_REQUIRED",
             "deterministic",f"visual:{aid}",
             "; ".join(vis_errors[:3]) if vis_errors else
             "visual schema valid; rendered geometry and physical scientific meaning require independent review"))
-        findings.append(check_multilingual_surface(a))
+        try:
+            findings.append(check_multilingual_surface(a))
+        except (AttributeError, KeyError, TypeError, ValueError) as exc:
+            # A broken nested localization container is a concrete FAIL,
+            # rather than discarding the audit of every other activity.
+            findings.append(Finding(
+                "multilingual_meaning","FAIL","deterministic",f"language:{aid}",
+                f"invalid localized structure ({type(exc).__name__})",True))
         findings.append(Finding("physics_consistency","REVIEW_REQUIRED",
             "deterministic",f"physics:{aid}",
             "independent source-grounded scientific proof not yet supplied for this exact activity revision"))
