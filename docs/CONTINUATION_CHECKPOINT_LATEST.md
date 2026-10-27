@@ -425,3 +425,12 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Actual Yoga6 live read-only preflight: physics=BUSY, semantics=BUSY, status DEFER_FOR_EXCLUSIVE_OWNERSHIP, canAttemptIndependentBrowserReview false; no Gemini conversation accessed, no session auth asserted.
 - Dedicated absence/busy/unknown/free tests plus coordinator fail-closed integration test. A FREE process profile is only a candidate for safe attach; authentication, response, full academic PASS and publication all remain false until independently verified.
 - Next deliverable: all 18 activity exact-source/physics evidence gap queue that prioritizes legitimate remaining academic review rather than repeating unsafe profile attempts.
+
+
+## PR157 full Section 9.4 private 18-activity academic gap plan ? 28 Oct 2026
+- Parent PR156 SHA 6f10812ce7a3ab9654d5924ccb4b52ed7e09e1ab. Isolated authorized Yoga6 checkout academic-evidence-batch-pr157-20261028.
+- New private, exact-version plan_exact_academic_batch function + CLI composes earlier independently generated source-location matrix and bounded-physics activity receipts for EVERY activity. Checks exact original PDF/package/activity identities and all gate statuses using PR150 reconciliation, fails closed if one receipt is stale, omitted, duplicated, forged or claims premature full PASS.
+- Live private Section 9.4 source SHA 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578 and v3 package SHA cd2c17864e155cc870e5ba8f6d3013a0c73e3bf3aa2d22a91834030eaf047fbc: 18/18 source-location receipts, 18/18 mathematical witness receipts, 0/18 academic PASS, 18/18 pending independent semantic and visual review. Outputs the known bounded collision activity first; remaining 17 follow package order.
+- Immutable private worklist file section94-exact-18-academic-gap-plan-pr157-20261028.json outside public repository; no source quotations, original PDF, learner content, credentials or user data in GitHub.
+- Source locations were independently extracted when the verified input matrix was created, not newly extracted by this report. No new Gemini submission while both profile roles BUSY; no claim of trilingual semantic/diagram/full teaching quality PASS, no human academic sign-off and no public release.
+- Next: exclusive safe reviewer sessions and actual semantic+visual responses, remediate specific defects in new private candidates and independently recheck before any change to release gate.
