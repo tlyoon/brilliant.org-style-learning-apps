@@ -28,6 +28,7 @@ jobs:
           node --check app/visual-renderers.js
           node --check "$(python -c 'from pathlib import Path; from app_generator.domains import resolve_domain; print(resolve_domain(Path(".")).path("visuals", "rendererScript"))')"
           node tests/test_app_rendering.js
+          node tests/test_single_activity_learning_path.js
           node tests/test_app_loading.js
           node tests/test_visual_renderers.js
           node tests/test_visual_player_integration.js
