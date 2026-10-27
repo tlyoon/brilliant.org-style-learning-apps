@@ -13,6 +13,7 @@ from typing import Any
 
 from app_generator.filesystem.outputs import write_json_atomic
 from app_generator.gemini.academic_reviewers import IndependentReviewerFactory
+from app_generator.gemini.reviewer_ownership_gate import reviewer_ownership_preflight
 from app_generator.runtime.autonomous_academic import review_batch_autonomously
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.academic_repair_stage import dispatch_repair_queue
@@ -128,7 +129,10 @@ def run_academic_stage(
     if eligible and config.llm_backend=="gemini_browser" and config.browser_mode=="controlled":
         profiles=[config.chrome_profile_dir/"academic-reviewers"/role/"gemini-browser"
                   for role in ("physics","semantics")]
-        if all(p.is_dir() for p in profiles):
+        profiles_exist=all(p.is_dir() for p in profiles)
+        ownership=(reviewer_ownership_preflight(config.chrome_profile_dir,config.repo_root)
+                   if profiles_exist else None)
+        if profiles_exist and ownership["canAttemptIndependentBrowserReview"]:
             review_config=replace(config,gem_url=NEUTRAL_CHAT,gem_edit_url=NEUTRAL_CHAT)
             try:
                 with reviewer_factory_type(review_config,source_pdf) as reviewer_pool:
@@ -161,7 +165,9 @@ def run_academic_stage(
         else:
             queue.extend({
                 "activityId":a["id"],"nextAction":"AUTO_RETRY",
-                "reason":"dedicated independent browser profiles are not provisioned",
+                "reason":("dedicated independent browser profiles are not provisioned"
+                          if not profiles_exist else
+                          "dedicated reviewer Chrome profiles occupied or ownership unknown; defer safely"),
             } for a in eligible)
     elif eligible:
         queue.extend({

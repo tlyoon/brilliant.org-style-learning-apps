@@ -417,3 +417,11 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Checkpoint bounded-academic-recovery saved IN_FLIGHT before attempting recovery, COMPLETE or BLOCKED afterwards, bound to source/package/manifest and independent receipt SHA. Repeated or ambiguous attempts never call provider or overwrite output; stale resumed inputs fail closed.
 - Actual repair changes limited to previous PR154 exact known append-only contradiction rollback; arbitrary model-generated answers and visuals untouched, source textbook and authoring files protected. Queue remains REVIEW_REQUIRED and publication false even after repair.
 - Six focused synthetic regressions, including call through actual run_academic_stage; no manual academic signoff or browser takeover. Continue independent browser readiness preflight and all-activity evidence coverage.
+
+
+## PR156 reviewer Chrome profile ownership read-only preflight ? 28 Oct 2026
+- Parent PR155 c4c20d8f4260796da3ffebb901076b5c66d71ce5. Isolated Yoga6 checkout academic-reviewer-readiness-pr156-20261028.
+- Existing source-verified automatic academic review now checks per-role Chrome profile ownership using a read-only Windows process command-line check before invoking the independent reviewer factory. Missing, BUSY, UNKNOWN and malformed statuses defer with AUTO_RETRY, never attach or terminate a browser process, copy credentials or retry a possibly sent model prompt.
+- Actual Yoga6 live read-only preflight: physics=BUSY, semantics=BUSY, status DEFER_FOR_EXCLUSIVE_OWNERSHIP, canAttemptIndependentBrowserReview false; no Gemini conversation accessed, no session auth asserted.
+- Dedicated absence/busy/unknown/free tests plus coordinator fail-closed integration test. A FREE process profile is only a candidate for safe attach; authentication, response, full academic PASS and publication all remain false until independently verified.
+- Next deliverable: all 18 activity exact-source/physics evidence gap queue that prioritizes legitimate remaining academic review rather than repeating unsafe profile attempts.
