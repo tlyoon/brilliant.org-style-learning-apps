@@ -83,6 +83,51 @@ class MatrixTests(unittest.TestCase):
             "sourceEvidence":"invented"}}
         r=self.audit(source_packets=packets)
         self.assertFalse(r["activities"][0]["sourceLocationVerified"])
+    def test_malformed_nested_generated_json_does_not_abort_other_activity_reviews(self):
+        def null_mcq_key(p):
+            p["activities"][0]["answerKey"]=None
+        def unhashable_mcq_option_id(p):
+            p["activities"][0]["answerKey"]["options"][0]["id"]=["a"]
+        def malformed_mcq_options(p):
+            p["activities"][0]["answerKey"]["options"]=None
+        def unhashable_interactive_selection(p):
+            p["activities"][1]["interaction"]["correctSelections"]=[["x"]]
+        def unhashable_classification_placement(p):
+            a=p["activities"][1]
+            a["interactionMode"]="classification"
+            a["interaction"]["targets"]=[{"id":"t","label":lang("Target")}]
+            a["interaction"]["placements"]=[
+                {"itemId":["x"],"targetId":"t"},
+                {"itemId":"y","targetId":"t"}]
+        for label, change, affected in (
+            ("null-mcq-key",null_mcq_key,0),
+            ("unhashable-mcq-option-id",unhashable_mcq_option_id,0),
+            ("missing-mcq-options-list",malformed_mcq_options,0),
+            ("unhashable-selection",unhashable_interactive_selection,1),
+            ("unhashable-classification-placement",unhashable_classification_placement,1),
+        ):
+            with self.subTest(case=label):
+                p=sample()
+                change(p)
+                self.save(p)
+                result=self.audit()
+                self.assertEqual(2,result["activityCount"])
+                self.assertEqual("FAIL",result["activities"][affected]["academicQA"])
+                self.assertEqual("AUTO_REPAIR",result["activities"][affected]["nextAction"])
+                self.assertEqual("REVIEW_REQUIRED",
+                                 result["activities"][1-affected]["academicQA"])
+                self.assertFalse(result["publicationAuthorized"])
+                self.assertEqual("FAIL",result["academicQA"])
+
+    def test_malformed_failure_diagnostics_never_echo_private_answer_text(self):
+        p=sample()
+        p["activities"][0]["answerKey"]["options"][0]["id"]=["private textbook text"]
+        self.save(p)
+        result=self.audit()
+        details=json.dumps(result,ensure_ascii=False)
+        self.assertNotIn("private textbook text",details)
+        self.assertIn("invalid answer structure (TypeError)",details)
+
     def test_ai_only_unsupported_pass_cannot_be_injected_as_json(self):
         with self.assertRaisesRegex(ValueError,"executable trusted"):
             self.audit(trusted_verifiers={"source_fidelity":"SUPPORTED"})
