@@ -128,7 +128,7 @@ class ExistingLoginProbeTests(unittest.TestCase):
         with patch("scripts.probe_existing_gemini.load_config",return_value=self.config):
             report=probe(self.root/"cfg",self.output,
                          chrome_factory=Chrome,verifier_factory=Verifier,
-                         page_factory=Page)
+                         page_factory=Page,profile_busy=lambda _:False)
         self.assertEqual("NEUTRAL_TWO_CONTEXTS_CONFIRMED",report["status"])
         self.assertEqual(2,len(Page.prompts))
         self.assertNotEqual(Page.prompts[0][0],Page.prompts[1][0])
@@ -139,13 +139,13 @@ class ExistingLoginProbeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"already exists"):
             with patch("scripts.probe_existing_gemini.load_config",return_value=self.config):
                 probe(self.root/"cfg",self.output,
-                      chrome_factory=Chrome,verifier_factory=Verifier,page_factory=Page)
+                      chrome_factory=Chrome,verifier_factory=Verifier,page_factory=Page,profile_busy=lambda _:False)
 
     def test_ambiguous_request_has_durable_claim_and_never_retries(self):
         Page.failure=True
         with patch("scripts.probe_existing_gemini.load_config",return_value=self.config):
             report=probe(self.root/"cfg",self.output,
-                         chrome_factory=Chrome,verifier_factory=Verifier,page_factory=Page)
+                         chrome_factory=Chrome,verifier_factory=Verifier,page_factory=Page,profile_busy=lambda _:False)
         self.assertEqual("REQUIRES_RECONCILIATION",report["status"])
         self.assertEqual(1,len(Page.prompts))
         r=json.loads((self.output/"state.json").read_text())
@@ -154,11 +154,55 @@ class ExistingLoginProbeTests(unittest.TestCase):
         self.assertFalse(r["sourcePdfUploaded"])
         self.assertFalse(r["publicationAuthorized"])
 
+    def test_busy_authoring_profile_blocks_before_claim_or_browser(self):
+        with patch("scripts.probe_existing_gemini.load_config",return_value=self.config):
+            with self.assertRaisesRegex(ValueError,"busy"):
+                probe(self.root/"cfg",self.output,
+                      chrome_factory=Chrome,verifier_factory=Verifier,
+                      page_factory=Page,profile_busy=lambda _:True)
+        self.assertFalse(self.output.exists())
+        self.assertEqual(0,len(Chrome.made))
+        self.assertEqual(0,len(Page.prompts))
+
+    def test_ambiguous_diagnostics_never_store_model_text(self):
+        from scripts.probe_existing_gemini import privacy_safe_response_diagnostics
+        from unittest.mock import patch
+        seen='PRIVATE MODEL TEXT THAT MUST NOT BE PERSISTED'
+        with patch("scripts.probe_existing_gemini.find_all",return_value=[object()]), \
+             patch("scripts.probe_existing_gemini._response_text",return_value=seen), \
+             patch("scripts.probe_existing_gemini._generation_signals",return_value=(False,True)):
+            out=privacy_safe_response_diagnostics(Driver())
+        self.assertEqual("OBSERVED_COUNTS_ONLY",out["status"])
+        self.assertEqual(1,out["visibleResponseCount"])
+        self.assertEqual(len(seen),out["longestResponseCharacters"])
+        self.assertFalse(out["generationActive"])
+        self.assertTrue(out["responseCompleteSignal"])
+        self.assertNotIn(seen,json.dumps(out))
+
+    def test_ambiguous_claim_persists_safe_ui_diagnostics_without_resend(self):
+        Page.failure=True
+        simulated={"status":"OBSERVED_COUNTS_ONLY",
+                   "visibleResponseCount":1,"nonemptyResponseCount":1,
+                   "longestResponseCharacters":52,"parseableJsonFrameCount":0,
+                   "generationActive":False,"responseCompleteSignal":True}
+        with patch("scripts.probe_existing_gemini.load_config",return_value=self.config), \
+             patch("scripts.probe_existing_gemini.privacy_safe_response_diagnostics",
+                   return_value=simulated):
+            report=probe(self.root/"cfg",self.output,chrome_factory=Chrome,
+                         verifier_factory=Verifier,page_factory=Page,
+                         profile_busy=lambda _:False)
+        self.assertEqual("REQUIRES_RECONCILIATION",report["status"])
+        self.assertEqual(1,len(Page.prompts))
+        state=json.loads((self.output/"state.json").read_text(encoding="utf-8"))
+        self.assertEqual(simulated,state["roles"]["physics"]["privacySafeUiDiagnostics"])
+        self.assertEqual("AMBIGUOUS",state["roles"]["physics"]["state"])
+        self.assertNotIn("semantics",state["roles"])
+
     def test_repo_receipts_rejected_before_browser_start(self):
         with patch("scripts.probe_existing_gemini.load_config",return_value=self.config):
             with self.assertRaisesRegex(ValueError,"inside Git"):
                 probe(self.root/"cfg",self.repo/"bad",
-                      chrome_factory=Chrome,verifier_factory=Verifier,page_factory=Page)
+                      chrome_factory=Chrome,verifier_factory=Verifier,page_factory=Page,profile_busy=lambda _:False)
         self.assertEqual(0,len(Chrome.made))
         self.assertFalse((self.repo/"bad").exists())
 

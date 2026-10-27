@@ -23,7 +23,50 @@ from app_generator.browser.account import GoogleAccountVerifier
 from app_generator.browser.chrome import ChromeSession
 from app_generator.config import load_config
 from app_generator.gemini.conversation import GemConversationPage
+from app_generator.gemini.existing_login_reviewers import existing_profile_in_use
+from app_generator.gemini import selectors
+from app_generator.browser.common import find_all
+from app_generator.gemini.conversation import (
+    _response_text, _complete_json_frame, _generation_signals,
+)
 from app_generator.generation.extraction import parse_json_response
+
+def privacy_safe_response_diagnostics(driver) -> dict:
+    """Count completion signals without persisting response or chat text.
+
+    Only call inside a newly created owned review tab. Failure to inspect
+    remains unknown and must never be interpreted as successful delivery.
+    """
+    try:
+        responses=find_all(driver,selectors.MODEL_RESPONSES)
+        lengths=[]
+        parseable=0
+        for element in responses:
+            try:
+                content=_response_text(driver,element)
+                if content:
+                    lengths.append(len(content))
+                    frame=_complete_json_frame(content)
+                    if frame is not None:
+                        try:
+                            if isinstance(parse_json_response(frame),dict):
+                                parseable+=1
+                        except (ValueError,TypeError,KeyError):
+                            pass
+            except Exception:
+                continue
+        active,complete=_generation_signals(driver)
+        return {
+            "status":"OBSERVED_COUNTS_ONLY",
+            "visibleResponseCount":len(responses),
+            "nonemptyResponseCount":len(lengths),
+            "longestResponseCharacters":max(lengths,default=0),
+            "parseableJsonFrameCount":parseable,
+            "generationActive":bool(active),
+            "responseCompleteSignal":bool(complete),
+        }
+    except Exception:
+        return {"status":"UNAVAILABLE"}
 
 ROLES=("physics","semantics")
 NEUTRAL="https://gemini.google.com/app"
@@ -38,7 +81,8 @@ def _save_state(dest:Path, data:dict) -> None:
 def probe(config:Path, output_dir:Path,
           *, chrome_factory=ChromeSession,
           verifier_factory=GoogleAccountVerifier,
-          page_factory=GemConversationPage) -> dict:
+          page_factory=GemConversationPage,
+          profile_busy=existing_profile_in_use) -> dict:
     cfg=replace(load_config(config),gem_url=NEUTRAL,gem_edit_url=NEUTRAL,
                 llm_backend="gemini_browser",
                 response_timeout_seconds=90,ui_timeout_seconds=24)
@@ -51,6 +95,11 @@ def probe(config:Path, output_dir:Path,
     profile=cfg.chrome_profile_dir/"gemini-browser"
     if cfg.browser_mode!="controlled" or not profile.is_dir():
         raise ValueError("only previously-authorized existing controlled Chrome profile")
+    # Ownership is a prerequisite, not a post-submission diagnostic:
+    # never connect to a possibly independently owned authoring browser.
+    # Do not create even a PREPARED request claim when the profile is busy.
+    if profile_busy(profile):
+        raise ValueError("existing authorized Chrome profile is busy; no probe request submitted")
     dest.mkdir(parents=True,exist_ok=False)
     result={
         "status":"PREPARED","reviewerMode":"same_authorized_login_separate_new_chats",
@@ -118,7 +167,8 @@ def probe(config:Path, output_dir:Path,
             except Exception as exc:
                 stage.update(state="AMBIGUOUS",
                              errorType=type(exc).__name__,
-                             responseCaptured=False)
+                             responseCaptured=False,
+                             privacySafeUiDiagnostics=privacy_safe_response_diagnostics(driver))
                 result["status"]="REQUIRES_RECONCILIATION"
                 _save_state(dest,result)
                 break
