@@ -16,6 +16,7 @@ from app_generator.gemini.academic_reviewers import IndependentReviewerFactory
 from app_generator.runtime.autonomous_academic import review_batch_autonomously
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.academic_repair_stage import dispatch_repair_queue
+from app_generator.runtime.bounded_recovery_stage import maybe_run_bounded_recovery
 from app_generator.runtime.academic_source_provision import provision_run_source_packets
 from app_generator.validation.source_passages import extract_pages
 from app_generator.validation.autonomous_ai_review import canonical_digest
@@ -178,5 +179,23 @@ def run_academic_stage(
         "academicQA":"REVIEW_REQUIRED",
         "publicationAuthorized":False,
     }
+    # Optional private exact-baseline recovery is a separate bounded action.
+    # It NEVER overwrites the original package or turns provider absence into PASS.
+    try:
+        recovery=maybe_run_bounded_recovery(
+            run=context,repository=config.repo_root,
+            package_file=package_file,source_pdf=source_pdf,
+        )
+    except (ValueError,TypeError,KeyError,OSError,json.JSONDecodeError) as exc:
+        recovery={"state":"BLOCKED","nextAction":"AUTO_SOURCE_CHECK",
+                  "errorClass":type(exc).__name__,"academicQA":"REVIEW_REQUIRED",
+                  "publicationAuthorized":False}
+    if recovery is not None:
+        output["boundedRecovery"]=recovery
+        output["queue"].append({
+            "activityId":recovery.get("activityId","BOUND_RECOVERY"),
+            "nextAction":recovery["nextAction"],
+            "reason":"controlled private rollback needs a separate independent review",
+        })
     write_json_atomic(context.validation/"autonomous-academic-queue.json",output)
     return output
