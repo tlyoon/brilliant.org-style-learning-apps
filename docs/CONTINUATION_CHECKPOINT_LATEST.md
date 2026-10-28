@@ -467,3 +467,10 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Completion screen now has a localized Export anonymous feedback button. On learner click only, it creates a local browser JSON download containing schema version, ordinal/validated non-PII activity ID, wrong/correct checks, authored hints, skips and correctly completed flags; no names, credentials, student IDs, raw learner responses, private textbook prose, timestamps or network requests.
 - Session data held in memory only, map uses null prototype for safe key handling. Nothing leaves the browser unless user explicitly exports and shares the file. No persistence or centralized cohort analytics is claimed.
 - Regression uses synthetic questions containing private-test markers and asserts omitted source/feedback text, no download before click and accurate skip/incorrect/correct/complete counters. Underlying scientific semantic and multilingual correctness still require independent academic review.
+
+
+## PR163 all-activity wrong-answer scientific-player falsification ? 28 Oct 2026
+- Parent PR162 head edaadf6b51a5e457a9ce1ce662fa2ca8e96e8836, hosted CI SUCCESS. New isolated authorized Yoga6 checkout academic-wrong-answer-proof-pr163-20261028.
+- Strengthened existing real app/app.js learner-path test: for EACH MCQ/selection/classification/matching/ordering and each EN/MS/ZH locale, inject a fully formed but independently wrong response and demand actual incorrect feedback, no completion and one wrong count; then clear response and perform original valid correct learner journey.
+- Actual private corrected Section 9.4 package SHA cd2c17864e155cc870e5ba8f6d3013a0c73e3bf3aa2d22a91834030eaf047fbc: 54/54 wrong-answer rejections and 54/54 correct answer journeys, source package loaded read-only. Public CI uses only synthetic 5-mode fixture: 15 negatives and 15 positives.
+- This is deterministic learner-scoring evidence, NOT an independent semantic, source, translation or visual academic PASS. No Gemini profile accessed and no protected publication/merge.
