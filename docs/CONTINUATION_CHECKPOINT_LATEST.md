@@ -448,3 +448,9 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - app/app.js now records check correctness, hint reveal, skip and genuinely completed activities in session-only in-memory map keyed by activity ID. Counter does not duplicate on rechecks and skip never confers completion; the session resets on reload/restart to avoid mixing textbook packages.
 - Anonymous counts only: no student identifiers, source text, token, cookie, storage, server, or network calls. Functional user feedback is a prerequisite to later closed feedback loop, not academic validation or persistent analytics.
 - Node regression verifies wrong-check, hint, retry, correct-check, completion, skip, and reset, wired into synthetic CI. Private package unchanged and 0/18 complete academic PASS.
+
+
+## PR160 automatic authored-hint intervention ? 28 Oct 2026
+- Parent PR159 9638b48442546d30a4a10e1615dd8e1ca9dfd441.
+- Real app.js uses new private wrong-attempt counter to show the already-authored, current-locale hint after two wrong checks; no synthetic scientific claim or model-generated text, no grading change. Single auto intervention per activity prevents endless hint increments; current session remains anonymous in memory.
+- Synthetic EN/MS/ZH adaptive regression switches locales between wrong attempts, confirms no hint on first wrong and the correct Malay and Chinese authored hint afterward. Correct answer still scores and completes; no academic or release claim.
