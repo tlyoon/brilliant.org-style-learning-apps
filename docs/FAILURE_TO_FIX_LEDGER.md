@@ -91,3 +91,5 @@
 | BSA-20261028-035 | Learner feedback counters did not change the teaching response to repeated misconceptions | Automatically reveal existing translated authored hint after second wrong attempt without altering grading, API access or source | Three-locale synthetic regression passes; only source-authored hints and no additional academic PASS |
 
 | BSA-20261028-036 | Existing player treated journey completion as equivalent to mastering the questions, even after learners skipped items | Render correct-completion tally and offer targeted voluntary revisit to only unfinished items; never award credit on skip | Synthetic end-to-end test moves 1/2 to 2/2 only after correct revisit; private learning counters remain anonymous |
+
+| BSA-20261028-037 | Anonymous learner evidence was only visible in transient JS state, preventing its controlled use in teaching feedback | Add optional local JSON export limited to safe activity IDs and aggregated attempt/hint/skip/completion metrics, never sending content to a server | Synthetic automated test verifies user click, no private learner text, no automatic export, accurate counters |

@@ -460,3 +460,10 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Parent PR160 head 884a78f2077e16a5b76d7523d94a22a3c554cb38, hosted CI SUCCESS.
 - Completion screen now reports correctly completed activities, separate from checked or skipped ones, and offers localized voluntary Review unfinished activities. A targeted review queue skips previously completed items, so skipped questions are not mistakenly counted as success or forced through already completed content.
 - Synthetic Node test skips first activity, correctly completes second, revisits only skipped first, verifies summary 1/2 -> 2/2 and reset. EN/MS/ZH UI labels are present; no manufactured mastery achievement, cloud telemetry, model, academic PASS or public release.
+
+
+## PR162 opt-in anonymous learning feedback export ? 28 Oct 2026
+- Parent draft PR161 head 966a6f0348b19a6fef7b2fce3c270b201d5606fe, hosted CI successful.
+- Completion screen now has a localized Export anonymous feedback button. On learner click only, it creates a local browser JSON download containing schema version, ordinal/validated non-PII activity ID, wrong/correct checks, authored hints, skips and correctly completed flags; no names, credentials, student IDs, raw learner responses, private textbook prose, timestamps or network requests.
+- Session data held in memory only, map uses null prototype for safe key handling. Nothing leaves the browser unless user explicitly exports and shares the file. No persistence or centralized cohort analytics is claimed.
+- Regression uses synthetic questions containing private-test markers and asserts omitted source/feedback text, no download before click and accurate skip/incorrect/correct/complete counters. Underlying scientific semantic and multilingual correctness still require independent academic review.

@@ -1,11 +1,11 @@
 const DEFAULT_PACKAGE = document.querySelector("#app").dataset.packageUrl || "";
-const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false, sessionMetrics: {}, reviewPending: false };
+const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false, sessionMetrics: Object.create(null), reviewPending: false };
 let loadGeneration = 0;
 
 const copy = {
-  en: { activity: "Activity", of: "of", check: "Check answer", next: "Next activity", tryAgain: "Try again", restart: "Start again", hint: "Show a hint", complete: "Journey complete", correct: "That reasoning fits.", retry: "Reconsider the relationship and try again.", moveUp: "Move up", moveDown: "Move down", position: "Position", skip: "Skip", completedCount: "Correctly completed:", reviewPending: "Review unfinished activities" },
-  ms: { activity: "Aktiviti", of: "daripada", check: "Semak jawapan", next: "Aktiviti seterusnya", tryAgain: "Cuba lagi", restart: "Mula semula", hint: "Tunjukkan petunjuk", complete: "Perjalanan selesai", correct: "Penaakulan itu sesuai.", retry: "Pertimbangkan semula hubungan itu dan cuba lagi.", moveUp: "Alih ke atas", moveDown: "Alih ke bawah", position: "Kedudukan", skip: "Langkau", completedCount: "Diselesaikan dengan betul:", reviewPending: "Ulang aktiviti belum selesai" },
-  zh: { activity: "活动", of: "/", check: "检查答案", next: "下一个活动", tryAgain: "再试一次", restart: "重新开始", hint: "显示提示", complete: "学习旅程完成", correct: "这个推理是恰当的。", retry: "重新思考其中的关系，然后再试一次。", moveUp: "上移", moveDown: "下移", position: "位置", skip: "跳过", completedCount: "\u5df2\u6b63\u786e\u5b8c\u6210\uff1a", reviewPending: "\u590d\u4e60\u672a\u5b8c\u6210\u7684\u6d3b\u52a8" },
+  en: { activity: "Activity", of: "of", check: "Check answer", next: "Next activity", tryAgain: "Try again", restart: "Start again", hint: "Show a hint", complete: "Journey complete", correct: "That reasoning fits.", retry: "Reconsider the relationship and try again.", moveUp: "Move up", moveDown: "Move down", position: "Position", skip: "Skip", completedCount: "Correctly completed:", reviewPending: "Review unfinished activities", exportFeedback: "Export anonymous feedback" },
+  ms: { activity: "Aktiviti", of: "daripada", check: "Semak jawapan", next: "Aktiviti seterusnya", tryAgain: "Cuba lagi", restart: "Mula semula", hint: "Tunjukkan petunjuk", complete: "Perjalanan selesai", correct: "Penaakulan itu sesuai.", retry: "Pertimbangkan semula hubungan itu dan cuba lagi.", moveUp: "Alih ke atas", moveDown: "Alih ke bawah", position: "Kedudukan", skip: "Langkau", completedCount: "Diselesaikan dengan betul:", reviewPending: "Ulang aktiviti belum selesai", exportFeedback: "Eksport maklum balas tanpa nama" },
+  zh: { activity: "活动", of: "/", check: "检查答案", next: "下一个活动", tryAgain: "再试一次", restart: "重新开始", hint: "显示提示", complete: "学习旅程完成", correct: "这个推理是恰当的。", retry: "重新思考其中的关系，然后再试一次。", moveUp: "上移", moveDown: "下移", position: "位置", skip: "跳过", completedCount: "\u5df2\u6b63\u786e\u5b8c\u6210\uff1a", reviewPending: "\u590d\u4e60\u672a\u5b8c\u6210\u7684\u6d3b\u52a8", exportFeedback: "\u5bfc\u51fa\u533f\u540d\u53cd\u9988" },
 };
 
 const localized = (value) => typeof value === "string" ? value : value?.[state.locale] ?? value?.en ?? "";
@@ -75,6 +75,23 @@ function recordLearningEvent(activity, event) {
   } else {
     throw new Error("unknown private learning event");
   }
+}
+
+// Private, opt-in teacher feedback: only ordinal/activity identifiers and counts.
+function anonymousLearningFeedback() {
+  const rows = state.package.activities.map((activity,index) => {
+    const entry = state.sessionMetrics[activity.id] || {};
+    const safeId = /^[A-Za-z0-9-]{1,100}$/.test(activity.id) ? activity.id : "";
+    return {
+      ordinal: index + 1, activityId: safeId,
+      checks: entry.checks || 0, wrong: entry.wrong || 0,
+      correct: entry.correct || 0, hints: entry.hints || 0,
+      skips: entry.skips || 0, completed: entry.completed === true,
+      adaptiveHintShown: entry.autoHintShown === true,
+    };
+  });
+  return { schemaVersion: 1, activitiesTotal: rows.length, activities: rows,
+    containsStudentIdentity: false, publicationAuthorized: false };
 }
 
 function resetActivity() {
@@ -279,9 +296,27 @@ function renderComplete(root) {
     });
     card.append(review);
   }
+  const exportFeedback = element("button", {
+    className: "action secondary", text: copy[state.locale].exportFeedback,
+    attributes: { id: "export-feedback" },
+  });
+  exportFeedback.addEventListener("click", () => {
+    // No fetch, localStorage, identity or account access. Create a download
+    // only in direct response to the learner opting in.
+    const data = JSON.stringify(anonymousLearningFeedback());
+    const link = element("a", { attributes: {
+      download: "anonymous-learning-feedback.json",
+      href: "data:application/json;charset=utf-8," + encodeURIComponent(data),
+    } });
+    link.style.display = "none";
+    card.append(link);
+    link.click();
+    link.remove?.();
+  });
+  card.append(exportFeedback);
   const restart = element("button", { className: "action", text: copy[state.locale].restart, attributes: { id: "restart" } });
   restart.addEventListener("click", () => {
-    state.sessionMetrics = {};
+    state.sessionMetrics = Object.create(null);
     state.reviewPending = false;
     state.activityIndex = 0;
     resetActivity();
@@ -394,7 +429,7 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
     const loadedPackage = await response.json();
     if (generation !== loadGeneration) return;
     state.package = loadedPackage;
-    state.sessionMetrics = {};
+    state.sessionMetrics = Object.create(null);
     state.reviewPending = false;
     applyActivityDeepLink(loadedPackage.activities ?? []);
     state.loading = false;
