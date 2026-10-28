@@ -3,11 +3,20 @@ import unittest
 from dataclasses import dataclass
 from pathlib import Path
 from app_generator.gemini.academic_reviewers import ReviewerBrowser, IndependentReviewerFactory
+from app_generator.errors import AuthenticationRequired
 
 @dataclass
 class Config:
     browser_mode: str
     chrome_profile_dir: Path
+    login_name: str = "teacher@example.com"
+    ui_timeout_seconds: int = 8
+
+class FakeAuth:
+    def __init__(self, driver, expected, timeout):
+        self.expected = expected
+    def verify_noninteractive(self):
+        return None
 
 class FakeChrome:
     made=[]
@@ -37,7 +46,8 @@ class TestReviewers(unittest.TestCase):
             def make(role,config,pdf):
                 return ReviewerBrowser(role,config,pdf,
                                        chrome_factory=FakeChrome,
-                                       client_factory=FakeClient)
+                                       client_factory=FakeClient,
+                                       account_verifier=FakeAuth)
             f=IndependentReviewerFactory(base,pdf,browser_factory=make)
             a,b=f.open_pair("collision")
             self.assertNotEqual(a.session_id,b.session_id)
@@ -52,6 +62,31 @@ class TestReviewers(unittest.TestCase):
             self.assertTrue(all(x.closed for x in FakeChrome.made))
             self.assertNotEqual(a.session_id,f.open_pair("new")[0].session_id)
             f.close()
+
+    def test_unauthenticated_reviewer_cannot_attach_source_or_prompt(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            pdf=root/"source.pdf"
+            pdf.write_bytes(b"%PDF-1.4 fixture")
+            called=[]
+            class Denied(FakeAuth):
+                def verify_noninteractive(self):
+                    raise AuthenticationRequired("no previous authorization")
+            class RecordingClient(FakeClient):
+                def __init__(self,*args):
+                    called.append("client-created")
+                    super().__init__(*args)
+            reviewer=ReviewerBrowser(
+                "physics",Config("controlled",root/"generator"),pdf,
+                chrome_factory=FakeChrome,
+                client_factory=RecordingClient,
+                account_verifier=Denied,
+            )
+            with self.assertRaises(AuthenticationRequired):
+                reviewer.open()
+            self.assertEqual([],called, "source-capable client must not be constructed")
+            self.assertTrue(FakeChrome.made[-1].closed)
+            self.assertIsNone(reviewer.client)
 
     def test_reject_attach_mode_and_unverified_source(self):
         with tempfile.TemporaryDirectory() as temp:

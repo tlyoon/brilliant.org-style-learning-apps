@@ -12,6 +12,7 @@ from typing import Any, Callable
 from uuid import uuid4
 
 from app_generator.browser.chrome import ChromeSession
+from app_generator.browser.account import GoogleAccountVerifier
 from app_generator.config import GeneratorConfig
 from app_generator.gemini.client import GeminiClient
 from app_generator.validation.autonomous_ai_review import ReviewerSession
@@ -22,7 +23,8 @@ class ReviewerBrowser:
 
     def __init__(self, role: str, config: GeneratorConfig, source_pdf: Path,
                  *, chrome_factory: Callable[..., Any] = ChromeSession,
-                 client_factory: Callable[..., Any] = GeminiClient):
+                 client_factory: Callable[..., Any] = GeminiClient,
+                 account_verifier: Callable[..., Any] = GoogleAccountVerifier):
         if role not in ("physics", "semantics", "repair"):
             raise ValueError("unknown independent academic reviewer role")
         if config.browser_mode != "controlled":
@@ -39,6 +41,7 @@ class ReviewerBrowser:
         self.pdf = source_pdf
         self.chrome_factory = chrome_factory
         self.client_factory = client_factory
+        self.account_verifier = account_verifier
         self.chrome = None
         self.client = None
 
@@ -49,6 +52,12 @@ class ReviewerBrowser:
         self.chrome = chrome
         try:
             driver = chrome.start()
+            # The original controlled PDF must NEVER enter a signed-out or
+            # unknown Gemini browser. No manual sign-in or cookies are read.
+            self.account_verifier(
+                driver, self.config.login_name,
+                min(8, self.config.ui_timeout_seconds),
+            ).verify_noninteractive()
             client = self.client_factory(driver, self.config)
             # No Gem edit/synchronization: independence from the authoring
             # system prompt is necessary to avoid merely repeating its claims.
