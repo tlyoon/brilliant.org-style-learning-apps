@@ -87,3 +87,5 @@
 | BSA-20261028-033 | Only one actual original-source activity had been exercised end-to-end across the three languages | Test all 18 original-source private Section 9.4 activities in real JS player via optional SHA-bound local path; retain only synthetic 5-mode CI fixtures | 54/54 original-package trilingual learner journeys passed; academic PASS remains pending |
 
 | BSA-20261028-034 | The learner player gave per-item feedback but retained no per-session evidence that could support adaptive remediation or teaching improvement | Anonymous in-memory per-activity event counters with distinct wrong/correct, hint, skip and completed semantics; synthetic CI tests | No unearned completion on skip or correct check without advancing; no persistent data or source uploads |
+
+| BSA-20261028-035 | Learner feedback counters did not change the teaching response to repeated misconceptions | Automatically reveal existing translated authored hint after second wrong attempt without altering grading, API access or source | Three-locale synthetic regression passes; only source-authored hints and no additional academic PASS |

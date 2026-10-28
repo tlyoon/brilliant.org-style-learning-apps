@@ -62,7 +62,7 @@ function focusUpdatedChoice(selector, matches) {
 function recordLearningEvent(activity, event) {
   const id = activity.id;
   if (!Object.hasOwn(state.sessionMetrics, id)) {
-    state.sessionMetrics[id] = { checks: 0, wrong: 0, correct: 0, hints: 0, skips: 0, completed: false };
+    state.sessionMetrics[id] = { checks: 0, wrong: 0, correct: 0, hints: 0, skips: 0, autoHintShown: false, completed: false };
   }
   const entry = state.sessionMetrics[id];
   if (event === "wrong" || event === "correct") {
@@ -313,7 +313,17 @@ function render() {
   check.disabled = !responseComplete(activity);
   check.addEventListener("click", () => {
     if (!state.checked) {
-      recordLearningEvent(activity, responseCorrect(activity) ? "correct" : "wrong");
+      const correct = responseCorrect(activity);
+      recordLearningEvent(activity, correct ? "correct" : "wrong");
+      // Feedback loop: after two wrong checks, reveal the EXISTING authored
+      // hint in the selected locale; never generate ungrounded scientific text.
+      const progress = state.sessionMetrics[activity.id];
+      if (!correct && progress.wrong >= 2 && !state.hint && !progress.autoHintShown &&
+          activity.hints?.[0]) {
+        progress.autoHintShown = true;
+        recordLearningEvent(activity, "hints");
+        state.hint = true;
+      }
       state.checked = true;
     } else if (responseCorrect(activity)) {
       recordLearningEvent(activity, "completed");
