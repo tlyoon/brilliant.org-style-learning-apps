@@ -65,7 +65,8 @@ async function exercise(activity,lang){
  };
  const sandbox={document:doc,console,fetch:async()=>({ok:true,json:async()=>
    ({subchapter:loc("test"),activities:[activity]})})};
- vm.runInNewContext(fs.readFileSync("app/app.js","utf8"),sandbox,{filename:"app/app.js"});
+ vm.createContext(sandbox);
+ vm.runInContext(fs.readFileSync("app/app.js","utf8"),sandbox,{filename:"app/app.js"});
  await new Promise(resolve=>setImmediate(resolve));
  locale.value=lang;
  locale.listeners.change({target:locale});
@@ -75,6 +76,36 @@ async function exercise(activity,lang){
  assert(typeof hint==="string"&&hint.trim(),"localized hint missing");
  find(root,x=>x.id==="hint").click();
  assert(matching(root,x=>x.className==="feedback").some(x=>x.textContent===hint));
+ // Independent negative control for every original item and locale.
+ // A structurally complete but WRONG answer must never be graded as correct.
+ let wrong;
+ if(activity.type==="mcq"){
+   wrong=activity.answerKey.options.find(x=>x.id!==activity.answerKey.correct)?.id;
+ } else if(activity.interactionMode==="selection"){
+   wrong=[activity.interaction.items.find(x=>
+     !activity.interaction.correctSelections.includes(x.id))?.id].filter(Boolean);
+ } else if(activity.interactionMode==="ordering"){
+   wrong=[...activity.interaction.correctOrder];
+   [wrong[0],wrong[1]]=[wrong[1],wrong[0]];
+ } else {
+   wrong=Object.fromEntries(activity.interaction.placements.map(x=>[x.itemId,x.targetId]));
+   const entry=activity.interaction.placements[0];
+   wrong[entry.itemId]=activity.interaction.targets.find(x=>x.id!==entry.targetId)?.id;
+ }
+ assert(wrong!==undefined,"cannot construct independent wrong-answer control");
+ sandbox.injectedWrong=wrong;
+ vm.runInContext("state.response=injectedWrong;state.checked=false;render()",sandbox);
+ const badCheck=find(root,x=>x.id==="check");
+ assert(badCheck&&!badCheck.disabled,"negative control must be a complete response");
+ badCheck.click();
+ const expectedRetry=vm.runInContext("copy[state.locale].retry",sandbox);
+ assert(matching(root,x=>x.className==="feedback").at(-1).textContent.includes(expectedRetry),
+   "incorrect answer accepted by actual player");
+ assert(!find(root,x=>x.id==="restart"),"incorrect answer must never complete journey");
+ assert.equal(vm.runInContext("state.sessionMetrics[ state.package.activities[0].id ].wrong",sandbox),1);
+ assert.equal(vm.runInContext("state.sessionMetrics[ state.package.activities[0].id ].completed",sandbox),false);
+ find(root,x=>x.id==="check").click();
+ vm.runInContext("resetActivity();render()",sandbox);
  const choose=(id)=>{const c=find(root,x=>x.tagName==="BUTTON"&&x.dataset.value===id);
    assert(c,"option missing");c.click();};
  if(activity.type==="mcq"){
@@ -131,7 +162,7 @@ async function exercise(activity,lang){
    assert.equal(Object.values(counts).reduce((a,b)=>a+b,0),18);
  }
  console.log(JSON.stringify({privateOriginal:!!process.env.BRILLIANT_PRIVATE_PACKAGE,
-  activities:pkg.activities.length,locales:3,journeys:pkg.activities.length*3,modes:counts,
+  activities:pkg.activities.length,locales:3,journeys:pkg.activities.length*3,wrongAnswerRejections:pkg.activities.length*3,modes:counts,
   academicQA:"REVIEW_REQUIRED",publicationAuthorized:false}));
 })().catch(err=>{
  console.error("Player coverage blocked",err.name,
