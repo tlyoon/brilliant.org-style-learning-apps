@@ -168,6 +168,11 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
     if evidence_root is not None:
         evidence = {
             "packageSha256": hashlib.sha256(package.read_bytes()).hexdigest(),
+            "browserSmokeOutcome": ("fail" if problems else "browser_dom_smoke_pass"),
+            "visualActivityCount": len(ids),
+            "responsiveChecks": checks,
+            "keyboardSelectionChecks": keyboard_checks,
+            "issues": problems,
             "screenshots": frames,
             "pixelQualityReviewed": False,
             "academicAccuracyReviewed": False,
