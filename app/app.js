@@ -1,5 +1,5 @@
 const DEFAULT_PACKAGE = document.querySelector("#app").dataset.packageUrl || "";
-const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false };
+const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false, sessionMetrics: {} };
 let loadGeneration = 0;
 
 const copy = {
@@ -56,6 +56,25 @@ function focusUpdatedChoice(selector, matches) {
     if (matches(control)) { control.focus?.(); return true; }
   }
   return false;
+}
+
+// Anonymous, in-memory session counters only: no content, identity, network or persistence.
+function recordLearningEvent(activity, event) {
+  const id = activity.id;
+  if (!Object.hasOwn(state.sessionMetrics, id)) {
+    state.sessionMetrics[id] = { checks: 0, wrong: 0, correct: 0, hints: 0, skips: 0, completed: false };
+  }
+  const entry = state.sessionMetrics[id];
+  if (event === "wrong" || event === "correct") {
+    entry.checks += 1;
+    entry[event] += 1;
+  } else if (event === "completed") {
+    entry.completed = true;
+  } else if (event === "hints" || event === "skips") {
+    entry[event] += 1;
+  } else {
+    throw new Error("unknown private learning event");
+  }
 }
 
 function resetActivity() {
@@ -239,7 +258,12 @@ function renderComplete(root) {
     element("h1", { text: copy[state.locale].complete }),
   );
   const restart = element("button", { className: "action", text: copy[state.locale].restart, attributes: { id: "restart" } });
-  restart.addEventListener("click", () => { state.activityIndex = 0; resetActivity(); render(); });
+  restart.addEventListener("click", () => {
+    state.sessionMetrics = {};
+    state.activityIndex = 0;
+    resetActivity();
+    render();
+  });
   card.append(restart);
   root.replaceChildren(card);
 }
@@ -288,16 +312,25 @@ function render() {
   const check = element("button", { className: "action", text: checkLabel, attributes: { id: "check" } });
   check.disabled = !responseComplete(activity);
   check.addEventListener("click", () => {
-    if (!state.checked) state.checked = true;
-    else if (responseCorrect(activity)) { state.activityIndex += 1; resetActivity(); }
-    else resetActivity();
+    if (!state.checked) {
+      recordLearningEvent(activity, responseCorrect(activity) ? "correct" : "wrong");
+      state.checked = true;
+    } else if (responseCorrect(activity)) {
+      recordLearningEvent(activity, "completed");
+      state.activityIndex += 1;
+      resetActivity();
+    } else resetActivity();
     render();
   });
   const hint = element("button", { className: "action secondary", text: labels.hint, attributes: { id: "hint" } });
-  hint.addEventListener("click", () => { state.hint = true; render(); });
+  hint.addEventListener("click", () => {
+    if (!state.hint) recordLearningEvent(activity, "hints");
+    state.hint = true; render();
+  });
   actions.append(check, hint);
   const skip = element("button", { className: "action secondary skip-action", text: labels.skip, attributes: { id: "skip" } });
   skip.addEventListener("click", () => {
+    recordLearningEvent(activity, "skips");
     state.activityIndex += 1;
     resetActivity();
     render();
@@ -326,6 +359,7 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
     const loadedPackage = await response.json();
     if (generation !== loadGeneration) return;
     state.package = loadedPackage;
+    state.sessionMetrics = {};
     applyActivityDeepLink(loadedPackage.activities ?? []);
     state.loading = false;
     localeSelector.disabled = false;

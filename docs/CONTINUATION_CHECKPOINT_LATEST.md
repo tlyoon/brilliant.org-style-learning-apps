@@ -441,3 +441,10 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Real corrected private Section 9.4 SHA cd2c17864... loaded read-only: all 18 original-source activities including 9 MCQs, 3 classifications, 2 matchings, 2 orderings and 2 selections completed via actual app/app.js in EN/MS/ZH, 54/54 learner journeys, including wrong MCQ attempt, hint, corrected answer and completion.
 - CI uses only five synthetic fixture activities (15 journeys); private package and original PDF are not stored/uploaded in Git. No human signoff, model calls, Chrome profile attach, merge or public release.
 - This demonstrates functional playback rather than independent scientific, multilingual-equivalence or visual correctness: complete academic PASS remains 0/18.
+
+
+## PR159 anonymous learner-session evidence ? 28 Oct 2026
+- Parent PR158 head 7680445123f2ee34d85620517123af572cde89a3 and completed GitHub CI success.
+- app/app.js now records check correctness, hint reveal, skip and genuinely completed activities in session-only in-memory map keyed by activity ID. Counter does not duplicate on rechecks and skip never confers completion; the session resets on reload/restart to avoid mixing textbook packages.
+- Anonymous counts only: no student identifiers, source text, token, cookie, storage, server, or network calls. Functional user feedback is a prerequisite to later closed feedback loop, not academic validation or persistent analytics.
+- Node regression verifies wrong-check, hint, retry, correct-check, completion, skip, and reset, wired into synthetic CI. Private package unchanged and 0/18 complete academic PASS.

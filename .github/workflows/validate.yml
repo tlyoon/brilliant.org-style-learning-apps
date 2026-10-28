@@ -30,6 +30,7 @@ jobs:
           node tests/test_app_rendering.js
           node tests/test_single_activity_learning_path.js
           node tests/test_complete_activity_coverage.js
+          node tests/test_learning_session_metrics.js
           node tests/test_app_loading.js
           node tests/test_visual_renderers.js
           node tests/test_visual_player_integration.js
