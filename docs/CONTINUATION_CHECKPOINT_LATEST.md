@@ -454,3 +454,9 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Parent PR159 9638b48442546d30a4a10e1615dd8e1ca9dfd441.
 - Real app.js uses new private wrong-attempt counter to show the already-authored, current-locale hint after two wrong checks; no synthetic scientific claim or model-generated text, no grading change. Single auto intervention per activity prevents endless hint increments; current session remains anonymous in memory.
 - Synthetic EN/MS/ZH adaptive regression switches locales between wrong attempts, confirms no hint on first wrong and the correct Malay and Chinese authored hint afterward. Correct answer still scores and completes; no academic or release claim.
+
+
+## PR161 unfinished-activity adaptive revisit ? 28 Oct 2026
+- Parent PR160 head 884a78f2077e16a5b76d7523d94a22a3c554cb38, hosted CI SUCCESS.
+- Completion screen now reports correctly completed activities, separate from checked or skipped ones, and offers localized voluntary Review unfinished activities. A targeted review queue skips previously completed items, so skipped questions are not mistakenly counted as success or forced through already completed content.
+- Synthetic Node test skips first activity, correctly completes second, revisits only skipped first, verifies summary 1/2 -> 2/2 and reset. EN/MS/ZH UI labels are present; no manufactured mastery achievement, cloud telemetry, model, academic PASS or public release.

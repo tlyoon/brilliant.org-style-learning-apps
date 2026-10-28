@@ -89,3 +89,5 @@
 | BSA-20261028-034 | The learner player gave per-item feedback but retained no per-session evidence that could support adaptive remediation or teaching improvement | Anonymous in-memory per-activity event counters with distinct wrong/correct, hint, skip and completed semantics; synthetic CI tests | No unearned completion on skip or correct check without advancing; no persistent data or source uploads |
 
 | BSA-20261028-035 | Learner feedback counters did not change the teaching response to repeated misconceptions | Automatically reveal existing translated authored hint after second wrong attempt without altering grading, API access or source | Three-locale synthetic regression passes; only source-authored hints and no additional academic PASS |
+
+| BSA-20261028-036 | Existing player treated journey completion as equivalent to mastering the questions, even after learners skipped items | Render correct-completion tally and offer targeted voluntary revisit to only unfinished items; never award credit on skip | Synthetic end-to-end test moves 1/2 to 2/2 only after correct revisit; private learning counters remain anonymous |
