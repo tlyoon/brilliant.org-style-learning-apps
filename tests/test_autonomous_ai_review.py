@@ -168,6 +168,74 @@ class AutonomousReviewTests(unittest.TestCase):
             self.assertEqual(0,session[0].conversation.calls)
             self.assertEqual(1,session[1].conversation.calls)
 
+    def test_invalid_received_json_has_private_hash_and_safe_reason_without_retry(self):
+        class WrongShape(Model):
+            def ask(self, prompt, *, stage=None):
+                self.calls+=1
+                return "BEGIN_JSON\n"+json.dumps({
+                    "gate":"source_fidelity",
+                    "verdict":"SUPPORTED",
+                    "rationale":"This contains an invented statement from a book.",
+                    "sourcePage":2,
+                    "issue":"",
+                    "unexpected":"private textbook quotation must not be logged",
+                })+"\nEND_JSON"
+        import hashlib
+        first=WrongShape()
+        original=first.ask
+        observed=[]
+        def record(prompt, *, stage=None):
+            raw=original(prompt,stage=stage)
+            observed.append(raw)
+            return raw
+        first.ask=record
+        with tempfile.TemporaryDirectory() as t:
+            context=RunContext.create(Path(t))
+            report=review_activity(self.activity,self.source,pair(first,Model()),
+                package_sha256=A,source_sha256=B,gates=("source_fidelity",),
+                checkpoint=context,claim_prefix="invalid-json")
+            self.assertFalse(report["aiReviewed"])
+            self.assertEqual("AUTO_SOURCE_CHECK",report["nextAction"])
+            claim=context.load_stage("invalid-json-source-fidelity-0")
+            self.assertEqual("AMBIGUOUS",claim["state"])
+            self.assertEqual("WRONG_JSON_FIELD_SET",claim["reasonCode"])
+            self.assertTrue(claim["responseCaptured"])
+            self.assertEqual(hashlib.sha256(observed[0].encode()).hexdigest(),
+                             claim["responseSha256"])
+            self.assertEqual(len(observed[0]),claim["responseCharacters"])
+            serialized=json.dumps(claim)
+            self.assertNotIn("private textbook quotation must not be logged",serialized)
+            self.assertNotIn("BEGIN_JSON",serialized)
+            recovered=pair(Model(),Model())
+            review_activity(self.activity,self.source,recovered,
+                package_sha256=A,source_sha256=B,gates=("source_fidelity",),
+                checkpoint=context,claim_prefix="invalid-json")
+            self.assertEqual(0,recovered[0].conversation.calls)
+            self.assertEqual(0,recovered[1].conversation.calls)
+
+    def test_uncaptured_remote_timeout_has_no_fabricated_response_receipt(self):
+        with tempfile.TemporaryDirectory() as t:
+            context=RunContext.create(Path(t))
+            result=review_activity(self.activity,self.source,
+                pair(Model(fail=True),Model()),
+                package_sha256=A,source_sha256=B,gates=("source_fidelity",),
+                checkpoint=context,claim_prefix="remote-timeout")
+            claim=context.load_stage("remote-timeout-source-fidelity-0")
+            self.assertEqual("AMBIGUOUS",claim["state"])
+            self.assertEqual("MODEL_RESPONSE_NOT_CAPTURED",claim["reasonCode"])
+            self.assertFalse(claim["responseCaptured"])
+            self.assertIsNone(claim["responseSha256"])
+            self.assertIsNone(claim["responseCharacters"])
+            self.assertFalse(result["publicationAuthorized"])
+
+    def test_prompt_does_not_offer_invalid_ellipsis_as_json_template(self):
+        from app_generator.validation.autonomous_ai_review import independent_review_prompt
+        prompt=independent_review_prompt(self.activity,"source_fidelity",self.source,
+                                         perspective="Independently check source")
+        self.assertNotIn("{...}",prompt)
+        self.assertIn("syntactically valid JSON object",prompt)
+        self.assertIn("Never invent a source page.",prompt)
+
     def test_untrusted_page_claim_cannot_gain_fidelity_pass(self):
         class UnsupportedPage(Model):
             def ask(self, prompt, *, stage=None):
