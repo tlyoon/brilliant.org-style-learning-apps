@@ -434,3 +434,10 @@ Updated: 2026-10-24 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 - Immutable private worklist file section94-exact-18-academic-gap-plan-pr157-20261028.json outside public repository; no source quotations, original PDF, learner content, credentials or user data in GitHub.
 - Source locations were independently extracted when the verified input matrix was created, not newly extracted by this report. No new Gemini submission while both profile roles BUSY; no claim of trilingual semantic/diagram/full teaching quality PASS, no human academic sign-off and no public release.
 - Next: exclusive safe reviewer sessions and actual semantic+visual responses, remediate specific defects in new private candidates and independently recheck before any change to release gate.
+
+
+## PR158 full private 18-activity learner journey ? 28 Oct 2026
+- Parent draft PR157 head 9cdc4129bbaaa32d7c3073a0bca24e279b05cbbf. New isolated Windows Yoga6 development checkout.
+- Real corrected private Section 9.4 SHA cd2c17864... loaded read-only: all 18 original-source activities including 9 MCQs, 3 classifications, 2 matchings, 2 orderings and 2 selections completed via actual app/app.js in EN/MS/ZH, 54/54 learner journeys, including wrong MCQ attempt, hint, corrected answer and completion.
+- CI uses only five synthetic fixture activities (15 journeys); private package and original PDF are not stored/uploaded in Git. No human signoff, model calls, Chrome profile attach, merge or public release.
+- This demonstrates functional playback rather than independent scientific, multilingual-equivalence or visual correctness: complete academic PASS remains 0/18.
