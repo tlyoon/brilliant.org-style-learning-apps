@@ -1,11 +1,11 @@
 const DEFAULT_PACKAGE = document.querySelector("#app").dataset.packageUrl || "";
-const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false, sessionMetrics: {} };
+const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false, sessionMetrics: {}, reviewPending: false };
 let loadGeneration = 0;
 
 const copy = {
-  en: { activity: "Activity", of: "of", check: "Check answer", next: "Next activity", tryAgain: "Try again", restart: "Start again", hint: "Show a hint", complete: "Journey complete", correct: "That reasoning fits.", retry: "Reconsider the relationship and try again.", moveUp: "Move up", moveDown: "Move down", position: "Position", skip: "Skip" },
-  ms: { activity: "Aktiviti", of: "daripada", check: "Semak jawapan", next: "Aktiviti seterusnya", tryAgain: "Cuba lagi", restart: "Mula semula", hint: "Tunjukkan petunjuk", complete: "Perjalanan selesai", correct: "Penaakulan itu sesuai.", retry: "Pertimbangkan semula hubungan itu dan cuba lagi.", moveUp: "Alih ke atas", moveDown: "Alih ke bawah", position: "Kedudukan", skip: "Langkau" },
-  zh: { activity: "活动", of: "/", check: "检查答案", next: "下一个活动", tryAgain: "再试一次", restart: "重新开始", hint: "显示提示", complete: "学习旅程完成", correct: "这个推理是恰当的。", retry: "重新思考其中的关系，然后再试一次。", moveUp: "上移", moveDown: "下移", position: "位置", skip: "跳过" },
+  en: { activity: "Activity", of: "of", check: "Check answer", next: "Next activity", tryAgain: "Try again", restart: "Start again", hint: "Show a hint", complete: "Journey complete", correct: "That reasoning fits.", retry: "Reconsider the relationship and try again.", moveUp: "Move up", moveDown: "Move down", position: "Position", skip: "Skip", completedCount: "Correctly completed:", reviewPending: "Review unfinished activities" },
+  ms: { activity: "Aktiviti", of: "daripada", check: "Semak jawapan", next: "Aktiviti seterusnya", tryAgain: "Cuba lagi", restart: "Mula semula", hint: "Tunjukkan petunjuk", complete: "Perjalanan selesai", correct: "Penaakulan itu sesuai.", retry: "Pertimbangkan semula hubungan itu dan cuba lagi.", moveUp: "Alih ke atas", moveDown: "Alih ke bawah", position: "Kedudukan", skip: "Langkau", completedCount: "Diselesaikan dengan betul:", reviewPending: "Ulang aktiviti belum selesai" },
+  zh: { activity: "活动", of: "/", check: "检查答案", next: "下一个活动", tryAgain: "再试一次", restart: "重新开始", hint: "显示提示", complete: "学习旅程完成", correct: "这个推理是恰当的。", retry: "重新思考其中的关系，然后再试一次。", moveUp: "上移", moveDown: "下移", position: "位置", skip: "跳过", completedCount: "\u5df2\u6b63\u786e\u5b8c\u6210\uff1a", reviewPending: "\u590d\u4e60\u672a\u5b8c\u6210\u7684\u6d3b\u52a8" },
 };
 
 const localized = (value) => typeof value === "string" ? value : value?.[state.locale] ?? value?.en ?? "";
@@ -250,6 +250,13 @@ function renderVisual(card, activity) {
   card.append(fallback);
 }
 
+function nextUnfinishedIndex(start) {
+  const i = state.package.activities.findIndex((activity,index) =>
+    index >= start && !state.sessionMetrics[activity.id]?.completed
+  );
+  return i < 0 ? state.package.activities.length : i;
+}
+
 function renderComplete(root) {
   syncActivityUrl(null);
   const card = element("section", { className: "card" });
@@ -257,9 +264,25 @@ function renderComplete(root) {
     element("p", { className: "eyebrow", text: localized(state.package.subchapter) }),
     element("h1", { text: copy[state.locale].complete }),
   );
+  const total = state.package.activities.length;
+  const completed = state.package.activities.filter((a) => state.sessionMetrics[a.id]?.completed).length;
+  card.append(element("p", { className: "progress-summary",
+    text: copy[state.locale].completedCount + " " + completed + " / " + total }));
+  if (completed < total) {
+    const review = element("button", { className: "action secondary",
+      text: copy[state.locale].reviewPending, attributes: { id: "review-pending" } });
+    review.addEventListener("click", () => {
+      state.reviewPending = true;
+      state.activityIndex = nextUnfinishedIndex(0);
+      resetActivity();
+      render();
+    });
+    card.append(review);
+  }
   const restart = element("button", { className: "action", text: copy[state.locale].restart, attributes: { id: "restart" } });
   restart.addEventListener("click", () => {
     state.sessionMetrics = {};
+    state.reviewPending = false;
     state.activityIndex = 0;
     resetActivity();
     render();
@@ -327,7 +350,8 @@ function render() {
       state.checked = true;
     } else if (responseCorrect(activity)) {
       recordLearningEvent(activity, "completed");
-      state.activityIndex += 1;
+      state.activityIndex = state.reviewPending
+        ? nextUnfinishedIndex(state.activityIndex + 1) : state.activityIndex + 1;
       resetActivity();
     } else resetActivity();
     render();
@@ -341,7 +365,8 @@ function render() {
   const skip = element("button", { className: "action secondary skip-action", text: labels.skip, attributes: { id: "skip" } });
   skip.addEventListener("click", () => {
     recordLearningEvent(activity, "skips");
-    state.activityIndex += 1;
+    state.activityIndex = state.reviewPending
+      ? nextUnfinishedIndex(state.activityIndex + 1) : state.activityIndex + 1;
     resetActivity();
     render();
   });
@@ -370,6 +395,7 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
     if (generation !== loadGeneration) return;
     state.package = loadedPackage;
     state.sessionMetrics = {};
+    state.reviewPending = false;
     applyActivityDeepLink(loadedPackage.activities ?? []);
     state.loading = false;
     localeSelector.disabled = false;
