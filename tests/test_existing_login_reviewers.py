@@ -164,6 +164,54 @@ class ExistingLoginTests(unittest.TestCase):
             self.assertFalse(any(h=="original-author" and url==NEUTRAL_URL for h,url in d.visited[1:]))
             self.assertNotIn("original-author",d.closed)
 
+    def test_restored_unrelated_starting_tab_is_preserved_and_new_neutral_tab_verified(self):
+        class RestoredChrome(FakeChrome):
+            def __init__(self, config):
+                super().__init__(config)
+                self.driver.urls["original-author"] = "https://example.net/unrelated"
+        f=ExistingLoginReviewerFactory(
+            self.config,self.pdf,
+            chrome_factory=RestoredChrome,client_factory=FakeClient,
+            account_verifier=FakeAccountVerifier,profile_busy=lambda path:False)
+        with f:
+            a,b=f.open_pair("collision")
+            d=FakeChrome.made[-1].driver
+            self.assertEqual("https://example.net/unrelated",
+                             d.urls["original-author"])
+            self.assertFalse(any(h=="original-author" for h,url in d.visited))
+            self.assertTrue(any(
+                h not in {"original-author",a.conversation.handle,b.conversation.handle}
+                and url==NEUTRAL_URL for h,url in d.visited
+            ))
+            self.assertNotEqual(a.conversation.handle,b.conversation.handle)
+            self.assertEqual(["teacher@example.com"],FakeAccountVerifier.calls)
+            self.assertEqual(2,len(FakeClient.made))
+        self.assertEqual(3,len(d.closed))
+        self.assertNotIn("original-author",d.closed)
+
+    def test_restored_page_recovery_fails_closed_if_new_tab_redirects_away(self):
+        class RedirectChrome(FakeChrome):
+            def __init__(self, config):
+                super().__init__(config)
+                self.driver.urls["original-author"]="https://example.net/unrelated"
+                def redirect_elsewhere(url):
+                    self.driver.visited.append((self.driver.active,url))
+                    self.driver.urls[self.driver.active]="https://example.net/redirected"
+                self.driver.get=redirect_elsewhere
+        f=ExistingLoginReviewerFactory(
+            self.config,self.pdf,
+            chrome_factory=RedirectChrome,client_factory=FakeClient,
+            account_verifier=FakeAccountVerifier,profile_busy=lambda path:False)
+        with self.assertRaisesRegex(ValueError,"fresh account-verification"):
+            f.open_pair("collision")
+        d=FakeChrome.made[-1].driver
+        self.assertEqual("https://example.net/unrelated",d.urls["original-author"])
+        self.assertFalse(any(h=="original-author" for h,url in d.visited))
+        self.assertNotIn("original-author",d.closed)
+        self.assertEqual([],FakeClient.made)
+        self.assertEqual([],FakeAccountVerifier.calls)
+        self.assertTrue(FakeChrome.made[-1].is_closed)
+
     def test_busy_existing_author_profile_cannot_be_taken_over(self):
         f=ExistingLoginReviewerFactory(
             self.config,self.pdf,

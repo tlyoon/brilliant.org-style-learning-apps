@@ -127,16 +127,29 @@ class ExistingLoginReviewerFactory:
         self.chrome = self.chrome_factory(self.config)
         try:
             self.driver = self.chrome.start()
-            # Check signed-in identity via visible UI. No cookie access.
-            # Chrome may have restored an authoring conversation in the
-            # initial tab. Never navigate or overwrite that protected tab.
-            origin = urlparse(self.driver.current_url)
-            if origin.scheme != "https" or origin.netloc != "gemini.google.com":
-                raise ValueError("existing authorized profile did not open Gemini")
-            self.account_verifier(self.driver, self.config.login_name, 12).verify()
+            # Preserve the original browser tabs BEFORE checking their URL.
+            # Chrome session restoration may select an unrelated starting
+            # page even though the explicit launch URL was neutral Gemini.
+            # Never navigate, inspect private text, or close a restored tab.
             self.protected = set(self.driver.window_handles)
             if not self.protected:
                 raise ValueError("owned browser missing protected starting tab")
+            origin = urlparse(self.driver.current_url)
+            if origin.scheme != "https" or origin.netloc != "gemini.google.com":
+                # Open a NEW owned tab for noninteractive account verification.
+                # Do not re-purpose any previous authoring or unrelated tab.
+                self.driver.switch_to.new_window("tab")
+                probe_handle = self.driver.current_window_handle
+                if not probe_handle or probe_handle in self.protected:
+                    raise ValueError("account-verification tab is not exclusively owned")
+                self.owned["account-verification"] = probe_handle
+                self.driver.get(NEUTRAL_URL)
+                origin = urlparse(self.driver.current_url)
+                if origin.scheme != "https" or origin.netloc != "gemini.google.com":
+                    raise ValueError("fresh account-verification tab did not open Gemini")
+            # Verify only the visible active Google account on a Gemini tab,
+            # before attaching the controlled textbook to any conversation.
+            self.account_verifier(self.driver, self.config.login_name, 12).verify()
             sessions = []
             for role in ROLES:
                 self.driver.switch_to.new_window("tab")
