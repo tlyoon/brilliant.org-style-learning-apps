@@ -12,6 +12,9 @@ from typing import Any, Callable, Mapping
 
 from app_generator.validation.academic_qa import REQUIRED, Finding, decide
 from app_generator.validation.language_qa import check_multilingual_surface
+from app_generator.validation.impulse_basis_reasoning import (
+    explicit_impulse_basis_rationale_defects,
+)
 from app_generator.validation.reviewer_source_packets import verified_source_packet
 from app_generator.visuals.validation import visual_contract_errors
 
@@ -72,6 +75,8 @@ def _answer_shape_defects(activity:dict[str,Any]) -> list[str]:
             defects.append("unsupported interactive answer mode")
     else:
         defects.append("unsupported academic activity type")
+    # A proven unrelated distractor explanation is a FAIL, not a PASS.
+    defects.extend(explicit_impulse_basis_rationale_defects(activity))
     return defects
 
 def audit_activity_matrix(
