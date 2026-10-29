@@ -114,11 +114,25 @@ def probe(config:Path, output_dir:Path,
     owned=[]
     try:
         driver=browser.start()
+        # Chrome may restore an unrelated start page despite the requested
+        # neutral URL. Protect ALL restored tabs before opening anything else.
+        # Never navigate, close, or reuse a pre-existing authoring tab.
+        protected=set(driver.window_handles)
+        if not protected:
+            raise ValueError("neutral probe missing protected starting tab")
         u=urlparse(driver.current_url)
         if u.scheme!="https" or u.netloc!="gemini.google.com":
-            raise ValueError("existing Chrome did not open neutral Gemini")
+            driver.switch_to.new_window("tab")
+            handle=driver.current_window_handle
+            if not handle or handle in protected:
+                raise ValueError("neutral account-verification tab is not exclusively owned")
+            owned.append(handle)
+            driver.get(NEUTRAL)
+            u=urlparse(driver.current_url)
+            if u.scheme!="https" or u.netloc!="gemini.google.com":
+                raise ValueError("fresh neutral account-verification tab did not open Gemini")
+        # Verify only after the active tab is genuinely on Gemini.
         verifier_factory(driver,cfg.login_name,12).verify()
-        protected=set(driver.window_handles)
         result["status"]="ACCOUNT_VERIFIED"
         _save_state(dest,result)
         for role in ROLES:

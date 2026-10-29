@@ -141,6 +141,57 @@ class ExistingLoginProbeTests(unittest.TestCase):
                 probe(self.root/"cfg",self.output,
                       chrome_factory=Chrome,verifier_factory=Verifier,page_factory=Page,profile_busy=lambda _:False)
 
+    def test_restored_non_gemini_tab_gets_new_owned_neutral_verification_tab(self):
+        class RestoredChrome(Chrome):
+            def __init__(self,cfg):
+                super().__init__(cfg)
+                self.driver.urls["original"]="https://example.net/previous-page"
+                self.navigation=[]
+                old_get=self.driver.get
+                def get(url):
+                    self.navigation.append((self.driver.active,url))
+                    old_get(url)
+                self.driver.get=get
+        with patch("scripts.probe_existing_gemini.load_config",return_value=self.config):
+            result=probe(self.root/"cfg",self.output,
+                         chrome_factory=RestoredChrome,verifier_factory=Verifier,
+                         page_factory=Page,profile_busy=lambda _:False)
+        self.assertEqual("NEUTRAL_TWO_CONTEXTS_CONFIRMED",result["status"])
+        driver=Chrome.made[-1].driver
+        self.assertEqual("https://example.net/previous-page",driver.urls["original"])
+        self.assertTrue(all(handle!="original" for handle,url in Chrome.made[-1].navigation))
+        self.assertEqual(3,len(driver.closed))
+        self.assertNotIn("original",driver.closed)
+        self.assertTrue(Chrome.made[-1].was_closed)
+        self.assertEqual(2,len(Page.prompts))
+        self.assertNotEqual(Page.prompts[0][0],Page.prompts[1][0])
+
+    def test_redirected_fresh_neutral_tab_fails_before_prompt_and_preserves_original(self):
+        class RedirectChrome(Chrome):
+            def __init__(self,cfg):
+                super().__init__(cfg)
+                self.driver.urls["original"]="https://example.net/previous-page"
+                self.navigation=[]
+                def get(url):
+                    self.navigation.append((self.driver.active,url))
+                    self.driver.urls[self.driver.active]="https://www.google.com/"
+                self.driver.get=get
+        with patch("scripts.probe_existing_gemini.load_config",return_value=self.config):
+            result=probe(self.root/"cfg",self.output,
+                         chrome_factory=RedirectChrome,verifier_factory=Verifier,
+                         page_factory=Page,profile_busy=lambda _:False)
+        self.assertEqual("BLOCKED_BEFORE_OR_DURING_PROBE",result["status"])
+        driver=Chrome.made[-1].driver
+        self.assertEqual("https://example.net/previous-page",driver.urls["original"])
+        self.assertNotIn("original",driver.closed)
+        self.assertTrue(all(handle!="original" for handle,url in Chrome.made[-1].navigation))
+        self.assertEqual([],Page.prompts)
+        receipt=json.loads((self.output/"state.json").read_text(encoding="utf-8"))
+        self.assertEqual("BLOCKED_BEFORE_OR_DURING_PROBE",receipt["status"])
+        self.assertFalse(receipt["sourcePdfUploaded"])
+        self.assertFalse(receipt["publicationAuthorized"])
+        self.assertEqual({},receipt["roles"])
+
     def test_ambiguous_request_has_durable_claim_and_never_retries(self):
         Page.failure=True
         with patch("scripts.probe_existing_gemini.load_config",return_value=self.config):
