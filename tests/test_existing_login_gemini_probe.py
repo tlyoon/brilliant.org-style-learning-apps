@@ -188,9 +188,31 @@ class ExistingLoginProbeTests(unittest.TestCase):
         self.assertEqual([],Page.prompts)
         receipt=json.loads((self.output/"state.json").read_text(encoding="utf-8"))
         self.assertEqual("BLOCKED_BEFORE_OR_DURING_PROBE",receipt["status"])
+        self.assertEqual("FRESH_NEUTRAL_TAB_NAVIGATION",receipt["failurePhase"])
+        self.assertFalse(receipt["remoteRequestPossiblySubmitted"])
         self.assertFalse(receipt["sourcePdfUploaded"])
         self.assertFalse(receipt["publicationAuthorized"])
         self.assertEqual({},receipt["roles"])
+
+    def test_account_verification_error_is_phase_only_without_secret_or_submission(self):
+        class AccountVerifierFails(Verifier):
+            def verify(self):
+                raise ValueError("PRIVATE_USER_EMAIL_AND_TOKEN_MUST_NOT_LEAK")
+        with patch("scripts.probe_existing_gemini.load_config",return_value=self.config):
+            result=probe(self.root/"cfg",self.output,chrome_factory=Chrome,
+                         verifier_factory=AccountVerifierFails,
+                         page_factory=Page,profile_busy=lambda _:False)
+        self.assertEqual("BLOCKED_BEFORE_OR_DURING_PROBE",result["status"])
+        self.assertEqual([],Page.prompts)
+        receipt=json.loads((self.output/"state.json").read_text(encoding="utf-8"))
+        self.assertEqual("VISIBLE_ACCOUNT_VERIFICATION",receipt["failurePhase"])
+        self.assertEqual("ValueError",receipt["errorType"])
+        self.assertFalse(receipt["remoteRequestPossiblySubmitted"])
+        self.assertFalse(receipt["sourcePdfUploaded"])
+        self.assertFalse(receipt["publicationAuthorized"])
+        self.assertNotIn("PRIVATE_USER_EMAIL_AND_TOKEN_MUST_NOT_LEAK",json.dumps(receipt))
+        self.assertTrue(Chrome.made[-1].was_closed)
+        self.assertEqual([],Chrome.made[-1].driver.closed)
 
     def test_ambiguous_request_has_durable_claim_and_never_retries(self):
         Page.failure=True

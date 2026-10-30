@@ -112,8 +112,10 @@ def probe(config:Path, output_dir:Path,
     browser=chrome_factory(cfg)
     driver=None
     owned=[]
+    phase="CHROME_START"
     try:
         driver=browser.start()
+        phase="INITIAL_GEMINI_OR_RESTORED_TAB"
         # Chrome may restore an unrelated start page despite the requested
         # neutral URL. Protect ALL restored tabs before opening anything else.
         # Never navigate, close, or reuse a pre-existing authoring tab.
@@ -127,15 +129,18 @@ def probe(config:Path, output_dir:Path,
             if not handle or handle in protected:
                 raise ValueError("neutral account-verification tab is not exclusively owned")
             owned.append(handle)
+            phase="FRESH_NEUTRAL_TAB_NAVIGATION"
             driver.get(NEUTRAL)
             u=urlparse(driver.current_url)
             if u.scheme!="https" or u.netloc!="gemini.google.com":
                 raise ValueError("fresh neutral account-verification tab did not open Gemini")
         # Verify only after the active tab is genuinely on Gemini.
+        phase="VISIBLE_ACCOUNT_VERIFICATION"
         verifier_factory(driver,cfg.login_name,12).verify()
         result["status"]="ACCOUNT_VERIFIED"
         _save_state(dest,result)
         for role in ROLES:
+            phase="FRESH_ROLE_TAB_CREATION"
             driver.switch_to.new_window("tab")
             handle=driver.current_window_handle
             if handle in protected or handle in owned:
@@ -143,6 +148,7 @@ def probe(config:Path, output_dir:Path,
             owned.append(handle)
             page=page_factory(driver,NEUTRAL,cfg.ui_timeout_seconds,
                               cfg.response_timeout_seconds)
+            phase="FRESH_ROLE_CONVERSATION_NAVIGATION"
             page.open_new()
             if urlparse(driver.current_url).netloc!="gemini.google.com":
                 raise ValueError("new probe conversation left Gemini")
@@ -163,6 +169,9 @@ def probe(config:Path, output_dir:Path,
             result["status"]="IN_FLIGHT"
             _save_state(dest,result)
             try:
+                # A request may have been accepted after this line even if
+                # local capture later fails. Never automatically replay it.
+                phase="NEUTRAL_REQUEST_OR_CAPTURE"
                 raw=page.ask(prompt)
                 parsed=parse_json_response(raw)
                 if not isinstance(parsed,dict) or parsed.get("role")!=role:
@@ -193,6 +202,10 @@ def probe(config:Path, output_dir:Path,
     except Exception as exc:
         result["status"]="BLOCKED_BEFORE_OR_DURING_PROBE"
         result["errorType"]=type(exc).__name__
+        # Only code-owned phase constants. Never log exception text, model
+        # response, account identifier, restored URLs or credential state.
+        result["failurePhase"]=phase
+        result["remoteRequestPossiblySubmitted"]=bool(result["roles"])
         _save_state(dest,result)
     finally:
         if driver is not None:
