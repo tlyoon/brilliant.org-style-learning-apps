@@ -31,6 +31,9 @@ RESPONSE_VALIDATION_CODES = {
 }
 
 NEXT_ACTIONS = frozenset({"AUTO_CONTINUE", "AUTO_REPAIR", "AUTO_RETRY", "AUTO_SOURCE_CHECK"})
+# Repeated uncaptured requests from one role indicate an unhealthy conversation.
+# Stop NEW prompts for that role; the other role can finish its finite review.
+UNCAPTURED_ROLE_CIRCUIT_THRESHOLD = 2
 
 
 class ReviewerConversation(Protocol):
@@ -173,6 +176,7 @@ def review_activity(
     if not gates or any(g not in REQUIRED for g in gates) or len(set(gates)) != len(gates):
         raise ValueError("invalid academic gate selection")
     result = {}
+    uncaptured_by_role = [0, 0]
     for gate in gates:
         reports = []
         for reviewer_index, (reviewer, perspective) in enumerate(zip(sessions,(
@@ -201,6 +205,23 @@ def review_activity(
                     decision={"gate":gate,"verdict":"UNCERTAIN",
                               "rationale":"Prior remote submission unresolved; reconcile before any retry",
                               "sourcePage":None,"issue":"reconcile in-flight review request"}
+                    if previous.get("state")=="AMBIGUOUS" and previous.get("responseCaptured") is False:
+                        uncaptured_by_role[reviewer_index]+=1
+            elif uncaptured_by_role[reviewer_index] >= UNCAPTURED_ROLE_CIRCUIT_THRESHOLD:
+                # No prompt has been sent for this specific gate. Keep an
+                # immutable source/package/prompt-bound record of that fact.
+                # This is NOT an AMBIGUOUS remote submission or an AI verdict.
+                if checkpoint is not None:
+                    checkpoint.save_stage(claim_name,{
+                        **identity,"state":"SKIPPED_UNSENT",
+                        "sessionId":reviewer.session_id,
+                        "reasonCode":"UNCAPTURED_ROLE_CIRCUIT_OPEN",
+                        "requestSubmitted":False,"responseCaptured":False,
+                        "responseSha256":None,"responseCharacters":None,
+                    })
+                decision={"gate":gate,"verdict":"UNCERTAIN",
+                          "rationale":"Uncaptured role circuit is open; this review request was not submitted",
+                          "sourcePage":None,"issue":"fresh reviewer role required in separate authorized run"}
             else:
                 if checkpoint is not None:
                     checkpoint.save_stage(claim_name,{**identity,"state":"IN_FLIGHT"})
@@ -221,6 +242,8 @@ def review_activity(
                     # model response. Preserve only immutable receipt metadata
                     # and a diagnostic code drawn from code-owned messages.
                     captured=isinstance(raw,str)
+                    if not captured:
+                        uncaptured_by_role[reviewer_index]+=1
                     reason=(
                         RESPONSE_VALIDATION_CODES.get(str(exc),"UNKNOWN_RESPONSE_VALIDATION_FAILURE")
                         if captured else "MODEL_RESPONSE_NOT_CAPTURED"
