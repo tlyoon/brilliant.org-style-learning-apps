@@ -21,6 +21,8 @@ RESPONSE_VALIDATION_CODES = {
     "independent model did not return complete bounded JSON": "UNPARSEABLE_BOUNDED_JSON",
     "independent model response shape invalid": "WRONG_JSON_FIELD_SET",
     "independent model returned mismatched gate or verdict": "MISMATCHED_GATE_OR_VERDICT",
+    "independent model returned another gate": "MISMATCHED_GATE",
+    "independent model returned invalid verdict": "INVALID_VERDICT",
     "independent model returned insufficient reasoning": "RATIONALE_TOO_SHORT",
     "independent model issue must be text": "ISSUE_NOT_STRING",
     "AI reviewer cited a non-authorized textbook page": "SOURCE_PAGE_NOT_AUTHORIZED",
@@ -90,7 +92,15 @@ def independent_review_prompt(
         "quote textbook passages outside rationale. The gate value must "
         "equal the named gate exactly; sourcePage must be one of the "
         "verified source pages when supporting source fidelity, otherwise "
-        "null. Never invent a source page."
+        "null. Never invent a source page. "
+        "THIS REQUEST HAS ONE GATE ONLY. The current gate identifier is: "
+        + gate
+        + ". In your JSON, gate must exactly equal this identifier, not "
+        "a gate from any previous conversation turn. Return one complete "
+        "JSON response only; do not repeat previous responses or output "
+        "prose outside BEGIN_JSON and END_JSON. If the evidence is "
+        "insufficient, return verdict UNCERTAIN rather than changing "
+        "the gate name or inventing support."
     )
 
 
@@ -104,8 +114,10 @@ def _evaluate_response(raw: str, gate: str,
         "gate", "verdict", "rationale", "sourcePage", "issue"
     }:
         raise ValueError("independent model response shape invalid")
-    if content["gate"] != gate or content["verdict"] not in VERDICTS:
-        raise ValueError("independent model returned mismatched gate or verdict")
+    if content["gate"] != gate:
+        raise ValueError("independent model returned another gate")
+    if content["verdict"] not in VERDICTS:
+        raise ValueError("independent model returned invalid verdict")
     if not isinstance(content["rationale"], str) or len(content["rationale"].strip()) < 15:
         raise ValueError("independent model returned insufficient reasoning")
     if not isinstance(content["issue"], str):
