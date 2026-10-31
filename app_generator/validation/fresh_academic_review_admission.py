@@ -9,15 +9,56 @@ from hashlib import sha256
 import json
 from pathlib import Path
 import re
+import time
 from typing import Any
 
 from app_generator.validation.reviewer_source_packets import verified_source_packet
 
 SAFE = re.compile(r"^[a-z0-9-]+$")
+_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+# A previously successful sign-in can expire or become redirected. This is
+# an operational freshness bound, not a cryptographic identity guarantee.
+MAX_NEUTRAL_RECEIPT_AGE_SECONDS = 1800
+MAX_FUTURE_CLOCK_SKEW_SECONDS = 60
 NEW_PRIORITIES = frozenset({
     "INDEPENDENT_MULTILINGUAL_SEMANTIC_REVIEW",
     "SUBMIT_FRESH_INDEPENDENT_REVIEW_WHEN_AUTHORIZED",
 })
+
+
+def verify_recent_source_free_neutral_receipt(
+    neutral: dict[str, Any], receipt_file: Path, *,
+    now_epoch: float | None = None,
+) -> None:
+    """Reject old, source-bearing, ambiguous, or fabricated readiness."""
+    if not isinstance(neutral, dict):
+        raise ValueError("neutral readiness receipt must be an object")
+    now = time.time() if now_epoch is None else now_epoch
+    age = now - receipt_file.stat().st_mtime
+    if not (-MAX_FUTURE_CLOCK_SKEW_SECONDS <= age <=
+            MAX_NEUTRAL_RECEIPT_AGE_SECONDS):
+        raise ValueError("neutral readiness receipt expired or has invalid clock")
+    if (neutral.get("status") != "NEUTRAL_TWO_CONTEXTS_CONFIRMED" or
+            neutral.get("reviewerMode") != "same_authorized_login_separate_new_chats" or
+            neutral.get("sourcePdfUploaded") is not False or
+            neutral.get("promptContainsSource") is not False or
+            neutral.get("providerAccountsIndependent") is not False or
+            neutral.get("academicQA") != "REVIEW_REQUIRED" or
+            neutral.get("publicationAuthorized") is not False):
+        raise ValueError("source-free neutral readiness flags do not confirm safe review")
+    roles = neutral.get("roles")
+    if not isinstance(roles, dict) or set(roles) != {"physics", "semantics"}:
+        raise ValueError("both independent fresh neutral conversation roles required")
+    for role in ("physics", "semantics"):
+        item = roles[role]
+        if (not isinstance(item, dict) or
+                item.get("state") != "COMPLETE_CAPTURED" or
+                item.get("responseCaptured") is not True or
+                item.get("validRoleAndShape") is not True or
+                any(not isinstance(item.get(k), str) or
+                    not _SHA256.fullmatch(item[k])
+                    for k in ("promptSha256", "responseSha256"))):
+            raise ValueError("source-free neutral role response not completely captured")
 
 
 def admit_fresh_academic_review(
@@ -86,14 +127,24 @@ def admit_fresh_academic_review(
             selected.get("unreconciledSubmittedOrSkippedClaims") != 0 or
             selected.get("publicationAuthorized") is not False):
         raise ValueError("previous or unresolved reviewer claims cannot be replayed")
-    roles = neutral.get("roles") if isinstance(neutral, dict) else None
-    if (neutral.get("status") != "NEUTRAL_TWO_CONTEXTS_CONFIRMED" or
-            not isinstance(roles, dict) or
-            any(not isinstance(roles.get(role), dict) or
-                roles[role].get("state") != "COMPLETE_CAPTURED" or
-                roles[role].get("responseCaptured") is not True
-                for role in ("physics", "semantics"))):
-        raise ValueError("fresh source-free two-context Gemini preflight required")
+    verify_recent_source_free_neutral_receipt(neutral, neutral_receipt_file)
+    # An old COMPLETE probe is stale as soon as a newer probe fails or starts.
+    # A 30-minute TTL alone cannot override newer account/network evidence.
+    # Probe family is scoped by source-workstream prefix and remains private.
+    folder = neutral_receipt_file.parent.name
+    if "neutral-gemini-probe" in folder:
+        family = folder.split("neutral-gemini-probe", 1)[0] + "neutral-gemini-probe"
+        selected = neutral_receipt_file.resolve()
+        selected_time = neutral_receipt_file.stat().st_mtime_ns
+        siblings = list(evidence.glob(f"{family}*/state.json"))
+        if len(siblings) > 500:
+            raise ValueError("unexpected number of private Gemini neutral receipts")
+        for other in siblings:
+            if other.is_symlink() or not other.is_file():
+                raise ValueError("untrusted private Gemini neutral probe receipt path")
+            if (other.resolve() != selected and
+                    other.stat().st_mtime_ns >= selected_time):
+                raise ValueError("newer neutral Gemini probe invalidates older readiness")
     # A stale queue is insufficient: independently scan every visible private
     # immutable claim. Unknown/corrupt JSON is a blocker, not implicit absence.
     for path in evidence.rglob("batches/*.json"):
