@@ -75,6 +75,54 @@ assert.ok(bySemantic(cart, "velocity-a"));
 assert.ok(texts(cart).includes("Cart A"));
 assert.ok(texts(cart).includes("vA"));
 
+// Regression: opposing arrows must not place long labels at converging tips.
+const longLabels = {
+  en: ["Initial velocity v1i", "Initial velocity v2i"],
+  ms: ["Halaju permulaan v1i", "Halaju permulaan v2i"],
+  zh: ["\u521d\u59cb\u901f\u5ea6\u65b9\u5411v1i", "\u521d\u59cb\u901f\u5ea6\u65b9\u5411v2i"],
+};
+const weightedUnits = (txt) => Array.from(txt).reduce(
+  (sum, c) => sum + (c.codePointAt(0) >= 0x2e80 ? 2 : 1), 0);
+for (const locale of ["en", "ms", "zh"]) {
+  const labelSpec = {
+    ...cartSpec,
+    vectors: cartSpec.vectors.map((v, i) => ({
+      ...v, label: { en: longLabels.en[i], ms: longLabels.ms[i], zh: longLabels.zh[i] },
+    })),
+  };
+  const figure = visuals.renderVisualSpec(labelSpec, { locale, document });
+  const labels = descendants(figure).filter((n) => n.tagName === "TEXT"
+    && n.attributes["data-vector-label-for"]);
+  assert.equal(labels.length, 2);
+  assert.deepEqual(labels.map((n) => Number(n.attributes.x)), [150, 490]);
+  assert.ok(labels.every((n) => Number(n.attributes.y) === 108));
+  assert.ok(labels.every((n) => n.children.every(
+    (line) => weightedUnits(line.textContent) <= 27)));
+  assert.deepEqual(labels.map((n) => n.textContent), longLabels[locale]);
+  assert.ok(Number(labels[1].attributes.x) - Number(labels[0].attributes.x) >= 27 * 8);
+}
+const fourCartSpec = {
+  ...cartSpec,
+  entities: [0, 1, 2, 3].map((i) => ({
+    id: "cart-" + i, kind: "cart", label: localized("Cart " + i),
+  })),
+  vectors: [0, 1, 2, 3].map((i) => ({
+    id: "speed-" + i, entityId: "cart-" + i, quantity: "velocity",
+    direction: i % 2 === 0 ? "right" : "left",
+    relativeMagnitude: 0.7,
+    label: localized("A deliberately long approach velocity label"),
+  })),
+};
+const fourFigure = visuals.renderVisualSpec(fourCartSpec, { locale: "en", document });
+const fourLabels = descendants(fourFigure).filter((n) => n.tagName === "TEXT"
+  && n.attributes["data-vector-label-for"]);
+assert.equal(fourLabels.length, 4);
+assert.deepEqual(fourLabels.map((n) => Number(n.attributes.y)), [65, 110, 65, 110]);
+assert.ok(fourLabels.every((n) => n.children.every(
+  (line) => weightedUnits(line.textContent) <= 20)));
+assert.ok(fourLabels.every((n) => n.textContent ===
+  "A deliberately long approach velocity label"));
+
 const freeBodySpec = {
   ...common("vector_diagram", "mechanics.free_body_2d", "A body with force vectors."),
   semanticParameters: { reference_frame: "cartesian" },
