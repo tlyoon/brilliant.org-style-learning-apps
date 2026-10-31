@@ -658,3 +658,8 @@ Updated: 2026-10-31 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 
 ## PR192 - exact mixed numeric and spelled dimensionality in EN/MS/ZH (31 October 2026)
 - Extends source-bound PR190 narrow notation audit to EN numeric 1D plus one-dimensional, MS numeric 1D plus satu dimensi, and Chinese written one-dimensional references. Checks strict locale multiplicities and independent original-source hashes. This can close only numeric-notation drift, not sentence meaning, physics answer accuracy or academic release. No source text committed or Gemini required.
+
+## PR193 - original-source all-36-option bounded MCQ physics audit (31 October 2026)
+- Verify 18 original PDF source activity passages and the exact approved corrected-v5 package before recomputing the nine anchored selected answer-key mathematical witnesses.
+- Validate all nine MCQ answer option rosters, 26 independent exact-rational counterexample witnesses against mapped wrong option IDs, and one Newton-cradle material-contact-force distractor that necessarily remains scientifically unresolved by a point-mass model.
+- Option text and full translated meanings, figures, all scientific semantics and academic release remain unapproved. No original source or private review data committed, no model/browser request or prior ambiguous claim replay.
