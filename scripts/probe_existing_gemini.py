@@ -124,14 +124,24 @@ def probe(config:Path, output_dir:Path,
             raise ValueError("neutral probe missing protected starting tab")
         u=urlparse(driver.current_url)
         if u.scheme!="https" or u.netloc!="gemini.google.com":
-            driver.switch_to.new_window("tab")
-            handle=driver.current_window_handle
-            if not handle or handle in protected:
-                raise ValueError("neutral account-verification tab is not exclusively owned")
-            owned.append(handle)
-            phase="FRESH_NEUTRAL_TAB_NAVIGATION"
-            driver.get(NEUTRAL)
-            u=urlparse(driver.current_url)
+            # Limited to NEW, exclusively owned tabs before any account
+            # verification, source upload or model request.
+            # Never touch restored/author tabs or retry remote prompts.
+            for attempt in range(2):
+                driver.switch_to.new_window("tab")
+                handle=driver.current_window_handle
+                if (not handle or handle in protected or handle in owned):
+                    raise ValueError("neutral account-verification tab is not exclusively owned")
+                owned.append(handle)
+                phase="FRESH_NEUTRAL_TAB_NAVIGATION"
+                driver.get(NEUTRAL)
+                u=urlparse(driver.current_url)
+                if u.scheme=="https" and u.netloc=="gemini.google.com":
+                    break
+                # Retain this newly owned disposable tab until cleanup.
+                # Closing it here can leave Selenium with no active window
+                # (NoSuchWindowException) for the next new_window call.
+                # Never select or inspect a protected restored author tab.
             if u.scheme!="https" or u.netloc!="gemini.google.com":
                 raise ValueError("fresh neutral account-verification tab did not open Gemini")
         # Verify only after the active tab is genuinely on Gemini.
