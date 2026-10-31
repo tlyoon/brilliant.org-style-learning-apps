@@ -136,16 +136,27 @@ class ExistingLoginReviewerFactory:
                 raise ValueError("owned browser missing protected starting tab")
             origin = urlparse(self.driver.current_url)
             if origin.scheme != "https" or origin.netloc != "gemini.google.com":
-                # Open a NEW owned tab for noninteractive account verification.
-                # Do not re-purpose any previous authoring or unrelated tab.
-                self.driver.switch_to.new_window("tab")
-                probe_handle = self.driver.current_window_handle
-                if not probe_handle or probe_handle in self.protected:
-                    raise ValueError("account-verification tab is not exclusively owned")
-                self.owned["account-verification"] = probe_handle
-                self.driver.get(NEUTRAL_URL)
-                origin = urlparse(self.driver.current_url)
-                if origin.scheme != "https" or origin.netloc != "gemini.google.com":
+                # A fresh Chrome tab occasionally redirects away from Gemini.
+                # Before ANY source upload, account verification or model prompt,
+                # allow exactly one fresh, distinct owned-tab retry. Never
+                # navigate, close, or inspect a protected/restored author tab.
+                for attempt in range(2):
+                    self.driver.switch_to.new_window("tab")
+                    probe_handle = self.driver.current_window_handle
+                    if (not probe_handle or probe_handle in self.protected or
+                            probe_handle in self.owned.values()):
+                        raise ValueError("account-verification tab is not exclusively owned")
+                    self.owned["account-verification"] = probe_handle
+                    self.driver.get(NEUTRAL_URL)
+                    origin = urlparse(self.driver.current_url)
+                    if origin.scheme == "https" and origin.netloc == "gemini.google.com":
+                        break
+                    if attempt == 0:
+                        # A rejected tab cannot be the next verification
+                        # context; close ONLY this exclusive new tab.
+                        self.driver.close()
+                        self.owned.pop("account-verification", None)
+                else:
                     raise ValueError("fresh account-verification tab did not open Gemini")
             # Verify only the visible active Google account on a Gemini tab,
             # before attaching the controlled textbook to any conversation.
