@@ -633,3 +633,6 @@ Updated: 2026-10-31 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 
 ## PR184 - source-bound eighteen-activity academic reviewer coverage (31 Oct 2026)
 - Reports 18 x 5 gates x 2 independent reviewer-role claim slots as NOT_SUBMITTED, COMPLETE, AMBIGUOUS, IN_FLIGHT, SKIPPED_UNSENT or MISSING; binds actual selected runs to private exact PDF/package/passage claim auditor and independently verifies 18 source passages first. NOT_SUBMITTED never means prior remote request, SUPPORTED or formal academic pass. No model prompt submitted, no manual academic signoff, no source/model text committed or emitted.
+
+## PR185 - triage source-bound multilingual academic review priorities (31 Oct 2026)
+- Joins immutable private corrected-v5 180-slot academic coverage with prior 18-activity original-source PDF EN/MS/ZH numeric triage, requiring exact same source/package SHA and matching activity roster. Flags remain unproven translations even when candidate notation is plausible. Deterministic next-step priority preserves nonreplayable claims, then numeric review, then fresh review; never launches browser or claims academic PASS.
