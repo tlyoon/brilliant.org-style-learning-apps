@@ -27,7 +27,7 @@ class StatementPhysicsTests(unittest.TestCase):
             supported+=sum(x is True for x in results.values())
             refuted+=sum(x is False for x in results.values())
             pending+=sum(x is None for x in results.values())
-        self.assertEqual((9,26,1),(supported,refuted,pending))
+        self.assertEqual((9,27,0),(supported,refuted,pending))
 
     def setUp(self):
         tmp=tempfile.TemporaryDirectory()
@@ -68,6 +68,10 @@ class StatementPhysicsTests(unittest.TestCase):
         ),patch(
             "app_generator.validation.mcq_statement_physics.OPTION_LABEL_SHA256",
             self.digests,
+        ),patch(
+            "app_generator.validation.mcq_statement_physics.audit_cradle_original_figure",
+            return_value={"originalPdfSha256":check["sourceSha256"],
+                          "visualPhysicsMeaningMachineVerified":False},
         ):
             return audit_source_bound_mcq_statement_physics(
                 package_file=self.pkg,source_pdf=self.pdf,packets_file=self.packets)
@@ -76,7 +80,7 @@ class StatementPhysicsTests(unittest.TestCase):
         out=self.audit()
         self.assertEqual(36,out["threeLanguageOptionLabelsBoundBySha256"])
         self.assertEqual(18,out["originalSourceActivityPassagesReverified"])
-        self.assertEqual((9,26,1),
+        self.assertEqual((9,27,0),
             (out["boundedAnswerOptionsSupported"],
              out["boundedDistractorsCounterexampled"],
              out["sourceFigureContactSemanticsPending"]))
