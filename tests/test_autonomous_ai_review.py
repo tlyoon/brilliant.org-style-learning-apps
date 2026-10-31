@@ -236,6 +236,25 @@ class AutonomousReviewTests(unittest.TestCase):
         self.assertIn("syntactically valid JSON object",prompt)
         self.assertIn("Never invent a source page.",prompt)
 
+    def test_source_page_allowlist_is_explicit_and_physical(self):
+        from app_generator.validation.autonomous_ai_review import independent_review_prompt
+        context={**self.source,"verifiedPages":[4,2]}
+        prompt=independent_review_prompt(self.activity,"source_fidelity",context,
+                                        perspective="Independent check")
+        self.assertIn("AUTHORIZED PHYSICAL PDF PAGES FOR THIS ACTIVITY: [2, 4]",prompt)
+        self.assertIn("Do not use printed textbook page numbers",prompt)
+        self.assertIn("return verdict UNCERTAIN and sourcePage null",prompt)
+        self.assertNotIn("AUTHORIZED PHYSICAL PDF PAGES FOR THIS ACTIVITY: [4, 2]",prompt)
+
+    def test_source_page_allowlist_rejects_untrusted_types_before_request(self):
+        from app_generator.validation.autonomous_ai_review import independent_review_prompt
+        for pages in ([],[False],[0],[2,2],[2,"3"],"2",None):
+            with self.subTest(pages=pages):
+                with self.assertRaisesRegex(ValueError,"verified, unique PDF page"):
+                    independent_review_prompt(self.activity,"source_fidelity",
+                                              {**self.source,"verifiedPages":pages},
+                                              perspective="Independent check")
+
     def test_untrusted_page_claim_cannot_gain_fidelity_pass(self):
         class UnsupportedPage(Model):
             def ask(self, prompt, *, stage=None):
