@@ -621,3 +621,6 @@ Updated: 2026-10-31 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 
 ## PR180 - explicit physical PDF page citation allowlist (31 Oct 2026)
 - Stacked on draft PR179. New academic reviewer prompts include sorted verified PHYSICAL PDF page integers and require UNCERTAIN/null when a source citation cannot be supported; printed book pagination is not accepted. Invalid/duplicate/boolean/string page lists are rejected before any request. Previously sent immutable claims are not resubmitted because prompt hashes change, so new prompt wording is only for new private claim prefixes. Source content stays private and all academic release gates remain locked.
+
+## PR181 - exact identity-bound, immutable academic claim inventory (31 Oct 2026)
+- New read-only claim inventory verifies source/package/activity/context/prompt hashes and a bounded five-gate/two-role lifecycle. It distinguishes MISSING, IN_FLIGHT, COMPLETE, AMBIGUOUS and SKIPPED_UNSENT. It never reads raw model text as a verdict, never sends requests or grants formal academic PASS, and does not weaken release controls. A future private CLI will independently derive exact controlled identities from the original PDF and corrected package before auditing live claims.
