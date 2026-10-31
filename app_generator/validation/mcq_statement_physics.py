@@ -18,6 +18,8 @@ from app_generator.validation.collision_property_grid import collision
 from app_generator.validation.physics_proofs import KNOWN_CASES
 from app_generator.validation.full_source_packet_roster import verify_full_source_packet_roster
 from app_generator.validation.mcq_label_digest_baseline import OPTION_LABEL_SHA256
+from app_generator.validation.cradle_contact_forces import contact_chain_counterexample
+from app_generator.validation.cradle_original_figure import audit_cradle_original_figure
 
 
 def _group_truths(group: str) -> dict[str,bool|None]:
@@ -107,7 +109,7 @@ def _group_truths(group: str) -> dict[str,bool|None]:
           "opt-violates-ke":incoming_momentum==outgoing_momentum and outgoing_ke*2==incoming_ke,
           "opt-ke-always":outgoing_ke==incoming_ke,
           "opt-momentum-lost":outgoing_momentum!=incoming_momentum,
-          "opt-force-transmission":None,
+          "opt-force-transmission":not contact_chain_counterexample()["staticTwoSimultaneousContactForces"],
         }
     if group=="mcq-spring-collision-intermediate":
         p0=F(0); p1=F(0)
@@ -140,6 +142,12 @@ def audit_source_bound_mcq_statement_physics(
     if (len(acts)!=18 or len(mcqs)!=9 or set(mcqs)!=set(KNOWN_CASES) or
             len(OPTION_LABEL_SHA256)!=36):
         raise ValueError("complete MCQ source-controlled roster changed")
+    figure=audit_cradle_original_figure(source_pdf)
+    if figure["originalPdfSha256"] != source["sourceSha256"]:
+        raise ValueError("original figure raster/source SHA identity mismatch")
+    contact=contact_chain_counterexample()
+    if not contact["staticTwoSimultaneousContactForces"]:
+        raise ValueError("contact witness no longer disproves propagation restriction")
     rows=[]
     for aid,a in mcqs.items():
         expected_correct=KNOWN_CASES[aid][1]
@@ -189,7 +197,7 @@ def audit_source_bound_mcq_statement_physics(
     support=sum(x["status"]=="BOUNDED_PHYSICS_SUPPORT" for x in rows)
     counter=sum(x["status"]=="BOUNDED_PHYSICS_COUNTEREXAMPLE" for x in rows)
     pending=sum(x["status"]=="FIGURE_CONTACT_SEMANTICS_PENDING" for x in rows)
-    if (len(rows),support,counter,pending)!=(36,9,26,1):
+    if (len(rows),support,counter,pending)!=(36,9,27,0):
         raise ValueError("source-bound MCQ scientific statement audit incomplete")
     return {
         "status":"SOURCE_BOUND_MC_Q_BOUNDED_STATEMENT_AUDIT",
@@ -200,6 +208,9 @@ def audit_source_bound_mcq_statement_physics(
         "boundedAnswerOptionsSupported":support,
         "boundedDistractorsCounterexampled":counter,
         "sourceFigureContactSemanticsPending":pending,
+        "threeBallContactCounterexample":contact,
+        "originalCradleFigureProvenance":figure,
+        "originalFigureScientificMeaningAutomaticallyApproved":False,
         "allOptionMeaningsFullyVerified":False,
         "independentAcademicReviewerAccepted":False,
         "translationMeaningVerified":False,
