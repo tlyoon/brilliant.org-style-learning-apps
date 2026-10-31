@@ -1,8 +1,10 @@
 """Synthetic adversarial admission checks: no source or browser required."""
 from hashlib import sha256
 import json
+import os
 from pathlib import Path
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -46,7 +48,13 @@ class FreshAdmissionTests(unittest.TestCase):
         self.neutral=self.private/"neutral.json"
         self.neutral_data={
             "status":"NEUTRAL_TWO_CONTEXTS_CONFIRMED",
-            "roles":{name:{"state":"COMPLETE_CAPTURED","responseCaptured":True}
+            "reviewerMode":"same_authorized_login_separate_new_chats",
+            "sourcePdfUploaded":False,"promptContainsSource":False,
+            "providerAccountsIndependent":False,
+            "academicQA":"REVIEW_REQUIRED","publicationAuthorized":False,
+            "roles":{name:{"state":"COMPLETE_CAPTURED","responseCaptured":True,
+                           "validRoleAndShape":True,
+                           "promptSha256":"a"*64,"responseSha256":"b"*64}
                      for name in ("physics","semantics")}}
         self.write()
         self.args=dict(
@@ -100,7 +108,7 @@ class FreshAdmissionTests(unittest.TestCase):
     def test_neutral_ambiguous_response_is_not_replayed(self):
         self.neutral_data["roles"]["semantics"]["state"]="POSSIBLY_SENT"
         self.write()
-        with self.assertRaisesRegex(ValueError,"Gemini preflight"):
+        with self.assertRaisesRegex(ValueError,"not completely captured"):
             self.verify()
 
     def test_changed_source_and_packet_fail_closed(self):
@@ -111,6 +119,78 @@ class FreshAdmissionTests(unittest.TestCase):
         self.manifest["packets"]["example-0"]={**self.packet,"verifiedPages":[3]}
         self.write()
         with self.assertRaisesRegex(ValueError,"passage/page"):
+            self.verify()
+
+    def test_expired_success_receipt_does_not_authorize_new_model_request(self):
+        old=time.time()-1801
+        os.utime(self.neutral,(old,old))
+        with self.assertRaisesRegex(ValueError,"expired"):
+            self.verify()
+
+    def test_future_clock_and_uncaptured_response_digests_rejected(self):
+        future=time.time()+90
+        os.utime(self.neutral,(future,future))
+        with self.assertRaisesRegex(ValueError,"clock"):
+            self.verify()
+        self.write()
+        self.neutral_data["roles"]["semantics"]["responseSha256"]=None
+        self.write()
+        with self.assertRaisesRegex(ValueError,"not completely captured"):
+            self.verify()
+
+    def test_newer_failed_neutral_probe_invalidates_recent_success(self):
+        earlier=self.private/"section94-neutral-gemini-probe-earlier"
+        earlier.mkdir()
+        newer=self.private/"section94-neutral-gemini-probe-newer"
+        newer.mkdir()
+        old_receipt=earlier/"state.json"
+        old_receipt.write_text(json.dumps(self.neutral_data),encoding="utf-8")
+        now=time.time()
+        os.utime(old_receipt,(now-20,now-20))
+        blocked=newer/"state.json"
+        blocked.write_text(json.dumps({
+            "status":"BLOCKED_BEFORE_OR_DURING_PROBE",
+            "failurePhase":"FRESH_NEUTRAL_TAB_NAVIGATION",
+            "remoteRequestPossiblySubmitted":False,
+        }),encoding="utf-8")
+        os.utime(blocked,(now-10,now-10))
+        with self.assertRaisesRegex(ValueError,"newer neutral Gemini probe"):
+            with patch(
+                "app_generator.validation.fresh_academic_review_admission.verified_source_packet",
+            ):
+                admit_fresh_academic_review(**{
+                    **self.args,"neutral_receipt_file":old_receipt})
+        os.utime(blocked,(now-30,now-30))
+        with patch(
+            "app_generator.validation.fresh_academic_review_admission.verified_source_packet",
+            return_value={**self.packet,"activityId":"example-0",
+                          "sourceSha256":self.ssha},
+        ):
+            result=admit_fresh_academic_review(**{
+                **self.args,"neutral_receipt_file":old_receipt})
+        self.assertEqual("example-0",result["activityId"])
+
+    def test_source_bearing_or_approved_neutral_cannot_pass_admission(self):
+        for key,value in (
+            ("sourcePdfUploaded",True),("promptContainsSource",True),
+            ("publicationAuthorized",True),("providerAccountsIndependent",True),
+        ):
+            with self.subTest(field=key):
+                original=self.neutral_data[key]
+                self.neutral_data[key]=value
+                self.write()
+                with self.assertRaisesRegex(ValueError,"source-free neutral readiness"):
+                    self.verify()
+                self.neutral_data[key]=original
+        self.write()
+
+    def test_neutral_wrong_role_or_duplicate_context_rejected(self):
+        self.neutral_data["roles"]["extra"]={
+            "state":"COMPLETE_CAPTURED","responseCaptured":True,
+            "validRoleAndShape":True,"promptSha256":"a"*64,
+            "responseSha256":"b"*64}
+        self.write()
+        with self.assertRaisesRegex(ValueError,"both independent"):
             self.verify()
 
     def test_private_paths_and_unsafe_run_names_rejected(self):
