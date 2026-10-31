@@ -52,6 +52,32 @@ def _triplets(activity: dict[str,Any]):
                         yield f"answerKey.options[{i}].label",value
 
 
+def _notation_candidate(texts: dict[str,str], counts: dict[str,Counter]) -> str:
+    """Classify a narrow *possible* notation explanation, never correctness."""
+    en=unicodedata.normalize("NFKC", texts["en"])
+    zh=unicodedata.normalize("NFKC", texts["zh"])
+    if counts["en"]!=counts["ms"]:
+        return "UNEXPLAINED_LITERAL_DIFFERENCE"
+    missing=counts["en"]-counts["zh"]
+    extra=counts["zh"]-counts["en"]
+    if extra or len(missing)!=1:
+        return "UNEXPLAINED_LITERAL_DIFFERENCE"
+    token,number=next(iter(missing.items()))
+    if token in ("1","2"):
+        # Require the exact numeric dimension notation in EN and precisely
+        # as many Chinese-character notation occurrences as missing digits.
+        dimension_pattern=rf"(?<![0-9A-Za-z]){token}\s*-?\s*[dD]\b"
+        en_dim_count=len(re.findall(dimension_pattern,en))
+        written = "\u4e00\u7ef4" if token=="1" else "\u4e8c\u7ef4"
+        if en_dim_count>=number and zh.count(written)>=number:
+            return ("POSSIBLE_ONE_DIMENSION_NOTATION" if token=="1"
+                    else "POSSIBLE_TWO_DIMENSION_NOTATION")
+    if (token=="0" and number==1 and
+            "momentum" in en.casefold() and "\u96f6" in zh):
+        return "POSSIBLE_WRITTEN_ZERO_NOTATION"
+    return "UNEXPLAINED_LITERAL_DIFFERENCE"
+
+
 def _scan_activity(activity: dict[str,Any]) -> tuple[int,list[dict[str,Any]]]:
     checked=0
     flags=[]
@@ -64,6 +90,8 @@ def _scan_activity(activity: dict[str,Any]) -> tuple[int,list[dict[str,Any]]]:
                 "reasonCode":"CROSS_LOCALE_NUMERIC_TOKEN_DIFFERENCE",
                 "numericTokenCounts":{lang:sum(number_sets[lang].values()) for lang in _LANGS},
                 "crossLocaleNumericTokensEqual":False,
+                "candidateReason":_notation_candidate(texts,number_sets),
+                "confirmedSemanticEquivalence":False,
             })
     return checked,flags
 
