@@ -120,8 +120,20 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
                                     const figure = document.querySelector('figure.physics-visual');
                                     const card = figure?.closest('.card');
                                     const svg = figure?.querySelector('svg');
+                                    const labelNodes = [...(figure?.querySelectorAll(
+                                      'text.physics-visual__vector-label, text.physics-visual__entity-label'
+                                    ) || [])];
+                                    const boxes = labelNodes.map(n => n.getBBox());
+                                    const labelCollision = boxes.some((a, i) => boxes.some((b, j) =>
+                                      j > i && a.x < b.x + b.width - 2
+                                      && b.x < a.x + a.width - 2
+                                      && a.y < b.y + b.height - 2
+                                      && b.y < a.y + a.height - 2));
                                     return {
                                       fig: !!figure,
+                                      velocityLabelCollision: labelCollision,
+                                      arrowLabelCount: figure?.querySelectorAll(
+                                        'text.physics-visual__vector-label').length || 0,
                                       svg: !!svg,
                                       desc: figure?.getAttribute('aria-label') || '',
                                       template: figure?.getAttribute('data-template') || '',
@@ -135,6 +147,8 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
                                     raise ValueError("missing SVG, accessible label, or semantic nodes")
                                 if status["overflow"]:
                                     raise ValueError("visual viewport horizontal overflow")
+                                if status["velocityLabelCollision"]:
+                                    raise ValueError("SVG entity/velocity labels overlap in browser")
                                 if not status["choices"]:
                                     raise ValueError("visual activity lost response controls")
                                 if evidence_root is not None:
