@@ -166,6 +166,38 @@ class ExistingLoginProbeTests(unittest.TestCase):
         self.assertEqual(2,len(Page.prompts))
         self.assertNotEqual(Page.prompts[0][0],Page.prompts[1][0])
 
+    def test_one_redirected_owned_neutral_tab_recovers_without_touching_author_tabs(self):
+        class OnceRedirectChrome(Chrome):
+            def __init__(self,cfg):
+                super().__init__(cfg)
+                self.driver.urls["original"]="https://example.net/restored-author-page"
+                self.navigation=[]
+                original_get=self.driver.get
+                redirected=[False]
+                def get(url):
+                    self.navigation.append((self.driver.active,url))
+                    if not redirected[0]:
+                        redirected[0]=True
+                        self.driver.urls[self.driver.active]="https://www.google.com/"
+                    else:
+                        original_get(url)
+                self.driver.get=get
+        with patch("scripts.probe_existing_gemini.load_config",return_value=self.config):
+            result=probe(self.root/"cfg",self.output,
+                         chrome_factory=OnceRedirectChrome,verifier_factory=Verifier,
+                         page_factory=Page,profile_busy=lambda _:False)
+        self.assertEqual("NEUTRAL_TWO_CONTEXTS_CONFIRMED",result["status"])
+        driver=Chrome.made[-1].driver
+        self.assertEqual("https://example.net/restored-author-page",driver.urls["original"])
+        self.assertNotIn("original",driver.closed)
+        self.assertIn("role-1",driver.closed)
+        self.assertEqual(2,len(Page.prompts))
+        self.assertEqual(2,len({handle for handle,_ in Page.prompts}))
+        self.assertTrue(all(handle!="original" for handle,_ in Chrome.made[-1].navigation))
+        receipt=json.loads((self.output/"state.json").read_text(encoding="utf-8"))
+        self.assertFalse(receipt["sourcePdfUploaded"])
+        self.assertFalse(receipt["publicationAuthorized"])
+
     def test_redirected_fresh_neutral_tab_fails_before_prompt_and_preserves_original(self):
         class RedirectChrome(Chrome):
             def __init__(self,cfg):
