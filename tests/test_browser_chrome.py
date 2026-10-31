@@ -21,6 +21,24 @@ class ChromeSessionTests(unittest.TestCase):
             gem_edit_url="https://gemini.google.com/gems/edit/demo",
         )
 
+    def test_missing_selenium_fails_without_launch_or_profile_mutation(self):
+        import builtins
+        original_import = builtins.__import__
+
+        def fail_selenium(name, *args, **kwargs):
+            if name == "selenium" or name.startswith("selenium."):
+                raise ImportError("synthetic missing Selenium")
+            return original_import(name, *args, **kwargs)
+
+        with tempfile.TemporaryDirectory() as root, \
+             patch("builtins.__import__", side_effect=fail_selenium), \
+             patch("app_generator.browser.chrome.subprocess.Popen") as launch:
+            session = ChromeSession(self.config(root))
+            with self.assertRaisesRegex(BrowserError, "Selenium is not installed"):
+                session.start()
+            launch.assert_not_called()
+            self.assertFalse((Path(root) / "gemini-browser").exists())
+
     def test_controlled_opens_regular_gemini_window_before_driver_connection(self):
         with tempfile.TemporaryDirectory() as root:
             config = self.config(root)
