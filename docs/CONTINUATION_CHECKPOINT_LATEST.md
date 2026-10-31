@@ -652,3 +652,6 @@ Updated: 2026-10-31 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 
 ## PR190 - independent source-bound numeric notation reconciliation (31 Oct 2026)
 - Offline deterministic 18-activity original PDF re-extraction and narrowly scoped Chinese one-dimensional, two-dimensional, and zero-momentum numeral reconciliation; no AI/browser, no copyrighted text committed or printed, no automatic translation or scientific semantic PASS. Source text remains private. Release gate closed.
+
+## PR191 - offline bounded physics checks for five source-bound diagrams (31 Oct 2026)
+- Adds exact-original-source and SHA-bound deterministic cart preimpact vector/mass checks for four visual activities and exact spring energy partition conservation for the fifth; verifies all 18 original PDF passages first. Verifies neither final answer semantics, rendered pixel meaning nor translations; leaves academicQA=REVIEW_REQUIRED, formal PASS=0 and release disabled.
