@@ -22,6 +22,11 @@ from app_generator.validation.multilingual_numeric_triage import (
 
 _ONE = re.compile(r"(?<![0-9A-Za-z])1\s*-?\s*[dD]\b")
 _TWO = re.compile(r"(?<![0-9A-Za-z])2\s*-?\s*[dD]\b")
+# Only explicit equivalents of the 1D physics dimension term. This does
+# not establish complete translated sentence meaning or textbook accuracy.
+_EN_ONE_WORD = re.compile(r"\bone[\s-]+dimensional\b", re.IGNORECASE)
+_MS_ONE_WORD = re.compile(r"\bsatu\s+dimensi\b", re.IGNORECASE)
+_MIXED_DIMENSION_RULE = "EXACT_MIXED_WRITTEN_ONE_DIMENSION_NOTATION"
 
 
 def _normalize_only_warranted_zh(texts: dict[str, str]) -> tuple[str, str]:
@@ -33,7 +38,7 @@ def _normalize_only_warranted_zh(texts: dict[str, str]) -> tuple[str, str]:
     counters = {lang: Counter(numeric_tokens(normalized[lang]))
                 for lang in normalized}
     candidate = _notation_candidate(texts, counters)
-    en, zh = normalized["en"], normalized["zh"]
+    en, ms, zh = normalized["en"], normalized["ms"], normalized["zh"]
     if candidate == "POSSIBLE_ONE_DIMENSION_NOTATION":
         missing = counters["en"] - counters["zh"]
         count = missing.get("1", 0)
@@ -41,6 +46,19 @@ def _normalize_only_warranted_zh(texts: dict[str, str]) -> tuple[str, str]:
                 len(_ONE.findall(en)) == count and zh.count("\u4e00\u7ef4") == count):
             return ("EXACT_DIMENSION_1_NUMERIC_NORMALIZATION",
                     zh.replace("\u4e00\u7ef4", "1D", count))
+        # A single field may spell the *second* 1D reference out:
+        # EN "one-dimensional", MS "satu dimensi", ZH written "one dimension".
+        # Do not reconcile unless BOTH alphabetic-language counts and the
+        # exact full Chinese written-dimension occurrence count agree.
+        spelled_en = len(_EN_ONE_WORD.findall(en))
+        spelled_ms = len(_MS_ONE_WORD.findall(ms))
+        if (count > 0 and len(missing) == 1 and
+                len(_ONE.findall(en)) == count and
+                len(_ONE.findall(ms)) == count and
+                spelled_en > 0 and spelled_en == spelled_ms and
+                zh.count("\u4e00\u7ef4") == count + spelled_en):
+            return (_MIXED_DIMENSION_RULE,
+                    zh.replace("\u4e00\u7ef4", "1D", count + spelled_en))
     elif candidate == "POSSIBLE_TWO_DIMENSION_NOTATION":
         missing = counters["en"] - counters["zh"]
         count = missing.get("2", 0)
@@ -99,8 +117,20 @@ def audit_private_narrow_numeric_notation(
                 raise ValueError("narrow notation classification has drifted")
             reason, rewritten = _normalize_only_warranted_zh(triplet)
             after_zh = Counter(numeric_tokens(rewritten))
+            if reason == _MIXED_DIMENSION_RULE:
+                # Compare the TWO notation representations only after
+                # rewriting literal 1D words in EN and MS, not by changing
+                # any user-facing text. Other numerical tokens must match.
+                en_effective = _EN_ONE_WORD.sub(
+                    "1D", unicodedata.normalize("NFKC", triplet["en"]))
+                ms_effective = _MS_ONE_WORD.sub(
+                    "1D", unicodedata.normalize("NFKC", triplet["ms"]))
+                en_numeric = Counter(numeric_tokens(en_effective))
+                ms_numeric = Counter(numeric_tokens(ms_effective))
+            else:
+                en_numeric, ms_numeric = before["en"], before["ms"]
             match = (reason != "NOTATION_NOT_STRICTLY_RESOLVED" and
-                     before["en"] == before["ms"] == after_zh)
+                     en_numeric == ms_numeric == after_zh)
             rows.append({
                 "activityId": aid, "field": field,
                 "originalCandidateReason": flag["candidateReason"],

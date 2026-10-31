@@ -655,3 +655,6 @@ Updated: 2026-10-31 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 
 ## PR191 - offline bounded physics checks for five source-bound diagrams (31 Oct 2026)
 - Adds exact-original-source and SHA-bound deterministic cart preimpact vector/mass checks for four visual activities and exact spring energy partition conservation for the fifth; verifies all 18 original PDF passages first. Verifies neither final answer semantics, rendered pixel meaning nor translations; leaves academicQA=REVIEW_REQUIRED, formal PASS=0 and release disabled.
+
+## PR192 - exact mixed numeric and spelled dimensionality in EN/MS/ZH (31 October 2026)
+- Extends source-bound PR190 narrow notation audit to EN numeric 1D plus one-dimensional, MS numeric 1D plus satu dimensi, and Chinese written one-dimensional references. Checks strict locale multiplicities and independent original-source hashes. This can close only numeric-notation drift, not sentence meaning, physics answer accuracy or academic release. No source text committed or Gemini required.

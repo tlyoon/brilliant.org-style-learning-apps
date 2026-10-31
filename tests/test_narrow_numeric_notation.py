@@ -49,6 +49,53 @@ class NarrowNotationTests(unittest.TestCase):
         self.assertEqual("NOTATION_NOT_STRICTLY_RESOLVED",
                          _normalize_only_warranted_zh(triplet)[0])
 
+    def test_mixed_numeral_and_written_one_dimension_across_en_ms_zh(self):
+        triplet = {
+            "en": "The 1D rule concerns one-dimensional elastic collisions.",
+            "ms": "Hukum 1D untuk perlanggaran kenyal satu dimensi.",
+            "zh": "\u4e00\u7ef4\u5173\u7cfb\u4ec5\u7528\u4e8e\u4e00\u7ef4\u5f39\u6027\u78b0\u649e\u3002",
+        }
+        reason, zh_normalized = _normalize_only_warranted_zh(triplet)
+        self.assertEqual("EXACT_MIXED_WRITTEN_ONE_DIMENSION_NOTATION", reason)
+        self.assertEqual(2, Counter(numeric_tokens(zh_normalized))["1"])
+        self.assertEqual(2, triplet["zh"].count("\u4e00\u7ef4"))
+        self.assertEqual(["1"], numeric_tokens(triplet["en"]))
+        self.assertEqual(["1"], numeric_tokens(triplet["ms"]))
+
+    def test_mixed_dimension_requires_exact_writing_in_both_en_and_ms(self):
+        triplet = {
+            "en": "The 1D rule applies to one-dimensional collisions.",
+            "ms": "Hukum 1D untuk perlanggaran kenyal.",
+            "zh": "\u4e00\u7ef4\u5173\u7cfb\u4ec5\u7528\u4e8e\u4e00\u7ef4\u5f39\u6027\u78b0\u649e\u3002",
+        }
+        self.assertEqual("NOTATION_NOT_STRICTLY_RESOLVED",
+                         _normalize_only_warranted_zh(triplet)[0])
+        triplet["ms"] = "Hukum 1D untuk perlanggaran satu dimensi."
+        triplet["zh"] += "\u4e00\u7ef4"
+        self.assertEqual("NOTATION_NOT_STRICTLY_RESOLVED",
+                         _normalize_only_warranted_zh(triplet)[0])
+
+    def test_extra_numeric_value_does_not_get_hidden_by_mixed_alias(self):
+        triplet = {
+            "en": "1D one-dimensional collision with 3 objects",
+            "ms": "1D perlanggaran satu dimensi dengan 3 objek",
+            "zh": "\u4e00\u7ef4\u4e00\u7ef4\u78b0\u649e\u4e0e4\u4e2a\u7269\u4f53",
+        }
+        self.assertEqual("NOTATION_NOT_STRICTLY_RESOLVED",
+                         _normalize_only_warranted_zh(triplet)[0])
+
+    def test_mixed_written_dimensionality_not_2d_or_attached_words(self):
+        triplet = {
+            "en": "1D pseudoone-dimensional effect",
+            "ms": "1D kesan satu dimensi",
+            "zh": "\u4e00\u7ef4\u4e00\u7ef4\u6548\u5e94",
+        }
+        self.assertEqual("NOTATION_NOT_STRICTLY_RESOLVED",
+                         _normalize_only_warranted_zh(triplet)[0])
+        triplet["en"] = "1D and two-dimensional effects"
+        self.assertEqual("NOTATION_NOT_STRICTLY_RESOLVED",
+                         _normalize_only_warranted_zh(triplet)[0])
+
     def test_unrelated_number_mismatch_not_hidden(self):
         triplet={"en":"2D and 3 objects", "ms":"2D dan 3 objek",
                  "zh":"\u4e8c\u7ef4\u548c4\u4e2a\u7269\u4f53"}
