@@ -145,15 +145,17 @@ class ChromeSession:
         )
 
     def start(self) -> Any:
+        # Check the dependency before launching an owned Chrome process.
+        # A missing WebDriver must not create or touch any browser profile.
+        try:
+            from selenium import webdriver
+        except ImportError as exc:
+            raise BrowserError("Selenium is not installed. Run: python -m pip install -r requirements-generator.txt") from exc
         address = (
             self.config.debugger_address
             if self.config.browser_mode == "attach"
             else self._open_automation_window()
         )
-        try:
-            from selenium import webdriver
-        except ImportError as exc:
-            raise BrowserError("Selenium is not installed. Run: python -m pip install -r requirements-generator.txt") from exc
         options = webdriver.ChromeOptions()
         options.debugger_address = address
         try:
