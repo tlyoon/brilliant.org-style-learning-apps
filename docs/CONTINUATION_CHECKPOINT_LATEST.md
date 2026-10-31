@@ -636,3 +636,6 @@ Updated: 2026-10-31 (Malaysia, UTC+08). Verify against live devices, GitHub and 
 
 ## PR185 - triage source-bound multilingual academic review priorities (31 Oct 2026)
 - Joins immutable private corrected-v5 180-slot academic coverage with prior 18-activity original-source PDF EN/MS/ZH numeric triage, requiring exact same source/package SHA and matching activity roster. Flags remain unproven translations even when candidate notation is plausible. Deterministic next-step priority preserves nonreplayable claims, then numeric review, then fresh review; never launches browser or claims academic PASS.
+
+## PR186 - source-bound private technical visual coverage integrated with academic review queue (31 Oct 2026)
+- Re-reads exact corrected v5 package and controlled PDF and independently checks SHA-bound real Chrome screenshots, PNG CRC/RGB nonblank, five visual activities across 3 locales and 2 viewport widths, then joins all eighteen source-bound queue activities without implying diagram accuracy, trilingual meaning, accessibility, pixel-quality judgement, or formal academic PASS. No private screenshots or textbook passages committed. Draft stacked on PR185.
