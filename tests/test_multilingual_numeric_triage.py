@@ -48,6 +48,36 @@ class MultilingualNumericTriageTests(unittest.TestCase):
         self.assertEqual("answerKey.options[0].label",flags[0]["field"])
         self.assertNotIn("3",json.dumps(flags))
 
+    def test_possible_notation_equivalence_remains_review_required(self):
+        cases=(
+            ("1D collisions", "Perlanggaran 1D", "\u4e00\u7ef4\u78b0\u649e", "POSSIBLE_ONE_DIMENSION_NOTATION"),
+            ("2D collision", "Perlanggaran 2D", "\u4e8c\u7ef4\u78b0\u649e", "POSSIBLE_TWO_DIMENSION_NOTATION"),
+            ("Total momentum = 0", "Jumlah momentum = 0", "\u603b\u52a8\u91cf\u4e3a\u96f6", "POSSIBLE_WRITTEN_ZERO_NOTATION"),
+            ("1D and 1D collisions", "1D dan 1D collisions",
+             "\u4e00\u7ef4\u548c\u4e00\u7ef4\u78b0\u649e", "POSSIBLE_ONE_DIMENSION_NOTATION"),
+        )
+        for en,ms,zh,expected in cases:
+            with self.subTest(expected=expected):
+                count,flags=_scan_activity({"id":"test","prompt":{"en":en,"ms":ms,"zh":zh}})
+                self.assertEqual(1,count)
+                self.assertEqual(1,len(flags))
+                self.assertEqual(expected,flags[0]["candidateReason"])
+                self.assertFalse(flags[0]["confirmedSemanticEquivalence"])
+                self.assertEqual("CROSS_LOCALE_NUMERIC_TOKEN_DIFFERENCE",flags[0]["reasonCode"])
+
+    def test_unrelated_digits_not_hidden_by_chinese_dimension_terms(self):
+        cases=(
+            ("Momentum is 1", "Momentum adalah 1", "\u4e00\u7ef4\u52a8\u91cf"),
+            ("1D and 2D", "1D dan 2D", "\u4e00\u7ef4\u78b0\u649e"),
+            ("0 collision", "0 perlanggaran", "\u96f6\u78b0\u649e"),
+        )
+        for en,ms,zh in cases:
+            with self.subTest(en=en):
+                _,flags=_scan_activity({"id":"x","prompt":{"en":en,"ms":ms,"zh":zh}})
+                self.assertTrue(flags)
+                self.assertEqual("UNEXPLAINED_LITERAL_DIFFERENCE",flags[0]["candidateReason"])
+                self.assertFalse(flags[0]["confirmedSemanticEquivalence"])
+
     def setUp(self):
         folder=tempfile.TemporaryDirectory()
         self.addCleanup(folder.cleanup)
