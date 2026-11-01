@@ -27,7 +27,7 @@ class AcademicPublicationGateTests(unittest.TestCase):
             with self.assertRaisesRegex(ValidationFailure, "unresolved academic QA"):
                 enforce_academic_release_gate(ROOT,package,Path(tmp))
             report=json.loads((Path(tmp)/"academic-release-gate.json").read_text(encoding="utf-8"))
-            self.assertEqual("REVIEW_REQUIRED",report["academicQA"])
+            self.assertIn(report["academicQA"],("FAIL","REVIEW_REQUIRED"))
             self.assertEqual(hashlib.sha256(package.read_bytes()).hexdigest(),report["artifactSha256"])
             self.assertFalse(report["publicationAuthorized"])
 
@@ -64,7 +64,7 @@ class AcademicPublicationGateTests(unittest.TestCase):
             digest=hashlib.sha256(package.read_bytes()).hexdigest()
             record=Path(tmp)/"academic-publication-gates"/digest/"academic-release-gate.json"
             report=json.loads(record.read_text(encoding="utf-8"))
-            self.assertEqual("REVIEW_REQUIRED",report["academicQA"])
+            self.assertIn(report["academicQA"],("FAIL","REVIEW_REQUIRED"))
             self.assertEqual(digest,report["artifactSha256"])
 
     def test_public_publisher_missing_state_receipt_directory_fails_before_remote(self):

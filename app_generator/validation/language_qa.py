@@ -1,8 +1,38 @@
 """Conservative multilingual QA triage, not a translation-quality oracle."""
 from __future__ import annotations
 import unicodedata
+import re
 from collections.abc import Mapping
 from app_generator.validation.academic_qa import Finding
+
+def scientific_malay_eternal_terms(document: Mapping) -> list[str]:
+    """Locate science usage where Malay 'eternal' likely mistranslates 'conservative'.
+
+    Returns metadata paths, never the protected localized sentences.
+    'diabadikan' (conserved) is deliberately NOT the exact word 'abadi'.
+    This negative test does not claim translation meaning is correct when empty.
+    """
+    suspects=[]
+    physical=re.compile(
+        r"(?i)\b(?:daya|spring|ayunan|perlanggaran|tenaga|sistem|"
+        r"interaksi|pelesapan|graviti|kinetik|bampar)\b")
+    exact=re.compile(r"(?i)\babadi\b")
+    def visit(obj,route):
+        if isinstance(obj,Mapping):
+            if isinstance(obj.get("ms"),str):
+                malay=obj["ms"]
+                if exact.search(malay) and physical.search(malay):
+                    suspects.append(route+"/ms")
+            for name,value in obj.items():
+                if name=="ms" and isinstance(value,str):
+                    continue
+                visit(value,route+"/"+str(name))
+        elif isinstance(obj,list):
+            for i,value in enumerate(obj):
+                visit(value,route+"/"+str(i))
+    visit(document,"")
+    return suspects
+
 
 def check_multilingual_surface(activity: Mapping) -> Finding:
     ref=f"activity:{activity.get('id', '?')}"
@@ -23,6 +53,11 @@ def check_multilingual_surface(activity: Mapping) -> Finding:
             texts.append(f"English/Chinese identical long prose at field {index}")
         if (len(norm["en"])>30 and norm["en"]==norm["ms"]):
             texts.append(f"English/Malay identical long prose at field {index}")
+    physics_terms=scientific_malay_eternal_terms(activity)
+    if physics_terms:
+        return Finding("multilingual_meaning","FAIL","deterministic",ref,
+                       "Malay conservative-force terminology mistranslated as eternal at "
+                       + ", ".join(physics_terms[:12]),True)
     if texts:
         return Finding("multilingual_meaning","REVIEW_REQUIRED","deterministic",ref,
                        "; ".join(texts),True)
