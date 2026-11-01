@@ -47,6 +47,31 @@ class MultilingualQATests(unittest.TestCase):
         self.assertEqual("REVIEW_REQUIRED",result.result)
         self.assertFalse(result.result=="PASS")
 
+    def test_eternity_derived_lexicon_in_mechanics_fails(self):
+        for malay in ("Keabadian momentum linear",
+                      "Sistem mengabadikan tenaga kinetik",
+                      "Momentum sentiasa diabadikan"):
+            v=copy.deepcopy(activity())
+            v["prompt"]["en"]="A collision conserves kinetic energy?"
+            v["feedback"]["ms"]=malay
+            result=check_multilingual_surface(v)
+            self.assertEqual("FAIL",result.result)
+            self.assertIn("eternity/immortalization",result.detail)
+            self.assertNotIn(malay,result.detail)
+
+    def test_literature_eternity_does_not_trigger_science_gate(self):
+        v=copy.deepcopy(activity())
+        v["prompt"]["en"]="What does eternity symbolize in this story?"
+        v["feedback"]["ms"]="Keabadian ialah tema utama karya sastera."
+        result=check_multilingual_surface(v)
+        self.assertEqual("REVIEW_REQUIRED",result.result)
+
+    def test_repaired_scientific_word_is_not_automatic_academic_pass(self):
+        v=copy.deepcopy(activity())
+        v["prompt"]["en"]="Does a collision conserve momentum?"
+        v["feedback"]["ms"]="Pemuliharaan momentum linear dalam sistem terpencil."
+        self.assertEqual("REVIEW_REQUIRED",check_multilingual_surface(v).result)
+
     def test_exact_english_copy_triggers_review(self):
         v=copy.deepcopy(activity())
         v["feedback"]["en"]="This is an unusually long English explanation of collisions and momentum."

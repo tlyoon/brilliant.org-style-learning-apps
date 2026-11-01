@@ -4,6 +4,7 @@ import unicodedata
 import re
 from collections.abc import Mapping
 from app_generator.validation.academic_qa import Finding
+from app_generator.validation.malay_conservation_lexicon import conservation_lexicon_flags
 
 def scientific_malay_eternal_terms(document: Mapping) -> list[str]:
     """Locate science usage where Malay 'eternal' likely mistranslates 'conservative'.
@@ -53,6 +54,19 @@ def check_multilingual_surface(activity: Mapping) -> Finding:
             texts.append(f"English/Chinese identical long prose at field {index}")
         if (len(norm["en"])>30 and norm["en"]==norm["ms"]):
             texts.append(f"English/Malay identical long prose at field {index}")
+    # This lexical failure is scoped to mechanics educational content;
+    # "eternity" may be legitimate in unrelated history/literature topics.
+    en_prompt=activity.get("prompt",{}).get("en","")
+    mechanics=bool(isinstance(en_prompt,str) and re.search(
+        r"(?i)\b(?:collision|collide|momentum|kinetic|impulse|"
+        r"glider|spring|ballistic|projectile|newton)\b",en_prompt))
+    if mechanics:
+        conservation_terms=conservation_lexicon_flags(activity)
+        if conservation_terms:
+            return Finding(
+                "multilingual_meaning","FAIL","deterministic",ref,
+                "Malay conservation expressed using eternity/immortalization "
+                "terminology at "+", ".join(conservation_terms[:12]),True)
     physics_terms=scientific_malay_eternal_terms(activity)
     if physics_terms:
         return Finding("multilingual_meaning","FAIL","deterministic",ref,
