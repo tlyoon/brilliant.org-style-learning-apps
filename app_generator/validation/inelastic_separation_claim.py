@@ -40,6 +40,31 @@ def nonreversing_inelastic_witness() -> dict:
             "physicalContactRealizationFullyVerified":False}
 
 
+def unqualified_inelastic_rebound_defects(activity:dict)->list[str]:
+    """Narrow known physics failure, not a claim of general semantic correctness.
+
+    Non-sticking inelastic collisions need not reverse either velocity; the
+    detector catches this erroneous overstatement in one known activity.
+    Return metadata only, never the original protected explanation.
+    """
+    if not isinstance(activity,dict) or activity.get("id")!=ACTIVITY:
+        return []
+    phrases={
+        "en":"the objects rebound separately",
+        "ms":"objek melantun secara berasingan",
+        "zh":"\u7269\u4f53\u5206\u522b\u53cd\u5f39",
+    }
+    explanations=activity.get("explanation")
+    errors=[]
+    for locale,phrase in phrases.items():
+        value=explanations.get(locale) if isinstance(explanations,dict) else None
+        if not isinstance(value,str) or not value.strip():
+            errors.append("missing inelastic collision explanation in "+locale)
+        elif phrase in value.casefold():
+            errors.append("non-sticking inelastic motion falsely implies reversal in "+locale)
+    return errors
+
+
 def scoped_private_correction(package:dict, rules:dict)->tuple[dict,dict]:
     if len(package.get("activities",[]))!=18:
         raise ValueError("controlled 18-activity roster changed")
