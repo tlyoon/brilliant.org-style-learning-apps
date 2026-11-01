@@ -32,7 +32,7 @@ def patch_derivation(package,correction):
     revised=deepcopy(package)
     activity=next(a for a in revised["activities"] if a["id"]==ACTIVITY)
     incorrect={"en":"this division is invalid","ms":"pembahagian ini tidak sah",
-               "zh":"\\u8fd9\\u4e00\\u9664\\u6cd5\\u4fbf\\u4e0d\\u6210\\u7acb"}
+               "zh":"\u8fd9\u4e00\u9664\u6cd5\u4fbf\u4e0d\u6210\u7acb"}
     for lang in ("en","ms","zh"):
         old=activity["answerLogic"][lang]
         rule=rules[lang]
@@ -82,3 +82,15 @@ def emit_private_v8(*,package_file,source_pdf,packets_file,corrections_file,out_
     (out_dir/"private-repair-receipt.json").write_text(
         json.dumps(result,ensure_ascii=True,indent=2)+"\n",encoding="utf-8")
     return result
+
+def incorrect_derivation_premise_defects(activity):
+    if not isinstance(activity,dict) or activity.get("id")!=ACTIVITY:
+        return []
+    terms={"en":"this division is invalid",
+           "ms":"pembahagian ini tidak sah",
+           "zh":"\u8fd9\u4e00\u9664\u6cd5\u4fbf\u4e0d\u6210\u7acb"}
+    values=activity.get("answerLogic",{})
+    return ["false energy premise attributed to division in "+lang
+            for lang,term in terms.items()
+            if not isinstance(values,dict) or not isinstance(values.get(lang),str)
+            or term in values[lang].casefold()]

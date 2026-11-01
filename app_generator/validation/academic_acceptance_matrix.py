@@ -13,6 +13,7 @@ from typing import Any, Callable, Mapping
 from app_generator.validation.academic_qa import REQUIRED, Finding, decide
 from app_generator.validation.language_qa import check_multilingual_surface
 from app_generator.validation.multiball_qualification import explicit_multiball_uniqueness_defects
+from app_generator.validation.relative_velocity_derivation import incorrect_derivation_premise_defects
 from app_generator.validation.impulse_basis_reasoning import (
     explicit_impulse_basis_rationale_defects,
 )
@@ -160,6 +161,7 @@ def audit_activity_matrix(
                 "multilingual_meaning","FAIL","deterministic",f"language:{aid}",
                 f"invalid localized structure ({type(exc).__name__})",True))
         physics_defects=explicit_multiball_uniqueness_defects(a)
+        physics_defects.extend(incorrect_derivation_premise_defects(a))
         findings.append(Finding(
             "physics_consistency",
             "FAIL" if physics_defects else "REVIEW_REQUIRED",
