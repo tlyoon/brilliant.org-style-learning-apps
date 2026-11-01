@@ -1,6 +1,10 @@
 """Source-free adversarial checks for controlled multilingual learner surfaces."""
 import unittest
-from scripts.audit_private_v6_scientific_browser import normalize_visible,check_science_surface
+import json
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+from scripts.audit_private_v6_scientific_browser import normalize_visible,check_science_surface,audit_v6_scientific_browser
 
 
 class ScientificLocaleSurfaceTests(unittest.TestCase):
@@ -43,6 +47,31 @@ class ScientificLocaleSurfaceTests(unittest.TestCase):
             check_science_surface(a,"en","Conservative \ufffdswing?","Body")
         with self.assertRaisesRegex(ValueError,"unsupported locale"):
             check_science_surface(self.mcq,"fr","What?","Body")
+
+    def test_revision_specific_immutable_package_sha_is_required(self):
+        with tempfile.TemporaryDirectory() as dirname:
+            p=Path(dirname)/"candidate.json"
+            p.write_text(json.dumps({"activities":[]}))
+            source=Path(dirname)/"source.pdf"
+            source.write_bytes(b"%PDF-1.4 synthetic")
+            packets=Path(dirname)/"source-packets.json"
+            packets.write_text("{}")
+            receipt={"packageSha256":"1"*64,
+                     "newlyReverifiedSourceActivities":18,
+                     "publicationAuthorized":False}
+            with patch(
+                "scripts.audit_private_v6_scientific_browser.verify_full_source_packet_roster",
+                return_value=receipt,
+            ):
+                for sha,revision in (("not-64-hex","v7"),("0"*64,"v7"),
+                                     ("1"*64,"invalid-version")):
+                    with self.subTest(sha=sha,revision=revision):
+                        with self.assertRaisesRegex(ValueError,"identity mismatch"):
+                            audit_v6_scientific_browser(
+                                package_file=p,pdf_file=source,packets_file=packets,
+                                repository=Path(dirname),
+                                expected_package_sha256=sha,
+                                candidate_revision=revision)
 
     def test_interactive_item_missing_or_translated(self):
         for locale in ("en","ms","zh"):

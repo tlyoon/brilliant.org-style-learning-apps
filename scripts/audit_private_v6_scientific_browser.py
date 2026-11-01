@@ -54,11 +54,15 @@ def check_science_surface(activity:dict,locale:str,prompt:str,body:str)->None:
 
 
 def audit_v6_scientific_browser(*,package_file:Path,pdf_file:Path,
-                               packets_file:Path,repository:Path)->dict:
+                               packets_file:Path,repository:Path,
+                               expected_package_sha256:str=EXPECTED_V6_SHA,
+                               candidate_revision:str="v6")->dict:
     identity=verify_full_source_packet_roster(
         package_file=package_file,source_pdf=pdf_file,
         packets_file=packets_file,expected_count=18)
-    if (identity["packageSha256"]!=EXPECTED_V6_SHA or
+    if (not re.fullmatch(r"[0-9a-f]{64}",expected_package_sha256) or
+        candidate_revision not in ("v6","v7") or
+        identity["packageSha256"]!=expected_package_sha256 or
         identity["newlyReverifiedSourceActivities"]!=18 or
         identity["publicationAuthorized"] is not False):
         raise ValueError("corrected private source-v6 identity mismatch")
@@ -127,9 +131,11 @@ def audit_v6_scientific_browser(*,package_file:Path,pdf_file:Path,
     if (questions,feedback,itemchecks)!=(54,27,sum(len(a["interaction"]["items"]) for a in activities if a["type"]=="interactive")*3):
         raise ValueError("scientific UI coverage incomplete")
     return {
-       "status":"SOURCE_BOUND_V6_TRILINGUAL_LEARNER_CONTENT_CHECK",
+       "status":"SOURCE_BOUND_"+candidate_revision.upper()+"_TRILINGUAL_LEARNER_CONTENT_CHECK",
        "originalPdfSha256":identity["sourceSha256"],
-       "privateV6PackageSha256":identity["packageSha256"],
+       "privateV6PackageSha256":identity["packageSha256"] if candidate_revision=="v6" else None,
+       "controlledCandidateRevision":candidate_revision,
+       "controlledCandidatePackageSha256":identity["packageSha256"],
        "originalSourceActivitiesReverified":18,
        "localizedQuestionSurfacesVerified":questions,
        "localizedMcqCorrectFeedbackVerified":feedback,
@@ -145,6 +151,8 @@ def main()->int:
     p=argparse.ArgumentParser(description=__doc__)
     for k in ("package","pdf","packets","repo","out"):
         p.add_argument("--"+k,type=Path,required=True)
+    p.add_argument("--expected-package-sha256",default=EXPECTED_V6_SHA)
+    p.add_argument("--candidate-revision",choices=("v6","v7"),default="v6")
     a=p.parse_args()
     try:
         output=a.out.resolve()
@@ -152,7 +160,9 @@ def main()->int:
             raise ValueError("new private receipt outside repository required")
         report=audit_v6_scientific_browser(
             package_file=a.package,pdf_file=a.pdf,
-            packets_file=a.packets,repository=a.repo)
+            packets_file=a.packets,repository=a.repo,
+            expected_package_sha256=a.expected_package_sha256,
+            candidate_revision=a.candidate_revision)
         with output.open("x",encoding="utf-8") as f:
             json.dump(report,f,ensure_ascii=True,indent=2)
             f.write("\n")
