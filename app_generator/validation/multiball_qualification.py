@@ -54,6 +54,32 @@ def rational_conservation_witness()->dict:
     }
 
 
+def explicit_multiball_uniqueness_defects(activity:dict)->list[str]:
+    """Flag known overclaims that p and K ALONE uniquely fix all cradle outcomes.
+
+    This is a narrow deterministic *failure detector*, never a PASS or general
+    natural-language semantics verifier. Report locale names, not protected text.
+    """
+    if not isinstance(activity,dict) or activity.get("id")!=ACTIVITY:
+        return []
+    explanations=activity.get("explanation")
+    if not isinstance(explanations,dict):
+        return ["Newton cradle trilingual explanation missing"]
+    signatures={
+       "en":"the only configuration that satisfies both conservation laws",
+       "ms":"satu-satunya konfigurasi yang memenuhi kedua-dua hukum",
+       "zh":"\u552f\u4e00\u80fd\u540c\u65f6\u6ee1\u8db3\u4e24\u4e2a\u5b88\u6052\u5b9a\u5f8b",
+    }
+    defects=[]
+    for lang,phrase in signatures.items():
+        text=explanations.get(lang)
+        if not isinstance(text,str) or not text.strip():
+            defects.append("missing Newton cradle explanation for "+lang)
+        elif phrase in text.casefold():
+            defects.append("conservation-only uniqueness overclaim in "+lang)
+    return defects
+
+
 def apply_private_clarification(package:dict, corrections:dict)->tuple[dict,dict]:
     """Copy-on-write 3-language one-field patch bound to exact old field hashes."""
     if len(package.get("activities",[]))!=18:
