@@ -27,13 +27,17 @@ from app_generator.validation.cradle_original_figure import audit_cradle_origina
 # Malay conservation lexemes against the original protected option-label SHA.
 # The original baseline remains authoritative for all 36 options.
 APPROVED_MALAY_LEXICON_V9_SHA = "03be0293ed289db36c8e781325f2e92420990a62e65af515e0c705546aaf9e51"
+APPROVED_INELASTIC_QUALIFICATION_V10_SHA = "6d0a9179025aa177ec76e97a14c6ac93fc0f331472444f9f9ad9f48abb41044f"
 
 
 def _approved_v9_malay_lexicon_reconciliation(
     label:dict[str,str], old_label_sha256:str, package_sha256:str,
 )->bool:
     """Reverse only 3 proven substitutions, then require original SHA equality."""
-    if package_sha256!=APPROVED_MALAY_LEXICON_V9_SHA:
+    if package_sha256 not in (
+        APPROVED_MALAY_LEXICON_V9_SHA,
+        APPROVED_INELASTIC_QUALIFICATION_V10_SHA,
+    ):
         return False
     from app_generator.validation.malay_conservation_lexicon import ROOTS
     old=label["ms"]
