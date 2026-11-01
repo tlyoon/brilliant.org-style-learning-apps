@@ -9,6 +9,8 @@ const copy = {
 };
 
 const localized = (value) => typeof value === "string" ? value : value?.[state.locale] ?? value?.en ?? "";
+// Only authored, package-controlled reasoning is shown; no network generation.
+const reasoningHeading = { en: "Why this works", ms: "Mengapa jawapan ini betul", zh: "\u539f\u7406\u8bf4\u660e" };
 
 const ACTIVITY_QUERY_KEY = "activity";
 
@@ -361,6 +363,21 @@ function render() {
       text: `${result} ${localized(activity.feedback)}`,
       attributes: { role: "status" },
     }));
+  }
+
+  // Do not reveal the full solution before a correct response.
+  // Always construct inert DOM text nodes, never package-supplied HTML.
+  const reason = localized(activity.explanation);
+  if (state.checked && responseCorrect(activity) && typeof reason === "string" && reason.trim()) {
+    const panel = element("section", {
+      className: "scientific-reasoning",
+      attributes: { "aria-label": reasoningHeading[state.locale] },
+    });
+    panel.append(
+      element("h2", { className: "reasoning-title", text: reasoningHeading[state.locale] }),
+      element("p", { className: "reasoning-text", text: reason }),
+    );
+    card.append(panel);
   }
 
   const actions = element("div", { className: "action-row" });
