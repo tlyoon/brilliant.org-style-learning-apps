@@ -676,3 +676,4 @@ PR206: Private v8, scoped trilingual 1D relative-velocity derivation correction.
 PR207 checked 18 original-source activities for both revisions. v7 had 3 derivation flaws; v8 had 0. No publication.
 PR208: v8 browser verified 54 prompts, 27 responses, 108 items, 30 screens. No release.
 PR209: Private v9 corrects 146 Malay conservation words in 101 fields; immutable previous versions and PDF, original 18 source packets checked. MCQ option digest reconciliation is restricted to 16 exact reversible lexical changes. Nine MCQs, 27 distractors, nine interactions and 320 exact collision checks remain bounded verified; academic PASS 0 and no publication.
+PR210: Future physics-generation multilingual QA flags incorrect Malay conservation lexemes, while unrelated literary eternity is not flagged. Private PDF-bound v8: 101 fields, 146 occurrences, 18 failures. Corrected v9: zero; all 18 original source packets checked in each. Academic PASS 0 and publication disabled.
