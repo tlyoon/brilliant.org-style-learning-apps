@@ -73,6 +73,28 @@ assert.ok(bySemantic(cart, "cart-a"));
 assert.ok(bySemantic(cart, "cart-b"));
 assert.ok(bySemantic(cart, "velocity-a"));
 assert.ok(texts(cart).includes("Cart A"));
+
+// A section's phase is learner-facing text: never leave it English-only
+// when the student explicitly selected Malay or Chinese.
+for (const [locale, expected] of [
+  ["en", "Before"], ["ms", "Sebelum pelanggaran"],
+  ["zh", "\u78b0\u649e\u524d"],
+]) {
+  const figure = visuals.renderVisualSpec(cartSpec, { locale, document });
+  const phase = descendants(figure).find((n) =>
+    n.tagName === "TEXT" && n.attributes.class === "physics-visual__phase");
+  assert.equal(phase.textContent, expected, "phase must be localized");
+}
+for (const [phaseName, expected] of [
+  ["after", "Selepas pelanggaran"], ["during", "Semasa pelanggaran"],
+]) {
+  const figure = visuals.renderVisualSpec({
+    ...cartSpec, semanticParameters: {...cartSpec.semanticParameters, phase:phaseName},
+  }, { locale:"ms", document });
+  const caption = descendants(figure).find((n) =>
+    n.tagName === "TEXT" && n.attributes.class === "physics-visual__phase");
+  assert.equal(caption.textContent, expected);
+}
 assert.ok(texts(cart).includes("vA"));
 
 // Regression: opposing arrows must not place long labels at converging tips.
@@ -168,6 +190,33 @@ const kinetic = bySemantic(energy, "kinetic");
 const potential = bySemantic(energy, "potential");
 assert.ok(Number(kinetic.attributes.height) > Number(potential.attributes.height));
 assert.ok(texts(energy).includes("Kinetic"));
+
+// The original spring-energy screenshot lacked complete English/Malay labels
+// because the capture was viewport-cropped; full capture exposed the actual
+// overlap. Assert source label identity and bounded wrapped lines in all 3.
+const energyWords = {
+  en: ["Kinetic energy", "Elastic potential energy"],
+  ms: ["Tenaga kinetik", "Tenaga keupayaan kenyal"],
+  zh: ["\u52a8\u80fd", "\u5f39\u6027\u52bf\u80fd"],
+};
+for (const locale of ["en", "ms", "zh"]) {
+  const spec = {...energySpec,
+    entities: energySpec.entities.map((e, i) => ({
+      ...e, label:{en:energyWords.en[i],ms:energyWords.ms[i],zh:energyWords.zh[i]},
+    })),
+  };
+  const rendered = visuals.renderVisualSpec(spec, {locale,document});
+  const labels = descendants(rendered).filter(n =>
+    n.tagName === "TEXT" && n.className === "physics-visual__energy-label");
+  assert.equal(labels.length,2);
+  assert.deepEqual(labels.map(n => n.attributes["data-full-label"]),energyWords[locale]);
+  assert.ok(labels.every(n => n.children.length <= 3));
+  assert.ok(labels.every(n => n.children.every(
+    line => weightedUnits(line.textContent) <= 10)));
+  assert.ok(labels.every(n => Number(n.attributes.y) === 318));
+  assert.ok(labels.every(n => n.children.reduce(
+    (height, item) => height + Number(item.attributes.dy), 318) <= 350));
+}
 
 const contextArtwork = new FakeElement("img");
 const hybrid = visuals.renderDeterministicOverlay(cartSpec, { locale: "en", document, baseLayer: contextArtwork });
