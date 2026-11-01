@@ -180,8 +180,16 @@
     const prefix = `pv-${++renderSequence}`;
     addMarkerDefinitions(svg, documentRef, prefix);
 
-    const phase = String(spec.semanticParameters?.phase ?? "").replace(/[-_]/g, " ");
-    if (phase) addSvgText(svg, documentRef, 40, 35, phase, "physics-visual__phase", "start");
+    const phase = String(spec.semanticParameters?.phase ?? "").toLowerCase();
+    const phaseCaptions = {
+      before: { en: "Before", ms: "Sebelum pelanggaran", zh: "\u78b0\u649e\u524d" },
+      after: { en: "After", ms: "Selepas pelanggaran", zh: "\u78b0\u649e\u540e" },
+      during: { en: "During", ms: "Semasa pelanggaran", zh: "\u78b0\u649e\u4e2d" },
+    };
+    const phaseText = phaseCaptions[phase]
+      ? localized(phaseCaptions[phase], options.locale ?? "en")
+      : phase.replace(/[-_]/g, " ");
+    if (phaseText) addSvgText(svg, documentRef, 40, 35, phaseText, "physics-visual__phase", "start");
 
     svg.append(createSvgElement(documentRef, "line", { x1: "45", y1: "255", x2: "595", y2: "255", class: "physics-visual__track" }));
     for (let x = 65; x <= 575; x += 34) {
@@ -436,6 +444,42 @@
     return figure;
   }
 
+  // Keep complete energy names without intersecting neighboring narrow bars.
+  // This word-aware wrapper also handles unspaced Chinese glyph sequences.
+  function energyLabelLines(value, unitsPerLine = 10) {
+    const width = (line) => Array.from(line).reduce(
+      (n, c) => n + (c.codePointAt(0) >= 0x2e80 ? 2 : 1), 0);
+    const pieces = String(value).trim().split(/\s+/).filter(Boolean);
+    const lines = [];
+    let line = "";
+    for (const word of pieces) {
+      for (const part of splitVectorLabel(word, unitsPerLine)) {
+        const proposed = line ? line + " " + part : part;
+        if (line && width(proposed) > unitsPerLine) {
+          lines.push(line);
+          line = part;
+        } else {
+          line = proposed;
+        }
+      }
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function addEnergyLabel(svg, documentRef, x, value) {
+    const label = createSvgElement(documentRef, "text", {
+      x, y: 318, class: "physics-visual__energy-label",
+      "text-anchor": "middle", "data-full-label": value,
+    });
+    energyLabelLines(value).forEach((part, i) => {
+      label.append(createSvgElement(documentRef, "tspan", {
+        x, dy: i === 0 ? 0 : 16,
+      }, part));
+    });
+    svg.append(label);
+  }
+
   function renderEnergyBars(spec, options) {
     const { documentRef, figure, svg } = makeSurface(spec, options);
     const prefix = `pv-${++renderSequence}`;
@@ -459,7 +503,8 @@
       const fill = createSvgElement(documentRef, "rect", { x, y, width, height: barHeight, rx: "12", class: `physics-visual__energy-fill physics-visual__energy-fill--${index % 4}`, "data-semantic-id": entity.id });
       svg.append(fill);
       if (index % 2 === 1) svg.append(createSvgElement(documentRef, "rect", { x, y, width, height: barHeight, rx: "12", fill: `url(#${prefix}-hatch)`, class: "physics-visual__energy-pattern" }));
-      addSvgText(svg, documentRef, x + width / 2, 320, semanticLabel(entity, options.locale, entity.id), "physics-visual__energy-label");
+      addEnergyLabel(svg, documentRef, x + width / 2,
+                     semanticLabel(entity, options.locale, entity.id));
     });
     return figure;
   }

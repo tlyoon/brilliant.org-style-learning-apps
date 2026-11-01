@@ -6,6 +6,7 @@ HTTP. Does not access Gemini, production browsers, publication or user assets.
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 from contextlib import contextmanager
 from functools import partial
@@ -14,6 +15,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import struct
 import tempfile
 from threading import Thread
 from urllib.parse import urlencode
@@ -55,22 +57,48 @@ def local_server(directory: Path):
         thread.join(timeout=5)
 
 
-def capture_review_frame(figure, output: Path, activity_id: str, locale: str, width: int, index: int) -> dict:
-    """Save unreviewed real-browser visual evidence, never marking it approved."""
+def capture_review_frame(driver, figure, output: Path, activity_id: str,
+                         locale: str, width: int, index: int) -> dict:
+    """Capture the ENTIRE SVG figure, even below the Chrome viewport.
+
+    Selenium WebElement.screenshot_as_png silently clips below-the-fold SVGs.
+    Use a restricted Chromium CDP full-page clip and validate PNG geometry.
+    This is source evidence, not pixel-quality or academic acceptance.
+    """
     safe = re.sub(r"[^a-zA-Z0-9_.-]", "_", activity_id)[:65]
     file = f"{index:03d}-{safe}-{locale}-{width}.png"
-    data = figure.screenshot_as_png
-    if not data.startswith(b"\x89PNG"):
-        raise ValueError("browser screenshot was not PNG")
+    bounds = driver.execute_script("""
+        const r = arguments[0].getBoundingClientRect();
+        return {x: r.left + window.scrollX, y: r.top + window.scrollY,
+                width: r.width, height: r.height};
+    """, figure)
+    if (not isinstance(bounds, dict) or
+            any(type(bounds.get(k)) not in (int,float) for k in
+                ("x","y","width","height")) or
+            bounds["width"] < 100 or bounds["height"] < 100 or
+            bounds["width"] > 2500 or bounds["height"] > 2500):
+        raise ValueError("invalid full-figure screenshot geometry")
+    frame = driver.execute_cdp_cmd("Page.captureScreenshot", {
+        "format":"png", "captureBeyondViewport":True,
+        "clip":{**bounds,"scale":1},
+    })
+    data = base64.b64decode(frame["data"],validate=True)
+    if not data.startswith(b"\x89PNG\r\n\x1a\n") or len(data)<100:
+        raise ValueError("browser screenshot was not a complete PNG")
+    actual_width,actual_height = struct.unpack(">II",data[16:24])
+    if (abs(actual_width-bounds["width"])>2 or
+            abs(actual_height-bounds["height"])>2):
+        raise ValueError("browser screenshot cropped below the viewport")
     (output / file).write_bytes(data)
     return {
-        "activityId": activity_id,
-        "locale": locale,
-        "viewportWidth": width,
-        "file": file,
-        "bytes": len(data),
-        "sha256": hashlib.sha256(data).hexdigest(),
-        "reviewStatus": "unreviewed",
+        "activityId":activity_id,"locale":locale,"viewportWidth":width,
+        "file":file,"bytes":len(data),
+        "sha256":hashlib.sha256(data).hexdigest(),
+        "imageWidth":actual_width,"imageHeight":actual_height,
+        "expectedFullFigureWidth":round(bounds["width"],2),
+        "expectedFullFigureHeight":round(bounds["height"],2),
+        "completeFigureCapture":True,
+        "reviewStatus":"unreviewed",
     }
 
 
@@ -81,7 +109,9 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
     from selenium.webdriver.support.ui import Select, WebDriverWait
 
     data = json.loads(package.read_text(encoding="utf-8"))
-    ids = [item["id"] for item in data.get("activities", []) if item.get("visualSpec")]
+    visual_specs = {item["id"]:item["visualSpec"] for item in data.get("activities", [])
+                    if item.get("visualSpec")}
+    ids = list(visual_specs)
     problems = []
     checks = 0
     keyboard_checks = 0
@@ -117,11 +147,12 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
                                     lambda d: len(d.find_elements(By.CSS_SELECTOR, "figure.physics-visual")) > 0
                                 )
                                 status = driver.execute_script("""
+                                    const spec = arguments[0] || {};
                                     const figure = document.querySelector('figure.physics-visual');
                                     const card = figure?.closest('.card');
                                     const svg = figure?.querySelector('svg');
                                     const labelNodes = [...(figure?.querySelectorAll(
-                                      'text.physics-visual__vector-label, text.physics-visual__entity-label'
+                                      'text.physics-visual__vector-label, text.physics-visual__entity-label, text.physics-visual__energy-label'
                                     ) || [])];
                                     const boxes = labelNodes.map(n => n.getBBox());
                                     const labelCollision = boxes.some((a, i) => boxes.some((b, j) =>
@@ -129,8 +160,62 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
                                       && b.x < a.x + a.width - 2
                                       && a.y < b.y + b.height - 2
                                       && b.y < a.y + a.height - 2));
+                                    const svgRect = svg?.getBoundingClientRect();
+                                    const allText = [...(svg?.querySelectorAll('text') || [])];
+                                    const textInside = allText.every((n) => {
+                                      const r = n.getBoundingClientRect();
+                                      return r.width > 0 && r.height > 0 &&
+                                        r.left >= svgRect.left - 2 &&
+                                        r.right <= svgRect.right + 2 &&
+                                        r.top >= svgRect.top - 2 &&
+                                        r.bottom <= svgRect.bottom + 2;
+                                    });
+                                    const vectorsMatch = (spec.vectors || []).every(v => {
+                                      const line = [...(svg?.querySelectorAll('line[data-semantic-id]') || [])]
+                                        .find(n => n.getAttribute('data-semantic-id') === v.id);
+                                      if (!line) return false;
+                                      const dx = Number(line.getAttribute('x2')) -
+                                                 Number(line.getAttribute('x1'));
+                                      if (v.direction === 'right') return dx > 0;
+                                      if (v.direction === 'left') return dx < 0;
+                                      return true;
+                                    });
+                                    const energyLabels = [...(svg?.querySelectorAll(
+                                      '.physics-visual__energy-label') || [])];
+                                    const energyBaseline = svg?.querySelector(
+                                      '.physics-visual__energy-baseline');
+                                    const captionClearOfBaseline = !energyBaseline ||
+                                      energyLabels.every(n =>
+                                        n.getBBox().y >
+                                        Number(energyBaseline.getAttribute('y1')) + 4);
+                                    const energies = (spec.entities || [])
+                                      .filter(x => x.kind === 'energy-component');
+                                    const tracks = [...(svg?.querySelectorAll(
+                                      '.physics-visual__energy-track') || [])];
+                                    const energyBarsMatch = energies.every((item, i) => {
+                                      const bar = [...(svg?.querySelectorAll(
+                                        'rect[data-semantic-id]') || [])]
+                                        .find(n => n.getAttribute('data-semantic-id') === item.id);
+                                      const track = tracks[i];
+                                      if (!bar || !track) return false;
+                                      const fraction = Number(bar.getAttribute('height')) /
+                                                       Number(track.getAttribute('height'));
+                                      return Math.abs(fraction - Number(
+                                        item.properties?.relativeAmount)) < 0.0001;
+                                    });
                                     return {
                                       fig: !!figure,
+                                      textInside: textInside,
+                                      vectorsMatch: vectorsMatch,
+                                      energyBarsMatch: energyBarsMatch,
+                                      captionClearOfBaseline: captionClearOfBaseline,
+                                      energyTopY: energyLabels.map(n=>n.getBBox().y),
+                                      energyBaselineY: energyBaseline ?
+                                        Number(energyBaseline.getAttribute('y1')) : null,
+                                      energyLabelCount: svg?.querySelectorAll(
+                                        '.physics-visual__energy-label').length || 0,
+                                      phaseCaption: svg?.querySelector(
+                                        '.physics-visual__phase')?.textContent || '',
                                       velocityLabelCollision: labelCollision,
                                       arrowLabelCount: figure?.querySelectorAll(
                                         'text.physics-visual__vector-label').length || 0,
@@ -141,7 +226,7 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
                                       choices: !!card?.querySelector('.choices'),
                                       overflow: figure ? figure.scrollWidth > figure.clientWidth + 2 : false
                                     };
-                                """)
+                                """, visual_specs[activity_id])
                                 checks += 1
                                 if not status["svg"] or not status["desc"] or status["semanticCount"] < 1:
                                     raise ValueError("missing SVG, accessible label, or semantic nodes")
@@ -151,10 +236,28 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
                                     raise ValueError("SVG entity/velocity labels overlap in browser")
                                 if not status["choices"]:
                                     raise ValueError("visual activity lost response controls")
+                                if not status["textInside"]:
+                                    raise ValueError("SVG text lies outside the visible diagram")
+                                if not status["vectorsMatch"]:
+                                    raise ValueError("rendered velocity arrows contradict the supplied directions")
+                                if not status["energyBarsMatch"]:
+                                    raise ValueError("rendered energy fractions contradict visualSpec")
+                                if not status["captionClearOfBaseline"]:
+                                    raise ValueError("energy label crosses baseline: " +
+                                        str(status["energyTopY"]) + "/" +
+                                        str(status["energyBaselineY"]))
+                                if status["template"] == "state.energy_bar" and status["energyLabelCount"] < 2:
+                                    raise ValueError("energy labels missing from SVG")
+                                phase=visual_specs[activity_id].get("semanticParameters",{}).get("phase")
+                                if phase == "before":
+                                    captions={"en":"Before","ms":"Sebelum pelanggaran",
+                                              "zh":"\u78b0\u649e\u524d"}
+                                    if status["phaseCaption"]!=captions[locale]:
+                                        raise ValueError("collision phase is not localized")
                                 if evidence_root is not None:
                                     figure = driver.find_element(By.CSS_SELECTOR, "figure.physics-visual")
                                     frames.append(capture_review_frame(
-                                        figure, evidence_root, activity_id, locale, width, checks,
+                                        driver, figure, evidence_root, activity_id, locale, width, checks,
                                     ))
                                 if activity_id in mcq_ids:
                                     choice = driver.find_element(By.CSS_SELECTOR, ".choices button")
