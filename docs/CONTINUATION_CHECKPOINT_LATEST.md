@@ -675,3 +675,4 @@ Independent full source-bound acceptance matrix cross-check: private v6 has one 
 PR206: Private v8, scoped trilingual 1D relative-velocity derivation correction. Exact e=1/2 gives momentum conserved and Kfinal/Kinitial=5/8; 18 original source packets and all bounded prior physics models reverified. Academic 0 PASS, publication disabled.
 PR207 checked 18 original-source activities for both revisions. v7 had 3 derivation flaws; v8 had 0. No publication.
 PR208: v8 browser verified 54 prompts, 27 responses, 108 items, 30 screens. No release.
+PR209: Private v9 corrects 146 Malay conservation words in 101 fields; immutable previous versions and PDF, original 18 source packets checked. MCQ option digest reconciliation is restricted to 16 exact reversible lexical changes. Nine MCQs, 27 distractors, nine interactions and 320 exact collision checks remain bounded verified; academic PASS 0 and no publication.
