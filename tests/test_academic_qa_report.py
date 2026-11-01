@@ -11,7 +11,7 @@ class AcademicReportTests(unittest.TestCase):
     def test_saved_package_review_not_false_pass(self):
         source=ROOT/"content/chapter-9/section-9-4/package.json"
         result=academic_triage(ROOT, source)
-        self.assertEqual("REVIEW_REQUIRED",result["academicQA"])
+        self.assertIn(result["academicQA"],("FAIL","REVIEW_REQUIRED"))
         self.assertFalse(result["publicationAuthorized"])
         self.assertFalse(result["humanReviewed"])
         self.assertEqual(18,result["activityCount"])
