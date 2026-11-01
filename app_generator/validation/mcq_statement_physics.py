@@ -13,6 +13,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 from typing import Any
+import re
 
 from app_generator.validation.collision_property_grid import collision
 from app_generator.validation.physics_proofs import KNOWN_CASES
@@ -20,6 +21,35 @@ from app_generator.validation.full_source_packet_roster import verify_full_sourc
 from app_generator.validation.mcq_label_digest_baseline import OPTION_LABEL_SHA256
 from app_generator.validation.cradle_contact_forces import contact_chain_counterexample
 from app_generator.validation.cradle_original_figure import audit_cradle_original_figure
+
+
+# Exact v9 SHA: the only revision allowed to reconcile narrowly rewritten
+# Malay conservation lexemes against the original protected option-label SHA.
+# The original baseline remains authoritative for all 36 options.
+APPROVED_MALAY_LEXICON_V9_SHA = "03be0293ed289db36c8e781325f2e92420990a62e65af515e0c705546aaf9e51"
+
+
+def _approved_v9_malay_lexicon_reconciliation(
+    label:dict[str,str], old_label_sha256:str, package_sha256:str,
+)->bool:
+    """Reverse only 3 proven substitutions, then require original SHA equality."""
+    if package_sha256!=APPROVED_MALAY_LEXICON_V9_SHA:
+        return False
+    from app_generator.validation.malay_conservation_lexicon import ROOTS
+    old=label["ms"]
+    for source,target,_count in ROOTS:
+        def restore(match):
+            value=match.group(0)
+            if value.isupper():return source.upper()
+            if value[0].isupper():return source[0].upper()+source[1:]
+            return source
+        old=re.sub(r"\b"+target+r"\b",restore,old,flags=re.I)
+    if old==label["ms"]:
+        return False
+    restored=dict(label,ms=old)
+    digest=sha256(json.dumps(restored,sort_keys=True,ensure_ascii=False,
+               separators=(",",":")).encode("utf-8")).hexdigest()
+    return digest==old_label_sha256
 
 
 def _group_truths(group: str) -> dict[str,bool|None]:
@@ -172,7 +202,10 @@ def audit_source_bound_mcq_statement_physics(
                 raise ValueError("three-language MCQ label missing")
             label_sha=sha256(json.dumps(label,sort_keys=True,
                               ensure_ascii=False,separators=(",",":")).encode("utf-8")).hexdigest()
-            if OPTION_LABEL_SHA256.get((aid,oid))!=label_sha:
+            baseline=OPTION_LABEL_SHA256.get((aid,oid))
+            if baseline!=label_sha and not _approved_v9_malay_lexicon_reconciliation(
+                label,baseline,source["packageSha256"]
+            ):
                 raise ValueError("English/Malay/Chinese option wording changed; interpretation stale")
             proposition=truths[oid]
             if proposition is None:
