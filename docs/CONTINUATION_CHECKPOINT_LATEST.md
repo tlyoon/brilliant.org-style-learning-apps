@@ -674,3 +674,4 @@ PR205 (1 Nov 2026): Verified source-bound private v7 candidate with 18 original 
 Independent full source-bound acceptance matrix cross-check: private v6 has one deterministic Newton cradle physics FAIL and 17 REVIEW_REQUIRED, private corrected v7 has zero detected FAIL, 18 REVIEW_REQUIRED and zero academic PASS. Both contain all 18 independently located original-source packets, no publication authorized.
 PR206: Private v8, scoped trilingual 1D relative-velocity derivation correction. Exact e=1/2 gives momentum conserved and Kfinal/Kinitial=5/8; 18 original source packets and all bounded prior physics models reverified. Academic 0 PASS, publication disabled.
 PR207 checked 18 original-source activities for both revisions. v7 had 3 derivation flaws; v8 had 0. No publication.
+PR208: v8 browser verified 54 prompts, 27 responses, 108 items, 30 screens. No release.

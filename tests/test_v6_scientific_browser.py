@@ -63,7 +63,7 @@ class ScientificLocaleSurfaceTests(unittest.TestCase):
                 "scripts.audit_private_v6_scientific_browser.verify_full_source_packet_roster",
                 return_value=receipt,
             ):
-                for sha,revision in (("not-64-hex","v7"),("0"*64,"v7"),
+                for sha,revision in (("not-64-hex","v7"),("0"*64,"v7"),("0"*64,"v8"),
                                      ("1"*64,"invalid-version")):
                     with self.subTest(sha=sha,revision=revision):
                         with self.assertRaisesRegex(ValueError,"identity mismatch"):
