@@ -36,7 +36,7 @@ def check_science_surface(activity:dict,locale:str,prompt:str,body:str)->None:
     expected=activity["prompt"][locale]
     if normalize_visible(prompt)!=normalize_visible(expected):
         raise ValueError("rendered scientific question differs from controlled locale")
-    if locale=="ms" and re.search(r"\babadi\b",body,flags=re.I):
+    if locale=="ms" and re.search(r"\b(?:abadi|keabadian|mengabadikan|diabadikan)\b",body,flags=re.I):
         raise ValueError("old incorrect eternal-for-conservative wording visible")
     if "\ufffd" in prompt:
         raise ValueError("replacement character in localized scientific question")
@@ -61,7 +61,7 @@ def audit_v6_scientific_browser(*,package_file:Path,pdf_file:Path,
         package_file=package_file,source_pdf=pdf_file,
         packets_file=packets_file,expected_count=18)
     if (not re.fullmatch(r"[0-9a-f]{64}",expected_package_sha256) or
-        candidate_revision not in ("v6","v7","v8") or
+        candidate_revision not in ("v6","v7","v8","v9") or
         identity["packageSha256"]!=expected_package_sha256 or
         identity["newlyReverifiedSourceActivities"]!=18 or
         identity["publicationAuthorized"] is not False):
@@ -123,7 +123,7 @@ def audit_v6_scientific_browser(*,package_file:Path,pdf_file:Path,
                         actual=driver.find_element(By.CSS_SELECTOR,"#app .feedback").text
                         if normalize_visible(activity["feedback"][lang]) not in normalize_visible(actual):
                             raise ValueError("localized scientific correctness feedback is not displayed")
-                        if lang=="ms" and re.search(r"\babadi\b",actual,flags=re.I):
+                        if lang=="ms" and re.search(r"\b(?:abadi|keabadian|mengabadikan|diabadikan)\b",actual,flags=re.I):
                             raise ValueError("scientifically incorrect conservative translation persisted")
                         feedback+=1
             finally:
@@ -152,7 +152,7 @@ def main()->int:
     for k in ("package","pdf","packets","repo","out"):
         p.add_argument("--"+k,type=Path,required=True)
     p.add_argument("--expected-package-sha256",default=EXPECTED_V6_SHA)
-    p.add_argument("--candidate-revision",choices=("v6","v7","v8"),default="v6")
+    p.add_argument("--candidate-revision",choices=("v6","v7","v8","v9"),default="v6")
     a=p.parse_args()
     try:
         output=a.out.resolve()

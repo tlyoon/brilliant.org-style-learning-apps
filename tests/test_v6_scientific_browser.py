@@ -28,15 +28,23 @@ class ScientificLocaleSurfaceTests(unittest.TestCase):
             check_science_surface(
                 self.mcq,locale,self.mcq["prompt"][locale],"Body")
 
+    def test_incorrect_malay_conservation_roots_block_actual_ui(self):
+        for term in ("keabadian","mengabadikan","diabadikan"):
+            with self.subTest(term=term):
+                with self.assertRaisesRegex(ValueError,"eternal"):
+                    check_science_surface(
+                        self.mcq,"ms","Ayunan konservatif?",
+                        "Momentum "+term+" dalam sistem terpencil")
+
     def test_new_malay_conservative_word_and_no_eternal_claim(self):
         check_science_surface(
             self.mcq,"ms","Ayunan konservatif?","Daya graviti konservatif")
         with self.assertRaisesRegex(ValueError,"incorrect eternal"):
             check_science_surface(self.mcq,"ms","Ayunan konservatif?",
                                   "daya graviti abadi")
-        # Embedded words such as 'diabadikan' mean 'conserved', not eternal.
+        # Use the correctly repaired physics verb instead of immortalize.
         check_science_surface(self.mcq,"ms","Ayunan konservatif?",
-                              "Momentum diabadikan oleh sistem.")
+                              "Momentum dikekalkan oleh sistem.")
 
     def test_missing_or_changed_question_rejected(self):
         with self.assertRaisesRegex(ValueError,"question differs"):
@@ -63,7 +71,7 @@ class ScientificLocaleSurfaceTests(unittest.TestCase):
                 "scripts.audit_private_v6_scientific_browser.verify_full_source_packet_roster",
                 return_value=receipt,
             ):
-                for sha,revision in (("not-64-hex","v7"),("0"*64,"v7"),("0"*64,"v8"),
+                for sha,revision in (("not-64-hex","v7"),("0"*64,"v7"),("0"*64,"v8"),("0"*64,"v9"),
                                      ("1"*64,"invalid-version")):
                     with self.subTest(sha=sha,revision=revision):
                         with self.assertRaisesRegex(ValueError,"identity mismatch"):
