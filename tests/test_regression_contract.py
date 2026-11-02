@@ -57,12 +57,12 @@ class RegressionContractTests(unittest.TestCase):
         ledger = self.root / "docs/FAILURE_TO_FIX_LEDGER.md"
         ledger.write_text(
             ledger.read_text(encoding="utf-8") +
-            "\n| BSA-20261102-098 | New reproducible defect | Root cause pending | ACTIVE |\n",
+            "\n| BSA-20991231-999 | New reproducible defect | Root cause pending | ACTIVE |\n",
             encoding="utf-8"
         )
         self.assertIn("absent from recurrence registry", " ".join(verify(self.root)))
         self.manifest["incidents"].append({
-            "id":"BSA-20261102-098", "class":"synthetic-triage",
+            "id":"BSA-20991231-999", "class":"synthetic-triage",
             "status":"active", "nextAction":"Reproduce in isolated local test fixture"
         })
         self.save_manifest()
