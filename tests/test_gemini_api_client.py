@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from app_generator.errors import AuthenticationRequired, GeminiApiError
 from app_generator.llm.gemini_api import GeminiApiClient, response_schema_for_stage
@@ -23,6 +24,29 @@ class FakeModels:
 class FakeSdk:
     def __init__(self, outputs):
         self.models = FakeModels(outputs)
+
+
+
+class FakeTypes:
+    """Only the SDK data-shape methods required by this unit-level test."""
+
+    class Part:
+        @staticmethod
+        def from_bytes(*, data, mime_type):
+            return SimpleNamespace(
+                inline_data=SimpleNamespace(data=data, mime_type=mime_type)
+            )
+
+    class ThinkingConfig:
+        def __init__(self, *, thinking_level):
+            self.thinking_level = thinking_level
+
+    class GenerateContentConfig:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+            self.response_json_schema = kwargs.get("response_json_schema")
+            self.response_mime_type = kwargs.get("response_mime_type")
+
 
 
 class GeminiApiClientTests(unittest.TestCase):
@@ -48,7 +72,7 @@ class GeminiApiClientTests(unittest.TestCase):
             pdf = root / "source.pdf"
             pdf.write_bytes(b"%PDF-test")
             sdk = FakeSdk(['{"sectionTitle":"Energy"}'])
-            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sleep=lambda _: None)
+            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sdk_types=FakeTypes, sleep=lambda _: None)
             client.prepare()
             response = client.ask("Analyze source", stage="source-analysis")
             self.assertEqual("BEGIN_JSON\n{\"sectionTitle\": \"Energy\"}\nEND_JSON", response)
@@ -72,7 +96,7 @@ class GeminiApiClientTests(unittest.TestCase):
             pdf.write_bytes(b"%PDF-test")
             sdk = FakeSdk([TimeoutError("temporary timeout"), '{"ok":true}'])
             sleeps = []
-            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sleep=sleeps.append)
+            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sdk_types=FakeTypes, sleep=sleeps.append)
             client.prepare()
             response = client.ask("Return object", stage="custom")
             self.assertEqual("BEGIN_JSON\n{\"ok\": true}\nEND_JSON", response)
@@ -87,7 +111,7 @@ class GeminiApiClientTests(unittest.TestCase):
             pdf = root / "source.pdf"
             pdf.write_bytes(b"%PDF-test")
             sdk = FakeSdk([KeyboardInterrupt()])
-            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sleep=lambda _: None)
+            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sdk_types=FakeTypes, sleep=lambda _: None)
             client.prepare()
             with self.assertRaises(KeyboardInterrupt):
                 client.ask("Return object", stage="custom")
@@ -104,7 +128,7 @@ class GeminiApiClientTests(unittest.TestCase):
             pdf = root / "source.pdf"
             pdf.write_bytes(b"%PDF-test")
             sdk = FakeSdk([BadRequest("invalid request")])
-            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sleep=lambda _: None)
+            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sdk_types=FakeTypes, sleep=lambda _: None)
             client.prepare()
             with self.assertRaisesRegex(GeminiApiError, "HTTP 400"):
                 client.ask("Return object", stage="custom")
@@ -121,10 +145,36 @@ class GeminiApiClientTests(unittest.TestCase):
             pdf = root / "source.pdf"
             pdf.write_bytes(b"%PDF-test")
             sdk = FakeSdk([Forbidden("permission denied")])
-            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sleep=lambda _: None)
+            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sdk_types=FakeTypes, sleep=lambda _: None)
             client.prepare()
             with self.assertRaisesRegex(AuthenticationRequired, "403"):
                 client.ask("Return object", stage="custom")
+            self.assertEqual(1, len(sdk.models.calls))
+
+    def test_fake_sdk_never_imports_real_google_genai(self):
+        """A fake API response must never start the heavyweight real SDK."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir()
+            (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
+            pdf = root / "source.pdf"
+            pdf.write_bytes(b"%PDF-test")
+            sdk = FakeSdk(['{"ok":true}'])
+            client = GeminiApiClient(
+                self.config(root), (pdf,), sdk_client=sdk,
+                sdk_types=FakeTypes, sleep=lambda _: None,
+            )
+            client.prepare()
+            original_import = __import__
+
+            def no_sdk_import(name, *args, **kwargs):
+                if name == "google.genai" or name.startswith("google.genai."):
+                    raise AssertionError("real SDK imported by fake unit test")
+                return original_import(name, *args, **kwargs)
+
+            with patch("builtins.__import__", side_effect=no_sdk_import):
+                answer = client.ask("Return object", stage="custom")
+            self.assertIn('"ok": true', answer)
             self.assertEqual(1, len(sdk.models.calls))
 
     def test_high_value_stage_schemas_are_explicit(self):
@@ -146,7 +196,7 @@ class GeminiApiClientTests(unittest.TestCase):
             (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
             pdf = root / "source.pdf"
             pdf.write_bytes(b"not a pdf")
-            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=FakeSdk([]))
+            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=FakeSdk([]), sdk_types=FakeTypes)
             with self.assertRaisesRegex(Exception, "PDF signature"):
                 client.prepare()
 
