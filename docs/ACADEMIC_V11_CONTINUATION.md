@@ -35,3 +35,14 @@ For each activity, the inventory records which bounded evidence exists and the n
 ### Boundaries
 
 This code performs metadata reconciliation only. It does not generate model outputs, validate translation meaning, interpret a textbook diagram, independently re-extract the source during inventory or provide ongoing asynchronous execution. The original-source verifier and subsequent independent review still need to run in an authorized environment. The source-free regression tests intentionally reject forged approvals, mismatched per-activity digests, altered option rosters and stale reports.
+
+
+## 2026-11-03 observed private v11 execution checkpoint
+
+- From the isolated Yoga6 checkout of this draft branch, `tests.test_academic_evidence_inventory`: **12/12 PASS**. Lint, 16 content package validation, and the permanent regression-contract guard also passed.
+- The private v11 package, exact original PDF, source academic matrix and previous `section94-v11-mcq-statements-pr215-20261102.json` and `section94-v11-collision-grid-pr215-20261102.json` reconciled successfully with exact hashes, **18 activities / 0 academic PASS**.
+- Private metadata-only output (outside repo): `section94-v11-proof-inventory-pr223-20261103.json`. Missing categories: **claims** and **visual**, next action 18 × `AUTO_RECONCILE_OR_RUN_INDEPENDENT_REVIEW`.
+- The 30 v11 browser PNG captures and their private manifest exist. A version-bound 18-row private visual worklist and empty **current-v11 run listing** were prepared for auditing. An empty current-v11 listing is *not proof that historical other-version Gemini requests never happened*; those must remain immutable and non-replayable as required by the reviewer contract.
+- Execution of the two proposed new private visual and reviewer-claim audit scripts was **blocked by an external execution safety check**. **No new verified visual-coverage or reviewer-claim receipt was produced or accepted** in this step. Never substitute a fabricated record, pretend the attempted audit ran, or route around the execution restriction.
+- Hosted CI on the first PR #223 commit passed (workflow #367), but no CI result can certify source-bound scientific/multilingual meaning.
+- Once the private execution route is authorized again, the next task is to run the precise existing `scripts/audit_private_academic_visual_coverage.py` and `scripts/audit_private_academic_claim_coverage.py` programs, then rerun this inventory with their successful exact-v11 receipts. Continue with independent semantic gate checks, not another generic evidence-registry rewrite. No publication or merge.
