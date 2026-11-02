@@ -1,0 +1,37 @@
+# Section 9.4 v11 — exact-evidence continuation (no automatic approval)
+
+## Contract
+
+The official academic acceptance matrix still reports 18 of 18 source locations reverified and zero full academic PASS. This document is not a request for human academic sign-off. The project requires independent source-grounded verification of science, answer logic, visual semantics and English/Malay/Chinese meaning before release.
+
+`scripts/reconcile_private_academic_evidence.py` compares the exact original controlled PDF SHA256, exact private package SHA256 and each activity's canonical digest with the official 18×5 academic matrix. Optional source-bound reports are accepted only when their identities and bounded contracts match. It creates an **entirely new private, metadata-only inventory**, never modifies the original source, package, or existing receipts.
+
+### Private inputs for current v11
+
+- Original PDF SHA256: `08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578`.
+- Candidate package SHA256: `8218f38eca1601ca0ec97061a5f566caa2e465aef681d8931deb53c90cafae97`.
+- Source packets: 18 records that the original-source verifier must separately reverify.
+- Academic matrix: `section94-v11-academic-matrix-independent-20261102.json`, 18 REVIEW_REQUIRED and zero PASS.
+- Supporting reports from the *same exact v11 version*: MCQ statement physics, collision property grid; technical visual coverage and reviewer claims are optional and may be absent.
+
+Do not copy these private materials, textbook pages, real prompts, credentials or student data into public GitHub commits.
+
+### Private CLI invocation
+
+```powershell
+python scripts/reconcile_private_academic_evidence.py --package "<PRIVATE>\package.json" --pdf "<PRIVATE>\section94-08c450e780e95aab.pdf" --matrix "<PRIVATE>\section94-v11-academic-matrix-independent-20261102.json" --source-sha256 08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578 --package-sha256 8218f38eca1601ca0ec97061a5f566caa2e465aef681d8931deb53c90cafae97 --mcq "<PRIVATE>\section94-v11-mcq-statements-pr215-20261102.json" --collision "<PRIVATE>\section94-v11-collision-grid-pr215-20261102.json" --out "<NEW-PRIVATE>\section94-v11-proof-inventory.json"
+```
+
+For each activity, the inventory records which bounded evidence exists and the next safe action, without treating mathematical examples as scientific-language PASS. A stale or contradictory supporting report terminates reconciliation rather than being silently ignored.
+
+### Autonomous next-action ordering
+
+1. Reconcile ambiguous/in-flight reviewer claim receipts *without replaying prompts*. The presence of a provider reply is not proof of an independently accepted academic statement.
+2. Complete exact-source mathematical and scientific checks, reusing v11 collision/MCQ receipts if their hashes and 18/36 rosters match; do not rerun already verified models.
+3. Independently evaluate natural-language explanations and all answer/distractor semantics in EN/MS/ZH, including conservation assumptions, inelastic rebound, external impulse and cradle contact force.
+4. Re-review source-grounded scientific meaning of diagrams in each locale and viewport; 30 technically clean screenshots alone do not confer semantic correctness.
+5. Feed source-bound, independently falsifiable gate findings into existing trusted-verifier paths; recalculate all 18×5 verdicts. No academic PASS without support from all five gates; preserve `git_publish=false` and `git_auto_merge=false`.
+
+### Boundaries
+
+This code performs metadata reconciliation only. It does not generate model outputs, validate translation meaning, interpret a textbook diagram, independently re-extract the source during inventory or provide ongoing asynchronous execution. The original-source verifier and subsequent independent review still need to run in an authorized environment. The source-free regression tests intentionally reject forged approvals, mismatched per-activity digests, altered option rosters and stale reports.
