@@ -20,26 +20,27 @@ ROOT = Path(__file__).resolve().parents[1]
 COUNT_RE = re.compile(r"Ran (\d+) tests? in")
 
 
-def _stop_tree(proc: subprocess.Popen[str]) -> None:
-    if proc.poll() is not None:
-        return
-    if os.name == "nt":
-        try:
-            subprocess.run(["taskkill", "/F", "/T", "/PID", str(proc.pid)],
-                           capture_output=True, timeout=5, check=False)
-        except (OSError, subprocess.TimeoutExpired):
-            pass
-    else:
-        try:
-            os.killpg(proc.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
+def _stop_tree(proc: subprocess.Popen[str]) -> str:
     if proc.poll() is None:
-        proc.kill()
+        if os.name == "nt":
+            try:
+                subprocess.run(["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+                               capture_output=True, timeout=5, check=False)
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+        else:
+            try:
+                os.killpg(proc.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+        if proc.poll() is None:
+            proc.kill()
     try:
-        proc.communicate(timeout=5)
+        output, _ = proc.communicate(timeout=5)
     except subprocess.TimeoutExpired:
         proc.kill()
+        output, _ = proc.communicate()
+    return output or ""
 
 
 def run_module(file: Path, *, timeout_seconds: float, python: str) -> dict:
@@ -58,8 +59,7 @@ def run_module(file: Path, *, timeout_seconds: float, python: str) -> dict:
         output, _ = proc.communicate(timeout=timeout_seconds)
         status = "PASS" if proc.returncode == 0 else "FAIL"
     except subprocess.TimeoutExpired:
-        _stop_tree(proc)
-        output, status = "", "TIMEOUT"
+        output, status = _stop_tree(proc), "TIMEOUT"
     match = COUNT_RE.search(output)
     return {
         "module": file.name, "status": status,
@@ -67,7 +67,7 @@ def run_module(file: Path, *, timeout_seconds: float, python: str) -> dict:
         "tests": int(match.group(1)) if match else None,
         # Never echo arbitrary test output from a success. Failure output
         # is deliberately bounded for local diagnostics only.
-        "diagnostic": output[-800:] if status == "FAIL" else "",
+        "diagnostic": output[-800:] if status != "PASS" else "",
     }
 
 
