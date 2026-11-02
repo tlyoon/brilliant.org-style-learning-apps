@@ -38,6 +38,7 @@ Historical roadmaps, old branch-testing instructions, chat transcripts, and copi
 | Application code | Architecture, product requirements, test plan |
 | Analytics/reporting | Security/privacy, learning design, relevant decisions |
 | Release planning | Development roadmap, test plan, current milestone/PR |
+| Recurring defect, interrupted run, CI/test stall, external access block or new PR work | Decision 0027, `docs/recurrence_registry.json`, failure-to-fix ledger and current continuation checkpoint before changing code |
 
 ## Current operational baseline on `main`
 

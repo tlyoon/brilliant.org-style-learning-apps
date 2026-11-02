@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "cutoverIncident": "BSA-20261102-096",
+  "policyDecision": "docs/decisions/0027-regression-immunity-and-recovery.md",
+  "incidents": [
+    {
+      "id": "BSA-20261023-003",
+      "class": "learner-keyboard-focus",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_visual_player_integration.js",
+          "kind": "javascript",
+          "marker": "MCQ rerender restores focus to selected answer"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261024-001",
+      "class": "academic-publication-bypass",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_academic_publication_gate.py",
+          "kind": "python",
+          "marker": "test_real_section94_blocks_unreviewed_public_release_and_saves_report"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261024-004",
+      "class": "source-handoff-publication-bypass",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_source_handoff_academic_guard.py",
+          "kind": "python",
+          "marker": "test_valid_exact_handoff_requires_academic_evidence_before_github_mutation"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261030-048",
+      "class": "reproducible-source-bound-physics-receipts",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_reproducible_private_physics_receipts.py",
+          "kind": "python",
+          "marker": "test_modified_pdf_fails_closed_before_source_or_model_review"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261030-049",
+      "class": "screenshot-pixel-integrity",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_private_visual_pixel_integrity.py",
+          "kind": "python",
+          "marker": "test_blank_white_image_rejected_even_with_correct_new_hash"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261030-051",
+      "class": "source-bound-multilingual-numeric-drift",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_multilingual_numeric_triage.py",
+          "kind": "python",
+          "marker": "test_chinese_adjacent_ascii_digits_and_nfkc_fullwidth_digits"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261030-052",
+      "class": "missing-reviewer-response-no-replay",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_review_uncaptured_role_circuit.py",
+          "kind": "python",
+          "marker": "test_second_role_repeated_uncaptured_is_unsent_after_two"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-055",
+      "class": "wrong-environment-preflight",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_browser_chrome.py",
+          "kind": "python",
+          "marker": "test_missing_selenium_fails_without_launch_or_profile_mutation"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-057",
+      "class": "immutable-review-claim-inventory",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_academic_claim_inventory.py",
+          "kind": "python",
+          "marker": "test_false_unsent_and_bogus_captured_digests_rejected"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-058",
+      "class": "source-bound-claim-evidence",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_source_bound_claim_audit.py",
+          "kind": "python",
+          "marker": "test_changed_immutable_claim_identity_fails_closed"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-059",
+      "class": "full-source-packet-roster",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_full_source_packet_roster.py",
+          "kind": "python",
+          "marker": "test_stale_verified_page_or_quoted_passage_rejected"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-060",
+      "class": "full-academic-claim-slot-coverage",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_full_academic_claim_coverage.py",
+          "kind": "python",
+          "marker": "test_fully_unsubmitted_source_verified_is_not_academic_pass"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-061",
+      "class": "academic-review-priorities",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_academic_review_priorities.py",
+          "kind": "python",
+          "marker": "test_blocked_nonreplayable_claims_priority_before_multilingual"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-062",
+      "class": "private-technical-visual-coverage",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_academic_technical_visual_coverage.py",
+          "kind": "python",
+          "marker": "test_missing_chinese_mobile_screenshot_fail_closed"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-063",
+      "class": "fresh-review-admission",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_fresh_academic_review_admission.py",
+          "kind": "python",
+          "marker": "test_previous_submitted_claim_detected_even_when_queue_is_stale"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-066",
+      "class": "neutral-probe-freshness-fence",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_fresh_academic_review_admission.py",
+          "kind": "python",
+          "marker": "test_expired_success_receipt_does_not_authorize_new_model_request"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-067",
+      "class": "neutral-probe-chronology",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_fresh_academic_review_admission.py",
+          "kind": "python",
+          "marker": "test_newer_failed_neutral_probe_invalidates_recent_success"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-070",
+      "class": "bounded-scientific-notation-equivalence",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_narrow_numeric_notation.py",
+          "kind": "python",
+          "marker": "test_mixed_dimension_requires_exact_writing_in_both_en_and_ms"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261101-074",
+      "class": "visual-physics-source-fact-trace",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_visual_fact_trace.py",
+          "kind": "python",
+          "marker": "test_wrong_source_fact_origin_cannot_pass"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261101-077",
+      "class": "malay-conservative-translation-science",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_malay_conservative_semantics.py",
+          "kind": "python",
+          "marker": "test_unreviewed_extra_mistranslation_rejected"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261102-090",
+      "class": "inelastic-no-rebound-science-correction",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_inelastic_separation_claim.py",
+          "kind": "python",
+          "marker": "test_old_rebound_claim_remaining_is_rejected"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261102-091",
+      "class": "inelastic-rebound-generation-guard",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_inelastic_rebound_qa_guard.py",
+          "kind": "python",
+          "marker": "test_old_three_locales_are_physics_fails"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261102-094",
+      "class": "scientific-momentum-qualification",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_ballistic_impulse_scope.py",
+          "kind": "python",
+          "marker": "test_exact_small_nonzero_external_impulse_does_not_conserve_momentum"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261102-096",
+      "class": "recurrence-registry-governance",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_registry_rejects_missing_coverage"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261102-097",
+      "class": "silent-local-test-stall",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_bounded_regression_runner.py",
+          "kind": "python",
+          "marker": "test_timeout_is_reported_and_next_module_runs"
+        }
+      ]
+    }
+  ]
+}
