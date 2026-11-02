@@ -15,6 +15,7 @@ from app_generator.validation.full_source_packet_roster import verify_full_sourc
 from scripts.audit_browser_visual import stage_bundle,local_server
 
 V10_SHA="6d0a9179025aa177ec76e97a14c6ac93fc0f331472444f9f9ad9f48abb41044f"
+V11_SHA="8218f38eca1601ca0ec97061a5f566caa2e465aef681d8931deb53c90cafae97"
 PDF_SHA="08c450e780e95aab57cfd7425df1401893c52378a2a5e890df4bbcd58c3d0578"
 
 
@@ -49,15 +50,18 @@ def select_correct(driver,activity):
 
 
 def audit(*,package_file:Path,source_pdf:Path,packets_file:Path,
-          repository:Path)->dict:
+          repository:Path,candidate_revision:str="v10")->dict:
+    expected_sha={"v10":V10_SHA,"v11":V11_SHA}.get(candidate_revision)
+    if expected_sha is None:
+        raise ValueError("only controlled private v10/v11 identities admitted")
     original=verify_full_source_packet_roster(
         package_file=package_file,source_pdf=source_pdf,
         packets_file=packets_file,expected_count=18)
-    if (original["packageSha256"]!=V10_SHA or
+    if (original["packageSha256"]!=expected_sha or
         original["sourceSha256"]!=PDF_SHA or
         original["newlyReverifiedSourceActivities"]!=18 or
         original["publicationAuthorized"] is not False):
-        raise ValueError("original source/private v10 SHA identity drift")
+        raise ValueError("original source/controlled private revision SHA drift")
     activities=json.loads(package_file.read_text("utf-8"))["activities"]
     if len(activities)!=18:
         raise ValueError("source-bound roster no longer 18 activities")
@@ -106,8 +110,11 @@ def audit(*,package_file:Path,source_pdf:Path,packets_file:Path,
                 driver.quit()
     if count!=54:
         raise ValueError("incomplete 18 by 3 real-browser explanation coverage")
-    return {"status":"SOURCE_BOUND_PRIVATE_V10_CORRECT_ONLY_EXPLANATION_BROWSER",
-            "originalPdfSha256":PDF_SHA,"privateV10PackageSha256":V10_SHA,
+    return {"status":"SOURCE_BOUND_PRIVATE_"+candidate_revision.upper()+"_CORRECT_ONLY_EXPLANATION_BROWSER",
+            "originalPdfSha256":PDF_SHA,
+            "controlledCandidateRevision":candidate_revision,
+            "controlledCandidatePackageSha256":expected_sha,
+            "privateV10PackageSha256":expected_sha if candidate_revision=="v10" else None,
             "originalSourceActivitiesReverified":18,
             "localizedCorrectOnlyExplanationSurfacesVerified":count,
             "reasoningHiddenBeforeAnswers":True,
@@ -121,12 +128,14 @@ def main()->int:
     p=argparse.ArgumentParser()
     for k in ("package","pdf","packets","repo","out"):
         p.add_argument("--"+k,type=Path,required=True)
+    p.add_argument("--candidate-revision",choices=("v10","v11"),default="v10")
     a=p.parse_args()
     try:
         if a.out.exists() or a.out.resolve().is_relative_to(ROOT):
             raise ValueError("new external private receipt required")
         report=audit(package_file=a.package,source_pdf=a.pdf,
-                     packets_file=a.packets,repository=a.repo)
+                     packets_file=a.packets,repository=a.repo,
+                     candidate_revision=a.candidate_revision)
         with a.out.open("x",encoding="utf-8") as f:
             json.dump(report,f,ensure_ascii=True,indent=2)
             f.write("\n")
