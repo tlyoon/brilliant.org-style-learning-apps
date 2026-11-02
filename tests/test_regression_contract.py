@@ -124,5 +124,51 @@ class RegressionContractTests(unittest.TestCase):
         self.assertIn("must run in CI", " ".join(verify(self.root)))
 
 
+    def test_backfilled_safety_protections_cannot_be_removed(self):
+        high_risk = {
+            "BSA-20261030-052",  # ambiguous model response, no replay
+            "BSA-20261031-059",  # exact original-source verification
+            "BSA-20261031-067",  # newer account failure invalidates readiness
+            "BSA-20261101-077",  # mistranslated scientific meaning
+            "BSA-20261102-091",  # future inelastic reasoning guard
+        }
+        present = {entry["id"] for entry in self.manifest["incidents"]}
+        self.assertTrue(high_risk.issubset(present))
+        for ident in high_risk:
+            with self.subTest(incident=ident):
+                original = self.manifest["incidents"]
+                self.manifest["incidents"] = [entry for entry in original if entry["id"] != ident]
+                self.save_manifest()
+                self.assertIn("protected baseline", " ".join(verify(self.root)))
+                self.manifest["incidents"] = original
+        self.save_manifest()
+
+    def test_repair_regression_cannot_be_a_skipped_or_undiscoverable_method(self):
+        path = self.root / "tests/test_browser_chrome.py"
+        original = path.read_text(encoding="utf-8")
+        signature = "    def test_missing_selenium_fails_without_launch_or_profile_mutation(self):"
+        self.assertIn(signature, original)
+        # The name is still present, but the regression is explicitly skipped.
+        path.write_text(
+            original.replace(
+                signature,
+                "    @unittest.skip('silenced regression')\n" + signature
+            ),
+            encoding="utf-8"
+        )
+        self.assertIn("Python test method is missing", " ".join(verify(self.root)))
+        # A test-looking free function is not executed by unittest discovery.
+        path.write_text(
+            original.replace(
+                signature,
+                "    def helper_missing_dependency(self):"
+            ) + "\ndef test_missing_selenium_fails_without_launch_or_profile_mutation():\n"
+                "    assert True\n",
+            encoding="utf-8"
+        )
+        self.assertIn("Python test method is missing", " ".join(verify(self.root)))
+
+
+
 if __name__ == "__main__":
     unittest.main()
