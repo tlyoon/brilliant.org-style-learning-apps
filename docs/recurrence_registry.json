@@ -203,7 +203,7 @@
         {
           "path": "tests/test_fresh_academic_review_admission.py",
           "kind": "python",
-          "marker": "test_fresh_source_bound_admission_does_not_open_browser"
+          "marker": "test_newer_failed_neutral_probe_invalidates_recent_success"
         }
       ]
     },
