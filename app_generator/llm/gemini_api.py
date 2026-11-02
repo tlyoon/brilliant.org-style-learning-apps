@@ -301,11 +301,16 @@ class GeminiApiClient:
         source_paths: tuple[Path, ...],
         *,
         sdk_client: Any | None = None,
+        sdk_types: Any | None = None,
         sleep: Callable[[float], None] = time.sleep,
     ) -> None:
         self.config = config
         self.source_paths = tuple(Path(path) for path in source_paths)
         self.sdk_client = sdk_client
+        # Fake SDK callers may supply lightweight type factories so deterministic
+        # unit tests never import the heavyweight/network-capable provider package.
+        # Production callers use the actual provider SDK unchanged.
+        self.sdk_types = sdk_types
         self.sleep = sleep
         self.source_documents: list[bytes] = []
         self.master_prompt = (config.repo_root / "config" / "gem_instructions.md").read_text(encoding="utf-8").strip()
@@ -337,10 +342,13 @@ class GeminiApiClient:
     def ask(self, prompt: str, *, stage: str | None = None) -> str:
         if not self.source_documents:
             raise ResponseContractError("Gemini API source files were not prepared before generation")
-        try:
-            from google.genai import types
-        except ImportError as exc:
-            raise AuthenticationRequired("google-genai is not installed") from exc
+        if self.sdk_types is not None:
+            types = self.sdk_types
+        else:
+            try:
+                from google.genai import types
+            except ImportError as exc:
+                raise AuthenticationRequired("google-genai is not installed") from exc
 
         schema = response_schema_for_stage(stage or "")
         contents: list[Any] = [
