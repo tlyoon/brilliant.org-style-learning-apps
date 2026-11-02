@@ -302,6 +302,18 @@
           "marker": "test_timeout_is_reported_and_next_module_runs"
         }
       ]
+    },
+    {
+      "id": "BSA-20261102-098",
+      "class": "offline-fake-sdk-test-import-hang",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_fake_sdk_never_imports_real_google_genai"
+        }
+      ]
     }
   ]
 }
