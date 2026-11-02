@@ -44,3 +44,7 @@ Use XP, named mastery levels, learning streaks, restrained achievements, satisfy
 The tutor may explain, question, diagnose misconceptions, create bounded variants, and refer to the same validated representation vocabulary used by the learning package. It must ground responses in the approved package plus standard prerequisites, disclose uncertainty, and avoid treating generated visual detail as scientific evidence unless that detail is supported by the package or a trusted template invariant.
 
 Potential package defects or low-confidence visual/question inconsistencies should be flagged for quality review. Optional instructor review does not gate normal automated publication.
+
+## Pilot learner evidence separation
+
+The browser prototype records anonymous, in-memory first-check evidence separately from later correctly completed activities. A completion is independent only when the first submitted answer is correct with no prior hints or skips. An error, hint, or skip makes later success assisted. The completion screen shows both counts without implying mastery, grades, or cohort rank. Opt-in local feedback export adds firstCheck, firstCheckHadHint, and completionEvidence to its existing schemaVersion 1 JSON records. Earlier fields are unchanged. No identity or learning history is persisted or uploaded. This is not production mastery storage, adaptive routing, or academic release approval.
