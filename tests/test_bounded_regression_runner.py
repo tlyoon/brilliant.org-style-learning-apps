@@ -46,6 +46,7 @@ class BoundedRegressionTests(unittest.TestCase):
         result, _ = self.run_plan(timeout_seconds=0.3)
         self.assertEqual(["TIMEOUT", "PASS"], [x["status"] for x in result])
         self.assertIsNone(result[0]["tests"])
+        self.assertIn("test_case", result[0]["diagnostic"])
 
     def test_fail_fast_limit_and_input_validation(self):
         self.make_test("test_a_fail.py", "self.fail('expected')")
