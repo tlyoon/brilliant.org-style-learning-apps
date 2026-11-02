@@ -8,6 +8,15 @@ const copy = {
   zh: { activity: "活动", of: "/", check: "检查答案", next: "下一个活动", tryAgain: "再试一次", restart: "重新开始", hint: "显示提示", complete: "学习旅程完成", correct: "这个推理是恰当的。", retry: "重新思考其中的关系，然后再试一次。", moveUp: "上移", moveDown: "下移", position: "位置", skip: "跳过", completedCount: "\u5df2\u6b63\u786e\u5b8c\u6210\uff1a", reviewPending: "\u590d\u4e60\u672a\u5b8c\u6210\u7684\u6d3b\u52a8", exportFeedback: "\u5bfc\u51fa\u533f\u540d\u53cd\u9988" },
 };
 
+// Session-only evidence descriptions, not mastery levels or grades.
+const evidenceCopy = {
+  en: { independent: "Correct on first attempt without help:", assisted: "Correct after help, an error or a skip:" },
+  ms: { independent: "Betul pada cubaan pertama tanpa bantuan:", assisted: "Betul selepas bantuan, kesilapan atau langkau:" },
+  zh: {
+    independent: "\u9996\u6b21\u4f5c\u7b54\u6b63\u786e\uff0c\u672a\u4f7f\u7528\u63d0\u793a\uff1a",
+    assisted: "\u4f7f\u7528\u63d0\u793a\u3001\u7b54\u9519\u6216\u8df3\u8fc7\u540e\u5b8c\u6210\uff1a",
+  },
+};
 const localized = (value) => typeof value === "string" ? value : value?.[state.locale] ?? value?.en ?? "";
 // Only authored, package-controlled reasoning is shown; no network generation.
 const reasoningHeading = { en: "Why this works", ms: "Mengapa jawapan ini betul", zh: "\u539f\u7406\u8bf4\u660e" };
@@ -64,14 +73,27 @@ function focusUpdatedChoice(selector, matches) {
 function recordLearningEvent(activity, event) {
   const id = activity.id;
   if (!Object.hasOwn(state.sessionMetrics, id)) {
-    state.sessionMetrics[id] = { checks: 0, wrong: 0, correct: 0, hints: 0, skips: 0, autoHintShown: false, completed: false };
+    state.sessionMetrics[id] = {
+      checks: 0, wrong: 0, correct: 0, hints: 0, skips: 0,
+      autoHintShown: false, completed: false,
+      firstCheck: null, firstCheckHadHint: false, completionEvidence: null,
+    };
   }
   const entry = state.sessionMetrics[id];
   if (event === "wrong" || event === "correct") {
+    // Preserve first checked response even after retry or hint use.
+    if (entry.checks === 0) {
+      entry.firstCheck = event;
+      entry.firstCheckHadHint = entry.hints > 0;
+    }
     entry.checks += 1;
     entry[event] += 1;
   } else if (event === "completed") {
     entry.completed = true;
+    // Skips, hints and earlier mistakes never become independent mastery.
+    entry.completionEvidence =
+      entry.checks === 1 && entry.correct === 1 && entry.hints === 0 && entry.skips === 0
+        ? "independent" : "assisted";
   } else if (event === "hints" || event === "skips") {
     entry[event] += 1;
   } else {
@@ -90,6 +112,11 @@ function anonymousLearningFeedback() {
       correct: entry.correct || 0, hints: entry.hints || 0,
       skips: entry.skips || 0, completed: entry.completed === true,
       adaptiveHintShown: entry.autoHintShown === true,
+      firstCheck: entry.firstCheck || "unattempted",
+      firstCheckHadHint: entry.firstCheckHadHint === true,
+      completionEvidence: entry.completed === true
+        ? (entry.completionEvidence === "independent" ? "independent" : "assisted")
+        : "not_completed",
     };
   });
   return { schemaVersion: 1, activitiesTotal: rows.length, activities: rows,
@@ -287,6 +314,19 @@ function renderComplete(root) {
   const completed = state.package.activities.filter((a) => state.sessionMetrics[a.id]?.completed).length;
   card.append(element("p", { className: "progress-summary",
     text: copy[state.locale].completedCount + " " + completed + " / " + total }));
+  const independent = state.package.activities.filter((a) =>
+    state.sessionMetrics[a.id]?.completed &&
+    state.sessionMetrics[a.id]?.completionEvidence === "independent"
+  ).length;
+  const assisted = completed - independent;
+  const labels = evidenceCopy[state.locale];
+  const evidence = element("div", { className: "evidence-summary",
+    attributes: { "aria-label": "Learning evidence" } });
+  evidence.append(
+    element("p", { text: labels.independent + " " + independent }),
+    element("p", { text: labels.assisted + " " + assisted }),
+  );
+  card.append(evidence);
   if (completed < total) {
     const review = element("button", { className: "action secondary",
       text: copy[state.locale].reviewPending, attributes: { id: "review-pending" } });
