@@ -15,6 +15,7 @@ from app_generator.validation.language_qa import check_multilingual_surface
 from app_generator.validation.multiball_qualification import explicit_multiball_uniqueness_defects
 from app_generator.validation.relative_velocity_derivation import incorrect_derivation_premise_defects
 from app_generator.validation.inelastic_separation_claim import unqualified_inelastic_rebound_defects
+from app_generator.validation.ballistic_impulse_scope import invalid_ballistic_impact_exactness_defects
 from app_generator.validation.impulse_basis_reasoning import (
     explicit_impulse_basis_rationale_defects,
 )
@@ -164,6 +165,7 @@ def audit_activity_matrix(
         physics_defects=explicit_multiball_uniqueness_defects(a)
         physics_defects.extend(incorrect_derivation_premise_defects(a))
         physics_defects.extend(unqualified_inelastic_rebound_defects(a))
+        physics_defects.extend(invalid_ballistic_impact_exactness_defects(a))
         findings.append(Finding(
             "physics_consistency",
             "FAIL" if physics_defects else "REVIEW_REQUIRED",

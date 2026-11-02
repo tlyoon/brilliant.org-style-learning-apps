@@ -41,6 +41,33 @@ def small_external_impulse_witness()->dict:
     }
 
 
+def invalid_ballistic_impact_exactness_defects(activity:dict)->list[str]:
+    """Known unsupported claim: negligible impulse does not mean exactly zero.
+
+    Restricted to the controlled ballistic pendulum source activity. A clean
+    outcome returns REVIEW_REQUIRED in the academic matrix, never PASS.
+    """
+    if not isinstance(activity,dict) or activity.get("id")!=ACTIVITY:
+        return []
+    phrases={
+      "en":("so momentum is conserved",
+            "determined strictly by momentum conservation"),
+      "ms":("maka momentum dikekalkan",
+            "ditentukan secara ketat oleh pemuliharaan momentum"),
+      "zh":("\u52a8\u91cf\u4e25\u683c\u5b88\u6052",
+            "\u5b8c\u5168\u7531\u52a8\u91cf\u5b88\u6052\u51b3\u5b9a"),
+    }
+    logic=activity.get("answerLogic")
+    errors=[]
+    for lang,terms in phrases.items():
+        value=logic.get(lang) if isinstance(logic,dict) else None
+        if not isinstance(value,str) or not value.strip():
+            errors.append("ballistic impact impulse qualifier missing in "+lang)
+        elif any(term in value.casefold() for term in terms):
+            errors.append("ballistic momentum incorrectly exact under approximation in "+lang)
+    return errors
+
+
 def copy_private_qualification(package:dict,rules:dict)->tuple[dict,dict]:
     if len(package.get("activities",[]))!=18:
         raise ValueError("18 source activities required")
