@@ -42,6 +42,7 @@ REQUIRED_BASELINE = frozenset({
     "BSA-20261102-094",
     "BSA-20261102-096",
     "BSA-20261102-097",
+    "BSA-20261102-098",
 })
 STANDARD_PYTHON_CI = "python -m unittest discover -s tests -v"
 GUARD_CI = "python scripts/check_regression_contract.py"
