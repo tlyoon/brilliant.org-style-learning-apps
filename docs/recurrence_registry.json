@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "cutoverIncident": "BSA-20261102-096",
+  "policyDecision": "docs/decisions/0027-regression-immunity-and-recovery.md",
+  "incidents": [
+    {
+      "id": "BSA-20261023-003",
+      "class": "learner-keyboard-focus",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_visual_player_integration.js",
+          "kind": "javascript",
+          "marker": "MCQ rerender restores focus to selected answer"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261024-001",
+      "class": "academic-publication-bypass",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_academic_publication_gate.py",
+          "kind": "python",
+          "marker": "test_real_section94_blocks_unreviewed_public_release_and_saves_report"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261024-004",
+      "class": "source-handoff-publication-bypass",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_source_handoff_academic_guard.py",
+          "kind": "python",
+          "marker": "test_valid_exact_handoff_requires_academic_evidence_before_github_mutation"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261031-055",
+      "class": "wrong-environment-preflight",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_browser_chrome.py",
+          "kind": "python",
+          "marker": "test_missing_selenium_fails_without_launch_or_profile_mutation"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261102-094",
+      "class": "scientific-momentum-qualification",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_ballistic_impulse_scope.py",
+          "kind": "python",
+          "marker": "test_exact_small_nonzero_external_impulse_does_not_conserve_momentum"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261102-096",
+      "class": "recurrence-registry-governance",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_registry_rejects_missing_coverage"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261102-097",
+      "class": "silent-local-test-stall",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_bounded_regression_runner.py",
+          "kind": "python",
+          "marker": "test_timeout_is_reported_and_next_module_runs"
+        }
+      ]
+    }
+  ]
+}
