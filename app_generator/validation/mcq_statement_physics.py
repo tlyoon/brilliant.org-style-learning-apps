@@ -28,6 +28,7 @@ from app_generator.validation.cradle_original_figure import audit_cradle_origina
 # The original baseline remains authoritative for all 36 options.
 APPROVED_MALAY_LEXICON_V9_SHA = "03be0293ed289db36c8e781325f2e92420990a62e65af515e0c705546aaf9e51"
 APPROVED_INELASTIC_QUALIFICATION_V10_SHA = "6d0a9179025aa177ec76e97a14c6ac93fc0f331472444f9f9ad9f48abb41044f"
+APPROVED_BALLISTIC_IMPULSE_V11_SHA = "8218f38eca1601ca0ec97061a5f566caa2e465aef681d8931deb53c90cafae97"
 
 
 def _approved_v9_malay_lexicon_reconciliation(
@@ -37,6 +38,7 @@ def _approved_v9_malay_lexicon_reconciliation(
     if package_sha256 not in (
         APPROVED_MALAY_LEXICON_V9_SHA,
         APPROVED_INELASTIC_QUALIFICATION_V10_SHA,
+        APPROVED_BALLISTIC_IMPULSE_V11_SHA,
     ):
         return False
     from app_generator.validation.malay_conservation_lexicon import ROOTS
