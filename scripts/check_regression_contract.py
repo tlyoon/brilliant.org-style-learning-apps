@@ -58,17 +58,49 @@ def _repo_file(root: Path, name: object) -> Path | None:
 
 
 def _python_has_test(source: str, marker: str) -> bool:
+    """Accept only an active unittest.TestCase method in normal discovery.
+
+    A bare test-named function, an inert nested helper or an explicitly
+    skipped method must not satisfy a supposedly permanent regression.
+    """
     try:
         tree = ast.parse(source)
     except SyntaxError:
         return False
     if not marker.startswith("test_") or not marker.isidentifier():
         return False
-    return any(
-        isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and
-        node.name == marker
-        for node in ast.walk(tree)
-    )
+    for cls in (node for node in tree.body if isinstance(node, ast.ClassDef)):
+        is_test_case = any(
+            (isinstance(base, ast.Name) and base.id == "TestCase")
+            or (isinstance(base, ast.Attribute) and base.attr == "TestCase")
+            for base in cls.bases
+        )
+        if not is_test_case:
+            continue
+        if any(
+            isinstance(decorator, (ast.Name, ast.Attribute))
+            and (
+                (isinstance(decorator, ast.Name) and decorator.id == "skip")
+                or (isinstance(decorator, ast.Attribute) and decorator.attr == "skip")
+            )
+            for decorator in cls.decorator_list
+        ):
+            continue
+        for method in cls.body:
+            if not isinstance(method, (ast.FunctionDef, ast.AsyncFunctionDef)) or method.name != marker:
+                continue
+            decorators = [
+                dec.func if isinstance(dec, ast.Call) else dec
+                for dec in method.decorator_list
+            ]
+            if any(
+                (isinstance(dec, ast.Name) and dec.id == "skip")
+                or (isinstance(dec, ast.Attribute) and dec.attr == "skip")
+                for dec in decorators
+            ):
+                continue
+            return True
+    return False
 
 
 def _js_has_assertion(source: str, marker: str) -> bool:
