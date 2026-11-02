@@ -10,3 +10,12 @@
 - Run `python scripts/validate_content.py` and `python -m unittest discover -s tests -v` after changes.
 - Present the final diff and test results before requesting review.
 
+
+## Regression immunity and blocker recovery (decision 0027)
+
+- Follow `docs/decisions/0027-regression-immunity-and-recovery.md` on every new development unit. This is an approved operational amendment, not a relaxation of source/academic/privacy or release rules.
+- Preflight project identity, exact Git head/base, owned worktree/process, current venv, existing failure ledger and service/request state before changing code or launching Chrome.
+- A repaired defect must gain a unique failure-ledger record, a real adversarial regression, and a linked entry in `docs/recurrence_registry.json`; all new incidents from BSA-20261102-096 onward must be registered even while open. Do not mark them resolved until tests protect the specific failure.
+- Run `python scripts/check_regression_contract.py` plus relevant tests; maintain exact test coverage in CI. Never remove safeguards to obtain green checks.
+- Distinguish retryable code/environment errors from ambiguous external operations and access/safety denials. Retry only with owned-state proof and a bounded budget; NEVER replay potentially submitted AI requests or route around a denied operation. Checkpoint and pivot to an independent permitted task.
+- Prioritize reducing the existing unmerged dependency chain in issue #220. Implementation, tests, integration, academic acceptance and public release are distinct milestones.
