@@ -161,3 +161,21 @@ A partial/limited run cannot replace the full CI suite, original-source
 academic QA, learner browser acceptance, or release authorization.
 No remote credentials, paid API or private textbook evidence are required
 for the runner itself; individual tests retain their usual environment needs.
+
+### Slow Gemini SDK imports in a cloud-synced workstation environment
+
+The source-free `GeminiApiClient` unit tests must use `FakeSdk` plus
+`FakeTypes` (injected through `sdk_types`) so a negative/authorization
+fixture never imports the real `google.genai` package from a
+Google Drive-synced virtual environment. A previous combined local
+regression spent over 75 seconds importing `google.genai`/websockets
+while executing a fake 403 test (BSA-20261102-098). This is an I/O and
+test-isolation failure, **not** evidence of a real API call or provider outage.
+
+Production `GeminiApiClient` still uses the authentic Google GenAI SDK
+when `sdk_types` is not explicitly injected. Hosted CI separately runs
+`python scripts/check_gemini_sdk_types.py`, which instantiates offline
+provider schema/types without creating a client or sending a request.
+When an isolated local module hangs, preserve its last test/stack,
+record TIMEOUT, check venv and import path, and repair the fixture rather
+than repeatedly rerunning the full suite or weakening the timeout.
