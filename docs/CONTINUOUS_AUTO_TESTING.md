@@ -142,3 +142,22 @@ Verify that simultaneous workers claim different `10.*` jobs, never claim `11.*`
 ## Production gate
 
 Before broad multi-PC generation, follow `docs/MULTI_PC_PRODUCTION_GATE.md`. The deterministic three-worker gate must pass on the same revision used by the real workstations.
+
+
+## Diagnosing a stalled local Python regression run
+
+The authoritative CI gate remains python -m unittest discover -s tests -v.
+If a local run is silent, do not repeatedly relaunch it without diagnostics.
+Run the optional bounded, stdlib-only module runner from an isolated checkout:
+
+    python scripts/run_bounded_regression.py --timeout-seconds 120
+    python scripts/run_bounded_regression.py --pattern test_academic_*.py --limit 5 --timeout-seconds 60
+
+Every test_*.py module executes in a new Python subprocess. The runner
+prints one PASS, FAIL or TIMEOUT per module, stops the process tree on a timeout,
+and returns a nonzero exit status when any module is not confirmed PASS.
+The limit and fail-fast options are for diagnosis, not complete verification.
+A partial/limited run cannot replace the full CI suite, original-source
+academic QA, learner browser acceptance, or release authorization.
+No remote credentials, paid API or private textbook evidence are required
+for the runner itself; individual tests retain their usual environment needs.
