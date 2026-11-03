@@ -395,6 +395,38 @@
           "marker": "test_complete_new_fields_remain_review_required_not_semantics_pass"
         }
       ]
+    },
+    {
+      "id": "BSA-20261103-102",
+      "class": "open-ended-pdf-specific-repair-loop",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_heldout_generalization_gate.py",
+          "kind": "python",
+          "marker": "test_pdf_specific_code_edits_are_never_admitted"
+        },
+        {
+          "path": "tests/test_heldout_generalization_gate.py",
+          "kind": "python",
+          "marker": "test_max_two_rounds_and_second_must_use_new_pdfs"
+        },
+        {
+          "path": "tests/test_heldout_generalization_gate.py",
+          "kind": "python",
+          "marker": "test_three_distinct_topics_can_reach_provisional_status_only"
+        },
+        {
+          "path": "tests/test_heldout_generalization_gate.py",
+          "kind": "python",
+          "marker": "test_changed_engine_revision_is_rejected_not_reclassified"
+        },
+        {
+          "path": "tests/test_heldout_generalization_gate.py",
+          "kind": "python",
+          "marker": "test_academic_pass_label_does_not_authorize_release"
+        }
+      ]
     }
   ]
 }
