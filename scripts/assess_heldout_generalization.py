@@ -9,10 +9,13 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-
-from app_generator.validation.heldout_generalization_gate import evaluate_campaign
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from app_generator.validation.heldout_generalization_gate import evaluate_campaign
 
 
 def main(args: list[str] | None = None) -> int:
