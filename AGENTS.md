@@ -27,3 +27,11 @@
 - Treat `BLOCKED_EXTERNAL` as terminal for the same operation intent and checkpoint. Re-entry requires separately confirmed external authorization and an independent audit of the intended action, not renamed or repeated requests.
 - Never store credentials, original PDFs, source passages, full commands, student material or raw model responses in public recovery records.
 - Preserve the permanent `BSA-20261103-099` negative-control regression and keep its incident, failure ledger, and ordinary CI contract in sync. Do not weaken Decision 0027 or the protected publication gates.
+
+## Finite completion and no per-PDF repair loop (owner-approved Decision 0029)
+
+- Follow docs/decisions/0029-finite-generalization-completion.md and docs/HELDOUT_GENERALIZATION_CAMPAIGN.md. Treat Section 9.4 academic acceptance and codebase technical completion as **separate**, honestly reported milestones.
+- Do not introduce new generic-application rules hard-coded to one PDF, source digest, activity ID or quoted textbook passage merely to make that document pass. Correct private content in privately versioned packages. General code defects require evidence from unrelated inputs and a source-free adversarial regression under Decision 0027.
+- C1/C2: close the existing integration debt and reusable verification layer; C3: one frozen-commit campaign on three independently precommitted unseen PDFs from three distinct physics topics; C4: real provenance/browser/privacy acceptance and a finite completion disposition.
+- Allow at most one general repair and one **fresh three-PDF** campaign. No third campaign or automatic repeated PDF-specific fix. A failed or blocked campaign reports named unresolved tasks, not invented PASS.
+- The source-free metadata gate is **not proof real PDFs ran** and cannot itself authorize codebase completion, scientific/multilingual approval, app merge or publication. Preserve Decision 0028 access-denial boundaries and git_publish=false/git_auto_merge=false.
