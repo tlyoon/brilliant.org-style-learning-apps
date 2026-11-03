@@ -250,6 +250,29 @@ Doctor checks configuration, Drive authorization, Source-Root/domain binding, PD
 
 The first Drive authorization on a PC may open a Google browser consent flow and create that PC/project's `drive-oauth-token.json`.
 
+### Gemini API key selection on Windows
+
+For a workstation explicitly permitted to access the existing local
+`%LOCALAPPDATA%\Microvid\.env`, the Gemini API backend discovers
+`GEMINI_API_KEY_1`, `GEMINI_API_KEY_2`, additional numbered keys and
+`GEMINI_API_KEY` without placing any credential in a command argument.
+An explicitly provided process-level `GOOGLE_API_KEY`/`GEMINI_API_KEY`
+retains precedence. Duplicate keys are skipped; at most eight distinct
+candidates are considered. No secrets are copied to the Git repository.
+The generator makes a minimal **source-free** request to select a key
+before any controlled PDF generation when alternatives exist, advancing
+only on explicit HTTP 503/504. A 401/403/429 or unknown error stops selection.
+`doctor` never performs this generation probe, so its success alone does
+not prove content-generation availability.
+
+If an already-submitted PDF-generation call returns 503/504/429,
+the run stops without automatically replaying that PDF through another
+key. Check its private saved run state and explicitly authorize any new
+attempt. Do not widen Desktop Commander permissions or substitute a
+different credential path merely because the default folder is missing.
+This policy is source-independent and must not trigger another round of
+document-specific science fixes.
+
 ## 8. Generate one selected subchapter
 
 Start with a controlled specific-mode run when validating a new project:

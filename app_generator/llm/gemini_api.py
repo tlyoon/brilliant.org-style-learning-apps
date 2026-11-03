@@ -12,6 +12,8 @@ from typing import Any, Callable
 
 from app_generator.config import GeneratorConfig
 from app_generator.errors import AuthenticationRequired, GeminiApiError, ResponseContractError, TransientGeminiError
+from app_generator.llm.gemini_key_failover import build_keyed_gemini_client
+
 
 VERTEX_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
 
@@ -50,7 +52,7 @@ def _client_project_id(client_file: Path) -> str:
     return ""
 
 
-def build_gemini_sdk_client(config: GeneratorConfig) -> Any:
+def build_gemini_sdk_client(config: GeneratorConfig, *, probe_keys: bool = False) -> Any:
     """Create a Gemini Developer API-key client or OAuth Vertex AI client."""
 
     try:
@@ -62,12 +64,9 @@ def build_gemini_sdk_client(config: GeneratorConfig) -> Any:
         ) from exc
 
     timeout_ms = config.gemini_api_timeout_seconds * 1000
-    api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
-    if api_key:
-        return genai.Client(
-            api_key=api_key,
-            http_options=types.HttpOptions(timeout=timeout_ms),
-        )
+    keyed_client = build_keyed_gemini_client(genai, types, config, probe_keys=probe_keys)
+    if keyed_client is not None:
+        return keyed_client
 
     if not config.drive_oauth_client_file.is_file():
         raise AuthenticationRequired(
@@ -320,9 +319,9 @@ class GeminiApiClient:
     def actual_model(self) -> str:
         return self.config.gemini_api_model
 
-    def _client(self) -> Any:
+    def _client(self, *, probe_keys: bool = False) -> Any:
         if self.sdk_client is None:
-            self.sdk_client = build_gemini_sdk_client(self.config)
+            self.sdk_client = build_gemini_sdk_client(self.config, probe_keys=probe_keys)
         return self.sdk_client
 
     def prepare(self) -> None:
@@ -337,7 +336,7 @@ class GeminiApiClient:
                 raise ResponseContractError(f"Gemini API source does not have a PDF signature: {path}")
             documents.append(data)
         self.source_documents = documents
-        self._client()  # Fail authentication/API setup before local temporary PDFs are removed.
+        self._client(probe_keys=True)  # Probe keys without submitting a controlled PDF.
 
     def ask(self, prompt: str, *, stage: str | None = None) -> str:
         if not self.source_documents:
@@ -396,6 +395,15 @@ class GeminiApiClient:
             except ResponseContractError:
                 raise
             except Exception as exc:
+                code = _status_code(exc)
+                if code in {503, 504}:
+                    raise TransientGeminiError(
+                        f'Gemini HTTP {code}; PDF request not replayed. A fresh authorized run reprobes keys.'
+                    ) from exc
+                if code == 429:
+                    raise TransientGeminiError(
+                        'Gemini quota/rate-limit HTTP 429; no rotation or automatic source replay'
+                    ) from exc
                 if not _retryable(exc):
                     code = _status_code(exc)
                     if code in {401, 403}:

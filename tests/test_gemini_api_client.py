@@ -4,7 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from app_generator.errors import AuthenticationRequired, GeminiApiError
+from app_generator.errors import AuthenticationRequired, GeminiApiError, TransientGeminiError
 from app_generator.llm.gemini_api import GeminiApiClient, response_schema_for_stage
 
 
@@ -102,6 +102,31 @@ class GeminiApiClientTests(unittest.TestCase):
             self.assertEqual("BEGIN_JSON\n{\"ok\": true}\nEND_JSON", response)
             self.assertEqual(2, len(sdk.models.calls))
             self.assertEqual([1], sleeps)
+
+    def test_explicit_503_504_and_429_never_replay_controlled_pdf(self):
+        class ProviderFailure(RuntimeError):
+            def __init__(self, status_code):
+                super().__init__("Simulated provider response")
+                self.status_code = status_code
+
+        for status in (503, 504, 429):
+            with self.subTest(status=status), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                (root / "config").mkdir()
+                (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
+                pdf = root / "source.pdf"
+                pdf.write_bytes(b"%PDF-test")
+                # The second entry would succeed if the code incorrectly replayed.
+                sdk = FakeSdk([ProviderFailure(status), '{"ok":true}'])
+                client = GeminiApiClient(
+                    self.config(root, gemini_api_max_attempts=5),
+                    (pdf,), sdk_client=sdk, sdk_types=FakeTypes,
+                    sleep=lambda _: self.fail("no automatic source replay"),
+                )
+                client.prepare()
+                with self.assertRaises(TransientGeminiError):
+                    client.ask("Return object", stage="custom")
+                self.assertEqual(1, len(sdk.models.calls))
 
     def test_keyboard_interrupt_propagates_without_being_wrapped(self):
         with tempfile.TemporaryDirectory() as directory:

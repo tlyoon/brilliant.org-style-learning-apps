@@ -59,6 +59,19 @@ where the immediate parent looks like `8.1`. Jobs are ordered numerically by cha
 
 Source-manifest version 1.1 records primary/supplementary PDFs and corpus provenance. Drive generation discovers sibling PDFs beneath the selected topic; direct local `source_files` configuration still accepts only one PDF.
 
+## Gemini API key failover without PDF replay
+
+On Windows, the API backend can discover existing `GEMINI_API_KEY_1`,
+`GEMINI_API_KEY_2` and additional numbered keys from the explicitly
+authorized default `%LOCALAPPDATA%\Microvid\.env`; process environment
+credentials take precedence. Before PDF generation, it can run small
+source-free requests across distinct keys, moving on only after HTTP
+503/504. Authorization/quota errors stop, and no key values are persisted.
+`doctor` does not trigger generation probes. A failed actual PDF
+request is **not** replayed through another key; a fresh authorized run
+must reconcile its previous receipt first. See
+`docs/HELDOUT_GENERALIZATION_CAMPAIGN.md`.
+
 ## Stage-0 textbook domain gate
 
 Every Google Drive run resolves a textbook-level subject domain before content generation. The gate always inventories the complete configured Source Root first; an explicit target such as `--chapter 9` or `--pdf-subchapter-path 9.2` is applied only after the textbook domain is verified. The inventory fingerprint covers all topic corpora, and each topic corpus key covers every sibling PDF in that topic folder.

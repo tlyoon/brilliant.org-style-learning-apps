@@ -2,6 +2,7 @@
 
 | Incident | Symptom and evidence | Root-cause class / permanent mitigation | Status and next action |
 |---|---|---|---|
+| BSA-20261104-104 | Gemini gemini-3.8-flash content generation returned HTTP 503 on two different days; source-free key_1 returned 504 while key_2 generated READY. Previous API transport retried source-bearing HTTP 503 automatically, risking ambiguous submission replay. | General source-free, bounded key discovery at the authorized Windows Microvid .env default; probe alternatives only on 503/504; stop on 401/403/429 or unknown failures; never rotate by replaying an already submitted controlled PDF. No key values are written or logged. | Implementation and synthetic tests under PR #223; verify GitHub CI, then continue separately authorized private C3 generation. |
 | BSA-20261023-001 | Run 20261022T132815Z-d248c31122 rejected energy-bar relative_amount despite correct numbers | PR #108 aligns renderer schema/prompt with relativeAmount and adds adversarial tests | Resolved in original replay and complete resumed run; retain tests |
 | BSA-20261023-002 | Repeated visual generation risk and incomplete saved sibling specs | PR #108 checkpoint reuse with bounded targeted repair, original run now COMPLETE | Reference case resolved; interrupted/ambiguous external responses still need review |
 | BSA-20261023-003 | Chrome Enter activation lost MCQ focus; 30 browser failures | PR #116 restored focus; 30 passing browser checks; #117–#118 expanded focus across interaction modes | Tested modes resolved; screen-reader review still pending |

@@ -10,6 +10,29 @@ Decision 0029 replaces repeated PDF-specific code hardening with a **finite test
 4. Record the source metadata in a private JSON manifest conforming to the module's strict v1 contract. Every source entry has caseId, sourceSha256, topicFamily, declaredUnseen=true and rightsCleared=true; the manifest has round=1, priorCampaign=null, baselineGitSha, profileId, campaignId and selectionWitnessSha256. **The boolean declarations and witness hash are not independent proof**; preserve external attestations.
 5. Run ordinary source acquisition, domain binding, generation, deterministic validation, real interactive learner/browser testing and source-bound academic review under separately authorized permissions. Use the same frozen commit for all three PDFs, and do not alter general code or validators for an individual source. Do not repeat a potentially submitted Gemini or ChatGPT request when its outcome is ambiguous.
 
+## Source-free Gemini credential failover (operational contract)
+
+The generator may read `%LOCALAPPDATA%\Microvid\.env` locally on Windows,
+alongside explicitly supplied process credentials. It discovers only
+`GEMINI_API_KEY_1`, `GEMINI_API_KEY_2`, further numbered entries and
+`GEMINI_API_KEY`/`GOOGLE_API_KEY`; duplicates are tested once, capped at
+eight distinct candidates. Neither credential values nor the .env file may
+appear in Git, generated app files, logs, diagnostic screenshots or public
+receipts. A missing Windows directory is **not** authorization to search
+arbitrary paths, broaden remote filesystem permissions or copy secrets.
+
+Before a controlled PDF is submitted, a source-free, minimal Gemini request
+may check alternatives one at a time. Advance only after an explicit provider
+HTTP 503/504; stop on 401/403, quota/rate-limit 429, unknown transport
+failure or a successful response. This is key selection, **not a quota bypass**.
+The non-generating `doctor` check remains non-generating.
+
+A source-bearing response that returns 503/504/429 must not be silently
+replayed through another key: it might already have been processed. Record
+the original stage and provider error, stop, and select a working key on the
+next separately authorized run. Do not mislabel source-free probing as
+academic approval, a completed held-out PDF, or valid publication evidence.
+
 ## Exactly five technical stage receipts for each PDF
 
 | Stage key | Evidence required for a truthful PASS |
