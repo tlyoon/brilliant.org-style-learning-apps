@@ -14,7 +14,7 @@ A failed per-document academic verdict is **not** proof the entire application i
 2. **Prefer generic engines.** Source provenance, answer models, EN/MS/ZH semantic equivalence, visual-to-answer consistency, accessibility, interaction and independent reviewer admission must operate through common typed interfaces and subject-domain profiles. Specialized physics belongs in the versioned physics domain profile, not PDF-specific application pathways.
 3. **Quarantine unresolved content.** Keep document academic findings REVIEW_REQUIRED or FAIL; do not promote or publish that package. Document quarantine does not prevent independent codebase validation.
 4. **Respect external controls.** Preserve Decision 0028 BLOCKED_EXTERNAL, immutable model-claim no-replay and allowed paths. A safety denial is not a scientific failure; do not copy inaccessible PDFs to another machine or connector to circumvent controls.
-5. **Avoid more stacked PR debt.** Prioritize integrating draft #222 and #223 in dependency order before unrelated feature PRs. Do not auto-merge or auto-publish.
+5. **Avoid more stacked PR debt.** Draft #223 now directly targets main and contains all former #222 commits. Former #222 was closed unmerged as superseded after ancestry and direct-main hosted CI verification. Treat #223 as the single consolidated technical candidate; do not create another unrelated stacked integration PR. Do not auto-merge or auto-publish.
 
 ## Four finite developmental milestones
 
