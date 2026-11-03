@@ -431,3 +431,15 @@ Real Section 9.4 Yoga6 v3 integration: 18/18 source locations ready and
 18 automatic Gemini reviewer retries, because both independent
 browser profiles are not yet authenticated/provisioned. There was no
 live model review and nothing was published.
+
+## Finite generalization milestone and technical completion (Decision 0029)
+
+The development contract now separates completion of the reusable generator from academic acceptance of each generated textbook section. Do not repeatedly patch generic generator code for a specific source SHA, Section 9.4 activity ID, or isolated explanation. Reusable defects require a general correction and cross-PDF regression; content defects remain private, versioned source-specific corrections without platform-code churn.
+
+The authoritative finite C1–C4 exit criteria are in docs/decisions/0029-finite-generalization-completion.md; the operator-facing held-out campaign guide is docs/HELDOUT_GENERALIZATION_CAMPAIGN.md. C3 requires three genuinely **unseen**, independently precommitted, rights-cleared PDFs representing three different physics topic families, all processed on one frozen commit without per-PDF code edits. Domain binding, source ingestion, draft validation, real interactive learner behavior and EN/MS/ZH rendering require honest evidence for each case. One cross-PDF general-code fix and one new three-PDF campaign may follow an initial failure; no indefinite repetition.
+
+The optional offline metadata-only assessor is invoked as:
+
+    python scripts/assess_heldout_generalization.py --manifest <PRIVATE_MANIFEST.json> --results <PRIVATE_RECEIPTS.json> --out <NEW_PRIVATE_REPORT.json>
+
+This command does **not** open or process a PDF, call a model, verify raw receipt provenance, grant academic PASS or publish. READY_FOR_TRUSTED_PROVENANCE_AUDIT means the bounded metadata is internally complete, not that C3 or C4 passed. Keep original sources, reviewer output, manifests, model credentials and student files outside the repository and outside unauthorized tool scopes. Exact Section 9.4 v11 remains 0/18 formal academic PASS until independently evidenced.
