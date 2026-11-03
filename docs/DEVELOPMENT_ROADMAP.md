@@ -10,7 +10,7 @@ This campaign must not drift into endless per-PDF code changes. Keep the histori
 
 C3 defaults to one held-out campaign. A single general fix may justify one further campaign using **different** unseen PDFs; no third campaign or bespoke per-PDF validator expansion. A failed campaign produces a named, finite blocker, not a fabricated PASS or another automatic repair cycle. Completion of the **codebase** is independent of whether the historical Section 9.4 PDF gains five-gate academic acceptance; its private content stays quarantined until separately approved.
 
-Current baseline (3 November 2026): C1/C2 implemented in draft PRs, not merged/authoritatively integrated; C3 **NOT RUN**; C4 **NOT VERIFIED**; Section 9.4 formal academic PASS remains **0/18**. Green repository CI only verifies code regressions. No merge or public release authorized.
+Current baseline (3 November 2026): **C1 direct-to-main technical candidate is now draft PR #223**, a descendant of the complete #222 stack. GitHub ancestry verified: #223 is 186 commits ahead of current main, zero behind, 271 code/docs paths changed. This consolidation is **unmerged** and still requires fresh CI on its direct-main base and subsequent authorized integration. C2 generic verifier code and held-out evaluation gate are drafted; C3 **NOT RUN**; C4 **NOT VERIFIED**; Section 9.4 formal academic PASS remains **0/18**. Green CI verifies code regressions, not scientific or learner acceptance. No merge or public release authorized.
 
 ## Milestones
 
