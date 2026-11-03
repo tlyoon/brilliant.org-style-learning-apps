@@ -39,6 +39,7 @@ Historical roadmaps, old branch-testing instructions, chat transcripts, and copi
 | Analytics/reporting | Security/privacy, learning design, relevant decisions |
 | Release planning | Development roadmap, test plan, current milestone/PR |
 | Recurring defect, interrupted run, CI/test stall, external access block or new PR work | Decision 0027, `docs/recurrence_registry.json`, failure-to-fix ledger and current continuation checkpoint before changing code |
+| Explicit external operation/security denial or recovery from a denied tool call | Decision 0028, `docs/EXTERNAL_EXECUTION_RUNBOOK.md`, `app_generator/validation/execution_access_recovery.py`; no retry or bypass |
 
 ## Current operational baseline on `main`
 
