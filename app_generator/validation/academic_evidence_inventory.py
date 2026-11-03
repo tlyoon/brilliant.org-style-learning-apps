@@ -237,6 +237,8 @@ def reconcile_evidence(
         reports = {}
     if not isinstance(reports, dict) or not set(reports).issubset(CONTRACTS):
         raise ValueError("unknown report type")
+    if reports and exact_roster is None:
+        raise ValueError("exact private package is required to admit supporting receipts")
     proven: dict[str, dict[str, dict[str, Any]]] = {}
     for name, report in reports.items():
         status, required = CONTRACTS[name]
