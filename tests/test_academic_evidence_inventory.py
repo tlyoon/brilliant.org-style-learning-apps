@@ -32,7 +32,7 @@ class EvidenceInventoryTests(unittest.TestCase):
                                    "ms": f"Soalan {n} jawapan {m}",
                                    "zh": f"题目{n}答案{m}"}}
                         for m in range(4)]}
-            elif n < 14:
+            if n < 5:
                 act["visualSpec"] = {"kind": "synthetic-test-only"}
             self.package["activities"].append(act)
             digest = sha256(json.dumps(act, sort_keys=True, ensure_ascii=False,
