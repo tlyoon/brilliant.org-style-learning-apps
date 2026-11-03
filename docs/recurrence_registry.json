@@ -314,6 +314,28 @@
           "marker": "test_fake_sdk_never_imports_real_google_genai"
         }
       ]
+    },
+    {
+      "id": "BSA-20261103-099",
+      "class": "external-safety-denial-replay-isolation",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_execution_access_recovery.py",
+          "kind": "python",
+          "marker": "test_blocked_action_immutable"
+        },
+        {
+          "path": "tests/test_execution_access_recovery.py",
+          "kind": "python",
+          "marker": "test_denying_visual_leaves_independent_tasks_ready"
+        },
+        {
+          "path": "tests/test_execution_access_recovery.py",
+          "kind": "python",
+          "marker": "test_extra_command_or_secret_fields_rejected"
+        }
+      ]
     }
   ]
 }
