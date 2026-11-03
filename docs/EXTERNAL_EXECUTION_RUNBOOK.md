@@ -39,7 +39,7 @@ Provide the project/workstream name, approximate date/time, affected connected a
 - Immutable event records reject duplicate attempts, aliases, forged receipts, malformed data and changed event order.
 - The event chain is a checksum, not a signature. Pin chain-head hashes independently if tamper-resistance is required.
 - Unit tests for failure isolation are part of ordinary CI, protected by Decision 0027 regression-registration requirements.
-- The scheduler never grants authorization or changes `git_auto_merge=false`, `git_publish=false), academic PASS or release controls.
+- The scheduler never grants authorization or changes `git_auto_merge=false`, `git_publish=false`, academic PASS or release controls.
 - Do not use this mechanism to bypass a platform's explicit denial or an access restriction.
 
 ## Next development tasks
