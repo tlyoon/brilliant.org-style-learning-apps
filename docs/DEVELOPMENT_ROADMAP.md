@@ -4,6 +4,14 @@
 
 Use `Backlog → Ready → In Progress → Validation → Done`. Keep `main` stable; develop through short-lived branches and reviewed pull requests.
 
+## Finite technical completion gate (Decision 0029)
+
+This campaign must not drift into endless per-PDF code changes. Keep the historical product roadmap below, but complete and **report separately** four bounded milestones: C1 consolidated integration candidate (existing PR #222 plus #223), C2 reusable academic verification and content quarantine, C3 three genuinely unseen PDFs from three physics topic families under frozen code with real technical/learner-browser receipts, and C4 independently confirmed technical disposition. See `docs/decisions/0029-finite-generalization-completion.md` and `docs/HELDOUT_GENERALIZATION_CAMPAIGN.md`.
+
+C3 defaults to one held-out campaign. A single general fix may justify one further campaign using **different** unseen PDFs; no third campaign or bespoke per-PDF validator expansion. A failed campaign produces a named, finite blocker, not a fabricated PASS or another automatic repair cycle. Completion of the **codebase** is independent of whether the historical Section 9.4 PDF gains five-gate academic acceptance; its private content stays quarantined until separately approved.
+
+Current baseline (3 November 2026): C1/C2 implemented in draft PRs, not merged/authoritatively integrated; C3 **NOT RUN**; C4 **NOT VERIFIED**; Section 9.4 formal academic PASS remains **0/18**. Green repository CI only verifies code regressions. No merge or public release authorized.
+
 ## Milestones
 
 1. **Section 1.1 Implementation Pack** ? approved objectives, misconceptions, 18 original activities, translations, answer logic, and traceability records.
