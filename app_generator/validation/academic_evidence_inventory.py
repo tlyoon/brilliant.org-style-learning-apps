@@ -38,7 +38,9 @@ def _not_approved(record: dict[str, Any], flag: str) -> None:
 
 
 def _source_rows(name: str, report: dict[str, Any],
-                 matrix_roster: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
+                 matrix_roster: dict[str, dict[str, Any]],
+                 exact_roster: dict[str, dict[str, Any]] | None = None
+                 ) -> dict[str, dict[str, Any]]:
     rows = report.get("optionChecks" if name == "mcq" else "activities")
     if not isinstance(rows, list):
         raise ValueError("evidence rows are absent")
@@ -46,6 +48,33 @@ def _source_rows(name: str, report: dict[str, Any],
         expected_ids = {k for k, v in matrix_roster.items() if v["type"] == "mcq"}
         if len(expected_ids) != 9 or len(rows) != 36:
             raise ValueError("MCQ activity/option counts differ from original package")
+        expected_options: dict[tuple[str, str], tuple[str, str]] | None = None
+        if exact_roster is not None:
+            expected_options = {}
+            for aid in expected_ids:
+                answer = exact_roster[aid].get("answerKey")
+                options = answer.get("options") if isinstance(answer, dict) else None
+                correct = answer.get("correct") if isinstance(answer, dict) else None
+                if not isinstance(options, list) or len(options) != 4:
+                    raise ValueError("exact package MCQ has incomplete answer options")
+                identities = [o.get("id") for o in options if isinstance(o, dict)]
+                if (len(identities) != 4 or any(not isinstance(oid, str) or not oid
+                        for oid in identities) or len(set(identities)) != 4
+                        or correct not in identities):
+                    raise ValueError("exact package MCQ answer key invalid")
+                for option in options:
+                    label = option.get("label")
+                    if (not isinstance(label, dict) or set(label) != {"en", "ms", "zh"}
+                            or any(not isinstance(label[lang], str) or not label[lang].strip()
+                                   for lang in ("en", "ms", "zh"))):
+                        raise ValueError("exact package multilingual MCQ label invalid")
+                    digest = sha256(json.dumps(label, sort_keys=True, ensure_ascii=False,
+                        separators=(",", ":")).encode("utf-8")).hexdigest()
+                    status = ("BOUNDED_PHYSICS_SUPPORT" if option["id"] == correct
+                              else "BOUNDED_PHYSICS_COUNTEREXAMPLE")
+                    expected_options[(aid, option["id"])] = (digest, status)
+            if len(expected_options) != 36:
+                raise ValueError("exact package does not contain 36 MCQ options")
         seen: set[tuple[str, str]] = set()
         summary = {"BOUNDED_PHYSICS_SUPPORT": 0,
                    "BOUNDED_PHYSICS_COUNTEREXAMPLE": 0,
@@ -59,9 +88,12 @@ def _source_rows(name: str, report: dict[str, Any],
                 raise ValueError("missing, duplicate or unrecognized MCQ option")
             seen.add((aid, oid))
             summary[entry["status"]] += 1
-            if not isinstance(entry.get("exactMultilingualLabelSha256"), str) or not SHA.fullmatch(
-                    entry["exactMultilingualLabelSha256"]):
+            label_sha = entry.get("exactMultilingualLabelSha256")
+            if not isinstance(label_sha, str) or not SHA.fullmatch(label_sha):
                 raise ValueError("invalid original option label SHA")
+            if expected_options is not None and expected_options.get((aid, oid)) != (
+                    label_sha, entry["status"]):
+                raise ValueError("MCQ option identity, wording or answer status differs from exact package")
             for key in ("scientificMeaningFullyVerified", "translationMeaningVerified",
                         "sourceFigureInterpretationVerified"):
                 _not_approved(entry, key)
@@ -109,13 +141,28 @@ def _source_rows(name: str, report: dict[str, Any],
                         for k, n in states.items()) or sum(states.values()) != 10 or
                     entry.get("originalSourcePassageReverified") is not True):
                 raise ValueError("two reviewers x five gates require ten claims per activity")
+            run_located = entry.get("reviewRunLocated")
+            if type(run_located) is not bool:
+                raise ValueError("review-run existence must be explicit")
+            if any(states.get(key, 0) for key in ("AMBIGUOUS", "IN_FLIGHT", "SKIPPED_UNSENT")):
+                expected_action = "RECONCILE_EXISTING_NONREPLAYABLE_CLAIMS"
+            elif not run_located:
+                expected_action = "FRESH_INDEPENDENT_REVIEW_NOT_YET_SUBMITTED"
+            else:
+                expected_action = "INDEPENDENT_DETERMINISTIC_PROOF_REQUIRED"
+            if entry.get("nextAction") != expected_action:
+                raise ValueError("review next action contradicts immutable claim state")
             result[aid] = {"reviewClaimStates": states,
-                           "reviewNextAction": entry.get("nextAction")}
+                           "reviewNextAction": expected_action}
         else:
             raise ValueError("unknown evidence report")
     if set(result) != set(matrix_roster):
         raise ValueError("supporting report activity roster incomplete")
     if name == "visual":
+        if exact_roster is not None and any(
+                record["technicalVisualReported"] != bool(exact_roster[aid].get("visualSpec"))
+                for aid, record in result.items()):
+            raise ValueError("visual evidence activity roster contradicts exact package visualSpec")
         if (sum(x["technicalVisualReported"] for x in result.values()) != 5
                 or report.get("visualActivities") != 5):
             raise ValueError("exact five visual activities required")
@@ -213,7 +260,7 @@ def reconcile_evidence(
         if name in ("mcq", "collision") and report.get("formalAcademicPASS") != 0:
             raise ValueError("bounded physics evidence cannot grant academic PASS")
         if name in ("mcq", "visual", "claims"):
-            proven[name] = _source_rows(name, report, roster)
+            proven[name] = _source_rows(name, report, roster, exact_roster)
     work = []
     for aid, row in roster.items():
         mode = row.get("type")
