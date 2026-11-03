@@ -19,3 +19,11 @@
 - Run `python scripts/check_regression_contract.py` plus relevant tests; maintain exact test coverage in CI. Never remove safeguards to obtain green checks.
 - Distinguish retryable code/environment errors from ambiguous external operations and access/safety denials. Retry only with owned-state proof and a bounded budget; NEVER replay potentially submitted AI requests or route around a denied operation. Checkpoint and pivot to an independent permitted task.
 - Prioritize reducing the existing unmerged dependency chain in issue #220. Implementation, tests, integration, academic acceptance and public release are distinct milestones.
+
+## Authorized execution and denial isolation (decision 0028, draft)
+
+- Follow `docs/decisions/0028-authorized-execution-and-blocker-isolation.md` and `docs/EXTERNAL_EXECUTION_RUNBOOK.md` when an external action is explicitly denied. These rules do not authorize bypassing any platform or app restriction.
+- The source-free recovery planner can only record exact-version evidence and propose independent tasks; it cannot run commands, change permissions, replay denied operations, declare academic PASS or publish.
+- Treat `BLOCKED_EXTERNAL` as terminal for the same operation intent and checkpoint. Re-entry requires separately confirmed external authorization and an independent audit of the intended action, not renamed or repeated requests.
+- Never store credentials, original PDFs, source passages, full commands, student material or raw model responses in public recovery records.
+- Preserve the permanent `BSA-20261103-099` negative-control regression and keep its incident, failure ledger, and ordinary CI contract in sync. Do not weaken Decision 0027 or the protected publication gates.
