@@ -427,6 +427,38 @@
           "marker": "test_academic_pass_label_does_not_authorize_release"
         }
       ]
+    },
+    {
+      "id": "BSA-20261103-103",
+      "class": "physics-specific-academic-validation-coupled-to-core",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_domain_academic_adapter.py",
+          "kind": "python",
+          "marker": "test_generic_engine_source_has_no_direct_pdf_specific_import"
+        },
+        {
+          "path": "tests/test_domain_academic_adapter.py",
+          "kind": "python",
+          "marker": "test_installed_physics_profile_supplies_negative_only_hooks"
+        },
+        {
+          "path": "tests/test_domain_academic_adapter.py",
+          "kind": "python",
+          "marker": "test_physics_specific_defect_behavior_preserved"
+        },
+        {
+          "path": "tests/test_domain_academic_adapter.py",
+          "kind": "python",
+          "marker": "test_unrelated_domain_without_adapter_remains_unknown"
+        },
+        {
+          "path": "tests/test_domain_academic_adapter.py",
+          "kind": "python",
+          "marker": "test_invalid_domain_adapter_cannot_manufacture_success"
+        }
+      ]
     }
   ]
 }
