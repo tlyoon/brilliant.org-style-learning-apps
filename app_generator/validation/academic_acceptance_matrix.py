@@ -12,18 +12,41 @@ from typing import Any, Callable, Mapping
 
 from app_generator.validation.academic_qa import REQUIRED, Finding, decide
 from app_generator.validation.language_qa import check_multilingual_surface
-from app_generator.validation.multiball_qualification import explicit_multiball_uniqueness_defects
-from app_generator.validation.relative_velocity_derivation import incorrect_derivation_premise_defects
-from app_generator.validation.inelastic_separation_claim import unqualified_inelastic_rebound_defects
-from app_generator.validation.ballistic_impulse_scope import invalid_ballistic_impact_exactness_defects
-from app_generator.validation.impulse_basis_reasoning import (
-    explicit_impulse_basis_rationale_defects,
-)
+from app_generator.domains import resolve_package_domain
 from app_generator.validation.reviewer_source_packets import verified_source_packet
 from app_generator.visuals.validation import visual_contract_errors
 
 LANGS=("en","ms","zh")
 Verifier=Callable[[dict[str,Any],dict[str,Any]|None],Finding]
+
+def _domain_checks(repo_root:Path,package:dict[str,Any]):
+    """Load bounded negative-only checks from the declared subject profile.
+
+    Generic academic QA never imports physics-specific knowledge directly.
+    A profile lacking an academic adapter has no automatic scientific PASS;
+    the five-gate result remains REVIEW_REQUIRED unless independently proved.
+    """
+    profile=resolve_package_domain(repo_root,package)
+    declared=profile.manifest.get("validation",{}).get("academicValidatorModule")
+    if declared is None:
+        return (lambda activity: [], lambda activity: [])
+    if not isinstance(declared,str) or not declared:
+        raise ValueError("invalid domain academic validator declaration")
+    adapter=profile.load_module("validation","academicValidatorModule")
+    rationale=getattr(adapter,"answer_rationale_defects",None)
+    science=getattr(adapter,"scientific_consistency_defects",None)
+    if not callable(rationale) or not callable(science):
+        raise ValueError("domain academic validator requires two negative-evidence hooks")
+    def bounded(hook):
+        def check(activity):
+            result=hook(activity)
+            if (not isinstance(result,list) or
+                    any(not isinstance(item,str) or not item or len(item)>300
+                        for item in result)):
+                raise ValueError("domain academic validator returned malformed defect evidence")
+            return result
+        return check
+    return bounded(rationale), bounded(science)
 
 def _localized(x:Any) -> bool:
     return (isinstance(x,dict) and all(isinstance(x.get(l),str) and
@@ -79,8 +102,7 @@ def _answer_shape_defects(activity:dict[str,Any]) -> list[str]:
             defects.append("unsupported interactive answer mode")
     else:
         defects.append("unsupported academic activity type")
-    # A proven unrelated distractor explanation is a FAIL, not a PASS.
-    defects.extend(explicit_impulse_basis_rationale_defects(activity))
+    # Domain-scoped scientific rationale checks are supplied separately.
     return defects
 
 def audit_activity_matrix(
@@ -104,6 +126,7 @@ def audit_activity_matrix(
         trusted_verifiers={}
     if any(gate not in REQUIRED or not callable(f) for gate,f in trusted_verifiers.items()):
         raise ValueError("only executable trusted academic-verifier callbacks supported")
+    rationale_defects,scientific_defects=_domain_checks(repo_root,package)
     packets=None
     if source_packets:
         if (source_packets.get("packageSha256")==package_sha and
@@ -138,6 +161,7 @@ def audit_activity_matrix(
             if source else "original-source passage not independently verified for exact package"))
         try:
             errors=_answer_shape_defects(a)
+            errors.extend(rationale_defects(a))
         except (AttributeError, KeyError, TypeError, ValueError) as exc:
             # Malformed generated JSON must not abort the other activity audits.
             # Only an exception class is persisted, never sensitive content.
@@ -162,10 +186,10 @@ def audit_activity_matrix(
             findings.append(Finding(
                 "multilingual_meaning","FAIL","deterministic",f"language:{aid}",
                 f"invalid localized structure ({type(exc).__name__})",True))
-        physics_defects=explicit_multiball_uniqueness_defects(a)
-        physics_defects.extend(incorrect_derivation_premise_defects(a))
-        physics_defects.extend(unqualified_inelastic_rebound_defects(a))
-        physics_defects.extend(invalid_ballistic_impact_exactness_defects(a))
+        try:
+            physics_defects=scientific_defects(a)
+        except (AttributeError, KeyError, TypeError, ValueError) as exc:
+            physics_defects=["invalid domain scientific verification ("+type(exc).__name__+")"]
         findings.append(Finding(
             "physics_consistency",
             "FAIL" if physics_defects else "REVIEW_REQUIRED",
