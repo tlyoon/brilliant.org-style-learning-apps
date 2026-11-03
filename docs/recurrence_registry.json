@@ -336,6 +336,38 @@
           "marker": "test_extra_command_or_secret_fields_rejected"
         }
       ]
+    },
+    {
+      "id": "BSA-20261103-100",
+      "class": "academic-evidence-cross-activity-identity",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_academic_evidence_inventory.py",
+          "kind": "python",
+          "marker": "test_four_unique_but_forged_mcq_option_id_rejected"
+        },
+        {
+          "path": "tests/test_academic_evidence_inventory.py",
+          "kind": "python",
+          "marker": "test_valid_looking_but_wrong_multilingual_hash_rejected"
+        },
+        {
+          "path": "tests/test_academic_evidence_inventory.py",
+          "kind": "python",
+          "marker": "test_swapped_answer_status_preserving_totals_rejected"
+        },
+        {
+          "path": "tests/test_academic_evidence_inventory.py",
+          "kind": "python",
+          "marker": "test_visual_counts_cannot_be_assigned_to_wrong_activity"
+        },
+        {
+          "path": "tests/test_academic_evidence_inventory.py",
+          "kind": "python",
+          "marker": "test_ambiguous_reviewer_claim_cannot_be_scheduled_as_fresh"
+        }
+      ]
     }
   ]
 }
