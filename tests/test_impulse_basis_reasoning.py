@@ -1,12 +1,17 @@
 """Regression for explicit answer-key/rationale mismatch in trilingual MCQ."""
 from __future__ import annotations
 import copy
+from pathlib import Path
 import unittest
 
 from app_generator.validation.impulse_basis_reasoning import (
     explicit_impulse_basis_rationale_defects,
 )
-from app_generator.validation.academic_acceptance_matrix import _answer_shape_defects
+from app_generator.validation.academic_acceptance_matrix import (
+    _answer_shape_defects, _domain_checks,
+)
+
+ROOT = Path(__file__).resolve().parents[1]
 
 WRONG = {
     "en": "Option D confuses horizontal normal forces with external forces.",
@@ -47,12 +52,16 @@ class ImpulseBasisReasoningTests(unittest.TestCase):
         defects=explicit_impulse_basis_rationale_defects(sample)
         self.assertEqual(3,len(defects))
         self.assertTrue(all("option D rationale" in x for x in defects))
-        self.assertEqual(3,len(_answer_shape_defects(sample)))
+        self.assertEqual([], _answer_shape_defects(sample))
+        rationale, _ = _domain_checks(ROOT, {"activities": [sample]})
+        self.assertEqual(defects, rationale(sample))
 
     def test_fixed_distractor_rationale_clears_concrete_error_but_not_academic_pass(self):
         sample=activity(RIGHT)
         self.assertEqual([],explicit_impulse_basis_rationale_defects(sample))
         self.assertEqual([],_answer_shape_defects(sample))
+        rationale, _ = _domain_checks(ROOT, {"activities": [sample]})
+        self.assertEqual([], rationale(sample))
 
     def test_not_invent_a_failure_for_unknown_activity_or_changed_option(self):
         sample=activity(WRONG)
