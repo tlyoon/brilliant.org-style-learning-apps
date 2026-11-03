@@ -275,3 +275,7 @@ These remain generic/versioned application behavior rather than textbook identit
 - deterministic validation/provenance rules;
 - source PDFs and credentials outside Git;
 - generated content may be published after automated validation and configured deployment checks succeed; manual review is optional.
+
+## Avoid document-specific hardening when switching textbook projects
+
+Decision 0029 requires a bounded unseen-PDF generalization pilot before claiming the reusable generator is technically complete. Reusing these scripts for a new textbook should select an installed domain profile and validate generic source/answer/visual/translation contracts, **not** copy old Section 9.4-specific constants or extend the generic application with new source ID checks. Use docs/HELDOUT_GENERALIZATION_CAMPAIGN.md for three previously unseen physics PDFs from distinct topic families and a fixed engine revision. Do not treat private content review or a synthetic campaign fixture as a completed real-world pilot. No automatic Git merge or publication follows from the offline evidence assessor.
