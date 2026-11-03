@@ -206,6 +206,14 @@ class EvidenceInventoryTests(unittest.TestCase):
                          result["nextActions"][0]["nextAutomaticAction"])
         self.assertTrue(result["nextActions"][0]["immutableNonReplayableReviewClaimPresent"])
 
+    def test_missing_exact_package_cannot_admit_mcq_receipt(self):
+        with self.assertRaisesRegex(ValueError, "exact private package"):
+            reconcile_evidence(
+                self.matrix, reports={"mcq": self.make_mcq()},
+                expected_source_sha256=self.SOURCE,
+                expected_package_sha256=self.PACKAGE,
+                exact_package=None)
+
     def test_four_unique_but_forged_mcq_option_id_rejected(self):
         report = self.make_mcq()
         report["optionChecks"][0]["optionId"] = "forged-option"
