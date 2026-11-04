@@ -45,3 +45,14 @@ The exact provider/billing detail and private run-state receipts are retained in
 The only remaining external prerequisite for any separately approved continuation is legitimate restoration of provider access. After it is resolved, the owner may explicitly authorize a **reconciliation-based continuation using the same already selected second-round sources**, with a new bounded no-replay execution record; this is not an automatic action and cannot be represented as a third development or PDF-specific correction campaign. Independent C3/C4 acceptance would still need genuine stage/browser/academic evidence.
 
 Until such a separately authorized and evidenced completion, the code candidate remains **CI-validated but NOT TECHNICALLY COMPLETE, NOT ACADEMICALLY ACCEPTED and NOT RELEASE-AUTHORIZED**.
+
+
+## 4 November 2026 — post-closure provider-access check
+
+- The owner requested a conditional responsiveness check and continuation *only if provider access was restored*. This is not evidence that access was restored or that the prior terminal campaign was reopened.
+- Yoga 6 was reachable. The already permitted Microvid environment contained Gemini API credential **names**; values were not displayed or copied to the repository.
+- The attempted source-free authenticated generation probe through Remote Desktop Commander was **blocked by the execution safety controls before tool execution**. No Gemini HTTP status was obtained from that attempt. Under Decision 0028, the denied operation must not be replayed, disguised, or rerouted. This is an execution-control denial, **not** an observed new provider HTTP 402.
+- External status monitors reported broad Gemini API availability, but they do not establish that the project's account, chosen model, balance or quota is operational. The project's last authenticated observation remains the round-2 HTTP 402, which Google's published API-error guide associates with depleted prepaid credit.
+- **Result: ACCESS_NOT_REVERIFIED / BLOCKED_EXTERNAL maintained**. Zero new PDF requests, package completions, academic PASS, merges or publications. The finite two-round campaign stays closed. Do not issue a new source-bearing request without legitimate access restoration, independently accepted no-replay provenance and separate bounded authorization for the *same* already-selected round-2 sources.
+
+Public reference only: https://ai.google.dev/gemini-api/docs/api-errors and https://ai.google.dev/gemini-api/docs/billing/
