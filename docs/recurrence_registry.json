@@ -603,6 +603,43 @@
           "marker": "test_auto_doctor_checks_config_without_live_model_probe"
         }
       ]
+    },
+    {
+      "id": "BSA-20261104-108",
+      "class": "ambiguous-source-bearing-gemini-request-replayed-after-transient-network-error",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_ambiguous_transport_timeout_never_replays_controlled_pdf"
+        },
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_other_retryable_http_statuses_never_replay_source"
+        },
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_successful_calls_can_advance_to_a_new_generation_stage"
+        },
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_empty_provider_output_latches_unresolved_request"
+        },
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_explicit_503_504_and_429_never_replay_controlled_pdf"
+        },
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_keyboard_interrupt_propagates_without_being_wrapped"
+        }
+      ]
     }
   ]
 }
