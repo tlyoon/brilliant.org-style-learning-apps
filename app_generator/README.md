@@ -66,8 +66,9 @@ On every authorized Windows PC, the API backend discovers
 `GEMINI_API_KEY`/`GOOGLE_API_KEY` from the default
 `%LOCALAPPDATA%\Microvid\.env`. Explicit process credentials take precedence,
 duplicate keys are ignored, and at most eight distinct keys are considered.
-Before submitting a controlled PDF it makes a minimal **source-free** request
-on the first candidate; if it returns 401 (invalid key), 402 (unfunded project),
+Every production Gemini API client creation automatically makes a minimal
+**source-free** model request on the first candidate without requiring callers
+to enable a fallback flag, before attaching any controlled PDF; if it returns 401 (invalid key), 402 (unfunded project),
 403 (no model permission), or 503/504 (provider capacity), the next configured
 key is probed automatically, once per key. HTTP 429 (quota/rate limit),
 malformed requests and ambiguous transport failures stop selection; no quota
