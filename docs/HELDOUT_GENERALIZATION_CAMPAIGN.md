@@ -21,17 +21,23 @@ appear in Git, generated app files, logs, diagnostic screenshots or public
 receipts. A missing Windows directory is **not** authorization to search
 arbitrary paths, broaden remote filesystem permissions or copy secrets.
 
-Before a controlled PDF is submitted, a source-free, minimal Gemini request
-may check alternatives one at a time. Advance only after an explicit provider
-HTTP 503/504; stop on 401/403, quota/rate-limit 429, unknown transport
-failure or a successful response. This is key selection, **not a quota bypass**.
-The non-generating `doctor` check remains non-generating.
+Before any controlled PDF is submitted, a minimal **source-free** Gemini
+request verifies the chosen key (including a single configured key).
+Try each distinct key once in order, advancing only after explicit HTTP
+401 (invalid credential), 402 (payment/billing), 403 (no resource permission),
+or 503/504 (temporary provider capacity). HTTP 429 quota/rate-limit errors,
+invalid requests, ambiguous transport failures and unrecognized errors stop
+without key rotation. A 402 may cover multiple keys linked to the same
+depleted billing account. This is credential readiness selection, **not a
+quota bypass**, and the non-generating `doctor` check remains non-generating.
 
-A source-bearing response that returns 503/504/429 must not be silently
-replayed through another key: it might already have been processed. Record
-the original stage and provider error, stop, and select a working key on the
-next separately authorized run. Do not mislabel source-free probing as
-academic approval, a completed held-out PDF, or valid publication evidence.
+An **already-submitted source-bearing request** must not be silently
+replayed through another key after any provider error: it might already
+have been processed. Preserve the original stage and receipt, stop, and
+reconcile before a separately authorized run. Source-free preflight success
+is not proof of academic approval, a completed held-out PDF or publication
+readiness. In particular, this code change does **not** reopen the closed
+two-round Decision 0029 campaign.
 
 ## Exactly five technical stage receipts for each PDF
 
