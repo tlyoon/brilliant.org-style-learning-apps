@@ -116,6 +116,16 @@ class GeminiApiError(GeneratorError):
     code = "GEMINI_API_ERROR"
 
 
+class ExternalExecutionDenied(GeneratorError):
+    """An upstream tool/host refused to dispatch the action to the provider.
+
+    Not a Gemini HTTP response. This cannot be healed by API-key rotation,
+    changing machines, rewording a command, or trying a different connector.
+    """
+
+    code = "EXTERNAL_EXECUTION_DENIED"
+
+
 class ValidationFailure(GeneratorError):
     code = "VALIDATION_FAILED"
 

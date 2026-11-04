@@ -12,6 +12,22 @@ This runbook applies to the Brilliant-style learning app. Before evaluating any 
 | Provider request may have been sent | `IN_FLIGHT` / `AMBIGUOUS` | Preserve immutable evidence; never blindly replay |
 | Original-source/science evidence is missing | Academic `REVIEW_REQUIRED` | Continue independent authorized review; never fabricate PASS |
 
+## Gemini API versus upstream execution refusal (4 November 2026)
+
+Use [the boundary-aware Gemini denial audit](GEMINI_EXECUTION_DENIAL_INTEGRATION_20261104.md)
+to classify a reported host-level refusal independently of an actual Gemini
+provider HTTP result. A host/connector block is **not** a Gemini HTTP 403,
+and it cannot authorize credential rotation, command rewording or execution
+through a different route. No historical original denial payload has been
+independently recovered in the project. The metadata-only tool never sends
+a request, reads credentials or grants permission.
+
+The shared Python client now propagates typed `ExternalExecutionDenied`
+through source-free key selection and source-bearing generation, without
+replay. A previously denied upstream operation still requires an **approved
+execution decision** from the relevant platform authority, separately from
+the user's ordinary permission.
+
 ## Exact v11 science boundary
 
 The last verified academic matrix contained 18 source locations verified and 0/18 formal academic PASS. Exact-v11 MCQ and collision-property receipts were accepted. The 30 browser screenshots cannot establish visual scientific semantics. Reviewer-claim and technical visual-coverage audits had not produced accepted v11 receipts at the last checkpoint. Do not equate an empty *current-version* reviewer roster to proof that earlier requests were never sent.

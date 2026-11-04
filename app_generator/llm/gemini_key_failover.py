@@ -15,7 +15,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Mapping, TypeVar
 
-from app_generator.errors import AuthenticationRequired, GeminiApiError, TransientGeminiError
+from app_generator.errors import (
+    AuthenticationRequired, ExternalExecutionDenied, GeminiApiError,
+    TransientGeminiError,
+)
 
 _MAX_KEYS = 8
 _NUMBERED = re.compile(r"GEMINI_API_KEY_([1-9][0-9]*)\Z")
@@ -134,6 +137,11 @@ def select_healthy_key(
     for candidate in candidates:
         try:
             return candidate, probe(candidate)
+        except ExternalExecutionDenied:
+            # A host/connector refusal is NOT a provider HTTP 403 even if an
+            # upstream wrapper attaches status_code=403. The denied operation
+            # remains terminal: do not rotate keys or reroute execution.
+            raise
         except Exception as exc:
             status = error_status(exc)
             if status in {401, 402, 403, 503, 504}:

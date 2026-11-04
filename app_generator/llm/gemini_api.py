@@ -11,7 +11,10 @@ from pathlib import Path
 from typing import Any, Callable
 
 from app_generator.config import GeneratorConfig
-from app_generator.errors import AuthenticationRequired, GeminiApiError, ResponseContractError, TransientGeminiError
+from app_generator.errors import (
+    AuthenticationRequired, ExternalExecutionDenied, GeminiApiError,
+    ResponseContractError, TransientGeminiError,
+)
 from app_generator.llm.gemini_key_failover import build_keyed_gemini_client
 
 
@@ -421,6 +424,10 @@ class GeminiApiClient:
             return "BEGIN_JSON\n" + json.dumps(parsed, ensure_ascii=False) + "\nEND_JSON"
         except ResponseContractError:
             # The model may already have processed the PDF.
+            raise
+        except ExternalExecutionDenied:
+            # Preserve the upstream boundary; do not present a wrapper's 403
+            # as Gemini authorization failure or retry an already-started call.
             raise
         except Exception as exc:
             code = _status_code(exc)

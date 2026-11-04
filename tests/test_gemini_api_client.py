@@ -4,7 +4,10 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from app_generator.errors import AuthenticationRequired, GeminiApiError, ResponseContractError, TransientGeminiError
+from app_generator.errors import (
+    AuthenticationRequired, ExternalExecutionDenied, GeminiApiError,
+    ResponseContractError, TransientGeminiError,
+)
 from app_generator.llm.gemini_api import GeminiApiClient, build_gemini_sdk_client, response_schema_for_stage
 
 
@@ -137,6 +140,27 @@ class GeminiApiClientTests(unittest.TestCase):
             self.assertEqual("HIGH", str(call["config"].thinking_config.thinking_level).split(".")[-1])
             self.assertEqual("application/json", call["config"].response_mime_type)
             self.assertIsNotNone(call["config"].response_json_schema)
+
+    def test_upstream_denial_during_source_request_remains_typed_and_latched(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir()
+            (root / "config" / "gem_instructions.md").write_text(
+                "MASTER", encoding="utf-8")
+            pdf = root / "source.pdf"
+            pdf.write_bytes(b"%PDF-test")
+            denied = ExternalExecutionDenied("upstream host refused execution")
+            denied.status_code = 403
+            sdk = FakeSdk([denied, '{"ok":true}'])
+            client = GeminiApiClient(
+                self.config(root), (pdf,), sdk_client=sdk, sdk_types=FakeTypes)
+            client.prepare()
+            with self.assertRaises(ExternalExecutionDenied):
+                client.ask("First request", stage="custom")
+            self.assertEqual(1, len(sdk.models.calls))
+            with self.assertRaisesRegex(TransientGeminiError, "unresolved"):
+                client.ask("No replay", stage="custom")
+            self.assertEqual(1, len(sdk.models.calls))
 
     def test_ambiguous_transport_timeout_never_replays_controlled_pdf(self):
         with tempfile.TemporaryDirectory() as directory:

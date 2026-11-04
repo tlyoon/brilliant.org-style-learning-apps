@@ -61,6 +61,14 @@ Source-manifest version 1.1 records primary/supplementary PDFs and corpus proven
 
 ## Gemini API key failover without PDF replay
 
+**Execution boundary:** A remote host/connector denial is not a Gemini HTTP
+403 and never triggers key fallback. The common `ExternalExecutionDenied`
+type is propagated rather than silently reclassified. The nonexecuting
+`scripts/triage_gemini_execution_boundary.py` classifies structured
+metadata only; it does not remove an upstream safety restriction or run an
+API request. See `docs/GEMINI_EXECUTION_DENIAL_INTEGRATION_20261104.md`.
+
+
 On every authorized Windows PC, the API backend discovers
 `GEMINI_API_KEY_1`, `GEMINI_API_KEY_2`, additional numbered keys and
 `GEMINI_API_KEY`/`GOOGLE_API_KEY` from the default

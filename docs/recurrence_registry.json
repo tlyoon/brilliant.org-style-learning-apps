@@ -714,6 +714,53 @@
           "marker": "test_transport_error_does_not_rotate"
         }
       ]
+    },
+    {
+      "id": "BSA-20261104-111",
+      "class": "upstream-execution-refusal-misclassified-as-provider-http-403-and-key-rotation",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_gemini_execution_boundary.py",
+          "kind": "python",
+          "marker": "test_upstream_denial_is_not_gemini_http_403"
+        },
+        {
+          "path": "tests/test_gemini_execution_boundary.py",
+          "kind": "python",
+          "marker": "test_explicit_upstream_exception_with_403_never_rotates_key"
+        },
+        {
+          "path": "tests/test_gemini_execution_boundary.py",
+          "kind": "python",
+          "marker": "test_real_provider_http_403_is_distinct_and_rotation_eligible"
+        },
+        {
+          "path": "tests/test_gemini_execution_boundary.py",
+          "kind": "python",
+          "marker": "test_source_bearing_503_must_not_rotate"
+        },
+        {
+          "path": "tests/test_gemini_execution_boundary.py",
+          "kind": "python",
+          "marker": "test_unknown_execution_is_never_assumed_unsent"
+        },
+        {
+          "path": "tests/test_gemini_execution_boundary.py",
+          "kind": "python",
+          "marker": "test_bad_observation_fields_and_secret_payload_rejected"
+        },
+        {
+          "path": "tests/test_gemini_execution_boundary.py",
+          "kind": "python",
+          "marker": "test_metadata_only_cli_rejects_forged_http_on_denial"
+        },
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_upstream_denial_during_source_request_remains_typed_and_latched"
+        }
+      ]
     }
   ]
 }
