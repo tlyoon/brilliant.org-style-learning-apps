@@ -136,7 +136,9 @@ class GeminiApiClientTests(unittest.TestCase):
             self.assertEqual("MASTER POLICY", call["config"].system_instruction)
             self.assertEqual("HIGH", str(call["config"].thinking_config.thinking_level).split(".")[-1])
             self.assertEqual("application/json", call["config"].response_mime_type)
-            self.assertIsNotNone(call["config"].    def test_ambiguous_transport_timeout_never_replays_controlled_pdf(self):
+            self.assertIsNotNone(call["config"].response_json_schema)
+
+    def test_ambiguous_transport_timeout_never_replays_controlled_pdf(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "config").mkdir()
@@ -219,8 +221,6 @@ class GeminiApiClientTests(unittest.TestCase):
             with self.assertRaisesRegex(TransientGeminiError, "unresolved"):
                 client.ask("Return object", stage="custom")
             self.assertEqual(1, len(sdk.models.calls))
-
-ertEqual([1], sleeps)
 
     def test_explicit_503_504_and_429_never_replay_controlled_pdf(self):
         class ProviderFailure(RuntimeError):
