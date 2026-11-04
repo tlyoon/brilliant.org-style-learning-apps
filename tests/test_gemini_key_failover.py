@@ -148,6 +148,25 @@ class KeyFailoverTests(unittest.TestCase):
                 self.assertEqual("READY",result)
                 self.assertEqual(["KEY_1","KEY_2"],visited)
 
+    def test_failed_key_statuses_are_logged_without_secret_values(self):
+        called=[]
+        def probe(candidate):
+            called.append(candidate.label)
+            if len(called) == 1:
+                raise HttpError(402)
+            return "READY"
+        with self.assertLogs(
+            "app_generator.llm.gemini_key_failover", level="INFO"
+        ) as recorded:
+            chosen,result=select_healthy_key(self.keys,probe)
+        self.assertEqual("KEY_2",chosen.label)
+        self.assertEqual("READY",result)
+        log="\n".join(recorded.output)
+        self.assertIn("KEY_1",log)
+        self.assertIn("HTTP 402",log)
+        for candidate in self.keys:
+            self.assertNotIn(candidate.secret,log)
+
     def test_all_keys_billing_blocked_does_not_send_source(self):
         visited=[]
         def probe(candidate):
