@@ -1,33 +1,47 @@
-# C1–C4 finite global closure disposition — 4 November 2026
+# Finite C1–C4 global codebase disposition — 4 November 2026
 
-**Disposition: NOT_COMPLETE_WITH_NAMED_BLOCKERS.**
-This is an engineering campaign-status decision, **not** a claim that C3 or C4 acceptance passed, the draft PR was merged, the academic material was approved, or publication was authorized. It is recorded to prevent another open-ended per-PDF repair loop.
+**FINAL DISPOSITION: BLOCKED_EXTERNAL.**
 
-## Frozen evidence inventory
+This is the terminal outcome of the **owner-approved, two-round Decision 0029 development campaign**, not a claim of technical completeness, scientific accuracy of unreviewed material, or authorization to merge/publish. Both allowed campaigns have been consumed; the one generic defect-correction opportunity has also been used. **No automatic third source campaign, per-PDF hardening loop, source-bearing request replay, or release is authorized.**
 
-| Milestone | Current evidence | Decision |
-|---|---|---|
-| C1 — consolidated platform | Draft direct-main PR #223; exact code commit `4b524f692228891db6802de4c7126f8f44d1c05a`; hosted GitHub Actions **#420 completed successfully** on that code commit; 53 targeted local visual/generation/regression tests passed | **Technical candidate validated, not merged** |
-| C2 — reusable verifier | Physics negative-only academic hooks decoupled through installed domain adapter on prior exact commit `a79ff02a0f6dc4c506d059a03dd6756adbd7bb8b` (CI #418 success); generic visual-plan schema guidance + fail-closed preflight now in commit `4b524f6`; BSA-20261104-105 locked | **Code checks pass; no independent source-semantic academic PASS conferred** |
-| C3 — three genuinely unseen real PDFs | Round-1 selection witness `67a63170e7b58d8b9eb78d3d3dfff860a7517811fc6d34c803eba40e3e17b8fb`; frozen run code `a79ff02a0f6dc4c506d059a03dd6756adbd7bb8b`; real mechanics first call blocked by provider HTTP 503, second call reached CONTENT_VALIDATED but failed visual-plan schema convergence; **0/3** complete outputs | **NOT_COMPLETE; existing first-round records immutable** |
-| C4 — independent release/privacy/browser audit and final acceptance | No 3/3 verified C3 technical receipts, no independent source/provenance and unseen-history attestation, no complete real trilingual interaction/browser audit | **NOT_VERIFIED; no final TECHNICALLY_COMPLETE or release authorization** |
+## Verified technical candidate
 
-## Closed corrective scope
+- Consolidated draft [PR #223](https://github.com/tlyoon/brilliant.org-style-learning-apps/pull/223) targets `main`, remains **unmerged**, and supersedes former PR #222.
+- Corrected code frozen at `7a7b146e16d719576ef7bceea6719fa4153b4a1c`; GitHub Actions **#421 SUCCESS** on that exact head. The subsequent status-only update in this document does not change application code.
+- The one shared generic visual-plan correction `BSA-20261104-105` supplies the authoritative JSON Schema to model prompts, rejects malformed plans before visual-spec calls, preserves the two-attempt limit, and is covered by regression cases independent of any PDF.
+- 90 local targeted tests across the visual, domain-adapter, held-out and regression suites passed before round two. These are **source-free code evidence**, not real source or multilingual semantic approval.
+- Physics academic checks are routed through the domain-profile adapter rather than Section 9.4-specific core imports.
 
-The single Decision 0029 general software correction has **already been used**: the producer now sends the trusted visual-plan JSON Schema on all generation/repair prompts, checks every returned plan against Draft 2020-12 *before* requesting costly visual specs, preserves strict failure and the existing two-attempt bound. It never repairs or aliases academic/source content. Source-free negative tests cover the originally observed malformed plan field and a different conditional mode violation; a third test prevents unbounded calls. These tests prove the generic behavior, **not** that an unseen PDF has completed.
+## Real-world held-out attempts
 
-The latest code commit must **not** be reclassified as the engine used for first-round source generation. No PDF-specific branch, source-hash exception, new domain-profile scientific rule, or replay of an uncertain model request is permitted.
+| Round | Engine | Real evidence | Result |
+|---|---|---|---|
+| 1 | `a79ff02a0f6dc4c506d059a03dd6756adbd7bb8b` | Three MIT OCW PDFs privately selected; mechanics first attempt hit provider HTTP 503; second reached `CONTENT_VALIDATED` but failed visual-plan schema convergence; other PDFs not completed | **0/3 drafts; NOT_COMPLETE** |
+| 2 (FINAL) | `7a7b146e16d719576ef7bceea6719fa4153b4a1c` | Three different public MIT OCW PDFs precommitted **before acquisition** (circular motion, Coulomb's law, traveling waves); exact hashes and three isolated private configs verified; real generation commands issued once per source. All halted on a **provider-controlled resource/billing access restriction (HTTP 402)** in **source-free preflight**, before PDF attachment | **0/3 drafts; BLOCKED_EXTERNAL** |
 
-## Named blockers and strict next/stop criteria
+Round-2 selection witness SHA256: `9d75f6979a1c20b378603c9919efc53d6540158d3bdb726ff616c48f178abdda`.
 
-1. **C3 remains incomplete**: no completed generated learning app, five genuine technical receipts or independently verified academic meaning/rights/unseen history for all three selected PDFs. Provider 503 and model-produced visual schema mismatch are historical first-round outcomes, not unbounded code-development mandates.
-2. **Only one fresh campaign remains eligible:** if pursuing a C3 proof, independently select *three different* rights-cleared, genuinely unseen source PDFs, freeze the corrected engine at an exact green Git SHA and produce real five-stage receipts; never reuse the round-1 PDFs as round-2 unseen sources. Source rights, lineage and source-selection commitments need independent corroboration.
-3. **No third round**: after the second campaign, record `TECHNICALLY_COMPLETE`, `NOT_COMPLETE_WITH_NAMED_BLOCKERS`, or `BLOCKED_EXTERNAL` on actual evidence. Do not reopen per-document hardening or quietly reset the single generic-fix budget.
-4. **C4 evidence is still missing:** browser/keyboard/responsive operation, trilingual learner rendering, independent source provenance/academic audit and privacy review of the held-out apps. Missing package-level academic signoff keeps an individual app quarantined, not automatically the whole codebase unmaintainable.
-5. **Integration and release remain separate**: PR #223 is draft and unmerged; no automatic merge, no Git publication of protected PDFs or third-party artwork, and no public deployment. Section 9.4 remains 0/18 formal independent academic PASS and is not a release blocker for the *generic source-free code checks*.
+Round-2 manifest SHA256: `cf56beb7c37af258439ca0dbce727e3c5c0bdd9a4f22993126b7e35bb4fa5fcc`.
 
-## Bounded recommended disposition
+Real local bounded generalization evaluator returned:
+`technicalResult=BLOCKED_EXTERNAL`, `draftsReportedComplete=0`, `technicalAcceptanceGranted=false`, `academicAcceptanceGranted=false`, `publicationAuthorized=false`.
 
-Stop code-feature expansion. Do not spend another iteration on mechanics, Section 9.4 or a private PDF. The only evidence-producing follow-on that can change the C3 verdict is the one permitted **fresh three-PDF round-2 campaign**, followed by finite independent C4 verification or a clear named-blocker disposition. Do not claim “complete” merely because GitHub CI is green. Document all genuine external/provider failures rather than concealing or automatically replaying them.
+The exact provider/billing detail and private run-state receipts are retained in the separately authorized Yoga 6 continuity workspace. **No key value, private model transcript, protected source PDF or original figure is in this document or Git.** The three round-2 source SHA256 values are different from the three round-1 source digests. This limited comparison and preselection witness do not independently prove absolute unseen history.
 
-**Evidence privacy:** All real source PDFs, package drafts, per-run receipts, screenshots, model responses and credentials remain in authorized private storage. This document contains only source-free status metadata; no academic acceptance, merge or publication is granted by its creation.
+## C4 final review without fabricated PASS
+
+- **Privacy (bounded verification):** A private read-only check confirmed that Gemini credential values are absent from the three provider logs and the round-2 manifest/evaluator receipts. None of the three selected source PDF filenames is tracked in the fixed code worktree. The user-authorized Desktop Commander directory scope remains narrow.
+- **Technical real learner/browser rendering:** NOT_RUN — no completed generated package was available.
+- **Accessible interactions, keyboard, responsive and EN/MS/ZH learner surfaces:** NOT_RUN — no completed package was available.
+- **Independent source rights/unseen-history/provenance attestations:** NOT_VERIFIED for all three cases; MIT OCW general CC BY-NC-SA 4.0 terms do not automatically clear third-party figures or permit a commercial release.
+- **Scientific/content academic approval:** NOT_GRANTED for the new PDFs. Historical Section 9.4 remains **0/18 formal independent academic PASS**, separately quarantined.
+- **PR/release:** PR #223 remains draft and unmerged. `git_publish=false`, `git_auto_merge=false` and `public_deploy=false` were enforced on all real round-2 configurations. Nothing was published.
+- Private terminal C4 review SHA256: `e99c800c2f33cf9ca5abd41cb4d58b670f73dbe2303f77e745af202baa104bf2`.
+
+## Binding closure and next permitted owner decision
+
+**Stop the current developmental campaign here.** All three round-two model requests were blocked by the provider *before* source attachment, so no source-specific inference should be made about corrected model performance. Do not relabel these failures as schema/scientific defects; do not reset the single correction budget or reselect PDFs as a de facto third campaign.
+
+The only remaining external prerequisite for any separately approved continuation is legitimate restoration of provider access. After it is resolved, the owner may explicitly authorize a **reconciliation-based continuation using the same already selected second-round sources**, with a new bounded no-replay execution record; this is not an automatic action and cannot be represented as a third development or PDF-specific correction campaign. Independent C3/C4 acceptance would still need genuine stage/browser/academic evidence.
+
+Until such a separately authorized and evidenced completion, the code candidate remains **CI-validated but NOT TECHNICALLY COMPLETE, NOT ACADEMICALLY ACCEPTED and NOT RELEASE-AUTHORIZED**.
