@@ -27,3 +27,11 @@ These results validate the **general software code candidate** only. They do not
 This documentation-only commit and an ordinary authenticated Git branch push from the isolated clone are intended to obtain a new GitHub `pull_request` synchronize event for the draft PR after GitHub attached no check suites to several connector-origin commits. Record the resulting workflow run and **its actual head SHA** separately. If no run is triggered, do not report CI success and do not bypass workflow permissions.
 
 The terminal Decision 0029 `BLOCKED_EXTERNAL` disposition and prior source-frozen campaign limits remain binding. `git_publish=false`, `git_auto_merge=false`, `public_deploy=false` for any future private evaluations; no automatic merge or publication from this audit.
+
+## General CI trigger resilience
+
+The original validation workflow listens for `pull_request` and pushes to `main` only. Although the Git ref reached a new commit, GitHub's pull-request metadata remained `mergeable_state=unknown` with its head index at an older commit and no new check suite. This differs from an actual Git conflict (the independently computed merge tree was clean). Past GitHub status incident records describe PR update delays, but they do not establish an active root cause for this individual repository.
+
+The workflow now accepts `push` on ordinary development prefixes (`feature/**`, `fix/**`, `docs/**`, `refactor/**`, `integration/**`, `test/**`) as a **second path** to exact-head validation, plus a future manual `workflow_dispatch` entry. PR and branch-push triggers retain **separate** concurrency groups, canceling only older runs of the same event/ref, not canceling required PR checks. The full existing test set and release permissions are unchanged.
+
+This repair is not evidence that GitHub hosted validation has passed. Preserve separate reporting of the observed workflow head and result after the following ordinary authenticated Git push.

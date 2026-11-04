@@ -2,8 +2,17 @@ name: Validate repository
 
 on:
   pull_request:
+  workflow_dispatch:
+  # If pull-request event processing is delayed, run the same checks on
+  # ordinary development branch pushes without changing publication gates.
   push:
-    branches: [main]
+    branches: [main, 'feature/**', 'fix/**', 'docs/**', 'refactor/**', 'integration/**', 'test/**']
+
+# Cancel superseded pushes/PR updates of the same event type and ref.
+# Keep PR and push checks distinct so PR-required checks are not canceled.
+concurrency:
+  group: validate-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
