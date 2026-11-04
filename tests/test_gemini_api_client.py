@@ -128,6 +128,27 @@ class GeminiApiClientTests(unittest.TestCase):
                     client.ask("Return object", stage="custom")
                 self.assertEqual(1, len(sdk.models.calls))
 
+    def test_http_402_after_pdf_submission_is_not_replayed(self):
+        class BillingError(RuntimeError):
+            status_code = 402
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir()
+            (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
+            pdf = root / "source.pdf"
+            pdf.write_bytes(b"%PDF-test")
+            sdk = FakeSdk([BillingError("prepay exhausted"), '{"ok":true}'])
+            client = GeminiApiClient(
+                self.config(root, gemini_api_max_attempts=5),
+                (pdf,), sdk_client=sdk, sdk_types=FakeTypes,
+                sleep=lambda _: self.fail("source-bearing request must not replay"),
+            )
+            client.prepare()
+            with self.assertRaisesRegex(GeminiApiError, "HTTP 402"):
+                client.ask("Return object", stage="custom")
+            self.assertEqual(1, len(sdk.models.calls))
+
     def test_keyboard_interrupt_propagates_without_being_wrapped(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
