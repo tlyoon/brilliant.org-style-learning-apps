@@ -105,8 +105,8 @@ class GeminiApiClientTests(unittest.TestCase):
                 if relative in authorized:
                     continue
                 source = source_file.read_text(encoding="utf-8")
-                if re.search(r"\\bgenai\\.Client\\s*\\(", source) or re.search(
-                    r"\\.models\\.generate_content\\s*\\(", source
+                if re.search(r"\bgenai\.Client\s*\(", source) or re.search(
+                    r"\.models\.generate_content\s*\(", source
                 ):
                     direct_calls.append(relative)
         self.assertEqual([], sorted(direct_calls), "Unprotected direct Gemini SDK entrypoints")
