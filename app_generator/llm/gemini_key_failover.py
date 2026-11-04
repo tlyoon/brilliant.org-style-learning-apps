@@ -202,8 +202,9 @@ def build_keyed_gemini_client(
                 model=config.gemini_api_model,
                 contents="Reply with exactly the word READY.",
                 config=types.GenerateContentConfig(
-                    temperature=0,
-                    max_output_tokens=128,
+                    # Gemini 3.8 Flash no longer accepts legacy sampling
+                    # controls; output budget includes reasoning tokens.
+                    max_output_tokens=512,
                 ),
             )
             if not str(getattr(response, "text", "") or "").strip():
