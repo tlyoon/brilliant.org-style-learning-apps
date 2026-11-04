@@ -92,3 +92,17 @@ Never place the private manifest (which may identify protected sources), origina
 Round-1 real-source mechanics reached content validation but failed visual generation when a model emitted a non-schema field name in its visual plan. The schema validator correctly rejected the value, but the producer omitted the authoritative visual-plan schema and permitted an avoidable visual-spec model call before discovering a malformed plan. BSA-20261104-105 adds schema-driven prompt guidance and early fail-closed generic plan validation, with source-free tests for two independent failure classes and a strict two-attempt ceiling. It does **not** silently normalize bad fields or patch mechanics-specific content. This is the **one** generic software correction allowed by Decision 0029; do not reset the budget by changing its label.
 
 All real C3 sources and their first-round failure receipts remain bound to frozen `a79ff02a0f6dc4c506d059a03dd6756adbd7bb8b`. No generated package was approved. Any subsequent held-out trial of the corrected engine is **round 2** and must use three *different genuinely unseen* rights-cleared PDFs, a new frozen revision, and the strict source/metadata witness. No round 3, automatic retry, document-specific hardening, merge or publication is authorized. If round 2 cannot be completed, issue a bounded `NOT_COMPLETE_WITH_NAMED_BLOCKERS` or `BLOCKED_EXTERNAL` disposition rather than extend development indefinitely.
+
+## Post-closure reconciliation readiness audit (non-executing, 4 November 2026)
+
+A read-only source-free checker now makes the prerequisites for any later **separately authorized** reconciliation explicit:
+
+```text
+python scripts/audit_reconciliation_readiness.py --config <EFFECTIVE_PRIVATE_CONFIG.toml> --frozen-engine <EXACT_ROUND2_GIT_SHA> --candidate-engine <EXACT_INSTALLED_GIT_SHA> --manifest <PRIVATE_EXISTING_ROUND2_MANIFEST.json> --selection-witness-sha256 <EXISTING_WITNESS_SHA256>
+```
+
+The script reads only effective TOML and optional private JSON **metadata**; it does not read any PDFs, .env/API keys, provider responses, learner screenshots or publication artifacts. It never sends an API request or writes output files. It fails closed if any of `git.git_publish`, `git.git_auto_merge`, `automation.public_deploy`, or `automation.public_deploy_auto_merge` is absent or not **exactly false**. It checks the exact frozen engine revision, the manifest's declared round-two/source-roster structure and the pinned source-selection witness value. Such values are declarations, **not independent confirmation of source rights or preselection**.
+
+`OFFLINE_READY_FOR_EXTERNAL_REVIEW` means only metadata checks passed. Both `executionAuthorized` and `publicationAuthorized` are always false. A caller must still obtain legitimate provider access, independent no-replay receipts, approval for the same bounded three-source reconciliation, original-source/rights evidence and C4 browser/science/locale verification. No third campaign or PDF-specific rule reset is permitted.
+
+**Important version boundary:** Newer key-fallback/no-replay source code is not the round-two frozen engine. A caller cannot simply set the candidate to its current code SHA and reuse the old engine receipt. A new bounded provenance/approval decision would be required to change this relation; this checker deliberately refuses mismatches rather than inventing technical PASS.

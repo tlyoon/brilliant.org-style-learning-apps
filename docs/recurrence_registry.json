@@ -640,6 +640,53 @@
           "marker": "test_keyboard_interrupt_propagates_without_being_wrapped"
         }
       ]
+    },
+    {
+      "id": "BSA-20261104-109",
+      "class": "reconciliation-readiness-frozen-engine-and-publication-controls-unchecked",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_reconciliation_readiness.py",
+          "kind": "python",
+          "marker": "test_matching_private_metadata_is_not_execution_approval"
+        },
+        {
+          "path": "tests/test_reconciliation_readiness.py",
+          "kind": "python",
+          "marker": "test_newer_code_cannot_impersonate_frozen_engine"
+        },
+        {
+          "path": "tests/test_reconciliation_readiness.py",
+          "kind": "python",
+          "marker": "test_all_publication_controls_require_explicit_false"
+        },
+        {
+          "path": "tests/test_reconciliation_readiness.py",
+          "kind": "python",
+          "marker": "test_missing_config_sections_are_not_safe_defaults"
+        },
+        {
+          "path": "tests/test_reconciliation_readiness.py",
+          "kind": "python",
+          "marker": "test_no_manifest_or_unpinned_witness_remains_blocked"
+        },
+        {
+          "path": "tests/test_reconciliation_readiness.py",
+          "kind": "python",
+          "marker": "test_wrong_round_source_or_witness_is_rejected"
+        },
+        {
+          "path": "tests/test_reconciliation_readiness.py",
+          "kind": "python",
+          "marker": "test_tracked_publication_enabled_template_fails_closed"
+        },
+        {
+          "path": "tests/test_reconciliation_readiness.py",
+          "kind": "python",
+          "marker": "test_cli_rejects_private_metadata_inside_public_git"
+        }
+      ]
     }
   ]
 }
