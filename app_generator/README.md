@@ -61,15 +61,24 @@ Source-manifest version 1.1 records primary/supplementary PDFs and corpus proven
 
 ## Gemini API key failover without PDF replay
 
-On Windows, the API backend can discover existing `GEMINI_API_KEY_1`,
-`GEMINI_API_KEY_2` and additional numbered keys from the explicitly
-authorized default `%LOCALAPPDATA%\Microvid\.env`; process environment
-credentials take precedence. Before PDF generation, it can run small
-source-free requests across distinct keys, moving on only after HTTP
-503/504. Authorization/quota errors stop, and no key values are persisted.
-`doctor` does not trigger generation probes. A failed actual PDF
-request is **not** replayed through another key; a fresh authorized run
-must reconcile its previous receipt first. See
+On every authorized Windows PC, the API backend discovers
+`GEMINI_API_KEY_1`, `GEMINI_API_KEY_2`, additional numbered keys and
+`GEMINI_API_KEY`/`GOOGLE_API_KEY` from the default
+`%LOCALAPPDATA%\Microvid\.env`. Explicit process credentials take precedence,
+duplicate keys are ignored, and at most eight distinct keys are considered.
+Before submitting a controlled PDF it makes a minimal **source-free** request
+on the first candidate; if it returns 401 (invalid key), 402 (unfunded project),
+403 (no model permission), or 503/504 (provider capacity), the next configured
+key is probed automatically, once per key. HTTP 429 (quota/rate limit),
+malformed requests and ambiguous transport failures stop selection; no quota
+bypass is attempted. Even one configured key is preflighted before generation.
+Provider credit may be shared among keys, so a 402 can affect every key.
+
+The `doctor` command does not generate or perform preflight requests. A failed
+**already-submitted PDF** is never replayed through another key automatically:
+reconcile its previous receipt and separately authorize a new attempt. No
+credential value is printed, persisted to Git or copied between PCs. This
+does not reopen the closed Decision 0029 held-out PDF campaign. See
 `docs/HELDOUT_GENERALIZATION_CAMPAIGN.md`.
 
 ## Stage-0 textbook domain gate
