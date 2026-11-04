@@ -268,6 +268,61 @@ class VisualGenerationStageTests(unittest.TestCase):
             self.assertEqual(correct_second, result["activities"][1]["visualSpec"])
             self.assertIsNone(context.load_stage("visual-specs-validated"))
 
+    def test_visual_plan_schema_misspelled_key_retries_without_generating_invalid_specs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            context = RunContext.create(Path(directory))
+            context.save_stage("source-analysis", {"sectionTitle": "Synthetic"})
+            invalid = plans()
+            intent = invalid["activities"][0]["visualPlan"]["activityIntent"]
+            intent["misconceptionsTargets"] = intent.pop("misconceptionTargets")
+            conversation = Conversation([invalid, plans(), specs()])
+            protocol = GenerationProtocol(
+                conversation, context, domain_profile=resolve_domain(ROOT),
+            )
+            result = protocol._visualize_package(package())
+
+        self.assertEqual(["visual-plans", "visual-plans", "visual-specs"], conversation.stages)
+        self.assertIn("AUTHORITATIVE VISUAL PLAN SCHEMA (MANDATORY)", conversation.prompts[0])
+        self.assertIn('"misconceptionTargets"', conversation.prompts[0])
+        self.assertIn('"additionalProperties": false', conversation.prompts[0])
+        self.assertIn("schema mismatch", conversation.prompts[1])
+        self.assertEqual(plan(), result["activities"][0]["visualPlan"])
+        self.assertNotIn("misconceptionsTargets", result["activities"][0]["visualPlan"]["activityIntent"])
+
+    def test_visual_plan_schema_preflight_is_generic_across_other_fields(self):
+        # An unrelated conditional mode violation must be caught by the same
+        # schema-driven engine, with no source- or PDF-specific exception.
+        invalid = plans()
+        invalid["activities"][0]["visualPlan"]["selectedMode"] = "none"
+        with tempfile.TemporaryDirectory() as directory:
+            context = RunContext.create(Path(directory))
+            context.save_stage("source-analysis", {"sectionTitle": "Independent synthetic context"})
+            conversation = Conversation([invalid, plans(), specs()])
+            protocol = GenerationProtocol(
+                conversation, context, domain_profile=resolve_domain(ROOT),
+            )
+            result = protocol._visualize_package(package())
+
+        self.assertEqual(["visual-plans", "visual-plans", "visual-specs"], conversation.stages)
+        self.assertIn("schema mismatch", conversation.prompts[1])
+        self.assertEqual("scene_diagram", result["activities"][0]["visualPlan"]["selectedMode"])
+
+    def test_visual_plan_schema_stops_after_two_invalid_batches_without_spec_requests(self):
+        invalid = plans()
+        invalid["activities"][0]["visualPlan"]["activityIntent"].pop("misconceptionTargets")
+        with tempfile.TemporaryDirectory() as directory:
+            context = RunContext.create(Path(directory))
+            context.save_stage("source-analysis", {"sectionTitle": "Synthetic"})
+            conversation = Conversation([invalid, invalid])
+            protocol = GenerationProtocol(
+                conversation, context, domain_profile=resolve_domain(ROOT),
+            )
+            with self.assertRaisesRegex(ResponseContractError, "within two validated batch attempts"):
+                protocol._visualize_package(package())
+
+        self.assertEqual(["visual-plans", "visual-plans"], conversation.stages)
+        self.assertIsNone(context.load_stage("visual-plans"))
+
     def test_visual_generation_runs_after_text_semantic_audit(self):
         with tempfile.TemporaryDirectory() as directory:
             context = RunContext.create(Path(directory))

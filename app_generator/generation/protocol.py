@@ -9,6 +9,8 @@ import json
 import re
 from typing import Any, Protocol
 
+from jsonschema import Draft202012Validator
+
 from app_generator.domains import DomainProfile, compose_domain_prompt
 from app_generator.generation.assembler import assemble_package, validate_activity_batch, validate_plan
 from app_generator.generation.extraction import parse_json_response
@@ -326,6 +328,9 @@ class GenerationProtocol:
         if not isinstance(analysis, dict):
             raise ResponseContractError("Visual generation requires a valid source-analysis checkpoint")
         catalog = visual_generation_catalog(self.domain_profile)
+        plan_schema_path = self.domain_profile.repo_root / "content" / "schema" / "visual-plan.schema.json"
+        visual_plan_schema = json.loads(plan_schema_path.read_text(encoding="utf-8"))
+        visual_plan_validator = Draft202012Validator(visual_plan_schema)
         schema_path = self.domain_profile.repo_root / "content" / "schema" / "visual-spec.schema.json"
         visual_spec_schema = json.loads(schema_path.read_text(encoding="utf-8"))
         correction_errors: list[str] = []
@@ -343,10 +348,25 @@ class GenerationProtocol:
                         package,
                         analysis,
                         catalog,
+                        visual_plan_schema=visual_plan_schema,
                         correction_errors=correction_errors,
                     ),
                 )
                 selected_ids = selected_visual_activity_ids(package, plans)
+                # Fail before requesting expensive specs. This is a general
+                # schema check, never a PDF-specific property-name repair.
+                for record in plans["activities"]:
+                    failures = sorted(
+                        visual_plan_validator.iter_errors(record["visualPlan"]),
+                        key=lambda error: tuple(map(str, error.absolute_path)),
+                    )
+                    if failures:
+                        first = failures[0]
+                        field_path = ".".join(map(str, first.absolute_path)) or "<root>"
+                        raise ResponseContractError(
+                            f"visual-plans {record['activityId']} schema mismatch at "
+                            f"{field_path} ({first.validator}); use exact authoritative schema keys"
+                        )
                 if not validated_records:
                     cached = self.context.load_stage("visual-specs-validated")
                     if isinstance(cached, dict) and isinstance(cached.get("activities"), list):

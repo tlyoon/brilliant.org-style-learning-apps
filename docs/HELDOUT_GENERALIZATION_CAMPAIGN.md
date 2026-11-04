@@ -75,3 +75,9 @@ Content-specific independent science, answer, EN/MS/ZH meaning and diagram check
 ## Privacy and truthfulness
 
 Never place the private manifest (which may identify protected sources), original PDFs, screenshots, student details or model responses into the public GitHub repository. The example values in tests are synthetic and **do not constitute a successful real hold-out run**. The run is only complete after an authorized execution actually produces trusted evidence.
+
+## One-time generic visual-plan correction (4 November 2026)
+
+Round-1 real-source mechanics reached content validation but failed visual generation when a model emitted a non-schema field name in its visual plan. The schema validator correctly rejected the value, but the producer omitted the authoritative visual-plan schema and permitted an avoidable visual-spec model call before discovering a malformed plan. BSA-20261104-105 adds schema-driven prompt guidance and early fail-closed generic plan validation, with source-free tests for two independent failure classes and a strict two-attempt ceiling. It does **not** silently normalize bad fields or patch mechanics-specific content. This is the **one** generic software correction allowed by Decision 0029; do not reset the budget by changing its label.
+
+All real C3 sources and their first-round failure receipts remain bound to frozen `a79ff02a0f6dc4c506d059a03dd6756adbd7bb8b`. No generated package was approved. Any subsequent held-out trial of the corrected engine is **round 2** and must use three *different genuinely unseen* rights-cleared PDFs, a new frozen revision, and the strict source/metadata witness. No round 3, automatic retry, document-specific hardening, merge or publication is authorized. If round 2 cannot be completed, issue a bounded `NOT_COMPLETE_WITH_NAMED_BLOCKERS` or `BLOCKED_EXTERNAL` disposition rather than extend development indefinitely.

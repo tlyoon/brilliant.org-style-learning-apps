@@ -190,6 +190,7 @@ def visual_plans_prompt(
     analysis: dict[str, Any],
     catalog: dict[str, Any],
     *,
+    visual_plan_schema: dict[str, Any] | None = None,
     correction_errors: list[str] | None = None,
 ) -> str:
     """Plan visuals for all activities in one bounded model call."""
@@ -217,6 +218,17 @@ def visual_plans_prompt(
             "Correct only the visual planning data; do not change activity IDs or content.\n"
             + "\n".join(f"- {error}" for error in correction_errors[:12])
         )
+    schema_instructions = ""
+    if visual_plan_schema is not None:
+        schema_instructions = (
+            "\n\nAUTHORITATIVE VISUAL PLAN SCHEMA (MANDATORY):\n"
+            + json.dumps(visual_plan_schema, ensure_ascii=False, indent=2)
+            + "\nEvery visualPlan must obey all required keys, enum values, "
+            "additionalProperties restrictions and conditional mode constraints. "
+            "Field names are case-sensitive: do not invent synonymous, pluralized "
+            "or snake_case property names. An invalid plan is rejected before "
+            "visual-spec generation."
+        )
     return _contract(
         "Create one visualPlan for every supplied activity. Return exactly "
         "{\"activities\":[{\"activityId\":\"...\",\"visualPlan\":{...}}, ...]}. "
@@ -229,7 +241,7 @@ def visual_plans_prompt(
         "SOURCE ANALYSIS:\n" + json.dumps(analysis, ensure_ascii=False, indent=2) + "\n\n"
         "TRUSTED VISUAL CATALOG:\n" + json.dumps(catalog, ensure_ascii=False, indent=2) + "\n\n"
         "ACTIVITIES:\n" + json.dumps(activities, ensure_ascii=False, indent=2)
-        + correction
+        + schema_instructions + correction
     )
 
 

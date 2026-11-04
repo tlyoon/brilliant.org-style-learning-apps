@@ -496,6 +496,28 @@
           "marker": "test_explicit_503_504_and_429_never_replay_controlled_pdf"
         }
       ]
+    },
+    {
+      "id": "BSA-20261104-105",
+      "class": "visual-plan-schema-is-not-supplied-and-invalid-plans-consume-visual-spec-calls",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_visual_generation_stage.py",
+          "kind": "python",
+          "marker": "test_visual_plan_schema_misspelled_key_retries_without_generating_invalid_specs"
+        },
+        {
+          "path": "tests/test_visual_generation_stage.py",
+          "kind": "python",
+          "marker": "test_visual_plan_schema_preflight_is_generic_across_other_fields"
+        },
+        {
+          "path": "tests/test_visual_generation_stage.py",
+          "kind": "python",
+          "marker": "test_visual_plan_schema_stops_after_two_invalid_batches_without_spec_requests"
+        }
+      ]
     }
   ]
 }
