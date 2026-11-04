@@ -134,17 +134,43 @@ class KeyFailoverTests(unittest.TestCase):
         with self.assertRaisesRegex(TransientGeminiError,"source-free preflight"):
             select_healthy_key(self.keys,lambda _: (_ for _ in ()).throw(HttpError(503)))
 
-    def test_quota_and_auth_fail_without_trying_other_keys(self):
-        for code,expected in ((429,TransientGeminiError),(401,AuthenticationRequired),
-                              (403,AuthenticationRequired),(400,GeminiApiError)):
+    def test_access_and_billing_failures_try_next_distinct_key(self):
+        for code in (401, 402, 403, 503, 504):
             with self.subTest(code=code):
-                called=[]
-                def probe(key):
-                    called.append(key.label)
+                visited=[]
+                def probe(candidate):
+                    visited.append(candidate.label)
+                    if len(visited) == 1:
+                        raise HttpError(code)
+                    return "READY"
+                chosen,result=select_healthy_key(self.keys,probe)
+                self.assertEqual("KEY_2",chosen.label)
+                self.assertEqual("READY",result)
+                self.assertEqual(["KEY_1","KEY_2"],visited)
+
+    def test_all_keys_billing_blocked_does_not_send_source(self):
+        visited=[]
+        def probe(candidate):
+            visited.append(candidate.label)
+            raise HttpError(402)
+        with self.assertRaisesRegex(GeminiApiError,"HTTP 402 billing"):
+            select_healthy_key(self.keys,probe)
+        self.assertEqual(["KEY_1","KEY_2","KEY_3"],visited)
+
+    def test_all_keys_denied_reports_auth_failure(self):
+        with self.assertRaises(AuthenticationRequired):
+            select_healthy_key(self.keys,lambda _: (_ for _ in ()).throw(HttpError(403)))
+
+    def test_quota_and_bad_request_stop_without_trying_other_keys(self):
+        for code,expected in ((429,TransientGeminiError),(400,GeminiApiError)):
+            with self.subTest(code=code):
+                visited=[]
+                def probe(candidate):
+                    visited.append(candidate.label)
                     raise HttpError(code)
                 with self.assertRaises(expected):
                     select_healthy_key(self.keys,probe)
-                self.assertEqual(["KEY_1"],called)
+                self.assertEqual(["KEY_1"],visited)
 
     def test_transport_error_does_not_rotate(self):
         attempts=[]
@@ -175,6 +201,40 @@ class ClientSelectionTests(unittest.TestCase):
             self.assertEqual("Reply with exactly the word READY.",
                              selected.calls[0]["contents"])
             self.assertNotIn("application/pdf",str(selected.calls))
+
+    def test_billing_failure_is_recovered_before_source_upload(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)/"Microvid"
+            root.mkdir()
+            (root/".env").write_text(
+                "GEMINI_API_KEY_1=unfunded\\nGEMINI_API_KEY_2=funded\\n",
+                encoding="utf-8",
+            )
+            sdk=FakeSdk({"unfunded":HttpError(402),"funded":"READY"})
+            config=SimpleNamespace(gemini_api_model="gemini-3.8-flash",
+                gemini_api_timeout_seconds=1200)
+            with patch.dict(os.environ,{"LOCALAPPDATA":d},clear=True):
+                selected=build_keyed_gemini_client(sdk,FakeTypes,config,probe_keys=True)
+            self.assertEqual("funded",selected.label)
+            self.assertTrue(sdk.created[0].closed)
+            self.assertEqual(["Reply with exactly the word READY."],
+                             [call["contents"] for call in sdk.created[0].calls])
+            self.assertNotIn("application/pdf",str(sdk.created[0].calls))
+
+    def test_single_key_is_preflighted_before_source(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)/"Microvid"
+            root.mkdir()
+            (root/".env").write_text("GEMINI_API_KEY_1=only-key\\n")
+            sdk=FakeSdk({"only-key":HttpError(402)})
+            config=SimpleNamespace(gemini_api_model="gemini-3.8-flash",
+                gemini_api_timeout_seconds=1200)
+            with patch.dict(os.environ,{"LOCALAPPDATA":d},clear=True):
+                with self.assertRaisesRegex(GeminiApiError,"HTTP 402"):
+                    build_keyed_gemini_client(sdk,FakeTypes,config,probe_keys=True)
+            self.assertEqual(1,len(sdk.created))
+            self.assertTrue(sdk.created[0].closed)
+            self.assertNotIn("application/pdf",str(sdk.created[0].calls))
 
     def test_doctor_does_not_generate(self):
         with tempfile.TemporaryDirectory() as d:
