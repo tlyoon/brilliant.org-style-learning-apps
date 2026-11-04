@@ -1,5 +1,7 @@
 # Gemini execution denial: boundary-aware recovery (4 November 2026)
 
+> **STATUS RECONCILIATION:** The host/connector refusal handling below remains a valid *code safety boundary*, but the original later denial's first-party payload was not recovered. It must not be treated as proof that Gemini API access is globally denied: earlier authorized live calls succeeded, and subsequent same-round PDF generation progressed. See [the verified later receipts](C3_POST_BILLING_RECONCILIATION_20261104.md). This change does not reissue a denied request, assert the platform refusal has been lifted or authorize a third PDF campaign.
+>
 **Scope:** General project implementation in draft [PR #223](https://github.com/tlyoon/brilliant.org-style-learning-apps/pull/223), not an attempt to override ChatGPT/Remote Desktop Commander policy, run a new Gemini probe, repeat a source-bearing request or reopen the Decision 0029 two-round campaign.
 
 ## Historical facts and evidence limit

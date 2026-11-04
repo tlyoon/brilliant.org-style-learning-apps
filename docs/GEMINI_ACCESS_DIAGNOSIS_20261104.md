@@ -1,5 +1,7 @@
 # Gemini API readiness diagnosis — 4 November 2026
 
+> **LATER VERIFIED EVIDENCE:** The account-access-unverified language below describes the earlier isolated diagnostic and is **outdated as a claim of continuing outage**. Authorized private Yoga 6 source-free receipts recorded HTTP 504 on `GEMINI_API_KEY_1`, success on `GEMINI_API_KEY_2` at 07:31 MYT, and a separate success with key 2 at 14:53 MYT on 4 November. See [the current evidence reconciliation](C3_POST_BILLING_RECONCILIATION_20261104.md). The direct live rotation used a private one-shot script, not proven-live execution of the newer shared client factory. No new Gemini request is needed to repeat those results.
+>
 **Scope:** Source-free public documentation review and shared-gateway compatibility correction for the Brilliant-style learning app (draft [PR #223](https://github.com/tlyoon/brilliant.org-style-learning-apps/pull/223)). No protected PDF, API key, authenticated Gemini request, prior-denial bypass, campaign restart, merge or public deployment was involved.
 
 ## Verified and unresolved

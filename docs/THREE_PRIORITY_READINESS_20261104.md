@@ -1,5 +1,7 @@
 # Next three priorities — bounded reconciliation and C4 readiness (4 November 2026)
 
+> **LATER RECEIPTS SUPERSEDE THE ACCESS-BLOCKED STATUS BELOW:** See [the 4 November post-billing reconciliation](C3_POST_BILLING_RECONCILIATION_20261104.md). Actual authorized source-free Gemini requests succeeded with key 2, and the original frozen round-two campaign produced two validated drafts and a third repair-contract failure. The present C3 result is **FAILED_LIMITED_CAMPAIGN**. The source-free readiness-audit code remains valid as a general safety check, but it does not represent the latest execution history.
+>
 **Repository:** `tlyoon/brilliant.org-style-learning-apps`; draft [PR #223](https://github.com/tlyoon/brilliant.org-style-learning-apps/pull/223). This is **not a new held-out campaign** and does not alter the Decision 0029 terminal result `BLOCKED_EXTERNAL`.
 
 ## Priority 1 — Gemini authenticated access readiness

@@ -1,5 +1,7 @@
 # Finite C1–C4 global codebase disposition — 4 November 2026
 
+> **CURRENT-STATUS CORRECTION:** The `BLOCKED_EXTERNAL` disposition immediately below was the **historical terminal result at the HTTP 402 stopping point**, not the last-known result of the subsequently approved reconciliation. Read [the later evidence reconciliation](C3_POST_BILLING_RECONCILIATION_20261104.md): live source-free Gemini access was restored and two of three frozen round-two runs produced validated draft packages; the third failed a repair contract. The current limited-campaign result is **FAILED_LIMITED_CAMPAIGN**, with no academic or publication approval. The immutable original 402 receipts and the two-campaign limit remain preserved.
+>
 **FINAL DISPOSITION: BLOCKED_EXTERNAL.**
 
 This is the terminal outcome of the **owner-approved, two-round Decision 0029 development campaign**, not a claim of technical completeness, scientific accuracy of unreviewed material, or authorization to merge/publish. Both allowed campaigns have been consumed; the one generic defect-correction opportunity has also been used. **No automatic third source campaign, per-PDF hardening loop, source-bearing request replay, or release is authorized.**
