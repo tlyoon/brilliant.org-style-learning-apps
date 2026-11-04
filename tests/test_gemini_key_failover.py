@@ -236,6 +236,32 @@ class ClientSelectionTests(unittest.TestCase):
             self.assertTrue(sdk.created[0].closed)
             self.assertNotIn("application/pdf",str(sdk.created[0].calls))
 
+    def test_ordinary_client_creation_inherently_tries_next_key(self):
+        # Calling the factory without an opt-in flag must safely select
+        # the second key before any source-bearing API request.
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)/"Microvid"
+            root.mkdir()
+            (root/".env").write_text(
+                "GEMINI_API_KEY_1=blocked\nGEMINI_API_KEY_2=working\n",
+                encoding="utf-8",
+            )
+            sdk=FakeSdk({"blocked":HttpError(402),"working":"READY"})
+            config=SimpleNamespace(gemini_api_model="gemini-3.8-flash",
+                gemini_api_timeout_seconds=1200)
+            with patch.dict(os.environ,{"LOCALAPPDATA":d},clear=True):
+                chosen=build_keyed_gemini_client(sdk,FakeTypes,config)
+            self.assertEqual("working",chosen.label)
+            self.assertEqual(2,len(sdk.created))
+            self.assertTrue(sdk.created[0].closed)
+            self.assertEqual(1,len(sdk.created[0].calls))
+            self.assertEqual("Reply with exactly the word READY.",
+                             sdk.created[0].calls[0]["contents"])
+            self.assertEqual("Reply with exactly the word READY.",
+                             sdk.created[1].calls[0]["contents"])
+            self.assertNotIn("application/pdf",str(sdk.created[0].calls))
+            self.assertNotIn("application/pdf",str(sdk.created[1].calls))
+
     def test_doctor_does_not_generate(self):
         with tempfile.TemporaryDirectory() as d:
             envpath=Path(d)/"Microvid"/".env"
@@ -246,7 +272,8 @@ class ClientSelectionTests(unittest.TestCase):
                 selected=build_keyed_gemini_client(
                     sdk,FakeTypes,SimpleNamespace(
                         gemini_api_model="gemini-3.8-flash",
-                        gemini_api_timeout_seconds=1200))
+                        gemini_api_timeout_seconds=1200),
+                    probe_keys=False)
             self.assertEqual("first",selected.label)
             self.assertEqual([],selected.calls)
             self.assertEqual(1,len(sdk.created))
