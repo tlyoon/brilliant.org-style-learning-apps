@@ -34,6 +34,8 @@ without key rotation. A 402 may cover multiple keys linked to the same
 depleted billing account. This is credential readiness selection, **not a
 quota bypass**, and the non-generating `doctor` check remains non-generating.
 
+The shared API client implements this boundary: it sends at most one source-bearing request, disables SDK transport retries for both credential modes, and latches any unresolved call until a fresh externally reconciled run. HTTP 408/409/500/502 and network timeouts are **not** exceptions to this rule; the configured legacy retry budget cannot authorize replay. A completed successful stage may still be followed by a separate next stage.
+
 An **already-submitted source-bearing request** must not be silently
 replayed through another key after any provider error: it might already
 have been processed. Preserve the original stage and receipt, stop, and
