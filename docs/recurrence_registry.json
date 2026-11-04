@@ -687,6 +687,33 @@
           "marker": "test_cli_rejects_private_metadata_inside_public_git"
         }
       ]
+    },
+    {
+      "id": "BSA-20261104-110",
+      "class": "gemini-3-8-source-free-probe-deprecated-temperature-and-unsanitized-key-failure-observability",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_source_free_probe_omits_deprecated_sampling_for_gemini_3_8"
+        },
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_failed_key_statuses_are_logged_without_secret_values"
+        },
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_access_and_billing_failures_try_next_distinct_key"
+        },
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_transport_error_does_not_rotate"
+        }
+      ]
     }
   ]
 }
