@@ -52,8 +52,12 @@ def _client_project_id(client_file: Path) -> str:
     return ""
 
 
-def build_gemini_sdk_client(config: GeneratorConfig, *, probe_keys: bool = False) -> Any:
-    """Create a Gemini Developer API-key client or OAuth Vertex AI client."""
+def build_gemini_sdk_client(config: GeneratorConfig, *, probe_keys: bool = True) -> Any:
+    """Create a Gemini client; automatically select a working API key before source use.
+
+    A caller that is *provably non-generating*, such as doctor, may explicitly
+    pass probe_keys=False. PDF generation always uses the default preflight.
+    """
 
     try:
         from google import genai
@@ -319,9 +323,11 @@ class GeminiApiClient:
     def actual_model(self) -> str:
         return self.config.gemini_api_model
 
-    def _client(self, *, probe_keys: bool = False) -> Any:
+    def _client(self) -> Any:
         if self.sdk_client is None:
-            self.sdk_client = build_gemini_sdk_client(self.config, probe_keys=probe_keys)
+            # Shared factory performs source-free key fallback by default.
+            # This path is used for every production Gemini API generation.
+            self.sdk_client = build_gemini_sdk_client(self.config)
         return self.sdk_client
 
     def prepare(self) -> None:
@@ -336,7 +342,7 @@ class GeminiApiClient:
                 raise ResponseContractError(f"Gemini API source does not have a PDF signature: {path}")
             documents.append(data)
         self.source_documents = documents
-        self._client(probe_keys=True)  # Probe keys without submitting a controlled PDF.
+        self._client()  # Automatic source-free key selection; no PDF submitted.
 
     def ask(self, prompt: str, *, stage: str | None = None) -> str:
         if not self.source_documents:
