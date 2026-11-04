@@ -21,8 +21,11 @@ appear in Git, generated app files, logs, diagnostic screenshots or public
 receipts. A missing Windows directory is **not** authorization to search
 arbitrary paths, broaden remote filesystem permissions or copy secrets.
 
-Before any controlled PDF is submitted, a minimal **source-free** Gemini
-request verifies the chosen key (including a single configured key).
+Every standard production Gemini API client construction now performs
+**automatic source-free** key selection through the shared client factory;
+call sites cannot accidentally omit the fallback by forgetting an opt-in
+argument. This verifies the chosen key (including a single configured key)
+before any controlled PDF is submitted.
 Try each distinct key once in order, advancing only after explicit HTTP
 401 (invalid credential), 402 (payment/billing), 403 (no resource permission),
 or 503/504 (temporary provider capacity). HTTP 429 quota/rate-limit errors,
