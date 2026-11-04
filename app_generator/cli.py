@@ -151,7 +151,7 @@ def _load(args: argparse.Namespace) -> GeneratorConfig:
 
 
 def _preflight_llm(config: GeneratorConfig) -> None:
-    """Validate API authentication before auto workers are allowed to claim jobs."""
+    """Check local Gemini SDK/client configuration without a live model request."""
 
     if getattr(config, "llm_backend", "gemini_browser") == "gemini_api":
         # Doctor checks local configuration without sending model requests.
