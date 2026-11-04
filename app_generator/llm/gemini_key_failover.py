@@ -152,9 +152,9 @@ def select_healthy_key(
     # source-bearing call. Status codes are safe to report; secrets are not.
     if 402 in failures:
         raise GeminiApiError(
-            "No usable Gemini API key; HTTP 402 billing credit was exhausted "
-            "for at least one candidate. Check billing for the configured "
-            "projects. No PDF generation request was sent"
+            "No usable Gemini API key; HTTP 402 billing/payment restriction "
+            "was reported for at least one candidate. Check project/model "
+            "billing configuration. No PDF generation request was sent"
         )
     if any(code in {401, 403} for code in failures):
         raise AuthenticationRequired(
