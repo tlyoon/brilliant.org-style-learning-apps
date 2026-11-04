@@ -123,7 +123,10 @@ def build_gemini_sdk_client(config: GeneratorConfig, *, probe_keys: bool = True)
         project=project_id,
         location=config.gemini_api_location,
         credentials=credentials,
-        http_options=types.HttpOptions(api_version="v1", timeout=timeout_ms),
+        http_options=types.HttpOptions(
+            api_version="v1", timeout=timeout_ms,
+            retry_options=types.HttpRetryOptions(attempts=1),
+        ),
     )
 
 
@@ -314,8 +317,12 @@ class GeminiApiClient:
         # unit tests never import the heavyweight/network-capable provider package.
         # Production callers use the actual provider SDK unchanged.
         self.sdk_types = sdk_types
-        self.sleep = sleep
+        self.sleep = sleep  # Kept for constructor compatibility; source calls never retry.
         self.source_documents: list[bytes] = []
+        # A source-bearing request may have reached Gemini even when its
+        # response is lost. Block subsequent ask() calls on this client until
+        # a separate authorized reconciliation creates a fresh client.
+        self._source_request_blocked = False
         self.master_prompt = (config.repo_root / "config" / "gem_instructions.md").read_text(encoding="utf-8").strip()
         self.prompt_sha256 = hashlib.sha256(self.master_prompt.encode("utf-8")).hexdigest()
 
@@ -380,48 +387,67 @@ class GeminiApiClient:
             )
         generation_config = types.GenerateContentConfig(**config_kwargs)
 
-        last_error: BaseException | None = None
-        for attempt in range(1, self.config.gemini_api_max_attempts + 1):
-            try:
-                response = self._client().models.generate_content(
-                    model=self.actual_model,
-                    contents=contents,
-                    config=generation_config,
+        if self._source_request_blocked:
+            raise TransientGeminiError(
+                "Previous Gemini source-bearing request is unresolved; "
+                "this client will not replay it without external reconciliation"
+            )
+
+        # The SDK's HTTP retries are disabled at client construction. A
+        # source-bearing request is deliberately sent at most once here.
+        # Only a successful, nonempty response clears the ambiguity latch.
+        client = self._client()
+        self._source_request_blocked = True
+        try:
+            response = client.models.generate_content(
+                model=self.actual_model,
+                contents=contents,
+                config=generation_config,
+            )
+            text = str(getattr(response, "text", "") or "").strip()
+            if not text:
+                raise ResponseContractError(
+                    "Gemini API returned no text output; request not replayed"
                 )
-                text = str(getattr(response, "text", "") or "").strip()
-                if not text:
-                    raise ResponseContractError("Gemini API returned no text output")
-                if "BEGIN_JSON" in text and "END_JSON" in text:
-                    return text
-                try:
-                    parsed = json.loads(text)
-                except json.JSONDecodeError:
-                    return text
-                return "BEGIN_JSON\n" + json.dumps(parsed, ensure_ascii=False) + "\nEND_JSON"
-            except ResponseContractError:
-                raise
-            except Exception as exc:
-                code = _status_code(exc)
-                if code in {503, 504}:
-                    raise TransientGeminiError(
-                        f'Gemini HTTP {code}; PDF request not replayed. A fresh authorized run reprobes keys.'
-                    ) from exc
-                if code == 429:
-                    raise TransientGeminiError(
-                        'Gemini quota/rate-limit HTTP 429; no rotation or automatic source replay'
-                    ) from exc
-                if not _retryable(exc):
-                    code = _status_code(exc)
-                    if code in {401, 403}:
-                        raise AuthenticationRequired(
-                            f"Gemini API authentication/authorization failed ({code}): {exc}"
-                        ) from exc
-                    status = f" (HTTP {code})" if code is not None else ""
-                    raise GeminiApiError(f"Gemini API request failed{status}: {exc}") from exc
-                last_error = exc
-                if attempt >= self.config.gemini_api_max_attempts:
-                    break
-                self.sleep(self.config.gemini_api_retry_backoff_seconds * (2 ** (attempt - 1)))
-        raise TransientGeminiError(
-            f"Gemini API request failed after {self.config.gemini_api_max_attempts} attempt(s): {last_error}"
-        ) from last_error
+            if "BEGIN_JSON" in text and "END_JSON" in text:
+                self._source_request_blocked = False
+                return text
+            try:
+                parsed = json.loads(text)
+            except json.JSONDecodeError:
+                self._source_request_blocked = False
+                return text
+            self._source_request_blocked = False
+            return "BEGIN_JSON\\n" + json.dumps(parsed, ensure_ascii=False) + "\\nEND_JSON"
+        except ResponseContractError:
+            # The model may already have processed the PDF.
+            raise
+        except Exception as exc:
+            code = _status_code(exc)
+            if code in {401, 403}:
+                raise AuthenticationRequired(
+                    f"Gemini API authentication/authorization failed (HTTP {code}); "
+                    "source-bearing request not replayed"
+                ) from exc
+            if code == 402:
+                raise GeminiApiError(
+                    "Gemini API HTTP 402 billing/payment restriction; "
+                    "source-bearing request not replayed"
+                ) from exc
+            if code == 429:
+                raise TransientGeminiError(
+                    "Gemini API HTTP 429 quota/rate limit; "
+                    "no key rotation or source-bearing request replay"
+                ) from exc
+            if _retryable(exc):
+                status = f"HTTP {code}" if code is not None else type(exc).__name__
+                raise TransientGeminiError(
+                    f"Gemini API {status}; source-bearing request outcome "
+                    "may be ambiguous. No automatic retry or key rotation"
+                ) from exc
+            status = f"HTTP {code}" if code is not None else type(exc).__name__
+            raise GeminiApiError(
+                f"Gemini API request failed ({status}); "
+                "source-bearing request not replayed"
+            ) from exc
+        # KeyboardInterrupt/SystemExit propagate, leaving the ambiguity latch set.
