@@ -202,6 +202,28 @@ class ClientSelectionTests(unittest.TestCase):
                              selected.calls[0]["contents"])
             self.assertNotIn("application/pdf",str(selected.calls))
 
+    def test_source_free_probe_omits_deprecated_sampling_for_gemini_3_8(self):
+        # Google Gemini 3.8 Flash migration explicitly removes temperature,
+        # top_p and top_k. This is separate from an HTTP 402 billing error.
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)/"Microvid"
+            root.mkdir()
+            (root/".env").write_text("GEMINI_API_KEY_1=test-only-key\n",encoding="utf-8")
+            sdk=FakeSdk({"test-only-key":"READY"})
+            config=SimpleNamespace(gemini_api_model="gemini-3.8-flash",
+                gemini_api_timeout_seconds=1200)
+            with patch.dict(os.environ,{"LOCALAPPDATA":d},clear=True):
+                selected=build_keyed_gemini_client(sdk,FakeTypes,config)
+            self.assertEqual("test-only-key",selected.label)
+            self.assertEqual(1,len(sdk.created))
+            call=sdk.created[0].calls[0]
+            self.assertEqual("gemini-3.8-flash",call["model"])
+            self.assertEqual(512,call["config"].options["max_output_tokens"])
+            for obsolete in ("temperature","top_p","top_k","candidate_count"):
+                self.assertNotIn(obsolete,call["config"].options)
+            self.assertEqual("Reply with exactly the word READY.",call["contents"])
+            self.assertNotIn("application/pdf",str(sdk.created[0].calls))
+
     def test_billing_failure_is_recovered_before_source_upload(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d)/"Microvid"
