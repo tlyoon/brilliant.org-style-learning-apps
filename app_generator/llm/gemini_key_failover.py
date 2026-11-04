@@ -169,12 +169,13 @@ def select_healthy_key(
 
 
 def build_keyed_gemini_client(
-    genai: object, types: object, config: object, *, probe_keys: bool = False
+    genai: object, types: object, config: object, *, probe_keys: bool = True
 ) -> object | None:
     """Build one SDK client, probing numbered keys without attaching any PDF.
 
-    Doctor calls without probes. Actual generation preparation probes up to the
-    configured bounded key pool before any controlled source is sent.
+    Every normal call probes the configured bounded key pool without source
+    attachment. Only explicit non-generating checks (doctor) may set
+    probe_keys=False; callers that send source must use the safe default.
     """
     import logging
 
