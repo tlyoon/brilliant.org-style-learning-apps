@@ -78,7 +78,7 @@ class CliParserTests(unittest.TestCase):
             output.getvalue(),
         )
 
-    def test_auto_doctor_preflights_gemini_api_authentication(self):
+    def test_auto_doctor_checks_config_without_live_model_probe(self):
         snapshot = QueueSnapshot(
             total=1, queued=1, interrupted=0, leased=0, generated=0,
             review_pending=0, completed=0, failed=0,
