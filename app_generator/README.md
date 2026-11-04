@@ -75,6 +75,8 @@ malformed requests and ambiguous transport failures stop selection; no quota
 bypass is attempted. Even one configured key is preflighted before generation.
 Provider credit may be shared among keys, so a 402 can affect every key.
 
+**No source-bearing automatic replay:** Once a controlled PDF request enters the Gemini SDK, the client makes one model request only. The SDK has retry attempts fixed at one for both API-key and OAuth/Vertex clients. An HTTP 408/409/5xx response, timeout, reset, empty response or interrupt leaves the request unresolved and the same client rejects another `ask()` until a separately authorized reconciliation. Successful requests may continue into the next genuine stage. Legacy `gemini_api_max_attempts` and `gemini_api_retry_backoff_seconds` configuration values do not override this source-bearing one-shot rule.
+
 The `doctor` command does not generate or perform preflight requests. A failed
 **already-submitted PDF** is never replayed through another key automatically:
 reconcile its previous receipt and separately authorize a new attempt. No
