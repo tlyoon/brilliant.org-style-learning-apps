@@ -566,6 +566,43 @@
           "marker": "test_http_402_after_pdf_submission_is_not_replayed"
         }
       ]
+    },
+    {
+      "id": "BSA-20261104-107",
+      "class": "gemini-key-fallback-opt-in-bypass-at-shared-client-boundary",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_ordinary_client_creation_inherently_tries_next_key"
+        },
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_doctor_does_not_generate"
+        },
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_shared_gemini_factory_auto_preflights_by_default"
+        },
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_production_pdf_client_uses_shared_factory_without_opt_in"
+        },
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_no_other_production_module_bypasses_shared_gemini_gateway"
+        },
+        {
+          "path": "tests/test_cli.py",
+          "kind": "python",
+          "marker": "test_auto_doctor_checks_config_without_live_model_probe"
+        }
+      ]
     }
   ]
 }
