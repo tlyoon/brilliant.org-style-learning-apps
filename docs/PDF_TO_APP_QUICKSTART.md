@@ -259,8 +259,10 @@ For a workstation explicitly permitted to access the existing local
 An explicitly provided process-level `GOOGLE_API_KEY`/`GEMINI_API_KEY`
 retains precedence. Duplicate keys are skipped; at most eight distinct
 candidates are considered. No secrets are copied to the Git repository.
-Before any controlled PDF generation, the generator performs a minimal
-**source-free** probe, even when only one key is configured. With multiple
+The shared Gemini API client factory **automatically** performs a minimal
+**source-free** probe whenever a production caller creates a model client;
+no call site needs to opt into fallback. It also probes when only one key
+is configured, before any controlled PDF generation. With multiple
 keys, a failed candidate automatically advances to the next distinct key
 only after an explicit HTTP 401, 402, 403, 503 or 504. HTTP 429 (rate/quota),
 HTTP 400 (malformed request), unknown or ambiguous errors stop; do not use
