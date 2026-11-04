@@ -259,19 +259,23 @@ For a workstation explicitly permitted to access the existing local
 An explicitly provided process-level `GOOGLE_API_KEY`/`GEMINI_API_KEY`
 retains precedence. Duplicate keys are skipped; at most eight distinct
 candidates are considered. No secrets are copied to the Git repository.
-The generator makes a minimal **source-free** request to select a key
-before any controlled PDF generation when alternatives exist, advancing
-only on explicit HTTP 503/504. A 401/403/429 or unknown error stops selection.
-`doctor` never performs this generation probe, so its success alone does
-not prove content-generation availability.
+Before any controlled PDF generation, the generator performs a minimal
+**source-free** probe, even when only one key is configured. With multiple
+keys, a failed candidate automatically advances to the next distinct key
+only after an explicit HTTP 401, 402, 403, 503 or 504. HTTP 429 (rate/quota),
+HTTP 400 (malformed request), unknown or ambiguous errors stop; do not use
+key rotation to evade project-level quota. HTTP 402 may reflect a shared
+billing account with depleted credits, in which case no key will work until
+the legitimate billing prerequisite is restored. `doctor` never performs
+this generation probe, so its success alone does not prove API readiness.
 
-If an already-submitted PDF-generation call returns 503/504/429,
-the run stops without automatically replaying that PDF through another
-key. Check its private saved run state and explicitly authorize any new
-attempt. Do not widen Desktop Commander permissions or substitute a
-different credential path merely because the default folder is missing.
-This policy is source-independent and must not trigger another round of
-document-specific science fixes.
+An **already-submitted PDF request** is not automatically replayed after
+any provider failure, even if another key is present. Inspect its private
+stage/receipt first; new source-bearing attempts require independent
+authorization. Do not widen Desktop Commander permissions or substitute
+a different credential path if the default folder is unavailable.
+This change does not reopen Decision 0029's exhausted two-round campaign
+or justify additional document-specific science fixes.
 
 ## 8. Generate one selected subchapter
 
