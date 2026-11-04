@@ -1,0 +1,25 @@
+# Gemini API readiness diagnosis — 4 November 2026
+
+**Scope:** Source-free public documentation review and shared-gateway compatibility correction for the Brilliant-style learning app (draft [PR #223](https://github.com/tlyoon/brilliant.org-style-learning-apps/pull/223)). No protected PDF, API key, authenticated Gemini request, prior-denial bypass, campaign restart, merge or public deployment was involved.
+
+## Verified and unresolved
+
+1. **Supported model.** The tracked generator selects `gemini-3.8-flash` and thinking level `high`. Google documents `gemini-3.8-flash` as a stable model supporting PDF input, text output, structured outputs and `low/medium/high` thinking. The model ID is not inherently invalid. Reference: https://aistudio.google.com/docs/models/gemini-3.8-flash.
+2. **Provider error classes.** An actual earlier source-free Gemini preflight returned **HTTP 402** for the original round-two private run. Google's API error reference calls 402 `payment_required` and associates it with prepaid credit. **This is not evidence that Gemini was overloaded**, which is HTTP 503. The user has independently stated that credit remains available, so do not diagnose depleted overall credit as fact. Verify the **particular projects and billing accounts to which each configured key belongs**, and whether account-plan migration, linkage, project status or caps differ. References: https://aistudio.google.com/docs/api-errors and https://aistudio.google.com/docs/billing.
+3. **No new authenticated observation.** A later remote authenticated source-free operation was denied by execution controls **before reaching Google**. It cannot be disguised, rerouted, or repeated through another tool/machine. Public provider-status pages cannot prove this project's key/model/billing state. The present code and synthetic tests therefore **do not establish real working keys**.
+4. **Separately verified code compatibility issue.** The shared Gemini source-free preflight was setting `temperature=0` even with 3.8 Flash. Google's model-3.8 migration instructions say to omit deprecated sampling controls `temperature`, `top_p`, `top_k` and `candidate_count`. The code now omits these controls, retains a small bounded `max_output_tokens=512` and never attaches PDF source to the preflight. This prevents an independent model-compatibility failure; it **does not explain or undo the historical HTTP 402**. Reference: https://aistudio.google.com/docs/whats-new-gemini-3.8#migrate-to-gemini-3-8-flash.
+5. **Sanitized key-level observability.** Each eligible source-free 401/402/403/503/504 fallback now logs only the configured credential-variable **label** and integer HTTP status, never a credential value, raw provider exception or source. HTTP 429 and ambiguous transport errors remain fail-closed; source-bearing requests are never automatically replayed. This behavior is tested with fake SDK inputs, **not live provider keys**.
+
+## Account-level decision boundary
+
+Within Google AI Studio itself, check the particular API-key row's **project**, that project's **Billing Tier / Status**, the linked **billing account / prepay plan**, and any project/account spend caps. A positive balance on a different billing account does not validate the account attached to a failing key. The provider's published project and billing views are https://aistudio.google.com/api-keys, https://aistudio.google.com/projects, https://aistudio.google.com/billing and https://aistudio.google.com/spend. This is an account-specific question which cannot be answered from GitHub source or synthetic tests; do not store credentials, account IDs, protected filenames or screenshots in the public repository.
+
+**Operational authorization remains blocked:** Do not retry the previously denied authenticated probe or any possibly submitted PDF. An independently approved permitted provider access path and a new positive readiness result are required before considering any source submission. A subsequent C3 continuation also requires a distinct approval to reconcile the same frozen second-round sources and engine receipts; no third campaign is authorized.
+
+## Verification checklist and disposition
+
+- Confirm that code selects the original safe key pool from `%LOCALAPPDATA%\\Microvid\\.env`, with explicit process credentials preceding numbered fallbacks. Do not display secret values.
+- Source-free synthetic regression: a failed candidate 402 proceeds to a different configured key; a 429 or unknown transport status stops; the 3.8 probe does **not** include legacy sampling parameters; logs contain only candidate labels and numeric statuses.
+- Full repository CI must pass on the new exact head. Code validation cannot replace live account readiness or independent scientific/translation/browser acceptance.
+
+**Status: CODE COMPATIBILITY FIXED / ACCOUNT GEMINI ACCESS NOT REVERIFIED / C3–C4 REMAIN BLOCKED_EXTERNAL.** This report carries no release authority.
