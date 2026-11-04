@@ -137,6 +137,13 @@ def select_healthy_key(
         except Exception as exc:
             status = error_status(exc)
             if status in {401, 402, 403, 503, 504}:
+                # Only log the configured variable label and numeric status,
+                # never the key value or potentially sensitive error text.
+                import logging
+                logging.getLogger(__name__).info(
+                    "Gemini source-free preflight candidate %s returned HTTP %d; "
+                    "trying next distinct credential", candidate.label, status,
+                )
                 failures.append(status)
                 continue
             if status == 429:
