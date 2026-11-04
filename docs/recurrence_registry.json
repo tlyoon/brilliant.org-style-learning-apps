@@ -478,7 +478,7 @@
         {
           "path": "tests/test_gemini_key_failover.py",
           "kind": "python",
-          "marker": "test_quota_and_auth_fail_without_trying_other_keys"
+          "marker": "test_quota_and_bad_request_stop_without_trying_other_keys"
         },
         {
           "path": "tests/test_gemini_key_failover.py",
@@ -495,7 +495,8 @@
           "kind": "python",
           "marker": "test_explicit_503_504_and_429_never_replay_controlled_pdf"
         }
-      ]
+      ],
+      "ownerSupersession": "2026-11-04 owner request supersedes preflight 401/403 stop-only rule with bounded failover; quota 429 and source-bearing no-replay remain protected by BSA-20261104-106"
     },
     {
       "id": "BSA-20261104-105",
@@ -516,6 +517,48 @@
           "path": "tests/test_visual_generation_stage.py",
           "kind": "python",
           "marker": "test_visual_plan_schema_stops_after_two_invalid_batches_without_spec_requests"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261104-106",
+      "class": "gemini-credential-billing-auth-fallback-before-source-submission",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_access_and_billing_failures_try_next_distinct_key"
+        },
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_all_keys_billing_blocked_does_not_send_source"
+        },
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_all_keys_denied_reports_auth_failure"
+        },
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_quota_and_bad_request_stop_without_trying_other_keys"
+        },
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_billing_failure_is_recovered_before_source_upload"
+        },
+        {
+          "path": "tests/test_gemini_key_failover.py",
+          "kind": "python",
+          "marker": "test_single_key_is_preflighted_before_source"
+        },
+        {
+          "path": "tests/test_gemini_api_client.py",
+          "kind": "python",
+          "marker": "test_explicit_503_504_and_429_never_replay_controlled_pdf"
         }
       ]
     }
