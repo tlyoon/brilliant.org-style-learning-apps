@@ -5,7 +5,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from app_generator.errors import AuthenticationRequired, GeminiApiError, TransientGeminiError
-from app_generator.llm.gemini_api import GeminiApiClient, response_schema_for_stage
+from app_generator.llm.gemini_api import GeminiApiClient, build_gemini_sdk_client, response_schema_for_stage
 
 
 class FakeModels:
@@ -63,6 +63,53 @@ class GeminiApiClientTests(unittest.TestCase):
         )
         values.update(overrides)
         return SimpleNamespace(**values)
+
+    def test_shared_gemini_factory_auto_preflights_by_default(self):
+        from inspect import signature
+
+        self.assertIs(True, signature(build_gemini_sdk_client).parameters["probe_keys"].default)
+        from app_generator.llm.gemini_key_failover import build_keyed_gemini_client
+        self.assertIs(True, signature(build_keyed_gemini_client).parameters["probe_keys"].default)
+
+    def test_production_pdf_client_uses_shared_factory_without_opt_in(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir()
+            (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
+            pdf = root / "source.pdf"
+            pdf.write_bytes(b"%PDF-test")
+            sdk = FakeSdk(['{"ok":true}'])
+            config = self.config(root)
+            client = GeminiApiClient(config, (pdf,), sdk_types=FakeTypes)
+            with patch(
+                "app_generator.llm.gemini_api.build_gemini_sdk_client",
+                return_value=sdk,
+            ) as factory:
+                client.prepare()
+                self.assertEqual("BEGIN_JSON", client.ask("Return object", stage="custom").splitlines()[0])
+            factory.assert_called_once_with(config)
+            self.assertEqual(1, len(sdk.models.calls))
+
+    def test_no_other_production_module_bypasses_shared_gemini_gateway(self):
+        import re
+
+        repo_root = Path(__file__).resolve().parents[1]
+        authorized = {
+            "app_generator/llm/gemini_api.py",
+            "app_generator/llm/gemini_key_failover.py",
+        }
+        direct_calls = []
+        for folder in ("app_generator", "scripts"):
+            for source_file in (repo_root / folder).rglob("*.py"):
+                relative = source_file.relative_to(repo_root).as_posix()
+                if relative in authorized:
+                    continue
+                source = source_file.read_text(encoding="utf-8")
+                if re.search(r"\\bgenai\\.Client\\s*\\(", source) or re.search(
+                    r"\\.models\\.generate_content\\s*\\(", source
+                ):
+                    direct_calls.append(relative)
+        self.assertEqual([], sorted(direct_calls), "Unprotected direct Gemini SDK entrypoints")
 
     def test_source_analysis_uses_inline_pdf_master_prompt_and_structured_output(self):
         with tempfile.TemporaryDirectory() as directory:
