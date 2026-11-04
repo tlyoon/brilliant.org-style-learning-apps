@@ -271,6 +271,8 @@ billing account with depleted credits, in which case no key will work until
 the legitimate billing prerequisite is restored. `doctor` never performs
 this generation probe, so its success alone does not prove API readiness.
 
+Source-bearing generation makes **one** SDK request per stage. Any timeout, connection interruption, HTTP 408/409/5xx, empty answer or other ambiguous outcome latches the current API client; do not reissue the request through another key or the same instance. Reconcile the private run-state before a new authorized attempt. `gemini_api_max_attempts` and `gemini_api_retry_backoff_seconds` are legacy settings and cannot enable source-bearing retries.
+
 An **already-submitted PDF request** is not automatically replayed after
 any provider failure, even if another key is present. Inspect its private
 stage/receipt first; new source-bearing attempts require independent
