@@ -418,7 +418,7 @@ class GeminiApiClient:
                 self._source_request_blocked = False
                 return text
             self._source_request_blocked = False
-            return "BEGIN_JSON\\n" + json.dumps(parsed, ensure_ascii=False) + "\\nEND_JSON"
+            return "BEGIN_JSON\n" + json.dumps(parsed, ensure_ascii=False) + "\nEND_JSON"
         except ResponseContractError:
             # The model may already have processed the PDF.
             raise
