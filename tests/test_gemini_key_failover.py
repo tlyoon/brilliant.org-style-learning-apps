@@ -207,7 +207,7 @@ class ClientSelectionTests(unittest.TestCase):
             root=Path(d)/"Microvid"
             root.mkdir()
             (root/".env").write_text(
-                "GEMINI_API_KEY_1=unfunded\\nGEMINI_API_KEY_2=funded\\n",
+                "GEMINI_API_KEY_1=unfunded\nGEMINI_API_KEY_2=funded\n",
                 encoding="utf-8",
             )
             sdk=FakeSdk({"unfunded":HttpError(402),"funded":"READY"})
@@ -225,7 +225,7 @@ class ClientSelectionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d)/"Microvid"
             root.mkdir()
-            (root/".env").write_text("GEMINI_API_KEY_1=only-key\\n")
+            (root/".env").write_text("GEMINI_API_KEY_1=only-key\n")
             sdk=FakeSdk({"only-key":HttpError(402)})
             config=SimpleNamespace(gemini_api_model="gemini-3.8-flash",
                 gemini_api_timeout_seconds=1200)
