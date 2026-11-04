@@ -38,6 +38,26 @@ class GoogleAccountVerifier:
                 continue
         return emails
 
+    def verify_noninteractive(self) -> None:
+        """Verify an existing logged-in UI session; NEVER ask an owner to sign in.
+
+        This guard runs before original PDF attachment or any AI submission.
+        Absence of an authenticated account is a fast, safe blocker rather
+        than permission to copy cookies, launch a login flow, or retry.
+        """
+        deadline = time.monotonic() + max(0, self.timeout)
+        while True:
+            accounts = self._visible_account_emails()
+            if accounts == {self.expected}:
+                return
+            if accounts:
+                raise WrongAccountError("independent reviewer has a different active account")
+            if time.monotonic() >= deadline:
+                raise AuthenticationRequired(
+                    "independent reviewer profile lacks existing verified sign-in"
+                )
+            time.sleep(0.25)
+
     def verify(self) -> None:
         deadline = time.monotonic() + self.timeout
         announced = False

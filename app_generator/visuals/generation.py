@@ -82,7 +82,20 @@ def visual_generation_catalog(domain: DomainProfile) -> dict[str, Any]:
             }
         )
 
+    # Optional domain-owned constraints mirror the trusted renderer validators.
+    # Unknown/stale template IDs are never sent to the model.
+    guidance_path = domain.path("visuals", "templateRegistry").with_name("renderer-guidance.json")
+    renderer_guidance = {}
+    if guidance_path.is_file():
+        guidance = json.loads(guidance_path.read_text(encoding="utf-8"))
+        if guidance.get("schemaVersion") != "1.0" or not isinstance(guidance.get("templates"), dict):
+            raise ResponseContractError("Invalid renderer-guidance manifest")
+        available = {item["id"] for item in templates}
+        if not available.issubset(guidance["templates"]):
+            raise ResponseContractError("Renderer guidance is missing an available trusted template")
+        renderer_guidance = {key: deepcopy(value) for key, value in guidance["templates"].items() if key in available}
     return {
+        "rendererGuidance": renderer_guidance,
         "domainId": domain.id,
         "profileVersion": domain.profile_version,
         "availableTemplates": templates,
@@ -138,6 +151,48 @@ def selected_visual_activity_ids(
         for activity_id in package_ids
         if by_id[activity_id].get("selectedMode") != "none"
     ]
+
+
+def partition_visual_specs(
+    repo_root: Path,
+    package: dict[str, Any],
+    plans_document: dict[str, Any],
+    specs_document: dict[str, Any],
+) -> tuple[dict[str, dict[str, Any]], list[str]]:
+    """Separate independently valid visual specs without modifying source activities.
+
+    Every selected plan is evaluated with its own real renderer/domain validator.
+    Nonselected or duplicate spec IDs are rejected, never silently reused.
+    """
+    selected = selected_visual_activity_ids(package, plans_document)
+    plans = {record["activityId"]: record for record in _records(
+        plans_document, value_key="visualPlan", label="visual-plans"
+    )}
+    specs = _records(specs_document, value_key="visualSpec", label="visual-specs")
+    ids = [record["activityId"] for record in specs]
+    if len(ids) != len(set(ids)) or not set(ids).issubset(selected):
+        raise ResponseContractError("visual-specs contains duplicate or unselected activity IDs")
+    by_id = {record["activityId"]: record for record in specs}
+    activities = {activity["id"]: activity for activity in package["activities"]}
+    valid: dict[str, dict[str, Any]] = {}
+    failures: list[str] = []
+    for activity_id in selected:
+        record = by_id.get(activity_id)
+        if record is None:
+            failures.append(f"{activity_id}: missing visualSpec")
+            continue
+        probe = deepcopy(package)
+        probe["activities"] = [deepcopy(activities[activity_id])]
+        try:
+            attach_visual_documents(
+                repo_root, probe, {"activities": [plans[activity_id]]},
+                {"activities": [record]},
+            )
+        except ResponseContractError as error:
+            failures.append(f"{activity_id}: {error}")
+        else:
+            valid[activity_id] = deepcopy(record)
+    return valid, failures
 
 
 def attach_visual_documents(

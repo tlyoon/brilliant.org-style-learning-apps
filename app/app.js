@@ -1,14 +1,25 @@
 const DEFAULT_PACKAGE = document.querySelector("#app").dataset.packageUrl || "";
-const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false };
+const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false, sessionMetrics: Object.create(null), reviewPending: false };
 let loadGeneration = 0;
 
 const copy = {
-  en: { activity: "Activity", of: "of", check: "Check answer", next: "Next activity", tryAgain: "Try again", restart: "Start again", hint: "Show a hint", complete: "Journey complete", correct: "That reasoning fits.", retry: "Reconsider the relationship and try again.", moveUp: "Move up", moveDown: "Move down", position: "Position", skip: "Skip" },
-  ms: { activity: "Aktiviti", of: "daripada", check: "Semak jawapan", next: "Aktiviti seterusnya", tryAgain: "Cuba lagi", restart: "Mula semula", hint: "Tunjukkan petunjuk", complete: "Perjalanan selesai", correct: "Penaakulan itu sesuai.", retry: "Pertimbangkan semula hubungan itu dan cuba lagi.", moveUp: "Alih ke atas", moveDown: "Alih ke bawah", position: "Kedudukan", skip: "Langkau" },
-  zh: { activity: "活动", of: "/", check: "检查答案", next: "下一个活动", tryAgain: "再试一次", restart: "重新开始", hint: "显示提示", complete: "学习旅程完成", correct: "这个推理是恰当的。", retry: "重新思考其中的关系，然后再试一次。", moveUp: "上移", moveDown: "下移", position: "位置", skip: "跳过" },
+  en: { activity: "Activity", of: "of", check: "Check answer", next: "Next activity", tryAgain: "Try again", restart: "Start again", hint: "Show a hint", complete: "Journey complete", correct: "That reasoning fits.", retry: "Reconsider the relationship and try again.", moveUp: "Move up", moveDown: "Move down", position: "Position", skip: "Skip", completedCount: "Correctly completed:", reviewPending: "Review unfinished activities", exportFeedback: "Export anonymous feedback" },
+  ms: { activity: "Aktiviti", of: "daripada", check: "Semak jawapan", next: "Aktiviti seterusnya", tryAgain: "Cuba lagi", restart: "Mula semula", hint: "Tunjukkan petunjuk", complete: "Perjalanan selesai", correct: "Penaakulan itu sesuai.", retry: "Pertimbangkan semula hubungan itu dan cuba lagi.", moveUp: "Alih ke atas", moveDown: "Alih ke bawah", position: "Kedudukan", skip: "Langkau", completedCount: "Diselesaikan dengan betul:", reviewPending: "Ulang aktiviti belum selesai", exportFeedback: "Eksport maklum balas tanpa nama" },
+  zh: { activity: "活动", of: "/", check: "检查答案", next: "下一个活动", tryAgain: "再试一次", restart: "重新开始", hint: "显示提示", complete: "学习旅程完成", correct: "这个推理是恰当的。", retry: "重新思考其中的关系，然后再试一次。", moveUp: "上移", moveDown: "下移", position: "位置", skip: "跳过", completedCount: "\u5df2\u6b63\u786e\u5b8c\u6210\uff1a", reviewPending: "\u590d\u4e60\u672a\u5b8c\u6210\u7684\u6d3b\u52a8", exportFeedback: "\u5bfc\u51fa\u533f\u540d\u53cd\u9988" },
 };
 
+// Session-only evidence descriptions, not mastery levels or grades.
+const evidenceCopy = {
+  en: { independent: "Correct on first attempt without help:", assisted: "Correct after help, an error or a skip:" },
+  ms: { independent: "Betul pada cubaan pertama tanpa bantuan:", assisted: "Betul selepas bantuan, kesilapan atau langkau:" },
+  zh: {
+    independent: "\u9996\u6b21\u4f5c\u7b54\u6b63\u786e\uff0c\u672a\u4f7f\u7528\u63d0\u793a\uff1a",
+    assisted: "\u4f7f\u7528\u63d0\u793a\u3001\u7b54\u9519\u6216\u8df3\u8fc7\u540e\u5b8c\u6210\uff1a",
+  },
+};
 const localized = (value) => typeof value === "string" ? value : value?.[state.locale] ?? value?.en ?? "";
+// Only authored, package-controlled reasoning is shown; no network generation.
+const reasoningHeading = { en: "Why this works", ms: "Mengapa jawapan ini betul", zh: "\u539f\u7406\u8bf4\u660e" };
 
 const ACTIVITY_QUERY_KEY = "activity";
 
@@ -46,6 +57,70 @@ function element(tag, { className, text, attributes } = {}) {
   if (text !== undefined) node.textContent = text;
   for (const [name, value] of Object.entries(attributes ?? {})) node.setAttribute(name, value);
   return node;
+}
+
+function focusUpdatedChoice(selector, matches) {
+  // Interaction updates rebuild the card. Return keyboard focus to the
+  // same semantic control on the new card rather than the document body.
+  const controls = document.querySelectorAll?.(selector) ?? [];
+  for (const control of controls) {
+    if (matches(control)) { control.focus?.(); return true; }
+  }
+  return false;
+}
+
+// Anonymous, in-memory session counters only: no content, identity, network or persistence.
+function recordLearningEvent(activity, event) {
+  const id = activity.id;
+  if (!Object.hasOwn(state.sessionMetrics, id)) {
+    state.sessionMetrics[id] = {
+      checks: 0, wrong: 0, correct: 0, hints: 0, skips: 0,
+      autoHintShown: false, completed: false,
+      firstCheck: null, firstCheckHadHint: false, completionEvidence: null,
+    };
+  }
+  const entry = state.sessionMetrics[id];
+  if (event === "wrong" || event === "correct") {
+    // Preserve first checked response even after retry or hint use.
+    if (entry.checks === 0) {
+      entry.firstCheck = event;
+      entry.firstCheckHadHint = entry.hints > 0;
+    }
+    entry.checks += 1;
+    entry[event] += 1;
+  } else if (event === "completed") {
+    entry.completed = true;
+    // Skips, hints and earlier mistakes never become independent mastery.
+    entry.completionEvidence =
+      entry.checks === 1 && entry.correct === 1 && entry.hints === 0 && entry.skips === 0
+        ? "independent" : "assisted";
+  } else if (event === "hints" || event === "skips") {
+    entry[event] += 1;
+  } else {
+    throw new Error("unknown private learning event");
+  }
+}
+
+// Private, opt-in teacher feedback: only ordinal/activity identifiers and counts.
+function anonymousLearningFeedback() {
+  const rows = state.package.activities.map((activity,index) => {
+    const entry = state.sessionMetrics[activity.id] || {};
+    const safeId = /^[A-Za-z0-9-]{1,100}$/.test(activity.id) ? activity.id : "";
+    return {
+      ordinal: index + 1, activityId: safeId,
+      checks: entry.checks || 0, wrong: entry.wrong || 0,
+      correct: entry.correct || 0, hints: entry.hints || 0,
+      skips: entry.skips || 0, completed: entry.completed === true,
+      adaptiveHintShown: entry.autoHintShown === true,
+      firstCheck: entry.firstCheck || "unattempted",
+      firstCheckHadHint: entry.firstCheckHadHint === true,
+      completionEvidence: entry.completed === true
+        ? (entry.completionEvidence === "independent" ? "independent" : "assisted")
+        : "not_completed",
+    };
+  });
+  return { schemaVersion: 1, activitiesTotal: rows.length, activities: rows,
+    containsStudentIdentity: false, publicationAuthorized: false };
 }
 
 function resetActivity() {
@@ -92,7 +167,14 @@ function renderMcq(card, activity) {
       attributes: { "aria-pressed": String(state.response === option.id) },
     });
     button.dataset.value = option.id;
-    button.addEventListener("click", () => { state.response = option.id; state.checked = false; render(); });
+    button.addEventListener("click", () => {
+      state.response = option.id;
+      state.checked = false;
+      render();
+      // Rerendering replaces the activated button. Restore focus to its
+      // selected replacement so keyboard users keep their place.
+      document.querySelector("#app .choices button[aria-pressed='true']")?.focus?.();
+    });
     choices.append(button);
   }
   card.append(choices);
@@ -111,10 +193,15 @@ function renderPlacements(card, activity) {
         text: localized(target.label),
         attributes: { "aria-pressed": String(state.response[item.id] === target.id) },
       });
+      button.dataset.itemId = item.id;
+      button.dataset.targetId = target.id;
       button.addEventListener("click", () => {
         state.response = { ...state.response, [item.id]: target.id };
         state.checked = false;
         render();
+        focusUpdatedChoice("#app .target-choice", (candidate) =>
+          candidate.dataset?.itemId === item.id && candidate.dataset?.targetId === target.id
+        );
       });
       targets.append(button);
     }
@@ -133,10 +220,12 @@ function renderSelection(card, activity) {
       text: localized(item.label),
       attributes: { "aria-pressed": String(selected) },
     });
+    button.dataset.value = item.id;
     button.addEventListener("click", () => {
       state.response = selected ? state.response.filter((id) => id !== item.id) : [...state.response, item.id];
       state.checked = false;
       render();
+      focusUpdatedChoice("#app .choices button", (candidate) => candidate.dataset?.value === item.id);
     });
     choices.append(button);
   }
@@ -149,10 +238,13 @@ function renderOrdering(card, activity) {
   const list = element("div", { className: "ordering", attributes: { role: "list", "aria-label": localized(activity.prompt) } });
   state.response.forEach((itemId, index) => {
     const row = element("div", { className: "order-row", attributes: { role: "listitem" } });
+    row.dataset.itemId = itemId;
     row.append(element("p", { className: "interaction-item", text: `${labels.position} ${index + 1}: ${localized(byId[itemId].label)}` }));
     const controls = element("div", { className: "order-controls" });
     for (const [text, delta] of [[labels.moveUp, -1], [labels.moveDown, 1]]) {
       const button = element("button", { className: "secondary order-control", text, attributes: { "aria-label": `${text}: ${localized(byId[itemId].label)}` } });
+      button.dataset.itemId = itemId;
+      button.dataset.delta = String(delta);
       button.disabled = index + delta < 0 || index + delta >= state.response.length;
       button.addEventListener("click", () => {
         const reordered = [...state.response];
@@ -160,6 +252,13 @@ function renderOrdering(card, activity) {
         state.response = reordered;
         state.checked = false;
         render();
+        const selector = "#app .order-control";
+        const sameDirection = focusUpdatedChoice(selector, (control) =>
+          control.dataset?.itemId === itemId && control.dataset?.delta === String(delta) && !control.disabled
+        );
+        if (!sameDirection) focusUpdatedChoice(selector, (control) =>
+          control.dataset?.itemId === itemId && control.dataset?.delta === String(-delta) && !control.disabled
+        );
       });
       controls.append(button);
     }
@@ -197,6 +296,13 @@ function renderVisual(card, activity) {
   card.append(fallback);
 }
 
+function nextUnfinishedIndex(start) {
+  const i = state.package.activities.findIndex((activity,index) =>
+    index >= start && !state.sessionMetrics[activity.id]?.completed
+  );
+  return i < 0 ? state.package.activities.length : i;
+}
+
 function renderComplete(root) {
   syncActivityUrl(null);
   const card = element("section", { className: "card" });
@@ -204,8 +310,60 @@ function renderComplete(root) {
     element("p", { className: "eyebrow", text: localized(state.package.subchapter) }),
     element("h1", { text: copy[state.locale].complete }),
   );
+  const total = state.package.activities.length;
+  const completed = state.package.activities.filter((a) => state.sessionMetrics[a.id]?.completed).length;
+  card.append(element("p", { className: "progress-summary",
+    text: copy[state.locale].completedCount + " " + completed + " / " + total }));
+  const independent = state.package.activities.filter((a) =>
+    state.sessionMetrics[a.id]?.completed &&
+    state.sessionMetrics[a.id]?.completionEvidence === "independent"
+  ).length;
+  const assisted = completed - independent;
+  const labels = evidenceCopy[state.locale];
+  const evidence = element("div", { className: "evidence-summary",
+    attributes: { "aria-label": "Learning evidence" } });
+  evidence.append(
+    element("p", { text: labels.independent + " " + independent }),
+    element("p", { text: labels.assisted + " " + assisted }),
+  );
+  card.append(evidence);
+  if (completed < total) {
+    const review = element("button", { className: "action secondary",
+      text: copy[state.locale].reviewPending, attributes: { id: "review-pending" } });
+    review.addEventListener("click", () => {
+      state.reviewPending = true;
+      state.activityIndex = nextUnfinishedIndex(0);
+      resetActivity();
+      render();
+    });
+    card.append(review);
+  }
+  const exportFeedback = element("button", {
+    className: "action secondary", text: copy[state.locale].exportFeedback,
+    attributes: { id: "export-feedback" },
+  });
+  exportFeedback.addEventListener("click", () => {
+    // No fetch, localStorage, identity or account access. Create a download
+    // only in direct response to the learner opting in.
+    const data = JSON.stringify(anonymousLearningFeedback());
+    const link = element("a", { attributes: {
+      download: "anonymous-learning-feedback.json",
+      href: "data:application/json;charset=utf-8," + encodeURIComponent(data),
+    } });
+    link.style.display = "none";
+    card.append(link);
+    link.click();
+    link.remove?.();
+  });
+  card.append(exportFeedback);
   const restart = element("button", { className: "action", text: copy[state.locale].restart, attributes: { id: "restart" } });
-  restart.addEventListener("click", () => { state.activityIndex = 0; resetActivity(); render(); });
+  restart.addEventListener("click", () => {
+    state.sessionMetrics = Object.create(null);
+    state.reviewPending = false;
+    state.activityIndex = 0;
+    resetActivity();
+    render();
+  });
   card.append(restart);
   root.replaceChildren(card);
 }
@@ -247,6 +405,21 @@ function render() {
     }));
   }
 
+  // Do not reveal the full solution before a correct response.
+  // Always construct inert DOM text nodes, never package-supplied HTML.
+  const reason = localized(activity.explanation);
+  if (state.checked && responseCorrect(activity) && typeof reason === "string" && reason.trim()) {
+    const panel = element("section", {
+      className: "scientific-reasoning",
+      attributes: { "aria-label": reasoningHeading[state.locale] },
+    });
+    panel.append(
+      element("h2", { className: "reasoning-title", text: reasoningHeading[state.locale] }),
+      element("p", { className: "reasoning-text", text: reason }),
+    );
+    card.append(panel);
+  }
+
   const actions = element("div", { className: "action-row" });
   const checkLabel = state.checked
     ? (responseCorrect(activity) ? labels.next : labels.tryAgain)
@@ -254,17 +427,38 @@ function render() {
   const check = element("button", { className: "action", text: checkLabel, attributes: { id: "check" } });
   check.disabled = !responseComplete(activity);
   check.addEventListener("click", () => {
-    if (!state.checked) state.checked = true;
-    else if (responseCorrect(activity)) { state.activityIndex += 1; resetActivity(); }
-    else resetActivity();
+    if (!state.checked) {
+      const correct = responseCorrect(activity);
+      recordLearningEvent(activity, correct ? "correct" : "wrong");
+      // Feedback loop: after two wrong checks, reveal the EXISTING authored
+      // hint in the selected locale; never generate ungrounded scientific text.
+      const progress = state.sessionMetrics[activity.id];
+      if (!correct && progress.wrong >= 2 && !state.hint && !progress.autoHintShown &&
+          activity.hints?.[0]) {
+        progress.autoHintShown = true;
+        recordLearningEvent(activity, "hints");
+        state.hint = true;
+      }
+      state.checked = true;
+    } else if (responseCorrect(activity)) {
+      recordLearningEvent(activity, "completed");
+      state.activityIndex = state.reviewPending
+        ? nextUnfinishedIndex(state.activityIndex + 1) : state.activityIndex + 1;
+      resetActivity();
+    } else resetActivity();
     render();
   });
   const hint = element("button", { className: "action secondary", text: labels.hint, attributes: { id: "hint" } });
-  hint.addEventListener("click", () => { state.hint = true; render(); });
+  hint.addEventListener("click", () => {
+    if (!state.hint) recordLearningEvent(activity, "hints");
+    state.hint = true; render();
+  });
   actions.append(check, hint);
   const skip = element("button", { className: "action secondary skip-action", text: labels.skip, attributes: { id: "skip" } });
   skip.addEventListener("click", () => {
-    state.activityIndex += 1;
+    recordLearningEvent(activity, "skips");
+    state.activityIndex = state.reviewPending
+      ? nextUnfinishedIndex(state.activityIndex + 1) : state.activityIndex + 1;
     resetActivity();
     render();
   });
@@ -292,6 +486,8 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
     const loadedPackage = await response.json();
     if (generation !== loadGeneration) return;
     state.package = loadedPackage;
+    state.sessionMetrics = Object.create(null);
+    state.reviewPending = false;
     applyActivityDeepLink(loadedPackage.activities ?? []);
     state.loading = false;
     localeSelector.disabled = false;

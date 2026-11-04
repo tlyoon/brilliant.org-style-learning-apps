@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "1.0",
+  "templates": {
+    "mechanics.cart_collision_1d": {
+      "requiredEntities": {
+        "kind": "cart",
+        "min": 1,
+        "max": 4,
+        "allSameKind": true
+      },
+      "rules": [
+        "semanticParameters.phase, when present, is before|during|after",
+        "semanticParameters.track_orientation, when present, is horizontal"
+      ],
+      "exampleEntities": [
+        {
+          "id": "cart-a",
+          "kind": "cart",
+          "label": {
+            "en": "Cart A",
+            "ms": "Troli A",
+            "zh": "?? A"
+          }
+        }
+      ]
+    },
+    "mechanics.free_body_2d": {
+      "requiredEntities": {
+        "kind": "body",
+        "min": 1,
+        "max": 1,
+        "allSameKind": true
+      },
+      "rules": [
+        "At least one vector; all vectors have entityId equal to the single body id"
+      ],
+      "exampleEntities": [
+        {
+          "id": "body-a",
+          "kind": "body",
+          "label": {
+            "en": "Body",
+            "ms": "Jasad",
+            "zh": "??"
+          }
+        }
+      ]
+    },
+    "graph.cartesian_qualitative": {
+      "rules": [
+        "graphSeries must have one to four entries (see authoritative JSON schema for each series)",
+        "Include axes as scientifically appropriate; never fabricate numeric measurements"
+      ]
+    },
+    "state.energy_bar": {
+      "requiredEntities": {
+        "kind": "energy-component",
+        "min": 1,
+        "max": 4,
+        "allSameKind": true
+      },
+      "rules": [
+        "Each energy-component entity requires properties.relativeAmount between 0 and 1 inclusive",
+        "Exact case-sensitive field name is properties.relativeAmount (camelCase); properties.relative_amount (snake_case) is INVALID even when the value is between 0 and 1",
+        "Emit properties.relativeAmount as a JSON number, e.g. 0.6, not as a string and never omit it",
+        "An energy state must be internally consistent with conservation laws; do not represent state values using entities of unrelated kinds",
+        "Use source-justified qualitative relative energy bars, not arbitrary measured joules"
+      ],
+      "exampleEntities": [
+        {
+          "id": "kinetic",
+          "kind": "energy-component",
+          "label": {
+            "en": "Kinetic energy",
+            "ms": "Tenaga kinetik",
+            "zh": "??"
+          },
+          "properties": {
+            "relativeAmount": 0.6
+          }
+        },
+        {
+          "id": "elastic",
+          "kind": "energy-component",
+          "label": {
+            "en": "Elastic potential energy",
+            "ms": "Tenaga keupayaan kenyal",
+            "zh": "????"
+          },
+          "properties": {
+            "relativeAmount": 0.4
+          }
+        }
+      ],
+      "requiredEntityProperties": {
+        "relativeAmount": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "forbiddenPropertyAliases": [
+        "relative_amount"
+      ]
+    },
+    "mechanics.motion_1d_slider": {
+      "requiredEntities": {
+        "kind": "cart",
+        "min": 1,
+        "max": 1,
+        "allSameKind": true
+      },
+      "rules": [
+        "semanticParameters.motion_model is exactly constant-velocity",
+        "simulation.modelId is kinematics.motion_1d with variableIds position, velocity, time",
+        "Two sliders must control velocity (-20 to 20 max) and time (min 0, max no greater than 20)",
+        "states contains initial-state with numeric position,velocity,time and time=0",
+        "Declare a constant-velocity invariant tied to simulation",
+        "fallback is scene_diagram with mechanics.cart_collision_1d",
+        "accessibility.reducedMotionStrategy is instant-state"
+      ]
+    }
+  }
+}

@@ -12,6 +12,8 @@ from typing import Any, Callable
 
 from app_generator.config import GeneratorConfig
 from app_generator.errors import AuthenticationRequired, GeminiApiError, ResponseContractError, TransientGeminiError
+from app_generator.llm.gemini_key_failover import build_keyed_gemini_client
+
 
 VERTEX_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
 
@@ -50,8 +52,12 @@ def _client_project_id(client_file: Path) -> str:
     return ""
 
 
-def build_gemini_sdk_client(config: GeneratorConfig) -> Any:
-    """Create a Gemini Developer API-key client or OAuth Vertex AI client."""
+def build_gemini_sdk_client(config: GeneratorConfig, *, probe_keys: bool = True) -> Any:
+    """Create a Gemini client; automatically select a working API key before source use.
+
+    A caller that is *provably non-generating*, such as doctor, may explicitly
+    pass probe_keys=False. PDF generation always uses the default preflight.
+    """
 
     try:
         from google import genai
@@ -62,12 +68,9 @@ def build_gemini_sdk_client(config: GeneratorConfig) -> Any:
         ) from exc
 
     timeout_ms = config.gemini_api_timeout_seconds * 1000
-    api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
-    if api_key:
-        return genai.Client(
-            api_key=api_key,
-            http_options=types.HttpOptions(timeout=timeout_ms),
-        )
+    keyed_client = build_keyed_gemini_client(genai, types, config, probe_keys=probe_keys)
+    if keyed_client is not None:
+        return keyed_client
 
     if not config.drive_oauth_client_file.is_file():
         raise AuthenticationRequired(
@@ -301,11 +304,16 @@ class GeminiApiClient:
         source_paths: tuple[Path, ...],
         *,
         sdk_client: Any | None = None,
+        sdk_types: Any | None = None,
         sleep: Callable[[float], None] = time.sleep,
     ) -> None:
         self.config = config
         self.source_paths = tuple(Path(path) for path in source_paths)
         self.sdk_client = sdk_client
+        # Fake SDK callers may supply lightweight type factories so deterministic
+        # unit tests never import the heavyweight/network-capable provider package.
+        # Production callers use the actual provider SDK unchanged.
+        self.sdk_types = sdk_types
         self.sleep = sleep
         self.source_documents: list[bytes] = []
         self.master_prompt = (config.repo_root / "config" / "gem_instructions.md").read_text(encoding="utf-8").strip()
@@ -317,6 +325,8 @@ class GeminiApiClient:
 
     def _client(self) -> Any:
         if self.sdk_client is None:
+            # Shared factory performs source-free key fallback by default.
+            # This path is used for every production Gemini API generation.
             self.sdk_client = build_gemini_sdk_client(self.config)
         return self.sdk_client
 
@@ -332,15 +342,18 @@ class GeminiApiClient:
                 raise ResponseContractError(f"Gemini API source does not have a PDF signature: {path}")
             documents.append(data)
         self.source_documents = documents
-        self._client()  # Fail authentication/API setup before local temporary PDFs are removed.
+        self._client()  # Automatic source-free key selection; no PDF submitted.
 
     def ask(self, prompt: str, *, stage: str | None = None) -> str:
         if not self.source_documents:
             raise ResponseContractError("Gemini API source files were not prepared before generation")
-        try:
-            from google.genai import types
-        except ImportError as exc:
-            raise AuthenticationRequired("google-genai is not installed") from exc
+        if self.sdk_types is not None:
+            types = self.sdk_types
+        else:
+            try:
+                from google.genai import types
+            except ImportError as exc:
+                raise AuthenticationRequired("google-genai is not installed") from exc
 
         schema = response_schema_for_stage(stage or "")
         contents: list[Any] = [
@@ -388,6 +401,15 @@ class GeminiApiClient:
             except ResponseContractError:
                 raise
             except Exception as exc:
+                code = _status_code(exc)
+                if code in {503, 504}:
+                    raise TransientGeminiError(
+                        f'Gemini HTTP {code}; PDF request not replayed. A fresh authorized run reprobes keys.'
+                    ) from exc
+                if code == 429:
+                    raise TransientGeminiError(
+                        'Gemini quota/rate-limit HTTP 429; no rotation or automatic source replay'
+                    ) from exc
                 if not _retryable(exc):
                     code = _status_code(exc)
                     if code in {401, 403}:

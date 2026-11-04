@@ -250,6 +250,33 @@ Doctor checks configuration, Drive authorization, Source-Root/domain binding, PD
 
 The first Drive authorization on a PC may open a Google browser consent flow and create that PC/project's `drive-oauth-token.json`.
 
+### Gemini API key selection on Windows
+
+For a workstation explicitly permitted to access the existing local
+`%LOCALAPPDATA%\Microvid\.env`, the Gemini API backend discovers
+`GEMINI_API_KEY_1`, `GEMINI_API_KEY_2`, additional numbered keys and
+`GEMINI_API_KEY` without placing any credential in a command argument.
+An explicitly provided process-level `GOOGLE_API_KEY`/`GEMINI_API_KEY`
+retains precedence. Duplicate keys are skipped; at most eight distinct
+candidates are considered. No secrets are copied to the Git repository.
+Before any controlled PDF generation, the generator performs a minimal
+**source-free** probe, even when only one key is configured. With multiple
+keys, a failed candidate automatically advances to the next distinct key
+only after an explicit HTTP 401, 402, 403, 503 or 504. HTTP 429 (rate/quota),
+HTTP 400 (malformed request), unknown or ambiguous errors stop; do not use
+key rotation to evade project-level quota. HTTP 402 may reflect a shared
+billing account with depleted credits, in which case no key will work until
+the legitimate billing prerequisite is restored. `doctor` never performs
+this generation probe, so its success alone does not prove API readiness.
+
+An **already-submitted PDF request** is not automatically replayed after
+any provider failure, even if another key is present. Inspect its private
+stage/receipt first; new source-bearing attempts require independent
+authorization. Do not widen Desktop Commander permissions or substitute
+a different credential path if the default folder is unavailable.
+This change does not reopen Decision 0029's exhausted two-round campaign
+or justify additional document-specific science fixes.
+
 ## 8. Generate one selected subchapter
 
 Start with a controlled specific-mode run when validating a new project:
@@ -266,11 +293,11 @@ If that section already has generated repository artifacts, the command stops **
 
 `--regenerate` is intentionally available only in `specific` mode. The generator fully builds and validates the candidate before replacement, backs up all existing destination artifacts, validates the repository after replacement, and restores the originals if installation/verification fails. Do not use this as an auto-mode retry mechanism; coordinated auto mode continues to treat existing valid packages as completed/skipped work.
 
-The default controlled launcher opens an independent ordinary Chrome window directly on the configured Gemini `gem_url` with no Selenium or remote-debugging connection. Its separate `<chrome_profile_dir>/gemini-browser` profile starts signed out on first use and can retain your Gemini login afterward. The run displays the configured Gemini `login_name` and both the Gem and Gem editor URLs. Finish sign-in, confirm the Gem page loads, close that dedicated Chrome window, and then press Enter in the terminal. The app reopens the same signed-in profile for Selenium, navigates to the configured `gem_edit_url`, and verifies the exact active account before editing or generating. This keeps the Google sign-in flow outside browser automation. Gemini login may differ from Drive OAuth. Existing personal and legacy generator profiles are left untouched. The launcher uses a new local debug connection and reports a connection-readiness failure after 15 seconds rather than silently waiting for an absent browser. Explicit `attach` mode is different: it requires an already-open browser and does not launch a window or clear its login.
+The default controlled launcher opens an independent ordinary Chrome window directly on the configured Gemini `gem_url` with no Selenium or remote-debugging connection. Its separate `<chrome_profile_dir>/gemini-browser` profile starts signed out on first use and can retain your Gemini login afterward. The run displays the configured Gemini `login_name` and both the Gem and Gem editor URLs. Finish sign-in, confirm the Gem page loads, close that dedicated Chrome window, and then press Enter in the terminal. The app reopens the same signed-in profile for Selenium, navigates to the configured `gem_edit_url`, and verifies the exact active account before editing or generating. This keeps the Google sign-in flow outside browser automation. Gemini login may differ from Drive OAuth. Existing personal and legacy generator profiles are left untouched. The launcher uses a new local debug connection and reports a connection-readiness failure after 15 seconds rather than silently waiting for an absent browser. When the generator Python environment lacks Selenium, automation now fails before opening the Chrome profile. Use the configured project Python environment with the declared `requirements-generator.txt` dependencies rather than assuming system Python has them. Explicit `attach` mode is different: it requires an already-open browser and does not launch a window or clear its login.
 
 The generator verifies the exact configured Gemini email on visible Google Account controls, reconciles project-owned Description and Instructions without renaming the Gem, opens a fresh conversation, uploads the controlled topic PDFs, generates/repairs the package, validates it, and installs the generated artifacts.
 
-A successful package is structurally validated and may proceed directly to configured publication without human sign-off.
+A structurally validated package is **not** automatically approved or publishable. The exact package must satisfy independent, evidence-backed academic acceptance gates for source/answer correctness, scientific semantics, multilingual equivalence and visual/interaction meaning, as well as applicable privacy and rights requirements; unresolved findings remain `REVIEW_REQUIRED` or `FAIL`. The workflow does not require manual sign-off for every question when independent evidence is admissible, but technical CI alone cannot authorize publication. For the current consolidated draft (Decision 0029), `git_publish=false`, `git_auto_merge=false` and `public_deploy=false`; the terminal C3/C4 disposition is `BLOCKED_EXTERNAL`, not permission to run a third PDF campaign or to deploy. See [finite global disposition](FINITE_GLOBAL_CODEBASE_DISPOSITION_20261104.md).
 
 ## 9. Managed coordinator: one-time project bootstrap
 
@@ -569,3 +596,9 @@ Do not reset blindly. Inspect `git status -sb`; commit/stash/remove intended loc
 ### Documentation uncertainty
 
 Refresh `main` and read the docs from that same checkout. `docs/DOCUMENTATION_MAINTENANCE.md` defines the same-PR documentation rule and CI gate.
+
+### Fresh-only independent academic review from private source evidence
+
+Use `scripts/run_private_fresh_source_bound_review.py` only after a newly completed **source-free two-context neutral Gemini probe** and a private source-bound academic priority queue. Pass `--config`, `--package`, `--pdf`, `--packets`, `--priority-queue`, `--neutral-receipt`, `--private-evidence-root`, `--run-id`, `--activity-id`, and `--claim-prefix`, and optionally `--preflight-only` to check admission without opening Chrome or sending any prompt. All referenced inputs, reviewer receipts and run directories must reside outside Git, under an authorized private evidence root. Use distinct, never-reused run IDs and claim prefixes. Existing submitted, ambiguous, in-flight or skipped claims must be reconciled, **never replayed**; the code scans known private immutable claim directories independently of the possibly stale work queue. Only a previously unreviewed activity is eligible. The command verifies original source/package SHA and specific PDF anchors before browser use, requires controlled existing-login Chrome ownership and creates one new private five-gate immutable review. This does **not** authorize publication or confer academic PASS; fresh model consensus is advisory until independent deterministic academic evidence is complete.
+
+Fresh-only source-bound academic review admission additionally rejects any two-context Gemini neutral receipt older than 30 minutes or dated beyond 60 seconds in the future, an incomplete or malformed role response SHA, a source-bearing probe, a missing original model role, or any purportedly approved or account-independent probe. Browser readiness can expire even though its old receipt remains complete. A blocked neutral probe must never be replaced with an older successful one. Re-run a separate source-free probe only when the browser account is actually available, and preserve immutable failed receipts.

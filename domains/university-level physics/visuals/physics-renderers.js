@@ -88,7 +88,46 @@
     return map[direction] ?? [1, 0];
   }
 
-  function drawVector(svg, documentRef, vector, origin, prefix, locale, index = 0) {
+  // Split long multilingual labels without losing a single character.
+  // CJK glyphs need approximately twice the horizontal space of Latin glyphs.
+  function splitVectorLabel(text, maximumUnits) {
+    const rows = [];
+    let current = "";
+    let units = 0;
+    for (const character of Array.from(String(text))) {
+      const cp = character.codePointAt(0);
+      const width = cp >= 0x2e80 ? 2 : 1;
+      if (current && units + width > maximumUnits) {
+        rows.push(current);
+        current = "";
+        units = 0;
+      }
+      current += character;
+      units += width;
+    }
+    if (current) rows.push(current);
+    return rows;
+  }
+
+  function addCartVectorLabel(svg, documentRef, vector, locale, placement) {
+    const label = semanticLabel(vector, locale, vector.quantity);
+    if (!label) return;
+    const maximumUnits = placement.maxUnits;
+    const rows = splitVectorLabel(label, maximumUnits);
+    const node = createSvgElement(documentRef, "text", {
+      x: placement.x, y: placement.y, class: "physics-visual__vector-label",
+      "text-anchor": "middle", "data-vector-label-for": vector.id,
+      "data-label-max-units": maximumUnits,
+    });
+    rows.forEach((line, i) => {
+      node.append(createSvgElement(documentRef, "tspan", {
+        x: placement.x, dy: i === 0 ? 0 : 16,
+      }, line));
+    });
+    svg.append(node);
+  }
+
+  function drawVector(svg, documentRef, vector, origin, prefix, locale, index = 0, cartLabelPlacement = null) {
     const [dx, dy] = vectorUnit(vector.direction);
     const magnitude = clamp(Number(vector.relativeMagnitude ?? 0.65), 0.15, 1);
     const length = 58 + magnitude * 72;
@@ -103,7 +142,11 @@
     const label = semanticLabel(vector, locale, vector.quantity);
     const labelX = end[0] + dx * 13 + (Math.abs(dy) > 0.3 ? 10 : 0);
     const labelY = end[1] + dy * 13 - (Math.abs(dx) > 0.3 ? 10 : 0);
-    addSvgText(svg, documentRef, labelX, labelY, label, "physics-visual__vector-label");
+    if (cartLabelPlacement) {
+      addCartVectorLabel(svg, documentRef, vector, locale, cartLabelPlacement);
+    } else {
+      addSvgText(svg, documentRef, labelX, labelY, label, "physics-visual__vector-label");
+    }
   }
 
   function makeSurface(spec, options) {
@@ -137,8 +180,16 @@
     const prefix = `pv-${++renderSequence}`;
     addMarkerDefinitions(svg, documentRef, prefix);
 
-    const phase = String(spec.semanticParameters?.phase ?? "").replace(/[-_]/g, " ");
-    if (phase) addSvgText(svg, documentRef, 40, 35, phase, "physics-visual__phase", "start");
+    const phase = String(spec.semanticParameters?.phase ?? "").toLowerCase();
+    const phaseCaptions = {
+      before: { en: "Before", ms: "Sebelum pelanggaran", zh: "\u78b0\u649e\u524d" },
+      after: { en: "After", ms: "Selepas pelanggaran", zh: "\u78b0\u649e\u540e" },
+      during: { en: "During", ms: "Semasa pelanggaran", zh: "\u78b0\u649e\u4e2d" },
+    };
+    const phaseText = phaseCaptions[phase]
+      ? localized(phaseCaptions[phase], options.locale ?? "en")
+      : phase.replace(/[-_]/g, " ");
+    if (phaseText) addSvgText(svg, documentRef, 40, 35, phaseText, "physics-visual__phase", "start");
 
     svg.append(createSvgElement(documentRef, "line", { x1: "45", y1: "255", x2: "595", y2: "255", class: "physics-visual__track" }));
     for (let x = 65; x <= 575; x += 34) {
@@ -164,7 +215,18 @@
 
     (spec.vectors ?? []).forEach((vector, index) => {
       const origin = anchors.get(vector.entityId);
-      if (origin) drawVector(svg, documentRef, vector, origin, prefix, options.locale, index);
+      if (origin) {
+        const cartIndex = visibleCarts.findIndex((cart) => cart.id === vector.entityId);
+        // Velocity labels belong above the individual carts, not at arrow
+        // endpoints where two opposing vectors converge and collide visually.
+        // For 3-4 carts, alternate rows and use shorter wrapped lines.
+        const placement = {
+          x: origin[0],
+          y: count <= 2 ? 108 : (cartIndex % 2 === 0 ? 65 : 110),
+          maxUnits: count <= 2 ? 27 : 20,
+        };
+        drawVector(svg, documentRef, vector, origin, prefix, options.locale, index, placement);
+      }
     });
     return figure;
   }
@@ -382,6 +444,42 @@
     return figure;
   }
 
+  // Keep complete energy names without intersecting neighboring narrow bars.
+  // This word-aware wrapper also handles unspaced Chinese glyph sequences.
+  function energyLabelLines(value, unitsPerLine = 10) {
+    const width = (line) => Array.from(line).reduce(
+      (n, c) => n + (c.codePointAt(0) >= 0x2e80 ? 2 : 1), 0);
+    const pieces = String(value).trim().split(/\s+/).filter(Boolean);
+    const lines = [];
+    let line = "";
+    for (const word of pieces) {
+      for (const part of splitVectorLabel(word, unitsPerLine)) {
+        const proposed = line ? line + " " + part : part;
+        if (line && width(proposed) > unitsPerLine) {
+          lines.push(line);
+          line = part;
+        } else {
+          line = proposed;
+        }
+      }
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function addEnergyLabel(svg, documentRef, x, value) {
+    const label = createSvgElement(documentRef, "text", {
+      x, y: 318, class: "physics-visual__energy-label",
+      "text-anchor": "middle", "data-full-label": value,
+    });
+    energyLabelLines(value).forEach((part, i) => {
+      label.append(createSvgElement(documentRef, "tspan", {
+        x, dy: i === 0 ? 0 : 16,
+      }, part));
+    });
+    svg.append(label);
+  }
+
   function renderEnergyBars(spec, options) {
     const { documentRef, figure, svg } = makeSurface(spec, options);
     const prefix = `pv-${++renderSequence}`;
@@ -405,7 +503,8 @@
       const fill = createSvgElement(documentRef, "rect", { x, y, width, height: barHeight, rx: "12", class: `physics-visual__energy-fill physics-visual__energy-fill--${index % 4}`, "data-semantic-id": entity.id });
       svg.append(fill);
       if (index % 2 === 1) svg.append(createSvgElement(documentRef, "rect", { x, y, width, height: barHeight, rx: "12", fill: `url(#${prefix}-hatch)`, class: "physics-visual__energy-pattern" }));
-      addSvgText(svg, documentRef, x + width / 2, 320, semanticLabel(entity, options.locale, entity.id), "physics-visual__energy-label");
+      addEnergyLabel(svg, documentRef, x + width / 2,
+                     semanticLabel(entity, options.locale, entity.id));
     });
     return figure;
   }

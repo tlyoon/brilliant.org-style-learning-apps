@@ -123,6 +123,44 @@ def package_with_visual() -> dict:
 
 
 class VisualContractTests(unittest.TestCase):
+    def test_renderer_guidance_detects_schema_and_example_disagreement(self):
+        from app_generator.visuals.guidance import renderer_guidance_errors
+        original = ROOT / "domains/university-level physics/visuals/renderer-guidance.json"
+        schema_file = ROOT / "content/schema/visual-spec.schema.json"
+        with tempfile.TemporaryDirectory() as dirname:
+            root = Path(dirname)
+            (root / "content/schema").mkdir(parents=True)
+            local_schema = root / "content/schema/visual-spec.schema.json"
+            local_schema.write_bytes(schema_file.read_bytes())
+            guidance = root / "renderer-guidance.json"
+            guidance.write_bytes(original.read_bytes())
+            all_ids = set(json.loads(guidance.read_text(encoding="utf-8"))["templates"])
+            self.assertEqual([], renderer_guidance_errors(root, guidance, all_ids))
+
+            # Regression for the real Oct-2026 energy bar failure: a schema
+            # that forbids camelCase contradicts the required example entities.
+            schema = json.loads(local_schema.read_text(encoding="utf-8"))
+            schema["$defs"]["entity"]["properties"]["properties"]["propertyNames"]["pattern"] = (
+                "^[a-z][a-z0-9]*(?:[-_.][a-z0-9]+)*$"
+            )
+            local_schema.write_text(json.dumps(schema), encoding="utf-8")
+            errors = renderer_guidance_errors(root, guidance, all_ids)
+            self.assertTrue(any("relativeAmount" in e for e in errors), errors)
+
+            local_schema.write_bytes(schema_file.read_bytes())
+            document = json.loads(guidance.read_text(encoding="utf-8"))
+            document["templates"]["state.energy_bar"]["exampleEntities"][0]["properties"] = {
+                "relative_amount": 0.6
+            }
+            guidance.write_text(json.dumps(document), encoding="utf-8")
+            errors = renderer_guidance_errors(root, guidance, all_ids)
+            self.assertTrue(any("missing relativeAmount" in e for e in errors), errors)
+
+            document["templates"]["unimplemented.template"] = {}
+            guidance.write_text(json.dumps(document), encoding="utf-8")
+            errors = renderer_guidance_errors(root, guidance, all_ids)
+            self.assertTrue(any("unimplemented.template" in e for e in errors), errors)
+
     def test_visual_registries_are_valid_and_fail_closed(self):
         self.assertEqual([], visual_registry_errors(ROOT))
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
@@ -162,6 +200,10 @@ class VisualContractTests(unittest.TestCase):
             "schemaVersion": "1.0", "mode": "energy_bar", "template": "state.energy_bar",
             "entities": [
                 {"id": "kinetic", "kind": "energy-component", "label": localized("Kinetic"), "properties": {"relativeAmount": 1.4}}
+            ],
+            "states": [
+                {"id": "initial", "values": {"kinetic": 1}},
+                {"id": "final", "values": {"kinetic": 0.5}},
             ],
             "accessibility": {"description": localized("An energy bar."), "colorIndependent": True, "reducedMotionStrategy": "not-applicable"},
             "grounding": [{"factId": "fact-cart-a", "origin": "source_fact", "appliesTo": ["kinetic"]}],
@@ -204,6 +246,78 @@ class VisualContractTests(unittest.TestCase):
         legacy["activities"] = [activity()]
         self.assertEqual([], validator.validate_package(legacy))
         self.assertEqual([], visual_contract_errors(ROOT, legacy))
+
+    def test_energy_conservation_invariants_fail_closed_on_contradictory_states(self):
+        from app_generator.domains import resolve_domain
+        physics = resolve_domain(ROOT).load_module(
+            "validation", "visualValidatorModule"
+        ).visual_spec_errors
+        visual = {
+            "template": "state.energy_bar",
+            "entities": [
+                {"id": "kinetic", "kind": "energy-component", "properties": {"relativeAmount": 0.6}},
+                {"id": "elastic", "kind": "energy-component", "properties": {"relativeAmount": 0.4}},
+            ],
+            "states": [
+                {"id": "initial", "values": {"kinetic": 1, "elastic": 0}},
+                {"id": "compressed", "values": {"kinetic": 0.6, "elastic": 0.4}},
+            ],
+            "invariants": [{
+                "id": "total-mechanical-energy",
+                "kind": "conserved",
+                "references": ["kinetic", "elastic"],
+            }],
+        }
+        self.assertEqual([], physics(visual, "visual"))
+        contradiction = copy.deepcopy(visual)
+        contradiction["states"][1]["values"]["elastic"] = 0.5
+        errors = physics(contradiction, "visual")
+        self.assertTrue(any("different state totals" in e for e in errors), errors)
+        missing = copy.deepcopy(visual)
+        missing["states"][1]["values"].pop("elastic")
+        errors = physics(missing, "visual")
+        self.assertTrue(any("finite nonnegative energy value" in e for e in errors), errors)
+        invalid = copy.deepcopy(visual)
+        invalid["states"][0]["values"]["kinetic"] = float("nan")
+        self.assertTrue(physics(invalid, "visual"))
+
+    def test_energy_bar_camelcase_amount_passes_schema_and_renderer(self):
+        candidate = package_with_visual()
+        item = candidate["activities"][0]
+        item["visualPlan"] = plan("energy_bar", "state.energy_bar")
+        item["visualSpec"] = {
+            "schemaVersion": "1.0",
+            "mode": "energy_bar",
+            "template": "state.energy_bar",
+            "entities": [
+                {"id": "kinetic", "kind": "energy-component",
+                 "label": localized("Kinetic energy"),
+                 "properties": {"relativeAmount": 0.6}},
+                {"id": "elastic", "kind": "energy-component",
+                 "label": localized("Elastic potential energy"),
+                 "properties": {"relativeAmount": 0.4}},
+            ],
+            "states": [
+                {"id": "initial", "values": {"kinetic": 1, "elastic": 0}},
+                {"id": "compressed", "values": {"kinetic": 0.6, "elastic": 0.4}},
+            ],
+            "accessibility": {
+                "description": localized("Energy transfers from kinetic to elastic potential."),
+                "colorIndependent": True, "reducedMotionStrategy": "not-applicable",
+            },
+            "grounding": [
+                {"factId": "fact-cart-a", "origin": "source_fact", "appliesTo": ["kinetic"]},
+                {"factId": "fact-cart-b", "origin": "source_fact", "appliesTo": ["elastic"]},
+            ],
+            "fallback": {"mode": "structured_interaction", "reason": "Use a textual energy comparison."},
+            "validation": {"answerRelevantIds": ["kinetic", "elastic"], "forbidAnswerLeakage": True},
+        }
+        self.assertEqual([], validator.validate_package(candidate))
+        broken = copy.deepcopy(candidate)
+        for entry in broken["activities"][0]["visualSpec"]["entities"]:
+            entry["properties"]["relative_amount"] = entry["properties"].pop("relativeAmount")
+        failures = validator.validate_package(broken)
+        self.assertTrue(any("relative_amount: invalid alias" in e for e in failures), failures)
 
     def test_valid_visual_plan_and_spec_pass_repository_validation(self):
         self.assertEqual([], validator.validate_package(package_with_visual()))

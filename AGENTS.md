@@ -10,3 +10,28 @@
 - Run `python scripts/validate_content.py` and `python -m unittest discover -s tests -v` after changes.
 - Present the final diff and test results before requesting review.
 
+
+## Regression immunity and blocker recovery (decision 0027)
+
+- Follow `docs/decisions/0027-regression-immunity-and-recovery.md` on every new development unit. This is an approved operational amendment, not a relaxation of source/academic/privacy or release rules.
+- Preflight project identity, exact Git head/base, owned worktree/process, current venv, existing failure ledger and service/request state before changing code or launching Chrome.
+- A repaired defect must gain a unique failure-ledger record, a real adversarial regression, and a linked entry in `docs/recurrence_registry.json`; all new incidents from BSA-20261102-096 onward must be registered even while open. Do not mark them resolved until tests protect the specific failure.
+- Run `python scripts/check_regression_contract.py` plus relevant tests; maintain exact test coverage in CI. Never remove safeguards to obtain green checks.
+- Distinguish retryable code/environment errors from ambiguous external operations and access/safety denials. Retry only with owned-state proof and a bounded budget; NEVER replay potentially submitted AI requests or route around a denied operation. Checkpoint and pivot to an independent permitted task.
+- Prioritize reducing the existing unmerged dependency chain in issue #220. Implementation, tests, integration, academic acceptance and public release are distinct milestones.
+
+## Authorized execution and denial isolation (decision 0028, draft)
+
+- Follow `docs/decisions/0028-authorized-execution-and-blocker-isolation.md` and `docs/EXTERNAL_EXECUTION_RUNBOOK.md` when an external action is explicitly denied. These rules do not authorize bypassing any platform or app restriction.
+- The source-free recovery planner can only record exact-version evidence and propose independent tasks; it cannot run commands, change permissions, replay denied operations, declare academic PASS or publish.
+- Treat `BLOCKED_EXTERNAL` as terminal for the same operation intent and checkpoint. Re-entry requires separately confirmed external authorization and an independent audit of the intended action, not renamed or repeated requests.
+- Never store credentials, original PDFs, source passages, full commands, student material or raw model responses in public recovery records.
+- Preserve the permanent `BSA-20261103-099` negative-control regression and keep its incident, failure ledger, and ordinary CI contract in sync. Do not weaken Decision 0027 or the protected publication gates.
+
+## Finite completion and no per-PDF repair loop (owner-approved Decision 0029)
+
+- Follow docs/decisions/0029-finite-generalization-completion.md and docs/HELDOUT_GENERALIZATION_CAMPAIGN.md. Treat Section 9.4 academic acceptance and codebase technical completion as **separate**, honestly reported milestones.
+- Do not introduce new generic-application rules hard-coded to one PDF, source digest, activity ID or quoted textbook passage merely to make that document pass. Correct private content in privately versioned packages. General code defects require evidence from unrelated inputs and a source-free adversarial regression under Decision 0027.
+- C1/C2: close the existing integration debt and reusable verification layer; C3: one frozen-commit campaign on three independently precommitted unseen PDFs from three distinct physics topics; C4: real provenance/browser/privacy acceptance and a finite completion disposition.
+- Allow at most one general repair and one **fresh three-PDF** campaign. No third campaign or automatic repeated PDF-specific fix. A failed or blocked campaign reports named unresolved tasks, not invented PASS.
+- The source-free metadata gate is **not proof real PDFs ran** and cannot itself authorize codebase completion, scientific/multilingual approval, app merge or publication. Preserve Decision 0028 access-denial boundaries and git_publish=false/git_auto_merge=false.

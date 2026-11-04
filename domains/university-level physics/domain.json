@@ -27,7 +27,8 @@
     "modelsModule": "simulations/models.py"
   },
   "validation": {
-    "visualValidatorModule": "validators/visual_validation.py"
+    "visualValidatorModule": "validators/visual_validation.py",
+    "academicValidatorModule": "validators/academic_validation.py"
   },
   "verification": {
     "policy": "verification/verification-policy.json"

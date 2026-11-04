@@ -154,8 +154,15 @@ def _preflight_llm(config: GeneratorConfig) -> None:
     """Validate API authentication before auto workers are allowed to claim jobs."""
 
     if getattr(config, "llm_backend", "gemini_browser") == "gemini_api":
-        build_gemini_sdk_client(config)
-        print("Gemini API authentication: ready")
+        # Doctor checks local configuration without sending model requests.
+        # Generation uses the same factory with source-free fallback enabled.
+        client = build_gemini_sdk_client(config, probe_keys=False)
+        try:
+            print("Gemini API client: configured; live access not verified (doctor is source-free)")
+        finally:
+            close = getattr(client, "close", None)
+            if callable(close):
+                close()
 
 
 def doctor(

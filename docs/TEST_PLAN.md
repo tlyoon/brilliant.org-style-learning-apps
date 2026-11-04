@@ -24,3 +24,8 @@
 
 Measure immediate understanding, delayed retention, participation/completion, tutor accuracy/usefulness, and teacher-management workload. Do not optimise solely for time in app, streak length, or activity volume.
 
+## Held-out codebase generalization exit (Decision 0029)
+
+The technical app is **not** declared complete merely because a tuned PDF passes, or because synthetic tests or GitHub CI pass. After integrated code and reusable validators are proven, independently precommit three unseen rights-cleared physics PDFs from three distinct topic families. Run all three on the same frozen revision and collect real source/domain, validated-draft, learner-interaction and EN/MS/ZH browser evidence without PDF-specific code changes. Use the source-free metadata evaluator only to audit receipt/identity completeness, never to synthesize real execution proof.
+
+Permitted evaluation: one initial campaign, and at most one additional fresh three-PDF campaign **only after** a documented general code defect and permanent cross-document regression fix. After that record TECHNICALLY_COMPLETE, NOT_COMPLETE_WITH_NAMED_BLOCKERS or BLOCKED_EXTERNAL. Any content with unresolved scientific, translation or diagram meaning stays quarantined regardless of software completion. Preserve separate accessibility, privacy, institutional pilot and publication gates.

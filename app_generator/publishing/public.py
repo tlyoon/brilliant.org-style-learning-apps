@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Callable
 
 from app_generator.errors import GitPublishError
+from app_generator.runtime.academic_release import enforce_academic_release_gate
 from scripts.build_public_release import build
 
 
@@ -82,7 +83,18 @@ class PublicPagesPublisher:
         subchapter_id: str,
         ensure_lease: Callable[[], None],
     ) -> PublicDeployResult:
+        # This is a separate callable entry point (used by auto recovery
+        # as well as run_generation). Guard it independently so the caller
+        # cannot skip academic verification by avoiding the orchestrator.
+        ensure_lease()
+        state_dir = getattr(self.config, "state_dir", None)
+        if not isinstance(state_dir, Path):
+            raise GitPublishError("Public release requires a local state_dir for academic QA receipts")
         digest = self.package_digest(package_path)
+        evidence_dir = state_dir / "academic-publication-gates" / digest
+        enforce_academic_release_gate(
+            Path(self.config.repo_root), package_path, evidence_dir,
+        )
         branch = self.branch_for(subchapter_id, digest)
         public_url = self.public_url_for(subchapter_id)
         existing = self._pr_for_branch(branch)
