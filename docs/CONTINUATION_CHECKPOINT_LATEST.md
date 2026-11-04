@@ -1,5 +1,10 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
+> **CURRENT GOVERNING CHECKPOINT (4 November 2026):** The October 31 material below is historical; it does **not** authorize resuming a new PDF campaign. Read [Finite global codebase disposition](FINITE_GLOBAL_CODEBASE_DISPOSITION_20261104.md) first. The final Decision 0029 result is **BLOCKED_EXTERNAL**, not technical or academic completion. Round 1 ended without completed drafts; round 2's three preselected different PDFs were each blocked by Gemini HTTP 402 **before source attachment**. Both permitted campaigns and the one generic correction have been consumed. Do not launch a third run, repeat a source-bearing model request, or resume Section 9.4-specific hardening. A separate explicit owner decision is required after legitimate provider-access restoration to reconcile the same round-2 sources. Source rights, independent EN/MS/ZH/science/visual/browser evidence, and release remain unverified. Historical Section 9.4 remains 0/18 academic PASS.
+>
+> **Live technical reference (verify before future writes):** Draft, unmerged [PR #223](https://github.com/tlyoon/brilliant.org-style-learning-apps/pull/223) targets `main`; PR #222 was closed unmerged as superseded. Last frozen application-code revision `7a7b146e16d719576ef7bceea6719fa4153b4a1c` had hosted run #421 SUCCESS; later documentation-only heads must be checked individually. Keep `git_publish=false`, `git_auto_merge=false`, `public_deploy=false`. No previously denied operation is silently reauthorized by this document.
+
+
 Updated: 2026-10-31 (Malaysia, UTC+08). Verify against live devices, GitHub and run state before any new work.
 
 ## Identity, ownership and contract
