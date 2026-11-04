@@ -4,7 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from app_generator.errors import AuthenticationRequired, GeminiApiError, TransientGeminiError
+from app_generator.errors import AuthenticationRequired, GeminiApiError, ResponseContractError, TransientGeminiError
 from app_generator.llm.gemini_api import GeminiApiClient, build_gemini_sdk_client, response_schema_for_stage
 
 
@@ -136,9 +136,7 @@ class GeminiApiClientTests(unittest.TestCase):
             self.assertEqual("MASTER POLICY", call["config"].system_instruction)
             self.assertEqual("HIGH", str(call["config"].thinking_config.thinking_level).split(".")[-1])
             self.assertEqual("application/json", call["config"].response_mime_type)
-            self.assertIsNotNone(call["config"].response_json_schema)
-
-    def test_transient_api_error_retries_then_succeeds(self):
+            self.assertIsNotNone(call["config"].    def test_ambiguous_transport_timeout_never_replays_controlled_pdf(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "config").mkdir()
@@ -146,13 +144,83 @@ class GeminiApiClientTests(unittest.TestCase):
             pdf = root / "source.pdf"
             pdf.write_bytes(b"%PDF-test")
             sdk = FakeSdk([TimeoutError("temporary timeout"), '{"ok":true}'])
-            sleeps = []
-            client = GeminiApiClient(self.config(root), (pdf,), sdk_client=sdk, sdk_types=FakeTypes, sleep=sleeps.append)
+            client = GeminiApiClient(
+                self.config(root, gemini_api_max_attempts=5),
+                (pdf,), sdk_client=sdk, sdk_types=FakeTypes,
+                sleep=lambda _: self.fail("ambiguous request must never be replayed"),
+            )
             client.prepare()
-            response = client.ask("Return object", stage="custom")
-            self.assertEqual("BEGIN_JSON\n{\"ok\": true}\nEND_JSON", response)
+            with self.assertRaisesRegex(TransientGeminiError, "ambiguous"):
+                client.ask("Return object", stage="custom")
+            self.assertEqual(1, len(sdk.models.calls))
+            with self.assertRaisesRegex(TransientGeminiError, "unresolved"):
+                client.ask("Return object", stage="custom")
+            self.assertEqual(1, len(sdk.models.calls))
+
+    def test_other_retryable_http_statuses_never_replay_source(self):
+        class ProviderFailure(RuntimeError):
+            def __init__(self, status_code):
+                super().__init__("simulated provider error")
+                self.status_code = status_code
+
+        for code in (408, 409, 500, 502):
+            with self.subTest(status=code), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                (root / "config").mkdir()
+                (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
+                pdf = root / "source.pdf"
+                pdf.write_bytes(b"%PDF-test")
+                sdk = FakeSdk([ProviderFailure(code), '{"ok":true}'])
+                client = GeminiApiClient(
+                    self.config(root, gemini_api_max_attempts=7),
+                    (pdf,), sdk_client=sdk, sdk_types=FakeTypes,
+                    sleep=lambda _: self.fail("HTTP error cannot replay PDF"),
+                )
+                client.prepare()
+                with self.assertRaisesRegex(TransientGeminiError, "No automatic retry"):
+                    client.ask("Return object", stage="custom")
+                self.assertEqual(1, len(sdk.models.calls))
+                with self.assertRaisesRegex(TransientGeminiError, "unresolved"):
+                    client.ask("Return object", stage="custom")
+                self.assertEqual(1, len(sdk.models.calls))
+
+    def test_successful_calls_can_advance_to_a_new_generation_stage(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir()
+            (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
+            pdf = root / "source.pdf"
+            pdf.write_bytes(b"%PDF-test")
+            sdk = FakeSdk(['{"first":true}', '{"second":true}'])
+            client = GeminiApiClient(
+                self.config(root), (pdf,), sdk_client=sdk, sdk_types=FakeTypes,
+            )
+            client.prepare()
+            first = client.ask("Stage one", stage="custom")
+            second = client.ask("Stage two", stage="custom")
+            self.assertIn('"first": true', first)
+            self.assertIn('"second": true', second)
             self.assertEqual(2, len(sdk.models.calls))
-            self.assertEqual([1], sleeps)
+
+    def test_empty_provider_output_latches_unresolved_request(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir()
+            (root / "config" / "gem_instructions.md").write_text("MASTER", encoding="utf-8")
+            pdf = root / "source.pdf"
+            pdf.write_bytes(b"%PDF-test")
+            sdk = FakeSdk(["", '{"ok":true}'])
+            client = GeminiApiClient(
+                self.config(root), (pdf,), sdk_client=sdk, sdk_types=FakeTypes,
+            )
+            client.prepare()
+            with self.assertRaisesRegex(ResponseContractError, "request not replayed"):
+                client.ask("Return object", stage="custom")
+            with self.assertRaisesRegex(TransientGeminiError, "unresolved"):
+                client.ask("Return object", stage="custom")
+            self.assertEqual(1, len(sdk.models.calls))
+
+ertEqual([1], sleeps)
 
     def test_explicit_503_504_and_429_never_replay_controlled_pdf(self):
         class ProviderFailure(RuntimeError):
