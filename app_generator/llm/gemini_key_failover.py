@@ -2,9 +2,9 @@
 
 On Windows, discover numbered Gemini credentials from
 %LOCALAPPDATA%/Microvid/.env. The file is read locally without command
-evaluation, and keys are never logged or serialized. Capacity errors 503/504
-may advance a source-free probe to the next distinct candidate; auth, quota,
-unknown and transport errors never cause account-hopping.
+evaluation, and keys are never logged or serialized. Explicit key/project access and billing errors (401/402/403) or capacity errors
+(503/504) may advance a source-free probe to the next distinct candidate.
+Quota 429, malformed requests, unknown and transport errors stop immediately.
 """
 
 from __future__ import annotations
@@ -121,25 +121,24 @@ def select_healthy_key(
     candidates: tuple[ApiKeyCandidate, ...],
     probe: Callable[[ApiKeyCandidate], T],
 ) -> tuple[ApiKeyCandidate, T]:
-    """Probe one key at a time; advance *only* on explicit 503/504 responses.
+    """Try each distinct credential once using a source-free provider probe.
 
-    A probe must be source-free. No PDF stage or other non-idempotent payload
-    may be retried by this function.
+    Only HTTP 401/402/403 (key/project authorization or billing) and 503/504
+    (temporary provider capacity) can select a *different* configured key.
+    Provider quota 429, bad requests, and ambiguous/unknown transport outcomes
+    stop immediately. Never call this with a PDF or other submitted job.
     """
     if not candidates:
         raise AuthenticationRequired("No Gemini API keys were found")
+    failures: list[int] = []
     for candidate in candidates:
         try:
-            outcome = probe(candidate)
-            return candidate, outcome
+            return candidate, probe(candidate)
         except Exception as exc:
             status = error_status(exc)
-            if status in {503, 504}:
+            if status in {401, 402, 403, 503, 504}:
+                failures.append(status)
                 continue
-            if status in {401, 403}:
-                raise AuthenticationRequired(
-                    f"Gemini API key {candidate.label} was denied (HTTP {status}); rotation stopped"
-                ) from exc
             if status == 429:
                 raise TransientGeminiError(
                     "Gemini quota/rate limit (HTTP 429); key rotation prohibited"
@@ -148,9 +147,24 @@ def select_healthy_key(
                 f"Gemini API key preflight stopped ({type(exc).__name__}); "
                 "no source request was sent"
             ) from exc
+
+    # This is a terminal source-free result, not permission to replay a
+    # source-bearing call. Status codes are safe to report; secrets are not.
+    if 402 in failures:
+        raise GeminiApiError(
+            "No usable Gemini API key; HTTP 402 billing credit was exhausted "
+            "for at least one candidate. Check billing for the configured "
+            "projects. No PDF generation request was sent"
+        )
+    if any(code in {401, 403} for code in failures):
+        raise AuthenticationRequired(
+            "No usable Gemini API key; one or more configured credentials "
+            "returned HTTP 401/403 and the remaining candidates failed "
+            "source-free preflight. No PDF generation request was sent"
+        )
     raise TransientGeminiError(
-        "All available Gemini API keys returned 503/504 during source-free preflight; "
-        "no PDF generation request was sent"
+        "All available Gemini API keys returned 503/504 during source-free "
+        "preflight; no PDF generation request was sent"
     )
 
 
@@ -160,7 +174,7 @@ def build_keyed_gemini_client(
     """Build one SDK client, probing numbered keys without attaching any PDF.
 
     Doctor calls without probes. Actual generation preparation probes up to the
-    configured bounded key pool if multiple distinct keys exist.
+    configured bounded key pool before any controlled source is sent.
     """
     import logging
 
@@ -177,7 +191,7 @@ def build_keyed_gemini_client(
             ),
         )
 
-    if not probe_keys or len(candidates) == 1:
+    if not probe_keys:
         return make_client(candidates[0])
 
     def check(candidate: ApiKeyCandidate) -> object:
