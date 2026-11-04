@@ -93,8 +93,9 @@ class CliParserTests(unittest.TestCase):
         ):
             result = doctor(config, auto_target_subchapter_id="9.1")
         self.assertEqual(0, result)
-        builder.assert_called_once_with(config)
-        self.assertIn("Gemini API authentication: ready", output.getvalue())
+        builder.assert_called_once_with(config, probe_keys=False)
+        builder.return_value.close.assert_called_once_with()
+        self.assertIn("live access not verified", output.getvalue())
 
     def test_failed_job_retry_requires_explicit_target_and_confirmation(self):
         args = _parser().parse_args([
