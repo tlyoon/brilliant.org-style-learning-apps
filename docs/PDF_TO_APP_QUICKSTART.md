@@ -293,7 +293,7 @@ The default controlled launcher opens an independent ordinary Chrome window dire
 
 The generator verifies the exact configured Gemini email on visible Google Account controls, reconciles project-owned Description and Instructions without renaming the Gem, opens a fresh conversation, uploads the controlled topic PDFs, generates/repairs the package, validates it, and installs the generated artifacts.
 
-A successful package is structurally validated and may proceed directly to configured publication without human sign-off.
+A structurally validated package is **not** automatically approved or publishable. The exact package must satisfy independent, evidence-backed academic acceptance gates for source/answer correctness, scientific semantics, multilingual equivalence and visual/interaction meaning, as well as applicable privacy and rights requirements; unresolved findings remain `REVIEW_REQUIRED` or `FAIL`. The workflow does not require manual sign-off for every question when independent evidence is admissible, but technical CI alone cannot authorize publication. For the current consolidated draft (Decision 0029), `git_publish=false`, `git_auto_merge=false` and `public_deploy=false`; the terminal C3/C4 disposition is `BLOCKED_EXTERNAL`, not permission to run a third PDF campaign or to deploy. See [finite global disposition](FINITE_GLOBAL_CODEBASE_DISPOSITION_20261104.md).
 
 ## 9. Managed coordinator: one-time project bootstrap
 
