@@ -109,6 +109,10 @@ class GeminiApiClientTests(unittest.TestCase):
                     r"\.models\.generate_content\s*\(", source
                 ):
                     direct_calls.append(relative)
+                if relative != "app_generator/cli.py" and re.search(
+                    r"\bprobe_keys\s*=\s*False\b", source
+                ):
+                    direct_calls.append(relative + ": unsafe key-fallback opt-out")
         self.assertEqual([], sorted(direct_calls), "Unprotected direct Gemini SDK entrypoints")
 
     def test_source_analysis_uses_inline_pdf_master_prompt_and_structured_output(self):
