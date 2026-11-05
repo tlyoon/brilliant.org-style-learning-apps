@@ -28,7 +28,32 @@ def main() -> int:
         raise AssertionError("SDK thinking configuration has changed")
     if config.response_json_schema is None:
         raise AssertionError("SDK schema field is no longer available")
-    print("Real Gemini SDK type shapes passed (offline, no client or API request).")
+
+    # Both the API-key and Vertex construction paths must be compatible with
+    # a single transport attempt. The source-bearing gateway never replays a
+    # request, so an SDK update that silently drops retry_options is unsafe.
+    for name, options in (
+        (
+            "API-key",
+            types.HttpOptions(
+                timeout=15_000, retry_options=types.HttpRetryOptions(attempts=1),
+            ),
+        ),
+        (
+            "Vertex",
+            types.HttpOptions(
+                api_version="v1", timeout=15_000,
+                retry_options=types.HttpRetryOptions(attempts=1),
+            ),
+        ),
+    ):
+        actual = getattr(getattr(options, "retry_options", None), "attempts", None)
+        if actual != 1:
+            raise AssertionError(
+                f"{name} SDK transport must permit exactly one source-bearing attempt; got {actual!r}"
+            )
+
+    print("Real Gemini SDK type and one-attempt transport shapes passed (offline, no client or API request).")
     return 0
 
 
