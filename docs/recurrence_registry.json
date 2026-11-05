@@ -889,6 +889,33 @@
           "marker": "test_cli_rejects_symlinked_artifact_when_supported"
         }
       ]
+    },
+    {
+      "id": "BSA-20261105-116",
+      "class": "browser-learner-audit-language-state-contamination",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_full_learner_browser_audit.py",
+          "kind": "python",
+          "marker": "test_each_locale_reloads_the_page_before_interaction"
+        },
+        {
+          "path": "tests/test_full_learner_browser_audit.py",
+          "kind": "python",
+          "marker": "test_exact_package_one_shot_refuses_prior_receipt"
+        },
+        {
+          "path": "tests/test_full_learner_browser_audit.py",
+          "kind": "python",
+          "marker": "test_localization_does_not_fabricate_missing_language"
+        },
+        {
+          "path": "tests/test_full_learner_browser_audit.py",
+          "kind": "python",
+          "marker": "test_reject_repository_output_before_browser"
+        }
+      ]
     }
   ]
 }
