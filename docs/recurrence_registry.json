@@ -837,6 +837,58 @@
           "marker": "test_offline_cli_rejects_bogus_provenance_without_dumping_files"
         }
       ]
+    },
+    {
+      "id": "BSA-20261105-115",
+      "class": "unbounded-independent-learner-academic-evidence-campaign",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_three_complete_rosters_still_stop_for_real_independent_proof"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_missing_learner_evidence_does_not_silently_pass"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_deterministic_defect_stops_without_retry"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_tampered_academic_matrix_fails_only_one_case_and_never_leaks_text"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_requires_exact_three_cases_one_check_each_and_no_provider"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_rejects_traversal_windows_paths_and_unbound_revision"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_one_shot_cli_refuses_to_overwrite_completed_report"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_cli_denies_mismatched_git_sha_without_new_run_folder"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_cli_rejects_symlinked_artifact_when_supported"
+        }
+      ]
     }
   ]
 }

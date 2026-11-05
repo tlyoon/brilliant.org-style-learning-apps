@@ -59,6 +59,10 @@ where the immediate parent looks like `8.1`. Jobs are ordered numerically by cha
 
 Source-manifest version 1.1 records primary/supplementary PDFs and corpus provenance. Drive generation discovers sibling PDFs beneath the selected topic; direct local `source_files` configuration still accepts only one PDF.
 
+## Finite cross-topic acceptance orchestration (5 November 2026)
+
+Use `scripts/run_bounded_cross_topic_acceptance.py` only with already available, explicitly authorized private **source-free** candidate/learner/academic evidence. It pins three distinct topic families and an exact Git revision, invokes the two offline coverage gates **once per case**, and writes a non-replayable terminal report. It cannot generate activities, open PDFs, run Gemini/Selenium, issue academic acceptance or publish. Even internally complete metadata remains unverified, not PASS. See `docs/BOUNDED_CROSS_TOPIC_ACCEPTANCE_20261105.md`.
+
 ## Offline global correctness gates (5 November 2026)
 
 Activity repair retains three attempts, reporting only categorized contract failures in run-local diagnostic JSON; it never installs a failed replacement. A visual QA with zero exercised visual activities fails before Chrome. Separate offline CLIs (`scripts/audit_learner_coverage.py` and `scripts/audit_academic_coverage.py`) check activity/locale/viewport or source/package/gate coverage from existing metadata, without reading PDFs or calling Gemini. These are **coverage and readiness checks**, not independent browser/physics/translation PASS or permission to publish. See `docs/GLOBAL_PIPELINE_HARDENING_20261105.md`.
