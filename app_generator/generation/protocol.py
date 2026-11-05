@@ -15,6 +15,11 @@ from app_generator.domains import DomainProfile, compose_domain_prompt
 from app_generator.generation.assembler import assemble_package, validate_activity_batch, validate_plan
 from app_generator.generation.extraction import parse_json_response
 from app_generator.errors import ResponseContractError, ValidationFailure
+from app_generator.filesystem.outputs import write_json_atomic
+from app_generator.generation.repair_diagnostics import (
+    StableRepairContractError, InteractionSolutionError, classify_repair_failure,
+)
+from app_generator.runtime.run_context import SAFE_STAGE
 from app_generator.prompts import (
     activity_batch_prompt,
     activity_plan_prompt,
@@ -162,22 +167,20 @@ class GenerationProtocol:
     def _assert_stable_activity_contract(original: dict[str, Any], replacement: dict[str, Any]) -> None:
         for field in ("id", "type", "difficulty", "objective", "interactionMode"):
             if original.get(field) != replacement.get(field):
-                raise ValueError(f"Repair attempted to change stable activity field {field} for {original.get('id')}")
+                raise StableRepairContractError("STABLE_FIELD", field)
         if set(original.get("misconceptions", [])) != set(replacement.get("misconceptions", [])):
-            raise ValueError(f"Repair attempted to change stable misconceptions for {original.get('id')}")
+            raise StableRepairContractError("STABLE_MISCONCEPTIONS", "misconceptions")
         original_recovery = original.get("prerequisiteRecovery", {}).get("prerequisiteId")
         replacement_recovery = replacement.get("prerequisiteRecovery", {}).get("prerequisiteId")
         if original_recovery and original_recovery != replacement_recovery:
-            raise ValueError(f"Repair attempted to change the prerequisite for {original.get('id')}")
+            raise StableRepairContractError("STABLE_PREREQUISITE", "prerequisite")
         for path in (("answerKey", "options"), ("interaction", "items"), ("interaction", "targets")):
             old_items = original.get(path[0], {}).get(path[1], [])
             new_items = replacement.get(path[0], {}).get(path[1], [])
             old_ids = {item.get("id") for item in old_items if isinstance(item, dict) and item.get("id")}
             new_ids = {item.get("id") for item in new_items if isinstance(item, dict) and item.get("id")}
             if old_ids and not old_ids.issubset(new_ids):
-                raise ValueError(
-                    f"Repair attempted to remove or rename stable {path[1]} IDs for {original.get('id')}"
-                )
+                raise StableRepairContractError("STABLE_INTERNAL_IDS", path[1])
 
     @staticmethod
     def _assert_complete_interaction_solution(activity: dict[str, Any]) -> None:
@@ -187,22 +190,22 @@ class GenerationProtocol:
         item_ids = [item.get("id") for item in interaction.get("items", [])]
         mode = activity.get("interactionMode")
         if mode == "ordering" and Counter(interaction.get("correctOrder", [])) != Counter(item_ids):
-            raise ResponseContractError("Ordering repair must order every item ID exactly once")
+            raise InteractionSolutionError("Ordering repair must order every item ID exactly once")
         if mode in {"classification", "matching"}:
             placements = interaction.get("placements", [])
             placed_items = [placement.get("itemId") for placement in placements]
             target_ids = [target.get("id") for target in interaction.get("targets", [])]
             placed_targets = [placement.get("targetId") for placement in placements]
             if Counter(placed_items) != Counter(item_ids):
-                raise ResponseContractError("Placement repair must place every item ID exactly once")
+                raise InteractionSolutionError("Placement repair must place every item ID exactly once")
             if any(target not in target_ids for target in placed_targets):
-                raise ResponseContractError("Placement repair references an unknown target ID")
+                raise InteractionSolutionError("Placement repair references an unknown target ID")
             if mode == "matching" and set(placed_targets) != set(target_ids):
-                raise ResponseContractError("Matching repair must use every target ID")
+                raise InteractionSolutionError("Matching repair must use every target ID")
         if mode == "selection":
             selections = interaction.get("correctSelections", [])
             if any(item not in item_ids for item in selections) or len(selections) >= len(item_ids):
-                raise ResponseContractError("Selection repair must select declared items and leave one unselected")
+                raise InteractionSolutionError("Selection repair must select declared items and leave one unselected")
 
     def _repair_stage(
         self,
@@ -210,6 +213,15 @@ class GenerationProtocol:
         original: dict[str, Any],
         prompt_factory: Callable[[], str],
     ) -> dict[str, Any]:
+        if not SAFE_STAGE.fullmatch(name):
+            raise ValueError("invalid repair-stage identifier")
+        diagnostic_path = self.context.diagnostics / f"{name}-repair-attempts.json"
+        attempts: list[dict[str, Any]] = []
+        activity_id = original.get("id")
+        safe_activity_id = (
+            activity_id if isinstance(activity_id, str)
+            and SAFE_STAGE.fullmatch(activity_id) else "unverified"
+        )
         for attempt in range(3):
             try:
                 replacement = self._stage(name, prompt_factory)
@@ -229,12 +241,25 @@ class GenerationProtocol:
                 validate_activity_batch({"activities": [replacement]}, [plan])
                 self._assert_complete_interaction_solution(replacement)
                 return replacement
-            except (ResponseContractError, ValueError):
+            except (ResponseContractError, ValueError) as exc:
+                record = classify_repair_failure(exc)
+                attempts.append({"attempt": attempt + 1, **record})
+                # Store only deterministic enums and identifiers: never raw
+                # model errors, response text, prompts or source PDF data.
+                write_json_atomic(diagnostic_path, {
+                    "status": "FAILED_CONTRACT_ATTEMPTS",
+                    "stage": name, "activityId": safe_activity_id,
+                    "attemptLimit": 3, "attempts": attempts,
+                    "sourceTextStored": False,
+                    "publicationAuthorized": False,
+                })
                 self.context.discard_stage(name)
                 if attempt == 2:
+                    categories = ",".join(row["category"] for row in attempts)
                     raise ResponseContractError(
-                        f"Activity repair for {original.get('id')} did not preserve its stable contract"
-                    )
+                        f"Activity repair for {safe_activity_id} did not preserve its stable contract "
+                        f"(categories={categories})"
+                    ) from None
         raise AssertionError("unreachable")
 
     def _audit_stage(self, name: str, prompt_factory: Callable[[], str]) -> dict[str, Any]:

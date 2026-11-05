@@ -20,6 +20,8 @@ import tempfile
 from threading import Thread
 from urllib.parse import urlencode
 
+from app_generator.validation.learner_coverage_gate import audit_visual_browser_scope
+
 
 def stage_bundle(root: Path, package_path: Path, destination: Path) -> None:
     app = root / "app"
@@ -117,6 +119,32 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
     keyboard_checks = 0
     mcq_ids = {item["id"] for item in data.get("activities", []) if item.get("type") == "mcq"}
     frames = []
+    if not ids:
+        # Do not launch Chrome for a zero-work visual audit and do not return
+        # a successful DOM smoke for an empty activity collection.
+        coverage = audit_visual_browser_scope(
+            visual_ids=[], mcq_ids=mcq_ids,
+            responsive_checks=0, keyboard_checks=0,
+            screenshots_captured=0,
+            capture_requested=evidence_root is not None,
+            issue_count=0,
+        )
+        return {
+            "keyboardSelectionChecks": 0,
+            "screenshotsCaptured": 0,
+            "outcome": "fail",
+            "visualActivities": 0,
+            "checks": 0,
+            "issues": [{"activityId": "audit", "locale": "all",
+                        "viewportWidth": 0,
+                        "reason": "NO_VISUAL_ACTIVITIES_EXERCISED"}],
+            "scopeCoverage": coverage,
+            "pixelQualityVerified": False,
+            "fullAccessibilityVerified": False,
+            "fullLearnerAcceptanceVerified": False,
+            "academicAccuracyVerified": False,
+            "publicationAuthorized": False,
+        }
     if evidence_root is not None:
         evidence_root = evidence_root.resolve()
         if evidence_root.is_relative_to(root.resolve()) or evidence_root.is_relative_to(package.parent.resolve()):
@@ -282,6 +310,21 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
                                 })
             finally:
                 driver.quit()
+    coverage = audit_visual_browser_scope(
+        visual_ids=ids, mcq_ids=mcq_ids,
+        responsive_checks=checks, keyboard_checks=keyboard_checks,
+        screenshots_captured=len(frames),
+        capture_requested=evidence_root is not None,
+        issue_count=len(problems),
+    )
+    # An empty browser run cannot pass visual learner QA. When screenshots
+    # were not requested a nonempty DOM smoke can still be reported, but
+    # it must never be described as screenshot/full learner acceptance.
+    for reason in coverage["missing"]:
+        if reason == "SCREENSHOT_EVIDENCE_NOT_REQUESTED":
+            continue
+        problems.append({"activityId": "audit", "locale": "all",
+                         "viewportWidth": 0, "reason": reason})
     if evidence_root is not None:
         evidence = {
             "packageSha256": hashlib.sha256(package.read_bytes()).hexdigest(),
@@ -294,6 +337,7 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
             "pixelQualityReviewed": False,
             "academicAccuracyReviewed": False,
             "approval": "pending_independent_review",
+            "scopeCoverage": coverage,
         }
         (evidence_root / "review-manifest.json").write_text(
             json.dumps(evidence, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -309,6 +353,9 @@ def audit_browser(root: Path, package: Path, *, evidence_root: Path | None = Non
         "fullAccessibilityVerified": False,
         "academicAccuracyVerified": False,
         "publicationAuthorized": False,
+        "scopeCoverage": coverage,
+        "fullLearnerAcceptanceVerified": False,
+        "trilingualMeaningVerified": False,
     }
 
 

@@ -761,6 +761,82 @@
           "marker": "test_upstream_denial_during_source_request_remains_typed_and_latched"
         }
       ]
+    },
+    {
+      "id": "BSA-20261105-112",
+      "class": "untyped-repair-failures-hide-contract-cause",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_repair_failure_observability.py",
+          "kind": "python",
+          "marker": "test_exhausted_repairs_preserve_per_attempt_categories_without_raw_errors"
+        },
+        {
+          "path": "tests/test_repair_failure_observability.py",
+          "kind": "python",
+          "marker": "test_good_repair_preserves_correction_and_failed_attempt_receipt"
+        },
+        {
+          "path": "tests/test_repair_failure_observability.py",
+          "kind": "python",
+          "marker": "test_distinct_interaction_completion_and_schema_categories"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261105-113",
+      "class": "empty-browser-qa-smoke-falsely-looks-like-acceptance",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_learner_coverage_gate.py",
+          "kind": "python",
+          "marker": "test_actual_browser_audit_rejects_zero_visual_scope_before_chrome"
+        },
+        {
+          "path": "tests/test_learner_coverage_gate.py",
+          "kind": "python",
+          "marker": "test_missing_responsive_keyboard_or_screenshots_fails_closed"
+        },
+        {
+          "path": "tests/test_learner_coverage_gate.py",
+          "kind": "python",
+          "marker": "test_learner_cli_rejects_aggregate_only_receipt"
+        },
+        {
+          "path": "tests/test_learner_coverage_gate.py",
+          "kind": "python",
+          "marker": "test_full_learner_coverage_requires_every_localized_interaction"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261105-114",
+      "class": "matrix-status-confused-with-independent-science-proof",
+      "status": "resolved",
+      "regressions": [
+        {
+          "path": "tests/test_academic_coverage_gate.py",
+          "kind": "python",
+          "marker": "test_all_pass_claimed_without_proof_does_not_become_acceptance"
+        },
+        {
+          "path": "tests/test_academic_coverage_gate.py",
+          "kind": "python",
+          "marker": "test_mutated_package_or_source_sha_is_rejected"
+        },
+        {
+          "path": "tests/test_academic_coverage_gate.py",
+          "kind": "python",
+          "marker": "test_source_fidelity_pass_claim_without_verified_original_page_rejected"
+        },
+        {
+          "path": "tests/test_academic_coverage_gate.py",
+          "kind": "python",
+          "marker": "test_offline_cli_rejects_bogus_provenance_without_dumping_files"
+        }
+      ]
     }
   ]
 }

@@ -59,6 +59,10 @@ where the immediate parent looks like `8.1`. Jobs are ordered numerically by cha
 
 Source-manifest version 1.1 records primary/supplementary PDFs and corpus provenance. Drive generation discovers sibling PDFs beneath the selected topic; direct local `source_files` configuration still accepts only one PDF.
 
+## Offline global correctness gates (5 November 2026)
+
+Activity repair retains three attempts, reporting only categorized contract failures in run-local diagnostic JSON; it never installs a failed replacement. A visual QA with zero exercised visual activities fails before Chrome. Separate offline CLIs (`scripts/audit_learner_coverage.py` and `scripts/audit_academic_coverage.py`) check activity/locale/viewport or source/package/gate coverage from existing metadata, without reading PDFs or calling Gemini. These are **coverage and readiness checks**, not independent browser/physics/translation PASS or permission to publish. See `docs/GLOBAL_PIPELINE_HARDENING_20261105.md`.
+
 ## Gemini API key failover without PDF replay
 
 **Execution boundary:** A remote host/connector denial is not a Gemini HTTP
