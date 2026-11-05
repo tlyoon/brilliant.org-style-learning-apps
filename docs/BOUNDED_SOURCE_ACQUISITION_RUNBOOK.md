@@ -65,7 +65,7 @@ python scripts/recover_bounded_sources.py `
   --pdftotext "$env:LOCALAPPDATA\Programs\MiKTeX\miktex\bin\x64\pdftotext.exe"
 ```
 
-The tool validates the complete plan, old-stop digest and immutable Git witness. It writes an exclusive `started.json`, per-source attempt markers and success/stop receipts. If all three source hashes, pages, extracts, and rights flags pass, it emits `source_integrity.json` with `ALL_THREE_PRIVATE_SOURCES_ACQUIRED`. This confirms *source preparation only*. Source files remain in the output folder's private `pdfs/` directory and must not be committed.
+The tool validates the complete plan, old-stop digest and immutable Git witness. It writes an exclusive `started.json`, per-source attempt markers and success/stop receipts. If all three source hashes, pages, extracts, and rights flags pass, it emits `source_integrity.json` with `ALL_THREE_PRIVATE_SOURCES_ACQUIRED`. This confirms *source preparation only*. Every verified file is retained with an exclusive `*-acquired.json` receipt **before** its suitability check, so borderline or rejected documents are not lost. Source suitability is classified as `PASS`, `BORDERLINE_REVIEW_REQUIRED`, `INSUFFICIENT_SOURCE_CONTENT` or `RIGHTS_REVIEW_REQUIRED`; the 300-word/5-page PASS threshold is **not** lowered by a borderline outcome. Source files remain in the output folder's private `pdfs/` directory and must not be committed.
 
 ## No-loop and QA contract
 

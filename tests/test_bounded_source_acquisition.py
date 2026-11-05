@@ -10,7 +10,7 @@ from unittest.mock import Mock, patch
 
 from app_generator.sources.bounded_acquisition import (
     AcquisitionStop, acquire_frozen_sources, validate_acquisition_plan,
-    MAX_PDF_BYTES, fetch_trusted_pdf_once,
+    MAX_PDF_BYTES, fetch_trusted_pdf_once, classify_source_suitability,
 )
 
 REPO = Path(__file__).resolve().parents[1]
@@ -54,11 +54,28 @@ def meta(_path: Path) -> dict:
     return {
         "pages": 6, "approxWords": 850,
         "rightsIndicatorsDetected": [],
+        "sourceSuitabilityCategory": "PASS",
         "textSuitabilityPass": True,
     }
 
 
 class BoundedSourceAcquisitionTests(unittest.TestCase):
+    def test_borderline_slide_deck_is_preserved_as_review_not_pass(self):
+        self.assertEqual(classify_source_suitability(
+            pages=7, words=260, rights_indicators=[]),
+            "BORDERLINE_REVIEW_REQUIRED")
+        self.assertEqual(classify_source_suitability(
+            pages=7, words=300, rights_indicators=[]), "PASS")
+        self.assertEqual(classify_source_suitability(
+            pages=6, words=230, rights_indicators=[]),
+            "INSUFFICIENT_SOURCE_CONTENT")
+        self.assertEqual(classify_source_suitability(
+            pages=10, words=900, rights_indicators=["courtesy of"]),
+            "RIGHTS_REVIEW_REQUIRED")
+        self.assertEqual(classify_source_suitability(
+            pages=4, words=500, rights_indicators=[]),
+            "INSUFFICIENT_SOURCE_CONTENT")
+
     def test_prevalidate_all_case_keys_before_network(self):
         with tempfile.TemporaryDirectory() as tmp:
             reuse = Path(tmp) / "existing.pdf"
@@ -261,6 +278,34 @@ class BoundedSourceAcquisitionTests(unittest.TestCase):
         self.assertTrue(all(call.kwargs["allow_redirects"] is False
                             for call in session.get.call_args_list))
         session.close.assert_called_once()
+
+    def test_borderline_source_retains_acquired_pdf_receipt_before_stop(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "run"
+            output.mkdir()
+            fetch = Mock(side_effect=[blob(0), blob(1), blob(2)])
+            def borderline(_path):
+                return {
+                    "pages": 7, "approxWords": 260,
+                    "rightsIndicatorsDetected": [],
+                    "textSuitabilityPass": False,
+                    "sourceSuitabilityCategory": "BORDERLINE_REVIEW_REQUIRED",
+                }
+            with patch("app_generator.sources.bounded_acquisition.verify_selection_witness",
+                       return_value="a" * 64):
+                with self.assertRaisesRegex(AcquisitionStop,
+                                            "SOURCE_STRUCTURE_OR_RIGHTS_REVIEW_STOP"):
+                    acquire_frozen_sources(plan(), repo=REPO, output_root=output,
+                                           fetch=fetch, inspector=borderline)
+            self.assertEqual(fetch.call_count, 1)
+            self.assertTrue((output / "pdfs" / "momentum.pdf").is_file())
+            acquired = json.loads((output / "attempts" /
+                                  "sample-momentum-acquired.json").read_text())
+            self.assertEqual(acquired["sourceSha256"], sha256(blob(0)).hexdigest())
+            stop = json.loads((output / "terminal_stop.json").read_text())
+            self.assertEqual(stop["retainedVerifiedPdfCases"], ["sample-momentum"])
+            self.assertEqual(stop["unacceptedSourceSuitabilityCategory"],
+                             "BORDERLINE_REVIEW_REQUIRED")
 
     def test_invalid_structure_stops_before_third_source(self):
         with tempfile.TemporaryDirectory() as tmp:

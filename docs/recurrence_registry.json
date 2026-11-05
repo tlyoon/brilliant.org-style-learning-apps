@@ -986,6 +986,16 @@
           "path": "tests/test_bounded_source_acquisition.py",
           "kind": "python",
           "marker": "test_bounded_same_host_redirect_can_complete_one_logical_fetch"
+        },
+        {
+          "path": "tests/test_bounded_source_acquisition.py",
+          "kind": "python",
+          "marker": "test_borderline_slide_deck_is_preserved_as_review_not_pass"
+        },
+        {
+          "path": "tests/test_bounded_source_acquisition.py",
+          "kind": "python",
+          "marker": "test_borderline_source_retains_acquired_pdf_receipt_before_stop"
         }
       ]
     }

@@ -205,6 +205,22 @@ def fetch_trusted_pdf_once(url: str, trusted_hosts: tuple[str, ...]) -> bytes:
         session.close()
 
 
+def classify_source_suitability(*, pages: int, words: int,
+                                rights_indicators: list[str]) -> str:
+    """Explanatory triage, not a waiver of the frozen 300-word PASS gate.
+
+    Sparse slide decks are retained as BORDERLINE_REVIEW_REQUIRED, never
+    automatically promoted to academic suitability.
+    """
+    if rights_indicators:
+        return "RIGHTS_REVIEW_REQUIRED"
+    if pages < 5 or words < 240:
+        return "INSUFFICIENT_SOURCE_CONTENT"
+    if words < 300:
+        return "BORDERLINE_REVIEW_REQUIRED"
+    return "PASS"
+
+
 def inspect_pdf_metadata(path: Path, pdfinfo: Path, pdftotext: Path) -> dict[str, Any]:
     """Inspect local bytes only; return numerical properties, never source text."""
     _stop_if(not pdfinfo.is_file() or not pdftotext.is_file(),
@@ -224,10 +240,12 @@ def inspect_pdf_metadata(path: Path, pdfinfo: Path, pdftotext: Path) -> dict[str
         s for s in ("all rights reserved", "reproduced with permission",
                     "courtesy of", "used with permission") if s in text.casefold()
     ]
+    category = classify_source_suitability(
+        pages=int(found.group(1)), words=words, rights_indicators=indicators)
     return {"pages": int(found.group(1)), "approxWords": words,
             "rightsIndicatorsDetected": indicators,
-            "textSuitabilityPass": int(found.group(1)) >= 5 and words >= 300 and
-                                   not indicators}
+            "sourceSuitabilityCategory": category,
+            "textSuitabilityPass": category == "PASS"}
 
 
 def _write_once(path: Path, payload: dict[str, Any]) -> None:
@@ -261,6 +279,8 @@ def acquire_frozen_sources(
         "noNetworkReplay": True,
     })
     results: list[dict[str, Any]] = []
+    retained: list[dict[str, Any]] = []
+    pending_category = "UNDETERMINED"
     done_shas: set[str] = set(plan["previousSourceSha256s"])
     try:
         for row in rows:
@@ -284,10 +304,29 @@ def acquire_frozen_sources(
                 f.write(data)
                 f.flush()
                 os.fsync(f.fileno())
+            retained_row = {
+                "caseId": row.case_id, "sourceSha256": digest,
+                "fileBytes": len(data), "persisted": True,
+                "modelCalls": 0, "publicationAuthorized": False,
+            }
+            retained.append(retained_row)
+            # This receipt is deliberately durable BEFORE source suitability:
+            # a failed borderline gate must not erase a sound downloaded PDF.
+            _write_once(attempts / (row.case_id + "-acquired.json"), retained_row)
             meta = inspector(dest)
+            claimed_category = (meta.get("sourceSuitabilityCategory")
+                                if isinstance(meta, dict) else None)
+            pending_category = (
+                claimed_category if claimed_category in {
+                    "PASS", "BORDERLINE_REVIEW_REQUIRED",
+                    "INSUFFICIENT_SOURCE_CONTENT", "RIGHTS_REVIEW_REQUIRED"}
+                else "INVALID_METADATA"
+            )
             _stop_if(not isinstance(meta, dict) or
                      set(meta) != {"pages", "approxWords",
-                                   "rightsIndicatorsDetected", "textSuitabilityPass"} or
+                                   "rightsIndicatorsDetected", "textSuitabilityPass",
+                                   "sourceSuitabilityCategory"} or
+                     meta.get("sourceSuitabilityCategory") != "PASS" or
                      meta.get("textSuitabilityPass") is not True or
                      type(meta.get("pages")) is not int or meta["pages"] < 5 or
                      type(meta.get("approxWords")) is not int or
@@ -321,6 +360,8 @@ def acquire_frozen_sources(
         _write_once(output_root / "terminal_stop.json", {
             "status": "STOPPED_NO_AUTO_RETRY", "failureCategory": category,
             "completedCases": [r["caseId"] for r in results],
+            "retainedVerifiedPdfCases": [r["caseId"] for r in retained],
+            "unacceptedSourceSuitabilityCategory": pending_category,
             "sourceBearingModelCalls": 0, "publicationAuthorized": False,
         })
         raise AcquisitionStop(category) from exc
