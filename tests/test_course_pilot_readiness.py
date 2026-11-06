@@ -3,7 +3,13 @@ from __future__ import annotations
 
 from hashlib import sha256
 import json
+import tempfile
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
+from pathlib import Path
+
+from scripts.audit_course_pilot_readiness import main as pilot_cli
 
 from app_generator.validation.course_pilot_readiness import (
     assess_pilot_candidates, validate_pilot_scope,
@@ -216,6 +222,58 @@ class SixSectionPilotTests(unittest.TestCase):
             with self.subTest(bad=bad):
                 with self.assertRaises(ValueError):
                     validate_pilot_scope(bad)
+
+
+    def test_cli_reads_six_existing_files_with_exact_revision(self):
+        manifest, data = fixture()
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            for relative, raw in data.items():
+                target = root.joinpath(*relative.split("/"))
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(raw)
+            manifest_path = root / "scope.json"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            stdout = StringIO()
+            with redirect_stdout(stdout):
+                exit_code = pilot_cli([
+                    "--manifest", str(manifest_path),
+                    "--repo-root", str(root),
+                    "--observed-git-sha", REVISION,
+                ])
+            self.assertEqual(0, exit_code)
+            result = json.loads(stdout.getvalue())
+            self.assertEqual(6, result["structuralCandidateCount"])
+            self.assertFalse(result["classroomPilotReady"])
+
+    def test_cli_rejects_absent_package_and_wrong_revision(self):
+        manifest, data = fixture()
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            for relative, raw in data.items():
+                target = root.joinpath(*relative.split("/"))
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(raw)
+            manifest_path = root / "scope.json"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            with redirect_stdout(StringIO()) as stdout:
+                result = pilot_cli([
+                    "--manifest", str(manifest_path),
+                    "--repo-root", str(root),
+                    "--observed-git-sha", "b" * 40,
+                ])
+            self.assertEqual(2, result)
+            self.assertNotIn("Traceback", stdout.getvalue())
+            first = manifest["cases"][0]["packagePath"]
+            root.joinpath(*first.split("/")).unlink()
+            with redirect_stdout(StringIO()) as stdout:
+                result = pilot_cli([
+                    "--manifest", str(manifest_path),
+                    "--repo-root", str(root),
+                    "--observed-git-sha", REVISION,
+                ])
+            self.assertEqual(1, result)
+            self.assertIn("STOP_INVALID_OR_INCOMPLETE_CANDIDATES", stdout.getvalue())
 
 
 if __name__ == "__main__":
