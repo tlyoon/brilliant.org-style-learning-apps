@@ -546,7 +546,24 @@ function render() {
 
 const localeSelector = document.querySelector("#locale");
 
-async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
+// Optional exact-byte identity for instructor-only course previews. This checks
+// transfer integrity, never scientific correctness or approval to publish.
+async function parsePackageWithOptionalDigest(response, expectedSha256) {
+  if (expectedSha256 === undefined) return response.json();
+  if (typeof expectedSha256 !== "string" || !/^[a-f0-9]{64}$/.test(expectedSha256)) {
+    throw new Error("Invalid expected package SHA-256.");
+  }
+  if (typeof crypto === "undefined" || !crypto.subtle?.digest || typeof TextDecoder === "undefined") {
+    throw new Error("Secure SHA-256 package verification is unavailable.");
+  }
+  const bytes = await response.arrayBuffer();
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  const actual = Array.from(new Uint8Array(digest), (value) => value.toString(16).padStart(2, "0")).join("");
+  if (actual !== expectedSha256) throw new Error("Package bytes differ from the selected roster.");
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+async function loadPackage(packageUrl = DEFAULT_PACKAGE, expectedSha256) {
   const generation = ++loadGeneration;
   state.loading = true;
   localeSelector.disabled = true;
@@ -561,7 +578,7 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE) {
   try {
     const response = await fetch(packageUrl);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const loadedPackage = await response.json();
+    const loadedPackage = await parsePackageWithOptionalDigest(response, expectedSha256);
     if (generation !== loadGeneration) return;
     state.package = loadedPackage;
     state.sessionMetrics = Object.create(null);
