@@ -24,6 +24,8 @@ The physics product should increasingly behave as a **visual-interactive reasoni
 - Text-first activities remain valid when a visual adds little learning value; there is no requirement to attach irrelevant imagery merely to reach a visual percentage.
 - Hints, retries, explanations, prerequisite activities, and the ability to skip an activity without being forced to answer it.
 - Named mastery level shown prominently; percentage shown secondarily.
+  - During Stage-0 single-package practice, the displayed level is explicitly **session-only mastery evidence**, not an institutional grade, verified course mastery, a permanent student profile or a cohort ranking. The conservative levels are: not yet demonstrated (no attempts), practising (attempts but no independently completed activity), developing independent reasoning (some independent completions), and all activities completed independently (every activity completed correctly on its first check without hints, mistakes or skips). The secondary percentage is the proportion independently completed, not a grade. The level is derived from the already-existing anonymous in-memory evidence counters and resets with the session. Later course-level mastery and adaptive progression require a separately verified, versioned design.
+
 - Cohort standing calculated separately for each subchapter and shown only with adequate comparable evidence.
 - Student view distinguishes independent from assisted performance.
 - Mobile, keyboard/touch, reduced-motion, multilingual, and non-color-only accessibility are preserved as interaction types expand.
