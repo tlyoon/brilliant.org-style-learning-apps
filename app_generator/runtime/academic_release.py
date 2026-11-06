@@ -7,10 +7,15 @@ from __future__ import annotations
 
 from pathlib import Path
 import hashlib
+import json
 
 from app_generator.errors import ValidationFailure
 from app_generator.filesystem.outputs import write_json_atomic
 from scripts.audit_academic_qa import academic_triage
+from app_generator.validation.bounded_cross_topic_acceptance import (
+    inspect_stage0_product_roster, ProductRosterMismatch,
+)
+from app_generator.visuals.validation import visual_contract_errors
 
 
 def public_release_requested(config) -> bool:
@@ -45,4 +50,40 @@ def enforce_academic_release_gate(repo_root: Path, package_path: Path, validatio
                 f"package sha256: {report.get('artifactSha256', 'unavailable')}",
             ],
         )
+    # A text-first choice is allowed, but every activity requires an actual
+    # visual-value assessment with a rationale. Academic PASS alone cannot
+    # bypass product/visual contracts on public merge/deployment paths.
+    try:
+        package = json.loads(package_path.read_text(encoding="utf-8"))
+        inspect_stage0_product_roster(package)
+        activities = package["activities"]
+        if any(not isinstance(activity.get("visualPlan"), dict)
+               for activity in activities):
+            raise ValueError("MISSING_VISUAL_VALUE_ASSESSMENT")
+        if visual_contract_errors(repo_root, package):
+            raise ValueError("INVALID_VISUAL_CONTRACT")
+    except (ValueError, TypeError, AttributeError, KeyError, OSError) as exc:
+        write_json_atomic(validation_dir / "visual-release-gate.json", {
+            "packageSha256": report["artifactSha256"],
+            "status": "BLOCKED_VISUAL_VALUE_ASSESSMENT",
+            "reasonCategory": "VISUAL_OR_STAGE0_PRODUCT_CONTRACT_MISSING_OR_INVALID",
+            "academicQA": report["academicQA"],
+            "publicationAuthorized": False,
+        })
+        raise ValidationFailure(
+            "Automatic merge/public release blocked by visual-value assessment",
+            ["VISUAL_OR_STAGE0_PRODUCT_CONTRACT_MISSING_OR_INVALID",
+             "each activity needs a valid visualPlan, including justified text-first choices"],
+        ) from exc
+    visual_report = {
+        "packageSha256": report["artifactSha256"],
+        "status": "VISUAL_VALUE_CONTRACT_COMPLETE",
+        "activityCount": len(activities),
+        "declaredVisualPlans": len(activities),
+        "declaredVisualSpecs": sum(bool(a.get("visualSpec")) for a in activities),
+        "visualSemanticsIndependentlyVerified": False,
+        "publicationAuthorized": False,
+    }
+    write_json_atomic(validation_dir / "visual-release-gate.json", visual_report)
+    report["visualValueContract"] = visual_report
     return report
