@@ -23,7 +23,12 @@ class FakeElement {
   get textContent() { return this._text + this.children.map((x) => x.textContent).join(""); }
   append(...elements) { this.children.push(...elements); }
   replaceChildren(...elements) { this._text = ""; this.children = [...elements]; }
-  addEventListener(type, callback) { this.listeners[type] = callback; }
+  addEventListener(type, callback) {
+    const previous = this.listeners[type];
+    this.listeners[type] = previous
+      ? (...args) => { previous(...args); callback(...args); }
+      : callback;
+  }
   setAttribute(name, value) { this.attributes[name] = String(value); if (name === "id") this.id = String(value); }
 }
 const descendants = (element) => [element, ...element.children.flatMap(descendants)];
