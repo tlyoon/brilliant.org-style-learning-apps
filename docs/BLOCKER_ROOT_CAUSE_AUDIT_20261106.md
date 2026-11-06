@@ -32,3 +32,15 @@ At the inspected PR head `efefbbc8bfbcbef376f465fd2a551cd1c7826067`, hosted CI s
 **Global priorities:** keep the large existing PR on one consolidated integration track; do not regenerate an exhausted PDF; use authenticated exact-commit CI and a read-only merge simulation as engineering evidence; advance a genuinely independent learner-platform/pilot readiness review only after source and academic gates have actual proof. No merge, publication or authorization changes are implied here.
 
 **Milestone:** project-level recurrence governance hardened once in the already existing checker, protected by source-free negative controls. Do not invent a new generic "pipeline recovery" implementation alongside the existing Decision 0027/0028 engines.
+
+
+## Follow-on global acceptance gap found and fixed
+
+In the existing `bounded_cross_topic_acceptance` evaluator, the earlier
+positive test package contained only **two activities** yet appeared
+metadata complete. This was the same underlying acceptance-coverage class
+as incidents BSA-20261105-113/114/115. The existing final gate now
+enforces 18 Stage-0 items, the 9+9 split and all six type/difficulty
+quotas, and explicitly records that visual specifications are not
+independently verified. New incident BSA-20261106-120 links those earlier
+failures, with source-free negative tests; no PDF/model replay.

@@ -31,10 +31,19 @@ def make_fixture(learner_complete=True, *, fail_academic=False):
         case_id = f"fixture-{topic}"
         candidate = {
             "activities": [
-                {"id":f"mcq-{index}","type":"mcq","prompt":{
-                    "en":"Synthetic question","ms":"Soalan sintetik","zh":"合成题目"}},
-                {"id":f"interactive-{index}","type":"interactive","prompt":{
-                    "en":"Synthetic interaction","ms":"Interaksi sintetik","zh":"合成交互"}},
+                {
+                    "id": f"{kind}-{difficulty}-{repeat}-{index}",
+                    "type": kind,
+                    "difficulty": difficulty,
+                    "prompt": {
+                        "en": f"Synthetic {kind} {difficulty} {repeat}",
+                        "ms": f"Soalan {kind} {difficulty} {repeat}",
+                        "zh": f"synthetic zh {kind} {difficulty} {repeat}",
+                    },
+                }
+                for kind in ("mcq", "interactive")
+                for difficulty in ("easy", "moderate", "challenging")
+                for repeat in range(3)
             ],
         }
         package_bytes = _raw(candidate)
@@ -72,7 +81,7 @@ def make_fixture(learner_complete=True, *, fail_academic=False):
                 for state in ("PASS","FAIL","REVIEW_REQUIRED")}
         matrix={
             "packageSha256":package_sha,"sourceSha256":source_sha,
-            "activityCount":2, "activities":rows,"counts":counts,
+            "activityCount":len(candidate["activities"]), "activities":rows,"counts":counts,
             "academicQA":"FAIL" if counts["FAIL"] else "REVIEW_REQUIRED",
             "publicationAuthorized":False,
         }
@@ -122,10 +131,111 @@ class BoundedCrossTopicAcceptanceTests(unittest.TestCase):
         self.assertFalse(report["newProviderOrPdfCallsAllowed"])
         self.assertEqual("STOP_INDEPENDENT_VERIFICATION_REQUIRED",report["terminalDisposition"])
         self.assertEqual(3,report["counts"]["METADATA_COMPLETE_PROOF_UNVERIFIED"])
+        self.assertTrue(report["productRosterContractChecked"])
+        self.assertEqual(3,report["candidatesWithNoDeclaredVisualSpec"])
+        for row in report["caseResults"]:
+            self.assertEqual(18,row["productContract"]["activityCount"])
+            self.assertEqual(9,row["productContract"]["mcqCount"])
+            self.assertEqual(9,row["productContract"]["interactiveCount"])
+            self.assertFalse(row["productContract"]["visualSemanticsIndependentlyVerified"])
+            self.assertEqual("NO_DECLARED_VISUAL_SPEC_REQUIRES_VISUAL_VALUE_JUSTIFICATION",
+                             row["productContract"]["visualPedagogyStatus"])
         self.assertFalse(report["interactiveLearnerAcceptanceGranted"])
         self.assertFalse(report["academicAcceptanceGranted"])
         self.assertFalse(report["publicationAuthorized"])
         self.assertEqual(sorted(TOPICS),report["topicFamilies"])
+
+    def test_previous_two_activity_demo_is_not_accepted_as_full_subchapter(self):
+        manifest,files=make_fixture()
+        name=manifest["cases"][0]["package"]
+        candidate=json.loads(files[name])
+        candidate["activities"]=candidate["activities"][:2]
+        blob=_raw(candidate)
+        files[name]=blob
+        manifest["cases"][0]["packageSha256"]=sha256(blob).hexdigest()
+        report,calls=evaluate(manifest,files)
+        self.assertEqual("STOP_STAGE0_PRODUCT_CONTRACT_VIOLATION",
+                         report["terminalDisposition"])
+        self.assertEqual(1,report["counts"]["INVALID_PRODUCT_ROSTER"])
+        self.assertEqual("STAGE0_ACTIVITY_QUOTA_OR_IDENTITY_MISMATCH",
+                         report["caseResults"][0]["errorCategory"])
+        self.assertEqual(7,len(calls))
+        self.assertFalse(report["technicalAcceptanceGranted"])
+        self.assertFalse(report["publicationAuthorized"])
+
+    def test_unbalanced_difficulty_quota_fails_without_source_or_model_retry(self):
+        manifest,files=make_fixture()
+        name=manifest["cases"][1]["package"]
+        candidate=json.loads(files[name])
+        candidate["activities"][0]["difficulty"]="challenging"
+        blob=_raw(candidate)
+        files[name]=blob
+        manifest["cases"][1]["packageSha256"]=sha256(blob).hexdigest()
+        report,calls=evaluate(manifest,files)
+        self.assertEqual("INVALID_PRODUCT_ROSTER",report["caseResults"][1]["status"])
+        self.assertEqual("STOP_STAGE0_PRODUCT_CONTRACT_VIOLATION",
+                         report["terminalDisposition"])
+        self.assertEqual(7,len(calls))
+        self.assertFalse(report["newProviderOrPdfCallsAllowed"])
+
+    def test_invalid_type_or_difficulty_shape_is_a_product_failure(self):
+        for mutation in (["not-a-tier"], None, 33):
+            manifest,files=make_fixture()
+            name=manifest["cases"][0]["package"]
+            candidate=json.loads(files[name])
+            candidate["activities"][0]["difficulty"]=mutation
+            blob=_raw(candidate)
+            files[name]=blob
+            manifest["cases"][0]["packageSha256"]=sha256(blob).hexdigest()
+            report,calls=evaluate(manifest,files)
+            self.assertEqual("INVALID_PRODUCT_ROSTER",
+                             report["caseResults"][0]["status"])
+            self.assertEqual("STAGE0_ACTIVITY_QUOTA_OR_IDENTITY_MISMATCH",
+                             report["caseResults"][0]["errorCategory"])
+            self.assertFalse(report["publicationAuthorized"])
+
+    def test_duplicate_activity_ids_cannot_be_masked_by_complete_browser_counters(self):
+        manifest,files=make_fixture()
+        name=manifest["cases"][2]["package"]
+        candidate=json.loads(files[name])
+        candidate["activities"][1]["id"]=candidate["activities"][0]["id"]
+        blob=_raw(candidate)
+        files[name]=blob
+        manifest["cases"][2]["packageSha256"]=sha256(blob).hexdigest()
+        report,calls=evaluate(manifest,files)
+        self.assertEqual("INVALID_PRODUCT_ROSTER",report["caseResults"][2]["status"])
+        self.assertEqual("STOP_STAGE0_PRODUCT_CONTRACT_VIOLATION",
+                         report["terminalDisposition"])
+
+    def test_meaningful_visual_requirement_does_not_become_arbitrary_quota(self):
+        manifest,files=make_fixture()
+        name=manifest["cases"][0]["package"]
+        candidate=json.loads(files[name])
+        candidate["activities"][9]["visualSpec"]={"type":"synthetic-visual"}
+        blob=_raw(candidate)
+        files[name]=blob
+        manifest["cases"][0]["packageSha256"]=sha256(blob).hexdigest()
+        # Rebinding the exact package in the learner and academic receipts
+        # keeps this strictly a metadata-only fixture; no real visual is certified.
+        learner_name=manifest["cases"][0]["learnerReceipt"]
+        academic_name=manifest["cases"][0]["academicMatrix"]
+        learner=json.loads(files[learner_name])
+        learner["packageSha256"]=manifest["cases"][0]["packageSha256"]
+        matrix=json.loads(files[academic_name])
+        matrix["packageSha256"]=manifest["cases"][0]["packageSha256"]
+        for row,activity in zip(matrix["activities"],candidate["activities"]):
+            row["activitySha256"]=sha256(json.dumps(
+                activity,sort_keys=True,ensure_ascii=False,
+                separators=(",",":")).encode("utf-8")).hexdigest()
+        files[learner_name]=_raw(learner)
+        files[academic_name]=_raw(matrix)
+        report,calls=evaluate(manifest,files)
+        self.assertEqual("METADATA_COMPLETE_PROOF_UNVERIFIED",
+                         report["caseResults"][0]["status"])
+        self.assertEqual(1,report["caseResults"][0]["productContract"]["declaredVisualSpecCount"])
+        self.assertEqual("DECLARED_VISUAL_SPEC_NOT_INDEPENDENTLY_VERIFIED",
+                         report["caseResults"][0]["productContract"]["visualPedagogyStatus"])
+        self.assertFalse(report["academicAcceptanceGranted"])
 
     def test_missing_learner_evidence_does_not_silently_pass(self):
         manifest,files=make_fixture(learner_complete=False)

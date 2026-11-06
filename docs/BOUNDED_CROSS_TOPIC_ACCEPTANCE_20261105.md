@@ -86,6 +86,42 @@ Output root must already exist and be **outside the repository**. The command re
 
 Each case's `status`, `learnerScope`, `academicEvidence`, missing-check count and per-gate outstanding count are included. The terminal receipt always sets `interactiveLearnerAcceptanceGranted=false`, `technicalAcceptanceGranted=false`, `academicAcceptanceGranted=false`, and `publicationAuthorized=false`. A historical self-reported `PASS` is never upgraded into independent academic proof.
 
+## Stage-0 product roster regression closed ? 6 November 2026
+
+The earlier three-case positive fixtures used only **two activities per case**
+(one MCQ plus one interactive). They proved the *coverage-metadata loop*
+but **not the required publishable learning-product roster**. As a result a
+small but internally consistent package could appear as
+`METADATA_COMPLETE_PROOF_UNVERIFIED`; this symptom resembles the historical
+BSA-20261105-113 and BSA-20261105-115 omissions.
+
+The **same existing** `assess_cross_topic_evidence` evaluator now validates
+`inspect_stage0_product_roster` **before** reading learner and academic
+receipts. The current product contract is **18** activities:
+9 MCQ and 9 interactive; 3 each of easy, moderate and challenging **for
+each type**; all unique activity IDs. A mismatched roster is reported as
+`INVALID_PRODUCT_ROSTER` with a sanitized
+`STAGE0_ACTIVITY_QUOTA_OR_IDENTITY_MISMATCH` category and terminal
+`STOP_STAGE0_PRODUCT_CONTRACT_VIOLATION`. This is a product-contract
+stop, **not** an invitation to regenerate the old source PDF.
+
+The positive synthetic fixtures now contain all **18** required activities
+per topic. Adversarial tests reject two-item packages, wrong difficulty
+quotas, missing/wrongly typed data and duplicate IDs even when external
+browser counters appear complete. Each report also includes
+`declaredVisualSpecCount` and `visualPedagogyStatus`, but **does not
+impose an arbitrary visual count** or mistake a declared visual for
+independently verified diagrams. The existing academic, technical and
+publication flags remain false.
+
+A **read-only, source-free scan of 15 tracked content packages** on the
+inspected repository head showed **15/15 matching Stage-0 counts** and
+**0/15 with a declared nonempty `visualSpec`**. Consequently the
+unresolved visual-interactive educational value is now explicit and
+still needs genuine independent evidence, rather than another quota
+loophole or decorative image generation. No source PDF/model/browser
+request was made. Incident: `BSA-20261106-120`, linked to 113/114/115.
+
 ## What this does and does not complete
 
 **Completed in code:** the finite, source-free **orchestration** of the two previously developed gates; evidence identity checking; a strict, bounded, one-shot stopping condition; and three-topic simulated integration and negative tests.

@@ -1025,6 +1025,45 @@
           "marker": "test_ci_registry_rejects_unlinked_repeat_even_with_real_tests"
         }
       ]
+    },
+    {
+      "id": "BSA-20261106-120",
+      "class": "cross-topic-metadata-accepted-incomplete-stage0-activity-roster",
+      "status": "resolved",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261105-113",
+        "BSA-20261105-114",
+        "BSA-20261105-115"
+      ],
+      "differenceFromLinkedIncident": "Prior tests guarded empty browser data and false academic PASS but used two-item positive fixtures; they never enforced the 18-activity six-quota product roster at the final cross-topic boundary.",
+      "regressions": [
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_previous_two_activity_demo_is_not_accepted_as_full_subchapter"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_unbalanced_difficulty_quota_fails_without_source_or_model_retry"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_invalid_type_or_difficulty_shape_is_a_product_failure"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_duplicate_activity_ids_cannot_be_masked_by_complete_browser_counters"
+        },
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_meaningful_visual_requirement_does_not_become_arbitrary_quota"
+        }
+      ]
     }
   ]
 }

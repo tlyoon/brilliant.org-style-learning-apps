@@ -31,6 +31,57 @@ _CASE = frozenset((
 ))
 
 
+class ProductRosterMismatch(ValueError):
+    """A candidate is not a Stage-0 publishable activity package."""
+
+
+def inspect_stage0_product_roster(package: dict[str, Any]) -> dict[str, Any]:
+    """Source-free product quota, not academic, visual or UX acceptance.
+
+    Current product contract: 18 activities, exactly three of each
+    (mcq/interactive) ? (easy/moderate/challenging) combination. Future
+    versions require an explicit versioned product contract migration.
+    """
+    if not isinstance(package, dict) or not isinstance(package.get("activities"), list):
+        raise ProductRosterMismatch("ACTIVITY_ROSTER_INVALID")
+    activities = package["activities"]
+    required = {(kind, tier) for kind in ("mcq", "interactive")
+                for tier in ("easy", "moderate", "challenging")}
+    actual = {(kind, tier): 0 for kind, tier in required}
+    seen: set[str] = set()
+    if len(activities) != 18:
+        raise ProductRosterMismatch("PRODUCT_ACTIVITY_COUNT_NOT_18")
+    for activity in activities:
+        if not isinstance(activity, dict):
+            raise ProductRosterMismatch("ACTIVITY_NOT_STRUCTURED")
+        identity = activity.get("id")
+        kind_tier = (activity.get("type"), activity.get("difficulty"))
+        if (not isinstance(identity, str) or not identity or identity in seen
+                or not isinstance(kind_tier[0], str)
+                or not isinstance(kind_tier[1], str)
+                or kind_tier not in actual):
+            raise ProductRosterMismatch("PRODUCT_TYPE_DIFFICULTY_OR_ID_INVALID")
+        seen.add(identity)
+        actual[kind_tier] += 1
+    if any(count != 3 for count in actual.values()):
+        raise ProductRosterMismatch("PRODUCT_DIFFICULTY_QUOTA_MISMATCH")
+    visuals = sum(bool(activity.get("visualSpec")) for activity in activities)
+    return {
+        "stage0RosterMatchesProductContract": True,
+        "activityCount": 18,
+        "mcqCount": 9,
+        "interactiveCount": 9,
+        "perTypeDifficultyQuota": 3,
+        "declaredVisualSpecCount": visuals,
+        "visualPedagogyStatus": (
+            "DECLARED_VISUAL_SPEC_NOT_INDEPENDENTLY_VERIFIED" if visuals
+            else "NO_DECLARED_VISUAL_SPEC_REQUIRES_VISUAL_VALUE_JUSTIFICATION"
+        ),
+        "visualSemanticsIndependentlyVerified": False,
+        "publicationAuthorized": False,
+    }
+
+
 def canonical_digest(obj: dict[str, Any]) -> str:
     return sha256(json.dumps(
         obj, sort_keys=True, ensure_ascii=True, separators=(",", ":")
@@ -116,12 +167,14 @@ def assess_cross_topic_evidence(
         academic_status = "NOT_EVALUATED"
         missing_checks = None
         academic_pending: dict[str, int] | None = None
+        product_roster = None
         error_category = None
         try:
             raw = loader(item["package"])
             if not isinstance(raw, bytes) or sha256(raw).hexdigest() != item["packageSha256"]:
                 raise ValueError("package lineage mismatch")
             package = json.loads(raw.decode("utf-8"))
+            product_roster = inspect_stage0_product_roster(package)
             learner = json.loads(loader(item["learnerReceipt"]).decode("utf-8"))
             matrix = json.loads(loader(item["academicMatrix"]).decode("utf-8"))
             if (not isinstance(learner, dict) or
@@ -142,6 +195,9 @@ def assess_cross_topic_evidence(
                 status = "MISSING_LEARNER_OBSERVATIONS"
             else:
                 status = "METADATA_COMPLETE_PROOF_UNVERIFIED"
+        except ProductRosterMismatch:
+            status = "INVALID_PRODUCT_ROSTER"
+            error_category = "STAGE0_ACTIVITY_QUOTA_OR_IDENTITY_MISMATCH"
         except (ValueError, TypeError, KeyError, AttributeError, OSError,
                 UnicodeError, json.JSONDecodeError):
             # Avoid logging exception messages, private source text, model
@@ -155,6 +211,7 @@ def assess_cross_topic_evidence(
             "academicEvidence": academic_status,
             "missingLearnerChecks": missing_checks,
             "outstandingAcademicGates": academic_pending,
+            "productContract": product_roster,
             "errorCategory": error_category,
             "checksPerformed": 1,
             "independentBrowserProven": False,
@@ -169,11 +226,14 @@ def assess_cross_topic_evidence(
             "METADATA_COMPLETE_PROOF_UNVERIFIED",
             "MISSING_LEARNER_OBSERVATIONS",
             "REPORTED_DETERMINISTIC_DEFECTS",
+            "INVALID_PRODUCT_ROSTER",
             "INVALID_EVIDENCE",
         )
     }
     if counts["REPORTED_DETERMINISTIC_DEFECTS"]:
         disposition = "STOP_REPORTED_DEFECTS"
+    elif counts["INVALID_PRODUCT_ROSTER"]:
+        disposition = "STOP_STAGE0_PRODUCT_CONTRACT_VIOLATION"
     elif counts["INVALID_EVIDENCE"] or counts["MISSING_LEARNER_OBSERVATIONS"]:
         disposition = "STOP_INCOMPLETE_OR_INVALID_EVIDENCE"
     else:
@@ -189,6 +249,12 @@ def assess_cross_topic_evidence(
         "topicFamilies": sorted(row["topicFamily"] for row in cases),
         "counts": counts,
         "caseResults": cases,
+        "candidatesWithNoDeclaredVisualSpec": sum(
+            row["productContract"] is not None
+            and row["productContract"]["declaredVisualSpecCount"] == 0
+            for row in cases
+        ),
+        "productRosterContractChecked": True,
         "terminalDisposition": disposition,
         "stoppingConditionMet": True,
         "repeatEvaluationAllowed": False,
