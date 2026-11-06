@@ -998,6 +998,33 @@
           "marker": "test_borderline_source_retains_acquired_pdf_receipt_before_stop"
         }
       ]
+    },
+    {
+      "id": "BSA-20261106-119",
+      "class": "recurring-root-cause-linkage-missing",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": [
+        "BSA-20261102-096"
+      ],
+      "differenceFromLinkedIncident": "Decision 0027 caught missing incident-to-test links but did not connect a newly named incident to an earlier solved root-cause family.",
+      "regressions": [
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_recurring_failure_requires_prior_link_and_difference"
+        },
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_fresh_failure_class_requires_novelty_evidence"
+        },
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_ci_registry_rejects_unlinked_repeat_even_with_real_tests"
+        }
+      ]
     }
   ]
 }

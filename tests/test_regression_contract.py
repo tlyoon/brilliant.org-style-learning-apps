@@ -7,7 +7,7 @@ import shutil
 import tempfile
 import unittest
 
-from scripts.check_regression_contract import verify
+from scripts.check_regression_contract import verify, _family_history_errors
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -38,6 +38,57 @@ class RegressionContractTests(unittest.TestCase):
             json.dumps(self.manifest, indent=2), encoding="utf-8"
         )
 
+    def test_recurring_failure_requires_prior_link_and_difference(self):
+        prior = {"BSA-20261102-096": {
+            "id": "BSA-20261102-096", "class": "recurrence-registry-governance",
+        }}
+        case = {
+            "rootCauseFamily": "recurrence-governance",
+            "relatedIncidentIds": ["BSA-20261102-096"],
+            "differenceFromLinkedIncident":
+                "The earlier registry enforced the presence of tests "
+                "but did not require a link to a previously solved root cause.",
+        }
+        self.assertEqual([], _family_history_errors(
+            case, "BSA-20261106-119", prior))
+        case["relatedIncidentIds"] = []
+        self.assertIn("repeated root cause", " ".join(
+            _family_history_errors(case, "BSA-20261106-119", prior)))
+        case["relatedIncidentIds"] = ["BSA-20261102-096"]
+        case["differenceFromLinkedIncident"] = "same old bug"
+        self.assertIn("explain why earlier regression", " ".join(
+            _family_history_errors(case, "BSA-20261106-119", prior)))
+        case["differenceFromLinkedIncident"] = "A sufficient explanation of how the proof gap remained after the former repair"
+        case["relatedIncidentIds"] = ["BSA-20991231-999"]
+        self.assertIn("existing earlier incident", " ".join(
+            _family_history_errors(case, "BSA-20261106-119", prior)))
+
+    def test_fresh_failure_class_requires_novelty_evidence(self):
+        earlier = {"BSA-20261102-096": {"id": "BSA-20261102-096"}}
+        case = {"rootCauseFamily": "genuinely-new-root-cause",
+                "relatedIncidentIds": [], "noveltyExplanation": ""}
+        self.assertIn("novelty explanation", " ".join(
+            _family_history_errors(case, "BSA-20261106-119", earlier)))
+        case["noveltyExplanation"] = (
+            "No known root family or existing canonical task covers this mechanism."
+        )
+        self.assertEqual([], _family_history_errors(
+            case, "BSA-20261106-119", earlier))
+        case["rootCauseFamily"] = "invented-family-name"
+        self.assertIn("recognized rootCauseFamily", " ".join(
+            _family_history_errors(case, "BSA-20261106-119", earlier)))
+
+    def test_ci_registry_rejects_unlinked_repeat_even_with_real_tests(self):
+        new_entry = next(item for item in self.manifest["incidents"]
+                         if item["id"] == "BSA-20261106-119")
+        new_entry["relatedIncidentIds"] = []
+        self.save_manifest()
+        self.assertIn("repeated root cause", " ".join(verify(self.root)))
+        new_entry["relatedIncidentIds"] = ["BSA-20261102-096"]
+        new_entry["differenceFromLinkedIncident"] = "old test did not catch it"
+        self.save_manifest()
+        self.assertIn("explain why earlier regression", " ".join(verify(self.root)))
+
     def test_canonical_resolved_incidents_are_ci_protected(self):
         self.assertEqual([], verify(self.root))
 
@@ -63,7 +114,10 @@ class RegressionContractTests(unittest.TestCase):
         self.assertIn("absent from recurrence registry", " ".join(verify(self.root)))
         self.manifest["incidents"].append({
             "id":"BSA-20991231-999", "class":"synthetic-triage",
-            "status":"active", "nextAction":"Reproduce in isolated local test fixture"
+            "status":"active", "nextAction":"Reproduce in isolated local test fixture",
+            "rootCauseFamily":"genuinely-new-root-cause",
+            "relatedIncidentIds":[],
+            "noveltyExplanation":"This is a hypothetical new mechanism with no registered earlier counterpart."
         })
         self.save_manifest()
         self.assertEqual([], verify(self.root))

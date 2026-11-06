@@ -16,6 +16,21 @@ ROOT = Path(__file__).resolve().parents[1]
 ID_RE = re.compile(r"^BSA-(\d{8})-(\d{3})$")
 LEDGER_RE = re.compile(r"\|\s*(BSA-\d{8}-\d{3})\s*\|")
 CUTOVER = "BSA-20261102-096"
+# New incidents must reuse an established mechanism before duplicating a fix.
+# Legacy records remain unchanged; the audit does not rewrite their history.
+FAMILY_LINK_CUTOVER = "BSA-20261106-119"
+FAMILY_ANCHORS: dict[str, tuple[str, ...]] = {
+    "recurrence-governance": ("BSA-20261102-096",),
+    "source-acquisition": ("BSA-20261105-117",),
+    "pdf-repair-loop": ("BSA-20261103-102",),
+    "academic-evidence": ("BSA-20261105-114",),
+    "learner-browser": ("BSA-20261105-116",),
+    "provider-no-replay": ("BSA-20261104-108",),
+    "external-denial": ("BSA-20261103-099", "BSA-20261104-111"),
+    "integration-readiness": ("BSA-20261104-109",),
+    "runtime-preflight": ("BSA-20261102-097",),
+}
+FAMILY_NEW = "genuinely-new-root-cause"
 REQUIRED_BASELINE = frozenset({
     "BSA-20261023-003",
     "BSA-20261024-001",
@@ -62,6 +77,7 @@ REQUIRED_BASELINE = frozenset({
     "BSA-20261105-115",
     "BSA-20261105-116",
     "BSA-20261105-117",
+    "BSA-20261106-119",
 })
 STANDARD_PYTHON_CI = "python -m unittest discover -s tests -v"
 GUARD_CI = "python scripts/check_regression_contract.py"
@@ -133,6 +149,41 @@ def _js_has_assertion(source: str, marker: str) -> bool:
                for line in source.splitlines())
 
 
+def _family_history_errors(
+    entry: dict, incident_id: str, earlier: dict[str, dict],
+) -> list[str]:
+    """Prevent new IDs from concealing a previously solved failure family.
+
+    The classification is intentionally explicit; AI similarity scores or
+    shared words in a log cannot grant permission to replay an operation.
+    """
+    if incident_id < FAMILY_LINK_CUTOVER:
+        return []
+    errors: list[str] = []
+    family = entry.get("rootCauseFamily")
+    if family not in (*FAMILY_ANCHORS, FAMILY_NEW):
+        return [incident_id + " missing recognized rootCauseFamily"]
+    links = entry.get("relatedIncidentIds")
+    if (not isinstance(links, list) or len(links) != len(set(map(str, links))) or
+            any(not isinstance(link, str) or not ID_RE.fullmatch(link)
+                or link not in earlier for link in links)):
+        return [incident_id + " requires distinct, existing earlier incident links"]
+    if family == FAMILY_NEW:
+        explanation = entry.get("noveltyExplanation")
+        if not isinstance(explanation, str) or len(explanation.strip()) < 35:
+            errors.append(incident_id + " new-root-cause requires a detailed novelty explanation")
+    else:
+        anchors = set(FAMILY_ANCHORS[family])
+        anchors.update(old_id for old_id, old in earlier.items()
+                       if old.get("rootCauseFamily") == family)
+        if not anchors.intersection(links):
+            errors.append(incident_id + " repeated root cause must link an earlier same-family incident")
+        delta = entry.get("differenceFromLinkedIncident")
+        if not isinstance(delta, str) or len(delta.strip()) < 35:
+            errors.append(incident_id + " must explain why earlier regression did not catch recurrence")
+    return errors
+
+
 def verify(root: Path = ROOT) -> list[str]:
     root = root.resolve()
     errors: list[str] = []
@@ -180,6 +231,12 @@ def verify(root: Path = ROOT) -> list[str]:
             errors.append(ident + " duplicates registry incident ID")
             continue
         registered.add(ident)
+        earlier = {
+            previous["id"]: previous
+            for previous in entries[:position]
+            if isinstance(previous, dict) and isinstance(previous.get("id"), str)
+        }
+        errors.extend(_family_history_errors(entry, ident, earlier))
         if ledger_counts[ident] == 0:
             errors.append(ident + " missing from failure-to-fix ledger")
         if ident >= CUTOVER and ledger_counts[ident] != 1:
