@@ -39,13 +39,97 @@ class AcademicPublicationGateTests(unittest.TestCase):
             with patch("app_generator.runtime.academic_release.academic_triage",return_value={
                 "academicQA":"PASS", "gates":{"answer_correctness":"PASS"}, "artifactSha256":digest
             }):
-                result=enforce_academic_release_gate(ROOT,package,Path(tmp))
-            self.assertEqual(result["academicQA"],"PASS")
+                with self.assertRaisesRegex(ValidationFailure,"visual-value assessment"):
+                    enforce_academic_release_gate(ROOT,package,Path(tmp))
+            receipt=json.loads((Path(tmp)/"visual-release-gate.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["status"],"BLOCKED_VISUAL_VALUE_ASSESSMENT")
+            self.assertFalse(receipt["publicationAuthorized"])
             with patch("app_generator.runtime.academic_release.academic_triage",return_value={
                 "academicQA":"PASS", "gates":{}, "artifactSha256":"0"*64
             }):
                 with self.assertRaisesRegex(ValidationFailure,"another package version"):
                     enforce_academic_release_gate(ROOT,package,Path(tmp))
+
+    def test_mocked_academic_pass_still_refuses_legacy_no_visual_plan(self):
+        source=ROOT/"content/chapter-1/section-1-1/package.json"
+        with tempfile.TemporaryDirectory() as tmp:
+            package=Path(tmp)/"package.json"
+            package.write_bytes(source.read_bytes())
+            digest=hashlib.sha256(package.read_bytes()).hexdigest()
+            with patch("app_generator.runtime.academic_release.academic_triage",return_value={
+                "academicQA":"PASS", "gates":{"answer_correctness":"PASS"},
+                "artifactSha256":digest,
+            }):
+                with self.assertRaisesRegex(ValidationFailure,"visual-value assessment"):
+                    enforce_academic_release_gate(ROOT,package,Path(tmp))
+            receipt=json.loads((Path(tmp)/"visual-release-gate.json").read_text())
+            self.assertEqual("BLOCKED_VISUAL_VALUE_ASSESSMENT",receipt["status"])
+            self.assertEqual(digest,receipt["packageSha256"])
+
+    def test_valid_text_first_plans_require_no_decorative_visual_quota(self):
+        # Only an artificial academic PASS stub: no actual physics approval.
+        from tests.test_visual_contracts import plan
+        source=ROOT/"content/chapter-1/section-1-1/package.json"
+        package_data=json.loads(source.read_text(encoding="utf-8"))
+        for activity in package_data["activities"]:
+            value=plan("none",None)
+            value["fallbackMode"]="none"
+            value["renderStrategy"]="none"
+            value["representationAssessment"].update(
+                visualValue=0,simulationValue=0,visualRequired=False,
+                rationale="The text-based reasoning task needs no drawing.")
+            value["generatedAssetPolicy"]["answerCriticalLayer"]="none"
+            value["activityIntent"].update(
+                learningObjective=activity["objective"],difficulty=activity["difficulty"],
+                misconceptionTargets=activity["misconceptions"])
+            value["groundedFactsUsed"]=[]
+            activity["visualPlan"]=value
+        with tempfile.TemporaryDirectory() as tmp:
+            package=Path(tmp)/"package.json"
+            package.write_text(json.dumps(package_data),encoding="utf-8")
+            digest=hashlib.sha256(package.read_bytes()).hexdigest()
+            with patch("app_generator.runtime.academic_release.academic_triage",return_value={
+                "academicQA":"PASS", "gates":{"answer_correctness":"PASS"},
+                "artifactSha256":digest,
+            }):
+                result=enforce_academic_release_gate(ROOT,package,Path(tmp))
+            self.assertEqual(result["academicQA"],"PASS")
+            receipt=json.loads((Path(tmp)/"visual-release-gate.json").read_text())
+            self.assertEqual(receipt["declaredVisualPlans"],18)
+            self.assertEqual(receipt["declaredVisualSpecs"],0)
+            self.assertFalse(receipt["visualSemanticsIndependentlyVerified"])
+            self.assertFalse(receipt["publicationAuthorized"])
+
+    def test_invalid_declared_visual_plan_cannot_bypass_release_gate(self):
+        from tests.test_visual_contracts import plan
+        source=ROOT/"content/chapter-1/section-1-1/package.json"
+        data=json.loads(source.read_text(encoding="utf-8"))
+        for activity in data["activities"]:
+            value=plan("none",None)
+            value["fallbackMode"]="none"
+            value["renderStrategy"]="none"
+            value["representationAssessment"].update(
+                visualValue=0,simulationValue=0,visualRequired=False,
+                rationale="No graphic is necessary.")
+            value["generatedAssetPolicy"]["answerCriticalLayer"]="none"
+            value["activityIntent"].update(
+                learningObjective=activity["objective"],difficulty=activity["difficulty"],
+                misconceptionTargets=activity["misconceptions"])
+            value["groundedFactsUsed"]=[]
+            activity["visualPlan"]=value
+        data["activities"][0]["visualPlan"]["representationAssessment"]["visualRequired"]=True
+        with tempfile.TemporaryDirectory() as tmp:
+            package=Path(tmp)/"package.json"
+            package.write_text(json.dumps(data),encoding="utf-8")
+            digest=hashlib.sha256(package.read_bytes()).hexdigest()
+            with patch("app_generator.runtime.academic_release.academic_triage",return_value={
+                "academicQA":"PASS", "gates":{"answer_correctness":"PASS"},
+                "artifactSha256":digest,
+            }):
+                with self.assertRaisesRegex(ValidationFailure,"visual-value assessment"):
+                    enforce_academic_release_gate(ROOT,package,Path(tmp))
+            receipt=json.loads((Path(tmp)/"visual-release-gate.json").read_text())
+            self.assertEqual(receipt["status"],"BLOCKED_VISUAL_VALUE_ASSESSMENT")
 
     def test_direct_public_publisher_refuses_real_unverified_section94_without_git_calls(self):
         from app_generator.publishing.public import PublicPagesPublisher
