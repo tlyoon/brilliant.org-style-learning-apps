@@ -152,10 +152,22 @@ def run() -> None:
                     assert len(driver.find_elements(By.CSS_SELECTOR, "#course-select option")) == 7
                     Select(driver.find_element(By.ID, "locale")).select_by_value(lang)
                     Select(driver.find_element(By.ID, "course-select")).select_by_value("1")
-                    WebDriverWait(driver, 10).until(
-                        lambda d: "Synthetic question 1 " + lang in
-                        d.find_element(By.CSS_SELECTOR, "#app h1.question").text
-                    )
+                    try:
+                        WebDriverWait(driver, 10).until(
+                            lambda d: "Synthetic question 1 " + lang in
+                            d.find_element(By.CSS_SELECTOR, "#app h1.question").text
+                        )
+                    except Exception as exc:
+                        # Synthetic-only DOM: no private source or student data.
+                        visible = driver.find_element(By.ID, "app").text[:240]
+                        console_errors = driver.execute_script(
+                            "return document.readyState + ':' + "
+                            "String(document.querySelector('#course-status')?.textContent)"
+                        )
+                        raise AssertionError(
+                            "SOURCEFREE_PREVIEW_RENDER_FAILED: " + repr(visible) +
+                            " STATUS=" + repr(console_errors)
+                        ) from exc
                     assert driver.execute_script(
                         "return document.documentElement.scrollWidth <= "
                         "document.documentElement.clientWidth + 1"
