@@ -25,12 +25,17 @@ LANGS = ("en", "ms", "zh")
 SIZES = ((390, 844, True), (1280, 800, False))
 
 
-def _fixture(section: int) -> bytes:
-    texts = {
-        "en": f"Synthetic question {section} en",
-        "ms": f"Soalan sintetik {section} ms",
-        "zh": f"合成问题 {section} zh",
+def _synthetic_prompt(section: int, lang: str) -> str:
+    stems = {
+        "en": "Synthetic question",
+        "ms": "Soalan sintetik",
+        "zh": "合成问题",
     }
+    return f"{stems[lang]} {section} {lang}"
+
+
+def _fixture(section: int) -> bytes:
+    texts = {lang: _synthetic_prompt(section, lang) for lang in LANGS}
     hints = {lang: "Test-only hint " + lang for lang in LANGS}
     feedback = {lang: "Test-only feedback " + lang for lang in LANGS}
     labels = {lang: "Test-only option " + lang for lang in LANGS}
@@ -154,7 +159,7 @@ def run() -> None:
                     Select(driver.find_element(By.ID, "course-select")).select_by_value("1")
                     try:
                         WebDriverWait(driver, 10).until(
-                            lambda d: "Synthetic question 1 " + lang in
+                            lambda d: _synthetic_prompt(1, lang) in
                             d.find_element(By.CSS_SELECTOR, "#app h1.question").text
                         )
                     except Exception as exc:
