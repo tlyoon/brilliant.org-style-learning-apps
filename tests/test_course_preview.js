@@ -42,6 +42,13 @@ const fixturePackage = (id) => ({
 });
 const sha = (value) => crypto.createHash("sha256").update(value).digest("hex");
 const flush = () => new Promise((resolve) => setImmediate(resolve));
+async function waitFor(predicate) {
+  for (let attempt = 0; attempt < 50; attempt++) {
+    if (predicate()) return;
+    await new Promise((resolve) => setTimeout(resolve, 20));
+  }
+  assert.fail("asynchronous package load did not settle");
+}
 
 function harness({ corruptManifest = false, wrongBytes = false, absentManifest = false } = {}) {
   const app = new FakeElement("section");
@@ -107,12 +114,11 @@ function harness({ corruptManifest = false, wrongBytes = false, absentManifest =
   assert.match(valid.status.textContent, /Select a section/);
   valid.select.value = "3";
   valid.select.listeners.change();
-  await flush();
-  await flush();
+  await waitFor(() => valid.app.textContent.includes("Prompt 3") || valid.app.textContent.includes("Could not load"));
   assert.deepEqual(valid.calls.map((x) => x.url), [
     "../local-pilot/roster.json", "../content/chapter-9/section-9-3/package.json",
   ]);
-  assert.equal(descendants(valid.app).find((x) => x.tagName === "H1").textContent, "Prompt 3 en");
+  assert.equal(descendants(valid.app).find((x) => x.tagName === "H1")?.textContent, "Prompt 3 en", valid.app.textContent);
   valid.locale.value = "ms";
   valid.locale.listeners.change({ target: { value: "ms" } });
   await flush();
@@ -136,8 +142,7 @@ function harness({ corruptManifest = false, wrongBytes = false, absentManifest =
   await flush();
   mismatch.select.value = "1";
   mismatch.select.listeners.change();
-  await flush();
-  await flush();
+  await waitFor(() => mismatch.app.textContent.includes("Could not load"));
   assert.match(mismatch.app.textContent, /Package bytes differ from the selected roster/);
   assert.equal(descendants(mismatch.app).filter((x) => x.tagName === "H1").length, 0,
     "tampered package must not render its activities");
