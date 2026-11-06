@@ -681,6 +681,31 @@ Decisions 0029/0030/0031 or change course diagnostic/prerequisite progression.
 
 ## Local-only six-section instructor preview (not classroom release)
 
+### One-command local roster preparation
+
+The repo includes a **source-free** helper to avoid manually calculating six
+package hashes or hand-writing a JSON roster. In an authorized clean checkout
+of draft PR #223, select six **explicit** existing sections from one chapter.
+For example, the following is a *test-only candidate selection*, NOT a
+record of instructor approval:
+
+```powershell
+python scripts/prepare_course_preview.py --chapter 9 --sections 1 2 3 4 5 6 --scope-id sourcefree-pilot-local-instructor-demo
+```
+
+This helper reads only the six existing tracked JSON files and Git HEAD.
+It refuses modified/untracked packages, invalid activity distributions,
+duplicate or mismatched identities, and missing gitignore protection.
+It creates `local-pilot/roster.json` exactly once; it will **not overwrite**
+an existing local roster. The roster remains ignored by Git, and all science,
+translation, visual, rights, browser and institutional approval gates remain
+unverified. An instructor must separately confirm the intended pilot roster
+before any real class use. Never treat the example sections as approved.
+
+After an authorized candidate check, use `python scripts/serve.py` and visit
+`http://127.0.0.1:8000/app/course-preview.html` in the same local checkout.
+
+
 The separate `app/course-preview.html` provides **manual navigation** among
 exactly six existing draft packages from one explicit roster. It uses the
 existing single-package learner (no course unlocking or adaptive routing).
