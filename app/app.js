@@ -17,6 +17,37 @@ const evidenceCopy = {
     assisted: "\u4f7f\u7528\u63d0\u793a\u3001\u7b54\u9519\u6216\u8df3\u8fc7\u540e\u5b8c\u6210\uff1a",
   },
 };
+
+const masteryCopy = {
+  en: {
+    label: "Session mastery evidence",
+    not_started: "Not yet demonstrated",
+    practice: "Practising — independent evidence pending",
+    developing: "Developing independent reasoning",
+    full: "All activities completed independently",
+    detail: "Independent first-try completion",
+    note: "Session-only practice evidence, not a grade or verified course mastery.",
+  },
+  ms: {
+    label: "Bukti penguasaan sesi",
+    not_started: "Belum ditunjukkan",
+    practice: "Sedang berlatih — bukti bebas belum mencukupi",
+    developing: "Penaakulan kendiri sedang berkembang",
+    full: "Semua aktiviti diselesaikan secara kendiri",
+    detail: "Selesai secara kendiri pada cubaan pertama",
+    note: "Bukti latihan sesi sahaja; bukan gred atau pengesahan penguasaan kursus.",
+  },
+  zh: {
+    label: "本次练习的掌握证据",
+    not_started: "尚未显示",
+    practice: "练习中——尚无独立完成的证据",
+    developing: "独立推理能力逐步建立",
+    full: "所有活动均独立完成",
+    detail: "首次独立完成",
+    note: "仅为本次练习的证据，不代表成绩或已通过课程掌握评估。",
+  },
+};
+
 const localized = (value) => typeof value === "string" ? value : value?.[state.locale] ?? value?.en ?? "";
 // Only authored, package-controlled reasoning is shown; no network generation.
 const reasoningHeading = { en: "Why this works", ms: "Mengapa jawapan ini betul", zh: "\u539f\u7406\u8bf4\u660e" };
@@ -121,6 +152,51 @@ function anonymousLearningFeedback() {
   });
   return { schemaVersion: 1, activitiesTotal: rows.length, activities: rows,
     containsStudentIdentity: false, publicationAuthorized: false };
+}
+
+// An intentionally conservative, non-persistent *session evidence* label.
+// It is NOT academic mastery, a grade, course completion or cohort standing.
+// Correct answers after help, retries or skips never count as independent.
+function masteryEvidence() {
+  const activities = state.package?.activities ?? [];
+  let independent = 0, completed = 0, attempted = 0;
+  for (const activity of activities) {
+    const entry = state.sessionMetrics[activity.id];
+    if (!entry) continue;
+    if (entry.completed === true) completed += 1;
+    if (entry.completed === true && entry.completionEvidence === "independent") {
+      independent += 1;
+    }
+    if (entry.checks > 0 || entry.hints > 0 || entry.skips > 0) attempted += 1;
+  }
+  const total = activities.length;
+  const level = attempted === 0 ? "not_started"
+    : total > 0 && independent === total ? "full"
+    : independent > 0 ? "developing" : "practice";
+  return {
+    level, independent, completed, total,
+    independentPercent: total ? Math.round(100 * independent / total) : 0,
+    sessionOnly: true, notAGrade: true, courseMasteryVerified: false,
+  };
+}
+
+function renderMasteryEvidence() {
+  const labels = masteryCopy[state.locale];
+  const evidence = masteryEvidence();
+  const section = element("section", {
+    className: "mastery-evidence",
+    attributes: { "aria-label": labels.label },
+  });
+  section.append(
+    element("p", { className: "mastery-heading", text: labels.label }),
+    element("h2", { className: "mastery-level", text: labels[evidence.level] }),
+    element("p", {
+      className: "mastery-numbers",
+      text: `${labels.detail}: ${evidence.independent} / ${evidence.total} (${evidence.independentPercent}%)`,
+    }),
+    element("p", { className: "mastery-note", text: labels.note }),
+  );
+  return section;
 }
 
 function resetActivity() {
@@ -309,6 +385,7 @@ function renderComplete(root) {
   card.append(
     element("p", { className: "eyebrow", text: localized(state.package.subchapter) }),
     element("h1", { text: copy[state.locale].complete }),
+    renderMasteryEvidence(),
   );
   const total = state.package.activities.length;
   const completed = state.package.activities.filter((a) => state.sessionMetrics[a.id]?.completed).length;
@@ -390,7 +467,8 @@ function render() {
   const progressBar = element("span");
   progressBar.style.width = `${((state.activityIndex + 1) / activities.length) * 100}%`;
   progress.append(progressBar);
-  card.append(progress, element("h1", { className: "question", text: localized(activity.prompt) }));
+  card.append(progress, renderMasteryEvidence(),
+    element("h1", { className: "question", text: localized(activity.prompt) }));
 
   renderVisual(card, activity);
   renderResponse(card, activity);
