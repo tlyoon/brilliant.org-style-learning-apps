@@ -1081,6 +1081,44 @@
           "marker": "test_evidence_paths_must_not_be_reused_across_topic_families"
         }
       ]
+    },
+    {
+      "id": "BSA-20261106-122",
+      "class": "academic-pass-without-visual-value-plan-at-public-release-boundary",
+      "status": "resolved",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261106-120",
+        "BSA-20261105-114"
+      ],
+      "differenceFromLinkedIncident": "Earlier fixes checked final activity quotas and academic evidence, but a package with a mocked academic PASS could reach merge/deploy without a validated visualPlan assessment for every activity; the content checker also accepted legacy visual-less packages labeled publishable.",
+      "regressions": [
+        {
+          "path": "tests/test_academic_publication_gate.py",
+          "kind": "python",
+          "marker": "test_mocked_academic_pass_still_refuses_legacy_no_visual_plan"
+        },
+        {
+          "path": "tests/test_academic_publication_gate.py",
+          "kind": "python",
+          "marker": "test_valid_text_first_plans_require_no_decorative_visual_quota"
+        },
+        {
+          "path": "tests/test_academic_publication_gate.py",
+          "kind": "python",
+          "marker": "test_invalid_declared_visual_plan_cannot_bypass_release_gate"
+        },
+        {
+          "path": "tests/test_content_validation.py",
+          "kind": "python",
+          "marker": "test_publishable_requires_visual_value_decision_per_activity"
+        },
+        {
+          "path": "tests/test_content_validation.py",
+          "kind": "python",
+          "marker": "test_publishable_accepts_schema_valid_justified_text_first_plans"
+        }
+      ]
     }
   ]
 }
