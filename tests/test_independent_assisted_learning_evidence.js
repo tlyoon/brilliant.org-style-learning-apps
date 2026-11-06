@@ -45,10 +45,17 @@ const id = x => all(app).find(e => e.id === x);
 const choice = x => all(app).find(e => e.dataset?.value === x);
 const metrics = () => JSON.parse(vm.runInContext("JSON.stringify(state.sessionMetrics)", context));
 const report = () => JSON.parse(vm.runInContext("JSON.stringify(anonymousLearningFeedback())",context));
+const mastery = () => JSON.parse(vm.runInContext("JSON.stringify(masteryEvidence())",context));
+const levelLabel = () => all(app).find(e => e.className === "mastery-level")?.textContent;
+
 
 setImmediate(() => {
+  assert.equal(mastery().level,"not_started");
+  assert.equal(levelLabel(),"Not yet demonstrated");
   // Independent success on the first submission.
   choice("right").click(); id("check").click(); id("check").click();
+  assert.equal(mastery().level,"developing");
+  assert.equal(mastery().independent,1);
   // Incorrect first response followed by correct answer is assisted.
   choice("wrong").click(); id("check").click();
   choice("right").click(); id("check").click(); id("check").click();
@@ -60,6 +67,11 @@ setImmediate(() => {
   id("review-pending").click();
   choice("right").click(); id("check").click(); id("check").click();
 
+  assert.equal(mastery().level,"developing");
+  assert.equal(mastery().independent,1);
+  assert.equal(mastery().completed,4);
+  assert.equal(mastery().independentPercent,25);
+  assert.equal(mastery().notAGrade,true);
   const entries = report().activities;
   assert.deepEqual(entries.map(e => e.firstCheck),
     ["correct","wrong","correct","correct"]);
@@ -77,13 +89,17 @@ setImmediate(() => {
   assert(summary && summary.textContent.includes("without help: 1"));
   assert(summary.textContent.includes("or a skip: 3"));
   locale.value = "ms"; locale.listeners.change({target:locale});
+  assert.equal(levelLabel(),"Penaakulan kendiri sedang berkembang");
   assert(all(app).find(e => e.className === "evidence-summary")
     .textContent.includes("tanpa bantuan: 1"));
   locale.value = "zh"; locale.listeners.change({target:locale});
+  assert.equal(levelLabel(),"独立推理能力逐步建立");
   assert(all(app).find(e => e.className === "evidence-summary").textContent.includes("3"));
   // Restart destroys all anonymous session evidence and skipped-history flags.
   id("restart").click();
   assert.deepEqual(metrics(),{});
+  assert.equal(mastery().level,"not_started");
+  assert.equal(levelLabel(),"尚未显示");
   assert.deepEqual(report().activities.map(e => e.completionEvidence),
     ["not_completed","not_completed","not_completed","not_completed"]);
   assert.deepEqual(report().activities.map(e => e.firstCheck),
