@@ -145,6 +145,17 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
     errors.extend(package_domain_errors(DOMAIN_ROOT, data, source))
     errors.extend(visual_contract_errors(DOMAIN_ROOT, data, source))
 
+    if data["status"] == "publishable":
+        # Legacy review/draft packages remain compatible. Final Stage-0
+        # packages must declare each activity's visual-value decision,
+        # including justified, schema-checked text-first decisions.
+        for index, activity in enumerate(data["activities"]):
+            if not isinstance(activity.get("visualPlan"), dict):
+                errors.append(
+                    f"{source}.activities[{index}].visualPlan: "
+                    "visual-value assessment required for publishable packages"
+                )
+
     if data["status"] in {"review", "publishable"}:
         required_review_fields = (
             "prerequisites", "misconceptionCatalogue", "evidencePolicy", "reviewRecord",
