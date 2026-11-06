@@ -90,10 +90,46 @@ class ContentValidationTests(unittest.TestCase):
         self.assertTrue(any("calculatorFree" in error for error in errors))
         self.assertTrue(any("numericAnswerRequired" in error for error in errors))
 
-    def test_publishable_distribution(self):
+    def test_publishable_requires_visual_value_decision_per_activity(self):
         package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
         package["status"] = "publishable"
+        errors = validator.validate_package(package)
+        self.assertEqual(
+            len(package["activities"]),
+            sum("visual-value assessment required" in issue for issue in errors),
+        )
+        # The earlier review state remains valid and does not gain a new
+        # visual quota retroactively.
+        package["status"] = "review"
         self.assertEqual([], validator.validate_package(package))
+
+    def test_publishable_accepts_schema_valid_justified_text_first_plans(self):
+        from tests.test_visual_contracts import plan
+        package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
+        package["status"] = "publishable"
+        for activity in package["activities"]:
+            value = plan("none", None)
+            value["fallbackMode"] = "none"
+            value["renderStrategy"] = "none"
+            value["representationAssessment"].update(
+                visualValue=0, simulationValue=0, visualRequired=False,
+                rationale="A diagram adds no learning value to this text reasoning exercise.",
+            )
+            value["generatedAssetPolicy"]["answerCriticalLayer"] = "none"
+            value["activityIntent"].update(
+                learningObjective=activity["objective"],
+                difficulty=activity["difficulty"],
+                misconceptionTargets=activity["misconceptions"],
+            )
+            value["groundedFactsUsed"] = []
+            activity["visualPlan"] = value
+        self.assertEqual([], validator.validate_package(package))
+        del package["activities"][4]["visualPlan"]
+        errors = validator.validate_package(package)
+        self.assertTrue(any(
+            "activities[4].visualPlan" in issue and
+            "visual-value assessment required" in issue for issue in errors
+        ))
 
     def test_options_are_required_and_non_empty(self):
         for options in (None, []):
