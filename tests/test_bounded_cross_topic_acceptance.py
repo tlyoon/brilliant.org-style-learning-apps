@@ -329,6 +329,26 @@ class BoundedCrossTopicAcceptanceTests(unittest.TestCase):
             assess_cross_topic_evidence(manifest,files.__getitem__,
                                          observed_git_sha="e"*40)
 
+    def test_evidence_paths_must_not_be_reused_across_topic_families(self):
+        for mutation in (
+            lambda m: m["cases"][1].update(
+                academicMatrix=m["cases"][0]["learnerReceipt"]),
+            lambda m: m["cases"][2].update(
+                package=m["cases"][0]["package"].replace("case-1", "CASE-1")),
+        ):
+            manifest, files = make_fixture()
+            mutation(manifest)
+            with self.subTest(mutation=mutation), self.assertRaisesRegex(
+                ValueError, "reused across topic families"
+            ):
+                validate_cross_topic_manifest(manifest)
+            calls = []
+            with self.assertRaisesRegex(ValueError, "reused across topic families"):
+                assess_cross_topic_evidence(
+                    manifest, lambda path: calls.append(path) or files[path],
+                    observed_git_sha=manifest["baselineGitSha"])
+            self.assertEqual([], calls, "manifest rejected before any evidence load")
+
     def test_mutated_manifest_changes_deterministic_hash(self):
         manifest,_=make_fixture()
         digest=canonical_digest(manifest)
