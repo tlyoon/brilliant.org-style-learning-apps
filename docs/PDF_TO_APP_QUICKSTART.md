@@ -629,3 +629,52 @@ Refresh `main` and read the docs from that same checkout. `docs/DOCUMENTATION_MA
 Use `scripts/run_private_fresh_source_bound_review.py` only after a newly completed **source-free two-context neutral Gemini probe** and a private source-bound academic priority queue. Pass `--config`, `--package`, `--pdf`, `--packets`, `--priority-queue`, `--neutral-receipt`, `--private-evidence-root`, `--run-id`, `--activity-id`, and `--claim-prefix`, and optionally `--preflight-only` to check admission without opening Chrome or sending any prompt. All referenced inputs, reviewer receipts and run directories must reside outside Git, under an authorized private evidence root. Use distinct, never-reused run IDs and claim prefixes. Existing submitted, ambiguous, in-flight or skipped claims must be reconciled, **never replayed**; the code scans known private immutable claim directories independently of the possibly stale work queue. Only a previously unreviewed activity is eligible. The command verifies original source/package SHA and specific PDF anchors before browser use, requires controlled existing-login Chrome ownership and creates one new private five-gate immutable review. This does **not** authorize publication or confer academic PASS; fresh model consensus is advisory until independent deterministic academic evidence is complete.
 
 Fresh-only source-bound academic review admission additionally rejects any two-context Gemini neutral receipt older than 30 minutes or dated beyond 60 seconds in the future, an incomplete or malformed role response SHA, a source-bearing probe, a missing original model role, or any purportedly approved or account-independent probe. Browser readiness can expire even though its old receipt remains complete. A blocked neutral probe must never be replaced with an older successful one. Re-run a separate source-free probe only when the browser account is actually available, and preserve immutable failed receipts.
+
+
+## Offline six-subchapter pilot candidate preflight (source-free)
+
+For the class-only six-subchapter pilot, prepare an **explicit candidate roster**
+in a private authorized workspace. This is not instructor approval, PDF
+acquisition or an authorization to run source-bearing model requests.
+
+The strict JSON manifest has exactly these fields:
+
+- `scopeId`: a fresh `sourcefree-pilot-...` identifier.
+- `baselineGitSha`: the exact 40-character Git revision.
+- `chapterNumber`: a positive integer chapter number.
+- `mode`: `OFFLINE_EXISTING_PACKAGES_ONLY`.
+- `modelCallsAllowed`, `pdfReadsAllowed`, `publicationAllowed`: all `false`.
+- `cases`: exactly six objects, each with `sectionNumber` (positive integer),
+  `packagePath` (e.g. `content/chapter-9/section-9-1/package.json`) and
+  `packageSha256` (SHA-256 of the exact JSON file bytes).
+
+Each path must identify a distinct section of the same chapter and bind to
+a distinct digest. Do not invent hashes or designate the first six packages
+as an instructor-approved pilot roster.
+
+On a checkout at that **same exact revision** run:
+
+```powershell
+python scripts/audit_course_pilot_readiness.py `
+  --manifest <private-roster.json> `
+  --repo-root . `
+  --observed-git-sha <exact-40-character-commit>
+```
+
+This reads each existing package once and reuses the Stage-0 roster gate:
+18 original activities, 9 MCQ/9 interactive, three per type/difficulty,
+EN/MS/ZH declarations, chapter/section identity, canonical source-manifest
+reference and exact package digest. Unsafe/duplicate paths, changed source
+identity, and model/PDF/publication-enabled flags fail closed before file reads.
+No provider, PDF, browser, source text, student records or publishing is used.
+
+Exit 0 means only **six structurally valid source-free candidates**. It never
+means classroom or academic readiness. Even 18 declared visual plans do not
+prove their quality. Instructor selection, original-source/figure rights,
+independent physics and EN/MS/ZH meaning, diagram semantics, authentic learner
+browser interactions, institution-specific privacy consent and release
+authorization remain separate gates. Every report keeps
+`classroomPilotReady=false`, `academicQA=REVIEW_REQUIRED` for every case and
+`publicationAuthorized=false`. Exit 1 means incomplete/invalid candidates;
+exit 2 means an invalid/unreadable scope. This step cannot reopen exhausted
+Decisions 0029/0030/0031 or change course diagnostic/prerequisite progression.
