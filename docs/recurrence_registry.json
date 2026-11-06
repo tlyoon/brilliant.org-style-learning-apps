@@ -1064,6 +1064,23 @@
           "marker": "test_meaningful_visual_requirement_does_not_become_arbitrary_quota"
         }
       ]
+    },
+    {
+      "id": "BSA-20261106-121",
+      "class": "cross-topic-artifact-path-identity-alias",
+      "status": "resolved",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261106-120"
+      ],
+      "differenceFromLinkedIncident": "The earlier full-roster gate checked distinct source and package digests, but did not enforce unique evidence file paths across topics before loading the receipts, including case-insensitive aliases.",
+      "regressions": [
+        {
+          "path": "tests/test_bounded_cross_topic_acceptance.py",
+          "kind": "python",
+          "marker": "test_evidence_paths_must_not_be_reused_across_topic_families"
+        }
+      ]
     }
   ]
 }
