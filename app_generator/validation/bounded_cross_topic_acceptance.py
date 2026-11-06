@@ -114,6 +114,7 @@ def validate_cross_topic_manifest(manifest: dict[str, Any]) -> None:
     topics: set[str] = set()
     sources: set[str] = set()
     packages: set[str] = set()
+    evidence_paths: set[str] = set()
     for item in cases:
         if not isinstance(item, dict) or set(item) != _CASE:
             raise ValueError("exactly seven per-case metadata fields required")
@@ -136,8 +137,13 @@ def validate_cross_topic_manifest(manifest: dict[str, Any]) -> None:
                 ":" in value or "\\" in value or
                 any(not part or part in (".", "..") for part in value.split("/"))):
                 raise ValueError("unsafe or ambiguous evidence artifact path")
-        if len({item[x] for x in ("package", "learnerReceipt", "academicMatrix")}) != 3:
+        artifact_names = {item[x].casefold() for x in (
+            "package", "learnerReceipt", "academicMatrix")}
+        if len(artifact_names) != 3:
             raise ValueError("distinct evidence files required per case")
+        if artifact_names & evidence_paths:
+            raise ValueError("evidence artifact path reused across topic families")
+        evidence_paths.update(artifact_names)
         identifiers.add(name)
         topics.add(topic)
         sources.add(source_sha)
