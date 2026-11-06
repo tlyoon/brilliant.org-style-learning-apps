@@ -202,7 +202,8 @@ class SixSectionPilotTests(unittest.TestCase):
         )
         self.assertTrue(all(
             row["declaredVisualPlans"] == 18
-            and not row["visualValueReviewPending"]
+            and row["allVisualPlansDeclared"]
+            and row["visualValueReviewPending"]
             and not row["independentVisualSemanticsVerified"]
             for row in report["cases"]
         ))
