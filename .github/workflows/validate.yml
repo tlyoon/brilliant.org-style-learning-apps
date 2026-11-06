@@ -47,6 +47,8 @@ jobs:
           node tests/test_anonymous_learning_feedback_export.js
           node tests/test_independent_assisted_learning_evidence.js
           node tests/test_app_loading.js
+          node --check app/course-preview.js
+          node tests/test_course_preview.js
           node tests/test_visual_renderers.js
           node tests/test_visual_player_integration.js
           node tests/test_motion_1d_simulation.js
