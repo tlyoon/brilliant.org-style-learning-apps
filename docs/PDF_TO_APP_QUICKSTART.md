@@ -678,3 +678,40 @@ authorization remain separate gates. Every report keeps
 `publicationAuthorized=false`. Exit 1 means incomplete/invalid candidates;
 exit 2 means an invalid/unreadable scope. This step cannot reopen exhausted
 Decisions 0029/0030/0031 or change course diagnostic/prerequisite progression.
+
+## Local-only six-section instructor preview (not classroom release)
+
+The separate `app/course-preview.html` provides **manual navigation** among
+exactly six existing draft packages from one explicit roster. It uses the
+existing single-package learner (no course unlocking or adaptive routing).
+This page is **not** included in `scripts/build_public_release.py` output.
+
+Use the **same strict JSON manifest** described in the preceding offline
+candidate preflight. First run `scripts/audit_course_pilot_readiness.py`
+against exact package bytes and the matching code revision. After a structural
+candidate check, place a copy of the private/sanitized manifest at
+`local-pilot/roster.json` inside an authorized **local testing checkout**.
+`local-pilot/` is excluded by `.gitignore`; never add real student identities,
+source passages, private PDF contents, or credentials to that directory.
+Then run the documented local server from the repository root:
+
+```powershell
+python scripts/serve.py
+```
+
+Open `http://127.0.0.1:8000/app/course-preview.html`. The preview loads only
+`../local-pilot/roster.json`, accepts six exact same-chapter repository
+`content/.../package.json` references, and checks the selected package's
+actual response bytes against its manifest SHA-256 in the existing learner
+loader before displaying activities. It refuses duplicates, unsafe paths,
+changed package bytes, invalid scopes, and unavailable cryptographic hashing.
+Nothing auto-selects a first section: the instructor chooses each draft.
+
+The menu supports EN/MS/ZH, uses no account or learner persistence and
+never calls an AI provider. An absent/invalid roster disables the menu.
+**Successful navigation is an engineering/local UI preview, not an academic
+PASS, learner mastery evaluation, class authorization, or source-rights
+approval.** Do not deploy the page publicly, include it in public bundles,
+or use it with real students until the independent source, visual, translation,
+browser, privacy and release gates are separately met. The exact-version
+SHA check is an integrity guard, not independent physics verification.
