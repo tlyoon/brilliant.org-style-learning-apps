@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Local instructor course preview</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="domain-styles.css">
+    <link rel="stylesheet" href="course-preview.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <select id="locale" aria-label="Language">
+          <option value="en">English</option>
+          <option value="ms">Bahasa Melayu</option>
+          <option value="zh">简体中文</option>
+        </select>
+      </header>
+      <section id="course-preview" class="course-preview" data-manifest-url="../local-pilot/roster.json">
+        <p class="eyebrow">LOCAL INSTRUCTOR TOOL</p>
+        <h1 id="course-heading">Six-subchapter draft preview</h1>
+        <p id="course-intro">Draft practice only. No academic approval, student identity, course progress, or publication.</p>
+        <label for="course-select" id="course-label">Select a subchapter</label>
+        <select id="course-select" aria-describedby="course-status" disabled>
+          <option value="">Choose a subchapter</option>
+        </select>
+        <p id="course-status" role="status" aria-live="polite">No local pilot roster has been configured.</p>
+      </section>
+      <section id="app" aria-live="polite" data-package-url="">
+        <p>Select a subchapter above to preview its activities.</p>
+      </section>
+    </main>
+    <script src="domain-renderers.js"></script>
+    <script src="visual-renderers.js"></script>
+    <!-- Classic-script scope shares the existing loadPackage() with this local-only selector. -->
+    <script src="app.js"></script>
+    <script src="course-preview.js"></script>
+  </body>
+</html>
