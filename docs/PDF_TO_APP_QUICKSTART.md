@@ -681,6 +681,25 @@ Decisions 0029/0030/0031 or change course diagnostic/prerequisite progression.
 
 ## Local-only six-section instructor preview (not classroom release)
 
+### Source-free real-browser engineering smoke
+
+The CI job executes `python scripts/check_course_preview_browser.py`
+in headless Chrome. It stages only disposable synthetic packages in a
+loopback-only temporary directory and tests three interface languages at
+390 px and 1280 px, section selection, localized hints, screenshot capture,
+responsive overflow and fail-closed rejection of tampered JSON bytes.
+It does not read original source PDFs, reach Gemini/ChatGPT, use student
+accounts or publish a course. A missing or failing Chrome dependency is a
+technical blocker, not permission to skip an acceptance gate.
+
+**This is an engineering smoke only:** six observations on synthetic
+activities do not establish actual 18-activity-per-subchapter browser
+coverage, independent scientific/visual correctness, source/figure rights,
+EN/MS/ZH meaning equivalence, institutional privacy or classroom readiness.
+Existing private source-bound browser audit denials and finite C3 campaigns
+remain terminal and are not retried through this source-free test.
+
+
 ### One-command local roster preparation
 
 The repo includes a **source-free** helper to avoid manually calculating six
