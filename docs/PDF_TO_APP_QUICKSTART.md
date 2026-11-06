@@ -31,6 +31,29 @@ Textbook-or-source-root/
         └── source.pdf
 ```
 
+### Source corpus discovery and manifest identity
+
+For an explicitly selected topic, the generator now locates the controlled
+source.pdf anchor and all sibling PDFs in a **single bounded metadata walk**
+of the configured Source Root. The optional separate textbook-domain inventory
+scan and coordinated queue scan still perform their own legitimate discovery.
+No source PDF is downloaded during metadata discovery itself.
+
+Sibling filenames are checked case-insensitively before any download, and
+ambiguous topic folder matches fail closed rather than selecting whichever
+folder happens to appear first. When validating an existing source manifest,
+the CLI doctor and normal generation path select the configured primary
+source.pdf by name, **not** the alphabetically first sibling PDF. Multi-PDF
+corpora without exactly one primary cannot be installed or reused as if the
+first supplementary PDF were primary.
+
+The ordering of attached source files and the existing topic-corpus
+coordinator job key remain unchanged. This prevents unnecessary requeueing of
+already completed/claimed jobs solely because of this software correction.
+All verification of the new behaviour uses synthetic metadata; this update
+does not authorize new Gemini requests, source-download retries, public release
+or re-opening a terminal campaign.
+
 The immediate parent folder must look like `8.5`; the controlled filename is normally `source.pdf`.
 
 Never commit source PDFs, OAuth files, tokens, browser profiles, cookies, raw Gemini responses, or generator run directories to Git.

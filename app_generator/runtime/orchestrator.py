@@ -45,7 +45,9 @@ from app_generator.sources.google_drive import (
 )
 from app_generator.sources.google_drive_auth import DriveAuthorization, authorize_google_drive
 from app_generator.sources.local_sources import inspect_sources
-from app_generator.sources.manifest import build_manifest, load_existing_manifest
+from app_generator.sources.manifest import (
+    build_manifest, load_existing_manifest, select_primary_source,
+)
 from app_generator.validation.repository_checks import run_repository_validator, validate_candidate
 from app_generator.validation.schema_validation import validate_manifest, validate_schemas
 
@@ -590,7 +592,11 @@ def run_generation(
                 active_config = materialize_source_metadata(active_config, analysis)
                 package = apply_source_metadata(package, active_config)
                 manifest = (
-                    load_existing_manifest(active_config.existing_source_manifest, sources[0], active_config)
+                    load_existing_manifest(
+                        active_config.existing_source_manifest,
+                        select_primary_source(sources, active_config.target_filename),
+                        active_config,
+                    )
                     if active_config.existing_source_manifest
                     else build_manifest(
                         active_config,

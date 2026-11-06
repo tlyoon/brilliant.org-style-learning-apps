@@ -1119,6 +1119,48 @@
           "marker": "test_publishable_accepts_schema_valid_justified_text_first_plans"
         }
       ]
+    },
+    {
+      "id": "BSA-20261106-123",
+      "class": "multi-pdf-source-traversal-duplication-and-primary-manifest-misidentification",
+      "status": "resolved",
+      "rootCauseFamily": "source-acquisition",
+      "relatedIncidentIds": [
+        "BSA-20261105-117"
+      ],
+      "differenceFromLinkedIncident": "The previous source-acquisition repair protected download-field identity and bounded retries but did not guard repeated full-root metadata traversal or alphabetical supplementary-PDF selection when validating a multi-PDF source manifest.",
+      "regressions": [
+        {
+          "path": "tests/test_multi_pdf_corpus.py",
+          "kind": "python",
+          "marker": "test_targeted_corpus_uses_one_root_traversal_and_same_auto_key"
+        },
+        {
+          "path": "tests/test_multi_pdf_corpus.py",
+          "kind": "python",
+          "marker": "test_ambiguous_topic_folders_do_not_choose_one_silently"
+        },
+        {
+          "path": "tests/test_multi_pdf_corpus.py",
+          "kind": "python",
+          "marker": "test_case_aliased_supplementary_sources_fail_before_download"
+        },
+        {
+          "path": "tests/test_multi_pdf_corpus.py",
+          "kind": "python",
+          "marker": "test_disabled_supplementary_pdf_and_missing_anchor_fail_closed"
+        },
+        {
+          "path": "tests/test_multi_pdf_corpus.py",
+          "kind": "python",
+          "marker": "test_primary_manifest_selection_ignores_supplementary_sort_order"
+        },
+        {
+          "path": "tests/test_multi_pdf_corpus.py",
+          "kind": "python",
+          "marker": "test_multi_pdf_missing_or_duplicate_primary_fails_closed"
+        }
+      ]
     }
   ]
 }

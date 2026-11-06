@@ -345,6 +345,11 @@ def discover_drive_sources_with_corpus_keys(
         anchors = [child for child in pdfs if child.name.casefold() == target_filename.casefold()]
         if not anchors:
             continue
+        names = [child.name.casefold() for child in pdfs]
+        if len(names) != len(set(names)):
+            raise SourceAmbiguous(
+                "Topic PDF filenames are not unique case-insensitively"
+            )
         for child in pdfs:
             if child.can_download is False:
                 raise SourceDownloadError(
@@ -392,21 +397,27 @@ def discover_topic_corpus(
     target_filename: str,
     max_folders: int,
 ) -> tuple[ResolvedDriveSource, ...]:
-    """Resolve every eligible PDF in one controlled topic folder.
+    """Resolve an anchored multi-PDF topic in exactly one Drive tree walk.
 
-    target_filename remains the backward-compatible anchor proving that the
-    folder is a controlled topic. Once anchored, every downloadable PDA in
-    that same folder belongs to the topic source corpus.
+    The old implementation traversed the complete Source Root to resolve
+    the anchor, then traversed it again to collect sibling PDFs. Keep the
+    exact anchor/selector and ordered corpus semantics while eliminating
+    the second remote inventory pass. No PDFs are downloaded here.
     """
-    anchor = resolve_drive_source(
-        client, sourcepath=sourcepath, pdf_subchapter_path=pdf_subchapter_path,
-        target_filename=target_filename, max_folders=max_folders,
-    )
-    target_folder = tuple(anchor.relative_path.split("/")[:-1])
     root_id = extract_drive_folder_id(sourcepath)
+    root = client.get_item(root_id)
+    if root.mime_type != FOLDER_MIME:
+        raise DriveAccessError(
+            f"sourcepath resolves to {root.name!r}, which is not a folder"
+        )
+    selector = _selector_components(pdf_subchapter_path)
+    if not selector:
+        raise SourceNotFound("A controlled topic selector is required")
+
     queue: deque[tuple[str, tuple[str, ...]]] = deque([(root_id, ())])
     visited: set[str] = set()
-    members: list[ResolvedDriveSource] = []
+    matching_corpora: list[tuple[ResolvedDriveSource, ...]] = []
+    matching_paths: list[str] = []
     while queue:
         folder_id, relative_folder = queue.popleft()
         if folder_id in visited:
@@ -416,30 +427,71 @@ def discover_topic_corpus(
             raise DriveAccessError(
                 f"Drive traversal exceeded the configured max_drive_folders limit ({max_folders})"
             )
-        for child in client.list_children(folder_id):
-            if child.mime_type == FOLDER_MIME:
-                if child.name == APPGEN_STATE_FOLDER_NAME:
-                    continue
+        children = client.list_children(folder_id)
+        for child in children:
+            if child.mime_type == FOLDER_MIME and child.name != APPGEN_STATE_FOLDER_NAME:
                 queue.append((child.file_id, relative_folder + (child.name,)))
-                continue
-            if relative_folder != target_folder or child.mime_type != PDF_MIME:
-                continue
+        if (not relative_folder
+                or not SUBCHAPTER_ID.fullmatch(relative_folder[-1])
+                or not _path_matches(relative_folder, selector)):
+            continue
+
+        pdfs = tuple(child for child in children if child.mime_type == PDF_MIME)
+        anchors = tuple(
+            child for child in pdfs if child.name.casefold() == target_filename.casefold()
+        )
+        if not anchors:
+            continue
+        # Duplicate primary PDFs (including Windows case aliases) cannot be
+        # selected deterministically; do not attempt a download.
+        if len(anchors) != 1:
+            raise SourceAmbiguous(
+                "More than one controlled anchor matches the requested topic"
+            )
+        if anchors[0].can_download is False:
+            raise SourceDownloadError(
+                "Google Drive reports that downloading is disabled for "
+                + "/".join(relative_folder + (anchors[0].name,))
+            )
+        folded_names = [child.name.casefold() for child in pdfs]
+        if len(set(folded_names)) != len(folded_names):
+            raise SourceAmbiguous(
+                "Topic PDF filenames are not unique case-insensitively"
+            )
+        for child in pdfs:
             if child.can_download is False:
                 raise SourceDownloadError(
                     "Google Drive reports that downloading is disabled for "
                     + "/".join(relative_folder + (child.name,))
                 )
-            members.append(ResolvedDriveSource(
-                file_id=child.file_id, filename=child.name,
+        corpus = tuple(sorted((
+            ResolvedDriveSource(
+                file_id=child.file_id,
+                filename=child.name,
                 relative_path="/".join(relative_folder + (child.name,)),
-                mime_type=child.mime_type, size_bytes=child.size_bytes,
-                md5_checksum=child.md5_checksum, subchapter_id=anchor.subchapter_id,
-                modified_time=child.modified_time, version=child.version,
+                mime_type=child.mime_type,
+                size_bytes=child.size_bytes,
+                md5_checksum=child.md5_checksum,
+                subchapter_id=relative_folder[-1],
+                modified_time=child.modified_time,
+                version=child.version,
                 parent_folder_id=folder_id,
-            ))
-    if not members:
-        raise SourceNotFound(f"No PDF source corpus was found for {pdf_subchapter_path!r}")
-    return tuple(sorted(members, key=lambda item: (item.filename.casefold(), item.file_id)))
+            )
+            for child in pdfs
+        ), key=lambda item: (item.filename.casefold(), item.file_id)))
+        matching_corpora.append(corpus)
+        matching_paths.append("/".join(relative_folder))
+    if not matching_corpora:
+        raise SourceNotFound(
+            f"No {target_filename} was found below a folder path ending in "
+            f"{pdf_subchapter_path!r} under {sourcepath}"
+        )
+    if len(matching_corpora) != 1:
+        raise SourceAmbiguous(
+            "More than one Google Drive PDF matches the configured topic: "
+            + "; ".join(sorted(matching_paths))
+        )
+    return matching_corpora[0]
 
 
 def topic_corpus_job_key(sources: tuple[ResolvedDriveSource, ...]) -> str:

@@ -32,7 +32,9 @@ from app_generator.sources.google_drive import (
 )
 from app_generator.sources.google_drive_auth import authorize_google_drive
 from app_generator.sources.local_sources import inspect_sources
-from app_generator.sources.manifest import build_manifest, load_existing_manifest
+from app_generator.sources.manifest import (
+    build_manifest, load_existing_manifest, select_primary_source,
+)
 from app_generator.validation.schema_validation import validate_manifest
 
 
@@ -272,7 +274,11 @@ def doctor(
             effective_config = config.for_subchapter(config.pdf_subchapter_path.split("/")[-1])
             sources = inspect_sources(config.source_files)
         manifest = (
-            load_existing_manifest(effective_config.existing_source_manifest, sources[0], effective_config)
+            load_existing_manifest(
+                effective_config.existing_source_manifest,
+                select_primary_source(sources, effective_config.target_filename),
+                effective_config,
+            )
             if effective_config.existing_source_manifest
             else build_manifest(
                 effective_config,

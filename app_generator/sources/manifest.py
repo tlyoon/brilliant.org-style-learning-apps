@@ -20,6 +20,35 @@ def _corpus_sha256(sources: tuple[LocalSource, ...]) -> str:
     return hashlib.sha256(material).hexdigest()
 
 
+def select_primary_source(
+    sources: tuple[LocalSource, ...], target_filename: str
+) -> LocalSource:
+    """Select the controlled primary PDF, independent of corpus sort order.
+
+    Multi-PDF topics must contain exactly one target_filename; silently
+    selecting the first (possibly supplementary) PDF creates stale or wrong
+    source-manifest identity. Preserve the prior single-PDF fallback for
+    existing local/legacy imports without rewriting their provenance.
+    """
+    if not sources:
+        raise RepositoryCompatibilityError("No controlled PDF source was supplied")
+    matches = [
+        source for source in sources
+        if source.controlled_filename.casefold() == target_filename.casefold()
+    ]
+    if len(matches) == 1:
+        return matches[0]
+    if len(matches) > 1:
+        raise RepositoryCompatibilityError(
+            "Several source files match the configured primary target filename"
+        )
+    if len(sources) > 1:
+        raise RepositoryCompatibilityError(
+            "Multi-PDF source corpus has no controlled primary target filename"
+        )
+    return sources[0]
+
+
 def build_manifest(
     config: GeneratorConfig,
     sources: tuple[LocalSource, ...],
@@ -29,10 +58,7 @@ def build_manifest(
 ) -> dict[str, Any]:
     if not sources:
         raise RepositoryCompatibilityError("A  source manifest requires at least one PDF")
-    primary = next(
-        (source for source in sources if source.controlled_filename.casefold() == config.target_filename.casefold()),
-        sources[0],
-    )
+    primary = select_primary_source(sources, config.target_filename)
     ids = tuple(drive_file_ids) or ((drive_file_id,) if drive_file_id else ())
     source_entries = []
     for index, source in enumerate(sources):
