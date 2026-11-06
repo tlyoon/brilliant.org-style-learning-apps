@@ -37,11 +37,19 @@ vm.runInContext(fs.readFileSync("app/app.js","utf8"),ctx);
 const button=id=>all(app).find(e=>e.id===id);
 const choice=id=>all(app).find(e=>e.dataset?.value===id);
 const metrics=()=>JSON.parse(vm.runInContext("JSON.stringify(state.sessionMetrics)",ctx));
+const mastery=()=>JSON.parse(vm.runInContext("JSON.stringify(masteryEvidence())",ctx));
+const currentLabel=()=>all(app).find(e=>e.className==="mastery-level")?.textContent;
+
 setImmediate(()=>{
  assert.deepEqual(metrics(),{});
+ assert.equal(mastery().level,"not_started");
+ assert.equal(mastery().independentPercent,0);
+ assert.equal(currentLabel(),"Not yet demonstrated");
  choice("wrong").click();
  button("check").click();
  assert.equal(metrics().first.wrong,1);
+ assert.equal(mastery().level,"practice");
+ assert.equal(mastery().independent,0);
  assert.equal(metrics().first.checks,1);
  assert.equal(metrics().first.completed,false);
  button("check").click();
@@ -55,11 +63,31 @@ setImmediate(()=>{
  assert.equal(metrics().first.completed,false,"checked correct is not yet completion");
  button("check").click();
  assert.equal(metrics().first.completed,true);
+ assert.equal(mastery().level,"practice","helped completion is not independent mastery");
  button("skip").click();
  assert.equal(metrics().second.skips,1);
  assert.equal(metrics().second.completed,false,"skips never confer mastery");
  assert.equal(button("restart").tagName,"BUTTON");
  button("restart").click();
  assert.deepEqual(metrics(),{},"restart resets anonymous session");
- console.log("In-memory learner events count wrong/correct/hint/skip without unearned completion.");
+ assert.equal(mastery().level,"not_started");
+ // New session: only first-try, no-hint/no-skip completions can reach
+ // full independent evidence. It is never a verified course grade.
+ choice("right").click();
+ button("check").click();
+ button("check").click();
+ assert.equal(mastery().level,"developing");
+ assert.equal(mastery().independent,1);
+ assert.equal(mastery().independentPercent,50);
+ choice("right").click();
+ button("check").click();
+ button("check").click();
+ assert.equal(mastery().level,"full");
+ assert.equal(mastery().independent,2);
+ assert.equal(mastery().independentPercent,100);
+ assert.equal(mastery().sessionOnly,true);
+ assert.equal(mastery().notAGrade,true);
+ assert.equal(mastery().courseMasteryVerified,false);
+ assert.equal(currentLabel(),"All activities completed independently");
+ console.log("Session-only mastery evidence reflects actual first-try completion without false grades.");
 });
