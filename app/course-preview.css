@@ -1,0 +1,27 @@
+/* Inert local instructor navigation; never a release/course-progress style. */
+.course-preview {
+  margin: 1rem 0 1.25rem;
+  padding: clamp(1rem, 4vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: #fff;
+}
+.course-preview h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); }
+.course-preview p { line-height: 1.55; }
+.course-preview label { display: block; font-weight: 700; margin: 1.3rem 0 .5rem; }
+#course-select {
+  display: block;
+  width: 100%;
+  padding: .75rem;
+  min-height: 44px;
+  font: inherit;
+  border: 1px solid var(--line);
+  border-radius: .6rem;
+  background: #fff;
+  color: inherit;
+}
+#course-select:disabled { opacity: .65; }
+#course-status { color: #4b6659; font-size: .95rem; }
+@media (prefers-reduced-motion: reduce) {
+  .course-preview * { transition: none !important; }
+}
