@@ -58,6 +58,7 @@ async function waitFor(predicate) {
 function harness({ corruptManifest = false, wrongBytes = false, absentManifest = false } = {}) {
   const app = new FakeElement("section");
   app.dataset.packageUrl = "";
+  app.dataset.externalPackageSelection = "true";
   const locale = new FakeElement("select");
   locale.value = "en";
   const preview = new FakeElement("section");
@@ -106,7 +107,7 @@ function harness({ corruptManifest = false, wrongBytes = false, absentManifest =
   vm.createContext(context);
   vm.runInContext(fs.readFileSync("app/app.js", "utf8"), context, { filename: "app/app.js" });
   vm.runInContext(fs.readFileSync("app/course-preview.js", "utf8"), context, { filename: "app/course-preview.js" });
-  return { app, locale, select, status, calls };
+  return { app, locale, select, status, calls, context };
 }
 
 (async () => {
@@ -117,6 +118,8 @@ function harness({ corruptManifest = false, wrongBytes = false, absentManifest =
   assert.equal(valid.select.children.length, 7, "six authored candidates and one placeholder");
   assert.equal(valid.calls.length, 1, "do not fetch a package until the instructor selects one");
   assert.match(valid.status.textContent, /Select a section/);
+  assert.match(valid.app.textContent, /Select a subchapter above/);
+  assert.doesNotMatch(valid.app.textContent, /No learning package was selected|Could not load/);
   valid.select.value = "3";
   valid.select.listeners.change();
   await waitFor(() => valid.app.textContent.includes("Prompt 3") || valid.app.textContent.includes("Could not load"));
@@ -130,6 +133,29 @@ function harness({ corruptManifest = false, wrongBytes = false, absentManifest =
   assert.equal(descendants(valid.app).find((x) => x.tagName === "H1").textContent, "Prompt 3 ms");
   assert.match(valid.status.textContent, /Pratonton pensyarah/);
   assert.equal(valid.calls.length, 2, "locale change must never reload or send learning evidence");
+
+  // Exercise the player, then deselect. Old section activity and session-only
+  // evidence must disappear; a fresh selection must restart at no mastery.
+  const choice = descendants(valid.app).find((x) => x.className === "choice");
+  assert.ok(choice?.listeners.click, "the actual player choice must be rendered");
+  choice.listeners.click();
+  const check = descendants(valid.app).find((x) => x.id === "check");
+  assert.ok(check?.listeners.click);
+  check.listeners.click();
+  assert.equal(JSON.parse(vm.runInContext("JSON.stringify(state.sessionMetrics)", valid.context))["fixture-3"].checks, 1);
+
+  valid.select.value = "";
+  valid.select.listeners.change();
+  assert.match(valid.app.textContent, /Select a subchapter above/);
+  assert.equal(descendants(valid.app).filter((x) => x.tagName === "H1").length, 0);
+  assert.deepEqual(JSON.parse(vm.runInContext("JSON.stringify(state.sessionMetrics)", valid.context)), {});
+  assert.equal(vm.runInContext("state.package === null", valid.context), true);
+  assert.equal(valid.calls.length, 2, "deselection must not fetch or persist learning data");
+  valid.select.value = "4";
+  valid.select.listeners.change();
+  await waitFor(() => valid.app.textContent.includes("Prompt 4 ms"));
+  assert.equal(JSON.parse(vm.runInContext("JSON.stringify(masteryEvidence())", valid.context)).level, "not_started");
+  assert.equal(valid.calls.length, 3);
 
   const invalid = harness({ corruptManifest: true });
   await flush();
