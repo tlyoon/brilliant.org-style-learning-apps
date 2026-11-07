@@ -25,6 +25,12 @@ gem_edit_url = "https://gemini.google.com/gems/edit/old"
 source_id_prefix = "${PROJECT_SLUG}"
 [compatibility]
 legacy_environment_prefix = "OLD_GENERATOR_"
+[git]
+git_publish = true
+git_auto_merge = true
+[automation]
+public_deploy = true
+public_deploy_auto_merge = true
 [repository]
 repo_root = "${REPO_ROOT}"
 [paths]
@@ -55,6 +61,41 @@ state_root = "${STATE_ROOT}"
         self.assertEqual("${PROJECT_SLUG}", payload["source_tree"]["source_id_prefix"])
         self.assertEqual("", payload["compatibility"]["legacy_environment_prefix"])
         self.assertNotIn("gem_name", payload["gemini"])
+
+    def test_recycling_new_project_resets_all_external_release_switches(self):
+        # The real tracked project config currently enables publication and
+        # deployment. Recycling it must never carry those controls forward.
+        rendered = render_project_configuration(self.template(), self.values())
+        payload = tomllib.loads(rendered)
+        self.assertEqual("NewSubjectProject", payload["project"]["project_name"])
+        self.assertIs(payload["git"]["git_publish"], False)
+        self.assertIs(payload["git"]["git_auto_merge"], False)
+        self.assertIs(payload["automation"]["public_deploy"], False)
+        self.assertIs(payload["automation"]["public_deploy_auto_merge"], False)
+
+    def test_same_project_config_change_preserves_existing_release_policy(self):
+        values = self.values()
+        values["project_name"] = "OldProject"
+        rendered = render_project_configuration(self.template(), values)
+        payload = tomllib.loads(rendered)
+        for table, key in (
+            ("git", "git_publish"),
+            ("git", "git_auto_merge"),
+            ("automation", "public_deploy"),
+            ("automation", "public_deploy_auto_merge"),
+        ):
+            self.assertIs(payload[table][key], True)
+        self.assertEqual(values["source_root_url"], payload["placeholders"]["sourcepath"])
+
+    def test_recycling_fails_closed_when_release_control_is_missing(self):
+        text = self.template().replace("public_deploy_auto_merge = true\\n", "")
+        with self.assertRaisesRegex(ProjectConfigurationError, "automation.public_deploy_auto_merge"):
+            render_project_configuration(text, self.values())
+
+    def test_recycling_fails_closed_on_invalid_release_control_type(self):
+        text = self.template().replace("git_publish = true", 'git_publish = "true"')
+        with self.assertRaisesRegex(ProjectConfigurationError, "git.git_publish"):
+            render_project_configuration(text, self.values())
 
     def test_current_project_has_one_authoritative_source_root_placeholder(self):
         payload = tomllib.loads((ROOT / "config" / "configure_project.toml").read_text(encoding="utf-8"))
