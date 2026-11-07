@@ -589,6 +589,18 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE, expectedSha256) {
     }));
     return;
   }
+  if (EXTERNAL_PACKAGE_SELECTION) {
+    // Section switching is a session boundary. Do not display previous
+    // exercises or evidence under the new section while the fetch is pending.
+    state.package = null;
+    state.activityIndex = 0;
+    state.sessionMetrics = Object.create(null);
+    state.reviewPending = false;
+    resetActivity();
+    document.querySelector("#app").replaceChildren(element("p", {
+      className: "course-placeholder", text: "Loading selected subchapter...",
+    }));
+  }
   try {
     const response = await fetch(packageUrl);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
