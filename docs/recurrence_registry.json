@@ -1257,7 +1257,7 @@
       "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
-        "BSA-20261024-012",
+        "BSA-20261104-109",
         "BSA-20261107-125"
       ],
       "differenceFromLinkedIncident": "The earlier Windows LF/CRLF incident protected receipt writer bytes, but the later offline six-section instructor-roster reader rejected Git-clean CRLF checkouts by comparing raw worktree and committed JSON bytes. Previous learner-browser isolation work did not test this cross-platform Git representation.",
