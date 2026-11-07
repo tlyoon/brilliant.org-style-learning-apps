@@ -119,6 +119,7 @@ function harness({ corruptManifest = false, wrongBytes = false, absentManifest =
   assert.equal(valid.calls.length, 1, "do not fetch a package until the instructor selects one");
   assert.match(valid.status.textContent, /Select a section/);
   assert.match(valid.app.textContent, /Select a subchapter above/);
+  assert.equal(vm.runInContext("state.package === null", valid.context), true);
   assert.doesNotMatch(valid.app.textContent, /No learning package was selected|Could not load/);
   valid.select.value = "3";
   valid.select.listeners.change();
@@ -153,6 +154,8 @@ function harness({ corruptManifest = false, wrongBytes = false, absentManifest =
   assert.equal(valid.calls.length, 2, "deselection must not fetch or persist learning data");
   valid.select.value = "4";
   valid.select.listeners.change();
+  assert.match(valid.app.textContent, /Loading selected subchapter/);
+  assert.doesNotMatch(valid.app.textContent, /Prompt 3|Session mastery evidence|Bukti penguasaan sesi/);
   await waitFor(() => valid.app.textContent.includes("Prompt 4 ms"));
   assert.equal(JSON.parse(vm.runInContext("JSON.stringify(masteryEvidence())", valid.context)).level, "not_started");
   assert.equal(valid.calls.length, 3);
