@@ -155,6 +155,9 @@ def run() -> None:
                         lambda d: d.find_element(By.ID, "course-select").is_enabled()
                     )
                     assert len(driver.find_elements(By.CSS_SELECTOR, "#course-select option")) == 7
+                    assert "Select a subchapter above" in driver.find_element(By.ID, "app").text, (
+                        "EXTERNAL_SELECTION_MUST_START_AS_IDLE_NOT_ERROR"
+                    )
                     Select(driver.find_element(By.ID, "locale")).select_by_value(lang)
                     Select(driver.find_element(By.ID, "course-select")).select_by_value("1")
                     try:
@@ -185,6 +188,19 @@ def run() -> None:
                     )
                     screenshots.append(sha256(driver.get_screenshot_as_png()).hexdigest())
                     checked += 1
+                    if width == 390 and lang == "en":
+                        Select(driver.find_element(By.ID, "course-select")).select_by_value("")
+                        _assert_idle = driver.find_element(By.ID, "app").text
+                        assert "Select a subchapter above" in _assert_idle
+                        assert not driver.find_elements(By.CSS_SELECTOR, "#app h1.question")
+                        Select(driver.find_element(By.ID, "course-select")).select_by_value("2")
+                        WebDriverWait(driver, 10).until(
+                            lambda d: _synthetic_prompt(2, "en") in
+                            d.find_element(By.CSS_SELECTOR, "#app h1.question").text
+                        )
+                        assert "Not yet demonstrated" in driver.find_element(
+                            By.CSS_SELECTOR, "#app .mastery-level"
+                        ).text
             # Corrupt only synthetic fixture bytes, not a repository package.
             altered = site / "content/chapter-9/section-9-2/package.json"
             altered.write_bytes(_fixture(3))
