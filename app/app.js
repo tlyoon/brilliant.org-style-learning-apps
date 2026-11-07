@@ -578,6 +578,7 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE, expectedSha256) {
     state.sessionMetrics = Object.create(null);
     state.reviewPending = false;
     resetActivity();
+    if (EXTERNAL_PACKAGE_SELECTION) syncActivityUrl(null);
     state.loading = false;
     localeSelector.disabled = false;
     const message = EXTERNAL_PACKAGE_SELECTION
@@ -597,6 +598,9 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE, expectedSha256) {
     state.sessionMetrics = Object.create(null);
     state.reviewPending = false;
     resetActivity();
+    // Activity IDs may be shared across sections; old deep links cannot
+    // select an unrelated section's activity on a fresh course choice.
+    syncActivityUrl(null);
     document.querySelector("#app").replaceChildren(element("p", {
       className: "course-placeholder", text: "Loading selected subchapter...",
     }));
