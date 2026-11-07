@@ -82,12 +82,13 @@ class PublicReleaseTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             evidence = Path(tmp) / "evidence"
             evidence.mkdir()
+            unreviewed = ROOT / "content/chapter-9/section-9-4/package.json"
             fake_receipt = {"academicQA": "PASS", "artifactSha256":
-                            hashlib.sha256(PACKAGE.read_bytes()).hexdigest()}
+                            hashlib.sha256(unreviewed.read_bytes()).hexdigest()}
             (evidence / "academic-release-gate.json").write_text(json.dumps(fake_receipt))
             output = Path(tmp) / "publication"
             with self.assertRaisesRegex(ValidationFailure, "unresolved academic QA"):
-                build(output, PACKAGE, validation_dir=evidence)
+                build(output, unreviewed, validation_dir=evidence)
             self.assertFalse(output.exists(), "forged receipt cannot create a public bundle")
             rewritten = json.loads((evidence / "academic-release-gate.json").read_text())
             self.assertNotEqual("PASS", rewritten["academicQA"])
