@@ -77,7 +77,7 @@ class DocumentationQuickstartTests(unittest.TestCase):
         self.assertTrue(package.is_file())
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "release"
-            build(output, package)
+            build(output, package, local_preview=True)
             for relative in (
                 "index.html",
                 ".nojekyll",
