@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from hashlib import sha256
 from pathlib import Path
 import subprocess
 import tempfile
@@ -60,6 +61,47 @@ class LocalPreviewPreparationTests(unittest.TestCase):
             capture_output=True, text=True, check=True,
         )
         self.assertEqual("", status.stdout, "private manifest must be gitignored")
+
+    def test_git_clean_crlf_checkout_accepts_same_committed_content(self):
+        relative = "content/chapter-9/section-9-1/package.json"
+        target = self.root / relative
+        git(self.root, "config", "core.autocrlf", "false")
+        original = (json.dumps(package(1), indent=2) + "\n").encode("utf-8")
+        target.write_bytes(original)
+        git(self.root, "add", relative)
+        git(self.root, "-c", "user.email=ci@example.invalid",
+            "-c", "user.name=Source-Free-Test", "commit", "-qm", "multiline json")
+        git(self.root, "config", "core.autocrlf", "true")
+        materialized = original.replace(b"\n", b"\r\n")
+        self.assertNotEqual(original, materialized)
+        target.write_bytes(materialized)
+        check = subprocess.run(
+            ["git", "-C", str(self.root), "status", "--porcelain"],
+            capture_output=True, text=True, check=True)
+        self.assertEqual("", check.stdout)
+        roster = self.prepare()
+        self.assertEqual(sha256(materialized).hexdigest(),
+                         roster["cases"][0]["packageSha256"])
+        self.assertNotEqual(sha256(original).hexdigest(),
+                            roster["cases"][0]["packageSha256"])
+
+    def test_git_normalized_blob_still_rejects_tampered_crlf_content(self):
+        relative = "content/chapter-9/section-9-1/package.json"
+        target = self.root / relative
+        git(self.root, "config", "core.autocrlf", "false")
+        original = (json.dumps(package(1), indent=2) + "\n").encode("utf-8")
+        target.write_bytes(original)
+        git(self.root, "add", relative)
+        git(self.root, "-c", "user.email=ci@example.invalid",
+            "-c", "user.name=Source-Free-Test", "commit", "-qm", "multiline json")
+        git(self.root, "config", "core.autocrlf", "true")
+        modified = original.replace(
+            b'"packageId": "chapter-9-section-9-1"',
+            b'"packageId": "chapter-9-section-9-2"', 1)
+        self.assertNotEqual(original, modified)
+        target.write_bytes(modified.replace(b"\n", b"\r\n"))
+        with self.assertRaisesRegex(ValueError, "SELECTED_PACKAGE_DIFFERS_FROM_FROZEN_COMMIT"):
+            self.prepare()
 
     def test_dirty_or_missing_tracked_package_never_creates_roster(self):
         package_path = self.root / "content/chapter-9/section-9-4/package.json"

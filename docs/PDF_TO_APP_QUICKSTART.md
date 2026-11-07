@@ -735,6 +735,7 @@ python scripts/prepare_course_preview.py --chapter 9 --sections 1 2 3 4 5 6 --sc
 ```
 
 This helper reads only the six existing tracked JSON files and Git HEAD.
+A clean Windows Git checkout may transform committed LF JSON into CRLF. The tool now compares the path-normalized Git blob with HEAD; genuine content changes remain rejected. The local roster digest still hashes the actual served package bytes.
 It refuses modified/untracked packages, invalid activity distributions,
 duplicate or mismatched identities, and missing gitignore protection.
 It creates `local-pilot/roster.json` exactly once; it will **not overwrite**

@@ -69,8 +69,13 @@ def prepare_local_roster(
         if not local_path.resolve().is_relative_to(root):
             raise ValueError("SELECTED_PACKAGE_OUTSIDE_REPOSITORY")
         actual = local_path.read_bytes()
-        committed = _git(root, "show", "HEAD:" + relative)
-        if actual != committed:
+        # Git-clean Windows checkouts may use CRLF for committed LF JSON.
+        # Compare canonical Git content, retaining actual bytes for preview SHA.
+        committed_blob = _git(root, "rev-parse", "HEAD:" + relative).strip()
+        worktree_blob = _git(
+            root, "hash-object", "--path=" + relative, relative,
+        ).strip()
+        if worktree_blob != committed_blob:
             raise ValueError("SELECTED_PACKAGE_DIFFERS_FROM_FROZEN_COMMIT")
         cases.append({
             "sectionNumber": section,

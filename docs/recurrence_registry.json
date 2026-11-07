@@ -1250,6 +1250,34 @@
           "marker": "test_two_projects_materialize_without_identity_or_state_leakage"
         }
       ]
+    },
+    {
+      "id": "BSA-20261107-127",
+      "class": "windows-autocrlf-clean-package-incorrectly-rejected",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261024-012",
+        "BSA-20261107-125"
+      ],
+      "differenceFromLinkedIncident": "The earlier Windows LF/CRLF incident protected receipt writer bytes, but the later offline six-section instructor-roster reader rejected Git-clean CRLF checkouts by comparing raw worktree and committed JSON bytes. Previous learner-browser isolation work did not test this cross-platform Git representation.",
+      "regressions": [
+        {
+          "path": "tests/test_prepare_course_preview.py",
+          "kind": "python",
+          "marker": "test_git_clean_crlf_checkout_accepts_same_committed_content"
+        },
+        {
+          "path": "tests/test_prepare_course_preview.py",
+          "kind": "python",
+          "marker": "test_git_normalized_blob_still_rejects_tampered_crlf_content"
+        },
+        {
+          "path": "tests/test_prepare_course_preview.py",
+          "kind": "python",
+          "marker": "test_dirty_or_missing_tracked_package_never_creates_roster"
+        }
+      ]
     }
   ]
 }
