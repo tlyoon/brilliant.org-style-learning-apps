@@ -40,7 +40,7 @@ python scripts\configure_project.py `
   --gemini-login-name "gemini@example.com"
 ```
 
-Review the diff, then repeat with `--apply` when correct.
+Review the diff, then repeat with `--apply` when correct. When the project name changes, the configurator now **forcibly disables** `git.git_publish`, `git.git_auto_merge`, `automation.public_deploy`, and `automation.public_deploy_auto_merge` in the new tracked configuration, even if the former project enabled them. This is a safety boundary, not a claim of academic or release authorization. Same-project edits preserve these switches. Before intentionally enabling any publishing or Pages deployment for the new project, inspect the destination repository, URL, institution's privacy requirements, academic approval and release authorization separately.
 
 The tracked project authority is:
 
