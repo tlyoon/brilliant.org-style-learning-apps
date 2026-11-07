@@ -1193,7 +1193,8 @@
           "kind": "python",
           "marker": "test_legacy_builder_requires_explicit_local_preview"
         }
-      ]
+      ],
+      "nextAction": "Run exact-head hosted CI for the standalone and legacy local-preview bundle negative controls; if green, mark this root-cause recurrence resolved and retain publication restrictions."
     }
   ]
 }
