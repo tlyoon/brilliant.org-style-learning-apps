@@ -124,7 +124,10 @@ class PublicPagesPublisher:
             if route.exists():
                 shutil.rmtree(route)
             bundle = Path(directory) / "bundle"
-            build(bundle, package_path, source_root=self.config.repo_root)
+            build(
+                bundle, package_path, source_root=self.config.repo_root,
+                validation_dir=evidence_dir,
+            )
             shutil.copytree(bundle, route)
             self._run(["git", "add", "--", self.route_for(subchapter_id)], cwd=checkout)
             self._run(["git", "diff", "--cached", "--check"], cwd=checkout)
