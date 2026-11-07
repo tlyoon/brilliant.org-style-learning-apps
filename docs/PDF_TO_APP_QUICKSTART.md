@@ -140,7 +140,7 @@ python scripts\configure_project.py `
   --gemini-login-name "gemini@example.com"
 ```
 
-Review the diff, then repeat with `--apply` when correct. Validate and merge that configuration through the normal PR workflow before distributing it to other PCs.
+Review the diff, then repeat with `--apply` when correct. **Changing the project name automatically sets Git publication/auto-merge and public Pages deployment/auto-merge to `false`**, preventing the old project's active release settings from carrying into the new project. A same-project configuration edit retains its existing release policy. Review the output repository and deployment URL before any later, explicitly authorized enabling of publication. Validate and merge the configuration through the normal PR workflow before distributing it to other PCs.
 
 For a conservative first **specific-mode** project test, `git_publish = false` and `git_auto_merge = false` are valid. Continuous `auto` and `distributed` modes require durable Git publication and therefore require `git_publish = true`.
 
