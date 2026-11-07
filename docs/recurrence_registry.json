@@ -1198,8 +1198,7 @@
     {
       "id": "BSA-20261107-125",
       "class": "course-preview-external-selection-session-contamination",
-      "status": "active",
-      "nextAction": "Run hosted CI for explicit-preview idle and clear-selection tests, investigate real Chrome failure once and mark resolved only after exact-head PASS.",
+      "status": "resolved",
       "rootCauseFamily": "learner-browser",
       "relatedIncidentIds": [
         "BSA-20261105-116",
