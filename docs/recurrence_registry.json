@@ -1165,7 +1165,7 @@
     {
       "id": "BSA-20261107-124",
       "class": "direct-static-bundle-academic-bypass",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261024-001",
@@ -1193,8 +1193,7 @@
           "kind": "python",
           "marker": "test_legacy_builder_requires_explicit_local_preview"
         }
-      ],
-      "nextAction": "Run exact-head hosted CI for the standalone and legacy local-preview bundle negative controls; if green, mark this root-cause recurrence resolved and retain publication restrictions."
+      ]
     }
   ]
 }
