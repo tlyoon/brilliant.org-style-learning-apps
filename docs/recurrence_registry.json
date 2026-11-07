@@ -1212,6 +1212,45 @@
           "marker": "deselection must not fetch or persist learning data"
         }
       ]
+    },
+    {
+      "id": "BSA-20261107-126",
+      "class": "cross-project-recycling-retains-publication-auto-merge",
+      "status": "active",
+      "nextAction": "Verify ordinary hosted CI for new-project publication default reset, same-identity preservation, malformed or missing release keys and two independent workstation materializations; then record exact successful CI before resolving.",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261107-124",
+        "BSA-20261104-109"
+      ],
+      "differenceFromLinkedIncident": "Existing public artifact release checks stop unapproved academic packages in the current project, but did not prevent the supported project-recycling tool from carrying enabled Git and Pages deployment/auto-merge controls into a newly named project.",
+      "regressions": [
+        {
+          "path": "tests/test_configure_project.py",
+          "kind": "python",
+          "marker": "test_recycling_new_project_resets_all_external_release_switches"
+        },
+        {
+          "path": "tests/test_configure_project.py",
+          "kind": "python",
+          "marker": "test_same_project_config_change_preserves_existing_release_policy"
+        },
+        {
+          "path": "tests/test_configure_project.py",
+          "kind": "python",
+          "marker": "test_recycling_fails_closed_when_release_control_is_missing"
+        },
+        {
+          "path": "tests/test_configure_project.py",
+          "kind": "python",
+          "marker": "test_recycling_fails_closed_on_invalid_release_control_type"
+        },
+        {
+          "path": "tests/test_project_recyclability.py",
+          "kind": "python",
+          "marker": "test_two_projects_materialize_without_identity_or_state_leakage"
+        }
+      ]
     }
   ]
 }
