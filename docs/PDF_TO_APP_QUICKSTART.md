@@ -773,7 +773,7 @@ loader before displaying activities. It refuses duplicates, unsafe paths,
 changed package bytes, invalid scopes, and unavailable cryptographic hashing.
 Nothing auto-selects a first section: the instructor chooses each draft.
 
-The local instructor page intentionally starts **without** an activity package; this is a waiting-for-selection state, not a configuration error. Clearing the section menu invalidates any outstanding package fetch, removes the previous activity, and clears its anonymous session-only practice evidence. Selecting another draft starts a fresh in-memory session. This changes neither the public single-package learner nor any course-wide progression/mastery policy.
+The local instructor page intentionally starts **without** an activity package; this is a waiting-for-selection state, not a configuration error. Clearing the section menu invalidates any outstanding package fetch, removes the previous activity, and clears its anonymous session-only practice evidence. While a new section loads, the preceding activity and evidence are hidden; a failed load cannot restore the old section. Selecting another draft starts a fresh in-memory session. This changes neither the public single-package learner nor any course-wide progression/mastery policy.
 
 The menu supports EN/MS/ZH, uses no account or learner persistence and
 never calls an AI provider. An absent/invalid roster disables the menu.
