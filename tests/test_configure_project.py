@@ -88,7 +88,7 @@ state_root = "${STATE_ROOT}"
         self.assertEqual(values["source_root_url"], payload["placeholders"]["sourcepath"])
 
     def test_recycling_fails_closed_when_release_control_is_missing(self):
-        text = self.template().replace("public_deploy_auto_merge = true\\n", "")
+        text = self.template().replace("public_deploy_auto_merge = true", "")
         with self.assertRaisesRegex(ProjectConfigurationError, "automation.public_deploy_auto_merge"):
             render_project_configuration(text, self.values())
 
