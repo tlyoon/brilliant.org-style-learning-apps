@@ -1278,6 +1278,34 @@
           "marker": "test_dirty_or_missing_tracked_package_never_creates_roster"
         }
       ]
+    },
+    {
+      "id": "BSA-20261107-128",
+      "class": "headless-real-browser-language-option-disabled-during-async-package-load",
+      "status": "resolved",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": [
+        "BSA-20261105-116",
+        "BSA-20261107-125"
+      ],
+      "differenceFromLinkedIncident": "Earlier fixes isolated locale state and prevented stale section navigation, but the shared real-package full browser harness performed Selenium Select immediately after navigation while app.js intentionally disabled #locale during asynchronous package loading. Selenium 4.47.0 select.py _set_selected raises NotImplementedError for a disabled option. The old harness also discarded exception phase and traceback origin.",
+      "regressions": [
+        {
+          "path": "tests/test_full_learner_browser_audit.py",
+          "kind": "python",
+          "marker": "test_locale_select_waits_for_enabled_and_loaded_question"
+        },
+        {
+          "path": "tests/test_full_learner_browser_audit.py",
+          "kind": "python",
+          "marker": "test_locale_select_refuses_disabled_or_unloaded_state"
+        },
+        {
+          "path": "tests/test_full_learner_browser_audit.py",
+          "kind": "python",
+          "marker": "test_browser_error_origin_is_sanitized_and_keeps_call_site"
+        }
+      ]
     }
   ]
 }

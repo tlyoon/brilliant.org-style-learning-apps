@@ -705,6 +705,8 @@ Decisions 0029/0030/0031 or change course diagnostic/prerequisite progression.
 
 ### Source-free real-browser engineering smoke
 
+The private full existing-package browser auditor now waits for the actual question and enabled locale selector after each navigation, since the learner deliberately disables language switching during asynchronous package load. Do not replace this readiness check with a fixed sleep or repeat a consumed one-shot candidate to force PASS. Failures retain sanitized phase and Python module/function identity for targeted root-cause classification, without storing raw tracebacks, private paths, original source texts, or credentials. These are harness-integrity checks, not independent academic approval.
+
 The CI job executes `python scripts/check_course_preview_browser.py`
 in headless Chrome. It stages only disposable synthetic packages in a
 loopback-only temporary directory and tests three interface languages at

@@ -6,11 +6,47 @@ from unittest import TestCase
 from unittest.mock import Mock, patch
 
 from scripts.audit_full_learner_browser import (
-    _localized, _select_fresh_locale, audit_existing_candidate, ROOT,
+    _localized, _select_fresh_locale, _safe_failure_origin,
+    audit_existing_candidate, ROOT,
 )
 
 
 class LearnerBrowserAuditTests(TestCase):
+    def test_browser_error_origin_is_sanitized_and_keeps_call_site(self):
+        try:
+            raise NotImplementedError("DO_NOT_LOG_PRIVATE_SOURCE_OR_SESSION_TOKEN")
+        except NotImplementedError as exc:
+            result = _safe_failure_origin(exc)
+        self.assertEqual("test_full_learner_browser_audit.py",
+                         result["originModule"])
+        self.assertEqual("test_browser_error_origin_is_sanitized_and_keeps_call_site",
+                         result["originFunction"])
+        self.assertNotIn("DO_NOT_LOG_PRIVATE", str(result))
+        self.assertEqual({"originModule", "originFunction"}, set(result))
+
+    def test_locale_select_waits_for_enabled_and_loaded_question(self):
+        driver = Mock()
+        element = driver.find_element.return_value
+        element.is_enabled.side_effect = [False, True, True]
+        driver.find_elements.side_effect = [[], [Mock()]]
+        with patch("selenium.webdriver.support.ui.Select") as select:
+            _select_fresh_locale(driver, "http://127.0.0.1:1234",
+                                 "test-activity", "ms")
+        self.assertEqual(3, element.is_enabled.call_count)
+        self.assertEqual(2, driver.find_elements.call_count)
+        select.return_value.select_by_value.assert_called_once_with("ms")
+
+    def test_locale_select_refuses_disabled_or_unloaded_state(self):
+        from selenium.common.exceptions import TimeoutException
+        driver = Mock()
+        with patch("selenium.webdriver.support.ui.WebDriverWait") as wait:
+            wait.return_value.until.side_effect = TimeoutException()
+            with patch("selenium.webdriver.support.ui.Select") as select:
+                with self.assertRaises(TimeoutException):
+                    _select_fresh_locale(driver, "http://127.0.0.1:1234",
+                                         "test-activity", "zh")
+        select.assert_not_called()
+
     def test_each_locale_reloads_the_page_before_interaction(self):
         driver = Mock()
         with patch("selenium.webdriver.support.ui.Select") as select:

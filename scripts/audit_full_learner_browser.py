@@ -11,6 +11,8 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+import traceback
+import re
 from urllib.parse import urlencode
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +28,21 @@ def _assert(condition: bool, category: str) -> None:
         raise ValueError(category)
 
 
+def _safe_failure_origin(exc: Exception) -> dict[str, str]:
+    """Keep a traceback's code identity without paths, values or source text."""
+    frames = traceback.extract_tb(exc.__traceback__)
+    if not frames:
+        return {"originModule": "unknown", "originFunction": "unknown"}
+    last = frames[-1]
+    module = Path(last.filename).name
+    name = last.name
+    if not (module.endswith(".py") and re.fullmatch(r"[A-Za-z0-9_.-]{1,80}", module)):
+        module = "unknown"
+    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]{0,79}", name):
+        name = "unknown"
+    return {"originModule": module, "originFunction": name}
+
+
 def _localized(value: object, lang: str) -> str:
     if isinstance(value, dict):
         return str(value.get(lang, "") or "").strip()
@@ -35,9 +52,17 @@ def _localized(value: object, lang: str) -> str:
 def _select_fresh_locale(driver, origin: str, activity_id: str, lang: str) -> None:
     """Reload before every locale check; selection state must not bleed across."""
     from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import Select
+    from selenium.webdriver.support.ui import Select, WebDriverWait
 
     driver.get(origin + "/index.html?" + urlencode({"activity": activity_id}))
+    # Package fetch sets the select disabled until load finishes. Selenium
+    # raises NotImplementedError if Select is asked to choose a disabled
+    # option. Wait for BOTH the real question and enabled selector, rather
+    # than racing the asynchronous package fetch after navigation.
+    WebDriverWait(driver, 8).until(
+        lambda d: d.find_element(By.ID, "locale").is_enabled()
+        and bool(d.find_elements(By.CSS_SELECTOR, "#app h1.question"))
+    )
     Select(driver.find_element(By.ID, "locale")).select_by_value(lang)
 
 
@@ -165,25 +190,31 @@ def audit_existing_candidate(
                                 "answerInteractionExercised": False,
                             }
                             category = "UNKNOWN_BROWSER_FAILURE"
+                            phase = "navigate_locale"
                             try:
                                 _select_fresh_locale(driver, origin, activity["id"], lang)
+                                phase = "wait_question"
                                 WebDriverWait(driver, 6).until(
                                     lambda d: bool(d.find_elements(
                                         By.CSS_SELECTOR, "#app h1.question")))
+                                phase = "read_question"
                                 title = driver.find_element(
                                     By.CSS_SELECTOR, "#app h1.question").text.strip()
                                 _assert(title == _localized(activity["prompt"], lang),
                                         "LOCALIZED_PROMPT_MISMATCH")
                                 row["rendered"] = True
+                                phase = "check_layout"
                                 _assert(bool(driver.execute_script(
                                     "return document.documentElement.scrollWidth <= "
                                     "window.innerWidth + 2 && "
                                     "document.body.scrollWidth <= window.innerWidth + 2;"
                                 )), "HORIZONTAL_OVERFLOW")
                                 row["responsive"] = True
+                                phase = "exercise"
                                 _exercise(driver, activity, lang)
                                 row["keyboardOperable"] = True
                                 row["answerInteractionExercised"] = True
+                                phase = "screenshot"
                                 screenshot = driver.get_screenshot_as_png()
                                 filename = f"{idx + 1:02d}-{lang}-{width}.png"
                                 (destination / filename).write_bytes(screenshot)
@@ -198,7 +229,8 @@ def audit_existing_candidate(
                                 errors.append({
                                     "activityIndex": idx + 1,
                                     "locale": lang, "viewportWidth": width,
-                                    "category": category,
+                                    "category": category, "failurePhase": phase,
+                                    **_safe_failure_origin(exc),
                                 })
                             evidence["checks"].append(row)
                             if len(errors) >= max_errors:
