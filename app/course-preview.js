@@ -87,6 +87,9 @@
       currentSelection = "";
       state = "ready";
       rerenderMenu();
+      // Invalidate any in-flight fetch and remove the previous section's
+      // practice state; an unselected course menu must not show old mastery.
+      if (typeof loadPackage === "function") void loadPackage();
       return;
     }
     currentSelection = selector.value;
