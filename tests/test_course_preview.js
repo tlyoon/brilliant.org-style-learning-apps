@@ -55,7 +55,7 @@ async function waitFor(predicate) {
   assert.fail("asynchronous package load did not settle");
 }
 
-function harness({ corruptManifest = false, wrongBytes = false, absentManifest = false } = {}) {
+function harness({ corruptManifest = false, wrongBytes = false, absentManifest = false, delayedSection = 0 } = {}) {
   const app = new FakeElement("section");
   app.dataset.packageUrl = "";
   app.dataset.externalPackageSelection = "true";
@@ -89,16 +89,21 @@ function harness({ corruptManifest = false, wrongBytes = false, absentManifest =
     files.set(path, Buffer.from(JSON.stringify(fixturePackage(5)), "utf8"));
   }
   const calls = [];
+  let releaseDelayed = null;
   const fetch = async (url, options) => {
     calls.push({ url, options });
     if (url === "../local-pilot/roster.json") return { ok: true, json: async () => manifest };
     if (!files.has(url)) throw new Error("unexpected URL " + url);
     const raw = files.get(url);
-    return {
+    const result = {
       ok: true,
       arrayBuffer: async () => raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.byteLength),
       json: async () => JSON.parse(raw.toString("utf8")),
     };
+    if (delayedSection && url === "../content/chapter-9/section-9-" + delayedSection + "/package.json") {
+      return new Promise((resolve) => { releaseDelayed = () => resolve(result); });
+    }
+    return result;
   };
   const context = {
     document: { querySelector: (selector) => nodes[selector] || null, createElement: (tag) => new FakeElement(tag) },
@@ -107,7 +112,7 @@ function harness({ corruptManifest = false, wrongBytes = false, absentManifest =
   vm.createContext(context);
   vm.runInContext(fs.readFileSync("app/app.js", "utf8"), context, { filename: "app/app.js" });
   vm.runInContext(fs.readFileSync("app/course-preview.js", "utf8"), context, { filename: "app/course-preview.js" });
-  return { app, locale, select, status, calls, context };
+  return { app, locale, select, status, calls, context, releaseDelayed: () => releaseDelayed?.() };
 }
 
 (async () => {
@@ -159,6 +164,23 @@ function harness({ corruptManifest = false, wrongBytes = false, absentManifest =
   await waitFor(() => valid.app.textContent.includes("Prompt 4 ms"));
   assert.equal(JSON.parse(vm.runInContext("JSON.stringify(masteryEvidence())", valid.context)).level, "not_started");
   assert.equal(valid.calls.length, 3);
+
+  const pending = harness({ delayedSection: 5 });
+  await flush();
+  await flush();
+  pending.select.value = "5";
+  pending.select.listeners.change();
+  assert.match(pending.app.textContent, /Loading selected subchapter/);
+  pending.select.value = "";
+  pending.select.listeners.change();
+  assert.match(pending.app.textContent, /Select a subchapter above/);
+  pending.releaseDelayed();
+  await flush();
+  await flush();
+  assert.match(pending.app.textContent, /Select a subchapter above/);
+  assert.equal(descendants(pending.app).filter((x) => x.tagName === "H1").length, 0,
+    "late package response must not resurrect cleared activity");
+  assert.deepEqual(JSON.parse(vm.runInContext("JSON.stringify(state.sessionMetrics)", pending.context)), {});
 
   const invalid = harness({ corruptManifest: true });
   await flush();
