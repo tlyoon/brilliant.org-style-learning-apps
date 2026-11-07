@@ -542,6 +542,8 @@ the underlying verifier, and this command does not itself authorize Git
 merge or external publication. The automation's publisher also rechecks
 the gate and remains subject to its separate deployment authorization.
 
+For GitHub Pages or other public hosting, **manual review is optional**, but independent, automated source-bound academic verification and explicit publication authorization are mandatory. Never upload a local preview bundle as a public release; a static `noindex` notice is not an access-control mechanism.
+
 The historical `scripts/build_section_8_1_public_release.py` containing
 multiple unverified variants is now **local-preview only**, requiring an
 explicit `--local-preview` flag. It includes visible unapproved-draft notices
