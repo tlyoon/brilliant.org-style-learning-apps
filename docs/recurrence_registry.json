@@ -1194,6 +1194,25 @@
           "marker": "test_legacy_builder_requires_explicit_local_preview"
         }
       ]
+    },
+    {
+      "id": "BSA-20261107-125",
+      "class": "course-preview-external-selection-session-contamination",
+      "status": "active",
+      "nextAction": "Run hosted CI for explicit-preview idle and clear-selection tests, investigate real Chrome failure once and mark resolved only after exact-head PASS.",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": [
+        "BSA-20261105-116",
+        "BSA-20261104-109"
+      ],
+      "differenceFromLinkedIncident": "Previously repaired browser locale isolation protected separate activity runs but did not exercise an empty, manually selected course package or cancel in-flight loads while clearing section-specific practice evidence.",
+      "regressions": [
+        {
+          "path": "tests/test_course_preview.js",
+          "kind": "javascript",
+          "marker": "deselection must not fetch or persist learning data"
+        }
+      ]
     }
   ]
 }
