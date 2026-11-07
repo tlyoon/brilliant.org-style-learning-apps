@@ -1,4 +1,6 @@
-const DEFAULT_PACKAGE = document.querySelector("#app").dataset.packageUrl || "";
+const playerHost = document.querySelector("#app");
+const DEFAULT_PACKAGE = playerHost.dataset.packageUrl || "";
+const EXTERNAL_PACKAGE_SELECTION = playerHost.dataset.externalPackageSelection === "true";
 const state = { package: null, activityIndex: 0, locale: "en", response: null, checked: false, hint: false, loading: false, sessionMetrics: Object.create(null), reviewPending: false };
 let loadGeneration = 0;
 
@@ -568,11 +570,23 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE, expectedSha256) {
   state.loading = true;
   localeSelector.disabled = true;
   if (!packageUrl) {
+    // Explicit instructor navigation has no initial package. Clearing its
+    // selection must invalidate any pending digest/network response and
+    // discard ALL session-only activity evidence from the previous section.
     state.package = null;
+    state.activityIndex = 0;
+    state.sessionMetrics = Object.create(null);
+    state.reviewPending = false;
+    resetActivity();
     state.loading = false;
     localeSelector.disabled = false;
-    const message = "No learning package was selected. Supply data-package-url in the host page or call loadPackage(packageUrl).";
-    document.querySelector("#app").replaceChildren(element("p", { className: "error", text: message }));
+    const message = EXTERNAL_PACKAGE_SELECTION
+      ? "Select a subchapter above to preview its activities."
+      : "No learning package was selected. Supply data-package-url in the host page or call loadPackage(packageUrl).";
+    document.querySelector("#app").replaceChildren(element("p", {
+      className: EXTERNAL_PACKAGE_SELECTION ? "course-placeholder" : "error",
+      text: message,
+    }));
     return;
   }
   try {
@@ -590,6 +604,10 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE, expectedSha256) {
   } catch (error) {
     if (generation !== loadGeneration) return;
     state.package = null;
+    state.activityIndex = 0;
+    state.sessionMetrics = Object.create(null);
+    state.reviewPending = false;
+    resetActivity();
     state.loading = false;
     localeSelector.disabled = false;
     const message = `Could not load the selected learning package. Start the app through the documented local server. (${error.message})`;
