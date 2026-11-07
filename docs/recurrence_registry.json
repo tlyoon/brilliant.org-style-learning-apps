@@ -1161,6 +1161,39 @@
           "marker": "test_multi_pdf_missing_or_duplicate_primary_fails_closed"
         }
       ]
+    },
+    {
+      "id": "BSA-20261107-124",
+      "class": "direct-static-bundle-academic-bypass",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261024-001",
+        "BSA-20261104-109"
+      ],
+      "differenceFromLinkedIncident": "The prior shared academic gate protected automatic merge and the public publisher, but separately callable standalone and historical multi-section static-bundle builders did not enforce that gate or visibly identify unapproved draft previews.",
+      "regressions": [
+        {
+          "path": "tests/test_public_release.py",
+          "kind": "python",
+          "marker": "test_default_builder_blocks_unverified_public_bundle"
+        },
+        {
+          "path": "tests/test_public_release.py",
+          "kind": "python",
+          "marker": "test_public_mode_requires_independent_academic_gate_not_cached_receipt"
+        },
+        {
+          "path": "tests/test_public_release.py",
+          "kind": "python",
+          "marker": "test_release_mode_accepts_only_exact_sha_from_same_academic_gate"
+        },
+        {
+          "path": "tests/test_section_8_1_public_release.py",
+          "kind": "python",
+          "marker": "test_legacy_builder_requires_explicit_local_preview"
+        }
+      ]
     }
   ]
 }
