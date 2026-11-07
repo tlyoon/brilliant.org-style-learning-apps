@@ -1265,7 +1265,7 @@
         {
           "path": "tests/test_prepare_course_preview.py",
           "kind": "python",
-          "marker": "test_git_clean_crlf_checkout_accepts_same_committed_content"
+          "marker": "test_git_normalized_crlf_checkout_accepts_same_committed_content"
         },
         {
           "path": "tests/test_prepare_course_preview.py",

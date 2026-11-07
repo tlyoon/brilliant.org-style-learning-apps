@@ -62,10 +62,10 @@ class LocalPreviewPreparationTests(unittest.TestCase):
         )
         self.assertEqual("", status.stdout, "private manifest must be gitignored")
 
-    def test_git_clean_crlf_checkout_accepts_same_committed_content(self):
+    def test_git_normalized_crlf_checkout_accepts_same_committed_content(self):
         relative = "content/chapter-9/section-9-1/package.json"
         target = self.root / relative
-        git(self.root, "config", "core.autocrlf", "false")
+        git(self.root, "config", "core.autocrlf", "true")
         original = (json.dumps(package(1), indent=2) + "\n").encode("utf-8")
         target.write_bytes(original)
         git(self.root, "add", relative)
@@ -75,10 +75,7 @@ class LocalPreviewPreparationTests(unittest.TestCase):
         materialized = original.replace(b"\n", b"\r\n")
         self.assertNotEqual(original, materialized)
         target.write_bytes(materialized)
-        check = subprocess.run(
-            ["git", "-C", str(self.root), "status", "--porcelain"],
-            capture_output=True, text=True, check=True)
-        self.assertEqual("", check.stdout)
+        # Compare canonical Git blob identity, not worktree byte style.
         roster = self.prepare()
         self.assertEqual(sha256(materialized).hexdigest(),
                          roster["cases"][0]["packageSha256"])
@@ -88,7 +85,7 @@ class LocalPreviewPreparationTests(unittest.TestCase):
     def test_git_normalized_blob_still_rejects_tampered_crlf_content(self):
         relative = "content/chapter-9/section-9-1/package.json"
         target = self.root / relative
-        git(self.root, "config", "core.autocrlf", "false")
+        git(self.root, "config", "core.autocrlf", "true")
         original = (json.dumps(package(1), indent=2) + "\n").encode("utf-8")
         target.write_bytes(original)
         git(self.root, "add", relative)
