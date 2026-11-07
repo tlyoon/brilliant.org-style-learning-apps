@@ -503,29 +503,49 @@ git push -u origin content/section-8-5-draft
 gh pr create --base main --fill
 ```
 
-Green CI and automated semantic validation are sufficient for configured publication. The `review-record.md` file is an audit/traceability record; any additional manual review is optional and does not block publication.
+Green CI and metadata/semantic validation alone are **not** publication permission. Automatic merge/public deployment requires the exact-package source-bound academic PASS and visual-value product gate enforced by `app_generator.runtime.academic_release`, plus the configured deployment and owner-authorization controls. Human academic review is optional; independent automated evidence is not. The `review-record.md` file remains an audit/traceability record.
 
-## 13. Build and preview a minimal static app
+## 13. Explicit local static preview or academic-gated public bundle
 
-Build one selected package into an empty directory:
+**Unreviewed packages cannot be silently packaged as a public release.**
+The standalone `scripts/build_public_release.py` now has two mutually
+exclusive modes. To preview drafts locally, choose `--local-preview`:
 
 ```powershell
-$release = "..\section-8-5-release"
-New-Item -ItemType Directory -Path $release
+$preview = "..\section-8-5-local-preview"
 & $py scripts\build_public_release.py `
   content/chapter-8/section-8-5/package.json `
-  $release
+  $preview --local-preview
+& $py -m http.server 8001 --bind 127.0.0.1 --directory $preview
 ```
 
-Preview:
+Open `http://127.0.0.1:8001/`. This generated preview has a **visible unapproved
+draft notice** and a `noindex` instruction. Neither provides access control;
+keep the local server loopback-only and do not upload, publish or share the
+bundle. Only runtime files and that selected package are copied, not PDFs,
+source manifests, review records or credentials.
+
+Public bundle mode (no `--local-preview`) requires a distinct, private
+`--academic-validation-dir` **outside the repository and the bundle**:
 
 ```powershell
-& $py -m http.server 8001 --directory $release
+& $py scripts\build_public_release.py `
+  content/chapter-8/section-8-5/package.json `
+  ..\reviewed-public-bundle `
+  --academic-validation-dir $privateAcademicReceiptDir
 ```
 
-Open `http://127.0.0.1:8001/`. The bundle contains the learner app and selected package, not PDFs, credentials, review records, source manifests, or development files.
+The command independently reuses the same exact-byte academic and visual
+release gate as the configured publisher; a draft with missing proof **stops
+before writing a bundle**. Supplying a fake PASS JSON does not override
+the underlying verifier, and this command does not itself authorize Git
+merge or external publication. The automation's publisher also rechecks
+the gate and remains subject to its separate deployment authorization.
 
-For public deployment, prefer a separate minimal GitHub Pages repository and verify the built bundle locally before pushing it.
+The historical `scripts/build_section_8_1_public_release.py` containing
+multiple unverified variants is now **local-preview only**, requiring an
+explicit `--local-preview` flag. It includes visible unapproved-draft notices
+on every page and cannot serve as a release authorization path.
 
 ## 14. List generated apps and deployment URLs
 
