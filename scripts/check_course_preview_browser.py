@@ -193,6 +193,9 @@ def run() -> None:
                         _assert_idle = driver.find_element(By.ID, "app").text
                         assert "Select a subchapter above" in _assert_idle
                         assert not driver.find_elements(By.CSS_SELECTOR, "#app h1.question")
+                        assert "activity=" not in driver.current_url, (
+                            "STALE_ACTIVITY_DEEP_LINK_AFTER_DESELECTION"
+                        )
                         Select(driver.find_element(By.ID, "course-select")).select_by_value("2")
                         WebDriverWait(driver, 10).until(
                             lambda d: _synthetic_prompt(2, "en") in
