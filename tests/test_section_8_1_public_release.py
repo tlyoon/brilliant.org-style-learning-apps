@@ -20,7 +20,7 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
     def test_bundle_contains_only_dual_version_runtime_files(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
-            build(output)
+            build(output, local_preview=True)
             actual_files = {
                 path.relative_to(output).as_posix()
                 for path in output.rglob("*")
@@ -51,7 +51,7 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
     def test_both_draft_versions_are_distinct_and_complete(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
-            build(output)
+            build(output, local_preview=True)
             version_one = json.loads((output / "content/v1/package.json").read_text(encoding="utf-8"))
             version_two = json.loads((output / "content/v2/package.json").read_text(encoding="utf-8"))
             self.assertNotEqual(version_one, version_two)
@@ -63,7 +63,7 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
     def test_version_one_is_the_immutable_historical_package(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
-            build(output)
+            build(output, local_preview=True)
             self.assertEqual(
                 version_one_package(),
                 (output / "content/v1/package.json").read_bytes(),
@@ -72,7 +72,7 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
     def test_version_two_uses_the_current_main_package(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
-            build(output)
+            build(output, local_preview=True)
             self.assertEqual(
                 (ROOT / "content/chapter-8/section-8-1/package.json").read_bytes(),
                 (output / "content/v2/package.json").read_bytes(),
@@ -81,7 +81,7 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
     def test_section_eight_two_uses_the_current_draft_package(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
-            build(output)
+            build(output, local_preview=True)
             deployed = json.loads(
                 (output / "content/section-8-2/package.json").read_text(encoding="utf-8")
             )
@@ -96,7 +96,7 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
     def test_section_eight_three_uses_the_current_draft_package(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
-            build(output)
+            build(output, local_preview=True)
             deployed = json.loads(
                 (output / "content/section-8-3/package.json").read_text(encoding="utf-8")
             )
@@ -111,7 +111,7 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
     def test_section_eight_four_uses_the_current_draft_package(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
-            build(output)
+            build(output, local_preview=True)
             deployed = json.loads(
                 (output / "content/section-8-4/package.json").read_text(encoding="utf-8")
             )
@@ -126,7 +126,7 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
     def test_section_eight_five_uses_the_current_draft_package(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
-            build(output)
+            build(output, local_preview=True)
             deployed = json.loads(
                 (output / "content/section-8-5/package.json").read_text(encoding="utf-8")
             )
@@ -138,10 +138,10 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
             self.assertEqual("draft", deployed["status"])
             self.assertEqual(18, len(deployed["activities"]))
 
-    def test_landing_and_section_pages_have_no_review_gate_notice(self):
+    def test_local_preview_pages_display_unapproved_notice(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory) / "release"
-            build(output)
+            build(output, local_preview=True)
             landing = (output / "index.html").read_text(encoding="utf-8")
             for href in ("v1/", "v2/", "section-8-2/", "section-8-3/", "section-8-4/", "section-8-5/"):
                 self.assertIn(f'href="{href}"', landing)
@@ -150,9 +150,9 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
                 "section-8-3/index.html", "section-8-4/index.html", "section-8-5/index.html",
             ):
                 page = (output / relative).read_text(encoding="utf-8")
-                self.assertNotIn("Draft review prototype", page)
-                self.assertNotIn("not approved for publication", page)
-                self.assertNotIn("prototype-notice", page)
+                self.assertIn("LOCAL DRAFT PREVIEW - NOT APPROVED FOR PUBLICATION", page)
+                self.assertIn("prototype-notice", page)
+                self.assertIn('content="noindex, nofollow"', page)
                 if relative != "index.html":
                     self.assertIn("../app/domain-renderers.js", page)
                     self.assertIn("../app/visual-renderers.js", page)
@@ -160,12 +160,19 @@ class SectionEightOnePublicReleaseTests(unittest.TestCase):
             self.assertIn('data-package-url="../content/v1/package.json"', (output / "v1/index.html").read_text(encoding="utf-8"))
             self.assertIn('data-package-url="../content/section-8-5/package.json"', (output / "section-8-5/index.html").read_text(encoding="utf-8"))
 
+    def test_legacy_builder_requires_explicit_local_preview(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory) / "release"
+            with self.assertRaisesRegex(ValueError, "not approved for public release"):
+                build(output)
+            self.assertFalse(output.exists(), "drafts must not be bundled by default")
+
     def test_refuses_to_overwrite_an_existing_bundle(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             output = Path(temporary_directory)
             (output / "existing.txt").write_text("keep", encoding="utf-8")
             with self.assertRaises(ValueError):
-                build(output)
+                build(output, local_preview=True)
             self.assertEqual("keep", (output / "existing.txt").read_text(encoding="utf-8"))
 
 
