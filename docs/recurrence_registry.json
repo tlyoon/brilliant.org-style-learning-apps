@@ -1216,8 +1216,7 @@
     {
       "id": "BSA-20261107-126",
       "class": "cross-project-recycling-retains-publication-auto-merge",
-      "status": "active",
-      "nextAction": "Verify ordinary hosted CI for new-project publication default reset, same-identity preservation, malformed or missing release keys and two independent workstation materializations; then record exact successful CI before resolving.",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261107-124",
