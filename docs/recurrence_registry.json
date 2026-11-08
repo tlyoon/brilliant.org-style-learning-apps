@@ -1306,6 +1306,54 @@
           "marker": "test_browser_error_origin_is_sanitized_and_keeps_call_site"
         }
       ]
+    },
+    {
+      "id": "BSA-20261108-129",
+      "class": "first-run-private-source-review-packets-require-prior-receipts",
+      "status": "resolved",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261105-114",
+        "BSA-20261105-117"
+      ],
+      "differenceFromLinkedIncident": "Earlier academic evidence checks prevented unsupported PASS, and source acquisition validated external file identity, but neither could create the first locally verified source-location packets for an unseen controlled PDF: the normal academic stage assumed two prior independent proof receipts and left AUTO_SOURCE_CHECK waiting. The initial single-passage bootstrap also missed long multi-concept questions; bounded complementary literal passages improve coverage without reducing the relevance threshold.",
+      "regressions": [
+        {
+          "path": "tests/test_academic_source_bootstrap.py",
+          "kind": "python",
+          "marker": "test_new_source_recovers_without_prior_proof_receipts"
+        },
+        {
+          "path": "tests/test_academic_source_bootstrap.py",
+          "kind": "python",
+          "marker": "test_auto_packet_never_reaches_browser_reviewer_without_rights"
+        },
+        {
+          "path": "tests/test_academic_source_bootstrap.py",
+          "kind": "python",
+          "marker": "test_complementary_passages_support_multiconcept_activity"
+        },
+        {
+          "path": "tests/test_academic_source_bootstrap.py",
+          "kind": "python",
+          "marker": "test_manifest_hash_mismatch_fails_closed"
+        },
+        {
+          "path": "tests/test_academic_source_bootstrap.py",
+          "kind": "python",
+          "marker": "test_missing_controlled_rights_note_blocks_source_read"
+        },
+        {
+          "path": "tests/test_academic_source_bootstrap.py",
+          "kind": "python",
+          "marker": "test_irrelevant_source_does_not_create_misleading_proof"
+        },
+        {
+          "path": "tests/test_academic_source_bootstrap.py",
+          "kind": "python",
+          "marker": "test_first_packet_is_immutable_and_stale_change_cannot_inherit_pass"
+        }
+      ]
     }
   ]
 }

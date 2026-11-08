@@ -8,15 +8,147 @@ from __future__ import annotations
 
 from hashlib import sha256
 import json
+import re
 from pathlib import Path
 from typing import Any
 
 from app_generator.filesystem.outputs import write_json_atomic
 from app_generator.runtime.run_context import RunContext
 from app_generator.validation.source_anchor_migration import migrate_anchor_packets
+from app_generator.validation.source_passages import extract_pages
+from app_generator.validation.reviewer_source_packets import verified_source_packet
 
 REGISTRY_DIR="academic-review-provenance"
 RUN_PACKET_NAME="academic-review-source-packets.json"
+
+# Local source location is *not* semantic proof or authority to transmit
+# copyright-controlled passages to a remote model.
+_STOPWORDS = {
+    "about", "after", "before", "because", "between", "during", "explain",
+    "following", "given", "their", "there", "these", "those", "which", "where",
+    "while", "using", "total", "system", "systems", "objects", "object",
+    "could", "would", "should", "describe", "determine", "whether", "through",
+    "different", "during", "with", "from", "what", "when", "have", "does",
+}
+
+def _topic_terms(text: str) -> set[str]:
+    return set(re.findall(r"[a-z]{4,}", text.lower())) - _STOPWORDS
+
+def _passages(page: str):
+    """Yield bounded literal PDF-text spans; never synthesize textbook prose."""
+    for paragraph in re.split(r"\n[ \t]*\n", page):
+        clean = re.sub(r"\s+", " ", paragraph).strip()
+        if "\ufffd" in clean:
+            continue
+        # Long paragraphs are split without semantic rewriting; every
+        # candidate must still occur literally in its original PDF page.
+        for start in range(0, len(clean), 750):
+            quote = clean[start:start + 750].strip()
+            if len(quote) >= 60 and len(quote.split()) >= 9:
+                yield quote
+
+def _bootstrap_local_source_locations(
+    config: Any, context: RunContext, package_file: Path,
+    source_pdf: Path, dest: Path, expected: str,
+) -> dict[str, Any]:
+    """Recover first-run *local* page anchors, never source/model permission."""
+    root = config.repo_root.resolve()
+    if source_pdf.resolve().is_relative_to(root):
+        return {"status": "BLOCKED_PRIVATE_SOURCE_IN_REPOSITORY",
+                "packetCreated": False, "publicationAuthorized": False}
+    package = json.loads(package_file.read_text(encoding="utf-8"))
+    relative = package.get("sourceManifest")
+    if not isinstance(relative, str) or not relative.startswith("content/source-manifests/"):
+        return {"status": "NO_VERIFIED_SOURCE_MANIFEST",
+                "packetCreated": False, "publicationAuthorized": False}
+    manifest_path = (root / relative).resolve()
+    if not manifest_path.is_relative_to((root / "content" / "source-manifests").resolve()):
+        return {"status": "BLOCKED_SOURCE_MANIFEST_PATH",
+                "packetCreated": False, "publicationAuthorized": False}
+    if not manifest_path.is_file():
+        return {"status": "NO_VERIFIED_SOURCE_MANIFEST",
+                "packetCreated": False, "publicationAuthorized": False}
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("sha256") != expected:
+        return {"status": "BLOCKED_SOURCE_MANIFEST_MISMATCH",
+                "packetCreated": False, "publicationAuthorized": False}
+    rights = manifest.get("rightsNote")
+    # A controlled transformation/provenance declaration supports only this
+    # on-device local-text operation, NOT third-party image rights or model use.
+    if not isinstance(rights, str) or not rights.startswith("Instructor-authorized controlled source"):
+        return {"status": "BLOCKED_SOURCE_USE_SCOPE",
+                "packetCreated": False, "publicationAuthorized": False}
+    activities = package.get("activities")
+    if (not isinstance(activities, list) or not activities or
+        any(not isinstance(x, dict) or not isinstance(x.get("id"), str)
+            or not x["id"] for x in activities) or
+        len({x["id"] for x in activities}) != len(activities)):
+        return {"status": "LOCAL_SOURCE_RELEVANCE_NOT_VERIFIED",
+                "packetCreated": False, "publicationAuthorized": False}
+    pages = extract_pages(source_pdf)
+    candidates = []
+    for page_index, page in enumerate(pages, 1):
+        for quote in _passages(page):
+            candidates.append((page_index, quote, _topic_terms(quote)))
+    packets = {}
+    for activity in activities:
+        prompt = activity.get("prompt")
+        prompt_en = prompt.get("en", "") if isinstance(prompt, dict) else ""
+        objective = activity.get("objective", "")
+        query = _topic_terms(" ".join(x for x in (prompt_en, objective) if isinstance(x, str)))
+        if len(query) < 3:
+            break
+        # A multi-concept question can need more than one source passage.
+        # Cover complementary terms rather than weakening the minimum
+        # aggregate relevance requirement to force a single-passage PASS.
+        covered = set()
+        anchors = []
+        unused = list(candidates)
+        for _ in range(3):
+            ranked = sorted(
+                ((len((query - covered) & words), page, quote, words)
+                 for page, quote, words in unused),
+                key=lambda x: (-x[0], x[1], x[2]),
+            )
+            if not ranked or ranked[0][0] < 3:
+                break
+            _score, page, quote, words = ranked[0]
+            anchors.append({"activityId": activity["id"],
+                            "pageIndex": page, "quotedText": quote})
+            covered.update(query & words)
+            unused = [x for x in unused if (x[0], x[1]) != (page, quote)]
+            if len(covered) / len(query) >= 0.25:
+                break
+        if not anchors or len(covered) / len(query) < 0.25:
+            break
+        try:
+            packet = verified_source_packet(
+                source_pdf, expected, activity["id"], anchors,
+                extractor=lambda _: pages,
+            )
+        except (ValueError, OSError):
+            break
+        packets[activity["id"]] = packet
+    if len(packets) != len(activities):
+        return {"status": "LOCAL_SOURCE_RELEVANCE_NOT_VERIFIED",
+                "packetCreated": False, "verifiedSourceLocations": 0,
+                "academicQA": "REVIEW_REQUIRED", "publicationAuthorized": False}
+    result = {
+        "packageSha256": sha256(package_file.read_bytes()).hexdigest(),
+        "sourceSha256": expected, "packets": packets,
+        "sourcePacketOrigin": "AUTOMATED_LOCAL_TEXT",
+        "modelSubmissionAuthorized": False,
+        "sourceInterpretationVerified": False,
+        "academicQA": "REVIEW_REQUIRED", "publicationAuthorized": False,
+    }
+    write_json_atomic(dest, result)
+    return {
+        "status": "LOCAL_SOURCE_LOCATIONS_VERIFIED_PENDING_RIGHTS",
+        "packetCreated": True, "verifiedSourceLocations": len(packets),
+        "sourceInterpretationVerified": False,
+        "modelSubmissionAuthorized": False,
+        "academicQA": "REVIEW_REQUIRED", "publicationAuthorized": False,
+    }
 
 def _canonical_private_file(value: Any, *, repo_root: Path,
                             allow_repo_readonly: bool=False) -> Path:
@@ -57,6 +189,18 @@ def provision_run_source_packets(
     if registry.is_relative_to(repository):
         raise ValueError("academic provenance registry cannot be inside Git")
     if not registry.is_file():
+        if registry_file is None and package_file.is_file():
+            package = json.loads(package_file.read_text(encoding="utf-8"))
+            if isinstance(package, dict) and isinstance(package.get("sourceManifest"), str):
+                if dest.exists():
+                    # Existing claim remains immutable even if source or
+                    # package versions have since changed.
+                    return {"status": "RUN_PACKET_EXISTS_RECHECK_IN_STAGE",
+                            "packetCreated": False, "academicQA": "REVIEW_REQUIRED",
+                            "publicationAuthorized": False}
+                return _bootstrap_local_source_locations(
+                    config, context, package_file, source_pdf, dest, source_digest,
+                )
         return {"status":"NO_PRIVATE_PROVENANCE_REGISTRY",
                 "packetCreated":False,"academicQA":"REVIEW_REQUIRED",
                 "publicationAuthorized":False}

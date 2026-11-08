@@ -73,6 +73,8 @@ def run_academic_stage(
     queue=[]
     eligible=[]
     contexts={}
+    local_locations=set()
+    local_location_only=False
     source_sha=None
     if packet_path.is_file():
         try:
@@ -85,6 +87,9 @@ def run_academic_stage(
             packets={}
         else:
             source_sha=packets.get("sourceSha256")
+            # Automated page-location evidence is not permission to submit
+            # textbook excerpts to an external reviewer.
+            local_location_only=(packets.get("sourcePacketOrigin")=="AUTOMATED_LOCAL_TEXT")
             page_cache=None
             if source_pdf is not None and source_pdf.is_file():
                 try:
@@ -115,10 +120,16 @@ def run_academic_stage(
                         if (trusted is not None and
                             trusted["sourceEvidence"]==packet["sourceEvidence"] and
                             trusted["passageSha256"]==packet.get("passageSha256")):
-                            eligible.append(a)
-                            contexts[a["id"]]=trusted
+                            if local_location_only:
+                                local_locations.add(a["id"])
+                            else:
+                                eligible.append(a)
+                                contexts[a["id"]]=trusted
     for id_ in ids:
-        if id_ not in contexts:
+        if id_ in local_locations:
+            queue.append({"activityId":id_,"nextAction":"AUTO_RIGHTS_CHECK",
+                          "reason":"private passage located; external reviewer use not authorized"})
+        elif id_ not in contexts:
             queue.append({"activityId":id_,"nextAction":"AUTO_SOURCE_CHECK",
                           "reason":"source passage absent or stale; automatically regenerate source packet"})
     if source_sha and (source_pdf is None or not source_pdf.is_file()
@@ -179,6 +190,7 @@ def run_academic_stage(
         "sourceSha256":source_sha,
         "activitiesTotal":len(ids),
         "sourceReady":len(eligible),
+        "sourceLocated":len(local_locations)+len(contexts),
         "queue":queue,
         "automaticSourceProvisioning":provision,
         "humanAcademicApprovalRequired":False,
