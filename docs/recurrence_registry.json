@@ -1392,6 +1392,61 @@
           "marker": "test_cli_invokes_recovery_before_full_audit"
         }
       ]
+    },
+    {
+      "id": "BSA-20261109-131",
+      "class": "browser-receipt-git-lf-versus-windows-execution-crlf-hash-mismatch",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": ["BSA-20261107-127"],
+      "differenceFromLinkedIncident": "Prior Windows autocrlf protection normalized Git-tracked course package identity during roster creation only. The subsequent standalone browser screenshot verifier compared historical Windows execution byte SHA-256 against canonical Git blob raw bytes, without reusing the same identity semantics. A shared identity resolver now checks exact Git blob or deterministic LF-to-CRLF materialization against the original recorded raw execution hash before verifying existing browser receipts, never treating arbitrary file changes as equivalent.",
+      "regressions": [
+        {
+          "path": "tests/test_existing_browser_receipt_integrity.py",
+          "kind": "python",
+          "marker": "test_previous_windows_crlf_receipt_is_auto_reconciled"
+        },
+        {
+          "path": "tests/test_existing_browser_receipt_integrity.py",
+          "kind": "python",
+          "marker": "test_real_code_change_is_not_silently_normalized"
+        },
+        {
+          "path": "tests/test_existing_browser_receipt_integrity.py",
+          "kind": "python",
+          "marker": "test_six_real_shape_receipts_remain_metadata_only"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261109-132",
+      "class": "browser-screenshot-claimed-viewport-not-actually-observed",
+      "status": "resolved",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": ["BSA-20261107-128", "BSA-20261105-113"],
+      "differenceFromLinkedIncident": "Previous learner-browser recovery waited for the locale selector and checked horizontal overflow relative to whatever viewport Chrome selected, without proving it matched the requested 390/1280 CSS sizes. Saved PNG headers exposed actual 504 and 1262 pixel captures labeled as 390 and 1280. The shared harness now applies CDP device metrics, asserts exact runtime CSS dimensions/device scale, and refuses screenshot dimensions mismatches before writing evidence. Historic receipts retain their non-accepted status, with no retry budget reset.",
+      "regressions": [
+        {
+          "path": "tests/test_full_learner_browser_audit.py",
+          "kind": "python",
+          "marker": "test_cdp_enforces_requested_css_viewport_before_navigation"
+        },
+        {
+          "path": "tests/test_full_learner_browser_audit.py",
+          "kind": "python",
+          "marker": "test_wrong_actual_css_viewport_fails_closed"
+        },
+        {
+          "path": "tests/test_full_learner_browser_audit.py",
+          "kind": "python",
+          "marker": "test_mislabeled_historical_png_width_is_rejected"
+        },
+        {
+          "path": "tests/test_existing_browser_receipt_integrity.py",
+          "kind": "python",
+          "marker": "test_png_checks_crc_and_bounded_decompression"
+        }
+      ]
     }
   ]
 }

@@ -13,6 +13,7 @@ import sys
 import tempfile
 import traceback
 import re
+import struct
 from urllib.parse import urlencode
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,6 +66,33 @@ def _select_fresh_locale(driver, origin: str, activity_id: str, lang: str) -> No
         and bool(d.find_elements(By.CSS_SELECTOR, "#app h1.question"))
     )
     Select(driver.find_element(By.ID, "locale")).select_by_value(lang)
+
+
+def _set_exact_viewport(driver, width: int, height: int) -> None:
+    """Avoid Chrome's minimum outer-window size changing CSS viewport proof."""
+    driver.set_window_size(width, height)
+    driver.execute_cdp_cmd("Emulation.setDeviceMetricsOverride", {
+        "width": width, "height": height, "deviceScaleFactor": 1,
+        "mobile": width <= 500,
+    })
+
+
+def _assert_exact_viewport(driver, width: int, height: int) -> None:
+    observed = driver.execute_script(
+        "return [window.innerWidth, window.innerHeight, window.devicePixelRatio]"
+    )
+    _assert(isinstance(observed, list) and len(observed) == 3
+            and observed[0] == width and observed[1] == height
+            and observed[2] == 1, "REQUESTED_VIEWPORT_NOT_EXERCISED")
+
+
+def _assert_screenshot_viewport(png: bytes, width: int, height: int) -> None:
+    _assert(png[:8] == b"\x89PNG\r\n\x1a\n"
+            and png[12:16] == b"IHDR" and len(png) >= 24,
+            "SCREENSHOT_NOT_VALID_PNG")
+    actual_width, actual_height = struct.unpack(">II", png[16:24])
+    _assert((actual_width, actual_height) == (width, height),
+            "SCREENSHOT_VIEWPORT_DIMENSIONS_MISMATCH")
 
 
 def _exercise(driver, activity: dict, lang: str) -> None:
@@ -175,7 +203,7 @@ def audit_existing_candidate(
         try:
             with local_server(site) as origin:
                 for width, height in ((390, 844), (1280, 800)):
-                    driver.set_window_size(width, height)
+                    _set_exact_viewport(driver, width, height)
                     for idx, activity in enumerate(activities):
                         if len(errors) >= max_errors:
                             break
@@ -194,6 +222,8 @@ def audit_existing_candidate(
                             phase = "navigate_locale"
                             try:
                                 _select_fresh_locale(driver, origin, activity["id"], lang)
+                                phase = "verify_requested_viewport"
+                                _assert_exact_viewport(driver, width, height)
                                 phase = "wait_question"
                                 WebDriverWait(driver, 6).until(
                                     lambda d: bool(d.find_elements(
@@ -217,6 +247,7 @@ def audit_existing_candidate(
                                 row["answerInteractionExercised"] = True
                                 phase = "screenshot"
                                 screenshot = driver.get_screenshot_as_png()
+                                _assert_screenshot_viewport(screenshot, width, height)
                                 filename = f"{idx + 1:02d}-{lang}-{width}.png"
                                 (destination / filename).write_bytes(screenshot)
                                 row["screenshotSha256"] = sha256(screenshot).hexdigest()

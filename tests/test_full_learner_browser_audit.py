@@ -87,3 +87,43 @@ class LearnerBrowserAuditTests(TestCase):
                 with self.assertRaises(FileExistsError):
                     audit_existing_candidate(package, output)
             chrome.assert_not_called()
+
+
+class BrowserViewportGuardTests(TestCase):
+    """A requested mobile label cannot mask a desktop-size screenshot."""
+
+    def test_cdp_enforces_requested_css_viewport_before_navigation(self):
+        from scripts.audit_full_learner_browser import _set_exact_viewport
+        driver = Mock()
+        _set_exact_viewport(driver, 390, 844)
+        driver.set_window_size.assert_called_once_with(390, 844)
+        driver.execute_cdp_cmd.assert_called_once_with(
+            "Emulation.setDeviceMetricsOverride",
+            {"width": 390, "height": 844, "deviceScaleFactor": 1, "mobile": True},
+        )
+        desktop = Mock()
+        _set_exact_viewport(desktop, 1280, 800)
+        self.assertFalse(desktop.execute_cdp_cmd.call_args.args[1]["mobile"])
+
+    def test_wrong_actual_css_viewport_fails_closed(self):
+        from scripts.audit_full_learner_browser import _assert_exact_viewport
+        driver = Mock()
+        driver.execute_script.return_value = [504, 692, 1]
+        with self.assertRaisesRegex(ValueError, "REQUESTED_VIEWPORT_NOT_EXERCISED"):
+            _assert_exact_viewport(driver, 390, 844)
+        driver.execute_script.return_value = [390, 844, 1]
+        _assert_exact_viewport(driver, 390, 844)
+
+    def test_mislabeled_historical_png_width_is_rejected(self):
+        from scripts.audit_full_learner_browser import _assert_screenshot_viewport
+        import struct
+        def png_header(w, h):
+            return (
+                b"\x89PNG\r\n\x1a\n" + struct.pack(">I", 13) + b"IHDR"
+                + struct.pack(">II", w, h)
+            )
+        with self.assertRaisesRegex(ValueError, "SCREENSHOT_VIEWPORT_DIMENSIONS_MISMATCH"):
+            _assert_screenshot_viewport(png_header(504, 692), 390, 844)
+        with self.assertRaisesRegex(ValueError, "SCREENSHOT_VIEWPORT_DIMENSIONS_MISMATCH"):
+            _assert_screenshot_viewport(png_header(1262, 648), 1280, 800)
+        _assert_screenshot_viewport(png_header(390, 844), 390, 844)

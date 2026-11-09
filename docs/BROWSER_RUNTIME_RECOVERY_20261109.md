@@ -52,3 +52,23 @@ Incident `BSA-20261109-130` links earlier environment-preflight
 specific remaining automatic-recovery gap. Permanent tests run with normal CI.
 This amendment belongs to consolidated draft PR #223 only; source code
 remains unmerged until applicable merge controls and final checks permit it.
+
+## 9 November 2026 — correction to historical viewport interpretation
+
+A later independent read-only PNG header check found that sampled captures
+labeled 390px mobile were actually 504px wide and samples labeled 1280px
+desktop were 1262px wide. These are real saved PNG dimensions, not the
+declared viewport field. Thus the earlier 108/108 interaction counts for
+each of Sections 9.4–9.6 **do not independently prove exact viewport sizing**.
+No historical receipt has been rewritten, and no consumed browser attempt
+has been restarted.
+
+The generic audit now uses CDP device-metric emulation and rejects both
+incorrect browser CSS viewport metrics and incorrect captured PNG dimensions.
+A neutral source-free Chrome test established that the correction requests
+and observes exact 390×844 and 1280×800 windows and PNG raster dimensions.
+The source-free browser receipt verifier also integrates strict historical
+Git LF/Windows CRLF provenance validation, rather than comparing mismatched
+file representations. Related incidents BSA-20261109-131/132 remain in the
+permanent recurrence registry and CI tests. Independent academic, source
+rights, visual semantics and actual pilot acceptance are still outstanding.
