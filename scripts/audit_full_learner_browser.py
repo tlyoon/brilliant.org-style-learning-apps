@@ -20,6 +20,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app_generator.validation.learner_coverage_gate import audit_full_learner_coverage
+from app_generator.runtime.browser_runtime_selection import recover_existing_browser_runtime
 from scripts.audit_browser_visual import local_server, stage_bundle
 
 
@@ -277,6 +278,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output-root", required=True, type=Path)
     parser.add_argument("--max-errors", type=int, default=8)
     args = parser.parse_args(argv)
+    # Recover a trusted project-local Selenium runtime before a one-shot
+    # destination or Chrome profile is created. Never pip-install or resubmit.
+    try:
+        recovered = recover_existing_browser_runtime(
+            ROOT, Path(__file__).resolve(),
+            list(sys.argv[1:] if argv is None else argv),
+        )
+    except RuntimeError as exc:
+        print(json.dumps({"status": str(exc), "auditStarted": False,
+                          "publicationAuthorized": False}, sort_keys=True))
+        return 3
+    if recovered is not None:
+        return recovered
     report = audit_existing_candidate(
         args.package, args.output_root, max_errors=args.max_errors)
     print(json.dumps(report, sort_keys=True))

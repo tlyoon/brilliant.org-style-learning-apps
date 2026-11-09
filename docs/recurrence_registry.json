@@ -1354,6 +1354,44 @@
           "marker": "test_first_packet_is_immutable_and_stale_change_cannot_inherit_pass"
         }
       ]
+    },
+    {
+      "id": "BSA-20261109-130",
+      "class": "browser-audit-launcher-uses-python-without-selenium",
+      "status": "resolved",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": [
+        "BSA-20261031-055",
+        "BSA-20261107-128"
+      ],
+      "differenceFromLinkedIncident": "Earlier browser preflight intentionally failed when Selenium was absent, while the locale readiness fix repaired an async DOM race only after Chrome opened. Neither routed a detached Git worktree launcher to the already available, verified owning BOSLA virtualenv. The new generic pre-audit selector automatically reuses that local interpreter without installing, scanning unrelated projects or consuming a one-shot browser receipt.",
+      "regressions": [
+        {
+          "path": "tests/test_browser_runtime_selection.py",
+          "kind": "python",
+          "marker": "test_repo_venv_is_used_automatically_before_audit"
+        },
+        {
+          "path": "tests/test_browser_runtime_selection.py",
+          "kind": "python",
+          "marker": "test_linked_worktree_finds_only_owning_git_venv"
+        },
+        {
+          "path": "tests/test_browser_runtime_selection.py",
+          "kind": "python",
+          "marker": "test_missing_runtime_stops_without_launch_or_install"
+        },
+        {
+          "path": "tests/test_browser_runtime_selection.py",
+          "kind": "python",
+          "marker": "test_switch_guard_prevents_recursive_dispatch"
+        },
+        {
+          "path": "tests/test_browser_runtime_selection.py",
+          "kind": "python",
+          "marker": "test_cli_invokes_recovery_before_full_audit"
+        }
+      ]
     }
   ]
 }
