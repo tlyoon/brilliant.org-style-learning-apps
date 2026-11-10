@@ -1511,6 +1511,22 @@
         {"path": "tests/test_adaptive_authored_hint.js", "kind": "javascript",
          "marker": "try-again reset must return focus to the question, not a disabled control"}
       ]
+    },
+    {
+      "id": "BSA-20261110-136",
+      "class": "ordering-prefilled-answer-false-independent-completion",
+      "status": "resolved",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": ["BSA-20261110-135", "BSA-20261023-003"],
+      "differenceFromLinkedIncident": "Unlike earlier learner-browser focus defects, the normal ordering-response initializer always reversed item order without verifying it differed from correctOrder. For legitimate authoring where correctOrder itself was reversed, the player initially supplied a fully correct response and a single untouched Check+Next awarded unearned independent-first-attempt evidence. A source-free normal-player test reproduced this exact failure before the fix. The shared ordinary ensureResponse initializer now selects a deterministic incorrect permutation for valid authored ordering activities, preserving author-provided item/answer order and all existing mastery thresholds. The existing normal Node interaction regression and source-free loopback-only Chrome learner path both reject a prefilled correct answer; this is not an academic-source or full pilot acceptance receipt.",
+      "regressions": [
+        {"path": "tests/test_interaction_rendering.js", "kind": "javascript",
+         "marker": "initial ordering arrangement must never already be the correct answer"},
+        {"path": "tests/test_interaction_rendering.js", "kind": "javascript",
+         "marker": "manually constructed correct ordering must still earn first-attempt credit"},
+        {"path": "tests/test_interaction_rendering.js", "kind": "javascript",
+         "marker": "ordinary authored-order answer must also start unsolved"}
+      ]
     }
   ]
 }

@@ -69,6 +69,12 @@ const packageData = {
       items: [item("keep-one"), item("leave"), item("keep-two")],
       correctSelections: ["keep-one", "keep-two"],
     }),
+    // The reverse of the authored list is a valid answer for this fixture.
+    // The player must not hand out an independently correct prefilled answer.
+    base("ordering-reverse-is-answer", "ordering", {
+      items: [item("a"), item("b"), item("c")],
+      correctOrder: ["c", "b", "a"],
+    }),
   ],
 };
 
@@ -129,6 +135,10 @@ setImmediate(() => {
   choosePlacements(app, ["R", "G", "B"]);
   checkAndAdvance(app);
 
+  const ordinaryPrefillCorrect = vm.runInContext(
+    "responseCorrect(state.package.activities[state.activityIndex])", context
+  );
+  assert.equal(ordinaryPrefillCorrect, false, "ordinary authored-order answer must also start unsolved");
   moveDown(app, "C");
   moveDown(app, "C");
   const cRow = find(app, (node) => node.className === "order-row" && node.dataset?.itemId === "c");
@@ -143,6 +153,23 @@ setImmediate(() => {
   assert.equal(find(app, (node) => node.dataset?.value === "keep-two").wasFocused, true);
   checkAndAdvance(app);
 
+  const prefilledOrderCorrect = vm.runInContext(
+    "responseCorrect(state.package.activities[state.activityIndex])", context
+  );
+  assert.equal(prefilledOrderCorrect, false, "initial ordering arrangement must never already be the correct answer");
+  assert.equal(
+    vm.runInContext("masteryEvidence().independent", context), 4,
+    "initial ordering must not gain unearned independent mastery",
+  );
+  moveDown(app, "A");
+  moveDown(app, "A");
+  moveDown(app, "B");
+  checkAndAdvance(app);
+
   assert.equal(find(app, (node) => node.tagName === "H1").textContent, "Journey complete");
+  const completionEvidence = vm.runInContext(
+    "state.sessionMetrics['ordering-reverse-is-answer'].completionEvidence", context
+  );
+  assert.equal(completionEvidence, "independent", "manually constructed correct ordering must still earn first-attempt credit");
   console.log("All interaction modes render, accept keyboard-native button input, and score correctly.");
 });

@@ -60,3 +60,12 @@ Question and completion headings are programmatically focusable; authored
 hints carry polite status semantics. This preserves existing mastery,
 progression and anonymous in-memory evidence rules; it does not constitute
 an independently verified accessibility or learner-pilot PASS.
+
+## No unearned completion from prefilled ordering
+
+Ordering activities must never start with the correct order already selected.
+The normal learner player chooses an initially incorrect, deterministic
+permutation while preserving the authored item IDs and answer model.
+A deliberate learner reordering is still required for first-try correctness.
+This preserves existing independent/assisted session evidence rules; no
+course-level mastery or learner privacy policy changes are implied.

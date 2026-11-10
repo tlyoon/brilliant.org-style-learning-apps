@@ -59,12 +59,27 @@ def _fixture(section: int) -> bytes:
                                     {"id": "b", "label": feedback}],
                     }
                 else:
-                    row["interactionMode"] = "selection"
-                    row["interaction"] = {
-                        "items": [{"id": "a", "label": labels},
-                                  {"id": "b", "label": feedback}],
-                        "correctSelections": ["a"],
-                    }
+                    if section == 6 and level == "challenging" and number == 2:
+                        # Independent negative control for a valid ordering
+                        # answer equal to the old player's reverse prefill.
+                        row["interactionMode"] = "ordering"
+                        row["interaction"] = {
+                            "items": [
+                                {"id": item_id, "label": {
+                                    lang: f"Test-only item {item_id} {lang}"
+                                    for lang in LANGS
+                                }}
+                                for item_id in ("a", "b", "c")
+                            ],
+                            "correctOrder": ["c", "b", "a"],
+                        }
+                    else:
+                        row["interactionMode"] = "selection"
+                        row["interaction"] = {
+                            "items": [{"id": "a", "label": labels},
+                                      {"id": "b", "label": feedback}],
+                            "correctSelections": ["a"],
+                        }
                 activities.append(row)
     payload = {
         "packageId": f"chapter-9-section-9-{section}",
@@ -231,6 +246,29 @@ def run() -> None:
                         assert "Not yet demonstrated" in driver.find_element(
                             By.CSS_SELECTOR, "#app .mastery-level"
                         ).text
+            # A real learner path, not a direct helper call: skip to the
+            # synthetic final ordering activity. The old player prefilled
+            # the reverse order ["c","b","a"], which is also the answer, so
+            # Check immediately awarded unearned independent completion.
+            driver.get(url)
+            WebDriverWait(driver, 10).until(
+                lambda d: d.find_element(By.ID, "course-select").is_enabled()
+            )
+            Select(driver.find_element(By.ID, "course-select")).select_by_value("6")
+            WebDriverWait(driver, 10).until(
+                lambda d: d.find_elements(By.CSS_SELECTOR, "#app h1.question")
+            )
+            for _ in range(17):
+                driver.find_element(By.ID, "skip").click()
+            assert len(driver.find_elements(By.CSS_SELECTOR, "#app .order-row")) == 3
+            assert driver.execute_script(
+                "return [...document.querySelectorAll('#app .order-row')]."
+                "map(node => node.dataset.itemId)"
+            ) != ["c", "b", "a"], "PREFILLED_CORRECT_ORDERING_ANSWER"
+            driver.find_element(By.ID, "check").click()
+            assert "Reconsider the relationship" in driver.find_element(
+                By.CSS_SELECTOR, "#app .feedback[role=status]"
+            ).text, "UNEARNED_INDEPENDENT_ORDERING_CREDIT"
             # Corrupt only synthetic fixture bytes, not a repository package.
             altered = site / "content/chapter-9/section-9-2/package.json"
             altered.write_bytes(_fixture(3))

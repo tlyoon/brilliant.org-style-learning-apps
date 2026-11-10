@@ -210,7 +210,17 @@ function resetActivity() {
 function ensureResponse(activity) {
   if (state.response !== null) return;
   if (activity.type !== "interactive") state.response = null;
-  else if (activity.interactionMode === "ordering") state.response = activity.interaction.items.map((item) => item.id).reverse();
+  else if (activity.interactionMode === "ordering") {
+    const authoredOrder = activity.interaction.items.map((item) => item.id);
+    const reversedOrder = [...authoredOrder].reverse();
+    // A prefilled correct answer would grant unearned independent completion
+    // with zero learner interaction. Use a deterministic incorrect starting
+    // permutation while preserving the authored items and correct answer.
+    const prefilledIsCorrect = reversedOrder.every(
+      (itemId, index) => itemId === activity.interaction.correctOrder[index]
+    );
+    state.response = prefilledIsCorrect ? authoredOrder : reversedOrder;
+  }
   else if (activity.interactionMode === "selection") state.response = [];
   else state.response = {};
 }
