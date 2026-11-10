@@ -640,21 +640,24 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE, expectedSha256) {
     }));
     return;
   }
-  if (EXTERNAL_PACKAGE_SELECTION) {
-    // Section switching is a session boundary. Do not display previous
-    // exercises or evidence under the new section while the fetch is pending.
-    state.package = null;
-    state.activityIndex = 0;
-    state.sessionMetrics = Object.create(null);
-    state.reviewPending = false;
-    resetActivity();
-    // Activity IDs may be shared across sections; old deep links cannot
-    // select an unrelated section's activity on a fresh course choice.
-    syncActivityUrl(null);
-    document.querySelector("#app").replaceChildren(element("p", {
-      className: "course-placeholder", text: "Loading selected subchapter...",
-    }));
-  }
+  // Both ordinary loadPackage() callers and the instructor course selector
+  // replace the learner session. Hide prior questions/answer buttons before
+  // awaiting network/byte validation so an obsolete package cannot be used
+  // or display its former mastery while the next request is in flight.
+  const replacingPackage = state.package !== null;
+  state.package = null;
+  state.activityIndex = 0;
+  state.sessionMetrics = Object.create(null);
+  state.reviewPending = false;
+  resetActivity();
+  // Preserve an initial standalone deep link until the initial package is
+  // loaded, but never carry an old activity link into a replacement section.
+  if (EXTERNAL_PACKAGE_SELECTION || replacingPackage) syncActivityUrl(null);
+  document.querySelector("#app").replaceChildren(element("p", {
+    className: "course-placeholder",
+    text: EXTERNAL_PACKAGE_SELECTION
+      ? "Loading selected subchapter..." : "Loading selected learning package...",
+  }));
   try {
     const response = await fetch(packageUrl);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);

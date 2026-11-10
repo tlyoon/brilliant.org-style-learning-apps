@@ -102,7 +102,7 @@ def stage_site(root: Path) -> None:
     app = root / "app"
     app.mkdir()
     for filename in (
-        "app.js", "styles.css", "visual-renderers.js",
+        "app.js", "styles.css", "visual-renderers.js", "index.html",
         "course-preview.html", "course-preview.js", "course-preview.css",
     ):
         shutil.copyfile(ROOT / "app" / filename, app / filename)
@@ -157,6 +157,34 @@ def run() -> None:
             driver = webdriver.Chrome(options=options)
             driver.set_page_load_timeout(15)
             url = f"http://127.0.0.1:{server.server_port}/app/course-preview.html"
+            standalone = f"http://127.0.0.1:{server.server_port}/app/index.html"
+            driver.get(standalone)
+            assert driver.execute_script(
+                "return typeof window.loadPackage === 'function'"
+            ), "STANDALONE_HOST_LOAD_PACKAGE_API_NOT_REACHABLE"
+            first_path = "../content/chapter-9/section-9-1/package.json"
+            second_path = "../content/chapter-9/section-9-2/package.json"
+            driver.execute_script("void window.loadPackage(arguments[0])", first_path)
+            WebDriverWait(driver, 10).until(
+                lambda d: _synthetic_prompt(1, "en") in
+                d.find_element(By.CSS_SELECTOR, "#app h1.question").text
+            )
+            # A request for another package must drop the old answer
+            # controls synchronously, not only when the response arrives.
+            pending_state = driver.execute_script(
+                "void window.loadPackage(arguments[0]);"
+                "return {question:!!document.querySelector('#app h1.question'),"
+                "answer:!!document.querySelector('#app .choices button'),"
+                "text:document.querySelector('#app').textContent};", second_path
+            )
+            assert not pending_state["question"] and not pending_state["answer"], (
+                "STANDALONE_STALE_ACTIVITY_VISIBLE_DURING_REPLACEMENT"
+            )
+            assert "Loading selected learning package" in pending_state["text"]
+            WebDriverWait(driver, 10).until(
+                lambda d: _synthetic_prompt(2, "en") in
+                d.find_element(By.CSS_SELECTOR, "#app h1.question").text
+            )
             checked = 0
             screenshots = []
             for width, height, mobile in SIZES:

@@ -81,3 +81,21 @@ proves byte identity, not content validity. Failure clears transient learning
 state, does not attribute progress to any activity, and permits subsequent
 valid loading. This complements authoring-time validation and does not
 change actual mastery definitions or add persistence/student identity.
+
+## Session-boundary isolation on every package replacement
+
+The shared Stage-0 player exposes loadPackage() to an authorized standalone
+host and the local instructor selector. Both entrypoints must invalidate
+the previous package, response, and anonymous session evidence *before*
+awaiting a replacement fetch; the old activity and buttons must not remain
+interactable while the new source is in flight. A neutral loading message
+replaces the card. Preserve the original standalone activity deep link on
+its initial load; clear a former package activity link when replacing it.
+Course preview retains its existing section-selection idle behavior. Neither
+the transition nor an incoming SHA-256 proof confers academic approval,
+course-level progress, persistence, or publication rights.
+
+The standalone index uses the existing normal classic app.js script so its
+documented host loadPackage(packageUrl) function is actually reachable,
+consistent with the already-working course-preview entrypoint. The
+source-free Node and real browser checks cover both entrypoints.

@@ -1594,6 +1594,50 @@
           {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
         ]
       }
+    },
+    {
+      "id": "BSA-20261110-139",
+      "class": "direct-package-replacement-exposes-stale-learner-state",
+      "status": "resolved",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": ["BSA-20261110-138", "BSA-20261107-125"],
+      "differenceFromLinkedIncident": "The previous BSA-20261107-125 fix cleared stale course-preview content only when data-external-package-selection was true. A different supported normal player path, a standalone host calling loadPackage with a replacement package URL while another activity was open, left the old answer controls and old in-memory mastery visible during the new asynchronous request. An existing source-free real player test reproduced this failing pre-fix state; the normal player loadPackage now invalidates old package, reset response and anonymous evidence, and shows an inert loading placeholder before awaiting any fetch for both entrypoints, preserving initial standalone deep-link semantics. Both direct Node and real loopback Chrome source-free cross-entrypoint tests verify fresh replacement content appears without old activity exposure. No new mastery/persistence policy or protected source is used.",
+      "automaticRemedy": {
+        "runtimePath": "app/app.js",
+        "triggerMarker": "const replacingPackage = state.package !== null;",
+        "remedyMarker": "if (EXTERNAL_PACKAGE_SELECTION || replacingPackage) syncActivityUrl(null);",
+        "normalEntryPoints": [
+          {"path": "app/index.html", "marker": "src=\"app.js\""},
+          {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_app_loading.js", "kind": "javascript",
+         "marker": "pending direct package replacement must invalidate the previous package immediately"},
+        {"path": "tests/test_app_loading.js", "kind": "javascript",
+         "marker": "pending direct package replacement must hide stale learner questions"}
+      ]
+    },
+    {
+      "id": "BSA-20261110-140",
+      "class": "standalone-player-module-hides-supported-loadpackage-host-api",
+      "status": "resolved",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": ["BSA-20261110-139", "BSA-20261107-125"],
+      "differenceFromLinkedIncident": "The existing app/index.html entrypoint loaded app.js as a JavaScript module while normal player text advertised the ability to call loadPackage(packageUrl). Browser module scope hid loadPackage from hosting pages. The course-preview entrypoint already used the same app.js as a classic script and could invoke the function, but the standalone entrypoint did not reuse that working dispatch. A new source-free real Chrome standalone smoke reproduced typeof window.loadPackage !== function before the fix. Align standalone index with the already-proven classic script loader; normal app.js remains shared, and the existing Chrome smoke now invokes a real standalone host load, then checks inert pending replacement and resolved new content, while the Node CI preview test locks the classic script tag. No source PDF, provider model, student data or release permission is implied.",
+      "automaticRemedy": {
+        "runtimePath": "app/app.js",
+        "triggerMarker": "async function loadPackage(",
+        "remedyMarker": "loadPackage();",
+        "normalEntryPoints": [
+          {"path": "app/index.html", "marker": "src=\"app.js\""},
+          {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_course_preview.js", "kind": "javascript",
+         "marker": "standalone host must expose callable loadPackage through classic player script"}
+      ]
     }
   ]
 }

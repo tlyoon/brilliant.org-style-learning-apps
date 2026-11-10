@@ -6,6 +6,11 @@ const fs = require("node:fs");
 const vm = require("node:vm");
 const crypto = require("node:crypto");
 
+// The standalone host contract requires a callable global loadPackage(),
+// not a module-scoped function invisible to third-party host scripts.
+const standaloneHtml = fs.readFileSync("app/index.html", "utf8");
+assert(standaloneHtml.includes('<script src="app.js"></script>'), "standalone host must expose callable loadPackage through classic player script");
+
 class FakeElement {
   constructor(tag) {
     this.tagName = tag.toUpperCase();
