@@ -45,3 +45,32 @@
 - The shared policy in `app_generator/validation/final_acceptance_closure.py` is invoked by the browser, local source-provisioning, normal academic and independent-review entrypoints. It must stay executable and fail-closed. Tests in `tests/test_final_acceptance_closure.py` and the recurrence registry protect the policy in CI.
 - New substantive rights/evidence or a newly approved independent scope may justify a **separate**, explicitly frozen revision to the decision and charter, preserving immutable historical attempts. A mere user request to "proceed" is not enough to change existing source/rights/cost limits.
 - This repository is the durable cross-session authority; do **not** presume chat memory can reliably enforce a contract without reading these files. Avoid applying BOSLA-specific frozen scope to MicroGen or other projects.
+
+## Binding v5.0 autonomous continuation and permanent-repair rule (10 Nov 2026)
+
+- When a previously resolved blocker reappears, first reuse its registered
+  **existing normal-path** remedy; do not create an alternative script or
+  repeat manual repairs. Resolve a recurrence only after capturing the
+  missing trigger/dispatch scenario, patching the shared normal code,
+  proving the pre-fix failure, adding cross-entrypoint regression coverage,
+  and passing exact-head CI. Tests alone are not a deployed solution.
+- A new RESOLVED BSA incident (from BSA-20261110-135) **must** declare
+  automaticRemedy with runtime path, trigger, repair/stop code and normal
+  dispatch evidence. The existing scripts/check_regression_contract.py
+  enforces it on every ordinary PR/push CI run; an unintegrated manual
+  workaround must remain ACTIVE with a bounded next step.
+- **Continue after a successful development milestone in an active authorized
+  execution**, without asking for routine permission again. Reassess the
+  smallest outstanding independently executable critical-path defect or
+  prerequisite and proceed when its scope, rights, budget, environment and
+  failure preconditions are established. A passing CI run alone is not a
+  stopping condition; equally, the absence of an independently supported
+  next action is not permission to invent one.
+- Never automatically restart frozen Chapter 9 original-source or private
+  browser campaigns, retry ambiguous model submissions, merge, deploy,
+  publish, alter institutional privacy, or claim full academic acceptance.
+  Preserve Decision 0032 exact-version stop budgets and distinct gates.
+- Autonomous operation here means **within the active ChatGPT/tool
+  invocation**. GitHub CI can execute regression gates on every push;
+  neither the repository nor chat memory can run a coding agent indefinitely
+  between chats without a separately configured ongoing service.

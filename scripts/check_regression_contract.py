@@ -19,6 +19,13 @@ CUTOVER = "BSA-20261102-096"
 # New incidents must reuse an established mechanism before duplicating a fix.
 # Legacy records remain unchanged; the audit does not rewrite their history.
 FAMILY_LINK_CUTOVER = "BSA-20261106-119"
+# Following the owner v5.0 directive, a new RESOLVED incident must also
+# demonstrate a remedy in a normally dispatched runtime, not only a test.
+# Keep historic incidents unchanged; start with the already-integrated
+# Stage-0 learner fixes, and apply this to all later resolved incidents.
+AUTO_REMEDY_CUTOVER = "BSA-20261110-135"
+NORMAL_RUNTIME_PREFIXES = ("app/", "app_generator/", "scripts/", "domains/")
+NORMAL_DISPATCH_PREFIXES = (*NORMAL_RUNTIME_PREFIXES, ".github/workflows/")
 FAMILY_ANCHORS: dict[str, tuple[str, ...]] = {
     "recurrence-governance": ("BSA-20261102-096",),
     "source-acquisition": ("BSA-20261105-117",),
@@ -188,6 +195,78 @@ def _family_history_errors(
     return errors
 
 
+def _active_marker(source: str, marker: object) -> bool:
+    """Require a concrete code/dispatch token on a noncomment line."""
+    return (isinstance(marker, str) and 8 <= len(marker) <= 240
+            and "\n" not in marker and
+            any(marker in line and not line.lstrip().startswith(
+                ("#", "//", "/*", "*", "<!--"))
+                for line in source.splitlines()))
+
+
+def _automatic_remedy_errors(entry: dict, ident: str, root: Path) -> list[str]:
+    """Fail closed when a 'resolved' fix is test-only or not normally dispatched.
+
+    This check verifies repository wiring plus existing executable regressions;
+    it cannot by itself prove semantic runtime correctness or merge/deployment.
+    """
+    if ident < AUTO_REMEDY_CUTOVER:
+        return []
+    remedy = entry.get("automaticRemedy")
+    if not isinstance(remedy, dict):
+        return [ident + " lacks automatic runtime remedy"]
+    allowed = {"runtimePath", "triggerMarker", "remedyMarker", "normalEntryPoints"}
+    if set(remedy) != allowed:
+        return [ident + " automatic runtime remedy has missing/unrecognized fields"]
+    runtime_name = remedy.get("runtimePath")
+    if (not isinstance(runtime_name, str)
+        or not runtime_name.startswith(NORMAL_RUNTIME_PREFIXES)
+        or not runtime_name.endswith((".py", ".js"))
+        or _repo_file(root, runtime_name) is None):
+        return [ident + " automatic runtime remedy lacks safe normal source path"]
+    source = _repo_file(root, runtime_name).read_text(encoding="utf-8")
+    trigger = remedy.get("triggerMarker")
+    fix = remedy.get("remedyMarker")
+    if not _active_marker(source, trigger):
+        return [ident + " automatic trigger is absent from runtime source"]
+    if not _active_marker(source, fix) or trigger == fix:
+        return [ident + " automatic remedy is absent from runtime source"]
+    dispatchers = remedy.get("normalEntryPoints")
+    if not isinstance(dispatchers, list) or not dispatchers:
+        return [ident + " automatic remedy has no normal entrypoint"]
+    unique: set[str] = set()
+    errors = []
+    for dispatch in dispatchers:
+        if not isinstance(dispatch, dict) or set(dispatch) != {"path", "marker"}:
+            errors.append(ident + " malformed normal entrypoint declaration")
+            continue
+        path = dispatch.get("path")
+        marker = dispatch.get("marker")
+        if (not isinstance(path, str) or path in unique
+            or not path.startswith(NORMAL_DISPATCH_PREFIXES)
+            or not path.endswith((".html", ".js", ".py", ".yml", ".yaml"))
+            or _repo_file(root, path) is None):
+            errors.append(ident + " invalid normal entrypoint")
+            continue
+        unique.add(path)
+        dispatch_source = _repo_file(root, path).read_text(encoding="utf-8")
+        if not _active_marker(dispatch_source, marker):
+            errors.append(ident + " normal entrypoint missing executable dispatcher")
+            continue
+        # The declared dispatch must specifically load/run THIS remedy, not
+        # merely point at any unrelated valid script or HTML resource.
+        if path.endswith(".html"):
+            linked = (runtime_name.endswith(".js")
+                      and marker == 'src="' + Path(runtime_name).name + '"')
+        elif path.endswith((".yml", ".yaml")):
+            linked = runtime_name in marker
+        else:
+            linked = path == runtime_name or Path(runtime_name).stem in marker
+        if not linked:
+            errors.append(ident + " normal entrypoint does not dispatch remedy runtime")
+    return errors
+
+
 def verify(root: Path = ROOT) -> list[str]:
     root = root.resolve()
     errors: list[str] = []
@@ -255,6 +334,9 @@ def verify(root: Path = ROOT) -> list[str]:
             if not isinstance(entry.get("nextAction"), str) or len(entry["nextAction"].strip()) < 12:
                 errors.append(ident + " active issue lacks actionable next step")
             continue
+        # A test and ledger entry cannot close the same blocker if the
+        # remedy is absent from the normal executable flow.
+        errors.extend(_automatic_remedy_errors(entry, ident, root))
         cases = entry.get("regressions")
         if not isinstance(cases, list) or not cases:
             errors.append(ident + " resolved incident lacks regression cases")

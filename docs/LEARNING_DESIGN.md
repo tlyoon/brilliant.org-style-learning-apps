@@ -69,3 +69,15 @@ permutation while preserving the authored item IDs and answer model.
 A deliberate learner reordering is still required for first-try correctness.
 This preserves existing independent/assisted session evidence rules; no
 course-level mastery or learner privacy policy changes are implied.
+
+## Runtime activity identity is an evidence trust boundary
+
+Activity identifiers are unique keys for anonymous first-check, wrong,
+hint, skip, completed and independent/assisted session evidence, and for
+activity deep links. Before a package becomes available in the normal player,
+the loader must reject absent, malformed or duplicate activity IDs, even if
+the package bytes match the instructor roster's SHA-256. A matching digest
+proves byte identity, not content validity. Failure clears transient learning
+state, does not attribute progress to any activity, and permits subsequent
+valid loading. This complements authoring-time validation and does not
+change actual mastery definitions or add persistence/student identity.

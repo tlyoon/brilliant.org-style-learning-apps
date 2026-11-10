@@ -1510,7 +1510,16 @@
          "marker": "restart must focus the first activity heading"},
         {"path": "tests/test_adaptive_authored_hint.js", "kind": "javascript",
          "marker": "try-again reset must return focus to the question, not a disabled control"}
-      ]
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app/app.js",
+        "triggerMarker": "hint.addEventListener(\"click\", () => {",
+        "remedyMarker": "render().hint.focus?.();",
+        "normalEntryPoints": [
+          {"path": "app/index.html", "marker": "src=\"app.js\""},
+          {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
+        ]
+      }
     },
     {
       "id": "BSA-20261110-136",
@@ -1526,7 +1535,65 @@
          "marker": "manually constructed correct ordering must still earn first-attempt credit"},
         {"path": "tests/test_interaction_rendering.js", "kind": "javascript",
          "marker": "ordinary authored-order answer must also start unsolved"}
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app/app.js",
+        "triggerMarker": "else if (activity.interactionMode === \"ordering\") {",
+        "remedyMarker": "state.response = prefilledIsCorrect ? authoredOrder : reversedOrder;",
+        "normalEntryPoints": [
+          {"path": "app/index.html", "marker": "src=\"app.js\""},
+          {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
+        ]
+      }
+    },
+    {
+      "id": "BSA-20261110-137",
+      "class": "resolved-regression-was-not-required-to-be-live-in-normal-code",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": ["BSA-20261102-096", "BSA-20261110-134"],
+      "differenceFromLinkedIncident": "The existing CI recurrence guard verified ledger, active unit tests, and historical family links, but accepted a new RESOLVED record even with no automatic remedy in a production or normal coordinator path. This made a test-only/manual workaround appear permanently solved, recurring beyond the earlier BSA-20261102-096 safeguards and BSA-20261110-134 finite acceptance stops. A new guarded v5.0 cutover at BSA-20261110-135 requires safe normal runtime path, active trigger/remedy signatures and at least one real dispatcher, in addition to the existing CI-tested regression. Tests reproduce acceptance of a test-only fix before the change and reject deleted production code, missing runtime metadata, swapped-out HTML dispatch and docs-only faux integration. Previous incident records remain immutable.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/check_regression_contract.py",
+        "triggerMarker": "errors.extend(_automatic_remedy_errors(entry, ident, root))",
+        "remedyMarker": "return [ident + \" lacks automatic runtime remedy\"]",
+        "normalEntryPoints": [
+          {"path": ".github/workflows/validate.yml", "marker": "python scripts/check_regression_contract.py"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_regression_contract.py", "kind": "python",
+         "marker": "test_resolved_recent_incident_requires_automatic_runtime_integration"},
+        {"path": "tests/test_regression_contract.py", "kind": "python",
+         "marker": "test_missing_normal_dispatcher_or_inert_remedy_is_rejected"},
+        {"path": "tests/test_regression_contract.py", "kind": "python",
+         "marker": "test_automatic_runtime_gate_detects_lost_production_wiring"},
+        {"path": "tests/test_regression_contract.py", "kind": "python",
+         "marker": "test_unrelated_valid_html_script_cannot_fake_normal_remedy_dispatch"}
       ]
+    },
+    {
+      "id": "BSA-20261110-138",
+      "class": "unverified-duplicate-activity-ids-alias-anonymous-learning-evidence",
+      "status": "resolved",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": ["BSA-20261110-136", "BSA-20261110-135"],
+      "differenceFromLinkedIncident": "The prior ordering and focus remedies protected in-activity scoring and navigation, but the normal browser loadPackage boundary implicitly trusted every loaded activity id. Even if a roster SHA-256 matched its bytes, two distinct activities with the same ID could alias the single sessionMetrics key and deep-link reference. A source-free asynchronous normal loader regression first proved a duplicate-id package rendered and had no error; the real application now rejects missing, duplicate, malformed or empty ID rosters before assigning state.package, resets session-only evidence and permits subsequent valid recovery. Existing Python academic validators already rejected duplicates, but the browser normal runtime did not. A signed synthetic duplicate-ID package is exercised through the normal source-free Chrome course-preview flow; no frozen original source was touched.",
+      "regressions": [
+        {"path": "tests/test_app_loading.js", "kind": "javascript",
+         "marker": "duplicate activity IDs must fail closed before any learner activity renders"},
+        {"path": "tests/test_app_loading.js", "kind": "javascript",
+         "marker": "missing activity IDs must fail closed, not share the undefined evidence key"}
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app/app.js",
+        "triggerMarker": "assertUniqueActivityIds(loadedPackage);",
+        "remedyMarker": "throw new Error(\"Invalid learning package activity identifiers.\");",
+        "normalEntryPoints": [
+          {"path": "app/index.html", "marker": "src=\"app.js\""},
+          {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
+        ]
+      }
     }
   ]
 }

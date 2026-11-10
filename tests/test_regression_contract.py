@@ -27,6 +27,12 @@ class RegressionContractTests(unittest.TestCase):
         for record in self.manifest["incidents"]:
             for test in record["regressions"]:
                 self.copy(test["path"])
+            remedy = record.get("automaticRemedy", {})
+            if isinstance(remedy, dict):
+                if remedy.get("runtimePath"):
+                    self.copy(remedy["runtimePath"])
+                for dispatcher in remedy.get("normalEntryPoints", []):
+                    self.copy(dispatcher["path"])
 
     def copy(self, rel):
         dest = self.root / rel
@@ -77,6 +83,54 @@ class RegressionContractTests(unittest.TestCase):
         case["rootCauseFamily"] = "invented-family-name"
         self.assertIn("recognized rootCauseFamily", " ".join(
             _family_history_errors(case, "BSA-20261106-119", earlier)))
+
+    def test_resolved_recent_incident_requires_automatic_runtime_integration(self):
+        """Green test names alone must never mean the fix is baked in."""
+        incident = next(x for x in self.manifest["incidents"]
+                        if x["id"] == "BSA-20261110-136")
+        incident.pop("automaticRemedy", None)
+        self.save_manifest()
+        self.assertIn("automatic runtime remedy", " ".join(verify(self.root)))
+
+    def test_missing_normal_dispatcher_or_inert_remedy_is_rejected(self):
+        incident = next(x for x in self.manifest["incidents"]
+                        if x["id"] == "BSA-20261110-136")
+        self.assertIn("automaticRemedy", incident)
+        runtime = self.root / incident["automaticRemedy"]["runtimePath"]
+        source = runtime.read_text(encoding="utf-8")
+        marker = incident["automaticRemedy"]["remedyMarker"]
+        self.assertIn(marker, source)
+        runtime.write_text(source.replace(marker, "return null;"), encoding="utf-8")
+        self.assertIn("automatic remedy is absent", " ".join(verify(self.root)))
+        runtime.write_text(source, encoding="utf-8")
+        incident["automaticRemedy"]["normalEntryPoints"] = [
+            {"path":"docs/LEARNING_DESIGN.md", "marker":"automatically"}
+        ]
+        self.save_manifest()
+        self.assertIn("normal entrypoint", " ".join(verify(self.root)))
+
+    def test_automatic_runtime_gate_detects_lost_production_wiring(self):
+        incident = next(x for x in self.manifest["incidents"]
+                        if x["id"] == "BSA-20261110-136")
+        front = self.root / incident["automaticRemedy"]["normalEntryPoints"][0]["path"]
+        source = front.read_text(encoding="utf-8")
+        marker = incident["automaticRemedy"]["normalEntryPoints"][0]["marker"]
+        self.assertIn(marker, source)
+        front.write_text(source.replace(marker, "src=\"disconnected.js\""), encoding="utf-8")
+        self.assertIn("normal entrypoint", " ".join(verify(self.root)))
+
+    def test_unrelated_valid_html_script_cannot_fake_normal_remedy_dispatch(self):
+        incident = next(x for x in self.manifest["incidents"]
+                        if x["id"] == "BSA-20261110-136")
+        dispatcher = incident["automaticRemedy"]["normalEntryPoints"][0]
+        front = self.root / dispatcher["path"]
+        front.write_text(
+            front.read_text(encoding="utf-8") +
+            '\n<script src="unrelated.js"></script>\n', encoding="utf-8"
+        )
+        dispatcher["marker"] = 'src="unrelated.js"'
+        self.save_manifest()
+        self.assertIn("does not dispatch remedy runtime", " ".join(verify(self.root)))
 
     def test_ci_registry_rejects_unlinked_repeat_even_with_real_tests(self):
         new_entry = next(item for item in self.manifest["incidents"]

@@ -596,6 +596,25 @@ async function parsePackageWithOptionalDigest(response, expectedSha256) {
   return JSON.parse(new TextDecoder().decode(bytes));
 }
 
+// Activity IDs are the keys for anonymous learning evidence and deep links.
+// Transfer hashes do not establish semantic uniqueness. Validate immediately
+// at the actual player boundary, including local unsigned Stage-0 packages.
+function assertUniqueActivityIds(packageData) {
+  const activities = packageData?.activities;
+  if (!Array.isArray(activities) || activities.length === 0) {
+    throw new Error("Invalid learning package activity identifiers.");
+  }
+  const ids = new Set();
+  for (const activity of activities) {
+    const id = activity?.id;
+    if (typeof id !== "string" ||
+        !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) || ids.has(id)) {
+      throw new Error("Invalid learning package activity identifiers.");
+    }
+    ids.add(id);
+  }
+}
+
 async function loadPackage(packageUrl = DEFAULT_PACKAGE, expectedSha256) {
   const generation = ++loadGeneration;
   state.loading = true;
@@ -641,6 +660,8 @@ async function loadPackage(packageUrl = DEFAULT_PACKAGE, expectedSha256) {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const loadedPackage = await parsePackageWithOptionalDigest(response, expectedSha256);
     if (generation !== loadGeneration) return;
+    // A duplicate/missing ID would combine unrelated learner outcomes.
+    assertUniqueActivityIds(loadedPackage);
     state.package = loadedPackage;
     state.sessionMetrics = Object.create(null);
     state.reviewPending = false;

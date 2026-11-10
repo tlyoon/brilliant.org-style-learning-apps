@@ -282,6 +282,33 @@ def run() -> None:
                 d.find_element(By.ID, "app").text
             )
             assert not driver.find_elements(By.CSS_SELECTOR, "#app h1.question")
+            # A correct roster SHA only proves byte identity. A synthetically
+            # malformed signed package with duplicate activity IDs must still
+            # be rejected by the real player before learner evidence is made.
+            broken = json.loads(_fixture(4))
+            broken["activities"][1]["id"] = broken["activities"][0]["id"]
+            broken_bytes = json.dumps(
+                broken, sort_keys=True, ensure_ascii=True
+            ).encode("utf-8")
+            (site / "content/chapter-9/section-9-4/package.json").write_bytes(
+                broken_bytes
+            )
+            roster_file = site / "local-pilot/roster.json"
+            roster = json.loads(roster_file.read_text(encoding="utf-8"))
+            roster["cases"][3]["packageSha256"] = sha256(broken_bytes).hexdigest()
+            roster_file.write_text(json.dumps(roster), encoding="utf-8")
+            driver.get(url)
+            WebDriverWait(driver, 10).until(
+                lambda d: d.find_element(By.ID, "course-select").is_enabled()
+            )
+            Select(driver.find_element(By.ID, "course-select")).select_by_value("4")
+            WebDriverWait(driver, 10).until(
+                lambda d: "Invalid learning package activity identifiers" in
+                d.find_element(By.ID, "app").text
+            )
+            assert not driver.find_elements(By.CSS_SELECTOR, "#app h1.question"), (
+                "DUPLICATE_ACTIVITY_ID_IN_SIGNED_PACKAGE_WAS_ACCEPTED"
+            )
             assert checked == 6 and len(screenshots) == 6
             print(json.dumps({
                 "status": "SOURCEFREE_REAL_BROWSER_PREVIEW_SMOKE_PASS",

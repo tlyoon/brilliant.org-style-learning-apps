@@ -74,6 +74,7 @@ const localized = (text) => ({ en: text, ms: text, zh: text });
 const packageData = {
   subchapter: malicious.subchapter,
   activities: [{
+    id: "safe-rendering-fixture",
     difficulty: "easy",
     prompt: localized(malicious.prompt),
     answerKey: {

@@ -56,6 +56,7 @@ function packageNamed(name) {
   return {
     subchapter: name,
     activities: [{
+      id: "activity-" + name,
       difficulty: "easy",
       prompt: localized("prompt"),
       answerKey: { correct: "a", options: [{ id: "a", label: localized("option") }] },
@@ -108,7 +109,35 @@ function flush() {
   const finalHeading = descendants(app).find((node) => node.tagName === "H1");
   assert.equal(finalHeading.textContent, "newer zh prompt");
   assert.equal(locale.disabled, false);
-  console.log("Locale changes and out-of-order package loads are race-safe.");
+
+  // A loaded package is a trust boundary: duplicate IDs alias the same
+  // anonymous completion/misconception counters across two activities.
+  const duplicate = packageNamed("duplicate");
+  duplicate.activities.push({ ...duplicate.activities[0] });
+  vm.runInContext('loadPackage("duplicate.json")', context);
+  requests.get("duplicate.json")({ ok: true, json: async () => duplicate });
+  await flush();
+  await flush();
+  assert.match(app.textContent, /Invalid learning package activity identifiers/, "duplicate activity IDs must fail closed before any learner activity renders");
+  assert.equal(vm.runInContext("state.package === null", context), true);
+  assert.equal(vm.runInContext("Object.keys(state.sessionMetrics).length", context), 0);
+
+  const missing = packageNamed("missing");
+  delete missing.activities[0].id;
+  vm.runInContext('loadPackage("missing.json")', context);
+  requests.get("missing.json")({ ok: true, json: async () => missing });
+  await flush();
+  await flush();
+  assert.match(app.textContent, /Invalid learning package activity identifiers/, "missing activity IDs must fail closed, not share the undefined evidence key");
+
+  const recovered = packageNamed("recovered");
+  vm.runInContext('loadPackage("recovered.json")', context);
+  requests.get("recovered.json")({ ok: true, json: async () => recovered });
+  await flush();
+  await flush();
+  assert.equal(descendants(app).find((node) => node.tagName === "H1").textContent,
+    "recovered zh prompt", "a valid fresh package should recover after invalid input");
+  console.log("Locale, race ordering and fail-closed unique activity identity checks passed.");
 })().catch((error) => {
   console.error(error);
   process.exitCode = 1;

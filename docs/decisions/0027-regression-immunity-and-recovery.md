@@ -52,3 +52,21 @@ Track **implemented, locally tested, CI-validated, integrated, academically acce
 - \`docs/CONTINUOUS_AUTO_TESTING.md\`: bounded local test recovery.
 - Decision 0024: independent AI academic review without mandatory human signoff.
 - Issue #220: existing long stacked integration debt.
+
+## Mandatory normal-path activation proof (10 November 2026, BSA-20261110-137)
+
+Effective for each newly RESOLVED BSA incident from BSA-20261110-135
+onward, the machine-readable recurrence registry must contain an
+automaticRemedy declaration with the actual normal runtime file,
+automatic trigger marker, remedy/stop marker and at least one
+real application/CI/coordinator dispatch entrypoint. A standalone manual
+script, incident record or test-only helper is not sufficient.
+
+The existing normal CI check_regression_contract.py verifier rejects
+missing, unsafe, inactive, or disconnected runtime/dispatch declarations.
+Do not weaken earlier tests, budgets or accepted review stop decisions.
+A static wiring check is necessary but not sufficient: each repair also
+requires a failing pre-fix negative fixture, a normal-path execution test,
+and exact-head CI before claiming integration or permanent coverage.
+No contract entry can imply autonomous merge, deployment, protected-source
+submission, student-data use or publication.
