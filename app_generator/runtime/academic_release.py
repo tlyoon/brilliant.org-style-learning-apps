@@ -16,6 +16,7 @@ from app_generator.validation.bounded_cross_topic_acceptance import (
     inspect_stage0_product_roster, ProductRosterMismatch,
 )
 from app_generator.visuals.validation import visual_contract_errors
+from app_generator.validation.final_acceptance_closure import assert_campaign_admissible
 
 
 def public_release_requested(config) -> bool:
@@ -24,6 +25,10 @@ def public_release_requested(config) -> bool:
 
 def enforce_academic_release_gate(repo_root: Path, package_path: Path, validation_dir: Path) -> dict:
     """Record exact-package academic evidence and refuse unresolved public release."""
+    # Common release gate is used by automated publishing as well as public
+    # bundle creation. Terminal frozen candidates fail before academic triage,
+    # receipt writes, or any downstream publication side effect.
+    assert_campaign_admissible(package_path, "publication")
     try:
         report = academic_triage(repo_root, package_path)
     except (OSError, ValueError, TypeError, KeyError) as exc:

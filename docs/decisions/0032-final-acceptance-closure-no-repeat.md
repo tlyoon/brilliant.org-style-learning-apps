@@ -43,6 +43,10 @@ the register and enforces its terminal decisions before side effects in:
    academic stage, before model calls.
 4. `scripts/run_private_fresh_source_bound_review.py` — external independent
    Gemini review entrypoint, before credential/configuration use.
+5. `app_generator/runtime/academic_release.py` — shared autonomous
+   publication gate, before academic triage, receipts or any release action.
+6. `scripts/build_public_release.py` — alternate standalone public
+   bundle builder, before invoking the academic gate or creating files.
 
 Read-only closure status:
 `python scripts/check_final_acceptance_closure.py`.

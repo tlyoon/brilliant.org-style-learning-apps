@@ -1638,6 +1638,29 @@
         {"path": "tests/test_course_preview.js", "kind": "javascript",
          "marker": "standalone host must expose callable loadPackage through classic player script"}
       ]
+    },
+    {
+      "id": "BSA-20261110-141",
+      "class": "terminal-publication-admission-missing-from-alternate-release-entrypoints",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": ["BSA-20261110-134", "BSA-20261110-137"],
+      "differenceFromLinkedIncident": "Decision 0032 froze six Chapter 9 candidates and implemented assert_campaign_admissible(..., publication), but only browser, local source, academic generation and private external-review entrypoints called this guard. Both the alternate scripts/build_public_release.py path and the shared app_generator/runtime/academic_release.py used by orchestrator could reach academic triage or a public bundle path before checking the immutable terminal release stop. Two new pre-fix source-free normal-path tests reproduced an attempted academic-gate/triage call on the frozen Section 9.4 candidate. This repair reuses the existing policy, does not create another release authorizer, and wires the exact existing stop into both entrypoints before academic triage, receipt creation, any output files, and downstream publish logic. Unrelated synthetic public/preview behavior and the older academic and visual release contracts remain unchanged.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/academic_release.py",
+        "triggerMarker": "def enforce_academic_release_gate(",
+        "remedyMarker": "assert_campaign_admissible(package_path, \"publication\")",
+        "normalEntryPoints": [
+          {"path": "app_generator/runtime/orchestrator.py", "marker": "enforce_academic_release_gate("},
+          {"path": "scripts/build_public_release.py", "marker": "enforce_academic_release_gate("}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_shared_auto_release_gate_stops_frozen_package_before_academic_triage"},
+        {"path": "tests/test_public_release.py", "kind": "python",
+         "marker": "test_frozen_chapter9_public_build_stops_before_academic_gate_or_write"}
+      ]
     }
   ]
 }

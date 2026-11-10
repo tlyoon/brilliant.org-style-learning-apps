@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
 
 from app_generator.domains import resolve_package_domain
 from app_generator.runtime.academic_release import enforce_academic_release_gate
+from app_generator.validation.final_acceptance_closure import assert_campaign_admissible
 
 
 def _resolve_package(package_path: Path, source_root: Path = ROOT) -> Path:
@@ -49,6 +50,12 @@ def build(
     package = json.loads(original.decode("utf-8"))
     if not isinstance(package, dict):
         raise ValueError("Selected package must contain a JSON object")
+
+    if not local_preview:
+        # This is an alternate public bundle entrypoint. Enforce the frozen
+        # owner closure BEFORE any external/academic proof or output writes.
+        # The shared academic gate separately protects automated publishing.
+        assert_campaign_admissible(source_package, "publication")
 
     if local_preview:
         if validation_dir is not None:
