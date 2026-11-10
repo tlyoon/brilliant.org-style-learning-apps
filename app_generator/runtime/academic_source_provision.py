@@ -17,6 +17,7 @@ from app_generator.runtime.run_context import RunContext
 from app_generator.validation.source_anchor_migration import migrate_anchor_packets
 from app_generator.validation.source_passages import extract_pages
 from app_generator.validation.reviewer_source_packets import verified_source_packet
+from app_generator.validation.final_acceptance_closure import assert_campaign_admissible
 
 REGISTRY_DIR="academic-review-provenance"
 RUN_PACKET_NAME="academic-review-source-packets.json"
@@ -184,6 +185,10 @@ def provision_run_source_packets(
     """
     repository=config.repo_root.resolve()
     dest=context.validation/RUN_PACKET_NAME
+    if not dest.is_file():
+        # Never silently replay a frozen source-location campaign in a fresh
+        # run directory. Existing immutable packets may still be inspected.
+        assert_campaign_admissible(package_file, "local_source")
     if dest.resolve().is_relative_to(repository):
         raise ValueError("private source packet destination inside Git checkout")
     if registry_file is None:

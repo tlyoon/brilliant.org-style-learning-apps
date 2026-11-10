@@ -23,6 +23,7 @@ from app_generator.gemini.existing_login_reviewers import (
 from app_generator.runtime.run_context import RunContext
 from app_generator.validation.autonomous_ai_review import review_activity
 from app_generator.validation.fresh_academic_review_admission import admit_fresh_academic_review
+from app_generator.validation.final_acceptance_closure import assert_campaign_admissible
 
 GATES = ("source_fidelity", "answer_correctness", "physics_consistency",
          "visual_semantics", "multilingual_meaning")
@@ -37,6 +38,8 @@ def main() -> int:
     parser.add_argument("--preflight-only", action="store_true")
     args = parser.parse_args()
     try:
+        # Binding shared no-repeat charter before any Gemini/auth/session work.
+        assert_campaign_admissible(Path(args.package), "academic_external")
         cfg = replace(
             load_config(Path(args.config)), repo_root=ROOT,
             browser_mode="controlled", llm_backend="gemini_browser",

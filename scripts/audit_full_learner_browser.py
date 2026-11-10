@@ -21,6 +21,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app_generator.validation.learner_coverage_gate import audit_full_learner_coverage
+from app_generator.validation.final_acceptance_closure import assert_campaign_admissible
 from app_generator.runtime.browser_runtime_selection import recover_existing_browser_runtime
 from scripts.audit_browser_visual import local_server, stage_bundle
 
@@ -152,6 +153,9 @@ def audit_existing_candidate(
     package_path: Path, output_root: Path, *, max_errors: int = 8,
 ) -> dict:
     """Run at most one new isolated browser audit for this exact package hash."""
+    # Binding closure decision first: a new path/chat cannot replay a
+    # historically terminal Chapter 9 browser campaign.
+    assert_campaign_admissible(package_path, "browser")
     from selenium import webdriver
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.ui import WebDriverWait

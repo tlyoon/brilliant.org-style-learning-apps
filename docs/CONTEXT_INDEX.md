@@ -1,5 +1,20 @@
 # Context index
 
+## Current binding BOSLA acceptance-closure decision (10 November 2026)
+
+**READ BEFORE STARTING OR RESTARTING ANY BOSLA WORK:** `AGENTS.md`,
+`docs/decisions/0032-final-acceptance-closure-no-repeat.md`,
+`docs/acceptance_closure_chapter9.json` and
+`docs/CONTINUATION_CHECKPOINT_LATEST.md`. The machine-executable
+`scripts/check_final_acceptance_closure.py` reports current
+`NOT_COMPLETE_WITH_NAMED_BLOCKERS` and `CLOSURE_STALL`.
+Frozen Chapter 9 browser and original-source-location campaigns are terminal;
+a fresh chat or generic "proceed" is **not** new evidence or authorization.
+Shared fixes must run automatically through the normal pipeline with
+source-free recurrence tests. Source/figure rights, independent physics,
+EN/MS/ZH, visual semantics, learner-pilot and release approval remain distinct.
+No PR merge, source-bearing model call or release is authorized by this index.
+
 ## Authority and precedence
 
 When documents conflict, use this order:

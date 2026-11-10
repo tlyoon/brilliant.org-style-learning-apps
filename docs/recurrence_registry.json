@@ -1467,6 +1467,30 @@
           "marker": "test_partial_packets_do_not_survive_changed_activity_identity"
         }
       ]
+    },
+    {
+      "id": "BSA-20261110-134",
+      "class": "terminal-pilot-acceptance-repeated-across-chat-and-new-run-directory",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": ["BSA-20261102-096", "BSA-20261109-131", "BSA-20261110-133"],
+      "differenceFromLinkedIncident": "Earlier finite campaign decisions existed in prose and private evidence directories but did not stop all default acceptance entrypoints from launching the same original six Chapter 9 candidate tests with a new run directory or new session. New frozen charter and shared fail-closed admission now reject terminal browser and local source-location attempts, unauthorized external academic reviewer sessions and publication before side effects. Existing domain/pilot gates remain missing evidence; narrow shared engineering recovery does not reopen source-specific budgets.",
+      "regressions": [
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_six_frozen_original_packages_cannot_restart_campaigns"},
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_normal_browser_caller_refuses_before_chrome_or_receipt"},
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_normal_academic_source_provision_refuses_before_pdf_parse"},
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_normal_academic_stage_stops_without_model_or_source_attempt"},
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_private_external_academic_entrypoint_stops_before_configuration"},
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_invalid_charter_cannot_silently_promote_rights_or_reset_history"},
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_future_session_read_first_instructions_are_kept_in_repository"}
+      ]
     }
   ]
 }

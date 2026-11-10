@@ -22,6 +22,7 @@ from app_generator.runtime.academic_source_provision import provision_run_source
 from app_generator.validation.source_passages import extract_pages
 from app_generator.validation.autonomous_ai_review import canonical_digest
 from app_generator.validation.reviewer_source_packets import verified_source_packet
+from app_generator.validation.final_acceptance_closure import assert_campaign_admissible
 
 NEUTRAL_CHAT = "https://gemini.google.com/app"
 
@@ -62,6 +63,27 @@ def run_academic_stage(
     ids=[a["id"] for a in activities]
     if len(set(ids))!=len(ids):
         raise ValueError("duplicated installed academic activity identifiers")
+    try:
+        # Normal coordinator admission, before source provisioning or Gemini.
+        # A new run ID is not authorization to revisit a terminal pilot.
+        assert_campaign_admissible(package_file, "academic_external")
+    except ValueError as exc:
+        reason=str(exc)
+        if not reason.startswith("STOP_"):
+            raise
+        result={
+            "status":"CLOSURE_STOP_PENDING_MATERIAL_EVIDENCE",
+            "reasonCode":reason,
+            "packageSha256":package_sha,
+            "activitiesTotal":len(ids),
+            "sourceReady":0,"sourceLocated":0,
+            "queue":[{"activityId":"PILOT","nextAction":"STOP_CLOSURE",
+                      "reason":reason}],
+            "humanAcademicApprovalRequired":False,
+            "academicQA":"REVIEW_REQUIRED","publicationAuthorized":False,
+        }
+        write_json_atomic(context.validation/"autonomous-academic-queue.json",result)
+        return result
     packet_path=context.validation/"academic-review-source-packets.json"
     provision={"status":"NO_PRIVATE_PROVENANCE_REGISTRY","packetCreated":False}
     if hasattr(config,"state_dir"):
