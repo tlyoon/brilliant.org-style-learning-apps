@@ -1447,6 +1447,26 @@
           "marker": "test_png_checks_crc_and_bounded_decompression"
         }
       ]
+    },
+    {
+      "id": "BSA-20261110-133",
+      "class": "source-location-bootstrap-discards-trusted-siblings-when-one-activity-unmatched",
+      "status": "resolved",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": ["BSA-20261108-129"],
+      "differenceFromLinkedIncident": "The earlier automatic local source bootstrap required every activity to meet the unchanged source relevance threshold and discarded all independently verified sibling packets if one activity failed. In the first bounded five-section Chapter 9 campaign on 10 Nov, Sections 9.1-9.3 failed all-or-nothing even though aggregate read-only diagnostics found 16/18, 15/18 and 17/18 qualifying local activity matches. Shared existing source provisioning now retains only independently verified activity packets, preserves unlocated IDs and routes verified items to AUTO_RIGHTS_CHECK and unmatched items to AUTO_SOURCE_CHECK through normal run_academic_stage. No relevance threshold, source-use rights, external model permission or source retry budget is weakened.",
+      "regressions": [
+        {
+          "path": "tests/test_academic_source_bootstrap.py",
+          "kind": "python",
+          "marker": "test_partial_local_source_packets_auto_route_matching_and_missing"
+        },
+        {
+          "path": "tests/test_academic_source_bootstrap.py",
+          "kind": "python",
+          "marker": "test_partial_packets_do_not_survive_changed_activity_identity"
+        }
+      ]
     }
   ]
 }

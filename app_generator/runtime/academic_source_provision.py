@@ -97,7 +97,9 @@ def _bootstrap_local_source_locations(
         objective = activity.get("objective", "")
         query = _topic_terms(" ".join(x for x in (prompt_en, objective) if isinstance(x, str)))
         if len(query) < 3:
-            break
+            # A single unlocatable activity must not discard independently
+            # verified locations for other activities in the same package.
+            continue
         # A multi-concept question can need more than one source passage.
         # Cover complementary terms rather than weakening the minimum
         # aggregate relevance requirement to force a single-passage PASS.
@@ -120,22 +122,29 @@ def _bootstrap_local_source_locations(
             if len(covered) / len(query) >= 0.25:
                 break
         if not anchors or len(covered) / len(query) < 0.25:
-            break
+            # Keep independently verified sibling activity packets intact;
+            # never lower the source relevance criterion for this activity.
+            continue
         try:
             packet = verified_source_packet(
                 source_pdf, expected, activity["id"], anchors,
                 extractor=lambda _: pages,
             )
         except (ValueError, OSError):
-            break
+            # A failed independent anchor check never becomes a packet.
+            continue
         packets[activity["id"]] = packet
-    if len(packets) != len(activities):
+    if not packets:
         return {"status": "LOCAL_SOURCE_RELEVANCE_NOT_VERIFIED",
                 "packetCreated": False, "verifiedSourceLocations": 0,
                 "academicQA": "REVIEW_REQUIRED", "publicationAuthorized": False}
+    missing_ids = [a["id"] for a in activities if a["id"] not in packets]
+    status = ("LOCAL_SOURCE_LOCATIONS_VERIFIED_PENDING_RIGHTS" if not missing_ids
+              else "LOCAL_SOURCE_LOCATIONS_PARTIAL_PENDING_REVIEW")
     result = {
         "packageSha256": sha256(package_file.read_bytes()).hexdigest(),
         "sourceSha256": expected, "packets": packets,
+        "unlocatedActivityIds": missing_ids,
         "sourcePacketOrigin": "AUTOMATED_LOCAL_TEXT",
         "modelSubmissionAuthorized": False,
         "sourceInterpretationVerified": False,
@@ -143,8 +152,9 @@ def _bootstrap_local_source_locations(
     }
     write_json_atomic(dest, result)
     return {
-        "status": "LOCAL_SOURCE_LOCATIONS_VERIFIED_PENDING_RIGHTS",
+        "status": status,
         "packetCreated": True, "verifiedSourceLocations": len(packets),
+        "unlocatedActivities": len(missing_ids),
         "sourceInterpretationVerified": False,
         "modelSubmissionAuthorized": False,
         "academicQA": "REVIEW_REQUIRED", "publicationAuthorized": False,

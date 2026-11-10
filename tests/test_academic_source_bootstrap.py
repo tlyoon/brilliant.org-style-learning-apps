@@ -155,5 +155,74 @@ class FreshEvidenceBootstrapTests(unittest.TestCase):
         self.assertTrue(all(x["nextAction"] == "AUTO_SOURCE_CHECK" for x in stage["queue"]))
 
 
+    def test_partial_local_source_packets_auto_route_matching_and_missing(self):
+        # Source-free fixture: one legitimate original quote and one unrelated
+        # activity. Previous all-or-nothing logic discarded the good packet.
+        self.activities[1]["objective"] = ""
+        self.activities[1]["prompt"]["en"] = (
+            "Spectroscopy chromatograph ultraviolet nebula pollen botany "
+            "interstellar galaxies plasma fractal ultraviolet"
+        )
+        data = json.loads(self.package.read_text(encoding="utf-8"))
+        data["activities"] = self.activities
+        self.package.write_text(json.dumps(data), encoding="utf-8")
+        first = self._provision()
+        self.assertEqual("LOCAL_SOURCE_LOCATIONS_PARTIAL_PENDING_REVIEW", first["status"])
+        self.assertEqual(1, first["verifiedSourceLocations"])
+        self.assertEqual(1, first["unlocatedActivities"])
+        packet_path = self.dest
+        payload = json.loads(packet_path.read_text(encoding="utf-8"))
+        self.assertEqual({"momentum"}, set(payload["packets"]))
+        self.assertEqual(["energy"], payload["unlocatedActivityIds"])
+        self.assertFalse(payload["modelSubmissionAuthorized"])
+        self.assertFalse(payload["sourceInterpretationVerified"])
+        original = packet_path.read_bytes()
+        self.assertEqual("RUN_PACKET_EXISTS_RECHECK_IN_STAGE", self._provision()["status"])
+        self.assertEqual(original, packet_path.read_bytes())
+
+        def forbidden(*args, **kwargs):
+            raise AssertionError("model session must not receive private source text")
+        with patch("app_generator.runtime.academic_generation_stage.extract_pages",
+                   return_value=self.pages):
+            stage = run_academic_stage(
+                self.config, self.context, self.package, self.source,
+                reviewer_factory_type=forbidden,
+            )
+        self.assertEqual(1, stage["sourceLocated"])
+        self.assertEqual(0, stage["sourceReady"])
+        by_id = {row["activityId"]: row["nextAction"]
+                 for row in stage["queue"] if row["activityId"] in {"momentum","energy"}}
+        self.assertEqual({"momentum":"AUTO_RIGHTS_CHECK",
+                          "energy":"AUTO_SOURCE_CHECK"}, by_id)
+        self.assertEqual("REVIEW_REQUIRED", stage["academicQA"])
+        self.assertFalse(stage["publicationAuthorized"])
+
+    def test_partial_packets_do_not_survive_changed_activity_identity(self):
+        self.activities[1]["objective"] = ""
+        self.activities[1]["prompt"]["en"] = (
+            "Spectroscopy chromatograph ultraviolet nebula pollen botany"
+        )
+        data = json.loads(self.package.read_text(encoding="utf-8"))
+        data["activities"] = self.activities
+        self.package.write_text(json.dumps(data), encoding="utf-8")
+        self.assertEqual("LOCAL_SOURCE_LOCATIONS_PARTIAL_PENDING_REVIEW",
+                         self._provision()["status"])
+        original = self.dest.read_bytes()
+        data["activities"][0]["prompt"]["en"] = (
+            "An entirely different question from the same sample"
+        )
+        self.package.write_text(json.dumps(data), encoding="utf-8")
+        with patch("app_generator.runtime.academic_generation_stage.extract_pages",
+                   return_value=self.pages):
+            output = run_academic_stage(
+                self.config, self.context, self.package, self.source,
+            )
+        self.assertEqual(0, output["sourceLocated"])
+        self.assertTrue(all(row["nextAction"] == "AUTO_SOURCE_CHECK"
+                            for row in output["queue"]))
+        self.assertEqual(original, self.dest.read_bytes())
+        self.assertFalse(output["publicationAuthorized"])
+
+
 if __name__ == "__main__":
     unittest.main()
