@@ -24,12 +24,12 @@ class AcademicPublicationGateTests(unittest.TestCase):
     def test_real_section94_blocks_unreviewed_public_release_and_saves_report(self):
         package=ROOT/"content/chapter-9/section-9-4/package.json"
         with tempfile.TemporaryDirectory() as tmp:
-            with self.assertRaisesRegex(ValidationFailure, "unresolved academic QA"):
+            # The stronger terminal closure policy must reject the frozen
+            # candidate BEFORE academic triage or receipt materialization.
+            with self.assertRaisesRegex(ValueError, "STOP_RELEASE_NOT_AUTHORIZED"):
                 enforce_academic_release_gate(ROOT,package,Path(tmp))
-            report=json.loads((Path(tmp)/"academic-release-gate.json").read_text(encoding="utf-8"))
-            self.assertIn(report["academicQA"],("FAIL","REVIEW_REQUIRED"))
-            self.assertEqual(hashlib.sha256(package.read_bytes()).hexdigest(),report["artifactSha256"])
-            self.assertFalse(report["publicationAuthorized"])
+            self.assertEqual([], list(Path(tmp).iterdir()),
+                             "frozen release stop must not create private receipts")
 
     def test_approved_verifier_result_requires_matching_artifact_bytes(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -140,16 +140,13 @@ class AcademicPublicationGateTests(unittest.TestCase):
                 def _run(self, arguments, *, cwd=None, check=True):
                     raise AssertionError("no remote publication commands permitted")
             publisher=NeverRemote(config)
-            with self.assertRaisesRegex(ValidationFailure, "unresolved academic QA"):
+            with self.assertRaisesRegex(ValueError, "STOP_RELEASE_NOT_AUTHORIZED"):
                 publisher.publish(
                     package_path=package, subchapter_id="9.4",
                     ensure_lease=lambda: None,
                 )
-            digest=hashlib.sha256(package.read_bytes()).hexdigest()
-            record=Path(tmp)/"academic-publication-gates"/digest/"academic-release-gate.json"
-            report=json.loads(record.read_text(encoding="utf-8"))
-            self.assertIn(report["academicQA"],("FAIL","REVIEW_REQUIRED"))
-            self.assertEqual(digest,report["artifactSha256"])
+            self.assertEqual([], list(Path(tmp).iterdir()),
+                             "direct publisher must not create release receipts or invoke Git")
 
     def test_public_publisher_missing_state_receipt_directory_fails_before_remote(self):
         from app_generator.publishing.public import PublicPagesPublisher
