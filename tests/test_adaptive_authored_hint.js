@@ -40,11 +40,14 @@ const metrics=()=>JSON.parse(vm.runInContext("JSON.stringify(state.sessionMetric
 setImmediate(()=>{
  choice("wrong").click();
  button("check").click();
+ assert(button("check").focused,
+   "wrong first check must focus updated try-again button");
  assert.equal(metrics().first.wrong,1);
  assert.equal(metrics().first.hints,0);
  assert.equal(all(app).some(e=>e.className==="feedback"&&e.textContent==="hint"),false,
   "one wrong attempt cannot auto-reveal hint");
  button("check").click();
+ assert(all(app).find(e=>e.className==="question")?.focused,"try-again reset must return focus to the question, not a disabled control");
  locale.value="ms";locale.listeners.change({target:locale});
  choice("wrong").click();
  button("check").click();

@@ -1493,6 +1493,24 @@
         {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
          "marker": "test_windows_and_linux_checkout_bytes_have_same_frozen_git_identity"}
       ]
+    },
+    {
+      "id": "BSA-20261110-135",
+      "class": "learner-card-transition-discards-keyboard-focus",
+      "status": "resolved",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": ["BSA-20261023-003", "BSA-20261105-116"],
+      "differenceFromLinkedIncident": "The previous keyboard focus correction preserved the selected option or ordering control across card re-rendering, but normal hint/check/try-again/skip/next/review/restart handlers still replaced the whole card and left keyboard focus on a detached element. A pre-fix source-free learner workflow regression reproduced the lost hint-button focus. The existing normal player now returns its freshly rendered controls/heading, restores focus to the new control or programmatically focusable question/completion heading, and announces authored hints with status semantics. It changes no mastery, progression, privacy or content rules. A real loopback-only synthetic Chrome smoke now exercises the same focus transitions at mobile and desktop widths without accessing a protected Chapter 9 package.",
+      "regressions": [
+        {"path": "tests/test_unfinished_activity_review.js", "kind": "javascript",
+         "marker": "new hint button must regain focus after hint opens"},
+        {"path": "tests/test_unfinished_activity_review.js", "kind": "javascript",
+         "marker": "skip must focus the new activity heading"},
+        {"path": "tests/test_unfinished_activity_review.js", "kind": "javascript",
+         "marker": "restart must focus the first activity heading"},
+        {"path": "tests/test_adaptive_authored_hint.js", "kind": "javascript",
+         "marker": "try-again reset must return focus to the question, not a disabled control"}
+      ]
     }
   ]
 }

@@ -384,9 +384,13 @@ function nextUnfinishedIndex(start) {
 function renderComplete(root) {
   syncActivityUrl(null);
   const card = element("section", { className: "card" });
+  const heading = element("h1", {
+    text: copy[state.locale].complete,
+    attributes: { tabindex: "-1" },
+  });
   card.append(
     element("p", { className: "eyebrow", text: localized(state.package.subchapter) }),
-    element("h1", { text: copy[state.locale].complete }),
+    heading,
     renderMasteryEvidence(),
   );
   const total = state.package.activities.length;
@@ -413,7 +417,7 @@ function renderComplete(root) {
       state.reviewPending = true;
       state.activityIndex = nextUnfinishedIndex(0);
       resetActivity();
-      render();
+      render().heading.focus?.();
     });
     card.append(review);
   }
@@ -441,18 +445,18 @@ function renderComplete(root) {
     state.reviewPending = false;
     state.activityIndex = 0;
     resetActivity();
-    render();
+    render().heading.focus?.();
   });
   card.append(restart);
   root.replaceChildren(card);
+  return { heading };
 }
 
 function render() {
   const root = document.querySelector("#app");
   const activities = state.package.activities;
   if (state.activityIndex >= activities.length) {
-    renderComplete(root);
-    return;
+    return renderComplete(root);
   }
 
   const activity = activities[state.activityIndex];
@@ -469,13 +473,19 @@ function render() {
   const progressBar = element("span");
   progressBar.style.width = `${((state.activityIndex + 1) / activities.length) * 100}%`;
   progress.append(progressBar);
-  card.append(progress, renderMasteryEvidence(),
-    element("h1", { className: "question", text: localized(activity.prompt) }));
+  const heading = element("h1", {
+    className: "question", text: localized(activity.prompt),
+    attributes: { tabindex: "-1" },
+  });
+  card.append(progress, renderMasteryEvidence(), heading);
 
   renderVisual(card, activity);
   renderResponse(card, activity);
 
-  if (state.hint) card.append(element("div", { className: "feedback", text: localized(activity.hints[0]) }));
+  if (state.hint) card.append(element("div", {
+    className: "feedback", text: localized(activity.hints[0]),
+    attributes: { role: "status" },
+  }));
   if (state.checked) {
     const result = responseCorrect(activity) ? labels.correct : labels.retry;
     card.append(element("div", {
@@ -507,6 +517,7 @@ function render() {
   const check = element("button", { className: "action", text: checkLabel, attributes: { id: "check" } });
   check.disabled = !responseComplete(activity);
   check.addEventListener("click", () => {
+    let focusHeading = false;
     if (!state.checked) {
       const correct = responseCorrect(activity);
       recordLearningEvent(activity, correct ? "correct" : "wrong");
@@ -525,13 +536,22 @@ function render() {
       state.activityIndex = state.reviewPending
         ? nextUnfinishedIndex(state.activityIndex + 1) : state.activityIndex + 1;
       resetActivity();
-    } else resetActivity();
-    render();
+      focusHeading = true;
+    } else {
+      resetActivity();
+      focusHeading = true;
+    }
+    const view = render();
+    // The old check button was removed with its card. Keep keyboard focus
+    // on the updated check/next control, or the new question/ending heading.
+    if (focusHeading) view.heading.focus?.();
+    else view.check?.focus?.();
   });
   const hint = element("button", { className: "action secondary", text: labels.hint, attributes: { id: "hint" } });
   hint.addEventListener("click", () => {
     if (!state.hint) recordLearningEvent(activity, "hints");
-    state.hint = true; render();
+    state.hint = true;
+    render().hint.focus?.();
   });
   actions.append(check, hint);
   const skip = element("button", { className: "action secondary skip-action", text: labels.skip, attributes: { id: "skip" } });
@@ -540,10 +560,11 @@ function render() {
     state.activityIndex = state.reviewPending
       ? nextUnfinishedIndex(state.activityIndex + 1) : state.activityIndex + 1;
     resetActivity();
-    render();
+    render().heading.focus?.();
   });
   card.append(actions, skip);
   root.replaceChildren(card);
+  return { heading, check, hint };
 }
 
 const localeSelector = document.querySelector("#locale");

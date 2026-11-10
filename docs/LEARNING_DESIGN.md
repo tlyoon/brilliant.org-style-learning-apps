@@ -48,3 +48,15 @@ Potential package defects or low-confidence visual/question inconsistencies shou
 ## Pilot learner evidence separation
 
 The browser prototype records anonymous, in-memory first-check evidence separately from later correctly completed activities. A completion is independent only when the first submitted answer is correct with no prior hints or skips. An error, hint, or skip makes later success assisted. The completion screen shows both counts without implying mastery, grades, or cohort rank. Opt-in local feedback export adds firstCheck, firstCheckHadHint, and completionEvidence to its existing schemaVersion 1 JSON records. Earlier fields are unchanged. No identity or learning history is persisted or uploaded. This is not production mastery storage, adaptive routing, or academic release approval.
+
+## Keyboard and screen-reader continuity in the existing player
+
+The Stage-0 player replaces its activity card when a learner changes a response,
+requests a hint, checks, retries, skips, advances, revisits or restarts.
+For the normal learner click path, focus must follow the replacement: keep the
+updated check or hint control focused while the same activity remains, and move
+focus to the next question or journey-complete heading after navigation.
+Question and completion headings are programmatically focusable; authored
+hints carry polite status semantics. This preserves existing mastery,
+progression and anonymous in-memory evidence rules; it does not constitute
+an independently verified accessibility or learner-pilot PASS.

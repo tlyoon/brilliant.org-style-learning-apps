@@ -38,10 +38,23 @@ const button=id=>all(app).find(e=>e.id===id);
 const choice=id=>all(app).find(e=>e.dataset?.value===id);
 const metrics=()=>JSON.parse(vm.runInContext("JSON.stringify(state.sessionMetrics)",ctx));
 setImmediate(()=>{
+ // Replacing the whole card must never strand keyboard/screen-reader focus.
+ // Pre-fix: hint/skip/check/review/restart lose their active DOM element.
+ button("hint").click();
+ assert(button("hint").focused,"new hint button must regain focus after hint opens");
+ assert(all(app).some(e=>e.className==="feedback"&&e.attributes.role==="status"),
+   "authored hint must be announced as live status");
  button("skip").click();
+ assert(all(app).find(e=>e.className==="question")?.focused,"skip must focus the new activity heading");
+ assert.equal(all(app).find(e=>e.className==="question")?.attributes.tabindex,"-1");
  assert.equal(metrics().first.skips,1);
  assert.equal(metrics().first.completed,false);
- choice("right").click();button("check").click();button("check").click();
+ choice("right").click();
+ button("check").click();
+ assert(button("check").focused,"check feedback must preserve focus on updated next button");
+ button("check").click();
+ assert(all(app).find(e=>e.tagName==="H1")?.focused,
+   "finishing a journey must focus the completion heading");
  assert(button("restart"));
  let progress=all(app).find(e=>e.className==="progress-summary");
  assert(progress.textContent.includes("1 / 2"),"skip must not count as correctly completed");
@@ -51,6 +64,8 @@ setImmediate(()=>{
  assert(button("review-pending"),"must offer revisit of unfinished activity");
  button("review-pending").click();
  assert(all(app).find(e=>e.className==="question").textContent==="first");
+ assert(all(app).find(e=>e.className==="question").focused,
+   "review pending must focus the revived question");
  choice("right").click();button("check").click();button("check").click();
  assert(button("restart"),"review queue should return to completion");
  progress=all(app).find(e=>e.className==="progress-summary");
@@ -59,6 +74,7 @@ setImmediate(()=>{
  assert.equal(metrics().first.completed,true);
  assert.equal(metrics().second.completed,true);
  button("restart").click();
+ assert(all(app).find(e=>e.className==="question")?.focused,"restart must focus the first activity heading");
  assert.deepEqual(metrics(),{});
  console.log("Skipped activity revisited and completed; completion not falsely awarded.");
 });

@@ -186,9 +186,36 @@ def run() -> None:
                             By.CSS_SELECTOR, "#app .feedback"
                         ).text
                     )
+                    assert driver.execute_script(
+                        "return document.activeElement?.id"
+                    ) == "hint", "KEYBOARD_FOCUS_LOST_AFTER_HINT"
+                    assert driver.find_element(
+                        By.CSS_SELECTOR, "#app .feedback"
+                    ).get_attribute("role") == "status", "HINT_NOT_LIVE_ANNOUNCED"
                     screenshots.append(sha256(driver.get_screenshot_as_png()).hexdigest())
                     checked += 1
                     if width == 390 and lang == "en":
+                        # Existing synthetic course preview: independently
+                        # exercise real keyboard focus after the normal card
+                        # replacement for skip, check feedback, and next.
+                        driver.find_element(By.ID, "skip").click()
+                        assert driver.execute_script(
+                            "return document.activeElement?.matches('#app h1.question')"
+                        ), "KEYBOARD_FOCUS_LOST_AFTER_SKIP"
+                        assert driver.find_element(
+                            By.CSS_SELECTOR, "#app h1.question"
+                        ).get_attribute("tabindex") == "-1"
+                        driver.find_element(
+                            By.CSS_SELECTOR, "#app .choices button.choice"
+                        ).click()
+                        driver.find_element(By.ID, "check").click()
+                        assert driver.execute_script(
+                            "return document.activeElement?.id"
+                        ) == "check", "KEYBOARD_FOCUS_LOST_AFTER_CHECK"
+                        driver.find_element(By.ID, "check").click()
+                        assert driver.execute_script(
+                            "return document.activeElement?.matches('#app h1.question')"
+                        ), "KEYBOARD_FOCUS_LOST_AFTER_NEXT"
                         Select(driver.find_element(By.ID, "course-select")).select_by_value("")
                         _assert_idle = driver.find_element(By.ID, "app").text
                         assert "Select a subchapter above" in _assert_idle
