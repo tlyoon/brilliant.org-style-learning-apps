@@ -1,171 +1,179 @@
 {
-  "schemaVersion": 1,
-  "project": "BOSLA",
-  "contract": "FINAL_ACCEPTANCE_NO_REPEAT_V1",
-  "decision": "docs/decisions/0031-chapter9-owner-approved-autonomous-pilot.md",
-  "policy": {
-    "objective": "terminal_evidence_based_acceptance_not_repeated_fix_loops",
-    "frozen": true,
-    "newCampaignsAuthorized": [],
-    "historicalAttemptsResetAllowed": false,
-    "sourceBearingModelCallsAllowed": false,
-    "publicReleaseAuthorized": false
-  },
-  "frozenCandidates": [
-    {
-      "section": "9.1",
-      "manifest": "content/source-manifests/chapter-9-section-9-1.json",
-      "packageSha256": "aa7b82fa8f256d02e7af1bb0ddfa8b91020b82d100175c14a37834eedb51ff7e",
-      "activityCount": 18,
-      "localSourceLocationsVerified": false,
-      "exactViewportVerified": false,
-      "browserCampaign": "TERMINAL",
-      "localSourceCampaign": "TERMINAL",
-      "independentAcademicExternalReview": "BLOCKED_RIGHTS_NOT_VERIFIED"
-    },
-    {
-      "section": "9.2",
-      "manifest": "content/source-manifests/chapter-9-section-9-2.json",
-      "packageSha256": "cfe7bab820aa01ce71bd7a6a334c742101ebd10d8895cccd5f05d599030f971c",
-      "activityCount": 18,
-      "localSourceLocationsVerified": false,
-      "exactViewportVerified": false,
-      "browserCampaign": "TERMINAL",
-      "localSourceCampaign": "TERMINAL",
-      "independentAcademicExternalReview": "BLOCKED_RIGHTS_NOT_VERIFIED"
-    },
-    {
-      "section": "9.3",
-      "manifest": "content/source-manifests/chapter-9-section-9-3.json",
-      "packageSha256": "c71398079f56fb8c752d6d9fa849e3b40a500fd538f2bb4dcb62a665c624b3da",
-      "activityCount": 18,
-      "localSourceLocationsVerified": false,
-      "exactViewportVerified": false,
-      "browserCampaign": "TERMINAL",
-      "localSourceCampaign": "TERMINAL",
-      "independentAcademicExternalReview": "BLOCKED_RIGHTS_NOT_VERIFIED"
-    },
-    {
-      "section": "9.4",
-      "manifest": "content/source-manifests/chapter-9-section-9-4.json",
-      "packageSha256": "1f6e2568fb6cbd5a82a7563c12f627779644ef3a991eb861e791849c49abc4d2",
-      "activityCount": 18,
-      "localSourceLocationsVerified": true,
-      "exactViewportVerified": false,
-      "browserCampaign": "TERMINAL",
-      "localSourceCampaign": "TERMINAL",
-      "independentAcademicExternalReview": "BLOCKED_RIGHTS_NOT_VERIFIED"
-    },
-    {
-      "section": "9.5",
-      "manifest": "content/source-manifests/chapter-9-section-9-5.json",
-      "packageSha256": "9152cc86789dcb43f898bd9a4f3cdfe4ea8928c09dccbcaed76fc83cf328431a",
-      "activityCount": 18,
-      "localSourceLocationsVerified": true,
-      "exactViewportVerified": false,
-      "browserCampaign": "TERMINAL",
-      "localSourceCampaign": "TERMINAL",
-      "independentAcademicExternalReview": "BLOCKED_RIGHTS_NOT_VERIFIED"
-    },
-    {
-      "section": "9.6",
-      "manifest": "content/source-manifests/chapter-9-section-9-6.json",
-      "packageSha256": "1620d15e1d645c81301997f0e42d0efbad0a7b2d123eb6b11cba9ec8c04b027f",
-      "activityCount": 18,
-      "localSourceLocationsVerified": true,
-      "exactViewportVerified": false,
-      "browserCampaign": "TERMINAL",
-      "localSourceCampaign": "TERMINAL",
-      "independentAcademicExternalReview": "BLOCKED_RIGHTS_NOT_VERIFIED"
-    }
-  ],
-  "gates": [
-    {
-      "id": "pilotScope",
-      "track": "engineering",
-      "status": "PASS_VERIFIED",
-      "evidence": "Decision 0031, six immutable candidate packages",
-      "criticalDependency": null
-    },
-    {
-      "id": "originalSourceIdentity",
-      "track": "domain",
-      "status": "PASS_VERIFIED",
-      "evidence": "Private six-original SHA256 receipt 2026-11-08; scoped original source identities only",
-      "criticalDependency": null
-    },
-    {
-      "id": "sourceLocation",
-      "track": "domain",
-      "status": "NOT_VERIFIED",
-      "evidence": "Existing private packets 9.4,9.5,9.6 each 18/18; 9.1-9.3 campaigns terminal and incomplete",
-      "criticalDependency": "Independently admissible new local evidence under a separately justified, authorized scope"
-    },
-    {
-      "id": "sourceAndFigureRights",
-      "track": "domain",
-      "status": "NOT_VERIFIED",
-      "evidence": "Instructor-controlled local transformation provenance is not permission for external model submission or third-party figure redistribution",
-      "criticalDependency": "Actual source/figure use permissions for independent review and publication as applicable"
-    },
-    {
-      "id": "physicsAnswersAndTrilingualMeaning",
-      "track": "domain",
-      "status": "NOT_VERIFIED",
-      "evidence": "No independently corroborated full 108-activity physics, answer and EN/MS/ZH review receipts",
-      "criticalDependency": "Rights-cleared independent source-grounded evidence, no model self-certification"
-    },
-    {
-      "id": "diagramVisualPedagogy",
-      "track": "domain",
-      "status": "NOT_VERIFIED",
-      "evidence": "Frozen packages have 0/108 declared visualSpec; visual meaning not independently evaluated",
-      "criticalDependency": "Independently verified meaningful diagrams and appropriate interactivity"
-    },
-    {
-      "id": "learnerViewportAndAccessibility",
-      "track": "pilot",
-      "status": "NOT_VERIFIED",
-      "evidence": "Existing 9.4-9.6 browser logs include PNG width mismatches; historic 9.1-9.3 runs terminal",
-      "criticalDependency": "Independent authorized exact-viewport, mobile touch and accessibility evidence under genuinely new scope"
-    },
-    {
-      "id": "adaptivePrivacyOperations",
-      "track": "pilot",
-      "status": "NOT_VERIFIED",
-      "evidence": "Stage-0 preview is not proof of full adaptive course, consent, retention or rollback",
-      "criticalDependency": "Real allowed learner workflow/operational acceptance"
-    },
-    {
-      "id": "engineeringHeadCI",
-      "track": "engineering",
-      "status": "PASS_VERIFIED",
-      "evidence": "Draft PR #223 SHA a57163f50d32efc4639c99d02953d63eca182034, GitHub Actions run 42753264837 success; does not constitute full engineering acceptance",
-      "criticalDependency": null
-    },
-    {
-      "id": "releaseAuthorization",
-      "track": "release",
-      "status": "NOT_AUTHORIZED",
-      "evidence": "PR #223 draft/unmerged, no authorization to merge, publish or deploy",
-      "criticalDependency": "Explicit release decision after mandatory gate proof"
-    }
-  ],
-  "finalDisposition": "NOT_COMPLETE_WITH_NAMED_BLOCKERS",
-  "repeatedInvocationsWithoutNewEvidence": "CLOSURE_STALL",
-  "allowedOperations": [
-    "read_only_status",
-    "check_exact_head_ci",
-    "review_new_independently_admissible_external_evidence",
-    "narrow_reproduced_critical_path_fix"
-  ],
-  "prohibitedOperations": [
-    "repeat_terminal_browser_campaign",
-    "repeat_terminal_local_source_campaign",
-    "external_academic_model_submission_without_rights",
-    "unapproved_source_figure_publication",
-    "automatic_merge_or_deployment"
-  ],
-  "reopeningRequires": "New materially distinct evidence or an explicitly authorized independent scope, frozen before any new protected run; update this charter in a reviewed commit without rewriting historical outcomes",
-  "latestAcceptedEvidenceDate": "2026-11-10"
+    "schemaVersion":  1,
+    "project":  "BOSLA",
+    "contract":  "FINAL_ACCEPTANCE_NO_REPEAT_V1",
+    "decision":  "docs/decisions/0031-chapter9-owner-approved-autonomous-pilot.md",
+    "policy":  {
+                   "objective":  "terminal_evidence_based_acceptance_not_repeated_fix_loops",
+                   "frozen":  true,
+                   "newCampaignsAuthorized":  [
+
+                                              ],
+                   "historicalAttemptsResetAllowed":  false,
+                   "sourceBearingModelCallsAllowed":  false,
+                   "publicReleaseAuthorized":  false
+               },
+    "frozenCandidates":  [
+                             {
+                                 "section":  "9.1",
+                                 "manifest":  "content/source-manifests/chapter-9-section-9-1.json",
+                                 "packageSha256":  "aa7b82fa8f256d02e7af1bb0ddfa8b91020b82d100175c14a37834eedb51ff7e",
+                                 "activityCount":  18,
+                                 "localSourceLocationsVerified":  false,
+                                 "exactViewportVerified":  false,
+                                 "browserCampaign":  "TERMINAL",
+                                 "localSourceCampaign":  "TERMINAL",
+                                 "independentAcademicExternalReview":  "BLOCKED_RIGHTS_NOT_VERIFIED",
+                                 "packageGitBlobSha1":  "6dc84d7bbc8f6944d150bb79bb26906a71e2f3f5"
+                             },
+                             {
+                                 "section":  "9.2",
+                                 "manifest":  "content/source-manifests/chapter-9-section-9-2.json",
+                                 "packageSha256":  "cfe7bab820aa01ce71bd7a6a334c742101ebd10d8895cccd5f05d599030f971c",
+                                 "activityCount":  18,
+                                 "localSourceLocationsVerified":  false,
+                                 "exactViewportVerified":  false,
+                                 "browserCampaign":  "TERMINAL",
+                                 "localSourceCampaign":  "TERMINAL",
+                                 "independentAcademicExternalReview":  "BLOCKED_RIGHTS_NOT_VERIFIED",
+                                 "packageGitBlobSha1":  "779deb4e207078f9081a9de78a14226d473f9b25"
+                             },
+                             {
+                                 "section":  "9.3",
+                                 "manifest":  "content/source-manifests/chapter-9-section-9-3.json",
+                                 "packageSha256":  "c71398079f56fb8c752d6d9fa849e3b40a500fd538f2bb4dcb62a665c624b3da",
+                                 "activityCount":  18,
+                                 "localSourceLocationsVerified":  false,
+                                 "exactViewportVerified":  false,
+                                 "browserCampaign":  "TERMINAL",
+                                 "localSourceCampaign":  "TERMINAL",
+                                 "independentAcademicExternalReview":  "BLOCKED_RIGHTS_NOT_VERIFIED",
+                                 "packageGitBlobSha1":  "7b019d9502d8da7eab9f311e9c3d0830e8b30396"
+                             },
+                             {
+                                 "section":  "9.4",
+                                 "manifest":  "content/source-manifests/chapter-9-section-9-4.json",
+                                 "packageSha256":  "1f6e2568fb6cbd5a82a7563c12f627779644ef3a991eb861e791849c49abc4d2",
+                                 "activityCount":  18,
+                                 "localSourceLocationsVerified":  true,
+                                 "exactViewportVerified":  false,
+                                 "browserCampaign":  "TERMINAL",
+                                 "localSourceCampaign":  "TERMINAL",
+                                 "independentAcademicExternalReview":  "BLOCKED_RIGHTS_NOT_VERIFIED",
+                                 "packageGitBlobSha1":  "f9604d795a6d8c02d2de02a5672f8cba0e4bf949"
+                             },
+                             {
+                                 "section":  "9.5",
+                                 "manifest":  "content/source-manifests/chapter-9-section-9-5.json",
+                                 "packageSha256":  "9152cc86789dcb43f898bd9a4f3cdfe4ea8928c09dccbcaed76fc83cf328431a",
+                                 "activityCount":  18,
+                                 "localSourceLocationsVerified":  true,
+                                 "exactViewportVerified":  false,
+                                 "browserCampaign":  "TERMINAL",
+                                 "localSourceCampaign":  "TERMINAL",
+                                 "independentAcademicExternalReview":  "BLOCKED_RIGHTS_NOT_VERIFIED",
+                                 "packageGitBlobSha1":  "aa6d34978b79a13cf26f9558c21dd8aafa08c80b"
+                             },
+                             {
+                                 "section":  "9.6",
+                                 "manifest":  "content/source-manifests/chapter-9-section-9-6.json",
+                                 "packageSha256":  "1620d15e1d645c81301997f0e42d0efbad0a7b2d123eb6b11cba9ec8c04b027f",
+                                 "activityCount":  18,
+                                 "localSourceLocationsVerified":  true,
+                                 "exactViewportVerified":  false,
+                                 "browserCampaign":  "TERMINAL",
+                                 "localSourceCampaign":  "TERMINAL",
+                                 "independentAcademicExternalReview":  "BLOCKED_RIGHTS_NOT_VERIFIED",
+                                 "packageGitBlobSha1":  "90b8a5e7d627de3bfcc2320428981e73022a968e"
+                             }
+                         ],
+    "gates":  [
+                  {
+                      "id":  "pilotScope",
+                      "track":  "engineering",
+                      "status":  "PASS_VERIFIED",
+                      "evidence":  "Decision 0031, six immutable candidate packages",
+                      "criticalDependency":  null
+                  },
+                  {
+                      "id":  "originalSourceIdentity",
+                      "track":  "domain",
+                      "status":  "PASS_VERIFIED",
+                      "evidence":  "Private six-original SHA256 receipt 2026-11-08; scoped original source identities only",
+                      "criticalDependency":  null
+                  },
+                  {
+                      "id":  "sourceLocation",
+                      "track":  "domain",
+                      "status":  "NOT_VERIFIED",
+                      "evidence":  "Existing private packets 9.4,9.5,9.6 each 18/18; 9.1-9.3 campaigns terminal and incomplete",
+                      "criticalDependency":  "Independently admissible new local evidence under a separately justified, authorized scope"
+                  },
+                  {
+                      "id":  "sourceAndFigureRights",
+                      "track":  "domain",
+                      "status":  "NOT_VERIFIED",
+                      "evidence":  "Instructor-controlled local transformation provenance is not permission for external model submission or third-party figure redistribution",
+                      "criticalDependency":  "Actual source/figure use permissions for independent review and publication as applicable"
+                  },
+                  {
+                      "id":  "physicsAnswersAndTrilingualMeaning",
+                      "track":  "domain",
+                      "status":  "NOT_VERIFIED",
+                      "evidence":  "No independently corroborated full 108-activity physics, answer and EN/MS/ZH review receipts",
+                      "criticalDependency":  "Rights-cleared independent source-grounded evidence, no model self-certification"
+                  },
+                  {
+                      "id":  "diagramVisualPedagogy",
+                      "track":  "domain",
+                      "status":  "NOT_VERIFIED",
+                      "evidence":  "Frozen packages have 0/108 declared visualSpec; visual meaning not independently evaluated",
+                      "criticalDependency":  "Independently verified meaningful diagrams and appropriate interactivity"
+                  },
+                  {
+                      "id":  "learnerViewportAndAccessibility",
+                      "track":  "pilot",
+                      "status":  "NOT_VERIFIED",
+                      "evidence":  "Existing 9.4-9.6 browser logs include PNG width mismatches; historic 9.1-9.3 runs terminal",
+                      "criticalDependency":  "Independent authorized exact-viewport, mobile touch and accessibility evidence under genuinely new scope"
+                  },
+                  {
+                      "id":  "adaptivePrivacyOperations",
+                      "track":  "pilot",
+                      "status":  "NOT_VERIFIED",
+                      "evidence":  "Stage-0 preview is not proof of full adaptive course, consent, retention or rollback",
+                      "criticalDependency":  "Real allowed learner workflow/operational acceptance"
+                  },
+                  {
+                      "id":  "engineeringHeadCI",
+                      "track":  "engineering",
+                      "status":  "PASS_VERIFIED",
+                      "evidence":  "Draft PR #223 SHA a57163f50d32efc4639c99d02953d63eca182034, GitHub Actions run 42753264837 success; does not constitute full engineering acceptance",
+                      "criticalDependency":  null
+                  },
+                  {
+                      "id":  "releaseAuthorization",
+                      "track":  "release",
+                      "status":  "NOT_AUTHORIZED",
+                      "evidence":  "PR #223 draft/unmerged, no authorization to merge, publish or deploy",
+                      "criticalDependency":  "Explicit release decision after mandatory gate proof"
+                  }
+              ],
+    "finalDisposition":  "NOT_COMPLETE_WITH_NAMED_BLOCKERS",
+    "repeatedInvocationsWithoutNewEvidence":  "CLOSURE_STALL",
+    "allowedOperations":  [
+                              "read_only_status",
+                              "check_exact_head_ci",
+                              "review_new_independently_admissible_external_evidence",
+                              "narrow_reproduced_critical_path_fix"
+                          ],
+    "prohibitedOperations":  [
+                                 "repeat_terminal_browser_campaign",
+                                 "repeat_terminal_local_source_campaign",
+                                 "external_academic_model_submission_without_rights",
+                                 "unapproved_source_figure_publication",
+                                 "automatic_merge_or_deployment"
+                             ],
+    "reopeningRequires":  "New materially distinct evidence or an explicitly authorized independent scope, frozen before any new protected run; update this charter in a reviewed commit without rewriting historical outcomes",
+    "latestAcceptedEvidenceDate":  "2026-11-10"
 }

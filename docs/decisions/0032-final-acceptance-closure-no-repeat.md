@@ -47,8 +47,14 @@ the register and enforces its terminal decisions before side effects in:
 Read-only closure status:
 `python scripts/check_final_acceptance_closure.py`.
 
-The candidate roster is pinned by the controlled source manifest and package
-SHA-256. Identity drift is a stop, not a new authorized campaign. The charter
+The candidate roster is pinned by the controlled source manifest,
+historical package SHA-256 and the **original committed Git blob SHA-1**.
+To recognize precisely the same package on Windows CRLF and Linux LF
+checkouts, the shared Git checkout identity mechanism (BSA-127/131) computes
+the canonical Git object identity from either real representation. It rejects
+substantive changes. A raw Windows SHA-256 must never be used alone as a
+cross-platform Git identity. Identity drift is a stop, not a new authorized
+campaign. The charter
 lists **zero** newly authorized campaigns. To reopen a truly fresh eligible
 scope, an explicit new decision must first freeze its source/candidate identity,
 rights, independent evidence, finite budgets and stop rules, and revise the

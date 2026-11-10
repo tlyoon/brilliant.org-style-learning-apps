@@ -6,13 +6,27 @@ blob OR its deterministic LF->CRLF materialization. No fuzzy matching.
 """
 from __future__ import annotations
 
-from hashlib import sha256
+from hashlib import sha1, sha256
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
 
 _HEX40 = re.compile(r"[0-9a-f]{40}\Z")
 _HEX64 = re.compile(r"[0-9a-f]{64}\Z")
+
+
+def canonical_git_blob_sha1(raw: bytes) -> str:
+    """Git object identity of a controlled LF-text file on Linux or Windows.
+
+    Only deterministic CRLF -> LF checkout normalization is performed;
+    no whitespace, token or content edits are tolerated. Use an independently
+    frozen Git blob SHA-1 for comparison (not the current mutable HEAD).
+    """
+    if not isinstance(raw, bytes) or len(raw) > 2_000_000:
+        raise ValueError("INVALID_GIT_TEXT_BYTES")
+    canonical = raw.replace(b"\r\n", b"\n")
+    prefix = b"blob " + str(len(canonical)).encode("ascii") + b"\0"
+    return sha1(prefix + canonical).hexdigest()
 
 
 def verify_git_checkout_sha(

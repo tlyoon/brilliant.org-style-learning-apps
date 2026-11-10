@@ -8,6 +8,7 @@ Source-free; no external actions, model, browser or PDF reads.
 from __future__ import annotations
 
 from hashlib import sha256
+from app_generator.validation.git_checkout_identity import canonical_git_blob_sha1
 import json
 from pathlib import Path
 import re
@@ -15,6 +16,7 @@ import re
 ROOT = Path(__file__).resolve().parents[2]
 CHARTER = ROOT / "docs" / "acceptance_closure_chapter9.json"
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
+_BLOB = re.compile(r"[0-9a-f]{40}\Z")
 _SECTION = tuple(f"9.{n}" for n in range(1, 7))
 _REQUIRED_GATES = frozenset({
     "pilotScope", "originalSourceIdentity", "sourceLocation",
@@ -56,6 +58,8 @@ def load_frozen_charter(file: Path = CHARTER) -> dict:
             f"content/source-manifests/chapter-9-section-9-{n}.json"
             or not isinstance(case.get("packageSha256"), str)
             or not _SHA.fullmatch(case["packageSha256"])
+            or not isinstance(case.get("packageGitBlobSha1"), str)
+            or not _BLOB.fullmatch(case["packageGitBlobSha1"])
             or case.get("activityCount") != 18
             or case.get("browserCampaign") != "TERMINAL"
             or case.get("localSourceCampaign") != "TERMINAL"
@@ -111,10 +115,10 @@ def assert_campaign_admissible(
             raise ValueError("STOP_FROZEN_PACKAGE_IDENTITY_DRIFT")
         return "NOT_APPLICABLE"
     case = matches[0]
-    actual = sha256(raw).hexdigest()
-    if (actual != case["packageSha256"]
-        and sha256(raw.replace(b"\r\n", b"\n")).hexdigest() !=
-        case["packageSha256"]):
+    # Reuse the established Git/CRLF recovery family (BSA-127/131).
+    # A historical frozen Git blob identity is portable across actual LF
+    # Linux checkouts and CRLF Windows checkouts; raw SHA-256 alone is not.
+    if canonical_git_blob_sha1(raw) != case["packageGitBlobSha1"]:
         raise ValueError("STOP_FROZEN_PACKAGE_IDENTITY_DRIFT")
     if action == "browser":
         raise ValueError("STOP_TERMINAL_BROWSER_ACCEPTANCE_CAMPAIGN")

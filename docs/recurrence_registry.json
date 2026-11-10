@@ -1489,7 +1489,9 @@
         {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
          "marker": "test_invalid_charter_cannot_silently_promote_rights_or_reset_history"},
         {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_future_session_read_first_instructions_are_kept_in_repository"}
+         "marker": "test_future_session_read_first_instructions_are_kept_in_repository"},
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_windows_and_linux_checkout_bytes_have_same_frozen_git_identity"}
       ]
     }
   ]

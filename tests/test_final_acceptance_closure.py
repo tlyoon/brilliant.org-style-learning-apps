@@ -59,6 +59,21 @@ class FrozenFinalClosureTests(TestCase):
         with self.assertRaisesRegex(ValueError, "STOP_FROZEN_PACKAGE_IDENTITY_DRIFT"):
             assert_campaign_admissible(changed, "browser")
 
+    def test_windows_and_linux_checkout_bytes_have_same_frozen_git_identity(self):
+        # Regression for BSA-127/131: CI uses LF, Yoga 6 uses CRLF.
+        # Both legitimate representations must hit the SAME terminal gate.
+        original = self.package.read_bytes().replace(b"\r\n", b"\n")
+        self.assertIn(b"\n", original)
+        for label, payload in (("linux", original),
+                               ("windows", original.replace(b"\n", b"\r\n"))):
+            copied = self.private / (label + ".json")
+            copied.write_bytes(payload)
+            with self.subTest(platform=label):
+                with self.assertRaisesRegex(
+                    ValueError, "STOP_TERMINAL_BROWSER_ACCEPTANCE_CAMPAIGN"
+                ):
+                    assert_campaign_admissible(copied, "browser")
+
     def test_chapter9_candidate_cannot_bypass_by_stripping_manifest(self):
         obj = json.loads(self.package.read_text(encoding="utf-8"))
         obj.pop("sourceManifest")
