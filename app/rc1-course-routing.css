@@ -1,0 +1,18 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f5f8f7; color: #18332c; }
+.rc1-shell { margin: 0 auto; max-width: 920px; padding: clamp(1rem, 3vw, 2.4rem); }
+.eyebrow { font-size: .8rem; font-weight: 800; letter-spacing: .09em; color: #36695c; }
+h1 { font-size: clamp(1.5rem, 3.5vw, 2.4rem); margin-bottom: .5rem; }
+p { line-height: 1.55; }
+#rc1-status { font-weight: 700; padding: .8rem 1rem; border-left: 3px solid #2f705d; background: #eaf3ef; }
+#rc1-route { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: .9rem; margin: 1.3rem 0; }
+.rc1-card { padding: 1rem; background: white; border: 1px solid #cbd9d3; border-radius: .8rem; }
+.rc1-card h2 { font-size: 1.1rem; margin: 0; }
+.rc1-card p { min-height: 3.3rem; }
+.controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; }
+button { font: inherit; color: #163b30; background: #eef5f1; border: 1px solid #6b9c89; border-radius: .5rem; min-height: 44px; padding: .55rem; cursor: pointer; }
+button:disabled { opacity: .48; cursor: not-allowed; }
+button:focus-visible { outline: 3px solid #1b6351; outline-offset: 3px; }
+.fine-print { font-size: .9rem; color: #4c685f; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }

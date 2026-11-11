@@ -1736,6 +1736,28 @@
         {"path": "tests/test_browser_visual_smoke.py", "kind": "python",
          "marker": "test_stages_only_private_test_assets_and_does_not_mutate_package"}
       ]
+    },
+    {
+      "id": "BSA-20261111-145",
+      "class": "rc1-course-level-prerequisite-and-review-route-absent",
+      "status": "resolved",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": ["BSA-20261105-116", "BSA-20261111-143"],
+      "differenceFromLinkedIncident": "Prior Stage-0 and local instructor preview tests proved one-package rendering and six-option selection but never implemented genuine course-level prerequisite graph routing or a session-only review-priority planner. Verified at the frozen pre-RC1 head that app/rc1-course-routing.js did not exist, so ordinary Stage-0 tests could not exercise these missing product requirements. The owner approved an independently frozen, original synthetic RC1 engineering-only scope (Decision 0034) to fill this gap without restarting the six original Chapter 9 browser or academic campaigns. A generic pure JS engine validates a versioned six-node graph, rejects cycles/missing/duplicate prerequisites, prevents assisted evidence from unlocking independent progress, and gives simulated review-due priority. A working, non-publishable, no-storage local-only HTML view loads the exact content-hash-frozen independent scope with a CSP and strict refusal of changed scope data. This is a verified RC1 engineering vertical slice, not real learner mastery, authenticated diagnostics, independent academic corroboration, or full course/pilot acceptance. Subsequent real integration remains pending.",
+      "automaticRemedy": {
+        "runtimePath": "app/rc1-course-routing.js",
+        "triggerMarker": "function plan(scope, observations = [])",
+        "remedyMarker": "const completed = new Set(",
+        "normalEntryPoints": [
+          {"path": "app/rc1-course-journey.html", "marker": "src=\"rc1-course-routing.js\""}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_rc1_course_routing.js", "kind": "javascript",
+         "marker": "assert.equal(stage(helped, \"concept-motion\").status, \"locked\")"},
+        {"path": "tests/test_rc1_course_routing.js", "kind": "javascript",
+         "marker": "assert.equal(due.suggestionReason, \"review_due\")"}
+      ]
     }
   ]
 }

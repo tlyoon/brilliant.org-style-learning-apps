@@ -5,6 +5,8 @@
 **READ BEFORE STARTING OR RESTARTING ANY BOSLA WORK:** `AGENTS.md`,
 `docs/decisions/0032-final-acceptance-closure-no-repeat.md`,
 `docs/decisions/0033-remove-rights-gate-from-technical-closure.md`,
+`docs/decisions/0034-rc1-independent-sourcefree-engineering-scope.md`,
+`docs/rc1_engineering_scope.json`,
 `docs/acceptance_closure_chapter9.json` and
 `docs/CONTINUATION_CHECKPOINT_LATEST.md`. The machine-executable
 `scripts/check_final_acceptance_closure.py` reports current
@@ -17,6 +19,10 @@ rights-holder identification, and source/figure rights are **excluded from
 technical-closure gates**. Independent physics/EN-MS-ZH evidence, visual
 semantics, learner-pilot and release authorization remain separate gates.
 No PR merge, source-bearing model call or release is authorized by this index.
+RC1 Decision 0034 separately freezes **six entirely synthetic, source-free**
+engineering concept nodes and safe local route simulation. It may establish
+software functionality, never independent learner-pilot or academic acceptance.
+Do not import these synthetic PASS results into the original frozen V2 gates.
 
 ## Authority and precedence
 
