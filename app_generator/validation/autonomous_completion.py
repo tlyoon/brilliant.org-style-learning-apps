@@ -150,6 +150,92 @@ def _parse_response(raw: str, activity_id: str) -> dict:
     return reply
 
 
+def _review_consensus(responses: list[dict]) -> tuple[dict, str]:
+    """Compute every cached or fresh verdict from its two model responses."""
+    dimensions = {
+        key: ("PASS" if all(
+            item.get("decision", {}).get("dimensions", {}).get(key) == "PASS"
+            for item in responses) else
+            "FAIL" if any(
+                item.get("decision", {}).get("dimensions", {}).get(key) == "FAIL"
+                for item in responses) else "UNCERTAIN")
+        for key in DIMENSIONS
+    }
+    status = ("AI_CONSENSUS_PASS" if all(
+        value == "PASS" for value in dimensions.values()) else
+        "AI_REPAIR_REQUIRED" if "FAIL" in dimensions.values()
+        else "AI_UNCERTAIN")
+    return dimensions, status
+
+
+def _build_review_report(digest: str, activities: list[dict],
+                         reviews: list[dict]) -> dict:
+    full = len(reviews) == len(activities)
+    all_pass = full and all(
+        row["status"] == "AI_CONSENSUS_PASS" for row in reviews)
+    return {
+        "contract":"AUTONOMOUS_AI_TECHNICAL_COMPLETION_V3",
+        "packageSha256":digest, "activityIds":[a["id"] for a in activities],
+        "reviews":reviews, "activitiesTotal":len(activities),
+        "activitiesAssessed":len(reviews),
+        "status":"AI_ASSESSED_PASS" if all_pass else
+        "AUTO_REPAIR_REQUIRED" if any(
+            row["status"] == "AI_REPAIR_REQUIRED" for row in reviews) else
+        "PENDING_AUTOMATED_ASSESSMENT",
+        "humanReviewRequired":False,"learnerPilotRequired":False,
+        "explicitReleaseApprovalRequired":False,
+        "visualAssetQuotaRequired":False,
+        "independentAcademicValidationClaimed":False,
+        "publicationAuthorized":False,
+    }
+
+
+def _validate_cached_review(activity: dict, row: dict) -> None:
+    """Reject forged PASS, unrelated prompts and inconsistent resume rows."""
+    if (not isinstance(row, dict)
+        or set(row) != {"activityId", "status", "dimensions", "reviewers"}
+        or row["activityId"] != activity["id"]
+        or not isinstance(row["reviewers"], list)
+        or len(row["reviewers"]) != 2):
+        raise ValueError("V3_INVALID_CACHED_REVIEW")
+    identities = set()
+    for response, perspective in zip(row["reviewers"],(
+        "physics-adversary", "language-and-learner-adversary"
+    )):
+        if not isinstance(response, dict):
+            raise ValueError("V3_INVALID_CACHED_MODEL_RESPONSE")
+        reviewer = response.get("reviewerId")
+        session = response.get("sessionId")
+        if (not isinstance(reviewer, str) or not reviewer
+            or not isinstance(session, str) or not session
+            or (reviewer, session) in identities):
+            raise ValueError("V3_INVALID_CACHED_REVIEWER_IDENTITY")
+        identities.add((reviewer, session))
+        if "decision" in response:
+            if (set(response) != {"reviewerId","sessionId",
+                                 "promptSha256","responseSha256","decision"}
+                or response["promptSha256"] != sha256(
+                    make_prompt(activity,perspective).encode("utf-8")
+                ).hexdigest()
+                or not isinstance(response["responseSha256"],str)
+                or not _HASH.fullmatch(response["responseSha256"])):
+                raise ValueError("V3_STALE_OR_FORGED_REVIEW_PROMPT")
+            _parse_response(json.dumps(response["decision"]), activity["id"])
+        elif (set(response) != {"reviewerId","sessionId","status","reasonCode"}
+              or response["status"] != "UNRESOLVED"
+              or not isinstance(response["reasonCode"],str)
+              or not response["reasonCode"]):
+            raise ValueError("V3_INVALID_UNRESOLVED_REVIEW")
+    if (row["reviewers"][0]["reviewerId"] ==
+        row["reviewers"][1]["reviewerId"]
+        or row["reviewers"][0]["sessionId"] ==
+        row["reviewers"][1]["sessionId"]):
+        raise ValueError("V3_CACHED_MODEL_CONTEXTS_NOT_DISTINCT")
+    dimensions, status = _review_consensus(row["reviewers"])
+    if row["dimensions"] != dimensions or row["status"] != status:
+        raise ValueError("V3_CACHED_REVIEW_VERDICT_MISMATCH")
+
+
 def assess_with_models(raw: bytes, sessions: tuple, *,
                        existing: dict | None = None,
                        checkpoint: Any = None,
@@ -168,6 +254,11 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
         or len({s.session_id for s in sessions}) != 2
         or sessions[0].conversation is sessions[1].conversation):
         raise ValueError("V3_DISTINCT_REVIEW_CONTEXTS_REQUIRED")
+    # The normal invocation resumes itself from a durable package-bound
+    # checkpoint; callers need not manually reconstruct the old assessment.
+    stage_name = f"v3-assessment-{digest}"
+    if existing is None and checkpoint is not None:
+        existing = checkpoint.load_stage(stage_name)
     if existing is not None and (
         existing.get("contract") != "AUTONOMOUS_AI_TECHNICAL_COMPLETION_V3"
         or existing.get("packageSha256") != digest
@@ -175,14 +266,14 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
         or not isinstance(existing.get("reviews"), list)):
         raise ValueError("V3_STALE_OR_MISMATCHED_REVIEW")
     prior = existing.get("reviews", []) if existing else []
-    if len(prior) > len(activities) or any(
-        not isinstance(row, dict)
-        or row.get("activityId") != activities[i]["id"]
-        or row.get("status") not in ("AI_CONSENSUS_PASS",
-                                   "AI_REPAIR_REQUIRED","AI_UNCERTAIN")
-        for i,row in enumerate(prior)
+    if len(prior) > len(activities):
+        raise ValueError("V3_TOO_MANY_CACHED_REVIEWS")
+    for i, row in enumerate(prior):
+        _validate_cached_review(activities[i],row)
+    if existing is not None and existing != _build_review_report(
+        digest, activities, prior
     ):
-        raise ValueError("V3_INVALID_RESUME_RECEIPT")
+        raise ValueError("V3_INCONSISTENT_ASSESSMENT_CHECKPOINT")
     reviews = [*prior]
     # Incomplete/uncertain requests are not resubmitted within this invocation.
     for index, activity in enumerate(
@@ -259,40 +350,16 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                     "sessionId":session.session_id,
                     "status":"UNRESOLVED","reasonCode":type(exc).__name__})
                 # No unbounded retries after ambiguous remote submission.
-        dimensions = {
-            key: ("PASS" if all(
-                item.get("decision",{}).get("dimensions",{}).get(key) == "PASS"
-                for item in responses) else
-                "FAIL" if any(
-                item.get("decision",{}).get("dimensions",{}).get(key) == "FAIL"
-                for item in responses) else "UNCERTAIN")
-            for key in DIMENSIONS
-        }
-        status = ("AI_CONSENSUS_PASS" if all(
-                  value=="PASS" for value in dimensions.values())
-                  else "AI_REPAIR_REQUIRED" if "FAIL" in dimensions.values()
-                  else "AI_UNCERTAIN")
+        dimensions, status = _review_consensus(responses)
         reviews.append({"activityId":activity["id"],"status":status,
+        # Persist the complete bounded slice after each activity. A restart
+        # advances to the next unseen activity; it never starts again at 1-6.
+        if checkpoint is not None:
+            checkpoint.save_stage(
+                stage_name, _build_review_report(digest, activities, reviews)
+            )
                         "dimensions":dimensions,"reviewers":responses})
-    full = len(reviews) == len(activities)
-    all_pass = full and all(
-        row["status"] == "AI_CONSENSUS_PASS" for row in reviews)
-    return {
-        "contract":"AUTONOMOUS_AI_TECHNICAL_COMPLETION_V3",
-        "packageSha256":digest, "activityIds":[a["id"] for a in activities],
-        "reviews":reviews,
-        "activitiesTotal":len(activities),
-        "activitiesAssessed":len(reviews),
-        "status":"AI_ASSESSED_PASS" if all_pass else
-        "AUTO_REPAIR_REQUIRED" if any(
-            row["status"]=="AI_REPAIR_REQUIRED" for row in reviews) else
-        "PENDING_AUTOMATED_ASSESSMENT",
-        "humanReviewRequired":False,"learnerPilotRequired":False,
-        "explicitReleaseApprovalRequired":False,
-        "visualAssetQuotaRequired":False,
-        "independentAcademicValidationClaimed":False,
-        "publicationAuthorized":False,
-    }
+    return _build_review_report(digest, activities, reviews)
 
 
 def active_disposition() -> dict:
