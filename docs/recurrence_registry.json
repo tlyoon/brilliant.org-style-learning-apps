@@ -1810,7 +1810,7 @@
       "id": "BSA-20261112-148",
       "class": "v3-bounded-model-review-replays-first-six-without-durable-aggregate",
       "status": "resolved",
-      "rootCauseFamily": "autonomous-assessment-state",
+      "rootCauseFamily": "recurrence-governance",
       "relatedIncidentIds": [
         "BSA-20261111-147",
         "BSA-20261111-146"
