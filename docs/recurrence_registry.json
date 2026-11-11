@@ -1805,6 +1805,49 @@
         {"path": "tests/test_academic_publication_gate.py", "kind": "python",
          "marker": "test_direct_publisher_never_reaches_remote_without_v3_receipt"}
       ]
+    },
+    {
+      "id": "BSA-20261112-148",
+      "class": "v3-bounded-model-review-replays-first-six-without-durable-aggregate",
+      "status": "resolved",
+      "rootCauseFamily": "autonomous-assessment-state",
+      "relatedIncidentIds": [
+        "BSA-20261111-147",
+        "BSA-20261111-146"
+      ],
+      "differenceFromLinkedIncident": "Decision 0036 implemented a generic per-activity, two-context model-review engine and per-role IN_FLIGHT/COMPLETE checkpoint, but the six-activity invocation returned an aggregate without saving/reloading it in the normal function. A fresh invocation without an externally rebuilt 'existing' report restarted the first six rather than advancing to 7-12 and 13-18, leaving PENDING_AUTOMATED_ASSESSMENT structurally non-progressive even when a permitted provider is available. The normal assess_with_models now loads package-SHA-bound aggregate state automatically and saves its review summary after each activity; it uses the original safe role claims, never replays ambiguous remote submissions, and rejects reused forged/mismatched reviewer decisions, role-specific prompt hashes, identities and package-version drift. The normal V3 status checker can now report real per-package checkpoint coverage and release receipt status rather than merely printing a constant PENDING disposition. Synthetic adversarial tests prove exactly three bounded invocations cover 18 activities and an idempotent fourth call submits zero prompts. These changes only remove a reusable code/state blocker: no live Gemini or ChatGPT content review was executed, Yoga6 was offline, and the previously denied authenticated reviewer-runner operation was not retried. Existing original Chapter 9 terminal source/browser campaigns and the operational no-protected-data-transfer boundary remain unchanged.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/autonomous_completion.py",
+        "triggerMarker": "def assess_with_models(",
+        "remedyMarker": "checkpoint.save_stage(",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/validation/autonomous_completion.py",
+            "marker": "def assess_with_models("
+          },
+          {
+            "path": "scripts/check_final_acceptance_closure.py",
+            "marker": "from app_generator.validation.autonomous_completion import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_three_automatic_bounded_invocations_cover_all_eighteen"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_tampered_cached_consensus_and_prompt_hash_refuse_replay"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_private_progress_reports_true_partial_coverage_not_fabricated_pass"
+        }
+      ]
     }
   ]
 }
