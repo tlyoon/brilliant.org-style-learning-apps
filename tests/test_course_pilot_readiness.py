@@ -94,6 +94,21 @@ class SixSectionPilotTests(unittest.TestCase):
             for case in report["cases"]
         ))
 
+    def test_v2_pilot_evidence_does_not_reintroduce_removed_rights_gate(self):
+        """Both direct and normal audit CLI paths must honor Decision 0033."""
+        manifest, data = fixture()
+        report = assess_pilot_candidates(
+            manifest, data.__getitem__, observed_git_sha=REVISION,
+        )
+        for row in report["cases"]:
+            self.assertNotIn("independentSourceAndRightsVerified", row)
+            self.assertNotIn("sourceAndFigureRights", row)
+            self.assertIs(row["independentSourceVerified"], False)
+            self.assertIs(row["independentPhysicsAndTrilingualMeaningVerified"], False)
+            self.assertIs(row["independentVisualSemanticsVerified"], False)
+        self.assertFalse(report["classroomPilotReady"])
+        self.assertFalse(report["publicationAuthorized"])
+
     def test_strict_scope_rejects_bad_counts_paths_and_flags_before_reads(self):
         modifications = [
             lambda m: m["cases"].pop(),
@@ -245,6 +260,9 @@ class SixSectionPilotTests(unittest.TestCase):
             result = json.loads(stdout.getvalue())
             self.assertEqual(6, result["structuralCandidateCount"])
             self.assertFalse(result["classroomPilotReady"])
+            for row in result["cases"]:
+                self.assertNotIn("independentSourceAndRightsVerified", row)
+                self.assertIs(row["independentSourceVerified"], False)
 
     def test_cli_rejects_absent_package_and_wrong_revision(self):
         manifest, data = fixture()

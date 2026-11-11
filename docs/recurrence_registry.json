@@ -1686,6 +1686,31 @@
         {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
          "marker": "test_invalid_charter_cannot_silently_promote_rights_or_reset_history"}
       ]
+    },
+    {
+      "id": "BSA-20261111-143",
+      "class": "v2-technical-closure-exclusion-missing-from-normal-six-section-pilot-report",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": ["BSA-20261111-142"],
+      "differenceFromLinkedIncident": "The earlier owner-directed Decision 0033/V2 change removed edition/rightsholder and sourceAndFigureRights from the frozen terminal acceptance charter, but the normal shared six-section source-free course_pilot_readiness assessor still published independentSourceAndRightsVerified=false. This misleading phantom rights-gate output was consumed by the normal instructor local-preview preparation and pilot audit entrypoints, contradicting the permanently excluded technical condition. The focused real assessor normal-path regression failed before the correction. Preserve independent source verification as its own false status while deleting the composite rights-dependent field entirely, using the already shared evaluator rather than modifying every caller, and prove both normal CLI and local preview continue to work. This is a proven cross-entrypoint enforcement gap, not a new acceptance PASS, a license grant, or permission to restart terminal Chapter 9 campaigns.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/course_pilot_readiness.py",
+        "triggerMarker": "def assess_pilot_candidates(",
+        "remedyMarker": "\"independentSourceVerified\": False,",
+        "normalEntryPoints": [
+          {"path": "scripts/audit_course_pilot_readiness.py", "marker": "from app_generator.validation.course_pilot_readiness import assess_pilot_candidates"},
+          {"path": "scripts/prepare_course_preview.py", "marker": "from app_generator.validation.course_pilot_readiness import ("}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_course_pilot_readiness.py", "kind": "python",
+         "marker": "test_v2_pilot_evidence_does_not_reintroduce_removed_rights_gate"},
+        {"path": "tests/test_course_pilot_readiness.py", "kind": "python",
+         "marker": "test_cli_reads_six_existing_files_with_exact_revision"},
+        {"path": "tests/test_prepare_course_preview.py", "kind": "python",
+         "marker": "test_exact_six_tracked_packages_create_single_ignored_roster"}
+      ]
     }
   ]
 }

@@ -1,8 +1,10 @@
 """Offline six-subchapter *candidate* inventory; never an academic or release gate.
 
 This extends the existing Stage-0 roster checker to one course-level selection.
-Metadata and matching digests cannot prove source rights, EN/MS/ZH meaning,
-scientific/visual correctness, learner browser behavior or instructor approval.
+Metadata and matching digests cannot prove independent source accuracy,
+EN/MS/ZH meaning, scientific/visual correctness, learner browser behavior or
+instructor approval. Decision 0033 excludes rights-holder/rights clearance
+from BOSLA's technical-completion evidence fields.
 No PDF, network, model, private evidence or learner record is opened here.
 """
 from __future__ import annotations
@@ -142,7 +144,9 @@ def assess_pilot_candidates(
             "allVisualPlansDeclared": visual_plans == 18,
             "visualValueReviewPending": True,
             "academicQA": "REVIEW_REQUIRED",
-            "independentSourceAndRightsVerified": False,
+            # V2: source evidence remains unverified, while the removed
+            # rights gate must not reappear in regular pilot-readiness reports.
+            "independentSourceVerified": False,
             "independentPhysicsAndTrilingualMeaningVerified": False,
             "independentVisualSemanticsVerified": False,
             "independentBrowserAndAccessibilityVerified": False,
