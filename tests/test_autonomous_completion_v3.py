@@ -192,6 +192,73 @@ class AutonomousCompletionV3Tests(TestCase):
         with self.assertRaises(ValueError):
             verify_automated_release_assessment(raw,again,checks(raw))
 
+    def test_three_automatic_bounded_invocations_cover_all_eighteen(self):
+        # Reproduces the earlier repeat-first-six bug: no caller-supplied
+        # 'existing' object, no resets or copied model verdicts.
+        source=json.loads(_raw())
+        template=source["activities"][0]
+        source["activities"]=[
+            {**template, "id":f"concept-{i}"} for i in range(1,19)
+        ]
+        raw=json.dumps(source,sort_keys=True,ensure_ascii=False).encode()
+        class Checkpoint:
+            def __init__(self):
+                self.rows={}
+            def load_stage(self,name):
+                return self.rows.get(name)
+            def save_stage(self,name,record):
+                self.rows[name]=json.loads(json.dumps(record))
+        cp=Checkpoint()
+        for n in (6,12,18):
+            first,second=FakeModel(),FakeModel()
+            report=assess_with_models(raw,sessions(first,second),
+                checkpoint=cp,generated_content_transfer_allowed=True)
+            self.assertEqual(n,report["activitiesAssessed"])
+            self.assertEqual(6,first.calls)
+            self.assertEqual(6,second.calls)
+        self.assertEqual("AI_ASSESSED_PASS",report["status"])
+        self.assertEqual(18,len(report["reviews"]))
+        self.assertEqual(
+            verify_automated_release_assessment(raw,report,checks(raw))
+            ["academicQA"],"AI_ASSESSED_PASS"
+        )
+        repeat_a,repeat_b=FakeModel(),FakeModel()
+        resumed=assess_with_models(raw,sessions(repeat_a,repeat_b),
+            checkpoint=cp,generated_content_transfer_allowed=True)
+        self.assertEqual("AI_ASSESSED_PASS",resumed["status"])
+        self.assertEqual(0,repeat_a.calls)
+        self.assertEqual(0,repeat_b.calls)
+
+    def test_tampered_cached_consensus_and_prompt_hash_refuse_replay(self):
+        class Checkpoint:
+            def __init__(self):
+                self.rows={}
+            def load_stage(self,name):
+                return self.rows.get(name)
+            def save_stage(self,name,record):
+                self.rows[name]=json.loads(json.dumps(record))
+        raw=_raw()
+        for mode in ("prompt", "status", "missing-reviewer"):
+            cp=Checkpoint()
+            assess_with_models(raw,sessions(),checkpoint=cp,
+                generated_content_transfer_allowed=True)
+            stage="v3-assessment-"+sha256(raw).hexdigest()
+            row=cp.rows[stage]["reviews"][0]
+            if mode=="prompt":
+                row["reviewers"][0]["promptSha256"]="0"*64
+            elif mode=="status":
+                row["status"]="AI_REPAIR_REQUIRED"
+            else:
+                row["reviewers"].pop()
+            first,second=FakeModel(),FakeModel()
+            with self.subTest(mode=mode),self.assertRaisesRegex(
+                ValueError, "V3_"
+            ):
+                assess_with_models(raw,sessions(first,second),
+                    checkpoint=cp,generated_content_transfer_allowed=True)
+            self.assertEqual(0,first.calls)
+            self.assertEqual(0,second.calls)
+
     def test_no_invented_visual_quota_or_fake_learner_pilot_in_prompts(self):
         prompt=make_prompt(json.loads(_raw())["activities"][0],"physics-adversary")
         self.assertIn("text-first",prompt)
