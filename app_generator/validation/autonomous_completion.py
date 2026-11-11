@@ -362,6 +362,63 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
     return _build_review_report(digest, activities, reviews)
 
 
+
+def assessment_progress(raw: bytes, assessment: dict | None = None, *,
+                        release_receipt: Path | None = None) -> dict:
+    """Read-only actual evidence coverage; never creates model review or PASS."""
+    load_policy()
+    digest, activities = package_identity(raw)
+    prior = []
+    if assessment is not None:
+        if (not isinstance(assessment,dict)
+            or assessment.get("contract") !=
+                "AUTONOMOUS_AI_TECHNICAL_COMPLETION_V3"
+            or assessment.get("packageSha256") != digest
+            or assessment.get("activityIds") != [a["id"] for a in activities]
+            or not isinstance(assessment.get("reviews"),list)):
+            raise ValueError("V3_UNTRUSTED_ASSESSMENT_PROGRESS")
+        prior = assessment["reviews"]
+        if len(prior) > len(activities):
+            raise ValueError("V3_TOO_MANY_CACHED_REVIEWS")
+        for activity,row in zip(activities,prior):
+            _validate_cached_review(activity,row)
+        if assessment != _build_review_report(digest,activities,prior):
+            raise ValueError("V3_INCONSISTENT_ASSESSMENT_PROGRESS")
+    counts = {kind:sum(r["status"] == kind for r in prior)
+              for kind in ("AI_CONSENSUS_PASS","AI_REPAIR_REQUIRED","AI_UNCERTAIN")}
+    if release_receipt is not None:
+        decision = read_private_release_receipt(raw,release_receipt)
+        if decision.get("automatedTechnicalEligible") is not True:
+            raise ValueError("V3_RELEASE_RECEIPT_NOT_ELIGIBLE")
+        state = "AUTOMATED_TECHNICAL_ELIGIBLE"
+    elif any(r["status"] == "AI_REPAIR_REQUIRED" for r in prior):
+        state = "AUTO_REPAIR_REQUIRED"
+    elif len(prior) < len(activities):
+        state = "PENDING_AUTOMATED_ASSESSMENT"
+    elif any(r["status"] == "AI_UNCERTAIN" for r in prior):
+        state = "RECONCILE_AMBIGUOUS_REVIEW"
+    else:
+        state = "PENDING_DETERMINISTIC_RELEASE_EVIDENCE"
+    return {
+        "contract":"AUTONOMOUS_AI_TECHNICAL_COMPLETION_V3",
+        "packageSha256":digest,
+        "activitiesTotal":len(activities),
+        "activitiesAssessed":len(prior),
+        "activitiesRemaining":len(activities)-len(prior),
+        "modelConsensusPassActivities":counts["AI_CONSENSUS_PASS"],
+        "modelRepairRequiredActivities":counts["AI_REPAIR_REQUIRED"],
+        "modelUncertainActivities":counts["AI_UNCERTAIN"],
+        "currentTechnicalDisposition":state,
+        "automaticReleaseEligibilityGranted":
+            state == "AUTOMATED_TECHNICAL_ELIGIBLE",
+        "publicationAuthorized":state == "AUTOMATED_TECHNICAL_ELIGIBLE",
+        "humanReviewRequired":False,
+        "realLearnerPilotRequired":False,
+        "explicitReleaseAuthorizationRequired":False,
+        "independentEducationalValidationClaimed":False,
+    }
+
+
 def active_disposition() -> dict:
     """Current owner V3 criteria, independently of frozen historical V2 log."""
     policy = load_policy()
