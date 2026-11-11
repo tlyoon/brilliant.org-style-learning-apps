@@ -1758,6 +1758,28 @@
         {"path": "tests/test_rc1_course_routing.js", "kind": "javascript",
          "marker": "assert.equal(due.suggestionReason, \"review_due\")"}
       ]
+    },
+    {
+      "id": "BSA-20261111-146",
+      "class": "rc1-draft-course-was-not-wired-to-real-player-answer-evidence",
+      "status": "resolved",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": ["BSA-20261111-145", "BSA-20261105-116"],
+      "differenceFromLinkedIncident": "Decision 0034/BSA-145 had established a generic session-only six-node planner and a synthetic completion-button demo, but the actual six original Chapter 9 draft activity packages still used the existing individual Stage-0 player with no verified event-to-route connection. A previous six-option instructor preview selected exact SHA256 package bytes but discarded all evidence on each section switch; the RC1 demonstration route used only simulated outcomes. An authentic provisional draft course must derive a first-check diagnostic from the real answer-key comparison, hints, skips and completed action, not synthetic buttons, while preserving the original frozen Chapter 9 academic/browser campaign stops. The new opt-in player event bridge, session-only first-encounter diagnostic and reusable planner connect six unchanged exact-Git-blob draft packages via local instructor roster without altering the original content or claiming independent academic correctness. A test caught that a rejected completion packet originally created a phantom not-yet observation; shared diagnostic now rejects it before writing session evidence. Browser regression uses six wholly synthetic package-shaped inputs, never original Chapter 9 source or fresh original-content QA. Answer-key correctness, multilingual science, meaningful visuals, real learner and publication remain unverified.",
+      "automaticRemedy": {
+        "runtimePath": "app/rc1-chapter9-bridge.js",
+        "triggerMarker": "function initDraftCourseBridge()",
+        "remedyMarker": "diagnostic.accept(active, event.detail)",
+        "normalEntryPoints": [
+          {"path": "app/rc1-chapter9-draft.html", "marker": "src=\"rc1-chapter9-bridge.js\""}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_rc1_draft_diagnostic.js", "kind": "javascript",
+         "marker": "assert.equal(report.independentlyCompleted, 1);"},
+        {"path": "tests/test_rc1_draft_diagnostic.js", "kind": "javascript",
+         "marker": "assert.equal(s.snapshot().independentlyCompleted, 1);"}
+      ]
     }
   ]
 }

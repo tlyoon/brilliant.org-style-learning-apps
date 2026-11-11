@@ -6,6 +6,7 @@
 `docs/decisions/0032-final-acceptance-closure-no-repeat.md`,
 `docs/decisions/0033-remove-rights-gate-from-technical-closure.md`,
 `docs/decisions/0034-rc1-independent-sourcefree-engineering-scope.md`,
+`docs/decisions/0035-rc1-provisional-chapter9-draft-player-integration.md`,
 `docs/rc1_engineering_scope.json`,
 `docs/acceptance_closure_chapter9.json` and
 `docs/CONTINUATION_CHECKPOINT_LATEST.md`. The machine-executable
@@ -23,6 +24,11 @@ RC1 Decision 0034 separately freezes **six entirely synthetic, source-free**
 engineering concept nodes and safe local route simulation. It may establish
 software functionality, never independent learner-pilot or academic acceptance.
 Do not import these synthetic PASS results into the original frozen V2 gates.
+Owner Decision 0035 additionally permits a **local draft Chapter 9 player-event bridge**
+using the six existing, unchanged package identities; all fresh Chrome and
+scoring tests remain synthetic. Actual first-check events are measured, but
+key validity, translation equivalence and learner mastery remain NOT_VERIFIED.
+No original Chapter 9 acceptance campaign is restarted.
 
 ## Authority and precedence
 

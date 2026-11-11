@@ -78,6 +78,13 @@
     } else {
       notice.textContent = message()[state] || message().invalid;
     }
+    // Optional RC1 draft-course bridge observes roster readiness, without
+    // exposing the roster contents or changing standard instructor preview.
+    const bridge = document.querySelector("#rc1-draft-course");
+    if (bridge && typeof bridge.dispatchEvent === "function"
+      && typeof Event === "function") {
+      bridge.dispatchEvent(new Event("bosla:course-roster-state"));
+    }
   }
 
   selector.addEventListener("change", () => {

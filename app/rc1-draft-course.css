@@ -1,0 +1,11 @@
+/* RC1 local draft-course instrumentation. Never production mastery styling. */
+#rc1-draft-list { margin: 1rem 0; padding-left: 1.5rem; }
+#rc1-draft-list li { line-height: 1.5; margin-bottom: .55rem; }
+#rc1-draft-status { font-weight: 700; }
+#rc1-draft-summary { font-variant-numeric: tabular-nums; }
+#rc1-draft-reset { min-height: 44px; padding: .65rem; font: inherit;
+  border: 1px solid var(--line); border-radius: .5rem; background: #eff5f2;
+  color: inherit; cursor: pointer; }
+#rc1-draft-reset:disabled { opacity: .5; cursor: not-allowed; }
+#rc1-draft-reset:focus-visible { outline: 3px solid #176a53; outline-offset: 3px; }
+.rc1-disclaimer { font-size: .92rem; color: #52675d; }

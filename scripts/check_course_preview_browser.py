@@ -104,6 +104,9 @@ def stage_site(root: Path) -> None:
     for filename in (
         "app.js", "styles.css", "visual-renderers.js", "index.html",
         "course-preview.html", "course-preview.js", "course-preview.css",
+        "rc1-chapter9-draft.html", "rc1-chapter9-bridge.js",
+        "rc1-course-routing.js", "rc1-course-diagnostic.js",
+        "rc1-draft-course.css",
     ):
         shutil.copyfile(ROOT / "app" / filename, app / filename)
     # Only empty domain hooks: no third-party assets or science data.

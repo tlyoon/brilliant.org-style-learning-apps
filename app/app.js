@@ -132,6 +132,28 @@ function recordLearningEvent(activity, event) {
   } else {
     throw new Error("unknown private learning event");
   }
+  // Explicit local draft-course opt-in only. Emit minimal, answer-key-scored
+  // session evidence from the *actual* player check/complete/skip path.
+  // No answer content, response choice, identity, account or persistent record.
+  // Host listeners cannot treat this as independent scientific approval.
+  if (playerHost.dataset.diagnosticEvents === "true" &&
+      typeof playerHost.dispatchEvent === "function" &&
+      typeof CustomEvent === "function") {
+    playerHost.dispatchEvent(new CustomEvent("bosla:player-evidence", {
+      detail: Object.freeze({
+        packageId: state.package?.packageId ?? "",
+        activityOrdinal: state.activityIndex + 1,
+        kind: event,
+        checks: entry.checks,
+        firstCheck: entry.firstCheck,
+        firstCheckHadHint: entry.firstCheckHadHint,
+        hints: entry.hints,
+        skips: entry.skips,
+        completed: entry.completed,
+        completionEvidence: entry.completed ? entry.completionEvidence : null,
+      }),
+    }));
+  }
 }
 
 // Private, opt-in teacher feedback: only ordinal/activity identifiers and counts.

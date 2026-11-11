@@ -53,6 +53,9 @@ jobs:
           node --check app/rc1-course-routing.js
           node --check app/rc1-course-demo.js
           node tests/test_rc1_course_routing.js
+          node --check app/rc1-course-diagnostic.js
+          node --check app/rc1-chapter9-bridge.js
+          node tests/test_rc1_draft_diagnostic.js
           node tests/test_visual_renderers.js
           node tests/test_visual_player_integration.js
           node tests/test_motion_1d_simulation.js
@@ -73,6 +76,8 @@ jobs:
         run: python scripts/check_course_preview_browser.py
       - name: Independent RC1 source-free routing Chrome smoke
         run: python scripts/check_rc1_routing_browser.py
+      - name: RC1 actual player event and provisional Chapter 9 route smoke
+        run: python scripts/check_rc1_chapter9_draft_browser.py
       - name: Reject course-specific legacy naming
         run: |
           if grep -RniE 'zca[ _-]?101' --exclude-dir=.git .; then

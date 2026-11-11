@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>BOSLA RC1 — Provisional six-section draft course</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="domain-styles.css">
+    <link rel="stylesheet" href="course-preview.css">
+    <link rel="stylesheet" href="rc1-draft-course.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <select id="locale" aria-label="Language">
+          <option value="en">English</option>
+          <option value="ms">Bahasa Melayu</option>
+          <option value="zh">中文</option>
+        </select>
+      </header>
+      <section id="course-preview" class="course-preview"
+        data-manifest-url="../local-pilot/roster.json">
+        <p class="eyebrow">LOCAL INSTRUCTOR DRAFT ONLY — NOT FOR CLASSROOM DEPLOYMENT</p>
+        <h1>Six-subchapter momentum course: provisional diagnostic</h1>
+        <p>This connects the actual draft activity player to RC1 routing.
+          The diagnostic counts answers checked by the player, not synthetic
+          button presses. The original answer keys, translations and scientific
+          meaning have NOT been independently verified. Do not use these
+          results as mastery grades or learner-pilot evidence.</p>
+        <label for="course-select">Select a subchapter</label>
+        <select id="course-select" aria-describedby="course-status" disabled>
+          <option value="">Choose a subchapter</option>
+        </select>
+        <p id="course-status" role="status" aria-live="polite">No local pilot roster has been configured.</p>
+      </section>
+      <section id="rc1-draft-course" class="course-preview"
+        aria-label="Provisional six-section diagnostic route">
+        <h2>Observed response evidence and provisional route</h2>
+        <p id="rc1-draft-status" role="status" aria-live="polite">Awaiting a local draft roster.</p>
+        <p id="rc1-draft-summary">No responses checked yet.</p>
+        <ol id="rc1-draft-list"></ol>
+        <button id="rc1-draft-reset" type="button" disabled>
+          Clear session evidence and deselect subchapter
+        </button>
+        <p class="rc1-disclaimer">
+          Prerequisite links are provisional design hypotheses, not independently
+          validated educational diagnoses. Route suggestions are advisory;
+          the draft questions remain accessible for inspection. Evidence stays
+          only in memory; reloading clears it. No login, uploads, institutional
+          cohort standing or storage is used.
+        </p>
+      </section>
+      <section id="app" aria-live="polite" data-package-url=""
+        data-external-package-selection="true" data-diagnostic-events="true">
+        <p>Select a subchapter above to inspect its draft activities.</p>
+      </section>
+    </main>
+    <script src="domain-renderers.js"></script>
+    <script src="visual-renderers.js"></script>
+    <script src="app.js"></script>
+    <script src="course-preview.js"></script>
+    <script src="rc1-course-routing.js"></script>
+    <script src="rc1-course-diagnostic.js"></script>
+    <script src="rc1-chapter9-bridge.js"></script>
+  </body>
+</html>
