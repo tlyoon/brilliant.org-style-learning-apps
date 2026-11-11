@@ -8,6 +8,7 @@
 `docs/decisions/0034-rc1-independent-sourcefree-engineering-scope.md`,
 `docs/decisions/0035-rc1-provisional-chapter9-draft-player-integration.md`,
 `docs/decisions/0036-autonomous-ai-technical-completion.md`,
+`docs/V3_AUTOMATED_ASSESSMENT_RECOVERY.md`,
 `docs/autonomous_completion_v3.json`,
 `docs/rc1_engineering_scope.json`,
 `docs/acceptance_closure_chapter9.json` and
