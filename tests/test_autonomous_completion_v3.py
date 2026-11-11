@@ -15,7 +15,7 @@ from app_generator.errors import ValidationFailure
 from app_generator.validation.autonomous_completion import (
     load_policy, make_prompt, assess_with_models, active_disposition,
     verify_automated_release_assessment, read_private_release_receipt,
-    seal_private_release_receipt,
+    seal_private_release_receipt, assessment_progress,
 )
 from app_generator.runtime.academic_release import enforce_academic_release_gate
 ROOT=Path(__file__).resolve().parents[1]
@@ -258,6 +258,38 @@ class AutonomousCompletionV3Tests(TestCase):
                     checkpoint=cp,generated_content_transfer_allowed=True)
             self.assertEqual(0,first.calls)
             self.assertEqual(0,second.calls)
+
+    def test_private_progress_reports_true_partial_coverage_not_fabricated_pass(self):
+        raw=_raw()
+        no_evidence=assessment_progress(raw)
+        self.assertEqual("PENDING_AUTOMATED_ASSESSMENT",
+                         no_evidence["currentTechnicalDisposition"])
+        self.assertEqual(2,no_evidence["activitiesRemaining"])
+        self.assertFalse(no_evidence["publicationAuthorized"])
+        first,second=FakeModel(),FakeModel()
+        report=assess_with_models(raw,sessions(first,second),
+            generated_content_transfer_allowed=True)
+        summary=assessment_progress(raw,report)
+        self.assertEqual(2,summary["activitiesAssessed"])
+        self.assertEqual(0,summary["activitiesRemaining"])
+        self.assertEqual(2,summary["modelConsensusPassActivities"])
+        self.assertEqual("PENDING_DETERMINISTIC_RELEASE_EVIDENCE",
+                         summary["currentTechnicalDisposition"])
+        self.assertFalse(summary["publicationAuthorized"])
+        with tempfile.TemporaryDirectory() as folder:
+            target=seal_private_release_receipt(raw,report,checks(raw),Path(folder))
+            accepted=assessment_progress(raw,report,release_receipt=target)
+            self.assertEqual("AUTOMATED_TECHNICAL_ELIGIBLE",
+                             accepted["currentTechnicalDisposition"])
+            self.assertTrue(accepted["publicationAuthorized"])
+            raw_changed=raw+b" "
+            with self.assertRaises(ValueError):
+                assessment_progress(raw_changed,report,release_receipt=target)
+        spoof=json.loads(json.dumps(report))
+        spoof["reviews"][0]["status"]="AI_CONSENSUS_PASS"
+        spoof["reviews"][0]["reviewers"][0]["promptSha256"]="0"*64
+        with self.assertRaisesRegex(ValueError,"V3_"):
+            assessment_progress(raw,spoof)
 
     def test_no_invented_visual_quota_or_fake_learner_pilot_in_prompts(self):
         prompt=make_prompt(json.loads(_raw())["activities"][0],"physics-adversary")
