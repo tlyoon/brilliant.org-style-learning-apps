@@ -20,10 +20,13 @@ _BLOB = re.compile(r"[0-9a-f]{40}\Z")
 _SECTION = tuple(f"9.{n}" for n in range(1, 7))
 _REQUIRED_GATES = frozenset({
     "pilotScope", "originalSourceIdentity", "sourceLocation",
-    "sourceAndFigureRights", "physicsAnswersAndTrilingualMeaning",
+    "physicsAnswersAndTrilingualMeaning",
     "diagramVisualPedagogy", "learnerViewportAndAccessibility",
     "adaptivePrivacyOperations", "engineeringHeadCI", "releaseAuthorization",
 })
+_EXCLUDED_TECHNICAL_GATES = (
+    "textbookEdition", "rightsHolder", "sourceAndFigureRights",
+)
 _ACTIONS = frozenset({"browser", "local_source", "academic_external", "publication"})
 _STATUSES = frozenset({
     "PASS_VERIFIED", "FAIL_REPRODUCED", "NOT_VERIFIED",
@@ -33,15 +36,16 @@ _STATUSES = frozenset({
 
 
 def load_frozen_charter(file: Path = CHARTER) -> dict:
-    """Validate all closure controls; fail when missing or silently relaxed."""
+    """Validate owner-updated V2 technical gates and preserve finite stop controls."""
     if file.is_symlink() or not file.is_file() or file.stat().st_size > 50000:
         raise ValueError("CLOSURE_CHARTER_MISSING_OR_UNSAFE")
     record = json.loads(file.read_text(encoding="utf-8"))
     if (not isinstance(record, dict) or record.get("schemaVersion") != 1
         or record.get("project") != "BOSLA"
-        or record.get("contract") != "FINAL_ACCEPTANCE_NO_REPEAT_V1"
+        or record.get("contract") != "FINAL_ACCEPTANCE_NO_REPEAT_V2"
         or record.get("policy", {}).get("frozen") is not True
         or record["policy"].get("newCampaignsAuthorized") != []
+        or record["policy"].get("excludedTechnicalAcceptanceGates") != list(_EXCLUDED_TECHNICAL_GATES)
         or record["policy"].get("historicalAttemptsResetAllowed") is not False
         or record["policy"].get("sourceBearingModelCallsAllowed") is not False
         or record["policy"].get("publicReleaseAuthorized") is not False
@@ -64,7 +68,7 @@ def load_frozen_charter(file: Path = CHARTER) -> dict:
             or case.get("browserCampaign") != "TERMINAL"
             or case.get("localSourceCampaign") != "TERMINAL"
             or case.get("independentAcademicExternalReview") !=
-            "BLOCKED_RIGHTS_NOT_VERIFIED"
+            "TERMINAL"
             or case.get("exactViewportVerified") is not False):
             raise ValueError("FROZEN_CANDIDATE_STOP_CHANGED")
     gates = record.get("gates")
@@ -75,7 +79,6 @@ def load_frozen_charter(file: Path = CHARTER) -> dict:
         raise ValueError("FROZEN_ACCEPTANCE_GATES_CHANGED")
     by = {g["id"]: g for g in gates}
     if (by["releaseAuthorization"]["status"] != "NOT_AUTHORIZED"
-        or by["sourceAndFigureRights"]["status"] != "NOT_VERIFIED"
         or by["physicsAnswersAndTrilingualMeaning"]["status"] != "NOT_VERIFIED"
         or by["learnerViewportAndAccessibility"]["status"] != "NOT_VERIFIED"):
         raise ValueError("UNSUPPORTED_ACCEPTANCE_PROMOTION")
@@ -125,7 +128,7 @@ def assert_campaign_admissible(
     if action == "local_source":
         raise ValueError("STOP_TERMINAL_SOURCE_LOCATION_CAMPAIGN")
     if action == "academic_external":
-        raise ValueError("STOP_INDEPENDENT_REVIEW_RIGHTS_NOT_VERIFIED")
+        raise ValueError("STOP_TERMINAL_INDEPENDENT_REVIEW_CAMPAIGN")
     raise ValueError("STOP_RELEASE_NOT_AUTHORIZED")
 
 

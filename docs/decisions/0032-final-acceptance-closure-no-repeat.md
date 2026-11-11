@@ -1,5 +1,7 @@
 # Decision 0032 — Final acceptance closure, automatic no-repeat enforcement
 
+> **11 Nov 2026 owner amendment:** Decision 0033 supersedes rights-gate, textbook-edition and rights-holder identification as technical completion prerequisites. The live `docs/acceptance_closure_chapter9.json` V2 charter has nine gates and excludes all three; references below to rights as an acceptance gate are historical V1 policy. The no-repeat, scientific/learner evidence, and no-unauthorized-use/merge/publication controls still apply.
+
 **Status:** Owner-directed binding BOSLA development decision, 10 November 2026.
 Applies to BOSLA (`brilliant.org-style-learning-apps`), especially the frozen
 Chapter 9 sections 9.1–9.6 pilot of Decision 0031. Supplements v5.0's

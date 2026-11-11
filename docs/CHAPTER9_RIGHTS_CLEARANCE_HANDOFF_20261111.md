@@ -1,4 +1,6 @@
-# Chapter 9 source and figure rights — clearance handoff (11 November 2026)
+# Chapter 9 source and figure rights — historical clearance handoff (11 November 2026)
+
+> **Superseded for technical completion by Decision 0033:** This file is an optional rights/operational reference, NOT a BOSLA technical acceptance checklist. No edition, rights-holder identity or source/figure-rights PASS is required for engineering closure, and no future session should present these as a remaining technical milestone. It still does not grant authority to transmit protected PDF data or distribute third-party content.
 
 **Disposition: NOT_VERIFIED. Evidence-only research; not a rights grant, revised frozen candidate, source campaign, model call, or release approval.**
 

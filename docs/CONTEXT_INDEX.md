@@ -1,9 +1,10 @@
 # Context index
 
-## Current binding BOSLA acceptance-closure decision (10 November 2026)
+## Current binding BOSLA acceptance-closure decisions (11 November 2026)
 
 **READ BEFORE STARTING OR RESTARTING ANY BOSLA WORK:** `AGENTS.md`,
 `docs/decisions/0032-final-acceptance-closure-no-repeat.md`,
+`docs/decisions/0033-remove-rights-gate-from-technical-closure.md`,
 `docs/acceptance_closure_chapter9.json` and
 `docs/CONTINUATION_CHECKPOINT_LATEST.md`. The machine-executable
 `scripts/check_final_acceptance_closure.py` reports current
@@ -11,8 +12,10 @@
 Frozen Chapter 9 browser and original-source-location campaigns are terminal;
 a fresh chat or generic "proceed" is **not** new evidence or authorization.
 Shared fixes must run automatically through the normal pipeline with
-source-free recurrence tests. Source/figure rights, independent physics,
-EN/MS/ZH, visual semantics, learner-pilot and release approval remain distinct.
+source-free recurrence tests. Under Decision 0033, textbook-edition,
+rights-holder identification, and source/figure rights are **excluded from
+technical-closure gates**. Independent physics/EN-MS-ZH evidence, visual
+semantics, learner-pilot and release authorization remain separate gates.
 No PR merge, source-bearing model call or release is authorized by this index.
 
 ## Authority and precedence

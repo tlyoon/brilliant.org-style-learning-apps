@@ -42,6 +42,25 @@ class FrozenFinalClosureTests(TestCase):
         self.assertEqual("NOT_AUTHORIZED",
                          status["gates"]["releaseAuthorization"])
 
+    def test_owner_removed_edition_rightsholder_and_rights_gate_permanently(self):
+        """The technical closure contract cannot resurrect admin licensing gates."""
+        charter = load_frozen_charter()
+        self.assertEqual("FINAL_ACCEPTANCE_NO_REPEAT_V2", charter["contract"])
+        self.assertEqual(
+            ["textbookEdition", "rightsHolder", "sourceAndFigureRights"],
+            charter["policy"]["excludedTechnicalAcceptanceGates"],
+        )
+        self.assertNotIn("sourceAndFigureRights", final_disposition()["gates"])
+        for case in charter["frozenCandidates"]:
+            self.assertEqual("TERMINAL", case["independentAcademicExternalReview"])
+            self.assertNotIn("edition", case)
+            self.assertNotIn("rightsHolder", case)
+        gates = {gate["id"]: gate for gate in charter["gates"]}
+        self.assertNotIn("Rights-cleared",
+                         gates["physicsAnswersAndTrilingualMeaning"]["criticalDependency"])
+        self.assertFalse(charter["policy"]["sourceBearingModelCallsAllowed"])
+        self.assertFalse(charter["policy"]["publicReleaseAuthorized"])
+
     def test_six_frozen_original_packages_cannot_restart_campaigns(self):
         for case in load_frozen_charter()["frozenCandidates"]:
             n = case["section"].split(".")[-1]
@@ -104,11 +123,16 @@ class FrozenFinalClosureTests(TestCase):
 
     def test_invalid_charter_cannot_silently_promote_rights_or_reset_history(self):
         charter = load_frozen_charter()
-        for mutation in ("rights", "retry", "release", "missing"):
+        for mutation in ("rights", "excluded", "retry", "release", "missing"):
             obj = json.loads(json.dumps(charter))
             if mutation == "rights":
-                next(g for g in obj["gates"] if g["id"] ==
-                     "sourceAndFigureRights")["status"] = "PASS_VERIFIED"
+                obj["gates"].append({
+                    "id": "sourceAndFigureRights", "track": "domain",
+                    "status": "PASS_VERIFIED", "evidence": "unapproved",
+                    "criticalDependency": None,
+                })
+            elif mutation == "excluded":
+                obj["policy"].pop("excludedTechnicalAcceptanceGates")
             elif mutation == "retry":
                 obj["policy"]["newCampaignsAuthorized"] = ["same-candidate-new-folder"]
             elif mutation == "release":
@@ -165,7 +189,7 @@ class FrozenFinalClosureTests(TestCase):
             result = run_academic_stage(config, context, self.package, None)
         self.assertEqual("CLOSURE_STOP_PENDING_MATERIAL_EVIDENCE",
                          result["status"])
-        self.assertEqual("STOP_INDEPENDENT_REVIEW_RIGHTS_NOT_VERIFIED",
+        self.assertEqual("STOP_TERMINAL_INDEPENDENT_REVIEW_CAMPAIGN",
                          result["reasonCode"])
         self.assertEqual(0, result["sourceReady"])
         self.assertFalse(result["publicationAuthorized"])
@@ -178,8 +202,10 @@ class FrozenFinalClosureTests(TestCase):
         decision = ROOT / "docs/decisions/0032-final-acceptance-closure-no-repeat.md"
         self.assertTrue(decision.is_file())
         self.assertIn("Decision 0032", instructions)
+        self.assertIn("Decision 0033", instructions)
         self.assertIn("docs/acceptance_closure_chapter9.json", instructions)
         self.assertIn("0032-final-acceptance-closure-no-repeat.md", index)
+        self.assertIn("0033-remove-rights-gate-from-technical-closure.md", index)
         self.assertIn("BSA-20261110-134", checkpoint)
 
     def test_private_external_academic_entrypoint_stops_before_configuration(self):

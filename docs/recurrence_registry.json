@@ -1663,6 +1663,29 @@
         {"path": "tests/test_academic_publication_gate.py", "kind": "python",
          "marker": "test_direct_public_publisher_refuses_real_unverified_section94_without_git_calls"}
       ]
+    },
+    {
+      "id": "BSA-20261111-142",
+      "class": "owner-directed-permanent-removal-of-administrative-rights-from-technical-closure",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": ["BSA-20261110-137", "BSA-20261110-134", "BSA-20261110-141"],
+      "differenceFromLinkedIncident": "The earlier V1 frozen Chapter 9 charter machine-required a sourceAndFigureRights PASS and made source edition/rightsholder investigation a critical precursor to technical completion. The owner expressly rescinded these administrative requirements on 11 November 2026. A new source-free test initially failed because the V1 contract still contained the tenth rights gate. V2 removes the gate entirely, declares all three administrative predicates excluded, replaces the rights-specific academic stop with the existing independent-review terminal-campaign stop, and keeps genuine scientific, visual, learner and release gates. This is a deliberate scope amendment, not evidence of a license, permission to transmit protected source files, or permission to deploy. CI rejects reintroduction of the old gate and removal of the exclusions.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/final_acceptance_closure.py",
+        "triggerMarker": "def load_frozen_charter(",
+        "remedyMarker": "or record[\"policy\"].get(\"excludedTechnicalAcceptanceGates\") != list(_EXCLUDED_TECHNICAL_GATES)",
+        "normalEntryPoints": [
+          {"path": "scripts/check_final_acceptance_closure.py", "marker": "from app_generator.validation.final_acceptance_closure import final_disposition"},
+          {"path": "app_generator/runtime/academic_release.py", "marker": "from app_generator.validation.final_acceptance_closure import assert_campaign_admissible"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_owner_removed_edition_rightsholder_and_rights_gate_permanently"},
+        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
+         "marker": "test_invalid_charter_cannot_silently_promote_rights_or_reset_history"}
+      ]
     }
   ]
 }
