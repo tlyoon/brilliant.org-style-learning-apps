@@ -1711,6 +1711,31 @@
         {"path": "tests/test_prepare_course_preview.py", "kind": "python",
          "marker": "test_exact_six_tracked_packages_create_single_ignored_roster"}
       ]
+    },
+    {
+      "id": "BSA-20261111-144",
+      "class": "browser-visual-audit-stages-default-physics-assets-for-other-domains",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": ["BSA-20261109-131", "BSA-20261104-105"],
+      "differenceFromLinkedIncident": "The generic production release builder uses the package's exact versioned registered domain for its visual renderer and stylesheet. But the shared source-free real-browser visual audit staging helper hard-coded domains/university-level physics/visuals even when the package declared a different registered domain. A new alternate-domain fixture reused the working public-release pattern and reproduced this mismatch before the fix: the staged browser's script lacked the alternate renderer marker. This could produce a false visual/bundle verdict for a different subject despite green default-physics tests. The shared staging helper now resolves the exact package domain before staging and rejects stale declared domain versions before writing any browser assets. The same automatic remedy reaches normal full learner, visual, private scientific and explanation browser audit call sites; only local synthetic test assets were used, without new acceptance campaign or third-party source.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/audit_browser_visual.py",
+        "triggerMarker": "def stage_bundle(",
+        "remedyMarker": "domain = resolve_package_domain(root, package)",
+        "normalEntryPoints": [
+          {"path": "scripts/audit_browser_visual.py", "marker": "stage_bundle(root, package, bundle)"},
+          {"path": "scripts/audit_full_learner_browser.py", "marker": "from scripts.audit_browser_visual import local_server, stage_bundle"},
+          {"path": "scripts/audit_private_v6_scientific_browser.py", "marker": "from scripts.audit_browser_visual import stage_bundle,local_server"},
+          {"path": "scripts/audit_private_correct_explanations_browser.py", "marker": "from scripts.audit_browser_visual import stage_bundle,local_server"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_browser_visual_smoke.py", "kind": "python",
+         "marker": "test_staged_browser_uses_package_declared_domain_assets"},
+        {"path": "tests/test_browser_visual_smoke.py", "kind": "python",
+         "marker": "test_stages_only_private_test_assets_and_does_not_mutate_package"}
+      ]
     }
   ]
 }

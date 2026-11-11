@@ -1,5 +1,6 @@
 import json
 import base64
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -27,6 +28,57 @@ class BrowserBundleTests(unittest.TestCase):
             self.assertTrue((output / "domain-renderers.js").is_file())
             self.assertTrue((output / "domain-styles.css").is_file())
             self.assertEqual(json.loads((output / "package.json").read_text(encoding="utf-8")), {"activities": []})
+
+    def test_staged_browser_uses_package_declared_domain_assets(self):
+        """Normal visual-audit staging must match trusted release domain assets."""
+        with tempfile.TemporaryDirectory() as dirname:
+            root = Path(dirname) / "repo"
+            shutil.copytree(ROOT / "app", root / "app")
+            shutil.copytree(ROOT / "domains", root / "domains")
+            alt = root / "domains" / "alternate-domain"
+            shutil.copytree(root / "domains" / "university-level physics", alt)
+            manifest_path = alt / "domain.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest.update({
+                "id": "alternate-domain",
+                "displayName": "Alternate Domain",
+                "subject": "alternate-subject",
+                "academicLevel": "university",
+                "profileVersion": "9.9.9",
+            })
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            renderer = alt / manifest["visuals"]["rendererScript"]
+            renderer.write_text("// ALTERNATE-BROWSER-RENDERER\n" +
+                                renderer.read_text(encoding="utf-8"), encoding="utf-8")
+            stylesheet = alt / manifest["visuals"]["stylesheet"]
+            stylesheet.write_text("/* ALTERNATE-BROWSER-STYLE */\n" +
+                                  stylesheet.read_text(encoding="utf-8"), encoding="utf-8")
+            registry_path = root / "domains" / "registry.json"
+            registry = json.loads(registry_path.read_text(encoding="utf-8"))
+            registry["domains"].append({"id": "alternate-domain",
+                                        "path": "alternate-domain"})
+            registry_path.write_text(json.dumps(registry), encoding="utf-8")
+            pkg = Path(dirname) / "synthetic-package.json"
+            identity = {"id": "alternate-domain", "profileVersion": "9.9.9",
+                        "subject": "alternate-subject", "academicLevel": "university"}
+            pkg.write_text(json.dumps({"activities": [], "domain": identity}),
+                           encoding="utf-8")
+            output = Path(dirname) / "browser"
+            output.mkdir()
+            stage_bundle(root, pkg, output)
+            self.assertIn("ALTERNATE-BROWSER-RENDERER",
+                          (output / "domain-renderers.js").read_text(encoding="utf-8"))
+            self.assertIn("ALTERNATE-BROWSER-STYLE",
+                          (output / "domain-styles.css").read_text(encoding="utf-8"))
+            identity["profileVersion"] = "9.9.8"
+            pkg.write_text(json.dumps({"activities": [], "domain": identity}),
+                           encoding="utf-8")
+            refused = Path(dirname) / "untrusted"
+            refused.mkdir()
+            with self.assertRaises(ValueError):
+                stage_bundle(root, pkg, refused)
+            self.assertEqual([], list(refused.iterdir()),
+                             "stale domain identity must fail before staging bytes")
 
     def test_review_screenshot_evidence_is_hashed_and_never_approved(self):
         class FakeDriver:

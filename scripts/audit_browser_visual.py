@@ -20,10 +20,25 @@ import tempfile
 from threading import Thread
 from urllib.parse import urlencode
 
+from app_generator.domains import resolve_package_domain
 from app_generator.validation.learner_coverage_gate import audit_visual_browser_scope
 
 
 def stage_bundle(root: Path, package_path: Path, destination: Path) -> None:
+    """Stage trusted renderer assets for the exact package-declared domain.
+
+    Resolve the package's versioned domain before writing bundle files, so
+    visually checking a different registered subject cannot silently render
+    with the default physics toolkit or accept a stale profile identity.
+    """
+    package = json.loads(package_path.read_text(encoding="utf-8"))
+    if not isinstance(package, dict):
+        raise ValueError("INVALID_PACKAGE_FOR_BROWSER_STAGING")
+    domain = resolve_package_domain(root, package)
+    renderer_script = domain.path("visuals", "rendererScript")
+    stylesheet = domain.path("visuals", "stylesheet")
+    if not renderer_script.is_file() or not stylesheet.is_file():
+        raise ValueError("REGISTERED_DOMAIN_VISUAL_ASSETS_MISSING")
     app = root / "app"
     for source_name in ("app.js", "styles.css", "visual-renderers.js"):
         shutil.copyfile(app / source_name, destination / source_name)
@@ -34,9 +49,8 @@ def stage_bundle(root: Path, package_path: Path, destination: Path) -> None:
     (destination / "index.html").write_text(
         document.replace(needle, 'data-package-url="package.json"'), encoding="utf-8"
     )
-    domain = root / "domains/university-level physics/visuals"
-    shutil.copyfile(domain / "physics-renderers.js", destination / "domain-renderers.js")
-    shutil.copyfile(domain / "physics-styles.css", destination / "domain-styles.css")
+    shutil.copyfile(renderer_script, destination / "domain-renderers.js")
+    shutil.copyfile(stylesheet, destination / "domain-styles.css")
     shutil.copyfile(package_path, destination / "package.json")
 
 
