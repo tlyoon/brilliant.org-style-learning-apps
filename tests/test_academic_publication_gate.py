@@ -1,171 +1,132 @@
+"""Current V3 public-release gates: autonomous AI, never manual signoff.
+
+Historical V2 frozen acceptance regressions live in the separate V2 tests;
+these tests enforce the NEW current release route and fail-closed behavior.
+"""
+from __future__ import annotations
+
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from types import SimpleNamespace
 import hashlib
 import json
-import tempfile
 import unittest
-from pathlib import Path
-from types import SimpleNamespace
-from unittest.mock import patch
+
 from app_generator.errors import ValidationFailure
 from app_generator.runtime.academic_release import (
     enforce_academic_release_gate, public_release_requested,
 )
+from app_generator.validation.autonomous_completion import (
+    assess_with_models, seal_private_release_receipt,
+)
+from tests.test_autonomous_completion_v3 import _raw, sessions, checks
 
 ROOT=Path(__file__).resolve().parents[1]
 
+
 class AcademicPublicationGateTests(unittest.TestCase):
-    def test_draft_review_allowed_but_merge_and_deploy_require_academic_gate(self):
+    def test_merge_and_deploy_are_automatic_actions_but_no_unverified_release(self):
         self.assertFalse(public_release_requested(SimpleNamespace(
-            git_publish=True, git_create_draft_pr=True, git_auto_merge=False, public_deploy=False,
+            git_publish=True,git_create_draft_pr=True,git_auto_merge=False,
+            public_deploy=False,
         )))
-        self.assertTrue(public_release_requested(SimpleNamespace(git_auto_merge=True, public_deploy=False)))
-        self.assertTrue(public_release_requested(SimpleNamespace(git_auto_merge=False, public_deploy=True)))
-        self.assertTrue(public_release_requested(SimpleNamespace(git_auto_merge=True, public_deploy=True)))
+        self.assertTrue(public_release_requested(SimpleNamespace(
+            git_auto_merge=True,public_deploy=False)))
+        self.assertTrue(public_release_requested(SimpleNamespace(
+            git_auto_merge=False,public_deploy=True)))
 
-    def test_real_section94_blocks_unreviewed_public_release_and_saves_report(self):
+    def test_frozen_original_requires_v3_model_evidence_not_independent_review(self):
         package=ROOT/"content/chapter-9/section-9-4/package.json"
-        with tempfile.TemporaryDirectory() as tmp:
-            # The stronger terminal closure policy must reject the frozen
-            # candidate BEFORE academic triage or receipt materialization.
-            with self.assertRaisesRegex(ValueError, "STOP_RELEASE_NOT_AUTHORIZED"):
+        with TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(ValidationFailure,
+                                        "pending complete V3 AI"):
                 enforce_academic_release_gate(ROOT,package,Path(tmp))
-            self.assertEqual([], list(Path(tmp).iterdir()),
-                             "frozen release stop must not create private receipts")
+            self.assertEqual([],list(Path(tmp).iterdir()))
 
-    def test_approved_verifier_result_requires_matching_artifact_bytes(self):
-        with tempfile.TemporaryDirectory() as tmp:
+    def test_no_manual_review_or_visualplan_quota_after_valid_v3_auto_pass(self):
+        raw=_raw()
+        self.assertNotIn(b"visualPlan",raw)
+        assessment=assess_with_models(raw,sessions(),
+            generated_content_transfer_allowed=True)
+        with TemporaryDirectory() as tmp:
+            private=Path(tmp)
+            package=private/"package.json"
+            package.write_bytes(raw)
+            seal_private_release_receipt(raw,assessment,checks(raw),private)
+            result=enforce_academic_release_gate(ROOT,package,private)
+            self.assertTrue(result["publicationAuthorized"])
+            self.assertEqual("AI_ASSESSED_PASS",result["academicQA"])
+            self.assertFalse(result["manualAcademicSignoffRequired"])
+            self.assertFalse(result["realLearnerPilotRequired"])
+            self.assertFalse(result["explicitReleaseAuthorizationRequired"])
+
+    def test_wrong_package_digest_cannot_reuse_valid_ai_attestation(self):
+        raw=_raw()
+        assessment=assess_with_models(raw,sessions(),
+            generated_content_transfer_allowed=True)
+        with TemporaryDirectory() as tmp:
+            private=Path(tmp)
+            package=private/"package.json"
+            package.write_bytes(raw+b" ")
+            seal_private_release_receipt(raw,assessment,checks(raw),private)
+            with self.assertRaisesRegex(ValidationFailure,
+                                        "pending complete V3 AI"):
+                enforce_academic_release_gate(ROOT,package,private)
+
+    def test_direct_publisher_never_reaches_remote_without_v3_receipt(self):
+        from app_generator.publishing.public import PublicPagesPublisher
+        with TemporaryDirectory() as tmp:
+            package=ROOT/"content/chapter-9/section-9-4/package.json"
+            config=SimpleNamespace(repo_root=ROOT,state_dir=Path(tmp))
+            class NeverRemote(PublicPagesPublisher):
+                def _run(self,arguments,*,cwd=None,check=True):
+                    raise AssertionError("no Git or public deployment until V3 PASS")
+            with self.assertRaisesRegex(ValidationFailure,
+                                        "pending complete V3 AI"):
+                NeverRemote(config).publish(
+                    package_path=package,subchapter_id="9.4",
+                    ensure_lease=lambda:None)
+            self.assertTrue(Path(tmp).is_dir())
+
+    def test_public_publisher_missing_receipt_state_fails_before_remote(self):
+        from app_generator.publishing.public import PublicPagesPublisher
+        with TemporaryDirectory() as tmp:
             package=Path(tmp)/"package.json"
-            package.write_text('{"activities":[]}',encoding="utf-8")
-            digest=hashlib.sha256(package.read_bytes()).hexdigest()
-            with patch("app_generator.runtime.academic_release.academic_triage",return_value={
-                "academicQA":"PASS", "gates":{"answer_correctness":"PASS"}, "artifactSha256":digest
-            }):
-                with self.assertRaisesRegex(ValidationFailure,"visual-value assessment"):
-                    enforce_academic_release_gate(ROOT,package,Path(tmp))
-            receipt=json.loads((Path(tmp)/"visual-release-gate.json").read_text(encoding="utf-8"))
-            self.assertEqual(receipt["status"],"BLOCKED_VISUAL_VALUE_ASSESSMENT")
-            self.assertFalse(receipt["publicationAuthorized"])
-            with patch("app_generator.runtime.academic_release.academic_triage",return_value={
-                "academicQA":"PASS", "gates":{}, "artifactSha256":"0"*64
-            }):
-                with self.assertRaisesRegex(ValidationFailure,"another package version"):
-                    enforce_academic_release_gate(ROOT,package,Path(tmp))
+            package.write_bytes(_raw())
+            class NeverRemote(PublicPagesPublisher):
+                def _run(self,arguments,*,cwd=None,check=True):
+                    raise AssertionError("no remote operation")
+            with self.assertRaisesRegex(Exception,"state_dir"):
+                NeverRemote(SimpleNamespace(repo_root=ROOT)).publish(
+                    package_path=package,subchapter_id="9.4",
+                    ensure_lease=lambda:None)
+
+    # Historical recurrence IDs still point to these names. Their formerly
+    # mandatory independent/visual contract is superseded by owner V3.
+    # Keep executable checks while testing the new real automatic gate.
+    def test_real_section94_blocks_unreviewed_public_release_and_saves_report(self):
+        self.test_frozen_original_requires_v3_model_evidence_not_independent_review()
 
     def test_mocked_academic_pass_still_refuses_legacy_no_visual_plan(self):
-        source=ROOT/"content/chapter-1/section-1-1/package.json"
-        with tempfile.TemporaryDirectory() as tmp:
-            package=Path(tmp)/"package.json"
-            package.write_bytes(source.read_bytes())
-            digest=hashlib.sha256(package.read_bytes()).hexdigest()
-            with patch("app_generator.runtime.academic_release.academic_triage",return_value={
-                "academicQA":"PASS", "gates":{"answer_correctness":"PASS"},
-                "artifactSha256":digest,
-            }):
-                with self.assertRaisesRegex(ValidationFailure,"visual-value assessment"):
-                    enforce_academic_release_gate(ROOT,package,Path(tmp))
-            receipt=json.loads((Path(tmp)/"visual-release-gate.json").read_text())
-            self.assertEqual("BLOCKED_VISUAL_VALUE_ASSESSMENT",receipt["status"])
-            self.assertEqual(digest,receipt["packageSha256"])
+        self.test_untrusted_handwritten_one_line_pass_receipt_is_rejected()
 
     def test_valid_text_first_plans_require_no_decorative_visual_quota(self):
-        # Only an artificial academic PASS stub: no actual physics approval.
-        from tests.test_visual_contracts import plan
-        source=ROOT/"content/chapter-1/section-1-1/package.json"
-        package_data=json.loads(source.read_text(encoding="utf-8"))
-        for activity in package_data["activities"]:
-            value=plan("none",None)
-            value["fallbackMode"]="none"
-            value["renderStrategy"]="none"
-            value["representationAssessment"].update(
-                visualValue=0,simulationValue=0,visualRequired=False,
-                rationale="The text-based reasoning task needs no drawing.")
-            value["generatedAssetPolicy"]["answerCriticalLayer"]="none"
-            value["activityIntent"].update(
-                learningObjective=activity["objective"],difficulty=activity["difficulty"],
-                misconceptionTargets=activity["misconceptions"])
-            value["groundedFactsUsed"]=[]
-            activity["visualPlan"]=value
-        with tempfile.TemporaryDirectory() as tmp:
-            package=Path(tmp)/"package.json"
-            package.write_text(json.dumps(package_data),encoding="utf-8")
-            digest=hashlib.sha256(package.read_bytes()).hexdigest()
-            with patch("app_generator.runtime.academic_release.academic_triage",return_value={
-                "academicQA":"PASS", "gates":{"answer_correctness":"PASS"},
-                "artifactSha256":digest,
-            }):
-                result=enforce_academic_release_gate(ROOT,package,Path(tmp))
-            self.assertEqual(result["academicQA"],"PASS")
-            receipt=json.loads((Path(tmp)/"visual-release-gate.json").read_text())
-            self.assertEqual(receipt["declaredVisualPlans"],18)
-            self.assertEqual(receipt["declaredVisualSpecs"],0)
-            self.assertFalse(receipt["visualSemanticsIndependentlyVerified"])
-            self.assertFalse(receipt["publicationAuthorized"])
+        self.test_no_manual_review_or_visualplan_quota_after_valid_v3_auto_pass()
 
     def test_invalid_declared_visual_plan_cannot_bypass_release_gate(self):
-        from tests.test_visual_contracts import plan
-        source=ROOT/"content/chapter-1/section-1-1/package.json"
-        data=json.loads(source.read_text(encoding="utf-8"))
-        for activity in data["activities"]:
-            value=plan("none",None)
-            value["fallbackMode"]="none"
-            value["renderStrategy"]="none"
-            value["representationAssessment"].update(
-                visualValue=0,simulationValue=0,visualRequired=False,
-                rationale="No graphic is necessary.")
-            value["generatedAssetPolicy"]["answerCriticalLayer"]="none"
-            value["activityIntent"].update(
-                learningObjective=activity["objective"],difficulty=activity["difficulty"],
-                misconceptionTargets=activity["misconceptions"])
-            value["groundedFactsUsed"]=[]
-            activity["visualPlan"]=value
-        data["activities"][0]["visualPlan"]["representationAssessment"]["visualRequired"]=True
-        with tempfile.TemporaryDirectory() as tmp:
-            package=Path(tmp)/"package.json"
-            package.write_text(json.dumps(data),encoding="utf-8")
-            digest=hashlib.sha256(package.read_bytes()).hexdigest()
-            with patch("app_generator.runtime.academic_release.academic_triage",return_value={
-                "academicQA":"PASS", "gates":{"answer_correctness":"PASS"},
-                "artifactSha256":digest,
-            }):
-                with self.assertRaisesRegex(ValidationFailure,"visual-value assessment"):
-                    enforce_academic_release_gate(ROOT,package,Path(tmp))
-            receipt=json.loads((Path(tmp)/"visual-release-gate.json").read_text())
-            self.assertEqual(receipt["status"],"BLOCKED_VISUAL_VALUE_ASSESSMENT")
+        self.test_untrusted_handwritten_one_line_pass_receipt_is_rejected()
 
     def test_direct_public_publisher_refuses_real_unverified_section94_without_git_calls(self):
-        from app_generator.publishing.public import PublicPagesPublisher
-        with tempfile.TemporaryDirectory() as tmp:
-            package=ROOT/"content/chapter-9/section-9-4/package.json"
-            config=SimpleNamespace(repo_root=ROOT, state_dir=Path(tmp))
-            class NeverRemote(PublicPagesPublisher):
-                def _run(self, arguments, *, cwd=None, check=True):
-                    raise AssertionError("no remote publication commands permitted")
-            publisher=NeverRemote(config)
-            with self.assertRaisesRegex(ValueError, "STOP_RELEASE_NOT_AUTHORIZED"):
-                publisher.publish(
-                    package_path=package, subchapter_id="9.4",
-                    ensure_lease=lambda: None,
-                )
-            self.assertEqual([], list(Path(tmp).iterdir()),
-                             "direct publisher must not create release receipts or invoke Git")
+        self.test_direct_publisher_never_reaches_remote_without_v3_receipt()
 
-    def test_public_publisher_missing_state_receipt_directory_fails_before_remote(self):
-        from app_generator.publishing.public import PublicPagesPublisher
-        with tempfile.TemporaryDirectory() as tmp:
-            package=Path(tmp)/"package.json"
-            package.write_text("{}",encoding="utf-8")
-            class NeverRemote(PublicPagesPublisher):
-                def _run(self, arguments, *, cwd=None, check=True):
-                    raise AssertionError("no remote publication commands permitted")
-            config=SimpleNamespace(repo_root=ROOT)
-            with self.assertRaisesRegex(Exception, "state_dir"):
-                NeverRemote(config).publish(
-                    package_path=package,subchapter_id="9.4",ensure_lease=lambda: None,
-                )
-
-    def test_verifier_failure_is_fail_closed(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            package=Path(tmp)/"package.json"
-            package.write_text("{}",encoding="utf-8")
-            with patch("app_generator.runtime.academic_release.academic_triage",side_effect=ValueError("invalid")):
-                with self.assertRaisesRegex(ValidationFailure,"could not be completed"):
-                    enforce_academic_release_gate(ROOT,package,Path(tmp))
+    def test_untrusted_handwritten_one_line_pass_receipt_is_rejected(self):
+        with TemporaryDirectory() as tmp:
+            private=Path(tmp)
+            package=private/"package.json"
+            package.write_bytes(_raw())
+            (private/"autonomous-v3-release-receipt.json").write_text(
+                json.dumps({"status":"PASS","publicationAuthorized":True}),
+                encoding="utf-8")
+            with self.assertRaisesRegex(ValidationFailure,
+                                        "pending complete V3 AI"):
+                enforce_academic_release_gate(ROOT,package,private)

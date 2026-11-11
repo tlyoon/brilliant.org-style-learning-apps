@@ -94,12 +94,10 @@ class ContentValidationTests(unittest.TestCase):
         package = json.loads(SECTION_1_1.read_text(encoding="utf-8"))
         package["status"] = "publishable"
         errors = validator.validate_package(package)
-        self.assertEqual(
-            len(package["activities"]),
-            sum("visual-value assessment required" in issue for issue in errors),
-        )
-        # The earlier review state remains valid and does not gain a new
-        # visual quota retroactively.
+        self.assertEqual([], errors,
+                         "V3 allows text-first publishable content without "
+                         "mandatory visualPlan quota; model QA is a separate gate")
+        # Legacy review mode remains schema valid.
         package["status"] = "review"
         self.assertEqual([], validator.validate_package(package))
 
@@ -126,10 +124,8 @@ class ContentValidationTests(unittest.TestCase):
         self.assertEqual([], validator.validate_package(package))
         del package["activities"][4]["visualPlan"]
         errors = validator.validate_package(package)
-        self.assertTrue(any(
-            "activities[4].visualPlan" in issue and
-            "visual-value assessment required" in issue for issue in errors
-        ))
+        self.assertEqual([], errors,
+                         "a valid text-first activity needs no decorative visual quota")
 
     def test_options_are_required_and_non_empty(self):
         for options in (None, []):

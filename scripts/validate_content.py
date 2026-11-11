@@ -145,16 +145,11 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
     errors.extend(package_domain_errors(DOMAIN_ROOT, data, source))
     errors.extend(visual_contract_errors(DOMAIN_ROOT, data, source))
 
-    if data["status"] == "publishable":
-        # Legacy review/draft packages remain compatible. Final Stage-0
-        # packages must declare each activity's visual-value decision,
-        # including justified, schema-checked text-first decisions.
-        for index, activity in enumerate(data["activities"]):
-            if not isinstance(activity.get("visualPlan"), dict):
-                errors.append(
-                    f"{source}.activities[{index}].visualPlan: "
-                    "visual-value assessment required for publishable packages"
-                )
+    # Binding owner V3/Decision 0036: publishable status no longer demands
+    # visualPlan objects or an independently approved meaningful-visual quota.
+    # The existing visual_contract_errors above still rejects malformed
+    # optional visuals; complete model review now assesses whether a
+    # text-first representation is pedagogically appropriate.
 
     if data["status"] in {"review", "publishable"}:
         required_review_fields = (

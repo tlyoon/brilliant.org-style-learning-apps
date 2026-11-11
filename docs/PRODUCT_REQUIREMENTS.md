@@ -10,8 +10,8 @@ The physics product should increasingly behave as a **visual-interactive reasoni
 
 - Six subchapters from an instructor-selected undergraduate physics chapter.
 - Formative practice only; pilot performance does not directly determine course grades.
-- Initial access uses a student's formal name and matric number, implemented outside this repository with appropriate institutional controls.
-- Class-only pilot built on a reusable architecture suitable for later subjects and institutions.
+- Optional institutional classroom enrollment, including names or matric numbers, must remain outside this repository under suitable institutional controls. **Real student identity and an approved classroom pilot are not prerequisites for V3 software technical completion.**
+- A class-only pilot can be conducted later as a separately authorized deployment; V3 technical completion uses automated model and source-free learner/browser checks instead.
 - Automatic unlocking with adaptive routing to prerequisites and delayed review.
 
 ## Required learner experience

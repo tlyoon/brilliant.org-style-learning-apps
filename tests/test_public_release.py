@@ -87,11 +87,12 @@ class PublicReleaseTests(unittest.TestCase):
                             hashlib.sha256(unreviewed.read_bytes()).hexdigest()}
             (evidence / "academic-release-gate.json").write_text(json.dumps(fake_receipt))
             output = Path(tmp) / "publication"
-            with self.assertRaisesRegex(ValueError, "STOP_RELEASE_NOT_AUTHORIZED"):
+            with self.assertRaisesRegex(ValidationFailure,
+                                        "pending complete V3 AI"):
                 build(output, unreviewed, validation_dir=evidence)
             self.assertFalse(output.exists(), "forged receipt cannot create a public bundle")
-            # Frozen no-repeat stop happens before receipts are examined or
-            # rewritten; pre-existing forged bytes remain inert, not accepted.
+            # The shared current V3 gate rejects legacy faux PASS; historical
+            # original-source/browser campaign stops are independently kept.
             stored = json.loads((evidence / "academic-release-gate.json").read_text())
             self.assertEqual(fake_receipt, stored)
 
@@ -115,19 +116,17 @@ class PublicReleaseTests(unittest.TestCase):
             self.assertEqual(PACKAGE.read_bytes(), (output / "content/package.json").read_bytes())
 
     def test_frozen_chapter9_public_build_stops_before_academic_gate_or_write(self):
-        """Alternative builder cannot repackage a terminal, unapproved pilot."""
+        """Alternative builder requires actual V3 AI receipts; no historic replay."""
         frozen = ROOT / "content/chapter-9/section-9-4/package.json"
         with tempfile.TemporaryDirectory() as tmp:
             evidence = Path(tmp) / "offrepo-evidence"
             evidence.mkdir()
             output = Path(tmp) / "bundle"
-            with patch("scripts.build_public_release.enforce_academic_release_gate",
-                       side_effect=AssertionError("release academic stage was entered")):
-                with self.assertRaisesRegex(
-                    ValueError, "STOP_RELEASE_NOT_AUTHORIZED"
-                ):
-                    build(output, frozen, validation_dir=evidence)
-            self.assertFalse(output.exists(), "no public files from terminal pilot")
+            with self.assertRaisesRegex(ValidationFailure,
+                                        "pending complete V3 AI"):
+                build(output, frozen, validation_dir=evidence)
+            self.assertFalse(output.exists(),
+                             "no public files without verified current V3 receipt")
 
     def test_private_receipts_cannot_be_staged_inside_public_output(self):
         with tempfile.TemporaryDirectory() as tmp:

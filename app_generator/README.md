@@ -317,7 +317,29 @@ For classification, matching and multi-selection activities, the player records 
 
 Moving an item up or down replaces its entire ordering row. The player now maintains semantic item/direction identifiers and focuses the new enabled direction control for that item. When the original move direction becomes disabled at a list boundary, the opposite enabled move button receives focus. DOM tests exercise repeated reorders, focus continuity and this boundary fallback without changing ordering answer scoring.
 
-### Autonomous academic QA decision policy
+### Current owner V3 autonomous technical completion (Decision 0036)
+
+**Current policy:** `docs/autonomous_completion_v3.json` and
+`app_generator/validation/autonomous_completion.py` replace mandatory
+independent academic/visual verification, approved real-student pilot evidence
+and explicit human release authorization with **two-context LLM review of all
+activities**, exact artifact identity, source-free browser/privacy checks and
+verified exact-head CI. No minimum decorative-visual quota exists; text-first
+may pass with a reasoned model assessment. Both adversarial model contexts must
+return valid, complete, unanimous PASS across physics/answers, EN/MS/ZH
+equivalence, representation value and accessible learner experience. Model
+FAIL, UNCERTAIN, incomplete responses or absent provider access are pending
+or automatic-repair work, not release PASS. The normal publisher and standalone
+bundle builder both require a private V3 release receipt, which has local
+tamper attestation, and derive release eligibility **without manual sign-off**.
+No original source PDF, copied third-party figures or real student records
+may be sent for this generated-content model assessment. A green structural
+test alone never establishes LLM review. Run
+`python scripts/check_final_acceptance_closure.py` for the active V3 state;
+use `--historical-v2` for the former Chapter 9 frozen evidence archive.
+The original Chapter 9 campaigns are not restarted.
+
+### Historical V2 academic QA decision policy (archived, not a V3 release prerequisite)
 
 Academic verification gates use PASS, FAIL, or REVIEW_REQUIRED. PASS requires explicit independent deterministic or source-verified evidence, never only the original generation model report. Missing evidence remains REVIEW_REQUIRED; a verified failure takes precedence. This evaluation never marks human review as performed or authorizes publication. See app_generator/validation/academic_qa.py.
 
@@ -326,7 +348,7 @@ Academic verification gates use PASS, FAIL, or REVIEW_REQUIRED. PASS requires ex
 Run `python scripts/audit_academic_qa.py --package PATH_TO_INSTALLED_PACKAGE`. An optional `--source-pdf PRIVATE_CONTROLLED_PDF_PATH` permits read-only SHA-256 identity checking; it does NOT upload or publish the PDF. The tool checks source-file identity, structural answer integrity, numerical collision witness availability, multilingual completeness and visual renderer contracts. PASS requires independently verified evidence for every academic gate; incomplete evidence is REVIEW_REQUIRED. A verified contradiction is FAIL. The report explicitly preserves humanReviewed=false and publicationAuthorized=false. It does not claim that syntactic validation, file hashes or model-based semantic reviews establish textbook accuracy. Next development work must provide trusted source-bound crosschecks and independent scientific/translation verification before academic PASS can be claimed.
 
 
-### Academic public-release gate
+### Historical V2 academic public-release documentation (superseded by V3)
 
 Normal generation, local installation and draft GitHub review remain possible
 while independent academic evidence is REVIEW_REQUIRED. Automatic Git merge
@@ -340,11 +362,12 @@ alone warrant public release. A false/ambiguous QA result never grants
 publication permission. See the continuation checkpoint and failure ledger.
 
 
-### Direct public publisher release safety
+### Direct public publisher V3 release safety
 
 The public Pages publisher is also called from auto-recovery, not only the
-normal generation orchestrator. Its publish entrypoint now independently
-requires matching, trusted academic PASS for the exact installed package.
+normal generator. Its publish entrypoint now requires the current V3
+**full-activity, two-context model-consensus and deterministic software**
+attestation for the exact installed package, not a human academic PASS.
 A private SHA-bound academic validation receipt is saved in the configured
 state directory. A missing state directory or unresolved result blocks public
 merge *before* remote Git operations. Test-only fake publisher/recovery

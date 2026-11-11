@@ -1,5 +1,19 @@
 # Decision 0032 — Final acceptance closure, automatic no-repeat enforcement
 
+> **11 Nov 2026 owner binding V3 amendment:** Decision 0036 and
+> `docs/autonomous_completion_v3.json` now govern **current technical
+> completion and automatic release eligibility**. The old independent
+> academic/EN-MS-ZH, independently validated visual, approved real-learner
+> pilot and separate manual release authorization requirements below are
+> historical V2 acceptance criteria, no longer mandatory. The immutable
+> original Chapter 9 terminal campaign history and operational protections
+> remain; no previous academic/learner PASS is retrospectively invented.
+> Run the closure checker normally for active V3, or `--historical-v2`
+> to inspect the old nine-gate log. Decision 0033's removed textbook/rights
+> technical gate stays removed.
+
+
+
 > **11 Nov 2026 owner amendment:** Decision 0033 supersedes rights-gate, textbook-edition and rights-holder identification as technical completion prerequisites. The live `docs/acceptance_closure_chapter9.json` V2 charter has nine gates and excludes all three; references below to rights as an acceptance gate are historical V1 policy. The no-repeat, scientific/learner evidence, and no-unauthorized-use/merge/publication controls still apply.
 
 **Status:** Owner-directed binding BOSLA development decision, 10 November 2026.

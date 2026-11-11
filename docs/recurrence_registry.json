@@ -1649,7 +1649,7 @@
       "automaticRemedy": {
         "runtimePath": "app_generator/runtime/academic_release.py",
         "triggerMarker": "def enforce_academic_release_gate(",
-        "remedyMarker": "assert_campaign_admissible(package_path, \"publication\")",
+        "remedyMarker": "read_private_release_receipt(",
         "normalEntryPoints": [
           {"path": "app_generator/runtime/orchestrator.py", "marker": "enforce_academic_release_gate("},
           {"path": "scripts/build_public_release.py", "marker": "enforce_academic_release_gate("}
@@ -1677,7 +1677,7 @@
         "remedyMarker": "or record[\"policy\"].get(\"excludedTechnicalAcceptanceGates\") != list(_EXCLUDED_TECHNICAL_GATES)",
         "normalEntryPoints": [
           {"path": "scripts/check_final_acceptance_closure.py", "marker": "from app_generator.validation.final_acceptance_closure import final_disposition"},
-          {"path": "app_generator/runtime/academic_release.py", "marker": "from app_generator.validation.final_acceptance_closure import assert_campaign_admissible"}
+          {"path": "scripts/audit_full_learner_browser.py", "marker": "from app_generator.validation.final_acceptance_closure import assert_campaign_admissible"}
         ]
       },
       "regressions": [
@@ -1779,6 +1779,31 @@
          "marker": "assert.equal(report.independentlyCompleted, 1);"},
         {"path": "tests/test_rc1_draft_diagnostic.js", "kind": "javascript",
          "marker": "assert.equal(s.snapshot().independentlyCompleted, 1);"}
+      ]
+    },
+    {
+      "id": "BSA-20261111-147",
+      "class": "owner-removes-manual-academic-visual-pilot-and-release-gates",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": ["BSA-20261111-142", "BSA-20261111-143"],
+      "differenceFromLinkedIncident": "The earlier Decision 0033 removal affected edition/rightsholder/rights gates, but the shared real publisher, alternative public bundle and active closure script still demanded independently validated educational content, visual plan quota, real learner-pilot evidence and explicit release approval. The owner has now expressly superseded those four prerequisites, replacing them in Decision 0036/V3 with bounded two-context adversarial LLM assessment and exact-hash automated CI/browser/privacy checks. Changed the normal shared publisher gate from original independent academic/visual triage to a complete AI-plus-deterministic private release receipt, and the alternate public bundle uses that same gate rather than historical V2 publication denial. This is a structural owner policy amendment, not a false assertion that any real original package has passed AI assessment. The historical V2 original campaign attempt log and no-repeat rules remain intact. Adversarial tests verify the no-manual/no-pilot owner policy, actual model interface calls on synthetic fixtures, missing/uncertain/conflicting response refusal, all-activity identity, automatic positive path and private receipt tamper protection. The live Gemini reviewer automation was not permitted to execute in this chat, so active V3 remains PENDING_AUTOMATED_ASSESSMENT rather than a fabricated PASS.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/academic_release.py",
+        "triggerMarker": "def enforce_academic_release_gate(",
+        "remedyMarker": "read_private_release_receipt(",
+        "normalEntryPoints": [
+          {"path": "app_generator/publishing/public.py", "marker": "enforce_academic_release_gate("},
+          {"path": "scripts/build_public_release.py", "marker": "report = enforce_academic_release_gate("}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_policy_permanently_removes_old_manual_gates"},
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_two_models_review_all_activities_and_auto_approve_without_manual_gates"},
+        {"path": "tests/test_academic_publication_gate.py", "kind": "python",
+         "marker": "test_direct_publisher_never_reaches_remote_without_v3_receipt"}
       ]
     }
   ]

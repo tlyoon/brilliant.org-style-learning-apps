@@ -7,19 +7,26 @@
 `docs/decisions/0033-remove-rights-gate-from-technical-closure.md`,
 `docs/decisions/0034-rc1-independent-sourcefree-engineering-scope.md`,
 `docs/decisions/0035-rc1-provisional-chapter9-draft-player-integration.md`,
+`docs/decisions/0036-autonomous-ai-technical-completion.md`,
+`docs/autonomous_completion_v3.json`,
 `docs/rc1_engineering_scope.json`,
 `docs/acceptance_closure_chapter9.json` and
 `docs/CONTINUATION_CHECKPOINT_LATEST.md`. The machine-executable
-`scripts/check_final_acceptance_closure.py` reports current
-`NOT_COMPLETE_WITH_NAMED_BLOCKERS` and `CLOSURE_STALL`.
-Frozen Chapter 9 browser and original-source-location campaigns are terminal;
-a fresh chat or generic "proceed" is **not** new evidence or authorization.
-Shared fixes must run automatically through the normal pipeline with
-source-free recurrence tests. Under Decision 0033, textbook-edition,
-rights-holder identification, and source/figure rights are **excluded from
-technical-closure gates**. Independent physics/EN-MS-ZH evidence, visual
-semantics, learner-pilot and release authorization remain separate gates.
-No PR merge, source-bearing model call or release is authorized by this index.
+`scripts/check_final_acceptance_closure.py` now reports CURRENT
+`AUTONOMOUS_AI_TECHNICAL_COMPLETION_V3` status (pending until actual two-model
+and deterministic machine evidence). Add `--historical-v2` to inspect the
+archived `NOT_COMPLETE_WITH_NAMED_BLOCKERS / CLOSURE_STALL` result.
+Frozen Chapter 9 original-source/browser/external-review campaigns are terminal.
+The V3 owner amendment expressly removes independent academic content review,
+independently certified meaningful visual plans, approved real learner-pilot
+evidence and separate manual release authorization as mandatory technical
+criteria. Bounded LLM assessments and machine CI/browser/privacy verification
+replace them. Decision 0033 also permanently excludes edition/rightsholder/
+sourceAndFigureRights as technical gates. Missing/model-uncertain evidence
+always means PENDING (not a fake PASS). Automatic release eligibility may be
+generated without manual approval after complete verified machine receipts,
+but no real student data, source PDF or protected third-party asset transmission
+is authorized merely by this document.
 RC1 Decision 0034 separately freezes **six entirely synthetic, source-free**
 engineering concept nodes and safe local route simulation. It may establish
 software functionality, never independent learner-pilot or academic acceptance.

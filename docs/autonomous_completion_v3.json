@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "project": "BOSLA",
+  "contract": "AUTONOMOUS_AI_TECHNICAL_COMPLETION_V3",
+  "decision": "docs/decisions/0036-autonomous-ai-technical-completion.md",
+  "activeForTechnicalCompletion": true,
+  "supersedesMandatoryAcceptanceCriteria": [
+    "independentEducationalContentValidation",
+    "independentlyVerifiedMeaningfulVisuals",
+    "approvedRealLearnerPilotEvidence",
+    "explicitHumanReleaseAuthorization",
+    "textbookEdition",
+    "rightsHolder",
+    "sourceAndFigureRights"
+  ],
+  "manualAcademicSignoffRequired": false,
+  "manualVisualSignoffRequired": false,
+  "realLearnerPilotRequired": false,
+  "explicitReleaseApprovalRequired": false,
+  "visualAssetQuotaRequired": false,
+  "aiRubricDimensions": [
+    "physicsAnswer",
+    "trilingualMeaning",
+    "visualValue",
+    "accessibleLearnerExperience"
+  ],
+  "assessment": {
+    "reviewerSessions": 2,
+    "distinctSessionIds": true,
+    "allActivitiesRequired": true,
+    "verdicts": [
+      "PASS",
+      "FAIL",
+      "UNCERTAIN"
+    ],
+    "unanimousPassRequired": true,
+    "adversarialCounterexampleRequired": true,
+    "allowedProviders": [
+      "gemini_browser",
+      "chatgpt_browser"
+    ],
+    "modelRetryLimit": 2,
+    "maxActivitiesPerInvocation": 6
+  },
+  "deterministicEvidence": {
+    "exactPackageSha256": true,
+    "exactHeadCIPass": true,
+    "browserAccessibilityPass": true,
+    "noPersonalDataExfiltration": true,
+    "sourceOrFigureUsePermissionsAreOperationalNotTechnicalGates": true
+  },
+  "releaseDecision": "AUTOMATIC_IF_ALL_AI_AND_DETERMINISTIC_TESTS_PASS",
+  "publicDeployWithoutEligibleReceipt": false,
+  "generatedPackageTextModelReviewAllowed": true,
+  "sourcePdfTransferAllowed": false,
+  "thirdPartyAssetTransferAllowed": false,
+  "realLearnerIdentityTransferAllowed": false,
+  "historicalChapter9CampaignsReopened": false,
+  "originalChapter9V2EvidenceModified": false,
+  "missingEvidenceStatus": "PENDING_AUTOMATED_ASSESSMENT"
+}

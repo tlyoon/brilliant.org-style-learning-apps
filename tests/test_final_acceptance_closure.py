@@ -147,12 +147,14 @@ class FrozenFinalClosureTests(TestCase):
 
     def test_shared_auto_release_gate_stops_frozen_package_before_academic_triage(self):
         from app_generator.runtime.academic_release import enforce_academic_release_gate
-        with patch("app_generator.runtime.academic_release.academic_triage",
-                   side_effect=AssertionError("release academic triage entered")):
-            with self.assertRaisesRegex(ValueError, "STOP_RELEASE_NOT_AUTHORIZED"):
+        from app_generator.errors import ValidationFailure
+        with patch("app_generator.runtime.academic_release.read_private_release_receipt",
+                   side_effect=ValueError("STOP_AUTONOMOUS_AI_ASSESSMENT_PENDING")):
+            with self.assertRaisesRegex(ValidationFailure,
+                                        "pending complete V3 AI"):
                 enforce_academic_release_gate(ROOT, self.package, self.private)
         self.assertEqual([], list(self.private.iterdir()),
-                         "a frozen release must not write receipts before refusal")
+                         "unassessed frozen package cannot write release receipts")
 
     def test_normal_browser_caller_refuses_before_chrome_or_receipt(self):
         out = self.private / "browser"

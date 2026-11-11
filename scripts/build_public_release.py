@@ -16,7 +16,6 @@ if str(ROOT) not in sys.path:
 
 from app_generator.domains import resolve_package_domain
 from app_generator.runtime.academic_release import enforce_academic_release_gate
-from app_generator.validation.final_acceptance_closure import assert_campaign_admissible
 
 
 def _resolve_package(package_path: Path, source_root: Path = ROOT) -> Path:
@@ -36,10 +35,11 @@ def build(
     output: Path, package_path: Path, *, source_root: Path = ROOT,
     local_preview: bool = False, validation_dir: Path | None = None,
 ) -> None:
-    """Build with explicit preview intent or independent academic release proof.
+    """Build with explicit preview intent or current V3 automated QA proof.
 
-    A standalone build is an alternate publication entry point. It must obey
-    the same exact-package academic/visual gate as the automated publisher.
+    The same exact-artifact AI consensus and deterministic release gate applies
+    to both standalone bundles and automated publisher entrypoints. No manual
+    academic, visual, classroom-pilot or explicit release-signoff is required.
     A preview is marked unapproved and must not be deployed.
     """
     if output.exists() and any(output.iterdir()):
@@ -50,12 +50,6 @@ def build(
     package = json.loads(original.decode("utf-8"))
     if not isinstance(package, dict):
         raise ValueError("Selected package must contain a JSON object")
-
-    if not local_preview:
-        # This is an alternate public bundle entrypoint. Enforce the frozen
-        # owner closure BEFORE any external/academic proof or output writes.
-        # The shared academic gate separately protects automated publishing.
-        assert_campaign_admissible(source_package, "publication")
 
     if local_preview:
         if validation_dir is not None:

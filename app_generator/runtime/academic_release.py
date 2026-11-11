@@ -1,94 +1,49 @@
-"""Fail-closed academic gate before automatic merge or public deployment.
+"""Shared automatic V3 release gate; no human academic or pilot signoff.
 
-This gate only runs on irreversible/release paths. Local package installation
-and draft PR handoff remain possible with REVIEW_REQUIRED academic evidence.
+A complete exact-artifact AI + engineering evidence receipt is necessary.
+Missing evidence queues autonomous assessment; it is never an implicit PASS.
+Operational restrictions on third-party assets and real personal data remain
+separate from technical-completion criteria.
 """
 from __future__ import annotations
 
 from pathlib import Path
-import hashlib
-import json
 
 from app_generator.errors import ValidationFailure
-from app_generator.filesystem.outputs import write_json_atomic
-from scripts.audit_academic_qa import academic_triage
-from app_generator.validation.bounded_cross_topic_acceptance import (
-    inspect_stage0_product_roster, ProductRosterMismatch,
+from app_generator.validation.autonomous_completion import (
+    read_private_release_receipt,
 )
-from app_generator.visuals.validation import visual_contract_errors
-from app_generator.validation.final_acceptance_closure import assert_campaign_admissible
 
 
 def public_release_requested(config) -> bool:
-    return bool(getattr(config, "git_auto_merge", False) or getattr(config, "public_deploy", False))
+    return bool(getattr(config, "git_auto_merge", False)
+                or getattr(config, "public_deploy", False))
 
 
-def enforce_academic_release_gate(repo_root: Path, package_path: Path, validation_dir: Path) -> dict:
-    """Record exact-package academic evidence and refuse unresolved public release."""
-    # Common release gate is used by automated publishing as well as public
-    # bundle creation. Terminal frozen candidates fail before academic triage,
-    # receipt writes, or any downstream publication side effect.
-    assert_campaign_admissible(package_path, "publication")
+def enforce_academic_release_gate(
+    repo_root: Path, package_path: Path, validation_dir: Path,
+) -> dict:
+    """Verify exact package and auto-derived release outcome at the real gate.
+
+    The public publisher and standalone bundle builder call this same entry.
+    There is no human review, real learner pilot or independent visual signoff.
+    A missing/unresolved automated receipt fails closed without writes.
+    """
+    if (not isinstance(repo_root, Path) or not isinstance(package_path, Path)
+        or not isinstance(validation_dir, Path)):
+        raise ValueError("V3_INVALID_RELEASE_INPUT")
+    if (package_path.is_symlink() or not package_path.is_file()
+        or package_path.stat().st_size > 2_000_000):
+        raise ValidationFailure("Autonomous V3 release cannot read exact package",
+                                ["V3_PACKAGE_MISSING_OR_UNSAFE"])
     try:
-        report = academic_triage(repo_root, package_path)
+        report = read_private_release_receipt(
+            package_path.read_bytes(),
+            validation_dir / "autonomous-v3-release-receipt.json",
+        )
     except (OSError, ValueError, TypeError, KeyError) as exc:
         raise ValidationFailure(
-            "Automatic release blocked: academic verification could not be completed",
-            [f"{type(exc).__name__}: {str(exc)[:300]}"],
+            "Automatic release pending complete V3 AI and deterministic assessment",
+            [str(exc)[:160]],
         ) from exc
-    # Reject stale/mismatched proof even when a verifier reports PASS.
-    if report.get("artifactSha256") != hashlib.sha256(package_path.read_bytes()).hexdigest():
-        raise ValidationFailure(
-            "Automatic release blocked: academic evidence refers to another package version",
-            ["academic QA artifact digest does not match the currently installed package"],
-        )
-    # A failed or pending gate is evidence, not permission. Save it as a
-    # separately named run validation artifact for operator recovery.
-    write_json_atomic(validation_dir / "academic-release-gate.json", report)
-    if report.get("academicQA") != "PASS":
-        pending = [key for key, outcome in report.get("gates", {}).items() if outcome != "PASS"]
-        raise ValidationFailure(
-            "Automatic merge/public release blocked by unresolved academic QA",
-            [
-                f"academicQA={report.get('academicQA', 'UNKNOWN')}",
-                f"pending or failed gates: {', '.join(pending) if pending else 'unknown'}",
-                f"package sha256: {report.get('artifactSha256', 'unavailable')}",
-            ],
-        )
-    # A text-first choice is allowed, but every activity requires an actual
-    # visual-value assessment with a rationale. Academic PASS alone cannot
-    # bypass product/visual contracts on public merge/deployment paths.
-    try:
-        package = json.loads(package_path.read_text(encoding="utf-8"))
-        inspect_stage0_product_roster(package)
-        activities = package["activities"]
-        if any(not isinstance(activity.get("visualPlan"), dict)
-               for activity in activities):
-            raise ValueError("MISSING_VISUAL_VALUE_ASSESSMENT")
-        if visual_contract_errors(repo_root, package):
-            raise ValueError("INVALID_VISUAL_CONTRACT")
-    except (ValueError, TypeError, AttributeError, KeyError, OSError) as exc:
-        write_json_atomic(validation_dir / "visual-release-gate.json", {
-            "packageSha256": report["artifactSha256"],
-            "status": "BLOCKED_VISUAL_VALUE_ASSESSMENT",
-            "reasonCategory": "VISUAL_OR_STAGE0_PRODUCT_CONTRACT_MISSING_OR_INVALID",
-            "academicQA": report["academicQA"],
-            "publicationAuthorized": False,
-        })
-        raise ValidationFailure(
-            "Automatic merge/public release blocked by visual-value assessment",
-            ["VISUAL_OR_STAGE0_PRODUCT_CONTRACT_MISSING_OR_INVALID",
-             "each activity needs a valid visualPlan, including justified text-first choices"],
-        ) from exc
-    visual_report = {
-        "packageSha256": report["artifactSha256"],
-        "status": "VISUAL_VALUE_CONTRACT_COMPLETE",
-        "activityCount": len(activities),
-        "declaredVisualPlans": len(activities),
-        "declaredVisualSpecs": sum(bool(a.get("visualSpec")) for a in activities),
-        "visualSemanticsIndependentlyVerified": False,
-        "publicationAuthorized": False,
-    }
-    write_json_atomic(validation_dir / "visual-release-gate.json", visual_report)
-    report["visualValueContract"] = visual_report
     return report
