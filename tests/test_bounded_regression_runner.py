@@ -41,9 +41,12 @@ class BoundedRegressionTests(unittest.TestCase):
         self.assertIn("test_b_fail.py", log)
 
     def test_timeout_is_reported_and_next_module_runs(self):
-        self.make_test("test_a_slow.py", "import time\n" "time.sleep(3)")
+        # Windows cold interpreter startup can exceed 0.3 seconds under
+        # load. The deliberately slow module must still exceed the cap,
+        # while an ordinary fresh subprocess must have a realistic budget.
+        self.make_test("test_a_slow.py", "import time\n" "time.sleep(5)")
         self.make_test("test_b_ok.py", "self.assertTrue(True)")
-        result, _ = self.run_plan(timeout_seconds=0.3)
+        result, _ = self.run_plan(timeout_seconds=2.0)
         self.assertEqual(["TIMEOUT", "PASS"], [x["status"] for x in result])
         self.assertIsNone(result[0]["tests"])
         self.assertIn("test_case", result[0]["diagnostic"])
