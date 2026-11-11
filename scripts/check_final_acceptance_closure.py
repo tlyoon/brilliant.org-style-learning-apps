@@ -15,16 +15,46 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from app_generator.validation.autonomous_completion import active_disposition
+from app_generator.validation.autonomous_completion import (
+    active_disposition, assessment_progress,
+)
 from app_generator.validation.final_acceptance_closure import final_disposition
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--historical-v2", action="store_true")
+    parser.add_argument("--package", type=Path)
+    parser.add_argument("--assessment-file", type=Path)
+    parser.add_argument("--release-receipt", type=Path)
     options = parser.parse_args(argv)
     try:
-        report = final_disposition() if options.historical_v2 else active_disposition()
+        if options.historical_v2:
+            if options.package or options.assessment_file or options.release_receipt:
+                raise ValueError("V3_PROGRESS_FLAGS_NOT_VALID_FOR_V2_HISTORY")
+            report = final_disposition()
+        elif options.package is not None:
+            package=options.package
+            if (package.is_symlink() or not package.is_file()
+                or package.name != "package.json"
+                or not package.resolve().is_relative_to((ROOT/"content").resolve())):
+                raise ValueError("V3_PACKAGE_NOT_REPOSITORY_CONTENT")
+            if options.assessment_file:
+                file=options.assessment_file
+                if (file.is_symlink() or not file.is_file()
+                    or file.stat().st_size > 8_000_000):
+                    raise ValueError("V3_PRIVATE_PROGRESS_UNSAFE")
+                assessment=json.loads(file.read_text(encoding="utf-8"))
+            else:
+                assessment=None
+            report = assessment_progress(
+                package.read_bytes(),assessment,
+                release_receipt=options.release_receipt,
+            )
+        else:
+            if options.assessment_file or options.release_receipt:
+                raise ValueError("V3_PACKAGE_REQUIRED_FOR_PRIVATE_EVIDENCE")
+            report = active_disposition()
     except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
         print(json.dumps({"status":"STOP_INVALID_ACTIVE_ACCEPTANCE_POLICY",
                           "publicationAuthorized":False},sort_keys=True))
