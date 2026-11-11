@@ -352,13 +352,13 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                 # No unbounded retries after ambiguous remote submission.
         dimensions, status = _review_consensus(responses)
         reviews.append({"activityId":activity["id"],"status":status,
+                        "dimensions":dimensions,"reviewers":responses})
         # Persist the complete bounded slice after each activity. A restart
         # advances to the next unseen activity; it never starts again at 1-6.
         if checkpoint is not None:
             checkpoint.save_stage(
                 stage_name, _build_review_report(digest, activities, reviews)
             )
-                        "dimensions":dimensions,"reviewers":responses})
     return _build_review_report(digest, activities, reviews)
 
 
