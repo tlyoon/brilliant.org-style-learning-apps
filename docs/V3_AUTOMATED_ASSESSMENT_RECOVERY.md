@@ -137,3 +137,41 @@ history-to-milestones evidence map is
 operational Gemini/ChatGPT generated-text-only reviewer source. Do not
 call the old denied authenticated browser runner, bypass a host restriction,
 attach protected PDFs, or count fake unit-test answers as actual model verdicts.
+
+## Course-wide V3 readiness (BSA-20261112-153)
+
+The Chapter 9 tracked content directory contains **nine** section packages
+(9.1–9.9), but the approved current RC1/V3 scope covers **only 9.1–9.6**.
+Never infer the frozen six-section roster from a whole-directory scan or
+silently truncate extra packages. Use the *existing normal status script*
+with an explicit selection:
+
+```powershell
+python scripts/check_final_acceptance_closure.py --course-dir content/chapter-9 --sections 1,2,3,4,5,6
+```
+
+Without `--sections`, a nine-section directory against the default expected
+six fails closed. The generic `--expected-sections` parameter permits
+separately authorized different engineering scopes; it does NOT amend the
+current owner-approved Chapter 9 V3 campaign. The `--course-dir` and
+`--package` modes are mutually exclusive. No source PDFs are read and no
+external provider request, private source campaign or original-content browser
+test is initiated by the new status path.
+
+Optionally provide `--private-assessment-root ABSOLUTE_OFF_REPO_DIRECTORY`
+to read the already-defined V3 `v3-generated-<full SHA>/batches/
+v3-assessment-<full SHA>.json` checkpoints. This is strictly read-only:
+missing evidence means zero model verdicts, stale/forged/mismatched evidence
+fails closed, and scope/package digests cannot be substituted. The course
+report uses `activitiesAssessedRows` separately from actual recorded
+`activitiesFullyModelReviewed` and `modelConsensusPassActivities`.
+It always reports `courseReleaseReceiptValidated=false` and
+`publicationAuthorized=false`; separate exact-package full receipt,
+deterministic browser/privacy/CI and genuine model evidence remain necessary.
+The output exposes no original generated activity texts, private file paths,
+model rationales, credentials or learner information.
+
+Dedicated source-free regressions in `tests/test_v3_course_readiness.py`
+cover the exact frozen six authentic repository packages, ambiguous broader
+directory, bad scope, optional private checkpoint, tampering, and normal CLI
+contract. They do not claim a real student pilot or AI review PASS.

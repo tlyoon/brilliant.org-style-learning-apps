@@ -1971,6 +1971,38 @@
         {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
          "marker": "test_frozen_real_chapter9_roster_cannot_auto_review_without_transport"}
       ]
+    },
+    {
+      "id": "BSA-20261112-153",
+      "class": "v3-course-readiness-roster-expands-frozen-six-to-nine-and-hides-multi-section-evidence",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": [
+        "BSA-20261111-146", "BSA-20261112-149",
+        "BSA-20261112-151", "BSA-20261112-152"
+      ],
+      "differenceFromLinkedIncident": "Previous 9.1–9.6 RC1 owner scope and synthetic six-section demonstrations did not guarantee a read-only whole-course V3 progress checker. The chapter-9 content directory actually contains nine sections (9.1–9.9), not just the six frozen V3 candidates. The new course test failed before the shared section-discovery fix, revealing synthetic section-1 versus real section-9-1 names and the wider nine-section inventory. Rather than silently scanning or truncating it, the canonical V3 status CLI now accepts an explicit section-number roster; an ambiguous nine-package directory with expected six fails closed, while explicitly selecting 1,2,3,4,5,6 validates six actual unchanged packages and 108 activities. Generic read-only helper reuses existing package_identity/assessment_progress and exact package SHA-bound off-repository checkpoint convention. It refuses duplicates, stale/forged private aggregates, unsafe paths and mismatched section counts, never reads PDFs or transmits content, and never turns draft/synthetic status into model or publication evidence. Missing live two-context reviews remain 0/108.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/v3_course_readiness.py",
+        "triggerMarker": "def course_readiness(",
+        "remedyMarker": "if section_numbers is not None:",
+        "normalEntryPoints": [
+          {"path": "scripts/check_final_acceptance_closure.py",
+           "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_normal_cli_requires_explicit_six_section_scope"},
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_real_repo_six_packages_are_structure_only_without_side_effects"},
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_private_durable_evidence_is_read_without_mutation_or_model_call"},
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_corrupted_private_evidence_must_not_be_silently_ignored"},
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_missing_duplicate_or_unsafe_six_section_roster_fails_closed"}
+      ]
     }
   ]
 }
