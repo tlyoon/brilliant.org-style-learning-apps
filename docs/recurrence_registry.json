@@ -1877,6 +1877,36 @@
          "kind": "python",
          "marker": "test_interactive_requires_scoring_data_and_never_fabricates_model_results"}
       ]
+    },
+    {
+      "id": "BSA-20261112-150",
+      "class": "v3-repeated-uncaptured-reviewer-and-swallowed-external-denial",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": ["BSA-20261030-052", "BSA-20261103-099",
+                             "BSA-20261111-147", "BSA-20261112-148"],
+      "differenceFromLinkedIncident": "BSA-20261030-052 protected the old source-PDF academic review from sending five prompts after repeated uncaptured UI responses, but the later generated-text V3 core independently issued all six role requests and swallowed an explicit ExternalExecutionDenied as an ordinary ambiguous model answer. This reproduced two real source-free engine test failures at the exact PR #223 head. Reuse one shared threshold in the legacy and V3 review engines; after two genuinely uncaptured transport errors V3 records SKIPPED_UNSENT with requestSubmitted=false and continues only the healthy role. Captured malformed JSON does not trip the circuit. A host denial records BLOCKED_EXTERNAL with requestSubmitted=false, raises immediately, and remains terminal on restart. An explicit read-only counter distinguishes real two-context reviewed activities from unresolved/skipped processed rows. These are synthetic execution guards, not provider authentication, an authorization grant, model verdicts or publication eligibility.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/autonomous_completion.py",
+        "triggerMarker": "def assess_with_models(",
+        "remedyMarker": "role_uncaptured = [",
+        "normalEntryPoints": [
+          {"path": "app_generator/validation/autonomous_completion.py",
+           "marker": "def assess_with_models("},
+          {"path": "scripts/check_final_acceptance_closure.py",
+           "marker": "from app_generator.validation.autonomous_completion import ("}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_v3_uncaptured_role_circuit_matches_legacy_and_preserves_healthy_role"},
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_v3_prior_external_execution_denial_stops_before_other_model_calls"},
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_v3_malformed_captured_json_does_not_trip_ui_circuit"},
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_v3_circuit_survives_all_three_bounded_invocations"}
+      ]
     }
   ]
 }

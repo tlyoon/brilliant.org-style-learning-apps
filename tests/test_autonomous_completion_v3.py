@@ -13,7 +13,7 @@ import subprocess
 import sys
 import tempfile
 
-from app_generator.errors import ValidationFailure
+from app_generator.errors import (ValidationFailure, UiContractError, ExternalExecutionDenied)
 from app_generator.validation.autonomous_completion import (
     load_policy, make_prompt, assess_with_models, active_disposition,
     verify_automated_release_assessment, read_private_release_receipt,
@@ -372,6 +372,119 @@ class AutonomousCompletionV3Tests(TestCase):
         spoof["reviews"][0]["reviewers"][0]["promptSha256"]="0"*64
         with self.assertRaisesRegex(ValueError,"V3_"):
             assessment_progress(raw,spoof)
+
+    def test_v3_uncaptured_role_circuit_matches_legacy_and_preserves_healthy_role(self):
+        source=json.loads(_raw())
+        template=source["activities"][0]
+        source["activities"]=[{**template,"id":f"concept-{i}"} for i in range(1,7)]
+        raw=json.dumps(source,sort_keys=True).encode()
+        class Checkpoint:
+            def __init__(self):
+                self.rows={}
+            def load_stage(self,name):
+                return self.rows.get(name)
+            def save_stage(self,name,record):
+                self.rows[name]=json.loads(json.dumps(record))
+        class Uncaptured:
+            def __init__(self):
+                self.calls=0
+            def ask(self,prompt,*,stage=None):
+                self.calls+=1
+                raise UiContractError("synthetic uncaptured Gemini UI response")
+        cp=Checkpoint()
+        broken,healthy=Uncaptured(),FakeModel()
+        report=assess_with_models(raw,sessions(broken,healthy),
+            checkpoint=cp,generated_content_transfer_allowed=True)
+        self.assertEqual(2,broken.calls)
+        self.assertEqual(6,healthy.calls)
+        self.assertEqual(6,report["activitiesAssessed"])
+        self.assertEqual("PENDING_AUTOMATED_ASSESSMENT",report["status"])
+        skipped=[v for v in cp.rows.values() if isinstance(v,dict)
+                 and v.get("state")=="SKIPPED_UNSENT"]
+        self.assertEqual(4,len(skipped))
+        self.assertTrue(all(v["requestSubmitted"] is False for v in skipped))
+        progress=assessment_progress(raw,report)
+        self.assertEqual(4,progress["reviewerRequestsSkippedUnsent"])
+        self.assertEqual(0,progress["activitiesFullyModelReviewed"])
+        again_a,again_b=FakeModel(),FakeModel()
+        resumed=assess_with_models(raw,sessions(again_a,again_b),
+            checkpoint=cp,generated_content_transfer_allowed=True)
+        self.assertEqual(report,resumed)
+        self.assertEqual((0,0),(again_a.calls,again_b.calls))
+
+    def test_v3_prior_external_execution_denial_stops_before_other_model_calls(self):
+        class Checkpoint:
+            def __init__(self):
+                self.rows={}
+            def load_stage(self,name):
+                return self.rows.get(name)
+            def save_stage(self,name,record):
+                self.rows[name]=json.loads(json.dumps(record))
+        class Denied:
+            def __init__(self):
+                self.calls=0
+            def ask(self,prompt,*,stage=None):
+                self.calls+=1
+                raise ExternalExecutionDenied("synthetic client rejection")
+        cp=Checkpoint()
+        denied,healthy=Denied(),FakeModel()
+        with self.assertRaises(ExternalExecutionDenied):
+            assess_with_models(_raw(),sessions(denied,healthy),
+                checkpoint=cp,generated_content_transfer_allowed=True)
+        self.assertEqual((1,0),(denied.calls,healthy.calls))
+        blocked=[v for v in cp.rows.values() if isinstance(v,dict)
+                 and v.get("state")=="BLOCKED_EXTERNAL"]
+        self.assertEqual(1,len(blocked))
+        self.assertFalse(blocked[0]["requestSubmitted"])
+        retry_a,retry_b=FakeModel(),FakeModel()
+        with self.assertRaisesRegex(ExternalExecutionDenied,"PREVIOUS"):
+            assess_with_models(_raw(),sessions(retry_a,retry_b),
+                checkpoint=cp,generated_content_transfer_allowed=True)
+        self.assertEqual((0,0),(retry_a.calls,retry_b.calls))
+
+    def test_v3_circuit_survives_all_three_bounded_invocations(self):
+        source=json.loads(_raw())
+        template=source["activities"][0]
+        source["activities"]=[{**template,"id":f"concept-{i}"} for i in range(1,19)]
+        raw=json.dumps(source,sort_keys=True).encode()
+        class Checkpoint:
+            def __init__(self):
+                self.rows={}
+            def load_stage(self,name):
+                return self.rows.get(name)
+            def save_stage(self,name,record):
+                self.rows[name]=json.loads(json.dumps(record))
+        class Uncaptured:
+            def __init__(self):
+                self.calls=0
+            def ask(self,prompt,*,stage=None):
+                self.calls+=1
+                raise UiContractError("synthetic uncaptured UI response")
+        cp=Checkpoint()
+        for n in (6,12,18):
+            unresponsive,healthy=Uncaptured(),FakeModel()
+            report=assess_with_models(raw,sessions(unresponsive,healthy),
+                checkpoint=cp,generated_content_transfer_allowed=True)
+            self.assertEqual(n,report["activitiesAssessed"])
+            self.assertEqual(2 if n==6 else 0,unresponsive.calls)
+            self.assertEqual(6,healthy.calls)
+        progress=assessment_progress(raw,report)
+        self.assertEqual(16,progress["reviewerRequestsSkippedUnsent"])
+        self.assertEqual(0,progress["activitiesFullyModelReviewed"])
+        self.assertFalse(progress["publicationAuthorized"])
+        self.assertEqual("RECONCILE_AMBIGUOUS_REVIEW",
+                         progress["currentTechnicalDisposition"])
+
+    def test_v3_malformed_captured_json_does_not_trip_ui_circuit(self):
+        source=json.loads(_raw())
+        template=source["activities"][0]
+        source["activities"]=[{**template,"id":f"concept-{i}"} for i in range(1,7)]
+        raw=json.dumps(source,sort_keys=True).encode()
+        malformed,healthy=FakeModel(malformed=True),FakeModel()
+        report=assess_with_models(raw,sessions(malformed,healthy),
+            generated_content_transfer_allowed=True)
+        self.assertEqual((6,6),(malformed.calls,healthy.calls))
+        self.assertEqual("PENDING_AUTOMATED_ASSESSMENT",report["status"])
 
     def test_no_invented_visual_quota_or_fake_learner_pilot_in_prompts(self):
         prompt=make_prompt(json.loads(_raw())["activities"][0],"physics-adversary")

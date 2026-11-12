@@ -15,6 +15,13 @@ from typing import Any
 import json
 import re
 
+from app_generator.errors import ExternalExecutionDenied
+from app_generator.validation.reviewer_failure_policy import (
+    UNCAPTURED_ROLE_CIRCUIT_THRESHOLD,
+    UNCAPTURED_TRANSPORT_ERROR_CODES,
+    is_uncaptured_reviewer_transport_error,
+)
+
 ROOT = Path(__file__).resolve().parents[2]
 POLICY = ROOT / "docs" / "autonomous_completion_v3.json"
 DIMENSIONS = ("physicsAnswer", "trilingualMeaning", "visualValue",
@@ -305,6 +312,14 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
     ):
         raise ValueError("V3_INCONSISTENT_ASSESSMENT_CHECKPOINT")
     reviews = [*prior]
+    # Reconstruct circuit state from exact-package, validated checkpoint
+    # results so the next six-activity invocation does not retry the failed
+    # role under a freshly initialized counter. No provider re-probe here.
+    role_uncaptured = [
+        sum(row["reviewers"][role].get("reasonCode") in
+            UNCAPTURED_TRANSPORT_ERROR_CODES for row in prior)
+        for role in range(2)
+    ]
     # Incomplete/uncertain requests are not resubmitted within this invocation.
     for index, activity in enumerate(
         activities[len(reviews):len(reviews)+6], start=len(reviews)
@@ -334,9 +349,29 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "responseSha256":previous["responseSha256"],
                         "decision":saved,
                     })
+                elif previous.get("state") == "BLOCKED_EXTERNAL":
+                    # Decision 0028: a client denial is terminal until an
+                    # independent authorization decision outside this runtime.
+                    raise ExternalExecutionDenied(
+                        "V3_PREVIOUS_EXTERNAL_EXECUTION_DENIED"
+                    )
+                elif previous.get("state") == "SKIPPED_UNSENT":
+                    if (previous.get("reasonCode") != "ROLE_CIRCUIT_OPEN_UNSENT"
+                        or previous.get("requestSubmitted") is not False):
+                        raise ValueError("V3_INVALID_SKIPPED_UNSENT_CLAIM")
+                    responses.append({
+                        "reviewerId":previous["reviewerId"],
+                        "sessionId":previous["sessionId"],
+                        "status":"UNRESOLVED",
+                        "reasonCode":"ROLE_CIRCUIT_OPEN_UNSENT",
+                    })
                 else:
                     # A previous IN_FLIGHT/AMBIGUOUS request may have reached
                     # Gemini. Never replay without provider reconciliation.
+                    if (previous.get("state") == "AMBIGUOUS" and
+                        previous.get("reasonCode") in
+                            UNCAPTURED_TRANSPORT_ERROR_CODES):
+                        role_uncaptured[role_index] += 1
                     responses.append({
                         "reviewerId":session.reviewer_id,
                         "sessionId":session.session_id,
@@ -344,13 +379,31 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "reasonCode":"PRIOR_MODEL_REQUEST_UNRECONCILED",
                     })
                 continue
+            if role_uncaptured[role_index] >= UNCAPTURED_ROLE_CIRCUIT_THRESHOLD:
+                # Unlike an ambiguous remote call, nothing was submitted.
+                # Record immutable evidence of the unsent role and continue
+                # only with an independently healthy reviewer context.
+                if checkpoint is not None:
+                    checkpoint.save_stage(claim,{**identity,
+                        "state":"SKIPPED_UNSENT",
+                        "reviewerId":session.reviewer_id,
+                        "sessionId":session.session_id,
+                        "reasonCode":"ROLE_CIRCUIT_OPEN_UNSENT",
+                        "requestSubmitted":False})
+                responses.append({"reviewerId":session.reviewer_id,
+                    "sessionId":session.session_id,
+                    "status":"UNRESOLVED",
+                    "reasonCode":"ROLE_CIRCUIT_OPEN_UNSENT"})
+                continue
             if checkpoint is not None:
                 checkpoint.save_stage(claim,{**identity,"state":"IN_FLIGHT",
                     "reviewerId":session.reviewer_id,
                     "sessionId":session.session_id})
+            response_returned = False
             try:
                 response = session.conversation.ask(
                     prompt, stage="academic-v3-autonomous")
+                response_returned = True
                 verdict = _parse_response(response, activity["id"])
                 response_hash=sha256(response.encode("utf-8")).hexdigest()
                 if checkpoint is not None:
@@ -368,7 +421,21 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                     "responseSha256":response_hash,
                     "decision":verdict,
                 })
+            except ExternalExecutionDenied:
+                # Unlike a provider timeout, the host rejected dispatch.
+                # Never reword, retry, or switch transport after this denial.
+                if checkpoint is not None:
+                    checkpoint.save_stage(claim,{
+                        **identity,"state":"BLOCKED_EXTERNAL",
+                        "reviewerId":session.reviewer_id,
+                        "sessionId":session.session_id,
+                        "reasonCode":"ExternalExecutionDenied",
+                        "requestSubmitted":False})
+                raise
             except Exception as exc:
+                if (not response_returned
+                    and is_uncaptured_reviewer_transport_error(exc)):
+                    role_uncaptured[role_index] += 1
                 if checkpoint is not None:
                     checkpoint.save_stage(claim,{
                         **identity,"state":"AMBIGUOUS",
@@ -416,6 +483,10 @@ def assessment_progress(raw: bytes, assessment: dict | None = None, *,
             raise ValueError("V3_INCONSISTENT_ASSESSMENT_PROGRESS")
     counts = {kind:sum(r["status"] == kind for r in prior)
               for kind in ("AI_CONSENSUS_PASS","AI_REPAIR_REQUIRED","AI_UNCERTAIN")}
+    fully_reviewed=sum(all("decision" in reviewer
+                           for reviewer in row["reviewers"]) for row in prior)
+    skipped_unsent=sum(reviewer.get("reasonCode")=="ROLE_CIRCUIT_OPEN_UNSENT"
+                       for row in prior for reviewer in row["reviewers"])
     if release_receipt is not None:
         decision = read_private_release_receipt(raw,release_receipt)
         if decision.get("automatedTechnicalEligible") is not True:
@@ -435,6 +506,11 @@ def assessment_progress(raw: bytes, assessment: dict | None = None, *,
         "activitiesTotal":len(activities),
         "activitiesAssessed":len(prior),
         "activitiesRemaining":len(activities)-len(prior),
+        # A processed row can contain an ambiguous or deliberately unsent
+        # reviewer. These separate counts prevent 6/6 from implying two
+        # genuine model decisions when the role circuit was open.
+        "activitiesFullyModelReviewed":fully_reviewed,
+        "reviewerRequestsSkippedUnsent":skipped_unsent,
         "modelConsensusPassActivities":counts["AI_CONSENSUS_PASS"],
         "modelRepairRequiredActivities":counts["AI_REPAIR_REQUIRED"],
         "modelUncertainActivities":counts["AI_UNCERTAIN"],

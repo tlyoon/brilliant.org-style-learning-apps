@@ -15,6 +15,9 @@ from typing import Any, Callable, Protocol
 
 from app_generator.generation.extraction import parse_json_response
 from app_generator.validation.academic_qa import REQUIRED
+from app_generator.validation.reviewer_failure_policy import (
+    UNCAPTURED_ROLE_CIRCUIT_THRESHOLD,
+)
 
 VERDICTS = frozenset({"SUPPORTED", "CONTRADICTED", "UNCERTAIN"})
 RESPONSE_VALIDATION_CODES = {
@@ -31,10 +34,6 @@ RESPONSE_VALIDATION_CODES = {
 }
 
 NEXT_ACTIONS = frozenset({"AUTO_CONTINUE", "AUTO_REPAIR", "AUTO_RETRY", "AUTO_SOURCE_CHECK"})
-# Repeated uncaptured requests from one role indicate an unhealthy conversation.
-# Stop NEW prompts for that role; the other role can finish its finite review.
-UNCAPTURED_ROLE_CIRCUIT_THRESHOLD = 2
-
 
 class ReviewerConversation(Protocol):
     def ask(self, prompt: str, *, stage: str | None = None) -> str: ...
