@@ -1938,6 +1938,39 @@
         {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
          "marker": "test_private_progress_reports_true_partial_coverage_not_fabricated_pass"}
       ]
+    },
+    {
+      "id": "BSA-20261112-152",
+      "class": "v3-authenticated-transport-integration-missing-private-normal-execution-seam",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": [
+        "BSA-20261030-052",
+        "BSA-20261103-099", "BSA-20261111-147",
+        "BSA-20261112-148", "BSA-20261112-150"
+      ],
+      "differenceFromLinkedIncident": "Historic source-PDF Gemini reviewers had a reusable ReviewerSession(conversation.ask) interface, protected-tab and profile guards, privacy-safe immutable request claims and role circuits. V3 introduced generated-activity-only assess_with_models, real 6+6+6 checkpointing and strict release checks, but lacked a stable off-repository provider-neutral execution integration callable by a separately authorized live session provider. An attempt to invent a direct authenticated browser runner was blocked under Decision 0028. Pre-fix source-free regression failed importing the missing service. The new canonical advance_v3_generated_text requires externally supplied distinct authorized reviewer sessions and explicit generated-content transfer permission, validates the exact package and finite 1-to-6 activity budget before requesting a model, creates no private state on missing/invalid auth/session conditions, reuses RunContext and the original assess_with_models automatically, protects durable package-SHA-specific state with exclusive lock, fails closed on a surviving lock or changed/forged checkpoint, and returns privacy-safe actual progress counts. This service does not open Chrome, authenticate, attach PDFs, bypass the old host denial, provide a model or import fake test verdicts into production. It closes only the internal executable integration seam; live V3 reviewer transport remains externally unavailable and original Chapter 9 genuine reviews remain 0/108.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_authorized_review.py",
+        "triggerMarker": "def advance_v3_generated_text(",
+        "remedyMarker": "context=RunContext.create(root,run_id)",
+        "normalEntryPoints": [
+          {"path": "app_generator/runtime/v3_authorized_review.py",
+           "marker": "def advance_v3_generated_text("}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
+         "marker": "test_no_authorized_transfer_or_sessions_has_no_side_effect"},
+        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
+         "marker": "test_single_activity_then_finite_resume_persists_private_claims"},
+        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
+         "marker": "test_existing_owned_run_lock_blocks_all_requests_and_is_not_removed"},
+        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
+         "marker": "test_corrupted_existing_aggregate_stops_before_any_model_request"},
+        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
+         "marker": "test_frozen_real_chapter9_roster_cannot_auto_review_without_transport"}
+      ]
     }
   ]
 }

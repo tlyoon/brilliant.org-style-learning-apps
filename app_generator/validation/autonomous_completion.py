@@ -276,7 +276,8 @@ def _validate_cached_review(activity: dict, row: dict) -> None:
 def assess_with_models(raw: bytes, sessions: tuple, *,
                        existing: dict | None = None,
                        checkpoint: Any = None,
-                       generated_content_transfer_allowed: bool = False) -> dict:
+                       generated_content_transfer_allowed: bool = False,
+                       max_activities: int = 6) -> dict:
     """One bounded original-package assessment slice using actual model ask().
 
     Never submits a PDF/figure/student record, and no model call without
@@ -284,6 +285,8 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
     """
     load_policy()
     digest, activities = package_identity(raw)
+    if type(max_activities) is not int or not 1 <= max_activities <= 6:
+        raise ValueError("V3_INVALID_BATCH_LIMIT")
     if not generated_content_transfer_allowed:
         raise ValueError("V3_GENERATED_CONTENT_MODEL_TRANSFER_NOT_ALLOWED")
     if (len(sessions) != 2
@@ -322,7 +325,7 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
     ]
     # Incomplete/uncertain requests are not resubmitted within this invocation.
     for index, activity in enumerate(
-        activities[len(reviews):len(reviews)+6], start=len(reviews)
+        activities[len(reviews):len(reviews)+max_activities], start=len(reviews)
     ):
         responses = []
         for role_index,(session, perspective) in enumerate(zip(sessions,(

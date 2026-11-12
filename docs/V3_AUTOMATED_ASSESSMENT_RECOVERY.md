@@ -88,3 +88,52 @@ visual certification, approved real learner pilot, or separate human release
 approval**. Decision 0033's technical rights gate remains removed. The
 archived original Chapter 9 V2 source/browser/academic review campaigns are
 not reset or restarted.
+
+## Canonical authorized-session integration (BSA-20261112-152)
+
+Previous BOSLA source-PDF reviewer code already supplied the
+`ReviewerSession(reviewer_id, session_id, conversation)` shape and a
+`conversation.ask(prompt, stage=...)` interface. The current V3 engine
+must not use those historical PDF-upload factories, but can reuse the
+interface **only when another permitted transport has independently provided
+two valid model sessions**.
+
+The provider-neutral entrypoint is now
+`app_generator/runtime/v3_authorized_review.py::advance_v3_generated_text`.
+Its parameters are the exact generated package bytes, two independently
+supplied and authorized reviewer sessions, an absolute **off-repository**
+private checkpoint root, explicit permission to transfer generated activity
+text, and `max_activities` from 1 to 6.
+
+A previously authorized runtime can first invoke
+`advance_v3_generated_text(raw, sessions, private_root=private_root,
+generated_content_transfer_allowed=True, max_activities=1)` for a single
+activity; later invocations use the same private root with a maximum of six.
+This is an API interface, **not a CLI that logs into Gemini or launches a
+browser**. The flag documents the external caller's established transfer
+permission; setting it does not itself authorize an account, browser action,
+provider connection or paid service.
+
+The service creates
+`<PRIVATE_ROOT>/v3-generated-<full-package-sha256>/batches/
+v3-assessment-<full-package-sha256>.json` as the stable private checkpoint.
+An exclusive `.active-review.lock` is held for each bounded invocation to
+prevent two concurrent processes from submitting the same model prompt.
+If a process terminates while holding the lock, the system stops for
+ownership reconciliation rather than silently deleting it or re-sending
+ambiguous model requests. No real model response is printed by the service;
+its return value is the source-free `assessment_progress` summary.
+
+The permanent synthetic tests in
+`tests/test_v3_authorized_execution_bridge.py` cover one-activity startup,
+durable 1+6+1 progression, zero-repeat completion, missing authorization,
+stale or conflicting checkpoint, unsafe private root, invalid batch size
+and exclusive lock refusal. All real Chapter 9 packages are protected by a
+no-model-session negative test, not reviewed by a fake transport. The separate
+history-to-milestones evidence map is
+`docs/V3_HISTORICAL_REUSE_MILESTONES.md`.
+
+**Remaining external dependency is unchanged:** a genuinely permitted and
+operational Gemini/ChatGPT generated-text-only reviewer source. Do not
+call the old denied authenticated browser runner, bypass a host restriction,
+attach protected PDFs, or count fake unit-test answers as actual model verdicts.
