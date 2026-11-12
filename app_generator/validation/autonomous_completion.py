@@ -481,6 +481,17 @@ def assessment_progress(raw: bytes, assessment: dict | None = None, *,
             _validate_cached_review(activity,row)
         if assessment != _build_review_report(digest,activities,prior):
             raise ValueError("V3_INCONSISTENT_ASSESSMENT_PROGRESS")
+    release_decision = None
+    if release_receipt is not None:
+        # Verify once and use the SAME signed assessment when reporting
+        # counts. A valid release receipt cannot show 0 reviewed activities,
+        # and an unrelated caller-supplied report cannot borrow its PASS.
+        release_decision, signed_record = _verified_private_release_record(
+            raw, release_receipt)
+        signed_assessment = signed_record["assessment"]
+        if assessment is not None and assessment != signed_assessment:
+            raise ValueError("V3_ASSESSMENT_DISAGREES_WITH_RELEASE_RECEIPT")
+        prior = signed_assessment["reviews"]
     counts = {kind:sum(r["status"] == kind for r in prior)
               for kind in ("AI_CONSENSUS_PASS","AI_REPAIR_REQUIRED","AI_UNCERTAIN")}
     fully_reviewed=sum(all("decision" in reviewer
@@ -488,8 +499,7 @@ def assessment_progress(raw: bytes, assessment: dict | None = None, *,
     skipped_unsent=sum(reviewer.get("reasonCode")=="ROLE_CIRCUIT_OPEN_UNSENT"
                        for row in prior for reviewer in row["reviewers"])
     if release_receipt is not None:
-        decision = read_private_release_receipt(raw,release_receipt)
-        if decision.get("automatedTechnicalEligible") is not True:
+        if release_decision.get("automatedTechnicalEligible") is not True:
             raise ValueError("V3_RELEASE_RECEIPT_NOT_ELIGIBLE")
         state = "AUTOMATED_TECHNICAL_ELIGIBLE"
     elif any(r["status"] == "AI_REPAIR_REQUIRED" for r in prior):
@@ -565,6 +575,16 @@ def verify_automated_release_assessment(
         or not isinstance(assessment.get("reviews"), list)
         or len(assessment["reviews"]) != len(ids)):
         raise ValueError("V3_AI_ASSESSMENT_INCOMPLETE_OR_STALE")
+    # Release must trust exactly the same role-specific activity prompts,
+    # parsed verdicts, consensus and aggregate identity as the normal V3
+    # assessment/progress path. A valid-looking PASS with a forged prompt
+    # digest must not be sealable into a locally attested release receipt.
+    for activity, row in zip(activities, assessment["reviews"]):
+        _validate_cached_review(activity, row)
+    if assessment != _build_review_report(
+        digest, activities, assessment["reviews"]
+    ):
+        raise ValueError("V3_INCONSISTENT_RELEASE_ASSESSMENT")
     for activity, row in zip(activities, assessment["reviews"]):
         if (not isinstance(row, dict) or row.get("activityId") != activity["id"]
             or row.get("status") != "AI_CONSENSUS_PASS"
@@ -649,10 +669,13 @@ def seal_private_release_receipt(
     return receipt_file
 
 
-def read_private_release_receipt(
+def _verified_private_release_record(
     raw: bytes, receipt_file: Path,
-) -> dict:
-    """A complete AI + verified deterministic receipt is mandatory.
+) -> tuple[dict, dict]:
+    """Return the verified release decision and its signed record in one read.
+
+    No second read or model call is needed for the progress/status checker.
+    A complete AI + verified deterministic receipt is mandatory.
 
     No one-line model PASS, unsigned changed package, or absence of evidence
     can authorize release. The receipt belongs to the private pipeline state,
@@ -680,6 +703,15 @@ def read_private_release_receipt(
         hmac.new(key,canonical,"sha256").hexdigest(),signature
     ):
         raise ValueError("STOP_AUTONOMOUS_AI_RELEASE_RECEIPT_TAMPERED")
-    return verify_automated_release_assessment(
+    decision = verify_automated_release_assessment(
         raw, record["assessment"],record["checks"]
     )
+    return decision, record
+
+
+def read_private_release_receipt(
+    raw: bytes, receipt_file: Path,
+) -> dict:
+    """Verify a locally attested receipt without exposing private model text."""
+    decision, _ = _verified_private_release_record(raw, receipt_file)
+    return decision

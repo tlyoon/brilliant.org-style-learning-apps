@@ -8,6 +8,7 @@ from hashlib import sha256
 from pathlib import Path
 from types import SimpleNamespace
 from unittest import TestCase
+import hmac
 import json
 import subprocess
 import sys
@@ -187,6 +188,83 @@ class AutonomousCompletionV3Tests(TestCase):
                     generated_content_transfer_allowed=True,
                 )
             self.assertEqual((0, 0), (no_call_a.calls, no_call_b.calls))
+
+    def test_release_verifier_reuses_exact_prompt_and_aggregate_provenance(self):
+        # Source-free synthetic controls: a valid-looking two-role PASS
+        # must never become a release receipt after its reviewer prompt or
+        # aggregate was changed, even if a caller can seal its own key.
+        raw=_raw()
+        original=assess_with_models(
+            raw,sessions(),generated_content_transfer_allowed=True)
+        for mode in ("stale-prompt","swapped-role","forged-aggregate"):
+            changed=json.loads(json.dumps(original))
+            if mode=="stale-prompt":
+                changed["reviews"][0]["reviewers"][0]["promptSha256"]="0"*64
+            elif mode=="swapped-role":
+                changed["reviews"][0]["reviewers"].reverse()
+            else:
+                changed["independentAcademicValidationClaimed"]=True
+            with self.subTest(mode=mode), self.assertRaisesRegex(
+                ValueError, "V3_"
+            ):
+                verify_automated_release_assessment(raw,changed,checks(raw))
+            with tempfile.TemporaryDirectory() as tmp:
+                root=Path(tmp)
+                with self.subTest(mode=mode), self.assertRaisesRegex(
+                    ValueError, "V3_"
+                ):
+                    seal_private_release_receipt(
+                        raw,changed,checks(raw),root)
+                self.assertFalse((root/"autonomous-v3-release-receipt.json").exists())
+
+    def test_even_locally_reattested_stale_model_prompt_blocks_normal_publisher(self):
+        # The HMAC is only a LOCAL attestation, not source-model evidence.
+        # Regenerating a valid local signature cannot rehabilitate a prompt
+        # bound to another activity, review role, or package revision.
+        raw=_raw()
+        valid=assess_with_models(
+            raw,sessions(),generated_content_transfer_allowed=True)
+        with tempfile.TemporaryDirectory() as tmp:
+            private=Path(tmp)
+            package=private/"package.json"
+            package.write_bytes(raw)
+            receipt=seal_private_release_receipt(
+                raw,valid,checks(raw),private)
+            payload=json.loads(receipt.read_text(encoding="utf-8"))
+            payload["assessment"]["reviews"][0]["reviewers"][0][
+                "promptSha256"]="0"*64
+            key=(private/".autonomous-v3-local-attestation.key").read_bytes()
+            canonical=json.dumps({
+                "assessment":payload["assessment"],"checks":payload["checks"]
+            },sort_keys=True,ensure_ascii=False,separators=(",",":")).encode("utf-8")
+            payload["localAttestation"]=hmac.new(key,canonical,"sha256").hexdigest()
+            receipt.write_text(json.dumps(payload),encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"V3_STALE_OR_FORGED_REVIEW_PROMPT"):
+                read_private_release_receipt(raw,receipt)
+            with self.assertRaises(ValidationFailure):
+                enforce_academic_release_gate(ROOT,package,private)
+
+    def test_release_only_status_uses_signed_review_coverage_not_zero(self):
+        raw=_raw()
+        original=assess_with_models(
+            raw,sessions(),generated_content_transfer_allowed=True)
+        with tempfile.TemporaryDirectory() as tmp:
+            receipt=seal_private_release_receipt(
+                raw,original,checks(raw),Path(tmp))
+            status=assessment_progress(raw,release_receipt=receipt)
+            self.assertEqual("AUTOMATED_TECHNICAL_ELIGIBLE",
+                             status["currentTechnicalDisposition"])
+            self.assertEqual(2,status["activitiesAssessed"])
+            self.assertEqual(2,status["activitiesFullyModelReviewed"])
+            self.assertEqual(2,status["modelConsensusPassActivities"])
+            self.assertEqual(0,status["activitiesRemaining"])
+            # An externally supplied but different report cannot borrow the
+            # valid receipt's PASS status, even when itself schema-complete.
+            different=json.loads(json.dumps(original))
+            different["reviews"][0]["reviewers"][0]["decision"]["rationales"][
+                "physicsAnswer"]="A different synthetic model rationale of sufficient length."
+            with self.assertRaisesRegex(ValueError,"V3_"):
+                assessment_progress(raw,different,release_receipt=receipt)
 
     def test_no_artifact_or_model_receipt_defaults_to_pending_not_manual_review(self):
         with tempfile.TemporaryDirectory() as folder:

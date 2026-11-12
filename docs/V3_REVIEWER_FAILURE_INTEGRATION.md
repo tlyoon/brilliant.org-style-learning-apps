@@ -50,3 +50,29 @@ machine checks exist:** `PENDING_AUTOMATED_ASSESSMENT`, model verdicts
 0/108 verified, no merge/deployment, and no scientific/visual/learner-pilot
 certification claimed. The old six original-source academic campaigns remain
 frozen. Do not replay their exhausted requests.
+
+## Release-proof consistency: BSA-20261112-151
+
+The model-review aggregate and publisher previously used different trust checks.
+While `assessment_progress` validated each role's actual
+`make_prompt(activity, perspective)` SHA-256, the release verifier accepted
+an arbitrary syntactically valid `promptSha256`. Source-free negative controls
+proved that a stale or role-swapped synthetic PASS could be sealed under a new
+local attestation and reach the normal publisher. The shared release verifier
+now invokes `_validate_cached_review` and requires an exact rebuilt aggregate
+before a receipt is sealable or admissible. A locally recomputed HMAC is not a
+substitute for package/role/prompt integrity, independent scientific validation,
+or a real model transcript.
+
+The read-only checker also previously reported an inconsistent state when
+given only a verified private release receipt: release eligible but zero assessed
+activities. The current path validates the signed receipt ONCE and derives all
+published counts from its exact signed assessment. A separate `--assessment-file`
+is optional but, if provided alongside a receipt, must match its entire signed
+assessment. Stale or mismatched evidence fails closed, not silently merged.
+
+Tests: `test_release_verifier_reuses_exact_prompt_and_aggregate_provenance`,
+`test_even_locally_reattested_stale_model_prompt_blocks_normal_publisher`,
+and `test_release_only_status_uses_signed_review_coverage_not_zero` in the
+normal V3 suite. All are **synthetic tests**; they neither invoke Gemini nor
+establish an eligible release receipt for the original six Chapter 9 packages.

@@ -1907,6 +1907,37 @@
         {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
          "marker": "test_v3_circuit_survives_all_three_bounded_invocations"}
       ]
+    },
+    {
+      "id": "BSA-20261112-151",
+      "class": "v3-release-trusts-unbound-reviewer-prompts-and-misstates-signed-coverage",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": [
+        "BSA-20261111-147", "BSA-20261112-148", "BSA-20261112-150"
+      ],
+      "differenceFromLinkedIncident": "The V3 status/aggregate checker already validated each reviewer's activity-specific perspective prompt SHA-256 and exact aggregate summary, but the normal private release verifier separately checked only presence/shape of arbitrary 64-character prompt hashes and unanimous PASS. Source-free tests reproduced that a role-swapped or stale-prompt fake PASS could be sealed into a local HMAC receipt and accepted by the normal publisher, even though the progress checker would refuse it. Independently, receipt-only status reported AUTOMATED_TECHNICAL_ELIGIBLE while still claiming activitiesAssessed=0 and 18 remaining, because the same private signed assessment was not used to derive read-only progress. Shared verify_automated_release_assessment now calls _validate_cached_review per real activity and requires exact aggregate rebuilding. The private receipt reader verifies the complete HMAC+assessment once and gives the progress checker the same verified signed report without a second file read; if the caller supplies a different report, it fails closed. Synthetic tests include stale prompt, swapped reviewer roles, forged aggregate, freshly re-attested hostile HMAC normal-publication refusal, receipt-only genuine signed counts, and mismatching supplied assessment. No actual LLM result or release receipt for the real Chapter 9 content was produced.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/autonomous_completion.py",
+        "triggerMarker": "def verify_automated_release_assessment(",
+        "remedyMarker": "_validate_cached_review(activity, row)",
+        "normalEntryPoints": [
+          {"path": "app_generator/validation/autonomous_completion.py",
+           "marker": "def verify_automated_release_assessment("},
+          {"path": "scripts/check_final_acceptance_closure.py",
+           "marker": "from app_generator.validation.autonomous_completion import ("}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_release_verifier_reuses_exact_prompt_and_aggregate_provenance"},
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_even_locally_reattested_stale_model_prompt_blocks_normal_publisher"},
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_release_only_status_uses_signed_review_coverage_not_zero"},
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_private_progress_reports_true_partial_coverage_not_fabricated_pass"}
+      ]
     }
   ]
 }
