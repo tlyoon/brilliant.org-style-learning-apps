@@ -9,13 +9,15 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest import TestCase
 import json
+import subprocess
+import sys
 import tempfile
 
 from app_generator.errors import ValidationFailure
 from app_generator.validation.autonomous_completion import (
     load_policy, make_prompt, assess_with_models, active_disposition,
     verify_automated_release_assessment, read_private_release_receipt,
-    seal_private_release_receipt, assessment_progress,
+    seal_private_release_receipt, assessment_progress, package_identity,
 )
 from app_generator.runtime.academic_release import enforce_academic_release_gate
 ROOT=Path(__file__).resolve().parents[1]
@@ -105,6 +107,86 @@ class AutonomousCompletionV3Tests(TestCase):
             self.assertEqual("AI_ASSESSED_PASS",accepted["academicQA"])
             self.assertEqual("AI_ASSESSED_PASS",
                              read_private_release_receipt(raw,target)["academicQA"])
+
+    def test_real_chapter9_packages_reach_normal_v3_status_without_model_calls(self):
+        # Schema-accurate integration coverage: these six committed packages
+        # contain 9 MCQs with answerKey and 9 interactive tasks with interaction.
+        for section in range(1, 7):
+            package = ROOT / "content" / "chapter-9" / f"section-9-{section}" / "package.json"
+            with self.subTest(section=section):
+                raw = package.read_bytes()
+                digest, activities = package_identity(raw)
+                self.assertEqual(sha256(raw).hexdigest(), digest)
+                self.assertEqual(18, len(activities))
+                self.assertEqual(9, sum(a["type"] == "mcq" for a in activities))
+                self.assertEqual(9, sum(a["type"] == "interactive" for a in activities))
+                self.assertEqual("PENDING_AUTOMATED_ASSESSMENT",
+                                 assessment_progress(raw)["currentTechnicalDisposition"])
+                status = subprocess.run(
+                    [sys.executable, str(ROOT / "scripts" /
+                     "check_final_acceptance_closure.py"), "--package", str(package)],
+                    cwd=ROOT, capture_output=True, text=True, timeout=20,
+                    check=False,
+                )
+                self.assertEqual(0, status.returncode,
+                                 status.stdout + status.stderr)
+                summary = json.loads(status.stdout)
+                self.assertEqual("PENDING_AUTOMATED_ASSESSMENT",
+                                 summary["currentTechnicalDisposition"])
+                self.assertEqual(18, summary["activitiesRemaining"])
+                self.assertFalse(summary["publicationAuthorized"])
+
+    def test_interactive_requires_scoring_data_and_never_fabricates_model_results(self):
+        data = json.loads(_raw())
+        activity = data["activities"][0]
+        activity.pop("answerKey")
+        activity.update({
+            "type": "interactive",
+            "interactionMode": "selection",
+            "interaction": {
+                "items": [{"id": "one"}, {"id": "two"}, {"id": "three"}],
+                "correctSelections": ["one", "two"],
+            },
+            "diagnosticRules": [{"misconception": "test-only",
+                                 "condition": {"type": "selection"}}],
+        })
+        valid = json.dumps(data, sort_keys=True).encode()
+        self.assertEqual(2, len(package_identity(valid)[1]))
+        first, second = FakeModel(), FakeModel()
+        report = assess_with_models(
+            valid, sessions(first, second),
+            generated_content_transfer_allowed=True,
+        )
+        self.assertEqual("AI_ASSESSED_PASS", report["status"])
+        self.assertEqual((2, 2), (first.calls, second.calls))
+        for mode in ("missing-interaction", "empty-logic", "missing-rules",
+                     "unknown-mode", "mixed-scoring"):
+            altered = json.loads(valid)
+            item = altered["activities"][0]
+            if mode == "missing-interaction":
+                item.pop("interaction")
+            elif mode == "empty-logic":
+                item["interaction"].pop("correctSelections")
+            elif mode == "missing-rules":
+                item.pop("diagnosticRules")
+            elif mode == "unknown-mode":
+                item["interactionMode"] = "freeform"
+            else:
+                item["answerKey"] = {"correct": "one"}
+            invalid = json.dumps(altered).encode()
+            with self.subTest(mode=mode), self.assertRaisesRegex(
+                ValueError, "V3_INVALID_ACTIVITIES"
+            ):
+                package_identity(invalid)
+            no_call_a, no_call_b = FakeModel(), FakeModel()
+            with self.subTest(mode=mode), self.assertRaisesRegex(
+                ValueError, "V3_INVALID_ACTIVITIES"
+            ):
+                assess_with_models(
+                    invalid, sessions(no_call_a, no_call_b),
+                    generated_content_transfer_allowed=True,
+                )
+            self.assertEqual((0, 0), (no_call_a.calls, no_call_b.calls))
 
     def test_no_artifact_or_model_receipt_defaults_to_pending_not_manual_review(self):
         with tempfile.TemporaryDirectory() as folder:

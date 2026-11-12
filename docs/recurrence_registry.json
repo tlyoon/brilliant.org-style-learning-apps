@@ -1848,6 +1848,35 @@
           "marker": "test_private_progress_reports_true_partial_coverage_not_fabricated_pass"
         }
       ]
+    },
+    {
+      "id": "BSA-20261112-149",
+      "class": "v3-mcq-only-score-validation-rejects-all-real-interactive-activities",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": ["BSA-20261112-148", "BSA-20261111-147"],
+      "differenceFromLinkedIncident": "V3's common package_identity required answerKey on every activity although the already validated production content schema expressly forbids answerKey on type=interactive and instead requires interactionMode, interaction scoring arrays and diagnosticRules. All six actual unchanged Chapter 9 packages contain nine MCQs and nine such interactive activities, so the ordinary read-only --package status CLI failed STOP_INVALID_ACTIVE_ACCEPTANCE_POLICY before any genuine model assessment could be attempted. The earlier synthetic-only V3 test fixtures used answerKey on every item, masking this normal-path integration failure. This incident is separate from BSA-148's durable aggregate continuation issue. Reproduced before the change against all six real tracked packages and a matching synthetic interactive; added their read-only normal CLI coverage so the mismatch cannot silently recur. No original PDF, browser academic campaign or model provider request was invoked. The fix is integrated on a draft candidate only, not merged, deployed, or evidence that the 108 activities passed model review.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/autonomous_completion.py",
+        "triggerMarker": "def package_identity(",
+        "remedyMarker": "def _has_scored_response(",
+        "normalEntryPoints": [
+          {"path": "app_generator/validation/autonomous_completion.py",
+           "marker": "def assess_with_models("},
+          {"path": "scripts/check_final_acceptance_closure.py",
+           "marker": "from app_generator.validation.autonomous_completion import ("},
+          {"path": "app_generator/runtime/academic_release.py",
+           "marker": "from app_generator.validation.autonomous_completion import ("}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_autonomous_completion_v3.py",
+         "kind": "python",
+         "marker": "test_real_chapter9_packages_reach_normal_v3_status_without_model_calls"},
+        {"path": "tests/test_autonomous_completion_v3.py",
+         "kind": "python",
+         "marker": "test_interactive_requires_scoring_data_and_never_fabricates_model_results"}
+      ]
     }
   ]
 }

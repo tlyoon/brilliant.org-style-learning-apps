@@ -70,6 +70,36 @@ def load_policy(file: Path = POLICY) -> dict:
     return p
 
 
+def _has_scored_response(activity: dict) -> bool:
+    """Accept both canonical schema activity types, never an unscored item.
+
+    The original V3 gate checked answerKey on every activity, accidentally
+    rejecting all real interactive items.  Their answer semantics instead live
+    in interaction plus mode-specific scoring arrays and diagnostic rules.
+    This predicate is used by every V3 assessment/status/release caller.
+    """
+    kind = activity.get("type", "mcq")  # Legacy synthetic MCQ test fixture.
+    if kind == "mcq":
+        return (isinstance(activity.get("answerKey"), dict)
+                and "interaction" not in activity
+                and "interactionMode" not in activity)
+    if kind != "interactive" or "answerKey" in activity:
+        return False
+    required = {
+        "classification": ("items", "targets", "placements"),
+        "matching": ("items", "targets", "placements"),
+        "ordering": ("items", "correctOrder"),
+        "selection": ("items", "correctSelections"),
+    }.get(activity.get("interactionMode"))
+    scoring = activity.get("interaction")
+    rules = activity.get("diagnosticRules")
+    return (required is not None
+            and isinstance(scoring, dict)
+            and all(isinstance(scoring.get(key), list) and scoring[key]
+                    for key in required)
+            and isinstance(rules, list) and bool(rules))
+
+
 def package_identity(raw: bytes) -> tuple[str, list[dict]]:
     if not isinstance(raw, bytes) or len(raw) > 2_000_000:
         raise ValueError("V3_INVALID_PACKAGE_BYTES")
@@ -79,7 +109,7 @@ def package_identity(raw: bytes) -> tuple[str, list[dict]]:
         len(activities) > 200 or any(
             not isinstance(row, dict) or not isinstance(row.get("id"), str) or
             not _ID.fullmatch(row["id"]) or not isinstance(row.get("prompt"), dict)
-            or not isinstance(row.get("answerKey"), dict)
+            or not _has_scored_response(row)
             for row in activities)):
         raise ValueError("V3_INVALID_ACTIVITIES")
     ids = [row["id"] for row in activities]
