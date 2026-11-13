@@ -125,6 +125,22 @@ def _unreconciled_next_role_claims(
     Only the next unaggregated activity can carry an incomplete role claim:
     normal V3 processes roles and aggregate rows in strict sequential order.
     """
+    # An aggregate must be saved before any later activity can start.
+    # Orphan claims for future positions indicate broken checkpoint order.
+    prefix = f"v3-review-{digest[:12]}-"
+    if batches.exists():
+        if batches.is_symlink() or not batches.is_dir():
+            raise ValueError("V3_UNSAFE_PRIVATE_COURSE_EVIDENCE")
+        for entry in batches.glob(prefix + "*.json"):
+            if entry.is_symlink() or not entry.is_file():
+                raise ValueError("V3_UNSAFE_PRIVATE_COURSE_EVIDENCE")
+            parts = entry.name[len(prefix):-5].split("-")
+            if (len(parts) != 2 or len(parts[0]) != 3
+                or not parts[0].isdigit() or parts[1] not in ("0", "1")
+                or int(parts[0]) >= len(activities)):
+                raise ValueError("V3_INVALID_ORPHAN_ROLE_CLAIM")
+            if int(parts[0]) > assessed:
+                raise ValueError("V3_OUT_OF_ORDER_ROLE_CLAIM")
     if assessed >= len(activities):
         return 0
     unresolved = 0
