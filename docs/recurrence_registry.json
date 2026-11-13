@@ -2261,6 +2261,39 @@
         {"path": "tests/test_v3_native_gemini_stress.py", "kind": "python",
          "marker": "test_interrupted_at_activity_32_stops_without_replay"}
       ]
+    },
+    {
+      "id": "BSA-20261113-163",
+      "class": "v3-future-orphan-review-claims-escaped-readonly-course-planner",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261113-162"
+      ],
+      "differenceFromLinkedIncident": "The preceding crash fix checked only the next unaggregated activity. A durable per-role claim unexpectedly recorded for a later index could escape normal read-only preflight. The planner now rejects out-of-order, oversized-index and malformed role-claim metadata before a Gemini client is created. It never deletes evidence or replays a model request. This is an offline source-free fix, not proof of live Gemini or academic acceptance.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/v3_course_readiness.py",
+        "triggerMarker": "if int(parts[0]) > assessed:",
+        "remedyMarker": "V3_OUT_OF_ORDER_ROLE_CLAIM",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "from app_generator.validation.v3_course_readiness import course_readiness"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_native_gemini_stress.py",
+          "kind": "python",
+          "marker": "test_future_orphan_role_claim_stops_before_sdk_construction"
+        },
+        {
+          "path": "tests/test_v3_native_gemini_stress.py",
+          "kind": "python",
+          "marker": "test_malformed_orphan_claim_filename_is_not_ignored"
+        }
+      ]
     }
   ]
 }
