@@ -79,3 +79,9 @@ captured and classified without replaying an ambiguous request, and its
 distinct permanent remedy must have a normal-path regression. The
 previously reported ChatGPT browser/connector denial remains separate
 and must not be evaded via the remote tool.
+
+## Follow-on hardening: BSA-20261113-163
+
+The normal read-only V3 planner also checks for out-of-order reviewer role-claim files beyond the next unaggregated activity. The assessment engine must persist each activity aggregate before starting any later activity. Accordingly, a future-index role claim is not a recoverable invitation to send another Gemini request: `V3_OUT_OF_ORDER_ROLE_CLAIM` prevents new clients from opening. Malformed or out-of-range claim filenames also fail closed. No claim is deleted or replayed.
+
+Two additional source-free normal-dispatch regressions are included in `tests/test_v3_native_gemini_stress.py`: `test_future_orphan_role_claim_stops_before_sdk_construction` and `test_malformed_orphan_claim_filename_is_not_ignored`. On Yoga 6 in an isolated temporary checkout, the 11-test focused stress suite completed with exit code 0. This proves only synthetic checkpoint handling, not genuine provider or academic acceptance. The remedy is registered in `docs/recurrence_registry.json` and runs through the standard `course_readiness` import used by the V3 course dispatcher.
