@@ -220,3 +220,33 @@ package identities, an independent synthetic Chapter 7 with a nine-section
 directory and approved six-candidate manifest, changed SHA/bytes, invalid
 frozen manifest, wrong folder naming and conflicting overrides. They are
 source-free and do not submit a prompt or trigger a browser.
+
+## Cross-platform immutable package identity (BSA-20261113-155)
+
+The first BSA-154 implementation did not pass hosted Linux CI. Its two
+failed tests did not indicate a changed authored question or scope: the
+frozen `packageSha256` came from controlled Windows Yoga 6 working files
+with CRLF newlines, while GitHub Actions checked out the **same tracked
+Git blobs** with LF. This is the established BSA-20261107-127 failure
+family, previously fixed in the course-preview roster path.
+
+The shared V3 `_verify_frozen_package_identity` now automatically applies
+the read-side remedy for every normal course-status call: the existing
+`packageGitBlobSha1` must match the exact LF-normalized Git blob
+identity, and the archived SHA-256 must match **either** actual bytes
+**or** the deterministic all-newlines-only alternate LF/CRLF bytes.
+No other byte changes are tolerated. If the source manifest lacks a
+Git blob identity, only exact SHA-256 bytes can pass; do not infer Git
+permission or fill a missing hash. Changed content, partial/mixed newline
+transformations, forged archival digests, wrong counts and renamed
+sections still fail closed. Per-section `frozenIdentityBasis` names
+`EXACT_PACKAGE_SHA256` or `EOL_NORMALIZED_GIT_BLOB`, not model PASS.
+
+This action neither modifies the frozen archival roster nor accesses
+protected source PDFs, a live browser, reviewer credentials or student
+records. The scope remains 9.1–9.6 and 108 activities. New synthetic
+regressions reproduce a CRLF-origin frozen SHA with an LF checkout and
+reject semantic alteration and altered Git blob identity on an
+independent Chapter 7 fixture. Hosted CI failure #43333798461 is
+retained as reproducible negative evidence; closure requires successful
+exact-head hosted Linux tests.

@@ -2033,6 +2033,34 @@
         {"path": "tests/test_v3_course_readiness.py", "kind": "python",
          "marker": "test_real_repo_six_packages_are_structure_only_without_side_effects"}
       ]
+    },
+    {
+      "id": "BSA-20261113-155",
+      "class": "frozen-v3-scope-windows-crlf-and-linux-git-lf-different-package-sha",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": [
+        "BSA-20261107-127", "BSA-20261112-153",
+        "BSA-20261113-154"
+      ],
+      "differenceFromLinkedIncident": "The BSA-20261113-154 automatic scope reader verified the historical frozen packageSha256 bytes, which matched all six Yoga6 Windows CRLF working-tree files, but exact-head GitHub Linux CI checkouts normalized the same six tracked Git blobs to LF and the full test suite failed on V3_FROZEN_PACKAGE_IDENTITY_DRIFT. This repeated the git-clean CRLF/LF read-side failure already recorded in BSA-20261107-127 for the separate course-preview roster. The previous resolution used Git filter-normalized blob identity; the V3 normal course status had not connected it. Inspecting the actual Section 9.1 Windows file confirmed 2156 CRLF line endings, frozen byte SHA256 match and LF-normalized SHA1 Git blob exactly matching frozen packageGitBlobSha1. The shared V3 checker now validates BOTH frozen Git blob SHA1 against canonical LF-normalized content and the original frozen SHA256 against either exact raw working bytes OR the uniquely deterministic CRLF/LF alternative. It refuses arbitrary whitespace/semantic edits, mixed line endings, changed bytes, changed archived identity, nonexistent blob evidence or changed activity count. The existing BSA-154 read-only engine remains the one normal CLI dispatch, with frozenIdentityBasis reporting EXACT_PACKAGE_SHA256 versus EOL_NORMALIZED_GIT_BLOB; no external model, protected PDF or publication is authorized. Source-free synthetic Chapter 7 CRLF-manifest/LF-checkout negative tests now pin the recurrence. The previously failed hosted run 43333798461 is failure evidence; the new exact-head CI must separately pass.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/v3_course_readiness.py",
+        "triggerMarker": "def _verify_frozen_package_identity(",
+        "remedyMarker": "return \"EOL_NORMALIZED_GIT_BLOB\"",
+        "normalEntryPoints": [
+          {"path": "scripts/check_final_acceptance_closure.py",
+           "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_cross_platform_crlf_frozen_bytes_match_only_exact_lf_git_blob"},
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_normal_cli_recovers_frozen_scope_and_rejects_replacement_sections"},
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_other_chapter_automatically_resolves_frozen_manifest_and_rejects_drift"}
+      ]
     }
   ]
 }

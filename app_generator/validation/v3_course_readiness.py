@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import re
+from hashlib import sha1, sha256
 from pathlib import Path
 
 from app_generator.validation.autonomous_completion import (
@@ -18,11 +19,12 @@ from app_generator.validation.autonomous_completion import (
 # portable synthetic section-1 fixtures without hardcoding chapter numbers.
 _SECTION = re.compile(r"section-(?:[0-9]+-)?([0-9]+)\Z")
 _HASH = re.compile(r"[0-9a-f]{64}\Z")
+_GIT_BLOB = re.compile(r"[0-9a-f]{40}\Z")
 
 
 def _approved_frozen_scope(
     chapter: Path, root: Path, expected_sections: int,
-) -> dict[int, tuple[str, int]] | None:
+) -> dict[int, tuple[str, int, str | None]] | None:
     """Read existing immutable candidate identities, never historical V2 gates.
 
     A chapter-N directory may carry an acceptance_closure_chapterN.json
@@ -57,13 +59,60 @@ def _approved_frozen_scope(
         suffix=label[len(prefix):] if isinstance(label,str) and label.startswith(prefix) else ""
         digest=candidate.get("packageSha256")
         count=candidate.get("activityCount")
+        git_blob=candidate.get("packageGitBlobSha1")
         if (not suffix.isdecimal() or not suffix or str(int(suffix))!=suffix
             or int(suffix)<1 or int(suffix) in result
             or not isinstance(digest,str) or not _HASH.fullmatch(digest)
-            or type(count) is not int or count<1):
+            or type(count) is not int or count<1
+            or (git_blob is not None and
+                (not isinstance(git_blob,str) or not _GIT_BLOB.fullmatch(git_blob)))):
             raise ValueError("V3_INVALID_FROZEN_SCOPE_CANDIDATE")
-        result[int(suffix)]=(digest,count)
+        result[int(suffix)]=(digest,count,git_blob)
     return result
+
+
+def _verify_frozen_package_identity(
+    raw: bytes, digest: str, activities: list[dict],
+    expected: tuple[str, int, str | None],
+) -> str:
+    """Accept only exact frozen bytes or provably equivalent Git EOL checkout.
+
+    BSA-20261107-127: Windows CRLF working bytes and Linux LF Git checkout
+    are two renderings of the SAME immutable committed package. Never accept
+    a changed package by trusting a Git hash *alone*: both the archival
+    SHA256 of the deterministic EOL alternative AND the archival Git blob
+    identity must match. This is not evidence of model/academic validation.
+    """
+    frozen_sha,frozen_count,frozen_blob=expected
+    if len(activities)!=frozen_count:
+        raise ValueError("V3_FROZEN_PACKAGE_IDENTITY_DRIFT")
+    normalized=raw.replace(b"\r\n",b"\n")
+    if frozen_blob is not None:
+        if b"\r" in normalized:
+            raise ValueError("V3_FROZEN_PACKAGE_IDENTITY_DRIFT")
+        actual_blob=sha1(
+            b"blob "+str(len(normalized)).encode()+b"\0"+normalized
+        ).hexdigest()
+        if actual_blob!=frozen_blob:
+            raise ValueError("V3_FROZEN_PACKAGE_IDENTITY_DRIFT")
+    if digest==frozen_sha:
+        return "EXACT_PACKAGE_SHA256"
+    if frozen_blob is None:
+        raise ValueError("V3_FROZEN_PACKAGE_IDENTITY_DRIFT")
+    # The only tolerated variation is ALL line endings changed, not
+    # formatting, field order, whitespace, content, or a renewed campaign.
+    if b"\r\n" in raw:
+        without_crlf=raw.replace(b"\r\n",b"")
+        if b"\r" in without_crlf or b"\n" in without_crlf:
+            raise ValueError("V3_FROZEN_PACKAGE_IDENTITY_DRIFT")
+        alternate=normalized
+    elif b"\r" not in raw and b"\n" in raw:
+        alternate=raw.replace(b"\n",b"\r\n")
+    else:
+        raise ValueError("V3_FROZEN_PACKAGE_IDENTITY_DRIFT")
+    if sha256(alternate).hexdigest()!=frozen_sha:
+        raise ValueError("V3_FROZEN_PACKAGE_IDENTITY_DRIFT")
+    return "EOL_NORMALIZED_GIT_BLOB"
 
 
 def course_readiness(
@@ -151,8 +200,9 @@ def course_readiness(
             raise ValueError("V3_MISSING_OR_UNSAFE_COURSE_PACKAGE")
         raw=package.read_bytes()
         digest,activities=package_identity(raw)
-        if frozen is not None and (digest,len(activities))!=frozen[number]:
-            raise ValueError("V3_FROZEN_PACKAGE_IDENTITY_DRIFT")
+        identity_basis=(_verify_frozen_package_identity(
+            raw,digest,activities,frozen[number])
+            if frozen is not None else "NOT_FROZEN")
         if digest in digests:
             raise ValueError("V3_DUPLICATE_COURSE_PACKAGE")
         digests.add(digest)
@@ -173,6 +223,7 @@ def course_readiness(
         rows.append({
             "section":section.name,
             "packageSha256":digest,
+            "frozenIdentityBasis":identity_basis,
             "activitiesTotal":len(activities),
             "activitiesAssessedRows":progress["activitiesAssessed"],
             "activitiesFullyModelReviewed":progress["activitiesFullyModelReviewed"],

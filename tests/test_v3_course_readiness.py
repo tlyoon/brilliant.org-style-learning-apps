@@ -188,6 +188,59 @@ class V3CourseReadinessTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"V3_FROZEN_PACKAGE_IDENTITY_DRIFT"):
                 course_readiness(chapter,root)
 
+    def test_cross_platform_crlf_frozen_bytes_match_only_exact_lf_git_blob(self):
+        # Historical BSA-20261107-127: Yoga 6 CRLF package SHA versus
+        # hosted Linux checkout LF of the SAME tracked Git blob.
+        from hashlib import sha1, sha256
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)
+            chapter=write_course(root,count=6).rename(
+                root/"content"/"chapter-7")
+            frozen=[]
+            for i in range(1,7):
+                folder=(chapter/f"section-{i}").rename(
+                    chapter/f"section-7-{i}")
+                pkg=folder/"package.json"
+                data=json.loads(pkg.read_text(encoding="utf-8"))
+                lf=(json.dumps(data,ensure_ascii=False,indent=2)+"\n").encode()
+                crlf=lf.replace(b"\n",b"\r\n")
+                pkg.write_bytes(lf)  # Simulate GitHub LF checkout.
+                frozen.append({
+                    "section":f"7.{i}","activityCount":1,
+                    "packageSha256":sha256(crlf).hexdigest(),
+                    "packageGitBlobSha1":sha1(
+                        b"blob "+str(len(lf)).encode()+b"\0"+lf).hexdigest(),
+                })
+            docs=root/"docs"
+            docs.mkdir()
+            manifest=docs/"acceptance_closure_chapter7.json"
+            archive={"project":"BOSLA",
+                     "contract":"FINAL_ACCEPTANCE_NO_REPEAT_V2",
+                     "policy":{"frozen":True},
+                     "frozenCandidates":frozen}
+            manifest.write_text(json.dumps(archive),encoding="utf-8")
+            summary=course_readiness(chapter,root)
+            self.assertEqual((6,6),(
+                summary["sectionsTotal"],summary["activitiesTotal"]))
+            self.assertTrue(all(
+                row["frozenIdentityBasis"]=="EOL_NORMALIZED_GIT_BLOB"
+                for row in summary["sectionProgress"]))
+            # Genuine content mutation (not newline normalization) fails.
+            p=chapter/"section-7-2"/"package.json"
+            original=p.read_bytes()
+            p.write_bytes(original.replace(b"Question",b"Altered"))
+            with self.assertRaisesRegex(
+                ValueError,"V3_FROZEN_PACKAGE_IDENTITY_DRIFT"):
+                course_readiness(chapter,root)
+            # Restore original and now tamper with frozen Git identity:
+            # the matching CRLF SHA cannot rehabilitate a changed blob ID.
+            p.write_bytes(original)
+            archive["frozenCandidates"][1]["packageGitBlobSha1"]="0"*40
+            manifest.write_text(json.dumps(archive),encoding="utf-8")
+            with self.assertRaisesRegex(
+                ValueError,"V3_FROZEN_PACKAGE_IDENTITY_DRIFT"):
+                course_readiness(chapter,root)
+
     def test_frozen_scope_missing_or_corrupt_fails_closed_not_autocleared(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d)
