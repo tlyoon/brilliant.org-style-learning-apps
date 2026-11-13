@@ -1,5 +1,17 @@
 # Context index
 
+## Latest owner binding: automatic recovery is normal pipeline behavior (13 November 2026)
+
+Read `docs/decisions/0037-automatic-recovery-normal-pipeline.md`
+and `docs/normal_pipeline_recovery_contract.json` before any further
+development. Every solved recurring blocker must be detected and safely
+repaired or stopped **within the already supported normal execution path**,
+with regression and exact-head CI, rather than through assistant-led manual
+patch cycles. The ordinary `scripts/check_regression_contract.py` CI
+check enforces the machine-readable policy. Continue independently eligible
+authorized work without repeated routine owner intervention; never route
+around a host safety denial or fabricate genuine model evidence.
+
 ## Current binding BOSLA acceptance-closure decisions (11 November 2026)
 
 **READ BEFORE STARTING OR RESTARTING ANY BOSLA WORK:** `AGENTS.md`,

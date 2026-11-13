@@ -2096,6 +2096,29 @@
         {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
          "marker": "test_stale_or_invalid_frozen_course_stops_before_model_call"}
       ]
+    },
+    {
+      "id": "BSA-20261113-157",
+      "class": "normal-pipeline-auto-recovery-owner-contract-not-machine-locked",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": ["BSA-20261110-137", "BSA-20261113-156"],
+      "differenceFromLinkedIncident": "Decision 0027 and v5.0 already requested automatic remedies, and BSA-137 required normal-dispatch fields for each recent resolved incident, but the cross-session owner rule itself was not a separately immutable machine-checked policy. This allowed future maintainers to weaken automatic recovery, revert to manual owner prompts, or describe test-only remedies as completion without CI rejecting the contract change. The new owner Decision 0037 is tied to exact machine-readable invariants, AGENTS operational precedence and the existing normal CI recurrence guard. A pre-fix negative regression demonstrated that deleting the policy was not detected. After the common checker repair, deleting the policy, switching off automatic detection, or removing the developer instruction causes the normal guard to fail. The old BSA-156 course executor stays the sole live V3 dispatch; this governance milestone does not supply the missing externally authorized Gemini/ChatGPT reviewer sessions or claim completed assessment.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/check_regression_contract.py",
+        "triggerMarker": "def verify(root: Path = ROOT) -> list[str]:",
+        "remedyMarker": "errors: list[str] = _normal_pipeline_recovery_errors(root)",
+        "normalEntryPoints": [
+          {"path": ".github/workflows/validate.yml",
+           "marker": "python scripts/check_regression_contract.py"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_regression_contract.py", "kind": "python",
+         "marker": "test_normal_pipeline_recovery_contract_cannot_be_silently_weakened"},
+        {"path": "tests/test_regression_contract.py", "kind": "python",
+         "marker": "test_resolved_recent_incident_requires_automatic_runtime_integration"}
+      ]
     }
   ]
 }

@@ -53,6 +53,19 @@ Track **implemented, locally tested, CI-validated, integrated, academically acce
 - Decision 0024: independent AI academic review without mandatory human signoff.
 - Issue #220: existing long stacked integration debt.
 
+## Superseding strengthening: Decision 0037 (13 November 2026)
+
+Owner Decision 0037 makes the existing regression-immunity rule explicit:
+**automatic recovery must be part of normal pipeline execution, not depend
+on you repeatedly asking me to fix the next blocker.** Its machine-readable
+invariants in `docs/normal_pipeline_recovery_contract.json` are checked
+by the ordinary `scripts/check_regression_contract.py` CI gate. A repaired
+defect is not closed by a manual-only workaround, a standalone tool, or a
+synthetic green test that was never exercised by its normal dispatch path.
+Safe automatic recovery must remain finite and respect external permission,
+request-ownership and no-replay boundaries. This is an additive development
+obligation, not an override of Decision 0028 or the V3 release proof.
+
 ## Mandatory normal-path activation proof (10 November 2026, BSA-20261110-137)
 
 Effective for each newly RESOLVED BSA incident from BSA-20261110-135

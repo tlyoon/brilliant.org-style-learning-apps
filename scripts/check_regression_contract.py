@@ -92,6 +92,29 @@ REQUIRED_BASELINE = frozenset({
 })
 STANDARD_PYTHON_CI = "python -m unittest discover -s tests -v"
 GUARD_CI = "python scripts/check_regression_contract.py"
+# Immutable owner-approved Decision 0037: runtime recovery, not manual patches.
+NORMAL_RECOVERY_DECISION = "docs/decisions/0037-automatic-recovery-normal-pipeline.md"
+NORMAL_RECOVERY_PRINCIPLE = (
+    "automatic recovery must be part of normal pipeline execution, "
+    "not depend on you repeatedly asking me to fix the next blocker."
+)
+NORMAL_RECOVERY_REQUIREMENTS = (
+    "reuseEarlierRemedyBeforeNewCode",
+    "automaticDetectionInNormalPipeline",
+    "boundedOwnedStateRecoveryOrStop",
+    "normalDispatchProofForEveryResolvedIncident",
+    "adversarialNegativeControlRequired",
+    "normalPathRegressionRequired",
+    "exactHeadCIRequired",
+    "advanceIndependentAuthorizedWorkWithoutUserPrompt",
+    "truthfulUnresolvedExternalBlockers",
+    "noAmbiguousRequestReplay",
+    "noExternalDenialBypass",
+)
+NORMAL_RECOVERY_TERMINAL = (
+    "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
+    "RECONCILE_AMBIGUOUS_REVIEW",
+)
 
 
 def _repo_file(root: Path, name: object) -> Path | None:
@@ -267,9 +290,38 @@ def _automatic_remedy_errors(entry: dict, ident: str, root: Path) -> list[str]:
     return errors
 
 
+def _normal_pipeline_recovery_errors(root: Path) -> list[str]:
+    """Keep the owner's auto-recovery rule active in ordinary PR/push CI."""
+    path = _repo_file(root, "docs/normal_pipeline_recovery_contract.json")
+    decision = _repo_file(root, NORMAL_RECOVERY_DECISION)
+    agents = _repo_file(root, "AGENTS.md")
+    if path is None or decision is None:
+        return ["normal pipeline recovery contract missing"]
+    try:
+        policy = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, ValueError):
+        return ["normal pipeline recovery contract weakened"]
+    expected = {
+        "schemaVersion": 1,
+        "decision": NORMAL_RECOVERY_DECISION,
+        "principle": NORMAL_RECOVERY_PRINCIPLE,
+        "requirements": {name: True for name in NORMAL_RECOVERY_REQUIREMENTS},
+        "terminalExternalStatuses": list(NORMAL_RECOVERY_TERMINAL),
+        "completionMeaning": "REAL_AUTHORIZED_EXECUTION_EVIDENCE_REQUIRED",
+    }
+    errors = []
+    if policy != expected or NORMAL_RECOVERY_PRINCIPLE not in (
+            decision.read_text(encoding="utf-8")):
+        errors.append("normal pipeline recovery contract weakened")
+    if agents is None or NORMAL_RECOVERY_DECISION not in agents.read_text(
+            encoding="utf-8"):
+        errors.append("normal pipeline recovery instructions missing")
+    return errors
+
+
 def verify(root: Path = ROOT) -> list[str]:
     root = root.resolve()
-    errors: list[str] = []
+    errors: list[str] = _normal_pipeline_recovery_errors(root)
     registry_path = _repo_file(root, "docs/recurrence_registry.json")
     ledger_path = _repo_file(root, "docs/FAILURE_TO_FIX_LEDGER.md")
     workflow_path = _repo_file(root, ".github/workflows/validate.yml")

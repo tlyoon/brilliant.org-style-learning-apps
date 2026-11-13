@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "decision": "docs/decisions/0037-automatic-recovery-normal-pipeline.md",
+  "principle": "automatic recovery must be part of normal pipeline execution, not depend on you repeatedly asking me to fix the next blocker.",
+  "requirements": {
+    "reuseEarlierRemedyBeforeNewCode": true,
+    "automaticDetectionInNormalPipeline": true,
+    "boundedOwnedStateRecoveryOrStop": true,
+    "normalDispatchProofForEveryResolvedIncident": true,
+    "adversarialNegativeControlRequired": true,
+    "normalPathRegressionRequired": true,
+    "exactHeadCIRequired": true,
+    "advanceIndependentAuthorizedWorkWithoutUserPrompt": true,
+    "truthfulUnresolvedExternalBlockers": true,
+    "noAmbiguousRequestReplay": true,
+    "noExternalDenialBypass": true
+  },
+  "terminalExternalStatuses": [
+    "BLOCKED_EXTERNAL",
+    "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
+    "RECONCILE_AMBIGUOUS_REVIEW"
+  ],
+  "completionMeaning": "REAL_AUTHORIZED_EXECUTION_EVIDENCE_REQUIRED"
+}

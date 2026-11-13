@@ -23,6 +23,9 @@ class RegressionContractTests(unittest.TestCase):
         self.copy("docs/recurrence_registry.json")
         self.copy("docs/FAILURE_TO_FIX_LEDGER.md")
         self.copy("docs/decisions/0027-regression-immunity-and-recovery.md")
+        self.copy("docs/decisions/0037-automatic-recovery-normal-pipeline.md")
+        self.copy("docs/normal_pipeline_recovery_contract.json")
+        self.copy("AGENTS.md")
         self.copy(".github/workflows/validate.yml")
         for record in self.manifest["incidents"]:
             for test in record["regressions"]:
@@ -142,6 +145,27 @@ class RegressionContractTests(unittest.TestCase):
         new_entry["differenceFromLinkedIncident"] = "old test did not catch it"
         self.save_manifest()
         self.assertIn("explain why earlier regression", " ".join(verify(self.root)))
+
+    def test_normal_pipeline_recovery_contract_cannot_be_silently_weakened(self):
+        """A manual-only fix or repeated owner intervention must not pass CI."""
+        policy_path = self.root / "docs/normal_pipeline_recovery_contract.json"
+        initial = policy_path.read_text(encoding="utf-8")
+        policy_path.unlink()
+        self.assertIn("normal pipeline recovery contract missing",
+                      " ".join(verify(self.root)))
+        policy_path.write_text(initial, encoding="utf-8")
+        policy = json.loads(initial)
+        policy["requirements"]["automaticDetectionInNormalPipeline"] = False
+        policy_path.write_text(json.dumps(policy), encoding="utf-8")
+        self.assertIn("normal pipeline recovery contract weakened",
+                      " ".join(verify(self.root)))
+        policy_path.write_text(initial, encoding="utf-8")
+        agent = self.root / "AGENTS.md"
+        agent.write_text(agent.read_text(encoding="utf-8").replace(
+            "docs/decisions/0037-automatic-recovery-normal-pipeline.md",
+            "docs/decisions/0037-omitted.md"), encoding="utf-8")
+        self.assertIn("normal pipeline recovery instructions missing",
+                      " ".join(verify(self.root)))
 
     def test_canonical_resolved_incidents_are_ci_protected(self):
         self.assertEqual([], verify(self.root))
