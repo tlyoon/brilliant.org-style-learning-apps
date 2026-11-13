@@ -61,3 +61,61 @@ Provide the project/workstream name, approximate date/time, affected connected a
 ## Next development tasks
 
 After CI validation of this draft code, perform an authorized private initial-checkpoint integration, preserving historic-denial records in a separate audit trail if the authorizing environment requires it. Then return to the independently admissible exact-v11 academic tasks. Neither a green CI result nor this document authorizes source-content publication or a merge.
+
+## Permanent first-party escalation workflow for Gemini-only V3 (13 November 2026)
+
+**Authority boundary:** An owner request, a locally constructed permission
+Boolean, source-free green CI and an app-level `Allow all actions` setting
+do NOT create approval for a formerly denied authenticated browser operation.
+A stale historical denial report without the original client error/tool
+arguments cannot be used to invoke the exact-call review panel or to assert
+that Gemini has refused a current request. Never create a new wrapper,
+switch devices/accounts/models, or submit a probe merely to manufacture a
+reviewable denial. The binding V3 provider is **Gemini only** (Decision 0038).
+
+**Approved escalation channels:**
+
+- For an actual **fresh** Remote Desktop Commander client-side refusal before
+  the action reaches Yoga 6, if one **unchanged** retry was stopped too, use
+  the connector's `review_device_call` first-party review control with the
+  exact refused tool name, unchanged arguments and actual client error. The
+  control only asks the user to review the original call; it cannot itself
+  override or submit a denied operation. Never use it for a historical
+  refusal without those exact details, a timeout, or an account failure.
+- Otherwise, request the independently authorized execution path through
+  **OpenAI Support**, officially reached via the chat bubble at
+  https://help.openai.com/ (see
+  https://help.openai.com/en/articles/6614161-how-can-i-contact-support).
+  File the support case through the account holder's signed-in Help Center;
+  repository issue comments and locally prepared support messages are **not**
+  actual submissions. Include affected conversation, approximate original
+  date/time/timezone, sanitized bounded operation, device/tool name and
+  actual error/correlation ID if preserved. Do not include private source,
+  password, browser token, personal data or raw student content.
+- The account holder can use the private Yoga 6 support packet
+  `V3_GEMINI_ONLY_OPENAI_SUPPORT_SUBMISSION_20261113.md` (private Yoga 6 project-continuity folder).
+  It is marked **PREPARED, NOT SUBMITTED** until a real support case receipt
+  is received. A support request alone is **not** an execution grant.
+
+**One reusable decision instead of repeated manual fixes:** Request a durable,
+scope-specific statement whether the existing `advance_v3_course_review`
+normal dispatcher may run authenticated Gemini-only generated-text reviews
+for initial batch size 1 followed by finite 1–6 batches on the same authorized
+profile. Preserve actual approval scope, permitted tool, case/decision ID,
+expiry and revocation conditions outside Git. If approved, a caller may
+supply its separately verified authorized `V3ExistingLoginSessions`; retain
+all package, transfer, two-context, no-replay and release checks. If
+pending/denied/uncertain, return `BLOCKED_EXTERNAL_REVIEW_TRANSPORT`
+without a browser launch or fabricated V3 verdict. Support staff, not this
+repository, determine whether any approval is reusable across runs.
+
+**Historical case caveat:** First-party details for the original reported
+authenticated-browser denial were not preserved, so the project cannot
+prove that the 13 November Gemini-only operation is currently denied or that
+ChatGPT caused the denial. A source-free offline preflight on Yoga 6 has
+already verified the *canonical* `scripts.sync_configured_workstation`
+configuration, existing unoccupied Gemini profile, Selenium import and
+normal source-free recurrence checks. Calling the generic synchronization
+renderer without `configure_core()` produces a misleading
+`[compatibility]` error; the correct production path passes. Do not
+introduce a second config-renderer workaround.

@@ -370,3 +370,21 @@ normal `advance_v3_course_review` path exercises this automatically.
 Source-free negative controls first failed on the real-format frame,
 then passed after the fix. This closes a code-format blocker, not the
 independent host execution authorization or missing real V3 assessments.
+
+## External execution dependency: one-time support escalation, not another model recovery loop
+
+The owner authorized pursuit of a reusable approved Gemini-only execution
+path. No internal code change or model/prompt retry can grant external
+platform authorization. The current appropriate escalation is the account
+holder's OpenAI Support chat at https://help.openai.com/ using the
+**prepared, not submitted** private Yoga 6 file
+`V3_GEMINI_ONLY_OPENAI_SUPPORT_SUBMISSION_20261113.md` (private Yoga 6 project-continuity folder).
+The request explicitly asks for the exact operation, platform decision ID,
+permitted execution tool and whether permission may persist for subsequent
+bounded batches. When a *new* Remote Desktop Commander tool call itself is
+client-blocked and an unchanged retry is also blocked, use the first-party
+`review_device_call` with those precise arguments/error instead. Never
+invent an original blocked-call payload or invoke a similar operation in an
+attempt to obtain that payload. Until a real decision arrives, keep
+`BLOCKED_EXTERNAL_REVIEW_TRANSPORT`, 0/108 genuine V3 reviews and no public
+release. See `docs/EXTERNAL_EXECUTION_RUNBOOK.md`.

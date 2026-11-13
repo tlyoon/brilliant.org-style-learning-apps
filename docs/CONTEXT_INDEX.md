@@ -1,5 +1,18 @@
 # Context index
 
+## External Gemini-only reviewer authorization — official support route (13 November 2026)
+
+The exact external-execution approval is still **pending**. See the permanent
+`docs/EXTERNAL_EXECUTION_RUNBOOK.md` escalation addendum and the Yoga 6
+private prepared-but-unsubmitted support request
+`V3_GEMINI_ONLY_OPENAI_SUPPORT_SUBMISSION_20261113.md` (private Yoga 6 project-continuity folder).
+A support packet, code PASS or app-level permission setting does not grant
+platform approval. A current client-side stopped call, with its exact
+unchanged retry also blocked, can use the connector's first-party review
+panel. Otherwise the signed-in account holder must submit via
+`https://help.openai.com/`. Do not repeat the historically denied operation
+with another model, tool, script or device.
+
 ## Gemini-only V3 assessment provider (13 November 2026)
 
 **Decision 0038** (`docs/decisions/0038-gemini-only-v3-reviewers.md`)
