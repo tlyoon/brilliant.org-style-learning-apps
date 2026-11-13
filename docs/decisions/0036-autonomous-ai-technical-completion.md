@@ -1,5 +1,7 @@
 # Decision 0036 — Autonomous AI technical completion, no mandatory manual sign-off
 
+**Native provider refinement (13 November 2026):** Owner Decision 0039 (`0039-native-gemini-api-review-worker.md`) adds the independent owner-run, text-only `gemini_api` V3 reviewer alongside `gemini_browser`, keeps ChatGPT excluded, and does not modify the two-context consensus or release tests. Do not assume a ChatGPT remote execution denial is a prerequisite to an independently authorized local Google API workflow.
+
 **Provider amendment (13 November 2026):** Owner Decision 0038 (`0038-gemini-only-v3-reviewers.md`) narrows only the V3 review provider choice to **two distinct Gemini browser conversations, never ChatGPT**. The strict active policy and all assessment/release logic enforce the explicit `gemini_browser` identity. Other Decision 0036 requirements remain unchanged; this does not unblock the previous platform-denied browser execution.\n\n**Owner-directed amendment:** 11 November 2026. **Status:** Binding for current
 BOSLA technical completion and release eligibility. Supersedes earlier
 Decisions 0032–0035 **only** where they made independent educational-content

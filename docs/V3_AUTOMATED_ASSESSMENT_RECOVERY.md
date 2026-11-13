@@ -388,3 +388,58 @@ invent an original blocked-call payload or invoke a similar operation in an
 attempt to obtain that payload. Until a real decision arrives, keep
 `BLOCKED_EXTERNAL_REVIEW_TRANSPORT`, 0/108 genuine V3 reviews and no public
 release. See `docs/EXTERNAL_EXECUTION_RUNBOOK.md`.
+
+## Decision 0039 / BSA-161 — independent native Gemini API reviewer (preferred local execution)
+
+The source of the repeated current `BLOCKED_EXTERNAL_REVIEW_TRANSPORT`
+was that normal V3 expected externally supplied reviewer sessions. This was
+an application-level missing-session status, **not proof** of a new OpenAI
+platform refusal. A native, locally initiated Gemini API worker removes the
+routine requirement that ChatGPT drive Selenium for every reviewed item.
+The older ChatGPT tool/connector denial remains forbidden to bypass.
+
+Binding provider policy now permits only **`gemini_api` and
+`gemini_browser`**, both Google Gemini; ChatGPT never acts as a reviewer.
+`app_generator/gemini/v3_native_api_reviewers.py` opens two independent
+stateless Gemini SDK clients with role-specific adversarial prompts and
+single-shot JSON responses. It reuses the **same**
+`advance_v3_course_review` / `assess_with_models` / immutable private
+checkpoint / strict release gate. It uses existing locally configured API
+key discovery, selects a single key per batch, disables SDK automatic
+HTTP retries, and makes **no uncheckpointed test model request**.
+
+The new independent owner-operated CLI:
+`scripts/run_v3_native_gemini_review.py`
+
+On the authorized Windows workstation, from the BOSLA repository root
+using the installed Python environment:
+
+```powershell
+# Safe, default read-only course status. No model call or credentials:
+python scripts/run_v3_native_gemini_review.py
+
+# First genuine source-free ONE-activity review (explicit local opt-in):
+python scripts/run_v3_native_gemini_review.py --execute --allow-generated-text-transfer --batch-size 1 --max-batches 1
+
+# Once the initial real result is accepted, finite continuation of
+# up to 108 CLI batches of 1–6 fresh one-activity reviewer pairs,
+# with automatic stop on an uncertain provider call:
+python scripts/run_v3_native_gemini_review.py --execute --allow-generated-text-transfer --batch-size 6 --max-batches 108
+```
+
+Use only a genuinely owner-authorized independent local Google API workflow.
+These instructions are **not** permission for ChatGPT to reroute an earlier
+explicitly denied remote tool call. The program never calls ChatGPT, opens
+Chrome, reads a PDF or sends a student record. Credentials are read only from
+the existing authorized Google key inventory outside Git; new keys are not
+created or printed. The project-level configured model name must be supported
+by the user's Google API account; successful offline tests do not establish
+live provider availability/billing. Review checkpoints default to the
+project's local private state directory outside Git. On any FAIL/UNCERTAIN,
+malformed response or ambiguous transport error, the normal course dispatcher
+halts without replay, even if further batches were requested. Resolve/reconcile
+the exact recorded failure rather than deleting the checkpoint.
+
+**No live test has run** as part of this milestone; original Chapter 9
+is still 0/108 genuine V3 reviews, unpublished. Native model review also
+does not replace downstream exact-commit CI/browser/privacy release checks.

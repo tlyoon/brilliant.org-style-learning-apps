@@ -82,6 +82,9 @@ def advance_v3_course_review(
         return before
     if sessions is not None and session_factory is not None:
         raise ValueError("V3_CONFLICTING_REVIEW_TRANSPORTS")
+    if (session_factory is not None and max_activities >
+            getattr(session_factory, "max_activities_per_session", 6)):
+        raise ValueError("V3_NATIVE_ONE_ACTIVITY_PER_BATCH_REQUIRED")
     if sessions is None and (session_factory is None
                             or external_operation_authorized is not True):
         return {**before,"dispatchStatus":"BLOCKED_EXTERNAL_REVIEW_TRANSPORT"}

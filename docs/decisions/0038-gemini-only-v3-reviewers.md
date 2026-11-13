@@ -1,6 +1,7 @@
 # Decision 0038 — Gemini-only V3 academic assessment
 
 **Status:** Binding BOSLA owner decision, 13 November 2026.
+**Transport refinement:** Decision 0039 now permits the native `gemini_api` transport in addition to the former `gemini_browser`. Both remain Google Gemini, with two separate role contexts and no ChatGPT reviewers. The older browser-only descriptions below are historical and must be read under Decision 0039.
 **Scope:** The V3 two-context generated-activity assessment engine,
 course dispatcher, private review checkpoint, and automatic release validator.
 This decision narrows Decision 0036's provider allowance; all other V3

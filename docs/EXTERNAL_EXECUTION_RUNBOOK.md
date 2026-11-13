@@ -119,3 +119,24 @@ normal source-free recurrence checks. Calling the generic synchronization
 renderer without `configure_core()` produces a misleading
 `[compatibility]` error; the correct production path passes. Do not
 introduce a second config-renderer workaround.
+
+## Architecture clarification: independent local Gemini API assessment (Decision 0039)
+
+OpenAI Support escalation above applies to a **ChatGPT-mediated tool call
+actually denied by its client/platform**, not automatically to an independent
+program an owner initiates directly on a computer they control. A previous
+normal V3 `BLOCKED_EXTERNAL_REVIEW_TRANSPORT` with `sessions=None` is a
+BOSLA software status for missing supplied reviewer sessions; by itself it
+is NOT an OpenAI policy refusal or an inability to use Google's own API.
+
+The new owner-run, text-only native Gemini API worker
+`scripts/run_v3_native_gemini_review.py` is the preferred independent
+BOSLA execution architecture under Decision 0039. It has its **own**
+explicit Google API content-transfer opt-in, legitimate account credentials
+and Google billing requirements, reuses the normal private V3 evidence
+checkpoint, and never runs ChatGPT/Remote Desktop Commander per activity.
+It MUST NOT be run through ChatGPT's remote connector as a workaround for
+an operation known to be specifically prohibited. When actual tool
+permission is at issue, the exact-call review/support process above still
+applies. Do not classify missing Google API account/model access as an
+OpenAI connector denial.

@@ -15,7 +15,7 @@ from app_generator.errors import (
     AuthenticationRequired, ExternalExecutionDenied, GeminiApiError,
     ResponseContractError, TransientGeminiError,
 )
-from app_generator.llm.gemini_key_failover import build_keyed_gemini_client
+from app_generator.llm.gemini_key_failover import (build_keyed_gemini_client, find_gemini_keys)
 
 
 VERTEX_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
@@ -53,6 +53,62 @@ def _client_project_id(client_file: Path) -> str:
         if project_id:
             return str(project_id)
     return ""
+
+
+def build_v3_native_text_sdk_components(config: Any) -> tuple[Callable[[str], Any], Any]:
+    """Make two SDK clients with the shared Gemini gateway's credential rules.
+
+    This path is ONLY for the exact V3 generated-text-only assessment: never
+    attaches a PDF, opens a browser or issues a model probe outside the V3
+    per-role IN_FLIGHT checkpoint. No SDK automatic retries or key fallback
+    after a possibly submitted request. Distinct clients share one authorized
+    Google API key but no conversation histories.
+    """
+    try:
+        from google import genai
+        from google.genai import types
+    except ImportError as exc:
+        raise AuthenticationRequired(
+            "google-genai is required for the native V3 Gemini reviewer"
+        ) from exc
+    candidates = find_gemini_keys()
+    if not candidates:
+        raise AuthenticationRequired(
+            "V3_NATIVE_GEMINI_KEY_UNAVAILABLE; configure a Google API key "
+            "outside the repository"
+        )
+    secret = candidates[0].secret
+
+    def create_client(role: str) -> Any:
+        if role not in ("physics", "semantics"):
+            raise ValueError("V3_NATIVE_REVIEWER_ROLE_UNKNOWN")
+        return genai.Client(
+            api_key=secret,
+            http_options=types.HttpOptions(
+                timeout=config.gemini_api_timeout_seconds * 1000,
+                retry_options=types.HttpRetryOptions(attempts=1),
+            ),
+        )
+
+    return create_client, types
+
+
+def send_v3_native_text_once(
+    client: Any, sdk_types: Any, model: str, prompt: str,
+) -> Any:
+    """Shared-Gemini-gateway call, exactly one generated-text-only request.
+
+    The role-bound V3 native conversation MUST latch and the normal private
+    checkpoint MUST record IN_FLIGHT before calling this function. Never
+    retry, rotate keys or submit an uncheckpointed availability prompt here.
+    """
+    generation_config = sdk_types.GenerateContentConfig(
+        response_mime_type="application/json",
+        max_output_tokens=4096,
+    )
+    return client.models.generate_content(
+        model=model, contents=prompt, config=generation_config,
+    )
 
 
 def build_gemini_sdk_client(config: GeneratorConfig, *, probe_keys: bool = True) -> Any:

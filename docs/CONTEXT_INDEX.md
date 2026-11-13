@@ -1,5 +1,21 @@
 # Context index
 
+## Native local Gemini API reviewer — default independent V3 route (13 November 2026)
+
+**Decision 0039 / BSA-20261113-161** (binding) adds
+`app_generator/gemini/v3_native_api_reviewers.py` and
+`scripts/run_v3_native_gemini_review.py`. Owner-run local execution uses
+two stateless Gemini API clients and the **same immutable normal V3 course
+dispatcher**, with no ChatGPT remote tool or browser required for each review.
+The strict active policy allows `gemini_api` and `gemini_browser` only.
+No ChatGPT model is a reviewer; no PDF/student data is sent.
+Default CLI is dry-run; real local API work requires explicit two-flag opt-in
+and legitimate provider credentials. No model calls were run during this
+code-development milestone. Old reported connector-denied operations
+remain forbidden to bypass. See
+`docs/decisions/0039-native-gemini-api-review-worker.md` and
+`docs/V3_AUTOMATED_ASSESSMENT_RECOVERY.md`.
+
 ## External Gemini-only reviewer authorization — official support route (13 November 2026)
 
 The exact external-execution approval is still **pending**. See the permanent

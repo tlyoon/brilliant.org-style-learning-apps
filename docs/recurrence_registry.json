@@ -2204,6 +2204,36 @@
         {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
          "marker": "test_ambiguous_second_response_is_not_replayed_or_accepted"}
       ]
+    },
+    {
+      "id": "BSA-20261113-161",
+      "class": "v3-native-gemini-review-depended-on-chatgpt-remote-browser-runner",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": ["BSA-20261104-109", "BSA-20261112-152",
+                             "BSA-20261113-158", "BSA-20261113-159"],
+      "differenceFromLinkedIncident": "The old BOSLA V3 assessor already had strictly bounded checkpointed two-role content review, but its sole accepted Gemini provider was gemini_browser, and the installed source-free Selenium adapter required a ChatGPT Remote Desktop Commander executor to drive actual model calls. Without externally injected browser sessions the normal dispatcher returned its own BLOCKED_EXTERNAL_REVIEW_TRANSPORT, repeatedly misclassified as proof of a current OpenAI platform denial. No first-party historical denial payload was available and the old denial remains not to be bypassed. Decision 0039 adds the owner-run INDEPENDENT native Gemini API worker using the normal immutable V3 course dispatcher and existing private checkpoint/safe-stop logic. Two separate stateless Gemini SDK clients, API MIME JSON, source-free prompts, strict provider labels and no API retries/model/key fallback after submission remove a recurring ChatGPT-mediated execution dependency from the normal LOCAL assessment architecture. This fix does NOT grant a prohibited ChatGPT tool operation, supply Google billing/credentials, or claim genuine live reviews. An owner explicitly starts the local workflow under their ordinary Google API authority; code integration and tests are entirely source-free and offline.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/gemini/v3_native_api_reviewers.py",
+        "triggerMarker": "def open_pair(self, activity_id: str)",
+        "remedyMarker": "NativeGeminiApiConversation(self.clients[i], types, model, role)",
+        "normalEntryPoints": [
+          {"path": "scripts/run_v3_native_gemini_review.py",
+           "marker": "from app_generator.gemini.v3_native_api_reviewers import V3NativeGeminiApiSessions"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
+         "marker": "test_native_two_role_reviews_are_separate_and_source_free"},
+        {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
+         "marker": "test_uncertain_model_request_is_not_replayed"},
+        {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
+         "marker": "test_default_sdk_constructor_uses_existing_key_inventory_without_a_probe"},
+        {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
+         "marker": "test_native_fake_verdict_is_checked_by_existing_release_gate"},
+        {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
+         "marker": "test_readonly_native_worker_requires_no_provider_or_credentials"}
+      ]
     }
   ]
 }

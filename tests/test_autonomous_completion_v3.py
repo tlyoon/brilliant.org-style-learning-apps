@@ -87,7 +87,7 @@ class AutonomousCompletionV3Tests(TestCase):
 
     def test_gemini_only_contract_rejects_chatgpt_or_unattributed_sessions_before_send(self):
         """No ChatGPT model/context can reach the V3 review or release flow."""
-        self.assertEqual(["gemini_browser"],
+        self.assertEqual(["gemini_api", "gemini_browser"],
                          load_policy()["assessment"]["allowedProviders"])
         self.assertEqual(2, load_policy()["assessment"]["reviewerSessions"])
         raw = _raw()
