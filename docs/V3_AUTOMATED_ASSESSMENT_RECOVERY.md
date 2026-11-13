@@ -143,14 +143,14 @@ attach protected PDFs, or count fake unit-test answers as actual model verdicts.
 The Chapter 9 tracked content directory contains **nine** section packages
 (9.1–9.9), but the approved current RC1/V3 scope covers **only 9.1–9.6**.
 Never infer the frozen six-section roster from a whole-directory scan or
-silently truncate extra packages. Use the *existing normal status script*
-with an explicit selection:
+silently truncate extra packages. The *existing normal status script* now runs
+with the automatically approved frozen-candidate selection (BSA-154):
 
 ```powershell
-python scripts/check_final_acceptance_closure.py --course-dir content/chapter-9 --sections 1,2,3,4,5,6
+python scripts/check_final_acceptance_closure.py --course-dir content/chapter-9
 ```
 
-Without `--sections`, a nine-section directory against the default expected
+Without a frozen scope manifest, a nine-section directory against the default expected
 six fails closed. The generic `--expected-sections` parameter permits
 separately authorized different engineering scopes; it does NOT amend the
 current owner-approved Chapter 9 V3 campaign. The `--course-dir` and
@@ -175,3 +175,48 @@ Dedicated source-free regressions in `tests/test_v3_course_readiness.py`
 cover the exact frozen six authentic repository packages, ambiguous broader
 directory, bad scope, optional private checkpoint, tampering, and normal CLI
 contract. They do not claim a real student pilot or AI review PASS.
+
+## On-the-fly frozen course-scope recovery (BSA-20261113-154)
+
+The earlier BSA-153 course-level checker required operators to repeat
+`--sections 1,2,3,4,5,6`. That repaired an unsafe nine-section directory
+scan, but introduced a recurring manual selection step and still allowed
+another existing six-number set to replace the approved campaign.
+
+**The normal command now automatically resolves the frozen scope:**
+
+```powershell
+python scripts/check_final_acceptance_closure.py --course-dir content/chapter-9
+```
+
+For any `content/chapter-N` with a tracked, compatible immutable candidate
+roster `docs/acceptance_closure_chapterN.json`, the shared
+`v3_course_readiness._approved_frozen_scope` reads only its
+`frozenCandidates` **section identities**, **activity counts**, and
+**package SHA-256** values. It rejects a malformed/unfrozen manifest,
+duplicate/unknown candidates, missing package, changed bytes/count,
+wrong chapter/section directory name, and an explicit `--sections` override
+that differs from the approved roster. This ensures recovery works for new
+approved chapter rosters of the same type without hardcoding 9.1–9.6.
+
+The Chapter 9 file currently contains precisely six frozen candidate
+identities, all **6/6 matching** the original unchanged package bytes, while
+the directory contains nine tracked sections. The scoped read-only report
+covers 9.1–9.6 and **108 activities only**. If a later authorized repair
+changes the bytes or versioned campaign, the checker must fail closed and
+require a separately established **new version-bound approved roster**.
+It must NOT self-update the approved hash, import a previous PASS, or silently
+expand to 9.7–9.9. With no approved roster, an overcomplete directory is
+not magically treated as approved.
+
+The legacy archive is used strictly as a **machine-readable immutable
+selection/identity source**, NOT as historical V2 academic, learner-pilot,
+visual, rights or manual-approval requirements. Decision 0036 remains the
+current V3 acceptance authority; only genuine two-context model verdicts
+and deterministic current-evidence receipts can establish eligibility.
+
+Permanent regressions cover automatic normal CLI recovery, real original
+package identities, an independent synthetic Chapter 7 with a nine-section
+directory and approved six-candidate manifest, changed SHA/bytes, invalid
+frozen manifest, wrong folder naming and conflicting overrides. They are
+source-free and do not submit a prompt or trigger a browser.

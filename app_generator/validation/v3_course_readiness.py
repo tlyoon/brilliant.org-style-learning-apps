@@ -17,6 +17,53 @@ from app_generator.validation.autonomous_completion import (
 # Support the repository's canonical section-9-1 layout as well as
 # portable synthetic section-1 fixtures without hardcoding chapter numbers.
 _SECTION = re.compile(r"section-(?:[0-9]+-)?([0-9]+)\Z")
+_HASH = re.compile(r"[0-9a-f]{64}\Z")
+
+
+def _approved_frozen_scope(
+    chapter: Path, root: Path, expected_sections: int,
+) -> dict[int, tuple[str, int]] | None:
+    """Read existing immutable candidate identities, never historical V2 gates.
+
+    A chapter-N directory may carry an acceptance_closure_chapterN.json
+    frozen-candidate roster. It is a source for *scope and exact package
+    identity only*: no former academic, human, rights or publication gate
+    is inherited by V3. No roster means no implicit subset authorization.
+    """
+    m=re.fullmatch(r"chapter-([1-9][0-9]*)",chapter.name)
+    if m is None:
+        return None
+    manifest=root/"docs"/("acceptance_closure_chapter"+m.group(1)+".json")
+    if not manifest.exists():
+        return None
+    if (manifest.is_symlink() or not manifest.is_file()
+        or manifest.stat().st_size > 150_000):
+        raise ValueError("V3_UNSAFE_FROZEN_SCOPE_MANIFEST")
+    data=json.loads(manifest.read_text(encoding="utf-8"))
+    if (not isinstance(data,dict)
+        or data.get("project")!="BOSLA"
+        or data.get("contract")!="FINAL_ACCEPTANCE_NO_REPEAT_V2"
+        or not isinstance(data.get("policy"),dict)
+        or data["policy"].get("frozen") is not True
+        or not isinstance(data.get("frozenCandidates"),list)
+        or len(data["frozenCandidates"])!=expected_sections):
+        raise ValueError("V3_INVALID_FROZEN_SCOPE_MANIFEST")
+    result={}
+    for candidate in data["frozenCandidates"]:
+        if not isinstance(candidate,dict):
+            raise ValueError("V3_INVALID_FROZEN_SCOPE_CANDIDATE")
+        label=candidate.get("section")
+        prefix=m.group(1)+"."
+        suffix=label[len(prefix):] if isinstance(label,str) and label.startswith(prefix) else ""
+        digest=candidate.get("packageSha256")
+        count=candidate.get("activityCount")
+        if (not suffix.isdecimal() or not suffix or str(int(suffix))!=suffix
+            or int(suffix)<1 or int(suffix) in result
+            or not isinstance(digest,str) or not _HASH.fullmatch(digest)
+            or type(count) is not int or count<1):
+            raise ValueError("V3_INVALID_FROZEN_SCOPE_CANDIDATE")
+        result[int(suffix)]=(digest,count)
+    return result
 
 
 def course_readiness(
@@ -60,10 +107,26 @@ def course_readiness(
     if len({number for number,_ in sections})!=len(sections):
         raise ValueError("V3_DUPLICATE_COURSE_SECTION")
     sections.sort()
+    # Validate an explicit claim before comparing it to frozen identities:
+    # bools, lists and duplicate ordinals cannot masquerade as approval.
+    if section_numbers is not None and (
+        not isinstance(section_numbers,tuple)
+        or len(section_numbers)!=expected_sections
+        or any(type(i) is not int or i<1 for i in section_numbers)
+        or len(set(section_numbers))!=len(section_numbers)
+    ):
+        raise ValueError("V3_INVALID_EXPLICIT_COURSE_SCOPE")
+    frozen=_approved_frozen_scope(chapter,root,expected_sections)
+    if frozen is not None:
+        # Recover the complete approved set automatically on every normal
+        # run. An explicit override is an assertion, never permission to
+        # expand or substitute a different six-section campaign.
+        if section_numbers is not None and set(section_numbers)!=set(frozen):
+            raise ValueError("V3_SECTION_OVERRIDE_CONFLICTS_WITH_FROZEN_SCOPE")
+        section_numbers=tuple(frozen)
     if section_numbers is not None:
-        # The approved 9.1–9.6 scope is only SIX of the chapter's nine
-        # tracked sections. A caller must explicitly select that subset:
-        # never silently truncate or expand the frozen campaign.
+        # For other scopes an explicitly supplied subset remains possible,
+        # but it cannot override an existing frozen-candidate manifest.
         if (not isinstance(section_numbers,tuple)
             or len(section_numbers)!=expected_sections
             or any(type(i) is not int or i<1 for i in section_numbers)
@@ -79,12 +142,17 @@ def course_readiness(
     digests=set()
     rows=[]
     for number,section in sections:
+        if (frozen is not None and
+            section.name != f"section-{chapter.name.split('-')[-1]}-{number}"):
+            raise ValueError("V3_FROZEN_SECTION_NAME_MISMATCH")
         package=section/"package.json"
         if (package.is_symlink() or not package.is_file()
             or package.stat().st_size > 2_000_000):
             raise ValueError("V3_MISSING_OR_UNSAFE_COURSE_PACKAGE")
         raw=package.read_bytes()
         digest,activities=package_identity(raw)
+        if frozen is not None and (digest,len(activities))!=frozen[number]:
+            raise ValueError("V3_FROZEN_PACKAGE_IDENTITY_DRIFT")
         if digest in digests:
             raise ValueError("V3_DUPLICATE_COURSE_PACKAGE")
         digests.add(digest)
@@ -126,6 +194,8 @@ def course_readiness(
     return {
         "contract":"AUTONOMOUS_AI_TECHNICAL_COMPLETION_V3",
         "scope":"READ_ONLY_COURSE_EVIDENCE_INVENTORY",
+        "scopeSource":("FROZEN_CANDIDATE_MANIFEST" if frozen is not None
+                       else "EXPLICIT_OR_COMPLETE_DIRECTORY"),
         "sectionsTotal":len(rows),
         "activitiesTotal":total,
         "activitiesAssessedRows":assessed,

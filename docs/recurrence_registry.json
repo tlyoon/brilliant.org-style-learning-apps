@@ -1993,7 +1993,7 @@
       },
       "regressions": [
         {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_normal_cli_requires_explicit_six_section_scope"},
+         "marker": "test_normal_cli_recovers_frozen_scope_and_rejects_replacement_sections"},
         {"path": "tests/test_v3_course_readiness.py", "kind": "python",
          "marker": "test_real_repo_six_packages_are_structure_only_without_side_effects"},
         {"path": "tests/test_v3_course_readiness.py", "kind": "python",
@@ -2002,6 +2002,36 @@
          "marker": "test_corrupted_private_evidence_must_not_be_silently_ignored"},
         {"path": "tests/test_v3_course_readiness.py", "kind": "python",
          "marker": "test_missing_duplicate_or_unsafe_six_section_roster_fails_closed"}
+      ]
+    },
+    {
+      "id": "BSA-20261113-154",
+      "class": "v3-frozen-scope-previous-repair-required-repeated-manual-selection-and-permitted-substitution",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": [
+        "BSA-20261112-149", "BSA-20261112-151",
+        "BSA-20261112-152", "BSA-20261112-153"
+      ],
+      "differenceFromLinkedIncident": "BSA-20261112-153 integrated a course-level V3 status checker, but the nine-section Chapter 9 directory required the user to repeat --sections 1,2,3,4,5,6 and mistakenly permitted arbitrary alternate six-number selections such as 4,5,6,7,8,9. Previous synthetic directory tests did not use the pre-existing machine-readable six frozenCandidates records with exact package SHA256 and activity counts. New real-roster and normal CLI regressions first failed on current HEAD: without manual selection the status returned STOP_INVALID_ACTIVE_ACCEPTANCE_POLICY. The shared code now discovers the already tracked immutable docs/acceptance_closure_chapterN.json roster generically for chapter-N, validates frozen schema, exact section identities, SHA256 and activity counts, auto-selects exactly those candidates, rejects all conflicting explicit overrides, malformed manifests, altered package bytes and wrongly named section directories. The V2 file is used solely for frozen scope metadata, never for archived academic, manual, rights, pilot or publication gates. Chapters without a tracked approved scope still require an exact full-directory count or an independently authorized selection; no invisible expansion, no model call, no campaign reset. Verified real Section 9.1-9.6 package identities 6 of 6 matching, 108 activities, zero real model reviews. This closes the reusable on-the-fly code repair but not the separate externally denied generated-text-only reviewer transport.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/v3_course_readiness.py",
+        "triggerMarker": "def course_readiness(",
+        "remedyMarker": "frozen=_approved_frozen_scope(chapter,root,expected_sections)",
+        "normalEntryPoints": [
+          {"path": "scripts/check_final_acceptance_closure.py",
+           "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_normal_cli_recovers_frozen_scope_and_rejects_replacement_sections"},
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_other_chapter_automatically_resolves_frozen_manifest_and_rejects_drift"},
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_frozen_scope_missing_or_corrupt_fails_closed_not_autocleared"},
+        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
+         "marker": "test_real_repo_six_packages_are_structure_only_without_side_effects"}
       ]
     }
   ]
