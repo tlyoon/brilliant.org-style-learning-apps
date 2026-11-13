@@ -1,16 +1,18 @@
 """Finite V3 course dispatcher over the *existing* authorized model engine.
 
-Never supplies provider credentials, opens a browser, uploads a source PDF,
-retries a denied external call, or turns fake model data into authentic proof.
-The underlying generated-text reviewer sessions MUST have independent external
-authorization before a caller passes them to this module.
+Never supplies provider credentials, uploads a source PDF, retries a
+denied call, or turns synthetic model data into authentic proof. An externally
+approved source-free factory may open isolated browser reviewer contexts
+only after independent operation authorization and immutable-scope preflight.
 """
 from __future__ import annotations
 
 from hashlib import sha256
 from pathlib import Path
+from typing import Any
 
 from app_generator.runtime.v3_authorized_review import advance_v3_generated_text
+from app_generator.gemini.v3_existing_login_sessions import V3ExistingLoginSessions
 from app_generator.validation.v3_course_readiness import course_readiness
 
 
@@ -60,13 +62,17 @@ def advance_v3_course_review(
     generated_content_transfer_allowed: bool = False,
     max_activities: int = 6,
     expected_sections: int = 6,
+    session_factory: Any | None = None,
+    external_operation_authorized: bool = False,
 ) -> dict:
     """Advance only one package/batch of an approved course per invocation.
 
-    Optional model sessions are injected, never discovered or authenticated
-    here. Without sessions or allowed transfer this returns a truthful typed
-    blocker and creates no state. It cannot bypass previously denied browser
-    execution and never replays unresolved model requests.
+    Use existing independently authorized sessions OR a separately approved
+    source-free session factory. Factories are entered only AFTER immutable
+    scope, package, explicit external-authorization and transfer preflight.
+    The default without a provider is a truthful blocker with no side effects.
+    This code never grants external permission, retries denied operations,
+    or replays unresolved model requests.
     """
     if type(max_activities) is not int or not 1<=max_activities<=6:
         raise ValueError("V3_INVALID_BATCH_LIMIT")
@@ -74,7 +80,13 @@ def advance_v3_course_review(
         private_root=private_root,expected_sections=expected_sections)
     if before["dispatchStatus"]!="READY_FOR_AUTHORIZED_REVIEW_SESSIONS":
         return before
-    if sessions is None:
+    if sessions is not None and session_factory is not None:
+        raise ValueError("V3_CONFLICTING_REVIEW_TRANSPORTS")
+    if sessions is None and (session_factory is None
+                            or external_operation_authorized is not True):
+        return {**before,"dispatchStatus":"BLOCKED_EXTERNAL_REVIEW_TRANSPORT"}
+    if (isinstance(session_factory, V3ExistingLoginSessions)
+        and session_factory.external_operation_authorized is not True):
         return {**before,"dispatchStatus":"BLOCKED_EXTERNAL_REVIEW_TRANSPORT"}
     if not generated_content_transfer_allowed:
         return {**before,"dispatchStatus":"BLOCKED_GENERATED_TEXT_TRANSFER"}
@@ -90,10 +102,21 @@ def advance_v3_course_review(
     raw=package.read_bytes()
     if sha256(raw).hexdigest()!=source["packageSha256"]:
         raise ValueError("V3_COURSE_SELECTED_PACKAGE_CHANGED")
-    advance_v3_generated_text(
-        raw,sessions,private_root=private_root,
-        generated_content_transfer_allowed=True,
-        max_activities=max_activities)
+    if session_factory is None:
+        advance_v3_generated_text(
+            raw,sessions,private_root=private_root,
+            generated_content_transfer_allowed=True,
+            max_activities=max_activities)
+    else:
+        # Existing-login source-free providers already enforce their own
+        # account/profile ownership checks and close only freshly owned tabs.
+        # Never bootstrap before the verified frozen package is selected.
+        with session_factory as provider:
+            authorized_sessions=provider.open_pair(section)
+            advance_v3_generated_text(
+                raw,authorized_sessions,private_root=private_root,
+                generated_content_transfer_allowed=True,
+                max_activities=max_activities)
     after=plan_v3_course_review(chapter_dir,repo_root,
         private_root=private_root,expected_sections=expected_sections)
     return {**after,"selectedSection":section}

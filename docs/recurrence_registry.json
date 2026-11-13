@@ -2119,6 +2119,36 @@
         {"path": "tests/test_regression_contract.py", "kind": "python",
          "marker": "test_resolved_recent_incident_requires_automatic_runtime_integration"}
       ]
+    },
+    {
+      "id": "BSA-20261113-158",
+      "class": "v3-generated-text-gemini-reviewer-not-wired-to-verified-existing-login",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": ["BSA-20261104-109", "BSA-20261112-152",
+                             "BSA-20261113-156"],
+      "differenceFromLinkedIncident": "Earlier existing-login Selenium neutral Gemini probes had successfully verified one signed-in account and two independently owned fresh conversation tabs, with bounded restored-tab navigation and response capture, but the original ExistingLoginReviewerFactory attached a textbook PDF and could not be used by V3. BSA-152/156 added provider-neutral generated-activity review and course dispatch yet required manual injection of two already-available sessions and never connected the proven source-free Gemini provider. A new source-free test reproduced missing v3_existing_login_sessions module before repair. The new factory reuses exactly the existing ChromeSession, account verifier, profile ownership preflight, neutral page and owned-tab mechanism without PDF attachment, authenticates only after Gemini host verification, binds each V3 role to an exclusive chat, avoids any model fallback/retry, and closes only its owned tabs. The normal advance_v3_course_review now dispatches an explicitly approved factory after frozen scope/bytes/transfer preflight and returns a typed blocker if external authorization is not established. This closes the SOURCE-FREE CODE INTEGRATION GAP, NOT the previous host-level denial or 0/108 genuine V3 model reviews. No live denied operation was repeated or relabeled.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/gemini/v3_existing_login_sessions.py",
+        "triggerMarker": "def open_pair(self, activity_id: str)",
+        "remedyMarker": "self.verifier_factory(driver, cfg.login_name, 12).verify()",
+        "normalEntryPoints": [
+          {"path": "app_generator/runtime/v3_course_review.py",
+           "marker": "from app_generator.gemini.v3_existing_login_sessions import V3ExistingLoginSessions"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
+         "marker": "test_denied_external_operation_cannot_bootstrap_browser_or_claim_review"},
+        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
+         "marker": "test_normal_dispatch_uses_distinct_owned_generated_only_gemini_tabs"},
+        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
+         "marker": "test_restored_author_tab_and_redirect_recovery_are_safe"},
+        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
+         "marker": "test_ambiguous_second_response_is_not_replayed_or_accepted"},
+        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
+         "marker": "test_busy_profile_blocks_before_browser_and_private_state"}
+      ]
     }
   ]
 }

@@ -76,3 +76,19 @@ This is a meaningful **internal execution integration** milestone, not a
 completed external reviewer-transport or release milestone. Continue to use
 `PENDING_AUTOMATED_ASSESSMENT` and **0/108 actual V3 reviews** until new
 legitimate provider evidence exists.
+
+## 13 November 2026 — BSA-158 existing-login generated-text adapter
+
+History rechecked: 30 October and 31 October 2026 neutral Gemini two-context
+health probes produced actual captured replies after selecting the correct
+project venv; the later source-bound V5 academic reviews sometimes produced
+valid dual-role evidence but were NOT V3 and are not transferable as approval.
+The source-free ownership/account/tab mechanisms from the neutral probe are
+now reused by the V3-only `V3ExistingLoginSessions` provider and the same
+`advance_v3_course_review` normal entrypoint. No original source-PDF
+attachments are involved. Fake-browser normal-dispatch tests verify the
+integration; they are not proof of current login or of external execution
+approval. The previously denied direct authenticated browser operation
+remains terminal until an independent authority authorizes that exact intent.
+`PENDING_AUTOMATED_ASSESSMENT` and zero real V3 verdicts must remain true
+until genuine model evidence is collected.

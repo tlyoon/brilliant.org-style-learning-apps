@@ -1,5 +1,15 @@
 # Context index
 
+## V3 existing authorized Gemini account recovery (13 November 2026)
+
+BSA-20261113-158 connects the historically proven source-free existing-login
+Gemini browser ownership, visible account verification and fresh isolated
+role tabs to the current `advance_v3_course_review` normal dispatcher via
+`V3ExistingLoginSessions`. See `docs/V3_AUTOMATED_ASSESSMENT_RECOVERY.md`.
+This is a dormant, separately-authorized generated-text-only provider. It
+cannot override an earlier denied authenticated browser operation or attest
+current live provider availability; no original PDF is attached.
+
 ## Latest owner binding: automatic recovery is normal pipeline behavior (13 November 2026)
 
 Read `docs/decisions/0037-automatic-recovery-normal-pipeline.md`

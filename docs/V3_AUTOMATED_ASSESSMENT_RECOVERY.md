@@ -297,3 +297,38 @@ read-only **only**; no fake V3 review appears in the authentic private
 state. Historical source-PDF campaigns remain frozen under Decision 0028.
 The independently established authorized Gemini/ChatGPT two-context
 transport remains the external completion dependency.
+
+## Source-free historical Gemini existing-login provider (BSA-20261113-158)
+
+The existing course-level entrypoint `advance_v3_course_review` now accepts
+an **optional** `session_factory` and the default-false
+`external_operation_authorized` admission guard. When a reviewer operation
+has been independently approved by the external execution authority, a caller
+can provide `V3ExistingLoginSessions` with the same approved intent,
+verified generated-content-only transfer and an existing already-authenticated
+controlled Gemini profile on Yoga 6. The normal dispatcher validates the
+frozen next section, package identity, permissions and batch limit BEFORE
+entering the provider, then receives two fresh `ReviewerSession` contexts,
+invokes the unchanged immutable V3 assessment engine, and closes only newly
+owned browser tabs in a finite context. The provider **never** attaches any
+source PDF, uses an author Gem, extracts cookies, copies model responses to
+Git or retries possibly submitted requests.
+
+**Do not run it under the previous rejected tool operation or assume that a
+local Boolean, history of Gemini success, existing login, user approval or
+this code change is a platform authorization grant.** The historical source-PDF
+reviewer factory is *not* the V3 factory. If the external operation has not
+been separately authorized, leave the factory unavailable and pass no
+sessions; normal dispatch returns `BLOCKED_EXTERNAL_REVIEW_TRANSPORT`
+without opening Chrome. No automatic account swapping, alternative device,
+permission-policy changes, request replay or model-health probe are implied.
+The new regression tests use fake browsers and synthetic verdicts; they are
+not genuine Section 9.1 evidence.
+
+The safe approved-operation constructor is
+`app_generator.gemini.v3_existing_login_sessions.V3ExistingLoginSessions`;
+the normal entrypoint is
+`app_generator.runtime.v3_course_review.advance_v3_course_review`.
+Existing `sessions=(...,...)` injection remains compatible. Do not publish
+until the actual external authorization decision and real two-context receipts
+have been independently verified.
