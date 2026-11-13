@@ -274,6 +274,30 @@ class V3NativeStressCampaign(unittest.TestCase):
         self.assertEqual([], self.tracker["calls"])
         self.assertFalse(self.private.exists())
 
+    def test_future_orphan_role_claim_stops_before_sdk_construction(self):
+        raw = (self.chapter / "section-7-1" / "package.json").read_bytes()
+        digest = sha256(raw).hexdigest()
+        batches = self.private / ("v3-generated-" + digest) / "batches"
+        batches.mkdir(parents=True)
+        future = batches / f"v3-review-{digest[:12]}-005-0.json"
+        future.write_text(json.dumps({"state": "IN_FLIGHT"}), encoding="utf8")
+        with self.assertRaisesRegex(ValueError, "V3_OUT_OF_ORDER_ROLE_CLAIM"):
+            self.advance_one()
+        self.assertEqual([], self.tracker["calls"])
+        self.assertEqual([], self.tracker["clients"])
+        self.assertTrue(future.exists())  # no destructive reconciliation
+
+    def test_malformed_orphan_claim_filename_is_not_ignored(self):
+        raw = (self.chapter / "section-7-1" / "package.json").read_bytes()
+        digest = sha256(raw).hexdigest()
+        batches = self.private / ("v3-generated-" + digest) / "batches"
+        batches.mkdir(parents=True)
+        invalid = batches / f"v3-review-{digest[:12]}-999-0.json"
+        invalid.write_text("{}", encoding="utf8")
+        with self.assertRaisesRegex(ValueError, "V3_INVALID_ORPHAN_ROLE_CLAIM"):
+            self.advance_one()
+        self.assertEqual([], self.tracker["clients"])
+
 
 if __name__ == "__main__":
     unittest.main()
