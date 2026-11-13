@@ -250,3 +250,50 @@ reject semantic alteration and altered Git blob identity on an
 independent Chapter 7 fixture. Hosted CI failure #43333798461 is
 retained as reproducible negative evidence; closure requires successful
 exact-head hosted Linux tests.
+
+## Finite generated-text course review dispatcher (BSA-20261113-156)
+
+Earlier incident BSA-20261105-115 established that recurring manual
+cross-topic inspection and selection must be replaced by bounded, existing-
+evidence-aware orchestration. BSA-152 provided a safe **single-package**
+generated-text V3 model-review adapter for externally authorized sessions;
+BSA-153/154/155 integrated immutable six-section status. A missing bridge
+between them still required manually choosing Sections 9.1–9.6 and each
+follow-up review batch.
+
+The shared, normal V3 implementation now consists of:
+
+- `app_generator/runtime/v3_course_review.py::plan_v3_course_review`
+  (strictly source-free **read-only** plan): recovers only the frozen
+  approved section roster, checks existing signed/exact package identity
+  and private V3 progress, and returns one `nextSection` or a terminal
+  `dispatchStatus`, without writing a private checkpoint or contacting
+  Gemini/ChatGPT. Any unresolved or failed model finding prevents
+  launching a fresh course batch until reconciled/repaired under a
+  separately versioned, legitimately authorized path.
+- `advance_v3_course_review`: with **already authorized, independent**
+  model reviewer sessions and explicit generated-text transfer permission
+  *externally supplied*, invokes the existing `advance_v3_generated_text`
+  for only the next 1–6 activities in one approved package, then
+  re-verifies the resulting state. It uses existing private package-SHA
+  checkpoints, lock, role circuit and no-replay policy. No API key,
+  browser, account, model context or PDF is bootstrapped by this service.
+  Without model access it returns `BLOCKED_EXTERNAL_REVIEW_TRANSPORT`
+  with no write or external request. A complete course remains
+  `PENDING_DETERMINISTIC_RELEASE_EVIDENCE`, not publishable.
+- The **existing normal status CLI**
+  `python scripts/check_final_acceptance_closure.py --course-dir content/chapter-9`
+  calls the read-only planner. It surfaces `nextSection` and
+  `dispatchStatus` (and correct source-free coverage) automatically.
+  This is a planning signal, not a live transport health probe or an
+  assertion that the next external request is permitted.
+
+The source-free six-section dispatcher test uses **synthetic** separate
+reviewers and 12 synthetic activities to exercise bounded 1-activity
+passes, exact round-robin progression, true idempotent completion,
+stop-on-uncertain, stale immutable source refusal and no-provider/no-
+transfer side-effect refusal. Real Chapter 9 packages are inspected
+read-only **only**; no fake V3 review appears in the authentic private
+state. Historical source-PDF campaigns remain frozen under Decision 0028.
+The independently established authorized Gemini/ChatGPT two-context
+transport remains the external completion dependency.

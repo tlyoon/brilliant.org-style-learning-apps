@@ -19,7 +19,7 @@ from app_generator.validation.autonomous_completion import (
     active_disposition, assessment_progress,
 )
 from app_generator.validation.final_acceptance_closure import final_disposition
-from app_generator.validation.v3_course_readiness import course_readiness
+from app_generator.runtime.v3_course_review import plan_v3_course_review
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -50,7 +50,7 @@ def main(argv: list[str] | None = None) -> int:
                                        or int(t)<1 for t in tokens)):
                     raise ValueError("V3_INVALID_SECTION_SELECTION")
                 chosen=tuple(int(t) for t in tokens)
-            report=course_readiness(
+            report=plan_v3_course_review(
                 options.course_dir, ROOT,
                 private_root=options.private_assessment_root,
                 expected_sections=options.expected_sections,

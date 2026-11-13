@@ -228,6 +228,8 @@ def course_readiness(
             "activitiesAssessedRows":progress["activitiesAssessed"],
             "activitiesFullyModelReviewed":progress["activitiesFullyModelReviewed"],
             "modelConsensusPassActivities":progress["modelConsensusPassActivities"],
+            "modelRepairRequiredActivities":progress["modelRepairRequiredActivities"],
+            "modelUncertainActivities":progress["modelUncertainActivities"],
             "reviewerRequestsSkippedUnsent":progress["reviewerRequestsSkippedUnsent"],
             "currentTechnicalDisposition":progress["currentTechnicalDisposition"],
         })
@@ -252,6 +254,10 @@ def course_readiness(
         "activitiesAssessedRows":assessed,
         "activitiesFullyModelReviewed":reviewed,
         "modelConsensusPassActivities":consensus,
+        "modelRepairRequiredActivities":sum(
+            row["modelRepairRequiredActivities"] for row in rows),
+        "modelUncertainActivities":sum(
+            row["modelUncertainActivities"] for row in rows),
         "reviewerRequestsSkippedUnsent":sum(
             row["reviewerRequestsSkippedUnsent"] for row in rows),
         "currentTechnicalDisposition":disposition,

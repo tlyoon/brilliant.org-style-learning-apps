@@ -1987,7 +1987,7 @@
         "triggerMarker": "def course_readiness(",
         "remedyMarker": "if section_numbers is not None:",
         "normalEntryPoints": [
-          {"path": "scripts/check_final_acceptance_closure.py",
+          {"path": "app_generator/runtime/v3_course_review.py",
            "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
         ]
       },
@@ -2019,7 +2019,7 @@
         "triggerMarker": "def course_readiness(",
         "remedyMarker": "frozen=_approved_frozen_scope(chapter,root,expected_sections)",
         "normalEntryPoints": [
-          {"path": "scripts/check_final_acceptance_closure.py",
+          {"path": "app_generator/runtime/v3_course_review.py",
            "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
         ]
       },
@@ -2049,7 +2049,7 @@
         "triggerMarker": "def _verify_frozen_package_identity(",
         "remedyMarker": "return \"EOL_NORMALIZED_GIT_BLOB\"",
         "normalEntryPoints": [
-          {"path": "scripts/check_final_acceptance_closure.py",
+          {"path": "app_generator/runtime/v3_course_review.py",
            "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
         ]
       },
@@ -2060,6 +2060,41 @@
          "marker": "test_normal_cli_recovers_frozen_scope_and_rejects_replacement_sections"},
         {"path": "tests/test_v3_course_readiness.py", "kind": "python",
          "marker": "test_other_chapter_automatically_resolves_frozen_manifest_and_rejects_drift"}
+      ]
+    },
+    {
+      "id": "BSA-20261113-156",
+      "class": "v3-course-model-review-requires-repeated-manual-package-batch-selection",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": [
+        "BSA-20261105-115", "BSA-20261112-150",
+        "BSA-20261112-152", "BSA-20261112-153",
+        "BSA-20261113-154", "BSA-20261113-155"
+      ],
+      "differenceFromLinkedIncident": "The BSA-152 provider-neutral reviewer bridge could advance one package at a time with two externally authorized contexts, and BSA-153/154/155 could read the immutable six-course roster and check actual model coverage, but nothing integrated the two normal paths: an operator would still have to pick the next section, call the per-package model reviewer and repeatedly inspect the private checkpoint across all 108 activities. That repeated manual package selection recurred from the earlier BSA-115 finite cross-topic acceptance orchestration defect. Source-free tests failed import of the missing v3_course_review module. The canonical course-level plan_v3_course_review now deterministically chooses the next genuinely unfinished approved section from exact frozen identities and private checkpoint validation, stops on any model repair/uncertain/skipped submissions, refuses absent approved scope and never submits by reading the plan. The provider-neutral advance_v3_course_review reuses only the existing BSA-152 per-package reviewer with the same 1-to-6 bounded semantics, no source-PDF uploads, no login, no browser creation, no new provider, no retry or relabeling of Decision 0028 denials. Missing external reviewer sessions or permission produce typed BLOCKED_EXTERNAL_REVIEW_TRANSPORT or BLOCKED_GENERATED_TEXT_TRANSFER with zero request/state writes. The existing scripts/check_final_acceptance_closure.py --course-dir normal path now returns the same read-only nextSection and dispatchStatus without any special manual steps. Fully complete synthetic course ends at PENDING_DETERMINISTIC_RELEASE_EVIDENCE, not publication PASS. Six original Chapter 9 packages remain untouched, their V3 real reviews 0/108, external authorization still unavailable.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_course_review.py",
+        "triggerMarker": "def advance_v3_course_review(",
+        "remedyMarker": "advance_v3_generated_text(",
+        "normalEntryPoints": [
+          {"path": "scripts/check_final_acceptance_closure.py",
+           "marker": "from app_generator.runtime.v3_course_review import plan_v3_course_review"},
+          {"path": "app_generator/runtime/v3_course_review.py",
+           "marker": "def advance_v3_course_review("}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
+         "marker": "test_one_then_one_per_package_finite_automatic_progress"},
+        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
+         "marker": "test_no_external_model_sessions_plans_only_and_creates_no_files"},
+        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
+         "marker": "test_unresolved_prior_review_blocks_next_course_dispatch"},
+        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
+         "marker": "test_normal_existing_cli_exposes_next_section_and_blocker"},
+        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
+         "marker": "test_stale_or_invalid_frozen_course_stops_before_model_call"}
       ]
     }
   ]
