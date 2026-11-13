@@ -332,3 +332,41 @@ the normal entrypoint is
 Existing `sessions=(...,...)` injection remains compatible. Do not publish
 until the actual external authorization decision and real two-context receipts
 have been independently verified.
+
+## Decision 0038 — Gemini exclusively for both V3 reviewers
+
+The owner explicitly removed ChatGPT from the V3 two-context assessment
+mechanism. Two distinct `gemini_browser` sessions (physics adversary and
+language/learner adversary) are mandatory. Mixed Gemini/ChatGPT, ChatGPT-only,
+unknown or unlabelled reviewer contexts are rejected BEFORE any model request
+or private checkpoint. Existing approved-session injectors must provide
+`provider_id="gemini_browser"`; `V3ExistingLoginSessions` supplies that
+metadata automatically. New per-role claims and aggregate review rows persist
+`providerId="gemini_browser"`, which is checked during bounded resume,
+read-only course status and private automated release verification. Older
+unattributed receipts cannot be recast as Gemini reviews.
+
+The owner guessed that the prior external tool denial might have originated
+from ChatGPT, but the historical evidence does **not** verify that cause.
+Changing the model-provider contract cannot itself authorize a denied
+authenticated-browser operation. The existing strictly finite, permission-
+gated source-free Gemini transport remains dormant unless independently
+authorized. All actual Chapter 9 reviews remain pending until real Gemini
+receipts exist. Regression coverage includes policy mutation, ChatGPT-only,
+mixed pair, missing provider, tampered saved evidence and no-state/no-call
+negative controls.
+
+## BSA-160 — automatic Gemini browser frame normalization
+
+The historical shared `GemConversationPage.ask` yields a complete
+`BEGIN_JSON` ... `END_JSON` frame, but the strict V3 four-dimension
+assessment parser accepts a bare JSON object only. Earlier V3 fake browser
+tests returned bare JSON and did not catch this genuine integration failure.
+`V3OwnedGeneratedConversation.ask` now unwraps **exactly one completed
+frame** locally before returning, and the existing V3 schema checker
+still validates every property. It rejects malformed, incomplete,
+multiple or prose-wrapped frames; no Gemini request is resent. The
+normal `advance_v3_course_review` path exercises this automatically.
+Source-free negative controls first failed on the real-format frame,
+then passed after the fix. This closes a code-format blocker, not the
+independent host execution authorization or missing real V3 assessments.

@@ -108,7 +108,7 @@ def advance_v3_course_review(
             generated_content_transfer_allowed=True,
             max_activities=max_activities)
     else:
-        # Existing-login source-free providers already enforce their own
+        # Explicit Gemini-only source-free providers already enforce their own
         # account/profile ownership checks and close only freshly owned tabs.
         # Never bootstrap before the verified frozen package is selected.
         with session_factory as provider:

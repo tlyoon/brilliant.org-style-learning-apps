@@ -51,9 +51,9 @@ class FakeReviewer:
 def pair():
     a,b=FakeReviewer(),FakeReviewer()
     return ((SimpleNamespace(reviewer_id="physics",session_id="a",
-                             conversation=a),
+                             provider_id="gemini_browser", conversation=a),
              SimpleNamespace(reviewer_id="language",session_id="b",
-                             conversation=b)),a,b)
+                             provider_id="gemini_browser", conversation=b)),a,b)
 
 
 class AuthorizedV3BridgeTests(unittest.TestCase):
@@ -71,6 +71,27 @@ class AuthorizedV3BridgeTests(unittest.TestCase):
                     generated_content_transfer_allowed=True)
             self.assertFalse(root.exists())
             self.assertEqual((0,0),(a.calls,b.calls))
+
+    def test_mixed_or_chatgpt_reviewers_are_blocked_before_private_state(self):
+        raw = package()
+        for providers in (("chatgpt_browser", "chatgpt_browser"),
+                          ("gemini_browser", "chatgpt_browser"),
+                          ("gemini_browser", None)):
+            with tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)/"private"
+                sessions, a, b = pair()
+                altered = tuple(SimpleNamespace(
+                    reviewer_id=s.reviewer_id, session_id=s.session_id,
+                    conversation=s.conversation, provider_id=provider)
+                    for s, provider in zip(sessions, providers))
+                with self.subTest(providers=providers), self.assertRaisesRegex(
+                    ValueError, "V3_GEMINI_ONLY_REVIEWERS_REQUIRED"):
+                    advance_v3_generated_text(
+                        raw, altered, private_root=root,
+                        generated_content_transfer_allowed=True,
+                        max_activities=1)
+                self.assertEqual((0, 0), (a.calls, b.calls))
+                self.assertFalse(root.exists())
 
     def test_single_activity_then_finite_resume_persists_private_claims(self):
         raw=package(8)

@@ -36,8 +36,7 @@
     "unanimousPassRequired": true,
     "adversarialCounterexampleRequired": true,
     "allowedProviders": [
-      "gemini_browser",
-      "chatgpt_browser"
+      "gemini_browser"
     ],
     "modelRetryLimit": 2,
     "maxActivitiesPerInvocation": 6

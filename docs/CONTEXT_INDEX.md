@@ -1,5 +1,15 @@
 # Context index
 
+## Gemini-only V3 assessment provider (13 November 2026)
+
+**Decision 0038** (`docs/decisions/0038-gemini-only-v3-reviewers.md`)
+supersedes Decision 0036 only for the permitted reviewer provider: two
+fresh role-isolated **Gemini** browser conversations, no ChatGPT or mixed
+provider fallback. Both sessions and durable V3 review evidence must identify
+`gemini_browser`, verified by normal review, status and release paths; no
+provider attribution may be inferred from unlabeled historical receipts.
+This does not override Decision 0028's platform-denied authenticated operation.
+
 ## V3 existing authorized Gemini account recovery (13 November 2026)
 
 BSA-20261113-158 connects the historically proven source-free existing-login

@@ -2149,6 +2149,61 @@
         {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
          "marker": "test_busy_profile_blocks_before_browser_and_private_state"}
       ]
+    },
+    {
+      "id": "BSA-20261113-159",
+      "class": "v3-ambiguous-two-provider-assessment-permitted-chatgpt-and-unattributed-review",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": ["BSA-20261104-109", "BSA-20261112-152",
+                             "BSA-20261113-157",
+                             "BSA-20261113-158"],
+      "differenceFromLinkedIncident": "The preceding V3 course engine and existing-login Gemini adapter correctly supported two separated model conversations, but Decision 0036 had allowed both gemini_browser and chatgpt_browser and neither the normal model session admission nor immutable reviewer claims/automatic release verifier proved which provider supplied either role. The owner's new decision explicitly requires GEMINI EXCLUSIVELY and no ChatGPT invocation for the two-context V3 assessment. New pre-fix adversarial test failed because policy allowed chatgpt_browser. Decision 0038 narrows the strict machine-readable owner policy to gemini_browser only; the normal review engine and pre-checkpoint bridge reject either ChatGPT, mixed, unknown or missing provider role before any request or state write. The existing V3ExistingLoginSessions labels both genuinely owned Gemini browser roles; durable immutable per-role claims and scored reviewer rows now record providerId=gemini_browser. Cached status and publisher reject tampered or missing provider ID, with older unlabeled claims failing closed. Two independent role/session identities, finite/no-replay boundaries and source-only transfer are unchanged. This is an implemented provider-selection remedy, not evidence that ChatGPT caused the historical external host denial or that the denied authenticated browser operation is now permitted.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/autonomous_completion.py",
+        "triggerMarker": "def assess_with_models(raw: bytes, sessions: tuple, *",
+        "remedyMarker": "raise ValueError(\"V3_GEMINI_ONLY_REVIEWERS_REQUIRED\")",
+        "normalEntryPoints": [
+          {"path": "app_generator/runtime/v3_authorized_review.py",
+           "marker": "from app_generator.validation.autonomous_completion import ("}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_gemini_only_contract_rejects_chatgpt_or_unattributed_sessions_before_send"},
+        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
+         "marker": "test_release_rejects_non_gemini_or_unattributed_model_evidence"},
+        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
+         "marker": "test_mixed_or_chatgpt_reviewers_are_blocked_before_private_state"},
+        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
+         "marker": "test_normal_course_dispatch_forbids_chatgpt_injected_transport"}
+      ]
+    },
+    {
+      "id": "BSA-20261113-160",
+      "class": "v3-gemini-browser-framed-json-misread-as-uncaptured-strict-json",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": ["BSA-20261104-109", "BSA-20261113-158",
+                             "BSA-20261113-159"],
+      "differenceFromLinkedIncident": "While implementing Decision 0038 Gemini-only sessions, source inspection found that the existing genuine GemConversationPage.ask always returns a complete BEGIN_JSON/END_JSON framed response, including when Gemini emits bare JSON, but the normal V3 _parse_response demanded only a bare JSON object. BSA-158's fake Gemini provider returned raw bare JSON, which concealed the mismatch. A corrected source-free normal-dispatch negative test using actual framed-output format FAILED before repair: two synthetic model replies were captured but counted as zero fully reviewed activities. The existing V3OwnedGeneratedConversation.ask now locally unwraps exactly one complete framed JSON object, rejecting malformed, incomplete, multiple or chattering frames, and passes the body directly to the unchanged strict V3 semantic validator. This is response normalization after one model request, NEVER a retry or new prompt, and does not grant authorization to use the previously denied browser runner. Normal generated-text session credentials, package hashes, no PDF, two separate Gemini contexts, private immutable claims and reviewer stop rules are unchanged.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/gemini/v3_existing_login_sessions.py",
+        "triggerMarker": "def _v3_bare_json_from_gemini(raw: str) -> str:",
+        "remedyMarker": "return _v3_bare_json_from_gemini(self.page.ask(prompt))",
+        "normalEntryPoints": [
+          {"path": "app_generator/runtime/v3_course_review.py",
+           "marker": "from app_generator.gemini.v3_existing_login_sessions import V3ExistingLoginSessions"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
+         "marker": "test_actual_gemini_json_frame_is_normalized_once_fail_closed"},
+        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
+         "marker": "test_normal_dispatch_uses_distinct_owned_generated_only_gemini_tabs"},
+        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
+         "marker": "test_ambiguous_second_response_is_not_replayed_or_accepted"}
+      ]
     }
   ]
 }

@@ -15,7 +15,7 @@ from tests.test_v3_course_review_dispatch import synthetic_course
 from tests.test_v3_authorized_execution_bridge import FakeReviewer
 from app_generator.runtime.v3_course_review import advance_v3_course_review
 from app_generator.gemini.v3_existing_login_sessions import (
-    V3ExistingLoginSessions,
+    V3ExistingLoginSessions, _v3_bare_json_from_gemini,
 )
 
 
@@ -27,7 +27,9 @@ class V3Page(Page):
         self.sent.append((self.driver.current_window_handle, prompt))
         if self.fail_second and len(self.sent) == 2:
             raise RuntimeError("synthetic possibly submitted model reply lost")
-        return FakeReviewer().ask(prompt, stage="academic-v3-autonomous")
+        raw = FakeReviewer().ask(prompt, stage="academic-v3-autonomous")
+        # Gemini browser returns the complete BEGIN_JSON/END_JSON frame.
+        return "BEGIN_JSON\n" + raw + "\nEND_JSON"
 
 
 class V3ExistingLoginTests(unittest.TestCase):
@@ -57,6 +59,23 @@ class V3ExistingLoginTests(unittest.TestCase):
             page_factory=V3Page,
             profile_busy=profile_busy,
         )
+
+    def test_actual_gemini_json_frame_is_normalized_once_fail_closed(self):
+        original = '{"activityId":"example","dimensions":{}}'
+        self.assertEqual(original, _v3_bare_json_from_gemini(
+            "BEGIN_JSON\n"+original+"\nEND_JSON"))
+        self.assertEqual(original, _v3_bare_json_from_gemini(original))
+        invalid = (
+            'BEGIN_JSON\n{"a":1}\nEND_JSON\nEXTRA',
+            'BEGIN_JSON\n{"a":1}\nEND_JSON BEGIN_JSON\n{"a":2}\nEND_JSON',
+            'BEGIN_JSON\n{"a":',
+            '["not an object"]',
+            'text before {"a":1}',
+        )
+        for value in invalid:
+            with self.subTest(value=value), self.assertRaisesRegex(
+                    ValueError, "V3_GEMINI_"):
+                _v3_bare_json_from_gemini(value)
 
     def test_denied_external_operation_cannot_bootstrap_browser_or_claim_review(self):
         provider = self.factory(authorized=False)

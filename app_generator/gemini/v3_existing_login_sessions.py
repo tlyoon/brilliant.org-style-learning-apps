@@ -9,6 +9,7 @@ editor, credentials, model fallback, or author tabs enter reviewer prompts.
 from __future__ import annotations
 
 from dataclasses import replace
+import json
 from pathlib import Path
 from typing import Any, Callable
 from urllib.parse import urlparse
@@ -26,6 +27,31 @@ from app_generator.validation.autonomous_ai_review import ReviewerSession
 def _on_neutral_gemini(driver: Any) -> bool:
     parsed = urlparse(driver.current_url)
     return parsed.scheme == "https" and parsed.netloc == "gemini.google.com"
+
+
+def _v3_bare_json_from_gemini(raw: str) -> str:
+    """Adapt exactly one complete browser JSON frame to strict V3 JSON.
+
+    This is local response normalization, never a second provider request.
+    Reject wrappers with trailing chatter, incomplete/multiple frames and
+    other malformed outputs. The V3 semantic schema is checked later.
+    """
+    if not isinstance(raw, str):
+        raise ValueError("V3_GEMINI_RESPONSE_NOT_TEXT")
+    body = raw.strip()
+    if body.startswith("BEGIN_JSON"):
+        if not body.endswith("END_JSON"):
+            raise ValueError("V3_GEMINI_INCOMPLETE_JSON_FRAME")
+        body = body[len("BEGIN_JSON"):-len("END_JSON")].strip()
+    if "BEGIN_JSON" in body or "END_JSON" in body:
+        raise ValueError("V3_GEMINI_MULTIPLE_OR_UNTRUSTED_JSON_FRAMES")
+    try:
+        parsed = json.loads(body)
+    except (ValueError, TypeError) as exc:
+        raise ValueError("V3_GEMINI_INVALID_JSON_OBJECT") from exc
+    if not isinstance(parsed, dict):
+        raise ValueError("V3_GEMINI_INVALID_JSON_OBJECT")
+    return body
 
 
 class V3OwnedGeneratedConversation:
@@ -47,7 +73,9 @@ class V3OwnedGeneratedConversation:
             raise ValueError("V3_REVIEW_TAB_LEFT_GEMINI")
         # One request, no fallback/resubmission. Existing V3 engine marks
         # ambiguous or uncaptured outcomes and refuses replay on restart.
-        return self.page.ask(prompt)
+        # Gemini browser emits BEGIN_JSON/END_JSON frames; the V3 content
+        # assessor requires a bare JSON object. Normalize locally, once.
+        return _v3_bare_json_from_gemini(self.page.ask(prompt))
 
 
 class V3ExistingLoginSessions:
@@ -137,6 +165,7 @@ class V3ExistingLoginSessions:
                 )
                 sessions.append(ReviewerSession(
                     "v3-gemini-" + role, uuid4().hex, conversation,
+                    provider_id="gemini_browser",
                 ))
             if len({s.conversation.handle for s in sessions}) != 2:
                 raise ValueError("V3_DISTINCT_REVIEW_CONTEXTS_REQUIRED")

@@ -58,8 +58,10 @@ class FakeModel:
 def sessions(a=None,b=None):
     a=a or FakeModel()
     b=b or FakeModel()
-    return (SimpleNamespace(reviewer_id="model-physics",session_id="a1",conversation=a),
-            SimpleNamespace(reviewer_id="model-languages",session_id="b2",conversation=b))
+    return (SimpleNamespace(reviewer_id="model-physics",session_id="a1",
+                            provider_id="gemini_browser",conversation=a),
+            SimpleNamespace(reviewer_id="model-languages",session_id="b2",
+                            provider_id="gemini_browser",conversation=b))
 
 def checks(raw):
     return {
@@ -82,6 +84,41 @@ class AutonomousCompletionV3Tests(TestCase):
         self.assertFalse(active["explicitReleaseAuthorizationRequired"])
         self.assertEqual("PENDING_AUTOMATED_ASSESSMENT",
                          active["currentTechnicalDisposition"])
+
+    def test_gemini_only_contract_rejects_chatgpt_or_unattributed_sessions_before_send(self):
+        """No ChatGPT model/context can reach the V3 review or release flow."""
+        self.assertEqual(["gemini_browser"],
+                         load_policy()["assessment"]["allowedProviders"])
+        self.assertEqual(2, load_policy()["assessment"]["reviewerSessions"])
+        raw = _raw()
+        for providers in (("chatgpt_browser", "chatgpt_browser"),
+                          ("gemini_browser", "chatgpt_browser"),
+                          (None, "gemini_browser")):
+            first, second = FakeModel(), FakeModel()
+            pair = sessions(first, second)
+            pair = tuple(SimpleNamespace(
+                reviewer_id=s.reviewer_id, session_id=s.session_id,
+                conversation=s.conversation, provider_id=provider)
+                for s, provider in zip(pair, providers))
+            with self.subTest(providers=providers), self.assertRaisesRegex(
+                    ValueError, "V3_GEMINI_ONLY_REVIEWERS_REQUIRED"):
+                assess_with_models(
+                    raw, pair, generated_content_transfer_allowed=True)
+            self.assertEqual((0, 0), (first.calls, second.calls))
+
+    def test_release_rejects_non_gemini_or_unattributed_model_evidence(self):
+        raw = _raw()
+        report = assess_with_models(
+            raw, sessions(), generated_content_transfer_allowed=True)
+        for replacement in ("chatgpt_browser", None, "other"):
+            modified = json.loads(json.dumps(report))
+            if replacement is None:
+                modified["reviews"][0]["reviewers"][0].pop("providerId", None)
+            else:
+                modified["reviews"][0]["reviewers"][0]["providerId"] = replacement
+            with self.subTest(replacement=replacement), self.assertRaisesRegex(
+                    ValueError, "V3_"):
+                verify_automated_release_assessment(raw, modified, checks(raw))
 
     def test_two_models_review_all_activities_and_auto_approve_without_manual_gates(self):
         raw=_raw()

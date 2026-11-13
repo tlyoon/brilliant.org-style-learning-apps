@@ -35,6 +35,7 @@ _REMOVED = (
 )
 _ID = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 _HASH = re.compile(r"^[a-f0-9]{64}$")
+GEMINI_PROVIDER = "gemini_browser"  # Binding V3-only model provenance.
 
 
 def load_policy(file: Path = POLICY) -> dict:
@@ -61,7 +62,7 @@ def load_policy(file: Path = POLICY) -> dict:
             "verdicts": ["PASS", "FAIL", "UNCERTAIN"],
             "unanimousPassRequired": True,
             "adversarialCounterexampleRequired": True,
-            "allowedProviders": ["gemini_browser", "chatgpt_browser"],
+            "allowedProviders": [GEMINI_PROVIDER],
             "modelRetryLimit": 2, "maxActivitiesPerInvocation": 6,
         }
         or p.get("deterministicEvidence") != {
@@ -241,6 +242,8 @@ def _validate_cached_review(activity: dict, row: dict) -> None:
     )):
         if not isinstance(response, dict):
             raise ValueError("V3_INVALID_CACHED_MODEL_RESPONSE")
+        if response.get("providerId") != GEMINI_PROVIDER:
+            raise ValueError("V3_GEMINI_ONLY_EVIDENCE_REQUIRED")
         reviewer = response.get("reviewerId")
         session = response.get("sessionId")
         if (not isinstance(reviewer, str) or not reviewer
@@ -249,7 +252,7 @@ def _validate_cached_review(activity: dict, row: dict) -> None:
             raise ValueError("V3_INVALID_CACHED_REVIEWER_IDENTITY")
         identities.add((reviewer, session))
         if "decision" in response:
-            if (set(response) != {"reviewerId","sessionId",
+            if (set(response) != {"reviewerId","sessionId","providerId",
                                  "promptSha256","responseSha256","decision"}
                 or response["promptSha256"] != sha256(
                     make_prompt(activity,perspective).encode("utf-8")
@@ -258,7 +261,7 @@ def _validate_cached_review(activity: dict, row: dict) -> None:
                 or not _HASH.fullmatch(response["responseSha256"])):
                 raise ValueError("V3_STALE_OR_FORGED_REVIEW_PROMPT")
             _parse_response(json.dumps(response["decision"]), activity["id"])
-        elif (set(response) != {"reviewerId","sessionId","status","reasonCode"}
+        elif (set(response) != {"reviewerId","sessionId","providerId","status","reasonCode"}
               or response["status"] != "UNRESOLVED"
               or not isinstance(response["reasonCode"],str)
               or not response["reasonCode"]):
@@ -294,6 +297,8 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
         or len({s.session_id for s in sessions}) != 2
         or sessions[0].conversation is sessions[1].conversation):
         raise ValueError("V3_DISTINCT_REVIEW_CONTEXTS_REQUIRED")
+    if any(getattr(s, "provider_id", None) != GEMINI_PROVIDER for s in sessions):
+        raise ValueError("V3_GEMINI_ONLY_REVIEWERS_REQUIRED")
     # The normal invocation resumes itself from a durable package-bound
     # checkpoint; callers need not manually reconstruct the old assessment.
     stage_name = f"v3-assessment-{digest}"
@@ -334,7 +339,8 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
             prompt_hash=sha256(prompt.encode("utf-8")).hexdigest()
             claim=f"v3-review-{digest[:12]}-{index:03d}-{role_index}"
             identity={"packageSha256":digest,"activityId":activity["id"],
-                      "promptSha256":prompt_hash,"roleIndex":role_index}
+                      "promptSha256":prompt_hash,"roleIndex":role_index,
+                      "providerId":GEMINI_PROVIDER}
             previous=checkpoint.load_stage(claim) if checkpoint is not None else None
             if previous is not None and (
                 not isinstance(previous,dict) or
@@ -348,6 +354,7 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                     responses.append({
                         "reviewerId":previous["reviewerId"],
                         "sessionId":previous["sessionId"],
+                        "providerId":GEMINI_PROVIDER,
                         "promptSha256":prompt_hash,
                         "responseSha256":previous["responseSha256"],
                         "decision":saved,
@@ -365,6 +372,7 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                     responses.append({
                         "reviewerId":previous["reviewerId"],
                         "sessionId":previous["sessionId"],
+                        "providerId":GEMINI_PROVIDER,
                         "status":"UNRESOLVED",
                         "reasonCode":"ROLE_CIRCUIT_OPEN_UNSENT",
                     })
@@ -378,6 +386,7 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                     responses.append({
                         "reviewerId":session.reviewer_id,
                         "sessionId":session.session_id,
+                        "providerId":GEMINI_PROVIDER,
                         "status":"UNRESOLVED",
                         "reasonCode":"PRIOR_MODEL_REQUEST_UNRECONCILED",
                     })
@@ -395,6 +404,7 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "requestSubmitted":False})
                 responses.append({"reviewerId":session.reviewer_id,
                     "sessionId":session.session_id,
+                    "providerId":GEMINI_PROVIDER,
                     "status":"UNRESOLVED",
                     "reasonCode":"ROLE_CIRCUIT_OPEN_UNSENT"})
                 continue
@@ -420,6 +430,7 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                 responses.append({
                     "reviewerId":session.reviewer_id,
                     "sessionId":session.session_id,
+                    "providerId":GEMINI_PROVIDER,
                     "promptSha256":prompt_hash,
                     "responseSha256":response_hash,
                     "decision":verdict,
@@ -448,6 +459,7 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                     })
                 responses.append({"reviewerId":session.reviewer_id,
                     "sessionId":session.session_id,
+                    "providerId":GEMINI_PROVIDER,
                     "status":"UNRESOLVED","reasonCode":type(exc).__name__})
                 # No unbounded retries after ambiguous remote submission.
         dimensions, status = _review_consensus(responses)

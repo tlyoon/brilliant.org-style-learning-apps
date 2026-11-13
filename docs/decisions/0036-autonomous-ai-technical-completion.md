@@ -1,6 +1,6 @@
 # Decision 0036 — Autonomous AI technical completion, no mandatory manual sign-off
 
-**Owner-directed amendment:** 11 November 2026. **Status:** Binding for current
+**Provider amendment (13 November 2026):** Owner Decision 0038 (`0038-gemini-only-v3-reviewers.md`) narrows only the V3 review provider choice to **two distinct Gemini browser conversations, never ChatGPT**. The strict active policy and all assessment/release logic enforce the explicit `gemini_browser` identity. Other Decision 0036 requirements remain unchanged; this does not unblock the previous platform-denied browser execution.\n\n**Owner-directed amendment:** 11 November 2026. **Status:** Binding for current
 BOSLA technical completion and release eligibility. Supersedes earlier
 Decisions 0032–0035 **only** where they made independent educational-content
 validation, independently certified meaningful visuals, real learner-pilot
@@ -73,7 +73,7 @@ trial-proven solely because the V3 gate passed.
 ## Operational limits are not technical clearance gates
 
 This amendment authorizes automated LLM review of the **generated activity
-text** through an already-authorized Gemini or ChatGPT transport, but does
+text** through an already-authorized Gemini-only transport (Decision 0038), but does
 not authorize transmission of the original textbook PDFs, copied figures,
 protected external source extracts, real student identities or confidential
 institutional records. Such operation-level constraints are not a disguised
@@ -115,7 +115,7 @@ from technical acceptance, not a resurrection of removed rights gates.
   content and automatic eligibility on fully satisfied artificial test data.
 
 **Execution limitation at this decision's creation:** The current chat has
-not performed real Gemini/ChatGPT assessments of the six original draft
+not performed real Gemini-only V3 assessments of the six original draft
 Chapter 9 packages. The direct authenticated-browser assessment-runner step
 was blocked by the available tool environment. Do not claim otherwise.
 The provider-neutral engine can be called by a connected, authorized LLM

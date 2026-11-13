@@ -68,6 +68,27 @@ class V3CourseReviewDispatchTests(unittest.TestCase):
             self.assertFalse(progress["publicationAuthorized"])
             self.assertFalse(private.exists())
 
+    def test_normal_course_dispatch_forbids_chatgpt_injected_transport(self):
+        from types import SimpleNamespace
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)/"repo"
+            chapter = synthetic_course(repo)
+            private = Path(tmp)/"unused-private"
+            for providers in (("chatgpt_browser", "chatgpt_browser"),
+                              ("gemini_browser", "chatgpt_browser")):
+                original, a, b = pair()
+                reviewers = tuple(SimpleNamespace(
+                    reviewer_id=s.reviewer_id, session_id=s.session_id,
+                    provider_id=provider, conversation=s.conversation)
+                    for s, provider in zip(original, providers))
+                with self.subTest(providers=providers), self.assertRaisesRegex(
+                    ValueError, "V3_GEMINI_ONLY_REVIEWERS_REQUIRED"):
+                    advance_v3_course_review(
+                        chapter, repo, private_root=private, sessions=reviewers,
+                        generated_content_transfer_allowed=True, max_activities=1)
+                self.assertEqual((0, 0), (a.calls, b.calls))
+                self.assertFalse(private.exists())
+
     def test_one_then_one_per_package_finite_automatic_progress(self):
         with tempfile.TemporaryDirectory() as tmp:
             base=Path(tmp)
@@ -152,6 +173,7 @@ class V3CourseReviewDispatchTests(unittest.TestCase):
             state=RunContext.create(private,"v3-generated-"+digest)
             prior,healthy,_=pair()
             bad=SimpleNamespace(reviewer_id="physics",session_id="a",
+                                provider_id="gemini_browser",
                                 conversation=Uncaptured())
             report=assess_with_models(raw,(bad,prior[1]),checkpoint=state,
                 max_activities=1,generated_content_transfer_allowed=True)

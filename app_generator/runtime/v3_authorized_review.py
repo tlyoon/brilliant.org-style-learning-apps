@@ -1,4 +1,4 @@
-"""Provider-neutral BOSLA V3 generated-text assessment execution seam.
+"""Gemini-only BOSLA V3 generated-text assessment execution seam.
 
 The external caller MUST supply already-authorized, verified and independently
 owned model conversation sessions. This module cannot log in to a provider,
@@ -12,7 +12,7 @@ from pathlib import Path
 
 from app_generator.runtime.run_context import RunContext
 from app_generator.validation.autonomous_completion import (
-    assess_with_models, assessment_progress, package_identity,
+    GEMINI_PROVIDER, assess_with_models, assessment_progress, package_identity,
 )
 
 REPO = Path(__file__).resolve().parents[2]
@@ -45,6 +45,8 @@ def advance_v3_generated_text(
         or sessions[0].session_id == sessions[1].session_id
         or sessions[0].conversation is sessions[1].conversation):
         raise ValueError("V3_DISTINCT_REVIEW_CONTEXTS_REQUIRED")
+    if any(getattr(s, "provider_id", None) != GEMINI_PROVIDER for s in sessions):
+        raise ValueError("V3_GEMINI_ONLY_REVIEWERS_REQUIRED")
     if (not isinstance(private_root, Path) or private_root.is_symlink()
         or not private_root.is_absolute()):
         raise ValueError("V3_UNSAFE_PRIVATE_ROOT")

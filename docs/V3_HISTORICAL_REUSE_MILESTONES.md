@@ -92,3 +92,15 @@ approval. The previously denied direct authenticated browser operation
 remains terminal until an independent authority authorizes that exact intent.
 `PENDING_AUTOMATED_ASSESSMENT` and zero real V3 verdicts must remain true
 until genuine model evidence is collected.
+
+## 13 November 2026 — Gemini-only provider selection, Decision 0038
+
+The current binding V3 review contract now permits `gemini_browser` ONLY.
+Two distinct Gemini browser conversations replace the previous alternative
+two-context Gemini/ChatGPT allowance. The earlier successful source-free
+Gemini neutral probes and BSA-158 factory are the intended authentic
+provider; no ChatGPT dispatch or fallback is legal. The normal engine,
+checkpoint identity and release checker reject mixed, ChatGPT and unknown
+provider labels. The earlier platform denial was not proven to arise from
+ChatGPT and remains an independent external authorization boundary. Do not
+mistake source-free synthetic tests for the actual 108 Chapter 9 assessments.

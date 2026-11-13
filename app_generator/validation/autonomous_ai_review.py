@@ -45,6 +45,9 @@ class ReviewerSession:
     reviewer_id: str
     session_id: str
     conversation: ReviewerConversation
+    # V3 requires explicit provider provenance; no inference from role names.
+    # Optional for older, separately governed V2 review workflows.
+    provider_id: str = ""
 
     def __post_init__(self) -> None:
         if not self.reviewer_id.strip() or not self.session_id.strip():
