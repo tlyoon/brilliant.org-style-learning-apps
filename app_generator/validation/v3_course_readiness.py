@@ -115,6 +115,43 @@ def _verify_frozen_package_identity(
     return "EOL_NORMALIZED_GIT_BLOB"
 
 
+def _unreconciled_next_role_claims(
+    batches: Path, digest: str, activities: list[dict], assessed: int,
+) -> int:
+    """Read-only check for role claims without their aggregate review row.
+
+    A killed worker may leave an IN_FLIGHT/AMBIGUOUS claim but no aggregate
+    report. The ordinary plan MUST stop before creating new Gemini clients.
+    Only the next unaggregated activity can carry an incomplete role claim:
+    normal V3 processes roles and aggregate rows in strict sequential order.
+    """
+    if assessed >= len(activities):
+        return 0
+    unresolved = 0
+    for role in (0, 1):
+        claim = batches / (
+            f"v3-review-{digest[:12]}-{assessed:03d}-{role}.json"
+        )
+        if claim.is_symlink():
+            raise ValueError("V3_UNSAFE_PRIVATE_COURSE_EVIDENCE")
+        if not claim.exists():
+            continue
+        if not claim.is_file() or claim.stat().st_size > 100_000:
+            raise ValueError("V3_UNSAFE_PRIVATE_COURSE_EVIDENCE")
+        row = json.loads(claim.read_text(encoding="utf-8"))
+        if (not isinstance(row, dict)
+            or row.get("packageSha256") != digest
+            or row.get("activityId") != activities[assessed]["id"]
+            or row.get("roleIndex") != role
+            or row.get("state") not in (
+                "COMPLETE", "IN_FLIGHT", "AMBIGUOUS",
+                "BLOCKED_EXTERNAL", "SKIPPED_UNSENT",
+            )):
+            raise ValueError("V3_INVALID_ORPHAN_ROLE_CLAIM")
+        unresolved += row["state"] != "COMPLETE"
+    return unresolved
+
+
 def course_readiness(
     chapter_dir: Path, repo_root: Path, *,
     private_root: Path | None = None, expected_sections: int = 6,
@@ -220,6 +257,9 @@ def course_readiness(
         # This pre-existing validator rejects stale, forged, mismatched,
         # incomplete and inconsistent model checkpoint aggregates.
         progress=assessment_progress(raw,assessment)
+        pending_claims = (_unreconciled_next_role_claims(
+            batches,digest,activities,progress["activitiesAssessed"])
+            if private is not None else 0)
         rows.append({
             "section":section.name,
             "packageSha256":digest,
@@ -230,6 +270,7 @@ def course_readiness(
             "modelConsensusPassActivities":progress["modelConsensusPassActivities"],
             "modelRepairRequiredActivities":progress["modelRepairRequiredActivities"],
             "modelUncertainActivities":progress["modelUncertainActivities"],
+            "unreconciledRoleClaims":pending_claims,
             "reviewerRequestsSkippedUnsent":progress["reviewerRequestsSkippedUnsent"],
             "currentTechnicalDisposition":progress["currentTechnicalDisposition"],
         })
@@ -239,10 +280,13 @@ def course_readiness(
     consensus=sum(row["modelConsensusPassActivities"] for row in rows)
     pending=any(row["currentTechnicalDisposition"]=="PENDING_AUTOMATED_ASSESSMENT" for row in rows)
     repair=any(row["currentTechnicalDisposition"]=="AUTO_REPAIR_REQUIRED" for row in rows)
-    ambiguous=any(row["currentTechnicalDisposition"]=="RECONCILE_AMBIGUOUS_REVIEW" for row in rows)
+    unreconciled=sum(row["unreconciledRoleClaims"] for row in rows)
+    ambiguous=unreconciled>0 or any(
+        row["currentTechnicalDisposition"]=="RECONCILE_AMBIGUOUS_REVIEW"
+        for row in rows)
     disposition=("AUTO_REPAIR_REQUIRED" if repair else
-                 "PENDING_AUTOMATED_ASSESSMENT" if pending else
                  "RECONCILE_AMBIGUOUS_REVIEW" if ambiguous else
+                 "PENDING_AUTOMATED_ASSESSMENT" if pending else
                  "PENDING_DETERMINISTIC_RELEASE_EVIDENCE")
     return {
         "contract":"AUTONOMOUS_AI_TECHNICAL_COMPLETION_V3",
@@ -258,6 +302,7 @@ def course_readiness(
             row["modelRepairRequiredActivities"] for row in rows),
         "modelUncertainActivities":sum(
             row["modelUncertainActivities"] for row in rows),
+        "unreconciledRoleClaims":unreconciled,
         "reviewerRequestsSkippedUnsent":sum(
             row["reviewerRequestsSkippedUnsent"] for row in rows),
         "currentTechnicalDisposition":disposition,

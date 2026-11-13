@@ -2234,6 +2234,33 @@
         {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
          "marker": "test_readonly_native_worker_requires_no_provider_or_credentials"}
       ]
+    },
+    {
+      "id": "BSA-20261113-162",
+      "class": "v3-native-inflight-role-claim-without-aggregate-reopened-model-dispatch",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": ["BSA-20261104-109", "BSA-20261113-161"],
+      "differenceFromLinkedIncident": "The newly integrated native Gemini API one-shot reviewer was source-free tested, but its normal course planner only inspected aggregate v3-assessment checkpoints, not a durable per-role IN_FLIGHT claim written before the SDK call. The synthetic 108-activity stress campaign injected KeyboardInterrupt immediately after first role model dispatch and before saving the activity aggregate. The initial adversarial restart test FAILED: plan_v3_course_review returned READY_FOR_AUTHORIZED_REVIEW_SESSIONS despite a stranded IN_FLIGHT role claim. Opening another two-client factory could then contact a second model before the first outstanding request was reconciled. The normal read-only course readiness now checks the NEXT unaggregated activity's exact package- and role-bound claims, validates safe private paths and immutable identity, and exposes unreconciledRoleClaims. The normal dispatcher deterministically returns STOP_UNRECONCILED_MODEL_REVIEW before opening new API clients when a claim remains IN_FLIGHT, AMBIGUOUS, BLOCKED_EXTERNAL or SKIPPED_UNSENT; no hidden model request or auto-replay occurs. A fully COMPLETE role with no aggregate is not falsely tagged as uncertain. The exclusive run lock remains separate and authoritative while an invocation is active. This remedy is automatically used by the normal native runner and browser dispatcher and is guarded by permanent full-course/stress/error tests. Synthetic stress results never count as genuine scientific/model acceptance.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/v3_course_readiness.py",
+        "triggerMarker": "def _unreconciled_next_role_claims(",
+        "remedyMarker": "unresolved += row[\"state\"] != \"COMPLETE\"",
+        "normalEntryPoints": [
+          {"path": "app_generator/runtime/v3_course_review.py",
+           "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v3_native_gemini_stress.py", "kind": "python",
+         "marker": "test_power_loss_after_inflight_claim_stops_before_new_api_calls"},
+        {"path": "tests/test_v3_native_gemini_stress.py", "kind": "python",
+         "marker": "test_two_simultaneous_workers_do_not_duplicate_inflight_request"},
+        {"path": "tests/test_v3_native_gemini_stress.py", "kind": "python",
+         "marker": "test_full_108_activities_216_model_calls_and_fresh_pair_per_activity"},
+        {"path": "tests/test_v3_native_gemini_stress.py", "kind": "python",
+         "marker": "test_interrupted_at_activity_32_stops_without_replay"}
+      ]
     }
   ]
 }

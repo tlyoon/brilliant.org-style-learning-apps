@@ -36,6 +36,10 @@ def plan_v3_course_review(
                 progress["activitiesTotal"]-progress["activitiesAssessedRows"])}
     if progress["scopeSource"]!="FROZEN_CANDIDATE_MANIFEST":
         result["dispatchStatus"]="BLOCKED_NO_APPROVED_COURSE_SCOPE"
+    elif progress.get("unreconciledRoleClaims",0)>0:
+        # Hard interruption after an IN_FLIGHT claim but before the
+        # per-activity aggregate must never open fresh model clients.
+        result["dispatchStatus"]="STOP_UNRECONCILED_MODEL_REVIEW"
     elif progress["modelRepairRequiredActivities"]>0:
         result["dispatchStatus"]="STOP_VERSIONED_CONTENT_REPAIR_REQUIRED"
     elif (progress["modelUncertainActivities"]>0

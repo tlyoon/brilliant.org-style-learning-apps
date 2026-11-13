@@ -1,5 +1,19 @@
 # Context index
 
+## Native Gemini V3 full-course stress and process-loss hardening (13 Nov 2026)
+
+**BSA-20261113-162** corrects a genuinely reproduced normal-runtime defect: a
+crashed API worker left a per-role `IN_FLIGHT` request claim but no aggregate
+review row, causing the course planner to return false READY. The normal
+`app_generator/validation/v3_course_readiness.py` now checks exact orphan
+role claims, and `advance_v3_course_review` stops before a new SDK session
+when `unreconciledRoleClaims` is nonzero. See
+`docs/V3_NATIVE_GEMINI_STRESS_REPORT_20261113.md` and
+`tests/test_v3_native_gemini_stress.py` for source-free full 108-activity
+campaign, simulated 216 calls, simultaneous-worker, power-loss and failure
+matrix tests. No authentic Chapter 9 Gemini model requests were executed.
+
+
 ## Native local Gemini API reviewer — default independent V3 route (13 November 2026)
 
 **Decision 0039 / BSA-20261113-161** (binding) adds

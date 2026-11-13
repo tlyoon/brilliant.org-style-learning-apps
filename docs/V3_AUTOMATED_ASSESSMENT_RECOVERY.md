@@ -443,3 +443,27 @@ the exact recorded failure rather than deleting the checkpoint.
 **No live test has run** as part of this milestone; original Chapter 9
 is still 0/108 genuine V3 reviews, unpublished. Native model review also
 does not replace downstream exact-commit CI/browser/privacy release checks.
+
+## BSA-162 — power-loss and concurrency stress recovery (13 Nov 2026)
+
+The full source-free stress campaign and independently reproducible
+software defect are documented in
+`docs/V3_NATIVE_GEMINI_STRESS_REPORT_20261113.md`.
+A synthetic 6×18 course completed 108 activities via 216 distinct
+one-shot fake Gemini SDK clients, without replay or premature publication.
+A simulated crash after `IN_FLIGHT` but before the assessment aggregate
+previously exposed false `READY_FOR_AUTHORIZED_REVIEW_SESSIONS`.
+
+The **normal** course-readiness function now reads the exact next-activity
+role claim (package digest, activity identity, role, file integrity,
+immutable state). Pending or ambiguous orphan claims set
+`unreconciledRoleClaims`, causing the normal
+`advance_v3_course_review` to return
+`STOP_UNRECONCILED_MODEL_REVIEW` **before** new Gemini API clients,
+regardless of whether the aggregate activity record was saved. Verified
+against a process-interruption simulation, simultaneous callers, a
+simulated request timeout on activity 32, orphan lock, malformed/empty
+responses, HTTP 401/429/503 provider faults, injected FAIL verdict,
+cached ChatGPT-provider tampering, frozen-content hash drift, and
+post-completion no-op. Never auto-delete a real run lock, erase an
+unreconciled request or label fake stress verdicts as genuine.
