@@ -102,3 +102,45 @@ dependency, not evidence that both reviewers failed, and not an SDK
 version mismatch. Independent, source-free engineering validation may
 continue while provider reconciliation or a versioned review policy
 is developed. No chapter-wide release eligibility is asserted.
+
+## Decision 0040 genuine independent continuation — Section 9.2
+
+A newly implemented **quarantine-aware** V3 native runner was checked against
+the existing HP private frozen-course state, which still contained the
+Section 9.1 activity-2 `ServerError`. The read-only normal CLI selected
+`section-9-2`, listed `section-9-1` under `quarantinedSections`, and
+left `publicationAuthorized=false`. Historical source/request identities
+were not rewritten.
+
+**Genuine execution:** On the first Decision-0040 source revision
+`fdf17b848a4b9dc000247d97297b44fc70c1ca65` (draft PR #223),
+the normal `run_v3_native_gemini_review.py` was invoked again
+with `--execute --allow-generated-text-transfer --batch-size 1
+--max-batches 1`. It selected **Section 9.2 activity 1**, not the
+quarantined Section 9.1 activity. The genuine run exited **0** after
+488.11 seconds. It added one fully model-reviewed, consensus-PASS activity.
+
+A separate **read-only metadata inspection** after the run and update to
+the later draft revision `81455a59be921db403f385bc1a3c7294dab75809`
+confirmed all six role claim files:
+
+- Section 9.1 activity 1: physics `COMPLETE`, semantics `COMPLETE`;
+- Section 9.1 activity 2: physics **`AMBIGUOUS` / `ServerError`**,
+  semantics `COMPLETE` — **unchanged**;
+- Section 9.2 activity 1: physics `COMPLETE`, semantics `COMPLETE`,
+  both with `providerId=gemini_api`.
+
+No run locks remained. The course now records
+`activitiesAssessedRows=3`, `activitiesFullyModelReviewed=2`,
+`modelConsensusPassActivities=2`, `modelUncertainActivities=1`,
+`quarantinedSections=["section-9-1"]`, and
+`dispatchStatus=READY_FOR_AUTHORIZED_REVIEW_SESSIONS` for the next
+eligible independent activity. The release flag remains false.
+
+**What this establishes:** Real independent-section continuation and
+immutability of the original uncertain request were observed on HP.
+This is not a successful reconciliation of the original Google request
+and not an academic, multilingual, learner-pilot or release certification.
+The later runtime revisions added stronger global active-lock and
+external-denial checks, verified separately by deterministic regressions;
+the live result should not be misattributed to those later changes.
