@@ -54,6 +54,21 @@ def plan_v3_course_review(
         ]
         result["quarantinedSections"] = quarantined
         result["independentContinuation"] = True
+        # The per-package run lock is global to live request ownership.
+        # Do not begin another section while an earlier review process may
+        # still be in flight, even when that section is quarantined.
+        if private_root is not None:
+            for row in progress["sectionProgress"]:
+                lock = (private_root /
+                    ("v3-generated-" + row["packageSha256"]) /
+                    ".active-review.lock")
+                if lock.is_symlink():
+                    raise ValueError("V3_UNSAFE_REVIEW_OWNERSHIP_LOCK")
+                if lock.exists():
+                    result["dispatchStatus"] = (
+                        "STOP_ACTIVE_REVIEW_OWNERSHIP_UNCERTAIN")
+                    result["publicationAuthorized"] = False
+                    return result
         if eligible:
             from app_generator.validation.v3_server_error_recovery import provider_capacity_gate
             result["nextSection"] = eligible[0]["section"]
