@@ -516,3 +516,26 @@ The optional offline metadata-only assessor is invoked as:
     python scripts/assess_heldout_generalization.py --manifest <PRIVATE_MANIFEST.json> --results <PRIVATE_RECEIPTS.json> --out <NEW_PRIVATE_REPORT.json>
 
 This command does **not** open or process a PDF, call a model, verify raw receipt provenance, grant academic PASS or publish. READY_FOR_TRUSTED_PROVENANCE_AUDIT means the bounded metadata is internally complete, not that C3 or C4 passed. Keep original sources, reviewer output, manifests, model credentials and student files outside the repository and outside unauthorized tool scopes. Exact Section 9.4 v11 remains 0/18 formal academic PASS until independently evidenced.
+
+## Native V3 Gemini SDK readiness and genuine pilot (2026-11-14)
+
+The V3 standalone `scripts/run_v3_native_gemini_review.py` now runs
+`app_generator.runtime.native_sdk_environment.delegate_to_supported_sdk`
+inside the **normal executable path** only after immutable-scope planning
+and explicit generated-text-transfer consent. On an older global
+`google-genai` installation lacking `types.HttpRetryOptions`, it
+reuses a compatible ignored project `.venv`, or creates that venv and
+performs one bounded installation of the pre-existing pinned project
+dependencies. Failure is terminal for that invocation before any model
+request. The delegated child is marked to prevent recursive bootstraps;
+no system Python installation is changed. The shared SDK constructor
+also rejects unsupported retry controls before key lookup.
+
+The independent real Google API one-activity review on HP completed on
+frozen commit `9b570101`, before this recovery code was introduced.
+Two distinct `gemini_api` reviewer claims were both `COMPLETE`, with
+one `AI_CONSENSUS_PASS` aggregate for Section 9.1 activity 1, no
+uncertain claims, and no release receipt. See
+`docs/V3_NATIVE_GEMINI_LIVE_PILOT_20261114.md`. This is genuine
+model-transport evidence, not independent academic certification and
+not a claim that the rest of Chapter 9 has passed.
