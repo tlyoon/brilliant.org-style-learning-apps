@@ -71,6 +71,13 @@ def build_v3_native_text_sdk_components(config: Any) -> tuple[Callable[[str], An
         raise AuthenticationRequired(
             "google-genai is required for the native V3 Gemini reviewer"
         ) from exc
+    # Required SDK retry control must be checked before any client or model
+    # claim. Older global SDK installations cannot silently retry V3 calls.
+    if not callable(getattr(types, "HttpRetryOptions", None)):
+        raise AuthenticationRequired(
+            "V3_NATIVE_GEMINI_SDK_RETRY_GUARD_UNAVAILABLE: "
+            "use the pinned project SDK in its isolated .venv"
+        )
     candidates = find_gemini_keys()
     if not candidates:
         raise AuthenticationRequired(
