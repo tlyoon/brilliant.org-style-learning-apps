@@ -302,5 +302,26 @@ class V3NativeGeminiApiTests(unittest.TestCase):
         self.assertEqual(0,status["activitiesFullyModelReviewed"])
 
 
+    def test_legacy_sdk_without_no_retry_controls_rejected_before_key_lookup(self):
+        from types import ModuleType
+        from unittest.mock import patch
+        from app_generator.llm.gemini_api import build_v3_native_text_sdk_components
+        from app_generator.errors import AuthenticationRequired
+        import sys as system
+        fake_google = ModuleType("google")
+        fake_genai = ModuleType("google.genai")
+        fake_types = ModuleType("google.genai.types")
+        fake_google.genai = fake_genai
+        fake_genai.types = fake_types
+        with patch.dict(system.modules, {
+            "google": fake_google, "google.genai": fake_genai,
+            "google.genai.types": fake_types,
+        }), patch("app_generator.llm.gemini_api.find_gemini_keys") as keys:
+            with self.assertRaisesRegex(AuthenticationRequired,
+                    "V3_NATIVE_GEMINI_SDK_RETRY_GUARD_UNAVAILABLE"):
+                build_v3_native_text_sdk_components(config())
+            keys.assert_not_called()
+
+
 if __name__=="__main__":
     unittest.main()
