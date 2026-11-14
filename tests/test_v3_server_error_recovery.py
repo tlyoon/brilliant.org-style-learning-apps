@@ -156,7 +156,7 @@ class V3ServerRecoveryTests(unittest.TestCase):
         state=self.plan()
         self.assertEqual(["section-7-1"], state["quarantinedSections"])
         self.assertEqual("section-7-2",state["nextSection"])
-        self.assertEqual("READY_FOR_AUTHORIZED_REVIEW_SESSIONS",state["dispatchStatus"])
+        self.assertEqual("STOP_UNCLASSIFIED_PROVIDER_REVIEW",state["dispatchStatus"])
 
     def test_quarantine_never_fabricates_global_completion(self):
         self.run_fault()
@@ -206,6 +206,35 @@ class V3ServerRecoveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,
                 "V3_PROVIDER_CAPACITY_FUTURE_TIMESTAMP"):
             self.plan()
+
+
+    def test_external_denial_cannot_be_bypassed_with_another_section(self):
+        from hashlib import sha256
+        raw = (self.chapter / "section-7-1" / "package.json").read_bytes()
+        digest = sha256(raw).hexdigest()
+        activity = json.loads(raw)["activities"][0]["id"]
+        batches = self.private / ("v3-generated-" + digest) / "batches"
+        batches.mkdir(parents=True)
+        claim = batches / f"v3-review-{digest[:12]}-000-0.json"
+        claim.write_text(json.dumps({
+            "packageSha256": digest, "activityId": activity,
+            "roleIndex": 0, "state": "BLOCKED_EXTERNAL",
+            "reasonCode": "ExternalExecutionDenied",
+            "requestSubmitted": False,
+        }),encoding="utf8")
+        result = self.plan()
+        self.assertEqual("BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
+                         result["dispatchStatus"])
+        sessions,a,b = pair()
+        stopped = advance_v3_course_review(
+            self.chapter,self.repo,private_root=self.private,
+            sessions=sessions,generated_content_transfer_allowed=True,
+            max_activities=1,continue_independent=True)
+        self.assertEqual("BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
+                         stopped["dispatchStatus"])
+        self.assertEqual((0,0),(a.calls,b.calls))
+        self.assertFalse(stopped["publicationAuthorized"])
+        self.assertTrue(claim.exists())
 
 
 if __name__ == "__main__":
