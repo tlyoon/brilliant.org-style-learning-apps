@@ -176,5 +176,37 @@ class V3ServerRecoveryTests(unittest.TestCase):
         self.assertFalse(result["publicationAuthorized"])
 
 
+    def test_live_or_orphaned_review_lock_blocks_all_new_sections(self):
+        self.run_fault()
+        self.make_claims_old()
+        lock_dir = next(self.private.glob("v3-generated-*"))
+        lock = lock_dir / ".active-review.lock"
+        lock.write_text("synthetic-other-worker", encoding="utf8")
+        sessions,a,b = pair()
+        blocked = advance_v3_course_review(
+            self.chapter, self.repo, private_root=self.private,
+            sessions=sessions, generated_content_transfer_allowed=True,
+            max_activities=1, continue_independent=True)
+        self.assertEqual("STOP_ACTIVE_REVIEW_OWNERSHIP_UNCERTAIN",
+                         blocked["dispatchStatus"])
+        self.assertEqual((0,0),(a.calls,b.calls))
+        self.assertEqual("synthetic-other-worker",
+                         lock.read_text(encoding="utf8"))
+        lock.unlink()  # remove only our disposable test lock
+        self.assertEqual("section-7-2",self.plan()["nextSection"])
+        self.assertEqual("READY_FOR_AUTHORIZED_REVIEW_SESSIONS",
+                         self.plan()["dispatchStatus"])
+
+    def test_future_timestamp_quarantine_fails_closed(self):
+        self.run_fault()
+        for p in self.claims():
+            if json.loads(p.read_text(encoding="utf8")).get("reasonCode") == "ServerError":
+                future=time.time()+600
+                os.utime(p,(future,future))
+        with self.assertRaisesRegex(ValueError,
+                "V3_PROVIDER_CAPACITY_FUTURE_TIMESTAMP"):
+            self.plan()
+
+
 if __name__ == "__main__":
     unittest.main()
