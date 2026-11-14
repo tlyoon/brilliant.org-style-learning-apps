@@ -302,6 +302,7 @@ class V3NativeGeminiApiTests(unittest.TestCase):
         status=json.loads(result.stdout)
         self.assertEqual("READY_FOR_AUTHORIZED_REVIEW_SESSIONS",status["dispatchStatus"])
         self.assertEqual(0,status["activitiesFullyModelReviewed"])
+        self.assertFalse(self.private.exists())  # synthetic dry-run is read-only
 
 
     def test_legacy_sdk_without_no_retry_controls_rejected_before_key_lookup(self):
