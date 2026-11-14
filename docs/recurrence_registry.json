@@ -2294,6 +2294,55 @@
           "marker": "test_malformed_orphan_claim_filename_is_not_ignored"
         }
       ]
+    },
+    {
+      "id": "BSA-20261114-164",
+      "class": "v3-native-gemini-sdk-version-mismatch-prevented-real-review-on-worker",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261113-161",
+        "BSA-20261113-163"
+      ],
+      "differenceFromLinkedIncident": "A real native V3 one-activity attempt on Dell-115 failed before the model checkpoint: the system-wide google-genai 1.4.0 SDK lacked HttpRetryOptions while pyproject.toml pins 2.25.0. The normal CLI now detects the no-retry API before any model request and, only for explicitly authorized execution, uses an existing compatible ignored .venv or makes one bounded attempt to install the repository's pinned dependencies, then delegates exactly once under a recursion guard. The core SDK constructor also fails closed before key discovery if retry control is unavailable. Failed/bootstrap-incompatible workers never transmit generated activity data or make an ambiguous request. A different already-compatible owner machine (HP, SDK 2.28.0) performed a genuine two-role Gemini 3.8 Flash assessment and persisted the first Chapter 9.1 activity with both COMPLETE claims and AI_CONSENSUS_PASS; this genuine receipt is separate from synthetic tests and is not a release authorization.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/native_sdk_environment.py",
+        "triggerMarker": "def delegate_to_supported_sdk(",
+        "remedyMarker": "V3_NATIVE_SDK_BOOTSTRAP_INCOMPATIBLE",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_native_gemini_review.py",
+            "marker": "delegated = delegate_to_supported_sdk("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_native_sdk_environment.py",
+          "kind": "python",
+          "marker": "test_stale_global_sdk_uses_existing_compatible_venv_once"
+        },
+        {
+          "path": "tests/test_native_sdk_environment.py",
+          "kind": "python",
+          "marker": "test_missing_venv_bootstraps_pinned_project_once_then_delegates"
+        },
+        {
+          "path": "tests/test_native_sdk_environment.py",
+          "kind": "python",
+          "marker": "test_install_failure_stops_without_any_review_dispatch"
+        },
+        {
+          "path": "tests/test_native_sdk_environment.py",
+          "kind": "python",
+          "marker": "test_cli_dispatch_invokes_recovery_before_provider_config"
+        },
+        {
+          "path": "tests/test_v3_native_gemini_api_reviewers.py",
+          "kind": "python",
+          "marker": "test_legacy_sdk_without_no_retry_controls_rejected_before_key_lookup"
+        }
+      ]
     }
   ]
 }
