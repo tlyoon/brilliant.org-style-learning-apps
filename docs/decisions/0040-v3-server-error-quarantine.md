@@ -53,6 +53,12 @@ even using another key, model, machine or protocol.
    The gate uses bounded claim metadata and local file modification times
    **only for rate limiting**, never to prove a model verdict or authorize
    replay. No probe request, key rotation, token leak or hidden retry occurs.
+   If **any** prior role claim records `BLOCKED_EXTERNAL`, the normal native
+   course remains blocked globally: switching sections cannot bypass an
+   authorization or platform denial. Likewise, an unclassified ambiguous
+   provider failure (which could be authentication, quota or malformed
+   content rather than capacity) stops with
+   `STOP_UNCLASSIFIED_PROVIDER_REVIEW`, not a new model request.
 4. **Truthful completion.** When no eligible unblocked section remains,
    return `STOP_UNRECONCILED_MODEL_REVIEW` (or the preserved academic repair
    stop). A quarantined course can never reach complete review or publish
