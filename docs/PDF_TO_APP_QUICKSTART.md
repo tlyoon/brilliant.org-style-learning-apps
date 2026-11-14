@@ -815,3 +815,28 @@ for the exact evidence and separation from later SDK-repair code. This
 does not certify all 108 activities, independently validate physics or
 EN/MS/ZH, authorize release or merge draft PR #223. Reviewers that
 return an uncertain response still stop before any attempted replay.
+
+### V3 Gemini ServerError: safe automatic independent continuation
+
+A genuine Gemini `ServerError` **after submission** is uncertain, not a
+proven unsent request. The native runner never resends that activity, even
+with a second API key or different model. It preserves the exact private
+`AMBIGUOUS` reviewer claim and `AI_UNCERTAIN` aggregate.
+
+For the normal native CLI (with both original execution/transfer flags),
+the read-only planner now **quarantines the affected frozen section** and
+selects a different unblocked section when one exists. For example, a
+Section 9.1 ambiguous assessment can lead to a *new*, independently
+authorized Section 9.2 activity; it cannot cause the original Section 9.1
+activity to be reported as passed. An existing active review lock prevents
+starting another section while a prior request may still be in flight.
+
+The runner enforces a minimum 30-minute cooldown after a recent ambiguous
+`ServerError` before any *new* independent model request. Two provider
+capacity failures in a rolling hour open the circuit until the window
+and cooldown are satisfied. A cooldown or circuit stop is a truthful
+status, not an invitation to repeatedly relaunch the same request.
+The default read-only CLI shows `quarantinedSections`, `providerCapacity`,
+`nextSection` and the unchanged real review counts without model calls.
+No automatic merge, release receipt, source-PDF upload or academic PASS is
+created. See `docs/decisions/0040-v3-server-error-quarantine.md`.
