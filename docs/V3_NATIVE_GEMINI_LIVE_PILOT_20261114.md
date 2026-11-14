@@ -72,3 +72,33 @@ The first activity is genuine, but the chapter-wide review remains incomplete.
 The normal course planner must resume from stored exact-package claims,
 never re-send activity 1, and stop on genuine uncertainty or an academic
 FAIL. No release receipt is granted by this pilot.
+
+## Follow-on genuine checkpoint continuation: Activity 2
+
+A second independently authorized normal CLI invocation used the same
+frozen local checkout and **same default machine-private state root**, with
+the same one-activity limit. It did not replay activity 1. Actual runtime
+was 326.66 seconds. The resulting course status was:
+
+- `activitiesAssessedRows=2`, `activitiesFullyModelReviewed=1`
+- `modelConsensusPassActivities=1`, `modelUncertainActivities=1`
+- `dispatchStatus=STOP_UNRECONCILED_MODEL_REVIEW`
+- `publicationAuthorized=false` (process exit code 1)
+
+Private metadata inspection confirmed activity 2
+(`act-mcq-02-si-units`) has a physics-role claim
+`AMBIGUOUS` / `reasonCode=ServerError`, while the second
+Gemini role is `COMPLETE`. The aggregate status is
+`AI_UNCERTAIN`. Both reviewer contexts were created on the configured
+Gemini API transport; no leftover run lock was found. The first
+activity's two `COMPLETE` claims and consensus PASS remain intact.
+
+The SDK error class alone cannot establish whether Google's service
+accepted the first activity-2 request. **Do not automatically resubmit
+that request, rotate credentials to replay it, or mark the aggregate
+as PASS.** The existing course dispatcher stops safely before opening
+another Gemini session. This is a genuine unresolved provider-side
+dependency, not evidence that both reviewers failed, and not an SDK
+version mismatch. Independent, source-free engineering validation may
+continue while provider reconciliation or a versioned review policy
+is developed. No chapter-wide release eligibility is asserted.
