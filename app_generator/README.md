@@ -539,3 +539,28 @@ uncertain claims, and no release receipt. See
 `docs/V3_NATIVE_GEMINI_LIVE_PILOT_20261114.md`. This is genuine
 model-transport evidence, not independent academic certification and
 not a claim that the rest of Chapter 9 has passed.
+
+## Gemini V3 server-capacity recovery and section quarantine (Decision 0040)
+
+Normal native `scripts/run_v3_native_gemini_review.py` sets
+`continue_independent=True` when planning and dispatching. Only a distinct
+approved frozen section whose aggregate and role claims remain clean can be
+selected after another section recorded an uncertain Google `ServerError`.
+The affected section remains quarantined, its original `AMBIGUOUS` claim
+and `AI_UNCERTAIN` aggregate stay immutable, and no extra review PASS,
+release receipt or re-submission can be inferred. A cross-section active
+run lock prevents overlapping live reviewer attempts.
+
+`app_generator/validation/v3_server_error_recovery.py` reads only
+package-bound role-claim metadata to impose a 30-minute capacity cooldown
+on new independent work, or a rolling-hour two-fault circuit. It never
+contacts Google, rotates keys, reads source PDFs, edits checkpoints or
+proves provider request delivery. If the provider is still unavailable,
+the normal runner stops with a truthful status rather than looping.
+The generic `plan_v3_course_review` remains strict unless its caller
+explicitly selects independent section continuation; the normal native
+entrypoint selects it automatically. See
+`docs/decisions/0040-v3-server-error-quarantine.md` and the permanent
+BSA-20261114-165 regressions. The one genuinely completed Section 9.1
+activity remains independent of any synthetic validation or later
+Section 9.2 attempt.
