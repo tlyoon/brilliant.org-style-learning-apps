@@ -20,6 +20,7 @@ def plan_v3_course_review(
     chapter_dir: Path, repo_root: Path, *, private_root: Path | None = None,
     expected_sections: int = 6,
     section_numbers: tuple[int, ...] | None = None,
+    continue_independent: bool = False,
 ) -> dict:
     """Select one unfinished approved section from durable validated evidence.
 
@@ -34,6 +35,47 @@ def plan_v3_course_review(
     result={**progress,"nextSection":None,"dispatchStatus":None,
             "activitiesRemaining":(
                 progress["activitiesTotal"]-progress["activitiesAssessedRows"])}
+    if continue_independent and progress["scopeSource"]=="FROZEN_CANDIDATE_MANIFEST":
+        # BSA-20261114-165: isolate genuine provider/academic faults at the
+        # section boundary. Never replay an uncertain activity or change its
+        # immutable aggregate. Other frozen sections may be reviewed without
+        # treating the original uncertainty as a PASS.
+        quarantined = [
+            row["section"] for row in progress["sectionProgress"]
+            if (row["unreconciledRoleClaims"] > 0
+                or row["modelUncertainActivities"] > 0
+                or row["modelRepairRequiredActivities"] > 0
+                or row["reviewerRequestsSkippedUnsent"] > 0)
+        ]
+        eligible = [
+            row for row in progress["sectionProgress"]
+            if (row["section"] not in quarantined
+                and row["activitiesAssessedRows"] < row["activitiesTotal"])
+        ]
+        result["quarantinedSections"] = quarantined
+        result["independentContinuation"] = True
+        if eligible:
+            from app_generator.validation.v3_server_error_recovery import provider_capacity_gate
+            result["nextSection"] = eligible[0]["section"]
+            capacity = provider_capacity_gate(
+                private_root, progress["sectionProgress"])
+            result["providerCapacity"] = capacity
+            result["dispatchStatus"] = (
+                "READY_FOR_AUTHORIZED_REVIEW_SESSIONS" if
+                capacity["status"] == "READY" else capacity["status"]
+            )
+        elif quarantined:
+            result["dispatchStatus"] = (
+                "STOP_VERSIONED_CONTENT_REPAIR_REQUIRED" if
+                progress["modelRepairRequiredActivities"] else
+                "STOP_UNRECONCILED_MODEL_REVIEW"
+            )
+        elif progress["activitiesFullyModelReviewed"] == progress["activitiesTotal"]:
+            result["dispatchStatus"] = "PENDING_DETERMINISTIC_RELEASE_EVIDENCE"
+        else:
+            result["dispatchStatus"] = "STOP_UNRECONCILED_MODEL_REVIEW"
+        result["publicationAuthorized"] = False
+        return result
     if progress["scopeSource"]!="FROZEN_CANDIDATE_MANIFEST":
         result["dispatchStatus"]="BLOCKED_NO_APPROVED_COURSE_SCOPE"
     elif progress.get("unreconciledRoleClaims",0)>0:
@@ -68,6 +110,7 @@ def advance_v3_course_review(
     expected_sections: int = 6,
     session_factory: Any | None = None,
     external_operation_authorized: bool = False,
+    continue_independent: bool = False,
 ) -> dict:
     """Advance only one package/batch of an approved course per invocation.
 
@@ -81,7 +124,8 @@ def advance_v3_course_review(
     if type(max_activities) is not int or not 1<=max_activities<=6:
         raise ValueError("V3_INVALID_BATCH_LIMIT")
     before=plan_v3_course_review(chapter_dir,repo_root,
-        private_root=private_root,expected_sections=expected_sections)
+        private_root=private_root,expected_sections=expected_sections,
+        continue_independent=continue_independent)
     if before["dispatchStatus"]!="READY_FOR_AUTHORIZED_REVIEW_SESSIONS":
         return before
     if sessions is not None and session_factory is not None:
@@ -125,5 +169,6 @@ def advance_v3_course_review(
                 generated_content_transfer_allowed=True,
                 max_activities=max_activities)
     after=plan_v3_course_review(chapter_dir,repo_root,
-        private_root=private_root,expected_sections=expected_sections)
+        private_root=private_root,expected_sections=expected_sections,
+        continue_independent=continue_independent)
     return {**after,"selectedSection":section}
