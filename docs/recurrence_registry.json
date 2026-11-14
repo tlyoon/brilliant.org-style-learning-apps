@@ -1398,7 +1398,9 @@
       "class": "browser-receipt-git-lf-versus-windows-execution-crlf-hash-mismatch",
       "status": "resolved",
       "rootCauseFamily": "integration-readiness",
-      "relatedIncidentIds": ["BSA-20261107-127"],
+      "relatedIncidentIds": [
+        "BSA-20261107-127"
+      ],
       "differenceFromLinkedIncident": "Prior Windows autocrlf protection normalized Git-tracked course package identity during roster creation only. The subsequent standalone browser screenshot verifier compared historical Windows execution byte SHA-256 against canonical Git blob raw bytes, without reusing the same identity semantics. A shared identity resolver now checks exact Git blob or deterministic LF-to-CRLF materialization against the original recorded raw execution hash before verifying existing browser receipts, never treating arbitrary file changes as equivalent.",
       "regressions": [
         {
@@ -1423,7 +1425,10 @@
       "class": "browser-screenshot-claimed-viewport-not-actually-observed",
       "status": "resolved",
       "rootCauseFamily": "learner-browser",
-      "relatedIncidentIds": ["BSA-20261107-128", "BSA-20261105-113"],
+      "relatedIncidentIds": [
+        "BSA-20261107-128",
+        "BSA-20261105-113"
+      ],
       "differenceFromLinkedIncident": "Previous learner-browser recovery waited for the locale selector and checked horizontal overflow relative to whatever viewport Chrome selected, without proving it matched the requested 390/1280 CSS sizes. Saved PNG headers exposed actual 504 and 1262 pixel captures labeled as 390 and 1280. The shared harness now applies CDP device metrics, asserts exact runtime CSS dimensions/device scale, and refuses screenshot dimensions mismatches before writing evidence. Historic receipts retain their non-accepted status, with no retry budget reset.",
       "regressions": [
         {
@@ -1453,7 +1458,9 @@
       "class": "source-location-bootstrap-discards-trusted-siblings-when-one-activity-unmatched",
       "status": "resolved",
       "rootCauseFamily": "academic-evidence",
-      "relatedIncidentIds": ["BSA-20261108-129"],
+      "relatedIncidentIds": [
+        "BSA-20261108-129"
+      ],
       "differenceFromLinkedIncident": "The earlier automatic local source bootstrap required every activity to meet the unchanged source relevance threshold and discarded all independently verified sibling packets if one activity failed. In the first bounded five-section Chapter 9 campaign on 10 Nov, Sections 9.1-9.3 failed all-or-nothing even though aggregate read-only diagnostics found 16/18, 15/18 and 17/18 qualifying local activity matches. Shared existing source provisioning now retains only independently verified activity packets, preserves unlocated IDs and routes verified items to AUTO_RIGHTS_CHECK and unmatched items to AUTO_SOURCE_CHECK through normal run_academic_stage. No relevance threshold, source-use rights, external model permission or source retry budget is weakened.",
       "regressions": [
         {
@@ -1473,25 +1480,53 @@
       "class": "terminal-pilot-acceptance-repeated-across-chat-and-new-run-directory",
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
-      "relatedIncidentIds": ["BSA-20261102-096", "BSA-20261109-131", "BSA-20261110-133"],
+      "relatedIncidentIds": [
+        "BSA-20261102-096",
+        "BSA-20261109-131",
+        "BSA-20261110-133"
+      ],
       "differenceFromLinkedIncident": "Earlier finite campaign decisions existed in prose and private evidence directories but did not stop all default acceptance entrypoints from launching the same original six Chapter 9 candidate tests with a new run directory or new session. New frozen charter and shared fail-closed admission now reject terminal browser and local source-location attempts, unauthorized external academic reviewer sessions and publication before side effects. Existing domain/pilot gates remain missing evidence; narrow shared engineering recovery does not reopen source-specific budgets.",
       "regressions": [
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_six_frozen_original_packages_cannot_restart_campaigns"},
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_normal_browser_caller_refuses_before_chrome_or_receipt"},
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_normal_academic_source_provision_refuses_before_pdf_parse"},
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_normal_academic_stage_stops_without_model_or_source_attempt"},
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_private_external_academic_entrypoint_stops_before_configuration"},
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_invalid_charter_cannot_silently_promote_rights_or_reset_history"},
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_future_session_read_first_instructions_are_kept_in_repository"},
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_windows_and_linux_checkout_bytes_have_same_frozen_git_identity"}
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_six_frozen_original_packages_cannot_restart_campaigns"
+        },
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_normal_browser_caller_refuses_before_chrome_or_receipt"
+        },
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_normal_academic_source_provision_refuses_before_pdf_parse"
+        },
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_normal_academic_stage_stops_without_model_or_source_attempt"
+        },
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_private_external_academic_entrypoint_stops_before_configuration"
+        },
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_invalid_charter_cannot_silently_promote_rights_or_reset_history"
+        },
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_future_session_read_first_instructions_are_kept_in_repository"
+        },
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_windows_and_linux_checkout_bytes_have_same_frozen_git_identity"
+        }
       ]
     },
     {
@@ -1499,25 +1534,46 @@
       "class": "learner-card-transition-discards-keyboard-focus",
       "status": "resolved",
       "rootCauseFamily": "learner-browser",
-      "relatedIncidentIds": ["BSA-20261023-003", "BSA-20261105-116"],
+      "relatedIncidentIds": [
+        "BSA-20261023-003",
+        "BSA-20261105-116"
+      ],
       "differenceFromLinkedIncident": "The previous keyboard focus correction preserved the selected option or ordering control across card re-rendering, but normal hint/check/try-again/skip/next/review/restart handlers still replaced the whole card and left keyboard focus on a detached element. A pre-fix source-free learner workflow regression reproduced the lost hint-button focus. The existing normal player now returns its freshly rendered controls/heading, restores focus to the new control or programmatically focusable question/completion heading, and announces authored hints with status semantics. It changes no mastery, progression, privacy or content rules. A real loopback-only synthetic Chrome smoke now exercises the same focus transitions at mobile and desktop widths without accessing a protected Chapter 9 package.",
       "regressions": [
-        {"path": "tests/test_unfinished_activity_review.js", "kind": "javascript",
-         "marker": "new hint button must regain focus after hint opens"},
-        {"path": "tests/test_unfinished_activity_review.js", "kind": "javascript",
-         "marker": "skip must focus the new activity heading"},
-        {"path": "tests/test_unfinished_activity_review.js", "kind": "javascript",
-         "marker": "restart must focus the first activity heading"},
-        {"path": "tests/test_adaptive_authored_hint.js", "kind": "javascript",
-         "marker": "try-again reset must return focus to the question, not a disabled control"}
+        {
+          "path": "tests/test_unfinished_activity_review.js",
+          "kind": "javascript",
+          "marker": "new hint button must regain focus after hint opens"
+        },
+        {
+          "path": "tests/test_unfinished_activity_review.js",
+          "kind": "javascript",
+          "marker": "skip must focus the new activity heading"
+        },
+        {
+          "path": "tests/test_unfinished_activity_review.js",
+          "kind": "javascript",
+          "marker": "restart must focus the first activity heading"
+        },
+        {
+          "path": "tests/test_adaptive_authored_hint.js",
+          "kind": "javascript",
+          "marker": "try-again reset must return focus to the question, not a disabled control"
+        }
       ],
       "automaticRemedy": {
         "runtimePath": "app/app.js",
         "triggerMarker": "hint.addEventListener(\"click\", () => {",
         "remedyMarker": "render().hint.focus?.();",
         "normalEntryPoints": [
-          {"path": "app/index.html", "marker": "src=\"app.js\""},
-          {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
+          {
+            "path": "app/index.html",
+            "marker": "src=\"app.js\""
+          },
+          {
+            "path": "app/course-preview.html",
+            "marker": "src=\"app.js\""
+          }
         ]
       }
     },
@@ -1526,23 +1582,41 @@
       "class": "ordering-prefilled-answer-false-independent-completion",
       "status": "resolved",
       "rootCauseFamily": "learner-browser",
-      "relatedIncidentIds": ["BSA-20261110-135", "BSA-20261023-003"],
+      "relatedIncidentIds": [
+        "BSA-20261110-135",
+        "BSA-20261023-003"
+      ],
       "differenceFromLinkedIncident": "Unlike earlier learner-browser focus defects, the normal ordering-response initializer always reversed item order without verifying it differed from correctOrder. For legitimate authoring where correctOrder itself was reversed, the player initially supplied a fully correct response and a single untouched Check+Next awarded unearned independent-first-attempt evidence. A source-free normal-player test reproduced this exact failure before the fix. The shared ordinary ensureResponse initializer now selects a deterministic incorrect permutation for valid authored ordering activities, preserving author-provided item/answer order and all existing mastery thresholds. The existing normal Node interaction regression and source-free loopback-only Chrome learner path both reject a prefilled correct answer; this is not an academic-source or full pilot acceptance receipt.",
       "regressions": [
-        {"path": "tests/test_interaction_rendering.js", "kind": "javascript",
-         "marker": "initial ordering arrangement must never already be the correct answer"},
-        {"path": "tests/test_interaction_rendering.js", "kind": "javascript",
-         "marker": "manually constructed correct ordering must still earn first-attempt credit"},
-        {"path": "tests/test_interaction_rendering.js", "kind": "javascript",
-         "marker": "ordinary authored-order answer must also start unsolved"}
+        {
+          "path": "tests/test_interaction_rendering.js",
+          "kind": "javascript",
+          "marker": "initial ordering arrangement must never already be the correct answer"
+        },
+        {
+          "path": "tests/test_interaction_rendering.js",
+          "kind": "javascript",
+          "marker": "manually constructed correct ordering must still earn first-attempt credit"
+        },
+        {
+          "path": "tests/test_interaction_rendering.js",
+          "kind": "javascript",
+          "marker": "ordinary authored-order answer must also start unsolved"
+        }
       ],
       "automaticRemedy": {
         "runtimePath": "app/app.js",
         "triggerMarker": "else if (activity.interactionMode === \"ordering\") {",
         "remedyMarker": "state.response = prefilledIsCorrect ? authoredOrder : reversedOrder;",
         "normalEntryPoints": [
-          {"path": "app/index.html", "marker": "src=\"app.js\""},
-          {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
+          {
+            "path": "app/index.html",
+            "marker": "src=\"app.js\""
+          },
+          {
+            "path": "app/course-preview.html",
+            "marker": "src=\"app.js\""
+          }
         ]
       }
     },
@@ -1551,25 +1625,43 @@
       "class": "resolved-regression-was-not-required-to-be-live-in-normal-code",
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
-      "relatedIncidentIds": ["BSA-20261102-096", "BSA-20261110-134"],
+      "relatedIncidentIds": [
+        "BSA-20261102-096",
+        "BSA-20261110-134"
+      ],
       "differenceFromLinkedIncident": "The existing CI recurrence guard verified ledger, active unit tests, and historical family links, but accepted a new RESOLVED record even with no automatic remedy in a production or normal coordinator path. This made a test-only/manual workaround appear permanently solved, recurring beyond the earlier BSA-20261102-096 safeguards and BSA-20261110-134 finite acceptance stops. A new guarded v5.0 cutover at BSA-20261110-135 requires safe normal runtime path, active trigger/remedy signatures and at least one real dispatcher, in addition to the existing CI-tested regression. Tests reproduce acceptance of a test-only fix before the change and reject deleted production code, missing runtime metadata, swapped-out HTML dispatch and docs-only faux integration. Previous incident records remain immutable.",
       "automaticRemedy": {
         "runtimePath": "scripts/check_regression_contract.py",
         "triggerMarker": "errors.extend(_automatic_remedy_errors(entry, ident, root))",
         "remedyMarker": "return [ident + \" lacks automatic runtime remedy\"]",
         "normalEntryPoints": [
-          {"path": ".github/workflows/validate.yml", "marker": "python scripts/check_regression_contract.py"}
+          {
+            "path": ".github/workflows/validate.yml",
+            "marker": "python scripts/check_regression_contract.py"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_regression_contract.py", "kind": "python",
-         "marker": "test_resolved_recent_incident_requires_automatic_runtime_integration"},
-        {"path": "tests/test_regression_contract.py", "kind": "python",
-         "marker": "test_missing_normal_dispatcher_or_inert_remedy_is_rejected"},
-        {"path": "tests/test_regression_contract.py", "kind": "python",
-         "marker": "test_automatic_runtime_gate_detects_lost_production_wiring"},
-        {"path": "tests/test_regression_contract.py", "kind": "python",
-         "marker": "test_unrelated_valid_html_script_cannot_fake_normal_remedy_dispatch"}
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_resolved_recent_incident_requires_automatic_runtime_integration"
+        },
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_missing_normal_dispatcher_or_inert_remedy_is_rejected"
+        },
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_automatic_runtime_gate_detects_lost_production_wiring"
+        },
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_unrelated_valid_html_script_cannot_fake_normal_remedy_dispatch"
+        }
       ]
     },
     {
@@ -1577,21 +1669,36 @@
       "class": "unverified-duplicate-activity-ids-alias-anonymous-learning-evidence",
       "status": "resolved",
       "rootCauseFamily": "learner-browser",
-      "relatedIncidentIds": ["BSA-20261110-136", "BSA-20261110-135"],
+      "relatedIncidentIds": [
+        "BSA-20261110-136",
+        "BSA-20261110-135"
+      ],
       "differenceFromLinkedIncident": "The prior ordering and focus remedies protected in-activity scoring and navigation, but the normal browser loadPackage boundary implicitly trusted every loaded activity id. Even if a roster SHA-256 matched its bytes, two distinct activities with the same ID could alias the single sessionMetrics key and deep-link reference. A source-free asynchronous normal loader regression first proved a duplicate-id package rendered and had no error; the real application now rejects missing, duplicate, malformed or empty ID rosters before assigning state.package, resets session-only evidence and permits subsequent valid recovery. Existing Python academic validators already rejected duplicates, but the browser normal runtime did not. A signed synthetic duplicate-ID package is exercised through the normal source-free Chrome course-preview flow; no frozen original source was touched.",
       "regressions": [
-        {"path": "tests/test_app_loading.js", "kind": "javascript",
-         "marker": "duplicate activity IDs must fail closed before any learner activity renders"},
-        {"path": "tests/test_app_loading.js", "kind": "javascript",
-         "marker": "missing activity IDs must fail closed, not share the undefined evidence key"}
+        {
+          "path": "tests/test_app_loading.js",
+          "kind": "javascript",
+          "marker": "duplicate activity IDs must fail closed before any learner activity renders"
+        },
+        {
+          "path": "tests/test_app_loading.js",
+          "kind": "javascript",
+          "marker": "missing activity IDs must fail closed, not share the undefined evidence key"
+        }
       ],
       "automaticRemedy": {
         "runtimePath": "app/app.js",
         "triggerMarker": "assertUniqueActivityIds(loadedPackage);",
         "remedyMarker": "throw new Error(\"Invalid learning package activity identifiers.\");",
         "normalEntryPoints": [
-          {"path": "app/index.html", "marker": "src=\"app.js\""},
-          {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
+          {
+            "path": "app/index.html",
+            "marker": "src=\"app.js\""
+          },
+          {
+            "path": "app/course-preview.html",
+            "marker": "src=\"app.js\""
+          }
         ]
       }
     },
@@ -1600,22 +1707,37 @@
       "class": "direct-package-replacement-exposes-stale-learner-state",
       "status": "resolved",
       "rootCauseFamily": "learner-browser",
-      "relatedIncidentIds": ["BSA-20261110-138", "BSA-20261107-125"],
+      "relatedIncidentIds": [
+        "BSA-20261110-138",
+        "BSA-20261107-125"
+      ],
       "differenceFromLinkedIncident": "The previous BSA-20261107-125 fix cleared stale course-preview content only when data-external-package-selection was true. A different supported normal player path, a standalone host calling loadPackage with a replacement package URL while another activity was open, left the old answer controls and old in-memory mastery visible during the new asynchronous request. An existing source-free real player test reproduced this failing pre-fix state; the normal player loadPackage now invalidates old package, reset response and anonymous evidence, and shows an inert loading placeholder before awaiting any fetch for both entrypoints, preserving initial standalone deep-link semantics. Both direct Node and real loopback Chrome source-free cross-entrypoint tests verify fresh replacement content appears without old activity exposure. No new mastery/persistence policy or protected source is used.",
       "automaticRemedy": {
         "runtimePath": "app/app.js",
         "triggerMarker": "const replacingPackage = state.package !== null;",
         "remedyMarker": "if (EXTERNAL_PACKAGE_SELECTION || replacingPackage) syncActivityUrl(null);",
         "normalEntryPoints": [
-          {"path": "app/index.html", "marker": "src=\"app.js\""},
-          {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
+          {
+            "path": "app/index.html",
+            "marker": "src=\"app.js\""
+          },
+          {
+            "path": "app/course-preview.html",
+            "marker": "src=\"app.js\""
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_app_loading.js", "kind": "javascript",
-         "marker": "pending direct package replacement must invalidate the previous package immediately"},
-        {"path": "tests/test_app_loading.js", "kind": "javascript",
-         "marker": "pending direct package replacement must hide stale learner questions"}
+        {
+          "path": "tests/test_app_loading.js",
+          "kind": "javascript",
+          "marker": "pending direct package replacement must invalidate the previous package immediately"
+        },
+        {
+          "path": "tests/test_app_loading.js",
+          "kind": "javascript",
+          "marker": "pending direct package replacement must hide stale learner questions"
+        }
       ]
     },
     {
@@ -1623,20 +1745,32 @@
       "class": "standalone-player-module-hides-supported-loadpackage-host-api",
       "status": "resolved",
       "rootCauseFamily": "learner-browser",
-      "relatedIncidentIds": ["BSA-20261110-139", "BSA-20261107-125"],
+      "relatedIncidentIds": [
+        "BSA-20261110-139",
+        "BSA-20261107-125"
+      ],
       "differenceFromLinkedIncident": "The existing app/index.html entrypoint loaded app.js as a JavaScript module while normal player text advertised the ability to call loadPackage(packageUrl). Browser module scope hid loadPackage from hosting pages. The course-preview entrypoint already used the same app.js as a classic script and could invoke the function, but the standalone entrypoint did not reuse that working dispatch. A new source-free real Chrome standalone smoke reproduced typeof window.loadPackage !== function before the fix. Align standalone index with the already-proven classic script loader; normal app.js remains shared, and the existing Chrome smoke now invokes a real standalone host load, then checks inert pending replacement and resolved new content, while the Node CI preview test locks the classic script tag. No source PDF, provider model, student data or release permission is implied.",
       "automaticRemedy": {
         "runtimePath": "app/app.js",
         "triggerMarker": "async function loadPackage(",
         "remedyMarker": "loadPackage();",
         "normalEntryPoints": [
-          {"path": "app/index.html", "marker": "src=\"app.js\""},
-          {"path": "app/course-preview.html", "marker": "src=\"app.js\""}
+          {
+            "path": "app/index.html",
+            "marker": "src=\"app.js\""
+          },
+          {
+            "path": "app/course-preview.html",
+            "marker": "src=\"app.js\""
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_course_preview.js", "kind": "javascript",
-         "marker": "standalone host must expose callable loadPackage through classic player script"}
+        {
+          "path": "tests/test_course_preview.js",
+          "kind": "javascript",
+          "marker": "standalone host must expose callable loadPackage through classic player script"
+        }
       ]
     },
     {
@@ -1644,24 +1778,42 @@
       "class": "terminal-publication-admission-missing-from-alternate-release-entrypoints",
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
-      "relatedIncidentIds": ["BSA-20261110-134", "BSA-20261110-137"],
+      "relatedIncidentIds": [
+        "BSA-20261110-134",
+        "BSA-20261110-137"
+      ],
       "differenceFromLinkedIncident": "Decision 0032 froze six Chapter 9 candidates and implemented assert_campaign_admissible(..., publication), but only browser, local source, academic generation and private external-review entrypoints called this guard. Both the alternate scripts/build_public_release.py path and the shared app_generator/runtime/academic_release.py used by orchestrator could reach academic triage or a public bundle path before checking the immutable terminal release stop. Two new pre-fix source-free normal-path tests reproduced an attempted academic-gate/triage call on the frozen Section 9.4 candidate. This repair reuses the existing policy, does not create another release authorizer, and wires the exact existing stop into both entrypoints before academic triage, receipt creation, any output files, and downstream publish logic. Unrelated synthetic public/preview behavior and the older academic and visual release contracts remain unchanged.",
       "automaticRemedy": {
         "runtimePath": "app_generator/runtime/academic_release.py",
         "triggerMarker": "def enforce_academic_release_gate(",
         "remedyMarker": "read_private_release_receipt(",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/orchestrator.py", "marker": "enforce_academic_release_gate("},
-          {"path": "scripts/build_public_release.py", "marker": "enforce_academic_release_gate("}
+          {
+            "path": "app_generator/runtime/orchestrator.py",
+            "marker": "enforce_academic_release_gate("
+          },
+          {
+            "path": "scripts/build_public_release.py",
+            "marker": "enforce_academic_release_gate("
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_shared_auto_release_gate_stops_frozen_package_before_academic_triage"},
-        {"path": "tests/test_public_release.py", "kind": "python",
-         "marker": "test_frozen_chapter9_public_build_stops_before_academic_gate_or_write"},
-        {"path": "tests/test_academic_publication_gate.py", "kind": "python",
-         "marker": "test_direct_public_publisher_refuses_real_unverified_section94_without_git_calls"}
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_shared_auto_release_gate_stops_frozen_package_before_academic_triage"
+        },
+        {
+          "path": "tests/test_public_release.py",
+          "kind": "python",
+          "marker": "test_frozen_chapter9_public_build_stops_before_academic_gate_or_write"
+        },
+        {
+          "path": "tests/test_academic_publication_gate.py",
+          "kind": "python",
+          "marker": "test_direct_public_publisher_refuses_real_unverified_section94_without_git_calls"
+        }
       ]
     },
     {
@@ -1669,22 +1821,38 @@
       "class": "owner-directed-permanent-removal-of-administrative-rights-from-technical-closure",
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
-      "relatedIncidentIds": ["BSA-20261110-137", "BSA-20261110-134", "BSA-20261110-141"],
+      "relatedIncidentIds": [
+        "BSA-20261110-137",
+        "BSA-20261110-134",
+        "BSA-20261110-141"
+      ],
       "differenceFromLinkedIncident": "The earlier V1 frozen Chapter 9 charter machine-required a sourceAndFigureRights PASS and made source edition/rightsholder investigation a critical precursor to technical completion. The owner expressly rescinded these administrative requirements on 11 November 2026. A new source-free test initially failed because the V1 contract still contained the tenth rights gate. V2 removes the gate entirely, declares all three administrative predicates excluded, replaces the rights-specific academic stop with the existing independent-review terminal-campaign stop, and keeps genuine scientific, visual, learner and release gates. This is a deliberate scope amendment, not evidence of a license, permission to transmit protected source files, or permission to deploy. CI rejects reintroduction of the old gate and removal of the exclusions.",
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/final_acceptance_closure.py",
         "triggerMarker": "def load_frozen_charter(",
         "remedyMarker": "or record[\"policy\"].get(\"excludedTechnicalAcceptanceGates\") != list(_EXCLUDED_TECHNICAL_GATES)",
         "normalEntryPoints": [
-          {"path": "scripts/check_final_acceptance_closure.py", "marker": "from app_generator.validation.final_acceptance_closure import final_disposition"},
-          {"path": "scripts/audit_full_learner_browser.py", "marker": "from app_generator.validation.final_acceptance_closure import assert_campaign_admissible"}
+          {
+            "path": "scripts/check_final_acceptance_closure.py",
+            "marker": "from app_generator.validation.final_acceptance_closure import final_disposition"
+          },
+          {
+            "path": "scripts/audit_full_learner_browser.py",
+            "marker": "from app_generator.validation.final_acceptance_closure import assert_campaign_admissible"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_owner_removed_edition_rightsholder_and_rights_gate_permanently"},
-        {"path": "tests/test_final_acceptance_closure.py", "kind": "python",
-         "marker": "test_invalid_charter_cannot_silently_promote_rights_or_reset_history"}
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_owner_removed_edition_rightsholder_and_rights_gate_permanently"
+        },
+        {
+          "path": "tests/test_final_acceptance_closure.py",
+          "kind": "python",
+          "marker": "test_invalid_charter_cannot_silently_promote_rights_or_reset_history"
+        }
       ]
     },
     {
@@ -1692,24 +1860,41 @@
       "class": "v2-technical-closure-exclusion-missing-from-normal-six-section-pilot-report",
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
-      "relatedIncidentIds": ["BSA-20261111-142"],
+      "relatedIncidentIds": [
+        "BSA-20261111-142"
+      ],
       "differenceFromLinkedIncident": "The earlier owner-directed Decision 0033/V2 change removed edition/rightsholder and sourceAndFigureRights from the frozen terminal acceptance charter, but the normal shared six-section source-free course_pilot_readiness assessor still published independentSourceAndRightsVerified=false. This misleading phantom rights-gate output was consumed by the normal instructor local-preview preparation and pilot audit entrypoints, contradicting the permanently excluded technical condition. The focused real assessor normal-path regression failed before the correction. Preserve independent source verification as its own false status while deleting the composite rights-dependent field entirely, using the already shared evaluator rather than modifying every caller, and prove both normal CLI and local preview continue to work. This is a proven cross-entrypoint enforcement gap, not a new acceptance PASS, a license grant, or permission to restart terminal Chapter 9 campaigns.",
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/course_pilot_readiness.py",
         "triggerMarker": "def assess_pilot_candidates(",
         "remedyMarker": "\"independentSourceVerified\": False,",
         "normalEntryPoints": [
-          {"path": "scripts/audit_course_pilot_readiness.py", "marker": "from app_generator.validation.course_pilot_readiness import assess_pilot_candidates"},
-          {"path": "scripts/prepare_course_preview.py", "marker": "from app_generator.validation.course_pilot_readiness import ("}
+          {
+            "path": "scripts/audit_course_pilot_readiness.py",
+            "marker": "from app_generator.validation.course_pilot_readiness import assess_pilot_candidates"
+          },
+          {
+            "path": "scripts/prepare_course_preview.py",
+            "marker": "from app_generator.validation.course_pilot_readiness import ("
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_course_pilot_readiness.py", "kind": "python",
-         "marker": "test_v2_pilot_evidence_does_not_reintroduce_removed_rights_gate"},
-        {"path": "tests/test_course_pilot_readiness.py", "kind": "python",
-         "marker": "test_cli_reads_six_existing_files_with_exact_revision"},
-        {"path": "tests/test_prepare_course_preview.py", "kind": "python",
-         "marker": "test_exact_six_tracked_packages_create_single_ignored_roster"}
+        {
+          "path": "tests/test_course_pilot_readiness.py",
+          "kind": "python",
+          "marker": "test_v2_pilot_evidence_does_not_reintroduce_removed_rights_gate"
+        },
+        {
+          "path": "tests/test_course_pilot_readiness.py",
+          "kind": "python",
+          "marker": "test_cli_reads_six_existing_files_with_exact_revision"
+        },
+        {
+          "path": "tests/test_prepare_course_preview.py",
+          "kind": "python",
+          "marker": "test_exact_six_tracked_packages_create_single_ignored_roster"
+        }
       ]
     },
     {
@@ -1717,24 +1902,45 @@
       "class": "browser-visual-audit-stages-default-physics-assets-for-other-domains",
       "status": "resolved",
       "rootCauseFamily": "integration-readiness",
-      "relatedIncidentIds": ["BSA-20261109-131", "BSA-20261104-105"],
+      "relatedIncidentIds": [
+        "BSA-20261109-131",
+        "BSA-20261104-105"
+      ],
       "differenceFromLinkedIncident": "The generic production release builder uses the package's exact versioned registered domain for its visual renderer and stylesheet. But the shared source-free real-browser visual audit staging helper hard-coded domains/university-level physics/visuals even when the package declared a different registered domain. A new alternate-domain fixture reused the working public-release pattern and reproduced this mismatch before the fix: the staged browser's script lacked the alternate renderer marker. This could produce a false visual/bundle verdict for a different subject despite green default-physics tests. The shared staging helper now resolves the exact package domain before staging and rejects stale declared domain versions before writing any browser assets. The same automatic remedy reaches normal full learner, visual, private scientific and explanation browser audit call sites; only local synthetic test assets were used, without new acceptance campaign or third-party source.",
       "automaticRemedy": {
         "runtimePath": "scripts/audit_browser_visual.py",
         "triggerMarker": "def stage_bundle(",
         "remedyMarker": "domain = resolve_package_domain(root, package)",
         "normalEntryPoints": [
-          {"path": "scripts/audit_browser_visual.py", "marker": "stage_bundle(root, package, bundle)"},
-          {"path": "scripts/audit_full_learner_browser.py", "marker": "from scripts.audit_browser_visual import local_server, stage_bundle"},
-          {"path": "scripts/audit_private_v6_scientific_browser.py", "marker": "from scripts.audit_browser_visual import stage_bundle,local_server"},
-          {"path": "scripts/audit_private_correct_explanations_browser.py", "marker": "from scripts.audit_browser_visual import stage_bundle,local_server"}
+          {
+            "path": "scripts/audit_browser_visual.py",
+            "marker": "stage_bundle(root, package, bundle)"
+          },
+          {
+            "path": "scripts/audit_full_learner_browser.py",
+            "marker": "from scripts.audit_browser_visual import local_server, stage_bundle"
+          },
+          {
+            "path": "scripts/audit_private_v6_scientific_browser.py",
+            "marker": "from scripts.audit_browser_visual import stage_bundle,local_server"
+          },
+          {
+            "path": "scripts/audit_private_correct_explanations_browser.py",
+            "marker": "from scripts.audit_browser_visual import stage_bundle,local_server"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_browser_visual_smoke.py", "kind": "python",
-         "marker": "test_staged_browser_uses_package_declared_domain_assets"},
-        {"path": "tests/test_browser_visual_smoke.py", "kind": "python",
-         "marker": "test_stages_only_private_test_assets_and_does_not_mutate_package"}
+        {
+          "path": "tests/test_browser_visual_smoke.py",
+          "kind": "python",
+          "marker": "test_staged_browser_uses_package_declared_domain_assets"
+        },
+        {
+          "path": "tests/test_browser_visual_smoke.py",
+          "kind": "python",
+          "marker": "test_stages_only_private_test_assets_and_does_not_mutate_package"
+        }
       ]
     },
     {
@@ -1742,21 +1948,33 @@
       "class": "rc1-course-level-prerequisite-and-review-route-absent",
       "status": "resolved",
       "rootCauseFamily": "learner-browser",
-      "relatedIncidentIds": ["BSA-20261105-116", "BSA-20261111-143"],
+      "relatedIncidentIds": [
+        "BSA-20261105-116",
+        "BSA-20261111-143"
+      ],
       "differenceFromLinkedIncident": "Prior Stage-0 and local instructor preview tests proved one-package rendering and six-option selection but never implemented genuine course-level prerequisite graph routing or a session-only review-priority planner. Verified at the frozen pre-RC1 head that app/rc1-course-routing.js did not exist, so ordinary Stage-0 tests could not exercise these missing product requirements. The owner approved an independently frozen, original synthetic RC1 engineering-only scope (Decision 0034) to fill this gap without restarting the six original Chapter 9 browser or academic campaigns. A generic pure JS engine validates a versioned six-node graph, rejects cycles/missing/duplicate prerequisites, prevents assisted evidence from unlocking independent progress, and gives simulated review-due priority. A working, non-publishable, no-storage local-only HTML view loads the exact content-hash-frozen independent scope with a CSP and strict refusal of changed scope data. This is a verified RC1 engineering vertical slice, not real learner mastery, authenticated diagnostics, independent academic corroboration, or full course/pilot acceptance. Subsequent real integration remains pending.",
       "automaticRemedy": {
         "runtimePath": "app/rc1-course-routing.js",
         "triggerMarker": "function plan(scope, observations = [])",
         "remedyMarker": "const completed = new Set(",
         "normalEntryPoints": [
-          {"path": "app/rc1-course-journey.html", "marker": "src=\"rc1-course-routing.js\""}
+          {
+            "path": "app/rc1-course-journey.html",
+            "marker": "src=\"rc1-course-routing.js\""
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_rc1_course_routing.js", "kind": "javascript",
-         "marker": "assert.equal(stage(helped, \"concept-motion\").status, \"locked\")"},
-        {"path": "tests/test_rc1_course_routing.js", "kind": "javascript",
-         "marker": "assert.equal(due.suggestionReason, \"review_due\")"}
+        {
+          "path": "tests/test_rc1_course_routing.js",
+          "kind": "javascript",
+          "marker": "assert.equal(stage(helped, \"concept-motion\").status, \"locked\")"
+        },
+        {
+          "path": "tests/test_rc1_course_routing.js",
+          "kind": "javascript",
+          "marker": "assert.equal(due.suggestionReason, \"review_due\")"
+        }
       ]
     },
     {
@@ -1764,21 +1982,33 @@
       "class": "rc1-draft-course-was-not-wired-to-real-player-answer-evidence",
       "status": "resolved",
       "rootCauseFamily": "learner-browser",
-      "relatedIncidentIds": ["BSA-20261111-145", "BSA-20261105-116"],
+      "relatedIncidentIds": [
+        "BSA-20261111-145",
+        "BSA-20261105-116"
+      ],
       "differenceFromLinkedIncident": "Decision 0034/BSA-145 had established a generic session-only six-node planner and a synthetic completion-button demo, but the actual six original Chapter 9 draft activity packages still used the existing individual Stage-0 player with no verified event-to-route connection. A previous six-option instructor preview selected exact SHA256 package bytes but discarded all evidence on each section switch; the RC1 demonstration route used only simulated outcomes. An authentic provisional draft course must derive a first-check diagnostic from the real answer-key comparison, hints, skips and completed action, not synthetic buttons, while preserving the original frozen Chapter 9 academic/browser campaign stops. The new opt-in player event bridge, session-only first-encounter diagnostic and reusable planner connect six unchanged exact-Git-blob draft packages via local instructor roster without altering the original content or claiming independent academic correctness. A test caught that a rejected completion packet originally created a phantom not-yet observation; shared diagnostic now rejects it before writing session evidence. Browser regression uses six wholly synthetic package-shaped inputs, never original Chapter 9 source or fresh original-content QA. Answer-key correctness, multilingual science, meaningful visuals, real learner and publication remain unverified.",
       "automaticRemedy": {
         "runtimePath": "app/rc1-chapter9-bridge.js",
         "triggerMarker": "function initDraftCourseBridge()",
         "remedyMarker": "diagnostic.accept(active, event.detail)",
         "normalEntryPoints": [
-          {"path": "app/rc1-chapter9-draft.html", "marker": "src=\"rc1-chapter9-bridge.js\""}
+          {
+            "path": "app/rc1-chapter9-draft.html",
+            "marker": "src=\"rc1-chapter9-bridge.js\""
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_rc1_draft_diagnostic.js", "kind": "javascript",
-         "marker": "assert.equal(report.independentlyCompleted, 1);"},
-        {"path": "tests/test_rc1_draft_diagnostic.js", "kind": "javascript",
-         "marker": "assert.equal(s.snapshot().independentlyCompleted, 1);"}
+        {
+          "path": "tests/test_rc1_draft_diagnostic.js",
+          "kind": "javascript",
+          "marker": "assert.equal(report.independentlyCompleted, 1);"
+        },
+        {
+          "path": "tests/test_rc1_draft_diagnostic.js",
+          "kind": "javascript",
+          "marker": "assert.equal(s.snapshot().independentlyCompleted, 1);"
+        }
       ]
     },
     {
@@ -1786,24 +2016,42 @@
       "class": "owner-removes-manual-academic-visual-pilot-and-release-gates",
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
-      "relatedIncidentIds": ["BSA-20261111-142", "BSA-20261111-143"],
+      "relatedIncidentIds": [
+        "BSA-20261111-142",
+        "BSA-20261111-143"
+      ],
       "differenceFromLinkedIncident": "The earlier Decision 0033 removal affected edition/rightsholder/rights gates, but the shared real publisher, alternative public bundle and active closure script still demanded independently validated educational content, visual plan quota, real learner-pilot evidence and explicit release approval. The owner has now expressly superseded those four prerequisites, replacing them in Decision 0036/V3 with bounded two-context adversarial LLM assessment and exact-hash automated CI/browser/privacy checks. Changed the normal shared publisher gate from original independent academic/visual triage to a complete AI-plus-deterministic private release receipt, and the alternate public bundle uses that same gate rather than historical V2 publication denial. This is a structural owner policy amendment, not a false assertion that any real original package has passed AI assessment. The historical V2 original campaign attempt log and no-repeat rules remain intact. Adversarial tests verify the no-manual/no-pilot owner policy, actual model interface calls on synthetic fixtures, missing/uncertain/conflicting response refusal, all-activity identity, automatic positive path and private receipt tamper protection. The live Gemini reviewer automation was not permitted to execute in this chat, so active V3 remains PENDING_AUTOMATED_ASSESSMENT rather than a fabricated PASS.",
       "automaticRemedy": {
         "runtimePath": "app_generator/runtime/academic_release.py",
         "triggerMarker": "def enforce_academic_release_gate(",
         "remedyMarker": "read_private_release_receipt(",
         "normalEntryPoints": [
-          {"path": "app_generator/publishing/public.py", "marker": "enforce_academic_release_gate("},
-          {"path": "scripts/build_public_release.py", "marker": "report = enforce_academic_release_gate("}
+          {
+            "path": "app_generator/publishing/public.py",
+            "marker": "enforce_academic_release_gate("
+          },
+          {
+            "path": "scripts/build_public_release.py",
+            "marker": "report = enforce_academic_release_gate("
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_policy_permanently_removes_old_manual_gates"},
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_two_models_review_all_activities_and_auto_approve_without_manual_gates"},
-        {"path": "tests/test_academic_publication_gate.py", "kind": "python",
-         "marker": "test_direct_publisher_never_reaches_remote_without_v3_receipt"}
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_policy_permanently_removes_old_manual_gates"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_two_models_review_all_activities_and_auto_approve_without_manual_gates"
+        },
+        {
+          "path": "tests/test_academic_publication_gate.py",
+          "kind": "python",
+          "marker": "test_direct_publisher_never_reaches_remote_without_v3_receipt"
+        }
       ]
     },
     {
@@ -1854,28 +2102,41 @@
       "class": "v3-mcq-only-score-validation-rejects-all-real-interactive-activities",
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
-      "relatedIncidentIds": ["BSA-20261112-148", "BSA-20261111-147"],
+      "relatedIncidentIds": [
+        "BSA-20261112-148",
+        "BSA-20261111-147"
+      ],
       "differenceFromLinkedIncident": "V3's common package_identity required answerKey on every activity although the already validated production content schema expressly forbids answerKey on type=interactive and instead requires interactionMode, interaction scoring arrays and diagnosticRules. All six actual unchanged Chapter 9 packages contain nine MCQs and nine such interactive activities, so the ordinary read-only --package status CLI failed STOP_INVALID_ACTIVE_ACCEPTANCE_POLICY before any genuine model assessment could be attempted. The earlier synthetic-only V3 test fixtures used answerKey on every item, masking this normal-path integration failure. This incident is separate from BSA-148's durable aggregate continuation issue. Reproduced before the change against all six real tracked packages and a matching synthetic interactive; added their read-only normal CLI coverage so the mismatch cannot silently recur. No original PDF, browser academic campaign or model provider request was invoked. The fix is integrated on a draft candidate only, not merged, deployed, or evidence that the 108 activities passed model review.",
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/autonomous_completion.py",
         "triggerMarker": "def package_identity(",
         "remedyMarker": "def _has_scored_response(",
         "normalEntryPoints": [
-          {"path": "app_generator/validation/autonomous_completion.py",
-           "marker": "def assess_with_models("},
-          {"path": "scripts/check_final_acceptance_closure.py",
-           "marker": "from app_generator.validation.autonomous_completion import ("},
-          {"path": "app_generator/runtime/academic_release.py",
-           "marker": "from app_generator.validation.autonomous_completion import ("}
+          {
+            "path": "app_generator/validation/autonomous_completion.py",
+            "marker": "def assess_with_models("
+          },
+          {
+            "path": "scripts/check_final_acceptance_closure.py",
+            "marker": "from app_generator.validation.autonomous_completion import ("
+          },
+          {
+            "path": "app_generator/runtime/academic_release.py",
+            "marker": "from app_generator.validation.autonomous_completion import ("
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_autonomous_completion_v3.py",
-         "kind": "python",
-         "marker": "test_real_chapter9_packages_reach_normal_v3_status_without_model_calls"},
-        {"path": "tests/test_autonomous_completion_v3.py",
-         "kind": "python",
-         "marker": "test_interactive_requires_scoring_data_and_never_fabricates_model_results"}
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_real_chapter9_packages_reach_normal_v3_status_without_model_calls"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_interactive_requires_scoring_data_and_never_fabricates_model_results"
+        }
       ]
     },
     {
@@ -1883,29 +2144,49 @@
       "class": "v3-repeated-uncaptured-reviewer-and-swallowed-external-denial",
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
-      "relatedIncidentIds": ["BSA-20261030-052", "BSA-20261103-099",
-                             "BSA-20261111-147", "BSA-20261112-148"],
+      "relatedIncidentIds": [
+        "BSA-20261030-052",
+        "BSA-20261103-099",
+        "BSA-20261111-147",
+        "BSA-20261112-148"
+      ],
       "differenceFromLinkedIncident": "BSA-20261030-052 protected the old source-PDF academic review from sending five prompts after repeated uncaptured UI responses, but the later generated-text V3 core independently issued all six role requests and swallowed an explicit ExternalExecutionDenied as an ordinary ambiguous model answer. This reproduced two real source-free engine test failures at the exact PR #223 head. Reuse one shared threshold in the legacy and V3 review engines; after two genuinely uncaptured transport errors V3 records SKIPPED_UNSENT with requestSubmitted=false and continues only the healthy role. Captured malformed JSON does not trip the circuit. A host denial records BLOCKED_EXTERNAL with requestSubmitted=false, raises immediately, and remains terminal on restart. An explicit read-only counter distinguishes real two-context reviewed activities from unresolved/skipped processed rows. These are synthetic execution guards, not provider authentication, an authorization grant, model verdicts or publication eligibility.",
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/autonomous_completion.py",
         "triggerMarker": "def assess_with_models(",
         "remedyMarker": "role_uncaptured = [",
         "normalEntryPoints": [
-          {"path": "app_generator/validation/autonomous_completion.py",
-           "marker": "def assess_with_models("},
-          {"path": "scripts/check_final_acceptance_closure.py",
-           "marker": "from app_generator.validation.autonomous_completion import ("}
+          {
+            "path": "app_generator/validation/autonomous_completion.py",
+            "marker": "def assess_with_models("
+          },
+          {
+            "path": "scripts/check_final_acceptance_closure.py",
+            "marker": "from app_generator.validation.autonomous_completion import ("
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_v3_uncaptured_role_circuit_matches_legacy_and_preserves_healthy_role"},
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_v3_prior_external_execution_denial_stops_before_other_model_calls"},
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_v3_malformed_captured_json_does_not_trip_ui_circuit"},
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_v3_circuit_survives_all_three_bounded_invocations"}
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_v3_uncaptured_role_circuit_matches_legacy_and_preserves_healthy_role"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_v3_prior_external_execution_denial_stops_before_other_model_calls"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_v3_malformed_captured_json_does_not_trip_ui_circuit"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_v3_circuit_survives_all_three_bounded_invocations"
+        }
       ]
     },
     {
@@ -1914,7 +2195,9 @@
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
       "relatedIncidentIds": [
-        "BSA-20261111-147", "BSA-20261112-148", "BSA-20261112-150"
+        "BSA-20261111-147",
+        "BSA-20261112-148",
+        "BSA-20261112-150"
       ],
       "differenceFromLinkedIncident": "The V3 status/aggregate checker already validated each reviewer's activity-specific perspective prompt SHA-256 and exact aggregate summary, but the normal private release verifier separately checked only presence/shape of arbitrary 64-character prompt hashes and unanimous PASS. Source-free tests reproduced that a role-swapped or stale-prompt fake PASS could be sealed into a local HMAC receipt and accepted by the normal publisher, even though the progress checker would refuse it. Independently, receipt-only status reported AUTOMATED_TECHNICAL_ELIGIBLE while still claiming activitiesAssessed=0 and 18 remaining, because the same private signed assessment was not used to derive read-only progress. Shared verify_automated_release_assessment now calls _validate_cached_review per real activity and requires exact aggregate rebuilding. The private receipt reader verifies the complete HMAC+assessment once and gives the progress checker the same verified signed report without a second file read; if the caller supplies a different report, it fails closed. Synthetic tests include stale prompt, swapped reviewer roles, forged aggregate, freshly re-attested hostile HMAC normal-publication refusal, receipt-only genuine signed counts, and mismatching supplied assessment. No actual LLM result or release receipt for the real Chapter 9 content was produced.",
       "automaticRemedy": {
@@ -1922,21 +2205,37 @@
         "triggerMarker": "def verify_automated_release_assessment(",
         "remedyMarker": "_validate_cached_review(activity, row)",
         "normalEntryPoints": [
-          {"path": "app_generator/validation/autonomous_completion.py",
-           "marker": "def verify_automated_release_assessment("},
-          {"path": "scripts/check_final_acceptance_closure.py",
-           "marker": "from app_generator.validation.autonomous_completion import ("}
+          {
+            "path": "app_generator/validation/autonomous_completion.py",
+            "marker": "def verify_automated_release_assessment("
+          },
+          {
+            "path": "scripts/check_final_acceptance_closure.py",
+            "marker": "from app_generator.validation.autonomous_completion import ("
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_release_verifier_reuses_exact_prompt_and_aggregate_provenance"},
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_even_locally_reattested_stale_model_prompt_blocks_normal_publisher"},
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_release_only_status_uses_signed_review_coverage_not_zero"},
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_private_progress_reports_true_partial_coverage_not_fabricated_pass"}
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_release_verifier_reuses_exact_prompt_and_aggregate_provenance"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_even_locally_reattested_stale_model_prompt_blocks_normal_publisher"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_release_only_status_uses_signed_review_coverage_not_zero"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_private_progress_reports_true_partial_coverage_not_fabricated_pass"
+        }
       ]
     },
     {
@@ -1946,8 +2245,10 @@
       "rootCauseFamily": "recurrence-governance",
       "relatedIncidentIds": [
         "BSA-20261030-052",
-        "BSA-20261103-099", "BSA-20261111-147",
-        "BSA-20261112-148", "BSA-20261112-150"
+        "BSA-20261103-099",
+        "BSA-20261111-147",
+        "BSA-20261112-148",
+        "BSA-20261112-150"
       ],
       "differenceFromLinkedIncident": "Historic source-PDF Gemini reviewers had a reusable ReviewerSession(conversation.ask) interface, protected-tab and profile guards, privacy-safe immutable request claims and role circuits. V3 introduced generated-activity-only assess_with_models, real 6+6+6 checkpointing and strict release checks, but lacked a stable off-repository provider-neutral execution integration callable by a separately authorized live session provider. An attempt to invent a direct authenticated browser runner was blocked under Decision 0028. Pre-fix source-free regression failed importing the missing service. The new canonical advance_v3_generated_text requires externally supplied distinct authorized reviewer sessions and explicit generated-content transfer permission, validates the exact package and finite 1-to-6 activity budget before requesting a model, creates no private state on missing/invalid auth/session conditions, reuses RunContext and the original assess_with_models automatically, protects durable package-SHA-specific state with exclusive lock, fails closed on a surviving lock or changed/forged checkpoint, and returns privacy-safe actual progress counts. This service does not open Chrome, authenticate, attach PDFs, bypass the old host denial, provide a model or import fake test verdicts into production. It closes only the internal executable integration seam; live V3 reviewer transport remains externally unavailable and original Chapter 9 genuine reviews remain 0/108.",
       "automaticRemedy": {
@@ -1955,21 +2256,38 @@
         "triggerMarker": "def advance_v3_generated_text(",
         "remedyMarker": "context=RunContext.create(root,run_id)",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_authorized_review.py",
-           "marker": "def advance_v3_generated_text("}
+          {
+            "path": "app_generator/runtime/v3_authorized_review.py",
+            "marker": "def advance_v3_generated_text("
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
-         "marker": "test_no_authorized_transfer_or_sessions_has_no_side_effect"},
-        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
-         "marker": "test_single_activity_then_finite_resume_persists_private_claims"},
-        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
-         "marker": "test_existing_owned_run_lock_blocks_all_requests_and_is_not_removed"},
-        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
-         "marker": "test_corrupted_existing_aggregate_stops_before_any_model_request"},
-        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
-         "marker": "test_frozen_real_chapter9_roster_cannot_auto_review_without_transport"}
+        {
+          "path": "tests/test_v3_authorized_execution_bridge.py",
+          "kind": "python",
+          "marker": "test_no_authorized_transfer_or_sessions_has_no_side_effect"
+        },
+        {
+          "path": "tests/test_v3_authorized_execution_bridge.py",
+          "kind": "python",
+          "marker": "test_single_activity_then_finite_resume_persists_private_claims"
+        },
+        {
+          "path": "tests/test_v3_authorized_execution_bridge.py",
+          "kind": "python",
+          "marker": "test_existing_owned_run_lock_blocks_all_requests_and_is_not_removed"
+        },
+        {
+          "path": "tests/test_v3_authorized_execution_bridge.py",
+          "kind": "python",
+          "marker": "test_corrupted_existing_aggregate_stops_before_any_model_request"
+        },
+        {
+          "path": "tests/test_v3_authorized_execution_bridge.py",
+          "kind": "python",
+          "marker": "test_frozen_real_chapter9_roster_cannot_auto_review_without_transport"
+        }
       ]
     },
     {
@@ -1978,8 +2296,10 @@
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
       "relatedIncidentIds": [
-        "BSA-20261111-146", "BSA-20261112-149",
-        "BSA-20261112-151", "BSA-20261112-152"
+        "BSA-20261111-146",
+        "BSA-20261112-149",
+        "BSA-20261112-151",
+        "BSA-20261112-152"
       ],
       "differenceFromLinkedIncident": "Previous 9.1–9.6 RC1 owner scope and synthetic six-section demonstrations did not guarantee a read-only whole-course V3 progress checker. The chapter-9 content directory actually contains nine sections (9.1–9.9), not just the six frozen V3 candidates. The new course test failed before the shared section-discovery fix, revealing synthetic section-1 versus real section-9-1 names and the wider nine-section inventory. Rather than silently scanning or truncating it, the canonical V3 status CLI now accepts an explicit section-number roster; an ambiguous nine-package directory with expected six fails closed, while explicitly selecting 1,2,3,4,5,6 validates six actual unchanged packages and 108 activities. Generic read-only helper reuses existing package_identity/assessment_progress and exact package SHA-bound off-repository checkpoint convention. It refuses duplicates, stale/forged private aggregates, unsafe paths and mismatched section counts, never reads PDFs or transmits content, and never turns draft/synthetic status into model or publication evidence. Missing live two-context reviews remain 0/108.",
       "automaticRemedy": {
@@ -1987,21 +2307,38 @@
         "triggerMarker": "def course_readiness(",
         "remedyMarker": "if section_numbers is not None:",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_course_review.py",
-           "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "from app_generator.validation.v3_course_readiness import course_readiness"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_normal_cli_recovers_frozen_scope_and_rejects_replacement_sections"},
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_real_repo_six_packages_are_structure_only_without_side_effects"},
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_private_durable_evidence_is_read_without_mutation_or_model_call"},
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_corrupted_private_evidence_must_not_be_silently_ignored"},
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_missing_duplicate_or_unsafe_six_section_roster_fails_closed"}
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_normal_cli_recovers_frozen_scope_and_rejects_replacement_sections"
+        },
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_real_repo_six_packages_are_structure_only_without_side_effects"
+        },
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_private_durable_evidence_is_read_without_mutation_or_model_call"
+        },
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_corrupted_private_evidence_must_not_be_silently_ignored"
+        },
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_missing_duplicate_or_unsafe_six_section_roster_fails_closed"
+        }
       ]
     },
     {
@@ -2010,8 +2347,10 @@
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
       "relatedIncidentIds": [
-        "BSA-20261112-149", "BSA-20261112-151",
-        "BSA-20261112-152", "BSA-20261112-153"
+        "BSA-20261112-149",
+        "BSA-20261112-151",
+        "BSA-20261112-152",
+        "BSA-20261112-153"
       ],
       "differenceFromLinkedIncident": "BSA-20261112-153 integrated a course-level V3 status checker, but the nine-section Chapter 9 directory required the user to repeat --sections 1,2,3,4,5,6 and mistakenly permitted arbitrary alternate six-number selections such as 4,5,6,7,8,9. Previous synthetic directory tests did not use the pre-existing machine-readable six frozenCandidates records with exact package SHA256 and activity counts. New real-roster and normal CLI regressions first failed on current HEAD: without manual selection the status returned STOP_INVALID_ACTIVE_ACCEPTANCE_POLICY. The shared code now discovers the already tracked immutable docs/acceptance_closure_chapterN.json roster generically for chapter-N, validates frozen schema, exact section identities, SHA256 and activity counts, auto-selects exactly those candidates, rejects all conflicting explicit overrides, malformed manifests, altered package bytes and wrongly named section directories. The V2 file is used solely for frozen scope metadata, never for archived academic, manual, rights, pilot or publication gates. Chapters without a tracked approved scope still require an exact full-directory count or an independently authorized selection; no invisible expansion, no model call, no campaign reset. Verified real Section 9.1-9.6 package identities 6 of 6 matching, 108 activities, zero real model reviews. This closes the reusable on-the-fly code repair but not the separate externally denied generated-text-only reviewer transport.",
       "automaticRemedy": {
@@ -2019,19 +2358,33 @@
         "triggerMarker": "def course_readiness(",
         "remedyMarker": "frozen=_approved_frozen_scope(chapter,root,expected_sections)",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_course_review.py",
-           "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "from app_generator.validation.v3_course_readiness import course_readiness"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_normal_cli_recovers_frozen_scope_and_rejects_replacement_sections"},
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_other_chapter_automatically_resolves_frozen_manifest_and_rejects_drift"},
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_frozen_scope_missing_or_corrupt_fails_closed_not_autocleared"},
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_real_repo_six_packages_are_structure_only_without_side_effects"}
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_normal_cli_recovers_frozen_scope_and_rejects_replacement_sections"
+        },
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_other_chapter_automatically_resolves_frozen_manifest_and_rejects_drift"
+        },
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_frozen_scope_missing_or_corrupt_fails_closed_not_autocleared"
+        },
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_real_repo_six_packages_are_structure_only_without_side_effects"
+        }
       ]
     },
     {
@@ -2040,7 +2393,8 @@
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
       "relatedIncidentIds": [
-        "BSA-20261107-127", "BSA-20261112-153",
+        "BSA-20261107-127",
+        "BSA-20261112-153",
         "BSA-20261113-154"
       ],
       "differenceFromLinkedIncident": "The BSA-20261113-154 automatic scope reader verified the historical frozen packageSha256 bytes, which matched all six Yoga6 Windows CRLF working-tree files, but exact-head GitHub Linux CI checkouts normalized the same six tracked Git blobs to LF and the full test suite failed on V3_FROZEN_PACKAGE_IDENTITY_DRIFT. This repeated the git-clean CRLF/LF read-side failure already recorded in BSA-20261107-127 for the separate course-preview roster. The previous resolution used Git filter-normalized blob identity; the V3 normal course status had not connected it. Inspecting the actual Section 9.1 Windows file confirmed 2156 CRLF line endings, frozen byte SHA256 match and LF-normalized SHA1 Git blob exactly matching frozen packageGitBlobSha1. The shared V3 checker now validates BOTH frozen Git blob SHA1 against canonical LF-normalized content and the original frozen SHA256 against either exact raw working bytes OR the uniquely deterministic CRLF/LF alternative. It refuses arbitrary whitespace/semantic edits, mixed line endings, changed bytes, changed archived identity, nonexistent blob evidence or changed activity count. The existing BSA-154 read-only engine remains the one normal CLI dispatch, with frozenIdentityBasis reporting EXACT_PACKAGE_SHA256 versus EOL_NORMALIZED_GIT_BLOB; no external model, protected PDF or publication is authorized. Source-free synthetic Chapter 7 CRLF-manifest/LF-checkout negative tests now pin the recurrence. The previously failed hosted run 43333798461 is failure evidence; the new exact-head CI must separately pass.",
@@ -2049,17 +2403,28 @@
         "triggerMarker": "def _verify_frozen_package_identity(",
         "remedyMarker": "return \"EOL_NORMALIZED_GIT_BLOB\"",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_course_review.py",
-           "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "from app_generator.validation.v3_course_readiness import course_readiness"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_cross_platform_crlf_frozen_bytes_match_only_exact_lf_git_blob"},
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_normal_cli_recovers_frozen_scope_and_rejects_replacement_sections"},
-        {"path": "tests/test_v3_course_readiness.py", "kind": "python",
-         "marker": "test_other_chapter_automatically_resolves_frozen_manifest_and_rejects_drift"}
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_cross_platform_crlf_frozen_bytes_match_only_exact_lf_git_blob"
+        },
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_normal_cli_recovers_frozen_scope_and_rejects_replacement_sections"
+        },
+        {
+          "path": "tests/test_v3_course_readiness.py",
+          "kind": "python",
+          "marker": "test_other_chapter_automatically_resolves_frozen_manifest_and_rejects_drift"
+        }
       ]
     },
     {
@@ -2068,9 +2433,12 @@
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
       "relatedIncidentIds": [
-        "BSA-20261105-115", "BSA-20261112-150",
-        "BSA-20261112-152", "BSA-20261112-153",
-        "BSA-20261113-154", "BSA-20261113-155"
+        "BSA-20261105-115",
+        "BSA-20261112-150",
+        "BSA-20261112-152",
+        "BSA-20261112-153",
+        "BSA-20261113-154",
+        "BSA-20261113-155"
       ],
       "differenceFromLinkedIncident": "The BSA-152 provider-neutral reviewer bridge could advance one package at a time with two externally authorized contexts, and BSA-153/154/155 could read the immutable six-course roster and check actual model coverage, but nothing integrated the two normal paths: an operator would still have to pick the next section, call the per-package model reviewer and repeatedly inspect the private checkpoint across all 108 activities. That repeated manual package selection recurred from the earlier BSA-115 finite cross-topic acceptance orchestration defect. Source-free tests failed import of the missing v3_course_review module. The canonical course-level plan_v3_course_review now deterministically chooses the next genuinely unfinished approved section from exact frozen identities and private checkpoint validation, stops on any model repair/uncertain/skipped submissions, refuses absent approved scope and never submits by reading the plan. The provider-neutral advance_v3_course_review reuses only the existing BSA-152 per-package reviewer with the same 1-to-6 bounded semantics, no source-PDF uploads, no login, no browser creation, no new provider, no retry or relabeling of Decision 0028 denials. Missing external reviewer sessions or permission produce typed BLOCKED_EXTERNAL_REVIEW_TRANSPORT or BLOCKED_GENERATED_TEXT_TRANSFER with zero request/state writes. The existing scripts/check_final_acceptance_closure.py --course-dir normal path now returns the same read-only nextSection and dispatchStatus without any special manual steps. Fully complete synthetic course ends at PENDING_DETERMINISTIC_RELEASE_EVIDENCE, not publication PASS. Six original Chapter 9 packages remain untouched, their V3 real reviews 0/108, external authorization still unavailable.",
       "automaticRemedy": {
@@ -2078,23 +2446,42 @@
         "triggerMarker": "def advance_v3_course_review(",
         "remedyMarker": "advance_v3_generated_text(",
         "normalEntryPoints": [
-          {"path": "scripts/check_final_acceptance_closure.py",
-           "marker": "from app_generator.runtime.v3_course_review import plan_v3_course_review"},
-          {"path": "app_generator/runtime/v3_course_review.py",
-           "marker": "def advance_v3_course_review("}
+          {
+            "path": "scripts/check_final_acceptance_closure.py",
+            "marker": "from app_generator.runtime.v3_course_review import plan_v3_course_review"
+          },
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "def advance_v3_course_review("
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
-         "marker": "test_one_then_one_per_package_finite_automatic_progress"},
-        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
-         "marker": "test_no_external_model_sessions_plans_only_and_creates_no_files"},
-        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
-         "marker": "test_unresolved_prior_review_blocks_next_course_dispatch"},
-        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
-         "marker": "test_normal_existing_cli_exposes_next_section_and_blocker"},
-        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
-         "marker": "test_stale_or_invalid_frozen_course_stops_before_model_call"}
+        {
+          "path": "tests/test_v3_course_review_dispatch.py",
+          "kind": "python",
+          "marker": "test_one_then_one_per_package_finite_automatic_progress"
+        },
+        {
+          "path": "tests/test_v3_course_review_dispatch.py",
+          "kind": "python",
+          "marker": "test_no_external_model_sessions_plans_only_and_creates_no_files"
+        },
+        {
+          "path": "tests/test_v3_course_review_dispatch.py",
+          "kind": "python",
+          "marker": "test_unresolved_prior_review_blocks_next_course_dispatch"
+        },
+        {
+          "path": "tests/test_v3_course_review_dispatch.py",
+          "kind": "python",
+          "marker": "test_normal_existing_cli_exposes_next_section_and_blocker"
+        },
+        {
+          "path": "tests/test_v3_course_review_dispatch.py",
+          "kind": "python",
+          "marker": "test_stale_or_invalid_frozen_course_stops_before_model_call"
+        }
       ]
     },
     {
@@ -2102,22 +2489,33 @@
       "class": "normal-pipeline-auto-recovery-owner-contract-not-machine-locked",
       "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
-      "relatedIncidentIds": ["BSA-20261110-137", "BSA-20261113-156"],
+      "relatedIncidentIds": [
+        "BSA-20261110-137",
+        "BSA-20261113-156"
+      ],
       "differenceFromLinkedIncident": "Decision 0027 and v5.0 already requested automatic remedies, and BSA-137 required normal-dispatch fields for each recent resolved incident, but the cross-session owner rule itself was not a separately immutable machine-checked policy. This allowed future maintainers to weaken automatic recovery, revert to manual owner prompts, or describe test-only remedies as completion without CI rejecting the contract change. The new owner Decision 0037 is tied to exact machine-readable invariants, AGENTS operational precedence and the existing normal CI recurrence guard. A pre-fix negative regression demonstrated that deleting the policy was not detected. After the common checker repair, deleting the policy, switching off automatic detection, or removing the developer instruction causes the normal guard to fail. The old BSA-156 course executor stays the sole live V3 dispatch; this governance milestone does not supply the missing externally authorized Gemini/ChatGPT reviewer sessions or claim completed assessment.",
       "automaticRemedy": {
         "runtimePath": "scripts/check_regression_contract.py",
         "triggerMarker": "def verify(root: Path = ROOT) -> list[str]:",
         "remedyMarker": "errors: list[str] = _normal_pipeline_recovery_errors(root)",
         "normalEntryPoints": [
-          {"path": ".github/workflows/validate.yml",
-           "marker": "python scripts/check_regression_contract.py"}
+          {
+            "path": ".github/workflows/validate.yml",
+            "marker": "python scripts/check_regression_contract.py"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_regression_contract.py", "kind": "python",
-         "marker": "test_normal_pipeline_recovery_contract_cannot_be_silently_weakened"},
-        {"path": "tests/test_regression_contract.py", "kind": "python",
-         "marker": "test_resolved_recent_incident_requires_automatic_runtime_integration"}
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_normal_pipeline_recovery_contract_cannot_be_silently_weakened"
+        },
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_resolved_recent_incident_requires_automatic_runtime_integration"
+        }
       ]
     },
     {
@@ -2125,29 +2523,49 @@
       "class": "v3-generated-text-gemini-reviewer-not-wired-to-verified-existing-login",
       "status": "resolved",
       "rootCauseFamily": "integration-readiness",
-      "relatedIncidentIds": ["BSA-20261104-109", "BSA-20261112-152",
-                             "BSA-20261113-156"],
+      "relatedIncidentIds": [
+        "BSA-20261104-109",
+        "BSA-20261112-152",
+        "BSA-20261113-156"
+      ],
       "differenceFromLinkedIncident": "Earlier existing-login Selenium neutral Gemini probes had successfully verified one signed-in account and two independently owned fresh conversation tabs, with bounded restored-tab navigation and response capture, but the original ExistingLoginReviewerFactory attached a textbook PDF and could not be used by V3. BSA-152/156 added provider-neutral generated-activity review and course dispatch yet required manual injection of two already-available sessions and never connected the proven source-free Gemini provider. A new source-free test reproduced missing v3_existing_login_sessions module before repair. The new factory reuses exactly the existing ChromeSession, account verifier, profile ownership preflight, neutral page and owned-tab mechanism without PDF attachment, authenticates only after Gemini host verification, binds each V3 role to an exclusive chat, avoids any model fallback/retry, and closes only its owned tabs. The normal advance_v3_course_review now dispatches an explicitly approved factory after frozen scope/bytes/transfer preflight and returns a typed blocker if external authorization is not established. This closes the SOURCE-FREE CODE INTEGRATION GAP, NOT the previous host-level denial or 0/108 genuine V3 model reviews. No live denied operation was repeated or relabeled.",
       "automaticRemedy": {
         "runtimePath": "app_generator/gemini/v3_existing_login_sessions.py",
         "triggerMarker": "def open_pair(self, activity_id: str)",
         "remedyMarker": "self.verifier_factory(driver, cfg.login_name, 12).verify()",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_course_review.py",
-           "marker": "from app_generator.gemini.v3_existing_login_sessions import V3ExistingLoginSessions"}
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "from app_generator.gemini.v3_existing_login_sessions import V3ExistingLoginSessions"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
-         "marker": "test_denied_external_operation_cannot_bootstrap_browser_or_claim_review"},
-        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
-         "marker": "test_normal_dispatch_uses_distinct_owned_generated_only_gemini_tabs"},
-        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
-         "marker": "test_restored_author_tab_and_redirect_recovery_are_safe"},
-        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
-         "marker": "test_ambiguous_second_response_is_not_replayed_or_accepted"},
-        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
-         "marker": "test_busy_profile_blocks_before_browser_and_private_state"}
+        {
+          "path": "tests/test_v3_generated_login_sessions.py",
+          "kind": "python",
+          "marker": "test_denied_external_operation_cannot_bootstrap_browser_or_claim_review"
+        },
+        {
+          "path": "tests/test_v3_generated_login_sessions.py",
+          "kind": "python",
+          "marker": "test_normal_dispatch_uses_distinct_owned_generated_only_gemini_tabs"
+        },
+        {
+          "path": "tests/test_v3_generated_login_sessions.py",
+          "kind": "python",
+          "marker": "test_restored_author_tab_and_redirect_recovery_are_safe"
+        },
+        {
+          "path": "tests/test_v3_generated_login_sessions.py",
+          "kind": "python",
+          "marker": "test_ambiguous_second_response_is_not_replayed_or_accepted"
+        },
+        {
+          "path": "tests/test_v3_generated_login_sessions.py",
+          "kind": "python",
+          "marker": "test_busy_profile_blocks_before_browser_and_private_state"
+        }
       ]
     },
     {
@@ -2155,28 +2573,45 @@
       "class": "v3-ambiguous-two-provider-assessment-permitted-chatgpt-and-unattributed-review",
       "status": "resolved",
       "rootCauseFamily": "integration-readiness",
-      "relatedIncidentIds": ["BSA-20261104-109", "BSA-20261112-152",
-                             "BSA-20261113-157",
-                             "BSA-20261113-158"],
+      "relatedIncidentIds": [
+        "BSA-20261104-109",
+        "BSA-20261112-152",
+        "BSA-20261113-157",
+        "BSA-20261113-158"
+      ],
       "differenceFromLinkedIncident": "The preceding V3 course engine and existing-login Gemini adapter correctly supported two separated model conversations, but Decision 0036 had allowed both gemini_browser and chatgpt_browser and neither the normal model session admission nor immutable reviewer claims/automatic release verifier proved which provider supplied either role. The owner's new decision explicitly requires GEMINI EXCLUSIVELY and no ChatGPT invocation for the two-context V3 assessment. New pre-fix adversarial test failed because policy allowed chatgpt_browser. Decision 0038 narrows the strict machine-readable owner policy to gemini_browser only; the normal review engine and pre-checkpoint bridge reject either ChatGPT, mixed, unknown or missing provider role before any request or state write. The existing V3ExistingLoginSessions labels both genuinely owned Gemini browser roles; durable immutable per-role claims and scored reviewer rows now record providerId=gemini_browser. Cached status and publisher reject tampered or missing provider ID, with older unlabeled claims failing closed. Two independent role/session identities, finite/no-replay boundaries and source-only transfer are unchanged. This is an implemented provider-selection remedy, not evidence that ChatGPT caused the historical external host denial or that the denied authenticated browser operation is now permitted.",
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/autonomous_completion.py",
         "triggerMarker": "def assess_with_models(raw: bytes, sessions: tuple, *",
         "remedyMarker": "raise ValueError(\"V3_GEMINI_ONLY_REVIEWERS_REQUIRED\")",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_authorized_review.py",
-           "marker": "from app_generator.validation.autonomous_completion import ("}
+          {
+            "path": "app_generator/runtime/v3_authorized_review.py",
+            "marker": "from app_generator.validation.autonomous_completion import ("
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_gemini_only_contract_rejects_chatgpt_or_unattributed_sessions_before_send"},
-        {"path": "tests/test_autonomous_completion_v3.py", "kind": "python",
-         "marker": "test_release_rejects_non_gemini_or_unattributed_model_evidence"},
-        {"path": "tests/test_v3_authorized_execution_bridge.py", "kind": "python",
-         "marker": "test_mixed_or_chatgpt_reviewers_are_blocked_before_private_state"},
-        {"path": "tests/test_v3_course_review_dispatch.py", "kind": "python",
-         "marker": "test_normal_course_dispatch_forbids_chatgpt_injected_transport"}
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_gemini_only_contract_rejects_chatgpt_or_unattributed_sessions_before_send"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_release_rejects_non_gemini_or_unattributed_model_evidence"
+        },
+        {
+          "path": "tests/test_v3_authorized_execution_bridge.py",
+          "kind": "python",
+          "marker": "test_mixed_or_chatgpt_reviewers_are_blocked_before_private_state"
+        },
+        {
+          "path": "tests/test_v3_course_review_dispatch.py",
+          "kind": "python",
+          "marker": "test_normal_course_dispatch_forbids_chatgpt_injected_transport"
+        }
       ]
     },
     {
@@ -2184,25 +2619,39 @@
       "class": "v3-gemini-browser-framed-json-misread-as-uncaptured-strict-json",
       "status": "resolved",
       "rootCauseFamily": "integration-readiness",
-      "relatedIncidentIds": ["BSA-20261104-109", "BSA-20261113-158",
-                             "BSA-20261113-159"],
+      "relatedIncidentIds": [
+        "BSA-20261104-109",
+        "BSA-20261113-158",
+        "BSA-20261113-159"
+      ],
       "differenceFromLinkedIncident": "While implementing Decision 0038 Gemini-only sessions, source inspection found that the existing genuine GemConversationPage.ask always returns a complete BEGIN_JSON/END_JSON framed response, including when Gemini emits bare JSON, but the normal V3 _parse_response demanded only a bare JSON object. BSA-158's fake Gemini provider returned raw bare JSON, which concealed the mismatch. A corrected source-free normal-dispatch negative test using actual framed-output format FAILED before repair: two synthetic model replies were captured but counted as zero fully reviewed activities. The existing V3OwnedGeneratedConversation.ask now locally unwraps exactly one complete framed JSON object, rejecting malformed, incomplete, multiple or chattering frames, and passes the body directly to the unchanged strict V3 semantic validator. This is response normalization after one model request, NEVER a retry or new prompt, and does not grant authorization to use the previously denied browser runner. Normal generated-text session credentials, package hashes, no PDF, two separate Gemini contexts, private immutable claims and reviewer stop rules are unchanged.",
       "automaticRemedy": {
         "runtimePath": "app_generator/gemini/v3_existing_login_sessions.py",
         "triggerMarker": "def _v3_bare_json_from_gemini(raw: str) -> str:",
         "remedyMarker": "return _v3_bare_json_from_gemini(self.page.ask(prompt))",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_course_review.py",
-           "marker": "from app_generator.gemini.v3_existing_login_sessions import V3ExistingLoginSessions"}
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "from app_generator.gemini.v3_existing_login_sessions import V3ExistingLoginSessions"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
-         "marker": "test_actual_gemini_json_frame_is_normalized_once_fail_closed"},
-        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
-         "marker": "test_normal_dispatch_uses_distinct_owned_generated_only_gemini_tabs"},
-        {"path": "tests/test_v3_generated_login_sessions.py", "kind": "python",
-         "marker": "test_ambiguous_second_response_is_not_replayed_or_accepted"}
+        {
+          "path": "tests/test_v3_generated_login_sessions.py",
+          "kind": "python",
+          "marker": "test_actual_gemini_json_frame_is_normalized_once_fail_closed"
+        },
+        {
+          "path": "tests/test_v3_generated_login_sessions.py",
+          "kind": "python",
+          "marker": "test_normal_dispatch_uses_distinct_owned_generated_only_gemini_tabs"
+        },
+        {
+          "path": "tests/test_v3_generated_login_sessions.py",
+          "kind": "python",
+          "marker": "test_ambiguous_second_response_is_not_replayed_or_accepted"
+        }
       ]
     },
     {
@@ -2210,29 +2659,50 @@
       "class": "v3-native-gemini-review-depended-on-chatgpt-remote-browser-runner",
       "status": "resolved",
       "rootCauseFamily": "integration-readiness",
-      "relatedIncidentIds": ["BSA-20261104-109", "BSA-20261112-152",
-                             "BSA-20261113-158", "BSA-20261113-159"],
+      "relatedIncidentIds": [
+        "BSA-20261104-109",
+        "BSA-20261112-152",
+        "BSA-20261113-158",
+        "BSA-20261113-159"
+      ],
       "differenceFromLinkedIncident": "The old BOSLA V3 assessor already had strictly bounded checkpointed two-role content review, but its sole accepted Gemini provider was gemini_browser, and the installed source-free Selenium adapter required a ChatGPT Remote Desktop Commander executor to drive actual model calls. Without externally injected browser sessions the normal dispatcher returned its own BLOCKED_EXTERNAL_REVIEW_TRANSPORT, repeatedly misclassified as proof of a current OpenAI platform denial. No first-party historical denial payload was available and the old denial remains not to be bypassed. Decision 0039 adds the owner-run INDEPENDENT native Gemini API worker using the normal immutable V3 course dispatcher and existing private checkpoint/safe-stop logic. Two separate stateless Gemini SDK clients, API MIME JSON, source-free prompts, strict provider labels and no API retries/model/key fallback after submission remove a recurring ChatGPT-mediated execution dependency from the normal LOCAL assessment architecture. This fix does NOT grant a prohibited ChatGPT tool operation, supply Google billing/credentials, or claim genuine live reviews. An owner explicitly starts the local workflow under their ordinary Google API authority; code integration and tests are entirely source-free and offline.",
       "automaticRemedy": {
         "runtimePath": "app_generator/gemini/v3_native_api_reviewers.py",
         "triggerMarker": "def open_pair(self, activity_id: str)",
         "remedyMarker": "NativeGeminiApiConversation(self.clients[i], types, model, role)",
         "normalEntryPoints": [
-          {"path": "scripts/run_v3_native_gemini_review.py",
-           "marker": "from app_generator.gemini.v3_native_api_reviewers import V3NativeGeminiApiSessions"}
+          {
+            "path": "scripts/run_v3_native_gemini_review.py",
+            "marker": "from app_generator.gemini.v3_native_api_reviewers import V3NativeGeminiApiSessions"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
-         "marker": "test_native_two_role_reviews_are_separate_and_source_free"},
-        {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
-         "marker": "test_uncertain_model_request_is_not_replayed"},
-        {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
-         "marker": "test_default_sdk_constructor_uses_existing_key_inventory_without_a_probe"},
-        {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
-         "marker": "test_native_fake_verdict_is_checked_by_existing_release_gate"},
-        {"path": "tests/test_v3_native_gemini_api_reviewers.py", "kind": "python",
-         "marker": "test_readonly_native_worker_requires_no_provider_or_credentials"}
+        {
+          "path": "tests/test_v3_native_gemini_api_reviewers.py",
+          "kind": "python",
+          "marker": "test_native_two_role_reviews_are_separate_and_source_free"
+        },
+        {
+          "path": "tests/test_v3_native_gemini_api_reviewers.py",
+          "kind": "python",
+          "marker": "test_uncertain_model_request_is_not_replayed"
+        },
+        {
+          "path": "tests/test_v3_native_gemini_api_reviewers.py",
+          "kind": "python",
+          "marker": "test_default_sdk_constructor_uses_existing_key_inventory_without_a_probe"
+        },
+        {
+          "path": "tests/test_v3_native_gemini_api_reviewers.py",
+          "kind": "python",
+          "marker": "test_native_fake_verdict_is_checked_by_existing_release_gate"
+        },
+        {
+          "path": "tests/test_v3_native_gemini_api_reviewers.py",
+          "kind": "python",
+          "marker": "test_readonly_native_worker_requires_no_provider_or_credentials"
+        }
       ]
     },
     {
@@ -2240,26 +2710,43 @@
       "class": "v3-native-inflight-role-claim-without-aggregate-reopened-model-dispatch",
       "status": "resolved",
       "rootCauseFamily": "integration-readiness",
-      "relatedIncidentIds": ["BSA-20261104-109", "BSA-20261113-161"],
+      "relatedIncidentIds": [
+        "BSA-20261104-109",
+        "BSA-20261113-161"
+      ],
       "differenceFromLinkedIncident": "The newly integrated native Gemini API one-shot reviewer was source-free tested, but its normal course planner only inspected aggregate v3-assessment checkpoints, not a durable per-role IN_FLIGHT claim written before the SDK call. The synthetic 108-activity stress campaign injected KeyboardInterrupt immediately after first role model dispatch and before saving the activity aggregate. The initial adversarial restart test FAILED: plan_v3_course_review returned READY_FOR_AUTHORIZED_REVIEW_SESSIONS despite a stranded IN_FLIGHT role claim. Opening another two-client factory could then contact a second model before the first outstanding request was reconciled. The normal read-only course readiness now checks the NEXT unaggregated activity's exact package- and role-bound claims, validates safe private paths and immutable identity, and exposes unreconciledRoleClaims. The normal dispatcher deterministically returns STOP_UNRECONCILED_MODEL_REVIEW before opening new API clients when a claim remains IN_FLIGHT, AMBIGUOUS, BLOCKED_EXTERNAL or SKIPPED_UNSENT; no hidden model request or auto-replay occurs. A fully COMPLETE role with no aggregate is not falsely tagged as uncertain. The exclusive run lock remains separate and authoritative while an invocation is active. This remedy is automatically used by the normal native runner and browser dispatcher and is guarded by permanent full-course/stress/error tests. Synthetic stress results never count as genuine scientific/model acceptance.",
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/v3_course_readiness.py",
         "triggerMarker": "def _unreconciled_next_role_claims(",
         "remedyMarker": "unresolved += row[\"state\"] != \"COMPLETE\"",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_course_review.py",
-           "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "from app_generator.validation.v3_course_readiness import course_readiness"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v3_native_gemini_stress.py", "kind": "python",
-         "marker": "test_power_loss_after_inflight_claim_stops_before_new_api_calls"},
-        {"path": "tests/test_v3_native_gemini_stress.py", "kind": "python",
-         "marker": "test_two_simultaneous_workers_do_not_duplicate_inflight_request"},
-        {"path": "tests/test_v3_native_gemini_stress.py", "kind": "python",
-         "marker": "test_full_108_activities_216_model_calls_and_fresh_pair_per_activity"},
-        {"path": "tests/test_v3_native_gemini_stress.py", "kind": "python",
-         "marker": "test_interrupted_at_activity_32_stops_without_replay"}
+        {
+          "path": "tests/test_v3_native_gemini_stress.py",
+          "kind": "python",
+          "marker": "test_power_loss_after_inflight_claim_stops_before_new_api_calls"
+        },
+        {
+          "path": "tests/test_v3_native_gemini_stress.py",
+          "kind": "python",
+          "marker": "test_two_simultaneous_workers_do_not_duplicate_inflight_request"
+        },
+        {
+          "path": "tests/test_v3_native_gemini_stress.py",
+          "kind": "python",
+          "marker": "test_full_108_activities_216_model_calls_and_fresh_pair_per_activity"
+        },
+        {
+          "path": "tests/test_v3_native_gemini_stress.py",
+          "kind": "python",
+          "marker": "test_interrupted_at_activity_32_stops_without_replay"
+        }
       ]
     },
     {
@@ -2341,6 +2828,58 @@
           "path": "tests/test_v3_native_gemini_api_reviewers.py",
           "kind": "python",
           "marker": "test_legacy_sdk_without_no_retry_controls_rejected_before_key_lookup"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261114-165",
+      "class": "v3-gemini-servererror-ambiguous-role-globally-blocked-unrelated-frozen-sections",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261104-104",
+        "BSA-20261104-108",
+        "BSA-20261113-162",
+        "BSA-20261113-163",
+        "BSA-20261114-164"
+      ],
+      "differenceFromLinkedIncident": "The genuine HP Chapter 9.1 activity-2 physics reviewer persisted AMBIGUOUS ServerError and AI_UNCERTAIN, so the original course planner globally stopped all six frozen sections even though new assessment work in other sections is independent. Historic 503/504 remedies prohibit replay/credential rotation of the same submitted request and cap provider retries; orphan-role crash fixes also forbid unproven resubmission. The normal native V3 runner now opts into read-only section quarantine and selects only another untouched frozen section. A bounded claim-metadata-only 30-minute provider cooldown and rolling one-hour two-fault circuit stop stampedes; a live review lock prevents cross-section concurrent dispatch. Neither action alters, retries, or upgrades the original ambiguous response; release remains blocked until genuine full-course evidence. The legacy strict planner remains unchanged for other callers. This resolves safe independent forward progress, not the upstream Google request or its unverifiable outcome.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_course_review.py",
+        "triggerMarker": "if continue_independent and progress[\"scopeSource\"]==\"FROZEN_CANDIDATE_MANIFEST\":",
+        "remedyMarker": "result[\"quarantinedSections\"] = quarantined",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_native_gemini_review.py",
+            "marker": "from app_generator.runtime.v3_course_review import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_server_error_recovery.py",
+          "kind": "python",
+          "marker": "test_realistic_server_error_quarantines_section_preserving_checkpoint"
+        },
+        {
+          "path": "tests/test_v3_server_error_recovery.py",
+          "kind": "python",
+          "marker": "test_cooldown_refuses_to_construct_new_model_sessions"
+        },
+        {
+          "path": "tests/test_v3_server_error_recovery.py",
+          "kind": "python",
+          "marker": "test_two_recent_server_failures_open_rolling_circuit"
+        },
+        {
+          "path": "tests/test_v3_server_error_recovery.py",
+          "kind": "python",
+          "marker": "test_live_or_orphaned_review_lock_blocks_all_new_sections"
+        },
+        {
+          "path": "tests/test_v3_server_error_recovery.py",
+          "kind": "python",
+          "marker": "test_quarantine_never_fabricates_global_completion"
         }
       ]
     }
