@@ -30,6 +30,8 @@ def provider_capacity_gate(
     clock = time.time() if now is None else float(now)
     root = private_root
     events: list[float] = []
+    denied = False
+    unclassified = False
     for row in section_progress:
         digest = row["packageSha256"]
         folder = root / ("v3-generated-" + digest) / "batches"
@@ -46,6 +48,14 @@ def provider_capacity_gate(
             data = json.loads(claim.read_text(encoding="utf-8"))
             if not isinstance(data, dict) or data.get("packageSha256") != digest:
                 raise ValueError("V3_PROVIDER_CAPACITY_INVALID_CLAIM")
+            if data.get("state") == "BLOCKED_EXTERNAL":
+                denied = True
+            elif (data.get("state") == "AMBIGUOUS"
+                  and data.get("reasonCode") not in _SERVER_ERROR_TYPES):
+                # An unknown error could be authentication, quota, content
+                # rejection, or a provider denial. Never route around it
+                # by silently switching to a different frozen section.
+                unclassified = True
             if (data.get("state") == "AMBIGUOUS"
                 and data.get("reasonCode") in _SERVER_ERROR_TYPES):
                 when = claim.stat().st_mtime
@@ -55,6 +65,12 @@ def provider_capacity_gate(
                     events.append(when)
     events.sort()
     count = len(events)
+    if denied:
+        return {"status": "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
+                "serverErrorsLastHour": count}
+    if unclassified:
+        return {"status": "STOP_UNCLASSIFIED_PROVIDER_REVIEW",
+                "serverErrorsLastHour": count}
     if count:
         newest = events[-1]
         # Cool down a single fault for 30 minutes. After two faults,
