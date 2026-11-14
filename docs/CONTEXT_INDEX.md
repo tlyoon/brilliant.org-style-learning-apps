@@ -141,6 +141,7 @@ Historical roadmaps, old branch-testing instructions, chat transcripts, and copi
 | Recycle repository for another textbook/project | `docs/GENERIC_PROJECT_SETUP.md`, `docs/DOMAIN_PROFILES.md`, then `config/README.md` |
 | Workstation setup/sync troubleshooting | `docs/WORKSTATION_SYNC.md` |
 | Continuous auto / multi-PC verification | `docs/CONTINUOUS_AUTO_TESTING.md`, then `app_generator/README.md` |
+| V3 native Gemini generated-text assessment and SDK recovery | `docs/decisions/0039-native-gemini-api-review-worker.md`, `docs/V3_NATIVE_GEMINI_LIVE_PILOT_20261114.md`, then `scripts/run_v3_native_gemini_review.py` |
 | Generator CLI/config/coordinator details | `app_generator/README.md`, `config/README.md` |
 | Product change | Product requirements and decision records |
 | Learning content | Content rules, learning design, schema, source-ingestion policy |
