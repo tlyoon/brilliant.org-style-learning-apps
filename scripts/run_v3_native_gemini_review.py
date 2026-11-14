@@ -92,6 +92,13 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     batches = 0
     try:
+        # BSA-20261114-164: recover a stale/missing google-genai SDK in an
+        # isolated, pinned local venv BEFORE any review claim or model call.
+        from app_generator.runtime.native_sdk_environment import delegate_to_supported_sdk
+        delegated = delegate_to_supported_sdk(
+            ROOT, list(argv) if argv is not None else sys.argv[1:])
+        if delegated is not None:
+            return delegated
         cfg = _load_native_config()
         current = before
         reviewed = 0
