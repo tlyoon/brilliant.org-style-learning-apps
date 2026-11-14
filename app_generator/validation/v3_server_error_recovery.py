@@ -1,0 +1,68 @@
+"""Read-only, bounded provider-capacity cooldown for independent V3 work.
+
+An ambiguous Google request is NOT retryable. This helper merely prevents
+new, independent activity requests from stampeding the same failed provider.
+Historical claim contents and result aggregate are immutable.
+"""
+from __future__ import annotations
+
+import json
+import time
+from pathlib import Path
+
+COOLDOWN_SECONDS = 30 * 60
+BURST_WINDOW_SECONDS = 60 * 60
+MAX_SERVER_FAILURES_PER_WINDOW = 2
+_SERVER_ERROR_TYPES = frozenset({"ServerError", "ServiceUnavailable", "TransientGeminiError"})
+
+
+def provider_capacity_gate(
+    private_root: Path | None, section_progress: list[dict], *,
+    now: float | None = None,
+) -> dict:
+    """Return only a privacy-safe, deterministic decision; never contact Google.
+
+    Uses file times solely to enforce backoff, NOT to prove request acceptance
+    or grant review PASS. No key rotation and no pending request replays.
+    """
+    if private_root is None:
+        return {"status": "READY", "serverErrorsLastHour": 0}
+    clock = time.time() if now is None else float(now)
+    root = private_root
+    events: list[float] = []
+    for row in section_progress:
+        digest = row["packageSha256"]
+        folder = root / ("v3-generated-" + digest) / "batches"
+        if folder.is_symlink():
+            raise ValueError("V3_PROVIDER_CAPACITY_UNSAFE_CHECKPOINT")
+        if not folder.exists():
+            continue
+        if not folder.is_dir():
+            raise ValueError("V3_PROVIDER_CAPACITY_UNSAFE_CHECKPOINT")
+        prefix = f"v3-review-{digest[:12]}-"
+        for claim in folder.glob(prefix + "*.json"):
+            if claim.is_symlink() or not claim.is_file() or claim.stat().st_size > 100_000:
+                raise ValueError("V3_PROVIDER_CAPACITY_UNSAFE_CHECKPOINT")
+            data = json.loads(claim.read_text(encoding="utf-8"))
+            if not isinstance(data, dict) or data.get("packageSha256") != digest:
+                raise ValueError("V3_PROVIDER_CAPACITY_INVALID_CLAIM")
+            if (data.get("state") == "AMBIGUOUS"
+                and data.get("reasonCode") in _SERVER_ERROR_TYPES):
+                when = claim.stat().st_mtime
+                if when > clock + 300:
+                    raise ValueError("V3_PROVIDER_CAPACITY_FUTURE_TIMESTAMP")
+                if clock - BURST_WINDOW_SECONDS < when <= clock + 300:
+                    events.append(when)
+    events.sort()
+    count = len(events)
+    if count:
+        newest = events[-1]
+        deadline = newest + COOLDOWN_SECONDS
+        if clock < deadline:
+            return {
+                "status": ("STOP_PROVIDER_CIRCUIT_OPEN" if count >=
+                           MAX_SERVER_FAILURES_PER_WINDOW else "WAIT_PROVIDER_COOLDOWN"),
+                "serverErrorsLastHour": count,
+                "retryNewWorkAfterUnix": int(deadline),
+            }
+    return {"status": "READY", "serverErrorsLastHour": count}
