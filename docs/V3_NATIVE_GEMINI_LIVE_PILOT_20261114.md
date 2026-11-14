@@ -1,9 +1,9 @@
 # BOSLA native Gemini V3 — genuine one-activity pilot (2026-11-14)
 
-**Project:** tlyoon/brilliant.org-style-learning-apps  
-**Milestone:** First genuine source-free Gemini API assessment of frozen Chapter 9  
-**Execution revision:** `9b570101dc23375b5277ef8055ba4673f7507348` (draft PR #223, unmerged)  
-**Device:** HP (Windows), independently configured Google credentials  
+**Project:** tlyoon/brilliant.org-style-learning-apps
+**Milestone:** First genuine source-free Gemini API assessment of frozen Chapter 9
+**Execution revision:** `9b570101dc23375b5277ef8055ba4673f7507348` (draft PR #223, unmerged)
+**Device:** HP (Windows), independently configured Google credentials
 **Model:** `gemini-3.8-flash`; 2 distinct one-shot SDK reviewer contexts per activity
 
 ## Directly verified live outcome
