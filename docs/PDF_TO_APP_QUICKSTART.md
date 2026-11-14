@@ -786,3 +786,32 @@ approval.** Do not deploy the page publicly, include it in public bundles,
 or use it with real students until the independent source, visual, translation,
 browser, privacy and release gates are separately met. The exact-version
 SHA check is an integrity guard, not independent physics verification.
+
+## V3 native Gemini API review: automatic SDK recovery (14 November 2026)
+
+After verifying the frozen candidate and independently authorizing the
+generated-text-only operation, invoke the normal source-free reviewer CLI:
+
+```powershell
+python scripts/run_v3_native_gemini_review.py --execute --allow-generated-text-transfer --batch-size 1 --max-batches 1
+```
+
+The default without these flags is **read-only** and cannot transmit content.
+An explicit execution first checks the frozen package, existing private role
+claims and no-replay state. If the current Python environment lacks the
+Google SDK's `HttpRetryOptions` (which is needed to disable implicit model
+request retries), the normal CLI now checks the repository's ignored `.venv`
+or creates it and makes **one bounded installation** of the project's already
+pinned dependencies from `pyproject.toml`. It delegates to that interpreter
+once, with a recursion guard. A failed install, unavailable package index,
+missing credentials or unresolved model claim stops the run; no model call
+can be reported successful from an SDK-installation attempt. It never
+installs or upgrades packages in the system-wide Python installation.
+
+A live test of Section 9.1 activity 1 on HP completed both Gemini API
+reviewer contexts and recorded one `AI_CONSENSUS_PASS` on the earlier
+frozen code revision. See `docs/V3_NATIVE_GEMINI_LIVE_PILOT_20261114.md`
+for the exact evidence and separation from later SDK-repair code. This
+does not certify all 108 activities, independently validate physics or
+EN/MS/ZH, authorize release or merge draft PR #223. Reviewers that
+return an uncertain response still stop before any attempted replay.
