@@ -57,11 +57,18 @@ def provider_capacity_gate(
     count = len(events)
     if count:
         newest = events[-1]
-        deadline = newest + COOLDOWN_SECONDS
+        # Cool down a single fault for 30 minutes. After two faults,
+        # additionally wait for the older fault to leave a rolling
+        # one-hour window; never hop across sections in a capacity outage.
+        circuit = count >= MAX_SERVER_FAILURES_PER_WINDOW
+        deadline = max(
+            newest + COOLDOWN_SECONDS,
+            events[-2] + BURST_WINDOW_SECONDS if circuit else 0,
+        )
         if clock < deadline:
             return {
-                "status": ("STOP_PROVIDER_CIRCUIT_OPEN" if count >=
-                           MAX_SERVER_FAILURES_PER_WINDOW else "WAIT_PROVIDER_COOLDOWN"),
+                "status": ("STOP_PROVIDER_CIRCUIT_OPEN" if circuit
+                           else "WAIT_PROVIDER_COOLDOWN"),
                 "serverErrorsLastHour": count,
                 "retryNewWorkAfterUnix": int(deadline),
             }
