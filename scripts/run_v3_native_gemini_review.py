@@ -76,7 +76,8 @@ def main(argv: list[str] | None = None) -> int:
         or private.is_symlink()):
         ap.error("private-root must be outside this Git repository")
     # The default is an entirely offline, read-only plan.
-    before = plan_v3_course_review(source, ROOT, private_root=private)
+    before = plan_v3_course_review(
+        source, ROOT, private_root=private, continue_independent=True)
     if not args.execute:
         print(json.dumps({**before, "nativeMode": "DRY_RUN_NO_MODEL_CALL"},
                          sort_keys=True))
@@ -121,6 +122,7 @@ def main(argv: list[str] | None = None) -> int:
                     external_operation_authorized=True,
                     generated_content_transfer_allowed=True,
                     max_activities=1,
+                    continue_independent=True,
                 )
                 reviewed += 1
                 if (after.get("activitiesAssessedRows", 0) <=
