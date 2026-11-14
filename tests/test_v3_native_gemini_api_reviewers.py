@@ -283,7 +283,8 @@ class V3NativeGeminiApiTests(unittest.TestCase):
         script=Path(__file__).resolve().parents[1]/"scripts"/"run_v3_native_gemini_review.py"
         result=subprocess.run([sys.executable,str(script),
             "--execute","--course-dir",
-            str(Path(__file__).resolve().parents[1]/"content"/"chapter-9")],
+            str(Path(__file__).resolve().parents[1]/"content"/"chapter-9"),
+            "--private-root", str(self.private)],
             cwd=Path(__file__).resolve().parents[1],capture_output=True,
             text=True,timeout=20)
         self.assertEqual(2,result.returncode,result.stdout+result.stderr)
@@ -293,7 +294,8 @@ class V3NativeGeminiApiTests(unittest.TestCase):
     def test_readonly_native_worker_requires_no_provider_or_credentials(self):
         script=Path(__file__).resolve().parents[1]/"scripts"/"run_v3_native_gemini_review.py"
         result=subprocess.run([sys.executable,str(script),"--course-dir",
-            str(Path(__file__).resolve().parents[1]/"content"/"chapter-9")],
+            str(Path(__file__).resolve().parents[1]/"content"/"chapter-9"),
+            "--private-root", str(self.private)],
             cwd=Path(__file__).resolve().parents[1],capture_output=True,
             text=True,timeout=20)
         self.assertEqual(0,result.returncode,result.stdout+result.stderr)
