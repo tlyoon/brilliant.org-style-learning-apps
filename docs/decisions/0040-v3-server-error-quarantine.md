@@ -85,3 +85,22 @@ would require an attributable provider receipt or a separately versioned,
 audited content/review transition; neither can be fabricated from a
 generic HTTP error. PR #223 remains draft/unmerged and no public release
 is authorized.
+
+## Authentic follow-on evidence (14 November 2026)
+
+On HP the existing frozen Section 9.1 activity-2 `AMBIGUOUS ServerError`
+was recovered as a **quarantined section**, not as an authorized retry.
+The new read-only native planner chose Section 9.2; a one-activity genuine
+Gemini API invocation on commit `fdf17b848a4b9dc000247d97297b44fc70c1ca65`
+then completed Section 9.2 activity 1 with **two COMPLETE Gemini API role
+claims and AI consensus PASS**, exit code 0. The real private checkpoint
+retained the original Section 9.1 `AMBIGUOUS` request and `AI_UNCERTAIN`
+aggregate, with no active review lock.
+
+Overall course state after the new genuine request: **3/108 assessment
+rows, 2/108 fully model-reviewed, 2 consensus PASS, 1 uncertain,
+0 published**. Source-free regressions protect cooldown, circuit, active
+ownership and external-denial boundaries. Later commits that harden these
+checks were not part of the original real Section 9.2 submission;
+their validation is reported separately. Exact receipts and scope details:
+`docs/V3_NATIVE_GEMINI_LIVE_PILOT_20261114.md`.
