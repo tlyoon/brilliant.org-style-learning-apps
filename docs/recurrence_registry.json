@@ -2474,6 +2474,86 @@
           "marker": "test_wrong_host_exits_cli_before_sdk_or_model_checkpoint"
         }
       ]
+    },
+    {
+      "id": "BSA-20261115-168",
+      "class": "yoga6-recovery-required-chat-invocations-and-unbounded-provider-activity-retries",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261114-165",
+        "BSA-20261115-166",
+        "BSA-20261115-167"
+      ],
+      "differenceFromLinkedIncident": "Prior V3 native Gemini pipeline had a finite per-run circuit and per-request claims but no persistent Yoga 6 worker/task to re-evaluate the frozen course after a provider outage without a fresh ChatGPT instruction. A user-approved current-account Windows Scheduled Task now invokes the normal one-shot source-free diagnostic and at most one new activity per tick. The normal worker uses a crash-released OS coordinator lock, verifies Yoga 6 host and project/private path, rereads exact frozen claims after lock, preserves ambiguous requests, honors current capacity cooldown, and stops after two distinct provider-failed activities. Durable source-free status is committed to private machine-local Microvid only. It cannot auto-publish. Negative tests prove no provider dispatch during circuit, source-free status fields, concurrent worker lock, and only a single new activity.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_yoga6_recovery.py",
+        "triggerMarker": "def gate_review_plan(",
+        "remedyMarker": "STOP_PROVIDER_RECOVERY_BUDGET",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_yoga6_recovery import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_yoga6_recovery_controller.py",
+          "kind": "python",
+          "marker": "test_os_owned_lock_serializes_and_crash_does_not_fake_review_pass"
+        },
+        {
+          "path": "tests/test_v3_yoga6_recovery_controller.py",
+          "kind": "python",
+          "marker": "test_worker_does_not_diagnose_or_dispatch_when_circuit_open"
+        },
+        {
+          "path": "tests/test_v3_yoga6_recovery_controller.py",
+          "kind": "python",
+          "marker": "test_new_activity_one_dispatch_after_sanitized_metadata"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261115-169",
+      "class": "gemini-servererror-class-only-without-non-generating-http-diagnosis",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261104-104",
+        "BSA-20261104-108",
+        "BSA-20261115-166"
+      ],
+      "differenceFromLinkedIncident": "Earlier Yoga 6 private claim preserved only generic ServerError exception class, making it impossible to distinguish model-metadata accessibility, 429 quota, 403 project authorization, 404 wrong model and 503 capacity without an unsafe replay of generated educational text. The normal Yoga 6 worker now invokes a bounded source-free Google models.get metadata probe, inspecting at most two existing credentials using SDK attempts=1, 15-second HTTP timeout, and source-free status-only receipts, stopping 429/unknown transport without key cycling. The documented limitation is that HTTP 200 metadata is not proof that generate_content will succeed. An authentic Yoga 6 HTTP 200 metadata response has been observed for configured key candidate 1 (zero-based), with original content review claims unchanged.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_gemini_diagnostics.py",
+        "triggerMarker": "def diagnose_model_metadata(",
+        "remedyMarker": "READY_SOURCE_FREE_ONLY",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_gemini_diagnostics import diagnose_model_metadata"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_yoga6_recovery_controller.py",
+          "kind": "python",
+          "marker": "test_metadata_get_no_generation_one_healthy_key"
+        },
+        {
+          "path": "tests/test_v3_yoga6_recovery_controller.py",
+          "kind": "python",
+          "marker": "test_503_then_other_key_accessible_no_source_fallback"
+        },
+        {
+          "path": "tests/test_v3_yoga6_recovery_controller.py",
+          "kind": "python",
+          "marker": "test_429_quota_stops_without_trying_other_candidate"
+        }
+      ]
     }
   ]
 }
