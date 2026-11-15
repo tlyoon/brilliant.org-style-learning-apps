@@ -47,7 +47,7 @@ MANAGED_CONFIG_HEADER = (
 )
 LOCAL_GEMINI_OVERRIDE_KEYS = ("login_name", "gem_url", "gem_edit_url")
 ALLOWED_PROJECT_KEYS = {
-    "project": {"project_name"},
+    "project": {"project_name", "native_gemini_review_host"},
     "placeholders": {
         "sourcepath", "pdf_subchapter_path", "target_filename", "target_file",
     },
