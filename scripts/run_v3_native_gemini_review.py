@@ -116,9 +116,18 @@ def main(argv: list[str] | None = None) -> int:
             for _ in range(args.batch_size):
                 if current["dispatchStatus"] != "READY_FOR_AUTHORIZED_REVIEW_SESSIONS":
                     break
+                # Historical capacity failures are read-only evidence from
+                # *other* activities. After cooldown, try the next configured
+                # key ONLY on new frozen work; never replay a submitted role.
+                capacity = current.get("providerCapacity") or {}
+                candidate_offset = capacity.get("serverErrorActivitiesHistorical", 0)
+                if (type(candidate_offset) is not int or
+                        candidate_offset < 0 or candidate_offset > 108):
+                    raise ValueError("V3_NATIVE_INVALID_CAPACITY_HISTORY")
                 factory = V3NativeGeminiApiSessions(
                     cfg, operation_authorized=True,
                     generated_content_transfer_allowed=True,
+                    candidate_offset=candidate_offset,
                 )
                 after = advance_v3_course_review(
                     source, ROOT, private_root=private,
