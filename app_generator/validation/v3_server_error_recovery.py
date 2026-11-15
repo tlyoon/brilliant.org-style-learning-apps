@@ -10,10 +10,11 @@ import json
 import time
 from pathlib import Path
 
+from app_generator.validation.reviewer_failure_policy import SERVER_CAPACITY_ERROR_NAMES
+
 COOLDOWN_SECONDS = 30 * 60
 BURST_WINDOW_SECONDS = 60 * 60
 MAX_SERVER_FAILURES_PER_WINDOW = 2
-_SERVER_ERROR_TYPES = frozenset({"ServerError", "ServiceUnavailable", "TransientGeminiError"})
 
 
 def provider_capacity_gate(
@@ -51,13 +52,13 @@ def provider_capacity_gate(
             if data.get("state") == "BLOCKED_EXTERNAL":
                 denied = True
             elif (data.get("state") == "AMBIGUOUS"
-                  and data.get("reasonCode") not in _SERVER_ERROR_TYPES):
+                  and data.get("reasonCode") not in SERVER_CAPACITY_ERROR_NAMES):
                 # An unknown error could be authentication, quota, content
                 # rejection, or a provider denial. Never route around it
                 # by silently switching to a different frozen section.
                 unclassified = True
             if (data.get("state") == "AMBIGUOUS"
-                and data.get("reasonCode") in _SERVER_ERROR_TYPES):
+                and data.get("reasonCode") in SERVER_CAPACITY_ERROR_NAMES):
                 when = claim.stat().st_mtime
                 if when > clock + 300:
                     raise ValueError("V3_PROVIDER_CAPACITY_FUTURE_TIMESTAMP")
