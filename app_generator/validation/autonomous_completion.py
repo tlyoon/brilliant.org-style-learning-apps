@@ -19,6 +19,7 @@ from app_generator.errors import ExternalExecutionDenied
 from app_generator.validation.reviewer_failure_policy import (
     UNCAPTURED_ROLE_CIRCUIT_THRESHOLD,
     UNCAPTURED_TRANSPORT_ERROR_CODES,
+    SERVER_CAPACITY_ERROR_NAMES,
     is_uncaptured_reviewer_transport_error,
 )
 
@@ -335,6 +336,7 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
         activities[len(reviews):len(reviews)+max_activities], start=len(reviews)
     ):
         responses = []
+        provider_capacity_failed = False
         for role_index,(session, perspective) in enumerate(zip(sessions,(
             "physics-adversary","language-and-learner-adversary"))):
             prompt = make_prompt(activity, perspective)
@@ -368,7 +370,9 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "V3_PREVIOUS_EXTERNAL_EXECUTION_DENIED"
                     )
                 elif previous.get("state") == "SKIPPED_UNSENT":
-                    if (previous.get("reasonCode") != "ROLE_CIRCUIT_OPEN_UNSENT"
+                    if (previous.get("reasonCode") not in (
+                            "ROLE_CIRCUIT_OPEN_UNSENT",
+                            "PROVIDER_CAPACITY_UNSENT")
                         or previous.get("requestSubmitted") is not False):
                         raise ValueError("V3_INVALID_SKIPPED_UNSENT_CLAIM")
                     responses.append({
@@ -376,7 +380,7 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "sessionId":previous["sessionId"],
                         "providerId":session.provider_id,
                         "status":"UNRESOLVED",
-                        "reasonCode":"ROLE_CIRCUIT_OPEN_UNSENT",
+                        "reasonCode":previous["reasonCode"],
                     })
                 else:
                     # A previous IN_FLIGHT/AMBIGUOUS request may have reached
@@ -392,6 +396,24 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "status":"UNRESOLVED",
                         "reasonCode":"PRIOR_MODEL_REQUEST_UNRECONCILED",
                     })
+                continue
+            if provider_capacity_failed:
+                # Gemini ServerError on the previous reviewer means a second
+                # new request may simply amplify the same provider outage.
+                # Nothing is transmitted: persist a distinct, non-replayable
+                # SKIPPED_UNSENT claim and preserve the first ambiguous role.
+                if checkpoint is not None:
+                    checkpoint.save_stage(claim,{**identity,
+                        "state":"SKIPPED_UNSENT",
+                        "reviewerId":session.reviewer_id,
+                        "sessionId":session.session_id,
+                        "reasonCode":"PROVIDER_CAPACITY_UNSENT",
+                        "requestSubmitted":False})
+                responses.append({"reviewerId":session.reviewer_id,
+                    "sessionId":session.session_id,
+                    "providerId":session.provider_id,
+                    "status":"UNRESOLVED",
+                    "reasonCode":"PROVIDER_CAPACITY_UNSENT"})
                 continue
             if role_uncaptured[role_index] >= UNCAPTURED_ROLE_CIRCUIT_THRESHOLD:
                 # Unlike an ambiguous remote call, nothing was submitted.
@@ -449,6 +471,8 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "requestSubmitted":False})
                 raise
             except Exception as exc:
+                if type(exc).__name__ in SERVER_CAPACITY_ERROR_NAMES:
+                    provider_capacity_failed = True
                 if (not response_returned
                     and is_uncaptured_reviewer_transport_error(exc)):
                     role_uncaptured[role_index] += 1
