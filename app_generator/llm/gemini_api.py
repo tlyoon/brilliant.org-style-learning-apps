@@ -55,7 +55,7 @@ def _client_project_id(client_file: Path) -> str:
     return ""
 
 
-def build_v3_native_text_sdk_components(config: Any) -> tuple[Callable[[str], Any], Any]:
+def build_v3_native_text_sdk_components(config: Any, *, candidate_offset: int = 0) -> tuple[Callable[[str], Any], Any]:
     """Make two SDK clients with the shared Gemini gateway's credential rules.
 
     This path is ONLY for the exact V3 generated-text-only assessment: never
@@ -84,7 +84,11 @@ def build_v3_native_text_sdk_components(config: Any) -> tuple[Callable[[str], An
             "V3_NATIVE_GEMINI_KEY_UNAVAILABLE; configure a Google API key "
             "outside the repository"
         )
-    secret = candidates[0].secret
+    if type(candidate_offset) is not int or candidate_offset < 0:
+        raise ValueError("V3_NATIVE_INVALID_CREDENTIAL_CANDIDATE")
+    # One fixed configured key for both roles of this NEW activity.
+    # No model probe, no fallback after submit, no credential value in logs.
+    secret = candidates[candidate_offset % len(candidates)].secret
 
     def create_client(role: str) -> Any:
         if role not in ("physics", "semantics"):
