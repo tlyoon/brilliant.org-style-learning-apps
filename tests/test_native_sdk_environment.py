@@ -48,6 +48,20 @@ class NativeSDKEnvironmentTests(unittest.TestCase):
         self.assertEqual("1", run.call_args.kwargs["env"][
             "BOSLA_V3_NATIVE_SDK_REEXEC"])
 
+    def test_worker_uses_pinned_sdk_without_delegating_to_native_runner(self):
+        self.fake_interpreter()
+        worker = self.root / "scripts" / "run_v3_yoga6_recovery_worker.py"
+        worker.write_text("# synthetic worker",encoding="utf8")
+        with patch.dict(os.environ, {"BOSLA_V3_NATIVE_SDK_REEXEC": "0"}), \
+             patch.object(recovery, "_current_has_retry_guard",return_value=False), \
+             patch.object(recovery, "_interpreter_has_retry_guard",return_value=True), \
+             patch.object(recovery.subprocess,"run",
+                          return_value=SimpleNamespace(returncode=17)) as run:
+            self.assertEqual(17,recovery.delegate_to_supported_sdk(
+                self.root,["--diagnose-only"],entrypoint=worker))
+        self.assertEqual(str(worker.resolve()),run.call_args.args[0][1])
+        self.assertEqual("--diagnose-only",run.call_args.args[0][2])
+
     def test_missing_venv_bootstraps_pinned_project_once_then_delegates(self):
         with patch.dict(os.environ, {"BOSLA_V3_NATIVE_SDK_REEXEC": "0"}), \
              patch.object(recovery, "_current_has_retry_guard", return_value=False), \
