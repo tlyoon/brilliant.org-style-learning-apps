@@ -224,3 +224,48 @@ and its tests; do not bypass the mismatch by renaming the host or
 copying private review claims. See Decision 0041 and
 `docs/V3_GEMINI_YOGA6_SERVERERROR_20261115.md` for the observed
 Yoga 6 provider failure and source-free recovery checks.
+
+## BOSLA Yoga 6 scheduled Gemini recovery worker (Decision 0042)
+
+The owner-approved V3 recovery worker lives in
+`scripts/run_v3_yoga6_recovery_worker.py`. It is **read-only by default**,
+and, when invoked with `--diagnose-only`, performs at most two bounded
+source-free `models.get` SDK metadata checks (no activity text submitted).
+The production task uses
+`--execute --allow-generated-text-transfer`, but the normal frozen-course
+planner, 30-minute/one-hour capacity circuit, Yoga 6 hostname, OS-owned
+single-instance coordinator lock, exact package role claims, and two failed
+activity campaign budget remain mandatory. Each eligible invocation may
+review at most ONE new activity. Only an authenticated model return from
+the preexisting V3 engine creates a model decision.
+
+To inspect the task without creating one (Yoga 6 PowerShell):
+
+```powershell
+powershell -NoProfile -File .\scripts\install_yoga6_v3_recovery.ps1
+```
+
+To install/verify one Windows Scheduled Task using the **currently logged-in
+Yoga 6 account** (never run on HP/Dell):
+
+```powershell
+powershell -NoProfile -File .\scripts\install_yoga6_v3_recovery.ps1 -Install
+```
+
+The task is named `BoslaYoga6V3Recovery`, scheduled at 30-minute
+intervals, ignores overlapping instances and runs with the user's
+**interactive logon**. It cannot run while that Windows user is logged out
+and is not a cloud background service. A 60-minute execution time limit
+is used to avoid terminating a potentially accepted two-role SDK call
+mid-flight. The install script refuses a conflicting pre-existing task.
+Remove only this owned task with `-Uninstall`; do not clear model
+checkpoints or operator credentials when uninstalling.
+
+The recovery receipt is a small sanitized
+`%LOCALAPPDATA%\Microvid\BoslaV3ReviewYoga6\yoga6-recovery-status.json`.
+The checkpoint and receipt are **outside Git/Drive**. Never copy private
+source, role claims, credentials or raw model responses into this document
+or into PR comments. The scheduler must remain safely stoppable on
+provider denial, ambiguous request, circuit stop, and changed frozen
+scope. Source-free metadata HTTP 200 means only that the model metadata
+can be accessed; it is not a successful Gemini generation.
