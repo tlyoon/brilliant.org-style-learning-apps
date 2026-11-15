@@ -21,12 +21,20 @@ if ($Uninstall) {
 }
 # Never overwrite a task of the same name with a different payload.
 $argument = ('"' + $worker + '" --execute --allow-generated-text-transfer')
+# Allow two sequential 20-minute SDK calls plus setup without task-killing a
+# potentially accepted provider request before its checkpoint is persisted.
+$settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 60) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 if ($existing) {
     $action = $existing.Actions | Select-Object -First 1
     if ($existing.Actions.Count -ne 1 -or
         $action.Execute -ne $python -or
         $action.Arguments -ne $argument) {
         throw 'BOSLA_RECOVERY_TASK_CONFLICT_REFUSED'
+    }
+    if ($Install) {
+        # Idempotently repair settings without replacing task principal/action.
+        Set-ScheduledTask -TaskName $taskName -Settings $settings | Out-Null
+        Write-Output 'BOSLA_YOGA6_RECOVERY_TASK_SETTINGS_VERIFIED'
     }
     Write-Output 'BOSLA_YOGA6_RECOVERY_TASK_ALREADY_CONFIGURED'
     Get-ScheduledTaskInfo -TaskName $taskName | Select-Object NextRunTime, LastRunTime, LastTaskResult
@@ -42,7 +50,6 @@ if (-not $Install) {
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(30) -RepetitionInterval (New-TimeSpan -Minutes 30) -RepetitionDuration (New-TimeSpan -Days 365)
 $action = New-ScheduledTaskAction -Execute $python -Argument $argument -WorkingDirectory $repo
 $principal = New-ScheduledTaskPrincipal -UserId ([System.Security.Principal.WindowsIdentity]::GetCurrent().Name) -LogonType Interactive -RunLevel Limited
-$settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 35) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Description 'BOSLA Yoga6 source-free Gemini diagnostic + at most one fresh V3 review per tick; immutable no-replay circuit' | Out-Null
 Write-Output 'BOSLA_YOGA6_RECOVERY_TASK_REGISTERED'
 Get-ScheduledTaskInfo -TaskName $taskName | Select-Object NextRunTime, LastRunTime, LastTaskResult
