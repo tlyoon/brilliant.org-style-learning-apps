@@ -25,8 +25,16 @@ Implement Steps 1 and 2 now, run a bounded genuine Yoga 6 recovery test against 
 
 | Step | Development status | Acceptance evidence required |
 |---|---|---|
-| 1. Diagnostic | IN PROGRESS | Actual source-free Yoga 6 SDK/model test and classified durable diagnostic |
-| 2. Autonomous recovery | IN PROGRESS | Source-free scheduler/worker tests, installed Yoga 6 task evidence, and bounded real eligible attempt |
-| 3. Batch assessment | NOT STARTED | Documented model/API feasibility, exact review-contract mapping and decision |
-| 4. Independent app functionality | NOT STARTED | New real browser/interaction tests on source-free fixtures |
-| 5. Release | BLOCKED_BY_REAL_EVIDENCE | Exact-head hosted CI, real scientific/language/visual/learner proof and release control |
+| 1. Diagnostic | SOURCE_FREE_LIVE_VERIFIED | Genuine Yoga 6 configured-key #2 `models.get` returned HTTP 200; 429/503/404/error redaction negative controls passed. Generation success not inferred. |
+| 2. Autonomous recovery | SCHEDULER_INSTALLED_LIVE_GENERATION_PENDING | `BoslaYoga6V3Recovery` installed under interactive Yoga 6 account, every 30 minutes, 60-minute maximum execution; 94 focused regression/integration tests passed; real post-cooldown new activity pending. |
+| 3. Batch assessment | FEASIBILITY_REVIEW_COMPLETE | `docs/V3_GEMINI_BATCH_FEASIBILITY_20261115.md` documents Gemini 3.8 Flash model support, per-item identity and provider job reconciliation; no batch submitted. |
+| 4. Independent app functionality | SOURCE_FREE_BROWSER_VERIFIED | Six locale/viewport real Chrome smoke tests passed, source-free preview and 12 course-pilot tests passed; full learner acceptance still pending. |
+| 5. Release | BLOCKED_BY_REAL_EVIDENCE | Exact-head hosted CI, real scientific/language/visual/learner proof and release authorization absent. |
+
+## 2026-11-15 in-session evidence
+
+- Yoga 6 owner account has registered `BoslaYoga6V3Recovery` for a recurring 30-minute Windows Scheduled Task, starting 11:13:22 local time, configured for interactive logon only. Verified task action uses the isolated draft checkout's worker, approved flags and Python interpreter; one-hour limit, no overlapping copies. No login credentials are stored in the task. It will not run when the Windows user is logged out.
+- Source-free live `models.get` through the second configured key returned HTTP 200 in about four seconds on Yoga 6. This proves metadata access only. Section 9.1 remains quarantined, with one uncertain activity; zero fully reviewed in Yoga 6 private state at this checkpoint.
+- 94 focused Python tests including SDK repair, workstation host check, scheduling coordinator, worker dispatch, source-free HTTP failures and sync regressions passed. Real source-free Chrome preview produced six locale/viewport screenshots and rejected tampered package hashes; trilingual Node preview and 12 pilot readiness tests passed. Neither result is source-grounded academic acceptance.
+- The SDK repair is invoked in the new worker BEFORE taking coordinator ownership, so any local venv re-exec reacquires its own lock normally. A formerly missing normal dispatch to the worker, rather than the native runner, is now covered by regression.
+- The approved campaign remains limited to two distinct provider-failed activities. The old Yoga 6 activity is never re-submitted; a second `ServerError` on a new section becomes a durable stop, not an invitation to consume all six sections.
