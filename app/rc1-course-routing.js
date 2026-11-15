@@ -88,8 +88,23 @@
       }
       results.set(item.id, {outcome: item.outcome, reviewDue: item.reviewDue});
     }
-    const completed = new Set([...results].filter(([, item]) =>
+    // An independent check in a still-locked section is real session
+    // evidence, but cannot satisfy downstream prerequisites out of order.
+    // Resolve the graph to a fixed point, independent of observation order.
+    const claimed = new Set([...results].filter(([, item]) =>
       item.outcome === "independent").map(([id]) => id));
+    const completed = new Set();
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const section of sections) {
+        if (claimed.has(section.id) && !completed.has(section.id)
+          && section.prerequisites.every((id) => completed.has(id))) {
+          completed.add(section.id);
+          changed = true;
+        }
+      }
+    }
     const stages = sections.map((section) => {
       const result = results.get(section.id);
       const unmet = section.prerequisites.filter((id) => !completed.has(id));

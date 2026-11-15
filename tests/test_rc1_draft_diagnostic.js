@@ -27,6 +27,19 @@ assert.equal(base.publicationAuthorized, false);
 assert.equal(base.advisoryOnly, true);
 assert.equal(base.suggestedSection, "section-9-1");
 assert.equal(base.stages[1].status, "locked");
+// A learner may deep-link into a later draft section, but its answer-key
+// check cannot unlock a downstream section before its prerequisites.
+const prematureLater = route.planDraftCourse(sections, [
+  {id:"section-9-2", outcome:"independent", reviewDue:false},
+]);
+assert.equal(prematureLater.stages[1].status, "locked");
+assert.equal(prematureLater.stages[2].status, "locked");
+const afterEarlier = route.planDraftCourse(sections, [
+  {id:"section-9-2", outcome:"independent", reviewDue:false},
+  {id:"section-9-1", outcome:"independent", reviewDue:false},
+]);
+assert.equal(afterEarlier.stages[1].status, "independent_completed");
+assert.equal(afterEarlier.stages[2].status, "ready");
 
 // A valid player event must identify the selected real package, first activity,
 // and minimal counters. It is never an independently validated physics grade.

@@ -39,6 +39,16 @@ assert.equal(stage(helped, "concept-vectors").status, "assisted_practice");
 assert.equal(stage(helped, "concept-motion").status, "locked");
 assert.equal(stage(helped, "concept-forces").status, "locked");
 
+// Independent evidence from a locked section never bypasses prerequisites.
+const premature = route.plan(scope, [observation("concept-motion", "independent")]);
+assert.equal(stage(premature, "concept-motion").status, "locked");
+assert.equal(stage(premature, "concept-energy").status, "locked");
+const outOfOrderReconciled = route.plan(scope, [
+  observation("concept-motion", "independent"),
+  observation("concept-vectors", "independent"),
+]);
+assert.equal(stage(outOfOrderReconciled, "concept-motion").status, "independent_completed");
+
 // Exact successful prerequisites unlock both independent branches.
 const vector = observation("concept-vectors", "independent");
 const branches = route.plan(scope, [vector]);

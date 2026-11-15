@@ -1,5 +1,9 @@
 # Context index
 
+## Bosla 15 November 2026 — scheduled recovery + Batch and learner-route follow-on
+
+**Newest verified Yoga 6 checkpoint:** `docs/V3_BATCH_AND_ROUTE_ENGINEERING_MILESTONE_20261115.md` and Decision 0042 are the current five-step development authority. The Windows `BoslaYoga6V3Recovery` scheduled task has continued independently of ChatGPT and its real private source-free status reached **10/108 attempted, nine fully model-reviewed Gemini consensus passes, one ambiguous/uncertain Section 9.1 activity still quarantined** as of the 15:13 local recurrence. A source-free Batch API candidate (immutable hash-bound manifest, no-replay journal, explicit-opt-in mocked SDK, 23 Python tests) and normal RC1 prerequisite-closure repair (BSA-20261115-170, two passing Node regression suites) are implemented in the isolated Yoga 6 draft checkout, without real Batch submission. Nine focused V3 Python modules passed (zero timeout), 16 tracked content files validated using the existing project virtual environment, and lint/recurrence/doc-impact checks passed. **Do not treat Batch metadata-only tests, model responses or historical Chapter 9 independent-source campaigns as release readiness.** PR #223 remains draft/unmerged; Step 5 and genuine provider row-attribution remain open. Exact-head hosted CI must be rechecked after push.
+
 ## Native Gemini V3 full-course stress and process-loss hardening (13 Nov 2026)
 
 **BSA-20261113-162** corrects a genuinely reproduced normal-runtime defect: a
