@@ -78,7 +78,8 @@ def provider_capacity_gate(
                 "serverErrorActivitiesHistorical": historic}
     if unclassified:
         return {"status": "STOP_UNCLASSIFIED_PROVIDER_REVIEW",
-                "serverErrorsLastHour": count}
+                "serverErrorsLastHour": count,
+                "serverErrorActivitiesHistorical": historic}
     if count:
         newest = events[-1]
         # Cool down a single fault for 30 minutes. After two faults,
