@@ -145,7 +145,7 @@ Historical roadmaps, old branch-testing instructions, chat transcripts, and copi
 | V3 Gemini ServerError cooldown, quarantine and independent section continuation | `docs/decisions/0040-v3-server-error-quarantine.md`, `docs/V3_NATIVE_GEMINI_LIVE_PILOT_20261114.md`, then `app_generator/runtime/v3_course_review.py` |
 | Bosla Yoga 6-only Gemini V3 review and provider-capacity fast-stop | `docs/decisions/0041-yoga6-v3-provider-capacity-fast-stop.md`, `docs/V3_GEMINI_YOGA6_SERVERERROR_20261115.md`, `scripts/run_v3_native_gemini_review.py` |
 | Bosla owner-approved 5-step autonomous development plan | `docs/decisions/0042-bosla-five-step-autonomous-development-plan.md`, `docs/V3_GEMINI_BATCH_FEASIBILITY_20261115.md` |
-| Persistent Yoga 6 diagnosis, circuit recovery and scheduler | `scripts/run_v3_yoga6_recovery_worker.py`, `app_generator/runtime/v3_yoga6_recovery.py`, `app_generator/runtime/v3_gemini_diagnostics.py`, `docs/WORKSTATION_SYNC.md` |
+| Persistent Yoga 6 diagnosis, circuit recovery and scheduler | `docs/V3_YOGA6_RECOVERY_MILESTONE_20261115.md`, `scripts/run_v3_yoga6_recovery_worker.py`, `app_generator/runtime/v3_yoga6_recovery.py`, `app_generator/runtime/v3_gemini_diagnostics.py`, `docs/WORKSTATION_SYNC.md` |
 | Generator CLI/config/coordinator details | `app_generator/README.md`, `config/README.md` |
 | Product change | Product requirements and decision records |
 | Learning content | Content rules, learning design, schema, source-ingestion policy |
