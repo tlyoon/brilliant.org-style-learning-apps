@@ -537,7 +537,8 @@ def assessment_progress(raw: bytes, assessment: dict | None = None, *,
               for kind in ("AI_CONSENSUS_PASS","AI_REPAIR_REQUIRED","AI_UNCERTAIN")}
     fully_reviewed=sum(all("decision" in reviewer
                            for reviewer in row["reviewers"]) for row in prior)
-    skipped_unsent=sum(reviewer.get("reasonCode")=="ROLE_CIRCUIT_OPEN_UNSENT"
+    skipped_unsent=sum(reviewer.get("reasonCode") in (
+                       "ROLE_CIRCUIT_OPEN_UNSENT", "PROVIDER_CAPACITY_UNSENT")
                        for row in prior for reviewer in row["reviewers"])
     if release_receipt is not None:
         if release_decision.get("automatedTechnicalEligible") is not True:
