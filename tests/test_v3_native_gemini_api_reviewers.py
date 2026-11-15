@@ -305,6 +305,45 @@ class V3NativeGeminiApiTests(unittest.TestCase):
                 self.assertTrue(all(c.conversation.submitted is False
                                     for c in reviewers))
 
+    def test_next_independent_activity_selects_second_key_without_model_probe(self):
+        from types import ModuleType
+        from unittest.mock import patch
+        import sys as system
+        observed=[]
+        fake_google=ModuleType("google")
+        fake_genai=ModuleType("google.genai")
+        fake_types=ModuleType("google.genai.types")
+        fake_types.GenerateContentConfig=FakeTypes.GenerateContentConfig
+        fake_types.HttpRetryOptions=lambda **kw:SimpleNamespace(**kw)
+        fake_types.HttpOptions=lambda **kw:SimpleNamespace(**kw)
+        def new_client(*, api_key, http_options):
+            observed.append(api_key)
+            return FakeClient()
+        fake_genai.Client=new_client
+        fake_genai.types=fake_types
+        fake_google.genai=fake_genai
+        candidates=(
+            SimpleNamespace(label="synthetic-one",secret="SYNTHETIC_KEY_A"),
+            SimpleNamespace(label="synthetic-two",secret="SYNTHETIC_KEY_B"),
+        )
+        with patch.dict(system.modules,{
+            "google":fake_google,"google.genai":fake_genai,
+            "google.genai.types":fake_types
+        }), patch("app_generator.llm.gemini_api.find_gemini_keys",
+                  return_value=candidates):
+            with V3NativeGeminiApiSessions(
+                config(), operation_authorized=True,
+                generated_content_transfer_allowed=True,
+                candidate_offset=1,
+            ) as provider:
+                pair=provider.open_pair("synthetic-new-activity")
+                self.assertEqual(2,len(pair))
+                self.assertFalse(any(x.conversation.submitted for x in pair))
+        self.assertEqual(["SYNTHETIC_KEY_B","SYNTHETIC_KEY_B"],observed)
+        with self.assertRaisesRegex(ValueError,
+                "V3_NATIVE_INVALID_CREDENTIAL_CANDIDATE"):
+            V3NativeGeminiApiSessions(config(),candidate_offset=-1)
+
     def test_cli_execute_without_transfer_permission_does_not_contact_provider(self):
         script=Path(__file__).resolve().parents[1]/"scripts"/"run_v3_native_gemini_review.py"
         result=subprocess.run([sys.executable,str(script),
