@@ -203,3 +203,24 @@ If the project is already bootstrapped, do not bootstrap again on every PC.
 Change `project_name` and other project-dependent values through `config/configure_project.toml` on a reviewed branch. The new project automatically receives its own `%LOCALAPPDATA%\<project_name>` state root, OAuth/token paths, Chrome profile paths, run state, environment namespace, and managed-coordinator project identity. Controlled browser launches open independent regular Chrome directly on Gemini using the separate `gemini-browser` child of `chrome_profile_dir`; legacy and personal profiles are not reused or cleared. The separate profile starts signed out on first use and can retain a manually verified Gemini login for later launches. A Chrome-assigned loopback debug port avoids dependence on an old debug session. Explicit `attach` mode requires an already-open browser and leaves its login unchanged.
 
 See `docs/GENERIC_PROJECT_SETUP.md` for the full recycling procedure.
+
+## Project-bound native Gemini reviewer workstation
+
+For the BOSLA V3 generated-text review, the owner has designated
+the Windows **Yoga 6** machine. Its current project-specific authority,
+`config/configure_project.toml`, includes
+`[project].native_gemini_review_host = "YOGA6"`.
+This is an accepted nonsecret configuration key in the strict workstation
+synchronizer and is preserved when generating local project settings.
+It does not alter machine ownership for generic generators or
+managed coordinator workers in other projects.
+
+The separate native V3 reviewer CLI validates the OS hostname from that
+authority before preparing the Gemini SDK, reading credentials or writing
+review claims. Direct native review on HP or Dell-115 fails closed.
+Read-only evidence planning remains portable. Legitimate reassignment
+requires reviewing the project-specific hostname value with the code
+and its tests; do not bypass the mismatch by renaming the host or
+copying private review claims. See Decision 0041 and
+`docs/V3_GEMINI_YOGA6_SERVERERROR_20261115.md` for the observed
+Yoga 6 provider failure and source-free recovery checks.
