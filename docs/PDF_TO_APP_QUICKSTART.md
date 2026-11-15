@@ -840,3 +840,33 @@ The default read-only CLI shows `quarantinedSections`, `providerCapacity`,
 `nextSection` and the unchanged real review counts without model calls.
 No automatic merge, release receipt, source-PDF upload or academic PASS is
 created. See `docs/decisions/0040-v3-server-error-quarantine.md`.
+
+### Bosla V3 reviewer workstation: Yoga 6 and Google capacity failures
+
+For this Bosla installation, `config/configure_project.toml` binds
+the native V3 Gemini execution host to `YOGA6`. Only the owner-designated
+Yoga 6 host can pass the normal CLI's execution guard. An attempt to
+send a live assessment from HP, Dell-115 or another computer stops
+before SDK preparation or credential lookup. Read-only planning remains
+portable; this guard is not permission to bypass a previously denied
+operation.
+
+A genuine new Yoga 6 assessment on 15 November 2026 encountered two
+`ServerError` responses for Section 9.1 activity 1. Its claims remain
+`AMBIGUOUS` and the course remains `AI_UNCERTAIN` on Yoga 6. The
+post-failure code now prevents an extra same-activity request when the
+first role encounters provider capacity failure: the second role is
+checkpointed as `SKIPPED_UNSENT` instead. After the existing bounded
+cooldown/circuit expires, an entirely NEW frozen activity may use the
+next configured key based on distinct historical failed activities,
+without any model preflight or replay of the uncertain original.
+The normal dispatcher still blocks publication and full-course release
+while an uncertain activity exists.
+
+A returned `STOP_PROVIDER_CIRCUIT_OPEN` is a finite stop. Do not relaunch
+the same activity, delete its claims, use an HP transcript as Yoga 6
+evidence, or rotate keys to repeat an already-submitted review.
+Source-free details, tested protections, and unverified Google
+availability are in
+`docs/decisions/0041-yoga6-v3-provider-capacity-fast-stop.md` and
+`docs/V3_GEMINI_YOGA6_SERVERERROR_20261115.md`.
