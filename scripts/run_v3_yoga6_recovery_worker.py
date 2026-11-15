@@ -69,8 +69,18 @@ def main(argv: list[str] | None = None) -> int:
         if not (args.execute or args.diagnose_only):
             _print(status_from_plan(before,status="DRY_RUN_NO_PROVIDER_REQUEST"))
             return 0
-        # No credential access, model SDK setup, or private run state on HP.
+        # No credential access, SDK setup, or private review state on HP.
         require_authorized_native_review_host(AUTHORITY)
+        # Reuse BSA-164's bounded isolated SDK bootstrap on Yoga 6 only.
+        # A child is started BEFORE holding the coordinator lock; otherwise
+        # its own legitimate lock acquisition would appear to conflict.
+        from app_generator.runtime.native_sdk_environment import delegate_to_supported_sdk
+        if args.diagnose_only or gate_review_plan(before) == "READY_FOR_SOURCE_FREE_METADATA_CHECK":
+            delegated = delegate_to_supported_sdk(
+                ROOT, list(argv) if argv is not None else sys.argv[1:],
+                entrypoint=Path(__file__))
+            if delegated is not None:
+                return delegated
         with coordinator_lock(private):
             # Re-plan after obtaining exclusive worker ownership.
             before = plan_v3_course_review(COURSE,ROOT,private_root=private,
