@@ -2395,6 +2395,85 @@
           "marker": "test_quarantine_never_fabricates_global_completion"
         }
       ]
+    },
+    {
+      "id": "BSA-20261115-166",
+      "class": "yoga6-v3-servererror-amplified-by-second-reviewer-and-static-first-key",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261104-104",
+        "BSA-20261104-108",
+        "BSA-20261114-165"
+      ],
+      "differenceFromLinkedIncident": "On the designated Yoga 6 workstation a genuinely fresh Section 9.1 V3 assessment contacted Gemini 3.8 Flash using compatible google-genai 2.25.0; both physics and language reviewer requests returned ServerError, causing AI_UNCERTAIN and a rolling-hour provider circuit. Historic BSA-104/108/165 protect no-replay and section quarantine but the V3 engine still submitted role 2 after role 1 encountered a provider-wide capacity failure and always reused the first key for future independent activities. The normal assessment engine now latches role 1 as AMBIGUOUS and records role 2 as SKIPPED_UNSENT with requestSubmitted=false and an accurate skipped counter after a recognized ServerError. After the finite cooldown, the native runner may choose another already-configured key only for a different frozen activity, using the number of distinct previously capacity-failed activities; it never retries either ambiguous role, does not probe or rotate within a request, and never grants academic PASS. The real old Yoga 6 claims remain unchanged. Synthetic tests confirm the behavior; no genuine post-fix provider recovery is claimed.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/autonomous_completion.py",
+        "triggerMarker": "if type(exc).__name__ in SERVER_CAPACITY_ERROR_NAMES:",
+        "remedyMarker": "PROVIDER_CAPACITY_UNSENT",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_authorized_review.py",
+            "marker": "from app_generator.validation.autonomous_completion import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_native_gemini_api_reviewers.py",
+          "kind": "python",
+          "marker": "test_server_error_blocks_second_role_without_a_google_request"
+        },
+        {
+          "path": "tests/test_v3_native_gemini_api_reviewers.py",
+          "kind": "python",
+          "marker": "test_next_independent_activity_selects_second_key_without_model_probe"
+        },
+        {
+          "path": "tests/test_v3_server_error_recovery.py",
+          "kind": "python",
+          "marker": "test_two_recent_server_failures_open_rolling_circuit"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261115-167",
+      "class": "bosla-native-gemini-review-misrouted-off-designated-yoga6-workstation",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261114-164",
+        "BSA-20261114-165"
+      ],
+      "differenceFromLinkedIncident": "The BOSLA project continuity checkpoint identifies Yoga 6 as the owner-designated Windows execution machine, but prior live V3 evaluations were sent to HP. Both workstations may have Gemini SDK and credentials, so mere environment readiness cannot enforce the owner-approved host. The project-specific config now names native_gemini_review_host=YOGA6; the normal runner checks OS hostname before SDK/bootstrap, credential discovery, role-claim creation or model request. Wrong host, missing authority and malformed configuration stop closed. Dry-run source-free planning is portable and existing Yoga 6 private state is not migrated. This is a misrouting guard not cryptographic attestation; tests prove HP/Dell fail without calling the provider.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/native_workstation_guard.py",
+        "triggerMarker": "def require_authorized_native_review_host(",
+        "remedyMarker": "V3_NATIVE_REVIEW_WRONG_WORKSTATION",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_native_gemini_review.py",
+            "marker": "from app_generator.runtime.native_workstation_guard import require_authorized_native_review_host"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_native_workstation_guard.py",
+          "kind": "python",
+          "marker": "test_matches_designated_yoga6_case_insensitively"
+        },
+        {
+          "path": "tests/test_native_workstation_guard.py",
+          "kind": "python",
+          "marker": "test_hp_or_dell_cannot_start_native_gemini_review"
+        },
+        {
+          "path": "tests/test_native_workstation_guard.py",
+          "kind": "python",
+          "marker": "test_wrong_host_exits_cli_before_sdk_or_model_checkpoint"
+        }
+      ]
     }
   ]
 }
