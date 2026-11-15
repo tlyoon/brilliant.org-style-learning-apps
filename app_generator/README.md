@@ -564,3 +564,34 @@ entrypoint selects it automatically. See
 BSA-20261114-165 regressions. The one genuinely completed Section 9.1
 activity remains independent of any synthetic validation or later
 Section 9.2 attempt.
+
+## Yoga 6 native V3 ownership and Gemini ServerError fast-stop (2026-11-15)
+
+The owner-designated Bosla native-review workstation is Yoga 6, not
+Dell-115 or HP. The current project authority records
+`native_gemini_review_host="YOGA6"`. The ordinary native Gemini CLI
+checks this expected OS hostname before entering SDK setup, credentials,
+role-claim creation or model transport; wrong-host execution stops
+closed. This setting is project-specific and must be reviewed on
+legitimate workstation reassignment. Dry-run source-free planning does
+not depend on host authorization.
+
+A real, isolated Yoga 6 execution (source revision `089681b`) returned
+Gemini `ServerError` for both first-activity reviewer contexts. A
+source-free DNS and unauthenticated HTTPS check confirmed basic endpoint
+reachability, not provider model readiness. The true Yoga 6 checkpoint
+records `AI_UNCERTAIN` and an open capacity circuit; neither role may
+be resubmitted. Earlier HP results cannot replace this Yoga 6 evidence.
+
+The revised V3 engine uses a shared capacity-error classifier:
+if a physics reviewer receives recognized `ServerError` before a
+usable response, the second role is permanently `SKIPPED_UNSENT`
+(`requestSubmitted=false`) rather than causing a second avoidable
+provider request. The standard checkpoint and progress counters preserve
+the distinction. After the cooldown, a **new** frozen activity may
+deterministically use another already-configured key based on the count
+of distinct historical capacity-failed activities. A submitted role
+never changes credentials, retries or receives synthetic PASS. Neither
+software proof nor a later successful review certifies the original
+uncertain activity or authorizes publication. See Decision 0041 and
+`docs/V3_GEMINI_YOGA6_SERVERERROR_20261115.md`.
