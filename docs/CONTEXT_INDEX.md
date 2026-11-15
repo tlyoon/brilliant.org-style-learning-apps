@@ -143,6 +143,7 @@ Historical roadmaps, old branch-testing instructions, chat transcripts, and copi
 | Continuous auto / multi-PC verification | `docs/CONTINUOUS_AUTO_TESTING.md`, then `app_generator/README.md` |
 | V3 native Gemini generated-text assessment and SDK recovery | `docs/decisions/0039-native-gemini-api-review-worker.md`, `docs/V3_NATIVE_GEMINI_LIVE_PILOT_20261114.md`, then `scripts/run_v3_native_gemini_review.py` |
 | V3 Gemini ServerError cooldown, quarantine and independent section continuation | `docs/decisions/0040-v3-server-error-quarantine.md`, `docs/V3_NATIVE_GEMINI_LIVE_PILOT_20261114.md`, then `app_generator/runtime/v3_course_review.py` |
+| Bosla Yoga 6-only Gemini V3 review and provider-capacity fast-stop | `docs/decisions/0041-yoga6-v3-provider-capacity-fast-stop.md`, `docs/V3_GEMINI_YOGA6_SERVERERROR_20261115.md`, `scripts/run_v3_native_gemini_review.py` |
 | Generator CLI/config/coordinator details | `app_generator/README.md`, `config/README.md` |
 | Product change | Product requirements and decision records |
 | Learning content | Content rules, learning design, schema, source-ingestion policy |
