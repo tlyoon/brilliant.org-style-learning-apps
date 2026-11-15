@@ -57,7 +57,7 @@ class V3ServerRecoveryTests(unittest.TestCase):
             continue_independent=True,
         )
         self.assertEqual(1, failed.calls)
-        self.assertEqual(1, good_b.calls)
+        self.assertEqual(0, good_b.calls)
         self.assertEqual(0, good_a.calls)
         return result
 
@@ -88,7 +88,8 @@ class V3ServerRecoveryTests(unittest.TestCase):
                          plan_v3_course_review(self.chapter, self.repo,
                                private_root=self.private)["dispatchStatus"])
         self.assertEqual(2, len(self.claims()))
-        self.assertEqual({"AMBIGUOUS", "COMPLETE"}, {
+        self.assertEqual(1, sum(json.loads(p.read_text(encoding="utf8")).get("reasonCode") == "PROVIDER_CAPACITY_UNSENT" for p in self.claims()))
+        self.assertEqual({"AMBIGUOUS", "SKIPPED_UNSENT"}, {
             json.loads(p.read_text(encoding="utf8"))["state"]
             for p in self.claims()})
         self.make_claims_old()
