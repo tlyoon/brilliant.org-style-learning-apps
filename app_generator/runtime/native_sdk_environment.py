@@ -1,6 +1,6 @@
 """Bounded local SDK repair before V3 review claims or model requests.
 
-Only an explicitly execution-authorized native run may use this helper.
+Only an explicitly authorized native review or source-free diagnostic may use this helper.
 It installs the repository's EXISTING pinned dependencies in its ignored
 local .venv; no global Python modifications, source PDF, or API requests.
 A failed bootstrap must stop before the immutable model claim is opened.
@@ -38,7 +38,8 @@ def _interpreter_has_retry_guard(interpreter: Path) -> bool:
 
 
 def delegate_to_supported_sdk(
-    repo_root: Path, original_args: list[str],
+    repo_root: Path, original_args: list[str], *,
+    entrypoint: Path | None = None,
 ) -> int | None:
     """Return None for a usable current SDK; else repair and run exactly once.
 
@@ -71,9 +72,17 @@ def delegate_to_supported_sdk(
         if not _interpreter_has_retry_guard(python):
             raise RuntimeError("V3_NATIVE_SDK_BOOTSTRAP_INCOMPATIBLE")
     env = {**os.environ, _GUARD: "1"}
+    scripts = repo_root / "scripts"
+    allowed = {
+        (scripts / "run_v3_native_gemini_review.py").resolve(),
+        (scripts / "run_v3_yoga6_recovery_worker.py").resolve(),
+    }
+    selected = (entrypoint if entrypoint is not None else
+                scripts / "run_v3_native_gemini_review.py").resolve()
+    if selected not in allowed or entrypoint is not None and entrypoint.is_symlink():
+        raise RuntimeError("V3_NATIVE_SDK_UNAUTHORIZED_ENTRYPOINT")
     child = subprocess.run(
-        [str(python), str(repo_root / "scripts" /
-                           "run_v3_native_gemini_review.py"), *original_args],
+        [str(python), str(selected), *original_args],
         cwd=repo_root, env=env, check=False,
     )
     return child.returncode
