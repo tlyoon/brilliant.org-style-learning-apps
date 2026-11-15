@@ -55,9 +55,14 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--private-root", type=Path)
     ap.add_argument("--batch-size", type=int, default=1)
     ap.add_argument("--max-batches", type=int, default=1)
+    ap.add_argument("--candidate-offset", type=int, default=None,
+                    help="fixed configured credential index, NEW activity only")
     ap.add_argument("--execute", action="store_true")
     ap.add_argument("--allow-generated-text-transfer", action="store_true")
     args = ap.parse_args(argv)
+    if (args.candidate_offset is not None and
+        not 0 <= args.candidate_offset < 8):
+        ap.error("candidate-offset must be a configured candidate index 0..7")
     if not (1 <= args.batch_size <= 6 and 1 <= args.max_batches <= 108):
         ap.error("batch-size must be 1..6 and max-batches 1..108")
     source = (ROOT / args.course_dir).resolve()
@@ -120,7 +125,9 @@ def main(argv: list[str] | None = None) -> int:
                 # *other* activities. After cooldown, try the next configured
                 # key ONLY on new frozen work; never replay a submitted role.
                 capacity = current.get("providerCapacity") or {}
-                candidate_offset = capacity.get("serverErrorActivitiesHistorical", 0)
+                candidate_offset = (args.candidate_offset
+                                    if args.candidate_offset is not None else
+                                    capacity.get("serverErrorActivitiesHistorical", 0))
                 if (type(candidate_offset) is not int or
                         candidate_offset < 0 or candidate_offset > 108):
                     raise ValueError("V3_NATIVE_INVALID_CAPACITY_HISTORY")
