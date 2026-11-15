@@ -24,13 +24,14 @@ def provider_capacity_gate(
     """Return only a privacy-safe, deterministic decision; never contact Google.
 
     Uses file times solely to enforce backoff, NOT to prove request acceptance
-    or grant review PASS. No key rotation and no pending request replays.
+    or grant review PASS. A later independent activity may select another\n    preconfigured key after cooldown; pending requests are never replayed.
     """
     if private_root is None:
-        return {"status": "READY", "serverErrorsLastHour": 0}
+        return {"status": "READY", "serverErrorsLastHour": 0, "serverErrorActivitiesHistorical": 0}
     clock = time.time() if now is None else float(now)
     root = private_root
     events: list[float] = []
+    failed_activities: set[tuple[str,str]] = set()
     denied = False
     unclassified = False
     for row in section_progress:
@@ -59,6 +60,10 @@ def provider_capacity_gate(
                 unclassified = True
             if (data.get("state") == "AMBIGUOUS"
                 and data.get("reasonCode") in SERVER_CAPACITY_ERROR_NAMES):
+                activity_id = data.get("activityId")
+                if not isinstance(activity_id,str) or not activity_id:
+                    raise ValueError("V3_PROVIDER_CAPACITY_INVALID_ACTIVITY_ID")
+                failed_activities.add((digest,activity_id))
                 when = claim.stat().st_mtime
                 if when > clock + 300:
                     raise ValueError("V3_PROVIDER_CAPACITY_FUTURE_TIMESTAMP")
@@ -66,9 +71,11 @@ def provider_capacity_gate(
                     events.append(when)
     events.sort()
     count = len(events)
+    historic = len(failed_activities)
     if denied:
         return {"status": "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
-                "serverErrorsLastHour": count}
+                "serverErrorsLastHour": count,
+                "serverErrorActivitiesHistorical": historic}
     if unclassified:
         return {"status": "STOP_UNCLASSIFIED_PROVIDER_REVIEW",
                 "serverErrorsLastHour": count}
@@ -87,6 +94,8 @@ def provider_capacity_gate(
                 "status": ("STOP_PROVIDER_CIRCUIT_OPEN" if circuit
                            else "WAIT_PROVIDER_COOLDOWN"),
                 "serverErrorsLastHour": count,
+                "serverErrorActivitiesHistorical": historic,
                 "retryNewWorkAfterUnix": int(deadline),
             }
-    return {"status": "READY", "serverErrorsLastHour": count}
+    return {"status": "READY", "serverErrorsLastHour": count,
+            "serverErrorActivitiesHistorical": historic}
