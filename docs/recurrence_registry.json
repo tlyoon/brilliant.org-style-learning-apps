@@ -2591,6 +2591,45 @@
           "marker": "prematureLater.stages[2].status, \"locked\""
         }
       ]
+    },
+    {
+      "id": "BSA-20261115-171",
+      "class": "gemini-inline-batch-dispatch-lacks-provable-response-row-identity",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261115-169",
+        "BSA-20261115-168"
+      ],
+      "differenceFromLinkedIncident": "The historical Yoga 6 provider-health and recovery fixes addressed model transport reachability and bounded service retries, but not the separate Batch API identity problem. The previous Batch submission used inline SDK requests that discarded a locally generated row hash, while the provider may return responses in a different order. A batch status of SUCCEEDED therefore could not establish which activity and reviewer produced each result. The normal Batch submission now uses official file-backed keyed JSONL rather than relying on array position.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/gemini/v3_keyed_batch.py",
+        "triggerMarker": "def submit_keyed_file_once_with_sdk(",
+        "remedyMarker": "raw = keyed_input_jsonl(",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/gemini/v3_batch_recovery.py",
+            "marker": "from app_generator.gemini.v3_keyed_batch import submit_keyed_file_once_with_sdk"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_keyed_batch.py",
+          "kind": "python",
+          "marker": "test_shuffled_provider_output_matches_by_echoed_key"
+        },
+        {
+          "path": "tests/test_v3_keyed_batch.py",
+          "kind": "python",
+          "marker": "test_upload_timeout_is_ambiguous_and_not_resent"
+        },
+        {
+          "path": "tests/test_v3_keyed_batch.py",
+          "kind": "python",
+          "marker": "test_reconciler_get_download_only_and_no_model_pass"
+        }
+      ]
     }
   ]
 }

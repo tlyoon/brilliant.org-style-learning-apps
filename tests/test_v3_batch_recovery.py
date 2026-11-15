@@ -222,7 +222,12 @@ class V3BatchRecoveryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             journal = BatchJournal(folder)
             journal.initialize(manifest)
-            sdk = SimpleNamespace(batches=FakeBatch())
+            class FakeFiles:
+                def upload(self, *, file, config):
+                    self.payload = Path(file).read_bytes()
+                    self.mime = config["mime_type"]
+                    return SimpleNamespace(name="files/unique-input")
+            sdk = SimpleNamespace(batches=FakeBatch(), files=FakeFiles())
             with self.assertRaisesRegex(ValueError, "NOT_AUTHORIZED"):
                 submit_once_with_sdk(journal, manifest, prompts, sdk, transfer_allowed=True)
             self.assertEqual(sdk.batches.calls, 0)
@@ -259,7 +264,10 @@ class V3BatchRecoveryTests(unittest.TestCase):
             journal = BatchJournal(folder)
             journal.initialize(manifest)
             backend = FakeFailure()
-            sdk = SimpleNamespace(batches=backend)
+            class FakeFiles:
+                def upload(self, *, file, config):
+                    return SimpleNamespace(name="files/timeout-input")
+            sdk = SimpleNamespace(batches=backend, files=FakeFiles())
             with self.assertRaisesRegex(ValueError, "AMBIGUOUS_NO_RETRY") as raised:
                 submit_once_with_sdk(journal, manifest, prompts, sdk,
                                      operation_authorized=True, transfer_allowed=True)

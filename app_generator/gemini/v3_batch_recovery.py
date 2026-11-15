@@ -214,35 +214,16 @@ def submit_once_with_sdk(journal: BatchJournal, manifest: dict[str, Any],
                          client: Any, *,
                          operation_authorized: bool = False,
                          transfer_allowed: bool = False) -> dict[str, Any]:
-    """Explicit opt-in only. Latch SUBMITTING before a single provider create."""
-    if operation_authorized is not True:
-        raise ValueError("V3_BATCH_OPERATION_NOT_AUTHORIZED")
-    requests = inline_requests(manifest, prompts, transfer_allowed=transfer_allowed)
-    state = journal.status()
-    if state["batchSha256"] != manifest["batchSha256"] or state["state"] != "PREPARED":
-        raise ValueError("V3_BATCH_REPLAY_OR_WRONG_MANIFEST")
-    if not callable(getattr(getattr(client, "batches", None), "create", None)):
-        raise ValueError("V3_BATCH_SDK_CLIENT_REQUIRED")
-    journal.transition("begin_submit")
-    try:
-        # Official SDK inline requests omit the REST wrapper and metadata.
-        # Metadata echo MUST be verified independently at result acceptance.
-        src = [request["request"] for request in requests]
-        job = client.batches.create(
-            model=manifest["model"], src=src,
-            config={"display_name": manifest["jobLabel"]},
-        )
-    except BaseException as exc:
-        journal.transition("submission_ambiguous")
-        raise ValueError("V3_BATCH_CREATE_AMBIGUOUS_NO_RETRY") from None
-    try:
-        journal.transition("attach_verified_job",
-                           provider_job=getattr(job, "name", None),
-                           provider_display_name=getattr(job, "display_name", None))
-    except ValueError:
-        journal.transition("submission_ambiguous")
-        raise ValueError("V3_BATCH_PROVIDER_ID_UNVERIFIED_NO_RETRY") from None
-    return journal.status()
+    """Normal Batch submission uses file-backed keyed JSONL, never inline.
+
+    The provider must echo stable input keys so that results can be attributed
+    to the correct activity and Gemini reviewer without relying on row order.
+    """
+    from app_generator.gemini.v3_keyed_batch import submit_keyed_file_once_with_sdk
+    return submit_keyed_file_once_with_sdk(
+        journal, manifest, prompts, client,
+        operation_authorized=operation_authorized,
+        transfer_allowed=transfer_allowed)
 
 
 def reconcile_inline_responses(manifest: dict[str, Any],
