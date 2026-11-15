@@ -29,9 +29,9 @@ _STAGE = "academic-v3-autonomous"
 _PREFIX = "BOSLA V3 AUTONOMOUS TECHNICAL CONTENT QA."
 
 
-def _default_sdk_components(config: Any) -> tuple[Callable[[str], Any], Any]:
+def _default_sdk_components(config: Any, *, candidate_offset: int = 0) -> tuple[Callable[[str], Any], Any]:
     """Reuse the shared Gemini API gateway; never construct an SDK directly."""
-    return build_v3_native_text_sdk_components(config)
+    return build_v3_native_text_sdk_components(config, candidate_offset=candidate_offset)
 
 
 class NativeGeminiApiConversation:
@@ -96,7 +96,11 @@ class V3NativeGeminiApiSessions:
         generated_content_transfer_allowed: bool = False,
         sdk_client_factory: Callable[[str], Any] | None = None,
         sdk_types: Any = None,
+        candidate_offset: int = 0,
     ) -> None:
+        if type(candidate_offset) is not int or candidate_offset < 0:
+            raise ValueError("V3_NATIVE_INVALID_CREDENTIAL_CANDIDATE")
+        self.candidate_offset = candidate_offset
         self.config = config
         self.operation_authorized = operation_authorized
         self.external_operation_authorized = operation_authorized
@@ -121,7 +125,8 @@ class V3NativeGeminiApiSessions:
         create = self.sdk_client_factory
         types = self.sdk_types
         if create is None:
-            create, types = _default_sdk_components(self.config)
+            create, types = _default_sdk_components(
+                self.config, candidate_offset=self.candidate_offset)
         if types is None:
             raise ValueError("V3_NATIVE_SDK_TYPES_REQUIRED")
         try:
