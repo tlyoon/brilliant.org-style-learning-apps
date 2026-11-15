@@ -93,6 +93,10 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     batches = 0
     try:
+        # BOSLA's V3 native review is assigned to Yoga 6. A different
+        # connected workstation must stop before keys, claims or model calls.
+        from app_generator.runtime.native_workstation_guard import require_authorized_native_review_host
+        require_authorized_native_review_host(AUTHORITY)
         # BSA-20261114-164: recover a stale/missing google-genai SDK in an
         # isolated, pinned local venv BEFORE any review claim or model call.
         from app_generator.runtime.native_sdk_environment import delegate_to_supported_sdk
