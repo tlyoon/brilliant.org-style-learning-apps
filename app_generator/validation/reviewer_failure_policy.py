@@ -12,6 +12,11 @@ from app_generator.errors import (
 # Two genuinely uncaptured UI/transport attempts open the circuit for a role.
 # A model's captured but invalid JSON is not a transport availability failure.
 UNCAPTURED_ROLE_CIRCUIT_THRESHOLD = 2
+# Shared capability-wide failures: do not send a second reviewer request
+# for the same activity once one of these errors has interrupted Google.
+SERVER_CAPACITY_ERROR_NAMES = frozenset({
+    "ServerError", "ServiceUnavailable", "TransientGeminiError",
+})
 _UNCAPTURED_ERRORS = (
     UiContractError, ResponseContractError, TransientGeminiError,
     TimeoutError, ConnectionError,
