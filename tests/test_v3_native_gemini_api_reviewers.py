@@ -24,6 +24,10 @@ from app_generator.gemini.v3_native_api_reviewers import (
 )
 
 
+class ServerError(Exception):
+    pass  # synthetic Google SDK capacity exception name
+
+
 class FakeModels:
     def __init__(self, outcome="valid"):
         self.calls = []
@@ -31,6 +35,8 @@ class FakeModels:
 
     def generate_content(self, *, model, contents, config):
         self.calls.append((model, contents, config))
+        if self.outcome == "server_error":
+            raise ServerError("synthetic provider capacity, no raw payload")
         if self.outcome == "ambiguous":
             raise TimeoutError("synthetic ambiguous response after dispatch")
         if self.outcome == "empty":
@@ -175,6 +181,26 @@ class V3NativeGeminiApiTests(unittest.TestCase):
         self.assertEqual("BLOCKED_GENERATED_TEXT_TRANSFER",result["dispatchStatus"])
         self.assertFalse(self.private.exists())
         self.assertEqual([],self.clients)
+
+    def test_server_error_blocks_second_role_without_a_google_request(self):
+        report=self.dispatch(self.factory(("server_error","valid")))
+        self.assertEqual("STOP_UNRECONCILED_MODEL_REVIEW",report["dispatchStatus"])
+        self.assertEqual(1,report["modelUncertainActivities"])
+        self.assertEqual(0,report["activitiesFullyModelReviewed"])
+        self.assertEqual(1,report["reviewerRequestsSkippedUnsent"])
+        self.assertEqual([1,0],[len(c.models.calls) for c in self.clients])
+        claims=[json.loads(p.read_text(encoding="utf8"))
+                for p in self.private.rglob("v3-review-*.json")]
+        self.assertEqual(["AMBIGUOUS","SKIPPED_UNSENT"],[
+            r["state"] for r in sorted(claims,key=lambda r:r["roleIndex"])])
+        unsent=next(r for r in claims if r["roleIndex"]==1)
+        self.assertEqual("PROVIDER_CAPACITY_UNSENT",unsent["reasonCode"])
+        self.assertIs(unsent["requestSubmitted"],False)
+        # The same immutable package never reopens either role on restart.
+        with self.factory() as fresh:
+            resumed=self.dispatch(fresh)
+        self.assertEqual("STOP_UNRECONCILED_MODEL_REVIEW",resumed["dispatchStatus"])
+        self.assertEqual(2,len(self.clients))
 
     def test_uncertain_model_request_is_not_replayed(self):
         outcome=self.dispatch(self.factory(("ambiguous","valid")))
