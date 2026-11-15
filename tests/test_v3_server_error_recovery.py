@@ -97,6 +97,7 @@ class V3ServerRecoveryTests(unittest.TestCase):
         self.assertEqual("READY_FOR_AUTHORIZED_REVIEW_SESSIONS",
                          resumed["dispatchStatus"])
         self.assertEqual("section-7-2", resumed["nextSection"])
+        self.assertEqual(1, resumed["providerCapacity"]["serverErrorActivitiesHistorical"])
         sessions, a, b = pair()
         completed = advance_v3_course_review(
             self.chapter, self.repo, private_root=self.private,
@@ -130,6 +131,7 @@ class V3ServerRecoveryTests(unittest.TestCase):
         self.assertEqual("STOP_PROVIDER_CIRCUIT_OPEN", second["dispatchStatus"])
         self.assertEqual(["section-7-1","section-7-2"],second["quarantinedSections"])
         self.assertEqual("section-7-3",second["nextSection"])
+        self.assertEqual(2, second["providerCapacity"]["serverErrorActivitiesHistorical"])
         sessions,a,b = pair()
         stopped = advance_v3_course_review(
             self.chapter,self.repo,private_root=self.private,
