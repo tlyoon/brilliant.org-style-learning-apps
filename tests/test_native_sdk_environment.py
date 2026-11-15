@@ -97,10 +97,12 @@ class NativeSDKEnvironmentTests(unittest.TestCase):
                                         "READY_FOR_AUTHORIZED_REVIEW_SESSIONS"}), \
              patch("app_generator.runtime.native_sdk_environment.delegate_to_supported_sdk",
                    return_value=23) as delegate, \
+             patch("app_generator.runtime.native_workstation_guard.require_authorized_native_review_host", return_value="YOGA6") as host_guard, \
              patch.object(runner,"_load_native_config") as config:
             self.assertEqual(23,runner.main([
                 "--execute","--allow-generated-text-transfer"]))
         self.assertEqual(1,delegate.call_count)
+        host_guard.assert_called_once_with(runner.AUTHORITY)
         config.assert_not_called()
 
 
