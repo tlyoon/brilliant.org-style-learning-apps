@@ -10,6 +10,8 @@ from copy import deepcopy
 from hashlib import sha256
 import json
 import os
+import shutil
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -116,7 +118,7 @@ def store_private_repair(out_root: Path, package: bytes, receipt: dict[str, Any]
     directory = out_root / receipt["candidatePackageSha256"]
     receipt_raw = (json.dumps(receipt, ensure_ascii=True, sort_keys=True,
                               indent=2) + "\n").encode("utf-8")
-    if directory.exists():
+    def verify_existing() -> Path:
         if directory.is_symlink() or not directory.is_dir():
             raise ValueError("V3_REPAIR_UNSAFE_EXISTING_CANDIDATE")
         targets = (directory / "package.json", directory / "review-required.json")
@@ -125,13 +127,34 @@ def store_private_repair(out_root: Path, package: bytes, receipt: dict[str, Any]
         if targets[0].read_bytes() != package or targets[1].read_bytes() != receipt_raw:
             raise ValueError("V3_REPAIR_EXISTING_IDENTITY_CONFLICT")
         return directory
+
+    if directory.exists() or directory.is_symlink():
+        return verify_existing()
     out_root.mkdir(parents=True, exist_ok=True)
-    directory.mkdir(exist_ok=False)
-    # Exclusive create; never overwrite an existing evidence file.
-    for name, data in (("package.json", package),
-                       ("review-required.json", receipt_raw)):
-        with (directory / name).open("xb") as stream:
-            stream.write(data)
-            stream.flush()
-            os.fsync(stream.fileno())
-    return directory
+    # BSA-175: stage both complete fsynced files in a fresh SAME-FILESYSTEM
+    # directory, then atomically promote the directory to the final SHA.
+    # A killed worker before promotion cannot publish a half-written
+    # candidate. Orphan temporary directories can be ignored/recovered on
+    # the next authorized run; never silently overwrite a final candidate.
+    stage = Path(tempfile.mkdtemp(prefix=".v3-repair-stage-", dir=out_root))
+    try:
+        for name, data in (("package.json", package),
+                           ("review-required.json", receipt_raw)):
+            with (stage / name).open("xb") as stream:
+                stream.write(data)
+                stream.flush()
+                os.fsync(stream.fileno())
+        try:
+            stage.rename(directory)
+        except OSError:
+            # Another process may have atomically staged the SAME candidate.
+            # A mismatch or partial final candidate always stops.
+            if not (directory.exists() or directory.is_symlink()):
+                raise
+            return verify_existing()
+        return directory
+    finally:
+        # On a normal exception, remove staged files. A hard crash may leave
+        # this non-final folder; a fresh staging directory works next time.
+        if stage.exists():
+            shutil.rmtree(stage)

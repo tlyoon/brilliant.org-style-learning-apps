@@ -84,6 +84,9 @@ def main(argv: list[str] | None = None) -> int:
             from app_generator.runtime.v3_forward_progress import (
                 advance_until_boundary,
             )
+            from app_generator.runtime.v3_auto_repair import (
+                stage_known_language_repair,
+            )
             def read_plan():
                 return plan_v3_course_review(
                     COURSE, ROOT, private_root=private,
@@ -99,7 +102,9 @@ def main(argv: list[str] | None = None) -> int:
                 operation_authorized=args.execute,
                 transfer_authorized=args.allow_generated_text_transfer,
                 max_activities=args.max_forward_activities,
-                max_elapsed_seconds=args.max_forward_seconds)
+                max_elapsed_seconds=args.max_forward_seconds,
+                source_free_recovery=lambda plan: stage_known_language_repair(
+                    COURSE, private, plan))
             _print(report)
             return 0 if report["status"] in (
                 "STOP_FORWARD_ACTIVITY_BUDGET_REACHED",

@@ -283,6 +283,8 @@ class ForwardControllerTests(unittest.TestCase):
         self.assertEqual(controller.call_args.kwargs["max_activities"], 3)
         self.assertTrue(controller.call_args.kwargs["operation_authorized"])
         self.assertTrue(controller.call_args.kwargs["transfer_authorized"])
+        self.assertTrue(callable(
+            controller.call_args.kwargs["source_free_recovery"]))
         self.assertFalse(json.loads(output.getvalue())["publicationAuthorized"])
 
 
@@ -365,6 +367,72 @@ class ForwardControllerTests(unittest.TestCase):
             self.skipTest("Creating symlinks not permitted")
         with self.assertRaisesRegex(ValueError, "UNSAFE_DRIVER_LOCK"):
             self.run_auto(lambda: self.fail("unexpected dispatch"))
+
+    def test_source_free_repair_stages_then_immediately_reviews_eligible_section(self):
+        sequence = []
+        def repair(plan):
+            sequence.append(("repair", plan["activitiesAssessedRows"]))
+            return {
+                "repairStatus": "PRIVATE_REPAIR_STAGED_PENDING_TWO_GEMINI_REVIEWS",
+                "repairStaged": True, "publicationAuthorized": False,
+            }
+        def review():
+            sequence.append(("review", self.course.assessed))
+            return self.course.pass_one()
+        result = self.run_auto(
+            review, max_activities=3, source_free_recovery=repair)
+        self.assertEqual(sequence,
+                         [("repair", 0), ("review", 0),
+                          ("review", 1), ("review", 2)])
+        self.assertEqual(result["modelConsensusPassActivities"], 3)
+        self.assertEqual(result["advancedActivitiesThisInvocation"], 3)
+        self.assertFalse(result["publicationAuthorized"])
+
+    def test_source_free_repair_is_never_executed_without_both_permissions(self):
+        calls = []
+        report = advance_until_boundary(
+            self.root, self.course.plan, lambda: calls.append("paid"),
+            source_free_recovery=lambda p: calls.append("repair"),
+            operation_authorized=False, transfer_authorized=True)
+        self.assertEqual(report["status"],
+                         "STOP_PAID_OR_TRANSFER_AUTHORIZATION_MISSING")
+        self.assertEqual(calls, [])
+        self.assertIsNone(read_checkpoint(self.root))
+
+    def test_unknown_or_promoted_repair_receipt_blocks_before_any_model_call(self):
+        for invalid in (
+            {"repairStaged": True, "repairStatus": "REPAIR_APPROVED"},
+            {"repairStaged": True,
+             "repairStatus": "PRIVATE_REPAIR_STAGED_PENDING_TWO_GEMINI_REVIEWS",
+             "publicationAuthorized": True},
+        ):
+            with self.subTest(invalid=invalid):
+                with self.assertRaisesRegex(ValueError, "RECOVERY_OUTCOME|REPAIR_STATE"):
+                    self.run_auto(source_free_recovery=lambda plan: invalid)
+                self.assertIsNone(read_checkpoint(self.root))
+                self.assertEqual(self.course.assessed, 0)
+
+    def test_source_free_recovery_after_crash_stays_no_replay(self):
+        calls = []
+        def repair(plan):
+            calls.append("repair")
+            return {
+                "repairStaged": True,
+                "repairStatus": "PRIVATE_REPAIR_STAGED_PENDING_TWO_GEMINI_REVIEWS",
+            }
+        def unknown_exit():
+            calls.append("worker")
+            raise TimeoutError("provider acceptance unknown")
+        result = self.run_auto(
+            unknown_exit, source_free_recovery=repair, max_activities=2)
+        self.assertEqual(
+            result["status"], "STOP_UNRECONCILED_WORKER_EXCEPTION_NO_REPLAY")
+        second = self.run_auto(
+            unknown_exit, source_free_recovery=repair, max_activities=2)
+        self.assertEqual(
+            second["status"], "STOP_UNRECONCILED_PREVIOUS_CALL_NO_REPLAY")
+        self.assertEqual(calls, ["repair", "worker"])
+        self.assertEqual(read_checkpoint(self.root)["phase"], "PRE_CALL")
 
 if __name__ == "__main__":
     unittest.main()

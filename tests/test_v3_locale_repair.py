@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from app_generator.validation.v3_locale_script_integrity import script_findings
 from app_generator.validation.v3_versioned_text_repair import (
@@ -179,6 +180,48 @@ class LocaleRepairTests(unittest.TestCase):
         # The source location/provenance should not be read as learner copy.
         self.assertEqual(len(script_findings(package)), 2)
 
+
+    def test_atomic_private_candidate_promotion_survives_interrupted_write(self):
+        old = raw_package(fixture())
+        new, receipt = make_locale_repair(
+            old, "synthetic-one", "ms",
+            (("sebuahเลgelongsor", "sebuah kereta luncur"),
+             ("legelongsor", "kereta luncur")))
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder) / "private" / "repairs"
+            final = root / receipt["candidatePackageSha256"]
+            with patch(
+                    "app_generator.validation.v3_versioned_text_repair.Path.rename",
+                    side_effect=OSError("simulated interrupted atomic promotion")):
+                with self.assertRaisesRegex(
+                        OSError, "interrupted atomic promotion"):
+                    store_private_repair(root, new, receipt)
+            self.assertFalse(final.exists())
+            candidate = store_private_repair(root, new, receipt)
+            self.assertEqual(candidate, final)
+            self.assertEqual((candidate / "package.json").read_bytes(), new)
+            self.assertTrue((candidate / "review-required.json").is_file())
+            self.assertFalse(json.loads(
+                (candidate / "review-required.json").read_text())[
+                    "publicationAuthorized"])
+
+    def test_orphaned_precommit_stage_does_not_block_restart(self):
+        old = raw_package(fixture())
+        new, receipt = make_locale_repair(
+            old, "synthetic-one", "ms",
+            (("sebuahเลgelongsor", "sebuah kereta luncur"),
+             ("legelongsor", "kereta luncur")))
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder) / "private" / "repairs"
+            orphan = root / ".v3-repair-stage-hard-crash"
+            orphan.mkdir(parents=True)
+            (orphan / "package.json").write_bytes(new[:20])
+            final = store_private_repair(root, new, receipt)
+            self.assertEqual(
+                final.name, receipt["candidatePackageSha256"])
+            self.assertEqual((final / "package.json").read_bytes(), new)
+            self.assertTrue(orphan.exists())
+            self.assertEqual(final, store_private_repair(root, new, receipt))
 
 if __name__ == "__main__":
     unittest.main()

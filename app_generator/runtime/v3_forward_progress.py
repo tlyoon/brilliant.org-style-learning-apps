@@ -252,6 +252,7 @@ def advance_until_boundary(
     transfer_authorized: bool = False,
     max_activities: int = 4,
     max_elapsed_seconds: int = 900,
+    source_free_recovery: Callable[[dict], dict] | None = None,
     monotonic: Callable[[], float] = time.monotonic,
 ) -> dict:
     """Advance as far as existing safe reviewer gates allow during this run.
@@ -269,7 +270,9 @@ def advance_until_boundary(
             or type(max_elapsed_seconds) is not int
             or not MIN_ELAPSED_SECONDS <= max_elapsed_seconds <= MAX_ELAPSED_SECONDS):
         raise ValueError("V3_FORWARD_INVALID_BOUNDED_BUDGET")
-    if not callable(read_plan) or not callable(execute_one):
+    if (not callable(read_plan) or not callable(execute_one)
+            or source_free_recovery is not None
+            and not callable(source_free_recovery)):
         raise ValueError("V3_FORWARD_MISSING_EXECUTABLE")
     began = monotonic()
     completed = calls = 0
@@ -316,6 +319,31 @@ def advance_until_boundary(
                 else:
                     return _report("STOP_UNRECONCILED_PREVIOUS_CALL_NO_REPLAY",
                                    plan, completed, calls)
+        if source_free_recovery is not None:
+            # Every safe repair stages a NEW exact-hash private candidate;
+            # neither the original package nor its model FAIL is changed.
+            # Idempotent across crashes and followed immediately by the
+            # ordinary eligible-review stage in this SAME authorized run.
+            outcome = source_free_recovery(plan)
+            if (not isinstance(outcome, dict) or
+                    outcome.get("repairStaged") not in (True, False) or
+                    not isinstance(outcome.get("repairStatus"), str) or
+                    len(outcome["repairStatus"]) > 95 or
+                    outcome.get("publicationAuthorized", False) is not False):
+                raise ValueError("V3_FORWARD_INVALID_RECOVERY_OUTCOME")
+            if outcome["repairStaged"] is True:
+                if outcome["repairStatus"] != (
+                        "PRIVATE_REPAIR_STAGED_PENDING_TWO_GEMINI_REVIEWS"):
+                    raise ValueError("V3_FORWARD_UNVERIFIED_REPAIR_STATE")
+                save_checkpoint(
+                    private_root, "STOPPED", current, current,
+                    "STAGED_VERSIONED_CANDIDATE_PENDING_FRESH_MODEL_QA")
+            # Re-read authoritative frozen course progress; staging a
+            # candidate cannot itself count as an activity reviewed.
+            after_repair = read_plan()
+            if snapshot(after_repair) != current:
+                raise ValueError("V3_FORWARD_REPAIR_CHANGED_FROZEN_ASSESSMENT")
+            plan = after_repair
         for _ in range(max_activities):
             plan = read_plan()
             current = snapshot(plan)

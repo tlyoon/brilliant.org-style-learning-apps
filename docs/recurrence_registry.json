@@ -2719,6 +2719,94 @@
           "marker": "test_source_free_script_quarantine_persists_across_restarts"
         }
       ]
+    },
+    {
+      "id": "BSA-20261116-174",
+      "class": "v3-corrected-content-one-off-stage-not-wired-to-forward-execution",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-173",
+        "BSA-20261116-172"
+      ],
+      "differenceFromLinkedIncident": "BSA-173 correctly staged an immutable privately versioned Section 9.2 language correction but the staging was one-off, while the BSA-172 automatic forward controller only dispatched reviews. A recoverable content defect therefore still required another user-driven repair command instead of advancing in the normal workflow.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_auto_repair.py",
+        "triggerMarker": "def stage_known_language_repair(",
+        "remedyMarker": "store_private_repair(destination, updated, receipt)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_auto_repair import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_auto_repair.py",
+          "kind": "python",
+          "marker": "test_genuine_frozen_text_and_exact_known_repair_identity"
+        },
+        {
+          "path": "tests/test_v3_auto_repair.py",
+          "kind": "python",
+          "marker": "test_missing_two_reviewers_never_stages_candidate"
+        },
+        {
+          "path": "tests/test_v3_auto_repair.py",
+          "kind": "python",
+          "marker": "test_foreign_reviewer_provider_cannot_authorize_auto_repair"
+        },
+        {
+          "path": "tests/test_v3_forward_progress.py",
+          "kind": "python",
+          "marker": "test_source_free_repair_stages_then_immediately_reviews_eligible_section"
+        },
+        {
+          "path": "tests/test_v3_forward_progress.py",
+          "kind": "python",
+          "marker": "test_source_free_recovery_after_crash_stays_no_replay"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261116-175",
+      "class": "private-v3-repair-half-written-final-directory-after-power-loss",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-174",
+        "BSA-20261116-173"
+      ],
+      "differenceFromLinkedIncident": "The BSA-173 repair helper and BSA-174 normal integration checked idempotency only for fully written private candidates. They created the final SHA-named directory and then wrote package.json and receipt files sequentially. A process crash between the two file writes leaves a half-written final candidate that all future invocations rejected, preventing automatic recovery. The new mechanism keeps the final SHA folder absent until both files are fsynced and atomically promoted.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/v3_versioned_text_repair.py",
+        "triggerMarker": "def store_private_repair(",
+        "remedyMarker": "stage.rename(directory)",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_auto_repair.py",
+            "marker": "from app_generator.validation.v3_versioned_text_repair import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_locale_repair.py",
+          "kind": "python",
+          "marker": "test_atomic_private_candidate_promotion_survives_interrupted_write"
+        },
+        {
+          "path": "tests/test_v3_locale_repair.py",
+          "kind": "python",
+          "marker": "test_orphaned_precommit_stage_does_not_block_restart"
+        },
+        {
+          "path": "tests/test_v3_locale_repair.py",
+          "kind": "python",
+          "marker": "test_private_store_restart_safe_no_overwrite"
+        }
+      ]
     }
   ]
 }

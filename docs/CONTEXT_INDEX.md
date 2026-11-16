@@ -1,5 +1,10 @@
 # Context index
 
+## 16 November 2026 - BSA-174 normal in-process repair-to-next-review handoff
+
+The previous BSA-173 private language correction was staged by a one-off command. The normal run_v3_yoga6_recovery_worker.py --auto-advance entrypoint now executes the source-free v3_auto_repair stage through the existing bounded forward-progress controller. It checks original frozen Section 9.2 package SHA, exact activity/glyphs, two independent Gemini API reviewer FAIL records and expected corrected candidate SHA, idempotently stages the private receipt and immediately advances to the next eligible Section 9.* activity under the SAME explicitly authorized invocation. No old model PASS, no paid request without flags, no Section 9.1 replay, no schedule, and no publication are introduced. See docs/V3_AUTOMATIC_REPAIR_FORWARD_HANDOFF_20261116.md and BSA-20261116-174.
+
+
 ## 16 Nov 2026 — BSA-173 actual Gemini translation FAIL + private versioned correction
 
 The real two-Gemini reviewers of Section 9.2 activity 14 (act-int-iso-05) both flagged Thai U+0E40/U+0E25 inadvertently inserted in a Malay sentence, while other dimensions passed. Normal V3 course planning now scans localized text for foreign-script corruption BEFORE paid dispatch, quarantines affected sections and persists source-free counts to the Yoga 6 recovery status without preventing independent Section 9.5. A hash-addressed private Section 9.2 revision of the original 18-activity package changes seven Malay fields (eight substitutions), retains unchanged original SHA/evidence, and passes existing full structural validation with zero script findings. NEW model review is still pending; no PASS is inferred. See docs/V3_LOCALE_REPAIR_AND_ACCEPTANCE_GAP_20261116.md and registry BSA-20261116-173.
