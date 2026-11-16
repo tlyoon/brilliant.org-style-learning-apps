@@ -18,6 +18,9 @@ from app_generator.runtime.v3_auto_repair import stage_known_language_repair
 from app_generator.runtime.v3_repair_review_handoff import (
     stage_changed_activity_review_handoff,
 )
+from app_generator.runtime.v3_isolated_repair_review import (
+    stage_isolated_review_slice,
+)
 
 _DECISION_NAME = "v3-recovery-policy-state.json"
 _SCHEMA = 1
@@ -217,6 +220,21 @@ def apply_registered_recovery(
                 or handoff.get("wholeCourseScopeAccepted") is not False):
             raise ValueError("V3_POLICY_UNVERIFIED_QA_HANDOFF")
         outcome["reviewHandoffSha256"] = handoff["handoffSha256"]
+        # Handoff metadata alone cannot drive the V3 model assessor:
+        # create one isolated reviewed-activity package so the existing
+        # two-Gemini, exact-package no-replay engine can check only the
+        # corrected content in a later separately authorized invocation.
+        isolated = stage_isolated_review_slice(
+            course_dir, private_root, outcome["candidateSha256"])
+        if (isolated.get("status") !=
+                "PENDING_AUTHORIZED_ISOLATED_TWO_GEMINI_REVIEW"
+                or isolated.get("activityCount") != 1
+                or isolated.get("reviewerCountRequired") != 2
+                or isolated.get("actualGeminiResponses") != 0
+                or isolated.get("wholeCourseScopeAccepted") is not False
+                or isolated.get("publicationAuthorized") is not False):
+            raise ValueError("V3_POLICY_INVALID_REVIEW_SLICE")
+        outcome["reviewSliceSha256"] = isolated["reviewSliceSha256"]
     outcome["triggerIncident"] = _TRIGGER
     outcome["remedyIncident"] = _REMEDY
     persist_policy_state(private_root, outcome)

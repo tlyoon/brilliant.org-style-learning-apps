@@ -1,5 +1,10 @@
 # Context index
 
+## 16 November 2026 — BSA-179 isolated corrected-activity execution bridge
+
+Owner v6 contract continuation: the last BSA-178 handoff was source-free metadata only and a regular full 18-activity Section9.2 re-review would duplicate unaffected work. New app_generator/runtime/v3_isolated_repair_review.py generates a private, immutable one-activity review slice SHA 78d8ddedc686a3c2bc4b2442ebb1260241fa8ada83f1a8fab0e2487a816fab2a from the corrected package SHA 49a7f18c..., and the normal v3_recovery_policy auto-stages this slice after BSA-178 handoff. New scripts/run_v3_revised_activity_review.py dry-run CLI on Yoga6 confirmed ready with 1 changed activity, 2 independent role targets, zero actual Gemini requests; explicit two-flag execution path reuses native Gemini host guard, metadata provider diagnostics, key rotation, exact-package no-replay and 1-activity limit. Synthetic fake-Gemini engine regression passed without touching real model claims. Source-free revision is NOT accepted course scope or real reviewer PASS. See docs/V3_ISOLATED_REVISED_REVIEW_20261116.md, BSA-179. No schedule or publication.
+
+
 ## 16 November 2026 — BSA-178 independent reviewer QA handoff staged
 
 The verified BSA-173/174 source-free corrected Section9.2 private package now automatically advances through a new normal-path, immutable two-role QA handoff (app_generator/runtime/v3_repair_review_handoff.py) called by v3_recovery_policy before next eligible original Section9.5 review. Real Yoga6 source-free output has handoff SHA 88a636b5df8f837b1a0384b3db8fccd4ba80c9eae79701be09611ce170c71758 with physics and semantics role row identities, zero real model responses, no versioned course admission and publicationAuthorized=false. Parent, candidate, receipt and Greek/Malay/Chinese Unicode are strictly validated; tamper/crash/restart tests cover safe recovery. See docs/V6_RUNTIME_RECOVERY_REGISTRY_MILESTONE_20261116.md and BSA-178. No paid model request, scheduled task or public release.

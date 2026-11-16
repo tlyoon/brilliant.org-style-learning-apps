@@ -66,6 +66,19 @@ class RegistryRecoveryV6Tests(unittest.TestCase):
             })
         handoff.start()
         self.addCleanup(handoff.stop)
+        slice_preflight = patch(
+            "app_generator.runtime.v3_recovery_policy.stage_isolated_review_slice",
+            return_value={
+                "status": "PENDING_AUTHORIZED_ISOLATED_TWO_GEMINI_REVIEW",
+                "reviewSliceSha256": "b"*64,
+                "activityCount": 1,
+                "reviewerCountRequired": 2,
+                "actualGeminiResponses": 0,
+                "wholeCourseScopeAccepted": False,
+                "publicationAuthorized": False,
+            })
+        slice_preflight.start()
+        self.addCleanup(slice_preflight.stop)
 
     def write_registry(self):
         self.registry.write_text(

@@ -2953,6 +2953,71 @@
           "marker": "test_other_whole_file_line_endings_same_content_same_handoff"
         }
       ]
+    },
+    {
+      "id": "BSA-20261116-179",
+      "class": "corrected-activity-handoff-not-executable-without-rereviewing-17-unchanged-activities",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-173",
+        "BSA-20261116-174",
+        "BSA-20261116-177",
+        "BSA-20261116-178"
+      ],
+      "differenceFromLinkedIncident": "BSA-178 automatically staged a metadata-only two-role handoff for the corrected activity. The original assessor accepted an 18-activity section package and no executable path was available to review only the changed activity without duplicating 17 otherwise unchanged activities. BSA-179 creates a verified isolated single-activity review package with its own SHA-bound V3 role claims and connects it to the existing Gemini-only assessor behind the standard host, transfer, budget and no-replay gates.",
+      "lastValidatedDate": "2026-11-16",
+      "applicableEnvironments": [
+        "Yoga6 Windows source-free and separately authorized API review",
+        "GitHub Actions source-free synthetic regression"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_isolated_repair_review.py",
+        "triggerMarker": "def stage_isolated_review_slice(",
+        "remedyMarker": "stage.rename(final)",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_recovery_policy.py",
+            "marker": "from app_generator.runtime.v3_isolated_repair_review import ("
+          },
+          {
+            "path": "scripts/run_v3_revised_activity_review.py",
+            "marker": "from app_generator.runtime.v3_isolated_repair_review import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_isolated_repair_review.py",
+          "kind": "python",
+          "marker": "test_one_changed_activity_without_parent_replay"
+        },
+        {
+          "path": "tests/test_v3_isolated_repair_review.py",
+          "kind": "python",
+          "marker": "test_existing_gemini_engine_reviews_only_one_synthetic_activity"
+        },
+        {
+          "path": "tests/test_v3_isolated_repair_review.py",
+          "kind": "python",
+          "marker": "test_partial_write_crash_does_not_publish_candidate"
+        },
+        {
+          "path": "tests/test_v3_revised_activity_cli.py",
+          "kind": "python",
+          "marker": "test_paid_execution_without_explicit_transfer_flag_never_stages"
+        },
+        {
+          "path": "tests/test_v3_revised_activity_cli.py",
+          "kind": "python",
+          "marker": "test_revised_key_selection_recycles_existing_capacity_strategy"
+        },
+        {
+          "path": "tests/test_v3_revised_activity_cli.py",
+          "kind": "python",
+          "marker": "test_corrupt_prior_evidence_stops_not_fallback_to_fresh_model"
+        }
+      ]
     }
   ]
 }
