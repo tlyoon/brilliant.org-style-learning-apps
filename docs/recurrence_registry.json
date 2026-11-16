@@ -2630,6 +2630,51 @@
           "marker": "test_reconciler_get_download_only_and_no_model_pass"
         }
       ]
+    },
+    {
+      "id": "BSA-20261116-172",
+      "class": "single-activity-v3-recovery-required-new-scheduled-invocation-after-each-success",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261115-168",
+        "BSA-20261115-166",
+        "BSA-20261115-171"
+      ],
+      "differenceFromLinkedIncident": "The BSA-168 recovery design survived provider outages but completed only one new activity per scheduled Windows tick. This violates the newer owner instruction to continue the next independently eligible development stage immediately, without scheduler dependency. It also lacked a full-invocation crash checkpoint that could recover on new aggregate evidence or distinguish genuine quarantine of a potentially accepted request from an unproven changed next-section pointer. The new normal one-shot worker now supports finite, explicitly authorized in-process auto-advance and no scheduler installation.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_forward_progress.py",
+        "triggerMarker": "def advance_until_boundary(",
+        "remedyMarker": "save_checkpoint(private_root, \"PRE_CALL\", current, current,",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_forward_progress import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_forward_progress.py",
+          "kind": "python",
+          "marker": "test_immediately_dispatches_four_next_activities_without_scheduler"
+        },
+        {
+          "path": "tests/test_v3_forward_progress.py",
+          "kind": "python",
+          "marker": "test_uncertain_orphan_claim_quarantines_section_and_advances_next"
+        },
+        {
+          "path": "tests/test_v3_forward_progress.py",
+          "kind": "python",
+          "marker": "test_crash_after_pre_call_without_evidence_stops_and_never_resends"
+        },
+        {
+          "path": "tests/test_v3_forward_progress.py",
+          "kind": "python",
+          "marker": "test_retired_schedule_cannot_be_reinstalled_by_legacy_script"
+        }
+      ]
     }
   ]
 }

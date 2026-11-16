@@ -1,5 +1,10 @@
 # Context index
 
+## New binding 16 Nov 2026: no Yoga 6 scheduled task; finite automatic forward recovery
+
+Owner Decision 0043 and BSA-20261116-172 supersede Decision 0042's recurring Windows scheduled-task execution. Task BoslaYoga6V3Recovery was disabled, unregistered and verified absent on YOGA6; installer refuses -Install. The EXISTING normal scripts/run_v3_yoga6_recovery_worker.py --auto-advance path now invokes a 1-6 activity finite recovery controller with both explicit execute and text-transfer authorization, immutable per-role QA/claims, crash-safe source-free atomic checkpoint, and automatic next-eligible-section progression. Previous ambiguous Section 9.1 or content FAIL Section 9.2 may not be declared PASS/replayed; genuinely quarantined sections can be bypassed to allow independent downstream review. Source-free 26-case stress (one Windows symlink test skipped) includes 108 simulated activities; no new paid Gemini calls or release. See docs/decisions/0043-bosla-no-scheduler-forward-progress.md. Genuine read-only progress at owner instruction: 52/108 assessed, 50 consensus PASS, next Section 9.5.
+
+
 ## 15 Nov 2026 — keyed Gemini Batch matching and Section 9.1/9.2 triage
 
 BSA-20261115-171 upgrades the existing V3 Batch entrypoint to file-backed JSONL with SHA-256 keys echoed by Google (official docs) and strict key-based result validation, durable no-replay submission, read-only GET. 19 new adversarial tests and 23 retained tests passed locally; no real Batch call, no model PASS inferred. See docs/V3_KEYED_BATCH_AND_REVIEW_DISPOSITION_20261115.md and Decision 0042. Original 9.1 AI_UNCERTAIN remains non-replayable, quarantined and blocks final 108/108 acceptance but not reviews of other sections. Section 9.2 activity 14 has genuine trilingualMeaning FAIL requiring a separately versioned correction. Read-only Yoga 6 continuation reached 19/108 assessed, 17 consensus passes; schedule remains active. Verify exact-head CI before claiming validated integration.

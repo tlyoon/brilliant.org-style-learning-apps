@@ -1,9 +1,12 @@
-"""One bounded Yoga 6 recovery tick for BOSLA V3.
+"""Yoga 6 BOSLA V3 normal recovery and finite forward-progress worker.
 
-Default is read-only planning. --diagnose-only uses source-free Gemini
-models.get metadata, NOT generation. The --execute path requires the
-generated-text-transfer flag, observes every frozen checkpoint/circuit, then
-attempts at most ONE new activity. It never replays a submitted request.
+Default is read-only. --diagnose-only uses source-free models.get metadata,
+not generation. --execute retains the historical ONE-activity mode.
+--auto-advance additionally invokes a bounded in-process controller that
+moves immediately to the next eligible frozen activity after each verified
+result, without Windows Task Scheduler. Both paid-operation and generated-
+text transfer flags are required. All existing claim and release gates stay
+authoritative; it never replays an uncertain request or auto-publishes.
 """
 from __future__ import annotations
 
@@ -46,7 +49,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--diagnose-only", action="store_true")
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--allow-generated-text-transfer", action="store_true")
+    parser.add_argument("--auto-advance", action="store_true",
+                        help="Within one authorized invocation, advance across "
+                             "new eligible activities without a scheduler.")
+    parser.add_argument("--max-forward-activities", type=int, default=4)
+    parser.add_argument("--max-forward-seconds", type=int, default=900)
     args = parser.parse_args(argv)
+    if args.auto_advance and (not args.execute or args.diagnose_only):
+        _print({"status":"STOP_FORWARD_EXECUTION_AUTHORIZATION_REQUIRED",
+                "publicationAuthorized":False})
+        return 2
     if args.diagnose_only and args.execute:
         parser.error("choose --diagnose-only or --execute, not both")
     if args.execute and not args.allow_generated_text_transfer:
@@ -64,6 +76,39 @@ def main(argv: list[str] | None = None) -> int:
     )
     try:
         private = checked_private_root(chosen,localappdata=Path(local))
+        if args.auto_advance:
+            # This is part of this existing normal entrypoint, not a new
+            # scheduled task. Each iteration invokes the unchanged
+            # one-activity reviewer and its original permission/claim gates.
+            require_authorized_native_review_host(AUTHORITY)
+            from app_generator.runtime.v3_forward_progress import (
+                advance_until_boundary,
+            )
+            def read_plan():
+                return plan_v3_course_review(
+                    COURSE, ROOT, private_root=private,
+                    continue_independent=True)
+            def execute_one():
+                output = io.StringIO()
+                with redirect_stdout(output):
+                    return main([
+                        "--private-root", str(private),
+                        "--execute", "--allow-generated-text-transfer"])
+            report = advance_until_boundary(
+                private, read_plan, execute_one,
+                operation_authorized=args.execute,
+                transfer_authorized=args.allow_generated_text_transfer,
+                max_activities=args.max_forward_activities,
+                max_elapsed_seconds=args.max_forward_seconds)
+            _print(report)
+            return 0 if report["status"] in (
+                "STOP_FORWARD_ACTIVITY_BUDGET_REACHED",
+                "STOP_DETERMINISTIC_RELEASE_QA_PENDING",
+                "STOP_VERSIONED_CONTENT_REPAIR_REQUIRED",
+                "STOP_UNRECONCILED_CLAIM_NO_REPLAY",
+                "STOP_PROVIDER_CIRCUIT_OPEN",
+                "STOP_PROVIDER_RECOVERY_BUDGET",
+                "STOP_FORWARD_ELAPSED_BOUND") else 3
         before = plan_v3_course_review(COURSE,ROOT,private_root=private,
                                        continue_independent=True)
         if not (args.execute or args.diagnose_only):

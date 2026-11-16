@@ -1,5 +1,7 @@
 # Decision 0042 — Bosla five-step autonomous development plan
 
+**Superseded as to scheduling (16 Nov 2026):** The owner removed the Windows recurring recovery task. Decision 0043 and BSA-20261116-172 now govern in-process bounded forward recovery; all references below to an installed scheduler are HISTORICAL and do not authorize reinstallation.
+
 **Approved by the owner:** 15 November 2026. **Project:** Bosla / Brilliant-style learning apps. **Execution host:** Yoga 6 only. Applies to draft PR #223 and subsequent development work. This is an ongoing project plan, not a claim of background execution by ChatGPT or permission to bypass external denials.
 
 ## Binding development sequence
