@@ -201,5 +201,27 @@ class RecoveryControllerTests(unittest.TestCase):
                          json.loads(out.getvalue())["status"])
 
 
+    def test_source_free_script_quarantine_persists_across_restarts(self):
+        plan = {"dispatchStatus": "READY_FOR_AUTHORIZED_REVIEW_SESSIONS",
+                "nextSection": "section-9-5",
+                "activitiesAssessedRows": 52,
+                "activitiesFullyModelReviewed": 51,
+                "modelConsensusPassActivities": 50,
+                "modelUncertainActivities": 1,
+                "quarantinedSections": ["section-9-1", "section-9-2"],
+                "scriptQuarantinedSections": {"section-9-2": 2},
+                "providerCapacity": {"serverErrorsLastHour": 0}}
+        status = status_from_plan(plan, status="SOURCE_FREE_SCRIPT_QUARANTINE")
+        location = persist_status(self.root, status)
+        stored = json.loads(location.read_text(encoding="utf8"))
+        self.assertEqual(stored["scriptQuarantinedSections"],
+                         {"section-9-2": 2})
+        self.assertFalse(stored["publicationAuthorized"])
+        self.assertEqual(stored["nextSection"], "section-9-5")
+        bad = dict(status)
+        bad["scriptQuarantinedSections"] = {"API_KEY_PASSWORD": "secret text"}
+        with self.assertRaisesRegex(ValueError, "UNSAFE_SCRIPT_QUARANTINE"):
+            persist_status(self.root, bad)
+
 if __name__=="__main__":
     unittest.main()

@@ -85,13 +85,23 @@ def persist_status(private_root: Path, report: dict) -> Path:
         "runUnix", "status", "dispatchStatus", "nextSection",
         "activitiesAssessedRows", "activitiesFullyModelReviewed",
         "modelConsensusPassActivities", "modelUncertainActivities",
-        "quarantinedSections", "providerCapacity", "diagnostic",
+        "quarantinedSections", "scriptQuarantinedSections",
+        "providerCapacity", "diagnostic",
         "nativeExitCode", "publicationAuthorized",
     }
     if not isinstance(report, dict) or not set(report).issubset(allowed):
         raise ValueError("V3_WORKER_UNSAFE_STATUS_FIELDS")
     if report.get("publicationAuthorized") is not False:
         raise ValueError("V3_WORKER_CANNOT_AUTHORIZE_PUBLICATION")
+    scripts = report.get("scriptQuarantinedSections")
+    if scripts is not None and (
+            not isinstance(scripts, dict) or len(scripts) > 6 or
+            any(not isinstance(section, str)
+                or not section.startswith("section-9-")
+                or len(section) > 16
+                or type(count) is not int or not 0 < count <= 64
+                for section, count in scripts.items())):
+        raise ValueError("V3_WORKER_UNSAFE_SCRIPT_QUARANTINE")
     encoded = (json.dumps(report, sort_keys=True, separators=(",", ":")) +
                "\n").encode("utf-8")
     if len(encoded) > 12_000:
@@ -122,7 +132,7 @@ def status_from_plan(plan: dict, *, status: str,
     keys = ("dispatchStatus", "nextSection", "activitiesAssessedRows",
             "activitiesFullyModelReviewed", "modelConsensusPassActivities",
             "modelUncertainActivities", "quarantinedSections",
-            "providerCapacity")
+            "scriptQuarantinedSections", "providerCapacity")
     report = {key: plan.get(key) for key in keys}
     report.update({"runUnix":int(time.time()), "status":status,
                    "publicationAuthorized":False})

@@ -2675,6 +2675,50 @@
           "marker": "test_retired_schedule_cannot_be_reinstalled_by_legacy_script"
         }
       ]
+    },
+    {
+      "id": "BSA-20261116-173",
+      "class": "mixed-thai-glyphs-in-malay-activity-bypassed-schema-and-triggered-real-gemini-language-fail",
+      "status": "resolved",
+      "rootCauseFamily": "genuinely-new-root-cause",
+      "relatedIncidentIds": [
+        "BSA-20261116-172",
+        "BSA-20261115-168"
+      ],
+      "noveltyExplanation": "Earlier recovery cases concerned transport, scheduler advance and immutable provider request identity. Actual Section 9.2 independent Gemini physics+semantics reviewers instead agreed on trilingualMeaning FAIL caused by two Thai Unicode characters inserted into a Malay learner prompt. Previous package structural validation did not check locale/script integrity; the review could not auto-repair safely or adopt a versioned candidate without changing frozen review evidence. This is a distinct malformed generated-text and curriculum integrity failure, not a provider capacity problem.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/v3_locale_script_integrity.py",
+        "triggerMarker": "def script_findings(",
+        "remedyMarker": "_DISALLOWED_ALL = (",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "from app_generator.validation.v3_locale_script_integrity import script_findings"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_locale_repair.py",
+          "kind": "python",
+          "marker": "test_real_frozen_section92_corruption_matches_two_reviewers"
+        },
+        {
+          "path": "tests/test_v3_locale_repair.py",
+          "kind": "python",
+          "marker": "test_normal_course_dispatch_quarantines_script_before_provider"
+        },
+        {
+          "path": "tests/test_v3_locale_repair.py",
+          "kind": "python",
+          "marker": "test_exact_locale_repair_preserves_other_activities_and_en_zh"
+        },
+        {
+          "path": "tests/test_v3_yoga6_recovery_controller.py",
+          "kind": "python",
+          "marker": "test_source_free_script_quarantine_persists_across_restarts"
+        }
+      ]
     }
   ]
 }

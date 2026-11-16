@@ -36,6 +36,17 @@ def plan_v3_course_review(
             "activitiesRemaining":(
                 progress["activitiesTotal"]-progress["activitiesAssessedRows"])}
     if continue_independent and progress["scopeSource"]=="FROZEN_CANDIDATE_MANIFEST":
+        # BSA-20261116-173: inspect language script integrity BEFORE paid
+        # Gemini dispatch, including every unreviewed frozen section. The
+        # original frozen package is never changed or falsely marked PASS.
+        import json
+        from app_generator.validation.v3_locale_script_integrity import script_findings
+        script_quarantined = {}
+        for section_row in progress["sectionProgress"]:
+            package = chapter_dir / section_row["section"] / "package.json"
+            findings = script_findings(json.loads(package.read_text(encoding="utf-8")))
+            if findings:
+                script_quarantined[section_row["section"]] = len(findings)
         # BSA-20261114-165: isolate genuine provider/academic faults at the
         # section boundary. Never replay an uncertain activity or change its
         # immutable aggregate. Other frozen sections may be reviewed without
@@ -45,7 +56,8 @@ def plan_v3_course_review(
             if (row["unreconciledRoleClaims"] > 0
                 or row["modelUncertainActivities"] > 0
                 or row["modelRepairRequiredActivities"] > 0
-                or row["reviewerRequestsSkippedUnsent"] > 0)
+                or row["reviewerRequestsSkippedUnsent"] > 0
+                or row["section"] in script_quarantined)
         ]
         eligible = [
             row for row in progress["sectionProgress"]
@@ -53,6 +65,7 @@ def plan_v3_course_review(
                 and row["activitiesAssessedRows"] < row["activitiesTotal"])
         ]
         result["quarantinedSections"] = quarantined
+        result["scriptQuarantinedSections"] = script_quarantined
         result["independentContinuation"] = True
         # The per-package run lock is global to live request ownership.
         # Do not begin another section while an earlier review process may
@@ -82,7 +95,7 @@ def plan_v3_course_review(
         elif quarantined:
             result["dispatchStatus"] = (
                 "STOP_VERSIONED_CONTENT_REPAIR_REQUIRED" if
-                progress["modelRepairRequiredActivities"] else
+                (progress["modelRepairRequiredActivities"] or script_quarantined) else
                 "STOP_UNRECONCILED_MODEL_REVIEW"
             )
         elif progress["activitiesFullyModelReviewed"] == progress["activitiesTotal"]:

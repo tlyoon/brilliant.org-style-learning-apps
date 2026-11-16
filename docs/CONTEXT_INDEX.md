@@ -1,5 +1,10 @@
 # Context index
 
+## 16 Nov 2026 — BSA-173 actual Gemini translation FAIL + private versioned correction
+
+The real two-Gemini reviewers of Section 9.2 activity 14 (act-int-iso-05) both flagged Thai U+0E40/U+0E25 inadvertently inserted in a Malay sentence, while other dimensions passed. Normal V3 course planning now scans localized text for foreign-script corruption BEFORE paid dispatch, quarantines affected sections and persists source-free counts to the Yoga 6 recovery status without preventing independent Section 9.5. A hash-addressed private Section 9.2 revision of the original 18-activity package changes seven Malay fields (eight substitutions), retains unchanged original SHA/evidence, and passes existing full structural validation with zero script findings. NEW model review is still pending; no PASS is inferred. See docs/V3_LOCALE_REPAIR_AND_ACCEPTANCE_GAP_20261116.md and registry BSA-20261116-173.
+
+
 ## New binding 16 Nov 2026: no Yoga 6 scheduled task; finite automatic forward recovery
 
 Owner Decision 0043 and BSA-20261116-172 supersede Decision 0042's recurring Windows scheduled-task execution. Task BoslaYoga6V3Recovery was disabled, unregistered and verified absent on YOGA6; installer refuses -Install. The EXISTING normal scripts/run_v3_yoga6_recovery_worker.py --auto-advance path now invokes a 1-6 activity finite recovery controller with both explicit execute and text-transfer authorization, immutable per-role QA/claims, crash-safe source-free atomic checkpoint, and automatic next-eligible-section progression. Previous ambiguous Section 9.1 or content FAIL Section 9.2 may not be declared PASS/replayed; genuinely quarantined sections can be bypassed to allow independent downstream review. Source-free 26-case stress (one Windows symlink test skipped) includes 108 simulated activities; no new paid Gemini calls or release. See docs/decisions/0043-bosla-no-scheduler-forward-progress.md. Genuine read-only progress at owner instruction: 52/108 assessed, 50 consensus PASS, next Section 9.5.
