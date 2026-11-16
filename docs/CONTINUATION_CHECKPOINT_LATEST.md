@@ -1,5 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
+> 16 NOV 2026 — OWNER v6.0 CONTRACT BSA-177: The normal Yoga6 V3 worker now consults the persistent recurrence registry instead of directly choosing a hardcoded Section9.2 fix. New v3_recovery_policy validates known incident status and exact allowlisted handler, writes checksum-protected private state with trigger/remedy IDs, candidate identity, no paid retry allowance and no publication right, and hands control back to the existing bounded auto-advance dispatcher. Tests cover known/unknown/retired remedies, tampered state, failed repair with independent work, simulated crash after recovery and immediate next-eligible activity on a newly authorized process restart. Real Yoga6 source-free run persisted BSA173 -> BSA174 policy revision1, Section9.5 next, 52/108 assessed and 50 genuine model PASS unchanged. No new paid Gemini call, no Windows task, no merger/release. Full 108/108 and fresh revised candidate QA remain open. See docs/V6_RUNTIME_RECOVERY_REGISTRY_MILESTONE_20261116.md and BSA-177.
+
+
 > 16 NOV 2026 BSA-176 CROSS-PLATFORM FIX: Actions run #714 failed the new BSA-174 auto-repair tests because the Windows original CRLF SHA differs from Linux LF checkout SHA. Prior BSA-20261107-127 already solved frozen Git blob + archival SHA EOL-equivalence; normal v3_auto_repair now reuses that exact validator with strict mixed-EOL rejection and stores the local actual digest separately from the archival identity. Two portability negative/positive tests added; no paid model replay, no scheduled task or release. Follow-up exact-head CI must pass before claiming closure.
 
 

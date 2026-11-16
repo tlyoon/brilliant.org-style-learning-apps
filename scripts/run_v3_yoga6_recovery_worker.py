@@ -84,8 +84,8 @@ def main(argv: list[str] | None = None) -> int:
             from app_generator.runtime.v3_forward_progress import (
                 advance_until_boundary,
             )
-            from app_generator.runtime.v3_auto_repair import (
-                stage_known_language_repair,
+            from app_generator.runtime.v3_recovery_policy import (
+                apply_registered_recovery,
             )
             def read_plan():
                 return plan_v3_course_review(
@@ -103,7 +103,7 @@ def main(argv: list[str] | None = None) -> int:
                 transfer_authorized=args.allow_generated_text_transfer,
                 max_activities=args.max_forward_activities,
                 max_elapsed_seconds=args.max_forward_seconds,
-                source_free_recovery=lambda plan: stage_known_language_repair(
+                source_free_recovery=lambda plan: apply_registered_recovery(
                     COURSE, private, plan))
             _print(report)
             return 0 if report["status"] in (

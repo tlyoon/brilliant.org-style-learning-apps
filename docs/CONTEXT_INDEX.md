@@ -1,5 +1,10 @@
 # Context index
 
+## 16 November 2026 — v6 registered recovery policy (BSA-177)
+
+Owner invoked auto_cont_dev_prompt_v6.0.md. Existing 103 incident registry rows were passive at runtime; new app_generator/runtime/v3_recovery_policy.py is used by normal run_v3_yoga6_recovery_worker.py --auto-advance. It matches the real Section 9.2 script failure to registered BSA-173/174/175/176, verifies active handlers and the safe allowlisted implementation, writes atomic private v3-recovery-policy-state.json with exact matched trigger/remedy IDs, candidate SHA, revision, integrity and zero paid retries, then returns to the bounded next-eligible review controller. Synthetic tests verify post-repair crash/restart, retired or forged handler refusal, unknown incident classification, and independent work continuation without false QA PASS. Real Yoga6 source-free recovery receipt revision 1 confirms BSA-173 -> BSA-174, next Section 9.5, no paid request. Details: docs/V6_RUNTIME_RECOVERY_REGISTRY_MILESTONE_20261116.md and incident BSA-20261116-177. No scheduler reinstated; full course still pending scientific QA.
+
+
 ## 16 Nov 2026 - BSA-176 cross-platform frozen source identity reuse
 
 GitHub Actions run #714 caught the new auto-repair raw Windows SHA check rejecting an otherwise genuine normalized LF checkout. The original archived CRLF SHA cfe7bab8... and Git blob SHA 779deb4... are enforced through the existing BSA-127 frozen-identity validator; local raw digest may be 327c9ae8... on Linux only if whole-file EOL equivalence and original blob/length agree. Mixed EOL/modified content fails closed. Mandatory new portability tests under tests/test_v3_auto_repair.py; follow-up exact-head CI required. See BSA-20261116-176 and docs/V3_AUTOMATIC_REPAIR_FORWARD_HANDOFF_20261116.md.

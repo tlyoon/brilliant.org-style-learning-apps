@@ -2736,8 +2736,8 @@
         "remedyMarker": "store_private_repair(destination, updated, receipt)",
         "normalEntryPoints": [
           {
-            "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "from app_generator.runtime.v3_auto_repair import ("
+            "path": "app_generator/runtime/v3_recovery_policy.py",
+            "marker": "from app_generator.runtime.v3_auto_repair import stage_known_language_repair"
           }
         ]
       },
@@ -2825,8 +2825,8 @@
         "remedyMarker": "_verify_frozen_package_identity(",
         "normalEntryPoints": [
           {
-            "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "from app_generator.runtime.v3_auto_repair import ("
+            "path": "app_generator/runtime/v3_recovery_policy.py",
+            "marker": "from app_generator.runtime.v3_auto_repair import stage_known_language_repair"
           }
         ]
       },
@@ -2845,6 +2845,62 @@
           "path": "tests/test_v3_auto_repair.py",
           "kind": "python",
           "marker": "test_genuine_frozen_text_and_exact_known_repair_identity"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261116-177",
+      "class": "persistent-recovery-registry-existed-but-normal-v3-worker-did-not-consult-it",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-173",
+        "BSA-20261116-174",
+        "BSA-20261116-175",
+        "BSA-20261116-176"
+      ],
+      "differenceFromLinkedIncident": "The original locale content FAIL and exact-hash handler were solved by BSA-173/174 and crash/EOL integrity by BSA-175/176. Yet normal V3 --auto-advance invoked a single hardcoded handler directly, never checked whether its incident metadata was registered or retired, and lacked a durable source-free incident/remedy decision record. This is a separate failure of v6 persistent recovery intelligence and auditability.",
+      "lastValidatedDate": "2026-11-16",
+      "applicableEnvironments": [
+        "Yoga6 Windows native Python",
+        "GitHub Actions Linux test runners"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_recovery_policy.py",
+        "triggerMarker": "def apply_registered_recovery(",
+        "remedyMarker": "persist_policy_state(private_root, outcome)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_recovery_policy import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_recovery_policy_v6.py",
+          "kind": "python",
+          "marker": "test_known_signature_selects_verified_handler_and_atomic_audit"
+        },
+        {
+          "path": "tests/test_v3_recovery_policy_v6.py",
+          "kind": "python",
+          "marker": "test_retired_remedy_disabled_without_disabling_other_sections"
+        },
+        {
+          "path": "tests/test_v3_recovery_policy_v6.py",
+          "kind": "python",
+          "marker": "test_v6_end_to_end_known_repair_then_auto_next_eligible_stage"
+        },
+        {
+          "path": "tests/test_v3_recovery_policy_v6.py",
+          "kind": "python",
+          "marker": "test_v6_crash_after_recovery_before_next_stage_then_restart"
+        },
+        {
+          "path": "tests/test_v3_recovery_policy_v6.py",
+          "kind": "python",
+          "marker": "test_tampered_audit_blocks_future_work_even_if_issue_disappears"
         }
       ]
     }
