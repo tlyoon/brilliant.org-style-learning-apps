@@ -2903,6 +2903,56 @@
           "marker": "test_tampered_audit_blocks_future_work_even_if_issue_disappears"
         }
       ]
+    },
+    {
+      "id": "BSA-20261116-178",
+      "class": "verified-v3-private-repair-staged-without-durable-independent-review-handoff",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-173",
+        "BSA-20261116-174",
+        "BSA-20261116-177"
+      ],
+      "differenceFromLinkedIncident": "BSA-173/174 created an immutable private correction and BSA-177 added persistent registry-backed selection, but neither made an exact-identity two-reviewer QA handoff. The same corrected content could be repeatedly staged without preparing durable independent physics/semantics role targets. The new verified source-free handoff automatically follows exact candidate staging in the normal registry-selected recovery path and is explicitly NOT scientific approval.",
+      "lastValidatedDate": "2026-11-16",
+      "applicableEnvironments": [
+        "Yoga6 Windows source-free",
+        "GitHub Actions Linux source-free"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_repair_review_handoff.py",
+        "triggerMarker": "def stage_changed_activity_review_handoff(",
+        "remedyMarker": "stage.rename(final)",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_recovery_policy.py",
+            "marker": "from app_generator.runtime.v3_repair_review_handoff import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_repair_review_handoff.py",
+          "kind": "python",
+          "marker": "test_real_archived_parent_prepares_two_independent_roles_not_pass"
+        },
+        {
+          "path": "tests/test_v3_repair_review_handoff.py",
+          "kind": "python",
+          "marker": "test_crash_before_atomic_promotion_then_restart"
+        },
+        {
+          "path": "tests/test_v3_repair_review_handoff.py",
+          "kind": "python",
+          "marker": "test_tampered_private_repair_receipt_rejected"
+        },
+        {
+          "path": "tests/test_v3_repair_review_handoff.py",
+          "kind": "python",
+          "marker": "test_other_whole_file_line_endings_same_content_same_handoff"
+        }
+      ]
     }
   ]
 }

@@ -1,5 +1,10 @@
 # Context index
 
+## 16 November 2026 — BSA-178 independent reviewer QA handoff staged
+
+The verified BSA-173/174 source-free corrected Section9.2 private package now automatically advances through a new normal-path, immutable two-role QA handoff (app_generator/runtime/v3_repair_review_handoff.py) called by v3_recovery_policy before next eligible original Section9.5 review. Real Yoga6 source-free output has handoff SHA 88a636b5df8f837b1a0384b3db8fccd4ba80c9eae79701be09611ce170c71758 with physics and semantics role row identities, zero real model responses, no versioned course admission and publicationAuthorized=false. Parent, candidate, receipt and Greek/Malay/Chinese Unicode are strictly validated; tamper/crash/restart tests cover safe recovery. See docs/V6_RUNTIME_RECOVERY_REGISTRY_MILESTONE_20261116.md and BSA-178. No paid model request, scheduled task or public release.
+
+
 ## 16 November 2026 — v6 registered recovery policy (BSA-177)
 
 Owner invoked auto_cont_dev_prompt_v6.0.md. Existing 103 incident registry rows were passive at runtime; new app_generator/runtime/v3_recovery_policy.py is used by normal run_v3_yoga6_recovery_worker.py --auto-advance. It matches the real Section 9.2 script failure to registered BSA-173/174/175/176, verifies active handlers and the safe allowlisted implementation, writes atomic private v3-recovery-policy-state.json with exact matched trigger/remedy IDs, candidate SHA, revision, integrity and zero paid retries, then returns to the bounded next-eligible review controller. Synthetic tests verify post-repair crash/restart, retired or forged handler refusal, unknown incident classification, and independent work continuation without false QA PASS. Real Yoga6 source-free recovery receipt revision 1 confirms BSA-173 -> BSA-174, next Section 9.5, no paid request. Details: docs/V6_RUNTIME_RECOVERY_REGISTRY_MILESTONE_20261116.md and incident BSA-20261116-177. No scheduler reinstated; full course still pending scientific QA.

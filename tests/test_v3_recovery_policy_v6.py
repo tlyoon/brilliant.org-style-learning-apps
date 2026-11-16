@@ -53,6 +53,19 @@ class RegistryRecoveryV6Tests(unittest.TestCase):
         full["incidents"] = [x for x in full["incidents"] if x["id"] in _REFS]
         self.data = full
         self.write_registry()
+        # Tests here isolate registry selection; independent exact-candidate
+        # source-free handoff logic has its own adversarial module.
+        handoff = patch(
+            "app_generator.runtime.v3_recovery_policy.stage_changed_activity_review_handoff",
+            return_value={
+                "handoffStatus": "PENDING_AUTHORIZED_TWO_GEMINI_REVIEW",
+                "handoffSha256": "a"*64,
+                "actualGeminiResponses": 0,
+                "wholeCourseScopeAccepted": False,
+                "publicationAuthorized": False,
+            })
+        handoff.start()
+        self.addCleanup(handoff.stop)
 
     def write_registry(self):
         self.registry.write_text(

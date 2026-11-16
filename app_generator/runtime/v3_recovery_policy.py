@@ -15,6 +15,9 @@ import tempfile
 from typing import Any
 
 from app_generator.runtime.v3_auto_repair import stage_known_language_repair
+from app_generator.runtime.v3_repair_review_handoff import (
+    stage_changed_activity_review_handoff,
+)
 
 _DECISION_NAME = "v3-recovery-policy-state.json"
 _SCHEMA = 1
@@ -203,6 +206,17 @@ def apply_registered_recovery(
             or outcome.get("archivalParentSha256") !=
             "cfe7bab820aa01ce71bd7a6a334c742101ebd10d8895cccd5f05d599030f971c"):
         raise ValueError("V3_POLICY_HANDLER_RESULT_NOT_VERIFIED")
+    if outcome["repairStaged"] is True:
+        # V6 next independent source-free stage: prepare the two-role,
+        # exact-package QA handoff. No paid Gemini call or model PASS.
+        handoff = stage_changed_activity_review_handoff(
+            course_dir, private_root, outcome["candidateSha256"])
+        if (handoff.get("handoffStatus") !=
+                "PENDING_AUTHORIZED_TWO_GEMINI_REVIEW"
+                or handoff.get("actualGeminiResponses") != 0
+                or handoff.get("wholeCourseScopeAccepted") is not False):
+            raise ValueError("V3_POLICY_UNVERIFIED_QA_HANDOFF")
+        outcome["reviewHandoffSha256"] = handoff["handoffSha256"]
     outcome["triggerIncident"] = _TRIGGER
     outcome["remedyIncident"] = _REMEDY
     persist_policy_state(private_root, outcome)
