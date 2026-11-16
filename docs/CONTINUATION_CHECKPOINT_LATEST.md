@@ -1,5 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
+> 16 NOV 2026 BSA-176 CROSS-PLATFORM FIX: Actions run #714 failed the new BSA-174 auto-repair tests because the Windows original CRLF SHA differs from Linux LF checkout SHA. Prior BSA-20261107-127 already solved frozen Git blob + archival SHA EOL-equivalence; normal v3_auto_repair now reuses that exact validator with strict mixed-EOL rejection and stores the local actual digest separately from the archival identity. Two portability negative/positive tests added; no paid model replay, no scheduled task or release. Follow-up exact-head CI must pass before claiming closure.
+
+
 > BSA-20261116-175: Additional crash-recovery hardening for the normal source-free repair stage. The former two-file write could leave an incomplete final SHA candidate directory on power loss; v3_versioned_text_repair.store_private_repair now fsyncs both files in a hidden same-volume staging directory and only then atomically renames it to the final immutable identity. Orphaned precommit folders do not block restart; tampered final candidates still fail closed. Tests inject an interrupted commit and an orphaned partial stage. See BSA-175 and docs/V3_AUTOMATIC_REPAIR_FORWARD_HANDOFF_20261116.md. No new paid reviewer request or release.
 
 

@@ -1,5 +1,10 @@
 # Context index
 
+## 16 Nov 2026 - BSA-176 cross-platform frozen source identity reuse
+
+GitHub Actions run #714 caught the new auto-repair raw Windows SHA check rejecting an otherwise genuine normalized LF checkout. The original archived CRLF SHA cfe7bab8... and Git blob SHA 779deb4... are enforced through the existing BSA-127 frozen-identity validator; local raw digest may be 327c9ae8... on Linux only if whole-file EOL equivalence and original blob/length agree. Mixed EOL/modified content fails closed. Mandatory new portability tests under tests/test_v3_auto_repair.py; follow-up exact-head CI required. See BSA-20261116-176 and docs/V3_AUTOMATIC_REPAIR_FORWARD_HANDOFF_20261116.md.
+
+
 ## 16 November 2026 - BSA-174 normal in-process repair-to-next-review handoff
 
 The previous BSA-173 private language correction was staged by a one-off command. The normal run_v3_yoga6_recovery_worker.py --auto-advance entrypoint now executes the source-free v3_auto_repair stage through the existing bounded forward-progress controller. It checks original frozen Section 9.2 package SHA, exact activity/glyphs, two independent Gemini API reviewer FAIL records and expected corrected candidate SHA, idempotently stages the private receipt and immediately advances to the next eligible Section 9.* activity under the SAME explicitly authorized invocation. No old model PASS, no paid request without flags, no Section 9.1 replay, no schedule, and no publication are introduced. See docs/V3_AUTOMATIC_REPAIR_FORWARD_HANDOFF_20261116.md and BSA-20261116-174.

@@ -2807,6 +2807,46 @@
           "marker": "test_private_store_restart_safe_no_overwrite"
         }
       ]
+    },
+    {
+      "id": "BSA-20261116-176",
+      "class": "auto-repair-rejected-cross-platform-lf-git-checkout-of-approved-crlf-package",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261107-127",
+        "BSA-20261116-174",
+        "BSA-20261116-175"
+      ],
+      "differenceFromLinkedIncident": "BSA-20261107-127 had already established strict archive SHA and Git blob identity for Windows CRLF vs Linux LF packaging in V3 course acceptance. New BSA-174 automatic repair reintroduced raw Windows SHA comparison and rejected the source-equivalent Linux GitHub Actions checkout, causing 3 failure and 2 error results on CI run 714 despite all Yoga 6 source-free checks passing. The normal repair now invokes the established exact-Git-blob frozen-source verification rather than accepting modified content or unverified alternate hashes.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_auto_repair.py",
+        "triggerMarker": "def _approved_parent_bytes(",
+        "remedyMarker": "_verify_frozen_package_identity(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_auto_repair import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_auto_repair.py",
+          "kind": "python",
+          "marker": "test_only_whole_file_lf_crlf_archival_equivalence"
+        },
+        {
+          "path": "tests/test_v3_auto_repair.py",
+          "kind": "python",
+          "marker": "test_mixed_line_endings_are_not_a_valid_frozen_candidate"
+        },
+        {
+          "path": "tests/test_v3_auto_repair.py",
+          "kind": "python",
+          "marker": "test_genuine_frozen_text_and_exact_known_repair_identity"
+        }
+      ]
     }
   ]
 }

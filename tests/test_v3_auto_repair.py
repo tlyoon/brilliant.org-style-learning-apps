@@ -12,7 +12,8 @@ import tempfile
 import unittest
 
 from app_generator.runtime.v3_auto_repair import (
-    _PARENT, _CANDIDATE, _confirmed_failure, stage_known_language_repair,
+    _PARENT, _CANDIDATE, _approved_parent_bytes,
+    _confirmed_failure, stage_known_language_repair,
 )
 from app_generator.validation.autonomous_completion import package_identity
 
@@ -67,10 +68,11 @@ class AutoRepairTests(unittest.TestCase):
             json.dumps(synthetic_assessment(self.original)), encoding="utf8")
 
     def test_genuine_frozen_text_and_exact_known_repair_identity(self):
-        self.assertEqual(sha256(self.original).hexdigest(), _PARENT)
+        self.assertTrue(_approved_parent_bytes(self.original))
         result = stage_known_language_repair(self.course, self.private, self.plan)
         self.assertTrue(result["repairStaged"])
-        self.assertEqual(result["parentSha256"], _PARENT)
+        self.assertEqual(result["parentSha256"], sha256(self.original).hexdigest())
+        self.assertEqual(result["archivalParentSha256"], _PARENT)
         self.assertEqual(result["candidateSha256"], _CANDIDATE)
         self.assertFalse(result["publicationAuthorized"])
         self.assertEqual(self.file.read_bytes(), self.original)
@@ -150,6 +152,34 @@ class AutoRepairTests(unittest.TestCase):
         self.assertFalse(stage_known_language_repair(
             self.course, self.private, self.plan)["repairStaged"])
         self.assertFalse((self.private / "repair-proposals").exists())
+
+    def test_only_whole_file_lf_crlf_archival_equivalence(self):
+        normalized = self.original.replace(b"\r\n", b"\n")
+        other = (normalized if normalized != self.original else
+                 normalized.replace(b"\n", b"\r\n"))
+        self.assertNotEqual(other, self.original)
+        self.assertTrue(_approved_parent_bytes(other))
+        self.file.write_bytes(other)
+        digest = sha256(other).hexdigest()
+        record = (self.private / ("v3-generated-" + digest) /
+                  "batches" / ("v3-assessment-" + digest + ".json"))
+        record.parent.mkdir(parents=True, exist_ok=True)
+        record.write_text(json.dumps(synthetic_assessment(other)), encoding="utf8")
+        result = stage_known_language_repair(self.course, self.private, self.plan)
+        self.assertTrue(result["repairStaged"])
+        self.assertEqual(result["parentSha256"], digest)
+        self.assertEqual(result["archivalParentSha256"], _PARENT)
+        self.assertEqual(result["candidateSha256"], _CANDIDATE)
+
+    def test_mixed_line_endings_are_not_a_valid_frozen_candidate(self):
+        raw = self.original
+        edited = (raw.replace(b"\r\n", b"\n", 1)
+                  if b"\r\n" in raw else raw.replace(b"\n", b"\r\n", 1))
+        self.file.write_bytes(edited)
+        self.assertFalse(_approved_parent_bytes(edited))
+        result = stage_known_language_repair(self.course, self.private, self.plan)
+        self.assertEqual(result["repairStatus"], "STOP_UNRECOGNIZED_PARENT")
+        self.assertFalse(result["repairStaged"])
 
 if __name__ == "__main__":
     unittest.main()

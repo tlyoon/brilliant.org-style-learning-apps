@@ -12,12 +12,14 @@ from pathlib import Path
 from typing import Any
 
 from app_generator.validation.autonomous_completion import package_identity
+from app_generator.validation.v3_course_readiness import _verify_frozen_package_identity
 from app_generator.validation.v3_locale_script_integrity import script_findings
 from app_generator.validation.v3_versioned_text_repair import (
     make_locale_repair, store_private_repair,
 )
 
 _PARENT = "cfe7bab820aa01ce71bd7a6a334c742101ebd10d8895cccd5f05d599030f971c"
+_PARENT_GIT_BLOB = "779deb4e207078f9081a9de78a14226d473f9b25"
 _CANDIDATE = "49a7f18c7cc2b7c00e0b6b23838cca1ed7fe52262384e0c26bbc8360fa3e9174"
 _SECTION = "section-9-2"
 _ACTIVITY = "act-int-iso-05"
@@ -30,10 +32,25 @@ _DIMS = ("physicsAnswer", "trilingualMeaning",
          "visualValue", "accessibleLearnerExperience")
 
 
+def _approved_parent_bytes(raw: bytes) -> bool:
+    """Reuse BSA-20261107-127's verified Windows-CRLF/Linux-LF identity.
+
+    Exact archive SHA and Git blob are BOTH required. This is NOT a new
+    review candidate and no mixed/partial line-ending changes are accepted.
+    """
+    try:
+        digest, activities = package_identity(raw)
+        _verify_frozen_package_identity(
+            raw, digest, activities, (_PARENT, 18, _PARENT_GIT_BLOB))
+        return True
+    except (ValueError, KeyError, UnicodeError):
+        return False
+
+
 def _confirmed_failure(private_root: Path, raw: bytes) -> bool:
     """Require the genuine immutable two-reviewer FAIL, not a report count."""
     digest, activities = package_identity(raw)
-    if digest != _PARENT or len(activities) != 18:
+    if not _approved_parent_bytes(raw) or len(activities) != 18:
         return False
     index = next((i for i, a in enumerate(activities)
                   if a["id"] == _ACTIVITY), None)
@@ -106,7 +123,7 @@ def stage_known_language_repair(
         raise ValueError("V3_AUTOREPAIR_SOURCE_UNSAFE")
     raw = source.read_bytes()
     digest = sha256(raw).hexdigest()
-    if digest != _PARENT:
+    if not _approved_parent_bytes(raw):
         return {"repairStatus": "STOP_UNRECOGNIZED_PARENT", "repairStaged": False}
     if not _confirmed_failure(private_root, raw):
         return {"repairStatus": "STOP_NO_GENUINE_REVIEW_EVIDENCE",
@@ -135,6 +152,7 @@ def stage_known_language_repair(
         "repairStatus": "PRIVATE_REPAIR_STAGED_PENDING_TWO_GEMINI_REVIEWS",
         "repairStaged": True,
         "parentSha256": digest,
+        "archivalParentSha256": _PARENT,
         "candidateSha256": receipt["candidatePackageSha256"],
         "publicationAuthorized": False,
     }
