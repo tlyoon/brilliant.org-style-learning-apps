@@ -19,6 +19,9 @@ from app_generator.runtime.v3_auto_repair import (
 from app_generator.runtime.v3_isolated_repair_review import (
     stage_isolated_review_slice, verify_isolated_review_slice,
 )
+from app_generator.runtime.v3_repair_review_handoff import (
+    stage_changed_activity_review_handoff,
+)
 from app_generator.validation.autonomous_completion import (
     package_identity, make_prompt,
 )
@@ -122,6 +125,11 @@ class IsolatedReviewSliceTests(unittest.TestCase):
             self.stage()
 
     def test_partial_write_crash_does_not_publish_candidate(self):
+        # Stage the PRIOR handoff before injecting the rename failure.
+        # Otherwise the injected crash might be testing the handoff rather
+        # than the NEW slice's final atomic promotion.
+        stage_changed_activity_review_handoff(
+            self.course, self.private, _CANDIDATE)
         with patch("app_generator.runtime.v3_isolated_repair_review.Path.rename",
                    side_effect=OSError("synthetic crash before promotion")):
             with self.assertRaisesRegex(OSError, "synthetic crash"):
@@ -183,6 +191,41 @@ class IsolatedReviewSliceTests(unittest.TestCase):
                                       max_activities=1)
         self.assertEqual((a.calls, b.calls), (0, 0))
 
+
+    def test_ambiguous_synthetic_provider_call_never_replayed_on_restart(self):
+        staged = self.stage()
+        raw = verify_isolated_review_slice(
+            self.course, self.private, _CANDIDATE,
+            staged["reviewSliceSha256"])
+        class TimedOutConversation(FakeGeminiConversation):
+            def ask(self, prompt, *, stage):
+                self.calls += 1
+                raise TimeoutError("SYNTHETIC uncertain server response")
+        broken, other = TimedOutConversation(), FakeGeminiConversation()
+        first_pair = (
+            ReviewerSession("v3-gemini-api-physics", "SYNTHETIC-first-physics",
+                            broken, provider_id="gemini_api"),
+            ReviewerSession("v3-gemini-api-semantics", "SYNTHETIC-first-semantics",
+                            other, provider_id="gemini_api"),
+        )
+        initial = advance_v3_generated_text(
+            raw, first_pair, private_root=self.private,
+            generated_content_transfer_allowed=True, max_activities=1)
+        self.assertEqual(initial["modelUncertainActivities"], 1)
+        self.assertEqual(broken.calls, 1)
+        fresh1, fresh2 = FakeGeminiConversation(), FakeGeminiConversation()
+        second_pair = (
+            ReviewerSession("v3-gemini-api-physics", "SYNTHETIC-restart-physics",
+                            fresh1, provider_id="gemini_api"),
+            ReviewerSession("v3-gemini-api-semantics", "SYNTHETIC-restart-semantics",
+                            fresh2, provider_id="gemini_api"),
+        )
+        reread = advance_v3_generated_text(
+            raw, second_pair, private_root=self.private,
+            generated_content_transfer_allowed=True, max_activities=1)
+        self.assertEqual((fresh1.calls, fresh2.calls), (0, 0))
+        self.assertEqual(reread["modelUncertainActivities"], 1)
+        self.assertEqual(self.source.read_bytes(), self.parent)
 
 if __name__ == "__main__":
     unittest.main()

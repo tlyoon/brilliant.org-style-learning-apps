@@ -3003,6 +3003,11 @@
           "marker": "test_partial_write_crash_does_not_publish_candidate"
         },
         {
+          "path": "tests/test_v3_isolated_repair_review.py",
+          "kind": "python",
+          "marker": "test_ambiguous_synthetic_provider_call_never_replayed_on_restart"
+        },
+        {
           "path": "tests/test_v3_revised_activity_cli.py",
           "kind": "python",
           "marker": "test_paid_execution_without_explicit_transfer_flag_never_stages"
