@@ -79,6 +79,16 @@ class RegistryRecoveryV6Tests(unittest.TestCase):
             })
         slice_preflight.start()
         self.addCleanup(slice_preflight.stop)
+        proposal = patch(
+            "app_generator.runtime.v3_recovery_policy.prepare_versioned_course_proposal",
+            return_value={
+                "status": "VERSIONED_COURSE_PROPOSAL_STAGED_NOT_ADMITTED",
+                "proposalSha256": "c"*64,
+                "versionedScopeAdmitted": False,
+                "publicationAuthorized": False,
+            })
+        proposal.start()
+        self.addCleanup(proposal.stop)
 
     def write_registry(self):
         self.registry.write_text(

@@ -3023,6 +3023,63 @@
           "marker": "test_corrupt_prior_evidence_stops_not_fallback_to_fresh_model"
         }
       ]
+    },
+    {
+      "id": "BSA-20261117-180",
+      "class": "corrected-one-activity-review-handoff-lacked-safe-versioned-108-course-acceptance-proposal",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-173",
+        "BSA-20261116-174",
+        "BSA-20261116-177",
+        "BSA-20261116-178",
+        "BSA-20261116-179"
+      ],
+      "differenceFromLinkedIncident": "BSA-179 correctly isolated one changed Section 9.2 activity for a fresh genuine reviewer call, but the normal V3 workflow had no trustworthy course-wide proposal that linked the corrected 18-item package to the unchanged 5 other sections and 50 existing two-Gemini original PASS records. A naive overwrite would violate immutable source history and a naive fresh whole-course review would duplicate all verified work. The new normal-path mechanism creates an immutable SHA-bound and explicitly unadmitted 108-activity proposal, with exact digest-bearing potential reuse claims for unchanged content and a live-updating corrected-activity evidence gate that never conflates an unreviewed patch with real consensus.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga6 Windows source-free acceptance",
+        "GitHub Actions Linux synthetic regression"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_versioned_acceptance_scope.py",
+        "triggerMarker": "def prepare_versioned_course_proposal(",
+        "remedyMarker": "stage.rename(final)",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_recovery_policy.py",
+            "marker": "from app_generator.runtime.v3_versioned_acceptance_scope import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_versioned_acceptance_scope.py",
+          "kind": "python",
+          "marker": "test_six_section_proposal_pins_only_changed_one_activity"
+        },
+        {
+          "path": "tests/test_v3_versioned_acceptance_scope.py",
+          "kind": "python",
+          "marker": "test_crash_before_proposal_promotion_restarts_cleanly"
+        },
+        {
+          "path": "tests/test_v3_versioned_acceptance_scope.py",
+          "kind": "python",
+          "marker": "test_forged_private_review_does_not_promote_inherited_passes"
+        },
+        {
+          "path": "tests/test_v3_versioned_acceptance_scope.py",
+          "kind": "python",
+          "marker": "test_fresh_two_context_synthetic_model_pass_updates_only_proposal"
+        },
+        {
+          "path": "tests/test_v3_versioned_acceptance_scope.py",
+          "kind": "python",
+          "marker": "test_synthetic_revised_language_fail_preserved_as_not_accepted"
+        }
+      ]
     }
   ]
 }

@@ -21,6 +21,9 @@ from app_generator.runtime.v3_repair_review_handoff import (
 from app_generator.runtime.v3_isolated_repair_review import (
     stage_isolated_review_slice,
 )
+from app_generator.runtime.v3_versioned_acceptance_scope import (
+    prepare_versioned_course_proposal,
+)
 
 _DECISION_NAME = "v3-recovery-policy-state.json"
 _SCHEMA = 1
@@ -235,6 +238,18 @@ def apply_registered_recovery(
                 or isolated.get("publicationAuthorized") is not False):
             raise ValueError("V3_POLICY_INVALID_REVIEW_SLICE")
         outcome["reviewSliceSha256"] = isolated["reviewSliceSha256"]
+        # A corrected course must first have an evidence-bound version
+        # proposal, NOT an automatically admitted/released course.
+        # Reuse original genuine PASS only for exactly unchanged content.
+        repo = course_dir.resolve().parents[1]
+        proposal = prepare_versioned_course_proposal(
+            course_dir, repo, private_root)
+        if (proposal.get("status") !=
+                "VERSIONED_COURSE_PROPOSAL_STAGED_NOT_ADMITTED"
+                or proposal.get("versionedScopeAdmitted") is not False
+                or proposal.get("publicationAuthorized") is not False):
+            raise ValueError("V3_POLICY_UNVERIFIED_COURSE_PROPOSAL")
+        outcome["versionedProposalSha256"] = proposal["proposalSha256"]
     outcome["triggerIncident"] = _TRIGGER
     outcome["remedyIncident"] = _REMEDY
     persist_policy_state(private_root, outcome)
