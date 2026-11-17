@@ -3203,6 +3203,58 @@
           "marker": "test_authorization_tamper_never_enables_batch_or_release"
         }
       ]
+    },
+    {
+      "id": "BSA-20261117-183",
+      "class": "real-gemini-native-v3-section96-physics-review-ambiguous-valueerror-no-attributable-provider-response",
+      "status": "active",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261104-108",
+        "BSA-20261114-165",
+        "BSA-20261117-181",
+        "BSA-20261117-182"
+      ],
+      "differenceFromLinkedIncident": "Historical BSA-165 quarantined provider ServerError uncertainty in Section9.1. On 17 Nov 2026 genuine Section9.6 activity mcq-mod-bat-cut-mass-comparison produced a different physics reviewer AMBIGUOUS ValueError with independent semantics reviewer COMPLETE. Neither attributable provider job identity nor raw response was saved. There is insufficient evidence to distinguish the SDK, JSON decoding or strict rubric as the origin, and the older source cannot be replayed. Existing section no-replay quarantine correctly stopped review, but no other Section9.3-9.6 original activity remains eligible under the current paid contract.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga6 Windows real Gemini API V3 review",
+        "Source-free historical no-replay regression tests"
+      ],
+      "nextAction": "Preserve immutable old physics and semantics role claims and the original review aggregate. Reconcile only a verifiable original provider response if later attributable; otherwise obtain separate owner authorization for a NEW, exact-versioned Section9.6 replacement with fresh independent Gemini two-role QA and new course admission. Do not retry the submitted old role, broaden the paid contract, invent a PASS or publish.",
+      "currentEvidence": {
+        "originalTotal": 108,
+        "originalAssessed": 75,
+        "originalFullyReviewed": 73,
+        "originalConsensusPasses": 72,
+        "originalUncertain": 2,
+        "originalRepairRequired": 1,
+        "originalNotAssessed": 33,
+        "blockedSection": "section-9-6",
+        "blockedActivityId": "mcq-mod-bat-cut-mass-comparison",
+        "blockedActivityIndex": 5,
+        "ambiguousRole": "physics",
+        "reasonClass": "ValueError",
+        "secondRole": "semantics_COMPLETE",
+        "providerJobIdPresent": false,
+        "rawResponsePresent": false,
+        "oldRequestReplayPermitted": false,
+        "correctedCourseProposalSha256": "3b4a3dfcda78c673028646f0cf0e9d7e86e23af9498dcb008438dba66c422a82",
+        "publicationAuthorized": false
+      },
+      "existingHistoricalRemedy": {
+        "runtimePaths": [
+          "app_generator/validation/autonomous_completion.py",
+          "app_generator/runtime/v3_course_review.py",
+          "app_generator/runtime/v3_forward_progress.py"
+        ],
+        "mode": "NO_REPLAY_SECTION_QUARANTINE_AND_FINITE_STOP",
+        "regressionPaths": [
+          "tests/test_v3_native_gemini_stress.py",
+          "tests/test_v3_server_error_recovery.py",
+          "tests/test_v3_forward_progress.py"
+        ]
+      }
     }
   ]
 }
