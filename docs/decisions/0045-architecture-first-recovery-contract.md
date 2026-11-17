@@ -24,3 +24,7 @@ Repeated isolated blocker fixes and green test counts do not establish an autono
 - `tests/test_v3_response_recovery_architecture.py`: executable source-free normal-path positive/negative controls
 
 **Status:** Code-integrated design, subject to full source-free regression and exact-head hosted CI. No new genuine provider response is fabricated and the earlier Section9.6 ambiguity remains unresolved. Treat code readiness and paid V3 course acceptance as distinct.
+
+## Initial hosted CI compatibility discovery
+
+Hosted exact-head CI #726 on commit 970e813 correctly rejected an old three-batch, 18-activity test which supplied an in-memory stage-only Checkpoint. The new permanent contract mandates durable exact response capture, so a stage-only fake is no longer sufficient to prove genuine completion. Repaired the **test fixture** to use the existing real private RunContext with fsynced response files instead of bypassing capture or relaxing the rubric; the actual 18-activity three-batch completion test passes again with six Gemini-shaped model outputs per invocation, and all 12 new architecture-specific recovery tests remain passing. The regression registry now retains this test as additional BSA-184 coverage. The initial #726 failure is not a provider error and does not change any authentic V3 records. Follow-up exact-head hosted CI is still required before the engineering milestone can be accepted.

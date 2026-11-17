@@ -3344,6 +3344,11 @@
           "path": "tests/test_v3_response_recovery_architecture.py",
           "kind": "python",
           "marker": "test_actual_model_scientific_fail_is_never_repaired_to_pass"
+        },
+        {
+          "path": "tests/test_autonomous_completion_v3.py",
+          "kind": "python",
+          "marker": "test_three_automatic_bounded_invocations_cover_all_eighteen"
         }
       ]
     }

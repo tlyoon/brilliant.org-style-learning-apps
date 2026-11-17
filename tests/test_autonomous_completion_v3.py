@@ -398,14 +398,13 @@ class AutonomousCompletionV3Tests(TestCase):
             {**template, "id":f"concept-{i}"} for i in range(1,19)
         ]
         raw=json.dumps(source,sort_keys=True,ensure_ascii=False).encode()
-        class Checkpoint:
-            def __init__(self):
-                self.rows={}
-            def load_stage(self,name):
-                return self.rows.get(name)
-            def save_stage(self,name,record):
-                self.rows[name]=json.loads(json.dumps(record))
-        cp=Checkpoint()
+        # The normal recovery architecture requires exact durable raw
+        # response bytes BEFORE local parsing. Use the genuine private
+        # checkpoint backend rather than a synthetic stage-only stub.
+        from app_generator.runtime.run_context import RunContext
+        private = tempfile.TemporaryDirectory()
+        self.addCleanup(private.cleanup)
+        cp = RunContext.create(Path(private.name), "synthetic-v3-18")
         for n in (6,12,18):
             first,second=FakeModel(),FakeModel()
             report=assess_with_models(raw,sessions(first,second),
