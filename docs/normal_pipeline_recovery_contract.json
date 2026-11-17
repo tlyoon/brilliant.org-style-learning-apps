@@ -44,12 +44,19 @@
     "newIndependentGeminiPositiveEvidenceRequiredToAdvance": true,
     "realSixSectionBrowserQAInNormalRecovery": true,
     "projectLocalPinnedBrowserSdkSelfRepair": true,
-    "browserEvidencePrivateShaBoundAndNoRelease": true
+    "browserEvidencePrivateShaBoundAndNoRelease": true,
+    "safeClientErrorStatusCapturedBeforeAggregate": true,
+    "classifiedProviderRejectionSkipsSecondNewReviewer": true,
+    "legacyClientErrorWithoutStatusStaysUnreconciled": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",
     "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
-    "RECONCILE_AMBIGUOUS_REVIEW"
+    "RECONCILE_AMBIGUOUS_REVIEW",
+    "STOP_PROVIDER_BILLING_RESTRICTED",
+    "STOP_PROVIDER_INVALID_MODEL_REQUEST",
+    "STOP_PROVIDER_MODEL_NOT_FOUND",
+    "STOP_PROVIDER_QUOTA_OR_RATE_LIMIT"
   ],
   "completionMeaning": "REAL_AUTHORIZED_EXECUTION_EVIDENCE_REQUIRED"
 }

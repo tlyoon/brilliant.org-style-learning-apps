@@ -3962,6 +3962,76 @@
           "marker": "test_no_staged_revised_course_does_not_invoke_browser"
         }
       ]
+    },
+    {
+      "id": "BSA-20261118-195",
+      "class": "actual-gemini-clienterror-cause-lost-without-safe-http-status-in-immutable-v3-reviewer-role",
+      "status": "resolved",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261114-165",
+        "BSA-20261117-183",
+        "BSA-20261117-184",
+        "BSA-20261117-191",
+        "BSA-20261118-193"
+      ],
+      "differenceFromLinkedIncident": "Genuine owner-authorized Yoga6 original Section9.6 first untouched index6 trial on df18ef0 made one distinct SHA-bound new activity review, both genuine Google roles failed with ClientError but older V3 checkpoint serialized only reasonCode ClientError and no numeric status/body; actual provider cause cannot be retrospectively established, no model PASS, provider-wide STOP. BSA-184 previously captured exact returned model text before parse; BSA-191 recovered post-return SDK accessor failures; neither saved sanitized provider failure code on a thrown ClientError. The shared normal assessment engine now reuses existing safe google error_status and classify_google_failure, persists only numeric HTTP status 400..599 and standardized cause, never error text, and skips the sibling new role on definite remote rejection. The strict cached assessment validator allows only exact status/class fields and rejects forged/extra keys. Provider circuit maps classified access/billing/model/quota/invalid/capacity into specific stops, and legacy no-status real ClientError remains unresolved. This is observability and future finite auto-stop hardening, not proof old Google error was corrected.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Yoga6 genuine Section9.6 new original index6 actual ClientError in both Gemini API roles",
+        "google-genai 2.25.0 authentic ClientError exception types and true V3 checkpoint/aggregate/provider-health normal validation fixture"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/reviewer_failure_policy.py",
+        "triggerMarker": "def sanitized_provider_failure_metadata(",
+        "remedyMarker": "return {",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/validation/autonomous_completion.py",
+            "marker": "from app_generator.validation.reviewer_failure_policy import ("
+          },
+          {
+            "path": "app_generator/validation/reviewer_failure_policy.py",
+            "marker": "def sanitized_provider_failure_metadata("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_provider_client_error.py",
+          "kind": "python",
+          "marker": "test_actual_google_sdk_error_types_make_safe_numeric_claims_and_stop_pair"
+        },
+        {
+          "path": "tests/test_v3_provider_client_error.py",
+          "kind": "python",
+          "marker": "test_server_side_500_only_opens_existing_cooldown_not_new_requests"
+        },
+        {
+          "path": "tests/test_v3_provider_client_error.py",
+          "kind": "python",
+          "marker": "test_live_legacy_clienterror_without_recorded_status_is_not_reclassified"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261118-196",
+      "class": "live-yoga6-new-section96-original-index6-two-real-gemini-clienterrors-no-raw-status-or-model-verdict",
+      "status": "active",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261117-183",
+        "BSA-20261117-186",
+        "BSA-20261118-193",
+        "BSA-20261118-195"
+      ],
+      "differenceFromLinkedIncident": "The real Yoga6 metadata models.get call returned HTTP200, and BSA-193's strict historical original unknown ValueError quarantine allowed exactly one independently new ORIGINAL untouched activity index6 (mcq-chal-nonuniform-density-rod, source-bound supplemental input SHA 2eb44d0bf0dc715ac806ad353aacced57d7265c0245457a0d14c9429a6878954) under already-approved finite original-only Gemini charter. The actual paid provider trial returned ClientError on BOTH independent roles, no returned text/captured SHA or code, producing exact supplemental AI_UNCERTAIN, 0 new real passes; controller STOP_PROBATION_WITHOUT_GENUINE_NEW_PASS. Genuine source and old original ValueError untouched; no other indices sent. After this new fault the shared provider preflight correctly remains STOP. BSA-195 separately hardens future status capture but must not falsely infer the error code or repeat either original submitted request.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Yoga6 actual authenticated Gemini API generated-text review, new original Section9.6 one-activity index6",
+        "Read-only inspection of actual immutable private Gemini clienterror original supplemental roles and source-bound AI_UNCERTAIN aggregate"
+      ],
+      "nextAction": "Preserve exact old original index5 and new index6 immutable uncertain claims. No automatic replay, key rotation, new paid query or release. Determine new provider generation eligibility through a source-free independent project/quota/permissions interface or authorized provider evidence if available. The old ClientError code was not captured so do not guess quota/auth/400. Only a separate legitimately approved new request on a genuinely distinct eligible content version, with production safe-status capture and fresh provider permission, can generate new independently attributable QA. Revised Section9.6 new-version paid workflow is not in existing charter. Continue offline source/Chrome/QA inventory and keep draft PR unmerged."
     }
   ]
 }

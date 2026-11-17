@@ -141,10 +141,17 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "realSixSectionBrowserQAInNormalRecovery",
     "projectLocalPinnedBrowserSdkSelfRepair",
     "browserEvidencePrivateShaBoundAndNoRelease",
+    "safeClientErrorStatusCapturedBeforeAggregate",
+    "classifiedProviderRejectionSkipsSecondNewReviewer",
+    "legacyClientErrorWithoutStatusStaysUnreconciled",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
     "RECONCILE_AMBIGUOUS_REVIEW",
+    "STOP_PROVIDER_BILLING_RESTRICTED",
+    "STOP_PROVIDER_INVALID_MODEL_REQUEST",
+    "STOP_PROVIDER_MODEL_NOT_FOUND",
+    "STOP_PROVIDER_QUOTA_OR_RATE_LIMIT",
 )
 
 

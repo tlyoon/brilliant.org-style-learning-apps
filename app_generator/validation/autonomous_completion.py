@@ -25,6 +25,7 @@ from app_generator.validation.reviewer_failure_policy import (
     UNCAPTURED_TRANSPORT_ERROR_CODES,
     SERVER_CAPACITY_ERROR_NAMES,
     is_uncaptured_reviewer_transport_error,
+    sanitized_provider_failure_metadata,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -268,11 +269,42 @@ def _validate_cached_review(activity: dict, row: dict) -> None:
                 or not _HASH.fullmatch(response["responseSha256"])):
                 raise ValueError("V3_STALE_OR_FORGED_REVIEW_PROMPT")
             _parse_response(json.dumps(response["decision"]), activity["id"])
-        elif (set(response) != {"reviewerId","sessionId","providerId","status","reasonCode"}
-              or response["status"] != "UNRESOLVED"
-              or not isinstance(response["reasonCode"],str)
-              or not response["reasonCode"]):
-            raise ValueError("V3_INVALID_UNRESOLVED_REVIEW")
+        else:
+            base={"reviewerId","sessionId","providerId","status","reasonCode"}
+            extra=set(response)-base
+            if (not base.issubset(response)
+                    or extra not in (
+                        set(),{"providerFailureClass"},
+                        {"providerFailureClass","providerHttpStatus"})
+                    or response["status"]!="UNRESOLVED"
+                    or not isinstance(response["reasonCode"],str)
+                    or not response["reasonCode"]):
+                raise ValueError("V3_INVALID_UNRESOLVED_REVIEW")
+            if extra:
+                if response["reasonCode"] not in {
+                    "ClientError","ServerError","APIError",
+                    "GeminiApiError","TransientGeminiError",
+                }:
+                    raise ValueError("V3_INVALID_SANITIZED_PROVIDER_REVIEW")
+                from app_generator.runtime.v3_gemini_diagnostics import (
+                    classify_google_failure,
+                )
+                category=response["providerFailureClass"]
+                if not isinstance(category,str) or category not in {
+                    "AUTH_OR_PROJECT_DENIED","BILLING_RESTRICTED",
+                    "MODEL_NOT_FOUND","QUOTA_OR_RATE_LIMIT",
+                    "INVALID_MODEL_REQUEST","TRANSPORT_UNCERTAIN",
+                    "PROVIDER_CAPACITY","UNCLASSIFIED_PROVIDER_ERROR",
+                }:
+                    raise ValueError("V3_INVALID_SANITIZED_PROVIDER_REVIEW")
+                code=response.get("providerHttpStatus")
+                if (("providerHttpStatus" in response and
+                     (type(code) is not int or not 400 <= code <= 599
+                      or classify_google_failure(
+                          code,response["reasonCode"])!=category))
+                    or ("providerHttpStatus" not in response
+                        and category!="UNCLASSIFIED_PROVIDER_ERROR")):
+                    raise ValueError("V3_INVALID_SANITIZED_PROVIDER_REVIEW")
     if (row["reviewers"][0]["reviewerId"] ==
         row["reviewers"][1]["reviewerId"]
         or row["reviewers"][0]["sessionId"] ==
@@ -341,6 +373,7 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
     ):
         responses = []
         provider_capacity_failed = False
+        provider_unsent_reason = "PROVIDER_CAPACITY_UNSENT"
         for role_index,(session, perspective) in enumerate(zip(sessions,(
             "physics-adversary","language-and-learner-adversary"))):
             prompt = make_prompt(activity, perspective)
@@ -419,7 +452,8 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                 elif previous.get("state") == "SKIPPED_UNSENT":
                     if (previous.get("reasonCode") not in (
                             "ROLE_CIRCUIT_OPEN_UNSENT",
-                            "PROVIDER_CAPACITY_UNSENT")
+                            "PROVIDER_CAPACITY_UNSENT",
+                            "PROVIDER_REJECTION_UNSENT")
                         or previous.get("requestSubmitted") is not False):
                         raise ValueError("V3_INVALID_SKIPPED_UNSENT_CLAIM")
                     responses.append({
@@ -454,13 +488,13 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "state":"SKIPPED_UNSENT",
                         "reviewerId":session.reviewer_id,
                         "sessionId":session.session_id,
-                        "reasonCode":"PROVIDER_CAPACITY_UNSENT",
+                        "reasonCode":provider_unsent_reason,
                         "requestSubmitted":False})
                 responses.append({"reviewerId":session.reviewer_id,
                     "sessionId":session.session_id,
                     "providerId":session.provider_id,
                     "status":"UNRESOLVED",
-                    "reasonCode":"PROVIDER_CAPACITY_UNSENT"})
+                    "reasonCode":provider_unsent_reason})
                 continue
             if role_uncaptured[role_index] >= UNCAPTURED_ROLE_CIRCUIT_THRESHOLD:
                 # Unlike an ambiguous remote call, nothing was submitted.
@@ -549,8 +583,23 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "requestSubmitted":False})
                 raise
             except Exception as exc:
+                # Persist only the numeric HTTP status and a stable cause,
+                # never an SDK exception/body, prompt, account or token.
+                safe_provider = sanitized_provider_failure_metadata(exc)
+                # Preserve BSA-166's existing ServerError circuit verbatim.
                 if type(exc).__name__ in SERVER_CAPACITY_ERROR_NAMES:
                     provider_capacity_failed = True
+                elif safe_provider.get("providerFailureClass") == "PROVIDER_CAPACITY":
+                    provider_capacity_failed = True
+                elif safe_provider.get("providerFailureClass") in {
+                    "AUTH_OR_PROJECT_DENIED", "BILLING_RESTRICTED",
+                    "MODEL_NOT_FOUND", "QUOTA_OR_RATE_LIMIT",
+                    "INVALID_MODEL_REQUEST",
+                }:
+                    # An explicit provider rejection is not server capacity.
+                    # Do not waste a second independent reviewer request.
+                    provider_capacity_failed = True
+                    provider_unsent_reason = "PROVIDER_REJECTION_UNSENT"
                 if (not response_returned
                     and is_uncaptured_reviewer_transport_error(exc)):
                     role_uncaptured[role_index] += 1
@@ -560,11 +609,13 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "reviewerId":session.reviewer_id,
                         "sessionId":session.session_id,
                         "reasonCode":type(exc).__name__,
+                        **safe_provider,
                     })
                 responses.append({"reviewerId":session.reviewer_id,
                     "sessionId":session.session_id,
                     "providerId":session.provider_id,
-                    "status":"UNRESOLVED","reasonCode":type(exc).__name__})
+                    "status":"UNRESOLVED","reasonCode":type(exc).__name__,
+                    **safe_provider})
                 # No unbounded retries after ambiguous remote submission.
         dimensions, status = _review_consensus(responses)
         reviews.append({"activityId":activity["id"],"status":status,
@@ -616,7 +667,8 @@ def assessment_progress(raw: bytes, assessment: dict | None = None, *,
     fully_reviewed=sum(all("decision" in reviewer
                            for reviewer in row["reviewers"]) for row in prior)
     skipped_unsent=sum(reviewer.get("reasonCode") in (
-                       "ROLE_CIRCUIT_OPEN_UNSENT", "PROVIDER_CAPACITY_UNSENT")
+                       "ROLE_CIRCUIT_OPEN_UNSENT", "PROVIDER_CAPACITY_UNSENT",
+                       "PROVIDER_REJECTION_UNSENT")
                        for row in prior for reviewer in row["reviewers"])
     if release_receipt is not None:
         if release_decision.get("automatedTechnicalEligible") is not True:

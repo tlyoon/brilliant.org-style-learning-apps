@@ -50,6 +50,7 @@ def provider_capacity_gate(
     failed_activities: set[tuple[str,str]] = set()
     denied = False
     unclassified = False
+    explicit_http_stops: set[str] = set()
     # BSA-186: independently reviewed original-tail slices must share the
     # same provider-wide circuit as the original frozen course.
     if (not isinstance(additional_package_shas, (tuple, list))
@@ -76,10 +77,37 @@ def provider_capacity_gate(
             data = json.loads(claim.read_text(encoding="utf-8"))
             if not isinstance(data, dict) or data.get("packageSha256") != digest:
                 raise ValueError("V3_PROVIDER_CAPACITY_INVALID_CLAIM")
+            if data.get("state") == "AMBIGUOUS":
+                cause=data.get("providerFailureClass")
+                code=data.get("providerHttpStatus")
+                if cause is not None:
+                    from app_generator.runtime.v3_gemini_diagnostics import (
+                        classify_google_failure,
+                    )
+                    if (not isinstance(cause,str) or
+                            cause not in {
+                                "AUTH_OR_PROJECT_DENIED",
+                                "BILLING_RESTRICTED","MODEL_NOT_FOUND",
+                                "QUOTA_OR_RATE_LIMIT","INVALID_MODEL_REQUEST",
+                                "TRANSPORT_UNCERTAIN","PROVIDER_CAPACITY",
+                                "UNCLASSIFIED_PROVIDER_ERROR",
+                            } or
+                            (code is not None and
+                             (type(code) is not int or
+                              not 400 <= code <= 599 or
+                              classify_google_failure(code, "ClientError") != cause))):
+                        raise ValueError("V3_PROVIDER_INVALID_SANITIZED_ERROR")
+                    if cause in {
+                        "AUTH_OR_PROJECT_DENIED","BILLING_RESTRICTED",
+                        "MODEL_NOT_FOUND","QUOTA_OR_RATE_LIMIT",
+                        "INVALID_MODEL_REQUEST",
+                    }:
+                        explicit_http_stops.add(cause)
             if data.get("state") == "BLOCKED_EXTERNAL":
                 denied = True
             elif (data.get("state") == "AMBIGUOUS"
-                  and data.get("reasonCode") not in SERVER_CAPACITY_ERROR_NAMES):
+                  and data.get("reasonCode") not in SERVER_CAPACITY_ERROR_NAMES
+                  and data.get("providerFailureClass") != "PROVIDER_CAPACITY"):
                 # Only one pinned, previously inspected old claim may be
                 # excluded from *current provider health* when its exact
                 # bytes still match a validated standalone quarantine.
@@ -97,7 +125,8 @@ def provider_capacity_gate(
                 else:
                     unclassified = True
             if (data.get("state") == "AMBIGUOUS"
-                and data.get("reasonCode") in SERVER_CAPACITY_ERROR_NAMES):
+                and (data.get("reasonCode") in SERVER_CAPACITY_ERROR_NAMES
+                     or data.get("providerFailureClass") == "PROVIDER_CAPACITY")):
                 activity_id = data.get("activityId")
                 if not isinstance(activity_id,str) or not activity_id:
                     raise ValueError("V3_PROVIDER_CAPACITY_INVALID_ACTIVITY_ID")
@@ -113,10 +142,20 @@ def provider_capacity_gate(
         raise ValueError("V3_PROVIDER_HISTORICAL_CLAIM_WITNESS_MISMATCH")
     count = len(events)
     historic = len(failed_activities)
-    if denied:
+    if denied or "AUTH_OR_PROJECT_DENIED" in explicit_http_stops:
         return {"status": "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
                 "serverErrorsLastHour": count,
                 "serverErrorActivitiesHistorical": historic}
+    for cls, status in (
+        ("BILLING_RESTRICTED","STOP_PROVIDER_BILLING_RESTRICTED"),
+        ("MODEL_NOT_FOUND","STOP_PROVIDER_MODEL_NOT_FOUND"),
+        ("QUOTA_OR_RATE_LIMIT","STOP_PROVIDER_QUOTA_OR_RATE_LIMIT"),
+        ("INVALID_MODEL_REQUEST","STOP_PROVIDER_INVALID_MODEL_REQUEST"),
+    ):
+        if cls in explicit_http_stops:
+            return {"status":status,
+                    "serverErrorsLastHour":count,
+                    "serverErrorActivitiesHistorical":historic}
     if unclassified:
         return {"status": "STOP_UNCLASSIFIED_PROVIDER_REVIEW",
                 "serverErrorsLastHour": count,
