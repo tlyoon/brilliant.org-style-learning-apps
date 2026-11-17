@@ -420,7 +420,15 @@ class FrozenOriginalIndependentTailTests(unittest.TestCase):
         metadata.assert_not_called()
         self.assertEqual(json.loads(prior.read_text())["state"],"AMBIGUOUS")
         self.assertFalse((private/"frozen-original-review-attempts").exists())
-        self.assertFalse((private/"frozen-original-review-slices").exists())
+        # BSA-187: the normal paid worker proactively completes independent
+        # source-free preparation even when provider-wide no-replay STOPs.
+        offline = message["sourceFreeRecovery"]
+        self.assertEqual(offline["paidGeminiCalls"], 0)
+        self.assertEqual(offline["stagedImmutableOriginalTailSlices"], 12)
+        self.assertEqual(offline["providerCapacity"],
+                         "STOP_UNCLASSIFIED_PROVIDER_REVIEW")
+        self.assertEqual(len(list((private/"frozen-original-review-slices").iterdir())),12)
+        self.assertFalse(offline["publicationAuthorized"])
 
     def test_normal_worker_paid_auth_denial_stops_before_any_claim(self):
         from scripts import run_v3_yoga6_recovery_worker as worker
@@ -448,11 +456,15 @@ class FrozenOriginalIndependentTailTests(unittest.TestCase):
         self.assertEqual(exit_code,3)
         self.assertEqual(json.loads(output.getvalue())["status"],
                          "STOP_YOGA6_RECOVERY_WORKER")
-        host.assert_not_called()
-        self.assertFalse(
-            (private/"frozen-original-review-slices").exists())
+        host.assert_called_once()
+        # Authorization denial prohibits MODEL transport but does not undo
+        # independently permitted source-free package preparation.
+        self.assertEqual(len(list(
+            (private/"frozen-original-review-slices").iterdir())),12)
         self.assertFalse(
             (private/"frozen-original-review-attempts").exists())
+        self.assertTrue(
+            (private/"v3-source-free-forward-checkpoint.json").is_file())
 
 
     def test_supplemental_unknown_provider_fault_stops_next_original(self):
@@ -567,9 +579,13 @@ class FrozenOriginalIndependentTailTests(unittest.TestCase):
         self.assertEqual(message["status"],
                          "STOP_TAIL_SUPPLEMENTAL_PROVIDER_STOP_UNCLASSIFIED_PROVIDER_REVIEW")
         self.assertFalse(message["publicationAuthorized"])
+        self.assertEqual(message["sourceFreeRecovery"]
+                         ["stagedImmutableOriginalTailSlices"], 11)
+        self.assertEqual(message["sourceFreeRecovery"]["paidGeminiCalls"], 0)
         bootstrap.assert_not_called()
         credential.assert_not_called()
         metadata.assert_not_called()
+        self.assertFalse(message["sourceFreeRecovery"]["publicationAuthorized"])
         self.assertEqual(plan_frozen_original_tail(
             chapter, self.repo, private,
             section="section-9-6")["next"]["index"], 7)
@@ -668,6 +684,155 @@ class FrozenOriginalIndependentTailTests(unittest.TestCase):
         self.assertEqual(plan["dispatchStatus"],
                          "STOP_TAIL_SUPPLEMENTAL_PROVIDER_STOP_UNCLASSIFIED_PROVIDER_REVIEW")
         self.assertFalse(plan["publicationAuthorized"])
+
+    def test_normal_worker_source_free_advance_without_paid_authorization(self):
+        from scripts import run_v3_yoga6_recovery_worker as worker
+        from app_generator.runtime.v3_source_free_forward import (
+            read_source_free_checkpoint,
+        )
+        chapter, local, private = self._normal_worker_fixture()
+        before = (chapter/"section-9-6"/"package.json").read_bytes()
+        original = (private/("v3-generated-"+self.digest)/"batches"
+                    /f"v3-review-{self.digest[:12]}-005-0.json")
+        claim_before = original.read_bytes()
+        out = io.StringIO()
+        with (patch.dict(os.environ, {"LOCALAPPDATA":str(local)}),
+              patch.object(worker,"ROOT",self.repo),
+              patch.object(worker,"COURSE",chapter),
+              patch.object(worker,"require_authorized_native_review_host"),
+              patch.object(worker,"_load_native_config") as credentials,
+              patch.object(worker,"diagnose_model_metadata") as metadata,
+              patch.object(worker.native,"main") as paid,
+              redirect_stdout(out)):
+            code=worker.main(["--private-root",str(private),
+                              "--source-free-advance"])
+        self.assertEqual(code,0,out.getvalue())
+        result=json.loads(out.getvalue())
+        self.assertEqual(result["status"],
+                         "SOURCE_FREE_BOUNDARIES_STAGED_PROVIDER_STILL_BLOCKED")
+        self.assertEqual(result["stagedImmutableOriginalTailSlices"],12)
+        self.assertEqual(result["repairStatus"],"NO_SCRIPT_BLOCKER")
+        self.assertEqual(result["paidGeminiCalls"],0)
+        self.assertEqual(result["originalAssessedUnchanged"],6)
+        self.assertFalse(result["publicationAuthorized"])
+        self.assertFalse(result["versionedScopeAdmitted"])
+        self.assertFalse((private/"frozen-original-review-attempts").exists())
+        self.assertEqual(original.read_bytes(),claim_before)
+        self.assertEqual((chapter/"section-9-6"/"package.json").read_bytes(),
+                         before)
+        self.assertEqual(read_source_free_checkpoint(private)
+                         ["integritySha256"],result["checkpointIntegritySha256"])
+        credentials.assert_not_called()
+        metadata.assert_not_called()
+        paid.assert_not_called()
+
+        # Repeat normal source-free execution. Twelve immutable slices are
+        # verified idempotently; no paid claim or duplicate model verdict.
+        again=io.StringIO()
+        with (patch.dict(os.environ, {"LOCALAPPDATA":str(local)}),
+              patch.object(worker,"ROOT",self.repo),
+              patch.object(worker,"COURSE",chapter),
+              patch.object(worker,"require_authorized_native_review_host"),
+              redirect_stdout(again)):
+            self.assertEqual(worker.main(["--private-root",str(private),
+                                          "--source-free-advance"]),0)
+        repeat=json.loads(again.getvalue())
+        self.assertEqual(repeat["checkpointIntegritySha256"],
+                         result["checkpointIntegritySha256"])
+        self.assertEqual(len(list(
+            (private/"frozen-original-review-slices").iterdir())),12)
+        self.assertFalse((private/"frozen-original-review-attempts").exists())
+
+    def test_source_free_checkpoint_tamper_blocks_restart_without_provider(self):
+        from scripts import run_v3_yoga6_recovery_worker as worker
+        chapter, local, private = self._normal_worker_fixture()
+        def invoke():
+            output=io.StringIO()
+            with (patch.dict(os.environ, {"LOCALAPPDATA":str(local)}),
+                  patch.object(worker,"ROOT",self.repo),
+                  patch.object(worker,"COURSE",chapter),
+                  patch.object(worker,"require_authorized_native_review_host"),
+                  patch.object(worker,"_load_native_config") as credential,
+                  patch.object(worker.native,"main") as paid,
+                  redirect_stdout(output)):
+                code=worker.main(["--private-root",str(private),
+                                  "--source-free-advance"])
+            credential.assert_not_called()
+            paid.assert_not_called()
+            return code, json.loads(output.getvalue())
+        code, report=invoke()
+        self.assertEqual(code,0,report)
+        checkpoint=private/"v3-source-free-forward-checkpoint.json"
+        record=json.loads(checkpoint.read_text(encoding="utf8"))
+        record["originalPasses"]=108
+        checkpoint.write_text(json.dumps(record),encoding="utf8")
+        code, rejected=invoke()
+        self.assertEqual(code,3)
+        self.assertEqual(rejected["status"],"STOP_YOGA6_RECOVERY_WORKER")
+        self.assertEqual(rejected["reasonClass"],"ValueError")
+        self.assertFalse(rejected["publicationAuthorized"])
+
+    def test_source_free_mode_rejects_paid_execution_and_transfer(self):
+        from scripts import run_v3_yoga6_recovery_worker as worker
+        local=self.home/"FakeLocalAppData"
+        local.mkdir(exist_ok=True)
+        output=io.StringIO()
+        with (patch.dict(os.environ,{"LOCALAPPDATA":str(local)}),
+              patch.object(worker,"_load_native_config") as credential,
+              patch.object(worker.native,"main") as paid,
+              redirect_stdout(output)):
+            code=worker.main(["--source-free-advance","--execute",
+                              "--allow-generated-text-transfer"])
+        self.assertEqual(code,2)
+        self.assertEqual(json.loads(output.getvalue())["status"],
+                         "STOP_SOURCE_FREE_MODE_MUST_NOT_REQUEST_PROVIDER")
+        credential.assert_not_called()
+        paid.assert_not_called()
+
+    def test_source_free_tail_crash_resumes_without_paid_or_duplicate(self):
+        from scripts import run_v3_yoga6_recovery_worker as worker
+        from app_generator.runtime import v3_source_free_forward as offline
+        chapter, local, private = self._normal_worker_fixture()
+        real_stage = offline.stage_frozen_original_tail_slice
+        seen = []
+        def fail_at_third(*args, **kwargs):
+            seen.append(kwargs["index"])
+            if len(seen) == 3:
+                raise RuntimeError("SYNTHETIC_SOURCE_FREE_DISK_INTERRUPTION")
+            return real_stage(*args, **kwargs)
+        def invoke():
+            output=io.StringIO()
+            with (patch.dict(os.environ,{"LOCALAPPDATA":str(local)}),
+                  patch.object(worker,"ROOT",self.repo),
+                  patch.object(worker,"COURSE",chapter),
+                  patch.object(worker,"require_authorized_native_review_host"),
+                  patch.object(worker.native,"main") as paid,
+                  patch.object(worker,"_load_native_config") as credential,
+                  redirect_stdout(output)):
+                code=worker.main(["--private-root",str(private),
+                                  "--source-free-advance"])
+            paid.assert_not_called()
+            credential.assert_not_called()
+            return code,json.loads(output.getvalue())
+        with patch.object(offline,"stage_frozen_original_tail_slice",
+                          side_effect=fail_at_third):
+            code,stopped=invoke()
+        self.assertEqual(code,3)
+        self.assertEqual(stopped["status"],"STOP_YOGA6_RECOVERY_WORKER")
+        self.assertEqual(seen,[6,7,8])
+        self.assertEqual(len(list((private/"frozen-original-review-slices")
+                                  .iterdir())),2)
+        self.assertFalse((private/"frozen-original-review-attempts").exists())
+        self.assertFalse((private/"v3-source-free-forward-checkpoint.json")
+                         .exists())
+        code,resumed=invoke()
+        self.assertEqual(code,0,resumed)
+        self.assertEqual(resumed["stagedImmutableOriginalTailSlices"],12)
+        self.assertEqual(len(list((private/"frozen-original-review-slices")
+                                  .iterdir())),12)
+        self.assertFalse((private/"frozen-original-review-attempts").exists())
+        self.assertEqual(resumed["paidGeminiCalls"],0)
+        self.assertFalse(resumed["publicationAuthorized"])
 
     def test_locally_captured_malformed_role_isolated_and_next_original_advances(self):
         from tests.test_autonomous_completion_v3 import FakeModel, sessions

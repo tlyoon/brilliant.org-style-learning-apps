@@ -44,6 +44,9 @@ from app_generator.runtime.v3_frozen_original_tail import (
 from app_generator.runtime.v3_frozen_tail_forward import (
     advance_frozen_tail_until_boundary, supplemental_provider_preflight,
 )
+from app_generator.runtime.v3_source_free_forward import (
+    advance_source_free_until_boundary,
+)
 
 COURSE = ROOT / "content" / "chapter-9"
 
@@ -60,13 +63,17 @@ def _advance_unchanged_frozen_tail(args, private: Path,
     separate deterministic package SHA and immutable two-Gemini checkpoint.
     This is NOT a new versioned content replacement or release permission.
     """
+    # Safe local development must not depend on success of a PAID
+    # authorization preflight. Perform these verified independent stages
+    # first, on the authorized Yoga6 host; never issue PRE_CALL or API I/O.
+    require_authorized_native_review_host(AUTHORITY)
+    offline = advance_source_free_until_boundary(COURSE, ROOT, private)
     authorize_paid_v3_action(
         "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",
         execute=args.execute,transfer=args.allow_generated_text_transfer,
         next_section="section-9-6",
         max_activities=args.max_forward_activities,
         max_elapsed_seconds=args.max_forward_seconds)
-    require_authorized_native_review_host(AUTHORITY)
     # Decision 0040/0041 remains authoritative: a generic unknown Gemini
     # failure can indicate authorization/quota/content denial. Never bypass
     # that provider-wide circuit by relabelling an untouched original as a
@@ -83,7 +90,10 @@ def _advance_unchanged_frozen_tail(args, private: Path,
     if (capacity["status"] != "READY"
             or capacity["serverErrorActivitiesHistorical"] >=
                 MAX_FAILED_ACTIVITIES_PER_COURSE):
-        _print({"status":"STOP_TAIL_PROVIDER_CAPACITY_"+
+        # Source-free staging was performed before any paid authorization
+        # or provider-capacity probe, and remains valid after this STOP.
+        _print({"sourceFreeRecovery":offline,
+                "status":"STOP_TAIL_PROVIDER_CAPACITY_"+
                 (capacity["status"] if capacity["status"] != "READY"
                  else "RECOVERY_BUDGET"),
                 "providerCapacity":capacity,
@@ -97,7 +107,9 @@ def _advance_unchanged_frozen_tail(args, private: Path,
         COURSE, ROOT, private, section="section-9-6")
     supplemental = supplemental_provider_preflight(private, tail_plan)
     if supplemental != "READY":
-        _print({"status": supplemental, "publicationAuthorized": False})
+        # Safely prepared before paid work was considered; do not repeat.
+        _print({"status": supplemental, "sourceFreeRecovery": offline,
+                "publicationAuthorized": False})
         return 3
     # Only independently READY original AND supplemental provider circuits
     # may bootstrap an SDK/client or run a metadata check.
@@ -158,9 +170,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--auto-advance", action="store_true",
                         help="Within one authorized invocation, advance across "
                              "new eligible activities without a scheduler.")
+    parser.add_argument("--source-free-advance", action="store_true",
+                        help="Advance registered local repair, immutable QA "
+                             "handoffs and untouched-original staging with "
+                             "zero model requests or paid authorization.")
     parser.add_argument("--max-forward-activities", type=int, default=4)
     parser.add_argument("--max-forward-seconds", type=int, default=900)
     args = parser.parse_args(argv)
+    if args.source_free_advance and (
+            args.execute or args.diagnose_only or args.auto_advance):
+        _print({"status":"STOP_SOURCE_FREE_MODE_MUST_NOT_REQUEST_PROVIDER",
+                "publicationAuthorized":False})
+        return 2
     if args.auto_advance and (not args.execute or args.diagnose_only):
         _print({"status":"STOP_FORWARD_EXECUTION_AUTHORIZATION_REQUIRED",
                 "publicationAuthorized":False})
@@ -182,6 +203,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     try:
         private = checked_private_root(chosen,localappdata=Path(local))
+        if args.source_free_advance:
+            require_authorized_native_review_host(AUTHORITY)
+            _print(advance_source_free_until_boundary(COURSE,ROOT,private))
+            return 0
         if args.auto_advance:
             ready = plan_v3_course_review(
                 COURSE, ROOT, private_root=private,
@@ -199,8 +224,12 @@ def main(argv: list[str] | None = None) -> int:
                         "READY_FOR_AUTHORIZED_FROZEN_ORIGINAL_TAIL_REVIEW"):
                     return _advance_unchanged_frozen_tail(args,private,argv)
             if ready["dispatchStatus"] != "READY_FOR_AUTHORIZED_REVIEW_SESSIONS":
-                _print(status_from_plan(
-                    ready,status=ready["dispatchStatus"]))
+                require_authorized_native_review_host(AUTHORITY)
+                offline = advance_source_free_until_boundary(
+                    COURSE,ROOT,private)
+                _print({**status_from_plan(
+                    ready,status=ready["dispatchStatus"]),
+                        "sourceFreeRecovery":offline})
                 return 0
             authorize_paid_v3_action(
                 "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",

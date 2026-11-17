@@ -3500,6 +3500,71 @@
           "marker": "test_ordinary_course_dispatcher_checks_supplemental_unknown"
         }
       ]
+    },
+    {
+      "id": "BSA-20261117-187",
+      "class": "v3-registered-source-free-remedies-inaccessible-behind-paid-provider-circuit-stop",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-177",
+        "BSA-20261117-183",
+        "BSA-20261117-185",
+        "BSA-20261117-186"
+      ],
+      "differenceFromLinkedIncident": "BSA-177 registered deterministic source-free local script and versioned-proposal remedies but ran them only inside the paid Gemini --auto-advance controller after eligibility/authority. BSA-185 separately staged never-submitted originals but its fallback still stopped at the global BSA-183 unclassified provider circuit. BSA-186 correctly closed paid-routing bypasses without making the safe source-free stages runnable. This code-level integration fault stranded existing repaired Section9.2 candidate, immutable QA handoff, proposal refresh and twelve untouched original-tail slice snapshots even though none requires sending Gemini text. The new normal Yoga6 source-free controller runs those proven local handlers independently of paid eligibility, remains fully source-bound, and automatically dispatches on normal paid provider STOP; historical unclassified paid requests remain terminal and original review counts unchanged.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga 6 BOSLA normal V3 review and recovery worker",
+        "source-free no-provider synthetic course fake SDK crash/restart tests"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_source_free_forward.py",
+        "triggerMarker": "def advance_source_free_until_boundary(",
+        "remedyMarker": "stage_frozen_original_tail_slice(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_source_free_forward import ("
+          },
+          {
+            "path": "app_generator/runtime/v3_source_free_forward.py",
+            "marker": "stage_frozen_original_tail_slice("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_worker_source_free_advance_without_paid_authorization"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_worker_unknown_valueerror_globally_stops_before_sdk"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_worker_supplemental_provider_failure_stops_before_sdk"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_source_free_checkpoint_tamper_blocks_restart_without_provider"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_source_free_mode_rejects_paid_execution_and_transfer"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_source_free_tail_crash_resumes_without_paid_or_duplicate"
+        }
+      ]
     }
   ]
 }
