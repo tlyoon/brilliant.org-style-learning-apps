@@ -588,11 +588,22 @@ class FrozenOriginalIndependentTailTests(unittest.TestCase):
                          "SUPPLEMENTAL_UNCERTAIN_NO_REPLAY")
         folder = (self.private / ("v3-generated-" + meta["slicePackageSha256"])
                   / "batches")
-        captures = list(folder.glob("*.response.txt"))
-        self.assertTrue(captures)
+        digest = meta["slicePackageSha256"]
+        claim_files = sorted(folder.glob(
+            f"v3-review-{digest[:12]}-000-*.json"))
+        local_failure_claims = [
+            file for file in claim_files
+            if json.loads(file.read_text(encoding="utf8")).get("state")
+            in {"PARSE_FAILED", "RUBRIC_FAILED"}
+        ]
+        # Locate the exact failed role by its immutable claim, never by
+        # glob iteration order (which differs on Windows and Linux CI).
+        self.assertEqual(len(local_failure_claims), 1)
+        capture = local_failure_claims[0].with_suffix(".response.txt")
+        self.assertTrue(capture.is_file())
         # Test-only deletion in a disposable private fixture; never alter
         # owner-owned immutable original or real provider evidence.
-        captures[0].unlink()
+        capture.unlink()
         called = []
         stopped = advance_frozen_tail_until_boundary(
             self.course, self.repo, self.private,
