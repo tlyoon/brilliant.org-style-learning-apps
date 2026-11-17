@@ -54,7 +54,8 @@ class NativeWorkstationGuardTests(unittest.TestCase):
         from unittest.mock import patch as mock
         out = io.StringIO()
         with mock.object(runner, "plan_v3_course_review", return_value={
-                "dispatchStatus":"READY_FOR_AUTHORIZED_REVIEW_SESSIONS"}), \
+                "dispatchStatus":"READY_FOR_AUTHORIZED_REVIEW_SESSIONS",
+                "nextSection":"section-9-5"}), \
              mock("app_generator.runtime.native_workstation_guard.socket.gethostname",
                   return_value="hp"), \
              mock("app_generator.runtime.native_sdk_environment.delegate_to_supported_sdk") as delegate, \

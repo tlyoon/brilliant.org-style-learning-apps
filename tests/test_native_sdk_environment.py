@@ -108,7 +108,8 @@ class NativeSDKEnvironmentTests(unittest.TestCase):
         from scripts import run_v3_native_gemini_review as runner
         with patch.object(runner,"plan_v3_course_review",
                           return_value={"dispatchStatus":
-                                        "READY_FOR_AUTHORIZED_REVIEW_SESSIONS"}), \
+                                        "READY_FOR_AUTHORIZED_REVIEW_SESSIONS",
+                                        "nextSection": "section-9-5"}), \
              patch("app_generator.runtime.native_sdk_environment.delegate_to_supported_sdk",
                    return_value=23) as delegate, \
              patch("app_generator.runtime.native_workstation_guard.require_authorized_native_review_host", return_value="YOGA6") as host_guard, \
