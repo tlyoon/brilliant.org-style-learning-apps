@@ -3565,6 +3565,124 @@
           "marker": "test_source_free_tail_crash_resumes_without_paid_or_duplicate"
         }
       ]
+    },
+    {
+      "id": "BSA-20261117-188",
+      "class": "source-free-recovery-reported-provider-ready-despite-supplemental-uncertainty-and-accepted-stale-original-progress-checkpoint",
+      "status": "resolved",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261113-162",
+        "BSA-20261113-163",
+        "BSA-20261117-183",
+        "BSA-20261117-184",
+        "BSA-20261117-186",
+        "BSA-20261117-187"
+      ],
+      "differenceFromLinkedIncident": "BSA-186 correctly checked all original and supplemental provider claims for any PAID review but BSA-187's independent source-free receipt reconstructed provider status using only six original section package hashes. A synthetic cooled original ServerError plus new supplemental AMBIGUOUS ValueError falsely reported provider READY, likewise for orphan PRE_CALL_NO_REPLAY. A separate source-free snapshot flaw allowed validly checksummed newer evidence counts to be overwritten with lower assessed/PASS counts on restart. Three pre-fix realistic tests failed. The source-free controller now reuses the paid dispatcher's shared supplemental provider preflight, retains provider STOP when either scan blocks, and refuses counter rollback before stage and at checkpoint commit; no claim changes, paid API contact or publication.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga 6 BOSLA native V3 source-free recovery and paid worker blocked-provider fallback",
+        "Linux/Windows source-free synthetic no-replay, immutable reviewer and persisted private-state restart tests"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_source_free_forward.py",
+        "triggerMarker": "existing_frozen_original_tail_preflight(",
+        "remedyMarker": "V3_SOURCE_FREE_ORIGINAL_EVIDENCE_ROLLBACK",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_source_free_forward import ("
+          },
+          {
+            "path": "app_generator/runtime/v3_source_free_forward.py",
+            "marker": "existing_frozen_original_tail_preflight("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_worker_supplemental_provider_failure_stops_before_sdk"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_source_free_orphan_precall_not_reported_provider_ready"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_source_free_checkpoint_rejects_assessment_rollback"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_source_free_ready_positive_control_has_no_false_provider_stop"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_source_free_exclusive_owner_lock_prevents_concurrent_entrypoint"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_source_free_repeated_crashes_at_first_middle_last_stage"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261117-189",
+      "class": "v3-normal-review-ready-branch-paid-authorization-denial-stranded-independent-registered-source-free-recovery",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-177",
+        "BSA-20261117-183",
+        "BSA-20261117-187",
+        "BSA-20261117-188"
+      ],
+      "differenceFromLinkedIncident": "BSA-187 added source-free local development automatically for global provider STOP, no original course eligible and Section9.6 fallback paid denial. The ordinary course review-ready --auto-advance branch still checked authorize_paid_v3_action before calling any source-free recovery; a denied or expired paid charter stranded independent local repair and QA staging even though no Gemini request was necessary. A normal Yoga6 worker synthetic READY section with paid-action denial failed the new pre-fix assertion that 12 immutable unchanged original-tail inputs and a private receipt exist. Normal READY branch now runs the same idempotent source-free controller on the Yoga6 owner host before separately checking paid permission, with model SDK/credential/metadata and PRE_CALL still forbidden after denial.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga 6 normal V3 --auto-advance eligible-review and denied paid permission branch",
+        "Source-free synthetic frozen Chapter9 no-paid actual normal entrypoint regression"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/run_v3_yoga6_recovery_worker.py",
+        "triggerMarker": "advance_source_free_until_boundary(COURSE,ROOT,private)",
+        "remedyMarker": "authorize_paid_v3_action(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "advance_source_free_until_boundary(COURSE,ROOT,private)"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_ready_paid_denial_does_not_strand_source_free_work"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_worker_paid_auth_denial_stops_before_any_claim"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_worker_source_free_advance_without_paid_authorization"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_source_free_repeated_crashes_at_first_middle_last_stage"
+        }
+      ]
     }
   ]
 }

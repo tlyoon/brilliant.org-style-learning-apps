@@ -126,6 +126,10 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "independentSourceFreeProgressUnderProviderStop",
     "noPaidClaimsFromSourceFreeForwardController",
     "sourceFreeForwardCheckpointRestartIntegrity",
+    "sourceFreeStatusUsesSharedSupplementalProviderCircuit",
+    "sourceFreeCheckpointRejectsAssessmentRollback",
+    "sourceFreeMultiCrashRestartNoReplayProof",
+    "ordinaryReadyBranchRunsSourceFreeBeforePaidAuthorization",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

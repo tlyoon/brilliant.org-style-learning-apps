@@ -231,6 +231,13 @@ def main(argv: list[str] | None = None) -> int:
                     ready,status=ready["dispatchStatus"]),
                         "sourceFreeRecovery":offline})
                 return 0
+            # BSA-189: the ordinary READY course path also needs independent
+            # source-free recovery BEFORE paid authorization. Previously a
+            # denied paid charter stranded registered local repair/QA even
+            # when no provider transmission was needed. Keep the independent
+            # reviewer permission gate fully authoritative AFTER staging.
+            require_authorized_native_review_host(AUTHORITY)
+            advance_source_free_until_boundary(COURSE,ROOT,private)
             authorize_paid_v3_action(
                 "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",
                 execute=args.execute,

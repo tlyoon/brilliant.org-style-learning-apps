@@ -29,7 +29,11 @@
     "ordinaryCourseDispatcherChecksHistoricalSupplementalClaims": true,
     "independentSourceFreeProgressUnderProviderStop": true,
     "noPaidClaimsFromSourceFreeForwardController": true,
-    "sourceFreeForwardCheckpointRestartIntegrity": true
+    "sourceFreeForwardCheckpointRestartIntegrity": true,
+    "sourceFreeStatusUsesSharedSupplementalProviderCircuit": true,
+    "sourceFreeCheckpointRejectsAssessmentRollback": true,
+    "sourceFreeMultiCrashRestartNoReplayProof": true,
+    "ordinaryReadyBranchRunsSourceFreeBeforePaidAuthorization": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

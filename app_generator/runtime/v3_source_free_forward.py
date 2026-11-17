@@ -22,6 +22,9 @@ from app_generator.runtime.v3_frozen_original_tail import (
     plan_frozen_original_tail, stage_frozen_original_tail_slice,
 )
 from app_generator.runtime.v3_yoga6_recovery import coordinator_lock
+from app_generator.runtime.v3_frozen_tail_forward import (
+    existing_frozen_original_tail_preflight,
+)
 from app_generator.validation.v3_server_error_recovery import provider_capacity_gate
 
 _RECEIPT = "v3-source-free-forward-checkpoint.json"
@@ -52,8 +55,16 @@ def read_source_free_checkpoint(private: Path) -> dict | None:
             or value.get("publicationAuthorized") is not False
             or type(value.get("originalAssessed")) is not int
             or type(value.get("originalPasses")) is not int
+            or not 0 <= value["originalPasses"] <= value["originalAssessed"] <= 108
+            or not isinstance(value.get("rosterSha256"), str)
+            or len(value["rosterSha256"]) != 64
+            or set(value["rosterSha256"]) - set("0123456789abcdef")
+            or not isinstance(value.get("repairStatus"), str)
+            or not 1 <= len(value["repairStatus"]) <= 100
+            or not isinstance(value.get("providerCapacity"), str)
+            or not 1 <= len(value["providerCapacity"]) <= 100
             or type(value.get("stagedTailCount")) is not int
-            or not 0 <= value["stagedTailCount"] <= 18
+            or not 0 <= value["stagedTailCount"] <= 12
             or value.get("proposalSha256") is not None and (
                 not isinstance(value["proposalSha256"], str)
                 or len(value["proposalSha256"]) != 64
@@ -68,9 +79,12 @@ def read_source_free_checkpoint(private: Path) -> dict | None:
 def _save_source_free_checkpoint(private: Path, payload: dict) -> dict:
     receipt = {**payload, "integritySha256": sha256(_encode(payload)).hexdigest()}
     previous = read_source_free_checkpoint(private)
-    if (previous is not None
-            and previous["rosterSha256"] != receipt["rosterSha256"]):
-        raise ValueError("V3_SOURCE_FREE_FROZEN_ROSTER_CHANGED")
+    if previous is not None:
+        if previous["rosterSha256"] != receipt["rosterSha256"]:
+            raise ValueError("V3_SOURCE_FREE_FROZEN_ROSTER_CHANGED")
+        if (previous["originalAssessed"] > receipt["originalAssessed"]
+                or previous["originalPasses"] > receipt["originalPasses"]):
+            raise ValueError("V3_SOURCE_FREE_ORIGINAL_EVIDENCE_ROLLBACK")
     if previous == receipt:
         return receipt
     data = _encode(receipt)
@@ -108,7 +122,17 @@ def advance_source_free_until_boundary(
         plan = plan_v3_course_review(
             course, repo, private_root=private, continue_independent=True)
         before = snapshot(plan)
-        read_source_free_checkpoint(private)  # Reject tampering before work.
+        previous = read_source_free_checkpoint(private)
+        # A valid checksum alone cannot prove the current private aggregate
+        # has not reverted to an older evidence state after a restart. Stop
+        # before any staging when a prior verified receipt saw newer counts.
+        if previous is not None:
+            if previous["rosterSha256"] != before["rosterSha256"]:
+                raise ValueError("V3_SOURCE_FREE_FROZEN_ROSTER_CHANGED")
+            if (previous["originalAssessed"] > before["activitiesAssessedRows"]
+                    or previous["originalPasses"] >
+                    before["modelConsensusPassActivities"]):
+                raise ValueError("V3_SOURCE_FREE_ORIGINAL_EVIDENCE_ROLLBACK")
         outcome = repair(course, private, plan)
         if (not isinstance(outcome, dict)
                 or outcome.get("publicationAuthorized") is not False
@@ -153,25 +177,38 @@ def advance_source_free_until_boundary(
         capacity = provider_capacity_gate(private, plan["sectionProgress"])
         if not isinstance(capacity, dict) or not isinstance(capacity.get("status"), str):
             raise ValueError("V3_SOURCE_FREE_INVALID_PROVIDER_STATE")
+        # BSA-188: reuse BSA-186's EXACT SAME read-only supplemental
+        # provider/owner checkpoint preflight as the normal paid dispatcher.
+        # An orphan PRE_CALL or an unknown supplemental provider error must
+        # never be reported as provider READY on an offline recovery receipt.
+        supplemental = existing_frozen_original_tail_preflight(
+            course, repo, private)
+        if not isinstance(supplemental, str) or not supplemental:
+            raise ValueError("V3_SOURCE_FREE_INVALID_SUPPLEMENTAL_PREFLIGHT")
+        effective_provider = (
+            capacity["status"] if capacity["status"] != "READY"
+            else supplemental)
         payload = {
             "schema": _SCHEMA, "rosterSha256": before["rosterSha256"],
             "originalAssessed": before["activitiesAssessedRows"],
             "originalPasses": before["modelConsensusPassActivities"],
             "repairStatus": outcome["repairStatus"],
             "proposalSha256": proposal_hash, "stagedTailCount": staged,
-            "providerCapacity": capacity["status"], "publicationAuthorized": False,
+            "providerCapacity": effective_provider, "publicationAuthorized": False,
         }
         receipt = _save_source_free_checkpoint(private, payload)
         return {
             "status": ("SOURCE_FREE_BOUNDARIES_STAGED_PROVIDER_STILL_BLOCKED"
-                       if capacity["status"] != "READY"
+                       if effective_provider != "READY"
                        else "SOURCE_FREE_BOUNDARIES_STAGED"),
             "repairStatus": outcome["repairStatus"],
             "stagedImmutableOriginalTailSlices": staged,
             "proposalSha256": proposal_hash,
             "originalAssessedUnchanged": receipt["originalAssessed"],
             "originalConsensusPassesUnchanged": receipt["originalPasses"],
-            "providerCapacity": capacity["status"],
+            "providerCapacity": effective_provider,
+            "originalProviderCapacity": capacity["status"],
+            "supplementalProviderPreflight": supplemental,
             "checkpointIntegritySha256": receipt["integritySha256"],
             "paidGeminiCalls": 0, "publicationAuthorized": False,
             "versionedScopeAdmitted": False,
