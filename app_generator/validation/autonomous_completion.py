@@ -16,6 +16,10 @@ import json
 import re
 
 from app_generator.errors import ExternalExecutionDenied
+from app_generator.validation.v3_response_recovery import (
+    record_returned_response, verified_returned_response,
+    normalize_complete_json_response, classify_local_error,
+)
 from app_generator.validation.reviewer_failure_policy import (
     UNCAPTURED_ROLE_CIRCUIT_THRESHOLD,
     UNCAPTURED_TRANSPORT_ERROR_CODES,
@@ -363,6 +367,49 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                         "responseSha256":previous["responseSha256"],
                         "decision":saved,
                     })
+                elif previous.get("state") in (
+                    "RESPONSE_CAPTURED", "PARSE_FAILED", "RUBRIC_FAILED"
+                ):
+                    # Recover only exact local response bytes from an already
+                    # submitted request; NEVER call the provider again.
+                    captured = verified_returned_response(
+                        checkpoint, claim, previous)
+                    try:
+                        saved = _parse_response(
+                            normalize_complete_json_response(captured),
+                            activity["id"])
+                    except (json.JSONDecodeError, ValueError) as local_error:
+                        state, reason = classify_local_error(local_error)
+                        if previous.get("state") != state:
+                            checkpoint.save_stage(claim, {
+                                **identity, "state": state,
+                                "reviewerId": previous["reviewerId"],
+                                "sessionId": previous["sessionId"],
+                                "responseSha256": previous["responseSha256"],
+                                "reasonCode": reason,
+                            })
+                        responses.append({
+                            "reviewerId": previous["reviewerId"],
+                            "sessionId": previous["sessionId"],
+                            "providerId": session.provider_id,
+                            "status": "UNRESOLVED", "reasonCode": reason,
+                        })
+                    else:
+                        checkpoint.save_stage(claim, {
+                            **identity, "state": "COMPLETE",
+                            "reviewerId": previous["reviewerId"],
+                            "sessionId": previous["sessionId"],
+                            "responseSha256": previous["responseSha256"],
+                            "decision": saved,
+                        })
+                        responses.append({
+                            "reviewerId": previous["reviewerId"],
+                            "sessionId": previous["sessionId"],
+                            "providerId": session.provider_id,
+                            "promptSha256": prompt_hash,
+                            "responseSha256": previous["responseSha256"],
+                            "decision": saved,
+                        })
                 elif previous.get("state") == "BLOCKED_EXTERNAL":
                     # Decision 0028: a client denial is terminal until an
                     # independent authorization decision outside this runtime.
@@ -441,8 +488,39 @@ def assess_with_models(raw: bytes, sessions: tuple, *,
                 response = session.conversation.ask(
                     prompt, stage="academic-v3-autonomous")
                 response_returned = True
-                verdict = _parse_response(response, activity["id"])
-                response_hash=sha256(response.encode("utf-8")).hexdigest()
+                if checkpoint is not None:
+                    # Store exact private response BEFORE parsing. If the
+                    # worker crashes after capture, the claim can be recovered
+                    # locally and no duplicate model call is required.
+                    response_hash = record_returned_response(
+                        checkpoint, claim, identity, session.reviewer_id,
+                        session.session_id, response)
+                else:
+                    response_hash = sha256(response.encode("utf-8")).hexdigest()
+                try:
+                    verdict = _parse_response(
+                        normalize_complete_json_response(response),
+                        activity["id"])
+                except (json.JSONDecodeError, ValueError) as local_error:
+                    # A received response with a local parse/rubric fault is
+                    # NOT an unidentified remote request; keep its raw bytes
+                    # and isolate only this activity without fabricating PASS.
+                    state, reason = classify_local_error(local_error)
+                    if checkpoint is not None:
+                        checkpoint.save_stage(claim, {
+                            **identity, "state": state,
+                            "reviewerId": session.reviewer_id,
+                            "sessionId": session.session_id,
+                            "responseSha256": response_hash,
+                            "reasonCode": reason,
+                        })
+                    responses.append({
+                        "reviewerId": session.reviewer_id,
+                        "sessionId": session.session_id,
+                        "providerId": session.provider_id,
+                        "status": "UNRESOLVED", "reasonCode": reason,
+                    })
+                    continue
                 if checkpoint is not None:
                     checkpoint.save_stage(claim,{
                         **identity,"state":"COMPLETE",

@@ -14,6 +14,9 @@ from typing import Any
 from app_generator.runtime.v3_authorized_review import advance_v3_generated_text
 from app_generator.gemini.v3_existing_login_sessions import V3ExistingLoginSessions
 from app_generator.validation.v3_course_readiness import course_readiness
+from app_generator.validation.v3_response_recovery import (
+    section_has_only_isolatable_uncertainty,
+)
 
 
 def plan_v3_course_review(
@@ -51,10 +54,25 @@ def plan_v3_course_review(
         # section boundary. Never replay an uncertain activity or change its
         # immutable aggregate. Other frozen sections may be reviewed without
         # treating the original uncertainty as a PASS.
+        # A received/hash-verified local JSON/rubric error is isolated to
+        # the affected activity. It remains AI_UNCERTAIN and blocks RELEASE,
+        # but later independent activities in that SAME frozen section may
+        # proceed without replaying that old role or changing its verdict.
+        # Historical AMBIGUOUS request, missing raw response, provider error
+        # and scientific FAIL continue to quarantine their section.
+        isolated_local = [
+            row["section"] for row in progress["sectionProgress"]
+            if (row["modelUncertainActivities"] > 0
+                and row["unreconciledRoleClaims"] == 0
+                and section_has_only_isolatable_uncertainty(
+                    private_root, row["packageSha256"],
+                    chapter_dir / row["section"] / "package.json"))
+        ]
         quarantined = [
             row["section"] for row in progress["sectionProgress"]
             if (row["unreconciledRoleClaims"] > 0
-                or row["modelUncertainActivities"] > 0
+                or (row["modelUncertainActivities"] > 0
+                    and row["section"] not in isolated_local)
                 or row["modelRepairRequiredActivities"] > 0
                 or row["reviewerRequestsSkippedUnsent"] > 0
                 or row["section"] in script_quarantined)
@@ -66,6 +84,7 @@ def plan_v3_course_review(
         ]
         result["quarantinedSections"] = quarantined
         result["scriptQuarantinedSections"] = script_quarantined
+        result["isolatedLocalFailureSections"] = isolated_local
         result["independentContinuation"] = True
         # The per-package run lock is global to live request ownership.
         # Do not begin another section while an earlier review process may

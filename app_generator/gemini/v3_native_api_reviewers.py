@@ -71,14 +71,8 @@ class NativeGeminiApiConversation:
         text = getattr(response, "text", None)
         if not isinstance(text, str) or not text.strip():
             raise ValueError("V3_NATIVE_JSON_RESPONSE_ONLY")
-        text = text.strip()
-        try:
-            value = json.loads(text)
-        except (TypeError, ValueError) as exc:
-            raise ValueError("V3_NATIVE_JSON_RESPONSE_ONLY") from exc
-        if not isinstance(value, dict):
-            raise ValueError("V3_NATIVE_JSON_RESPONSE_ONLY")
-        # No invented PASS: existing V3 _parse_response checks every detail.
+        # Native transport returns provider text without parsing. The owning
+        # assessment engine saves exact bytes durably before JSON/rubric QA.
         return text
 
 

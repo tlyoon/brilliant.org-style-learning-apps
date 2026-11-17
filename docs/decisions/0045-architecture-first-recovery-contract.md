@@ -1,0 +1,26 @@
+# Decision 0045 — Architecture-first, recovery-completion development
+
+**Owner approved 17 November 2026.** Binding supplement to Decision 0037, the machine-checked `docs/normal_pipeline_recovery_contract.json`, and the unchanged V3 paid-operation authorization in Decision 0044.
+
+## Strategic correction
+
+Repeated isolated blocker fixes and green test counts do not establish an autonomous recovery system. For all subsequent Bosla pipeline work, prefer **failure-class architecture over one-off symptom patches**. Diagnose exactly which trust boundary failed, preserve original evidence, demonstrate that the genuine normal pipeline can safely recover and continue, and retain unresolved provider/scientific failures as **ACTIVE** until real evidence closes them. A safe STOP is a verified safety feature, **not** a repaired blocker.
+
+1. **Provider receipt versus local validation.** Before JSON or the four-dimensional physics/language/visual/accessibility rubric is parsed, the normal V3 assessor must durably write original returned provider text to the external **private** checkpoint and bind it to the exact package, activity, role-specific prompt, reviewer, session and returned response SHA. No source PDF or credentials may be captured in this response record.
+2. **Distinct states.** An uncaptured possibly-submitted remote request remains `IN_FLIGHT` or `AMBIGUOUS` and may never be submitted again. A successfully captured returned response becomes `RESPONSE_CAPTURED`, `PARSE_FAILED`, `RUBRIC_FAILED`, or `COMPLETE`. A local parse/rubric fault is never silently promoted to a scientific PASS; an actually observed valid response can only be evaluated using the existing strict rubric. A local disk write failure cannot be counted as captured.
+3. **Deterministic local recovery.** Verified captured bytes may be reparsed on restart without another provider call. Only an exact, complete JSON object or a complete Markdown JSON fence may be normalized; no fragment extraction, guessed missing values, changed physics labels, extra commentary or synthetic model verdict. Keep original raw bytes and SHA, including a parse/rubric rejection.
+4. **Activity-level failure isolation.** A locally captured/identity-verified JSON or rubric fault may leave a genuine activity `AI_UNCERTAIN` while other independently eligible activities in the same frozen section continue. Previously ambiguous external requests without provable capture, `SKIPPED_UNSENT`, genuine science FAIL and script-integrity failures still quarantine the relevant section and stop or select a different eligible section. No reviewer request, historical activity outcome or frozen source package is replayed, modified, or upgraded to PASS. Final course acceptance still requires the complete resolved 108-activity evidence.
+5. **Genuine normal-path proof before further paid review.** The automated suite must exercise the production Gemini API reviewer adapter with a no-network SDK fake and the actual course dispatcher, immutable checkpoint, restart and original scientific rubric. Include malformed response, exact-fence normalization, strict-rubric failure, no-provider-response, failed private capture, crash after durable capture, response/prompt tampering, successful unaffected activity continuation, non-replay and actual scientific FAIL negative controls. After this, require green ordinary source-free V3 regressions and **hosted exact-head CI** before commencing another paid batch. Synthetic tests prove recovery behavior, not genuine model correctness or course acceptance.
+6. **Owner authorization unchanged.** This architectural milestone does NOT permit retrying the old Section9.1/9.6 ambiguous requests, creating new versioned paid review scopes, opening a batch job, uploading third-party source material, reinstalling a scheduler, merging PR #223 or publishing a course. Future authorized finite review may only resume after genuine gates pass.
+
+## Integrated executable paths
+
+- `app_generator/gemini/v3_native_api_reviewers.py`: returns provider text without parsing first
+- `app_generator/runtime/run_context.py`: private fsynced exact-byte response capture
+- `app_generator/validation/v3_response_recovery.py`: strict raw SHA verification, deterministic envelope handling, local failure classification and activity-level identity matching
+- `app_generator/validation/autonomous_completion.py`: captures before parse, distinguishes locally captured failures and recovers from crash at `RESPONSE_CAPTURED`
+- `app_generator/validation/v3_course_readiness.py`: only allows truly verified captured orphan roles to resume without re-sending
+- `app_generator/runtime/v3_course_review.py`: selects later independent activities even after a *locally captured* parse/rubric fault, without weakening historical unknown-provider quarantines
+- `tests/test_v3_response_recovery_architecture.py`: executable source-free normal-path positive/negative controls
+
+**Status:** Code-integrated design, subject to full source-free regression and exact-head hosted CI. No new genuine provider response is fabricated and the earlier Section9.6 ambiguity remains unresolved. Treat code readiness and paid V3 course acceptance as distinct.

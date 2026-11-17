@@ -260,9 +260,10 @@ class V3NativeGeminiApiTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"V3_NATIVE_GENERATED_REVIEW_ONLY"):
             convo.ask("no rubric",stage="academic-v3-autonomous")
         self.assertEqual(0,len(client.models.calls))
-        with self.assertRaisesRegex(ValueError,"V3_NATIVE_JSON_RESPONSE_ONLY"):
-            convo.ask(valid_prompt,
-                      stage="academic-v3-autonomous")  # malformed SDK JSON
+        # Transport must return even malformed text for private durable
+        # capture BEFORE local JSON/rubric parsing. Never send it again.
+        self.assertEqual("{invalid", convo.ask(
+            valid_prompt, stage="academic-v3-autonomous"))
         self.assertEqual(1,len(client.models.calls))
         with self.assertRaisesRegex(ValueError,"V3_NATIVE_REQUEST_ALREADY_SUBMITTED"):
             convo.ask(valid_prompt,stage="academic-v3-autonomous")

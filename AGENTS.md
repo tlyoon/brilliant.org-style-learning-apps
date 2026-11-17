@@ -100,3 +100,26 @@ The owner explicitly authorized a NEW bounded V3 Gemini API academic-review camp
 ## 17 Nov 2026 — ACTIVE BSA-183 Section 9.6 reviewer ambiguity
 
 Real Yoga6 paid V3 assessment now has 75/108 originals assessed and 72 original genuine two-Gemini PASS. Section9.5 is fully 18/18 reviewed. Section9.6 activity mcq-mod-bat-cut-mass-comparison (zero-based index5) has an actual immutable physics AMBIGUOUS ValueError role claim with no provider job ID or raw response, while semantics is COMPLETE. Do not retry, overwrite, alter or promote this reviewer claim. Normal V3 planner currently STOP_VERSIONED_CONTENT_REPAIR_REQUIRED with Section9.6 quarantined and no independently eligible original section in the current paid authorization. This remains an ACTIVE incident, not fixed. Only a verifiable attributable original response, or explicitly owner-approved NEW exact-versioned Section9.6 replacement with genuine fresh QA, can reopen review. New private corrected 108-activity proposal has SHA 3b4a3dfcda78c673028646f0cf0e9d7e86e23af9498dcb008438dba66c422a82, 72 original potentially reusable genuine PASS and corrected Section9.2 genuine PASS; not accepted or published. Retired scheduler remains absent. See docs/V3_SECTION96_REVIEW_UNCERTAINTY_20261117.md and BSA-183.
+
+## 17 November 2026 — Decision 0045: architecture-first recovery development
+
+The owner explicitly directed that future codebase development **must correct
+repeated failure architecture before resuming mass paid content assessment**.
+This is binding and executable in the new true-valued requirements of
+`docs/normal_pipeline_recovery_contract.json` and
+`scripts/check_regression_contract.py`. Detailed decision:
+`docs/decisions/0045-architecture-first-recovery-contract.md`.
+
+The normal reviewer must durably record returned source-free model text BEFORE
+JSON/rubric parsing and separately distinguish uncaptured provider uncertainty
+from captured local parse/rubric error. Only hash-verified captured response bytes
+can be locally reparsed without another model request. A bad local response may
+remain AI_UNCERTAIN while an unrelated activity proceeds under the normal finite
+authorization; scientific/model FAIL and old uncaptured ambiguous provider calls
+remain quarantined. A STOP that preserves safety is not proof of a REPAIR.
+
+An incident is not resolved merely because its registry entry, checkpoint and
+unit tests exist. Every recovered family requires realistic same-path response,
+failure, restart, negative control and forward-continuation evidence plus exact-
+head hosted CI before more paid model work. If any requirement is absent, do not
+resume mass generation or bypass no-replay, frozen scope or release gates.

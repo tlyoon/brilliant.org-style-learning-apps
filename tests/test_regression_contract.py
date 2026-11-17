@@ -146,6 +146,17 @@ class RegressionContractTests(unittest.TestCase):
         self.save_manifest()
         self.assertIn("explain why earlier regression", " ".join(verify(self.root)))
 
+    def test_architecture_first_recovery_contract_cannot_be_weakened(self):
+        """The new no-replay local-capture/isolation strategy is CI locked."""
+        path = self.root / "docs/normal_pipeline_recovery_contract.json"
+        policy = json.loads(path.read_text(encoding="utf8"))
+        self.assertTrue(policy["requirements"][
+            "realisticNormalPathRecoveryProofBeforePaidResumption"])
+        policy["requirements"]["responseCaptureBeforeAnyParsing"] = False
+        path.write_text(json.dumps(policy), encoding="utf8")
+        self.assertIn("normal pipeline recovery contract weakened",
+                      " ".join(verify(self.root)))
+
     def test_normal_pipeline_recovery_contract_cannot_be_silently_weakened(self):
         """A manual-only fix or repeated owner intervention must not pass CI."""
         policy_path = self.root / "docs/normal_pipeline_recovery_contract.json"

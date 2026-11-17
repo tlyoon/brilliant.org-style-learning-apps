@@ -13,7 +13,13 @@
     "advanceIndependentAuthorizedWorkWithoutUserPrompt": true,
     "truthfulUnresolvedExternalBlockers": true,
     "noAmbiguousRequestReplay": true,
-    "noExternalDenialBypass": true
+    "noExternalDenialBypass": true,
+    "architecturalRootCauseBeforeAdditionalPatch": true,
+    "responseCaptureBeforeAnyParsing": true,
+    "providerAndLocalFailureClassesDistinct": true,
+    "perActivityIsolationWithNoReplay": true,
+    "realisticNormalPathRecoveryProofBeforePaidResumption": true,
+    "unresolvedFaultsRemainOpenInRegistry": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

@@ -2245,7 +2245,7 @@
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/v3_course_readiness.py",
         "triggerMarker": "def _unreconciled_next_role_claims(",
-        "remedyMarker": "unresolved += row[\"state\"] != \"COMPLETE\"",
+        "remedyMarker": "unresolved += 1",
         "normalEntryPoints": [
           {"path": "app_generator/runtime/v3_course_review.py",
            "marker": "from app_generator.validation.v3_course_readiness import course_readiness"}
@@ -3272,6 +3272,80 @@
           "tests/test_v3_forward_progress.py"
         ]
       }
+    },
+    {
+      "id": "BSA-20261117-184",
+      "class": "v3-native-provider-json-validated-before-capture-and-section-wide-local-error-quarantine",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261113-162",
+        "BSA-20261117-180",
+        "BSA-20261117-183"
+      ],
+      "differenceFromLinkedIncident": "BSA-162 correctly prevented replay after an uncaptured IN_FLIGHT role but neither saved exact returned text nor distinguished local parse/rubric faults from uncertain provider submission. BSA-183 is still ACTIVE: historical Section9.6 ValueError has no raw response/provider ID and cannot be retroactively recovered. BSA-184 instead fixes the general NORMAL V3 pipeline: exact private raw-response capture before local parse, crash-resumable captured role, deterministic complete JSON-fence normalization, separate PARSE_FAILED/RUBRIC_FAILED states, and SHA/prompt/reviewer-bound per-activity isolation so unrelated later activities in the same section continue. Old ambiguous/denied responses and genuine model FAIL are never replayed or upgraded. Twelve no-network SDK end-to-end tests include an 18-activity scenario with one malformed response and seventeen safe follow-on PASS fixtures.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga 6 Windows normal V3 reviewer execution",
+        "GitHub hosted Linux source-free full suite"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/v3_response_recovery.py",
+        "triggerMarker": "def record_returned_response(",
+        "remedyMarker": "def section_has_only_isolatable_uncertainty(",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/validation/autonomous_completion.py",
+            "marker": "from app_generator.validation.v3_response_recovery import ("
+          },
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "from app_generator.validation.v3_response_recovery import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_response_recovery_architecture.py",
+          "kind": "python",
+          "marker": "test_real_normal_dispatch_captures_malformed_then_advances_same_section"
+        },
+        {
+          "path": "tests/test_v3_response_recovery_architecture.py",
+          "kind": "python",
+          "marker": "test_full_eighteen_activity_section_proceeds_past_one_local_failure"
+        },
+        {
+          "path": "tests/test_v3_response_recovery_architecture.py",
+          "kind": "python",
+          "marker": "test_after_response_capture_crash_restarts_without_reissuing_role_zero"
+        },
+        {
+          "path": "tests/test_v3_response_recovery_architecture.py",
+          "kind": "python",
+          "marker": "test_exact_fenced_response_locally_normalized_but_original_saved"
+        },
+        {
+          "path": "tests/test_v3_response_recovery_architecture.py",
+          "kind": "python",
+          "marker": "test_current_legacy_valueerror_ambiguity_stays_quarantined"
+        },
+        {
+          "path": "tests/test_v3_response_recovery_architecture.py",
+          "kind": "python",
+          "marker": "test_no_response_capture_write_fails_closed_without_replay"
+        },
+        {
+          "path": "tests/test_v3_response_recovery_architecture.py",
+          "kind": "python",
+          "marker": "test_prompt_identity_tamper_prevents_same_section_continuation"
+        },
+        {
+          "path": "tests/test_v3_response_recovery_architecture.py",
+          "kind": "python",
+          "marker": "test_actual_model_scientific_fail_is_never_repaired_to_pass"
+        }
+      ]
     }
   ]
 }

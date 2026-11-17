@@ -14,6 +14,9 @@ from pathlib import Path
 from app_generator.validation.autonomous_completion import (
     package_identity, assessment_progress,
 )
+from app_generator.validation.v3_response_recovery import (
+    read_local_failure_claim,
+)
 
 # Support the repository's canonical section-9-1 layout as well as
 # portable synthetic section-1 fixtures without hardcoding chapter numbers.
@@ -162,9 +165,23 @@ def _unreconciled_next_role_claims(
             or row.get("state") not in (
                 "COMPLETE", "IN_FLIGHT", "AMBIGUOUS",
                 "BLOCKED_EXTERNAL", "SKIPPED_UNSENT",
+                "RESPONSE_CAPTURED", "PARSE_FAILED", "RUBRIC_FAILED",
             )):
             raise ValueError("V3_INVALID_ORPHAN_ROLE_CLAIM")
-        unresolved += row["state"] != "COMPLETE"
+        state = row["state"]
+        if state in ("PARSE_FAILED", "RUBRIC_FAILED"):
+            if not read_local_failure_claim(
+                    batches, digest, assessed, role, activities[assessed]["id"]):
+                raise ValueError("V3_LOCAL_FAILURE_CAPTURE_UNTRUSTED")
+        elif state == "RESPONSE_CAPTURED":
+            saved = batches / (
+                f"v3-review-{digest[:12]}-{assessed:03d}-{role}.response.txt")
+            if (saved.is_symlink() or not saved.is_file()
+                    or saved.stat().st_size > 200_000
+                    or row.get("responseSha256") != sha256(saved.read_bytes()).hexdigest()):
+                raise ValueError("V3_CAPTURED_ORPHAN_RESPONSE_UNTRUSTED")
+        elif state != "COMPLETE":
+            unresolved += 1
     return unresolved
 
 

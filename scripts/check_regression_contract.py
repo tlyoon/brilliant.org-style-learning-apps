@@ -110,6 +110,12 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "truthfulUnresolvedExternalBlockers",
     "noAmbiguousRequestReplay",
     "noExternalDenialBypass",
+    "architecturalRootCauseBeforeAdditionalPatch",
+    "responseCaptureBeforeAnyParsing",
+    "providerAndLocalFailureClassesDistinct",
+    "perActivityIsolationWithNoReplay",
+    "realisticNormalPathRecoveryProofBeforePaidResumption",
+    "unresolvedFaultsRemainOpenInRegistry",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

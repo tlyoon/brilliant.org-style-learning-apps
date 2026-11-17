@@ -56,3 +56,26 @@ valid two-model receipt. Preserve `BLOCKED_EXTERNAL_REVIEW_TRANSPORT`,
 `PENDING_AUTOMATED_ASSESSMENT` and 0/108 genuine reviews until new
 verified authorized execution evidence exists. Do not add a substitute
 fake provider or re-enter frozen source-PDF campaigns.
+
+## 17 November 2026 — Decision 0045: architecture-first recovery development
+
+The owner explicitly directed that future codebase development **must correct
+repeated failure architecture before resuming mass paid content assessment**.
+This is binding and executable in the new true-valued requirements of
+`docs/normal_pipeline_recovery_contract.json` and
+`scripts/check_regression_contract.py`. Detailed decision:
+`docs/decisions/0045-architecture-first-recovery-contract.md`.
+
+The normal reviewer must durably record returned source-free model text BEFORE
+JSON/rubric parsing and separately distinguish uncaptured provider uncertainty
+from captured local parse/rubric error. Only hash-verified captured response bytes
+can be locally reparsed without another model request. A bad local response may
+remain AI_UNCERTAIN while an unrelated activity proceeds under the normal finite
+authorization; scientific/model FAIL and old uncaptured ambiguous provider calls
+remain quarantined. A STOP that preserves safety is not proof of a REPAIR.
+
+An incident is not resolved merely because its registry entry, checkpoint and
+unit tests exist. Every recovered family requires realistic same-path response,
+failure, restart, negative control and forward-continuation evidence plus exact-
+head hosted CI before more paid model work. If any requirement is absent, do not
+resume mass generation or bypass no-replay, frozen scope or release gates.
