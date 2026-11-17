@@ -228,11 +228,16 @@ class FrozenOriginalIndependentTailTests(unittest.TestCase):
         second=advance_frozen_tail_until_boundary(
             self.course,self.repo,self.private,review,
             section=self.section,max_activities=2)
+        # Unlike an independently proven local parser fault, this callback
+        # exception may have reached Google; source-free evidence cannot
+        # establish its delivery. Preserve the reservation and stop globally.
+        self.assertEqual(second["status"],
+                         "STOP_TAIL_UNCONFIRMED_PRIOR_ATTEMPT")
         self.assertEqual(second["supplemental"]["reserved"],1)
-        self.assertEqual(second["supplemental"]["passed"],2)
-        self.assertEqual(seen,[7,8])
+        self.assertEqual(second["supplemental"]["passed"],0)
+        self.assertEqual(seen,[])
         self.assertEqual(calls,[6])
-        self.assertEqual(second["nextOriginalIndex"],9)
+        self.assertEqual(second["nextOriginalIndex"],7)
 
     def test_no_checkpoint_result_cannot_count_as_review(self):
         called=[]
@@ -449,6 +454,209 @@ class FrozenOriginalIndependentTailTests(unittest.TestCase):
         self.assertFalse(
             (private/"frozen-original-review-attempts").exists())
 
+
+    def test_supplemental_unknown_provider_fault_stops_next_original(self):
+        # A failed slice is NOT in the frozen sectionProgress roster.
+        # Earlier code skipped its unknown provider claim on restart.
+        from types import SimpleNamespace
+        from app_generator.validation.v3_course_readiness import course_readiness
+        from app_generator.validation.v3_server_error_recovery import provider_capacity_gate
+
+        raw, meta = self.stage(6)
+        reserve_frozen_original_tail_attempt(
+            self.private, source_sha=self.digest, index=6,
+            slice_sha=meta["slicePackageSha256"])
+
+        class Unclassified:
+            def ask(self, prompt, *, stage=None):
+                raise ValueError("SYNTHETIC_UNKNOWN_PROVIDER")
+
+        sessions, _, _ = pair()
+        failure = SimpleNamespace(
+            reviewer_id=sessions[0].reviewer_id,
+            session_id=sessions[0].session_id,
+            provider_id=sessions[0].provider_id,
+            conversation=Unclassified())
+        review = advance_v3_generated_text(
+            raw, (failure, sessions[1]), private_root=self.private,
+            generated_content_transfer_allowed=True, max_activities=1)
+        self.assertEqual(review["modelUncertainActivities"], 1)
+        section_progress = course_readiness(
+            self.course, self.repo, private_root=self.private)["sectionProgress"]
+        # This tests the corrected provider gate directly, independent of SDK.
+        check = provider_capacity_gate(
+            self.private, section_progress,
+            additional_package_shas=[meta["slicePackageSha256"]])
+        self.assertEqual(check["status"], "STOP_UNCLASSIFIED_PROVIDER_REVIEW")
+        unseen = []
+        stopped = advance_frozen_tail_until_boundary(
+            self.course, self.repo, self.private,
+            lambda *_: unseen.append("FORBIDDEN"), section=self.section)
+        self.assertEqual(stopped["status"],
+                         "STOP_TAIL_SUPPLEMENTAL_PROVIDER_STOP_UNCLASSIFIED_PROVIDER_REVIEW")
+        self.assertEqual(unseen, [])
+        self.assertEqual(self.plan()["next"]["index"], 7)
+
+    def test_orphan_precall_must_stop_new_slice_until_reconciled(self):
+        _, meta = self.stage(6)
+        reserve_frozen_original_tail_attempt(
+            self.private, source_sha=self.digest, index=6,
+            slice_sha=meta["slicePackageSha256"])
+        unseen = []
+        stopped = advance_frozen_tail_until_boundary(
+            self.course, self.repo, self.private,
+            lambda *_: unseen.append("FORBIDDEN"), section=self.section)
+        self.assertEqual(stopped["status"],
+                         "STOP_TAIL_UNCONFIRMED_PRIOR_ATTEMPT")
+        self.assertEqual(unseen, [])
+        self.assertEqual(self.plan()["next"]["index"], 7)
+
+    def test_normal_worker_supplemental_provider_failure_stops_before_sdk(self):
+        # Full normal Yoga6 entrypoint, cooled old original (independently
+        # READY) but a previously attempted supplemental ValueError (unsafe).
+        from types import SimpleNamespace
+        from scripts import run_v3_yoga6_recovery_worker as worker
+        from app_generator.runtime import native_sdk_environment
+
+        chapter, local, private = self._normal_worker_fixture()
+        self._set_synthetic_sixth_failure_to_cooled_servererror(private)
+        raw, meta = stage_frozen_original_tail_slice(
+            chapter, self.repo, private, section="section-9-6", index=6)
+        reserve_frozen_original_tail_attempt(
+            private, source_sha=self.digest, index=6,
+            slice_sha=meta["slicePackageSha256"])
+
+        class Unclassified:
+            def ask(self, prompt, *, stage=None):
+                raise ValueError("SYNTHETIC_UNKNOWN_GOOGLE_OUTCOME")
+
+        reviewers, _, _ = pair()
+        bad = SimpleNamespace(
+            reviewer_id=reviewers[0].reviewer_id,
+            session_id=reviewers[0].session_id,
+            provider_id=reviewers[0].provider_id,
+            conversation=Unclassified())
+        advance_v3_generated_text(
+            raw, (bad, reviewers[1]), private_root=private,
+            generated_content_transfer_allowed=True, max_activities=1)
+        old_plan = {
+            "dispatchStatus": "STOP_VERSIONED_CONTENT_REPAIR_REQUIRED",
+            "quarantinedSections": ["section-9-6"],
+            "publicationAuthorized": False,
+        }
+        output = io.StringIO()
+        with (patch.dict(os.environ, {"LOCALAPPDATA": str(local)}),
+              patch.object(worker, "ROOT", self.repo),
+              patch.object(worker, "COURSE", chapter),
+              patch.object(worker, "plan_v3_course_review",
+                           return_value=old_plan),
+              patch.object(worker, "require_authorized_native_review_host"),
+              patch.object(native_sdk_environment,
+                           "delegate_to_supported_sdk") as bootstrap,
+              patch.object(worker, "_load_native_config") as credential,
+              patch.object(worker, "diagnose_model_metadata") as metadata,
+              redirect_stdout(output)):
+            code = worker.main([
+                "--private-root", str(private),
+                "--auto-advance", "--execute",
+                "--allow-generated-text-transfer",
+                "--max-forward-activities", "2",
+            ])
+        self.assertEqual(code, 3, output.getvalue())
+        message = json.loads(output.getvalue())
+        self.assertEqual(message["status"],
+                         "STOP_TAIL_SUPPLEMENTAL_PROVIDER_STOP_UNCLASSIFIED_PROVIDER_REVIEW")
+        self.assertFalse(message["publicationAuthorized"])
+        bootstrap.assert_not_called()
+        credential.assert_not_called()
+        metadata.assert_not_called()
+        self.assertEqual(plan_frozen_original_tail(
+            chapter, self.repo, private,
+            section="section-9-6")["next"]["index"], 7)
+
+    def test_missing_captured_local_response_fails_closed_on_restart(self):
+        from tests.test_autonomous_completion_v3 import FakeModel, sessions
+        raw, meta = self.stage(6)
+        reserve_frozen_original_tail_attempt(
+            self.private, source_sha=self.digest, index=6,
+            slice_sha=meta["slicePackageSha256"])
+        advance_v3_generated_text(
+            raw, sessions(FakeModel(malformed=True), FakeModel()),
+            private_root=self.private, generated_content_transfer_allowed=True,
+            max_activities=1)
+        self.assertEqual(self.plan()["rows"][0]["state"],
+                         "SUPPLEMENTAL_UNCERTAIN_NO_REPLAY")
+        folder = (self.private / ("v3-generated-" + meta["slicePackageSha256"])
+                  / "batches")
+        captures = list(folder.glob("*.response.txt"))
+        self.assertTrue(captures)
+        # Test-only deletion in a disposable private fixture; never alter
+        # owner-owned immutable original or real provider evidence.
+        captures[0].unlink()
+        called = []
+        stopped = advance_frozen_tail_until_boundary(
+            self.course, self.repo, self.private,
+            lambda *_: called.append("FORBIDDEN"), section=self.section)
+        self.assertEqual(stopped["status"],
+                         "STOP_TAIL_UNVERIFIED_SUPPLEMENTAL_UNCERTAINTY")
+        self.assertEqual(called, [])
+
+    def test_verified_local_capture_can_continue_on_restart(self):
+        from tests.test_autonomous_completion_v3 import FakeModel, sessions
+        raw, meta = self.stage(6)
+        reserve_frozen_original_tail_attempt(
+            self.private, source_sha=self.digest, index=6,
+            slice_sha=meta["slicePackageSha256"])
+        advance_v3_generated_text(
+            raw, sessions(FakeModel(malformed=True), FakeModel()),
+            private_root=self.private, generated_content_transfer_allowed=True,
+            max_activities=1)
+        seen = []
+        def valid_next(raw, manifest):
+            seen.append(manifest["sourceActivityIndex"])
+            pair = sessions(FakeModel(), FakeModel())
+            return advance_v3_generated_text(
+                raw, pair, private_root=self.private,
+                generated_content_transfer_allowed=True, max_activities=1)
+        progressed = advance_frozen_tail_until_boundary(
+            self.course, self.repo, self.private, valid_next,
+            section=self.section, max_activities=1)
+        self.assertEqual(progressed["supplemental"]["uncertain"], 1)
+        self.assertEqual(progressed["supplemental"]["passed"], 1)
+        self.assertEqual(seen, [7])
+        self.assertFalse(progressed["publicationAuthorized"])
+
+    def test_ordinary_course_dispatcher_checks_supplemental_unknown(self):
+        # Section 9.1 is independently eligible, yet an earlier frozen-tail
+        # provider-wide unknown failure must prohibit a NEW model request.
+        from types import SimpleNamespace
+        from app_generator.runtime.v3_course_review import plan_v3_course_review
+        chapter, local, private = self._normal_worker_fixture()
+        self._set_synthetic_sixth_failure_to_cooled_servererror(private)
+        raw, meta = stage_frozen_original_tail_slice(
+            chapter, self.repo, private, section="section-9-6", index=6)
+        reserve_frozen_original_tail_attempt(
+            private, source_sha=self.digest, index=6,
+            slice_sha=meta["slicePackageSha256"])
+
+        class Unclassified:
+            def ask(self, prompt, *, stage=None):
+                raise ValueError("SYNTHETIC_UNCLASSIFIED_PROVIDER")
+
+        pair_sessions, _, _ = pair()
+        bad = SimpleNamespace(
+            reviewer_id=pair_sessions[0].reviewer_id,
+            session_id=pair_sessions[0].session_id,
+            provider_id=pair_sessions[0].provider_id,
+            conversation=Unclassified())
+        advance_v3_generated_text(
+            raw, (bad, pair_sessions[1]), private_root=private,
+            generated_content_transfer_allowed=True, max_activities=1)
+        plan = plan_v3_course_review(
+            chapter, self.repo, private_root=private, continue_independent=True)
+        self.assertEqual(plan["dispatchStatus"],
+                         "STOP_TAIL_SUPPLEMENTAL_PROVIDER_STOP_UNCLASSIFIED_PROVIDER_REVIEW")
+        self.assertFalse(plan["publicationAuthorized"])
 
     def test_locally_captured_malformed_role_isolated_and_next_original_advances(self):
         from tests.test_autonomous_completion_v3 import FakeModel, sessions

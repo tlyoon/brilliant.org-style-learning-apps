@@ -102,6 +102,20 @@ def plan_v3_course_review(
                     result["publicationAuthorized"] = False
                     return result
         if eligible:
+            # BSA-186: a different original section becoming eligible must
+            # NOT route around earlier supplemental reviewer claims or an
+            # uncertain PRE_CALL made by the independent original-tail queue.
+            # Read-only; never opens a model or clears prior reviewer claims.
+            if private_root is not None:
+                from app_generator.runtime.v3_frozen_tail_forward import (
+                    existing_frozen_original_tail_preflight,
+                )
+                tail_status = existing_frozen_original_tail_preflight(
+                    chapter_dir, repo_root, private_root)
+                if tail_status != "READY":
+                    result["dispatchStatus"] = tail_status
+                    result["publicationAuthorized"] = False
+                    return result
             from app_generator.validation.v3_server_error_recovery import provider_capacity_gate
             result["nextSection"] = eligible[0]["section"]
             capacity = provider_capacity_gate(

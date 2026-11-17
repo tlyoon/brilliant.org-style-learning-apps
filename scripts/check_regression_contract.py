@@ -119,6 +119,10 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "neverReplayAmbiguousPrefixWhileReviewingUntouchedSiblings",
     "durableOneActivityPreCallAndExactVersionProvenance",
     "supplementalEvidenceCannotAdmitCourse",
+    "supplementalClaimsShareOriginalProviderCircuit",
+    "unconfirmedTailPreCallBlocksNewProviderContact",
+    "localFailureCaptureReverifiedOnEveryTailRestart",
+    "ordinaryCourseDispatcherChecksHistoricalSupplementalClaims",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

@@ -3426,6 +3426,80 @@
           "marker": "test_genuine_shaped_unchanged_tail_pass_updates_only_proposal"
         }
       ]
+    },
+    {
+      "id": "BSA-20261117-186",
+      "class": "v3-supplemental-frozen-original-provider-claims-omitted-from-global-capacity-circuit-and-orphan-precall-skipped",
+      "status": "resolved",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261104-108",
+        "BSA-20261117-183",
+        "BSA-20261117-184",
+        "BSA-20261117-185"
+      ],
+      "differenceFromLinkedIncident": "BSA-183 remains an unresolved real Yoga6 original Section9.6 uncaptured ValueError. BSA-185 safely created new exact-original single-activity identities and checked the original provider-wide circuit, but the circuit scanned only six original course hashes, not these new supplemental identities. After a later supplemental unknown Gemini result, the next process could skip its AMBIGUOUS role and open a fresh SDK for another untouched original. Worse, a fsynced PRE_CALL without any review aggregate was skipped as reserved, despite uncertain delivery. The normal worker and bounded tail controller now consult the same source-bound supplemental provider circuit before any new model request and fail closed on orphan PRE_CALL or incomplete role evidence. Authenticated source-free local capture faults still permit independent continuation; no old claim is replayed or relabelled.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga6 Windows normal paid V3 auto-advance worker",
+        "source-free fake Gemini SDK and crash/restart tests"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_frozen_tail_forward.py",
+        "triggerMarker": "def supplemental_provider_preflight(",
+        "remedyMarker": "provider_capacity_gate(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_frozen_tail_forward import ("
+          },
+          {
+            "path": "app_generator/runtime/v3_course_review.py",
+            "marker": "from app_generator.runtime.v3_frozen_tail_forward import ("
+          },
+          {
+            "path": "app_generator/runtime/v3_frozen_tail_forward.py",
+            "marker": "safe = supplemental_provider_preflight(private,current)"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_supplemental_unknown_provider_fault_stops_next_original"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_orphan_precall_must_stop_new_slice_until_reconciled"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_worker_supplemental_provider_failure_stops_before_sdk"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_locally_captured_malformed_role_isolated_and_next_original_advances"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_missing_captured_local_response_fails_closed_on_restart"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_verified_local_capture_can_continue_on_restart"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_ordinary_course_dispatcher_checks_supplemental_unknown"
+        }
+      ]
     }
   ]
 }

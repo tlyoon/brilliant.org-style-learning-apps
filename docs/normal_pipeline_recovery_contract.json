@@ -22,7 +22,11 @@
     "unresolvedFaultsRemainOpenInRegistry": true,
     "neverReplayAmbiguousPrefixWhileReviewingUntouchedSiblings": true,
     "durableOneActivityPreCallAndExactVersionProvenance": true,
-    "supplementalEvidenceCannotAdmitCourse": true
+    "supplementalEvidenceCannotAdmitCourse": true,
+    "supplementalClaimsShareOriginalProviderCircuit": true,
+    "unconfirmedTailPreCallBlocksNewProviderContact": true,
+    "localFailureCaptureReverifiedOnEveryTailRestart": true,
+    "ordinaryCourseDispatcherChecksHistoricalSupplementalClaims": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

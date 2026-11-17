@@ -42,7 +42,7 @@ from app_generator.runtime.v3_frozen_original_tail import (
     plan_frozen_original_tail,
 )
 from app_generator.runtime.v3_frozen_tail_forward import (
-    advance_frozen_tail_until_boundary,
+    advance_frozen_tail_until_boundary, supplemental_provider_preflight,
 )
 
 COURSE = ROOT / "content" / "chapter-9"
@@ -89,9 +89,18 @@ def _advance_unchanged_frozen_tail(args, private: Path,
                 "providerCapacity":capacity,
                 "publicationAuthorized":False})
         return 3
-    # Only an independently READY original provider circuit may bootstrap a
-    # Google SDK/client or run a metadata check. A historical unclassified
-    # ValueError must stop before any credential or model transport work.
+    # BSA-186: the original course circuit is insufficient on its own.
+    # Check all previously created, source-bound supplemental package claims
+    # and orphan PRE_CALL records BEFORE metadata, SDK, credentials or new
+    # paid transport; this remains mandatory across restarts.
+    tail_plan = plan_frozen_original_tail(
+        COURSE, ROOT, private, section="section-9-6")
+    supplemental = supplemental_provider_preflight(private, tail_plan)
+    if supplemental != "READY":
+        _print({"status": supplemental, "publicationAuthorized": False})
+        return 3
+    # Only independently READY original AND supplemental provider circuits
+    # may bootstrap an SDK/client or run a metadata check.
     from app_generator.runtime.native_sdk_environment import (
         delegate_to_supported_sdk,
     )

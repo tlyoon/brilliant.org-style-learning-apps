@@ -20,6 +20,7 @@ MAX_SERVER_FAILURES_PER_WINDOW = 2
 def provider_capacity_gate(
     private_root: Path | None, section_progress: list[dict], *,
     now: float | None = None,
+    additional_package_shas: tuple[str, ...] | list[str] = (),
 ) -> dict:
     """Return only a privacy-safe, deterministic decision; never contact Google.
 
@@ -34,8 +35,18 @@ def provider_capacity_gate(
     failed_activities: set[tuple[str,str]] = set()
     denied = False
     unclassified = False
-    for row in section_progress:
-        digest = row["packageSha256"]
+    # BSA-186: independently reviewed original-tail slices must share the
+    # same provider-wide circuit as the original frozen course.
+    if (not isinstance(additional_package_shas, (tuple, list))
+            or len(additional_package_shas) > 108
+            or any(not isinstance(d, str) or len(d) != 64
+                   or set(d) - set("0123456789abcdef")
+                   for d in additional_package_shas)):
+        raise ValueError("V3_PROVIDER_CAPACITY_INVALID_ADDITIONAL_DIGESTS")
+    packages = list(dict.fromkeys(
+        [row["packageSha256"] for row in section_progress]
+        + list(additional_package_shas)))
+    for digest in packages:
         folder = root / ("v3-generated-" + digest) / "batches"
         if folder.is_symlink():
             raise ValueError("V3_PROVIDER_CAPACITY_UNSAFE_CHECKPOINT")

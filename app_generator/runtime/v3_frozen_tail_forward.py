@@ -7,6 +7,7 @@ single-activity package and never replays a prior ambiguous model request.
 """
 from __future__ import annotations
 
+import json
 import time
 from pathlib import Path
 from typing import Callable, Any
@@ -16,12 +17,89 @@ from app_generator.runtime.v3_frozen_original_tail import (
     stage_frozen_original_tail_slice,
 )
 from app_generator.runtime.v3_yoga6_recovery import coordinator_lock
+from app_generator.validation.v3_server_error_recovery import provider_capacity_gate
+from app_generator.validation.v3_response_recovery import (
+    section_has_only_isolatable_uncertainty,
+)
 
 _ALLOWED = {
     "GENUINE_SUPPLEMENTAL_CONSENSUS_PASS",
     "SUPPLEMENTAL_SCIENTIFIC_REPAIR_REQUIRED",
     "SUPPLEMENTAL_UNCERTAIN_NO_REPLAY",
 }
+
+_UNRECONCILED_DELIVERY = {
+    "ATTEMPT_RESERVED_DO_NOT_REPLAY",
+    "ROLE_CLAIM_PRESENT_DO_NOT_REPLAY",
+    "ORIGINAL_ROLE_CLAIM_PRESENT_DO_NOT_REPLAY",
+}
+
+
+def supplemental_provider_preflight(private: Path, report: dict) -> str:
+    """Read-only shared circuit for ALL exact-source independent slices.
+
+    A durable PRE_CALL without a verified aggregate may have reached Google,
+    so it cannot be silently skipped to contact Google for another activity.
+    Captured local parse/rubric failures remain isolatable: their actual role
+    state is neither AMBIGUOUS nor BLOCKED_EXTERNAL.
+    """
+    if any(row["state"] in _UNRECONCILED_DELIVERY
+           for row in report["rows"]):
+        return "STOP_TAIL_UNCONFIRMED_PRIOR_ATTEMPT"
+    # A local PARSE_FAILED/RUBRIC_FAILED label is not permission to move on
+    # after its raw response sidecar has disappeared or changed. Revalidate
+    # the original response hash and exact prompt/reviewer provenance on
+    # EVERY restart, not only immediately after the failed callback.
+    for row in report["rows"]:
+        if row["state"] != "SUPPLEMENTAL_UNCERTAIN_NO_REPLAY":
+            continue
+        digest = row["slicePackageSha256"]
+        batches = private / ("v3-generated-" + digest) / "batches"
+        local_failure = False
+        for file in batches.glob(f"v3-review-{digest[:12]}-000-*.json"):
+            if file.is_symlink() or not file.is_file() or file.stat().st_size > 100_000:
+                return "STOP_TAIL_UNVERIFIED_SUPPLEMENTAL_UNCERTAINTY"
+            try:
+                state = json.loads(file.read_text(encoding="utf8"))
+            except (OSError, UnicodeError, ValueError):
+                return "STOP_TAIL_UNVERIFIED_SUPPLEMENTAL_UNCERTAINTY"
+            if not isinstance(state, dict):
+                return "STOP_TAIL_UNVERIFIED_SUPPLEMENTAL_UNCERTAINTY"
+            if state.get("state") in {"PARSE_FAILED", "RUBRIC_FAILED"}:
+                local_failure = True
+        if local_failure:
+            package = (private / "frozen-original-review-slices" /
+                       digest / "package.json")
+            if not section_has_only_isolatable_uncertainty(
+                    private, digest, package):
+                return "STOP_TAIL_UNVERIFIED_SUPPLEMENTAL_UNCERTAINTY"
+    extra = [row["slicePackageSha256"] for row in report["rows"]]
+    capacity = provider_capacity_gate(
+        private, [], additional_package_shas=extra)
+    if capacity["status"] != "READY":
+        return "STOP_TAIL_SUPPLEMENTAL_PROVIDER_" + capacity["status"]
+    return "READY"
+
+
+def existing_frozen_original_tail_preflight(
+    course: Path, repo: Path, private: Path,
+) -> str:
+    """Protect ordinary V3 dispatch from older supplemental provider faults.
+
+    A separate original section can be eligible when a supplemental
+    Section9.6 review has failed. Do not permit that separate course route to
+    skip the shared historical provider circuit.
+    """
+    slices = private / "frozen-original-review-slices"
+    attempts = private / "frozen-original-review-attempts"
+    for path in (slices, attempts):
+        if path.is_symlink() or (path.exists() and not path.is_dir()):
+            raise ValueError("V3_TAIL_UNSAFE_PROVIDER_EVIDENCE_ROOT")
+    if not slices.exists() and not attempts.exists():
+        return "READY"
+    report = plan_frozen_original_tail(
+        course, repo, private, section="section-9-6")
+    return supplemental_provider_preflight(private, report)
 
 
 def _receipt(status: str, report: dict, *, attempted: int, verified: int) -> dict:
@@ -68,6 +146,12 @@ def advance_frozen_tail_until_boundary(
         for _ in range(max_activities):
             current = plan_frozen_original_tail(
                 course,repo,private,section=section)
+            # Check every older supplemental claim, not only the original
+            # course roster, on EACH iteration and AFTER every restart.
+            safe = supplemental_provider_preflight(private,current)
+            if safe != "READY":
+                return _receipt(safe,current,
+                                attempted=attempted,verified=verified)
             if current["status"] != "READY_FOR_AUTHORIZED_FROZEN_ORIGINAL_TAIL_REVIEW":
                 return _receipt("STOP_TAIL_NO_ELIGIBLE_ORIGINAL_REVIEW",
                                 current,attempted=attempted,verified=verified)
