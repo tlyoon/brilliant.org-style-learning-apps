@@ -277,6 +277,10 @@ class ForwardControllerTests(unittest.TestCase):
                               "publicationAuthorized": False,
                           }), \
              patch.object(worker, "require_authorized_native_review_host"), \
+             patch.object(worker, "advance_source_free_until_boundary",
+                          return_value={"status": "SOURCE_FREE_BOUNDARIES_STAGED",
+                                        "publicationAuthorized": False,
+                                        "paidGeminiCalls": 0}) as offline, \
              patch("app_generator.runtime.v3_forward_progress.advance_until_boundary",
                    return_value={"status": "STOP_FORWARD_ACTIVITY_BUDGET_REACHED",
                                  "publicationAuthorized": False}) as controller, \
@@ -286,6 +290,11 @@ class ForwardControllerTests(unittest.TestCase):
                 "--max-forward-activities", "3",
                 "--private-root", str(self.root)])
         self.assertEqual(code, 0)
+        # BSA-190: this is intentionally a mocked READY plan without six
+        # real packages, so the independent source-free controller must be
+        # stubbed, not asked to invent historical source or model evidence.
+        # BSA-189's separate real-shaped paid-denial test executes offline.
+        offline.assert_called_once_with(worker.COURSE, worker.ROOT, self.root)
         self.assertEqual(controller.call_count, 1)
         self.assertEqual(controller.call_args.kwargs["max_activities"], 3)
         self.assertTrue(controller.call_args.kwargs["operation_authorized"])

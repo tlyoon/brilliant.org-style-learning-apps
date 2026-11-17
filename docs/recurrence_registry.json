@@ -3668,6 +3668,11 @@
           "marker": "test_normal_ready_paid_denial_does_not_strand_source_free_work"
         },
         {
+          "path": "tests/test_v3_forward_progress.py",
+          "kind": "python",
+          "marker": "test_script_dispatches_controller_from_normal_entrypoint"
+        },
+        {
           "path": "tests/test_v3_frozen_original_tail.py",
           "kind": "python",
           "marker": "test_normal_worker_paid_auth_denial_stops_before_any_claim"
