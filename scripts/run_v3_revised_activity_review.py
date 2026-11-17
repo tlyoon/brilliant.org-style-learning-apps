@@ -29,6 +29,9 @@ from app_generator.runtime.v3_yoga6_recovery import (
 )
 from app_generator.validation.autonomous_completion import assessment_progress
 from scripts.run_v3_native_gemini_review import AUTHORITY, _load_native_config
+from app_generator.runtime.v3_paid_review_authorization import (
+    authorize_paid_v3_action,
+)
 
 COURSE = ROOT / "content" / "chapter-9"
 
@@ -102,6 +105,13 @@ def main(argv: list[str] | None = None) -> int:
                 "publicationAuthorized": False,
             })
             return 0
+        authorize_paid_v3_action(
+            "ISOLATED_CORRECTED_SECTION_9_2_ACTIVITY",
+            execute=args.execute,
+            transfer=args.allow_generated_text_transfer,
+            corrected_candidate_sha256=_CANDIDATE,
+            max_activities=1,
+            max_elapsed_seconds=900)
         # No key/model initialization until AFTER both permissions and the
         # workstation authorization. Same provider capacity and cost circuit
         # as the normal frozen Section 9.5 worker.

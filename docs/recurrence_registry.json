@@ -3140,6 +3140,69 @@
           "marker": "test_two_disagreeing_valid_models_produce_real_fail_consensus"
         }
       ]
+    },
+    {
+      "id": "BSA-20261117-182",
+      "class": "v3-genuine-assessment-stalled-on-separate-paid-operation-authorization",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261117-181",
+        "BSA-20261116-172",
+        "BSA-20261117-180"
+      ],
+      "differenceFromLinkedIncident": "The engineering reviewer was ready, metadata-only Google models.get returned HTTP200, but no owner-authorized executable paid V3 campaign had been recorded. Prior historical FINAL_ACCEPTANCE_NO_REPEAT_V2 charter forbade source-bearing model campaigns and was immutable. On 2026-11-17 the owner explicitly approved paid Gemini V3 model calls; this resolution creates a NEW bounded V3 authorization contract rather than mutating or evading the frozen historical V2 closure charter. The real Yoga6 two-reviewer review proceeded under explicit opt-in and immutable claims.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga6 Windows native Gemini API",
+        "GitHub Actions source-free contract tests"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_paid_review_authorization.py",
+        "triggerMarker": "def authorize_paid_v3_action(",
+        "remedyMarker": "contract = load_paid_review_contract()",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_paid_review_authorization import ("
+          },
+          {
+            "path": "scripts/run_v3_native_gemini_review.py",
+            "marker": "from app_generator.runtime.v3_paid_review_authorization import ("
+          },
+          {
+            "path": "scripts/run_v3_revised_activity_review.py",
+            "marker": "from app_generator.runtime.v3_paid_review_authorization import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_paid_review_authorization.py",
+          "kind": "python",
+          "marker": "test_explicit_paid_and_transfer_authorization_new_version"
+        },
+        {
+          "path": "tests/test_v3_paid_review_authorization.py",
+          "kind": "python",
+          "marker": "test_historical_frozen_charter_is_unchanged"
+        },
+        {
+          "path": "tests/test_v3_paid_review_authorization.py",
+          "kind": "python",
+          "marker": "test_corrected_one_activity_only_and_no_original_ambiguous"
+        },
+        {
+          "path": "tests/test_v3_paid_review_authorization.py",
+          "kind": "python",
+          "marker": "test_budgets_exceed_caps_fail_before_provider"
+        },
+        {
+          "path": "tests/test_v3_paid_review_authorization.py",
+          "kind": "python",
+          "marker": "test_authorization_tamper_never_enables_batch_or_release"
+        }
+      ]
     }
   ]
 }

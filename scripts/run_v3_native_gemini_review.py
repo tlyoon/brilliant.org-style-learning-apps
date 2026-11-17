@@ -27,6 +27,9 @@ from app_generator.runtime.v3_course_review import (
     advance_v3_course_review, plan_v3_course_review,
 )
 from scripts import sync_configured_workstation as configured
+from app_generator.runtime.v3_paid_review_authorization import (
+    authorize_paid_v3_action,
+)
 
 AUTHORITY = ROOT / "config" / "configure_project.toml"
 
@@ -96,6 +99,18 @@ def main(argv: list[str] | None = None) -> int:
     if before["dispatchStatus"] != "READY_FOR_AUTHORIZED_REVIEW_SESSIONS":
         print(json.dumps(before,sort_keys=True))
         return 0
+    try:
+        authorize_paid_v3_action(
+            "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",
+            execute=True,
+            transfer=args.allow_generated_text_transfer,
+            next_section=before.get("nextSection"),
+            max_activities=args.batch_size * args.max_batches,
+            max_elapsed_seconds=900)
+    except ValueError:
+        print(json.dumps({"status":"STOP_V3_PAID_CAMPAIGN_NOT_AUTHORIZED",
+                          "publicationAuthorized":False},sort_keys=True))
+        return 2
     batches = 0
     try:
         # BOSLA's V3 native review is assigned to Yoga 6. A different

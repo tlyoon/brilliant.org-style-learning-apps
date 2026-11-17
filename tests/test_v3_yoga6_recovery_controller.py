@@ -171,9 +171,11 @@ class RecoveryControllerTests(unittest.TestCase):
     def test_new_activity_one_dispatch_after_sanitized_metadata(self):
         from scripts import run_v3_yoga6_recovery_worker as worker
         before={"dispatchStatus":"READY_FOR_AUTHORIZED_REVIEW_SESSIONS",
+                "nextSection":"section-9-5",
                 "providerCapacity":{"serverErrorActivitiesHistorical":1},
                 "activitiesFullyModelReviewed":0}
         after={"dispatchStatus":"READY_FOR_AUTHORIZED_REVIEW_SESSIONS",
+                "nextSection":"section-9-5",
                 "providerCapacity":{"serverErrorActivitiesHistorical":1},
                 "activitiesFullyModelReviewed":1}
         out=io.StringIO()

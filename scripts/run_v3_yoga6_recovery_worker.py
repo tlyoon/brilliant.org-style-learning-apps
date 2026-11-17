@@ -35,6 +35,9 @@ from scripts.run_v3_native_gemini_review import (
     AUTHORITY, _load_native_config,
 )
 from scripts import run_v3_native_gemini_review as native
+from app_generator.runtime.v3_paid_review_authorization import (
+    authorize_paid_v3_action,
+)
 
 COURSE = ROOT / "content" / "chapter-9"
 
@@ -77,6 +80,16 @@ def main(argv: list[str] | None = None) -> int:
     try:
         private = checked_private_root(chosen,localappdata=Path(local))
         if args.auto_advance:
+            ready = plan_v3_course_review(
+                COURSE, ROOT, private_root=private,
+                continue_independent=True)
+            authorize_paid_v3_action(
+                "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",
+                execute=args.execute,
+                transfer=args.allow_generated_text_transfer,
+                next_section=ready.get("nextSection"),
+                max_activities=args.max_forward_activities,
+                max_elapsed_seconds=args.max_forward_seconds)
             # This is part of this existing normal entrypoint, not a new
             # scheduled task. Each iteration invokes the unchanged
             # one-activity reviewer and its original permission/claim gates.
@@ -119,6 +132,15 @@ def main(argv: list[str] | None = None) -> int:
         if not (args.execute or args.diagnose_only):
             _print(status_from_plan(before,status="DRY_RUN_NO_PROVIDER_REQUEST"))
             return 0
+        if (args.execute and before["dispatchStatus"] ==
+                "READY_FOR_AUTHORIZED_REVIEW_SESSIONS"):
+            authorize_paid_v3_action(
+                "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",
+                execute=True,
+                transfer=args.allow_generated_text_transfer,
+                next_section=before.get("nextSection"),
+                max_activities=1,
+                max_elapsed_seconds=900)
         # No credential access, SDK setup, or private review state on HP.
         require_authorized_native_review_host(AUTHORITY)
         # Reuse BSA-164's bounded isolated SDK bootstrap on Yoga 6 only.
