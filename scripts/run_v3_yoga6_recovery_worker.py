@@ -38,12 +38,106 @@ from scripts import run_v3_native_gemini_review as native
 from app_generator.runtime.v3_paid_review_authorization import (
     authorize_paid_v3_action,
 )
+from app_generator.runtime.v3_frozen_original_tail import (
+    plan_frozen_original_tail,
+)
+from app_generator.runtime.v3_frozen_tail_forward import (
+    advance_frozen_tail_until_boundary,
+)
 
 COURSE = ROOT / "content" / "chapter-9"
 
 
 def _print(data: dict) -> None:
     print(json.dumps(data,sort_keys=True,separators=(",",":")))
+
+
+def _advance_unchanged_frozen_tail(args, private: Path,
+                                    argv: list[str] | None) -> int:
+    """Normal authorized original-work fallback after an older role is uncertain.
+
+    Never retries that role: each subsequent untouched original activity has a
+    separate deterministic package SHA and immutable two-Gemini checkpoint.
+    This is NOT a new versioned content replacement or release permission.
+    """
+    authorize_paid_v3_action(
+        "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",
+        execute=args.execute,transfer=args.allow_generated_text_transfer,
+        next_section="section-9-6",
+        max_activities=args.max_forward_activities,
+        max_elapsed_seconds=args.max_forward_seconds)
+    require_authorized_native_review_host(AUTHORITY)
+    # Decision 0040/0041 remains authoritative: a generic unknown Gemini
+    # failure can indicate authorization/quota/content denial. Never bypass
+    # that provider-wide circuit by relabelling an untouched original as a
+    # separate single-activity slice. Recognized capacity errors must cool
+    # down before a NEW request, and old denied calls remain terminal.
+    from app_generator.validation.v3_course_readiness import course_readiness
+    from app_generator.validation.v3_server_error_recovery import provider_capacity_gate
+    from app_generator.runtime.v3_yoga6_recovery import (
+        MAX_FAILED_ACTIVITIES_PER_COURSE,
+    )
+    section_progress = course_readiness(
+        COURSE,ROOT,private_root=private)["sectionProgress"]
+    capacity = provider_capacity_gate(private,section_progress)
+    if (capacity["status"] != "READY"
+            or capacity["serverErrorActivitiesHistorical"] >=
+                MAX_FAILED_ACTIVITIES_PER_COURSE):
+        _print({"status":"STOP_TAIL_PROVIDER_CAPACITY_"+
+                (capacity["status"] if capacity["status"] != "READY"
+                 else "RECOVERY_BUDGET"),
+                "providerCapacity":capacity,
+                "publicationAuthorized":False})
+        return 3
+    # Only an independently READY original provider circuit may bootstrap a
+    # Google SDK/client or run a metadata check. A historical unclassified
+    # ValueError must stop before any credential or model transport work.
+    from app_generator.runtime.native_sdk_environment import (
+        delegate_to_supported_sdk,
+    )
+    delegated = delegate_to_supported_sdk(
+        ROOT, list(argv) if argv is not None else sys.argv[1:],
+        entrypoint=Path(__file__))
+    if delegated is not None:
+        return delegated
+    config = _load_native_config()
+    # Source-free metadata-only probe; must pass BEFORE any durable PRE_CALL
+    # or possible paid request. The historical failure count selects only
+    # a future NEW original-activity credential, never a replay.
+    diagnostic = diagnose_model_metadata(
+        config,preferred_offset=capacity["serverErrorActivitiesHistorical"])
+    if diagnostic.get("status") != "READY_SOURCE_FREE_ONLY":
+        _print({"status":"STOP_TAIL_PROVIDER_METADATA_NOT_READY",
+                "diagnosticStatus":diagnostic.get("status"),
+                "publicationAuthorized":False})
+        return 3
+    candidate = diagnostic["selectedCandidateIndex"]
+    from app_generator.gemini.v3_native_api_reviewers import (
+        V3NativeGeminiApiSessions,
+    )
+    from app_generator.runtime.v3_authorized_review import (
+        advance_v3_generated_text,
+    )
+    def review_one(raw: bytes, manifest: dict) -> dict:
+        factory = V3NativeGeminiApiSessions(
+            config,operation_authorized=True,
+            generated_content_transfer_allowed=True,
+            candidate_offset=candidate)
+        with factory as provider:
+            sessions = provider.open_pair(manifest["activityId"])
+            return advance_v3_generated_text(
+                raw,sessions,private_root=private,
+                generated_content_transfer_allowed=True,max_activities=1)
+    result = advance_frozen_tail_until_boundary(
+        COURSE,ROOT,private,review_one,section="section-9-6",
+        max_activities=args.max_forward_activities,
+        max_elapsed_seconds=args.max_forward_seconds)
+    _print(result)
+    return (0 if result["status"] in (
+        "STOP_TAIL_ACTIVITY_BUDGET_REACHED",
+        "STOP_TAIL_NO_ELIGIBLE_ORIGINAL_REVIEW",
+        "STOP_TAIL_ELAPSED_BUDGET",
+    ) else 3)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -83,6 +177,22 @@ def main(argv: list[str] | None = None) -> int:
             ready = plan_v3_course_review(
                 COURSE, ROOT, private_root=private,
                 continue_independent=True)
+            if (ready["dispatchStatus"] != "READY_FOR_AUTHORIZED_REVIEW_SESSIONS"
+                    and "section-9-6" in ready.get("quarantinedSections", [])):
+                # BSA-185: the original activity at index5 remains forever
+                # AMBIGUOUS, but untouched frozen original indices6..17 have
+                # NEVER been submitted. Continue those with distinct exact
+                # one-activity identities under the existing original-only
+                # paid authorization, not a new content replacement scope.
+                tail = plan_frozen_original_tail(
+                    COURSE,ROOT,private,section="section-9-6")
+                if (tail["status"] ==
+                        "READY_FOR_AUTHORIZED_FROZEN_ORIGINAL_TAIL_REVIEW"):
+                    return _advance_unchanged_frozen_tail(args,private,argv)
+            if ready["dispatchStatus"] != "READY_FOR_AUTHORIZED_REVIEW_SESSIONS":
+                _print(status_from_plan(
+                    ready,status=ready["dispatchStatus"]))
+                return 0
             authorize_paid_v3_action(
                 "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",
                 execute=args.execute,

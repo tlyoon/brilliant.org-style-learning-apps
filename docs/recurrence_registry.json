@@ -3351,6 +3351,81 @@
           "marker": "test_three_automatic_bounded_invocations_cover_all_eighteen"
         }
       ]
+    },
+    {
+      "id": "BSA-20261117-185",
+      "class": "v3-frozen-original-unreviewed-activities-stranded-behind-ambiguous-role-prefix",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261113-162",
+        "BSA-20261117-183",
+        "BSA-20261117-184"
+      ],
+      "differenceFromLinkedIncident": "BSA-162 correctly blocked replay of uncaptured provider-role claims but still assumed one contiguous per-package assessment prefix. BSA-184 distinguished captured local parsing errors and made same-section continuation possible only for verifiable local faults. BSA-183 is still ACTIVE: Section9.6 activity index5 physics provider result is an unreplayable old AMBIGUOUS ValueError. This incident instead closes a separate architectural forward-progress defect: **12 untouched, never-submitted original frozen Section9.6 activities** were unnecessarily stranded behind that uncertain prefix. The normal Yoga6 auto-advance worker now detects exact original post-prefix work, stages deterministic one-activity review slices with new content-preserving identities, reserves a private durable PRE_CALL_NO_REPLAY marker, invokes the original finite authorized two-Gemini assessment and independently validates immutable outcomes. Any genuinely passed unchanged original can be linked in a new unadmitted versioned-course proposal without mutating the old original ledger.",
+      "lastValidatedDate": "2026-11-17",
+      "providerScopeEvidence": "BSA-185 closes the code-level frozen-original untouched-item continuation path, not the external global provider gate. The REAL Yoga6 Section9.6 old AMBIGUOUS ValueError has no attributable provider response and triggers STOP_UNCLASSIFIED_PROVIDER_REVIEW in the unchanged Decision0040/41 capacity gate. The normal worker checks it BEFORE SDK bootstrap, metadata and any PRE_CALL; genuine 12 untouched originals remain unreviewed pending external evidence/authorization. Only synthetic cooled ServerError creates a READY gate in positive tests. Historical BSA-183 remains ACTIVE.",
+      "applicableEnvironments": [
+        "Yoga6 Windows normal paid V3 auto-advance",
+        "source-free SDK normal-path regression environment"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_frozen_original_tail.py",
+        "triggerMarker": "def plan_frozen_original_tail(",
+        "remedyMarker": "def reserve_frozen_original_tail_attempt(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_frozen_original_tail import ("
+          },
+          {
+            "path": "app_generator/runtime/v3_frozen_tail_forward.py",
+            "marker": "from app_generator.runtime.v3_frozen_original_tail import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_readonly_plan_keeps_ambiguous_and_finds_twelve_untouched"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_actual_yoga6_normal_worker_auto_advance_fallback_fake_sdk"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_worker_unknown_valueerror_globally_stops_before_sdk"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_worker_paid_auth_denial_stops_before_any_claim"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_failure_after_persistent_reservation_never_replays_on_resume"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_locally_captured_malformed_role_isolated_and_next_original_advances"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_no_checkpoint_result_cannot_count_as_review"
+        },
+        {
+          "path": "tests/test_v3_versioned_acceptance_scope.py",
+          "kind": "python",
+          "marker": "test_genuine_shaped_unchanged_tail_pass_updates_only_proposal"
+        }
+      ]
     }
   ]
 }

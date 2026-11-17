@@ -146,6 +146,20 @@ class RegressionContractTests(unittest.TestCase):
         self.save_manifest()
         self.assertIn("explain why earlier regression", " ".join(verify(self.root)))
 
+    def test_original_tail_no_replay_development_contract_is_ci_locked(self):
+        """The independent tail must never disable earlier request protection."""
+        path=self.root/"docs/normal_pipeline_recovery_contract.json"
+        policy=json.loads(path.read_text(encoding="utf8"))
+        self.assertTrue(policy["requirements"][
+            "neverReplayAmbiguousPrefixWhileReviewingUntouchedSiblings"])
+        self.assertTrue(policy["requirements"][
+            "durableOneActivityPreCallAndExactVersionProvenance"])
+        policy["requirements"][
+            "supplementalEvidenceCannotAdmitCourse"]=False
+        path.write_text(json.dumps(policy),encoding="utf8")
+        self.assertIn("normal pipeline recovery contract weakened",
+                      " ".join(verify(self.root)))
+
     def test_architecture_first_recovery_contract_cannot_be_weakened(self):
         """The new no-replay local-capture/isolation strategy is CI locked."""
         path = self.root / "docs/normal_pipeline_recovery_contract.json"

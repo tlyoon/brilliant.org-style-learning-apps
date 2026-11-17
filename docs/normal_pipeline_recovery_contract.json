@@ -19,7 +19,10 @@
     "providerAndLocalFailureClassesDistinct": true,
     "perActivityIsolationWithNoReplay": true,
     "realisticNormalPathRecoveryProofBeforePaidResumption": true,
-    "unresolvedFaultsRemainOpenInRegistry": true
+    "unresolvedFaultsRemainOpenInRegistry": true,
+    "neverReplayAmbiguousPrefixWhileReviewingUntouchedSiblings": true,
+    "durableOneActivityPreCallAndExactVersionProvenance": true,
+    "supplementalEvidenceCannotAdmitCourse": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

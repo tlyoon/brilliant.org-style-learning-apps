@@ -1,0 +1,478 @@
+"""No-network end-to-end V3 original-tail queue tests.
+
+Protected earlier ambiguous physics role is never retried. Other originally
+UNREVIEWED frozen activities can receive distinct deterministic slice reviews
+using the existing scientific rubric. Synthetic verdicts are not real Gemini.
+"""
+from __future__ import annotations
+
+from hashlib import sha256
+from contextlib import redirect_stdout
+import io
+import json
+import os
+from pathlib import Path
+import shutil
+import tempfile
+import time
+import unittest
+from unittest.mock import patch
+
+from app_generator.runtime.run_context import RunContext
+from app_generator.runtime.v3_authorized_review import advance_v3_generated_text
+from app_generator.runtime.v3_frozen_original_tail import (
+    plan_frozen_original_tail, stage_frozen_original_tail_slice,
+    reserve_frozen_original_tail_attempt,
+)
+from app_generator.runtime.v3_frozen_tail_forward import (
+    advance_frozen_tail_until_boundary,
+)
+from app_generator.validation.autonomous_completion import (
+    assess_with_models, package_identity,
+)
+from tests.test_v3_authorized_execution_bridge import FakeReviewer, pair
+from tests.test_v3_course_review_dispatch import synthetic_course
+
+
+class UnconfirmedSixthReviewer(FakeReviewer):
+    def ask(self, prompt, *, stage=None):
+        self.calls += 1
+        if self.calls == 6:
+            raise TimeoutError("SYNTHETIC_UNCONFIRMED_NO_REPLAY")
+        self.calls -= 1
+        return super().ask(prompt, stage=stage)
+
+
+class FrozenOriginalIndependentTailTests(unittest.TestCase):
+    def setUp(self):
+        t=tempfile.TemporaryDirectory()
+        self.addCleanup(t.cleanup)
+        self.home=Path(t.name)
+        self.repo=self.home/"repo"
+        self.course=synthetic_course(self.repo,n=6,activities=18)
+        self.section="section-7-6"
+        self.private=self.home/"private"
+        self.source=(self.course/self.section/"package.json").read_bytes()
+        self.digest,self.items=package_identity(self.source)
+        cp=RunContext.create(self.private,"v3-generated-"+self.digest)
+        fake_a=UnconfirmedSixthReviewer()
+        fake_b=FakeReviewer()
+        from types import SimpleNamespace
+        sessions=(
+            SimpleNamespace(reviewer_id="physics",session_id="physics-s",
+                            provider_id="gemini_api",conversation=fake_a),
+            SimpleNamespace(reviewer_id="semantics",session_id="semantic-s",
+                            provider_id="gemini_api",conversation=fake_b),
+        )
+        report=assess_with_models(
+            self.source,sessions,checkpoint=cp,
+            generated_content_transfer_allowed=True,max_activities=6)
+        self.assertEqual(len(report["reviews"]),6)
+        self.assertEqual([r["status"] for r in report["reviews"]],
+                         ["AI_CONSENSUS_PASS"]*5+["AI_UNCERTAIN"])
+
+    def plan(self):
+        return plan_frozen_original_tail(
+            self.course,self.repo,self.private,section=self.section)
+
+    def stage(self,index=6):
+        return stage_frozen_original_tail_slice(
+            self.course,self.repo,self.private,
+            section=self.section,index=index)
+
+    def test_readonly_plan_keeps_ambiguous_and_finds_twelve_untouched(self):
+        old=self.source
+        p=self.plan()
+        self.assertEqual(p["status"],
+                         "READY_FOR_AUTHORIZED_FROZEN_ORIGINAL_TAIL_REVIEW")
+        self.assertEqual(p["next"]["index"],6)
+        self.assertEqual(p["supplemental"]["eligible"],12)
+        self.assertEqual(p["originalAssessedUnchanged"],6)
+        self.assertEqual(p["originalModelConsensusPassesUnchanged"],5)
+        self.assertFalse((self.private/"frozen-original-review-slices").exists())
+        self.assertFalse(p["publicationAuthorized"])
+        self.assertEqual((self.course/self.section/"package.json").read_bytes(),old)
+
+    def test_immutable_slice_is_original_and_idempotent(self):
+        raw,meta=self.stage()
+        sha,items=package_identity(raw)
+        self.assertEqual(sha,meta["slicePackageSha256"])
+        self.assertEqual(items,[self.items[6]])
+        self.assertEqual(meta["sourcePackageSha256"],self.digest)
+        self.assertEqual(meta["originalActivitySha256"],sha256(
+            json.dumps(self.items[6],sort_keys=True,ensure_ascii=False,
+                       separators=(",",":")).encode("utf8")).hexdigest())
+        self.assertEqual(self.stage(),(raw,meta))
+        staged=(self.private/"frozen-original-review-slices"/sha)
+        self.assertTrue((staged/"package.json").is_file())
+        self.assertTrue((staged/"review-slice.json").is_file())
+
+    def test_reserved_attempt_cannot_be_submitted_twice_and_skips_forward(self):
+        _,meta=self.stage()
+        reserve_frozen_original_tail_attempt(
+            self.private,source_sha=self.digest,index=6,
+            slice_sha=meta["slicePackageSha256"])
+        with self.assertRaisesRegex(ValueError,"NO_REPLAY"):
+            reserve_frozen_original_tail_attempt(
+                self.private,source_sha=self.digest,index=6,
+                slice_sha=meta["slicePackageSha256"])
+        state=self.plan()
+        self.assertEqual(state["next"]["index"],7)
+        self.assertEqual(state["supplemental"]["reserved"],1)
+        self.assertEqual(state["supplemental"]["eligible"],11)
+        with self.assertRaisesRegex(ValueError,"NO_REPLAY"):
+            self.stage(6)
+
+    def test_normal_checkpoint_reviewer_completed_tail_is_separate_from_original(self):
+        raw,meta=self.stage(6)
+        reserve_frozen_original_tail_attempt(
+            self.private,source_sha=self.digest,index=6,
+            slice_sha=meta["slicePackageSha256"])
+        sessions,first,second=pair()
+        result=advance_v3_generated_text(
+            raw,sessions,private_root=self.private,
+            generated_content_transfer_allowed=True,max_activities=1)
+        self.assertEqual(result["modelConsensusPassActivities"],1)
+        self.assertEqual((first.calls,second.calls),(1,1))
+        state=self.plan()
+        self.assertEqual(state["supplemental"]["passed"],1)
+        self.assertEqual(state["next"]["index"],7)
+        self.assertEqual(state["originalAssessedUnchanged"],6)
+        self.assertEqual(state["originalModelConsensusPassesUnchanged"],5)
+        self.assertEqual((self.course/self.section/"package.json").read_bytes(),
+                         self.source)
+        with self.assertRaisesRegex(ValueError,"NO_REPLAY"):
+            self.stage(6)
+        self.assertFalse(state["publicationAuthorized"])
+
+    def test_historical_unknown_provider_claim_is_not_recovered_or_rewritten(self):
+        before=self.plan()
+        old=(self.private/("v3-generated-"+self.digest)/"batches"
+             /f"v3-review-{self.digest[:12]}-005-0.json")
+        self.assertEqual(json.loads(old.read_text())["state"],"AMBIGUOUS")
+        self.stage(6)
+        after=self.plan()
+        self.assertEqual(before["next"]["index"],after["next"]["index"])
+        self.assertEqual(json.loads(old.read_text())["state"],"AMBIGUOUS")
+        self.assertFalse(old.with_suffix(".response.txt").exists())
+
+    def test_source_changed_or_foreign_role_rejects_tail(self):
+        orig=self.source
+        data=json.loads(orig)
+        data["activities"][6]["prompt"]["en"]="SYNTHETIC altered"
+        (self.course/self.section/"package.json").write_text(
+            json.dumps(data),encoding="utf8")
+        with self.assertRaises(ValueError):
+            self.plan()
+
+    def test_exact_old_full_role_for_unreviewed_index_is_not_resubmitted(self):
+        base=self.private/("v3-generated-"+self.digest)/"batches"
+        role=base/f"v3-review-{self.digest[:12]}-006-0.json"
+        role.write_text("{}",encoding="utf8")
+        # The independent queue cannot bypass the existing original-course
+        # role-claim validator: malformed/out-of-order claims fail CLOSED.
+        with self.assertRaisesRegex(ValueError,"V3_INVALID_ORPHAN_ROLE_CLAIM"):
+            self.plan()
+
+    def test_original_uncertain_absent_prevents_tail_work(self):
+        base=self.private/("v3-generated-"+self.digest)/"batches"
+        report_file=base/("v3-assessment-"+self.digest+".json")
+        report=json.loads(report_file.read_text())
+        report["reviews"].pop()
+        report_file.write_text(json.dumps(report),encoding="utf8")
+        with self.assertRaises(ValueError):
+            self.plan()
+
+
+
+    def test_finite_normal_tail_controller_advances_four_real_checkpoint_rows(self):
+        calls=[]
+        def reviewer(raw, manifest):
+            sessions,a,b=pair()
+            result=advance_v3_generated_text(
+                raw,sessions,private_root=self.private,
+                generated_content_transfer_allowed=True,max_activities=1)
+            calls.append((manifest["sourceActivityIndex"],a.calls,b.calls))
+            return result
+        report=advance_frozen_tail_until_boundary(
+            self.course,self.repo,self.private,reviewer,
+            section=self.section,max_activities=4,max_elapsed_seconds=900)
+        self.assertEqual(report["status"],"STOP_TAIL_ACTIVITY_BUDGET_REACHED")
+        self.assertEqual(report["verifiedNewSupplementalRowsThisInvocation"],4)
+        self.assertEqual(report["supplemental"]["passed"],4)
+        self.assertEqual(report["nextOriginalIndex"],10)
+        self.assertEqual(calls,[(i,1,1) for i in range(6,10)])
+        self.assertEqual(report["originalAssessedUnchanged"],6)
+        self.assertEqual(report["originalModelConsensusPassesUnchanged"],5)
+        self.assertFalse(report["publicationAuthorized"])
+
+    def test_failure_after_persistent_reservation_never_replays_on_resume(self):
+        calls=[]
+        def fault(_raw,manifest):
+            calls.append(manifest["sourceActivityIndex"])
+            raise TimeoutError("SYNTHETIC_REQUEST_MAY_HAVE_BEEN_SUBMITTED")
+        first=advance_frozen_tail_until_boundary(
+            self.course,self.repo,self.private,fault,
+            section=self.section,max_activities=4)
+        self.assertEqual(first["status"],"STOP_TAIL_WORKER_EXCEPTION_NO_REPLAY")
+        self.assertEqual(first["attemptedThisInvocation"],1)
+        self.assertEqual(first["verifiedNewSupplementalRowsThisInvocation"],0)
+        self.assertEqual(self.plan()["next"]["index"],7)
+        seen=[]
+        def review(raw,manifest):
+            sessions,a,b=pair()
+            seen.append(manifest["sourceActivityIndex"])
+            return advance_v3_generated_text(
+                raw,sessions,private_root=self.private,
+                generated_content_transfer_allowed=True,max_activities=1)
+        second=advance_frozen_tail_until_boundary(
+            self.course,self.repo,self.private,review,
+            section=self.section,max_activities=2)
+        self.assertEqual(second["supplemental"]["reserved"],1)
+        self.assertEqual(second["supplemental"]["passed"],2)
+        self.assertEqual(seen,[7,8])
+        self.assertEqual(calls,[6])
+        self.assertEqual(second["nextOriginalIndex"],9)
+
+    def test_no_checkpoint_result_cannot_count_as_review(self):
+        called=[]
+        def fake_return(_raw,manifest):
+            called.append(manifest["sourceActivityIndex"])
+            return {"modelConsensusPassActivities":1,
+                    "publicationAuthorized":True}  # ignored, NOT real evidence
+        result=advance_frozen_tail_until_boundary(
+            self.course,self.repo,self.private,fake_return,
+            section=self.section,max_activities=3)
+        self.assertEqual(result["status"],
+                         "STOP_TAIL_PRE_CALL_WITHOUT_VERIFIED_RESULT_NO_REPLAY")
+        self.assertEqual(result["attemptedThisInvocation"],1)
+        self.assertEqual(result["verifiedNewSupplementalRowsThisInvocation"],0)
+        self.assertEqual(self.plan()["next"]["index"],7)
+        self.assertEqual(called,[6])
+        self.assertFalse(result["publicationAuthorized"])
+
+    def test_elapsed_budget_prevents_any_reservation_or_model_call(self):
+        calls=[]
+        result=advance_frozen_tail_until_boundary(
+            self.course,self.repo,self.private,
+            lambda *_: calls.append("FORBIDDEN"),
+            section=self.section,max_activities=4,max_elapsed_seconds=30,
+            monotonic=iter((0,31)).__next__)
+        self.assertEqual(result["status"],"STOP_TAIL_ELAPSED_BUDGET")
+        self.assertEqual(result["attemptedThisInvocation"],0)
+        self.assertEqual(calls,[])
+        self.assertEqual(self.plan()["supplemental"]["eligible"],12)
+
+
+    def _normal_worker_fixture(self):
+        """Rename the fully frozen synthetic Chapter 7 to a Chapter 9 copy."""
+        chapter9=self.repo/"content"/"chapter-9"
+        self.course.rename(chapter9)
+        for i in range(1,7):
+            (chapter9/f"section-7-{i}").rename(chapter9/f"section-9-{i}")
+        old=self.repo/"docs"/"acceptance_closure_chapter7.json"
+        charter=json.loads(old.read_text(encoding="utf8"))
+        for i,row in enumerate(charter["frozenCandidates"],1):
+            row["section"]=f"9.{i}"
+        (self.repo/"docs"/"acceptance_closure_chapter9.json").write_text(
+            json.dumps(charter),encoding="utf8")
+        old.unlink()
+        local=self.home/"LocalAppData"
+        private=local/"Microvid"/"BoslaFakeOriginalTail"
+        private.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copytree(self.private,private)
+        self.assertEqual(plan_frozen_original_tail(
+            chapter9,self.repo,private,section="section-9-6")["next"]["index"],6)
+        return chapter9,local,private
+
+    def _set_synthetic_sixth_failure_to_cooled_servererror(self,private):
+        # TEMP synthetic fixture only. An historical ServerError with fully
+        # expired cooldown permits a *new* original activity. Never adjust
+        # real owner claims, and retain unknown ValueError as a global STOP.
+        batches=(private/("v3-generated-"+self.digest)/"batches")
+        role=batches/f"v3-review-{self.digest[:12]}-005-0.json"
+        row=json.loads(role.read_text(encoding="utf8"))
+        self.assertEqual(row["state"],"AMBIGUOUS")
+        row["reasonCode"]="ServerError"
+        role.write_text(json.dumps(row),encoding="utf8")
+        report=batches/("v3-assessment-"+self.digest+".json")
+        payload=json.loads(report.read_text(encoding="utf8"))
+        payload["reviews"][5]["reviewers"][0]["reasonCode"]="ServerError"
+        report.write_text(json.dumps(payload),encoding="utf8")
+        old=time.time()-4000
+        os.utime(role,(old,old))
+
+    def test_actual_yoga6_normal_worker_auto_advance_fallback_fake_sdk(self):
+        # This is the SAME normal paid entrypoint using the genuine
+        # authorization validator, but Google SDK/network/host are stubbed.
+        from scripts import run_v3_yoga6_recovery_worker as worker
+        from app_generator.gemini.v3_native_api_reviewers import (
+            V3NativeGeminiApiSessions,
+        )
+        from app_generator.gemini import v3_native_api_reviewers as sdk_module
+        from tests.test_v3_native_gemini_api_reviewers import (
+            FakeClient, FakeTypes, config,
+        )
+        chapter,local,private=self._normal_worker_fixture()
+        self._set_synthetic_sixth_failure_to_cooled_servererror(private)
+        clients=[]
+        def fake_session_factory(configured, **kwargs):
+            def client_for(role):
+                client=FakeClient("valid")
+                clients.append(client)
+                return client
+            return V3NativeGeminiApiSessions(
+                configured, sdk_client_factory=client_for,
+                sdk_types=FakeTypes, **kwargs)
+        stopped={
+            "dispatchStatus":"STOP_VERSIONED_CONTENT_REPAIR_REQUIRED",
+            "quarantinedSections":["section-9-1","section-9-2","section-9-6"],
+            "publicationAuthorized":False,
+        }
+        output=io.StringIO()
+        from app_generator.runtime import native_sdk_environment
+        with (patch.dict(os.environ,{"LOCALAPPDATA":str(local)}),
+              patch.object(worker,"ROOT",self.repo),
+              patch.object(worker,"COURSE",chapter),
+              patch.object(worker,"plan_v3_course_review",
+                           return_value=stopped),
+              patch.object(worker,"require_authorized_native_review_host"),
+              patch.object(native_sdk_environment,
+                           "delegate_to_supported_sdk",return_value=None),
+              patch.object(worker,"_load_native_config",return_value=config()),
+              patch.object(worker,"diagnose_model_metadata",
+                           return_value={"status":"READY_SOURCE_FREE_ONLY",
+                                         "selectedCandidateIndex":0}),
+              patch.object(sdk_module,"V3NativeGeminiApiSessions",
+                           side_effect=fake_session_factory),
+              redirect_stdout(output)):
+            exit_code=worker.main([
+                "--private-root",str(private),
+                "--auto-advance","--execute","--allow-generated-text-transfer",
+                "--max-forward-activities","2","--max-forward-seconds","900",
+            ])
+        self.assertEqual(exit_code,0,output.getvalue())
+        result=json.loads(output.getvalue())
+        self.assertEqual(result["status"],"STOP_TAIL_ACTIVITY_BUDGET_REACHED")
+        self.assertEqual(result["verifiedNewSupplementalRowsThisInvocation"],2)
+        self.assertEqual(result["supplemental"]["passed"],2)
+        self.assertEqual(result["nextOriginalIndex"],8)
+        self.assertEqual(result["originalAssessedUnchanged"],6)
+        self.assertFalse(result["publicationAuthorized"])
+        self.assertEqual(len(clients),4)
+        self.assertEqual([len(x.models.calls) for x in clients],[1,1,1,1])
+        self.assertEqual((chapter/"section-9-6"/"package.json").read_bytes(),
+                         self.source)
+
+    def test_normal_worker_unknown_valueerror_globally_stops_before_sdk(self):
+        # Mimics the ACTUAL Yoga6 old ambiguity: a provider-side ValueError
+        # with no original raw response/request ID. Section9.6 index6 is new
+        # and unchanged, but Decisions0040/41 still prohibit another call.
+        from scripts import run_v3_yoga6_recovery_worker as worker
+        from app_generator.runtime import native_sdk_environment
+        chapter,local,private=self._normal_worker_fixture()
+        prior=(private/("v3-generated-"+self.digest)/"batches"
+               /f"v3-review-{self.digest[:12]}-005-0.json")
+        record=json.loads(prior.read_text(encoding="utf8"))
+        record["reasonCode"]="ValueError"
+        prior.write_text(json.dumps(record),encoding="utf8")
+        # Also retain matching original two-reviewer aggregate state.
+        aggregate=(private/("v3-generated-"+self.digest)/"batches"
+                   /("v3-assessment-"+self.digest+".json"))
+        rows=json.loads(aggregate.read_text(encoding="utf8"))
+        rows["reviews"][5]["reviewers"][0]["reasonCode"]="ValueError"
+        aggregate.write_text(json.dumps(rows),encoding="utf8")
+        stopped={
+            "dispatchStatus":"STOP_VERSIONED_CONTENT_REPAIR_REQUIRED",
+            "quarantinedSections":["section-9-6"],
+            "publicationAuthorized":False,
+        }
+        output=io.StringIO()
+        with (patch.dict(os.environ,{"LOCALAPPDATA":str(local)}),
+              patch.object(worker,"ROOT",self.repo),
+              patch.object(worker,"COURSE",chapter),
+              patch.object(worker,"plan_v3_course_review",
+                           return_value=stopped),
+              patch.object(worker,"require_authorized_native_review_host"),
+              patch.object(native_sdk_environment,
+                           "delegate_to_supported_sdk") as bootstrap,
+              patch.object(worker,"_load_native_config") as config_loader,
+              patch.object(worker,"diagnose_model_metadata") as metadata,
+              redirect_stdout(output)):
+            code=worker.main([
+                "--private-root",str(private),
+                "--auto-advance","--execute","--allow-generated-text-transfer",
+                "--max-forward-activities","2","--max-forward-seconds","900",
+            ])
+        self.assertEqual(code,3,output.getvalue())
+        message=json.loads(output.getvalue())
+        self.assertEqual(message["status"],
+                         "STOP_TAIL_PROVIDER_CAPACITY_STOP_UNCLASSIFIED_PROVIDER_REVIEW")
+        self.assertFalse(message["publicationAuthorized"])
+        self.assertEqual(message["providerCapacity"]["serverErrorsLastHour"],0)
+        bootstrap.assert_not_called()
+        config_loader.assert_not_called()
+        metadata.assert_not_called()
+        self.assertEqual(json.loads(prior.read_text())["state"],"AMBIGUOUS")
+        self.assertFalse((private/"frozen-original-review-attempts").exists())
+        self.assertFalse((private/"frozen-original-review-slices").exists())
+
+    def test_normal_worker_paid_auth_denial_stops_before_any_claim(self):
+        from scripts import run_v3_yoga6_recovery_worker as worker
+        chapter,local,private=self._normal_worker_fixture()
+        stopped={
+            "dispatchStatus":"STOP_UNRECONCILED_MODEL_REVIEW",
+            "quarantinedSections":["section-9-6"],
+            "publicationAuthorized":False,
+        }
+        output=io.StringIO()
+        with (patch.dict(os.environ,{"LOCALAPPDATA":str(local)}),
+              patch.object(worker,"ROOT",self.repo),
+              patch.object(worker,"COURSE",chapter),
+              patch.object(worker,"plan_v3_course_review",
+                           return_value=stopped),
+              patch.object(worker,"authorize_paid_v3_action",
+                           side_effect=ValueError("SYNTHETIC_NOT_AUTHORIZED")),
+              patch.object(worker,"require_authorized_native_review_host") as host,
+              redirect_stdout(output)):
+            exit_code=worker.main([
+                "--private-root",str(private),
+                "--auto-advance","--execute","--allow-generated-text-transfer",
+                "--max-forward-activities","2","--max-forward-seconds","900",
+            ])
+        self.assertEqual(exit_code,3)
+        self.assertEqual(json.loads(output.getvalue())["status"],
+                         "STOP_YOGA6_RECOVERY_WORKER")
+        host.assert_not_called()
+        self.assertFalse(
+            (private/"frozen-original-review-slices").exists())
+        self.assertFalse(
+            (private/"frozen-original-review-attempts").exists())
+
+
+    def test_locally_captured_malformed_role_isolated_and_next_original_advances(self):
+        from tests.test_autonomous_completion_v3 import FakeModel, sessions
+        attempted=[]
+        def reviewer(raw,manifest):
+            index=manifest["sourceActivityIndex"]
+            attempted.append(index)
+            pair=(sessions(FakeModel(malformed=True),FakeModel())
+                  if index==6 else sessions(FakeModel(),FakeModel()))
+            return advance_v3_generated_text(
+                raw,pair,private_root=self.private,
+                generated_content_transfer_allowed=True,max_activities=1)
+        result=advance_frozen_tail_until_boundary(
+            self.course,self.repo,self.private,reviewer,
+            section=self.section,max_activities=2)
+        self.assertEqual(result["status"],"STOP_TAIL_ACTIVITY_BUDGET_REACHED")
+        self.assertEqual(result["supplemental"]["uncertain"],1)
+        self.assertEqual(result["supplemental"]["passed"],1)
+        self.assertEqual(result["verifiedNewSupplementalRowsThisInvocation"],2)
+        self.assertEqual(result["nextOriginalIndex"],8)
+        self.assertEqual(attempted,[6,7])
+        self.assertEqual(result["originalAssessedUnchanged"],6)
+        self.assertFalse(result["publicationAuthorized"])
+
+
+if __name__=="__main__":
+    unittest.main()

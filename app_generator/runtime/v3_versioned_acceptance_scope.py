@@ -18,6 +18,9 @@ from typing import Any
 from app_generator.runtime.v3_auto_repair import _ACTIVITY, _CANDIDATE
 from app_generator.runtime.v3_course_review import plan_v3_course_review
 from app_generator.runtime.v3_isolated_repair_review import stage_isolated_review_slice
+from app_generator.runtime.v3_frozen_original_tail import (
+    plan_frozen_original_tail, _slice as make_frozen_original_slice,
+)
 from app_generator.validation.autonomous_completion import (
     assessment_progress, package_identity,
 )
@@ -78,6 +81,23 @@ def prepare_versioned_course_proposal(
             or progress.get("activitiesTotal") != 108
             or progress.get("publicationAuthorized") is not False):
         raise ValueError("V3_PROPOSAL_NOT_FROZEN_108_SCOPE")
+    # BSA-185: supplemental reviews of UNCHANGED original Section 9.6
+    # activities have a distinct one-activity immutable identity after a
+    # historical uncertain earlier role. They can contribute potential
+    # content-level reuse, but never alter the old original 108 ledger,
+    # retroactively resolve the ambiguous role or grant course admission.
+    original_96 = next(r for r in progress["sectionProgress"]
+                       if r["section"] == "section-9-6")
+    independent = (
+        plan_frozen_original_tail(
+            course,repo,private_root,section="section-9-6")
+        if original_96["modelUncertainActivities"] else None)
+    supplementary_pass = {
+        r["index"]: r for r in independent["rows"]
+        if r["state"] == "GENUINE_SUPPLEMENTAL_CONSENSUS_PASS"
+    } if independent else {}
+    supplementary_metadata = []
+
     corrected = (private_root / "repair-proposals" / _SECTION /
                  _CANDIDATE / "package.json")
     corrected_raw = corrected.read_bytes()
@@ -158,6 +178,54 @@ def prepare_versioned_course_proposal(
                     # Reuse CANDIDATE: no accepted new version or new PASS.
                     "status": "POTENTIALLY_REUSABLE_NOT_RELEASE_ACCEPTED",
                 })
+        if label == "section-9-6":
+            for index, supplemental in sorted(supplementary_pass.items()):
+                if not len(reviews) <= index < len(activities):
+                    raise ValueError("V3_PROPOSAL_SUPPLEMENT_OVERLAPS_ORIGINAL_REVIEW")
+                slice_raw, review_sha, expected = make_frozen_original_slice(
+                    digest,label,index,activities[index])
+                if supplemental["slicePackageSha256"] != review_sha:
+                    raise ValueError("V3_PROPOSAL_SUPPLEMENT_IDENTITY_MISMATCH")
+                parent = (private_root / "frozen-original-review-slices"
+                          / review_sha)
+                package_file = parent / "package.json"
+                manifest_file = parent / "review-slice.json"
+                if (parent.is_symlink() or package_file.is_symlink()
+                        or manifest_file.is_symlink()
+                        or not package_file.is_file()
+                        or not manifest_file.is_file()
+                        or package_file.read_bytes() != slice_raw
+                        or json.loads(manifest_file.read_text(encoding="utf8")) != expected):
+                    raise ValueError("V3_PROPOSAL_SUPPLEMENT_CHANGED_OR_MISSING")
+                verified = _private_assessment(
+                    private_root,slice_raw,review_sha)
+                if (verified is None
+                        or assessment_progress(slice_raw,verified)
+                           ["modelConsensusPassActivities"] != 1
+                        or len(verified["reviews"]) != 1
+                        or verified["reviews"][0]["activityId"] != activities[index]["id"]):
+                    raise ValueError("V3_PROPOSAL_SUPPLEMENT_NO_GENUINE_MODEL_PASS")
+                source_review_sha = sha256(
+                    _encoded(verified["reviews"][0])).hexdigest()
+                supplement_link = {
+                    "section": label,
+                    "originalActivityIndex": index,
+                    "activityId": activities[index]["id"],
+                    "activitySha256": canonical_digest(activities[index]),
+                    "sourcePackageSha256": digest,
+                    "supplementalReviewSliceSha256": review_sha,
+                    "sourceReviewSha256": source_review_sha,
+                    "status": "POTENTIALLY_REUSABLE_NOT_RELEASE_ACCEPTED",
+                }
+                supplementary_metadata.append(supplement_link)
+                reuse.append({
+                    "section": label,
+                    "activityId": activities[index]["id"],
+                    "activitySha256": canonical_digest(activities[index]),
+                    "sourcePackageSha256": digest,
+                    "sourceReviewSha256": source_review_sha,
+                    "status": "POTENTIALLY_REUSABLE_NOT_RELEASE_ACCEPTED",
+                })
         original_roster.append([label, digest, len(activities)])
         new_roster.append([label, replacement_digest, len(activities)])
         rows.append({
@@ -171,7 +239,8 @@ def prepare_versioned_course_proposal(
             "originalRepairRequired": section["modelRepairRequiredActivities"],
         })
     if (changed != 1 or sum(x["activities"] for x in rows) != 108
-            or len(reuse) != progress["modelConsensusPassActivities"]):
+            or len(reuse) != (progress["modelConsensusPassActivities"]
+                              + len(supplementary_metadata))):
         raise ValueError("V3_PROPOSAL_CONFLICTING_REVIEW_INVENTORY")
     if (progress["activitiesAssessedRows"] !=
             progress["modelConsensusPassActivities"] +
@@ -217,6 +286,17 @@ def prepare_versioned_course_proposal(
         "all108ReviewedAndApproved": False,
         "publicationAuthorized": False,
     }
+    if supplementary_metadata:
+        # Additions only when actual exact-version two-Gemini supplemental
+        # evidence exists; historical proposal bytes remain unchanged when
+        # no original tail has been independently reviewed.
+        unsigned["supplementalFrozenOriginalReviews"] = supplementary_metadata
+        unsigned["counts"]["supplementalFrozenOriginalConsensusPasses"] = (
+            len(supplementary_metadata))
+        unsigned["counts"]["originalNotAssessedAfterSupplemental"] = (
+            108-progress["activitiesAssessedRows"]-len(supplementary_metadata))
+        unsigned["unresolved"].append(
+            "SUPPLEMENTAL_REVIEWS_NOT_YET_ADMITTED_INTO_NEW_COURSE_SCOPE")
     manifest = {**unsigned, "integritySha256":sha256(_encoded(unsigned)).hexdigest()}
     payload = (json.dumps(manifest,indent=2,sort_keys=True)+"\n").encode("utf8")
     proposals = private_root / "versioned-course-proposals"
@@ -256,7 +336,10 @@ def prepare_versioned_course_proposal(
         "oldRosterSha256":manifest["oldRosterSha256"],
         "proposedRosterSha256":manifest["proposedRosterSha256"],
         "potentiallyReusableGenuinePasses":len(reuse),
+        "verifiedSupplementalFrozenOriginalPasses":len(supplementary_metadata),
         "remainingOriginalUnassessed":108-progress["activitiesAssessedRows"],
+        "remainingContentUnreviewedAfterSupplemental":
+            108-progress["activitiesAssessedRows"]-len(supplementary_metadata),
         "originalUncertain":progress["modelUncertainActivities"],
         "originalFailed":progress["modelRepairRequiredActivities"],
         "correctedActivityNewGeminiConsensusPass":int(corrected_pass),

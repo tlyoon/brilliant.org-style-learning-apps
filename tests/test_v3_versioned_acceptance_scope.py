@@ -216,5 +216,72 @@ class VersionedCourseProposalTests(unittest.TestCase):
                          "REVISED_GEMINI_REPAIR_REQUIRED")
         self.assertFalse(new["publicationAuthorized"])
 
+    def test_genuine_shaped_unchanged_tail_pass_updates_only_proposal(self):
+        # Source-free model fixtures: NEVER counts as a real Google review.
+        from app_generator.runtime.run_context import RunContext
+        from app_generator.runtime.v3_frozen_original_tail import (
+            stage_frozen_original_tail_slice, reserve_frozen_original_tail_attempt,
+        )
+        from app_generator.runtime.v3_authorized_review import advance_v3_generated_text
+        from app_generator.validation.autonomous_completion import (
+            assess_with_models, package_identity,
+        )
+        from tests.test_autonomous_completion_v3 import FakeModel, sessions
+        source = (COURSE/"section-9-6"/"package.json").read_bytes()
+        digest, original_items = package_identity(source)
+        class SixthUncertain(FakeModel):
+            def ask(self, prompt, *, stage=None):
+                if self.calls == 5:
+                    self.calls += 1
+                    raise TimeoutError("SYNTHETIC_NO_PROVIDER_RESULT")
+                return super().ask(prompt, stage=stage)
+        original_cp=RunContext.create(
+            self.private,"v3-generated-"+digest)
+        original_evidence=assess_with_models(
+            source,sessions(SixthUncertain(),FakeModel()),
+            checkpoint=original_cp,generated_content_transfer_allowed=True,
+            max_activities=6)
+        self.assertEqual(len(original_evidence["reviews"]),6)
+        self.assertEqual(original_evidence["reviews"][-1]["status"],"AI_UNCERTAIN")
+        prior=self.propose()
+        self.assertEqual(prior["potentiallyReusableGenuinePasses"],5)
+        self.assertEqual(prior["verifiedSupplementalFrozenOriginalPasses"],0)
+        raw,meta=stage_frozen_original_tail_slice(
+            COURSE,REPO,self.private,index=6)
+        reserve_frozen_original_tail_attempt(
+            self.private,source_sha=digest,index=6,
+            slice_sha=meta["slicePackageSha256"])
+        new_result=advance_v3_generated_text(
+            raw,sessions(FakeModel(),FakeModel()),private_root=self.private,
+            generated_content_transfer_allowed=True,max_activities=1)
+        self.assertEqual(new_result["modelConsensusPassActivities"],1)
+        updated=self.propose()
+        self.assertNotEqual(prior["proposalSha256"],updated["proposalSha256"])
+        self.assertEqual(updated["potentiallyReusableGenuinePasses"],6)
+        self.assertEqual(updated["verifiedSupplementalFrozenOriginalPasses"],1)
+        self.assertEqual(updated["remainingOriginalUnassessed"],102)
+        self.assertEqual(updated["remainingContentUnreviewedAfterSupplemental"],101)
+        candidate=self.saved(updated)
+        supplemental=candidate["supplementalFrozenOriginalReviews"]
+        self.assertEqual(len(supplemental),1)
+        self.assertEqual(supplemental[0]["originalActivityIndex"],6)
+        self.assertEqual(supplemental[0]["activityId"],original_items[6]["id"])
+        self.assertEqual(candidate["counts"]["originalGenuineConsensusPasses"],5)
+        self.assertEqual(candidate["counts"]["supplementalFrozenOriginalConsensusPasses"],1)
+        self.assertEqual(candidate["counts"]["potentiallyReusablePasses"],6)
+        self.assertFalse(updated["versionedScopeAdmitted"])
+        self.assertFalse(updated["publicationAuthorized"])
+        self.assertEqual((COURSE/"section-9-6"/"package.json").read_bytes(),source)
+        # Candidate manifest tampering cannot falsely preserve the PASS link.
+        path=(self.private/"frozen-original-review-slices"
+              /meta["slicePackageSha256"]/"review-slice.json")
+        tampered=json.loads(path.read_text(encoding="utf8"))
+        tampered["publicationAuthorized"]=True
+        path.write_text(json.dumps(tampered),encoding="utf8")
+        with self.assertRaisesRegex(ValueError,
+                                   "V3_PROPOSAL_SUPPLEMENT_CHANGED_OR_MISSING"):
+            self.propose()
+
+
 if __name__ == "__main__":
     unittest.main()

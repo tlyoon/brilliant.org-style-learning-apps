@@ -270,7 +270,12 @@ class ForwardControllerTests(unittest.TestCase):
         output = io.StringIO()
         with patch.dict(os.environ, {"LOCALAPPDATA": str(self.root.parent.parent)}), \
              patch.object(worker, "plan_v3_course_review",
-                          return_value={"nextSection": "section-9-5"}), \
+                          return_value={
+                              "nextSection": "section-9-5",
+                              "dispatchStatus": "READY_FOR_AUTHORIZED_REVIEW_SESSIONS",
+                              "quarantinedSections": [],
+                              "publicationAuthorized": False,
+                          }), \
              patch.object(worker, "require_authorized_native_review_host"), \
              patch("app_generator.runtime.v3_forward_progress.advance_until_boundary",
                    return_value={"status": "STOP_FORWARD_ACTIVITY_BUDGET_REACHED",
