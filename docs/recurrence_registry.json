@@ -3242,6 +3242,23 @@
         "correctedCourseProposalSha256": "3b4a3dfcda78c673028646f0cf0e9d7e86e23af9498dcb008438dba66c422a82",
         "publicationAuthorized": false
       },
+      "regressions": [
+        {
+          "path": "tests/test_v3_native_gemini_stress.py",
+          "kind": "python",
+          "marker": "test_provider_fault_matrix_never_retries_or_exposes_secrets"
+        },
+        {
+          "path": "tests/test_v3_server_error_recovery.py",
+          "kind": "python",
+          "marker": "test_realistic_server_error_quarantines_section_preserving_checkpoint"
+        },
+        {
+          "path": "tests/test_v3_forward_progress.py",
+          "kind": "python",
+          "marker": "test_genuine_servererror_uncertain_is_preserved_not_retried"
+        }
+      ],
       "existingHistoricalRemedy": {
         "runtimePaths": [
           "app_generator/validation/autonomous_completion.py",
