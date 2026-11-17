@@ -33,7 +33,12 @@
     "sourceFreeStatusUsesSharedSupplementalProviderCircuit": true,
     "sourceFreeCheckpointRejectsAssessmentRollback": true,
     "sourceFreeMultiCrashRestartNoReplayProof": true,
-    "ordinaryReadyBranchRunsSourceFreeBeforePaidAuthorization": true
+    "ordinaryReadyBranchRunsSourceFreeBeforePaidAuthorization": true,
+    "knownUnrecoverableHistoricalProviderRoleRollsToNewContentOnly": true,
+    "oldUncapturedProviderRoleNeverBecomesGenuinePass": true,
+    "newVersionProposalIncludesSourceBoundSection96Revision": true,
+    "geminiSdkTextAccessorFallbackUsesSameReturnedObjectWithoutRetry": true,
+    "unusableProviderEnvelopeRemainsUnresolved": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

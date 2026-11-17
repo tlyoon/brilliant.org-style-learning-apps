@@ -15,6 +15,9 @@ import tempfile
 from app_generator.runtime.v3_course_review import plan_v3_course_review
 from app_generator.runtime.v3_forward_progress import snapshot
 from app_generator.runtime.v3_recovery_policy import apply_registered_recovery
+from app_generator.runtime.v3_historical_role_rollforward import (
+    stage_known_unrecoverable_section96,
+)
 from app_generator.runtime.v3_versioned_acceptance_scope import (
     prepare_versioned_course_proposal,
 )
@@ -139,6 +142,20 @@ def advance_source_free_until_boundary(
                 or outcome.get("repairStaged") not in (True, False)
                 or not isinstance(outcome.get("repairStatus"), str)):
             raise ValueError("V3_SOURCE_FREE_UNVERIFIED_REMEDY")
+        # New immutable Section9.6 content is prepared before building the
+        # 108-activity versioned proposal, so the proposal sees BOTH genuine
+        # candidate changes in the same invocation (Section9.2 and 9.6).
+        historical = stage_known_unrecoverable_section96(
+            course, repo, private)
+        if (not isinstance(historical, dict) or
+                historical.get("status") not in {
+                    "NO_REGISTERED_HISTORICAL_ROLE_REMEDY",
+                    "HISTORICAL_ROLE_EVIDENCE_UNAVAILABLE",
+                    "STOP_ORIGINAL_RESPONSE_EVIDENCE_MUST_RECONCILE",
+                    "STOP_UNTRUSTED_UNRECOVERABLE_ROLE_SIGNATURE",
+                    "NEW_VERSIONED_SECTION96_REPAIR_STAGED_QA_NOT_AUTHORIZED",
+                }):
+            raise ValueError("V3_SOURCE_FREE_UNTRUSTED_HISTORICAL_REPAIR")
         proposal_hash = None
         if outcome["repairStaged"]:
             if outcome["repairStatus"] != (
@@ -202,6 +219,7 @@ def advance_source_free_until_boundary(
                        if effective_provider != "READY"
                        else "SOURCE_FREE_BOUNDARIES_STAGED"),
             "repairStatus": outcome["repairStatus"],
+            "historicalUnrecoverableRoleRecovery": historical,
             "stagedImmutableOriginalTailSlices": staged,
             "proposalSha256": proposal_hash,
             "originalAssessedUnchanged": receipt["originalAssessed"],

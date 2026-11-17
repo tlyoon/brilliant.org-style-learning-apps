@@ -3688,6 +3688,160 @@
           "marker": "test_source_free_repeated_crashes_at_first_middle_last_stage"
         }
       ]
+    },
+    {
+      "id": "BSA-20261117-190",
+      "class": "v3-unrecoverable-real-section96-gemini-role-stranded-substantive-new-content-version",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-177",
+        "BSA-20261117-183",
+        "BSA-20261117-187",
+        "BSA-20261117-189"
+      ],
+      "differenceFromLinkedIncident": "BSA-183 preserved a real old uncaptured Section9.6 physics ValueError with no request ID or raw response. BSA-187/189 automatically advanced independent source-free repairs but could not prepare a genuinely changed replacement for that sixth reviewed original; BSA-185 prepared only twelve genuinely untouched siblings. Reused the historical exact-parent BSA-174/175 atomic staging mechanics to create a substantive physics-clarified EN/MS/ZH Section9.6 new-content version and one exact SHA-bound isolated review input, triggered from the normal source-free worker on the exact owner frozen original claim. Original provider role and all genuine model evidence remain unchanged and uncertain; no new paid workflow or version admission is implied.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga6 genuine Section9.6 retained private old role and 108-activity source-free normal worker",
+        "Exact real archived Windows frozen Section9.6 source under cross-platform synthetic offline reviewer checkpoint"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_historical_role_rollforward.py",
+        "triggerMarker": "def stage_known_unrecoverable_section96(",
+        "remedyMarker": "store_private_repair(",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_source_free_forward.py",
+            "marker": "from app_generator.runtime.v3_historical_role_rollforward import ("
+          },
+          {
+            "path": "app_generator/runtime/v3_historical_role_rollforward.py",
+            "marker": "def stage_known_unrecoverable_section96("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_exact_authentic_section96_fork_and_restart"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_changed_old_claim_fails_closed_without_new_candidate"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_found_original_raw_response_must_be_reconciled_first"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_crash_after_candidate_before_review_input_resumes"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_real_source_normal_source_free_pipeline_dispatch"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261117-191",
+      "class": "gemini-native-sdk-response-text-property-valueerror-lost-already-returned-text-before-durable-capture",
+      "status": "resolved",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261117-183",
+        "BSA-20261117-184",
+        "BSA-20261117-186",
+        "BSA-20261117-190"
+      ],
+      "differenceFromLinkedIncident": "BSA-184 moved JSON/rubric parsing after raw response capture in the V3 assessment engine but the NativeGeminiApiConversation still read Google's response.text convenience property inside the transport BEFORE returning its already received SDK object to that engine. A locally raised ValueError could thus create an uncaptured ambiguous role even when exactly one complete text candidate was already returned. Reused the original no-replay engine but now extracts verbatim text only from one returned SDK candidate with text-only parts if the property throws/returns None, allowing existing fsynced response capture and local parse classification. No proof exists that BSA-183 had such an SDK accessor fault, so it remains active and unreconciled.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga6 native Gemini API reviewer transport with installed google-genai SDK 2.25.0",
+        "Actual Section9.6 authored question and real Google SDK response types in no-network end-to-end capture/rubric regression"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/gemini/v3_native_api_reviewers.py",
+        "triggerMarker": "def _single_sdk_candidate_text(",
+        "remedyMarker": "text = _single_sdk_candidate_text(response)",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/gemini/v3_native_api_reviewers.py",
+            "marker": "text = _single_sdk_candidate_text(response)"
+          },
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.gemini.v3_native_api_reviewers import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_real_google_genai_candidate_after_text_accessor_valueerror"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_mixed_or_multiple_candidates_still_fail_closed"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_real_sdk_valueerror_is_captured_before_rubric_on_real_96_content"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261117-192",
+      "class": "v3-versioned-108-course-proposal-did-not-link-real-recovered-section96-content-candidate",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261117-180",
+        "BSA-20261117-187",
+        "BSA-20261117-190"
+      ],
+      "differenceFromLinkedIncident": "BSA-180's immutable full-course proposal supported one corrected Section9.2 item and BSA-185's reviews of unchanged untouched original Section9.6 tail, but not a genuinely changed Section9.6 activity replacing an unrecoverable older provider role. Without a second exact source-bound content row, private new Section9.6 candidate could not be safely selected in any six-section 108-activity version. The same normal immutable proposal builder now links both one-activity corrections (9.2 index13, 9.6 index5), validates changed-field count and private review-slice identity, incorporates only independently reviewed new QA evidence, and never promotes old uncertain role, borrowed prior PASS, new-version admission or publication.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga6 owner genuine 75/108 original and revised Section9.2/9.6 combined course proposal",
+        "Portable real-source synthetic reviewer fixture and existing immutable versioned-proposal tests"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_versioned_acceptance_scope.py",
+        "triggerMarker": "recovered_96 = stage_known_unrecoverable_section96(",
+        "remedyMarker": "section96UnrecoverableRoleReplacement",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_source_free_forward.py",
+            "marker": "from app_generator.runtime.v3_versioned_acceptance_scope import ("
+          },
+          {
+            "path": "app_generator/runtime/v3_versioned_acceptance_scope.py",
+            "marker": "recovered_96 = stage_known_unrecoverable_section96("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_exact_real_source_108_activity_combined_proposal"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_real_source_normal_source_free_pipeline_dispatch"
+        }
+      ]
     }
   ]
 }

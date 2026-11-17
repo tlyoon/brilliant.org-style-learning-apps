@@ -18,6 +18,9 @@ from typing import Any
 from app_generator.runtime.v3_auto_repair import _ACTIVITY, _CANDIDATE
 from app_generator.runtime.v3_course_review import plan_v3_course_review
 from app_generator.runtime.v3_isolated_repair_review import stage_isolated_review_slice
+from app_generator.runtime.v3_historical_role_rollforward import (
+    stage_known_unrecoverable_section96,
+)
 from app_generator.runtime.v3_frozen_original_tail import (
     plan_frozen_original_tail, _slice as make_frozen_original_slice,
 )
@@ -97,6 +100,59 @@ def prepare_versioned_course_proposal(
         if r["state"] == "GENUINE_SUPPLEMENTAL_CONSENSUS_PASS"
     } if independent else {}
     supplementary_metadata = []
+    # BSA-190: a different, genuinely revised activity may replace an
+    # unrecoverable *old* Section9.6 role in a NEW unadmitted course version.
+    # Neither the old AI_UNCERTAIN nor a newly staged QA input counts as PASS.
+    recovered_96 = stage_known_unrecoverable_section96(
+        course, repo, private_root)
+    has_revised_96 = (
+        recovered_96["status"] ==
+        "NEW_VERSIONED_SECTION96_REPAIR_STAGED_QA_NOT_AUTHORIZED")
+    revised_96_raw = None
+    revised_96_items = None
+    revised_96_qa_state = None
+    if has_revised_96:
+        new_sha = recovered_96["candidatePackageSha256"]
+        candidate_file = (private_root / "historical-role-rollforward" /
+                          "section-9-6" / new_sha / "package.json")
+        if (candidate_file.is_symlink() or not candidate_file.is_file()
+                or candidate_file.stat().st_size > 2_000_000):
+            raise ValueError("V3_PROPOSAL_MISSING_NEW_SECTION96_CONTENT")
+        revised_96_raw = candidate_file.read_bytes()
+        revised_sha, revised_96_items = package_identity(revised_96_raw)
+        old_96_raw = (course / "section-9-6" / "package.json").read_bytes()
+        old_96_sha, old_96_items = package_identity(old_96_raw)
+        if (revised_sha != new_sha
+                or old_96_sha != recovered_96["parentPackageSha256"]
+                or len(revised_96_items) != 18
+                or [i for i,(old,new) in enumerate(
+                    zip(old_96_items,revised_96_items)) if old!=new] != [5]
+                or set(k for k in revised_96_items[5]
+                       if revised_96_items[5][k] != old_96_items[5][k])
+                   != {"prompt"}):
+            raise ValueError("V3_PROPOSAL_NEW_SECTION96_CHANGED_TOO_MUCH")
+        new_review_sha = recovered_96["isolatedReviewInputSha256"]
+        review_file = (private_root / "historical-role-review-inputs" /
+                       "section-9-6" / new_review_sha / "package.json")
+        if review_file.is_symlink() or not review_file.is_file():
+            raise ValueError("V3_PROPOSAL_MISSING_NEW_SECTION96_REVIEW_INPUT")
+        review_raw = review_file.read_bytes()
+        review_digest, review_items = package_identity(review_raw)
+        if (review_digest != new_review_sha
+                or review_items != [revised_96_items[5]]):
+            raise ValueError("V3_PROPOSAL_NEW_SECTION96_REVIEW_IDENTITY")
+        qa_assessment = _private_assessment(
+            private_root, review_raw, review_digest)
+        qa_progress = assessment_progress(review_raw, qa_assessment)
+        revised_96_qa_state = (
+            "GENUINE_REVISED_SECTION96_GEMINI_PASS_NOT_ADMITTED"
+            if qa_progress["modelConsensusPassActivities"] == 1
+               and qa_progress["activitiesFullyModelReviewed"] == 1
+            else "NEW_SECTION96_GEMINI_REPAIR_REQUIRED"
+            if qa_progress["modelRepairRequiredActivities"] else
+            "NEW_SECTION96_GEMINI_UNCERTAIN_NO_REPLAY"
+            if qa_progress["modelUncertainActivities"] else
+            "NEW_SECTION96_TWO_GEMINI_REVIEWS_NOT_YET_AUTHORIZED")
 
     corrected = (private_root / "repair-proposals" / _SECTION /
                  _CANDIDATE / "package.json")
@@ -155,6 +211,15 @@ def prepare_versioned_course_proposal(
             if differences != [13] or activities[13]["id"] != _ACTIVITY:
                 raise ValueError("V3_PROPOSAL_UNEXPECTED_PATCH_SCOPE")
             replacement_digest = _CANDIDATE
+            changed += 1
+        elif label == "section-9-6" and has_revised_96:
+            if (revised_96_items is None
+                    or [item["id"] for item in activities] !=
+                       [item["id"] for item in revised_96_items]
+                    or [i for i,(a,b) in enumerate(
+                        zip(activities,revised_96_items)) if a!=b] != [5]):
+                raise ValueError("V3_PROPOSAL_REVISED_SECTION96_SCOPE_CHANGED")
+            replacement_digest = recovered_96["candidatePackageSha256"]
             changed += 1
         old = _private_assessment(private_root, raw, digest)
         reviews = old["reviews"] if old else []
@@ -238,7 +303,8 @@ def prepare_versioned_course_proposal(
             "originalUncertain": section["modelUncertainActivities"],
             "originalRepairRequired": section["modelRepairRequiredActivities"],
         })
-    if (changed != 1 or sum(x["activities"] for x in rows) != 108
+    if (changed != (2 if has_revised_96 else 1)
+            or sum(x["activities"] for x in rows) != 108
             or len(reuse) != (progress["modelConsensusPassActivities"]
                               + len(supplementary_metadata))):
         raise ValueError("V3_PROPOSAL_CONFLICTING_REVIEW_INVENTORY")
@@ -286,6 +352,35 @@ def prepare_versioned_course_proposal(
         "all108ReviewedAndApproved": False,
         "publicationAuthorized": False,
     }
+    if has_revised_96:
+        # The NEW content version can have its own genuine two-role model
+        # result later, but old ambiguous provider evidence always remains
+        # unresolved and never upgrades the original frozen review.
+        unsigned["section96UnrecoverableRoleReplacement"] = {
+            "section": "section-9-6",
+            "originalUnresolvedActivityIndex": 5,
+            "originalUnresolvedActivityId":
+                "mcq-mod-bat-cut-mass-comparison",
+            "parentPackageSha256":
+                recovered_96["parentPackageSha256"],
+            "newContentPackageSha256":
+                recovered_96["candidatePackageSha256"],
+            "newOneActivityReviewInputSha256":
+                recovered_96["isolatedReviewInputSha256"],
+            "oldAmbiguousProviderRolePreserved": True,
+            "newGeminiScientificStatus": revised_96_qa_state,
+            "versionedScopeAdmitted": False,
+            "publicationAuthorized": False,
+        }
+        unsigned["unresolved"].append(
+            "HISTORICAL_SECTION96_PROVIDER_RESPONSE_UNRECOVERABLE_DO_NOT_REPLAY")
+        if revised_96_qa_state != (
+                "GENUINE_REVISED_SECTION96_GEMINI_PASS_NOT_ADMITTED"):
+            unsigned["unresolved"].append(
+                "NEW_SECTION96_REVISED_ACTIVITY_TWO_GEMINI_REVIEW_PENDING")
+        unsigned["counts"]["revisedSection96NewGeminiConsensusPass"] = int(
+            revised_96_qa_state ==
+            "GENUINE_REVISED_SECTION96_GEMINI_PASS_NOT_ADMITTED")
     if supplementary_metadata:
         # Additions only when actual exact-version two-Gemini supplemental
         # evidence exists; historical proposal bytes remain unchanged when
@@ -344,6 +439,9 @@ def prepare_versioned_course_proposal(
         "originalFailed":progress["modelRepairRequiredActivities"],
         "correctedActivityNewGeminiConsensusPass":int(corrected_pass),
         "correctedActivityScientificStatus":corrected_state,
+        "section96NewContentCandidateSha256": (
+            recovered_96["candidatePackageSha256"] if has_revised_96 else None),
+        "section96NewGeminiScientificStatus": revised_96_qa_state,
         "versionedScopeAdmitted":False,
         "publicationAuthorized":False,
     }

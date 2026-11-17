@@ -130,6 +130,11 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "sourceFreeCheckpointRejectsAssessmentRollback",
     "sourceFreeMultiCrashRestartNoReplayProof",
     "ordinaryReadyBranchRunsSourceFreeBeforePaidAuthorization",
+    "knownUnrecoverableHistoricalProviderRoleRollsToNewContentOnly",
+    "oldUncapturedProviderRoleNeverBecomesGenuinePass",
+    "newVersionProposalIncludesSourceBoundSection96Revision",
+    "geminiSdkTextAccessorFallbackUsesSameReturnedObjectWithoutRetry",
+    "unusableProviderEnvelopeRemainsUnresolved",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

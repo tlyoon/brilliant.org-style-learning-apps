@@ -29,6 +29,44 @@ _STAGE = "academic-v3-autonomous"
 _PREFIX = "BOSLA V3 AUTONOMOUS TECHNICAL CONTENT QA."
 
 
+def _single_sdk_candidate_text(response: Any) -> str | None:
+    """Use only literal text from ONE already-returned SDK candidate.
+
+    The google-genai .text convenience accessor can raise ValueError after a
+    successful model return, before the normal assessor can capture the text.
+    Recover exact content.parts[].text WITHOUT a new request. Never assemble
+    multiple candidates, function calls, generated thoughts, images or empty
+    outputs into an invented reviewer verdict.
+    """
+    candidates = getattr(response, "candidates", None)
+    if not isinstance(candidates, (list, tuple)) or len(candidates) != 1:
+        return None
+    content = getattr(candidates[0], "content", None)
+    parts = getattr(content, "parts", None)
+    if not isinstance(parts, (list, tuple)) or not parts:
+        return None
+    strings: list[str] = []
+    for part in parts:
+        if getattr(part, "thought", None) is True:
+            continue
+        value = getattr(part, "text", None)
+        if not isinstance(value, str):
+            return None
+        # Reject SDK mixed-content envelopes rather than silently dropping
+        # a function call / image while claiming the text is a full response.
+        dump = getattr(part, "model_dump", None)
+        if callable(dump):
+            extras = dump(exclude={"text", "thought", "thought_signature"})
+            if not isinstance(extras, dict) or any(
+                    item is not None for item in extras.values()):
+                return None
+        strings.append(value)
+    recovered = "".join(strings)
+    if not recovered.strip() or len(recovered) > 50_000:
+        return None
+    return recovered
+
+
 def _default_sdk_components(config: Any, *, candidate_offset: int = 0) -> tuple[Callable[[str], Any], Any]:
     """Reuse the shared Gemini API gateway; never construct an SDK directly."""
     return build_v3_native_text_sdk_components(config, candidate_offset=candidate_offset)
@@ -68,7 +106,15 @@ class NativeGeminiApiConversation:
         response = send_v3_native_text_once(
             self.client, self.sdk_types, self.model, prompt,
         )
-        text = getattr(response, "text", None)
+        try:
+            text = getattr(response, "text", None)
+        except ValueError:
+            # An SDK convenience-property error is local to an already
+            # returned response object. Use exact single-candidate text if
+            # present; otherwise retain the old fail-closed no-replay path.
+            text = None
+        if not isinstance(text, str) or not text.strip():
+            text = _single_sdk_candidate_text(response)
         if not isinstance(text, str) or not text.strip():
             raise ValueError("V3_NATIVE_JSON_RESPONSE_ONLY")
         # Native transport returns provider text without parsing. The owning
