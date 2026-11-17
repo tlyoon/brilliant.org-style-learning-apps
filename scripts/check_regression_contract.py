@@ -135,6 +135,12 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "newVersionProposalIncludesSourceBoundSection96Revision",
     "geminiSdkTextAccessorFallbackUsesSameReturnedObjectWithoutRetry",
     "unusableProviderEnvelopeRemainsUnresolved",
+    "boundedRealSourceHistoricalProviderProbation",
+    "oneUnknownRoleQuarantineNeverMasksAdditionalProviderDenial",
+    "newIndependentGeminiPositiveEvidenceRequiredToAdvance",
+    "realSixSectionBrowserQAInNormalRecovery",
+    "projectLocalPinnedBrowserSdkSelfRepair",
+    "browserEvidencePrivateShaBoundAndNoRelease",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

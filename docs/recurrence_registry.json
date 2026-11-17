@@ -3842,6 +3842,126 @@
           "marker": "test_real_source_normal_source_free_pipeline_dispatch"
         }
       ]
+    },
+    {
+      "id": "BSA-20261118-193",
+      "class": "old-section96-uncaptured-valueerror-global-provider-deadlock-vs-independent-explicitly-authorized-new-request",
+      "status": "resolved",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261113-162",
+        "BSA-20261113-163",
+        "BSA-20261117-183",
+        "BSA-20261117-185",
+        "BSA-20261117-186",
+        "BSA-20261117-190",
+        "BSA-20261117-191"
+      ],
+      "differenceFromLinkedIncident": "The original global capacity gate correctly STOPs unknown Gemini ValueError; an earlier iteration incorrectly treated that historic missing-response request as permanent failure of ALL future independently authorized new original-activity requests. New restricted recovery proves exact frozen old role + SHA-bound versioned repair, leaves generic provider gate unchanged by default, quarantines only that one old role for a new separate activity, checks actual provider metadata health and the unchanged owner original Section9.6 paid charter before a one-activity two-Gemini restoration trial. A genuinely persisted independent source-bound new PASS is required before automatic advance to up to the remaining three allowed activities in the same finite invocation. All other unknowns, denied operations, stale/tampered evidence, additional claims, capacity cooldown and orphan PRE_CALL remain fail-closed. Original ValueError cannot be reconstructed or replayed.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Yoga6 genuine frozen Section9.6 source and exact old SHA-bound private ValueError claim",
+        "Actual provider metadata HTTP200 source-free diagnosis and normal worker SDK-shaped transport fixture with real authored activity questions"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_provider_restoration.py",
+        "triggerMarker": "def plan_authorized_independent_recovery_trial(",
+        "remedyMarker": "quarantined_historical_claim=(_PARENT, identity)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_provider_restoration import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_real_source_historical_probation_without_replaying_old_role"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_restoration_never_masks_another_unknown_or_explicit_denial"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_restoration_mismatched_old_identity_stays_blocked"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_real_normal_worker_recovery_and_auto_continue_with_sdk_transport"
+        },
+        {
+          "path": "tests/test_v3_historical_role_rollforward.py",
+          "kind": "python",
+          "marker": "test_real_normal_worker_rejects_metadata_denial_before_paid_claim"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261118-194",
+      "class": "yoga6-sourcefree-real-chapter9-browser-qa-not-run-because-selenium-missing-and-older-smoke-was-synthetic-only",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261114-164",
+        "BSA-20261116-175",
+        "BSA-20261117-187",
+        "BSA-20261117-190",
+        "BSA-20261117-192"
+      ],
+      "differenceFromLinkedIncident": "Earlier hosted CI browser smoke rendered synthetic six-section inputs only, while real authorized Yoga6 host had installed Chrome but no selenium Python module; old QA could falsely imply full content acceptance. A new strict actual-candidate browser test stages precisely six SHA-bound real 18-activity packages from frozen content and two private versioned repairs, no publication, and verifies 50 real authored trilingual/mobile/desktop+navigation+privacy checks. A normal sourcefree worker stage now automatically delegates to pinned selenium==4.47.0 in a bounded project local .venv and writes an integrity-bound private receipt keyed by proposal, runtime JS/python digest and git revision. No paid call or scientific acceptance; immutable receipt tamper and browser failure remain STOP.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Yoga6 live Chrome with all six actual Chapter9 source-bound unadmitted candidate packages and revised 9.6 question",
+        "CI portable receipt, fail-closed integration and source-free tests"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/run_v3_yoga6_acceptance.py",
+        "triggerMarker": "def advance_real_candidate_browser_qa(",
+        "remedyMarker": "_browser_python(root)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from scripts.run_v3_yoga6_acceptance import ("
+          },
+          {
+            "path": "scripts/run_v3_yoga6_acceptance.py",
+            "marker": "def advance_real_candidate_browser_qa("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_real_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_atomic_browser_receipt_round_trip_and_integrity_check"
+        },
+        {
+          "path": "tests/test_v3_real_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_browser_qa_failure_is_not_reported_as_success"
+        },
+        {
+          "path": "tests/test_v3_real_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_browser_qa_is_called_from_normal_worker_result"
+        },
+        {
+          "path": "tests/test_v3_real_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_browser_receipt_cannot_authorize_publication_or_model_review"
+        },
+        {
+          "path": "tests/test_v3_real_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_no_staged_revised_course_does_not_invoke_browser"
+        }
+      ]
     }
   ]
 }

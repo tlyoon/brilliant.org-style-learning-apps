@@ -38,7 +38,13 @@
     "oldUncapturedProviderRoleNeverBecomesGenuinePass": true,
     "newVersionProposalIncludesSourceBoundSection96Revision": true,
     "geminiSdkTextAccessorFallbackUsesSameReturnedObjectWithoutRetry": true,
-    "unusableProviderEnvelopeRemainsUnresolved": true
+    "unusableProviderEnvelopeRemainsUnresolved": true,
+    "boundedRealSourceHistoricalProviderProbation": true,
+    "oneUnknownRoleQuarantineNeverMasksAdditionalProviderDenial": true,
+    "newIndependentGeminiPositiveEvidenceRequiredToAdvance": true,
+    "realSixSectionBrowserQAInNormalRecovery": true,
+    "projectLocalPinnedBrowserSdkSelfRepair": true,
+    "browserEvidencePrivateShaBoundAndNoRelease": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

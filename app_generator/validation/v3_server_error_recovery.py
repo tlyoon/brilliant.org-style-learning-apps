@@ -6,6 +6,7 @@ Historical claim contents and result aggregate are immutable.
 """
 from __future__ import annotations
 
+from hashlib import sha256
 import json
 import time
 from pathlib import Path
@@ -21,6 +22,7 @@ def provider_capacity_gate(
     private_root: Path | None, section_progress: list[dict], *,
     now: float | None = None,
     additional_package_shas: tuple[str, ...] | list[str] = (),
+    quarantined_historical_claim: tuple[str, str] | None = None,
 ) -> dict:
     """Return only a privacy-safe, deterministic decision; never contact Google.
 
@@ -31,6 +33,19 @@ def provider_capacity_gate(
         return {"status": "READY", "serverErrorsLastHour": 0, "serverErrorActivitiesHistorical": 0}
     clock = time.time() if now is None else float(now)
     root = private_root
+    # One exact, pre-verified historical raw claim may be quarantined from
+    # *provider capacity* classification for a NEW authorized activity.
+    # This does NOT mark the old review as reconciled or allow its replay.
+    # The caller must independently prove frozen source, old role identity,
+    # new separate scope, owner authorization and current metadata access.
+    if quarantined_historical_claim is not None:
+        if (not isinstance(quarantined_historical_claim, tuple)
+                or len(quarantined_historical_claim) != 2
+                or any(not isinstance(item, str) or len(item) != 64
+                       or set(item) - set("0123456789abcdef")
+                       for item in quarantined_historical_claim)):
+            raise ValueError("V3_PROVIDER_INVALID_HISTORICAL_CLAIM_WITNESS")
+    quarantined_count = 0
     events: list[float] = []
     failed_activities: set[tuple[str,str]] = set()
     denied = False
@@ -65,10 +80,22 @@ def provider_capacity_gate(
                 denied = True
             elif (data.get("state") == "AMBIGUOUS"
                   and data.get("reasonCode") not in SERVER_CAPACITY_ERROR_NAMES):
-                # An unknown error could be authentication, quota, content
-                # rejection, or a provider denial. Never route around it
-                # by silently switching to a different frozen section.
-                unclassified = True
+                # Only one pinned, previously inspected old claim may be
+                # excluded from *current provider health* when its exact
+                # bytes still match a validated standalone quarantine.
+                # All other unknown, denied and capacity failures stay live.
+                verified_legacy = (
+                    quarantined_historical_claim is not None
+                    and digest == quarantined_historical_claim[0]
+                    and sha256(claim.read_bytes()).hexdigest() ==
+                        quarantined_historical_claim[1]
+                    and data.get("reasonCode") == "ValueError"
+                    and data.get("providerId") == "gemini_api"
+                    and data.get("roleIndex") == 0)
+                if verified_legacy:
+                    quarantined_count += 1
+                else:
+                    unclassified = True
             if (data.get("state") == "AMBIGUOUS"
                 and data.get("reasonCode") in SERVER_CAPACITY_ERROR_NAMES):
                 activity_id = data.get("activityId")
@@ -81,6 +108,9 @@ def provider_capacity_gate(
                 if clock - BURST_WINDOW_SECONDS < when <= clock + 300:
                     events.append(when)
     events.sort()
+    if (quarantined_historical_claim is not None
+            and quarantined_count != 1):
+        raise ValueError("V3_PROVIDER_HISTORICAL_CLAIM_WITNESS_MISMATCH")
     count = len(events)
     historic = len(failed_activities)
     if denied:
@@ -109,5 +139,9 @@ def provider_capacity_gate(
                 "serverErrorActivitiesHistorical": historic,
                 "retryNewWorkAfterUnix": int(deadline),
             }
-    return {"status": "READY", "serverErrorsLastHour": count,
+    return {"status": (
+                "READY_RESTRICTED_HISTORICAL_QUARANTINE"
+                if quarantined_historical_claim is not None else "READY"),
+            "historicalUnrecoverableClaimsQuarantined": quarantined_count,
+            "serverErrorsLastHour": count,
             "serverErrorActivitiesHistorical": historic}

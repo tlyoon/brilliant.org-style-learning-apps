@@ -17,6 +17,7 @@ import json
 import os
 from pathlib import Path
 import sys
+import time
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -47,12 +48,33 @@ from app_generator.runtime.v3_frozen_tail_forward import (
 from app_generator.runtime.v3_source_free_forward import (
     advance_source_free_until_boundary,
 )
+from app_generator.runtime.v3_provider_restoration import (
+    plan_authorized_independent_recovery_trial,
+)
+from scripts.run_v3_yoga6_acceptance import (
+    advance_real_candidate_browser_qa,
+)
 
 COURSE = ROOT / "content" / "chapter-9"
 
 
 def _print(data: dict) -> None:
     print(json.dumps(data,sort_keys=True,separators=(",",":")))
+
+
+def _complete_source_free_with_browser(private: Path, result: dict) -> dict:
+    """Execute idempotent actual-candidate Chrome QA in the normal workflow.
+
+    Browser QA cannot authorize paid reviews or publication. Failures are
+    reported as independent acceptance blockers, not silently counted PASS.
+    """
+    try:
+        qa=advance_real_candidate_browser_qa(ROOT,private,result)
+    except Exception as exc:
+        qa={"status":"STOP_NATIVE_REAL_CANDIDATE_BROWSER_QA",
+            "errorClass":type(exc).__name__,
+            "publicationAuthorized":False}
+    return {**result,"realCandidateBrowserAcceptance":qa}
 
 
 def _advance_unchanged_frozen_tail(args, private: Path,
@@ -67,37 +89,50 @@ def _advance_unchanged_frozen_tail(args, private: Path,
     # authorization preflight. Perform these verified independent stages
     # first, on the authorized Yoga6 host; never issue PRE_CALL or API I/O.
     require_authorized_native_review_host(AUTHORITY)
-    offline = advance_source_free_until_boundary(COURSE, ROOT, private)
+    offline = _complete_source_free_with_browser(
+        private,advance_source_free_until_boundary(COURSE, ROOT, private))
     authorize_paid_v3_action(
         "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",
         execute=args.execute,transfer=args.allow_generated_text_transfer,
         next_section="section-9-6",
         max_activities=args.max_forward_activities,
         max_elapsed_seconds=args.max_forward_seconds)
-    # Decision 0040/0041 remains authoritative: a generic unknown Gemini
-    # failure can indicate authorization/quota/content denial. Never bypass
-    # that provider-wide circuit by relabelling an untouched original as a
-    # separate single-activity slice. Recognized capacity errors must cool
-    # down before a NEW request, and old denied calls remain terminal.
-    from app_generator.validation.v3_course_readiness import course_readiness
-    from app_generator.validation.v3_server_error_recovery import provider_capacity_gate
+    # BSA-193: an old, exact-source unknown result stays unreconciled, but
+    # a new separately authorized activity can enter ONE controlled trial.
+    # Default provider circuit still stops unknowns, actual denials and
+    # cooldowns. The restricted selector ignores at most the single
+    # sha-verified known old role, never any new or other ambiguity.
+    probation = plan_authorized_independent_recovery_trial(
+        COURSE, ROOT, private)
+    permitted = (
+        "READY_ORDINARY_PROVIDER",
+        "READY_ONE_NEW_AUTHORIZED_ACTIVITY_PROBATION",
+        "READY_AFTER_INDEPENDENT_GEMINI_REVIEW",
+    )
+    if probation["status"] not in permitted:
+        _print({"sourceFreeRecovery":offline,
+                "status":(
+                    "STOP_TAIL_PROVIDER_CAPACITY_STOP_UNCLASSIFIED_PROVIDER_REVIEW"
+                    if probation["originalProviderStatus"] ==
+                       "STOP_UNCLASSIFIED_PROVIDER_REVIEW"
+                    else "STOP_TAIL_PROVIDER_"+probation["status"]),
+                "providerRestoration":probation,
+                "providerCapacity":probation["originalProviderCapacity"],
+                "publicationAuthorized":False})
+        return 3
+    capacity = probation.get("currentCapacityAfterQuarantine")
+    if capacity is None:
+        from app_generator.validation.v3_course_readiness import course_readiness
+        from app_generator.validation.v3_server_error_recovery import provider_capacity_gate
+        capacity = provider_capacity_gate(private,course_readiness(
+            COURSE,ROOT,private_root=private)["sectionProgress"])
     from app_generator.runtime.v3_yoga6_recovery import (
         MAX_FAILED_ACTIVITIES_PER_COURSE,
     )
-    section_progress = course_readiness(
-        COURSE,ROOT,private_root=private)["sectionProgress"]
-    capacity = provider_capacity_gate(private,section_progress)
-    if (capacity["status"] != "READY"
-            or capacity["serverErrorActivitiesHistorical"] >=
-                MAX_FAILED_ACTIVITIES_PER_COURSE):
-        # Source-free staging was performed before any paid authorization
-        # or provider-capacity probe, and remains valid after this STOP.
-        _print({"sourceFreeRecovery":offline,
-                "status":"STOP_TAIL_PROVIDER_CAPACITY_"+
-                (capacity["status"] if capacity["status"] != "READY"
-                 else "RECOVERY_BUDGET"),
-                "providerCapacity":capacity,
-                "publicationAuthorized":False})
+    if capacity["serverErrorActivitiesHistorical"] >= (
+            MAX_FAILED_ACTIVITIES_PER_COURSE):
+        _print({"status":"STOP_TAIL_PROVIDER_RECOVERY_BUDGET",
+                "sourceFreeRecovery":offline, "publicationAuthorized":False})
         return 3
     # BSA-186: the original course circuit is insufficient on its own.
     # Check all previously created, source-bound supplemental package claims
@@ -149,10 +184,55 @@ def _advance_unchanged_frozen_tail(args, private: Path,
             return advance_v3_generated_text(
                 raw,sessions,private_root=private,
                 generated_content_transfer_allowed=True,max_activities=1)
-    result = advance_frozen_tail_until_boundary(
-        COURSE,ROOT,private,review_one,section="section-9-6",
-        max_activities=args.max_forward_activities,
-        max_elapsed_seconds=args.max_forward_seconds)
+    began = time.monotonic()
+    if probation["status"] == "READY_ONE_NEW_AUTHORIZED_ACTIVITY_PROBATION":
+        # One genuine new role pair, then read the immutable reviewer
+        # aggregate: no simulated provider-ready certificate is accepted.
+        first = advance_frozen_tail_until_boundary(
+            COURSE,ROOT,private,review_one,section="section-9-6",
+            max_activities=1,max_elapsed_seconds=args.max_forward_seconds)
+        if (first["attemptedThisInvocation"] != 1
+                or first["verifiedNewSupplementalRowsThisInvocation"] != 1
+                or first["supplemental"]["passed"] !=
+                    probation["previousIndependentGeminiPasses"] + 1):
+            _print({**first, "status":"STOP_PROBATION_WITHOUT_GENUINE_NEW_PASS",
+                    "providerRestoration":"NO_GENUINE_NEW_HEALTH_PROOF",
+                    "publicationAuthorized":False})
+            return 3
+        if args.max_forward_activities == 1:
+            _print({**first, "providerRestoration":
+                    "PROBATION_PASSED_ONE_GENUINE_NEW_ACTIVITY"})
+            return 0
+        reread = plan_authorized_independent_recovery_trial(
+            COURSE,ROOT,private)
+        remaining = args.max_forward_seconds - int(time.monotonic()-began)
+        if (reread["status"] != "READY_AFTER_INDEPENDENT_GEMINI_REVIEW"
+                or remaining < 30):
+            _print({**first, "status":"STOP_POST_PROBATION_PREFLIGHT",
+                    "providerRestoration":reread["status"],
+                    "publicationAuthorized":False})
+            return 3
+        result = advance_frozen_tail_until_boundary(
+            COURSE,ROOT,private,review_one,section="section-9-6",
+            max_activities=args.max_forward_activities-1,
+            max_elapsed_seconds=min(900,remaining))
+        result = {
+            **result,
+            "attemptedThisInvocation": (
+                first["attemptedThisInvocation"] +
+                result["attemptedThisInvocation"]),
+            "verifiedNewSupplementalRowsThisInvocation": (
+                first["verifiedNewSupplementalRowsThisInvocation"] +
+                result["verifiedNewSupplementalRowsThisInvocation"]),
+            "providerRestoration":"PROBATION_PASSED_CONTINUED_NEW_WORK",
+            "historicalRoleReconciled":False,
+        }
+    else:
+        result = advance_frozen_tail_until_boundary(
+            COURSE,ROOT,private,review_one,section="section-9-6",
+            max_activities=args.max_forward_activities,
+            max_elapsed_seconds=args.max_forward_seconds)
+        result["historicalRoleReconciled"] = False
     _print(result)
     return (0 if result["status"] in (
         "STOP_TAIL_ACTIVITY_BUDGET_REACHED",
@@ -205,7 +285,8 @@ def main(argv: list[str] | None = None) -> int:
         private = checked_private_root(chosen,localappdata=Path(local))
         if args.source_free_advance:
             require_authorized_native_review_host(AUTHORITY)
-            _print(advance_source_free_until_boundary(COURSE,ROOT,private))
+            _print(_complete_source_free_with_browser(
+                private,advance_source_free_until_boundary(COURSE,ROOT,private)))
             return 0
         if args.auto_advance:
             ready = plan_v3_course_review(
@@ -225,8 +306,9 @@ def main(argv: list[str] | None = None) -> int:
                     return _advance_unchanged_frozen_tail(args,private,argv)
             if ready["dispatchStatus"] != "READY_FOR_AUTHORIZED_REVIEW_SESSIONS":
                 require_authorized_native_review_host(AUTHORITY)
-                offline = advance_source_free_until_boundary(
-                    COURSE,ROOT,private)
+                offline = _complete_source_free_with_browser(
+                    private,advance_source_free_until_boundary(
+                        COURSE,ROOT,private))
                 _print({**status_from_plan(
                     ready,status=ready["dispatchStatus"]),
                         "sourceFreeRecovery":offline})
@@ -237,7 +319,8 @@ def main(argv: list[str] | None = None) -> int:
             # when no provider transmission was needed. Keep the independent
             # reviewer permission gate fully authoritative AFTER staging.
             require_authorized_native_review_host(AUTHORITY)
-            advance_source_free_until_boundary(COURSE,ROOT,private)
+            _complete_source_free_with_browser(
+                private,advance_source_free_until_boundary(COURSE,ROOT,private))
             authorize_paid_v3_action(
                 "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",
                 execute=args.execute,

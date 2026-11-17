@@ -239,6 +239,193 @@ class RealSourceRollforwardTests(unittest.TestCase):
         self.assertEqual(models.calls,1)
         self.assertFalse(result.get("publicationAuthorized",False))
 
+    def test_real_source_historical_probation_without_replaying_old_role(self):
+        from app_generator.runtime.v3_provider_restoration import (
+            plan_authorized_independent_recovery_trial,
+        )
+        from app_generator.runtime.v3_frozen_tail_forward import (
+            advance_frozen_tail_until_boundary,
+        )
+        from app_generator.runtime.v3_authorized_review import advance_v3_generated_text
+        from tests.test_v3_authorized_execution_bridge import pair
+        old = self.old_claim.read_bytes()
+        ready = plan_authorized_independent_recovery_trial(
+            self.course,self.repo,self.private)
+        self.assertEqual(ready["status"],
+                         "READY_ONE_NEW_AUTHORIZED_ACTIVITY_PROBATION")
+        self.assertEqual(ready["allowedActivitiesBeforeNewEvidence"],1)
+        self.assertEqual(ready["nextNewOriginalIndex"],6)
+        self.assertEqual(ready["originalProviderStatus"],
+                         "STOP_UNCLASSIFIED_PROVIDER_REVIEW")
+        self.assertFalse(ready["historicalRoleReconciled"])
+        self.assertEqual(ready["paidCalls"],0)
+        self.assertEqual(ready["currentCapacityAfterQuarantine"]
+                         ["historicalUnrecoverableClaimsQuarantined"],1)
+        sent=[]
+        def reviewed(raw,metadata):
+            contexts,a,b=pair()
+            sent.append((metadata["sourceActivityIndex"],a,b))
+            return advance_v3_generated_text(
+                raw,contexts,private_root=self.private,
+                generated_content_transfer_allowed=True,max_activities=1)
+        trial=advance_frozen_tail_until_boundary(
+            self.course,self.repo,self.private,reviewed,
+            max_activities=1,max_elapsed_seconds=120)
+        self.assertEqual(trial["attemptedThisInvocation"],1)
+        self.assertEqual(trial["verifiedNewSupplementalRowsThisInvocation"],1)
+        self.assertEqual(trial["supplemental"]["passed"],1)
+        self.assertEqual([row[0] for row in sent],[6])
+        self.assertEqual([row[1].calls for row in sent],[1])
+        self.assertEqual([row[2].calls for row in sent],[1])
+        later=plan_authorized_independent_recovery_trial(
+            self.course,self.repo,self.private)
+        self.assertEqual(later["status"],
+                         "READY_AFTER_INDEPENDENT_GEMINI_REVIEW")
+        self.assertEqual(later["nextNewOriginalIndex"],7)
+        self.assertEqual(later["previousIndependentGeminiPasses"],1)
+        self.assertEqual(self.old_claim.read_bytes(),old)
+        self.assertEqual(self.raw,(self.course/SECTION/"package.json").read_bytes())
+
+    def test_restoration_never_masks_another_unknown_or_explicit_denial(self):
+        from app_generator.runtime.v3_provider_restoration import (
+            plan_authorized_independent_recovery_trial,
+        )
+        batch=self.old_claim.parent
+        for state,reason in (("AMBIGUOUS","ValueError"),
+                             ("BLOCKED_EXTERNAL","AUTH_DENIED")):
+            with self.subTest(state=state):
+                other=batch/f"v3-review-{self.digest[:12]}-004-0.json"
+                data=json.loads(other.read_text(encoding="utf8"))
+                saved=other.read_bytes()
+                try:
+                    data["state"]=state
+                    data["reasonCode"]=reason
+                    other.write_text(json.dumps(data),encoding="utf8")
+                    result=plan_authorized_independent_recovery_trial(
+                        self.course,self.repo,self.private)
+                    self.assertTrue(result["status"].startswith("STOP_"))
+                    self.assertFalse(result["historicalRoleReconciled"])
+                    self.assertFalse(result["publicationAuthorized"])
+                finally:
+                    other.write_bytes(saved)
+
+    def test_restoration_mismatched_old_identity_stays_blocked(self):
+        from app_generator.runtime.v3_provider_restoration import (
+            plan_authorized_independent_recovery_trial,
+        )
+        verified=plan_authorized_independent_recovery_trial(
+            self.course,self.repo,self.private)
+        self.assertEqual(verified["nextNewOriginalIndex"],6)
+        saved=self.old_claim.read_bytes()
+        state=json.loads(saved)
+        state["sessionId"]="FALSIFIED_OLD_SESSION"
+        self.old_claim.write_text(json.dumps(state),encoding="utf8")
+        refused=plan_authorized_independent_recovery_trial(
+            self.course,self.repo,self.private)
+        self.assertEqual(refused["status"],
+                         "STOP_HISTORICAL_ROLE_EVIDENCE_CONFLICT")
+        self.old_claim.write_bytes(saved)
+
+    def test_real_normal_worker_recovery_and_auto_continue_with_sdk_transport(self):
+        from contextlib import redirect_stdout
+        import io
+        from unittest.mock import patch
+        from scripts import run_v3_yoga6_recovery_worker as worker
+        from app_generator.runtime import native_sdk_environment
+        from app_generator.gemini import v3_native_api_reviewers as sdk_module
+        from app_generator.gemini.v3_native_api_reviewers import V3NativeGeminiApiSessions
+        from tests.test_v3_native_gemini_api_reviewers import (
+            FakeClient, FakeTypes, config,
+        )
+        output=io.StringIO()
+        old=self.old_claim.read_bytes()
+        sent=[]
+        def model_factory(configured,**kwargs):
+            def generate(role):
+                result=FakeClient("valid")
+                sent.append(result)
+                return result
+            return V3NativeGeminiApiSessions(
+                configured,sdk_client_factory=generate,
+                sdk_types=FakeTypes,**kwargs)
+        stopped={"dispatchStatus":"STOP_UNRECONCILED_MODEL_REVIEW",
+                 "quarantinedSections":[SECTION],"publicationAuthorized":False}
+        with (patch.object(worker,"ROOT",self.repo),
+              patch.object(worker,"COURSE",self.course),
+              patch.object(worker,"checked_private_root",return_value=self.private),
+              patch.object(worker,"plan_v3_course_review",return_value=stopped),
+              patch.object(worker,"advance_source_free_until_boundary",
+                           return_value={"status":"SOURCE_FREE_PREPARED_IN_OTHER_TEST",
+                                         "paidGeminiCalls":0,
+                                         "publicationAuthorized":False}),
+              patch.object(worker,"require_authorized_native_review_host"),
+              patch.object(native_sdk_environment,"delegate_to_supported_sdk",
+                           return_value=None),
+              patch.object(worker,"_load_native_config",return_value=config()),
+              patch.object(worker,"diagnose_model_metadata",
+                           return_value={"status":"READY_SOURCE_FREE_ONLY",
+                                         "selectedCandidateIndex":0}),
+              patch.object(sdk_module,"V3NativeGeminiApiSessions",
+                           side_effect=model_factory),
+              patch.dict("os.environ",{"LOCALAPPDATA":str(self.private.parent)}),
+              redirect_stdout(output)):
+            code=worker.main([
+                "--private-root",str(self.private),
+                "--auto-advance","--execute","--allow-generated-text-transfer",
+                "--max-forward-activities","2","--max-forward-seconds","900"])
+        self.assertEqual(code,0,output.getvalue())
+        actual=json.loads(output.getvalue())
+        self.assertEqual(actual["status"],"STOP_TAIL_ACTIVITY_BUDGET_REACHED")
+        self.assertEqual(actual["attemptedThisInvocation"],2)
+        self.assertEqual(actual["verifiedNewSupplementalRowsThisInvocation"],2)
+        self.assertEqual(actual["supplemental"]["passed"],2)
+        self.assertEqual(actual["nextOriginalIndex"],8)
+        self.assertEqual(actual["providerRestoration"],
+                         "PROBATION_PASSED_CONTINUED_NEW_WORK")
+        self.assertFalse(actual["historicalRoleReconciled"])
+        self.assertEqual([len(x.models.calls) for x in sent],[1,1,1,1])
+        self.assertEqual(self.old_claim.read_bytes(),old)
+        self.assertEqual((self.course/SECTION/"package.json").read_bytes(),self.raw)
+
+    def test_real_normal_worker_rejects_metadata_denial_before_paid_claim(self):
+        from contextlib import redirect_stdout
+        import io
+        from unittest.mock import patch
+        from scripts import run_v3_yoga6_recovery_worker as worker
+        from app_generator.runtime import native_sdk_environment
+        from app_generator.gemini import v3_native_api_reviewers as sdk_module
+        from tests.test_v3_native_gemini_api_reviewers import config
+        output=io.StringIO()
+        stopped={"dispatchStatus":"STOP_UNRECONCILED_MODEL_REVIEW",
+                 "quarantinedSections":[SECTION],"publicationAuthorized":False}
+        with (patch.object(worker,"ROOT",self.repo),
+              patch.object(worker,"COURSE",self.course),
+              patch.object(worker,"checked_private_root",return_value=self.private),
+              patch.object(worker,"plan_v3_course_review",return_value=stopped),
+              patch.object(worker,"advance_source_free_until_boundary",
+                           return_value={"status":"SOURCE_FREE_PREPARED_IN_OTHER_TEST",
+                                         "paidGeminiCalls":0,
+                                         "publicationAuthorized":False}),
+              patch.object(worker,"require_authorized_native_review_host"),
+              patch.object(native_sdk_environment,"delegate_to_supported_sdk",
+                           return_value=None),
+              patch.object(worker,"_load_native_config",return_value=config()),
+              patch.object(worker,"diagnose_model_metadata",
+                           return_value={"status":"STOP_AUTH_OR_PROJECT_DENIED",
+                                         "selectedCandidateIndex":None}),
+              patch.object(sdk_module,"V3NativeGeminiApiSessions") as factory,
+              patch.dict("os.environ",{"LOCALAPPDATA":str(self.private.parent)}),
+              redirect_stdout(output)):
+            code=worker.main([
+                "--private-root",str(self.private),
+                "--auto-advance","--execute","--allow-generated-text-transfer",
+                "--max-forward-activities","2","--max-forward-seconds","900"])
+        self.assertEqual(code,3)
+        self.assertEqual(json.loads(output.getvalue())["status"],
+                         "STOP_TAIL_PROVIDER_METADATA_NOT_READY")
+        factory.assert_not_called()
+        self.assertEqual(
+            list(self.private.glob("frozen-original-review-attempts/*.json")),[])
     def test_new_section96_paid_review_is_not_implicitly_authorized(self):
         from app_generator.runtime.v3_paid_review_authorization import (
             authorize_paid_v3_action,
