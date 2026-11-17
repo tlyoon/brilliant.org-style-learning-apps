@@ -3080,6 +3080,66 @@
           "marker": "test_synthetic_revised_language_fail_preserved_as_not_accepted"
         }
       ]
+    },
+    {
+      "id": "BSA-20261117-181",
+      "class": "gemini-keyed-batch-results-not-adopted-into-immutable-v3-role-claims",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261115-171",
+        "BSA-20261116-172",
+        "BSA-20261117-180"
+      ],
+      "differenceFromLinkedIncident": "BSA-171 bound Gemini Batch responses to echoed JSONL keys but never converted verified model outputs into the normal BOSLA V3 rubric and immutable reviewer checkpoints. The new adapter uses the exact previously authenticated provider job to import a one-activity, two-role review without POST, generated-content replay or overwrite of the old Section 9.1 ambiguity. The adapter is mock-tested only; no live Batch job has been authorized in this milestone.",
+      "lastValidatedDate": "2026-11-17",
+      "applicableEnvironments": [
+        "Yoga6 Windows source-free tests",
+        "GitHub Actions Linux source-free"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/gemini/v3_batch_claim_adoption.py",
+        "triggerMarker": "def adopt_verified_keyed_batch_one_activity(",
+        "remedyMarker": "checkpoint.save_stage(name, expected_claim)",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/gemini/v3_batch_recovery.py",
+            "marker": "from app_generator.gemini.v3_batch_claim_adoption import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_batch_claim_adoption.py",
+          "kind": "python",
+          "marker": "test_provider_echoed_shuffled_result_is_real_v3_rubric_shape"
+        },
+        {
+          "path": "tests/test_v3_batch_claim_adoption.py",
+          "kind": "python",
+          "marker": "test_normal_batch_recovery_entrypoint_invokes_immutable_adopter"
+        },
+        {
+          "path": "tests/test_v3_batch_claim_adoption.py",
+          "kind": "python",
+          "marker": "test_historical_ambiguous_model_role_prevents_adoption"
+        },
+        {
+          "path": "tests/test_v3_batch_claim_adoption.py",
+          "kind": "python",
+          "marker": "test_interrupted_local_import_can_resume_without_new_provider_post"
+        },
+        {
+          "path": "tests/test_v3_batch_claim_adoption.py",
+          "kind": "python",
+          "marker": "test_active_native_review_lock_refuses_parallel_import"
+        },
+        {
+          "path": "tests/test_v3_batch_claim_adoption.py",
+          "kind": "python",
+          "marker": "test_two_disagreeing_valid_models_produce_real_fail_consensus"
+        }
+      ]
     }
   ]
 }

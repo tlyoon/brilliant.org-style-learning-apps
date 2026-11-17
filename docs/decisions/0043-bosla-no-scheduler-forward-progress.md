@@ -41,3 +41,7 @@ After BSA-178's metadata-only private reviewer handoff, normal v3_recovery_polic
 ## BSA-20261117-180 — automatic evidence-bound versioned course proposal
 
 After BSA-179's isolated review slice, the source-free normal registry-selected recovery now stages a full six-section 108-activity corrected-course PROPOSAL_NOT_ADMITTED with per-activity SHA-bound potentially reusable genuine PASS evidence from only unchanged original content. Original FAIL/UNCERTAIN results are preserved; any genuine revised single-activity two-Gemini verdict later updates a new immutable proposal snapshot. This is not automatic scope admission, public release, new API permission, or scheduling authority. Mandatory adversarial tests and exact-head CI govern. See docs/V3_VERSIONED_ACCEPTANCE_PROPOSAL_20261117.md.
+
+## 17 Nov 2026 — BSA-181 authenticated Batch result adoption
+
+The normal Batch module now accepts read-only exact-keyed one-activity/two-role results from a prior separately authorized provider job and imports them through the existing immutable V3 reviewer checkpoint engine. This is a mock-verified recovery option, not live Batch acceptance or permission to create paid jobs. It will not overwrite original uncertain claims, publish, or recreate a task scheduler. See docs/V3_BATCH_CLAIM_ADOPTION_20261117.md.

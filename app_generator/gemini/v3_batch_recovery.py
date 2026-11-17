@@ -251,3 +251,24 @@ def reconcile_inline_responses(manifest: dict[str, Any],
         (row["activityId"], row["role"]): bound[key]
         for key, row in expected.items()
     }
+
+
+def reconcile_submitted_v3_review_batch(
+    journal: BatchJournal, manifest: dict[str, Any], sdk: Any,
+    package: bytes, private_root: Path, *,
+    provider_reconciliation_authorized: bool = False,
+) -> dict[str, Any]:
+    """Normal read-only Batch recovery -> exact V3 role checkpoints.
+
+    Called only after a separately authorized keyed file-backed submission.
+    It reads the original provider job by durable ID, never POSTs/retries,
+    then validates both independent Gemini roles through the existing V3
+    rubric and persists restart-safe claims for exactly ONE activity.
+    This cannot reconcile historical synchronous ServerError submissions.
+    """
+    from app_generator.gemini.v3_batch_claim_adoption import (
+        adopt_verified_keyed_batch_one_activity,
+    )
+    return adopt_verified_keyed_batch_one_activity(
+        journal, manifest, sdk, package, private_root,
+        provider_reconciliation_authorized=provider_reconciliation_authorized)

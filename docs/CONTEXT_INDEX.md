@@ -1,5 +1,10 @@
 # Context index
 
+## 17 November 2026 — BSA-181 source-free Batch-to-V3 immutable reviewer result adapter
+
+The normal Gemini keyed Batch recovery module now includes reconcile_submitted_v3_review_batch using the exact-keyed one-activity, two-role provider journal to import genuine future model outputs through the strict original four-dimension V3 parser and immutable private reviewer role claims. It refuses ambiguous Section9.1 claims, forged provider errors, raw-output order guessing, malformed model data, conflicting role checkpoints and concurrent native reviewers. A crash after one locally written role recovers via provider GET without new POST. Thirteen synthetic SDK tests PASS; genuine metadata-only Yoga6 diagnostic reports Google model HTTP200 on candidate1. No real Batch job submitted, no new genuine PASS or publication. See docs/V3_BATCH_CLAIM_ADOPTION_20261117.md, incident BSA-181.
+
+
 ## 17 November 2026 — V3 108-activity versioned acceptance proposal (BSA-180)
 
 Owner-directed full V3 acceptance continuation: real Yoga6 frozen 108-activity evidence still 52 assessed, 51 both independently reviewed, 50 genuine consensus PASS, Section9.1 original unreconciled, Section9.2 original language FAIL, 56 original unassessed. New production app_generator/runtime/v3_versioned_acceptance_scope.py automatically follows BSA-179 corrected single-activity slice through the registry-selected v3_recovery_policy. It validates frozen original six-section package SHA/receipt evidence; proves only the exact Section9.2 activity changed; records 50 unchanged original genuine model PASS rows individually as **potentially reusable, not release accepted**; and creates a private atomic SHA-bound course proposal f7fee312... with versionedScopeAdmitted=false and publicationAuthorized=false. Later genuinely authorized revised-content Gemini QA will refresh a NEW immutable proposal snapshot; no old FAIL/PASS is forged. See docs/V3_VERSIONED_ACCEPTANCE_PROPOSAL_20261117.md and BSA-20261117-180. No paid model call, no Windows scheduled task, no release.
