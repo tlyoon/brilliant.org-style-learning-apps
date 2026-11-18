@@ -4417,14 +4417,14 @@
     {
       "id": "BSA-20261118-204",
       "class": "new-source-corrected-section96-index9-not-covered-by-old-108-browser-acceptance",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "learner-browser",
       "relatedIncidentIds": [
         "BSA-20261105-116",
         "BSA-20261118-197",
         "BSA-20261118-201"
       ],
-      "differenceFromLinkedIncident": "Prior 698 real Chrome checks visited all 108 proposed activities but under an older Section9.6 candidate changed only at index5; subsequently source-bound newly corrected index9 scientific/Chinese defects created a different Section9.6 SHA. The old browser receipt cannot validate new index9. The BSA204 normal sourcefree worker now validates actual BSA201 failed reviewer/repair identity, exact new Section9.6 SHA and revised one-activity input, checks only index9 differs from previous 9.6 candidate, exercises new local temporary 108-activity trilingual mobile+desktop Chrome, and persists a distinct exact git/source/renderer/proposal-bound atomic receipt. Cache reuse requires precise immutable bytes, source & revision identity, 698 checks and 648 locale/viewport. Never grants Gemini science PASS, release or modified original review status. Actual Yoga6 sourcefree preflight verified exact candidate old SHA and new SHA with 108 items and zero Gemini calls; synthetic browser fault injection protects tampered receipt/incomplete QA/changed source/renderer and normal worker dispatch. Final real exact-head Chrome test pending.",
+      "differenceFromLinkedIncident": "Prior 698 real Chrome checks visited all 108 proposed activities but under an older Section9.6 candidate changed only at index5; subsequently source-bound newly corrected index9 scientific/Chinese defects created a different Section9.6 SHA. The old browser receipt cannot validate new index9. The BSA204 normal sourcefree worker now validates actual BSA201 failed reviewer/repair identity, exact new Section9.6 SHA and revised one-activity input, checks only index9 differs from previous 9.6 candidate, exercises new local temporary 108-activity trilingual mobile+desktop Chrome, and persists a distinct exact git/source/renderer/proposal-bound atomic receipt. Cache reuse requires precise immutable bytes, source & revision identity, 698 checks and 648 locale/viewport. Never grants Gemini science PASS, release or modified original review status. Actual Yoga6 sourcefree preflight verified exact candidate old SHA and new SHA with 108 items and zero Gemini calls; synthetic browser fault injection protects tampered receipt/incomplete QA/changed source/renderer and normal worker dispatch. Final real exact-head Chrome test pending. REAL Yoga6 direct existing .venv 698 corrected-index9 Chrome checks and 648 locale/viewports PASS for exact BSA201 new source, exit0, immutable private report f9c8ac62..., 0 model calls. BSA205 tracked missing Selenium runtime and fixed normal worker to reuse historical BSA197 verified .venv; final new-head normal restart to be confirmed.",
       "lastValidatedDate": "2026-11-18",
       "applicableEnvironments": [
         "Actual Yoga6 source-bound new Section9.6 index9 science candidate source SHA65e35a..., original prior proposed bb6523..., current renderer",
@@ -4477,8 +4477,57 @@
           "kind": "python",
           "marker": "test_linked_browser_receipt_parent_never_reused"
         }
+      ]
+    },
+    {
+      "id": "BSA-20261118-205",
+      "class": "new-corrected-index9-science-browser-uses-base-python-without-verified-selenium-runtime",
+      "status": "resolved",
+      "rootCauseFamily": "runtime-preflight",
+      "relatedIncidentIds": [
+        "BSA-20261102-097",
+        "BSA-20261118-197",
+        "BSA-20261118-204"
       ],
-      "nextAction": "Commit code and run actual Yoga6 normal --source-free-advance at exact new git HEAD for real 698 Chrome checks of the corrected index9. Mark resolved only after actual real pass. Paid independent revised Section9.6 index9 Gemini QA remains separately not authorized."
+      "differenceFromLinkedIncident": "Historical BSA197 already implemented pinned-Selenium .venv selection in scripts/run_v3_yoga6_acceptance._browser_python; new BSA204 browser source failed to reuse it and directly imported Selenium through miniforge base Python, where selenium find_spec=False, while the verified Yoga6 .venv finds Selenium. Genuine normal Yoga6 --source-free-advance returned old-proposal real 698 checks PASS but distinct new source-bound corrected index9 browser STOP with ModuleNotFoundError. Targeted reusable cure calls old exact _browser_python selector only on genuine new-browser cache miss, delegates via bounded 420s child run to authorized host CLI scripts/check_v3_science_candidate_browser.py, and validates exact returned 698/648 coverage and canonical fsynced private receipt. If selected interpreter already is supported, no delegation, and unchanged identity reuses cached receipt. Missing child receipt, child failure, wrong git/source/renderer, unsafe private or non-authorized host STOP; no paid Gemini request/replay. Actual source-bound corrected Section9.6 65e35a... new index9 Chrome test in the existing Yoga6 .venv succeeded 108 activities, 698 full checks, 648 EN/MS/ZH mobile/desktop, exit0, exact old git head 8d04a74, 0 model calls, distinct immutable receipt. 26 focused new and old runtime/QA tests passed including successful child + persisted receipt and forged child success without receipt; real final-head normal worker revalidation pending after commit.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Actual Yoga6 miniforge base Python missing Selenium and existing .venv Selenium installed, real 698-check corrected index9 Chrome run with old committed head and exact source-bound private receipt",
+        "Portable synthetic verified virtualenv child subprocess returns valid 698 and exact receipt, missing receipt and wrong child status fault injection"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_science_candidate_browser.py",
+        "triggerMarker": "if exercise is None:",
+        "remedyMarker": "interpreter=_browser_python(repo)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_science_candidate_browser import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_verified_existing_selenium_runtime_child_commits_exact_receipt"
+        },
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_successful_child_without_durable_receipt_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_worker_invokes_separate_browser_only_when_science_staged"
+        },
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_tampered_prior_receipt_stops_before_browser"
+        }
+      ]
     }
   ]
 }

@@ -62,7 +62,9 @@
     "sourcefreeScientificFailRepairUsesTwoRealRoleHashes": true,
     "changedScienceActivityNeedsNewPaidAndVersionApproval": true,
     "separateCorrectedIndex9RealChromeCoverageRequired": true,
-    "sourceRevisionRendererBoundBrowserReceiptCannotClaimGeminiPass": true
+    "sourceRevisionRendererBoundBrowserReceiptCannotClaimGeminiPass": true,
+    "scienceBrowserUsesHistoricalVerifiedSeleniumInterpreter": true,
+    "scienceBrowserChildMustPersistExactReceiptBeforeReportingPass": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

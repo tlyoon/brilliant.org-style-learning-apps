@@ -12,6 +12,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 
 from app_generator.runtime.v3_section96_scientific_failure_repair import (
@@ -134,6 +135,35 @@ def advance_science_revision_browser_qa(
         if raw!=_canonical(value):
             raise ValueError("V3_SCIENCE_BROWSER_TAMPERED_RECEIPT_BYTES")
         return value
+    if exercise is None:
+        # BSA-205: reuse the already registered BSA-197 verified Selenium
+        # runtime instead of importing the Chrome driver in miniforge's
+        # base Python (which has no Selenium). Single child, bounded 420s.
+        from scripts.run_v3_yoga6_acceptance import _browser_python
+        interpreter=_browser_python(repo)
+        if interpreter.resolve()!=Path(sys.executable).resolve():
+            runner=repo/"scripts"/"check_v3_science_candidate_browser.py"
+            if runner.is_symlink() or not runner.is_file():
+                raise ValueError("V3_SCIENCE_BROWSER_UNSAFE_CHILD_SCRIPT")
+            child=subprocess.run(
+                [str(interpreter),str(runner),"--private-root",str(private)],
+                cwd=repo,capture_output=True,text=True,check=False,
+                timeout=420,
+                env={**os.environ,"PYTHONDONTWRITEBYTECODE":"1"})
+            try:
+                report=json.loads(child.stdout.strip().splitlines()[-1])
+            except (ValueError,IndexError):
+                raise ValueError("V3_SCIENCE_BROWSER_CHILD_NON_JSON") from None
+            if child.returncode!=0:
+                raise ValueError("V3_SCIENCE_BROWSER_CHILD_FAILED")
+            _assert_result(report,expected)
+            if (not receipt.is_file() or receipt.is_symlink()
+                    or receipt.stat().st_size>4096):
+                raise ValueError("V3_SCIENCE_BROWSER_CHILD_DID_NOT_COMMIT")
+            raw=receipt.read_bytes()
+            if raw!=_canonical(report):
+                raise ValueError("V3_SCIENCE_BROWSER_CHILD_RECEIPT_MISMATCH")
+            return report
     from scripts.check_v3_real_chapter9_browser import (
         _stage_site,_exercise,
     )

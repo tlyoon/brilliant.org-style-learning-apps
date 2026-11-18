@@ -176,6 +176,66 @@ class ScienceCandidateBrowserTests(unittest.TestCase):
                 advance_science_revision_browser_qa(
                     self.repo,self.course,self.private,exercise=self.exercise)
 
+    def test_verified_existing_selenium_runtime_child_commits_exact_receipt(self):
+        from subprocess import CompletedProcess
+        from app_generator.runtime.v3_science_candidate_browser import (
+            _RECEIPT_DIR,
+        )
+        runner=self.repo/"scripts"/"check_v3_science_candidate_browser.py"
+        runner.parent.mkdir(parents=True,exist_ok=True)
+        runner.write_text("# isolated subprocess fixture only",encoding="utf8")
+        interpreter=self.repo/"existing-selenium-python.exe"
+        record={**_EXPECTED,**_BROWSING,
+                "status":_STATUS,"versionedScopeAdmitted":False,
+                "learnerPilotAccepted":False,"genuineGeminiReviewsAdded":0}
+        record["integritySha256"]=sha256(_canonical(record)).hexdigest()
+        calls=[]
+        def child(args,**kwargs):
+            calls.append((args,kwargs))
+            target=self.private/_RECEIPT_DIR/self.identity
+            target.mkdir(parents=True)
+            (target/"receipt.json").write_bytes(_canonical(record))
+            return CompletedProcess(args,0,json.dumps(record)+"\n","")
+        with patch(
+            "app_generator.runtime.v3_science_candidate_browser._identity",
+            return_value=self.plan()
+        ),patch("scripts.run_v3_yoga6_acceptance._browser_python",
+                return_value=interpreter),patch(
+            "app_generator.runtime.v3_science_candidate_browser.subprocess.run",
+            side_effect=child):
+            result=advance_science_revision_browser_qa(
+                self.repo,self.course,self.private)
+        self.assertEqual(result,record)
+        self.assertEqual(len(calls),1)
+        args,kwargs=calls[0]
+        self.assertEqual(args[:2],[str(interpreter),str(runner)])
+        self.assertEqual(kwargs["timeout"],420)
+        self.assertEqual(kwargs["cwd"],self.repo)
+        self.assertFalse(result["publicationAuthorized"])
+
+    def test_successful_child_without_durable_receipt_fails_closed(self):
+        from subprocess import CompletedProcess
+        runner=self.repo/"scripts"/"check_v3_science_candidate_browser.py"
+        runner.parent.mkdir(parents=True,exist_ok=True)
+        runner.write_text("# isolated subprocess fixture only",encoding="utf8")
+        record={**_EXPECTED,**_BROWSING,
+                "status":_STATUS,"versionedScopeAdmitted":False,
+                "learnerPilotAccepted":False,"genuineGeminiReviewsAdded":0}
+        record["integritySha256"]=sha256(_canonical(record)).hexdigest()
+        with patch(
+            "app_generator.runtime.v3_science_candidate_browser._identity",
+            return_value=self.plan()
+        ),patch("scripts.run_v3_yoga6_acceptance._browser_python",
+                return_value=self.repo/"existing-selenium-python.exe"),patch(
+            "app_generator.runtime.v3_science_candidate_browser.subprocess.run",
+            return_value=CompletedProcess([],0,json.dumps(record)+"\n","")):
+            with self.assertRaisesRegex(
+                ValueError,"CHILD_DID_NOT_COMMIT"):
+                advance_science_revision_browser_qa(
+                    self.repo,self.course,self.private)
+        self.assertFalse((self.private/"scientific-failure-browser-acceptance"
+                          /self.identity).exists())
+
     def test_private_root_cannot_be_repo_or_relative_path(self):
         with self.assertRaisesRegex(ValueError,"UNSAFE_PRIVATE"):
             advance_science_revision_browser_qa(
