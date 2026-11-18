@@ -4031,7 +4031,120 @@
         "Yoga6 actual authenticated Gemini API generated-text review, new original Section9.6 one-activity index6",
         "Read-only inspection of actual immutable private Gemini clienterror original supplemental roles and source-bound AI_UNCERTAIN aggregate"
       ],
-      "nextAction": "Preserve exact old original index5 and new index6 immutable uncertain claims. No automatic replay, key rotation, new paid query or release. Determine new provider generation eligibility through a source-free independent project/quota/permissions interface or authorized provider evidence if available. The old ClientError code was not captured so do not guess quota/auth/400. Only a separate legitimately approved new request on a genuinely distinct eligible content version, with production safe-status capture and fresh provider permission, can generate new independently attributable QA. Revised Section9.6 new-version paid workflow is not in existing charter. Continue offline source/Chrome/QA inventory and keep draft PR unmerged."
+      "nextAction": "Preserve exact old original index5 and new index6 immutable uncertain claims. No automatic replay, key rotation, new paid query or release. Determine new provider generation eligibility through a source-free independent project/quota/permissions interface or authorized provider evidence if available. The old ClientError code was not captured so do not guess quota/auth/400. Only a separate legitimately approved new request on a genuinely distinct eligible content version, with production safe-status capture and fresh provider permission, can generate new independently attributable QA. Revised Section9.6 new-version paid workflow is not in existing charter. Continue offline source/Chrome/QA inventory and keep draft PR unmerged.",
+      "regressions": [
+        {
+          "path": "tests/test_v3_provider_client_error.py",
+          "kind": "python",
+          "marker": "test_two_legacy_clienterrors_without_status_remain_quarantined_no_replay"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261118-197",
+      "class": "real-unadmitted-108-activity-browser-coverage-spot-check-gap-and-stale-valid-50-check-receipt-upgrade",
+      "status": "resolved",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261117-187",
+        "BSA-20261117-190",
+        "BSA-20261118-194"
+      ],
+      "differenceFromLinkedIncident": "Previous authentic Yoga6 browser QA covered only 50 section-entry and first Section9.6 answer-route checks, despite proposed source-bound Chapter9 containing 108 real items (54 MCQ and 54 interactions). The normal actual-candidate Chrome runner now visits ALL 108 genuine questions in EN/MS/ZH on two device viewports (648 locale/viewport displays), retains original navigation and locality checks, producing 698 checks and explicit all108ActivitiesVisited=true. A genuine SHA-valid older 50-check receipt previously caused the strict new receipt reader to STOP; the normal source-free repair now recognizes this exact older sufficient-integrity/insufficient-coverage case as STALE_50_SPOT_CHECK_FULL_QA_REQUIRED, reruns Chrome, and replaces the receipt atomically only upon 698-check success. No original Gemini claim, publication or scientific evidence is upgraded. Real Yoga6 full Chrome 698-check run passed before release change, with authentic 108-item proposed roster. Portable tests verify old receipt evidence is not accepted as current, tamper still STOP and restart progression works.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Yoga6 actual Chrome authentic six-section, 108-activity amended Chapter9 candidate with EN/MS/ZH and mobile/desktop viewports",
+        "Real owner historical SHA-valid 50-check receipt under normal source-free worker and portable restart/receipt tests"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/run_v3_yoga6_acceptance.py",
+        "triggerMarker": "def _read_saved(",
+        "remedyMarker": "STALE_50_SPOT_CHECK_FULL_QA_REQUIRED",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from scripts.run_v3_yoga6_acceptance import ("
+          },
+          {
+            "path": "scripts/run_v3_yoga6_acceptance.py",
+            "marker": "def advance_real_candidate_browser_qa("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_real_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_former_50_check_smoke_receipt_cannot_claim_108_completion"
+        },
+        {
+          "path": "tests/test_v3_real_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_atomic_browser_receipt_round_trip_and_integrity_check"
+        },
+        {
+          "path": "tests/test_v3_real_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_browser_qa_is_called_from_normal_worker_result"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261118-198",
+      "class": "models-get-http200-before-paid-clienterrors-misreported-as-generation-eligibility-and-legacy-key-format-unchecked",
+      "status": "resolved",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261115-166",
+        "BSA-20261117-183",
+        "BSA-20261118-193",
+        "BSA-20261118-195",
+        "BSA-20261118-196"
+      ],
+      "differenceFromLinkedIncident": "Real Yoga6 authenticated Google model metadata responded HTTP200 but separately authorized actual new Section9.6 index6 Gemini generation failed with unclassified ClientError on both roles; prior source-free diagnostic reported READY_SOURCE_FREE_ONLY and did not inspect whether the selected model declared generateContent or whether both configured keys had legacy Standard-format hints. Official November 2026 Gemini API key policy deprecates Standard keys by September 2026; a safe local format inspection of both configured credentials returned legacy AIza format, which is a strong migration lead but NOT proof of actual key Type nor the past unlogged ClientError. Normal --diagnose-only now audits at most two existing keys using ONLY google-genai models.get metadata (15s timeout, one attempt, zero content generation), checks declared model action, and records only fixed key-format hints. Both actual key slots yielded metadata HTTP200 and declared generateContent; status MODEL_ACTION_DECLARED_LEGACY_KEY_FORMAT_REVIEW_REQUIRED, generationPermissionVerified=false, projectQuotaVerified=false and paidModelCalls=0. The normal status checkpoint previously rejected new diagnostic keys (reproduced genuine ValueError); now exact allowlist safely accepts only canonical two-slot metadata with no secret/error-body fields, and still refuses any false paid permission/billing claim. The actual unknown ClientError BSA196 remains active; credential changes/payment require proper owner/project permission and cannot be done from this diagnostic.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Yoga6 two actual configured Gemini key slots and real metadata-only SDK models.get results with no paid model call",
+        "Installed official SDK Model and ClientError typed fixtures, two-slot fake metadata, no-generation and private status writer tamper tests"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_gemini_diagnostics.py",
+        "triggerMarker": "def diagnose_declared_generation_support(",
+        "remedyMarker": "_safe_key_format_hint(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_gemini_diagnostics import diagnose_declared_generation_support"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_readonly_generation_capability.py",
+          "kind": "python",
+          "marker": "test_two_actual_sdk_metadata_models_do_not_prove_generation_access"
+        },
+        {
+          "path": "tests/test_v3_readonly_generation_capability.py",
+          "kind": "python",
+          "marker": "test_legacy_format_on_two_keys_is_warning_not_quota_proof"
+        },
+        {
+          "path": "tests/test_v3_readonly_generation_capability.py",
+          "kind": "python",
+          "marker": "test_normal_worker_private_diagnostic_checkpoint_is_strict"
+        },
+        {
+          "path": "tests/test_v3_readonly_generation_capability.py",
+          "kind": "python",
+          "marker": "test_explicit_denial_not_bypassed_by_another_key"
+        },
+        {
+          "path": "tests/test_v3_readonly_generation_capability.py",
+          "kind": "python",
+          "marker": "test_quota_denial_not_bypassed_by_alternate_key"
+        }
+      ]
     }
   ]
 }

@@ -25,7 +25,9 @@ class ActualCourseBrowserReceiptTests(unittest.TestCase):
             "revisionSha":"b"*40,
             "rendererRuntimeSha256":"c"*64,
             "activitiesInCandidate":108,
-            "sections":6,"renderedChecks":50,"locales":3,"viewports":2,
+            "sections":6,"renderedChecks":698,"locales":3,"viewports":2,
+            "all108ActivitiesVisited":True,
+            "allLocaleViewportPromptChecks":648,
             "genuineGeminiReviewsAdded":0,
             "versionedScopeAdmitted":False,"publicationAuthorized":False,
         }
@@ -41,6 +43,23 @@ class ActualCourseBrowserReceiptTests(unittest.TestCase):
         self.target.write_text(json.dumps(changed),encoding="utf8")
         with self.assertRaisesRegex(ValueError,"RECEIPT_INTEGRITY_ERROR"):
             _read_saved(self.target)
+
+    def test_former_50_check_smoke_receipt_cannot_claim_108_completion(self):
+        # Even with a valid re-encoded digest, previous spot-check receipts
+        # do not prove all 108 actual questions were displayed in 3 locales
+        # on both responsive viewports.
+        prior={**self.payload,"renderedChecks":50,
+               "all108ActivitiesVisited":False,
+               "allLocaleViewportPromptChecks":0}
+        old=_write_saved(self.target,prior)
+        stale=_read_saved(self.target)
+        self.assertEqual(stale["status"],"STALE_50_SPOT_CHECK_FULL_QA_REQUIRED")
+        self.assertFalse(stale["publicationAuthorized"])
+        self.assertEqual(json.loads(self.target.read_text(encoding="utf8")),old)
+        # A full QA receipt replaces the old only AFTER a genuine browser
+        # success. Merely passing the old checksum cannot claim 698 checks.
+        new=_write_saved(self.target,self.payload)
+        self.assertEqual(_read_saved(self.target),new)
 
     def test_browser_receipt_cannot_authorize_publication_or_model_review(self):
         for field,value in (("publicationAuthorized",True),

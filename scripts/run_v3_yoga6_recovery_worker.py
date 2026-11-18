@@ -28,6 +28,7 @@ from app_generator.runtime.native_workstation_guard import (
 )
 from app_generator.runtime.v3_course_review import plan_v3_course_review
 from app_generator.runtime.v3_gemini_diagnostics import diagnose_model_metadata
+from app_generator.runtime.v3_gemini_diagnostics import diagnose_declared_generation_support
 from app_generator.runtime.v3_yoga6_recovery import (
     checked_private_root, coordinator_lock, gate_review_plan,
     persist_status, status_from_plan,
@@ -407,12 +408,38 @@ def main(argv: list[str] | None = None) -> int:
             diagnostic = diagnose_model_metadata(
                 config,preferred_offset=preferred)
             if args.diagnose_only:
+                # Historical BSA-196: model metadata may return 200 on
+                # both keys while generation is refused. Check the declared
+                # model action on both slots, but never claim a working
+                # provider, project tier, quota or permission from this.
+                capability = (
+                    diagnose_declared_generation_support(config)
+                    if diagnostic["status"] == "READY_SOURCE_FREE_ONLY"
+                    else {
+                        "status":"SKIPPED_AFTER_METADATA_FAILURE",
+                        "sourceFree":True,
+                        "generationPermissionVerified":False,
+                        "projectQuotaVerified":False,
+                        "paidModelCalls":0,
+                    })
+                final_diagnostic_status = (
+                    "DIAGNOSTIC_"+capability["status"]
+                    if diagnostic["status"]=="READY_SOURCE_FREE_ONLY"
+                    and capability["status"] !=
+                        "MODEL_GENERATION_ACTION_DECLARED_QUOTA_UNVERIFIED"
+                    else "DIAGNOSTIC_"+diagnostic["status"]
+                )
                 receipt = status_from_plan(
-                    before,status="DIAGNOSTIC_"+diagnostic["status"],
+                    before,status=final_diagnostic_status,
                     diagnostic=diagnostic)
+                receipt["generationCapabilityMetadata"] = capability
+                receipt["generationPermissionVerified"] = False
+                receipt["projectQuotaVerified"] = False
                 persist_status(private,receipt)
                 _print(receipt)
-                return 0 if diagnostic["status"]=="READY_SOURCE_FREE_ONLY" else 3
+                return 0 if (diagnostic["status"]=="READY_SOURCE_FREE_ONLY"
+                             and capability["status"] ==
+                                 "MODEL_GENERATION_ACTION_DECLARED_QUOTA_UNVERIFIED") else 3
             if diagnostic["status"]!="READY_SOURCE_FREE_ONLY":
                 receipt = status_from_plan(
                     before,status=diagnostic["status"],diagnostic=diagnostic)

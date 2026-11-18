@@ -47,7 +47,12 @@
     "browserEvidencePrivateShaBoundAndNoRelease": true,
     "safeClientErrorStatusCapturedBeforeAggregate": true,
     "classifiedProviderRejectionSkipsSecondNewReviewer": true,
-    "legacyClientErrorWithoutStatusStaysUnreconciled": true
+    "legacyClientErrorWithoutStatusStaysUnreconciled": true,
+    "all108RealActivitiesBrowserCheckedBothViewportsAndLocales": true,
+    "legacy50BrowserReceiptTriggersAutomaticFullReverification": true,
+    "readonlyModelActionsCheckedOnTwoExistingCredentials": true,
+    "legacyApiKeyFormatWarnsWithoutClaimingHistoricalCause": true,
+    "readonlyProviderStatusCannotProveGenerationQuotaOrBilling": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

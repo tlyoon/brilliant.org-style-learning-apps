@@ -144,6 +144,11 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "safeClientErrorStatusCapturedBeforeAggregate",
     "classifiedProviderRejectionSkipsSecondNewReviewer",
     "legacyClientErrorWithoutStatusStaysUnreconciled",
+    "all108RealActivitiesBrowserCheckedBothViewportsAndLocales",
+    "legacy50BrowserReceiptTriggersAutomaticFullReverification",
+    "readonlyModelActionsCheckedOnTwoExistingCredentials",
+    "legacyApiKeyFormatWarnsWithoutClaimingHistoricalCause",
+    "readonlyProviderStatusCannotProveGenerationQuotaOrBilling",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

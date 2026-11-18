@@ -19,6 +19,132 @@ MAX_CANDIDATES = 2
 METADATA_TIMEOUT_SECONDS = 15
 
 
+def _safe_key_format_hint(candidate: Any) -> str:
+    """Never serialize a key or identify its project; format is NOT proof.
+
+    Official Gemini 2026 migration deprecated Standard API keys. AIza and
+    AQ. are format hints only. Confirm actual Key Type in AI Studio before
+    assuming the cause of a lost, unstamped ClientError.
+    """
+    secret = getattr(candidate, "secret", None)
+    if not isinstance(secret, str):
+        return "UNVERIFIED_KEY_FORMAT"
+    if secret.startswith("AIza"):
+        return "LEGACY_STANDARD_FORMAT_HINT"
+    if secret.startswith("AQ."):
+        return "AUTH_FORMAT_HINT"
+    return "UNVERIFIED_KEY_FORMAT"
+
+
+def diagnose_declared_generation_support(
+    config: Any, *,
+    max_candidates: int = MAX_CANDIDATES,
+    make_sdk_components: Callable[..., tuple] = build_v3_native_text_sdk_components,
+    count_credentials: Callable[[], tuple] = find_gemini_keys,
+) -> dict:
+    """Read-only metadata capability check; NEVER a paid-generation preflight.
+
+    An HTTP 200 to models.get can expose supported_actions but does not
+    prove project access to generateContent, billing tier or RPM/TPM quota.
+    Preserve BSA-193/196's mandatory new-request no-replay and provider
+    STOP, even when every configured key returns metadata successfully.
+    """
+    if type(max_candidates) is not int or not 1 <= max_candidates <= 2:
+        raise ValueError("V3_INVALID_READONLY_CAPABILITY_BUDGET")
+    candidates = count_credentials()
+    if not isinstance(candidates, (tuple, list)) or not candidates:
+        return {
+            "status": "STOP_NO_GEMINI_CREDENTIAL",
+            "sourceFree": True,
+            "generationPermissionVerified": False,
+            "projectQuotaVerified": False,
+            "paidModelCalls": 0, "attempts": [],
+        }
+    model = getattr(config, "gemini_api_model", None)
+    if not isinstance(model, str) or not model.startswith("gemini-"):
+        raise ValueError("V3_INVALID_DIAGNOSTIC_MODEL")
+    short = SimpleNamespace(
+        gemini_api_model=model,
+        gemini_api_timeout_seconds=METADATA_TIMEOUT_SECONDS,
+    )
+    attempts = []
+    checked_hints = []
+    for index in range(min(len(candidates), max_candidates)):
+        key_hint = _safe_key_format_hint(candidates[index])
+        checked_hints.append(key_hint)
+        client = None
+        try:
+            create, _ = make_sdk_components(short, candidate_offset=index)
+            client = create("physics")
+            # Absolutely no models.generate_content/count_tokens/interactions.
+            response = client.models.get(model=model)
+            if response is None:
+                raise ValueError("V3_EMPTY_PROVIDER_MODEL_METADATA")
+            actions = getattr(response, "supported_actions", None)
+            if not isinstance(actions, (tuple, list)):
+                attempts.append({
+                    "candidateIndex": index, "httpStatus": 200,
+                    "keyFormatHint": key_hint,
+                    "classification": "MODEL_ACTIONS_NOT_REPORTED",
+                })
+                return {
+                    "status": "STOP_MODEL_ACTIONS_NOT_REPORTED",
+                    "sourceFree": True, "attempts": attempts,
+                    "generationPermissionVerified": False,
+                    "projectQuotaVerified": False, "paidModelCalls": 0,
+                }
+            supported = "generateContent" in actions
+            attempts.append({
+                "candidateIndex": index, "httpStatus": 200,
+                "keyFormatHint": key_hint,
+                "classification": (
+                    "MODEL_DECLARES_GENERATE_CONTENT"
+                    if supported else "MODEL_DOES_NOT_DECLARE_GENERATE_CONTENT"
+                ),
+            })
+            if not supported:
+                return {
+                    "status": "STOP_MODEL_NO_GENERATION_ACTION",
+                    "sourceFree": True, "attempts": attempts,
+                    "generationPermissionVerified": False,
+                    "projectQuotaVerified": False, "paidModelCalls": 0,
+                }
+        except Exception as exc:
+            from app_generator.errors import ExternalExecutionDenied
+            if isinstance(exc, ExternalExecutionDenied):
+                raise
+            code = error_status(exc)
+            cause = classify_google_failure(code, type(exc).__name__)
+            attempts.append({
+                "candidateIndex": index, "httpStatus": code,
+                "keyFormatHint": key_hint,
+                "classification": cause, "errorClass": type(exc).__name__,
+            })
+            return {
+                "status": "STOP_READONLY_MODEL_METADATA_"+cause,
+                "sourceFree": True, "attempts": attempts,
+                "generationPermissionVerified": False,
+                "projectQuotaVerified": False, "paidModelCalls": 0,
+            }
+        finally:
+            if client is not None:
+                closer = getattr(client, "close", None)
+                if callable(closer):
+                    closer()
+    return {
+        "status": (
+            "MODEL_ACTION_DECLARED_LEGACY_KEY_FORMAT_REVIEW_REQUIRED"
+            if checked_hints and all(
+                hint == "LEGACY_STANDARD_FORMAT_HINT"
+                for hint in checked_hints)
+            else "MODEL_GENERATION_ACTION_DECLARED_QUOTA_UNVERIFIED"
+        ),
+        "sourceFree": True, "attempts": attempts,
+        "generationPermissionVerified": False,
+        "projectQuotaVerified": False, "paidModelCalls": 0,
+    }
+
+
 def classify_google_failure(http_status: int | None, exception_name: str) -> str:
     if http_status in (401, 403):
         return "AUTH_OR_PROJECT_DENIED"

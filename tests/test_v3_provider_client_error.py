@@ -129,6 +129,51 @@ class ClientErrorSourceBoundTests(unittest.TestCase):
         self.assertIn(gate["status"],
                       ("WAIT_PROVIDER_COOLDOWN","STOP_PROVIDER_CIRCUIT_OPEN"))
 
+    def test_two_legacy_clienterrors_without_status_remain_quarantined_no_replay(self):
+        """CI analogue of genuine owner BSA-196, not a provider response."""
+        from app_generator.runtime.v3_course_review import plan_v3_course_review
+        first,clients=self.one(429)
+        self.assertEqual([x.models.calls for x in clients],[1,0])
+        role_files=list(self.private.rglob("v3-review-*.json"))
+        self.assertEqual(len(role_files),2)
+        for file in role_files:
+            claim=json.loads(file.read_text(encoding="utf8"))
+            # BSA-196's live persisted format predates BSA-195: BOTH
+            # independent reviewer transports uncertain, no numeric code
+            # or returned model bytes. Never fabricate a 429 diagnosis.
+            claim["state"]="AMBIGUOUS"
+            claim["reasonCode"]="ClientError"
+            for key in ("providerHttpStatus","providerFailureClass",
+                        "requestSubmitted"):
+                claim.pop(key,None)
+            file.write_text(json.dumps(claim),encoding="utf8")
+        assessment=next(self.private.rglob("v3-assessment-*.json"))
+        document=json.loads(assessment.read_text(encoding="utf8"))
+        self.assertEqual(document["reviews"][0]["status"],"AI_UNCERTAIN")
+        for reviewer in document["reviews"][0]["reviewers"]:
+            reviewer["reasonCode"]="ClientError"
+            for key in ("providerHttpStatus","providerFailureClass"):
+                reviewer.pop(key,None)
+        assessment.write_text(json.dumps(document),encoding="utf8")
+        readiness=course_readiness(
+            self.course,self.repo,private_root=self.private)
+        gate=provider_capacity_gate(
+            self.private,readiness["sectionProgress"])
+        self.assertEqual(gate["status"],"STOP_UNCLASSIFIED_PROVIDER_REVIEW")
+        self.assertFalse(list(self.private.rglob("*.response.txt")))
+        plan=plan_v3_course_review(
+            self.course,self.repo,private_root=self.private,
+            continue_independent=True)
+        self.assertNotEqual(plan.get("providerCapacity","READY"),
+                            "READY_RESTRICTED_HISTORICAL_QUARANTINE")
+        # No historical response or request ID was created or reclassified.
+        for file in role_files:
+            data=json.loads(file.read_text(encoding="utf8"))
+            self.assertEqual(data["state"],"AMBIGUOUS")
+            self.assertEqual(data["reasonCode"],"ClientError")
+            self.assertNotIn("providerHttpStatus",data)
+            self.assertNotIn("responseSha256",data)
+
     def test_live_legacy_clienterror_without_recorded_status_is_not_reclassified(self):
         # Sanitization of a *future* SDK exception cannot recover the old
         # real provider response nor guess the status of past ClientError.

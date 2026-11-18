@@ -93,9 +93,27 @@ def _read_saved(path: Path) -> dict | None:
     if (doc.get("integritySha256")!=_digest(check)
             or doc.get("publicationAuthorized") is not False
             or doc.get("genuineGeminiReviewsAdded") != 0
-            or doc.get("versionedScopeAdmitted") is not False):
+            or doc.get("versionedScopeAdmitted") is not False
+            or doc.get("activitiesInCandidate") != 108
+            or doc.get("sections") != 6
+            or doc.get("viewports") != 2
+            or doc.get("locales") != 3):
         raise ValueError("V3_BROWSER_QA_RECEIPT_INTEGRITY_ERROR")
-    return doc
+    if (doc.get("all108ActivitiesVisited") is True
+            and doc.get("allLocaleViewportPromptChecks") == 648
+            and doc.get("renderedChecks") == 698):
+        return doc
+    # BSA-197: a genuine SHA-valid 50-check receipt from the previous
+    # real Yoga6 browser release must be automatically refreshed, not
+    # promoted to 108-activity PASS or mistaken for corrupted evidence.
+    # The actual prior authenticated receipt is kept intact until a new
+    # full run succeeds; malicious or malformed receipts still fail STOP.
+    if (doc.get("status") == "ACTUAL_UNADMITTED_CHAPTER9_BROWSER_QA_PASS"
+            and doc.get("renderedChecks") == 50
+            and doc.get("all108ActivitiesVisited") in (None, False)
+            and doc.get("allLocaleViewportPromptChecks") in (None, 0)):
+        return {**doc,"status":"STALE_50_SPOT_CHECK_FULL_QA_REQUIRED"}
+    raise ValueError("V3_BROWSER_QA_RECEIPT_INTEGRITY_ERROR")
 
 
 def _write_saved(path: Path, report: dict) -> dict:
@@ -159,7 +177,7 @@ def advance_real_candidate_browser_qa(
              str(root/"scripts"/"check_v3_real_chapter9_browser.py"),
              "--private-root",str(private)]
     child=subprocess.run(command,cwd=root,capture_output=True,text=True,
-                         check=False,timeout=210,
+                         check=False,timeout=420,
                          env={**os.environ,"PYTHONDONTWRITEBYTECODE":"1"})
     try:
         result=json.loads(child.stdout.strip().splitlines()[-1])
@@ -170,7 +188,9 @@ def advance_real_candidate_browser_qa(
             or result.get("proposalSha256")!=proposed
             or result.get("activitiesInCandidate")!=108
             or result.get("sections")!=6
-            or result.get("renderedChecks")!=50
+            or result.get("renderedChecks")!=698
+            or result.get("all108ActivitiesVisited") is not True
+            or result.get("allLocaleViewportPromptChecks")!=648
             or result.get("genuineGeminiReviewsAdded")!=0
             or result.get("publicationAuthorized") is not False):
         return {"status":"STOP_REAL_CANDIDATE_BROWSER_QA_FAILED",

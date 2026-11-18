@@ -180,6 +180,43 @@ def _exercise(site: Path, packages: list[tuple[int,bytes,list]]) -> dict:
                         "8 cm" not in items[5]["prompt"]["en"]):
                     raise ValueError("V3_BROWSER_REVISED_PHYSICS_INPUT_MISSING")
                 observations+=1
+                # BSA-197: the previous 50 checks visited only each
+                # section's first prompt and the first five original 9.6
+                # MCQs. Exercise the ACTUAL full authoring set instead.
+                # Skip is a user UI navigation action, not a reviewer PASS.
+                # Each distinct activity in each locale is displayed on
+                # both mobile and desktop. Never infer scientific validity.
+                complete_locale_checks=0
+                for section_number,raw,section_items in packages:
+                    Select(driver.find_element(By.ID,"course-select")
+                           ).select_by_value(str(section_number))
+                    for activity_index,authored in enumerate(section_items):
+                        Select(driver.find_element(By.ID,"locale")
+                               ).select_by_value("en")
+                        WebDriverWait(driver,10).until(lambda d:
+                            _normalized(authored["prompt"]["en"]) in
+                            _normalized(d.find_element(
+                                By.CSS_SELECTOR,"#app h1.question").text))
+                        for language in ("en","ms","zh"):
+                            Select(driver.find_element(By.ID,"locale")
+                                   ).select_by_value(language)
+                            WebDriverWait(driver,10).until(lambda d:
+                                _normalized(authored["prompt"][language]) in
+                                _normalized(d.find_element(
+                                    By.CSS_SELECTOR,"#app h1.question").text))
+                            complete_locale_checks += 1
+                            observations += 1
+                        if driver.execute_script(
+                                "return document.documentElement.scrollWidth > innerWidth + 1"):
+                            raise ValueError(
+                                "V3_BROWSER_ACTUAL_ACTIVITY_HORIZONTAL_OVERFLOW")
+                        WebDriverWait(driver,10).until(
+                            lambda d:d.find_element(By.ID,"skip").is_enabled())
+                        driver.find_element(By.ID,"skip").click()
+                    WebDriverWait(driver,10).until(
+                        lambda d:d.find_element(By.ID,"restart").is_enabled())
+                if complete_locale_checks != 108*3:
+                    raise ValueError("V3_BROWSER_INCOMPLETE_REAL_ACTIVITY_LOCALES")
                 browser=driver.execute_script("""
                   return {width:innerWidth,
                     scroll:document.documentElement.scrollWidth,
@@ -192,6 +229,8 @@ def _exercise(site: Path, packages: list[tuple[int,bytes,list]]) -> dict:
                         or browser["external"] is not False):
                     raise ValueError("V3_BROWSER_VIEWPORT_OR_PRIVACY_FAILURE")
     return {"renderedChecks":observations,"viewports":2,"locales":3,
+            "all108ActivitiesVisited":True,
+            "allLocaleViewportPromptChecks":108*3*2,
             "sourceFree":True,"publicationAuthorized":False,
             "originalModelVerdictsChanged":False}
 

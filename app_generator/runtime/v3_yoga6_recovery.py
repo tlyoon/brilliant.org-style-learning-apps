@@ -87,12 +87,58 @@ def persist_status(private_root: Path, report: dict) -> Path:
         "modelConsensusPassActivities", "modelUncertainActivities",
         "quarantinedSections", "scriptQuarantinedSections",
         "providerCapacity", "diagnostic",
+        "generationCapabilityMetadata", "generationPermissionVerified",
+        "projectQuotaVerified",
         "nativeExitCode", "publicationAuthorized",
     }
     if not isinstance(report, dict) or not set(report).issubset(allowed):
         raise ValueError("V3_WORKER_UNSAFE_STATUS_FIELDS")
     if report.get("publicationAuthorized") is not False:
         raise ValueError("V3_WORKER_CANNOT_AUTHORIZE_PUBLICATION")
+    if (report.get("generationPermissionVerified") is True
+            or report.get("projectQuotaVerified") is True):
+        raise ValueError("V3_WORKER_READONLY_DIAG_CANNOT_PROVE_PERMISSION")
+    capability = report.get("generationCapabilityMetadata")
+    if capability is not None:
+        if (not isinstance(capability, dict)
+                or not set(capability).issubset({
+                    "status","sourceFree","attempts",
+                    "generationPermissionVerified","projectQuotaVerified",
+                    "paidModelCalls",
+                })
+                or capability.get("sourceFree") is not True
+                or capability.get("generationPermissionVerified") is not False
+                or capability.get("projectQuotaVerified") is not False
+                or capability.get("paidModelCalls") != 0
+                or capability.get("status") not in {
+                    "MODEL_GENERATION_ACTION_DECLARED_QUOTA_UNVERIFIED",
+                    "MODEL_ACTION_DECLARED_LEGACY_KEY_FORMAT_REVIEW_REQUIRED",
+                    "STOP_MODEL_NO_GENERATION_ACTION",
+                    "STOP_MODEL_ACTIONS_NOT_REPORTED",
+                    "STOP_NO_GEMINI_CREDENTIAL",
+                    "SKIPPED_AFTER_METADATA_FAILURE",
+                } and not str(capability.get("status","")).startswith(
+                    "STOP_READONLY_MODEL_METADATA_")
+                or not isinstance(capability.get("attempts", []),list)
+                or len(capability.get("attempts", []))>2):
+            raise ValueError("V3_WORKER_UNSAFE_GENERATION_DIAGNOSTIC")
+        for item in capability.get("attempts", []):
+            if (not isinstance(item,dict)
+                    or not set(item).issubset({
+                        "candidateIndex","httpStatus",
+                        "classification","errorClass","keyFormatHint",
+                    })
+                    or not isinstance(item.get("classification"),str)
+                    or item.get("keyFormatHint") not in {
+                        "UNVERIFIED_KEY_FORMAT",
+                        "LEGACY_STANDARD_FORMAT_HINT","AUTH_FORMAT_HINT",
+                    }
+                    or type(item.get("candidateIndex")) is not int
+                    or not 0<=item["candidateIndex"]<=1
+                    or not isinstance(item.get("httpStatus"),(int,type(None)))
+                    or len(str(item.get("classification","")))>64
+                    or len(str(item.get("errorClass","")))>64):
+                raise ValueError("V3_WORKER_UNSAFE_GENERATION_DIAGNOSTIC")
     scripts = report.get("scriptQuarantinedSections")
     if scripts is not None and (
             not isinstance(scripts, dict) or len(scripts) > 6 or
