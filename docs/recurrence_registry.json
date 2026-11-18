@@ -4528,6 +4528,90 @@
           "marker": "test_tampered_prior_receipt_stops_before_browser"
         }
       ]
+    },
+    {
+      "id": "BSA-20261118-206",
+      "class": "new-exact-owner-authorized-two-revised-section96-gemini-review-after-original-tail-completion",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261117-190",
+        "BSA-20261118-199",
+        "BSA-20261118-200",
+        "BSA-20261118-201",
+        "BSA-20261118-202",
+        "BSA-20261118-205"
+      ],
+      "differenceFromLinkedIncident": "The frozen 2017? old V3 owner paid charter 2026-11-17 strictly permits unchanged original reviews and only one changed Section9.2 activity; code must never silently extend it to the newly corrected Section9.6 index5 and index9. The owner on 2026-11-18 expressly requested proceeding with the previously recommended next sequence limited to exactly two new isolated revised Section9.6 source SHA inputs and four independent Gemini calls. New separate immutable code-pinned authorization record and normal worker --advance-revised-96 enforce two exact Section9.6 source inputs 738292dc... and45d6ba0..., no old role or original source replay, 2 independent one-shot Gemini contexts per activity and 900s. It reuses BSA190/201 existing source-bound correctors and old role witnesses, actual 10 genuine original supplemental PASS and two prior historical old unknown/failed states, and old dual AQ key migration real GET200 metadata + original independently completed review evidence; untouched prior paid charter remains unchanged. Real Yoga6 no-paid original readiness and source SHA preflight PASS, 7 synthetic fault injection tests pass on exact scope, tampered consent, excessive budget, old request directory and forged model capacity, unknown role stops. Actual new paid Gemini content QA still pending at registration, requiring exact-commit test/CI then normal invocation and immutable two role claim verification. Never admits 108 scope or releases. Additional acceptance guard validates genuine two COMPLETE source-bound role claim files and persisted V3 assessment before believing a callback's claimed PASS or scientific FAIL. Reused actual previously completed Yoga6 independent index12 twin Gemini role evidence source-free verified successfully, after synthetic forged-pass-without-claims test. BSA206 restart-hardening: a previously completed independently two-role source-bound reviewed index5 may be safely RECONCILED from real immutable aggregate and both role claims so an unsubmitted index9 advances without replaying index5, even across process/session restarts. A previously uncertain first revised request hard-stops without creating index9 role, and a partial/damaged saved record cannot be promoted to success. Ten focused permission/fault/restart tests PASS.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Actual authorized Yoga6 original frozen Section9.6 and new exact source SHA 738292dc... and45d6ba0..., two AQ Auth format credentials and completed original reviewer role evidence",
+        "Portable synthetic private source reviews with forged/changed consent, source identity, role no replay, explicit permission and unverified migration"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_section96_authorized_revised_qa.py",
+        "triggerMarker": "def advance_revised96_reviews(",
+        "remedyMarker": "def unsent_revised_input(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "if args.advance_revised_96:"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_section96_authorized_revised_qa.py",
+          "kind": "python",
+          "marker": "test_exact_authorization_and_unchanged_old_paid_charter"
+        },
+        {
+          "path": "tests/test_v3_section96_authorized_revised_qa.py",
+          "kind": "python",
+          "marker": "test_tampered_new_paid_charter_and_excess_paid_calls_fail_closed"
+        },
+        {
+          "path": "tests/test_v3_section96_authorized_revised_qa.py",
+          "kind": "python",
+          "marker": "test_two_exact_new_version_inputs_verified_no_old_role_replay"
+        },
+        {
+          "path": "tests/test_v3_section96_authorized_revised_qa.py",
+          "kind": "python",
+          "marker": "test_source_id_or_prior_submitted_identity_is_not_replayed"
+        },
+        {
+          "path": "tests/test_v3_section96_authorized_revised_qa.py",
+          "kind": "python",
+          "marker": "test_real_two_role_callback_never_exceeds_four_calls"
+        },
+        {
+          "path": "tests/test_v3_section96_authorized_revised_qa.py",
+          "kind": "python",
+          "marker": "test_uncertain_first_role_halts_other_new_activity"
+        },
+        {
+          "path": "tests/test_v3_section96_authorized_revised_qa.py",
+          "kind": "python",
+          "marker": "test_auth_migration_bypass_is_not_metadata_only"
+        },
+        {
+          "path": "tests/test_v3_section96_authorized_revised_qa.py",
+          "kind": "python",
+          "marker": "test_callback_cannot_forge_two_gemini_pass_without_saved_claims"
+        },
+        {
+          "path": "tests/test_v3_section96_authorized_revised_qa.py",
+          "kind": "python",
+          "marker": "test_restart_reuses_completed_first_and_reviews_only_new_second"
+        },
+        {
+          "path": "tests/test_v3_section96_authorized_revised_qa.py",
+          "kind": "python",
+          "marker": "test_uncertain_prior_version_does_not_trigger_other_paid_request"
+        }
+      ],
+      "nextAction": "Run exact-head CI and bounded local tests, then genuine authorized Yoga6 normal --advance-revised-96 --execute --allow-generated-text-transfer --max-forward-activities 2 --max-forward-seconds 900. Confirm recorded reviewer role claims and full two-model consensus/real content FAIL, no replay or source modification. On genuine PASS, prepare new Section9.6 [5,9] 108-activity UNADMITTED proposal and real Chrome acceptance, retaining all historical science and provider evidence; never publish automatically."
     }
   ]
 }

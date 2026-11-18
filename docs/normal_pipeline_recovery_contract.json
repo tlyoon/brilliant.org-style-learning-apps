@@ -64,7 +64,10 @@
     "separateCorrectedIndex9RealChromeCoverageRequired": true,
     "sourceRevisionRendererBoundBrowserReceiptCannotClaimGeminiPass": true,
     "scienceBrowserUsesHistoricalVerifiedSeleniumInterpreter": true,
-    "scienceBrowserChildMustPersistExactReceiptBeforeReportingPass": true
+    "scienceBrowserChildMustPersistExactReceiptBeforeReportingPass": true,
+    "revisedSection96TwoExactOwnerApprovedSHAOnly": true,
+    "oldPaidCharterUnchangedAndRevisedRequestCannotReplay": true,
+    "revised96TwoIndependentGeminiPerActivityFourTotal": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

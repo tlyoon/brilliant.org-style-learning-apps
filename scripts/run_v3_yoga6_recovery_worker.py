@@ -303,6 +303,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--auto-advance", action="store_true",
                         help="Within one authorized invocation, advance across "
                              "new eligible activities without a scheduler.")
+    parser.add_argument("--advance-revised-96", action="store_true",
+                        help="Exact two changed Section9.6 source-SHA Gemini QA "
+                             "under separate owner charter; never old-role replay.")
     parser.add_argument("--source-free-advance", action="store_true",
                         help="Advance registered local repair, immutable QA "
                              "handoffs and untouched-original staging with "
@@ -310,6 +313,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-forward-activities", type=int, default=4)
     parser.add_argument("--max-forward-seconds", type=int, default=900)
     args = parser.parse_args(argv)
+    if args.advance_revised_96 and (
+            args.source_free_advance or args.diagnose_only or args.auto_advance):
+        _print({"status":"STOP_REVISED96_MODE_CONFLICT",
+                "publicationAuthorized":False})
+        return 2
     if args.source_free_advance and (
             args.execute or args.diagnose_only or args.auto_advance):
         _print({"status":"STOP_SOURCE_FREE_MODE_MUST_NOT_REQUEST_PROVIDER",
@@ -336,6 +344,81 @@ def main(argv: list[str] | None = None) -> int:
     )
     try:
         private = checked_private_root(chosen,localappdata=Path(local))
+        if args.advance_revised_96:
+            require_authorized_native_review_host(AUTHORITY)
+            from app_generator.runtime.v3_section96_authorized_revised_qa import (
+                authorize_revised96, stage_and_verify_two_new_inputs,
+                advance_revised96_reviews,
+            )
+            # Reuse registered source-bound BSA201 and BSA204/205 REAL Chrome
+            # checks. No new paid request can bypass scientific/visual
+            # preflight, existing old no-replay witnesses, or owner charter.
+            inputs=stage_and_verify_two_new_inputs(COURSE,ROOT,private)
+            if not args.execute:
+                _print({"status":"READY_TWO_NEW_SOURCE_BOUND_SECTION96_REVISIONS",
+                        "reviewInputs":[{"index":x["index"],"sha":x["sha"]}
+                                        for x in inputs],
+                        "paidGeminiCalls":0,
+                        "publicationAuthorized":False})
+                return 0
+            authorize_revised96(
+                execute=args.execute,transfer=args.allow_generated_text_transfer,
+                activities=args.max_forward_activities,
+                seconds=args.max_forward_seconds)
+            offline=_complete_source_free_with_browser(
+                private,advance_source_free_until_boundary(COURSE,ROOT,private))
+            old_browser=offline.get("realCandidateBrowserAcceptance",{})
+            new_browser=offline.get("scienceRevisionBrowserAcceptance",{})
+            if (old_browser.get("status")!=
+                    "ACTUAL_UNADMITTED_CHAPTER9_BROWSER_QA_PASS"
+                    or new_browser.get("status")!=
+                    "ACTUAL_INDEX9_SCIENCE_REVISION_BROWSER_QA_PASS_NOT_SCIENTIFIC_QA"
+                    or old_browser.get("renderedChecks")!=698
+                    or new_browser.get("renderedChecks")!=698):
+                _print({"status":"STOP_REVISED96_REAL_BROWSER_NOT_VERIFIED",
+                        "sourceFreeRecovery":offline,
+                        "publicationAuthorized":False})
+                return 3
+            from app_generator.runtime.native_sdk_environment import (
+                delegate_to_supported_sdk,
+            )
+            delegated=delegate_to_supported_sdk(
+                ROOT,list(argv) if argv is not None else sys.argv[1:],
+                entrypoint=Path(__file__))
+            if delegated is not None:
+                return delegated
+            from app_generator.runtime.v3_gemini_diagnostics import (
+                diagnose_declared_generation_support,
+            )
+            from app_generator.gemini.v3_native_api_reviewers import (
+                V3NativeGeminiApiSessions,
+            )
+            from app_generator.runtime.v3_authorized_review import (
+                advance_v3_generated_text,
+            )
+            config=_load_native_config()
+            capability=diagnose_declared_generation_support(config)
+            def review_one(raw,activity_id,private_root):
+                with V3NativeGeminiApiSessions(
+                    config,operation_authorized=True,
+                    generated_content_transfer_allowed=True,
+                    candidate_offset=0,
+                ) as reviewer:
+                    pair=reviewer.open_pair(activity_id)
+                    return advance_v3_generated_text(
+                        raw,pair,private_root=private_root,
+                        generated_content_transfer_allowed=True,
+                        max_activities=1)
+            result=advance_revised96_reviews(
+                COURSE,ROOT,private,
+                execute=True,transfer=args.allow_generated_text_transfer,
+                max_activities=args.max_forward_activities,
+                max_seconds=args.max_forward_seconds,
+                capability=capability,review_one=review_one)
+            _print({**result,"sourceFreeBrowserOriginal":
+                    old_browser.get("status"),"sourceFreeBrowserScienceRevision":
+                    new_browser.get("status")})
+            return 0 if result["status"]=="REVISED96_AUTHORIZED_BATCH_COMPLETED" else 3
         if args.source_free_advance:
             require_authorized_native_review_host(AUTHORITY)
             _print(_complete_source_free_with_browser(

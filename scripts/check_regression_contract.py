@@ -161,6 +161,9 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "sourceRevisionRendererBoundBrowserReceiptCannotClaimGeminiPass",
     "scienceBrowserUsesHistoricalVerifiedSeleniumInterpreter",
     "scienceBrowserChildMustPersistExactReceiptBeforeReportingPass",
+    "revisedSection96TwoExactOwnerApprovedSHAOnly",
+    "oldPaidCharterUnchangedAndRevisedRequestCannotReplay",
+    "revised96TwoIndependentGeminiPerActivityFourTotal",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
