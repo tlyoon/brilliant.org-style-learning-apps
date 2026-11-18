@@ -112,6 +112,59 @@ class MigratedAuthProbationTests(unittest.TestCase):
                         ValueError,"MIGRATION_WITNESS_INVALID"):
                     self.gate(candidate,self.orig)
 
+    def test_post_migration_progress_requires_two_actual_complete_sha_roles(self):
+        # BSA-200 real-shaped restart fixture. Explicitly synthetic role
+        # hashes are injected only into this isolated verification helper;
+        # the production planner uses pinned hashes from live Yoga6.
+        from app_generator.runtime.v3_provider_restoration import (
+            _verified_restored_index7, _PARENT, _RESTORED_SLICE7,
+        )
+        folder=(self.private/("v3-generated-"+_RESTORED_SLICE7)/"batches")
+        folder.mkdir(parents=True,exist_ok=True)
+        files=[]
+        hashes=[]
+        for role_index in (0,1):
+            file=folder/f"v3-review-{_RESTORED_SLICE7[:12]}-000-{role_index}.json"
+            record={
+                "packageSha256":_RESTORED_SLICE7,
+                "roleIndex":role_index,
+                "state":"COMPLETE","providerId":"gemini_api",
+                "activityId":"mcq-chal-hollow-geometry-cm",
+                "responseSha256":"c"*64,
+            }
+            raw=json.dumps(record,sort_keys=True).encode("utf8")
+            file.write_bytes(raw)
+            files.append(file)
+            hashes.append(sha256(raw).hexdigest())
+        tail={
+            "sourcePackageSha256":_PARENT,
+            "next":{"index":8},
+            "supplemental":{"passed":1,"uncertain":1,"failed":0,"reserved":0},
+            "rows":[{"index":7,"slicePackageSha256":_RESTORED_SLICE7,
+                     "state":"GENUINE_SUPPLEMENTAL_CONSENSUS_PASS"}],
+        }
+        expected=tuple(hashes)
+        self.assertTrue(_verified_restored_index7(
+            self.private,tail,expected_role_shas=expected))
+        # Old singleton or altered source-bound role never proves readiness.
+        old=files[1].read_bytes()
+        files[1].write_bytes(old+b" ")
+        self.assertFalse(_verified_restored_index7(
+            self.private,tail,expected_role_shas=expected))
+        files[1].write_bytes(old)
+        bad={**tail,"rows":[{**tail["rows"][0],
+                            "state":"SUPPLEMENTAL_UNCERTAIN_NO_REPLAY"}]}
+        self.assertFalse(_verified_restored_index7(
+            self.private,bad,expected_role_shas=expected))
+        for changes in (
+            {"next":{"index":7}},
+            {"supplemental":{**tail["supplemental"],"uncertain":2}},
+            {"supplemental":{**tail["supplemental"],"failed":1}},
+            {"sourcePackageSha256":"f"*64},
+        ):
+            self.assertFalse(_verified_restored_index7(
+                self.private,{**tail,**changes},expected_role_shas=expected))
+
     def test_migrated_auth_witness_without_new_role_auth_is_not_broad_gate(self):
         # Scope protection is enforced at the real, exact-source
         # plan_authorized_independent_recovery_trial() entrypoint, which

@@ -34,6 +34,62 @@ _OLD_CLIENTERROR_ROLES = (
     (_MIGRATED_SLICE, "f168835612fe40e97241cdadd00ea61b088fc025dc45ce9c84a79abae39e4b92", 0),
     (_MIGRATED_SLICE, "4fedd6ad8191e6eae4c0ca3e9a211707c02aa738ea3ccbf8a45c10a40815a196", 1),
 )
+# BSA-200: ACTUAL new two-Gemini index7 consensus PASS, with both
+# immutable role requests COMPLETE and raw response hashes. These
+# are transport recovery evidence for future NEW work only.
+_RESTORED_SLICE7 = "816e451c5f3027bd76969ed4c16551d2ab2951aee765aba69a0e94803484d867"
+_RESTORED_ROLE_SHAS = (
+    "3eda096510368adc863345402f76f36528dff34dc23920afda2cf0aa44d98483",
+    "ce1166a6f242b194f34a7903aed728a706f15f2b464011897e07311d2e75f4ac",
+)
+
+
+def _verified_restored_index7(
+    private: Path, tail: dict, *,
+    expected_role_shas: tuple[str, str] = _RESTORED_ROLE_SHAS,
+) -> bool:
+    """Post-migration *real* two-role original index7 PASS is durable.
+
+    No synthetic outcome, no client metadata or single role may authorize
+    follow-on work. Tail status is independently computed using the actual
+    source-bound assessor, preserving all old uncertainty and release STOP.
+    """
+    if (tail.get("sourcePackageSha256") != _PARENT
+            or not isinstance(tail.get("next"),dict)
+            or type(tail["next"].get("index")) is not int
+            or not 8 <= tail["next"]["index"] <= 17
+            or not isinstance(tail.get("supplemental"),dict)
+            or tail["supplemental"].get("passed",0)<1
+            or tail["supplemental"].get("uncertain")!=1
+            or tail["supplemental"].get("failed")!=0
+            or tail["supplemental"].get("reserved")!=0
+            or not any(
+                row.get("index")==7
+                and row.get("slicePackageSha256")==_RESTORED_SLICE7
+                and row.get("state")=="GENUINE_SUPPLEMENTAL_CONSENSUS_PASS"
+                for row in tail.get("rows",[]))):
+        return False
+    folder=private/("v3-generated-"+_RESTORED_SLICE7)/"batches"
+    if folder.is_symlink() or not folder.is_dir():
+        return False
+    for role_index, expected in enumerate(expected_role_shas):
+        file=folder/f"v3-review-{_RESTORED_SLICE7[:12]}-000-{role_index}.json"
+        if (file.is_symlink() or not file.is_file()
+                or file.stat().st_size>100_000):
+            return False
+        raw=file.read_bytes()
+        if sha256(raw).hexdigest()!=expected:
+            return False
+        role=json.loads(raw.decode("utf8"))
+        if (role.get("state")!="COMPLETE"
+                or role.get("providerId")!="gemini_api"
+                or role.get("roleIndex")!=role_index
+                or role.get("activityId")!="mcq-chal-hollow-geometry-cm"
+                or role.get("packageSha256")!=_RESTORED_SLICE7
+                or not isinstance(role.get("responseSha256"),str)
+                or len(role["responseSha256"])!=64):
+            return False
+    return True
 
 
 def known_bsa196_source_claims_present(private: Path) -> bool:
@@ -53,8 +109,10 @@ def known_bsa196_source_claims_present(private: Path) -> bool:
 def _verified_migrated_auth_keys(
     private: Path, capability: dict | None, next_index: int,
 ) -> tuple[tuple[str, str, int], ...]:
-    """Exact-BSA-196 one-time migration witness; not general provider access."""
-    if not isinstance(capability, dict) or next_index != 7:
+    """Exact-BSA-196 migration witness, never a general provider bypass."""
+    if (not isinstance(capability, dict)
+            or type(next_index) is not int
+            or not 7 <= next_index <= 17):
         return ()
     if (capability.get("status") !=
             "MODEL_GENERATION_ACTION_DECLARED_QUOTA_UNVERIFIED"
@@ -188,11 +246,15 @@ def plan_authorized_independent_recovery_trial(
         return blocked
     migrated = _verified_migrated_auth_keys(
         private, auth_migration_capability, tail["next"]["index"])
-    if migrated and (tail["supplemental"] != {
-            "passed":0,"uncertain":1,"failed":0,"reserved":0,"eligible":11}
-            or tail["next"]["slicePackageSha256"] !=
-                "816e451c5f3027bd76969ed4c16551d2ab2951aee765aba69a0e94803484d867"):
-        migrated=()
+    if migrated:
+        if tail["next"]["index"] == 7:
+            if (tail["supplemental"] != {
+                    "passed":0,"uncertain":1,"failed":0,"reserved":0,"eligible":11}
+                    or tail["next"]["slicePackageSha256"] !=
+                        _RESTORED_SLICE7):
+                migrated=()
+        elif not _verified_restored_index7(private,tail):
+            migrated=()
     if existing_frozen_original_tail_preflight(
             course, repo, private,
             migrated_clienterrors=migrated) != "READY":

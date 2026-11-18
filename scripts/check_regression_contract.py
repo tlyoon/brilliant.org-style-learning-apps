@@ -152,6 +152,8 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "migratedAuthRequiresExactOldClaimHashesForNewActivityProbation",
     "migrationProbationPreservesUncertainOldCallsAndStopsOnThirdUnknown",
     "liveMigratedCredentialTrialUsesNormalTwoGeminiNoReplayCheckpoint",
+    "postMigrationVerifiedTwoRolePassResumesNextUntouchedOnly",
+    "postProbationNoReplayWitnessPersistsAcrossSessions",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

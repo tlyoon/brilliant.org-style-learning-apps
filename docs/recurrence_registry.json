@@ -4149,7 +4149,7 @@
     {
       "id": "BSA-20261118-199",
       "class": "confirmed-standard-to-auth-key-migration-new-activity-probation-under-old-unknown-clienterrors",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "provider-no-replay",
       "relatedIncidentIds": [
         "BSA-20261118-193",
@@ -4157,7 +4157,7 @@
         "BSA-20261118-196",
         "BSA-20261118-198"
       ],
-      "differenceFromLinkedIncident": "Actual Yoga6 source-free inspection shows two previously configured Standard keys migrated to two currently-selected AQ Auth credentials, with new dotenv mtime after immutable BSA-196 two ClientError roles. Both AQ slots yielded real models.get HTTP200 and declared generateContent. The ordinary provider circuit still correctly STOPs on old unknown-status ClientErrors. One separately authorized previously UNSUBMITTED frozen original Section9.6 index7 has now been source-verified for exactly one single-activity probation; old index5 ValueError and old index6 two ClientError claims immutable/no replay. New narrow runtime migration quarantine accepts only immutable exact two known statusless ClientError SHA witnesses and original known ValueError SHA, new config epoch, two Auth formats and fresh two-key metadata GET200. Any other unknown or explicit provider denial stops, no paid retry, no general relaxation. Tests exercise mutation, third unknown, denial, default STOP, only matched claims allowed; real source-free owner preflight yields one eligible index7 without any paid calls; real reviewer result must be separately confirmed.",
+      "differenceFromLinkedIncident": "Actual Yoga6 source-free inspection shows two previously configured Standard keys migrated to two currently-selected AQ Auth credentials, with new dotenv mtime after immutable BSA-196 two ClientError roles. Both AQ slots yielded real models.get HTTP200 and declared generateContent. The ordinary provider circuit still correctly STOPs on old unknown-status ClientErrors. One separately authorized previously UNSUBMITTED frozen original Section9.6 index7 has now been source-verified for exactly one single-activity probation; old index5 ValueError and old index6 two ClientError claims immutable/no replay. New narrow runtime migration quarantine accepts only immutable exact two known statusless ClientError SHA witnesses and original known ValueError SHA, new config epoch, two Auth formats and fresh two-key metadata GET200. Any other unknown or explicit provider denial stops, no paid retry, no general relaxation. Tests exercise mutation, third unknown, denial, default STOP, only matched claims allowed; real source-free owner preflight yields one eligible index7 without any paid calls; real reviewer result must be separately confirmed. Live owner execution on commit ce470a0 produced TWO genuine Gemini COMPLETE role responses for newly submitted original index7 with AI_CONSENSUS_PASS; old index5/6 claims unchanged. Exact-head GitHub CI 44228952241 passed. Only one activity was submitted under the bounded authorization.",
       "lastValidatedDate": "2026-11-18",
       "applicableEnvironments": [
         "Yoga6 owner native AQ Auth credentials, real Google native SDK two-key metadata GET200 and historical exact immutable BSA-196 role claims",
@@ -4170,15 +4170,7 @@
         "normalEntryPoints": [
           {
             "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "auth_migration_capability=capability"
-          },
-          {
-            "path": "app_generator/runtime/v3_frozen_tail_forward.py",
-            "marker": "migrated_clienterrors=migrated_clienterrors"
-          },
-          {
-            "path": "app_generator/validation/v3_server_error_recovery.py",
-            "marker": "quarantined_migrated_clienterrors"
+            "marker": "from app_generator.runtime.v3_provider_restoration import ("
           }
         ]
       },
@@ -4223,8 +4215,52 @@
           "kind": "python",
           "marker": "test_migrated_auth_witness_without_new_role_auth_is_not_broad_gate"
         }
+      ]
+    },
+    {
+      "id": "BSA-20261118-200",
+      "class": "successful-auth-migration-two-gemini-original-pass-not-persistently-unblocking-next-eligible-activity",
+      "status": "resolved",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261118-193",
+        "BSA-20261118-196",
+        "BSA-20261118-199"
       ],
-      "nextAction": "After full local V3 regression and exact source-free preflight PASS, run only one separately authorized never-submitted frozen original Section9.6 index7 on actual Yoga6 using the existing two-Gemini V3 checkpoint. Inspect raw immutable claim states and safe HTTP error classification. Never retry original index5 or index6 and never synthesize model PASS. Preserve provider/release STOP if no authentic new two-reviewer consensus."
+      "differenceFromLinkedIncident": "Genuine authenticated new Gemini generation succeeded for never-submitted frozen original Section9.6 index7 (source SHA 816e451c..., two immutable separate reviewer COMPLETE role SHAs 3eda0965... and ce1166a6..., exact assessment AI_CONSENSUS_PASS); worker correctly stopped after one authorized activity, with original source 6 assessed/5 PASS and supplemental 1 PASS/1 UNCERTAIN. Source-free next-invocation planning nevertheless returned STOP because migration proof incorrectly required nextIndex=7 and normal worker dropped exact clienterror quarantine witness in continuation. Historical auto-forward recovery required source-bound verified two-Gemini real new outcome to persist as transport proof without treating old index5/index6 uncertain claims as recovered. Production now verifies pinned exact two new role bytes, both response hashes, eligible new original index8..17, valid original-tail assessment PASS, current AQ credential epoch and metadata, unchanged old ambiguous roles, no further unknown/failed/reserved work; migrator rechecks every iteration while default provider circuit remains strict STOP. Live Yoga6 source-free post-pass plan READY_AFTER_INDEPENDENT_GEMINI_REVIEW, next8 and supplemental READY, zero further Gemini calls. Separate QA, payment, and release gates unchanged.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Actual Yoga6 genuine paid dual Gemini original Section9.6 index7 PASS and private SHA-bound role/aggregate evidence",
+        "Portable mocked two-role PASS checkpoint with exact hash witness and altered/failed/uncertain/source-drift negative cases"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_provider_restoration.py",
+        "triggerMarker": "def _verified_restored_index7(",
+        "remedyMarker": "_RESTORED_ROLE_SHAS",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_provider_restoration import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_post_migration_progress_requires_two_actual_complete_sha_roles"
+        },
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_default_never_quarantines_unclassified_submitted_roles"
+        },
+        {
+          "path": "tests/test_v3_frozen_original_tail.py",
+          "kind": "python",
+          "marker": "test_normal_worker_unknown_valueerror_globally_stops_before_sdk"
+        }
+      ]
     }
   ]
 }

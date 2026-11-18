@@ -1,0 +1,24 @@
+# Decision 0059 — Preserve successful Auth-key recovery across future BOSLA sessions
+
+**Date:** 18 November 2026. **Incident:** BSA-20261118-200.
+**Depends on:** Decisions 0053, 0055, 0057, 0058.
+
+## Authentic Google provider restoration result
+
+The actual Yoga6 **standard→AQ Auth-key migration** and the exact limited original Section9.6 index7 probation on commit `ce470a0a6c07c16c6f90eeb036f17941ecb2e9a2` **SUCCEEDED**. The normal paid/transfer-authorized worker was invoked with `--auto-advance --execute --allow-generated-text-transfer --max-forward-activities 1 --max-forward-seconds 450`, and its distinct original index7 `mcq-chal-hollow-geometry-cm` generated exactly two native Gemini review roles: both `COMPLETE`, provider `gemini_api`, with genuine separately stored response SHA evidence, one `AI_CONSENSUS_PASS` aggregate. The original frozen section remains **6 assessed / 5 original PASS**, while the distinct source-bound supplemental tail is now 1 PASS, 1 UNCERTAIN, 0 failed, 10 untouched. The old original index5 `AMBIGUOUS ValueError` and prior supplemental index6 two `AMBIGUOUS ClientError` roles remain immutable and unreplayed. Original course totals 75/108 assessed, 72 consensus PASS. No generated source PDF transfer, release or course admission.
+
+Actual immutable new index7 source-bound original slice SHA `816e451c5f3027bd76969ed4c16551d2ab2951aee765aba69a0e94803484d867`; the two completed reviewer role SHA hashes, fixed to actual private bytes, are `3eda096510368adc863345402f76f36528dff34dc23920afda2cf0aa44d98483` (physics) and `ce1166a6f242b194f34a7903aed728a706f15f2b464011897e07311d2e75f4ac` (semantics). The normal worker reported `PROBATION_PASSED_ONE_GENUINE_NEW_ACTIVITY`, `attemptedThisInvocation=1`, `verifiedNewSupplementalRowsThisInvocation=1`, `STOP_TAIL_ACTIVITY_BUDGET_REACHED` and exit0, with index8 next. Hosted exact-head CI for `ce470a0` passed all normal tests and Chrome smoke. This is **real paid generation evidence**, not fake/metadata-only proof.
+
+## New blocker exposed by successful recovery
+
+A genuine successful index7 pass did not automatically activate the *next* eligible original index8. The first migrated credential probation helper unnecessarily accepted `next_index == 7` only and the normal worker's continuation path omitted migration hashes on subsequent calls. Consequently, source-free read-only `plan_authorized_independent_recovery_trial` reverted to `STOP_NEW_INDEPENDENT_PROVIDER_TRIAL` even with a valid new scientific PASS, forcing repeated new owner turns. This violated the executable automatic-forward-progress contract.
+
+## Permanent executable fix
+
+The normal `v3_provider_restoration.py` selector now recognizes **only** the exact verified, newly received two-role `COMPLETE` index7 evidence with BOTH pinned actual claim hashes, valid response SHA fields, exact Section9.6 original parent/slice SHA and `GENUINE_SUPPLEMENTAL_CONSENSUS_PASS` state from the independent original-tail assessment validator. It requires current real dual-key AQ metadata GET200, latest `.env` epoch newer than old ClientErrors, same immutable original ValueError and two BSA196 historical claims, an eligible next untouched original index8..17, and no other new unknown/failed/reserved reviews. The default provider-wide circuit remains STOP. Only the same narrow migration-specific two-claim quarantine can allow future independent work.
+
+The normal Yoga6 worker now carries the verified dual-key source-free capability into its post-review replan, and passes the exact migration witness on every finite forward iteration. Any third unknown provider error, explicit denial, malformed/tampered role evidence, changed source, unsent/ambiguous PRE_CALL or new scientific failure reopens STOP. Existing owner paid/transfer authorization, per-invocation max 4, two Gemini roles per activity, 180s SDK timeout and zero replay continue to apply. No automatic new paid call occurs without a newly invoked authorized worker; the concluded one-activity test did not send any further request.
+
+## Actual source-free post-pass verification
+
+On Yoga6, with genuine saved index7 PASS and the two AQ credentials, independent source-free planning now returns `READY_AFTER_INDEPENDENT_GEMINI_REVIEW`, `previousIndependentGeminiPasses=1`, next original index8, zero paid calls, plus `supplemental_provider_preflight=READY` **under the exact recovered migration witness**. Without that witness, unchanged provider circuit returns `STOP_UNCLASSIFIED_PROVIDER_REVIEW` as before. Portable regression constructs realistic complete two-role checkpoint bytes, validates exact SHA+scientific PASS acceptance and tests missing/changed role bytes, reverted/failed results, extra uncertainty, wrong source and returned ambiguous statuses. No old claim was modified.

@@ -106,6 +106,7 @@ def _advance_unchanged_frozen_tail(args, private: Path,
     # sha-verified known old role, never any new or other ambiguity.
     probation = plan_authorized_independent_recovery_trial(
         COURSE, ROOT, private)
+    auth_capability = None
     # BSA-199: the user has migrated Standard to AQ Auth keys AFTER the
     # historical BSA-196 ClientErrors. Only an actual TWO-key, read-only
     # models.get action check may offer a one-NEW-activity probation.
@@ -117,13 +118,13 @@ def _advance_unchanged_frozen_tail(args, private: Path,
         from app_generator.runtime.v3_gemini_diagnostics import (
             diagnose_declared_generation_support,
         )
-        capability = diagnose_declared_generation_support(
+        auth_capability = diagnose_declared_generation_support(
             _load_native_config())
-        if (capability["status"] ==
+        if (auth_capability["status"] ==
                 "MODEL_GENERATION_ACTION_DECLARED_QUOTA_UNVERIFIED"):
             probation = plan_authorized_independent_recovery_trial(
                 COURSE,ROOT,private,
-                auth_migration_capability=capability)
+                auth_migration_capability=auth_capability)
     migrated_claims=tuple(tuple(x) for x in probation.get(
         "quarantinedMigratedClientErrorClaims",[]))
     permitted = (
@@ -236,7 +237,8 @@ def _advance_unchanged_frozen_tail(args, private: Path,
                     "PROBATION_PASSED_ONE_GENUINE_NEW_ACTIVITY"})
             return 0
         reread = plan_authorized_independent_recovery_trial(
-            COURSE,ROOT,private)
+            COURSE,ROOT,private,
+            auth_migration_capability=auth_capability)
         remaining = args.max_forward_seconds - int(time.monotonic()-began)
         if (reread["status"] != "READY_AFTER_INDEPENDENT_GEMINI_REVIEW"
                 or remaining < 30):
@@ -247,7 +249,8 @@ def _advance_unchanged_frozen_tail(args, private: Path,
         result = advance_frozen_tail_until_boundary(
             COURSE,ROOT,private,review_one,section="section-9-6",
             max_activities=args.max_forward_activities-1,
-            max_elapsed_seconds=min(900,remaining))
+            max_elapsed_seconds=min(900,remaining),
+            migrated_clienterrors=migrated_claims)
         result = {
             **result,
             "attemptedThisInvocation": (
@@ -263,7 +266,8 @@ def _advance_unchanged_frozen_tail(args, private: Path,
         result = advance_frozen_tail_until_boundary(
             COURSE,ROOT,private,review_one,section="section-9-6",
             max_activities=args.max_forward_activities,
-            max_elapsed_seconds=args.max_forward_seconds)
+            max_elapsed_seconds=args.max_forward_seconds,
+            migrated_clienterrors=migrated_claims)
         result["historicalRoleReconciled"] = False
     _print(result)
     return (0 if result["status"] in (

@@ -55,7 +55,9 @@
     "readonlyProviderStatusCannotProveGenerationQuotaOrBilling": true,
     "migratedAuthRequiresExactOldClaimHashesForNewActivityProbation": true,
     "migrationProbationPreservesUncertainOldCallsAndStopsOnThirdUnknown": true,
-    "liveMigratedCredentialTrialUsesNormalTwoGeminiNoReplayCheckpoint": true
+    "liveMigratedCredentialTrialUsesNormalTwoGeminiNoReplayCheckpoint": true,
+    "postMigrationVerifiedTwoRolePassResumesNextUntouchedOnly": true,
+    "postProbationNoReplayWitnessPersistsAcrossSessions": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",
