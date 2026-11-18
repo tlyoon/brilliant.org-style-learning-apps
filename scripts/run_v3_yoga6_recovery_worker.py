@@ -76,7 +76,24 @@ def _complete_source_free_with_browser(private: Path, result: dict) -> dict:
         qa={"status":"STOP_NATIVE_REAL_CANDIDATE_BROWSER_QA",
             "errorClass":type(exc).__name__,
             "publicationAuthorized":False}
-    return {**result,"realCandidateBrowserAcceptance":qa}
+    science=None
+    if (result.get("scientificFailureRepair",{}).get("status") ==
+            "NEW_SECTION96_SCIENCE_REPAIR_STAGED_REVIEW_NOT_AUTHORIZED"):
+        # BSA-204: Check the separate NEW index9 version in ACTUAL Chrome.
+        # A valid revision/renderer/source-bound receipt is reused at the
+        # same head; never treat this as independent Gemini scientific QA.
+        try:
+            from app_generator.runtime.v3_science_candidate_browser import (
+                advance_science_revision_browser_qa,
+            )
+            science=advance_science_revision_browser_qa(ROOT,COURSE,private)
+        except Exception as exc:
+            science={"status":"STOP_REAL_SCIENCE_REVISION_BROWSER_QA",
+                     "errorClass":type(exc).__name__,
+                     "publicationAuthorized":False}
+    return {**result,"realCandidateBrowserAcceptance":qa,
+            **({"scienceRevisionBrowserAcceptance":science}
+               if science is not None else {})}
 
 
 def _advance_unchanged_frozen_tail(args, private: Path,

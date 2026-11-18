@@ -157,6 +157,8 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "scienceFailIsSourceBoundAndNotMistakenForProviderOutage",
     "sourcefreeScientificFailRepairUsesTwoRealRoleHashes",
     "changedScienceActivityNeedsNewPaidAndVersionApproval",
+    "separateCorrectedIndex9RealChromeCoverageRequired",
+    "sourceRevisionRendererBoundBrowserReceiptCannotClaimGeminiPass",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

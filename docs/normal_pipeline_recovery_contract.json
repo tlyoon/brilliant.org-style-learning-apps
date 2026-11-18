@@ -60,7 +60,9 @@
     "postProbationNoReplayWitnessPersistsAcrossSessions": true,
     "scienceFailIsSourceBoundAndNotMistakenForProviderOutage": true,
     "sourcefreeScientificFailRepairUsesTwoRealRoleHashes": true,
-    "changedScienceActivityNeedsNewPaidAndVersionApproval": true
+    "changedScienceActivityNeedsNewPaidAndVersionApproval": true,
+    "separateCorrectedIndex9RealChromeCoverageRequired": true,
+    "sourceRevisionRendererBoundBrowserReceiptCannotClaimGeminiPass": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

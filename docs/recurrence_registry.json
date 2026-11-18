@@ -4413,6 +4413,72 @@
           "marker": "test_explicit_project_denial_stops_even_with_exact_witness"
         }
       ]
+    },
+    {
+      "id": "BSA-20261118-204",
+      "class": "new-source-corrected-section96-index9-not-covered-by-old-108-browser-acceptance",
+      "status": "active",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": [
+        "BSA-20261105-116",
+        "BSA-20261118-197",
+        "BSA-20261118-201"
+      ],
+      "differenceFromLinkedIncident": "Prior 698 real Chrome checks visited all 108 proposed activities but under an older Section9.6 candidate changed only at index5; subsequently source-bound newly corrected index9 scientific/Chinese defects created a different Section9.6 SHA. The old browser receipt cannot validate new index9. The BSA204 normal sourcefree worker now validates actual BSA201 failed reviewer/repair identity, exact new Section9.6 SHA and revised one-activity input, checks only index9 differs from previous 9.6 candidate, exercises new local temporary 108-activity trilingual mobile+desktop Chrome, and persists a distinct exact git/source/renderer/proposal-bound atomic receipt. Cache reuse requires precise immutable bytes, source & revision identity, 698 checks and 648 locale/viewport. Never grants Gemini science PASS, release or modified original review status. Actual Yoga6 sourcefree preflight verified exact candidate old SHA and new SHA with 108 items and zero Gemini calls; synthetic browser fault injection protects tampered receipt/incomplete QA/changed source/renderer and normal worker dispatch. Final real exact-head Chrome test pending.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Actual Yoga6 source-bound new Section9.6 index9 science candidate source SHA65e35a..., original prior proposed bb6523..., current renderer",
+        "Isolated mocked browser and private temp receipts for source/renderer/git identity and tamper regressions"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_science_candidate_browser.py",
+        "triggerMarker": "def advance_science_revision_browser_qa(",
+        "remedyMarker": "_assert_result(record,expected)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_science_candidate_browser import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_first_run_and_restart_reuse_same_immutable_real_contract"
+        },
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_bad_or_partial_chrome_result_cannot_create_pass_receipt"
+        },
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_tampered_prior_receipt_stops_before_browser"
+        },
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_change_of_revision_source_or_renderer_never_reuses_receipt"
+        },
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_worker_invokes_separate_browser_only_when_science_staged"
+        },
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_private_root_cannot_be_repo_or_relative_path"
+        },
+        {
+          "path": "tests/test_v3_science_candidate_browser.py",
+          "kind": "python",
+          "marker": "test_linked_browser_receipt_parent_never_reused"
+        }
+      ],
+      "nextAction": "Commit code and run actual Yoga6 normal --source-free-advance at exact new git HEAD for real 698 Chrome checks of the corrected index9. Mark resolved only after actual real pass. Paid independent revised Section9.6 index9 Gemini QA remains separately not authorized."
     }
   ]
 }

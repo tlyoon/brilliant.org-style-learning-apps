@@ -1,5 +1,9 @@
 # Context index
 
+## 18 November 2026 — BSA204 separate real browser check for corrected index9
+
+Original frozen Section9.6 indices6..17 are fully covered by genuine independent two-Gemini review: 10 PASS, 1 original index9 science FAIL, 1 historical index6 unknown, 0 untouched. Corrected Section9.2 has existing genuine 1-item Gemini PASS. Normal sourcefree after tail completion saved unadmitted 108-activity proposal bb652360... and Chrome 698 PASS but the previously tested Section9.6 original item9 was scientifically incorrect; BSA201 sourcebound corrected new version 65e35a..., separate reviewer input45d6ba... remain unadmitted. BSA204 introduces independent actual Chrome 698-check (all 108 activities/3 locales/2 viewports) against this NEW Section9.6 index9 source, identity-bound to original proposal, new exact candidate, renderer and git HEAD, with atomic private receipt reuse and strict tamper/changed-source rejection. In ordinary --source-free-advance it runs after verified science correction, separate from prior browser receipt. No model pass, paid review, course admission or publication implied. Real final-head run pending. Decision0062.
+
 ## 18 Nov 2026 — Real Section9.6 original tail + content source-bound auto-repair
 
 Real native Yoga6 paid/transfer-authorized bounded original indices8..11 (four activities): genuine Gemini consensus PASS for indices8/10/11, genuinely COMPLETE two reviewer science FAIL for index9. Combined distinct tail: 4 model PASS, 1 model science FAIL, 1 prior uncertain ClientError, 6 originally unsubmitted indices12..17; no unknown provider error this batch, original frozen 75 assessed/72 PASS untouched. Reviewers agreed that a body on a frictionless floor does not always rotate under an off-centre horizontal force due to floor normal-force torque, and 3 Chinese occurrences of mass-line were incorrect.
