@@ -5510,6 +5510,52 @@
         }
       ],
       "nextAction": "Run full recurrence/lint and cross-path tests, exact-head CI then actual Yoga6 sourcefree 108/698 real Chrome on NEW versioned proposal digest. Preserve all original frozen roles, no paid Gemini calls. If verified resolve BSA213 and continue independent remaining 9.1/9.6 assessment only with separately approved paid scope."
+    },
+    {
+      "id": "BSA-20261118-214",
+      "class": "hosted-ubuntu-synthetic-section92-fixture-hardcodes-real-yoga6-crlf-source-sha",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261118-207",
+        "BSA-20261118-212",
+        "BSA-20261118-213"
+      ],
+      "differenceFromLinkedIncident": "The BSA213 production source-free four real two-Gemini PASS validator and resulting unadmitted 108-content proposal passed owner Yoga6 real 108/698 Chrome and local 43 focused tests, but GitHub Ubuntu exact HEAD 6bb0e25 run 44301732336 failed six new synthetic test setUp fixtures, each at assert checkout section9.2 package_identity(raw)==the Yoga6 owner PARENT digest. Direct authentic Yoga6 comparison of local Section9.2 package.json vs git show HEAD content showed 185151 Windows working bytes vs 182910 Git-tracked bytes, local digest cfe7bab8... vs Git digest 327c9ae8..., confirming checkout line-endings affect raw package SHA even though unchanged logical content. Production must keep exact owner-authorized Yoga6 source SHA, authorizations and completed role claims unchanged; never normalize them in the paid pipeline or claim Linux test SHA as a real Gemini submission. Fix only the fake tests to compute private synthetic source digest and one-item SHA from their own checkout bytes, patch the source-free verifier PARENT and PINNED constants only within test scope, preserve actual production owner pin, and add negative test proving owner PARENT remains immutable. The real Yoga6 four independent Gemini consensus PASSes, original 75 assessed/72 PASS, unadmitted new 108/698 browser acceptance and no-release status remain true and preserved. Exact-head hosted CI must validate synthetic test portability before closing BSA214.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "GitHub-hosted Ubuntu checkout with LF tracked Section9.2 frozen JSON and synthetic tests",
+        "Yoga6 Windows working checkout with CRLF Section9.2 raw bytes and genuine owner-authorized eight Gemini reviewer calls already completed"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_section92_supplemental_reuse.py",
+        "triggerMarker": "def verified_section92_original_tail_passes(",
+        "remedyMarker": "result = read_prior_two_role_science(private, entry)",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_versioned_acceptance_scope.py",
+            "marker": "from app_generator.runtime.v3_section92_supplemental_reuse import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_section92_supplemental_reuse.py",
+          "kind": "python",
+          "marker": "test_synthetic_source_hash_uses_local_checkout_not_paid_owner_pin"
+        },
+        {
+          "path": "tests/test_v3_section92_supplemental_reuse.py",
+          "kind": "python",
+          "marker": "test_saved_fixture_cannot_claim_genuine_pass_without_two_real_roles"
+        },
+        {
+          "path": "tests/test_v3_section92_supplemental_reuse.py",
+          "kind": "python",
+          "marker": "test_synthetic_manifest_links_only_original_four_and_cannot_release"
+        }
+      ],
+      "nextAction": "Run synthetic unit and cross path tests, lint/recovery contract, commit test-only portable fixture, require hosted CI at exact new HEAD, fresh genuine Yoga6 108/698 Chrome source-bound to updated revision and immutable new proposal digest. No additional paid calls or old role replay."
     }
   ]
 }

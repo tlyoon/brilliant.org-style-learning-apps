@@ -32,20 +32,25 @@ REPO = Path(__file__).resolve().parents[1]
 COURSE = REPO / "content" / "chapter-9"
 
 
-def _four_fixture_entries() -> list[dict]:
+def _four_fixture_entries() -> tuple[str,tuple,list[dict]]:
+    # BSA214: real Yoga6 source SHA remains pinned in production, but
+    # synthetic hosted-Linux tests must derive SHA from their own checkout
+    # bytes. Git line endings can differ between Windows and Ubuntu.
     raw = (COURSE / SECTION / "package.json").read_bytes()
     digest, items = package_identity(raw)
-    assert digest == PARENT
     entries = []
-    for index, name, expected_sha in PINNED:
-        slice_raw, review_sha, manifest = _slice(PARENT,SECTION,index,items[index])
-        assert review_sha == expected_sha
+    local_pins = []
+    for index, name, _owner_sha in PINNED:
+        assert items[index]["id"] == name
+        slice_raw, review_sha, manifest = _slice(
+            digest,SECTION,index,items[index])
+        local_pins.append((index,name,review_sha))
         entries.append({
             "index":index,"activityId":name,"sha":review_sha,
             "raw":slice_raw,"manifest":manifest,
             "originalReviewState":"AGGREGATE_EXISTS",
         })
-    return entries
+    return digest,tuple(local_pins),entries
 
 
 class FourNewEvidenceReuseTests(unittest.TestCase):
@@ -54,7 +59,26 @@ class FourNewEvidenceReuseTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.private=Path(self.temp.name)/"private"
         self.private.mkdir()
-        self.entries=_four_fixture_entries()
+        self.fixture_parent,self.fixture_pins,self.entries=_four_fixture_entries()
+        for variable,value in (
+            ("PARENT",self.fixture_parent),
+            ("PINNED",self.fixture_pins),
+        ):
+            fixture=patch(
+                "app_generator.runtime.v3_section92_supplemental_reuse."
+                +variable,value)
+            fixture.start()
+            self.addCleanup(fixture.stop)
+
+    def test_synthetic_source_hash_uses_local_checkout_not_paid_owner_pin(self):
+        raw=(COURSE/SECTION/"package.json").read_bytes()
+        self.assertEqual(package_identity(raw)[0],self.fixture_parent)
+        self.assertEqual(
+            [x["sha"] for x in self.entries],
+            [digest for _, _, digest in self.fixture_pins])
+        # Never redefine the actual owner-authorized Yoga6 input hashes.
+        self.assertEqual(PARENT,
+            "cfe7bab820aa01ce71bd7a6a334c742101ebd10d8895cccd5f05d599030f971c")
 
     def _install_fake_evidence(self):
         for e in self.entries:
@@ -107,7 +131,8 @@ class FourNewEvidenceReuseTests(unittest.TestCase):
             [x["originalActivityIndex"] for x in items],[14,15,16,17])
         self.assertTrue(all(x["status"]==
             "POTENTIALLY_REUSABLE_NOT_RELEASE_ACCEPTED" for x in items))
-        self.assertTrue(all(x["sourcePackageSha256"]==PARENT for x in items))
+        self.assertTrue(all(x["sourcePackageSha256"]==
+                            self.fixture_parent for x in items))
 
     def test_tampered_private_slice_fails_closed(self):
         self._install_fake_evidence()
@@ -139,11 +164,11 @@ class FourNewEvidenceReuseTests(unittest.TestCase):
             "section":SECTION,"originalActivityIndex":index,
             "activityId":name,
             "activitySha256":canonical_digest(original_items[index]),
-            "sourcePackageSha256":PARENT,
+            "sourcePackageSha256":self.fixture_parent,
             "supplementalReviewSliceSha256":sha,
             "sourceReviewSha256":"a"*64,
             "status":"POTENTIALLY_REUSABLE_NOT_RELEASE_ACCEPTED"}
-            for index,name,sha in PINNED]
+            for index,name,sha in self.fixture_pins]
         with patch(
             "app_generator.runtime.v3_versioned_acceptance_scope."
             "verified_section92_original_tail_passes",return_value=fake_rows):

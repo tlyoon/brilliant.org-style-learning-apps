@@ -75,7 +75,8 @@
     "newFourOriginal92ExactEightCallOwnerBoundary": true,
     "syntheticBrowserMutatedFixtureAlwaysFetchedFresh": true,
     "fourNewWorkerUsesSafeModuleLevelDiagnosticImport": true,
-    "fourNewSection92GenuinePassesSourceBoundInUnadmittedRoster": true
+    "fourNewSection92GenuinePassesSourceBoundInUnadmittedRoster": true,
+    "syntheticNewFourSourceDigestsDoNotOverrideOwnerPinnedGeminiSource": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

@@ -172,6 +172,7 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "syntheticBrowserMutatedFixtureAlwaysFetchedFresh",
     "fourNewWorkerUsesSafeModuleLevelDiagnosticImport",
     "fourNewSection92GenuinePassesSourceBoundInUnadmittedRoster",
+    "syntheticNewFourSourceDigestsDoNotOverrideOwnerPinnedGeminiSource",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
