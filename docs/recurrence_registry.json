@@ -4532,7 +4532,7 @@
     {
       "id": "BSA-20261118-206",
       "class": "new-exact-owner-authorized-two-revised-section96-gemini-review-after-original-tail-completion",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261117-190",
@@ -4542,7 +4542,7 @@
         "BSA-20261118-202",
         "BSA-20261118-205"
       ],
-      "differenceFromLinkedIncident": "The frozen 2017? old V3 owner paid charter 2026-11-17 strictly permits unchanged original reviews and only one changed Section9.2 activity; code must never silently extend it to the newly corrected Section9.6 index5 and index9. The owner on 2026-11-18 expressly requested proceeding with the previously recommended next sequence limited to exactly two new isolated revised Section9.6 source SHA inputs and four independent Gemini calls. New separate immutable code-pinned authorization record and normal worker --advance-revised-96 enforce two exact Section9.6 source inputs 738292dc... and45d6ba0..., no old role or original source replay, 2 independent one-shot Gemini contexts per activity and 900s. It reuses BSA190/201 existing source-bound correctors and old role witnesses, actual 10 genuine original supplemental PASS and two prior historical old unknown/failed states, and old dual AQ key migration real GET200 metadata + original independently completed review evidence; untouched prior paid charter remains unchanged. Real Yoga6 no-paid original readiness and source SHA preflight PASS, 7 synthetic fault injection tests pass on exact scope, tampered consent, excessive budget, old request directory and forged model capacity, unknown role stops. Actual new paid Gemini content QA still pending at registration, requiring exact-commit test/CI then normal invocation and immutable two role claim verification. Never admits 108 scope or releases. Additional acceptance guard validates genuine two COMPLETE source-bound role claim files and persisted V3 assessment before believing a callback's claimed PASS or scientific FAIL. Reused actual previously completed Yoga6 independent index12 twin Gemini role evidence source-free verified successfully, after synthetic forged-pass-without-claims test. BSA206 restart-hardening: a previously completed independently two-role source-bound reviewed index5 may be safely RECONCILED from real immutable aggregate and both role claims so an unsubmitted index9 advances without replaying index5, even across process/session restarts. A previously uncertain first revised request hard-stops without creating index9 role, and a partial/damaged saved record cannot be promoted to success. Ten focused permission/fault/restart tests PASS.",
+      "differenceFromLinkedIncident": "The frozen 2017? old V3 owner paid charter 2026-11-17 strictly permits unchanged original reviews and only one changed Section9.2 activity; code must never silently extend it to the newly corrected Section9.6 index5 and index9. The owner on 2026-11-18 expressly requested proceeding with the previously recommended next sequence limited to exactly two new isolated revised Section9.6 source SHA inputs and four independent Gemini calls. New separate immutable code-pinned authorization record and normal worker --advance-revised-96 enforce two exact Section9.6 source inputs 738292dc... and45d6ba0..., no old role or original source replay, 2 independent one-shot Gemini contexts per activity and 900s. It reuses BSA190/201 existing source-bound correctors and old role witnesses, actual 10 genuine original supplemental PASS and two prior historical old unknown/failed states, and old dual AQ key migration real GET200 metadata + original independently completed review evidence; untouched prior paid charter remains unchanged. Real Yoga6 no-paid original readiness and source SHA preflight PASS, 7 synthetic fault injection tests pass on exact scope, tampered consent, excessive budget, old request directory and forged model capacity, unknown role stops. Actual new paid Gemini content QA still pending at registration, requiring exact-commit test/CI then normal invocation and immutable two role claim verification. Never admits 108 scope or releases. Additional acceptance guard validates genuine two COMPLETE source-bound role claim files and persisted V3 assessment before believing a callback's claimed PASS or scientific FAIL. Reused actual previously completed Yoga6 independent index12 twin Gemini role evidence source-free verified successfully, after synthetic forged-pass-without-claims test. BSA206 restart-hardening: a previously completed independently two-role source-bound reviewed index5 may be safely RECONCILED from real immutable aggregate and both role claims so an unsubmitted index9 advances without replaying index5, even across process/session restarts. A previously uncertain first revised request hard-stops without creating index9 role, and a partial/damaged saved record cannot be promoted to success. Ten focused permission/fault/restart tests PASS. GENUINE Yoga6 exact owner-authorized worker executed both NEW isolated Section9.6 idx5/idx9 two-Gemini reviews at commit 2934473, all four role claims COMPLETE with two independently source-bound AI_CONSENSUS_PASS aggregates SHA d7151d08... and 34162f34..., exit0, no new scientific FAIL/unknown, original older records untouched, exact GitHub CI run44273603175 SUCCESS. Next BSA207 addresses distinct proposal version integration.",
       "lastValidatedDate": "2026-11-18",
       "applicableEnvironments": [
         "Actual authorized Yoga6 original frozen Section9.6 and new exact source SHA 738292dc... and45d6ba0..., two AQ Auth format credentials and completed original reviewer role evidence",
@@ -4555,7 +4555,7 @@
         "normalEntryPoints": [
           {
             "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "if args.advance_revised_96:"
+            "marker": "from app_generator.runtime.v3_section96_authorized_revised_qa import ("
           }
         ]
       },
@@ -4610,8 +4610,80 @@
           "kind": "python",
           "marker": "test_uncertain_prior_version_does_not_trigger_other_paid_request"
         }
+      ]
+    },
+    {
+      "id": "BSA-20261118-207",
+      "class": "two-real-model-validated-revised-section96-passes-not-integrated-into-new-sourcebound-108-activity-proposal",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261116-175",
+        "BSA-20261117-185",
+        "BSA-20261117-190",
+        "BSA-20261118-201",
+        "BSA-20261118-204",
+        "BSA-20261118-205",
+        "BSA-20261118-206"
       ],
-      "nextAction": "Run exact-head CI and bounded local tests, then genuine authorized Yoga6 normal --advance-revised-96 --execute --allow-generated-text-transfer --max-forward-activities 2 --max-forward-seconds 900. Confirm recorded reviewer role claims and full two-model consensus/real content FAIL, no replay or source modification. On genuine PASS, prepare new Section9.6 [5,9] 108-activity UNADMITTED proposal and real Chrome acceptance, retaining all historical science and provider evidence; never publish automatically."
+      "differenceFromLinkedIncident": "Actual owner-authorized native Yoga6 two distinct corrected Section9.6 inputs index5 and index9 were independently genuinely two-Gemini-reviewed, four immutable COMPLETE roles; both source-bound full V3 aggregates AI_CONSENSUS_PASS, exactly capped; old original uncertain index6 and old index9 scientific FAIL preserved. Existing versioned-course builder still proposed Section9.6 earlier idx5-only SHA bf9c55 rather than newer idx5+idx9 SHA 65e35a, meaning a previously 698-Chrome-tested OLD unadmitted course could incorrectly be interpreted as covering changed physics. New v3_science_validated_roster validates the exact two new role input SHAs, genuine aggregate status and two actual COMPLETE role claim identities for both corrections; enforces original frozen source differs only at [5,9] and former idx5 candidate differs only at idx9. It permits a new immutable UNADMITTED six-section/108-activity proposal only after BOTH independently reviewed revised source fields have genuine persisted model PASS. No PASS or release on staging alone; old unknown and failed original records never overwritten. The old immutable course proposal stays intact. Real Yoga6 source-free staging produced separate SHA c02dcdc4513a54f3cf6a04924ef76322d280081784b9d5b46f5c79021c44ef9e with Section9.6 package 65e35a..., exact changed indices [5,9], old 75 original assessments/72 consensus PASS and 10 source-bound supplemental genuine original passes, two independent revised model proofs, version/release FALSE. Normal source-free worker now routes this new proposal to full actual 108-activity trilingual 698 real Chrome acceptance at exact version/renderer/git HEAD, not the prior old-parent BSA204 receipt. Six synthetic fault-injection fixtures PASS after fixture-specific hash-parent repair without weakening production gate, plus existing scope/browser/paid regression 27 PASS. New exact-head real Chrome/CI pending.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Actual Yoga6 private two genuine two-independent-Gemini revised Section9.6 role sets, original frozen Chapter9 108 items, new validated parent candidate SHA65e35a... and unadmitted course SHA c02dcdc...",
+        "Portable source-based synthetic two-reviewer model consensus/missing/FAIL/tampered course and parent SHA fixtures; normal browser selection tested without paid models"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_science_validated_roster.py",
+        "triggerMarker": "def validated_section96_two_science_revision(",
+        "remedyMarker": "verify_persisted_two_role_science(",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_versioned_acceptance_scope.py",
+            "marker": "two_revision_science=validated_section96_two_science_revision("
+          },
+          {
+            "path": "app_generator/runtime/v3_source_free_forward.py",
+            "marker": "science_in_proposal=candidate.get("
+          },
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "if result.get(\"section96ScienceIntegrated\") is True:"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_science_validated_roster.py",
+          "kind": "python",
+          "marker": "test_both_fake_model_approvals_only_in_fixture_return_exact_new_parent"
+        },
+        {
+          "path": "tests/test_v3_science_validated_roster.py",
+          "kind": "python",
+          "marker": "test_missing_either_new_independent_review_is_not_a_scientific_pass"
+        },
+        {
+          "path": "tests/test_v3_science_validated_roster.py",
+          "kind": "python",
+          "marker": "test_reviewer_scientific_failure_never_inherits_original_pass"
+        },
+        {
+          "path": "tests/test_v3_science_validated_roster.py",
+          "kind": "python",
+          "marker": "test_extra_changed_index_or_changed_old_source_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_science_validated_roster.py",
+          "kind": "python",
+          "marker": "test_forged_original_fail_status_cannot_promote_new_version"
+        },
+        {
+          "path": "tests/test_v3_science_validated_roster.py",
+          "kind": "python",
+          "marker": "test_normal_worker_only_uses_main_browser_for_integrated_exact_revision"
+        }
+      ],
+      "nextAction": "Run bounded complete local regression and exact-head CI, then Yoga6 NORMAL --source-free-advance verifies newly staged c02dcdc... proposal in actual 698 Chrome across all 108 activities with both corrected Section9.6 indices5,9 and 648 locale/viewport interactions; second restart reuses exact identity receipts without revisiting. Preserve original unreviewed and historically uncertain original activity/authorization/release boundaries; do not claim all108 independent scientific acceptance or publication."
     }
   ]
 }

@@ -21,6 +21,9 @@ from app_generator.runtime.v3_isolated_repair_review import stage_isolated_revie
 from app_generator.runtime.v3_historical_role_rollforward import (
     stage_known_unrecoverable_section96,
 )
+from app_generator.runtime.v3_science_validated_roster import (
+    validated_section96_two_science_revision,
+)
 from app_generator.runtime.v3_frozen_original_tail import (
     plan_frozen_original_tail, _slice as make_frozen_original_slice,
 )
@@ -111,6 +114,8 @@ def prepare_versioned_course_proposal(
     revised_96_raw = None
     revised_96_items = None
     revised_96_qa_state = None
+    two_revision_science = None
+    proposed_96_sha = None
     if has_revised_96:
         new_sha = recovered_96["candidatePackageSha256"]
         candidate_file = (private_root / "historical-role-rollforward" /
@@ -153,6 +158,19 @@ def prepare_versioned_course_proposal(
             "NEW_SECTION96_GEMINI_UNCERTAIN_NO_REPLAY"
             if qa_progress["modelUncertainActivities"] else
             "NEW_SECTION96_TWO_GEMINI_REVIEWS_NOT_YET_AUTHORIZED")
+
+    # BSA-207: a genuinely new Section9.6 index9 correction was reviewed
+    # ONLY AFTER the earlier versioned index5 correction. Both separately
+    # submitted new identities must have two COMPLETE independent Gemini
+    # consensus PASS records. Old original FAIL/unknown claims never change.
+    if has_revised_96:
+        proposed_96_sha = recovered_96["candidatePackageSha256"]
+        two_revision_science=validated_section96_two_science_revision(
+            course,repo,private_root,
+            previous_sha=proposed_96_sha,previous_items=revised_96_items)
+        if two_revision_science is not None:
+            proposed_96_sha=two_revision_science["candidatePackageSha256"]
+            revised_96_items=two_revision_science["activities"]
 
     corrected = (private_root / "repair-proposals" / _SECTION /
                  _CANDIDATE / "package.json")
@@ -217,9 +235,10 @@ def prepare_versioned_course_proposal(
                     or [item["id"] for item in activities] !=
                        [item["id"] for item in revised_96_items]
                     or [i for i,(a,b) in enumerate(
-                        zip(activities,revised_96_items)) if a!=b] != [5]):
+                        zip(activities,revised_96_items)) if a!=b] != (
+                            [5,9] if two_revision_science is not None else [5])):
                 raise ValueError("V3_PROPOSAL_REVISED_SECTION96_SCOPE_CHANGED")
-            replacement_digest = recovered_96["candidatePackageSha256"]
+            replacement_digest = proposed_96_sha
             changed += 1
         old = _private_assessment(private_root, raw, digest)
         reviews = old["reviews"] if old else []
@@ -363,8 +382,7 @@ def prepare_versioned_course_proposal(
                 "mcq-mod-bat-cut-mass-comparison",
             "parentPackageSha256":
                 recovered_96["parentPackageSha256"],
-            "newContentPackageSha256":
-                recovered_96["candidatePackageSha256"],
+            "newContentPackageSha256": proposed_96_sha,
             "newOneActivityReviewInputSha256":
                 recovered_96["isolatedReviewInputSha256"],
             "oldAmbiguousProviderRolePreserved": True,
@@ -374,6 +392,19 @@ def prepare_versioned_course_proposal(
         }
         unsigned["unresolved"].append(
             "HISTORICAL_SECTION96_PROVIDER_RESPONSE_UNRECOVERABLE_DO_NOT_REPLAY")
+        if two_revision_science is not None:
+            unsigned["section96ScientificFailureReplacement"] = {
+                "section":"section-9-6",
+                "newContentPackageSha256":proposed_96_sha,
+                "changedActivityIndices":[5,9],
+                "independentNewVersionGeminiEvidence":
+                    two_revision_science["proofs"],
+                "originalIndex9ScientificFailurePreserved":True,
+                "originalIndex6ProviderUnknownPreserved":True,
+                "versionedScopeAdmitted":False,
+                "publicationAuthorized":False,
+            }
+            unsigned["counts"]["revisedSection96Index9NewGeminiConsensusPass"]=1
         if revised_96_qa_state != (
                 "GENUINE_REVISED_SECTION96_GEMINI_PASS_NOT_ADMITTED"):
             unsigned["unresolved"].append(
@@ -439,9 +470,11 @@ def prepare_versioned_course_proposal(
         "originalFailed":progress["modelRepairRequiredActivities"],
         "correctedActivityNewGeminiConsensusPass":int(corrected_pass),
         "correctedActivityScientificStatus":corrected_state,
-        "section96NewContentCandidateSha256": (
-            recovered_96["candidatePackageSha256"] if has_revised_96 else None),
+        "section96NewContentCandidateSha256": proposed_96_sha,
         "section96NewGeminiScientificStatus": revised_96_qa_state,
+        "section96ScienceIntegrated":two_revision_science is not None,
+        "section96Index9NewGeminiConsensusPass":int(
+            two_revision_science is not None),
         "versionedScopeAdmitted":False,
         "publicationAuthorized":False,
     }

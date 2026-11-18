@@ -77,7 +77,14 @@ def _complete_source_free_with_browser(private: Path, result: dict) -> dict:
             "errorClass":type(exc).__name__,
             "publicationAuthorized":False}
     science=None
-    if (result.get("scientificFailureRepair",{}).get("status") ==
+    if result.get("section96ScienceIntegrated") is True:
+        # BSA-207: both corrected activities have fresh two-Gemini PASS;
+        # the main new 108-item roster now includes corrected idx9.
+        # The main REAL 698 Chrome QA covers it; no separate old-parent
+        # browser receipt can authorize this new roster.
+        science={"status":"SCIENCE_INDEX9_INCLUDED_IN_FULL_CANDIDATE_BROWSER",
+                 "publicationAuthorized":False}
+    elif (result.get("scientificFailureRepair",{}).get("status") ==
             "NEW_SECTION96_SCIENCE_REPAIR_STAGED_REVIEW_NOT_AUTHORIZED"):
         # BSA-204: Check the separate NEW index9 version in ACTUAL Chrome.
         # A valid revision/renderer/source-bound receipt is reused at the
@@ -371,10 +378,15 @@ def main(argv: list[str] | None = None) -> int:
             new_browser=offline.get("scienceRevisionBrowserAcceptance",{})
             if (old_browser.get("status")!=
                     "ACTUAL_UNADMITTED_CHAPTER9_BROWSER_QA_PASS"
-                    or new_browser.get("status")!=
-                    "ACTUAL_INDEX9_SCIENCE_REVISION_BROWSER_QA_PASS_NOT_SCIENTIFIC_QA"
                     or old_browser.get("renderedChecks")!=698
-                    or new_browser.get("renderedChecks")!=698):
+                    or not (
+                        (new_browser.get("status")==
+                            "ACTUAL_INDEX9_SCIENCE_REVISION_BROWSER_QA_PASS_NOT_SCIENTIFIC_QA"
+                         and new_browser.get("renderedChecks")==698)
+                        or (offline.get("section96ScienceIntegrated") is True
+                            and new_browser.get("status")==
+                                "SCIENCE_INDEX9_INCLUDED_IN_FULL_CANDIDATE_BROWSER")
+                    )):
                 _print({"status":"STOP_REVISED96_REAL_BROWSER_NOT_VERIFIED",
                         "sourceFreeRecovery":offline,
                         "publicationAuthorized":False})

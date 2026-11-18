@@ -164,6 +164,9 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "revisedSection96TwoExactOwnerApprovedSHAOnly",
     "oldPaidCharterUnchangedAndRevisedRequestCannotReplay",
     "revised96TwoIndependentGeminiPerActivityFourTotal",
+    "twoRevised96GenuineModelPassesBeforeNew108Roster",
+    "historicalOriginalFailedOrUnknownCannotBecomeNewModelPass",
+    "fullyRevised108ChromeSourceIdentitySeparateFromLegacyProposal",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

@@ -61,7 +61,23 @@ def _source_bound_packages(private: Path) -> tuple[str, list[tuple[int, bytes, l
         elif label=="section-9-2":
             source=private/"repair-proposals"/label/target/"package.json"
         elif label=="section-9-6":
-            source=private/"historical-role-rollforward"/label/target/"package.json"
+            science=doc.get("section96ScientificFailureReplacement")
+            if science is not None:
+                if (not isinstance(science,dict)
+                        or science.get("newContentPackageSha256")!=target
+                        or science.get("changedActivityIndices")!=[5,9]
+                        or science.get("originalIndex9ScientificFailurePreserved") is not True
+                        or science.get("originalIndex6ProviderUnknownPreserved") is not True
+                        or science.get("publicationAuthorized") is not False
+                        or science.get("versionedScopeAdmitted") is not False
+                        or len(science.get("independentNewVersionGeminiEvidence",[]))!=2
+                        or not all(
+                            entry.get("genuineConsensusPass") is True
+                            for entry in science["independentNewVersionGeminiEvidence"])):
+                    raise ValueError("V3_BROWSER_UNTRUSTED_NEW_SCIENCE_PROPOSAL")
+                source=private/"scientific-failure-rollforward"/label/target/"package.json"
+            else:
+                source=private/"historical-role-rollforward"/label/target/"package.json"
         else:
             raise ValueError("V3_BROWSER_UNREGISTERED_CHANGED_SECTION")
         if source.is_symlink() or not source.is_file() or source.stat().st_size>2_000_000:

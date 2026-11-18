@@ -67,7 +67,10 @@
     "scienceBrowserChildMustPersistExactReceiptBeforeReportingPass": true,
     "revisedSection96TwoExactOwnerApprovedSHAOnly": true,
     "oldPaidCharterUnchangedAndRevisedRequestCannotReplay": true,
-    "revised96TwoIndependentGeminiPerActivityFourTotal": true
+    "revised96TwoIndependentGeminiPerActivityFourTotal": true,
+    "twoRevised96GenuineModelPassesBeforeNew108Roster": true,
+    "historicalOriginalFailedOrUnknownCannotBecomeNewModelPass": true,
+    "fullyRevised108ChromeSourceIdentitySeparateFromLegacyProposal": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",
