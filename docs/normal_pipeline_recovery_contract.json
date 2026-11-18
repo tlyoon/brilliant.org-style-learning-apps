@@ -73,7 +73,8 @@
     "fullyRevised108ChromeSourceIdentitySeparateFromLegacyProposal": true,
     "postRevised96GenuinePassAutoDispatchesLocal108Chrome": true,
     "newFourOriginal92ExactEightCallOwnerBoundary": true,
-    "syntheticBrowserMutatedFixtureAlwaysFetchedFresh": true
+    "syntheticBrowserMutatedFixtureAlwaysFetchedFresh": true,
+    "fourNewWorkerUsesSafeModuleLevelDiagnosticImport": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

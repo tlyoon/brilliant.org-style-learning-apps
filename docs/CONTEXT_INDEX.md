@@ -1,5 +1,9 @@
 # Context index
 
+## 18 November 2026 — BSA211 four-new worker local import collision before provider calls
+
+New BSA209 exact four-eligible Section9.2 normal worker initially returned STOP_YOGA6_RECOVERY_WORKER UnboundLocalError on committed 5d31077 after successful 108/698 real Yoga6 browser and hosted GitHub CI 44295739064. All four source-specific provider run directories were ABSENT; 0 Gemini requests/roles, no ambiguous new claim. The later revised96 branch had a redundant main()-scoped import of the same diagnostic name already at module level, so the earlier new-four branch accessed an unbound Python local. Decision0069 removes only that duplicate import and introduces complete mocked normal main() dispatch regressions (13 tests + 4 subtests PASS) without any paid/model operations. BSA210 hosted synthetic preview cache correction is independently RESOLVED with CI SUCCESS. Next exact-head CI then retry new owner-approved at-most-eight Gemini calls without replay.
+
 ## 18 November 2026 — BSA210 hosted Chrome synthetic signed-fixture mutation timeout
 
 Exact-head CI 44294173539 failed at the synthetic preview's signed-roster integrity negative control after overwriting a previously loaded Section9.2 test fixture; all preceding source/tests passed and real Yoga6 108/698 browser passed. Root cause is consistent with browser caching of mutable same-session fixture resources but not conclusively proven. Decision0068 changes only the disposable local test HTTP handler to emit no-store and ignore conditional 304, preserving deterministic corrupted-package rejection; added two real loopback HTTP negative controls and synthetic-visible timeout diagnosis. Yoga6 pinned Selenium preview and 2 HTTP tests PASSED. Exact-head GitHub CI pending. BSA209 new four-owner-Gemini requests remain unsent until CI passes.

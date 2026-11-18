@@ -503,9 +503,9 @@ def main(argv: list[str] | None = None) -> int:
                 entrypoint=Path(__file__))
             if delegated is not None:
                 return delegated
-            from app_generator.runtime.v3_gemini_diagnostics import (
-                diagnose_declared_generation_support,
-            )
+            # BSA211: use the existing module-level diagnostic import.
+            # Re-importing this name only in this later branch makes Python
+            # treat it as local throughout main(), breaking --advance-new-four.
             from app_generator.gemini.v3_native_api_reviewers import (
                 V3NativeGeminiApiSessions,
             )

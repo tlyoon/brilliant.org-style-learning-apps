@@ -5327,7 +5327,7 @@
     {
       "id": "BSA-20261118-210",
       "class": "hosted-synthetic-chrome-integrity-test-stale-fixture-byte-cache-negative-control-timeout",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261118-194",
@@ -5364,7 +5364,49 @@
           "marker": "test_test_server_ignores_conditional_etag_on_replaced_fixture"
         }
       ],
-      "nextAction": "Pass lint/CI recurrence, fresh hosted CI on exact final HEAD, and rerun real Yoga6 preview. Retain the BSA209 separate eight-call campaign stopped until CI passes; never replay ambiguous role requests or relax negative-controls."
+      "nextAction": "BSA210 resolved: exact owner Yoga6 real loopback cache negative controls (2 PASS), genuine headless Chrome preview 6/6 and mutated-package rejection PASS, hosted GitHub CI 44295739064 SUCCESS on 5d31077, and 108/698 real Yoga6 course browser PASS on exact head. All test-only, zero Gemini calls. Subsequent new four-input paid worker UnboundLocalError recorded separately as BSA211."
+    },
+    {
+      "id": "BSA-20261118-211",
+      "class": "python-function-scoped-late-import-makes-new-four-dispatch-unboundlocalerror-before-gemini",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261117-185",
+        "BSA-20261118-208",
+        "BSA-20261118-209",
+        "BSA-20261118-210"
+      ],
+      "differenceFromLinkedIncident": "The independently owner authorized new four-activity Yoga6 Gemini worker passed 52 cross-path tests plus 26 subtests, 108 genuine Chrome 698 checks and GitHub CI 44295739064 exact head. The first real normal --advance-new-four --execute invocation nevertheless returned STOP_YOGA6_RECOVERY_WORKER UnboundLocalError before any new Gemini role claim or aggregate. All four expected new source SHA folders were absent, confirming no paid request submission and no ambiguity. The new branch uses diagnose_declared_generation_support which is bound at module scope but a redundant function-scoped import in a later --advance-revised-96 branch made the name LOCAL in all of main(), causing UnboundLocalError in the earlier new-four branch. This is an entrypoint coverage/lexical scoping defect distinct from previous Chrome cache BSA210 or scientific failures. Remove only the redundant late diagnostic import; the ordinary main() uses its existing module-level binding. Add synthetic full normal-dispatch integration tests reaching metadata preflight and local post-review advancement without opening provider clients. The previously approved exact four-input max8 Gemini paid charter remains immutable and unspent; old unknown/failed source review evidence unchanged. Must pass exact new-head CI before retrying the original legitimate 4 new activity inputs.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Yoga6 normal Python main() four-new paid-gated branch before Gemini provider submission, under the exact Section9.2 four-source charter",
+        "Source-free isolated normal entrypoint mocking host, source, Chrome, Gemini SDK, metadata and paid reviewer; Python function-level import-shadow regression"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/run_v3_yoga6_recovery_worker.py",
+        "triggerMarker": "if args.advance_new_four:",
+        "remedyMarker": "capability=diagnose_declared_generation_support(cfg)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "if args.advance_new_four:"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_four_new92_worker_dispatch.py",
+          "kind": "python",
+          "marker": "test_real_normal_cli_branch_invokes_capability_without_local_shadow"
+        },
+        {
+          "path": "tests/test_v3_four_new92_worker_dispatch.py",
+          "kind": "python",
+          "marker": "test_incompatible_new_four_modes_stop_before_provider"
+        }
+      ],
+      "nextAction": "Verify local 13 focused tests plus 4 subtests, recurrence contract and lint. Commit and require exact-head hosted CI before retrying the authorized new four SHA reviewer inputs. Original paid call count zero, no role submitted, no old ambiguity replay, publication false."
     }
   ]
 }
