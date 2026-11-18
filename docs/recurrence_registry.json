@@ -5407,6 +5407,47 @@
         }
       ],
       "nextAction": "Verify local 13 focused tests plus 4 subtests, recurrence contract and lint. Commit and require exact-head hosted CI before retrying the authorized new four SHA reviewer inputs. Original paid call count zero, no role submitted, no old ambiguity replay, publication false."
+    },
+    {
+      "id": "BSA-20261118-212",
+      "class": "hosted-linux-test-fixture-missing-windows-localappdata-causes-false-normal-dispatch-fail",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261117-185",
+        "BSA-20261118-208",
+        "BSA-20261118-211"
+      ],
+      "differenceFromLinkedIncident": "Owner new-4 Yoga6 Gemini branch runtime had already been fixed for Python local import shadowing at commit 76d63f9, and local Windows regression, actual 108/698 browser and recurrence passed. GitHub Ubuntu CI run 44297233694 failed one normal main() test with 3 != 0 because Ubuntu has no Windows LOCALAPPDATA environment variable, and the test mocked checked_private_root but never mocked the required environment variable preflight. Reproduced exact failure on actual Yoga6 by removing LOCALAPPDATA from subprocess environment; before test repair it failed the same single case. Repair only the synthetic test harness by patch.dict(os.environ, LOCALAPPDATA=isolated TemporaryDirectory) for the mocked happy path, and add independent negative control with empty environment asserting the production normal worker still stops STOP_LOCALAPPDATA_MISSING with exit3 before external Gemini calls. No runtime or authorization gate weakened, and no Gemini calls performed; the owner authorization for four previously untouched Section9.2 activities remains unused until new exact HEAD CI passes.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "GitHub hosted Ubuntu Python 3.12 unittest collection without Windows LOCALAPPDATA",
+        "Yoga6 PowerShell with explicitly unset LOCALAPPDATA and isolated Python test fixture, no model calls"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/run_v3_yoga6_recovery_worker.py",
+        "triggerMarker": "if not local:",
+        "remedyMarker": "STOP_LOCALAPPDATA_MISSING",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "if not local:"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_four_new92_worker_dispatch.py",
+          "kind": "python",
+          "marker": "test_real_normal_cli_branch_invokes_capability_without_local_shadow"
+        },
+        {
+          "path": "tests/test_v3_four_new92_worker_dispatch.py",
+          "kind": "python",
+          "marker": "test_missing_localappdata_is_still_denied_before_any_model"
+        }
+      ],
+      "nextAction": "Pass current full recurrence and lint, commit portable test and check hosted exact-head GitHub CI success before retrying four new authorized Gemini requests. No paid roles submitted."
     }
   ]
 }

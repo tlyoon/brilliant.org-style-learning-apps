@@ -4,6 +4,7 @@ Tests make no network, browser or Gemini calls. They reach the actual
 main() four-new-activity dispatch through mocks of only the external steps.
 """
 from contextlib import ExitStack
+import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
@@ -16,6 +17,10 @@ class FourNewWorkerDispatchTests(unittest.TestCase):
     def test_real_normal_cli_branch_invokes_capability_without_local_shadow(self):
         with TemporaryDirectory() as root, ExitStack() as stack:
             private = Path(root)
+            # Hosted Linux CI lacks Windows LOCALAPPDATA. Supply a synthetic
+            # isolated path to reach the same paid-gated worker branch without
+            # weakening the production missing-environment refusal.
+            stack.enter_context(patch.dict(os.environ, {"LOCALAPPDATA": root}))
             baseline = {"section96ScienceIntegrated": True,
                         "paidGeminiCalls": 0,
                         "proposalSha256": "a" * 64,
@@ -78,6 +83,19 @@ class FourNewWorkerDispatchTests(unittest.TestCase):
             capability.assert_called_once()
             review_action.assert_called_once()
             continuation.assert_called_once()
+
+    def test_missing_localappdata_is_still_denied_before_any_model(self):
+        with patch.dict(os.environ, {}, clear=True), patch(
+                "scripts.run_v3_yoga6_recovery_worker._print") as printed:
+            outcome = worker.main([
+                "--advance-new-four", "--execute",
+                "--allow-generated-text-transfer",
+            ])
+        self.assertEqual(outcome, 3)
+        printed.assert_called_once_with({
+            "status": "STOP_LOCALAPPDATA_MISSING",
+            "publicationAuthorized": False,
+        })
 
     def test_incompatible_new_four_modes_stop_before_provider(self):
         self.assertEqual(worker.main([
