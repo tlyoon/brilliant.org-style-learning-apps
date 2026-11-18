@@ -49,6 +49,9 @@ from app_generator.runtime.v3_frozen_tail_forward import (
 from app_generator.runtime.v3_source_free_forward import (
     advance_source_free_until_boundary,
 )
+from app_generator.runtime.v3_revised96_forward import (
+    advance_post_revised96_science,
+)
 from app_generator.runtime.v3_provider_restoration import (
     plan_authorized_independent_recovery_trial,
     known_bsa196_source_claims_present,
@@ -101,6 +104,18 @@ def _complete_source_free_with_browser(private: Path, result: dict) -> dict:
     return {**result,"realCandidateBrowserAcceptance":qa,
             **({"scienceRevisionBrowserAcceptance":science}
                if science is not None else {})}
+
+
+def _continue_revised96_source_free(private: Path, reviewed: dict) -> dict:
+    """BSA208 normal dispatcher: bounded local work follows saved Gemini roles.
+
+    Source-bound genuine role validation occurs in advance_revised96_reviews
+    and independently in advance_source_free_until_boundary. No provider
+    request or old-role replay is made by this continuation.
+    """
+    return advance_post_revised96_science(
+        reviewed,lambda: _complete_source_free_with_browser(
+            private,advance_source_free_until_boundary(COURSE,ROOT,private)))
 
 
 def _advance_unchanged_frozen_tail(args, private: Path,
@@ -427,10 +442,19 @@ def main(argv: list[str] | None = None) -> int:
                 max_activities=args.max_forward_activities,
                 max_seconds=args.max_forward_seconds,
                 capability=capability,review_one=review_one)
+            # BSA208: complete the next safe local stage in THIS authorized
+            # invocation. The verified old roles cannot be replayed; a
+            # "batch completed" with genuine science FAIL must not advance.
+            post=_continue_revised96_source_free(private,result)
             _print({**result,"sourceFreeBrowserOriginal":
                     old_browser.get("status"),"sourceFreeBrowserScienceRevision":
-                    new_browser.get("status")})
-            return 0 if result["status"]=="REVISED96_AUTHORIZED_BATCH_COMPLETED" else 3
+                    new_browser.get("status"),
+                    "postReviewAutomaticContinuation":post})
+            return 0 if (
+                result["status"]=="REVISED96_AUTHORIZED_BATCH_COMPLETED"
+                and post["status"]==
+                    "REVISED96_AUTOMATICALLY_ADVANCED_TO_108_BROWSER_PASS"
+            ) else 3
         if args.source_free_advance:
             require_authorized_native_review_host(AUTHORITY)
             _print(_complete_source_free_with_browser(

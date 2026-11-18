@@ -167,6 +167,7 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "twoRevised96GenuineModelPassesBeforeNew108Roster",
     "historicalOriginalFailedOrUnknownCannotBecomeNewModelPass",
     "fullyRevised108ChromeSourceIdentitySeparateFromLegacyProposal",
+    "postRevised96GenuinePassAutoDispatchesLocal108Chrome",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

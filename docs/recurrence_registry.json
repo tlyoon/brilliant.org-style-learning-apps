@@ -4676,6 +4676,78 @@
         }
       ],
       "nextAction": "Run bounded complete local regression and exact-head CI, then Yoga6 NORMAL --source-free-advance verifies newly staged c02dcdc... proposal in actual 698 Chrome across all 108 activities with both corrected Section9.6 indices5,9 and 648 locale/viewport interactions; second restart reuses exact identity receipts without revisiting. Preserve original unreviewed and historically uncertain original activity/authorization/release boundaries; do not claim all108 independent scientific acceptance or publication."
+    },
+    {
+      "id": "BSA-20261118-208",
+      "class": "completed-two-revised-science-review-did-not-automatically-invoke-next-source-free-108-browser-stage",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-175",
+        "BSA-20261117-185",
+        "BSA-20261118-206",
+        "BSA-20261118-207"
+      ],
+      "differenceFromLinkedIncident": "The existing genuine two-revised Gemini normal dispatcher returned immediately after complete model-review outcomes, requiring a separate prompt and --source-free-advance invocation to assemble and browser-check the newly valid 108-activity roster. BSA207 already made source-bound staging available and BSA185 had previously addressed forward progress for original frozen requests, but post-review dispatch wiring was absent. BSA208 integrates a bounded next-stage callback into the existing revised96 entrypoint: only two independently verified genuine source-hash scientific PASS outcomes cause automatic local versioned staging plus 698-check real Chrome, never a completed scientific FAIL, partial review, historical uncertain role or model retry. Source-free results must independently confirm the exact new proposal, all 108 activities, 648 locale/viewport checks, 698 total checks, zero new paid calls, false admission and false publication. Previous owner charters and historical evidence remain immutable. Offline adversarial tests and real owner Yoga6 browser+CI are required for resolution.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Yoga6 actual saved revised96 index5/index9 independent complete two-Gemini roles, versioned new 108-activity candidate and verified Selenium Chrome environment",
+        "Synthetic no-provider post-review callback scenarios with corrupt results, scientific FAIL, uncertainty, false browser receipts and local crash/restart"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_revised96_forward.py",
+        "triggerMarker": "def advance_post_revised96_science(",
+        "remedyMarker": "forward = run_source_free()",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_revised96_forward import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_revised96_forward.py",
+          "kind": "python",
+          "marker": "test_two_genuine_passes_advance_one_sourcefree_and_browser_stage"
+        },
+        {
+          "path": "tests/test_v3_revised96_forward.py",
+          "kind": "python",
+          "marker": "test_scientific_fail_complete_is_not_two_passes"
+        },
+        {
+          "path": "tests/test_v3_revised96_forward.py",
+          "kind": "python",
+          "marker": "test_uncertain_or_incomplete_batch_does_not_invoke_sourcefree"
+        },
+        {
+          "path": "tests/test_v3_revised96_forward.py",
+          "kind": "python",
+          "marker": "test_browser_or_staging_not_proven_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_revised96_forward.py",
+          "kind": "python",
+          "marker": "test_local_failure_preserves_completed_reviews_for_next_restart"
+        },
+        {
+          "path": "tests/test_v3_revised96_forward.py",
+          "kind": "python",
+          "marker": "test_reused_bounded_browser_receipt_is_accepted_without_paid_call"
+        },
+        {
+          "path": "tests/test_v3_revised96_forward.py",
+          "kind": "python",
+          "marker": "test_actual_normal_worker_dispatches_registered_local_stage"
+        },
+        {
+          "path": "tests/test_v3_revised96_forward.py",
+          "kind": "python",
+          "marker": "test_worker_skips_local_stage_on_saved_review_uncertainty"
+        }
+      ],
+      "nextAction": "Run whole normal regression contract and 41 targeted real code unit tests with negative controls, then verify actual old two-role Yoga6 evidence through source-free bounded normal dispatcher with zero API calls and exact committed 698 Chrome acceptance. Require exact final-head hosted CI. No new paid requests, course admission or publication."
     }
   ]
 }

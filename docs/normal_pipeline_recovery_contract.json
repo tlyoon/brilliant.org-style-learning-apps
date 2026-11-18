@@ -70,7 +70,8 @@
     "revised96TwoIndependentGeminiPerActivityFourTotal": true,
     "twoRevised96GenuineModelPassesBeforeNew108Roster": true,
     "historicalOriginalFailedOrUnknownCannotBecomeNewModelPass": true,
-    "fullyRevised108ChromeSourceIdentitySeparateFromLegacyProposal": true
+    "fullyRevised108ChromeSourceIdentitySeparateFromLegacyProposal": true,
+    "postRevised96GenuinePassAutoDispatchesLocal108Chrome": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",
