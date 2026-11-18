@@ -4261,6 +4261,158 @@
           "marker": "test_normal_worker_unknown_valueerror_globally_stops_before_sdk"
         }
       ]
+    },
+    {
+      "id": "BSA-20261118-201",
+      "class": "genuine-two-gemini-scientific-fail-floor-torque-and-chinese-mass-line-deterministic-repair",
+      "status": "resolved",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261105-114",
+        "BSA-20261117-190",
+        "BSA-20261118-195",
+        "BSA-20261118-200"
+      ],
+      "differenceFromLinkedIncident": "Earlier source-bound Section9.6 corrections targeted an unrecoverable provider ValueError and a separate original model PASS. Newly AUTH-key restored real two Gemini reviewers both COMPLETE for original index9 and agree physicsAnswer FAIL because an object on a frictionless floor has a supporting normal force that can oppose off-centre torque; they also agree Chinese ?? incorrectly labels center of mass in exactly three source fields. This is a genuine scientific/content FAIL, NOT provider incapacity. The normal sourcefree worker had no historical-matched science-failure solver and its old 108-activity browser PASS is not academic evidence. New immutable original index9 slice SHA and two real reviewer role SHAs plus aggregate SHA verify actual failed dimensions; deterministic source-free solver stages a NEW 18-activity section retaining prior index5 repair but correcting only index9 prompt in EN/MS/ZH to a free-floating gravity-free unsupported rigid body and replacing exactly three erroneous Chinese ?? terms by ??. Normal source-free pipeline imports and executes the solver automatically, source-bound private fsync stored two-artifact output and no previous review rewritten. Real Yoga6 native --source-free-advance after the actual four-reviewer batch produced corrected SHA 65e35a... and one-review-input SHA 45d6... with zero new model calls, original 75 assessed/72 PASS unchanged, and existing unadmitted source-bound browser 698 checks PASS without conflating this newly corrected candidate. Additional synthetic realistic failed two-Gemini tests enforce tamper/forged old claims, old source drift, exact isolated changed fields and normal production dispatcher with no new paid role. Distinct new versioned scientific QA still pending.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Actual Yoga6 frozen Section9.6 original, immutable original index9 two genuine Gemini FAIL roles and aggregate, earlier versioned idx5 candidate and private model evidence",
+        "Real frozen 9.6 source cross-platform, synthetic two-Gemini scientific FAIL with SHA-bound original slice, fault injections and source-free normal pipeline restart"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_section96_scientific_failure_repair.py",
+        "triggerMarker": "def stage_known_section96_scientific_failure(",
+        "remedyMarker": "_NEW_PROMPT = {",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_source_free_forward.py",
+            "marker": "from app_generator.runtime.v3_section96_scientific_failure_repair import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_real_original_source_scientific_repair_is_one_new_version"
+        },
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_new_one_activity_input_is_not_old_request_or_model_pass"
+        },
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_change_both_old_reviewer_claims_refuses_without_repair"
+        },
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_tampered_failed_aggregate_is_not_read_as_genuine_review"
+        },
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_restage_rejects_modified_immutable_scientific_proposal"
+        },
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_registered_scientific_repair_runs_in_normal_sourcefree_worker"
+        },
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_forged_pass_role_does_not_justify_synthetic_failure_repair"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261118-202",
+      "class": "new-scientific-corrected-section96-index9-version-not-independently-reviewed-or-allowed-by-existing-paid-charter",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261105-114",
+        "BSA-20261117-190",
+        "BSA-20261118-201"
+      ],
+      "differenceFromLinkedIncident": "BSA201 has produced and SHA-bound a new corrected index9 activity, but the actually authorized original-only 9.6 tail campaign and exact single revised Section9.2 paid charter do not authorize submitting changed Section9.6 index9. A source-free 698 Chrome PASS on a previous unadmitted 108-activity proposal does not validate the distinct new scientific-fail correction. Genuine new independent two-Gemini science/language/visual/accessibility assessment and a separately versioned 108-course proposal containing BOTH revised Section9.6 indices5 and9 are still missing; no old FAIL/unknown may be upgraded to PASS.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Actual Yoga6 private corrected Section9.6 SHA 65e35a... and distinct one changed-activity index9 QA source SHA 45d6ba..., owner paid charter unchanged",
+        "Cross-platform synthetic source-bound scientific repair review-input guard and authorized workflow scope test"
+      ],
+      "nextAction": "Obtain explicit owner permission to extend the paid review contract to the NEW isolated Section9.6 index9 candidate SHA 45d6ba0cf52b952bbc9267bb94893d3642aa2b1fa3322fd49a0e4b4dd9b169d6, at most two genuine independent Gemini calls, no old original request replay; stage genuine QA and verify reviewer claims. Only after a real new PASS may a further source-bound versioned 108 activity proposal combine old 9.6 index5 corrected text and new index9 and run fresh real rendering/scientific acceptance. The remaining untouched originals12..17 may separately advance under existing original-only authorization with finite per-invocation budget; do not auto-publish.",
+      "regressions": [
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_new_one_activity_input_is_not_old_request_or_model_pass"
+        },
+        {
+          "path": "tests/test_v3_paid_review_authorization.py",
+          "kind": "python",
+          "marker": "test_invalid_workflow_or_scope_is_rejected"
+        }
+      ]
+    },
+    {
+      "id": "BSA-20261118-203",
+      "class": "completed-two-gemini-scientific-content-fail-incorrectly-poisons-unrelated-next-original-provider-restart",
+      "status": "resolved",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261118-193",
+        "BSA-20261118-196",
+        "BSA-20261118-200",
+        "BSA-20261118-201"
+      ],
+      "differenceFromLinkedIncident": "Genuine new AQ-key four-activity original Section9.6 Yoga6 review completed two independent Gemini roles each for indices8 PASS,9 SCIENTIFIC_REPAIR_REQUIRED,10 PASS,11 PASS, with 4 genuine latest supplemental PASS and 1 content FAIL. The same normal worker completed its 4-activity finite budget with no provider error, but next restart could not review untouched original index12: BSA200 persisted old Auth restoration only if tail.failed==0, wrongly treating returned scientific FAIL as provider outage. BSA201 source-bound correction now separately staged for genuine physics/Chinese index9 defect. New code in normal provider-restoration path accepts ONLY the one proven source-bound original index9 scientific FAIL with exact unchanged two actual original role SHA and aggregate, previous versioned idx5 parent SHA and new corrected idx9 candidate+one-item input SHA with exact immutable receipts; the old failed scientific verdict stays FAIL and awaits new authorization. It retains BSA200 exact original index7 genuine PASS, existing two AQ metadata with no paid probe, and BSA199 old unclassified provider no-replay witness. If another failed/unknown/reserved role, role/receipt/source tamper, unreviewed revision, explicit denial or new quota issue appears, it continues to STOP. Real Yoga6 prior STOP reproduces; with exact real evidence after fix read-only provider restoration now READY_AFTER_INDEPENDENT_GEMINI_REVIEW for next original index12, previous verified PASS4, scientific failed1 and no paid calls; normal ungated provider status remains STOP.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Actual owner Yoga6 real persisted two Gemini independent science FAIL for original index9 plus unchanged index7/8/10/11 PASS and no extra provider errors",
+        "Portable source-bound synthetic two independent scientifically failed roles, immutable SHA correction, altered receipt/third unknown historical faults and normal restored provider-gate unit regressions"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_provider_restoration.py",
+        "triggerMarker": "def _verified_separate_scientific_fail_repair(",
+        "remedyMarker": "or not _verified_separate_scientific_fail_repair(private,tail)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_provider_restoration import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_verified_local_scientific_fail_not_mistaken_for_api_outage"
+        },
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_tampered_failed_aggregate_is_not_read_as_genuine_review"
+        },
+        {
+          "path": "tests/test_v3_section96_scientific_failure_repair.py",
+          "kind": "python",
+          "marker": "test_registered_scientific_repair_runs_in_normal_sourcefree_worker"
+        },
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_a_third_unknown_after_migration_reopens_stop"
+        },
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_explicit_project_denial_stops_even_with_exact_witness"
+        }
+      ]
     }
   ]
 }

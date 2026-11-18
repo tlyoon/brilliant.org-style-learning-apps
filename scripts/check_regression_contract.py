@@ -154,6 +154,9 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "liveMigratedCredentialTrialUsesNormalTwoGeminiNoReplayCheckpoint",
     "postMigrationVerifiedTwoRolePassResumesNextUntouchedOnly",
     "postProbationNoReplayWitnessPersistsAcrossSessions",
+    "scienceFailIsSourceBoundAndNotMistakenForProviderOutage",
+    "sourcefreeScientificFailRepairUsesTwoRealRoleHashes",
+    "changedScienceActivityNeedsNewPaidAndVersionApproval",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

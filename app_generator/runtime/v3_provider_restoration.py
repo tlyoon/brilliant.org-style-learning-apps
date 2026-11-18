@@ -44,6 +44,107 @@ _RESTORED_ROLE_SHAS = (
 )
 
 
+def _verified_separate_scientific_fail_repair(
+    private: Path, tail: dict, *,
+    expected_role_shas: tuple[str, str] | None = None,
+    expected_aggregate_sha: str | None = None,
+) -> bool:
+    """BSA-203: repaired REAL scientific FAIL is not provider downtime.
+
+    A scientific FAIL never becomes PASS: the original reviewer state must
+    remain failed and the separate, source-bound NEW candidate must exist
+    intact. A third unknown provider error remains controlled elsewhere.
+    """
+    failures = [row for row in tail.get("rows",[])
+                if row.get("state") == "SUPPLEMENTAL_SCIENTIFIC_REPAIR_REQUIRED"]
+    count = tail.get("supplemental",{}).get("failed")
+    if count == 0 and not failures:
+        return True
+    if (count != 1 or len(failures)!=1 or failures[0].get("index")!=9):
+        return False
+    from app_generator.runtime.v3_section96_scientific_failure_repair import (
+        _OLD_SLICE, _ROLE_SHAS, _AGGREGATE_SHA, _CHANGED,
+    )
+    # The normal executor ALWAYS uses the two ACTUAL pinned private SHA
+    # witnesses. Optional parameters are only for isolated synthetic
+    # fault-injection regression fixtures.
+    role_shas=_ROLE_SHAS if expected_role_shas is None else expected_role_shas
+    aggregate_sha=(_AGGREGATE_SHA if expected_aggregate_sha is None
+                   else expected_aggregate_sha)
+    if (not isinstance(role_shas,tuple) or len(role_shas)!=2
+            or any(not isinstance(x,str) or len(x)!=64
+                   or set(x)-set("0123456789abcdef")
+                   for x in (*role_shas,aggregate_sha))):
+        return False
+    if failures[0].get("slicePackageSha256") != _OLD_SLICE:
+        return False
+    repair_sha="65e35a3727090119031411422a2728e1fefb2cb0c0ae71dd3307937eec2871dd"
+    review_sha="45d6ba0cf52b952bbc9267bb94893d3642aa2b1fa3322fd49a0e4b4dd9b169d6"
+    previous_sha="bf9c5553f435b53a8822e1a907811d61d0fcc286d22e85e3473ce38d59ffb49d"
+    folder=private/"scientific-failure-rollforward"/"section-9-6"/repair_sha
+    sub=private/"scientific-failure-review-inputs"/"section-9-6"/review_sha
+    source=folder/"package.json"
+    receipt=folder/"review-required.json"
+    single=sub/"package.json"
+    single_receipt=sub/"review-required.json"
+    originals=private/("v3-generated-"+_OLD_SLICE)/"batches"
+    checks=[source,receipt,single,single_receipt,
+            originals/("v3-assessment-"+_OLD_SLICE+".json")]
+    checks.extend(originals/f"v3-review-{_OLD_SLICE[:12]}-000-{i}.json"
+                  for i in (0,1))
+    if (any(p.is_symlink() or not p.is_file()
+            or p.stat().st_size>8_000_000 for p in checks)
+            or any(p.is_symlink() for p in (folder,sub,originals))):
+        return False
+    if (sha256(source.read_bytes()).hexdigest()!=repair_sha
+            or sha256(single.read_bytes()).hexdigest()!=review_sha
+            or sha256(checks[4].read_bytes()).hexdigest()!=aggregate_sha):
+        return False
+    old_shas=tuple(sha256(p.read_bytes()).hexdigest() for p in checks[5:])
+    if old_shas!=role_shas:
+        return False
+    try:
+        expected=json.loads(receipt.read_text(encoding="utf8"))
+        sliced=json.loads(single_receipt.read_text(encoding="utf8"))
+        aggregate=json.loads(checks[4].read_text(encoding="utf8"))
+    except (OSError,UnicodeError,ValueError):
+        return False
+    # BSA-175/201: the receipt must match the atomic SHA-bound writer
+    # exactly; whitespace edits are not valid new immutable provenance.
+    if (receipt.read_bytes() != (
+            json.dumps(expected,ensure_ascii=True,sort_keys=True,
+                       indent=2)+"\n").encode("utf8")
+            or single_receipt.read_bytes() != (
+                json.dumps(sliced,ensure_ascii=True,sort_keys=True,
+                           indent=2)+"\n").encode("utf8")):
+        return False
+    return bool(
+        expected.get("contract") ==
+            "BOSLA_V3_SCIENTIFIC_FAILURE_ROLLFORWARD_V1"
+        and expected.get("parentPackageSha256")==previous_sha
+        and expected.get("originalPackageSha256")==_PARENT
+        and expected.get("candidatePackageSha256")==repair_sha
+        and expected.get("failedOriginalReviewSliceSha256")==_OLD_SLICE
+        and expected.get("failedReviewAggregateSha256")==aggregate_sha
+        and expected.get("failedReviewerRoleSha256s")==list(role_shas)
+        and expected.get("activityIndex")==9
+        and expected.get("activityId")=="int-easy-line-of-action-motion"
+        and sorted(expected.get("changedFieldPaths",[]))==sorted(_CHANGED)
+        and expected.get("newModelConsensusPassClaimed") is False
+        and expected.get("publicationAuthorized") is False
+        and expected.get("versionedScopeAdmitted") is False
+        and sliced.get("candidatePackageSha256")==review_sha
+        and sliced.get("parentPackageSha256")==repair_sha
+        and sliced.get("newModelConsensusPassClaimed") is False
+        and sliced.get("publicationAuthorized") is False
+        and isinstance(aggregate.get("reviews"),list)
+        and len(aggregate["reviews"])==1
+        and isinstance(aggregate["reviews"][0],dict)
+        and aggregate["reviews"][0].get("status")==
+            "AI_REPAIR_REQUIRED"
+    )
+
+
 def _verified_restored_index7(
     private: Path, tail: dict, *,
     expected_role_shas: tuple[str, str] = _RESTORED_ROLE_SHAS,
@@ -61,7 +162,7 @@ def _verified_restored_index7(
             or not isinstance(tail.get("supplemental"),dict)
             or tail["supplemental"].get("passed",0)<1
             or tail["supplemental"].get("uncertain")!=1
-            or tail["supplemental"].get("failed")!=0
+            or not _verified_separate_scientific_fail_repair(private,tail)
             or tail["supplemental"].get("reserved")!=0
             or not any(
                 row.get("index")==7

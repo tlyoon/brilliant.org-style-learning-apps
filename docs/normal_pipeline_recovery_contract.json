@@ -57,7 +57,10 @@
     "migrationProbationPreservesUncertainOldCallsAndStopsOnThirdUnknown": true,
     "liveMigratedCredentialTrialUsesNormalTwoGeminiNoReplayCheckpoint": true,
     "postMigrationVerifiedTwoRolePassResumesNextUntouchedOnly": true,
-    "postProbationNoReplayWitnessPersistsAcrossSessions": true
+    "postProbationNoReplayWitnessPersistsAcrossSessions": true,
+    "scienceFailIsSourceBoundAndNotMistakenForProviderOutage": true,
+    "sourcefreeScientificFailRepairUsesTwoRealRoleHashes": true,
+    "changedScienceActivityNeedsNewPaidAndVersionApproval": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",
