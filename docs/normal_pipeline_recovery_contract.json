@@ -52,7 +52,10 @@
     "legacy50BrowserReceiptTriggersAutomaticFullReverification": true,
     "readonlyModelActionsCheckedOnTwoExistingCredentials": true,
     "legacyApiKeyFormatWarnsWithoutClaimingHistoricalCause": true,
-    "readonlyProviderStatusCannotProveGenerationQuotaOrBilling": true
+    "readonlyProviderStatusCannotProveGenerationQuotaOrBilling": true,
+    "migratedAuthRequiresExactOldClaimHashesForNewActivityProbation": true,
+    "migrationProbationPreservesUncertainOldCallsAndStopsOnThirdUnknown": true,
+    "liveMigratedCredentialTrialUsesNormalTwoGeminiNoReplayCheckpoint": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

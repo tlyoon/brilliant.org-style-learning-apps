@@ -1,5 +1,9 @@
 # Context index
 
+## 18 Nov 2026 — BSA-199 native AQ migration one-new-original recovery
+
+Owner updated both Yoga6 configured Gemini keys from Standard to AQ Auth; both read-only metadata GET200, model generateContent declared, new dotenv epoch later than immutable two old BSA196 ClientError roles. Default provider circuit STOP still correct; exact old SHA-bound role evidence not replayable. New narrow BSA199 `known_bsa196_source_claims_present` preflight avoids new SDK access for unrelated unknowns; the allowed path requires exact old original ValueError and two ClientError SHA witnesses, exact frozen untouched index7 activity SHA, fresh two-key AQ metadata. Only one separately authorized real index7 original activity with two independent Gemini scientific review calls; native SDK timeout bounded 180s each, zero SDK retry. Real owner source-free plan READY_ONE_NEW_AUTHORIZED_ACTIVITY_PROBATION, ordinary default STOP. Eight negative and positive migration stress cases + 44 focused historical/reviewer tests passed after the unrelated SDK-load trigger regression was repaired; real paid result and CI must be recorded separately. Decision0058.
+
 ## 18 Nov 2026 — Close step 1 / step 2 source-free key diagnostics, 698 real browser QA
 
 BSA197: Native Yoga6 headless Chrome passed **698 real source-bound browser checks**, with all 108/108 true proposed Chapter9 activities displayed in EN/MS/ZH across both device viewports (648 locale-viewport checks), real checked-answer route through initial Section9.6 items and responsive privacy validations; zero Gemini calls, no full scientific/multimodal acceptance. Earlier authentic SHA-valid 50-check private browser receipt now automatically marked STALE_50_SPOT_CHECK_FULL_QA_REQUIRED and refreshed by normal worker before any acceptance; exact receipt bounds prevent false 698 PASS. Decision0056.

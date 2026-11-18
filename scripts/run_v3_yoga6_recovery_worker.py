@@ -51,6 +51,7 @@ from app_generator.runtime.v3_source_free_forward import (
 )
 from app_generator.runtime.v3_provider_restoration import (
     plan_authorized_independent_recovery_trial,
+    known_bsa196_source_claims_present,
 )
 from scripts.run_v3_yoga6_acceptance import (
     advance_real_candidate_browser_qa,
@@ -105,6 +106,26 @@ def _advance_unchanged_frozen_tail(args, private: Path,
     # sha-verified known old role, never any new or other ambiguity.
     probation = plan_authorized_independent_recovery_trial(
         COURSE, ROOT, private)
+    # BSA-199: the user has migrated Standard to AQ Auth keys AFTER the
+    # historical BSA-196 ClientErrors. Only an actual TWO-key, read-only
+    # models.get action check may offer a one-NEW-activity probation.
+    # All old checkpoint bytes and the ordinary provider STOP remain intact.
+    if (probation["status"]=="STOP_NEW_INDEPENDENT_PROVIDER_TRIAL"
+            and probation["originalProviderStatus"] ==
+                "STOP_UNCLASSIFIED_PROVIDER_REVIEW"
+            and known_bsa196_source_claims_present(private)):
+        from app_generator.runtime.v3_gemini_diagnostics import (
+            diagnose_declared_generation_support,
+        )
+        capability = diagnose_declared_generation_support(
+            _load_native_config())
+        if (capability["status"] ==
+                "MODEL_GENERATION_ACTION_DECLARED_QUOTA_UNVERIFIED"):
+            probation = plan_authorized_independent_recovery_trial(
+                COURSE,ROOT,private,
+                auth_migration_capability=capability)
+    migrated_claims=tuple(tuple(x) for x in probation.get(
+        "quarantinedMigratedClientErrorClaims",[]))
     permitted = (
         "READY_ORDINARY_PROVIDER",
         "READY_ONE_NEW_AUTHORIZED_ACTIVITY_PROBATION",
@@ -141,7 +162,8 @@ def _advance_unchanged_frozen_tail(args, private: Path,
     # paid transport; this remains mandatory across restarts.
     tail_plan = plan_frozen_original_tail(
         COURSE, ROOT, private, section="section-9-6")
-    supplemental = supplemental_provider_preflight(private, tail_plan)
+    supplemental = supplemental_provider_preflight(
+        private,tail_plan,migrated_clienterrors=migrated_claims)
     if supplemental != "READY":
         # Safely prepared before paid work was considered; do not repeat.
         _print({"status": supplemental, "sourceFreeRecovery": offline,
@@ -158,6 +180,14 @@ def _advance_unchanged_frozen_tail(args, private: Path,
     if delegated is not None:
         return delegated
     config = _load_native_config()
+    if migrated_claims:
+        # This one genuinely new, paid-review probation is strictly bounded:
+        # at most two roles, each with 180s SDK timeout and ZERO SDK retries.
+        # A timeout is AMBIGUOUS and must never trigger role replay.
+        from dataclasses import replace
+        config = replace(
+            config,gemini_api_timeout_seconds=min(
+                config.gemini_api_timeout_seconds,180))
     # Source-free metadata-only probe; must pass BEFORE any durable PRE_CALL
     # or possible paid request. The historical failure count selects only
     # a future NEW original-activity credential, never a replay.
@@ -191,7 +221,8 @@ def _advance_unchanged_frozen_tail(args, private: Path,
         # aggregate: no simulated provider-ready certificate is accepted.
         first = advance_frozen_tail_until_boundary(
             COURSE,ROOT,private,review_one,section="section-9-6",
-            max_activities=1,max_elapsed_seconds=args.max_forward_seconds)
+            max_activities=1,max_elapsed_seconds=args.max_forward_seconds,
+            migrated_clienterrors=migrated_claims)
         if (first["attemptedThisInvocation"] != 1
                 or first["verifiedNewSupplementalRowsThisInvocation"] != 1
                 or first["supplemental"]["passed"] !=

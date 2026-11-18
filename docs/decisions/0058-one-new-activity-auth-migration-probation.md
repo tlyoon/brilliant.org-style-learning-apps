@@ -1,0 +1,22 @@
+# Decision 0058 — Exactly one new original activity after actual Auth-key migration
+
+**Date:** 18 November 2026. **Incident:** BSA-20261118-199.
+**Prior relevant decisions:** 0040, 0055, 0057; **historical unclassified provider incident** BSA-20261118-196 remains immutable.
+
+## Reproduced, actual owner-machine blocker
+
+Two original Section 9.6 reviewer requests were previously submitted for source-bound frozen-original index6 `mcq-chal-nonuniform-density-rod`, supplemental package SHA `2eb44d0bf0dc715ac806ad353aacced57d7265c0245457a0d14c9429a6878954`; both saved independent role states `AMBIGUOUS ClientError` with neither response nor HTTP code. Their exact immutable claim SHA256 hashes are respectively `f168835612fe40e97241cdadd00ea61b088fc025dc45ce9c84a79abae39e4b92` and `4fedd6ad8191e6eae4c0ca3e9a211707c02aa738ea3ccbf8a45c10a40815a196`. The old original parent Section9.6 index5 ValueError remains immutable. Ordinary `provider_capacity_gate` correctly reported `STOP_UNCLASSIFIED_PROVIDER_REVIEW`, and original tail selector recognized index7 as the next UNREVIEWED activity. No replay of indices 5 or 6 is permitted.
+
+The owner confirms both old Gemini credential keys were Google **Standard** and has replaced them with Google **AQ Auth** credentials. The actual Yoga 6 `%LOCALAPPDATA%\\Microvid\\.env` was saved after the index6 failures. Both **selected** unique keys currently use AQ format, and fresh real Google SDK `models.get` metadata GET200 declared model `gemini-3.8-flash` supports `generateContent` for both keys. This is a source-free connectivity check, **not** proof that paid generation succeeds. Owner specifically authorized one bounded actual newly unsubmitted activity review with normal immutable two-Gemini scientific QA, not replay, broad new campaign, release or credential mutations.
+
+## Permanent, narrow executable response
+
+Use previously established exact SHA-bound provider-history recovery (BSA193), project-local SDK, offline source-bound browser QA, paid owner charter and immutable per-role PRE_CALL no-replay. Add to existing `provider_capacity_gate` a non-default, exact **two-role migration witness** that checks a pair of distinct valid SHA256 source/role hashes. The ordinary gate and generic SDK path never quarantine anything and remain stopped. For migration only, the provider selector requires original history SHA, exact old index6 pair SHA, exact frozen parent, current new untouched index7 slice SHA, two freshly verified AQ Auth slots, a source-free models.get 200 with generateContent declared by each, and local credential-file mtime later than the prior two actual submitted roles. Every check is recomputed before an operation; no current key or provider message is logged.
+
+One fresh index7 `mcq-chal-hollow-geometry-cm` may receive a bounded two independent Gemini reviewer trial, under the existing strict owner paid/transfer authorization, current actual Yoga6 host, single-activity budget, at most two Gemini calls, and fsynced PRE_CALL. The older two uncertain roles and original old role are neither rewritten nor inferred; the default provider circuit remains STOP; any new explicit denial, unknown third error, stale/tampered source or changed claim bytes is a hard STOP. A real two-reviewer consensus PASS may prove successful new transport *for this new activity only*, not scientific approval of either older missing response or all other learning content. Full release is not authorized.
+
+## Verification
+
+Regression tests generate realistic role checkpoint JSON, hash the actual bytes, then demonstrate: default STOP, two-claim exact match only under narrow explicit witness, old original role untouched, changed role SHA rejects, explicit 403 denial is always terminal, a third new ClientError reopens STOP, malformed witness rejected, and missing AQ/current metadata cannot grant the migration witness. Actual owner read-only plan after new key migration returned `READY_ONE_NEW_AUTHORIZED_ACTIVITY_PROBATION`, next original index7, 1 permitted activity, with both original and supplemental provider preflights independently reporting READY **only under the exact migrated witness**.
+
+The normal worker performs actual existing source-free browser recovery first; paid charter and no-replay gates remain enforceable. It then attempts only the distinct original index7 once, if all checks remain valid. Actual reviewer outcome and new HTTP status must be reported separately; a successful metadata probe must not be presented as a successful generation.

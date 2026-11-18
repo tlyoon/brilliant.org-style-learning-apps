@@ -35,7 +35,10 @@ _UNRECONCILED_DELIVERY = {
 }
 
 
-def supplemental_provider_preflight(private: Path, report: dict) -> str:
+def supplemental_provider_preflight(
+    private: Path, report: dict, *,
+    migrated_clienterrors: tuple[tuple[str, str, int], ...] = (),
+) -> str:
     """Read-only shared circuit for ALL exact-source independent slices.
 
     A durable PRE_CALL without a verified aggregate may have reached Google,
@@ -74,15 +77,28 @@ def supplemental_provider_preflight(private: Path, report: dict) -> str:
                     private, digest, package):
                 return "STOP_TAIL_UNVERIFIED_SUPPLEMENTAL_UNCERTAINTY"
     extra = [row["slicePackageSha256"] for row in report["rows"]]
-    capacity = provider_capacity_gate(
-        private, [], additional_package_shas=extra)
-    if capacity["status"] != "READY":
-        return "STOP_TAIL_SUPPLEMENTAL_PROVIDER_" + capacity["status"]
-    return "READY"
+    # A verified migrated-Auth one-activity probation may quarantine ONLY
+    # the exact two earlier BSA-196 role hashes. Ordinary paths default
+    # to no quarantine, retain provider-wide STOP and never replay.
+    if migrated_clienterrors:
+        capacity = provider_capacity_gate(
+            private, [], additional_package_shas=extra,
+            quarantined_migrated_clienterrors=migrated_clienterrors)
+    else:
+        capacity = provider_capacity_gate(
+            private, [], additional_package_shas=extra)
+    if capacity["status"] == "READY":
+        return "READY"
+    if (migrated_clienterrors and
+            capacity["status"] == "READY_RESTRICTED_HISTORICAL_QUARANTINE"
+            and capacity.get("migratedUnreconciledClientErrorsQuarantined")==2):
+        return "READY"
+    return "STOP_TAIL_SUPPLEMENTAL_PROVIDER_" + capacity["status"]
 
 
 def existing_frozen_original_tail_preflight(
-    course: Path, repo: Path, private: Path,
+    course: Path, repo: Path, private: Path, *,
+    migrated_clienterrors: tuple[tuple[str, str, int], ...] = (),
 ) -> str:
     """Protect ordinary V3 dispatch from older supplemental provider faults.
 
@@ -99,7 +115,8 @@ def existing_frozen_original_tail_preflight(
         return "READY"
     report = plan_frozen_original_tail(
         course, repo, private, section="section-9-6")
-    return supplemental_provider_preflight(private, report)
+    return supplemental_provider_preflight(
+        private, report, migrated_clienterrors=migrated_clienterrors)
 
 
 def _receipt(status: str, report: dict, *, attempted: int, verified: int) -> dict:
@@ -128,6 +145,7 @@ def advance_frozen_tail_until_boundary(
     max_activities: int = 4,
     max_elapsed_seconds: int = 900,
     monotonic: Callable[[], float] = time.monotonic,
+    migrated_clienterrors: tuple[tuple[str, str, int], ...] = (),
 ) -> dict:
     """Forward across genuine *new* frozen activities only; no paid call itself.
 
@@ -148,7 +166,8 @@ def advance_frozen_tail_until_boundary(
                 course,repo,private,section=section)
             # Check every older supplemental claim, not only the original
             # course roster, on EACH iteration and AFTER every restart.
-            safe = supplemental_provider_preflight(private,current)
+            safe = supplemental_provider_preflight(
+                private,current,migrated_clienterrors=migrated_clienterrors)
             if safe != "READY":
                 return _receipt(safe,current,
                                 attempted=attempted,verified=verified)

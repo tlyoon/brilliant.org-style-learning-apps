@@ -149,6 +149,9 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "readonlyModelActionsCheckedOnTwoExistingCredentials",
     "legacyApiKeyFormatWarnsWithoutClaimingHistoricalCause",
     "readonlyProviderStatusCannotProveGenerationQuotaOrBilling",
+    "migratedAuthRequiresExactOldClaimHashesForNewActivityProbation",
+    "migrationProbationPreservesUncertainOldCallsAndStopsOnThirdUnknown",
+    "liveMigratedCredentialTrialUsesNormalTwoGeminiNoReplayCheckpoint",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

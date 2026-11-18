@@ -3459,7 +3459,7 @@
           },
           {
             "path": "app_generator/runtime/v3_frozen_tail_forward.py",
-            "marker": "safe = supplemental_provider_preflight(private,current)"
+            "marker": "safe = supplemental_provider_preflight("
           }
         ]
       },
@@ -4145,6 +4145,86 @@
           "marker": "test_quota_denial_not_bypassed_by_alternate_key"
         }
       ]
+    },
+    {
+      "id": "BSA-20261118-199",
+      "class": "confirmed-standard-to-auth-key-migration-new-activity-probation-under-old-unknown-clienterrors",
+      "status": "active",
+      "rootCauseFamily": "provider-no-replay",
+      "relatedIncidentIds": [
+        "BSA-20261118-193",
+        "BSA-20261118-195",
+        "BSA-20261118-196",
+        "BSA-20261118-198"
+      ],
+      "differenceFromLinkedIncident": "Actual Yoga6 source-free inspection shows two previously configured Standard keys migrated to two currently-selected AQ Auth credentials, with new dotenv mtime after immutable BSA-196 two ClientError roles. Both AQ slots yielded real models.get HTTP200 and declared generateContent. The ordinary provider circuit still correctly STOPs on old unknown-status ClientErrors. One separately authorized previously UNSUBMITTED frozen original Section9.6 index7 has now been source-verified for exactly one single-activity probation; old index5 ValueError and old index6 two ClientError claims immutable/no replay. New narrow runtime migration quarantine accepts only immutable exact two known statusless ClientError SHA witnesses and original known ValueError SHA, new config epoch, two Auth formats and fresh two-key metadata GET200. Any other unknown or explicit provider denial stops, no paid retry, no general relaxation. Tests exercise mutation, third unknown, denial, default STOP, only matched claims allowed; real source-free owner preflight yields one eligible index7 without any paid calls; real reviewer result must be separately confirmed.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "Yoga6 owner native AQ Auth credentials, real Google native SDK two-key metadata GET200 and historical exact immutable BSA-196 role claims",
+        "Portable synthetic independent one-activity review and provider circuit exact two-role SHA quarantine with attempted third unknown/error and explicit 403"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_provider_restoration.py",
+        "triggerMarker": "def _verified_migrated_auth_keys(",
+        "remedyMarker": "_OLD_CLIENTERROR_ROLES",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "auth_migration_capability=capability"
+          },
+          {
+            "path": "app_generator/runtime/v3_frozen_tail_forward.py",
+            "marker": "migrated_clienterrors=migrated_clienterrors"
+          },
+          {
+            "path": "app_generator/validation/v3_server_error_recovery.py",
+            "marker": "quarantined_migrated_clienterrors"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_default_never_quarantines_unclassified_submitted_roles"
+        },
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_exact_two_known_roles_only_under_narrow_witness"
+        },
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_a_third_unknown_after_migration_reopens_stop"
+        },
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_explicit_project_denial_stops_even_with_exact_witness"
+        },
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_corruption_of_either_historical_role_stops"
+        },
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_known_status_code_cannot_be_laundered_as_old_unknown"
+        },
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_incomplete_wrong_role_or_reordered_witness_rejected"
+        },
+        {
+          "path": "tests/test_v3_auth_migration_probation.py",
+          "kind": "python",
+          "marker": "test_migrated_auth_witness_without_new_role_auth_is_not_broad_gate"
+        }
+      ],
+      "nextAction": "After full local V3 regression and exact source-free preflight PASS, run only one separately authorized never-submitted frozen original Section9.6 index7 on actual Yoga6 using the existing two-Gemini V3 checkpoint. Inspect raw immutable claim states and safe HTTP error classification. Never retry original index5 or index6 and never synthesize model PASS. Preserve provider/release STOP if no authentic new two-reviewer consensus."
     }
   ]
 }

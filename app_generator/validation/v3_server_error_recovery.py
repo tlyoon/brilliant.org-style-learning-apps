@@ -23,6 +23,7 @@ def provider_capacity_gate(
     now: float | None = None,
     additional_package_shas: tuple[str, ...] | list[str] = (),
     quarantined_historical_claim: tuple[str, str] | None = None,
+    quarantined_migrated_clienterrors: tuple[tuple[str, str, int], ...] = (),
 ) -> dict:
     """Return only a privacy-safe, deterministic decision; never contact Google.
 
@@ -45,6 +46,28 @@ def provider_capacity_gate(
                        or set(item) - set("0123456789abcdef")
                        for item in quarantined_historical_claim)):
             raise ValueError("V3_PROVIDER_INVALID_HISTORICAL_CLAIM_WITNESS")
+    # BSA-199: AUTH-key migration may justify one separate, bounded
+    # previously unsubmitted review. Only the verified TWO exact legacy
+    # ClientError role claims may be quarantined; the caller must first
+    # prove owner scope, a genuine new AQ key epoch, and real GET200.
+    # The default circuit still STOPs, including every unknown new error.
+    if (not isinstance(quarantined_migrated_clienterrors, tuple)
+            or len(quarantined_migrated_clienterrors) not in (0, 2)):
+        raise ValueError("V3_PROVIDER_MIGRATION_WITNESS_INVALID")
+    witness = {}
+    for entry in quarantined_migrated_clienterrors:
+        if (not isinstance(entry, tuple) or len(entry) != 3
+                or type(entry[2]) is not int or entry[2] not in (0, 1)
+                or any(not isinstance(s, str) or len(s) != 64
+                       or set(s) - set("0123456789abcdef")
+                       for s in entry[:2])
+                or (entry[0], entry[2]) in witness):
+            raise ValueError("V3_PROVIDER_MIGRATION_WITNESS_INVALID")
+        witness[(entry[0], entry[2])] = entry[1]
+    if witness and (len({entry[0] for entry in quarantined_migrated_clienterrors}) != 1
+                    or set(role for _, role in witness) != {0, 1}):
+        raise ValueError("V3_PROVIDER_MIGRATION_WITNESS_INVALID")
+    migrated_count = 0
     quarantined_count = 0
     events: list[float] = []
     failed_activities: set[tuple[str,str]] = set()
@@ -120,8 +143,19 @@ def provider_capacity_gate(
                     and data.get("reasonCode") == "ValueError"
                     and data.get("providerId") == "gemini_api"
                     and data.get("roleIndex") == 0)
+                migrated = (
+                    (digest, data.get("roleIndex")) in witness
+                    and sha256(claim.read_bytes()).hexdigest() ==
+                        witness[(digest, data.get("roleIndex"))]
+                    and data.get("reasonCode") == "ClientError"
+                    and data.get("providerId") == "gemini_api"
+                    and data.get("providerHttpStatus") is None
+                    and data.get("providerFailureClass") is None
+                    and data.get("responseSha256") is None)
                 if verified_legacy:
                     quarantined_count += 1
+                elif migrated:
+                    migrated_count += 1
                 else:
                     unclassified = True
             if (data.get("state") == "AMBIGUOUS"
@@ -140,6 +174,8 @@ def provider_capacity_gate(
     if (quarantined_historical_claim is not None
             and quarantined_count != 1):
         raise ValueError("V3_PROVIDER_HISTORICAL_CLAIM_WITNESS_MISMATCH")
+    if witness and migrated_count != 2:
+        raise ValueError("V3_PROVIDER_MIGRATION_WITNESS_MISMATCH")
     count = len(events)
     historic = len(failed_activities)
     if denied or "AUTH_OR_PROJECT_DENIED" in explicit_http_stops:
@@ -180,7 +216,9 @@ def provider_capacity_gate(
             }
     return {"status": (
                 "READY_RESTRICTED_HISTORICAL_QUARANTINE"
-                if quarantined_historical_claim is not None else "READY"),
+                if quarantined_historical_claim is not None
+                or quarantined_migrated_clienterrors else "READY"),
             "historicalUnrecoverableClaimsQuarantined": quarantined_count,
+            "migratedUnreconciledClientErrorsQuarantined": migrated_count,
             "serverErrorsLastHour": count,
             "serverErrorActivitiesHistorical": historic}
