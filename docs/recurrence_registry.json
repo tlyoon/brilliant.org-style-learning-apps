@@ -4615,7 +4615,7 @@
     {
       "id": "BSA-20261118-207",
       "class": "two-real-model-validated-revised-section96-passes-not-integrated-into-new-sourcebound-108-activity-proposal",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261116-175",
@@ -4639,15 +4639,7 @@
         "normalEntryPoints": [
           {
             "path": "app_generator/runtime/v3_versioned_acceptance_scope.py",
-            "marker": "two_revision_science=validated_section96_two_science_revision("
-          },
-          {
-            "path": "app_generator/runtime/v3_source_free_forward.py",
-            "marker": "science_in_proposal=candidate.get("
-          },
-          {
-            "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "if result.get(\"section96ScienceIntegrated\") is True:"
+            "marker": "from app_generator.runtime.v3_science_validated_roster import ("
           }
         ]
       },
