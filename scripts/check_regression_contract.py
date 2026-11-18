@@ -171,6 +171,7 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "newFourOriginal92ExactEightCallOwnerBoundary",
     "syntheticBrowserMutatedFixtureAlwaysFetchedFresh",
     "fourNewWorkerUsesSafeModuleLevelDiagnosticImport",
+    "fourNewSection92GenuinePassesSourceBoundInUnadmittedRoster",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

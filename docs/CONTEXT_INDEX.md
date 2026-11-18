@@ -1,5 +1,9 @@
 # Context index
 
+## 18 November 2026 — BSA213 genuine four new Section9.2 science PASSes integrated source-free
+
+The separate owner-authorized up-to-eight-call Gemini campaign on Yoga6 completed four original Section9.2 indices14–17 with eight genuine independently COMPLETE Gemini roles and four source-bound full V3 consensus PASS; no new uncertainty, previous original 75 assessed/72 PASS unchanged, index13 original science FAIL intact. Normal worker exit0 and postreview automatic source-bound 108 browser PASS. BSA213 remedies the versioned 108-course evidence inventory previously counting only 10 Section9.6 supplemental originals, omitting new four verified unchanged Section9.2: v3_section92_supplemental_reuse and normal versioned course builder now revalidate the exact four saved role aggregates before adding evidence, source-bound. Actual new unadmitted proposal SHA8afd6869... has 14 supplemental genuine original PASS, 86 potentially reusable unchanged originals, separately verified corrected 9.2 idx13 and revised 9.6 idx5/9, remaining19 not independently reviewed after supplemental; never marks whole 108 science PASS or release. Six fake-only tamper/no-role/counterfeit PASS and course-manifest regressions protect this. Decision0071/BSA213. Exact-head CI/real 108/698 Chrome required, no new paid calls.
+
 ## 18 November 2026 ? BSA212 portable mocked worker in hosted CI
 
 Hosted Ubuntu run44297233694 failed a new mocked four-input worker happy-path test because it assumed Windows LOCALAPPDATA existed. Reproduced failure on Yoga6 with variable unset; test fixture now patches a temporary environment for the happy path and has explicit missing-variable STOP regression. Production worker/authorization unchanged. Decision0070. No new Gemini calls; exact-head CI required before paid run.

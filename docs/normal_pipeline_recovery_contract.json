@@ -74,7 +74,8 @@
     "postRevised96GenuinePassAutoDispatchesLocal108Chrome": true,
     "newFourOriginal92ExactEightCallOwnerBoundary": true,
     "syntheticBrowserMutatedFixtureAlwaysFetchedFresh": true,
-    "fourNewWorkerUsesSafeModuleLevelDiagnosticImport": true
+    "fourNewWorkerUsesSafeModuleLevelDiagnosticImport": true,
+    "fourNewSection92GenuinePassesSourceBoundInUnadmittedRoster": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

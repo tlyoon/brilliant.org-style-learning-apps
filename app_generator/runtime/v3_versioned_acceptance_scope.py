@@ -24,6 +24,9 @@ from app_generator.runtime.v3_historical_role_rollforward import (
 from app_generator.runtime.v3_science_validated_roster import (
     validated_section96_two_science_revision,
 )
+from app_generator.runtime.v3_section92_supplemental_reuse import (
+    verified_section92_original_tail_passes,
+)
 from app_generator.runtime.v3_frozen_original_tail import (
     plan_frozen_original_tail, _slice as make_frozen_original_slice,
 )
@@ -103,6 +106,11 @@ def prepare_versioned_course_proposal(
         if r["state"] == "GENUINE_SUPPLEMENTAL_CONSENSUS_PASS"
     } if independent else {}
     supplementary_metadata = []
+    # BSA213: preserve source-bound four NEW original Section9.2 two-Gemini
+    # PASSes in this unadmitted version. They do NOT rewrite original 75/72
+    # or promote the original index13 scientific FAIL.
+    independent_92 = verified_section92_original_tail_passes(
+        course, repo, private_root)
     # BSA-190: a different, genuinely revised activity may replace an
     # unrecoverable *old* Section9.6 role in a NEW unadmitted course version.
     # Neither the old AI_UNCERTAIN nor a newly staged QA input counts as PASS.
@@ -262,6 +270,27 @@ def prepare_versioned_course_proposal(
                     # Reuse CANDIDATE: no accepted new version or new PASS.
                     "status": "POTENTIALLY_REUSABLE_NOT_RELEASE_ACCEPTED",
                 })
+        if label == "section-9-2":
+            for extra in independent_92:
+                index = extra["originalActivityIndex"]
+                if (not len(reviews) <= index < len(activities)
+                        or extra["section"] != label
+                        or extra["activityId"] != activities[index]["id"]
+                        or extra["sourcePackageSha256"] != digest
+                        or extra["activitySha256"] !=
+                           canonical_digest(activities[index])
+                        or corrected_items[index] != activities[index]):
+                    raise ValueError(
+                        "V3_PROPOSAL_NEW4_SCIENCE_REUSE_CHANGED_ACTIVITY")
+                supplementary_metadata.append(extra)
+                reuse.append({
+                    "section":label,
+                    "activityId":extra["activityId"],
+                    "activitySha256":extra["activitySha256"],
+                    "sourcePackageSha256":digest,
+                    "sourceReviewSha256":extra["sourceReviewSha256"],
+                    "status":"POTENTIALLY_REUSABLE_NOT_RELEASE_ACCEPTED",
+                })
         if label == "section-9-6":
             for index, supplemental in sorted(supplementary_pass.items()):
                 if not len(reviews) <= index < len(activities):
@@ -412,6 +441,10 @@ def prepare_versioned_course_proposal(
         unsigned["counts"]["revisedSection96NewGeminiConsensusPass"] = int(
             revised_96_qa_state ==
             "GENUINE_REVISED_SECTION96_GEMINI_PASS_NOT_ADMITTED")
+    if independent_92:
+        unsigned["section92FourNewGenuineOriginalReviews"] = independent_92
+        unsigned["counts"]["newFourSection92SupplementalConsensusPasses"] = (
+            len(independent_92))
     if supplementary_metadata:
         # Additions only when actual exact-version two-Gemini supplemental
         # evidence exists; historical proposal bytes remain unchanged when
