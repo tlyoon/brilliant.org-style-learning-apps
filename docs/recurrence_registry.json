@@ -4680,7 +4680,7 @@
     {
       "id": "BSA-20261118-208",
       "class": "completed-two-revised-science-review-did-not-automatically-invoke-next-source-free-108-browser-stage",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261116-175",
@@ -4747,7 +4747,7 @@
           "marker": "test_worker_skips_local_stage_on_saved_review_uncertainty"
         }
       ],
-      "nextAction": "Run whole normal regression contract and 41 targeted real code unit tests with negative controls, then verify actual old two-role Yoga6 evidence through source-free bounded normal dispatcher with zero API calls and exact committed 698 Chrome acceptance. Require exact final-head hosted CI. No new paid requests, course admission or publication."
+      "nextAction": "RESOLVED on exact owner Yoga6 with 41 focused unit tests plus 22 subtests PASS, normal recurrence and lint PASS, GitHub Actions 44285300060 SUCCESS on 460ef30, genuine previously saved two-Gemini roles read-only verified for both exact indexed slices, and same-worker registered local continuation executed 108/698 Chrome at exact 460ef30, proposal c02dcdc..., immutable browser receipt cbecf7dd..., paidGeminiCalls 0, exit0. Restart with exact same commit confirmed receipt reuse. Next independent boundary: outstanding other original scientific assessments, historical uncertain no replay, and V3 overall release readiness; new explicit provider scope required for any additional paid calls. No merge or publication."
     }
   ]
 }
