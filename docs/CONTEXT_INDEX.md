@@ -1,5 +1,9 @@
 # Context index
 
+## 18 November 2026 ? BSA213/214 exact GitHub CI and genuine new 108 roster accepted (source-free)
+
+Owner-authorized four new original Section9.2 index14?17 each genuine two-Gemini consensus PASS, eight role COMPLETE and eight paid calls consumed, original frozen 75/72 unchanged. Versioned sourcefree roster now reuses four genuine 9.2 + prior ten 9.6 unchanged supplemental results (14), 86 reusable unchanged source PASSES and separately corrected 9.2 index13/9.6 indices5+9 each genuine previous two-Gemini PASS. NEW unadmitted proposal SHA8afd6869... actual exact Git HEADd7d5273 108/698 Chrome PASS receipt238592b6..., GitHub hosted CI44303437538 SUCCESS, all fake SHA Linux negative controls and two-role source pins preserved. BSA213/214 RESOLVED; 19 content positions still unreviewed after supplemental, old uncertain roles no replay, no additional paid authorization, no merge/release.
+
 ## 18 November 2026 — BSA214 hosted Ubuntu synthetic Section9.2 original hash portability
 
 Hosted CI44301732336 at code6bb0e25 failed six new mock QA tests asserting Linux raw package SHA equals Yoga6 owner cfe7bab8; actual Git tracked vs Yoga6 Windows working bytes differ 182910 vs185151 (raw hashes327c9ae8 vs cfe7bab8) due checkout line endings. Actual Yoga6 NEW source-bound proposal8afd6869... passed all 108/698 real Chrome tests, and saved eight genuine Gemini reviewer roles remain unchanged. Decision0072 fixes ONLY synthetic fixture to derive its own local raw and isolated digest, patch test-scoped PARENT/PINNED without altering pinned paid owner SHA, adds production owner pin safety regression, rechecks fake role tamper. Local17 cross-path tests pass; fresh CI required for closure.
