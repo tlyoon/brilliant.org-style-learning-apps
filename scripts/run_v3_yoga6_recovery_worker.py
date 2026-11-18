@@ -328,6 +328,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--advance-revised-96", action="store_true",
                         help="Exact two changed Section9.6 source-SHA Gemini QA "
                              "under separate owner charter; never old-role replay.")
+    parser.add_argument("--advance-new-four", action="store_true",
+                        help="Exactly four untouched original Section9.2 items, "
+                             "two independent Gemini roles each, max 8 calls.")
     parser.add_argument("--source-free-advance", action="store_true",
                         help="Advance registered local repair, immutable QA "
                              "handoffs and untouched-original staging with "
@@ -336,8 +339,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-forward-seconds", type=int, default=900)
     args = parser.parse_args(argv)
     if args.advance_revised_96 and (
-            args.source_free_advance or args.diagnose_only or args.auto_advance):
+            args.source_free_advance or args.diagnose_only or args.auto_advance
+            or args.advance_new_four):
         _print({"status":"STOP_REVISED96_MODE_CONFLICT",
+                "publicationAuthorized":False})
+        return 2
+    if args.advance_new_four and (
+            args.source_free_advance or args.diagnose_only or args.auto_advance
+            or args.advance_revised_96):
+        _print({"status":"STOP_NEW4_MODE_CONFLICT",
                 "publicationAuthorized":False})
         return 2
     if args.source_free_advance and (
@@ -366,6 +376,85 @@ def main(argv: list[str] | None = None) -> int:
     )
     try:
         private = checked_private_root(chosen,localappdata=Path(local))
+        if args.advance_new_four:
+            # BSA209: separately owner-authorized 4 *new* original 9.2
+            # activity identities. The OLD science-failed idx13 and earlier
+            # ambiguous 9.1 roles are never revisited.
+            require_authorized_native_review_host(AUTHORITY)
+            from app_generator.runtime.v3_four_new92_review import (
+                authorize_four_new, exact_four_unreviewed,
+                advance_four_new, continue_four_to_browser,
+            )
+            inputs = exact_four_unreviewed(COURSE, ROOT, private)
+            if not args.execute:
+                _print({"status":"READY_FOUR_UNTOUCHED_SECTION92_INPUTS",
+                        "reviewInputs":[{"index":x["index"],
+                                         "sha":x["sha"]} for x in inputs],
+                        "maximumGeminiCalls":8,"paidGeminiCalls":0,
+                        "publicationAuthorized":False})
+                return 0
+            authorize_four_new(
+                execute=args.execute,transfer=args.allow_generated_text_transfer,
+                activities=args.max_forward_activities,
+                seconds=args.max_forward_seconds)
+            # Browser and source staging are independently valid, and must
+            # succeed BEFORE any potentially paid provider call.
+            offline = _complete_source_free_with_browser(
+                private,advance_source_free_until_boundary(COURSE,ROOT,private))
+            qa = offline.get("realCandidateBrowserAcceptance",{})
+            if (offline.get("section96ScienceIntegrated") is not True
+                    or offline.get("paidGeminiCalls") != 0
+                    or qa.get("status") !=
+                        "ACTUAL_UNADMITTED_CHAPTER9_BROWSER_QA_PASS"
+                    or qa.get("renderedChecks") != 698
+                    or qa.get("all108ActivitiesVisited") is not True
+                    or qa.get("proposalSha256") != offline.get("proposalSha256")):
+                _print({"status":"STOP_NEW4_SOURCEFREE_PREFLIGHT_FAILED",
+                        "sourceFreeRecovery":offline,
+                        "publicationAuthorized":False})
+                return 3
+            from app_generator.runtime.native_sdk_environment import (
+                delegate_to_supported_sdk,
+            )
+            delegated=delegate_to_supported_sdk(
+                ROOT,list(argv) if argv is not None else sys.argv[1:],
+                entrypoint=Path(__file__))
+            if delegated is not None:
+                return delegated
+            from app_generator.gemini.v3_native_api_reviewers import (
+                V3NativeGeminiApiSessions,
+            )
+            from app_generator.runtime.v3_authorized_review import (
+                advance_v3_generated_text,
+            )
+            cfg=_load_native_config()
+            capability=diagnose_declared_generation_support(cfg)
+            def review_one(raw,activity_id,private_root):
+                with V3NativeGeminiApiSessions(
+                    cfg,operation_authorized=True,
+                    generated_content_transfer_allowed=True,
+                    candidate_offset=0,
+                ) as reviewer:
+                    return advance_v3_generated_text(
+                        raw,reviewer.open_pair(activity_id),
+                        private_root=private_root,
+                        generated_content_transfer_allowed=True,
+                        max_activities=1)
+            result=advance_four_new(
+                COURSE,ROOT,private,execute=True,
+                transfer=args.allow_generated_text_transfer,
+                max_activities=args.max_forward_activities,
+                max_seconds=args.max_forward_seconds,
+                capability=capability,review_one=review_one)
+            post=continue_four_to_browser(
+                result,lambda: _complete_source_free_with_browser(
+                    private,advance_source_free_until_boundary(COURSE,ROOT,private)))
+            _print({**result,"preflightBrowser":qa.get("status"),
+                    "postReviewAutomaticContinuation":post})
+            return 0 if (
+                result["status"]=="NEW4_AUTHORIZED_BATCH_COMPLETED"
+                and post["status"]=="NEW4_AUTOMATICALLY_ADVANCED_108_BROWSER_PASS"
+            ) else 3
         if args.advance_revised_96:
             require_authorized_native_review_host(AUTHORITY)
             from app_generator.runtime.v3_section96_authorized_revised_qa import (

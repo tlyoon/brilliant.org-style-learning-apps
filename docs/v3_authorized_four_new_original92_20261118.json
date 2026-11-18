@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "contractId": "BOSLA_V3_OWNER_AUTHORIZED_FOUR_NEW_UNREVIEWED_SECTION92_20261118",
+  "authorizedBy": "OWNER_EXPLICIT_CHAT_AUTHORIZATION_2026-11-18_MAX8_CALLS",
+  "scope": "FOUR_NEVER_REVIEWED_FROZEN_SECTION92_ORIGINAL_ONE_ACTIVITY_INPUTS",
+  "authorizedHost": "Yoga 6",
+  "provider": "gemini_api",
+  "historicalCharter": "docs/acceptance_closure_chapter9.json",
+  "historicalCharterRemainsFrozen": true,
+  "previousPaidCharter": "docs/v3_paid_gemini_review_authorization_20261117.json",
+  "previousPaidCharterRemainsFrozen": true,
+  "revised96Charter": "docs/v3_authorized_revised_section96_scientific_qa_20261118.json",
+  "revised96CharterRemainsFrozen": true,
+  "originalSection": "section-9-2",
+  "originalPackageSha256": "cfe7bab820aa01ce71bd7a6a334c742101ebd10d8895cccd5f05d599030f971c",
+  "reviewInputs": [
+    {
+      "index": 14,
+      "activityId": "act-int-iso-06",
+      "reviewSliceSha256": "2a625cdf0889f7e6adeba090d25e0fb03fa0b54b53eed092f9c7ef10acb98fe8"
+    },
+    {
+      "index": 15,
+      "activityId": "act-int-iso-07",
+      "reviewSliceSha256": "a1b7eaeecb91ac9f0892daa039823a511a332e4c0bedd4118676e5a8ba2ecbf3"
+    },
+    {
+      "index": 16,
+      "activityId": "act-int-iso-08",
+      "reviewSliceSha256": "f86df040c2da54587000a0a706e38e73f0bce96bc6713ebf1a73699e0aa14033"
+    },
+    {
+      "index": 17,
+      "activityId": "act-int-iso-09",
+      "reviewSliceSha256": "fb0b2f5b1a246ea494047765dd2530dd9db650491de6162a5203100c0dae2aa5"
+    }
+  ],
+  "maxActivitiesPerInvocation": 4,
+  "maxIndependentGeminiCallsPerActivity": 2,
+  "maxTotalGeminiCalls": 8,
+  "maxElapsedSecondsPerInvocation": 900,
+  "paidGeminiApiGenerationAuthorized": true,
+  "generatedLearningTextTransferAuthorized": true,
+  "noReplayOfAnySubmittedOriginalOrIsolatedRole": true,
+  "useImmutableRoleClaims": true,
+  "allowSourcePDFUpload": false,
+  "allowBatchJobCreation": false,
+  "allowAutomatedScheduler": false,
+  "allowUnboundedRecurrence": false,
+  "versionedCourseAdmissionAuthorized": false,
+  "publicationAuthorized": false,
+  "releaseApprovalRequiredSeparately": true
+}
