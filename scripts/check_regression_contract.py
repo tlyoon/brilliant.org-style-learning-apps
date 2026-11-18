@@ -169,6 +169,7 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "fullyRevised108ChromeSourceIdentitySeparateFromLegacyProposal",
     "postRevised96GenuinePassAutoDispatchesLocal108Chrome",
     "newFourOriginal92ExactEightCallOwnerBoundary",
+    "syntheticBrowserMutatedFixtureAlwaysFetchedFresh",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

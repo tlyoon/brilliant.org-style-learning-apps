@@ -5323,6 +5323,48 @@
         }
       ],
       "nextAction": "Before paid calls, pass exact-head unit tests, lint and executable recurrence contract, then hosted GitHub CI. On Yoga6 use normal --advance-new-four explicit paid+transfer flags, max4 and 900s; preserve role immutability and stop at ambiguous request. If genuine four science PASS, normal worker runs 108/698 actual source-bound Chrome. Publication and all108 scientific acceptance remain blocked."
+    },
+    {
+      "id": "BSA-20261118-210",
+      "class": "hosted-synthetic-chrome-integrity-test-stale-fixture-byte-cache-negative-control-timeout",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261118-194",
+        "BSA-20261118-197",
+        "BSA-20261118-205",
+        "BSA-20261118-209"
+      ],
+      "differenceFromLinkedIncident": "A new exact-head CI run 44294173539 for owner-authorized four pristine Section9.2 Gemini QA failed only the hosted synthetic real Chrome preview negative control: the test rewrote a previously loaded fixture package and waited for a signed-roster byte mismatch, but Chrome did not display the mismatch within ten seconds. All source/content/recovery tests passed, and Yoga6 genuinely checked all 108 course activities with 698 real Chrome assertions. Unlike earlier BSA194/197 which distinguished fake vs real package coverage, this failure concerns conditional HTTP caching of mutable synthetic fixtures during a single browser session; stale bytes are a plausible mechanism, not conclusively established. The disposable fixture server now disables conditional 304 responses and emits Cache-Control no-store/Pragma no-cache so a rewritten signed package must be fetched and rejected; a timeout remains a failure with visible synthetic-only diagnostic state. Network-level conditional-negative-control tests and true Selenium browser smoke on Yoga6 passed. Need fresh exact-head hosted CI before resolving; no production content or paid Gemini call changed.",
+      "lastValidatedDate": "2026-11-18",
+      "applicableEnvironments": [
+        "GitHub Ubuntu hosted Chrome source-free six-section synthetic course preview with rapid previously loaded package mutation and conditional HTTP fetch",
+        "Yoga6 pinned Selenium existing .venv source-free preview test; portable real loopback HTTP cache negative-control tests"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/check_course_preview_browser.py",
+        "triggerMarker": "class QuietHandler(SimpleHTTPRequestHandler):",
+        "remedyMarker": "def end_headers(self) -> None:",
+        "normalEntryPoints": [
+          {
+            "path": ".github/workflows/validate.yml",
+            "marker": "python scripts/check_course_preview_browser.py"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_course_preview_cache_integrity.py",
+          "kind": "python",
+          "marker": "test_test_server_never_returns_stale_bytes_after_source_tamper"
+        },
+        {
+          "path": "tests/test_course_preview_cache_integrity.py",
+          "kind": "python",
+          "marker": "test_test_server_ignores_conditional_etag_on_replaced_fixture"
+        }
+      ],
+      "nextAction": "Pass lint/CI recurrence, fresh hosted CI on exact final HEAD, and rerun real Yoga6 preview. Retain the BSA209 separate eight-call campaign stopped until CI passes; never replay ambiguous role requests or relax negative-controls."
     }
   ]
 }

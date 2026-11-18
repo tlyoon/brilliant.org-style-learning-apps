@@ -72,7 +72,8 @@
     "historicalOriginalFailedOrUnknownCannotBecomeNewModelPass": true,
     "fullyRevised108ChromeSourceIdentitySeparateFromLegacyProposal": true,
     "postRevised96GenuinePassAutoDispatchesLocal108Chrome": true,
-    "newFourOriginal92ExactEightCallOwnerBoundary": true
+    "newFourOriginal92ExactEightCallOwnerBoundary": true,
+    "syntheticBrowserMutatedFixtureAlwaysFetchedFresh": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

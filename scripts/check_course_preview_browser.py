@@ -17,6 +17,7 @@ import tempfile
 from threading import Thread
 
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
@@ -94,6 +95,21 @@ def _fixture(section: int) -> bytes:
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
+    # BSA210: this disposable fixture server intentionally rewrites package
+    # bytes during the same browser session. Chrome may otherwise reuse a
+    # previously fetched "valid" payload after the test has corrupted it.
+    # Serve actual on-disk bytes for every synthetic integrity negative test.
+    def send_head(self):
+        for conditional in ("If-Modified-Since", "If-None-Match"):
+            if conditional in self.headers:
+                del self.headers[conditional]
+        return super().send_head()
+
+    def end_headers(self) -> None:
+        self.send_header("Cache-Control", "no-store, max-age=0")
+        self.send_header("Pragma", "no-cache")
+        return super().end_headers()
+
     def log_message(self, *args) -> None:
         pass
 
@@ -308,10 +324,18 @@ def run() -> None:
                 lambda d: d.find_element(By.ID, "course-select").is_enabled()
             )
             Select(driver.find_element(By.ID, "course-select")).select_by_value("2")
-            WebDriverWait(driver, 10).until(
-                lambda d: "Package bytes differ from the selected roster" in
-                d.find_element(By.ID, "app").text
-            )
+            try:
+                WebDriverWait(driver, 10).until(
+                    lambda d: "Package bytes differ from the selected roster" in
+                    d.find_element(By.ID, "app").text
+                )
+            except TimeoutException as exc:
+                # Fail closed with the actual synthetic learner-visible state.
+                # No private data, model response or real student record.
+                visible = driver.find_element(By.ID, "app").text[:300]
+                raise AssertionError(
+                    "SYNTHETIC_CHANGED_SOURCE_NOT_REJECTED: " + repr(visible)
+                ) from exc
             assert not driver.find_elements(By.CSS_SELECTOR, "#app h1.question")
             # A correct roster SHA only proves byte identity. A synthetically
             # malformed signed package with duplicate activity IDs must still
