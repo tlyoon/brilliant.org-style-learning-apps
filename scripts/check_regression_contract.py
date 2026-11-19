@@ -386,6 +386,20 @@ def _normal_pipeline_recovery_errors(root: Path) -> list[str]:
     return errors
 
 
+def _checkpoint_freshness_errors(checkpoint: str, entries: list) -> list[str]:
+    """BSA215: prevent stale top-of-file state from causing next-session replays."""
+    if not entries or not isinstance(entries[-1], dict):
+        return ["continuation checkpoint lacks a latest registered incident"]
+    latest_id = entries[-1].get("id")
+    status = entries[-1].get("status")
+    if not isinstance(latest_id, str) or not isinstance(status, str):
+        return ["continuation checkpoint has invalid latest incident"]
+    expected = f"> CURRENT RECOVERY CHECKPOINT: {latest_id} | {status.upper()}"
+    if expected not in checkpoint.splitlines()[:5]:
+        return ["continuation checkpoint first five lines disagree with recovery registry"]
+    return []
+
+
 def verify(root: Path = ROOT) -> list[str]:
     root = root.resolve()
     errors: list[str] = _normal_pipeline_recovery_errors(root)
@@ -416,6 +430,14 @@ def verify(root: Path = ROOT) -> list[str]:
     entries = registry.get("incidents")
     if not isinstance(entries, list):
         return errors + ["incidents must be a JSON list"]
+    # BSA215: the top-level continuity status must track the latest
+    # executable recovery registry state. Historical paragraphs are retained.
+    checkpoint_file = _repo_file(root, "docs/CONTINUATION_CHECKPOINT_LATEST.md")
+    if checkpoint_file is None:
+        errors.append("continuation checkpoint is missing")
+    else:
+        errors.extend(_checkpoint_freshness_errors(
+            checkpoint_file.read_text(encoding="utf-8"), entries))
     ledger = ledger_path.read_text(encoding="utf-8")
     ledger_counts = Counter(LEDGER_RE.findall(ledger))
     registered: set[str] = set()

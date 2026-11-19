@@ -5556,6 +5556,53 @@
         }
       ],
       "nextAction": "RESOLVED on genuine owner Yoga6 code HEAD d7d5273d97854ce4f203812337239c4601e74de2: exact new UNADMITTED proposal 8afd6869320cc9794031614c9b7a7cc453cf5eed7681e8c6f4642eb6710d6d46, all 108 real activities visited, 648 trilingual desktop/mobile prompt checks and 698 total Chrome checks PASS, immutable browser receipt 238592b6e3ad090fbad3ced20077d91bcc4012b37d86781b354020579b41cbf7, exit0, no new paid Gemini calls; same exact HEAD hosted GitHub CI 44303437538 SUCCESS including all 1600-plus repository tests, source/contract/Chrome smoke. Four owner Section9.2 original indices14-17 each still exact two genuine Gemini role COMPLETE, all consensus PASS, max eight-call grant consumed, original 75 assessed/72 PASS and older failed or ambiguous role evidence unchanged. New manifest retains 14 supplemental original PASS, 86 potentially reusable unchanged original PASS, three independently reviewed corrected changed activities, 19 original content items remaining scientifically unreviewed after supplemental, course admission/publication FALSE. Resolved runtime source, tests and registry persisted. Future additional paid calls require new explicit authorization; no merges/releases."
+    },
+    {
+      "id": "BSA-20261119-215",
+      "class": "obsolete-top-level-cross-session-checkpoint-reports-active-even-after-registered-resolved",
+      "status": "resolved",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": [
+        "BSA-20261106-119",
+        "BSA-20261113-157",
+        "BSA-20261118-213",
+        "BSA-20261118-214"
+      ],
+      "differenceFromLinkedIncident": "The user's next-session status request revealed the recovery registry correctly held BSA213/BSA214 RESOLVED and git HEAD c2c06c3 with exact-head hosted GitHub CI SUCCESS, while the top paragraphs of CONTINUATION_CHECKPOINT_LATEST.md still asserted BSA214 ACTIVE and BSA213 ACTIVE. An earlier source-free checkpoint update had matched a normalized line ending/header token that was not present; only registry and other docs were successfully committed. This stale prominent top state risks next-session repeat paid reviews or false blocker assertions. Remedy is an exact leading machine-readable current recovery status line on the checkpoint, with old snapshots explicitly labeled historical, plus an executable normal CI recurrence-contract guard checking the first five lines against the last registry entry id and status, regardless of OS line endings or past prose. Three synthetic negative controls check missing latest id, changed status, and valid top; old actual immutable Gemini claims, original ledger and unadmitted proposal unchanged.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "Cross-session Yoga6 recovery document with prior historical active snapshots despite a resolved latest recurrence registry incident",
+        "All normal GitHub repository CI recurrence-contract invocations; zero paid provider calls, no source PDF or student data"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/check_regression_contract.py",
+        "triggerMarker": "def _checkpoint_freshness_errors(",
+        "remedyMarker": "errors.extend(_checkpoint_freshness_errors(",
+        "normalEntryPoints": [
+          {
+            "path": ".github/workflows/validate.yml",
+            "marker": "python scripts/check_regression_contract.py"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_continuation_checkpoint_freshness.py",
+          "kind": "python",
+          "marker": "test_latest_registry_id_and_status_at_top_passes"
+        },
+        {
+          "path": "tests/test_continuation_checkpoint_freshness.py",
+          "kind": "python",
+          "marker": "test_historical_active_header_without_new_closure_fails_closed"
+        },
+        {
+          "path": "tests/test_continuation_checkpoint_freshness.py",
+          "kind": "python",
+          "marker": "test_latest_status_transition_must_refresh_top_marker"
+        }
+      ],
+      "nextAction": "After verifying regression/lint and hosted CI, preserve current top with BSA-20261119-215 RESOLVED and never change historic model evidence. A later newly registered incident must also update the top as part of the same commit, automatically enforced by normal CI. Additional paid Gemini calls require separate owner consent."
     }
   ]
 }

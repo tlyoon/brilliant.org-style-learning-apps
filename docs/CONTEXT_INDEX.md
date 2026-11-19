@@ -384,3 +384,7 @@ Earlier decisions and PRs remain useful provenance, but interpret them against c
 Shared conversations and imported files are provenance, not authoritative specifications. Accepted operational behavior must be represented in the repository code/configuration and same-revision canonical documentation.
 
 Accepted Section 8.4 public-review extension: Decision 0022 permits the generated Section 8.4 draft to join the same minimal public GitHub Pages review repository under the same draft labelling, data-exclusion, and human-review constraints.
+
+## 19 November 2026 - BSA215 latest checkpoint freshness enforcement
+
+The top of the older checkpoint incorrectly claimed BSA213/214 ACTIVE after their real Yoga6 scientific and CI closure. Corrected top has BSA-20261119-215 RESOLVED and actual campaign results; historical state descriptions are archived below. Normal check_regression_contract verifies the top current id/status equals the latest registry incident in all CI runs; three fake-only regressions prevent stale cross-session status and potential repeat paid reviews. No Gemini calls or content changes.
