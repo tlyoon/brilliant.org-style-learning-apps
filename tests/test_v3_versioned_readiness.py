@@ -215,6 +215,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "exactHeadHostedCiSuccess":True,
                     "publicationAuthorized":False}))
             from app_generator.runtime import v3_five_stage_completion
+            from app_generator.runtime import v3_public_bundle_handoff
             stack.enter_context(patch.object(
                 v3_five_stage_completion,
                 "advance_five_stage_on_pinned_browser",
@@ -225,11 +226,20 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "technicalV3ReleaseAttestationsVerified":True,
                     "privateNativeV3Attestations":6,
                 }))
+            bundle=stack.enter_context(patch.object(
+                v3_public_bundle_handoff,
+                "dispatch_private_public_bundle_build",
+                return_value={
+                    "status":"SIX_REAL_PUBLIC_BUNDLE_BUILDS_VERIFIED_PRIVATE_NO_DEPLOY",
+                    "realOriginalPublicBuilderInvocations":6,
+                    "publicationAuthorized":False,"publicDeployExecuted":False,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))
             status=worker.main(["--source-free-advance"])
             self.assertEqual(verified.call_count,1)
+            self.assertEqual(bundle.call_count,0 if failing else 1)
             if failing:
                 self.assertEqual(status,3)
             else:
