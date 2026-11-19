@@ -91,7 +91,17 @@
     "versionedCurrentEvidenceRequiresSaved108ScientificAndRealBrowser": true,
     "versionedExactHeadCIRequiresCleanCommittedCode": true,
     "normalWorkerAutoAdvancesToSourceBoundVersionedReadiness": true,
-    "versionedReadinessNeverAdmitsOrPublishesCourse": true
+    "versionedReadinessNeverAdmitsOrPublishesCourse": true,
+    "ownerFiveStageAutonomousDevelopmentConsent20261119": true,
+    "fiveStageAutoAdmissionPrivacyReleaseEvidenceCandidateRollback": true,
+    "fiveStageNoManualAcademicVisualOrLearnerPilotGates": true,
+    "sourceBoundAutomaticVersionAdmissionRequiresGenuineTwoModelEvidence": true,
+    "automaticPrivacyTestsNoRealStudentOrProtectedAssetTransfer": true,
+    "automaticReleaseReceiptRequiresExactSourceCiBrowserPrivacy": true,
+    "privateReleaseCandidateMustPassFunctionalAndRollbackTests": true,
+    "automaticNextStageDispatchAndDurableCheckpoints": true,
+    "publicPublicationOnlyWithinAuthorizedDeploymentBoundary": true,
+    "noHistoricalProviderReplayOrForgedReleaseEvidence": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

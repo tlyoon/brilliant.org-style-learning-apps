@@ -6014,6 +6014,128 @@
         }
       ],
       "nextAction": "RESOLVED: source-verified commit 61a5d6dfb622360aff0736f4a28068b8867f1cea GitHub Actions #44485028486 SUCCESS, genuine Yoga6 normal --source-free-advance same HEAD visited 108 actual activities/648 language?viewport questions/698 Chrome total PASS source proposal 738a612d6d192cae715858c226bf0f952ceeb0a2df823502d15a387448b968b0 browser receipt SHA282c5fcd5951da621c8ece068970f2db7d053bcee80e0e739b491a7dbe3ffef4, worker exit0. The same normal invocation automatically (without additional Gemini or a new user prompt) reconciled the saved 108/108 source-specific independent model evidence, original frozen 75 reviewed/72 genuine original PASS unchanged, clean exact git HEAD and hosted CI, persisted integrity-bound owner private versioned readiness receipt SHA645865ded37bc3da78a166a2a959ffc0c146dc3fd1fda5539ecbb3cbe7d7ea8b, status VERSIONED_SCIENCE_BROWSER_AND_CI_VERIFIED_UNADMITTED. Local Yoga6 65 crosspath tests and 44 subtests, real prior dirty-tree and wrong Git CI controls, recurrence contract and lint PASS. No version admission, public release, merge, learner pilot or additional paid calls. Next independent source-free task: assess private version admission/privacy/release proof eligibility, but DO NOT auto-release; C3 heldout generalization historically BLOCKED_EXTERNAL and must not be fabricated or replayed. Closure-only successor commit requires exact new HEAD CI and genuine Chrome before final immutable status handoff."
+    },
+    {
+      "id": "BSA-20261119-221",
+      "class": "owner-five-stage-auto-completion-missing-executable-version-privacy-release-candidate",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261119-220",
+        "BSA-20261119-219",
+        "BSA-20261119-218"
+      ],
+      "differenceFromLinkedIncident": "BSA220 existing source-free readiness verified exact 108 two-Gemini-scientific content positions, authentic 698/698 Chrome, exact GitHub CI, but merely reported next action INDEPENDENT_VERSION_ADMISSION_PRIVACY_AND_RELEASE_PROOFS. This owner-approved v7/Decision0078 v1-v5 contract requires executable automatic next-stage processing. Reuse BSA220 saved source-bound manifest, distinct independent two-role model proofs, 698 real Chrome, fixed original 75/72 archive, and historic BSA219 bounded browser recovery. New five-stage normal worker implements corrected course internal version admission (private receipt only), source-free technical privacy/no-exfil and no real student data, exact release-evidence dossier, privately staged hash-exact 6x18 candidate, independent real Chrome and fault-injected rollback, then persistent next eligible task. It never fabricates the unrelated V3 public package attestation or grants public deploy. The first real preflight ran with the ordinary miniforge Python which lacked Selenium. As earlier Decision0063 historical, reuse the existing *pinned* project-local Selenium 4.47.0 environment via a finite subprocess rather than repeat install/repair loops; retry at most once only for categorized Selenium transient, preserve semantic/privacy stops and saved milestones. Owner explicitly authorized this whole five-step development sequence without routine manual approvals. Before exact CI+Yoga6 normal execution stage BSA221 ACTIVE.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "Owner Yoga6 normal scripts/run_v3_yoga6_recovery_worker.py --source-free-advance",
+        "Existing pinned local Selenium 4.47.0 runtime, no new model/client/credential",
+        "Fake-only privacy/exfil/modified JS, failed browser, missing CI, source identity, corrupted checkpoint and transient Selenium fault-injection tests",
+        "Private local release-preview exercise, never public release or original textbook/student data transfer"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_five_stage_completion.py",
+        "triggerMarker": "def advance_five_stage_on_pinned_browser(",
+        "remedyMarker": "def run_five_stage_completion(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_five_stage_completion import ("
+          },
+          {
+            "path": "scripts/run_v3_yoga6_five_stage.py",
+            "marker": "from app_generator.runtime.v3_five_stage_completion import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_owner_five_stages_advance_without_publication"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_saved_checkpoints_resume_idempotently_without_second_browser"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_corrupt_source_content_in_staged_private_candidate_rejected"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_corrupt_staged_javascript_rejected_on_restart"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_unauthorized_publication_rejected_before_checkpoint_write"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_tampered_signed_checkpoint_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_broken_private_qa_does_not_become_real_acceptance"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_missing_real_chrome_never_mock_accepted"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_missing_model_source_readiness_fails_without_any_stage"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_stale_git_ci_fails_without_any_stage"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_unauthorized_source_asset_extension_rejected"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_private_student_field_detected"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_nonlocal_exfiltration_api_detected"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_real_normal_sourcefree_worker_dispatches_all_five_without_model"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_real_normal_worker_refuses_fake_five_stage_success"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_transient_child_retry_at_most_once"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_semantic_privacy_source_error_never_retried"
+        }
+      ],
+      "nextAction": "Owner consent and new stage dispatcher implemented on Yoga6, 21 focused fake-only tests PASS, real private 6x18 source preflight PASS and static local privacy pass, first unpinned Selenium stage failed as expected; historical pinned interpreter reused, actual pinned preview stage contained 21 known public files. Require exact-head GitHub CI, authentic source-free normal pipeline triggering 698 Chrome then five-step private candidate built+separate 698 Chrome+recovery/rollback receipts, no paid calls, no public merge/deploy. After success mark resolved, persist checkpoint, and continue to remaining separately authorized general codebase technical boundary; do not claim held-out C3 publication or institutional approval."
     }
   ]
 }

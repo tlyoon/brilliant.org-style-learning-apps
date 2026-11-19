@@ -188,6 +188,16 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "versionedExactHeadCIRequiresCleanCommittedCode",
     "normalWorkerAutoAdvancesToSourceBoundVersionedReadiness",
     "versionedReadinessNeverAdmitsOrPublishesCourse",
+    "ownerFiveStageAutonomousDevelopmentConsent20261119",
+    "fiveStageAutoAdmissionPrivacyReleaseEvidenceCandidateRollback",
+    "fiveStageNoManualAcademicVisualOrLearnerPilotGates",
+    "sourceBoundAutomaticVersionAdmissionRequiresGenuineTwoModelEvidence",
+    "automaticPrivacyTestsNoRealStudentOrProtectedAssetTransfer",
+    "automaticReleaseReceiptRequiresExactSourceCiBrowserPrivacy",
+    "privateReleaseCandidateMustPassFunctionalAndRollbackTests",
+    "automaticNextStageDispatchAndDurableCheckpoints",
+    "publicPublicationOnlyWithinAuthorizedDeploymentBoundary",
+    "noHistoricalProviderReplayOrForgedReleaseEvidence",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

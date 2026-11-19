@@ -1,0 +1,79 @@
+{
+  "schema": "BOSLA_OWNER_FIVE_STAGE_AUTONOMOUS_COMPLETION_V1",
+  "ownerDecision": "docs/decisions/0078-owner-five-stage-autonomous-completion.md",
+  "target": "Yoga 6 only / draft PR#223",
+  "approvalReceived": "2026-11-19",
+  "noRoutineManualIntervention": true,
+  "neverAutomaticallyReplayUnknownPaidRequests": true,
+  "noUnboundedScheduler": true,
+  "noAutomaticPublicMergeOrDeploymentFromTechnicalReceipt": true,
+  "stageOrder": [
+    {
+      "id": "V1",
+      "name": "SOURCE_BOUND_VERSION_ADMISSION",
+      "automatic": true,
+      "requiredProofs": [
+        "immutable proposed roster",
+        "108 genuine independently validated model content results",
+        "historical originals intact",
+        "exact source+browser+clean Git+CI"
+      ],
+      "acceptance": "private internal corrected course version with no original-ledger writes"
+    },
+    {
+      "id": "V2",
+      "name": "PRIVACY_AND_SECURITY_QA",
+      "automatic": true,
+      "requiredProofs": [
+        "real local browser no extraneous external resources",
+        "no browser storage",
+        "no real student data or protected PDFs transferred",
+        "source-bound static and runtime checks"
+      ],
+      "acceptance": "source-free technical privacy result (not institutional authorization)"
+    },
+    {
+      "id": "V3",
+      "name": "EXACT_RELEASE_EVIDENCE",
+      "automatic": true,
+      "requiredProofs": [
+        "V1+V2 immutable outputs",
+        "exact CI and browser receipts",
+        "source SHA-bound academic model proof"
+      ],
+      "acceptance": "private technical release-evidence dossier, not fabricated existing V3 public attestation"
+    },
+    {
+      "id": "V4",
+      "name": "PRIVATE_RELEASE_CANDIDATE_AND_ROLLBACK",
+      "automatic": true,
+      "requiredProofs": [
+        "staged six-section 108-activity release preview",
+        "immutable package files+hashes",
+        "real functional Chrome test on staged preview",
+        "rollback to previous private candidate"
+      ],
+      "acceptance": "private candidate verified without public merge or deployment"
+    },
+    {
+      "id": "V5",
+      "name": "CONTINUOUS_NEXT_ELIGIBLE_DISPATCH",
+      "automatic": true,
+      "requiredProofs": [
+        "V1-V4 accepted or named safe blocker with checkpoint",
+        "next task selected automatically",
+        "no paid replay",
+        "deployment authorization checked before irreversible action"
+      ],
+      "acceptance": "durable next-stage disposition; independent safe work continues"
+    }
+  ],
+  "recoverySequence": [
+    "historical failure review",
+    "targeted repair",
+    "genuine real test",
+    "fault injection and regression",
+    "executable recovery registry integration",
+    "normal pipeline restart and next milestone dispatch"
+  ]
+}

@@ -164,3 +164,9 @@ Persist checkpoints and maintain automatic restart capability wherever the envir
 **Do not stop merely because the current task has succeeded. Stop only when a mandatory intervention condition is reached, no further eligible work exists, or the execution environment genuinely prevents continued operation.**
 
 The ultimate objective is a **self-advancing, self-recovering, checkpointed development workflow** that systematically drives the codebase toward verified completion with minimal manual intervention.
+
+## 10. Owner-approved five-stage automatic acceptance amendment (19 Nov 2026)
+
+The BOSLA owner explicitly approves the entire five-stage autonomous code-completion sequence in `docs/owner_five_stage_autonomous_completion_v1.json` and Decision 0078. The executable normal controller must sequentially: (V1) source-bound revised course version admission, (V2) automatic source-free privacy/security verification with no real student data, (V3) independently verified exact-release-evidence dossier, (V4) private candidate build, real functional/browser checks and rollback evidence, (V5) durable next-eligible-task dispatch without another user instruction. This amendment is binding wherever the previous v7 contract referred generally to 'next milestone.' Each stage must have a persisted acceptance receipt, explicit proof provenance, failure injection and restart-safe retry, and be integrated in the *ordinary worker*, not a one-time development script.
+
+Automated technical completion does not fabricate unavailable Gemini roles, CI results, privacy certification or the unrelated V3 public-release receipt. Real student/institutional data authorization, protected source transfer, unapproved expenditure and irreversible publishing are outside this standing technical consent. Do not introduce a manual academic/visual/pilot acceptance gate, and continue independent safe development while any external-bound operation remains blocked.

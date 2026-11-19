@@ -781,13 +781,32 @@ def main(argv: list[str] | None = None) -> int:
                 )
                 result["versionedEvidenceReadiness"]=(
                     evaluate_current_versioned_evidence(ROOT,private))
+                # Owner Decision0078: V1-V5 must follow the genuine source-
+                # bound readiness in the SAME normal sourcefree invocation.
+                # Its own proof gate is mandatory; never fill in a result
+                # when the hosted CI/source revision is not yet accepted.
+                ready=result["versionedEvidenceReadiness"]
+                if (ready.get("status")==
+                        "VERSIONED_SCIENCE_BROWSER_AND_CI_VERIFIED_UNADMITTED"
+                        and ready.get("exactHeadHostedCiSuccess") is True):
+                    from app_generator.runtime.v3_five_stage_completion import (
+                        advance_five_stage_on_pinned_browser,
+                    )
+                    result["fiveStageAutonomousCompletion"]=(
+                        advance_five_stage_on_pinned_browser(ROOT,private,ready))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
             # is a live blocker, not a verified checkpoint for paid science.
             return 0 if (result.get("paidGeminiCalls")==0
                          and result.get("publicationAuthorized") is False
-                         and (genuine if has_proposal else no_proposal)) else 3
+                         and (genuine if has_proposal else no_proposal)
+                         and (
+                            "fiveStageAutonomousCompletion" not in result
+                            or result["fiveStageAutonomousCompletion"].get(
+                                "status")==
+                            "FIVE_STAGE_PRIVATE_TECHNICAL_PATH_COMPLETE_NO_PUBLICATION"
+                         )) else 3
         if args.auto_advance:
             ready = plan_v3_course_review(
                 COURSE, ROOT, private_root=private,
