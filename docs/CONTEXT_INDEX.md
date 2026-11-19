@@ -392,3 +392,7 @@ The top of the older checkpoint incorrectly claimed BSA213/214 ACTIVE after thei
 ## 19 November 2026 - BSA216 synthetic recurrence checkpoint fixture
 
 BSA215 real checkpoint guard passed true owner Yoga6 108/698 Chrome, but hosted CI44437091959 failed 2 of 1607 tests because synthetic regression registry fixture did not copy the now-required checkpoint and did not sync a fake newly appended id/status. BSA216 test-only repair mirrors mock checkpoint on setUp/save and explicitly tests missing/stale negative cases. Local25 tests+5 subtests PASS, exact-head CI pending. All eight paid Gemini roles consumed; original scientific evidence and release restrictions unchanged.
+
+## 19 November 2026 - BSA215/BSA216 resolved with exact-head CI and real browser
+
+True top-of-checkpoint current registry guard and synthetic temporary-registry mirror passed 25 focused tests +5 subtests, genuine owner Yoga6 normal unadmitted 108/698 Chrome on e161aad, receipt1f583575..., and GitHub hosted CI44438560761 SUCCESS. The latest registry and first-five-line checkpoint both read BSA-20261119-216 RESOLVED. Frozen original 75/72 and 8 already completed new Section9.2 genuine independent Gemini roles unchanged; 19 unique items remain without independent scientific PASS. No new paid authorization, version admission, merge or release. Metadata closure successor must pass exact-head checks.

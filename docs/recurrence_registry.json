@@ -5560,7 +5560,7 @@
     {
       "id": "BSA-20261119-215",
       "class": "obsolete-top-level-cross-session-checkpoint-reports-active-even-after-registered-resolved",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
       "relatedIncidentIds": [
         "BSA-20261106-119",
@@ -5602,12 +5602,12 @@
           "marker": "test_latest_status_transition_must_refresh_top_marker"
         }
       ],
-      "nextAction": "After verifying regression/lint and hosted CI, preserve current top with BSA-20261119-215 RESOLVED and never change historic model evidence. A later newly registered incident must also update the top as part of the same commit, automatically enforced by normal CI. Additional paid Gemini calls require separate owner consent."
+      "nextAction": "RESOLVED: genuine owner Yoga6 exact source code e161aad182b64994b8d22a1c3d4aabf4510f1cc2 ran the normal source-free recovery worker, 108/108 activities and 698/698 Chrome checks PASS, source-bound new proposal 8afd6869320cc9794031614c9b7a7cc453cf5eed7681e8c6f4642eb6710d6d46, fresh browser receipt 1f5835759df163aa7700d0632e9027cb3d46fde7e14652c88ff20472da428d66, no paid calls, no original role replay, exit0. GitHub Actions #44438560761 SUCCESS on exact e161aad code with full Python test suite, lint, content, recurrence and hosted Chrome. BSA215 true top-marker guard remains active in normal CI; BSA216 synthetic registry test fixture mirrors current marker during fake mutations and adversarial missing/stale negative tests still fail closed; 25 focused tests+5 subtests PASS. Next requires a distinct scientific review authorization for untouched Section9.1 indices1..17; previous eight paid Gemini calls for Section9.2 are exhausted. Historical index0 and Section9.6 unknown provider claims MUST NOT be replayed. No release, merge or scheduling authorized. A metadata closure commit succeeding this evidence must itself pass exact new-head CI and real Chrome."
     },
     {
       "id": "BSA-20261119-216",
       "class": "synthetic-regression-repository-omits-new-continuation-checkpoint-and-test-manifest-sync",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "recurrence-governance",
       "relatedIncidentIds": [
         "BSA-20261113-157",
@@ -5652,7 +5652,7 @@
           "marker": "test_fixture_stale_checkpoint_is_rejected_after_registry_change"
         }
       ],
-      "nextAction": "Synthetic 25 tests and five subtests PASS after fixture-only repair. Run exact current combined recurrence/lint, commit to PR#223 and require exact-head GitHub full CI and genuine Yoga6 108/698 restart. Then close BSA215 and BSA216 with a separate verified checkpoint commit; no further paid model authorization."
+      "nextAction": "RESOLVED: genuine owner Yoga6 exact source code e161aad182b64994b8d22a1c3d4aabf4510f1cc2 ran the normal source-free recovery worker, 108/108 activities and 698/698 Chrome checks PASS, source-bound new proposal 8afd6869320cc9794031614c9b7a7cc453cf5eed7681e8c6f4642eb6710d6d46, fresh browser receipt 1f5835759df163aa7700d0632e9027cb3d46fde7e14652c88ff20472da428d66, no paid calls, no original role replay, exit0. GitHub Actions #44438560761 SUCCESS on exact e161aad code with full Python test suite, lint, content, recurrence and hosted Chrome. BSA215 true top-marker guard remains active in normal CI; BSA216 synthetic registry test fixture mirrors current marker during fake mutations and adversarial missing/stale negative tests still fail closed; 25 focused tests+5 subtests PASS. Next requires a distinct scientific review authorization for untouched Section9.1 indices1..17; previous eight paid Gemini calls for Section9.2 are exhausted. Historical index0 and Section9.6 unknown provider claims MUST NOT be replayed. No release, merge or scheduling authorized. A metadata closure commit succeeding this evidence must itself pass exact new-head CI and real Chrome."
     }
   ]
 }
