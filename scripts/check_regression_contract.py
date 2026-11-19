@@ -211,6 +211,14 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "nativeV3DirectInvocationRejectsDirtyOrWrongHostedHead",
     "nativeV3NormalFiveStageForwardDispatchBeforeReturningSuccess",
     "nativeV3TechnicalAttestationDoesNotTriggerPublicPublish",
+    "sourceFreeExactHeadCIInProgressAutoBoundedWait",
+    "sourceFreeExactHeadCIAlreadyFailedStopsWithoutReplayingModel",
+    "sourceFreeWrongHostedHeadCannotCountAsSuccess",
+    "sourceFreeNoManualCIWaitRerunRequiredInsideOneInvocation",
+    "sourceFreeBoundedCIWaitRevalidatesWholeScienceBrowserBeforeRelease",
+    "sourceFreeCITimeoutMustReturnNonzeroNotBrowserOnlyPass",
+    "sourceFreeHeadMovementDuringCIPollTerminatesSafe",
+    "sourceFreeNeverReplaysPaidProviderWhileWaitingOnHostedCI",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

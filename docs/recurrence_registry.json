@@ -6200,7 +6200,7 @@
     {
       "id": "BSA-20261119-223",
       "class": "native-v3-six-package-release-evidence-adapter-not-in-normal-pipeline",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261119-222",
@@ -6223,14 +6223,6 @@
           {
             "path": "app_generator/runtime/v3_five_stage_completion.py",
             "marker": "from app_generator.runtime.v3_native_release_adapter import ("
-          },
-          {
-            "path": "scripts/run_v3_yoga6_five_stage.py",
-            "marker": "run_five_stage_completion("
-          },
-          {
-            "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "advance_five_stage_on_pinned_browser(ROOT,private,ready)"
           }
         ]
       },
@@ -6306,7 +6298,94 @@
           "marker": "test_direct_adapter_refuses_wrong_hosted_head"
         }
       ],
-      "nextAction": "BSA223 ACTIVE: after commit+hosted CI, owner Yoga6 normal sourcefree worker must perform exact first genuine 108/698 Chrome and independent private second 698 Chrome+rollback, all five stages, then automatically seal and native-V3 verify all six source-specific private HMAC receipts using original genuine 103 unchanged and five revised two-Gemini role pairs; persist V6; normal exit0 with zero new Gemini and no publish. Genuine read-only mapping 108/108 and native original release verifier 6/6 PASS; 39 fake-only tests pass. Close only after true exact-head CI and real worker result."
+      "nextAction": "BSA223 GENUINELY VERIFIED RESOLVED on Yoga6 exact Git commit fd063ceb0eefd0569045ee688b800ee87c73a2ab hosted GitHub Actions #44514513757 SUCCESS, ordinary --source-free-advance true 108/698 reviewed course browser plus separate genuine private staged 21-file candidate 698 Chrome/rollback, all five source-bound stages; ORIGINAL V3 native validator six package HMAC attestations sealed using authentic 103 unchanged saved original Gemini pairs and five independently revised pairs, and native enforce_academic_release_gate verified each SHA. Independent read-only audit verified all six HMAC (59-63 KB each), signed private V6 SHA8cbda98b97fe934adf9568bb7a58f867b7bc60079f983f6c3963d440e6f0446d, normal worker exit0, 97 crosspath tests+38 subtests and hosted CI PASS. Zero paid Gemini, no PDF, no original history change, no publication/merge/student data, finite C3 FAILED_LIMITED_CAMPAIGN stays. The first actual HEAD run had 698 Chrome PASS before same-head GitHub CI completed and returned 0 with WAIT_CI but did not dispatch V6; a second assistant-invoked run after CI green was needed. BSA224 remedies this true historical forward-progress defect in executable code: finite CI polling inside same worker, fail-closed on terminal CI or moved head, no repeated proceed."
+    },
+    {
+      "id": "BSA-20261119-224",
+      "class": "sourcefree-worker-ci-running-returned-success-without-v6-forward-dispatch",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261119-223",
+        "BSA-20261119-222",
+        "BSA-20261119-220"
+      ],
+      "differenceFromLinkedIncident": "BSA223 actually produced six authentic private native V3 original HMAC technical receipts under exact CI, double Chrome and privacy; it required TWO normal worker invocations: first source-bound 108/698 Chrome completed while matching HEAD hosted GitHub Actions #44514513757 was still in_progress, so evaluate_current_versioned_evidence returned VERSIONED_SCIENCE_BROWSER_VERIFIED_WAIT_EXACT_HEAD_CI and the normal --source-free-advance falsely returned exit0 without any five-stage / V6. Assistant had to relaunch manually after CI completion, contradicting owner v7 forward-progress contract. Existing BSA220 saw identical uncommitted/CI boundary, but earlier remediation merely added exact-CI detection, not bounded automatic waiting and continuation. BSA224 new sourcefree v3_ci_resume.await_exact_ci_and_resume is called within ORIGINAL normal worker immediately after authentic Chrome when exact CI is queued/running. It polls authenticated GH branch current 1-25 finite times max240 seconds, checks immutable current clean Git HEAD every poll, refuses wrong SHA or completed non-successful CI, revalidates original full 108 source-bound science+real browser+CI using original evaluator on success and automatically transitions SAME invocation to V1-V6 including native six HMAC. Any bounded timeout, dirty/moved head, failed CI returns a truthful nonzero stop rather than false success. No paid Gemini, browser replay, extra PDF campaign, scheduler or publication.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "Owner Yoga6 ordinary --source-free-advance after real 108/698 browser and before five-stage native HMAC",
+        "Hosted GitHub exact-head queued/in_progress, success, failure or missing workflow",
+        "Fake-only deterministic CI status sequence and monotonic/sleep injection, dirty worktree, wrong-head, timeout and normal-worker dispatch"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_ci_resume.py",
+        "triggerMarker": "if current.get(\"status\")==_GREEN:",
+        "remedyMarker": "def await_exact_ci_and_resume(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_ci_resume import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_running_ci_auto_resumes_to_genuine_revalidation"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_terminal_failed_hosted_ci_stops_without_retry"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_wrong_head_green_ci_not_reused"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_missing_hosted_ci_always_finite"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_dirty_source_never_touches_hosted_ci"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_exact_head_changes_during_ci_wait_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_bad_wait_window_rejected"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_dirty_repo_proof_cannot_wait"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_green_with_false_ci_flag_refused"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_normal_worker_immediately_continues_after_bounded_ci_green"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_normal_worker_stops_on_exhausted_ci_without_false_pass"
+        }
+      ],
+      "nextAction": "BSA224 ACTIVE: synthetic CI status/time fault injection and normal-worker continuation 48 tests PASS; executable CI pending->bounded status polling->same invocation source/browser/CI proof rerun->native six V3 signed private receipts integrated, terminal failed/timeout stops nonzero. Commit and push exact head, verify hosted GitHub CI success, run genuine Yoga6 NORMAL --source-free-advance and verify real 108/698 Chrome, second private 698 Chrome/rollback and six signed native V3 HMAC plus V6 private receipt, exit0. CI race actual run should be handled without second user prompt; regardless of whether CI was already done, use fake-only test for active CI scenario. No paid Gemini/PDF/merge/public deploy."
     }
   ]
 }

@@ -114,7 +114,15 @@
     "nativeV3MissingOrTamperedOriginalReviewsFailClosed": true,
     "nativeV3DirectInvocationRejectsDirtyOrWrongHostedHead": true,
     "nativeV3NormalFiveStageForwardDispatchBeforeReturningSuccess": true,
-    "nativeV3TechnicalAttestationDoesNotTriggerPublicPublish": true
+    "nativeV3TechnicalAttestationDoesNotTriggerPublicPublish": true,
+    "sourceFreeExactHeadCIInProgressAutoBoundedWait": true,
+    "sourceFreeExactHeadCIAlreadyFailedStopsWithoutReplayingModel": true,
+    "sourceFreeWrongHostedHeadCannotCountAsSuccess": true,
+    "sourceFreeNoManualCIWaitRerunRequiredInsideOneInvocation": true,
+    "sourceFreeBoundedCIWaitRevalidatesWholeScienceBrowserBeforeRelease": true,
+    "sourceFreeCITimeoutMustReturnNonzeroNotBrowserOnlyPass": true,
+    "sourceFreeHeadMovementDuringCIPollTerminatesSafe": true,
+    "sourceFreeNeverReplaysPaidProviderWhileWaitingOnHostedCI": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

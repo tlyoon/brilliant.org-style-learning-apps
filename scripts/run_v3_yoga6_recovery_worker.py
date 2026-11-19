@@ -786,14 +786,31 @@ def main(argv: list[str] | None = None) -> int:
                 # Its own proof gate is mandatory; never fill in a result
                 # when the hosted CI/source revision is not yet accepted.
                 ready=result["versionedEvidenceReadiness"]
-                if (ready.get("status")==
-                        "VERSIONED_SCIENCE_BROWSER_AND_CI_VERIFIED_UNADMITTED"
-                        and ready.get("exactHeadHostedCiSuccess") is True):
-                    from app_generator.runtime.v3_five_stage_completion import (
-                        advance_five_stage_on_pinned_browser,
+                # BSA224: hosted GitHub CI may still run when real Chrome
+                # finishes. Do not falsely return normal success or depend
+                # on a second manual 'proceed'. Bounded source-free polling
+                # followed by full source/browser/CI revalidation and the
+                # SAME normal V1-V6 handoff; never request Gemini/PDF.
+                if ready.get("status")==(
+                        "VERSIONED_SCIENCE_BROWSER_VERIFIED_WAIT_EXACT_HEAD_CI"):
+                    from app_generator.runtime.v3_ci_resume import (
+                        await_exact_ci_and_resume,
                     )
-                    result["fiveStageAutonomousCompletion"]=(
-                        advance_five_stage_on_pinned_browser(ROOT,private,ready))
+                    ready=await_exact_ci_and_resume(ROOT,private,ready)
+                    result["versionedEvidenceReadiness"]=ready
+                if (ready.get("status")!=
+                        "VERSIONED_SCIENCE_BROWSER_AND_CI_VERIFIED_UNADMITTED"
+                        or ready.get("exactHeadHostedCiSuccess") is not True):
+                    result["automaticCiRecoveryBoundary"]={
+                        "status":ready.get("status"),
+                        "publicationAuthorized":False,"paidGeminiCalls":0}
+                    _print(result)
+                    return 3
+                from app_generator.runtime.v3_five_stage_completion import (
+                    advance_five_stage_on_pinned_browser,
+                )
+                result["fiveStageAutonomousCompletion"]=(
+                    advance_five_stage_on_pinned_browser(ROOT,private,ready))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -802,8 +819,9 @@ def main(argv: list[str] | None = None) -> int:
                          and result.get("publicationAuthorized") is False
                          and (genuine if has_proposal else no_proposal)
                          and (
-                            "fiveStageAutonomousCompletion" not in result
-                            or result["fiveStageAutonomousCompletion"].get(
+                            not (genuine and
+                                 result.get("finalTwoScienceIntegrated") is True)
+                            or result.get("fiveStageAutonomousCompletion",{}).get(
                                 "status")==
                             "FIVE_STAGE_PRIVATE_TECHNICAL_PATH_COMPLETE_NO_PUBLICATION"
                          )) else 3

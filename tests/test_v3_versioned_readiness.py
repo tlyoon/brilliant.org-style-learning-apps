@@ -210,8 +210,21 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                 v,"evaluate_current_versioned_evidence",
                 side_effect=(ValueError("INCOMPLETE_PROOF") if failing
                 else None),
-                return_value={"status":"VERSIONED_VERIFIED_UNADMITTED",
-                              "publicationAuthorized":False}))
+                return_value={
+                    "status":"VERSIONED_SCIENCE_BROWSER_AND_CI_VERIFIED_UNADMITTED",
+                    "exactHeadHostedCiSuccess":True,
+                    "publicationAuthorized":False}))
+            from app_generator.runtime import v3_five_stage_completion
+            stack.enter_context(patch.object(
+                v3_five_stage_completion,
+                "advance_five_stage_on_pinned_browser",
+                return_value={
+                    "status":"FIVE_STAGE_PRIVATE_TECHNICAL_PATH_COMPLETE_NO_PUBLICATION",
+                    "publicationAuthorized":False,
+                    "paidGeminiCalls":0,
+                    "technicalV3ReleaseAttestationsVerified":True,
+                    "privateNativeV3Attestations":6,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))

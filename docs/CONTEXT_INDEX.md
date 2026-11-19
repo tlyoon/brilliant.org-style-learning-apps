@@ -440,3 +440,7 @@ Owner Yoga6 exact git c3ba9a6295095f6751c76fbf96b01f7780d01b8d hosted CI #444937
 ## 19 November 2026 - BSA223 authentic native V3 gate adapter active
 
 The normal Yoga6 five-stage worker now automatically calls the original native V3 per-package release HMAC sign/verify gate and persists separate private V6, after exact SHA/source, true 108 two-Gemini science, real 2x698 browser, privacy and rollback. Historical 103 unchanged and five revised model records genuine; read-only native original V3 gate accepted all six exact packages; fake-only fault suite 39 PASSED. Exact new CI and real Yoga6 normal pipeline needed for final closure. Public merge/deploy remain disabled, no old evidence/review replay, no institutional privacy certification.
+
+## 19 Nov 2026 - BSA223 verified closed, BSA224 exact CI race automatic resume active
+
+BSA223 genuine Yoga6 sourcefree 108/698 and second 698 Chrome+rollback, six original V3 HMAC genuine technical receipt validated on exact fd063ce GitHub CI #44514513757, private V6 SHA 8cbda98b..., zero model/PDF calls, no public release. Earlier initial sourcefree while CI was in_progress returned green browser/exit0 without native HMAC, requiring second worker invocation. BSA224 now implements finite automatic clean SHA exact CI polling in normal worker after browser, source-science-browser-CI revalidation on success then auto V1-V6; terminal failed, missing, wrong-head, moved/dirty Git STOP nonzero. Fake-only 48 tests pass, new GitHub CI+real restart pending.
