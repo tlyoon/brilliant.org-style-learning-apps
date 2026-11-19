@@ -87,7 +87,11 @@
     "finalTwoRealBrowserInNormalProductionRecovery": true,
     "sourceFreeBrowserFailureCannotReturnSuccessExitCode": true,
     "browserChildFailureClassifiedWithoutExposingPrivateSource": true,
-    "seleniumTransientRetryAtMostOneAndNeverSemanticOrPrivacyRetry": true
+    "seleniumTransientRetryAtMostOneAndNeverSemanticOrPrivacyRetry": true,
+    "versionedCurrentEvidenceRequiresSaved108ScientificAndRealBrowser": true,
+    "versionedExactHeadCIRequiresCleanCommittedCode": true,
+    "normalWorkerAutoAdvancesToSourceBoundVersionedReadiness": true,
+    "versionedReadinessNeverAdmitsOrPublishesCourse": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

@@ -772,6 +772,15 @@ def main(argv: list[str] | None = None) -> int:
                      and qa.get("allLocaleViewportPromptChecks")==648)
             no_proposal=(not has_proposal and qa.get("status")==
                          "NO_NEW_REAL_CANDIDATE_FOR_BROWSER_QA")
+            # BSA220: immediately transition a fully authenticated sourcefree
+            # browser milestone to the *independent* versioned admission
+            # readiness check. No new API calls or publication side effect.
+            if genuine and result.get("finalTwoScienceIntegrated") is True:
+                from app_generator.runtime.v3_versioned_readiness import (
+                    evaluate_current_versioned_evidence,
+                )
+                result["versionedEvidenceReadiness"]=(
+                    evaluate_current_versioned_evidence(ROOT,private))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check

@@ -5927,6 +5927,93 @@
         }
       ],
       "nextAction": "RESOLVED: BSA219 code e7caf6f restored truthful nonzero status for failed normal browser, preserved safe child failure diagnostics and bounded one Selenium timeout/transient retry, with adverse tests for 697 checks, nonretriable content/privacy errors and hung child. Focused crosspath 38 tests+6 subtests PASS, recurrence contract/lint PASS, hosted exact-head CI #44473327042 SUCCESS. Most importantly, REAL owner Yoga6 normal --source-free-advance exact HEAD e7caf6f completed 108/698 source-bound Chrome PASS and exit0, and subsequent REAL --final-two-science automatically ran NEW proposal 738a612d6d192cae715858c226bf0f952ceeb0a2df823502d15a387448b968b0 through 108/698 browser after four real two-activity Gemini reviews, returning exit0. No browser-only result counted scientific PASS; no old role replay. Next: verify closure commit exact-head CI/browser, continue independent release readiness checks without automatic publish."
+    },
+    {
+      "id": "BSA-20261119-220",
+      "class": "generic-static-acceptance-status-does-not-reconcile-proven-versioned-108-content-browser-and-ci",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261118-208",
+        "BSA-20261119-217",
+        "BSA-20261119-218",
+        "BSA-20261119-219"
+      ],
+      "differenceFromLinkedIncident": "BSA218/BSA219 verified new six-section UNADMITTED source version with 103 real unchanged independent model PASSES, five separately reviewed changed activities, 108/108 proposed content scientific coverage, genuine Yoga6 698/698 Chrome, exact-head GitHub CI SUCCESS. Yet default scripts/check_final_acceptance_closure.py prints generic PENDING_AUTOMATED_ASSESSMENT with a static note that no live two-model evidence exists, because active_disposition() deliberately reports policy rather than versioned private scope. Blindly changing default status to RELEASE would forge admission and rewrite the frozen original 75/72 assessment ledger. Targeted BSA220 new --versioned-evidence mode reuses actual prepare_versioned_course_proposal and full immutable Gemini proof verifier, source SHA-bound private Chrome 108/648/698 integrity, exact committed clean Git head and live authenticated GitHub CI. It writes a safe private restart receipt with integrity; normal --source-free-advance automatically invokes it after genuine browser stage, persisting the next eligible milestone. Result is VERSIONED_SCIENCE_BROWSER_AND_CI_VERIFIED_UNADMITTED only when all actual proof types pass. Release/admission and pilot stay false, and generic no-argument policy remains historical pending by design. A dirty code tree or stale GitHub CI cannot reuse old green evidence. No new paid model, source replay, manual authorization bypass, course merge or publication.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "Authorized owner Yoga6 real 108 science-source reconciliation with private two-role Gemini receipts and exact Git/CI/Chrome",
+        "Synthetic fake-only adversarial tests on manifest tamper, historical original uncertainty, browser mismatch, wrong CI SHA, uncommitted code and private receipt corruption",
+        "Normal source-free worker automatic post-browser transition and standalone check_final_acceptance_closure --versioned-evidence"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_versioned_readiness.py",
+        "triggerMarker": "def _exact_ci_success(",
+        "remedyMarker": "def evaluate_current_versioned_evidence(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_versioned_readiness import ("
+          },
+          {
+            "path": "scripts/check_final_acceptance_closure.py",
+            "marker": "from app_generator.runtime.v3_versioned_readiness import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "test_real_source_chain_shape_ci_browser_yes_but_never_release"
+        },
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "test_missing_ci_does_not_become_release_or_true_exact_head"
+        },
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "test_uncommitted_development_never_reuses_old_ci_success"
+        },
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "test_old_wrong_source_browser_pass_fails_not_recounted"
+        },
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "test_fake_sci_count_108_without_true_source_coverage_fails"
+        },
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "test_missing_original_unknown_history_protection_fails"
+        },
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "test_private_receipt_idempotent_and_tamper_is_rejected"
+        },
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "test_authenticated_browser_completion_auto_dispatches_next_stage"
+        },
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "test_incomplete_new_readiness_stops_normal_worker"
+        },
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "test_no_flag_preserves_legacy_pending_policy"
+        }
+      ],
+      "nextAction": "Commit code/test/active registry, require exact-head GitHub full CI, then actual Yoga6 normal --source-free-advance that automatically performs new versioned evidence checker without any paid calls. Expect 108/108 sourcebound Gemini science, real 698 Chrome, exact clean Git/CI success, persisted private readiness receipt and no publication/admission. If all pass, mark BSA220 resolved, commit/reverify closure, and advance independently to privacy/admission evidence checks, not direct publish."
     }
   ]
 }

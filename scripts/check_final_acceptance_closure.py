@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -25,6 +26,10 @@ from app_generator.runtime.v3_course_review import plan_v3_course_review
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--historical-v2", action="store_true")
+    parser.add_argument("--versioned-evidence", action="store_true",
+                        help="Independently reconcile exact source-bound 108 "
+                             "content science, Chrome and GitHub CI evidence "
+                             "for the UNADMITTED proposal; never publish.")
     parser.add_argument("--package", type=Path)
     parser.add_argument("--course-dir", type=Path)
     parser.add_argument("--sections", type=str)
@@ -34,7 +39,22 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--release-receipt", type=Path)
     options = parser.parse_args(argv)
     try:
-        if options.historical_v2:
+        if options.versioned_evidence:
+            if (options.historical_v2 or options.package or options.course_dir
+                or options.assessment_file or options.release_receipt
+                or options.sections is not None or options.expected_sections!=6):
+                raise ValueError("V3_VERSIONED_EVIDENCE_FLAGS_CONFLICT")
+            from app_generator.runtime.v3_versioned_readiness import (
+                evaluate_current_versioned_evidence,
+            )
+            local=os.environ.get("LOCALAPPDATA")
+            if options.private_assessment_root is None and not local:
+                raise ValueError("V3_VERSIONED_EVIDENCE_LOCALAPPDATA_MISSING")
+            private=(options.private_assessment_root
+                     if options.private_assessment_root is not None else
+                     Path(local)/"Microvid"/"BoslaV3ReviewYoga6")
+            report=evaluate_current_versioned_evidence(ROOT,private)
+        elif options.historical_v2:
             if (options.package or options.course_dir or options.assessment_file
                 or options.release_receipt or options.private_assessment_root
                 or options.sections is not None):
@@ -88,6 +108,9 @@ def main(argv: list[str] | None = None) -> int:
                           "publicationAuthorized":False},sort_keys=True))
         return 2
     print(json.dumps(report,sort_keys=True))
+    if options.versioned_evidence:
+        return (0 if report.get("exactHeadHostedCiSuccess") is True
+                else 3)
     return 0
 
 

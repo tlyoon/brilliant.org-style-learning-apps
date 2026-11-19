@@ -184,6 +184,10 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "sourceFreeBrowserFailureCannotReturnSuccessExitCode",
     "browserChildFailureClassifiedWithoutExposingPrivateSource",
     "seleniumTransientRetryAtMostOneAndNeverSemanticOrPrivacyRetry",
+    "versionedCurrentEvidenceRequiresSaved108ScientificAndRealBrowser",
+    "versionedExactHeadCIRequiresCleanCommittedCode",
+    "normalWorkerAutoAdvancesToSourceBoundVersionedReadiness",
+    "versionedReadinessNeverAdmitsOrPublishesCourse",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
