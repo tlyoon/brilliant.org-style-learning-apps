@@ -5657,7 +5657,7 @@
     {
       "id": "BSA-20261119-217",
       "class": "recurrent-finite-activity-gemini-paid-charter-exhaustion-stalls-next-scientific-batch",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261117-185",
@@ -5744,7 +5744,7 @@
           "marker": "test_old_uncertain_no_browser_acceptance_cannot_be_ignored"
         }
       ],
-      "nextAction": "Pass exact-head hosted CI and genuine Yoga6 108/698 source-free Chrome before first paid call, then run ordinary finite --standing-science --execute --allow-generated-text-transfer --max-forward-activities 4 --max-forward-seconds 900 for genuinely untouched Section9.1 indices1-4. Safely reuse saved results and advance distinct new siblings without requesting another owner grant. Release/merge not authorized."
+      "nextAction": "BSA217 RESOLVED: new owner STANDING Gemini consent executable in normal Yoga6 finite 4 new/8 role/900sec mode; genuine source-bound 17 untouched original Section9.1 indices1-17 received 34 COMPLETE independent Gemini role claims and 17 genuine AI_CONSENSUS_PASS with zero unknown or science FAIL. First four index1-4 passed actual normal 108/698 Chrome proposal SHA5c956c7..., then 3 auto-linked four-activity batches idx5-8 proposal0e68d1d..., idx9-12 proposald1fe7075..., idx13-16 proposal24d31ece..., and final single idx17 proposal2cc36095ca8251de29c9b9f52850c764ac697de18ea7556b9c2a7470474116e9. Each finite worker returned STANDING_BOUNDED_BATCH_COMPLETED and STANDING_AUTOMATICALLY_ADVANCED_BROWSER_PASS exit0; total 34 role calls across five finite invocations (8+8+8+8+2), original index0 uncertain NEVER REPLAYED, old 9.6 idx6 uncertain and idx9 original science fail immutable, Section9.2 original idx13 scientific FAIL immutable, all earlier 72 original PASS and supplemental results retained. New unadmitted 108 candidate contains 103 genuine unchanged content PASS and three distinct separately Gemini-validated corrections, still does NOT claim 108/108 science completion or publication. GitHub Actions #44446706575 SUCCESS on exact implementation HEAD cd9c544 with owner Yoga6 source-bound browser receipt b05e73e9... for final idx17. Next technical boundary: separately source-revised/new versioned review of Section9.1 idx0 and Section9.6 idx6 under standing consent; never replay their original provider request hashes or fake science acceptance. Any closure metadata commit must be verified at exact new head by hosted CI and real browser, preserve draft/unmerged PR."
     }
   ]
 }
