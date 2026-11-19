@@ -84,7 +84,10 @@
     "ownerV7ContinuousMilestoneTransitionsUnderAuthorizedBound": true,
     "finalTwoHistoricalUnknownNeverReplayed": true,
     "finalTwoDistinctSourceReviewBeforeSciencePASS": true,
-    "finalTwoRealBrowserInNormalProductionRecovery": true
+    "finalTwoRealBrowserInNormalProductionRecovery": true,
+    "sourceFreeBrowserFailureCannotReturnSuccessExitCode": true,
+    "browserChildFailureClassifiedWithoutExposingPrivateSource": true,
+    "seleniumTransientRetryAtMostOneAndNeverSemanticOrPrivacyRetry": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

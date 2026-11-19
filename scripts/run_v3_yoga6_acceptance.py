@@ -136,6 +136,22 @@ def _write_saved(path: Path, report: dict) -> dict:
     return doc
 
 
+def classified_browser_child_failure(
+    proposed: str, result: dict, exit_code: int,
+) -> dict:
+    """Expose only safe browser failure classification for durable recovery."""
+    error_class=result.get("errorClass")
+    error_code=result.get("errorCode")
+    return {"status":"STOP_REAL_CANDIDATE_BROWSER_QA_FAILED",
+            "proposalSha256":proposed,
+            "childStatus":result.get("status"),
+            "childErrorClass":error_class if isinstance(error_class,str) else None,
+            "childErrorCode":(error_code if isinstance(error_code,str)
+                and error_code.startswith("V3_BROWSER_")
+                and len(error_code)<128 else None),
+            "childExitCode":exit_code,"publicationAuthorized":False}
+
+
 def advance_real_candidate_browser_qa(
     root: Path, private: Path, source_free: dict,
 ) -> dict:
@@ -193,8 +209,8 @@ def advance_real_candidate_browser_qa(
             or result.get("allLocaleViewportPromptChecks")!=648
             or result.get("genuineGeminiReviewsAdded")!=0
             or result.get("publicationAuthorized") is not False):
-        return {"status":"STOP_REAL_CANDIDATE_BROWSER_QA_FAILED",
-                "proposalSha256":proposed,"publicationAuthorized":False}
+        return classified_browser_child_failure(
+            proposed,result,child.returncode)
     report={**result,"revisionSha":revision,"rendererRuntimeSha256":runtime,
             "versionedScopeAdmitted":False,"publicationAuthorized":False}
     return _write_saved(target,report)

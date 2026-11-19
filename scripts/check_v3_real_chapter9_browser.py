@@ -321,8 +321,11 @@ def main(argv=None):
     try:
         result=run(private)
     except Exception as exc:
+        safe=str(exc)
         print(json.dumps({"status":"STOP_ACTUAL_CHAPTER9_BROWSER_QA",
                           "errorClass":type(exc).__name__,
+                          "errorCode":safe if safe.startswith("V3_BROWSER_")
+                              and len(safe)<128 else None,
                           "publicationAuthorized":False}))
         return 3
     print(json.dumps(result,sort_keys=True))

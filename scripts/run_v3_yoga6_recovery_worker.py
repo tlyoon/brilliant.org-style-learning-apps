@@ -760,9 +760,25 @@ def main(argv: list[str] | None = None) -> int:
             ) else 3
         if args.source_free_advance:
             require_authorized_native_review_host(AUTHORITY)
-            _print(_complete_source_free_with_browser(
-                private,advance_source_free_until_boundary(COURSE,ROOT,private)))
-            return 0
+            result=_complete_source_free_with_browser(
+                private,advance_source_free_until_boundary(COURSE,ROOT,private))
+            qa=result.get("realCandidateBrowserAcceptance",{})
+            has_proposal=isinstance(result.get("proposalSha256"),str)
+            genuine=(qa.get("status")==
+                       "ACTUAL_UNADMITTED_CHAPTER9_BROWSER_QA_PASS"
+                     and qa.get("proposalSha256")==result.get("proposalSha256")
+                     and qa.get("renderedChecks")==698
+                     and qa.get("all108ActivitiesVisited") is True
+                     and qa.get("allLocaleViewportPromptChecks")==648)
+            no_proposal=(not has_proposal and qa.get("status")==
+                         "NO_NEW_REAL_CANDIDATE_FOR_BROWSER_QA")
+            _print(result)
+            # BSA219: the previous worker unconditionally returned exit0
+            # even after a real Chrome STOP. An unsuccessful browser check
+            # is a live blocker, not a verified checkpoint for paid science.
+            return 0 if (result.get("paidGeminiCalls")==0
+                         and result.get("publicationAuthorized") is False
+                         and (genuine if has_proposal else no_proposal)) else 3
         if args.auto_advance:
             ready = plan_v3_course_review(
                 COURSE, ROOT, private_root=private,

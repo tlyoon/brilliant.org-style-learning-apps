@@ -408,3 +408,7 @@ Five finite owner Yoga6 normal standing review invocations on source code cd9c54
 ## 19 November 2026 - BSA218 v7 owner contract + genuine final two separate scientific sources
 
 Source docs/auto_cont_dev_prompt_v7.md was fetched directly from Drive file ID 14m_5wvXMlqhxGEbTF_kfZLSlMFx8zZzp. Enforces contiguous authorized milestone progression and six-step historical recovery; no indefinite paid scheduler authorized. Only missing science positions after BSA217 are Section9.1 old uncertain idx0 and Section9.6 old uncertain idx6. New one-activity source revisions have new SHA input identities; no replay of original Gemini roles. BSA218 normal --final-two-science and new versioned 108-browser source selection accept ONLY two genuine independent Gemini PASS role pairs. BSA218 ACTIVE pending tests/CI/live independent QA.
+
+## 19 Nov 2026 ? BSA219 real Chrome false-success correction
+
+On b82da8d, real Yoga6 normal --source-free-advance reported sourcebound browser STOP but returned exit0, after hosted CI SUCCESS. An independent browser rerun on the same SHA passed 108/698. Original class is unknown because child stderr/errorClass was discarded. Reuse BSA197/BSA210 history. BSA219 now returns exit3 on Chrome STOP, forwards safe child classification, retries at most one transient Selenium/timeout browser request only, never content/privacy/source defects, and no paid Gemini. Active until exact-head CI + authentic sourcefree normal restart.

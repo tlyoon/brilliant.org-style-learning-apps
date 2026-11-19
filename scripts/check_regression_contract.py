@@ -181,6 +181,9 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "finalTwoHistoricalUnknownNeverReplayed",
     "finalTwoDistinctSourceReviewBeforeSciencePASS",
     "finalTwoRealBrowserInNormalProductionRecovery",
+    "sourceFreeBrowserFailureCannotReturnSuccessExitCode",
+    "browserChildFailureClassifiedWithoutExposingPrivateSource",
+    "seleniumTransientRetryAtMostOneAndNeverSemanticOrPrivacyRetry",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

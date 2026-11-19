@@ -5856,6 +5856,81 @@
         }
       ],
       "nextAction": "Run all BSA218 tests and actual Yoga6 source-free 108/698 browser, regression/lint. Push pre-paid exact source head and require GitHub CI SUCCESS. Then run --final-two-science --execute --allow-generated-text-transfer --max-forward-activities 2 --max-forward-seconds 900 ON YOGA6 only, at most four NEW Gemini independent roles. Accept only authentic per-role COMPLETE exact-SHA saved consensus science PASS. Immediately source-free stage the exact fully corrected unadmitted 108 proposal with zero remaining content science gaps and verify REAL 698 Chrome; original uncertainties remain frozen. Persist receipt and mark resolved after exact-head CI and genuine normal-path restart; release/admission still separate."
+    },
+    {
+      "id": "BSA-20261119-219",
+      "class": "genuine-yoga6-browser-failure-reported-as-sourcefree-success",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261118-197",
+        "BSA-20261118-210",
+        "BSA-20261119-218"
+      ],
+      "differenceFromLinkedIncident": "On exact-head b82da8d GitHub full CI passed while one genuine Yoga6 108/698 sourcefree browser reported STOP_REAL_CANDIDATE_BROWSER_QA_FAILED. The ordinary worker incorrectly returned exit code zero regardless of failed browser and the child error status/class were lost. Historic BSA197 had a stale 50-check browser receipt and BSA210 had browser fixture cache/timeout; neither guarded this normal worker exit code. A subsequent independent real browser rerun on the same source SHA passed 108/698, showing the original failure is not reproducible; its exact cause was lost. BSA219 makes actual sourcebound browser failure a nonzero exit, forwards safe child status/error class/code, and automatically retries only ONE browser run if first failure is recognized Selenium transient or a killed timeout child. Source, privacy, physics, semantic and unknown failures are NEVER retried or promoted to PASS. No new paid Gemini call or release is authorized by browser success.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "Yoga6 authentic 108/698 sourcefree Chrome verification before independent new paid Gemini roles",
+        "Synthetic fault injection for browser timeout, stale Selenium, 697 check, corrupt source and privacy hard stop"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/run_v3_yoga6_acceptance.py",
+        "triggerMarker": "def classified_browser_child_failure(",
+        "remedyMarker": "def _run_bounded_browser_child(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "if args.source_free_advance:"
+          },
+          {
+            "path": "scripts/run_v3_yoga6_acceptance.py",
+            "marker": "_run_bounded_browser_child("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_browser_failure_propagation.py",
+          "kind": "python",
+          "marker": "test_genuine_child_browser_stop_returns_nonzero_no_model_calls"
+        },
+        {
+          "path": "tests/test_v3_browser_failure_propagation.py",
+          "kind": "python",
+          "marker": "test_fake_697_not_promoted_to_698_browser_success"
+        },
+        {
+          "path": "tests/test_v3_browser_failure_propagation.py",
+          "kind": "python",
+          "marker": "test_real_genuine_698_sourcebound_is_only_successful_proposal"
+        },
+        {
+          "path": "tests/test_v3_browser_failure_propagation.py",
+          "kind": "python",
+          "marker": "test_no_new_proposal_is_not_an_error_after_safe_local_progress"
+        },
+        {
+          "path": "tests/test_v3_browser_failure_propagation.py",
+          "kind": "python",
+          "marker": "test_only_safe_error_class_and_named_code_exposed"
+        },
+        {
+          "path": "tests/test_v3_browser_failure_propagation.py",
+          "kind": "python",
+          "marker": "test_selenium_transient_child_fails_then_one_genuine_child_pass"
+        },
+        {
+          "path": "tests/test_v3_browser_failure_propagation.py",
+          "kind": "python",
+          "marker": "test_content_error_is_not_retried_or_marked_pass"
+        },
+        {
+          "path": "tests/test_v3_browser_failure_propagation.py",
+          "kind": "python",
+          "marker": "test_hung_browser_child_timeout_can_retry_once_but_not_forever"
+        }
+      ],
+      "nextAction": "Pass focused synthetic tests and repository regression/lint; commit and require exact-head GitHub CI. Restart actual sourcefree Yoga6 108/698 browser with correct nonzero stop and bounded retry. Only after both genuine checks pass, resume BSA218 two new scientific activities with at most four paid Gemini calls under standing authorization. No old role replay."
     }
   ]
 }
