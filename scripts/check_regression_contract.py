@@ -177,6 +177,10 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "standingGeminiEveryInvocationFiniteEightCallsFourActivities",
     "standingGeminiSourceBoundNoRoleReplayAndOldChartersPreserved",
     "standingGeminiGenuinePassReusedInUnadmittedCourse",
+    "ownerV7ContinuousMilestoneTransitionsUnderAuthorizedBound",
+    "finalTwoHistoricalUnknownNeverReplayed",
+    "finalTwoDistinctSourceReviewBeforeSciencePASS",
+    "finalTwoRealBrowserInNormalProductionRecovery",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

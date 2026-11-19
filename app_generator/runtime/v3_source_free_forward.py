@@ -176,6 +176,7 @@ def advance_source_free_until_boundary(
             raise ValueError("V3_SOURCE_FREE_UNTRUSTED_SCIENCE_REPAIR")
         proposal_hash = None
         science_in_proposal = False
+        final_two_in_proposal = False
         if outcome["repairStaged"]:
             if outcome["repairStatus"] != (
                     "PRIVATE_REPAIR_STAGED_PENDING_TWO_GEMINI_REVIEWS"):
@@ -190,6 +191,7 @@ def advance_source_free_until_boundary(
                 raise ValueError("V3_SOURCE_FREE_UNVERIFIED_PROPOSAL")
             proposal_hash = candidate["proposalSha256"]
             science_in_proposal=candidate.get("section96ScienceIntegrated") is True
+            final_two_in_proposal=candidate.get("finalTwoScienceIntegrated") is True
         staged = 0
         if "section-9-6" in plan.get("quarantinedSections", ()):
             tail = plan_frozen_original_tail(
@@ -244,6 +246,7 @@ def advance_source_free_until_boundary(
             "stagedImmutableOriginalTailSlices": staged,
             "proposalSha256": proposal_hash,
             "section96ScienceIntegrated":science_in_proposal,
+            "finalTwoScienceIntegrated":final_two_in_proposal,
             "originalAssessedUnchanged": receipt["originalAssessed"],
             "originalConsensusPassesUnchanged": receipt["originalPasses"],
             "providerCapacity": effective_provider,

@@ -5745,6 +5745,117 @@
         }
       ],
       "nextAction": "BSA217 RESOLVED: new owner STANDING Gemini consent executable in normal Yoga6 finite 4 new/8 role/900sec mode; genuine source-bound 17 untouched original Section9.1 indices1-17 received 34 COMPLETE independent Gemini role claims and 17 genuine AI_CONSENSUS_PASS with zero unknown or science FAIL. First four index1-4 passed actual normal 108/698 Chrome proposal SHA5c956c7..., then 3 auto-linked four-activity batches idx5-8 proposal0e68d1d..., idx9-12 proposald1fe7075..., idx13-16 proposal24d31ece..., and final single idx17 proposal2cc36095ca8251de29c9b9f52850c764ac697de18ea7556b9c2a7470474116e9. Each finite worker returned STANDING_BOUNDED_BATCH_COMPLETED and STANDING_AUTOMATICALLY_ADVANCED_BROWSER_PASS exit0; total 34 role calls across five finite invocations (8+8+8+8+2), original index0 uncertain NEVER REPLAYED, old 9.6 idx6 uncertain and idx9 original science fail immutable, Section9.2 original idx13 scientific FAIL immutable, all earlier 72 original PASS and supplemental results retained. New unadmitted 108 candidate contains 103 genuine unchanged content PASS and three distinct separately Gemini-validated corrections, still does NOT claim 108/108 science completion or publication. GitHub Actions #44446706575 SUCCESS on exact implementation HEAD cd9c544 with owner Yoga6 source-bound browser receipt b05e73e9... for final idx17. Next technical boundary: separately source-revised/new versioned review of Section9.1 idx0 and Section9.6 idx6 under standing consent; never replay their original provider request hashes or fake science acceptance. Any closure metadata commit must be verified at exact new head by hosted CI and real browser, preserve draft/unmerged PR."
+    },
+    {
+      "id": "BSA-20261119-218",
+      "class": "historically-uncertain-model-roles-block-last-two-chapter9-scientific-positions-without-versioned-recovery",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261118-207",
+        "BSA-20261118-208",
+        "BSA-20261119-217"
+      ],
+      "differenceFromLinkedIncident": "The original Section9.1 index0 and Section9.6 supplemental index6 Gemini provider outcomes remain historically uncertain and cannot be submitted again; BSA217 proved 17 untouched Section9.1 sibling reviews via 34 genuine Gemini roles plus sourcefree Chrome, but the old unknown positions still leave exactly two new-course scientific gaps. The owner shared the authoritative v7 autonomous forward-progress and repair workflow: historical incident review, targeted reuse/repair, real test, fault-injection/regressions, executable recovery registry and normal pipeline restart. A new separate source revision for Section9.1 index0 and a newly clarified linearly increasing mass-density Section9.6 index6 are each staged privately with distinct one-activity source SHA, preserving 17 prior Section9.1 original consensus PASS, old frozen75/72 and earlier new Section9.6 index5/9 genuine corrected evidence. The executable normal --final-two-science worker uses standing owner paid Gemini consent with 2 activities/4 independent calls/900 seconds, immutable PRE_CALL, no historical unknown replay, no false model PASS and same-run source-free revised 108-course full 698 Chrome. The versioned proposal and Chrome loader verify both new immutable source/parent and two real independent science role proofs before ever treating them as reviewed content. This is NOT admission of a course version or permission to release/publish/merge; no paid always-on scheduler is introduced.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "Yoga6 distinct new versions for original frozen Section9.1 idx0 and Section9.6 supplemental idx6, true 2x2 Gemini paid roles under BSA217 standing consent",
+        "source-free Python/CI synthetic adversarial tests and genuine 108/698 Chrome including en/ms/zh and both viewports"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_final_two_science.py",
+        "triggerMarker": "def stage_final_two_new_inputs(",
+        "remedyMarker": "def advance_final_two_new_science(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_final_two_science import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_final_two_science.py",
+          "kind": "python",
+          "marker": "test_two_source_revisions_stage_without_original_mutation"
+        },
+        {
+          "path": "tests/test_v3_final_two_science.py",
+          "kind": "python",
+          "marker": "test_invariant_17_genuine_sibling_passes_is_not_optional"
+        },
+        {
+          "path": "tests/test_v3_final_two_science.py",
+          "kind": "python",
+          "marker": "test_prior_96_unknown_and_fail_cannot_be_erased"
+        },
+        {
+          "path": "tests/test_v3_final_two_science.py",
+          "kind": "python",
+          "marker": "test_saved_stage_tamper_rejected_without_provider_contact"
+        },
+        {
+          "path": "tests/test_v3_final_two_science.py",
+          "kind": "python",
+          "marker": "test_fake_two_review_callback_cannot_forge_genuine_proof"
+        },
+        {
+          "path": "tests/test_v3_final_two_science.py",
+          "kind": "python",
+          "marker": "test_one_unknown_stops_before_second_paid_call"
+        },
+        {
+          "path": "tests/test_v3_final_two_science.py",
+          "kind": "python",
+          "marker": "test_incomplete_previous_new_role_stops_before_resubmission"
+        },
+        {
+          "path": "tests/test_v3_final_two_worker.py",
+          "kind": "python",
+          "marker": "test_normal_bounded_two_review_to_real_browser_continuation"
+        },
+        {
+          "path": "tests/test_v3_final_two_worker.py",
+          "kind": "python",
+          "marker": "test_scientific_failure_must_not_enter_second_browser"
+        },
+        {
+          "path": "tests/test_v3_final_two_worker.py",
+          "kind": "python",
+          "marker": "test_fake_browser_success_without_source_reuse_refused"
+        },
+        {
+          "path": "tests/test_v3_final_two_worker.py",
+          "kind": "python",
+          "marker": "test_reject_conflicting_modes_and_missing_transfer"
+        },
+        {
+          "path": "tests/test_v3_final_two_worker.py",
+          "kind": "python",
+          "marker": "test_unpaid_dry_run_exposes_exact_two_new_source_identities"
+        },
+        {
+          "path": "tests/test_v3_final_two_browser.py",
+          "kind": "python",
+          "marker": "test_exact_new_two_science_provenance_selects_all_six_packages"
+        },
+        {
+          "path": "tests/test_v3_final_two_browser.py",
+          "kind": "python",
+          "marker": "test_no_genuine_saved_role_evidence_rejects_forged_proposal"
+        },
+        {
+          "path": "tests/test_v3_final_two_browser.py",
+          "kind": "python",
+          "marker": "test_mismatched_new_section96_sha_is_fatal_not_browser_pass"
+        },
+        {
+          "path": "tests/test_v3_final_two_browser.py",
+          "kind": "python",
+          "marker": "test_content_mutation_does_not_reuse_sha_bound_browser_receipt"
+        }
+      ],
+      "nextAction": "Run all BSA218 tests and actual Yoga6 source-free 108/698 browser, regression/lint. Push pre-paid exact source head and require GitHub CI SUCCESS. Then run --final-two-science --execute --allow-generated-text-transfer --max-forward-activities 2 --max-forward-seconds 900 ON YOGA6 only, at most four NEW Gemini independent roles. Accept only authentic per-role COMPLETE exact-SHA saved consensus science PASS. Immediately source-free stage the exact fully corrected unadmitted 108 proposal with zero remaining content science gaps and verify REAL 698 Chrome; original uncertainties remain frozen. Persist receipt and mark resolved after exact-head CI and genuine normal-path restart; release/admission still separate."
     }
   ]
 }

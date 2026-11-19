@@ -30,6 +30,9 @@ from app_generator.runtime.v3_section92_supplemental_reuse import (
 from app_generator.runtime.v3_standing_paid_science import (
     verified_section91_standing_passes,
 )
+from app_generator.runtime.v3_final_two_science import (
+    verified_final_two_science,
+)
 from app_generator.runtime.v3_frozen_original_tail import (
     plan_frozen_original_tail, _slice as make_frozen_original_slice,
 )
@@ -186,6 +189,26 @@ def prepare_versioned_course_proposal(
         if two_revision_science is not None:
             proposed_96_sha=two_revision_science["candidatePackageSha256"]
             revised_96_items=two_revision_science["activities"]
+    # BSA218: the two old uncertain claims remain immutable. Only genuinely
+    # NEW and separately two-Gemini-reviewed source versions can close the
+    # missing CONTENT science positions in a NEW unadmitted proposal.
+    final_two_science = (
+        verified_final_two_science(course,repo,private_root)
+        if (len(independent_91)==17 and two_revision_science is not None)
+        else None
+    )
+    if final_two_science is not None:
+        if (final_two_science["originalSection91Index0UnknownPreserved"] is not True
+                or final_two_science["originalSection96Index6UnknownPreserved"] is not True
+                or final_two_science["publicationAuthorized"] is not False
+                or final_two_science["versionedScopeAdmitted"] is not False
+                or [r["section"] for r in final_two_science["proofs"]]
+                   != ["section-9-1","section-9-6"]
+                or any(r["genuineConsensusPass"] is not True
+                       for r in final_two_science["proofs"])):
+            raise ValueError("V3_PROPOSAL_FINAL_TWO_REVIEW_PROVENANCE_INVALID")
+        proposed_96_sha=final_two_science["section96"]["candidatePackageSha256"]
+        revised_96_items=final_two_science["section96"]["activities"]
 
     corrected = (private_root / "repair-proposals" / _SECTION /
                  _CANDIDATE / "package.json")
@@ -235,6 +258,18 @@ def prepare_versioned_course_proposal(
         if digest != section["packageSha256"] or len(activities) != 18:
             raise ValueError("V3_PROPOSAL_SOURCE_CHANGED_DURING_READ")
         replacement_digest = digest
+        if label == "section-9-1" and final_two_science is not None:
+            new_items=final_two_science["section91"]["activities"]
+            if (len(new_items)!=18
+                    or [x["id"] for x in new_items] !=
+                       [x["id"] for x in activities]
+                    or [i for i,(old,new) in enumerate(zip(activities,new_items))
+                        if old!=new]!=[0]
+                    or set(k for k in activities[0]
+                           if activities[0][k]!=new_items[0][k])!={"prompt"}):
+                raise ValueError("V3_PROPOSAL_FINAL_91_CHANGED_UNEXPECTED_CONTENT")
+            replacement_digest=final_two_science["section91"]["candidatePackageSha256"]
+            changed+=1
         if label == _SECTION:
             if ([a["id"] for a in activities] !=
                     [a["id"] for a in corrected_items]):
@@ -251,6 +286,7 @@ def prepare_versioned_course_proposal(
                        [item["id"] for item in revised_96_items]
                     or [i for i,(a,b) in enumerate(
                         zip(activities,revised_96_items)) if a!=b] != (
+                            [5,6,9] if final_two_science is not None else
                             [5,9] if two_revision_science is not None else [5])):
                 raise ValueError("V3_PROPOSAL_REVISED_SECTION96_SCOPE_CHANGED")
             replacement_digest = proposed_96_sha
@@ -376,7 +412,8 @@ def prepare_versioned_course_proposal(
             "originalUncertain": section["modelUncertainActivities"],
             "originalRepairRequired": section["modelRepairRequiredActivities"],
         })
-    if (changed != (2 if has_revised_96 else 1)
+    if (changed != (3 if final_two_science is not None else
+                    2 if has_revised_96 else 1)
             or sum(x["activities"] for x in rows) != 108
             or len(reuse) != (progress["modelConsensusPassActivities"]
                               + len(supplementary_metadata))):
@@ -466,6 +503,24 @@ def prepare_versioned_course_proposal(
         unsigned["counts"]["revisedSection96NewGeminiConsensusPass"] = int(
             revised_96_qa_state ==
             "GENUINE_REVISED_SECTION96_GEMINI_PASS_NOT_ADMITTED")
+    if final_two_science is not None:
+        unsigned["finalTwoNewVersionGenuineScience"] = {
+            "reviewedNewSourceOnly":True,
+            "proofs":final_two_science["proofs"],
+            "originalSection91Index0UnknownPreserved":True,
+            "originalSection96Index6UnknownPreserved":True,
+            "versionedScopeAdmitted":False,
+            "publicationAuthorized":False,
+        }
+        unsigned["counts"]["finalTwoNewVersionConsensusPasses"]=2
+        unsigned["counts"]["scientificallyReviewedProposedContent"]=(
+            len(reuse)+int(corrected_pass)
+            +2*int(two_revision_science is not None)+2)
+        if unsigned["counts"]["scientificallyReviewedProposedContent"]!=108:
+            raise ValueError("V3_PROPOSAL_FINAL_SCIENCE_COVERAGE_NOT_108")
+        unsigned["counts"]["proposedContentWithoutScience"]=0
+        # Never remove original-review deficit: its historical unknown
+        # provider claims are immutable, distinct from NEW version review.
     if independent_91:
         unsigned["section91StandingGenuineOriginalReviews"] = independent_91
         unsigned["counts"]["standingSection91SupplementalConsensusPasses"] = (
@@ -526,8 +581,9 @@ def prepare_versioned_course_proposal(
         "potentiallyReusableGenuinePasses":len(reuse),
         "verifiedSupplementalFrozenOriginalPasses":len(supplementary_metadata),
         "remainingOriginalUnassessed":108-progress["activitiesAssessedRows"],
-        "remainingContentUnreviewedAfterSupplemental":
-            108-progress["activitiesAssessedRows"]-len(supplementary_metadata),
+        "remainingContentUnreviewedAfterSupplemental":(
+            0 if final_two_science is not None else
+            108-progress["activitiesAssessedRows"]-len(supplementary_metadata)),
         "originalUncertain":progress["modelUncertainActivities"],
         "originalFailed":progress["modelRepairRequiredActivities"],
         "correctedActivityNewGeminiConsensusPass":int(corrected_pass),
@@ -535,6 +591,7 @@ def prepare_versioned_course_proposal(
         "section96NewContentCandidateSha256": proposed_96_sha,
         "section96NewGeminiScientificStatus": revised_96_qa_state,
         "section96ScienceIntegrated":two_revision_science is not None,
+        "finalTwoScienceIntegrated":final_two_science is not None,
         "section96Index9NewGeminiConsensusPass":int(
             two_revision_science is not None),
         "versionedScopeAdmitted":False,

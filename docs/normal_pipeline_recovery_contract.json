@@ -80,7 +80,11 @@
     "standingOwnerPaidGeminiConsentWithoutPerCampaignReauthorization": true,
     "standingGeminiEveryInvocationFiniteEightCallsFourActivities": true,
     "standingGeminiSourceBoundNoRoleReplayAndOldChartersPreserved": true,
-    "standingGeminiGenuinePassReusedInUnadmittedCourse": true
+    "standingGeminiGenuinePassReusedInUnadmittedCourse": true,
+    "ownerV7ContinuousMilestoneTransitionsUnderAuthorizedBound": true,
+    "finalTwoHistoricalUnknownNeverReplayed": true,
+    "finalTwoDistinctSourceReviewBeforeSciencePASS": true,
+    "finalTwoRealBrowserInNormalProductionRecovery": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

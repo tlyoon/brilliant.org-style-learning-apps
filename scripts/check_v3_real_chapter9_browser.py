@@ -50,6 +50,30 @@ def _source_bound_packages(private: Path) -> tuple[str, list[tuple[int, bytes, l
             or len(doc["sections"])!=6
             or not isinstance(doc.get("section96UnrecoverableRoleReplacement"),dict)):
         raise ValueError("V3_BROWSER_INVALID_VERSIONED_PROPOSAL")
+    # BSA218: a new source version for the two old uncertain roles is
+    # permitted ONLY on independent saved two-Gemini evidence. Never allow
+    # a manifest to redirect Chrome to unreviewed or arbitrary private data.
+    final_two=doc.get("finalTwoNewVersionGenuineScience")
+    proven_final=None
+    if final_two is not None:
+        from app_generator.runtime.v3_final_two_science import (
+            verified_final_two_science,
+        )
+        proven_final=verified_final_two_science(
+            ROOT/"content"/"chapter-9",ROOT,private)
+        if (not isinstance(final_two,dict) or proven_final is None
+                or final_two.get("reviewedNewSourceOnly") is not True
+                or final_two.get("originalSection91Index0UnknownPreserved") is not True
+                or final_two.get("originalSection96Index6UnknownPreserved") is not True
+                or final_two.get("publicationAuthorized") is not False
+                or final_two.get("versionedScopeAdmitted") is not False
+                or final_two.get("proofs")!=proven_final["proofs"]):
+            raise ValueError("V3_BROWSER_FINAL_TWO_NEEDS_GENUINE_NEW_ROLE_PROOF")
+        for number,section in ((1,"section91"),(6,"section96")):
+            row=doc["sections"][number-1]
+            if row.get("proposedPackageSha256")!=(
+                    proven_final[section]["candidatePackageSha256"]):
+                raise ValueError("V3_BROWSER_FINAL_TWO_PROPOSED_SHA_MISMATCH")
     payload=[]
     for index,row in enumerate(doc["sections"],1):
         label=f"section-9-{index}"
@@ -58,8 +82,21 @@ def _source_bound_packages(private: Path) -> tuple[str, list[tuple[int, bytes, l
         target=row["proposedPackageSha256"]
         if target==row["originalPackageSha256"]:
             source=ROOT/"content"/"chapter-9"/label/"package.json"
+        elif label=="section-9-1" and proven_final is not None:
+            source=private/"final-two-science-candidates"/label/target/"package.json"
         elif label=="section-9-2":
             source=private/"repair-proposals"/label/target/"package.json"
+        elif label=="section-9-6" and proven_final is not None:
+            # Existing corrected indices 5 and 9 remain byte-for-byte
+            # identical to their genuinely approved parent revisions.
+            science=doc.get("section96ScientificFailureReplacement")
+            if (not isinstance(science,dict)
+                    or science.get("changedActivityIndices")!=[5,9]
+                    or science.get("originalIndex9ScientificFailurePreserved") is not True
+                    or science.get("originalIndex6ProviderUnknownPreserved") is not True
+                    or len(science.get("independentNewVersionGeminiEvidence",[]))!=2):
+                raise ValueError("V3_BROWSER_FINAL_TWO_PRIOR_96_PROOF_CHANGED")
+            source=private/"final-two-science-candidates"/label/target/"package.json"
         elif label=="section-9-6":
             science=doc.get("section96ScientificFailureReplacement")
             if science is not None:
