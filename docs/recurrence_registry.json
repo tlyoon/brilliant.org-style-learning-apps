@@ -5931,7 +5931,7 @@
     {
       "id": "BSA-20261119-220",
       "class": "generic-static-acceptance-status-does-not-reconcile-proven-versioned-108-content-browser-and-ci",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261118-208",
@@ -6013,7 +6013,7 @@
           "marker": "test_no_flag_preserves_legacy_pending_policy"
         }
       ],
-      "nextAction": "Commit code/test/active registry, require exact-head GitHub full CI, then actual Yoga6 normal --source-free-advance that automatically performs new versioned evidence checker without any paid calls. Expect 108/108 sourcebound Gemini science, real 698 Chrome, exact clean Git/CI success, persisted private readiness receipt and no publication/admission. If all pass, mark BSA220 resolved, commit/reverify closure, and advance independently to privacy/admission evidence checks, not direct publish."
+      "nextAction": "RESOLVED: source-verified commit 61a5d6dfb622360aff0736f4a28068b8867f1cea GitHub Actions #44485028486 SUCCESS, genuine Yoga6 normal --source-free-advance same HEAD visited 108 actual activities/648 language?viewport questions/698 Chrome total PASS source proposal 738a612d6d192cae715858c226bf0f952ceeb0a2df823502d15a387448b968b0 browser receipt SHA282c5fcd5951da621c8ece068970f2db7d053bcee80e0e739b491a7dbe3ffef4, worker exit0. The same normal invocation automatically (without additional Gemini or a new user prompt) reconciled the saved 108/108 source-specific independent model evidence, original frozen 75 reviewed/72 genuine original PASS unchanged, clean exact git HEAD and hosted CI, persisted integrity-bound owner private versioned readiness receipt SHA645865ded37bc3da78a166a2a959ffc0c146dc3fd1fda5539ecbb3cbe7d7ea8b, status VERSIONED_SCIENCE_BROWSER_AND_CI_VERIFIED_UNADMITTED. Local Yoga6 65 crosspath tests and 44 subtests, real prior dirty-tree and wrong Git CI controls, recurrence contract and lint PASS. No version admission, public release, merge, learner pilot or additional paid calls. Next independent source-free task: assess private version admission/privacy/release proof eligibility, but DO NOT auto-release; C3 heldout generalization historically BLOCKED_EXTERNAL and must not be fabricated or replayed. Closure-only successor commit requires exact new HEAD CI and genuine Chrome before final immutable status handoff."
     }
   ]
 }
