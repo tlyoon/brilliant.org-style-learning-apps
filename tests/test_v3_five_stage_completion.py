@@ -30,6 +30,21 @@ class FiveStageSyntheticTests(unittest.TestCase):
         child=self.repo/"scripts"/"run_v3_yoga6_five_stage.py"
         child.parent.mkdir()
         child.write_text("synthetic only")
+        # Fake-only reference summaries with the later C3 status taking
+        # precedence over obsolete HTTP402. Never copy real private PDFs.
+        docs=self.repo/"docs"
+        docs.mkdir()
+        (docs/"FINITE_GLOBAL_CODEBASE_DISPOSITION_20261104.md").write_text(
+            "CURRENT-STATUS CORRECTION: FAILED_LIMITED_CAMPAIGN")
+        (docs/"C3_POST_BILLING_RECONCILIATION_20261104.md").write_text(
+            "PROVIDER_ACCESS_RECOVERED, FAILED_LIMITED_CAMPAIGN, "
+            "RESPONSE_CONTRACT_ERROR, No third campaign, "
+            "zero responsive checks")
+        gate=self.repo/"app_generator"/"runtime"
+        gate.mkdir(parents=True)
+        (gate/"academic_release.py").write_text(
+            "def enforce_academic_release_gate(x): "
+            "return read_private_release_receipt(x)")
         self.local=self.root/"local"
         self.private=self.local/"Microvid"/"owner"
         self.private.mkdir(parents=True)
@@ -108,6 +123,10 @@ class FiveStageSyntheticTests(unittest.TestCase):
         self.assertFalse(answer["publicV3ReleaseReceiptMinted"])
         self.assertFalse(answer["publicationAuthorized"])
         self.assertEqual(self.calls["browser"],1)
+        self.assertTrue(answer["sourceFreeDownstreamAdapterVerified"])
+        self.assertEqual(
+            answer["historicalFiniteC3Result"],
+            "C3_FAILED_LIMITED_CAMPAIGN_RECONCILED_READ_ONLY")
         self.assertTrue(all(x["status"] in (
             "PASS_PRIVATE_ONLY","READY_FOR_NEXT_AUTHORIZED_STAGE")
             for x in answer["stages"]))
@@ -154,6 +173,37 @@ class FiveStageSyntheticTests(unittest.TestCase):
         file.write_text(json.dumps(saved))
         with self.assertRaisesRegex(ValueError,"CHECKPOINT_INTEGRITY_ERROR"):
             self.invoke(exercise=False)
+
+    def test_future_stage_executes_real_sourcefree_historical_c3_precedence(self):
+        answer=self.invoke()
+        self.assertTrue(answer["sourceFreeDownstreamAdapterVerified"])
+        stage=(self.private/v._BASE/self.head/self.source/
+               (v._STAGE_NAMES[4]+".json"))
+        doc=json.loads(stage.read_text(encoding="utf8"))
+        history=doc["historicalFiniteC3Reconciliation"]
+        self.assertTrue(doc["sourceFreeDownstreamWorkExecuted"])
+        self.assertEqual(history["completedDraftsInRecordedReconciliation"],2)
+        self.assertTrue(history["historicalProvider402SupersededByAuthenticatedSourceFreeRecovery"])
+        self.assertFalse(history["historicalThirdCampaignAllowed"])
+        self.assertEqual(history["newSourceBearingPDFCalls"],0)
+        self.assertFalse(doc["publicationAuthorized"])
+
+    def test_older_http402_without_later_reconciliation_must_fail_closed(self):
+        self.repo.joinpath(
+            "docs","C3_POST_BILLING_RECONCILIATION_20261104.md"
+        ).write_text("BLOCKED_EXTERNAL only")
+        with self.assertRaisesRegex(ValueError,
+                "C3_STALE_OR_CONTRADICTORY_HISTORY"):
+            self.invoke()
+        self.assertFalse((self.private/v._BASE/self.head/self.source/
+                  (v._STAGE_NAMES[4]+".json")).exists())
+
+    def test_existing_public_release_gate_must_remain_attested(self):
+        gate=self.repo/"app_generator"/"runtime"/"academic_release.py"
+        gate.write_text("def unsafe_release(): return True")
+        with self.assertRaisesRegex(ValueError,
+                "PUBLIC_V3_GATE_WEAKENED"):
+            self.invoke()
 
     def test_broken_private_qa_does_not_become_real_acceptance(self):
         self.browser["renderedChecks"]=697

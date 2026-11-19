@@ -6018,7 +6018,7 @@
     {
       "id": "BSA-20261119-221",
       "class": "owner-five-stage-auto-completion-missing-executable-version-privacy-release-candidate",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261119-220",
@@ -6135,7 +6135,67 @@
           "marker": "test_semantic_privacy_source_error_never_retried"
         }
       ],
-      "nextAction": "Owner consent and new stage dispatcher implemented on Yoga6, 21 focused fake-only tests PASS, real private 6x18 source preflight PASS and static local privacy pass, first unpinned Selenium stage failed as expected; historical pinned interpreter reused, actual pinned preview stage contained 21 known public files. Require exact-head GitHub CI, authentic source-free normal pipeline triggering 698 Chrome then five-step private candidate built+separate 698 Chrome+recovery/rollback receipts, no paid calls, no public merge/deploy. After success mark resolved, persist checkpoint, and continue to remaining separately authorized general codebase technical boundary; do not claim held-out C3 publication or institutional approval."
+      "nextAction": "RESOLVED on genuine Yoga6 normal --source-free-advance exact Git commit a97c11461f5add62c08fff7ee4a7a11165cb22e1, hosted GitHub Actions #44491367018 SUCCESS, first genuine 108/648/698 Chrome source-bound receipt SHA177fbfefb1255ff031a671b18896bda925c864718ee532f43860fbffbbac6934; normal pipeline immediately reused historically pinned Selenium and ran ALL FIVE owner-approved stages in one run exit0. Private corrected version admission PASS SHA d5fa5383513e368aa299bdae17338b14322dd15d3811abb055310631c9f432bc; local privacy/software no-exfil PASS SHA68959dd3d48ad8597651ee5c73cd610485cfdc51ea6442738c0cc84493190d21, honest noninstitutional; actual exact source release dossier PASS SHAe95d3b985199f098be36a272dbbe13857ae91c74a097fabb34230f33c0ea0582; 21-file private staged candidate re-exercised a DIFFERENT real Chrome 698 PASS with injected rollback restoring original exact bits, V4 SHA bd71ef3f59a3c950d88a3e50d972a01145ea9c21139758d1f2e55a5a835e8b27; V5 next-task persisted SHAa2cd100236c3f33422598892055bcbfd351611e0384acd7bbf2ac7dd0dee1784, all 5 stages in runtime not just docs. 135 broadly focused local regression tests, 74 subtests, recurrence, lint, GitHub hosted CI SUCCESS. Original frozen 75/72 genuine original model records remain unchanged and historical ambiguous provider calls never replayed; zero additional Gemini calls, no real student records, no PDF transfers, no public per-package V3 attestation, merge or deploy. Next BSA222 ensures V5 really executes source-free successor and correctly recognizes superseding finite C3 FAILED_LIMITED_CAMPAIGN, rather than a misleading still-active HTTP402 blocker."
+    },
+    {
+      "id": "BSA-20261119-222",
+      "class": "five-stage-v5-next-task-only-queued-and-historical-c3-http402-obsolete",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261119-221",
+        "BSA-20261119-220"
+      ],
+      "differenceFromLinkedIncident": "BSA221 was verified in genuine Yoga6 normal worker with 5 private checkpoints, owner Decision0078, exact 108-source two-Gemini content proof and independent second actual 698 Chrome+rollback, but V5 only stored an eligible-task LABEL, not actually performed an independently eligible source-free downstream check. Historical C3 FINITE_GLOBAL_CODEBASE_DISPOSITION_20261104.md explicitly supersedes earlier terminal HTTP402 with later C3_POST_BILLING_RECONCILIATION_20261104.md: Gemini source-free access was genuinely recovered; two of three frozen round-two physics drafts were produced with basic DOM smoke; traveling waves failed generic activity repair RESPONSE_CONTRACT_ERROR and campaign terminal is FAILED_LIMITED_CAMPAIGN. Third PDF campaign and replay forbidden. BSA222 adds automatic executable V5 successor: read-only exact historical-status priority audit with both repository SHA pins, no private source reads/model calls, and an independent generic private release-adapter inventory validating all four true private receipts, 21-file candidate SHA, actual 698-browser/rollback and preserved per-package V3 public HMAC gate. False older HTTP402 and forged public gate are rejected. No public release/admission from summaries.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "Owner Yoga6 normal --source-free-advance after successful genuine five-stage",
+        "Source-free finite C3 historical correction precedence and existing public V3 gated release",
+        "Synthetic missing-corrected-history/old-http402-only/altered-private-gate negative controls"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_five_stage_completion.py",
+        "triggerMarker": "def _reconcile_finite_c3_historical_status(",
+        "remedyMarker": "def _source_free_public_adapter_inventory(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_five_stage_completion import ("
+          },
+          {
+            "path": "scripts/run_v3_yoga6_five_stage.py",
+            "marker": "from app_generator.runtime.v3_five_stage_completion import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_future_stage_executes_real_sourcefree_historical_c3_precedence"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_older_http402_without_later_reconciliation_must_fail_closed"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_existing_public_release_gate_must_remain_attested"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_owner_five_stages_advance_without_publication"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "test_saved_checkpoints_resume_idempotently_without_second_browser"
+        }
+      ],
+      "nextAction": "BSA221 genuine CI+double Chrome+five-stage complete. BSA222 new read-only source-free post-V5 audit and private release-adapter negative controls implemented; 37 focused sourcefree tests PASS. Require exact new commit CI and actual Yoga6 normal five-stage (2x698 Chrome), V5 receipt proving historical C3 FAILED_LIMITED_CAMPAIGN supersedes obsolete ongoing-402 claim, sourcefree public adapter preservation, no third-source or model replay. Then close BSA222, preserve blocked full C3/C4 generalization and unmerged draft PR; do not claim codebase fully generalizes or is public-ready."
     }
   ]
 }

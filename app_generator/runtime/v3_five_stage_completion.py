@@ -218,6 +218,94 @@ def _stage_preview(private:Path,head:str,proposal:str,packages:list)->tuple[Path
     return final,snapshot
 
 
+def _reconcile_finite_c3_historical_status(repo:Path)->dict:
+    """Execute the NEXT source-free milestone without restarting any PDF.
+
+    The older terminal HTTP 402 file carries its own explicit correction:
+    later owner-approved access recovery was real, but the reconciled finite
+    three-topic campaign still FAILED. This reads only versioned public
+    summaries, NOT private PDF/model evidence or a new generalization trial.
+    """
+    old=repo/"docs"/"FINITE_GLOBAL_CODEBASE_DISPOSITION_20261104.md"
+    later=repo/"docs"/"C3_POST_BILLING_RECONCILIATION_20261104.md"
+    for file in (old,later):
+        if file.is_symlink() or not file.is_file() or file.stat().st_size>120000:
+            raise ValueError("V3_FIVE_STAGE_C3_HISTORICAL_SOURCE_MISSING")
+    frozen=old.read_text(encoding="utf8")
+    revised=later.read_text(encoding="utf8")
+    if ("CURRENT-STATUS CORRECTION" not in frozen
+        or "FAILED_LIMITED_CAMPAIGN" not in frozen
+        or "PROVIDER_ACCESS_RECOVERED" not in revised
+        or "FAILED_LIMITED_CAMPAIGN" not in revised
+        or "RESPONSE_CONTRACT_ERROR" not in revised
+        or "No third campaign" not in revised
+        or "zero responsive checks" not in revised):
+        raise ValueError("V3_FIVE_STAGE_C3_STALE_OR_CONTRADICTORY_HISTORY")
+    return {
+        "status":"C3_FAILED_LIMITED_CAMPAIGN_RECONCILED_READ_ONLY",
+        "referenceSource":"Versioned repository summaries, not new private receipts",
+        "historicalProvider402SupersededByAuthenticatedSourceFreeRecovery":True,
+        "frozenHeldoutCases":3,
+        "completedDraftsInRecordedReconciliation":2,
+        "remainingTravelingWavesContractFailure":"RESPONSE_CONTRACT_ERROR",
+        "newSourceBearingPDFCalls":0,
+        "newGeminiCalls":0,
+        "historicalThirdCampaignAllowed":False,
+        "c3TechnicalAcceptanceGranted":False,
+        "c4IndependentAcademicAcceptanceGranted":False,
+        "institutionalPrivacyCertificationClaimed":False,
+        "publicationAuthorized":False,
+        "earlierSummarySha256":sha256(old.read_bytes()).hexdigest(),
+        "correctedSummarySha256":sha256(later.read_bytes()).hexdigest(),
+    }
+
+
+def _source_free_public_adapter_inventory(repo:Path,private:Path,
+                                          head:str,proposal:str)->dict:
+    """Source-free audit of the *actual* five private release-stage receipts.
+
+    Never substitutes these records for the distinct per-package V3 public
+    receipt required by the existing publishing gate.
+    """
+    folder=private/_BASE/head/proposal
+    receipts=[
+        _checked_stage(folder/(name+".json"),head=head,source=proposal)
+        for name in _STAGE_NAMES[:4]
+    ]
+    if (any(receipt is None or receipt.get("status")!="PASS_PRIVATE_ONLY"
+            for receipt in receipts)
+        or receipts[0].get("versionedCourseInternalAdmission") is not True
+        or receipts[1].get("technicalPrivacyChecksPassed") is not True
+        or receipts[2].get("existingPublicV3PerPackageAttestationMinted") is not False
+        or receipts[3].get("faultInjectedRollbackRestoredAndVerified") is not True):
+        raise ValueError("V3_FIVE_STAGE_PUBLIC_ADAPTER_PROOFS_INCOMPLETE")
+    preview=_candidate_dir(private,head,proposal)
+    observed=_files_snapshot(preview)
+    if (_hash({"files":observed})!=receipts[3].get("stagedFilesSha256")
+            or receipts[3].get("stagedRealBrowserChecks")!=698):
+        raise ValueError("V3_FIVE_STAGE_PUBLIC_ADAPTER_PREVIEW_STALE")
+    gate=repo/"app_generator"/"runtime"/"academic_release.py"
+    if gate.is_symlink() or not gate.is_file():
+        raise ValueError("V3_FIVE_STAGE_PUBLIC_V3_GATE_MISSING")
+    code=gate.read_text(encoding="utf8")
+    if ("read_private_release_receipt(" not in code
+            or "def enforce_academic_release_gate(" not in code):
+        raise ValueError("V3_FIVE_STAGE_PUBLIC_V3_GATE_WEAKENED")
+    return {
+        "status":"PRIVATE_RELEASE_ADAPTER_EVIDENCE_VERIFIED",
+        "verifiedInternalVersionAdmissionReceipt":receipts[0]["integritySha256"],
+        "verifiedTechnicalPrivacyReceipt":receipts[1]["integritySha256"],
+        "verifiedTechnicalReleaseEvidenceReceipt":receipts[2]["integritySha256"],
+        "verifiedStagedReal698BrowserAndRollbackReceipt":
+            receipts[3]["integritySha256"],
+        "verifiedPreviewFileCount":len(observed),
+        "existingPublicV3GatePreserved":True,
+        "publicV3ReceiptAbsentOrNotInferred":True,
+        "publicDeployExecuted":False,
+        "publicationAuthorized":False,
+    }
+
+
 def _browser_existing(readiness:dict)->bool:
     return (readiness.get("proposedContentScientificCoverage")==108
             and readiness.get("realChromeChecks")==698
@@ -348,10 +436,19 @@ def run_five_stage_completion(
     if len(stages)==3:
         stages.append({"stage":_STAGE_NAMES[3],"status":preview["status"],
                        "integritySha256":preview["integritySha256"]})
+    # BSA222: V5 must EXECUTE its independent source-free downstream work,
+    # not merely enqueue a label and stop. Read-only source-bound adapter
+    # inventory + precedence-correct finite C3 history, no new PDF/model I/O.
+    adapter=_source_free_public_adapter_inventory(
+        repo,private,head,proposal)
+    historical=_reconcile_finite_c3_historical_status(repo)
     last=save(4,status="READY_FOR_NEXT_AUTHORIZED_STAGE",
         previousPrivateCandidatePreserved=True,
         v1toV4AcceptanceValidated=True,
-        nextEligibleMilestone="SOURCE_FREE_GENERIC_RELEASE_ADAPTER_AND_C3_BLOCKER_RECONCILIATION",
+        sourceFreeDownstreamWorkExecuted=True,
+        sourceFreePublicAdapter=adapter,
+        historicalFiniteC3Reconciliation=historical,
+        nextEligibleMilestone="GENERIC_FULL_COURSE_V3_RELEASE_ADAPTER_WITHOUT_FORGED_ATTESTATION",
         externalDeploymentPermissionNotAssumed=True,
         originalModelRoleClaimsNeverReplayed=True,
         priorC3CampaignsNotReplayed=True,
@@ -368,6 +465,8 @@ def run_five_stage_completion(
         "publicV3ReleaseReceiptMinted":False,
         "publicationAuthorized":False,"publicDeployExecuted":False,
         "paidGeminiCalls":0,
+        "historicalFiniteC3Result":historical["status"],
+        "sourceFreeDownstreamAdapterVerified":True,
     }
 
 

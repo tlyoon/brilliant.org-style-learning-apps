@@ -198,6 +198,10 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "automaticNextStageDispatchAndDurableCheckpoints",
     "publicPublicationOnlyWithinAuthorizedDeploymentBoundary",
     "noHistoricalProviderReplayOrForgedReleaseEvidence",
+    "fiveStageV5ActuallyExecutesNextReadOnlySourceFreeMilestone",
+    "historicalC3Provider402SupersededByFailedLimitedCampaign",
+    "noThirdHeldoutSourceReplayAfterExhaustedCampaign",
+    "privateGenericReleaseAdapterKeepsExistingPublicV3Gate",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

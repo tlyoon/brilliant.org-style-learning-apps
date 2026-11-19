@@ -101,7 +101,11 @@
     "privateReleaseCandidateMustPassFunctionalAndRollbackTests": true,
     "automaticNextStageDispatchAndDurableCheckpoints": true,
     "publicPublicationOnlyWithinAuthorizedDeploymentBoundary": true,
-    "noHistoricalProviderReplayOrForgedReleaseEvidence": true
+    "noHistoricalProviderReplayOrForgedReleaseEvidence": true,
+    "fiveStageV5ActuallyExecutesNextReadOnlySourceFreeMilestone": true,
+    "historicalC3Provider402SupersededByFailedLimitedCampaign": true,
+    "noThirdHeldoutSourceReplayAfterExhaustedCampaign": true,
+    "privateGenericReleaseAdapterKeepsExistingPublicV3Gate": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",
