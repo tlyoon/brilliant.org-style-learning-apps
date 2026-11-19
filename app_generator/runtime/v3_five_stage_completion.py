@@ -317,6 +317,7 @@ def _browser_existing(readiness:dict)->bool:
 def run_five_stage_completion(
     repo:Path,private:Path,readiness:dict, *,
     exercise_candidate:bool=True,
+    native_release_adapter:bool=True,
 )->dict:
     """Complete authorized next stages in one bounded synchronous invocation.
 
@@ -453,6 +454,22 @@ def run_five_stage_completion(
         originalModelRoleClaimsNeverReplayed=True,
         priorC3CampaignsNotReplayed=True,
         privateReleaseCandidateVerified=True)
+    # BSA223: V5 must actually advance to the genuine native V3 technical
+    # release gate, once per immutable exact source+Git revision. The 108
+    # Gemini pairs are historical verified records, NOT new model calls.
+    # No merge, site publication, public data transfer or paid operation.
+    attestation=None
+    if native_release_adapter:
+        from app_generator.runtime.v3_native_release_adapter import (
+            run_exact_native_release_adapter,
+        )
+        attestation=run_exact_native_release_adapter(
+            repo,private,readiness,packages)
+        if (attestation.get("status") !=
+                "SIX_PRIVATE_NATIVE_V3_RELEASE_ATTESTATIONS_VERIFIED_NO_PUBLIC_DEPLOY"
+                or attestation.get("nativeV3TechnicalReleaseChecksPassed")!=6
+                or attestation.get("publicationAuthorized") is not False):
+            raise ValueError("V3_FIVE_STAGE_NATIVE_V3_ADAPTER_NOT_ACCEPTED")
     return {
         "status":"FIVE_STAGE_PRIVATE_TECHNICAL_PATH_COMPLETE_NO_PUBLICATION",
         "contract":_CONTRACT,"gitHead":head,"proposalSha256":proposal,
@@ -467,6 +484,16 @@ def run_five_stage_completion(
         "paidGeminiCalls":0,
         "historicalFiniteC3Result":historical["status"],
         "sourceFreeDownstreamAdapterVerified":True,
+        "technicalV3ReleaseAttestationsVerified":attestation is not None,
+        "privateNativeV3Attestations":(
+            attestation["nativeV3TechnicalReleaseChecksPassed"]
+            if attestation is not None else 0),
+        "nativeV3TechnicalReleaseEvidence":({
+            "status":attestation["status"],
+            "integritySha256":attestation["integritySha256"],
+            "nativeV3TechnicalReleaseChecksPassed":6,
+            "publicDeployExecuted":False,"publicationAuthorized":False,
+        } if attestation is not None else None),
     }
 
 
@@ -519,7 +546,9 @@ def advance_five_stage_on_pinned_browser(
                 or report.get("gitHead")!=readiness["gitHead"]
                 or report.get("publicationAuthorized") is not False
                 or report.get("paidGeminiCalls")!=0
-                or report.get("realPrivateCandidateBrowserChecks")!=698):
+                or report.get("realPrivateCandidateBrowserChecks")!=698
+                or report.get("technicalV3ReleaseAttestationsVerified") is not True
+                or report.get("privateNativeV3Attestations")!=6):
             return {
                 "status":"STOP_FIVE_STAGE_NORMAL_PIPELINE",
                 "childStatus":report.get("status"),

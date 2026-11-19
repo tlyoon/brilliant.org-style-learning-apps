@@ -6196,6 +6196,117 @@
         }
       ],
       "nextAction": "BSA222 GENUINELY RESOLVED on commit c3ba9a6295095f6751c76fbf96b01f7780d01b8d GitHub hosted CI #44493752053 SUCCESS. Real owner Yoga6 normal --source-free-advance exit0 with genuine first reviewed 108-activity 648 trilingual viewport/698 Chrome PASS SHA5541b4579db9a7adf456ab5eaca1f5c0dc94976757592f2e0a990aa89c4c2ef5, auto-dispatched 21-file private candidate independent second 698 Chrome PASS and injected rollback. Source-specific five stages true, V5 SHA c05e42b1c7bf121b4cea1d10bcd47d8db99bf31323fe0662ec2fc63413fbac60 genuinely executed successor source-free public-V3-adapter evidence inventory and C3 precedence-correct FAILED_LIMITED_CAMPAIGN read-only historical check. 45 focused synthetic regression, hosted CI, normal exit0. No new Gemini/model calls, PDF requests, original 75/72 history changes, public-release attestation, merge/deploy or fabricated cross-topic generalization. Next eligible separate generic full-course V3 release adapter proof; heldout C3 remains finite terminal without third campaign."
+    },
+    {
+      "id": "BSA-20261119-223",
+      "class": "native-v3-six-package-release-evidence-adapter-not-in-normal-pipeline",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261119-222",
+        "BSA-20261119-221",
+        "BSA-20261119-220"
+      ],
+      "differenceFromLinkedIncident": "BSA221/BSA222 private course science+privacy+2x698 Chrome+CI checkpoint never minted V3 original gate HMAC attestations. No native V3 release adapter existed: 103 original unchanged role rows and five independent revised activity rows required separate native V3 source-bound per-section 18-activity model reports. New sourcefree adapter reuses saved 44 aggregate assessment files, matches 103 sourceReviewSha256 witnesses under BOTH historical canonical encodings and validates each saved row prompt to current exact source; five revised exact SHA individual reviews never borrow original FAIL/unknown. Real Yoga6 read-only all 108/108 and original V3 release validator six packages passed. Production code rechecks immutable source-proposal SHA, signed V1-V5, actual two 698 Chrome+rollback, privacy, clean exact SHA and real hosted CI. It then calls ORIGINAL native seal_private_release_receipt and enforce_academic_release_gate per exact package (six private HMAC signatures), writes integrity-bound V6 with restart-safe idempotence. Any missing/modified role proof, dirty Git, CI mismatch, HMAC corruption or staged content mismatch blocks. No paid provider calls, merge, publication, third heldout C3, student data, or original 75/72 changes.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "Owner Yoga6 normal --source-free-advance after real completed V1-V5 and both genuine 698 Chrome runs",
+        "Authentic 103 unchanged plus five revised source-bound two-Gemini reviewer records",
+        "Original native V3 technical release HMAC validator and private per-package sealing",
+        "Fake-only six times 18 reviewer inputs, model edits, incorrect hosted CI, dirty tree, stale course and HMAC corruption"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_native_release_adapter.py",
+        "triggerMarker": "def _candidate_rows(",
+        "remedyMarker": "def run_exact_native_release_adapter(",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_five_stage_completion.py",
+            "marker": "from app_generator.runtime.v3_native_release_adapter import ("
+          },
+          {
+            "path": "scripts/run_v3_yoga6_five_stage.py",
+            "marker": "run_five_stage_completion("
+          },
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "advance_five_stage_on_pinned_browser(ROOT,private,ready)"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_native_gate_six_real_shaped_fake_receipts_only_in_private"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_source_provenance_fake_reports_both_canonical_encodings"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_restart_readonly_reuses_identical_attestations"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_missing_one_model_aggregate_fails_before_receipt"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_revised_model_prompt_mismatch_rejected_before_write"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_missing_ci_never_attested"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_wrong_browser_and_privacy_receipt_hash_blocks"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_modified_staged_course_blocks_all_attestations"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_missing_private_rollback_proof_rejected"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_corrupted_signed_v3_receipt_never_autorepaired"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_modified_synthetic_role_witness_rejected"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_stale_v6_checkpoint_must_fail"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_direct_adapter_refuses_uncommitted_repository"
+        },
+        {
+          "path": "tests/test_v3_native_release_adapter.py",
+          "kind": "python",
+          "marker": "test_direct_adapter_refuses_wrong_hosted_head"
+        }
+      ],
+      "nextAction": "BSA223 ACTIVE: after commit+hosted CI, owner Yoga6 normal sourcefree worker must perform exact first genuine 108/698 Chrome and independent private second 698 Chrome+rollback, all five stages, then automatically seal and native-V3 verify all six source-specific private HMAC receipts using original genuine 103 unchanged and five revised two-Gemini role pairs; persist V6; normal exit0 with zero new Gemini and no publish. Genuine read-only mapping 108/108 and native original release verifier 6/6 PASS; 39 fake-only tests pass. Close only after true exact-head CI and real worker result."
     }
   ]
 }

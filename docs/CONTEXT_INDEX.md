@@ -436,3 +436,7 @@ Owner-approved five stages actually executed in normal Yoga6 commit a97c114 exac
 ## Genuine closure 19 Nov 2026
 
 Owner Yoga6 exact git c3ba9a6295095f6751c76fbf96b01f7780d01b8d hosted CI #44493752053 SUCCESS, live normal 108/698 browser plus independent private 698 browser/rollback, five stages source-specific, V5 genuine downstream historical C3 and private release adapter audits executed, private V5 SHA c05e42b1c7bf121b4cea1d10bcd47d8db99bf31323fe0662ec2fc63413fbac60, zero model/PDF calls, exit0. BSA222 resolved. Public V3 attestation/publishing and finite heldout C3 generalization remain separate unfinished boundaries.
+
+## 19 November 2026 - BSA223 authentic native V3 gate adapter active
+
+The normal Yoga6 five-stage worker now automatically calls the original native V3 per-package release HMAC sign/verify gate and persists separate private V6, after exact SHA/source, true 108 two-Gemini science, real 2x698 browser, privacy and rollback. Historical 103 unchanged and five revised model records genuine; read-only native original V3 gate accepted all six exact packages; fake-only fault suite 39 PASSED. Exact new CI and real Yoga6 normal pipeline needed for final closure. Public merge/deploy remain disabled, no old evidence/review replay, no institutional privacy certification.

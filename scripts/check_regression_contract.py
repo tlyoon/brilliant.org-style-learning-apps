@@ -202,6 +202,15 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "historicalC3Provider402SupersededByFailedLimitedCampaign",
     "noThirdHeldoutSourceReplayAfterExhaustedCampaign",
     "privateGenericReleaseAdapterKeepsExistingPublicV3Gate",
+    "nativeV3SourceBoundRealModelRowsReuseWithoutReReview",
+    "nativeV3FiveCorrectedActivitiesNeverBorrowOldRoleVerdict",
+    "nativeV3AllSixPackagesMustPassOriginalReleaseValidator",
+    "nativeV3PerPackageLocalHmacAttestationAfterExactCiChromePrivacy",
+    "nativeV3AttestationIdempotentAcrossOwnerYoga6Restart",
+    "nativeV3MissingOrTamperedOriginalReviewsFailClosed",
+    "nativeV3DirectInvocationRejectsDirtyOrWrongHostedHead",
+    "nativeV3NormalFiveStageForwardDispatchBeforeReturningSuccess",
+    "nativeV3TechnicalAttestationDoesNotTriggerPublicPublish",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

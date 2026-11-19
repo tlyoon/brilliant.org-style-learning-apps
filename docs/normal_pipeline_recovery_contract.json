@@ -105,7 +105,16 @@
     "fiveStageV5ActuallyExecutesNextReadOnlySourceFreeMilestone": true,
     "historicalC3Provider402SupersededByFailedLimitedCampaign": true,
     "noThirdHeldoutSourceReplayAfterExhaustedCampaign": true,
-    "privateGenericReleaseAdapterKeepsExistingPublicV3Gate": true
+    "privateGenericReleaseAdapterKeepsExistingPublicV3Gate": true,
+    "nativeV3SourceBoundRealModelRowsReuseWithoutReReview": true,
+    "nativeV3FiveCorrectedActivitiesNeverBorrowOldRoleVerdict": true,
+    "nativeV3AllSixPackagesMustPassOriginalReleaseValidator": true,
+    "nativeV3PerPackageLocalHmacAttestationAfterExactCiChromePrivacy": true,
+    "nativeV3AttestationIdempotentAcrossOwnerYoga6Restart": true,
+    "nativeV3MissingOrTamperedOriginalReviewsFailClosed": true,
+    "nativeV3DirectInvocationRejectsDirtyOrWrongHostedHead": true,
+    "nativeV3NormalFiveStageForwardDispatchBeforeReturningSuccess": true,
+    "nativeV3TechnicalAttestationDoesNotTriggerPublicPublish": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

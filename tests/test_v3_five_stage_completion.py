@@ -113,7 +113,7 @@ class FiveStageSyntheticTests(unittest.TestCase):
                 "_git_clean",return_value=True))
             return v.run_five_stage_completion(
                 self.repo,self.private,self.readiness,
-                exercise_candidate=exercise)
+                exercise_candidate=exercise,native_release_adapter=False)
 
     def test_owner_five_stages_advance_without_publication(self):
         answer=self.invoke()
@@ -292,7 +292,9 @@ class FiveStageSyntheticTests(unittest.TestCase):
         outcome={"status":"FIVE_STAGE_PRIVATE_TECHNICAL_PATH_COMPLETE_NO_PUBLICATION",
             "completedStageCount":5,"proposalSha256":self.source,
             "gitHead":self.head,"publicationAuthorized":False,
-            "paidGeminiCalls":0,"realPrivateCandidateBrowserChecks":698}
+            "paidGeminiCalls":0,"realPrivateCandidateBrowserChecks":698,
+            "technicalV3ReleaseAttestationsVerified":True,
+            "privateNativeV3Attestations":6}
         with ExitStack() as stack:
             from scripts import run_v3_yoga6_acceptance
             stack.enter_context(patch.object(
@@ -313,7 +315,9 @@ class FiveStageSyntheticTests(unittest.TestCase):
             "status":"FIVE_STAGE_PRIVATE_TECHNICAL_PATH_COMPLETE_NO_PUBLICATION",
             "completedStageCount":5,"proposalSha256":self.source,
             "gitHead":self.head,"publicationAuthorized":False,
-            "paidGeminiCalls":0,"realPrivateCandidateBrowserChecks":698}
+            "paidGeminiCalls":0,"realPrivateCandidateBrowserChecks":698,
+            "technicalV3ReleaseAttestationsVerified":True,
+            "privateNativeV3Attestations":6}
         with ExitStack() as stack:
             from scripts import run_v3_yoga6_acceptance
             stack.enter_context(patch.object(
