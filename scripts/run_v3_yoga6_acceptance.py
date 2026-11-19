@@ -152,6 +152,48 @@ def classified_browser_child_failure(
             "childExitCode":exit_code,"publicationAuthorized":False}
 
 
+_TRANSIENT_BROWSER_CHILD_ERRORS=frozenset({
+    "TimeoutException",
+    "StaleElementReferenceException",
+    "WebDriverException",
+    "SessionNotCreatedException",
+})
+
+
+def _run_bounded_browser_child(
+    command: list[str], *, cwd: Path, environment: dict,
+) -> tuple[subprocess.CompletedProcess,dict,int]:
+    """One retry on named transient Selenium errors, no model or source replay.
+
+    Each new invocation launches a fresh browser child. Browser-only is
+    repeatable because the candidate source SHA is immutable; provider calls
+    and scientific review are NEVER repeated here.
+    """
+    for attempt in (1,2):
+        try:
+            child=subprocess.run(command,cwd=cwd,capture_output=True,
+                                 text=True,check=False,timeout=420,
+                                 env=environment)
+        except subprocess.TimeoutExpired:
+            # subprocess.run already terminates the timed-out child. Do
+            # NOT silently upgrade a repeat failure to PASS.
+            if attempt==1:
+                continue
+            raise
+        try:
+            result=json.loads(child.stdout.strip().splitlines()[-1])
+        except (ValueError,IndexError):
+            raise ValueError("V3_BROWSER_QA_CHILD_NON_JSON_OUTPUT") from None
+        if not isinstance(result,dict):
+            raise ValueError("V3_BROWSER_QA_CHILD_INVALID_JSON_OBJECT")
+        if (attempt==1 and child.returncode!=0
+                and result.get("status")=="STOP_ACTUAL_CHAPTER9_BROWSER_QA"
+                and result.get("errorClass") in _TRANSIENT_BROWSER_CHILD_ERRORS):
+            continue
+        return child,result,attempt
+    raise AssertionError("V3_BROWSER_CHILD_BOUNDED_RETRY_EXHAUSTED")
+
+
 def advance_real_candidate_browser_qa(
     root: Path, private: Path, source_free: dict,
 ) -> dict:
@@ -192,13 +234,9 @@ def advance_real_candidate_browser_qa(
     command=[str(interpreter),
              str(root/"scripts"/"check_v3_real_chapter9_browser.py"),
              "--private-root",str(private)]
-    child=subprocess.run(command,cwd=root,capture_output=True,text=True,
-                         check=False,timeout=420,
-                         env={**os.environ,"PYTHONDONTWRITEBYTECODE":"1"})
-    try:
-        result=json.loads(child.stdout.strip().splitlines()[-1])
-    except (ValueError,IndexError):
-        raise ValueError("V3_BROWSER_QA_CHILD_NON_JSON_OUTPUT") from None
+    child,result,attempts=_run_bounded_browser_child(
+        command,cwd=root,
+        environment={**os.environ,"PYTHONDONTWRITEBYTECODE":"1"})
     if (child.returncode!=0
             or result.get("status")!="ACTUAL_UNADMITTED_CHAPTER9_BROWSER_QA_PASS"
             or result.get("proposalSha256")!=proposed
@@ -209,8 +247,10 @@ def advance_real_candidate_browser_qa(
             or result.get("allLocaleViewportPromptChecks")!=648
             or result.get("genuineGeminiReviewsAdded")!=0
             or result.get("publicationAuthorized") is not False):
-        return classified_browser_child_failure(
-            proposed,result,child.returncode)
+        return {**classified_browser_child_failure(
+            proposed,result,child.returncode),
+            "browserChildAttempts":attempts}
     report={**result,"revisionSha":revision,"rendererRuntimeSha256":runtime,
+            "browserChildAttempts":attempts,
             "versionedScopeAdmitted":False,"publicationAuthorized":False}
     return _write_saved(target,report)

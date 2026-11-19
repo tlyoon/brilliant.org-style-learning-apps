@@ -5749,7 +5749,7 @@
     {
       "id": "BSA-20261119-218",
       "class": "historically-uncertain-model-roles-block-last-two-chapter9-scientific-positions-without-versioned-recovery",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261118-207",
@@ -5855,12 +5855,12 @@
           "marker": "test_content_mutation_does_not_reuse_sha_bound_browser_receipt"
         }
       ],
-      "nextAction": "Run all BSA218 tests and actual Yoga6 source-free 108/698 browser, regression/lint. Push pre-paid exact source head and require GitHub CI SUCCESS. Then run --final-two-science --execute --allow-generated-text-transfer --max-forward-activities 2 --max-forward-seconds 900 ON YOGA6 only, at most four NEW Gemini independent roles. Accept only authentic per-role COMPLETE exact-SHA saved consensus science PASS. Immediately source-free stage the exact fully corrected unadmitted 108 proposal with zero remaining content science gaps and verify REAL 698 Chrome; original uncertainties remain frozen. Persist receipt and mark resolved after exact-head CI and genuine normal-path restart; release/admission still separate."
+      "nextAction": "RESOLVED on Yoga6 at source HEAD e7caf6f: new source-bound Section9.1 index0 and Section9.6 index6 exactly two genuine new independent Gemini role pairs (four distinct new reviewer calls) all COMPLETE/AI_CONSENSUS_PASS, no scientific repair/uncertainty, original historical unknown roles unchanged; normal --final-two-science automatically staged unadmitted versioned 108 roster proposal 738a612d6d192cae715858c226bf0f952ceeb0a2df823502d15a387448b968b0 and ran 698/698 genuine Chrome, exit0. Independent readback confirmed 108/108 proposed-content scientific coverage and zero remaining content gaps, two exact saved new source proofs, browser receipt SHA7429544eb3f0c2b876dd974f9013aa85dc74667456a3e7a4e3006afb0147f120, source match, no course admission or publication. GitHub CI #44473327042 SUCCESS on exact HEAD e7caf6f. Next: exact closure metadata head CI and genuine normal restart; assessment gap closed only for versioned proposal, never retrofit frozen original ledger 75/72 or infer publication authorized."
     },
     {
       "id": "BSA-20261119-219",
       "class": "genuine-yoga6-browser-failure-reported-as-sourcefree-success",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261118-197",
@@ -5880,11 +5880,7 @@
         "normalEntryPoints": [
           {
             "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "if args.source_free_advance:"
-          },
-          {
-            "path": "scripts/run_v3_yoga6_acceptance.py",
-            "marker": "_run_bounded_browser_child("
+            "marker": "from scripts.run_v3_yoga6_acceptance import ("
           }
         ]
       },
@@ -5930,7 +5926,7 @@
           "marker": "test_hung_browser_child_timeout_can_retry_once_but_not_forever"
         }
       ],
-      "nextAction": "Pass focused synthetic tests and repository regression/lint; commit and require exact-head GitHub CI. Restart actual sourcefree Yoga6 108/698 browser with correct nonzero stop and bounded retry. Only after both genuine checks pass, resume BSA218 two new scientific activities with at most four paid Gemini calls under standing authorization. No old role replay."
+      "nextAction": "RESOLVED: BSA219 code e7caf6f restored truthful nonzero status for failed normal browser, preserved safe child failure diagnostics and bounded one Selenium timeout/transient retry, with adverse tests for 697 checks, nonretriable content/privacy errors and hung child. Focused crosspath 38 tests+6 subtests PASS, recurrence contract/lint PASS, hosted exact-head CI #44473327042 SUCCESS. Most importantly, REAL owner Yoga6 normal --source-free-advance exact HEAD e7caf6f completed 108/698 source-bound Chrome PASS and exit0, and subsequent REAL --final-two-science automatically ran NEW proposal 738a612d6d192cae715858c226bf0f952ceeb0a2df823502d15a387448b968b0 through 108/698 browser after four real two-activity Gemini reviews, returning exit0. No browser-only result counted scientific PASS; no old role replay. Next: verify closure commit exact-head CI/browser, continue independent release readiness checks without automatic publish."
     }
   ]
 }

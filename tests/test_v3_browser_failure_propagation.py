@@ -6,11 +6,14 @@ from contextlib import ExitStack
 import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from subprocess import CompletedProcess, TimeoutExpired
 import unittest
 from unittest.mock import patch
 
 from scripts import run_v3_yoga6_recovery_worker as worker
-from scripts.run_v3_yoga6_acceptance import classified_browser_child_failure
+from scripts.run_v3_yoga6_acceptance import (
+    classified_browser_child_failure, _run_bounded_browser_child,
+)
 
 
 class BrowserFailurePropagationTests(unittest.TestCase):
@@ -77,6 +80,52 @@ class BrowserFailurePropagationTests(unittest.TestCase):
                 "status":"NO_NEW_REAL_CANDIDATE_FOR_BROWSER_QA",
                 "publicationAuthorized":False}})
         self.assertEqual(worker.main(["--source-free-advance"]),0)
+
+    def test_selenium_transient_child_fails_then_one_genuine_child_pass(self):
+        bad=CompletedProcess(["browser"],3,stdout=(
+            '{"status":"STOP_ACTUAL_CHAPTER9_BROWSER_QA",'
+            '"errorClass":"TimeoutException"}'))
+        good=CompletedProcess(["browser"],0,stdout=(
+            '{"status":"ACTUAL_UNADMITTED_CHAPTER9_BROWSER_QA_PASS",'
+            '"renderedChecks":698}'))
+        with patch("scripts.run_v3_yoga6_acceptance.subprocess.run",
+                   side_effect=[bad,good]) as runner:
+            result,payload,attempts=_run_bounded_browser_child(
+                ["browser"],cwd=Path("."),environment={})
+        self.assertEqual(attempts,2)
+        self.assertEqual(payload["renderedChecks"],698)
+        self.assertEqual(result.returncode,0)
+        self.assertEqual(runner.call_count,2)
+
+    def test_content_error_is_not_retried_or_marked_pass(self):
+        bad=CompletedProcess(["browser"],3,stdout=(
+            '{"status":"STOP_ACTUAL_CHAPTER9_BROWSER_QA",'
+            '"errorClass":"ValueError",'
+            '"errorCode":"V3_BROWSER_VIEWPORT_OR_PRIVACY_FAILURE"}'))
+        with patch("scripts.run_v3_yoga6_acceptance.subprocess.run",
+                   return_value=bad) as runner:
+            result,payload,attempts=_run_bounded_browser_child(
+                ["browser"],cwd=Path("."),environment={})
+        self.assertEqual(result.returncode,3)
+        self.assertEqual(attempts,1)
+        self.assertEqual(payload["errorClass"],"ValueError")
+        runner.assert_called_once()
+
+    def test_hung_browser_child_timeout_can_retry_once_but_not_forever(self):
+        good=CompletedProcess(["browser"],0,stdout=(
+            '{"status":"ACTUAL_UNADMITTED_CHAPTER9_BROWSER_QA_PASS"}'))
+        with patch("scripts.run_v3_yoga6_acceptance.subprocess.run",
+                   side_effect=[TimeoutExpired(["browser"],420),good]) as runner:
+            _,_,attempts=_run_bounded_browser_child(
+                ["browser"],cwd=Path("."),environment={})
+        self.assertEqual(attempts,2)
+        self.assertEqual(runner.call_count,2)
+        with patch("scripts.run_v3_yoga6_acceptance.subprocess.run",
+                   side_effect=TimeoutExpired(["browser"],420)) as runner:
+            with self.assertRaises(TimeoutExpired):
+                _run_bounded_browser_child(
+                    ["browser"],cwd=Path("."),environment={})
+        self.assertEqual(runner.call_count,2)
 
     def test_only_safe_error_class_and_named_code_exposed(self):
         result=classified_browser_child_failure("a"*64,{
