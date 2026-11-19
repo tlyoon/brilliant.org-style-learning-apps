@@ -811,6 +811,19 @@ def main(argv: list[str] | None = None) -> int:
                 )
                 result["fiveStageAutonomousCompletion"]=(
                     advance_five_stage_on_pinned_browser(ROOT,private,ready))
+                # BSA225/v7.1: a V6 checkpoint is a CONTINUE event. Dispatch
+                # the actual production release builder on all six genuine
+                # exact-HMAC packages privately, in THIS same normal run.
+                # Never call public Git/Pages publisher or model/PDF API.
+                completed=result["fiveStageAutonomousCompletion"]
+                if completed.get("status")==(
+                        "FIVE_STAGE_PRIVATE_TECHNICAL_PATH_COMPLETE_NO_PUBLICATION"):
+                    from app_generator.runtime.v3_public_bundle_handoff import (
+                        dispatch_private_public_bundle_build,
+                    )
+                    result["realPublicBundleBuildHandoff"]=(
+                        dispatch_private_public_bundle_build(
+                            ROOT,private,ready,completed))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -824,6 +837,11 @@ def main(argv: list[str] | None = None) -> int:
                             or result.get("fiveStageAutonomousCompletion",{}).get(
                                 "status")==
                             "FIVE_STAGE_PRIVATE_TECHNICAL_PATH_COMPLETE_NO_PUBLICATION"
+                            and result.get("realPublicBundleBuildHandoff",{}).get(
+                                "status")==
+                            "SIX_REAL_PUBLIC_BUNDLE_BUILDS_VERIFIED_PRIVATE_NO_DEPLOY"
+                            and result.get("realPublicBundleBuildHandoff",{}).get(
+                                "realOriginalPublicBuilderInvocations")==6
                          )) else 3
         if args.auto_advance:
             ready = plan_v3_course_review(

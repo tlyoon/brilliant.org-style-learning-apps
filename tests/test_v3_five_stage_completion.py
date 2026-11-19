@@ -15,6 +15,7 @@ from unittest.mock import patch
 
 from app_generator.runtime import v3_five_stage_completion as v
 from app_generator.runtime import v3_versioned_readiness as readiness_mod
+from app_generator.runtime import v3_public_bundle_handoff as bundle_handoff
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -372,12 +373,20 @@ class FiveStageSyntheticTests(unittest.TestCase):
             five=stack.enter_context(patch.object(
                 v,"advance_five_stage_on_pinned_browser",
                 return_value=expected))
+            release=stack.enter_context(patch.object(
+                bundle_handoff,"dispatch_private_public_bundle_build",
+                return_value={
+                    "status":"SIX_REAL_PUBLIC_BUNDLE_BUILDS_VERIFIED_PRIVATE_NO_DEPLOY",
+                    "realOriginalPublicBuilderInvocations":6,
+                    "publicationAuthorized":False,"publicDeployExecuted":False,
+                }))
             observed=[]
             stack.enter_context(patch.object(worker,"_print",
                                               side_effect=observed.append))
             status=worker.main(["--source-free-advance"])
         self.assertEqual(status,0)
         self.assertEqual(five.call_count,1)
+        self.assertEqual(release.call_count,1)
         self.assertEqual(observed[-1]["fiveStageAutonomousCompletion"],expected)
         self.assertEqual(observed[-1]["paidGeminiCalls"],0)
         self.assertFalse(observed[-1]["publicationAuthorized"])

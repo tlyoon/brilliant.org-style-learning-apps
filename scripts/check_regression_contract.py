@@ -219,6 +219,11 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "sourceFreeCITimeoutMustReturnNonzeroNotBrowserOnlyPass",
     "sourceFreeHeadMovementDuringCIPollTerminatesSafe",
     "sourceFreeNeverReplaysPaidProviderWhileWaitingOnHostedCI",
+    "v71SuccessfulV6CheckpointDispatchesNextRealBuilderInSameRun",
+    "v71SixOriginalPublicBundlesRequireExistingNativeV3HmacEvidence",
+    "v71PublicBundleBuildFailureCannotReturnFalseSuccess",
+    "v71PublicBundleBuildIsPrivateOnlyWithoutMergeOrDeploy",
+    "v71BuildHandoffTamperDirtyCiAndRestartRegressionProtected",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

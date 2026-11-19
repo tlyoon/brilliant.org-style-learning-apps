@@ -122,7 +122,12 @@
     "sourceFreeBoundedCIWaitRevalidatesWholeScienceBrowserBeforeRelease": true,
     "sourceFreeCITimeoutMustReturnNonzeroNotBrowserOnlyPass": true,
     "sourceFreeHeadMovementDuringCIPollTerminatesSafe": true,
-    "sourceFreeNeverReplaysPaidProviderWhileWaitingOnHostedCI": true
+    "sourceFreeNeverReplaysPaidProviderWhileWaitingOnHostedCI": true,
+    "v71SuccessfulV6CheckpointDispatchesNextRealBuilderInSameRun": true,
+    "v71SixOriginalPublicBundlesRequireExistingNativeV3HmacEvidence": true,
+    "v71PublicBundleBuildFailureCannotReturnFalseSuccess": true,
+    "v71PublicBundleBuildIsPrivateOnlyWithoutMergeOrDeploy": true,
+    "v71BuildHandoffTamperDirtyCiAndRestartRegressionProtected": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

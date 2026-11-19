@@ -13,6 +13,7 @@ from unittest.mock import patch
 from app_generator.runtime import v3_ci_resume as ci
 from app_generator.runtime import v3_versioned_readiness as actual
 from app_generator.runtime import v3_five_stage_completion as five
+from app_generator.runtime import v3_public_bundle_handoff as bundle
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -188,6 +189,13 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "technicalV3ReleaseAttestationsVerified":True,
                     "privateNativeV3Attestations":6,
                 }))
+            release=stack.enter_context(patch.object(
+                bundle,"dispatch_private_public_bundle_build",
+                return_value={
+                    "status":"SIX_REAL_PUBLIC_BUNDLE_BUILDS_VERIFIED_PRIVATE_NO_DEPLOY",
+                    "realOriginalPublicBuilderInvocations":6,
+                    "publicationAuthorized":False,"publicDeployExecuted":False,
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))
@@ -196,6 +204,7 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
         self.assertEqual(original.call_count,1)
         self.assertEqual(resumecall.call_count,1)
         self.assertEqual(advance.call_count,1 if when_green else 0)
+        self.assertEqual(release.call_count,1 if when_green else 0)
         self.assertEqual(output[-1]["paidGeminiCalls"],0)
         self.assertFalse(output[-1]["publicationAuthorized"])
         if not when_green:
