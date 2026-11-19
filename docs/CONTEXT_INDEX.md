@@ -444,3 +444,7 @@ The normal Yoga6 five-stage worker now automatically calls the original native V
 ## 19 Nov 2026 - BSA223 verified closed, BSA224 exact CI race automatic resume active
 
 BSA223 genuine Yoga6 sourcefree 108/698 and second 698 Chrome+rollback, six original V3 HMAC genuine technical receipt validated on exact fd063ce GitHub CI #44514513757, private V6 SHA 8cbda98b..., zero model/PDF calls, no public release. Earlier initial sourcefree while CI was in_progress returned green browser/exit0 without native HMAC, requiring second worker invocation. BSA224 now implements finite automatic clean SHA exact CI polling in normal worker after browser, source-science-browser-CI revalidation on success then auto V1-V6; terminal failed, missing, wrong-head, moved/dirty Git STOP nonzero. Fake-only 48 tests pass, new GitHub CI+real restart pending.
+
+## Verified BSA224 closure - 19 November 2026
+
+Git 850866cbaf546daeb4a1e75938f00e8fc95f3396 hosted GitHub CI #44517209237 SUCCESS; owner Yoga6 true normal sourcefree first 108/698 Chrome plus distinct 698 candidate+rollback, six original V3 private HMAC per-exact-source receipts, V6 SHA6d0dbc51c1aae125eb014707bea3929d2dec518d72daefb10e6fc3a175e2587b, exit0 and 0 paid calls. Finite queued->success/wrong-head/fail/timeout CI polling exercised in synthetic fault tests; this genuine run had green hosted CI before the polling branch was needed. Crosspath 108 tests and 38 subtests pass. BSA224 RESOLVED. No public merge or publication; historical three-topic C3 remains FAILED_LIMITED_CAMPAIGN.

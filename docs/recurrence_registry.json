@@ -6303,7 +6303,7 @@
     {
       "id": "BSA-20261119-224",
       "class": "sourcefree-worker-ci-running-returned-success-without-v6-forward-dispatch",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261119-223",
@@ -6385,7 +6385,7 @@
           "marker": "test_normal_worker_stops_on_exhausted_ci_without_false_pass"
         }
       ],
-      "nextAction": "BSA224 ACTIVE: synthetic CI status/time fault injection and normal-worker continuation 48 tests PASS; executable CI pending->bounded status polling->same invocation source/browser/CI proof rerun->native six V3 signed private receipts integrated, terminal failed/timeout stops nonzero. Commit and push exact head, verify hosted GitHub CI success, run genuine Yoga6 NORMAL --source-free-advance and verify real 108/698 Chrome, second private 698 Chrome/rollback and six signed native V3 HMAC plus V6 private receipt, exit0. CI race actual run should be handled without second user prompt; regardless of whether CI was already done, use fake-only test for active CI scenario. No paid Gemini/PDF/merge/public deploy."
+      "nextAction": "BSA224 VERIFIED RESOLVED on genuine owner Yoga6 exact commit 850866cbaf546daeb4a1e75938f00e8fc95f3396 with hosted GitHub Actions #44517209237 SUCCESS and normal --source-free-advance EXIT0 in a single user-authorized invocation. First 108 reviewed scientifically source-bound real Chrome 698/698 PASS and automatic post-browser five-stage private candidate second real 698/698 Chrome plus injected restored rollback, privacy, exact CI and all 103 unchanged + five separately revised genuinely saved two-Gemini sources accepted. All six private per-package original V3 HMAC attestations independently reverified exact bytes; signed V6 SHA6d0dbc51c1aae125eb014707bea3929d2dec518d72daefb10e6fc3a175e2587b. 108 crosspath tests and 38 subtests, recovery registry, lint and GitHub hosted CI PASS. BSA224 queued-CI->success and fail/wrong-head/timeout finite recovery branch specifically passed synthetic fault-injection; on this exact real rerun GitHub CI completed before normal worker required CI polling, so the live pending path was NOT separately exercised. Owner v7 executable recovery prevents future false exit0 while CI remains pending, no manual academic approval or second prompt required within a finite invocation. Zero paid Gemini/PDF calls, no old ambiguous role replay, frozen original75/72, historical finite C3 FAILED_LIMITED_CAMPAIGN unchanged; PR#223 draft/unmerged and no public deployment or institutional privacy certification. Remaining future release/heldout generalization decisions separate; no more BSA224 CI-race fix required."
     }
   ]
 }
