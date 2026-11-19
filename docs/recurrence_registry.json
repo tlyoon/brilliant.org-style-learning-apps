@@ -5653,6 +5653,98 @@
         }
       ],
       "nextAction": "RESOLVED: genuine owner Yoga6 exact source code e161aad182b64994b8d22a1c3d4aabf4510f1cc2 ran the normal source-free recovery worker, 108/108 activities and 698/698 Chrome checks PASS, source-bound new proposal 8afd6869320cc9794031614c9b7a7cc453cf5eed7681e8c6f4642eb6710d6d46, fresh browser receipt 1f5835759df163aa7700d0632e9027cb3d46fde7e14652c88ff20472da428d66, no paid calls, no original role replay, exit0. GitHub Actions #44438560761 SUCCESS on exact e161aad code with full Python test suite, lint, content, recurrence and hosted Chrome. BSA215 true top-marker guard remains active in normal CI; BSA216 synthetic registry test fixture mirrors current marker during fake mutations and adversarial missing/stale negative tests still fail closed; 25 focused tests+5 subtests PASS. Next requires a distinct scientific review authorization for untouched Section9.1 indices1..17; previous eight paid Gemini calls for Section9.2 are exhausted. Historical index0 and Section9.6 unknown provider claims MUST NOT be replayed. No release, merge or scheduling authorized. A metadata closure commit succeeding this evidence must itself pass exact new-head CI and real Chrome."
+    },
+    {
+      "id": "BSA-20261119-217",
+      "class": "recurrent-finite-activity-gemini-paid-charter-exhaustion-stalls-next-scientific-batch",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261117-185",
+        "BSA-20261118-206",
+        "BSA-20261118-209",
+        "BSA-20261118-213"
+      ],
+      "differenceFromLinkedIncident": "Earlier source-bound four-activity BSA185/206/209 paid Gemini charters were correctly used and expired after eight calls each; the next untouched Section9.1 activities stayed blocked for a new per-campaign owner grant even though API provider and browser were functional. The owner explicitly renewed a standing permission on 19 November 2026 for any necessary paid Gemini API calls throughout BOSLA code development. The new independent standing owner contract permits successive genuinely new source identities without a lifetime quota or repeated per-batch approval. Each normal Yoga6 invocation remains finite at four new activities, two independent reviewer roles each, eight calls/900 seconds, with explicit execute/transfer, durable PRE_CALL before provider I/O, no scheduler/unbounded loop, exact SHA-bound source, no retry of any uncertain or previously submitted role, and no automatic release. Old paid charters and old original scientific verdicts stay immutable. A new standing-science normal worker first targets Section9.1 original indices1-17, preserving old index0 uncertain, skips any newly quarantined prior roles and continues clean untouched siblings. Real model two-role PASS evidence enters a fresh unadmitted source-free course proposal and genuine 108/698 Chrome acceptance. This corrects the recurring authorization lifecycle blocker at executable workflow level rather than overriding provider denials or pretending old role evidence is new.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "Authorized owner Yoga6 normal source-bound scientific review, originally Section9.1 untouched indices1-17 with idx0 historical unknown",
+        "Portable fake reviewer callbacks, source mutation and incomplete PRE_CALL role tests, normal paid-gated worker and real source-free Chrome dispatch"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_standing_paid_science.py",
+        "triggerMarker": "def authorize_standing(",
+        "remedyMarker": "def advance_standing_science(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_standing_paid_science import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_standing_paid_science.py",
+          "kind": "python",
+          "marker": "test_standing_permission_not_exhausted_and_budget_bounded_each_invocation"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_science.py",
+          "kind": "python",
+          "marker": "test_executable_grant_tamper_and_missing_transfer_stop"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_science.py",
+          "kind": "python",
+          "marker": "test_real_section91_old_unknown_preserved_and_new_source_digest_bound"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_science.py",
+          "kind": "python",
+          "marker": "test_historical_original_uncertainty_change_is_rejected"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_science.py",
+          "kind": "python",
+          "marker": "test_private_staging_idempotent_and_tamper_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_science.py",
+          "kind": "python",
+          "marker": "test_fake_callback_cannot_claim_independent_gemini_success"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_science.py",
+          "kind": "python",
+          "marker": "test_bounded_four_review_callbacks_only_and_stop_on_uncertainty"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_science.py",
+          "kind": "python",
+          "marker": "test_uncertain_first_role_stops_further_paid_work"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_science.py",
+          "kind": "python",
+          "marker": "test_any_prior_incomplete_role_is_not_replayed_but_new_siblings_advance"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_worker.py",
+          "kind": "python",
+          "marker": "test_standing_normal_worker_real_dispatch_bounded_and_local_browser"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_worker.py",
+          "kind": "python",
+          "marker": "test_missing_transfer_or_conflicting_modes_never_use_provider"
+        },
+        {
+          "path": "tests/test_v3_standing_paid_worker.py",
+          "kind": "python",
+          "marker": "test_old_uncertain_no_browser_acceptance_cannot_be_ignored"
+        }
+      ],
+      "nextAction": "Pass exact-head hosted CI and genuine Yoga6 108/698 source-free Chrome before first paid call, then run ordinary finite --standing-science --execute --allow-generated-text-transfer --max-forward-activities 4 --max-forward-seconds 900 for genuinely untouched Section9.1 indices1-4. Safely reuse saved results and advance distinct new siblings without requesting another owner grant. Release/merge not authorized."
     }
   ]
 }

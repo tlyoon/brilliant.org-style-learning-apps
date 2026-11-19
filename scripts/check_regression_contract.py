@@ -173,6 +173,10 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "fourNewWorkerUsesSafeModuleLevelDiagnosticImport",
     "fourNewSection92GenuinePassesSourceBoundInUnadmittedRoster",
     "syntheticNewFourSourceDigestsDoNotOverrideOwnerPinnedGeminiSource",
+    "standingOwnerPaidGeminiConsentWithoutPerCampaignReauthorization",
+    "standingGeminiEveryInvocationFiniteEightCallsFourActivities",
+    "standingGeminiSourceBoundNoRoleReplayAndOldChartersPreserved",
+    "standingGeminiGenuinePassReusedInUnadmittedCourse",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

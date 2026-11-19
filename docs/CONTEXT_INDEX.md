@@ -396,3 +396,7 @@ BSA215 real checkpoint guard passed true owner Yoga6 108/698 Chrome, but hosted 
 ## 19 November 2026 - BSA215/BSA216 resolved with exact-head CI and real browser
 
 True top-of-checkpoint current registry guard and synthetic temporary-registry mirror passed 25 focused tests +5 subtests, genuine owner Yoga6 normal unadmitted 108/698 Chrome on e161aad, receipt1f583575..., and GitHub hosted CI44438560761 SUCCESS. The latest registry and first-five-line checkpoint both read BSA-20261119-216 RESOLVED. Frozen original 75/72 and 8 already completed new Section9.2 genuine independent Gemini roles unchanged; 19 unique items remain without independent scientific PASS. No new paid authorization, version admission, merge or release. Metadata closure successor must pass exact-head checks.
+
+## 19 November 2026 - BSA217 standing paid Gemini authorization
+
+The owner renewed permission for necessary paid Gemini API calls during BOSLA code development without per-campaign reauthorization. An immutable standing consent JSON allows repeated independent new source identities, each finite invocation max4 new activities/8 genuine Gemini reviewer roles/900s, exact source/role SHA and no ambiguous request replay. Normal standing-science worker starts with clean original Section9.1 indices1-17; old index0 uncertain protected. Model PASS evidence reuses sourcebound unadmitted 108-course proposal and Chrome, never publication. Decision0075.

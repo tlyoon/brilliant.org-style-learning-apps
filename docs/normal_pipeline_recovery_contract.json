@@ -76,7 +76,11 @@
     "syntheticBrowserMutatedFixtureAlwaysFetchedFresh": true,
     "fourNewWorkerUsesSafeModuleLevelDiagnosticImport": true,
     "fourNewSection92GenuinePassesSourceBoundInUnadmittedRoster": true,
-    "syntheticNewFourSourceDigestsDoNotOverrideOwnerPinnedGeminiSource": true
+    "syntheticNewFourSourceDigestsDoNotOverrideOwnerPinnedGeminiSource": true,
+    "standingOwnerPaidGeminiConsentWithoutPerCampaignReauthorization": true,
+    "standingGeminiEveryInvocationFiniteEightCallsFourActivities": true,
+    "standingGeminiSourceBoundNoRoleReplayAndOldChartersPreserved": true,
+    "standingGeminiGenuinePassReusedInUnadmittedCourse": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

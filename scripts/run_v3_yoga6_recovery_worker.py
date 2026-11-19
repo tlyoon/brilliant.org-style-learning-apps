@@ -331,6 +331,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--advance-new-four", action="store_true",
                         help="Exactly four untouched original Section9.2 items, "
                              "two independent Gemini roles each, max 8 calls.")
+    parser.add_argument("--standing-science", action="store_true",
+                        help="Standing owner Gemini consent for NEW untouched "
+                             "source-bound Section9.1 activities; finite 4/8 "
+                             "per invocation, never replay old role claims.")
     parser.add_argument("--source-free-advance", action="store_true",
                         help="Advance registered local repair, immutable QA "
                              "handoffs and untouched-original staging with "
@@ -338,15 +342,21 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-forward-activities", type=int, default=4)
     parser.add_argument("--max-forward-seconds", type=int, default=900)
     args = parser.parse_args(argv)
+    if args.standing_science and (
+            args.source_free_advance or args.diagnose_only or args.auto_advance
+            or args.advance_new_four or args.advance_revised_96):
+        _print({"status":"STOP_STANDING_SCIENCE_MODE_CONFLICT",
+                "publicationAuthorized":False})
+        return 2
     if args.advance_revised_96 and (
             args.source_free_advance or args.diagnose_only or args.auto_advance
-            or args.advance_new_four):
+            or args.advance_new_four or args.standing_science):
         _print({"status":"STOP_REVISED96_MODE_CONFLICT",
                 "publicationAuthorized":False})
         return 2
     if args.advance_new_four and (
             args.source_free_advance or args.diagnose_only or args.auto_advance
-            or args.advance_revised_96):
+            or args.advance_revised_96 or args.standing_science):
         _print({"status":"STOP_NEW4_MODE_CONFLICT",
                 "publicationAuthorized":False})
         return 2
@@ -376,6 +386,96 @@ def main(argv: list[str] | None = None) -> int:
     )
     try:
         private = checked_private_root(chosen,localappdata=Path(local))
+        if args.standing_science:
+            # BSA217: standing owner Gemini consent for any NEW eligible
+            # review identity, currently Section9.1 untouched siblings.
+            # This is a finite batch, not a renewed old paid charter.
+            require_authorized_native_review_host(AUTHORITY)
+            from app_generator.runtime.v3_standing_paid_science import (
+                authorize_standing,section91_evidence,advance_standing_science,
+            )
+            preflight=section91_evidence(COURSE,ROOT,private)
+            eligible=[{"index":e["index"],"activityId":e["activityId"],
+                       "sha":e["sha"]} for e in preflight["items"]
+                      if e["originalReviewState"]=="UNREVIEWED_ELIGIBLE"]
+            if not args.execute:
+                _print({"status":"READY_STANDING_NEW_SCIENTIFIC_INPUTS",
+                        "standingConsent":True,"nextUnreviewed":eligible[:4],
+                        "remainingNewEligible":len(eligible),"paidGeminiCalls":0,
+                        "publicationAuthorized":False})
+                return 0
+            grant=authorize_standing(execute=args.execute,
+                transfer=args.allow_generated_text_transfer,
+                activities=args.max_forward_activities,
+                seconds=args.max_forward_seconds)
+            # Genuine source-free/browser baseline before ANY paid provider.
+            offline=_complete_source_free_with_browser(
+                private,advance_source_free_until_boundary(COURSE,ROOT,private))
+            browser=offline.get("realCandidateBrowserAcceptance",{})
+            if (offline.get("section96ScienceIntegrated") is not True
+                    or offline.get("paidGeminiCalls")!=0
+                    or browser.get("status")!=
+                        "ACTUAL_UNADMITTED_CHAPTER9_BROWSER_QA_PASS"
+                    or browser.get("renderedChecks")!=698
+                    or browser.get("all108ActivitiesVisited") is not True
+                    or browser.get("proposalSha256")!=offline.get("proposalSha256")):
+                _print({"status":"STOP_STANDING_PREPAID_BROWSER_PREFLIGHT",
+                        "publicationAuthorized":False})
+                return 3
+            from app_generator.runtime.native_sdk_environment import (
+                delegate_to_supported_sdk,
+            )
+            delegated=delegate_to_supported_sdk(
+                ROOT,list(argv) if argv is not None else sys.argv[1:],
+                entrypoint=Path(__file__))
+            if delegated is not None:
+                return delegated
+            from app_generator.gemini.v3_native_api_reviewers import (
+                V3NativeGeminiApiSessions,
+            )
+            from app_generator.runtime.v3_authorized_review import (
+                advance_v3_generated_text,
+            )
+            config=_load_native_config()
+            capability=diagnose_declared_generation_support(config)
+            def review_one(raw,activity_id,private_root):
+                with V3NativeGeminiApiSessions(
+                    config,operation_authorized=True,
+                    generated_content_transfer_allowed=True,
+                    candidate_offset=0) as reviewer:
+                    return advance_v3_generated_text(
+                        raw,reviewer.open_pair(activity_id),
+                        private_root=private_root,
+                        generated_content_transfer_allowed=True,
+                        max_activities=1)
+            reviewed=advance_standing_science(
+                COURSE,ROOT,private,execute=True,
+                transfer=args.allow_generated_text_transfer,
+                max_activities=args.max_forward_activities,
+                max_seconds=args.max_forward_seconds,
+                capability=capability,review_one=review_one)
+            # Same-run source-free staging and REAL 108/698 browser after
+            # independent model work; new evidence is never itself a release.
+            post=_complete_source_free_with_browser(
+                private,advance_source_free_until_boundary(COURSE,ROOT,private))
+            after=post.get("realCandidateBrowserAcceptance",{})
+            status=("STANDING_AUTOMATICALLY_ADVANCED_BROWSER_PASS"
+                    if reviewed.get("status")=="STANDING_BOUNDED_BATCH_COMPLETED"
+                       and reviewed.get("allNewScientificPass") is True
+                       and post.get("section96ScienceIntegrated") is True
+                       and post.get("paidGeminiCalls")==0
+                       and after.get("status")==
+                           "ACTUAL_UNADMITTED_CHAPTER9_BROWSER_QA_PASS"
+                       and after.get("all108ActivitiesVisited") is True
+                       and after.get("renderedChecks")==698
+                       and after.get("proposalSha256")==post.get("proposalSha256")
+                    else "STANDING_STOP_SCIENCE_OR_BROWSER_NOT_ACCEPTED")
+            _print({**reviewed,"standingAuthorization":grant,
+                    "postReviewAutomaticContinuation":{
+                        "status":status,"proposalSha256":post.get("proposalSha256"),
+                        "browserReceiptSha256":after.get("integritySha256"),
+                        "paidGeminiCalls":0,"publicationAuthorized":False}})
+            return 0 if status=="STANDING_AUTOMATICALLY_ADVANCED_BROWSER_PASS" else 3
         if args.advance_new_four:
             # BSA209: separately owner-authorized 4 *new* original 9.2
             # activity identities. The OLD science-failed idx13 and earlier
