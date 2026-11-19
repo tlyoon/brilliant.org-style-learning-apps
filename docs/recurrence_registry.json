@@ -6140,7 +6140,7 @@
     {
       "id": "BSA-20261119-222",
       "class": "five-stage-v5-next-task-only-queued-and-historical-c3-http402-obsolete",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261119-221",
@@ -6195,7 +6195,7 @@
           "marker": "test_saved_checkpoints_resume_idempotently_without_second_browser"
         }
       ],
-      "nextAction": "BSA221 genuine CI+double Chrome+five-stage complete. BSA222 new read-only source-free post-V5 audit and private release-adapter negative controls implemented; 37 focused sourcefree tests PASS. Require exact new commit CI and actual Yoga6 normal five-stage (2x698 Chrome), V5 receipt proving historical C3 FAILED_LIMITED_CAMPAIGN supersedes obsolete ongoing-402 claim, sourcefree public adapter preservation, no third-source or model replay. Then close BSA222, preserve blocked full C3/C4 generalization and unmerged draft PR; do not claim codebase fully generalizes or is public-ready."
+      "nextAction": "BSA222 GENUINELY RESOLVED on commit c3ba9a6295095f6751c76fbf96b01f7780d01b8d GitHub hosted CI #44493752053 SUCCESS. Real owner Yoga6 normal --source-free-advance exit0 with genuine first reviewed 108-activity 648 trilingual viewport/698 Chrome PASS SHA5541b4579db9a7adf456ab5eaca1f5c0dc94976757592f2e0a990aa89c4c2ef5, auto-dispatched 21-file private candidate independent second 698 Chrome PASS and injected rollback. Source-specific five stages true, V5 SHA c05e42b1c7bf121b4cea1d10bcd47d8db99bf31323fe0662ec2fc63413fbac60 genuinely executed successor source-free public-V3-adapter evidence inventory and C3 precedence-correct FAILED_LIMITED_CAMPAIGN read-only historical check. 45 focused synthetic regression, hosted CI, normal exit0. No new Gemini/model calls, PDF requests, original 75/72 history changes, public-release attestation, merge/deploy or fabricated cross-topic generalization. Next eligible separate generic full-course V3 release adapter proof; heldout C3 remains finite terminal without third campaign."
     }
   ]
 }
