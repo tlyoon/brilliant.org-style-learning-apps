@@ -388,3 +388,7 @@ Accepted Section 8.4 public-review extension: Decision 0022 permits the generate
 ## 19 November 2026 - BSA215 latest checkpoint freshness enforcement
 
 The top of the older checkpoint incorrectly claimed BSA213/214 ACTIVE after their real Yoga6 scientific and CI closure. Corrected top has BSA-20261119-215 RESOLVED and actual campaign results; historical state descriptions are archived below. Normal check_regression_contract verifies the top current id/status equals the latest registry incident in all CI runs; three fake-only regressions prevent stale cross-session status and potential repeat paid reviews. No Gemini calls or content changes.
+
+## 19 November 2026 - BSA216 synthetic recurrence checkpoint fixture
+
+BSA215 real checkpoint guard passed true owner Yoga6 108/698 Chrome, but hosted CI44437091959 failed 2 of 1607 tests because synthetic regression registry fixture did not copy the now-required checkpoint and did not sync a fake newly appended id/status. BSA216 test-only repair mirrors mock checkpoint on setUp/save and explicitly tests missing/stale negative cases. Local25 tests+5 subtests PASS, exact-head CI pending. All eight paid Gemini roles consumed; original scientific evidence and release restrictions unchanged.

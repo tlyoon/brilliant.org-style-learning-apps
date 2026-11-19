@@ -5560,7 +5560,7 @@
     {
       "id": "BSA-20261119-215",
       "class": "obsolete-top-level-cross-session-checkpoint-reports-active-even-after-registered-resolved",
-      "status": "resolved",
+      "status": "active",
       "rootCauseFamily": "recurrence-governance",
       "relatedIncidentIds": [
         "BSA-20261106-119",
@@ -5603,6 +5603,56 @@
         }
       ],
       "nextAction": "After verifying regression/lint and hosted CI, preserve current top with BSA-20261119-215 RESOLVED and never change historic model evidence. A later newly registered incident must also update the top as part of the same commit, automatically enforced by normal CI. Additional paid Gemini calls require separate owner consent."
+    },
+    {
+      "id": "BSA-20261119-216",
+      "class": "synthetic-regression-repository-omits-new-continuation-checkpoint-and-test-manifest-sync",
+      "status": "active",
+      "rootCauseFamily": "recurrence-governance",
+      "relatedIncidentIds": [
+        "BSA-20261113-157",
+        "BSA-20261119-215"
+      ],
+      "differenceFromLinkedIncident": "BSA215 correctly made normal CI reject a stale or missing top-level cross-session checkpoint, but the preexisting tests/test_regression_contract.py builds a synthetic temporary repository copying registry/ledger/runtime/tests while forgetting docs/CONTINUATION_CHECKPOINT_LATEST.md. GitHub hosted CI run 44437091959 on committed BSA215 head15058f9 failed exactly two tests test_canonical_resolved_incidents_are_ci_protected and test_future_ledger_incident_must_be_registered with continuation checkpoint is missing, while actual owner Yoga6 exact head 108/698 real Chrome and recurrence/lint passed. This is an isolated synthetic CI fixture coverage gap rather than a defect in the real checkpoint guard, analogous to BSA212 Ubuntu fake profile omitted LOCALAPPDATA. Repair ONLY the synthetic test setUp to copy the real checkpoint and its save_manifest to update the first five lines' current incident id/status when the FAKE registry mutates. Add explicit negative tests proving missing file and stale top id still fail the UNWEAKENED real verify function. Real frozen 75/72 original science and eight spent authenticated new role claims remain unmodified; no new paid Gemini requests, release, merge or scheduler.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "GitHub Ubuntu CI running complete unittest discovery, source-free temporary repository incidence contract synthetic tests",
+        "Owner Yoga6 exact-head 108/698 browser acceptance; isolated local fake registry with appended incidents and stale status"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/check_regression_contract.py",
+        "triggerMarker": "def _checkpoint_freshness_errors(",
+        "remedyMarker": "errors.extend(_checkpoint_freshness_errors(",
+        "normalEntryPoints": [
+          {
+            "path": ".github/workflows/validate.yml",
+            "marker": "python scripts/check_regression_contract.py"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_canonical_resolved_incidents_are_ci_protected"
+        },
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_future_ledger_incident_must_be_registered"
+        },
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_fixture_missing_current_checkpoint_is_rejected"
+        },
+        {
+          "path": "tests/test_regression_contract.py",
+          "kind": "python",
+          "marker": "test_fixture_stale_checkpoint_is_rejected_after_registry_change"
+        }
+      ],
+      "nextAction": "Synthetic 25 tests and five subtests PASS after fixture-only repair. Run exact current combined recurrence/lint, commit to PR#223 and require exact-head GitHub full CI and genuine Yoga6 108/698 restart. Then close BSA215 and BSA216 with a separate verified checkpoint commit; no further paid model authorization."
     }
   ]
 }

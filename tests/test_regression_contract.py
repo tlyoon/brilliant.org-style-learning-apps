@@ -25,6 +25,9 @@ class RegressionContractTests(unittest.TestCase):
         self.copy("docs/decisions/0027-regression-immunity-and-recovery.md")
         self.copy("docs/decisions/0037-automatic-recovery-normal-pipeline.md")
         self.copy("docs/normal_pipeline_recovery_contract.json")
+        # BSA216: synthetic repository must contain the SAME first-class
+        # checkpoint as production, so the new CI safeguard stays testable.
+        self.copy("docs/CONTINUATION_CHECKPOINT_LATEST.md")
         self.copy("AGENTS.md")
         self.copy(".github/workflows/validate.yml")
         for record in self.manifest["incidents"]:
@@ -46,6 +49,21 @@ class RegressionContractTests(unittest.TestCase):
         (self.root / "docs/recurrence_registry.json").write_text(
             json.dumps(self.manifest, indent=2), encoding="utf-8"
         )
+        # Synthetic tests deliberately add incidents/change their statuses.
+        # Keep the *fixture* checkpoint in sync, as real development must.
+        # Do not weaken the production checker or modify the real checkpoint.
+        current = self.manifest["incidents"][-1]
+        tag = (f'> CURRENT RECOVERY CHECKPOINT: {current["id"]} | '
+               f'{current["status"].upper()}')
+        checkpoint = self.root / "docs/CONTINUATION_CHECKPOINT_LATEST.md"
+        lines = checkpoint.read_text(encoding="utf-8").splitlines()
+        marker = "> CURRENT RECOVERY CHECKPOINT:"
+        locations = [i for i, line in enumerate(lines)
+                     if line.startswith(marker)]
+        if len(locations) != 1 or locations[0] >= 5:
+            raise AssertionError("Synthetic checkpoint has no unique top marker")
+        lines[locations[0]] = tag
+        checkpoint.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     def test_recurring_failure_requires_prior_link_and_difference(self):
         prior = {"BSA-20261102-096": {
@@ -194,6 +212,23 @@ class RegressionContractTests(unittest.TestCase):
 
     def test_canonical_resolved_incidents_are_ci_protected(self):
         self.assertEqual([], verify(self.root))
+
+    def test_fixture_missing_current_checkpoint_is_rejected(self):
+        (self.root / "docs/CONTINUATION_CHECKPOINT_LATEST.md").unlink()
+        self.assertIn("continuation checkpoint is missing",
+                      " ".join(verify(self.root)))
+
+    def test_fixture_stale_checkpoint_is_rejected_after_registry_change(self):
+        checkpoint = self.root / "docs/CONTINUATION_CHECKPOINT_LATEST.md"
+        s = checkpoint.read_text(encoding="utf-8")
+        marker = ("> CURRENT RECOVERY CHECKPOINT: " +
+                  self.manifest["incidents"][-1]["id"])
+        self.assertIn(marker, s[:400])
+        checkpoint.write_text(
+            s.replace(marker, "> CURRENT RECOVERY CHECKPOINT: BSA-20991231-999",
+                      1), encoding="utf-8")
+        self.assertIn("continuation checkpoint first five lines disagree",
+                      " ".join(verify(self.root)))
 
     def test_registry_rejects_missing_coverage(self):
         (self.root / "tests/test_browser_chrome.py").unlink()
