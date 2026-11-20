@@ -6681,7 +6681,7 @@
     {
       "id": "BSA-20261120-229",
       "class": "genuine-v8-public-scope-records-next-step-but-no-pinned-private-release-proposal",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261120-227",
@@ -6744,7 +6744,7 @@
           "marker": "test_readiness_and_exact_ci_cannot_be_bypassed"
         }
       ],
-      "nextAction": "BSA229 ACTIVE: real local V9 test suite 80 focused tests passed (one Windows symlink test skipped); executable recovery wiring and source-free normal EXIT0 asserts are added. Need strict registry contract pass, clean exact new-head hosted CI, genuine Yoga6 normal V1\u2013V9 startup, immutable 3-bundle receipt, and restart idempotence before marking resolved. No public PR, push, merge or deploy."
+      "nextAction": "BSA229 VERIFIED RESOLVED: exact owner Yoga6 normal --source-free-advance EXIT0 at 3ac86d08e75a00e8f411413833bb98b50ac78c2f, GitHub Actions #44667471177 SUCCESS, genuine V1-V8 including source-bound native HMAC evidence, V9 three original production eight-file release bundles privately staged under immutable candidate, 24 SHA-pinned files. V9 integrity 7d1852ecc8a6aa5f595e589b0125424dd7d09dae0f5aeb1a78e8b2eea01ba743; no model/PDF replay, no public PR, push, merge or deploy. Existing public main eb86fe8eb94ec33f8c0c055d2423b245e5898241 stays pinned and 9.3..9.5,9.7..9.9 unaffected. Next authorized BSA230: private browser smoke and pinned proposal readiness for non-merge PR. Historical C3 FAILED_LIMITED_CAMPAIGN unchanged."
     }
   ]
 }

@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-229 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-229 | RESOLVED
+
+> **20 NOV 2026 BSA229 VERIFIED RESOLVED.** Actual Yoga6 normal --source-free-advance EXIT0 on clean code 3ac86d08e75a00e8f411413833bb98b50ac78c2f, hosted CI #44667471177 SUCCESS. V1-V8 genuine source/browser/science and original V3 HMAC signed bundle evidence retained; V9 original production builder staged three complete eight-file public release routes 9.1,9.2,9.6 (24 pinned files) privately, with signed V9 receipt and pinned public main eb86fe8eb94ec33f8c0c055d2423b245e5898241. No paid model/PDF, public PR, push, merge or deploy; other public Chapter9 routes untouched and C3 FAILED_LIMITED_CAMPAIGN unchanged. NEXT BSA230 private release browser integration smoke and safe non-merge proposal workflow; no public publication claimed.
+
 
 > **20 NOV 2026 BSA229 V8→V9 PRIVATE PINNED RELEASE PROPOSAL ACTIVE.** Previous BSA227/BSA228 authentic owner Yoga6 and hosted CI prove public scope and unsafe merge guard. V8 next milestone was only text, no actual 3-route production release proposal. New v3_pinned_public_release_proposal.py runs original three real release builders for public sections 9.1,9.2,9.6 into private LOCALAPPDATA, pins existing public main eb86fe8eb94ec33f8c0c055d2423b245e5898241 and V7/V8 immutable source receipts, exact SHA of every file and no external public writes. Wired to normal --source-free-advance so V8 success executes V9 in SAME invocation; CI/normal exact new-head acceptance pending. 80 focused tests pass (one unsupported Windows symlink skip); finite C3 FAILED_LIMITED_CAMPAIGN preserved. No public PR/merge/deploy. NEXT: commit, CI, real Yoga6 normal worker and signed V9 acceptance, then staged integration/browser work.
 
