@@ -1,6 +1,6 @@
 # Decision 0090 — BSA234: reuse historical GitHub draft PR with exact version and automatic restart
 
-**21 November 2026 — owner Yoga 6; v7.1 forward-progress and failure recovery contract.**
+**20 November 2026 — owner Yoga 6; v7.1 forward-progress and failure recovery contract.**
 
 ## Historical fault review
 
