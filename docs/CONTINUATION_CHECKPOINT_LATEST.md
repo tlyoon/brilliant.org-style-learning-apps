@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-236 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-236 | RESOLVED
+
+> **20 NOV 2026 — BSA236 GENUINE SAME-INVOCATION GLOBAL READONLY TASK DISPATCH.** Exact clean source 28e49e3a1ea1b53b764aa40ec8490619b65a947c, hosted CI #44721290201 SUCCESS, genuine owner Yoga6 V1–V15 normal worker EXIT0. Signed V15 fa9d9acfb4a7a6ab4e36322c65ae134e0367cf701ab86c8f6bb3f050db10006a contains three distinct durable PRE_CALL and RESULT handoffs after signed V14; external draft PR #16 still open/unmerged, public main unchanged. GitHub native check/status counts both 0 and no review approval are reported as **missing**, not accepted. Active historical provider BSA183/BSA196 and revised science BSA202 remain blocked by no-replay/authorization and old C3 FAILED_LIMITED_CAMPAIGN is untouched. Bounded controller never merges/deploys, never creates scheduler and explicitly does not claim cross-session persistent supervisor. NEXT safe independent PR content security/accessibility evidence; actual publication requires an authorized release gate.
+
 
 > **20 NOV 2026 — BSA236 BOUNDED GLOBAL POST-PR ROADMAP DISPATCH.** BSA235 passed genuine Yoga6 V1–V14 sourcefree EXIT0 at f94d201 and signed V14 ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1 with all 9 actual public PR routes real Chrome; closure on e49da57. But normal worker still returned after V14 without executing any independent global task. New allowlisted V15 controller is integrated immediately after V14: live GitHub PR/base/21-path reconciliation; native GitHub check/review audit (currently absent; NOT approval); historical FAILED_LIMITED_CAMPAIGN and global recurrence scan. Each eligible task writes signed PRE_CALL/RESULT; isolated read-only failures quarantine and independent task still dispatches. 58 focused tests PASS. NEXT strict registry/CI and genuine V1–V15. No merge/deploy or paid call, no owner-retired scheduler and no imaginary cross-session supervisor.
 

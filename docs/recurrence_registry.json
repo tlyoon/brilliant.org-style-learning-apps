@@ -7267,7 +7267,7 @@
     {
       "id": "BSA-20261120-236",
       "class": "post-v14-worker-stops-before-global-eligible-independent-task-dispatch",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261120-229",
@@ -7344,7 +7344,7 @@
           "marker": "test_bad_active_incident_id_cannot_be_reported_as_valid"
         }
       ],
-      "nextAction": "BSA236 ACTIVE: structural after-V14 global read-only task dispatcher implemented. 58 focused tests PASS, including exact normal-worker V14\u2192V15 and quarantine-after-middle-task. Require strict recurrence contract, exact-head CI, genuine owner Yoga6 V1\u2013V15 exit0 and signed V15 per-task PRE_CALL/RESULT receipts before closure. Original C3 failure and no-scheduler decision preserved."
+      "nextAction": "BSA236 VERIFIED RESOLVED: genuine owner Yoga6 ordinary V1\u2013V15 EXIT0 on exact clean head 28e49e3a1ea1b53b764aa40ec8490619b65a947c with GitHub Actions #44721290201 SUCCESS, source-bound signed V15 fa9d9acfb4a7a6ab4e36322c65ae134e0367cf701ab86c8f6bb3f050db10006a. Same normal invocation after V14 dispatched 3 allowlisted independent read-only tasks with persistent PRE_CALL/RESULT; actual PR #16 remains DRAFT OPEN unmerged, GitHub native checks 0 and status checks 0 are correctly reported as missing, not fake PASS; historical C3 FAILED_LIMITED_CAMPAIGN and provider no-replay incidents preserved. No release, paid calls, scheduler or imaginary persistent supervisor. NEXT independent content release/accessibility/security evaluation, or separately authorized deployment."
     }
   ]
 }
