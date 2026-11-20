@@ -887,6 +887,17 @@ def main(argv: list[str] | None = None) -> int:
                             ROOT,private,ready,
                             result["pinnedPrivateReleaseProposal"],
                             result["privateReleaseBrowserAcceptance"]))
+                    # BSA233: authenticated V11 success MUST dispatch
+                    # a private non-merging PR readiness draft before
+                    # the worker returns; no public Git operations.
+                    from app_generator.runtime.v3_private_nonmerging_pr_readiness import (
+                        stage_private_nonmerging_pr_draft,
+                    )
+                    result["privateNonmergingPrReadiness"]=(
+                        stage_private_nonmerging_pr_draft(
+                            ROOT,private,ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -934,6 +945,15 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("privatePinnedPublicPatch",{}).get(
                                 "changedFileCount")==21
                             and result.get("privatePinnedPublicPatch",{}).get(
+                                "publicDeployExecuted") is False
+                            and result.get("privateNonmergingPrReadiness",{}).get(
+                                "status")==
+                            "PRIVATE_SCOPED_NONMERGING_PR_DRAFT_VERIFIED_NO_REMOTE_WRITE"
+                            and result.get("privateNonmergingPrReadiness",{}).get(
+                                "changedFileCount")==21
+                            and result.get("privateNonmergingPrReadiness",{}).get(
+                                "publicPRCreated") is False
+                            and result.get("privateNonmergingPrReadiness",{}).get(
                                 "publicDeployExecuted") is False
                          )) else 3
         if args.auto_advance:

@@ -173,7 +173,14 @@
     "v71V11LongPathRecoveryUsesShortPrivateTempGitClone": true,
     "v71V11UnsignedPatchOrRemoteMainDriftFailsClosed": true,
     "v71V11RestartRefusesDifferentPrivatePatchBytes": true,
-    "v71V11NoPublicGitPushMergePRCreateOrDeploy": true
+    "v71V11NoPublicGitPushMergePRCreateOrDeploy": true,
+    "v71SignedV11AutoDispatchesV12InNormalSourcefreeWorker": true,
+    "v71V12V9CleanHeadCIAndSignedV11SourceIdentity": true,
+    "v71V12PatchShaAndExactly21HeadersThreeRoutes": true,
+    "v71V12RejectUnexpectedRouteAndForgedChangedPatch": true,
+    "v71V12RemotePublicMainReadOnlyAndPinned": true,
+    "v71V12ImmutableDraftWithRestartRefusal": true,
+    "v71V12NoPRPushMergeDeployOrScheduler": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

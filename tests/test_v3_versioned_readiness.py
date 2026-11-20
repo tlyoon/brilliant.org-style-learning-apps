@@ -220,6 +220,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             from app_generator.runtime import v3_pinned_public_release_proposal as proposal
             from app_generator.runtime import v3_public_release_browser_acceptance as browser_stage
             from app_generator.runtime import v3_private_public_patch_rehearsal as v11_stage
+            from app_generator.runtime import v3_private_nonmerging_pr_readiness as v12_stage
             stack.enter_context(patch.object(
                 v3_five_stage_completion,
                 "advance_five_stage_on_pinned_browser",
@@ -266,6 +267,13 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "status":"PINNED_THREE_SECTION_PRIVATE_PUBLIC_PATCH_REHEARSED_NO_PUBLIC_WRITE",
                     "changedFileCount":21,"publicDeployExecuted":False,
                 }))
+            v12_mock=stack.enter_context(patch.object(
+                v12_stage,"stage_private_nonmerging_pr_draft",
+                return_value={
+                    "status":"PRIVATE_SCOPED_NONMERGING_PR_DRAFT_VERIFIED_NO_REMOTE_WRITE",
+                    "changedFileCount":21,
+                    "publicPRCreated":False,"publicDeployExecuted":False,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))
@@ -276,6 +284,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             self.assertEqual(proposal_mock.call_count,0 if failing else 1)
             self.assertEqual(browser_mock.call_count,0 if failing else 1)
             self.assertEqual(v11_mock.call_count,0 if failing else 1)
+            self.assertEqual(v12_mock.call_count,0 if failing else 1)
             if failing:
                 self.assertEqual(status,3)
             else:

@@ -20,6 +20,7 @@ from app_generator.runtime import v3_public_deployment_scope as scope
 from app_generator.runtime import v3_pinned_public_release_proposal as proposal
 from app_generator.runtime import v3_public_release_browser_acceptance as browser_stage
 from app_generator.runtime import v3_private_public_patch_rehearsal as v11_stage
+from app_generator.runtime import v3_private_nonmerging_pr_readiness as v12_stage
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -412,6 +413,13 @@ class FiveStageSyntheticTests(unittest.TestCase):
                     "status":"PINNED_THREE_SECTION_PRIVATE_PUBLIC_PATCH_REHEARSED_NO_PUBLIC_WRITE",
                     "changedFileCount":21,"publicDeployExecuted":False,
                 }))
+            v12_mock=stack.enter_context(patch.object(
+                v12_stage,"stage_private_nonmerging_pr_draft",
+                return_value={
+                    "status":"PRIVATE_SCOPED_NONMERGING_PR_DRAFT_VERIFIED_NO_REMOTE_WRITE",
+                    "changedFileCount":21,
+                    "publicPRCreated":False,"publicDeployExecuted":False,
+                }))
             observed=[]
             stack.enter_context(patch.object(worker,"_print",
                                               side_effect=observed.append))
@@ -423,6 +431,7 @@ class FiveStageSyntheticTests(unittest.TestCase):
         self.assertEqual(proposal_mock.call_count,1)
         self.assertEqual(browser_mock.call_count,1)
         self.assertEqual(v11_mock.call_count,1)
+        self.assertEqual(v12_mock.call_count,1)
         self.assertEqual(observed[-1]["fiveStageAutonomousCompletion"],expected)
         self.assertEqual(observed[-1]["paidGeminiCalls"],0)
         self.assertFalse(observed[-1]["publicationAuthorized"])

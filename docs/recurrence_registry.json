@@ -6970,6 +6970,86 @@
         }
       ],
       "nextAction": "BSA232 VERIFIED RESOLVED: genuine Yoga6 normal source-free V1\u2013V11 EXIT0 and exact GitHub Actions #44692645543 SUCCESS at clean f3a7deac9d0c8c025eeb1be88cddfa34654c043b; original V10 signed Chrome 3-route genuine acceptance, pinned V9 24-file manifest, actual V11 local git apply --check on independent public main clone, 21 paths only Sections 9.1/9.2/9.6 and 756429 immutable private patch bytes signed integrity 67420d2f4e8305f0d5d8baf4a6282175944678b25e1c1a5794105df99a7bf98f; no public PR/branch push/merge/deploy. Next BSA233 independent non-merging PR readiness/automatic supervisor. C3 FAILED_LIMITED_CAMPAIGN unchanged."
+    },
+    {
+      "id": "BSA-20261120-233",
+      "class": "signed-v11-checkpoint-stops-without-actual-nonmerging-pr-preparation-dispatch",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261120-232",
+        "BSA-20261120-230",
+        "BSA-20261120-229",
+        "BSA-20261116-172"
+      ],
+      "differenceFromLinkedIncident": "Owner Yoga6 genuine V1\u2013V11 sourcefree exit0 on f3a7dea at exact hosted CI #44692645543 accepted private 3-route git patch against pinned main but did not dispatch its nextEligibleMilestone SCOPED_NONMERGING_PUBLIC_PR_PREPARATION before returning. BSA233 restores v7.1 checkpoint-to-action by automatically dispatching immutable PRIVATE V12 review-only PR draft from the normal V11 success branch, after verifying signed V9 source clean exact-head CI, V11 integrity and 21 Git diff headers, and read-only remote pinned public main. No public Git writes, Gemini calls, learner pilot claims or scheduler. Historical Decision 0043 explicitly requires Yoga6 owner-retired scheduled task stay absent.",
+      "lastValidatedDate": "2026-11-20",
+      "applicableEnvironments": [
+        "Owner Yoga6 sourcefree V1\u2013V12 normal worker with genuine Chapter9 private release",
+        "Existing public GitHub Pages main pinned eb86fe8eb94ec33f8c0c055d2423b245e5898241",
+        "Source-bound immutable V9 V10 V11 private receipts and 21-path binary diff",
+        "No Windows Task Scheduler reinstall after owner decision 0043",
+        "Restart with forged predecessor, changed branch, local draft bytes, or out-of-scope 9.7 path"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_private_nonmerging_pr_readiness.py",
+        "triggerMarker": "def stage_private_nonmerging_pr_draft(",
+        "remedyMarker": "V12_PATCH_HEADER_UNSAFE_OR_MISMATCHED",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_private_nonmerging_pr_readiness import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_private_nonmerging_pr_readiness.py",
+          "kind": "python",
+          "marker": "test_real_signed_patch_generates_only_private_draft"
+        },
+        {
+          "path": "tests/test_v3_private_nonmerging_pr_readiness.py",
+          "kind": "python",
+          "marker": "test_restart_does_not_mutate_private_draft"
+        },
+        {
+          "path": "tests/test_v3_private_nonmerging_pr_readiness.py",
+          "kind": "python",
+          "marker": "test_tampered_private_draft_refused"
+        },
+        {
+          "path": "tests/test_v3_private_nonmerging_pr_readiness.py",
+          "kind": "python",
+          "marker": "test_changed_public_revision_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_private_nonmerging_pr_readiness.py",
+          "kind": "python",
+          "marker": "test_tampered_v11_signed_receipt_blocks_even_if_result_claims_pass"
+        },
+        {
+          "path": "tests/test_v3_private_nonmerging_pr_readiness.py",
+          "kind": "python",
+          "marker": "test_9_7_path_in_patch_fails_scope"
+        },
+        {
+          "path": "tests/test_v3_private_nonmerging_pr_readiness.py",
+          "kind": "python",
+          "marker": "test_mismatched_diff_paths_fails_even_with_updated_sha"
+        },
+        {
+          "path": "tests/test_v3_private_nonmerging_pr_readiness.py",
+          "kind": "python",
+          "marker": "test_missing_or_replaced_patch_is_refused"
+        },
+        {
+          "path": "tests/test_v3_private_nonmerging_pr_readiness.py",
+          "kind": "python",
+          "marker": "test_staged_identity_not_stolen_from_another_head"
+        }
+      ],
+      "nextAction": "BSA233 ACTIVE: implemented V11\u2192V12 normal sourcefree dispatch to immutable private nonmerging PR draft. 66 focused stage plus ordinary worker tests PASS, including nine adversarial checks. Require strict recurrence contract, exact new-head hosted CI, genuine owner Yoga6 V1\u2013V12 exit0 and signed private V12 receipt before closing. No public writes/scheduler. C3 FAILED_LIMITED_CAMPAIGN preserved."
     }
   ]
 }

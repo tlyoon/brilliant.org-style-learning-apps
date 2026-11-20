@@ -270,6 +270,13 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71V11UnsignedPatchOrRemoteMainDriftFailsClosed",
     "v71V11RestartRefusesDifferentPrivatePatchBytes",
     "v71V11NoPublicGitPushMergePRCreateOrDeploy",
+    "v71SignedV11AutoDispatchesV12InNormalSourcefreeWorker",
+    "v71V12V9CleanHeadCIAndSignedV11SourceIdentity",
+    "v71V12PatchShaAndExactly21HeadersThreeRoutes",
+    "v71V12RejectUnexpectedRouteAndForgedChangedPatch",
+    "v71V12RemotePublicMainReadOnlyAndPinned",
+    "v71V12ImmutableDraftWithRestartRefusal",
+    "v71V12NoPRPushMergeDeployOrScheduler",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

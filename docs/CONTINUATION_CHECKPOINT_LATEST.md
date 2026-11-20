@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-232 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-233 | ACTIVE
+
+> **20 NOV 2026 — BSA233 V12 PRIVATE NONMERGING PR READINESS.** BSA232 genuinely closed after exact GitHub CI #44692645543 success and Yoga6 V1–V11 exit0, V11 signed 67420d2f4e8305f0d5d8baf4a6282175944678b25e1c1a5794105df99a7bf98f. V11 formerly stopped after saving a next-stage label. The new normal sourcefree pipeline now actually dispatches V12, validating signed V11, the 21 exact diff headers and patch SHA, original public main pinned SHA, and writing only immutable owner-private PR review draft + signed V12. 66 source-free tests PASS. NO public branch push, PR create/merge, publication, paid provider request or scheduled task. Owner's 16 Nov Decision0043 removed the Yoga6 scheduled task: do not recreate it. NEXT real new-head CI and genuine V1–V12, close only on signed V12 acceptance; original C3 failure unchanged.
+
 
 > **20 NOV 2026 — BSA232 VERIFIED RESOLVED.** Exact clean code f3a7deac9d0c8c025eeb1be88cddfa34654c043b, hosted CI #44692645543 SUCCESS and genuine Yoga6 normal V1–V11 EXIT0. Historical BSA128 locale recovery and V10 3/3 Chrome production route acceptance reused, V9 24 private file SHA locked. V11 pinned public main eb86fe8eb94ec33f8c0c055d2423b245e5898241, exact 21 paths only 9.1/9.2/9.6, independent read-only clone and git apply --check, private signed patch integrity 67420d2f4e8305f0d5d8baf4a6282175944678b25e1c1a5794105df99a7bf98f. No public PR/push/merge/deploy. NEXT BSA233 safe nonmerging PR readiness, plus v7.1 persistent supervisor requirement; historical C3 FAILED_LIMITED_CAMPAIGN unchanged.
 
