@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261119-226 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261119-226 | RESOLVED
+
+> **20 NOV 2026 BSA225/BSA226 VERIFIED RESOLVED.** On genuine clean Yoga6 code head a296da3e894a9b2854eafd2f4886fe99c2bfca5b with exact GitHub Actions #44645502624 SUCCESS, the ordinary normal --source-free-advance completed real 108/698 scientific Chrome, persisted V1-V6 original native HMAC checks, genuine second 698 browser and fault-injected rollback, and automatically ran V7 original production bundle builder SIX times with signed per-package exact release gates. Worker EXIT0, signed private V7 receipt 48a3c5599a166ed44068bb64b58d42be44558430bc3d2cb0cd1dc76264c4cd91. No paid Gemini/PDF, Git merge or public deploy; original frozen75/72 and finite heldout C3 FAILED_LIMITED_CAMPAIGN unaffected. NEXT: separate read-only public deployment scope/permission check and C3 independent heldout generalization; do not report public release or full project completion. A metadata-only closure commit still requires its own hosted CI.
+
 
 > **19 NOV 2026 BSA226 ACTIVE — delayed-CI metadata must not corrupt V7 private native release gate.** Genuine owner Yoga6 on 926edf49 exact hosted CI #44536308759 SUCCESS and normal sourcefree 108/698 Chrome + V1-V6 six genuine original native V3 HMAC checkpoints, then ValueError EXIT3 before V7. Original canonical V7 direct test successfully built six actual signed release bundles, but CI polling added transient ciRecoveryPolls/ciRecoveredInSameInvocation to verified readiness, which strict V7 rejected as V3_PUBLIC_BUILD_READINESS_NOT_SAVED. Reproduced exact root pre-fix. New normal worker strips only those recognized bounded diagnostics from canonical readiness, records polling separately, retains strict saved-source proof for all downstream V1-V7; fake delayed-CI negative control and 73 focused regression tests passed. Exact new-head CI and genuine full normal worker V7 acceptance pending. Prior BSA225 remains open until same-path V7 completes. C3 FAILED_LIMITED_CAMPAIGN remains terminal; zero new model/PDF/public deploy or merge.
 

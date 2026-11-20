@@ -6390,7 +6390,7 @@
     {
       "id": "BSA-20261119-225",
       "class": "v6-technical-success-stopped-before-genuine-public-builder-executed",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261119-224",
@@ -6398,7 +6398,7 @@
         "BSA-20261119-222"
       ],
       "differenceFromLinkedIncident": "BSA223 built six authentic source-bound native V3 HMAC technical receipts; BSA224 removed the CI wait race. The normal sourcefree worker then returned EXIT0 after V6 and printed GENERIC_FULL_COURSE_V3_RELEASE_ADAPTER as the next label, but no real original public bundle build was dispatched. Owner v7.1 forbids a checkpoint-only handoff. New BSA225 dispatches exactly six original release builder calls with actual per-package native V3 gate receipts in a private scratch overlay, verifies each compiled bundle and records an immutable V7 proof, without merging/publishing.",
-      "lastValidatedDate": "2026-11-19",
+      "lastValidatedDate": "2026-11-20",
       "applicableEnvironments": [
         "Owner Yoga6 normal --source-free-advance with exact hosted CI",
         "Six corrected 18-activity genuine private native V3 release receipt folders",
@@ -6467,19 +6467,19 @@
           "marker": "test_old_signed_v7_receipt_must_not_be_replaced"
         }
       ],
-      "nextAction": "Focused ten synthetic tests passed; real Yoga6 stand-alone six native receipt public bundles build passed for genuine source SHA on previous exact head. New integrated BSA225 production branch requires exact committed GitHub hosted CI and ordinary Yoga6 --source-free-advance V7 proof before closure. Never call public publisher or reopen finite C3."
+      "nextAction": "BSA225 and BSA226 VERIFIED RESOLVED: owner Yoga6 ordinary --source-free-advance EXIT0 at clean exact head a296da3e894a9b2854eafd2f4886fe99c2bfca5b; GitHub Actions #44645502624 SUCCESS, real 108 reviewed activities/698 first browser, V1-V6 six genuine native HMAC technical checks, real second 698 browser and rollback, V7 six original release bundles PASS through exact per-package gate, private integrity receipt SHA 48a3c5599a166ed44068bb64b58d42be44558430bc3d2cb0cd1dc76264c4cd91. No paid Gemini, no PDF source replay, no public merge/deploy. Original 75/72 and finite C3 FAILED_LIMITED_CAMPAIGN preserved. Next independent boundary PUBLIC_DEPLOYMENT_SCOPE_AND_PERMISSION_CHECK (read-only) and separate C3 heldout generalization."
     },
     {
       "id": "BSA-20261119-226",
       "class": "ci-poll-recovery-transient-metadata-contaminates-native-v3-readiness",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261119-224",
         "BSA-20261119-225"
       ],
       "differenceFromLinkedIncident": "BSA224 exact hosted CI wait was simulated with a green return but never live-tested against BSA225's new strict original per-package release build gate. In genuine owner Yoga6 run on 926edf49 CI first pending then successful; V1-V6 all genuine private receipts were saved, but normal worker returned ValueError exit3 before V7. The existing await_exact_ci_and_resume returns a new dict embedding ciRecoveryPolls and ciRecoveredInSameInvocation, which are transient operational fields absent from the immutable saved canonical source-bound readiness record. Genuine direct V7 on the saved canonical readiness passed six actual real release builds, and negative control of recovered-with-polling dict reproduced V3_PUBLIC_BUILD_READINESS_NOT_SAVED exactly. Targeted reusable fix: normal sourcefree worker separates bounded CI poll diagnostics into exactHostedCiRecovery and forwards only canonical verified readiness to V1-V7; rejects malformed green poll metadata. Historical BSA224 no-replay and strict V3 HMAC proof remain unchanged.",
-      "lastValidatedDate": "2026-11-19",
+      "lastValidatedDate": "2026-11-20",
       "applicableEnvironments": [
         "Owner Yoga6 BSA224 queued/in_progress to green exact-head CI followed by V1-V7",
         "BSA225 strict original V3 HMAC six-package public bundle build",
@@ -6518,7 +6518,7 @@
           "marker": "test_wrong_head_or_dirty_source_cannot_build"
         }
       ],
-      "nextAction": "Owner Yoga6 926edf49 exact CI #44536308759 SUCCESS; genuine normal worker EXIT3, V1-V6 existed, V7 missing. Read-only direct canonical V7 six builds passed. Explicit pre-fix poll-enriched negative control raised V3_PUBLIC_BUILD_READINESS_NOT_SAVED; revised normal worker and focused 73 local tests PASS. Exact new-head hosted CI and genuine same-entrypoint delayed-CI or green-CI normal V7 dispatch required before resolved. No public deploy, model/PDF call or C3 reopening."
+      "nextAction": "BSA225 and BSA226 VERIFIED RESOLVED: owner Yoga6 ordinary --source-free-advance EXIT0 at clean exact head a296da3e894a9b2854eafd2f4886fe99c2bfca5b; GitHub Actions #44645502624 SUCCESS, real 108 reviewed activities/698 first browser, V1-V6 six genuine native HMAC technical checks, real second 698 browser and rollback, V7 six original release bundles PASS through exact per-package gate, private integrity receipt SHA 48a3c5599a166ed44068bb64b58d42be44558430bc3d2cb0cd1dc76264c4cd91. No paid Gemini, no PDF source replay, no public merge/deploy. Original 75/72 and finite C3 FAILED_LIMITED_CAMPAIGN preserved. Next independent boundary PUBLIC_DEPLOYMENT_SCOPE_AND_PERMISSION_CHECK (read-only) and separate C3 heldout generalization."
     }
   ]
 }
