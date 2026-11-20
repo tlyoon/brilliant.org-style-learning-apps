@@ -18,6 +18,7 @@ from app_generator.runtime import v3_versioned_readiness as readiness_mod
 from app_generator.runtime import v3_public_bundle_handoff as bundle_handoff
 from app_generator.runtime import v3_public_deployment_scope as scope
 from app_generator.runtime import v3_pinned_public_release_proposal as proposal
+from app_generator.runtime import v3_public_release_browser_acceptance as browser_stage
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -397,6 +398,13 @@ class FiveStageSyntheticTests(unittest.TestCase):
                     "productionReleaseBuilderInvocations":3,
                     "publicDeployExecuted":False,
                 }))
+            browser_mock=stack.enter_context(patch.object(
+                browser_stage,"run_private_release_browser_acceptance",
+                return_value={
+                    "status":"THREE_PRIVATE_PRODUCTION_BUNDLES_REAL_CHROME_RENDERED_NO_PUBLIC_WRITE",
+                    "realHeadlessChromeRoutesPassed":3,
+                    "publicDeployExecuted":False,
+                }))
             observed=[]
             stack.enter_context(patch.object(worker,"_print",
                                               side_effect=observed.append))
@@ -406,6 +414,7 @@ class FiveStageSyntheticTests(unittest.TestCase):
         self.assertEqual(release.call_count,1)
         self.assertEqual(audit.call_count,1)
         self.assertEqual(proposal_mock.call_count,1)
+        self.assertEqual(browser_mock.call_count,1)
         self.assertEqual(observed[-1]["fiveStageAutonomousCompletion"],expected)
         self.assertEqual(observed[-1]["paidGeminiCalls"],0)
         self.assertFalse(observed[-1]["publicationAuthorized"])

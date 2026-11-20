@@ -866,6 +866,16 @@ def main(argv: list[str] | None = None) -> int:
                         stage_pinned_private_public_proposal(
                             ROOT,private,ready,
                             result["publicDeploymentScopeAudit"]))
+                    # BSA230: follow a real V9 private production release
+                    # with actual localhost Selenium Chrome acceptance on
+                    # all three bundles. Never use any public Git writes.
+                    from app_generator.runtime.v3_public_release_browser_acceptance import (
+                        run_private_release_browser_acceptance,
+                    )
+                    result["privateReleaseBrowserAcceptance"]=(
+                        run_private_release_browser_acceptance(
+                            ROOT,private,ready,
+                            result["pinnedPrivateReleaseProposal"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -899,6 +909,13 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("pinnedPrivateReleaseProposal",{}).get(
                                 "productionReleaseBuilderInvocations")==3
                             and result.get("pinnedPrivateReleaseProposal",{}).get(
+                                "publicDeployExecuted") is False
+                            and result.get("privateReleaseBrowserAcceptance",{}).get(
+                                "status")==
+                            "THREE_PRIVATE_PRODUCTION_BUNDLES_REAL_CHROME_RENDERED_NO_PUBLIC_WRITE"
+                            and result.get("privateReleaseBrowserAcceptance",{}).get(
+                                "realHeadlessChromeRoutesPassed")==3
+                            and result.get("privateReleaseBrowserAcceptance",{}).get(
                                 "publicDeployExecuted") is False
                          )) else 3
         if args.auto_advance:

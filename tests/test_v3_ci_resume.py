@@ -16,6 +16,7 @@ from app_generator.runtime import v3_five_stage_completion as five
 from app_generator.runtime import v3_public_bundle_handoff as bundle
 from app_generator.runtime import v3_public_deployment_scope as scope
 from app_generator.runtime import v3_pinned_public_release_proposal as proposal
+from app_generator.runtime import v3_public_release_browser_acceptance as browser_stage
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -227,6 +228,13 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "productionReleaseBuilderInvocations":3,
                     "publicDeployExecuted":False,
                 }))
+            browser_mock=stack.enter_context(patch.object(
+                browser_stage,"run_private_release_browser_acceptance",
+                return_value={
+                    "status":"THREE_PRIVATE_PRODUCTION_BUNDLES_REAL_CHROME_RENDERED_NO_PUBLIC_WRITE",
+                    "realHeadlessChromeRoutesPassed":3,
+                    "publicDeployExecuted":False,
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))
@@ -239,6 +247,7 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
         self.assertEqual(release.call_count,1 if succeeded else 0)
         self.assertEqual(audit.call_count,1 if succeeded else 0)
         self.assertEqual(proposal_mock.call_count,1 if succeeded else 0)
+        self.assertEqual(browser_mock.call_count,1 if succeeded else 0)
         # The generic worker exception boundary deliberately does not
         # invent a paid-call count; the source-free path makes no API calls.
         if not bad_poll:

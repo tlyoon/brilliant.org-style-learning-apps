@@ -152,7 +152,15 @@
     "v71V9StagedManifestAndRestartCannotDrift": true,
     "v71V9NoPublicPushMergePRCreationOrDeployment": true,
     "v71V9RemoteDriftAndReceiptTamperFailClosed": true,
-    "v71V9ExactCIAndSourceCleanRequiredBeforeProposal": true
+    "v71V9ExactCIAndSourceCleanRequiredBeforeProposal": true,
+    "v71V9SuccessDispatchesThreeProductionBundleChromeSameWorker": true,
+    "v71V10ExactV9SignedReceiptAnd24FilesRequired": true,
+    "v71V10ActualChromePageAndInteractionMustRender": true,
+    "v71V10OnlyLocalhostFavicon404IsBenign": true,
+    "v71V10MissingAppAssetsOrJavascriptErrorStillFails": true,
+    "v71V10SourceAndManifestDriftCannotBypassBrowser": true,
+    "v71V10NoPublicPRPushMergeOrDeploy": true,
+    "v71V10SignedBrowserRestartReceiptImmutable": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

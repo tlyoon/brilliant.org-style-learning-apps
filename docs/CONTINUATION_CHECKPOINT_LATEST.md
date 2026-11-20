@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-229 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-230 | ACTIVE
+
+> **20 NOV 2026 BSA230 REAL RELEASE BUNDLE BROWSER SMOKE.** Genuine V9 three private eight-file release bundles signed receipt 7d1852ecc8a6aa5f595e589b0125424dd7d09dae0f5aeb1a78e8b2eea01ba743, source 3ac86d0 hosted CI SUCCESS and normal V9 worker EXIT0. Actual owner Yoga6 Selenium 4.47 loopback browser loaded every index/script/style/package HTTP 200 and produced real UI with 7 buttons for each route 9.1/9.2/9.6. Initial scratch acceptance EXIT1 only on two expected 127.0.0.1/favicon.ico 404 SEVERE messages in section 9.1; no app runtime errors. New V10 stage baked into same sourcefree normal worker, verifies actual V9 receipt+24 file SHA, real Chrome three routes, and filters ONLY exact localhost favicon404 while still blocking missing app assets/JS exceptions. 68 focused tests PASS; new exact-head CI and genuine full worker V10 acceptance pending. No public Git writes and C3 FAILED_LIMITED_CAMPAIGN unchanged. NEXT: CI, genuine V10, independent pinned PR preparation.
+
 
 > **20 NOV 2026 BSA229 VERIFIED RESOLVED.** Actual Yoga6 normal --source-free-advance EXIT0 on clean code 3ac86d08e75a00e8f411413833bb98b50ac78c2f, hosted CI #44667471177 SUCCESS. V1-V8 genuine source/browser/science and original V3 HMAC signed bundle evidence retained; V9 original production builder staged three complete eight-file public release routes 9.1,9.2,9.6 (24 pinned files) privately, with signed V9 receipt and pinned public main eb86fe8eb94ec33f8c0c055d2423b245e5898241. No paid model/PDF, public PR, push, merge or deploy; other public Chapter9 routes untouched and C3 FAILED_LIMITED_CAMPAIGN unchanged. NEXT BSA230 private release browser integration smoke and safe non-merge proposal workflow; no public publication claimed.
 

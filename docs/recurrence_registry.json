@@ -6745,6 +6745,98 @@
         }
       ],
       "nextAction": "BSA229 VERIFIED RESOLVED: exact owner Yoga6 normal --source-free-advance EXIT0 at 3ac86d08e75a00e8f411413833bb98b50ac78c2f, GitHub Actions #44667471177 SUCCESS, genuine V1-V8 including source-bound native HMAC evidence, V9 three original production eight-file release bundles privately staged under immutable candidate, 24 SHA-pinned files. V9 integrity 7d1852ecc8a6aa5f595e589b0125424dd7d09dae0f5aeb1a78e8b2eea01ba743; no model/PDF replay, no public PR, push, merge or deploy. Existing public main eb86fe8eb94ec33f8c0c055d2423b245e5898241 stays pinned and 9.3..9.5,9.7..9.9 unaffected. Next authorized BSA230: private browser smoke and pinned proposal readiness for non-merge PR. Historical C3 FAILED_LIMITED_CAMPAIGN unchanged."
+    },
+    {
+      "id": "BSA-20261120-230",
+      "class": "real-private-production-release-browser-smoke-falsely-rejects-expected-localhost-favicon404",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261120-229",
+        "BSA-20261120-227"
+      ],
+      "differenceFromLinkedIncident": "BSA229 authentic V9 signed source+three private 8-file release bundles passed CI and normal worker, but V9 checkpoint only recorded next private browser integration. First real Yoga6 Selenium 4.47 loopback smoke loaded all genuine 3 routes, scripts/style/JSON HTTP200, rendered 7 buttons each, zero application errors. Chrome reported two SEVERE 127.0.0.1:ephemeral/favicon.ico HTTP404 requests on first route; scratch probe wrongly blocked whole browser acceptance. Historical search found broad browser runtime error checking but no exact favicon exception. New BSA230 normal V9\u2192V10 automatically dispatches real headless Chrome on all three local production bundles, verifies exact 24 file manifest and 3 package digests, filters only exact local favicon 404, blocks JS/asset/other SEVERE failures, source or V9 tamper, and persists immutable V10 receipt with no public Git writes or Gemini/PDF calls.",
+      "lastValidatedDate": "2026-11-20",
+      "applicableEnvironments": [
+        "Owner Yoga6 pinned Selenium 4.47 and local Chrome, private V9 production bundles",
+        "Strict 127.0.0.1 ephemeral-port favicon.ico HTTP404 harmless only",
+        "Run real HTTP served three route learner UI checks and Chrome SEVERE logs",
+        "24 SHA-file bundle manifest and genuine signed V9 exact-head CI prerequisites"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_public_release_browser_acceptance.py",
+        "triggerMarker": "def run_private_release_browser_acceptance(",
+        "remedyMarker": "_FAVICON.fullmatch(msg)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_public_release_browser_acceptance import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_exact_historical_favicon404_is_benign_only"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_actual_runtime_js_not_found_remains_failure"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_favicon_five_hundred_is_not_ignored"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_remote_unrelated_favicon_not_ignored"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_javascript_exceptions_remain_blocking"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_nonsevere_console_info_not_blocking"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_real_browser_route_and_button_state_required"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_empty_or_stalled_or_wrong_route_fails"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_private_manifest_and_v9_signed_exact_proof_accepted"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_tampered_bundle_refused_before_chrome_launch"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_forged_v9_acceptance_refused"
+        },
+        {
+          "path": "tests/test_v3_public_release_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_missing_source_ci_refused_before_chrome"
+        }
+      ],
+      "nextAction": "BSA230 ACTIVE: first actual Yoga6 browser smoke all 3 production bundles rendered 7-button learner UI and all actual package/app/renderer assets HTTP 200. First scratch acceptance EXIT1 only due two benign exact 127.0.0.1/favicon.ico 404 logs, no app JS errors; remedy now integrated into normal V9\u2192V10 worker, 68 focused tests pass. Need recurrence contract, exact new-head CI, actual owner Yoga6 full normal --source-free-advance V1\u2013V10 EXIT0, signed V10 receipt and restart idempotence before resolution. No public PR, push, merge or deployment."
     }
   ]
 }

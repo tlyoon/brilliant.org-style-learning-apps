@@ -249,6 +249,14 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71V9NoPublicPushMergePRCreationOrDeployment",
     "v71V9RemoteDriftAndReceiptTamperFailClosed",
     "v71V9ExactCIAndSourceCleanRequiredBeforeProposal",
+    "v71V9SuccessDispatchesThreeProductionBundleChromeSameWorker",
+    "v71V10ExactV9SignedReceiptAnd24FilesRequired",
+    "v71V10ActualChromePageAndInteractionMustRender",
+    "v71V10OnlyLocalhostFavicon404IsBenign",
+    "v71V10MissingAppAssetsOrJavascriptErrorStillFails",
+    "v71V10SourceAndManifestDriftCannotBypassBrowser",
+    "v71V10NoPublicPRPushMergeOrDeploy",
+    "v71V10SignedBrowserRestartReceiptImmutable",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
