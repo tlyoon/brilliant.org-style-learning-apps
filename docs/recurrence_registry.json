@@ -6677,6 +6677,74 @@
         }
       ],
       "nextAction": "BSA228 VERIFIED RESOLVED: committed Git bd3802dffd7029e199b5d429985908ea421cb620 hosted CI #44653287879 SUCCESS; on clean Yoga6 direct production PublicPagesPublisher protected 9.1 route with actual public repository and configured autoMerge=true safely refused before lease, academic gate, Git push or merge; EXIT0 on the expected negative test. Six fake-only PR/route controls pass; related focused 42 tests PASS (one unsupported Windows symlink skip), executable recovery contract passed. Explicit public_deploy_auto_merge=False returns nonmerged PR handoff, missing flag defaults safe, protected 9.1-9.6 cannot bypass frozen V8. No public PR, branch push, merge or deployment. Next distinct boundary BSA229: pinned local full runtime proposal and safe constrained public PR workflow. C3 FAILED_LIMITED_CAMPAIGN unchanged."
+    },
+    {
+      "id": "BSA-20261120-229",
+      "class": "genuine-v8-public-scope-records-next-step-but-no-pinned-private-release-proposal",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261120-227",
+        "BSA-20261120-228",
+        "BSA-20261119-225"
+      ],
+      "differenceFromLinkedIncident": "V8 produced authentic existing public Pages destination and permission scope and suggested a pinned non-destructive release proposal, but normal source-free worker returned successfully without dispatching the actual original production builder into a privately durable three-route staging plan. BSA229 wires the genuine V8 checkpoint directly into source-free normal worker, re-verifies V7/V8 integrity, exact GitHub head CI, pinned public SHA and 6 source/package identities, and actually builds/compares three private 8-file production bundles against current public route bytes, before publication. This is a local proposal only: no PR, branch push, merge or deploy, no Gemini/PDF replay. Historical C3 failed heldout campaign remains terminal.",
+      "lastValidatedDate": "2026-11-20",
+      "applicableEnvironments": [
+        "Owner Yoga6 normal source-free supervisor, authenticated read-only public Pages main",
+        "Immutable signed V7/V8 six package evidence and 3 change scope",
+        "Source-free production release build with localappdata private 3-route manifest",
+        "Remote main moves, V8 tampered, exact source changes, locally staged bundle corrupted"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_pinned_public_release_proposal.py",
+        "triggerMarker": "def stage_pinned_private_public_proposal(",
+        "remedyMarker": "V9_PUBLIC_MAIN_DRIFT_BEFORE_PROPOSAL",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_pinned_public_release_proposal import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_public_release_proposal.py",
+          "kind": "python",
+          "marker": "test_six_source_packages_only_three_staged_production_bundles"
+        },
+        {
+          "path": "tests/test_v3_public_release_proposal.py",
+          "kind": "python",
+          "marker": "test_restart_is_immutable_and_does_not_duplicate_external_actions"
+        },
+        {
+          "path": "tests/test_v3_public_release_proposal.py",
+          "kind": "python",
+          "marker": "test_tampered_v8_receipt_refused_before_public_read"
+        },
+        {
+          "path": "tests/test_v3_public_release_proposal.py",
+          "kind": "python",
+          "marker": "test_wrong_candidate_sha_rejected"
+        },
+        {
+          "path": "tests/test_v3_public_release_proposal.py",
+          "kind": "python",
+          "marker": "test_unexpected_remote_head_movement_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_public_release_proposal.py",
+          "kind": "python",
+          "marker": "test_private_staged_package_corruption_blocks_restart"
+        },
+        {
+          "path": "tests/test_v3_public_release_proposal.py",
+          "kind": "python",
+          "marker": "test_readiness_and_exact_ci_cannot_be_bypassed"
+        }
+      ],
+      "nextAction": "BSA229 ACTIVE: real local V9 test suite 80 focused tests passed (one Windows symlink test skipped); executable recovery wiring and source-free normal EXIT0 asserts are added. Need strict registry contract pass, clean exact new-head hosted CI, genuine Yoga6 normal V1\u2013V9 startup, immutable 3-bundle receipt, and restart idempotence before marking resolved. No public PR, push, merge or deploy."
     }
   ]
 }

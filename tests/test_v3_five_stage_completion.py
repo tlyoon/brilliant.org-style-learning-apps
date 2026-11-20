@@ -17,6 +17,7 @@ from app_generator.runtime import v3_five_stage_completion as v
 from app_generator.runtime import v3_versioned_readiness as readiness_mod
 from app_generator.runtime import v3_public_bundle_handoff as bundle_handoff
 from app_generator.runtime import v3_public_deployment_scope as scope
+from app_generator.runtime import v3_pinned_public_release_proposal as proposal
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -389,6 +390,13 @@ class FiveStageSyntheticTests(unittest.TestCase):
                     "individualChangedActivities":5,
                     "publicDeployExecuted":False,
                 }))
+            proposal_mock=stack.enter_context(patch.object(
+                proposal,"stage_pinned_private_public_proposal",
+                return_value={
+                    "status":"THREE_ROUTE_PRIVATE_PINNED_RELEASE_PROPOSAL_READY_NO_PUBLIC_WRITE",
+                    "productionReleaseBuilderInvocations":3,
+                    "publicDeployExecuted":False,
+                }))
             observed=[]
             stack.enter_context(patch.object(worker,"_print",
                                               side_effect=observed.append))
@@ -397,6 +405,7 @@ class FiveStageSyntheticTests(unittest.TestCase):
         self.assertEqual(five.call_count,1)
         self.assertEqual(release.call_count,1)
         self.assertEqual(audit.call_count,1)
+        self.assertEqual(proposal_mock.call_count,1)
         self.assertEqual(observed[-1]["fiveStageAutonomousCompletion"],expected)
         self.assertEqual(observed[-1]["paidGeminiCalls"],0)
         self.assertFalse(observed[-1]["publicationAuthorized"])

@@ -15,6 +15,7 @@ from app_generator.runtime import v3_versioned_readiness as actual
 from app_generator.runtime import v3_five_stage_completion as five
 from app_generator.runtime import v3_public_bundle_handoff as bundle
 from app_generator.runtime import v3_public_deployment_scope as scope
+from app_generator.runtime import v3_pinned_public_release_proposal as proposal
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -219,6 +220,13 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "individualChangedActivities":5,
                     "publicDeployExecuted":False,
                 }))
+            proposal_mock=stack.enter_context(patch.object(
+                proposal,"stage_pinned_private_public_proposal",
+                return_value={
+                    "status":"THREE_ROUTE_PRIVATE_PINNED_RELEASE_PROPOSAL_READY_NO_PUBLIC_WRITE",
+                    "productionReleaseBuilderInvocations":3,
+                    "publicDeployExecuted":False,
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))
@@ -230,6 +238,7 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
         self.assertEqual(advance.call_count,1 if succeeded else 0)
         self.assertEqual(release.call_count,1 if succeeded else 0)
         self.assertEqual(audit.call_count,1 if succeeded else 0)
+        self.assertEqual(proposal_mock.call_count,1 if succeeded else 0)
         # The generic worker exception boundary deliberately does not
         # invent a paid-call count; the source-free path makes no API calls.
         if not bad_poll:

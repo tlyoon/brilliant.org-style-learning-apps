@@ -242,6 +242,13 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71Chapter9ProtectedScopeBlocksUnpinnedDirectMerge",
     "v71PublisherRoutesOnlyNumericDottedSections",
     "v71PublisherExistingNativeV3ReleaseGateNotBypassed",
+    "v71V8SuccessDispatchesPinnedV9SameNormalWorker",
+    "v71PinnedPublicMainAndSixGenuinePackagesRecheckedForV9",
+    "v71V9OriginalProductionBuilderStagesOnlyThreeChangedRoutes",
+    "v71V9StagedManifestAndRestartCannotDrift",
+    "v71V9NoPublicPushMergePRCreationOrDeployment",
+    "v71V9RemoteDriftAndReceiptTamperFailClosed",
+    "v71V9ExactCIAndSourceCleanRequiredBeforeProposal",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

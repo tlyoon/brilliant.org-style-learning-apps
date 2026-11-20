@@ -217,6 +217,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             from app_generator.runtime import v3_five_stage_completion
             from app_generator.runtime import v3_public_bundle_handoff
             from app_generator.runtime import v3_public_deployment_scope as scope
+            from app_generator.runtime import v3_pinned_public_release_proposal as proposal
             stack.enter_context(patch.object(
                 v3_five_stage_completion,
                 "advance_five_stage_on_pinned_browser",
@@ -243,6 +244,13 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "individualChangedActivities":5,
                     "publicDeployExecuted":False,
                 }))
+            proposal_mock=stack.enter_context(patch.object(
+                proposal,"stage_pinned_private_public_proposal",
+                return_value={
+                    "status":"THREE_ROUTE_PRIVATE_PINNED_RELEASE_PROPOSAL_READY_NO_PUBLIC_WRITE",
+                    "productionReleaseBuilderInvocations":3,
+                    "publicDeployExecuted":False,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))
@@ -250,6 +258,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             self.assertEqual(verified.call_count,1)
             self.assertEqual(bundle.call_count,0 if failing else 1)
             self.assertEqual(audit.call_count,0 if failing else 1)
+            self.assertEqual(proposal_mock.call_count,0 if failing else 1)
             if failing:
                 self.assertEqual(status,3)
             else:

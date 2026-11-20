@@ -446,3 +446,5 @@ Yoga6 normal worker EXIT0 at clean Git f6ad79d54e0b72964ed2dd8276fefee15142c5df,
 ## 20 Nov 2026 — BSA228 verified public publisher guard
 
 Clean committed Yoga6 git bd3802dffd7029e199b5d429985908ea421cb620 hosted CI #44653287879 SUCCESS. Direct original publisher safe refusal before public Git/lease, explicit no-auto-merge PR stage behavior and numeric route validation covered by six synthetic controls; 42 related tests PASS with one Windows-only skipped symlink. No push/merge/deploy. BSA228 RESOLVED; next safe pinned 3-route local proposal.
+
+| BSA-20261120-229 | Authentic V8 verified public Pages scope and wrote V9 next milestone, but normal worker returned without staging the three real production routes. | New source-bound V8→V9 automatic dispatch, existing V3 native gate, pinned read-only remote main and exact candidate sha, three 8-file real builder bundles private, immutable manifest, remote drift and tamper fail closed. | Seven fake-only fault/restart controls plus 80 focused suite pass; exact-head CI and genuine full Yoga6 normal V9 handoff pending. No public PR, push, merge/deploy. |

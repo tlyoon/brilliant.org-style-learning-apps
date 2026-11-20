@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-228 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-229 | ACTIVE
+
+> **20 NOV 2026 BSA229 V8→V9 PRIVATE PINNED RELEASE PROPOSAL ACTIVE.** Previous BSA227/BSA228 authentic owner Yoga6 and hosted CI prove public scope and unsafe merge guard. V8 next milestone was only text, no actual 3-route production release proposal. New v3_pinned_public_release_proposal.py runs original three real release builders for public sections 9.1,9.2,9.6 into private LOCALAPPDATA, pins existing public main eb86fe8eb94ec33f8c0c055d2423b245e5898241 and V7/V8 immutable source receipts, exact SHA of every file and no external public writes. Wired to normal --source-free-advance so V8 success executes V9 in SAME invocation; CI/normal exact new-head acceptance pending. 80 focused tests pass (one unsupported Windows symlink skip); finite C3 FAILED_LIMITED_CAMPAIGN preserved. No public PR/merge/deploy. NEXT: commit, CI, real Yoga6 normal worker and signed V9 acceptance, then staged integration/browser work.
+
 
 > **20 NOV 2026 BSA228 VERIFIED RESOLVED.** Git bd3802dffd7029e199b5d429985908ea421cb620 hosted CI #44653287879 SUCCESS. On clean Yoga6 actual direct PublicPagesPublisher configured for existing public Chapter9 with auto-merge enabled refused the protected 9.1 route BEFORE lease or Git I/O, expected negative test EXIT0. Code now respects public_deploy_auto_merge=False, missing flag safe by default, and numeric dotted routes only. 42 related tests pass (one Windows symlink skip), recovery registry checks pass. Existing real V8 public destination and 3-package 5-activity update scope remains unchanged. No public PR/push/merge/deploy or new paid Gemini/PDF. NEXT: BSA229 pinned non-destructive 3-route proposal workflow; original C3 FAILED_LIMITED_CAMPAIGN unchanged.
 

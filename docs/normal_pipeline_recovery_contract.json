@@ -145,7 +145,14 @@
     "v71PublicPagesMissingMergeFlagDefaultsSafe": true,
     "v71Chapter9ProtectedScopeBlocksUnpinnedDirectMerge": true,
     "v71PublisherRoutesOnlyNumericDottedSections": true,
-    "v71PublisherExistingNativeV3ReleaseGateNotBypassed": true
+    "v71PublisherExistingNativeV3ReleaseGateNotBypassed": true,
+    "v71V8SuccessDispatchesPinnedV9SameNormalWorker": true,
+    "v71PinnedPublicMainAndSixGenuinePackagesRecheckedForV9": true,
+    "v71V9OriginalProductionBuilderStagesOnlyThreeChangedRoutes": true,
+    "v71V9StagedManifestAndRestartCannotDrift": true,
+    "v71V9NoPublicPushMergePRCreationOrDeployment": true,
+    "v71V9RemoteDriftAndReceiptTamperFailClosed": true,
+    "v71V9ExactCIAndSourceCleanRequiredBeforeProposal": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

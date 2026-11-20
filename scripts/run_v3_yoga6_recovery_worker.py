@@ -856,6 +856,16 @@ def main(argv: list[str] | None = None) -> int:
                         verify_public_deployment_scope(
                             ROOT,private,ready,
                             result["realPublicBundleBuildHandoff"]))
+                    # BSA229: a genuine V8 checkpoint dispatches three
+                    # production release bundles into an immutable local
+                    # proposal. No Git push, PR, merge or public deployment.
+                    from app_generator.runtime.v3_pinned_public_release_proposal import (
+                        stage_pinned_private_public_proposal,
+                    )
+                    result["pinnedPrivateReleaseProposal"]=(
+                        stage_pinned_private_public_proposal(
+                            ROOT,private,ready,
+                            result["publicDeploymentScopeAudit"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -882,6 +892,13 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("publicDeploymentScopeAudit",{}).get(
                                 "individualChangedActivities")==5
                             and result.get("publicDeploymentScopeAudit",{}).get(
+                                "publicDeployExecuted") is False
+                            and result.get("pinnedPrivateReleaseProposal",{}).get(
+                                "status")==
+                            "THREE_ROUTE_PRIVATE_PINNED_RELEASE_PROPOSAL_READY_NO_PUBLIC_WRITE"
+                            and result.get("pinnedPrivateReleaseProposal",{}).get(
+                                "productionReleaseBuilderInvocations")==3
+                            and result.get("pinnedPrivateReleaseProposal",{}).get(
                                 "publicDeployExecuted") is False
                          )) else 3
         if args.auto_advance:
