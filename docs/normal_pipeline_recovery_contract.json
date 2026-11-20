@@ -188,7 +188,15 @@
     "v71V13ReconcileUncertainPushAndPrCreateWithoutReplay": true,
     "v71V13NoDuplicateClosedNonDraftOrAlteredPublicPrAccepted": true,
     "v71V13DraftPrOpenAndBaseMainUnchangedGenuineEvidence": true,
-    "v71V13NeverAutoMergeDeployOrRecreateRetiredScheduler": true
+    "v71V13NeverAutoMergeDeployOrRecreateRetiredScheduler": true,
+    "v71RealPublicPRV13AutomaticallyDispatchesV14IndependentBrowser": true,
+    "v71V14RequiresOriginalSignedV9ThroughV13AndExactSourceHead": true,
+    "v71V14RejectsPublicPrMergedNonDraftOrChangedMain": true,
+    "v71V14ExactRemoteCommitParentTreeAnd21DiffFiles": true,
+    "v71V14NineRoutesRealChromePackageButtonsAndConsoleChecked": true,
+    "v71V14HistoricalFavicon404IsBenignButOtherSevereErrorsBlock": true,
+    "v71V14ImmutableSourceBoundReceiptAndNoPublicGitWrites": true,
+    "v71V14NoMergeDeployGeminiOrRetiredScheduler": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

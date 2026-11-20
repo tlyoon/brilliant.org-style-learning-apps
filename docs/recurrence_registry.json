@@ -7142,6 +7142,127 @@
         }
       ],
       "nextAction": "BSA234 VERIFIED RESOLVED: owner Yoga6 normal sourcefree V1\u2013V13 EXIT0 on clean exact source 430cd0846e3f3240a6eaec824c0595c82730714f and hosted GitHub Actions #44708064566 SUCCESS. Authenticated real public draft PR https://github.com/tlyoon/section-8-1-learning-app/pull/16 exists, state open, draft true, merged null; public base main eb86fe8eb94ec33f8c0c055d2423b245e5898241 unchanged, 21 exactly scoped GitHub changed paths 9.1/9.2/9.6, real remote Git tree and one pinned public-base parent checked. Signed immutable V13 b898f0c34105bc0c136832a1eebe1677db562c129c4514a1a2b888777803a1b3 derives from genuine V9\u2013V12 predecessor receipts. No merge, public deploy or retired Yoga6 scheduled task. NEXT: independent public review PR checks and separate release readiness; original C3 FAILED_LIMITED_CAMPAIGN preserved."
+    },
+    {
+      "id": "BSA-20261120-235",
+      "class": "real-public-PR-nine-route-Chrome-QA-was-one-off-not-executable-handoff",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261120-230",
+        "BSA-20261120-231",
+        "BSA-20261120-232",
+        "BSA-20261120-234",
+        "BSA-20261107-128"
+      ],
+      "differenceFromLinkedIncident": "BSA234 owner Yoga6 authenticated public draft PR #16 genuinely created from signed V9-V13 receipts, 21 GitHub file differences and immutable pinned main eb86fe8. Separate owner Yoga6 one-off V14 Chrome probe on real PR branch passed all nine Chapter9 routes and saved signed 961d31322a6c77000470f07b0248f59c98895b2a7606c82a0e6c9bedf43b45c6. However normal source-free worker stopped after V13 and never dispatched independent PUBLIC branch QA. Historical BSA230 favicon/Chrome remedies and BSA232 signed patch/PR checks should be reused. Add V14 actual GitHub read-only PR state, tree, 21-diff scope, pinned parent and nine real Chrome routes to ordinary worker immediately after V13, with signed immutable private V14 receipt, no public merge/deploy or retired scheduler.",
+      "lastValidatedDate": "2026-11-20",
+      "applicableEnvironments": [
+        "Owner Yoga6 genuine source-free normal V1\u2013V14 worker with nine Chrome routes",
+        "Actual public GitHub Pages pull request draft and existing protected main",
+        "Exact signed V9\u2013V13 receipts and 21-file scope",
+        "Restart after V13 with changed remote draft/branch/main or forged receipt",
+        "No public merge, public deployment, model call or owner-retired scheduled task"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_public_pr_independent_browser_acceptance.py",
+        "triggerMarker": "def independent_public_pr_browser_acceptance(",
+        "remedyMarker": "V14_PR_DIFF_DOES_NOT_MATCH_SIGNED_PRIVATE_PATCH",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_public_pr_independent_browser_acceptance import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_genuine_signed_v13_prerequisite_accepted"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_forged_v13_content_rejected_even_if_in_memory_result_passes"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_source_identity_from_other_code_head_refused"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_malicious_review_branch_refused"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_current_open_draft_public_pr_matches_exact_source"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_public_pr_promoted_out_of_draft_is_refused"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_public_pr_merge_is_refused"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_public_main_moved_after_pr_is_refused"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_21_precisely_scoped_public_files_accepted"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_hidden_additional_9_7_public_file_refused"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_duplicate_file_in_public_pr_diff_refused"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_public_pr_file_deletions_not_accepted"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_public_pr_incomplete_diff_refused"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_full_route_browser_state_pass"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_missing_package_content_prevents_acceptance"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_severe_browser_error_rejected"
+        },
+        {
+          "path": "tests/test_v3_public_pr_independent_browser_acceptance.py",
+          "kind": "python",
+          "marker": "test_benign_historical_favicon_handling_reused"
+        }
+      ],
+      "nextAction": "BSA235 ACTIVE: inherited real one-off 9-route PR#16 Chrome proof. V14 read-only PR source/tree/diff/Chrome integrated into real normal worker after V13. 77 focused tests PASS including 17 adverse acceptance cases. Require strict recurrence contract, exact new-head CI, genuine owner Yoga6 V1\u2013V14 exit0 and signed real V14 receipt; no merge/deploy and C3 FAILED_LIMITED_CAMPAIGN preserved."
     }
   ]
 }

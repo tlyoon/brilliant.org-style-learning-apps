@@ -22,6 +22,7 @@ from app_generator.runtime import v3_public_release_browser_acceptance as browse
 from app_generator.runtime import v3_private_public_patch_rehearsal as v11_stage
 from app_generator.runtime import v3_private_nonmerging_pr_readiness as v12_stage
 from app_generator.runtime import v3_public_nonmerging_draft_pr as v13_stage
+from app_generator.runtime import v3_public_pr_independent_browser_acceptance as v14_stage
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -430,6 +431,16 @@ class FiveStageSyntheticTests(unittest.TestCase):
                     "publicDeployExecuted":False,
                     "publicBaseMainPinnedSha":"eb86fe8eb94ec33f8c0c055d2423b245e5898241",
                 }))
+            v14_mock=stack.enter_context(patch.object(
+                v14_stage,"independent_public_pr_browser_acceptance",
+                return_value={
+                    "status":"PR_EXACT_PUBLIC_GIT_BRANCH_NINE_ROUTES_ACTUAL_CHROME_PASS",
+                    "realChromeRoutesPassed":9,
+                    "changedFileCount":21,
+                    "publicPrDraft":True,
+                    "publicMergeExecuted":False,
+                    "publicDeployExecuted":False,
+                }))
             observed=[]
             stack.enter_context(patch.object(worker,"_print",
                                               side_effect=observed.append))
@@ -443,6 +454,7 @@ class FiveStageSyntheticTests(unittest.TestCase):
         self.assertEqual(v11_mock.call_count,1)
         self.assertEqual(v12_mock.call_count,1)
         self.assertEqual(v13_mock.call_count,1)
+        self.assertEqual(v14_mock.call_count,1)
         self.assertEqual(observed[-1]["fiveStageAutonomousCompletion"],expected)
         self.assertEqual(observed[-1]["paidGeminiCalls"],0)
         self.assertFalse(observed[-1]["publicationAuthorized"])

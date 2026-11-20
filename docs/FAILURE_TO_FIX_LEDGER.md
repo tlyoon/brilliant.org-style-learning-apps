@@ -482,3 +482,5 @@ After genuine V1–V12 normal EXIT0 and BSA233 signed closure, owner-authenticat
 ## 20 Nov 2026 — BSA234 actual nonmerging PR acceptance
 
 Owner Yoga6 normal sourcefree V1–V13 EXIT0 at 430cd0846e3f3240a6eaec824c0595c82730714f, GitHub Actions #44708064566 SUCCESS; opened https://github.com/tlyoon/section-8-1-learning-app/pull/16 draft, unmerged, with 21 exact scoped GitHub changes and original public main SHA pinned. Remote commit tree and parent verified. Signed V13 b898f0c34105bc0c136832a1eebe1677db562c129c4514a1a2b888777803a1b3; no public deployment or retired scheduler. BSA234 RESOLVED. Next independent PR review/release boundary; C3 original failed campaign unchanged.
+
+| BSA-20261120-235 | PR#16 nine-route real Chrome QA existed only as one-off, while normal V13 exit0 wrote a next-action label and stopped again. | Reuse BSA230 favicon filter and BSA234 signed PR checks; integrate V14 authenticated actual public PR Git tree/21-file diff and real Chrome across all nine routes into ordinary source-free worker. | Previous real one-off V14 PASS; 77 new source-free tests PASS; genuine new-head CI and normal worker V1–V14 pending. |

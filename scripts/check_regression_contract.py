@@ -285,6 +285,14 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71V13NoDuplicateClosedNonDraftOrAlteredPublicPrAccepted",
     "v71V13DraftPrOpenAndBaseMainUnchangedGenuineEvidence",
     "v71V13NeverAutoMergeDeployOrRecreateRetiredScheduler",
+    "v71RealPublicPRV13AutomaticallyDispatchesV14IndependentBrowser",
+    "v71V14RequiresOriginalSignedV9ThroughV13AndExactSourceHead",
+    "v71V14RejectsPublicPrMergedNonDraftOrChangedMain",
+    "v71V14ExactRemoteCommitParentTreeAnd21DiffFiles",
+    "v71V14NineRoutesRealChromePackageButtonsAndConsoleChecked",
+    "v71V14HistoricalFavicon404IsBenignButOtherSevereErrorsBlock",
+    "v71V14ImmutableSourceBoundReceiptAndNoPublicGitWrites",
+    "v71V14NoMergeDeployGeminiOrRetiredScheduler",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

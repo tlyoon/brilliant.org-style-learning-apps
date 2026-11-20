@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-234 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-235 | ACTIVE
+
+> **20 NOV 2026 — BSA235 V14 AUTOMATIC PUBLIC-PR BRANCH QA.** BSA234 genuinely resolved with real 21-file draft PR #16 and signed V13 b898f0c34105bc0c136832a1eebe1677db562c129c4514a1a2b888777803a1b3; separate owner Yoga6 direct Chrome test passed all nine exact PR routes, signed 961d31322a6c77000470f07b0248f59c98895b2a7606c82a0e6c9bedf43b45c6, but ordinary worker had no executable V13→V14 handoff. Reused historical BSA230/231 favicon/Chrome and signed V13/PR diff checks in new source-bound V14, now automatically invoked immediately after V13; refuses changed PR draft, base, branch, GitHub commit/tree, any outside-route edits, severe Chrome errors or forged checkpoint. 77 focused source-free tests PASS. NEXT strict registry contract, new exact head hosted CI, genuine normal V1–V14 and immutable V14 receipt. No public merge/deploy or retired scheduler; C3 FAILED_LIMITED_CAMPAIGN unchanged.
+
 
 > **20 NOV 2026 — BSA234 REAL PUBLIC DRAFT PR VERIFIED.** Exact clean code 430cd0846e3f3240a6eaec824c0595c82730714f, hosted CI #44708064566 SUCCESS, actual owner Yoga6 normal V1–V13 exit0. Signed V13 b898f0c34105bc0c136832a1eebe1677db562c129c4514a1a2b888777803a1b3 verifies authenticated public PR https://github.com/tlyoon/section-8-1-learning-app/pull/16 is OPEN and DRAFT, base public main eb86fe8eb94ec33f8c0c055d2423b245e5898241 unchanged; 21 exact modified/added GitHub paths only 9.1/9.2/9.6, expected public Git tree, single pinned main parent and 24 private release asset source receipts. No merge or public Pages deployment. Historical BSA228 nonmerge remedy reused, uncertain external writes reconcile before replay. NEXT actual PR independent acceptance and separately authorized release; C3 FAILED_LIMITED_CAMPAIGN unchanged. Previously retired Yoga6 scheduled task not recreated.
 

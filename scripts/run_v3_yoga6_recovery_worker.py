@@ -912,6 +912,19 @@ def main(argv: list[str] | None = None) -> int:
                             result["pinnedPrivateReleaseProposal"],
                             result["privatePinnedPublicPatch"],
                             result["privateNonmergingPrReadiness"]))
+                    # BSA235: V13 success automatically triggers independent
+                    # Chrome on the exact authenticated PUBLIC review branch,
+                    # including unchanged Chapter9 routes. Read-only GitHub.
+                    from app_generator.runtime.v3_public_pr_independent_browser_acceptance import (
+                        independent_public_pr_browser_acceptance,
+                    )
+                    result["independentPublicPrBrowserAcceptance"]=(
+                        independent_public_pr_browser_acceptance(
+                            ROOT,private,ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["scopedPublicDraftPr"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -981,6 +994,19 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("scopedPublicDraftPr",{}).get(
                                 "publicBaseMainPinnedSha")==
                                 "eb86fe8eb94ec33f8c0c055d2423b245e5898241"
+                            and result.get("independentPublicPrBrowserAcceptance",{}).get(
+                                "status")==
+                            "PR_EXACT_PUBLIC_GIT_BRANCH_NINE_ROUTES_ACTUAL_CHROME_PASS"
+                            and result.get("independentPublicPrBrowserAcceptance",{}).get(
+                                "realChromeRoutesPassed")==9
+                            and result.get("independentPublicPrBrowserAcceptance",{}).get(
+                                "changedFileCount")==21
+                            and result.get("independentPublicPrBrowserAcceptance",{}).get(
+                                "publicPrDraft") is True
+                            and result.get("independentPublicPrBrowserAcceptance",{}).get(
+                                "publicMergeExecuted") is False
+                            and result.get("independentPublicPrBrowserAcceptance",{}).get(
+                                "publicDeployExecuted") is False
                          )) else 3
         if args.auto_advance:
             ready = plan_v3_course_review(
