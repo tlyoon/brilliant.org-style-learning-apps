@@ -180,7 +180,15 @@
     "v71V12RejectUnexpectedRouteAndForgedChangedPatch": true,
     "v71V12RemotePublicMainReadOnlyAndPinned": true,
     "v71V12ImmutableDraftWithRestartRefusal": true,
-    "v71V12NoPRPushMergeDeployOrScheduler": true
+    "v71V12NoPRPushMergeDeployOrScheduler": true,
+    "v71SignedV12SuccessDispatchesProtectedDraftV13InNormalWorker": true,
+    "v71V13ExactSourceSignedV9ToV12IntegrityAnd21PathScope": true,
+    "v71V13ImmutablePreCallBeforePublicGitWrites": true,
+    "v71V13RemoteBranchPushedOnlyOnPinnedPublicMain": true,
+    "v71V13ReconcileUncertainPushAndPrCreateWithoutReplay": true,
+    "v71V13NoDuplicateClosedNonDraftOrAlteredPublicPrAccepted": true,
+    "v71V13DraftPrOpenAndBaseMainUnchangedGenuineEvidence": true,
+    "v71V13NeverAutoMergeDeployOrRecreateRetiredScheduler": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

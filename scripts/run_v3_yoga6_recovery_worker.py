@@ -898,6 +898,20 @@ def main(argv: list[str] | None = None) -> int:
                             ROOT,private,ready,
                             result["pinnedPrivateReleaseProposal"],
                             result["privatePinnedPublicPatch"]))
+                    # BSA234: historical public PR branch/PR creator reused
+                    # with deterministic exact-source branch and draft-only
+                    # review. A PRE_CALL receipt + read-only GitHub
+                    # reconciliation forbid blind duplicate external writes.
+                    # NEVER auto-merge or deploy protected Chapter9.
+                    from app_generator.runtime.v3_public_nonmerging_draft_pr import (
+                        dispatch_scoped_nonmerging_public_pr,
+                    )
+                    result["scopedPublicDraftPr"]=(
+                        dispatch_scoped_nonmerging_public_pr(
+                            ROOT,private,ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -955,6 +969,18 @@ def main(argv: list[str] | None = None) -> int:
                                 "publicPRCreated") is False
                             and result.get("privateNonmergingPrReadiness",{}).get(
                                 "publicDeployExecuted") is False
+                            and result.get("scopedPublicDraftPr",{}).get(
+                                "status")==
+                            "SCOPED_PUBLIC_DRAFT_PR_OPEN_UNMERGED_MAIN_UNCHANGED"
+                            and result.get("scopedPublicDraftPr",{}).get(
+                                "publicPullRequestDraft") is True
+                            and result.get("scopedPublicDraftPr",{}).get(
+                                "publicMergeExecuted") is False
+                            and result.get("scopedPublicDraftPr",{}).get(
+                                "publicDeployExecuted") is False
+                            and result.get("scopedPublicDraftPr",{}).get(
+                                "publicBaseMainPinnedSha")==
+                                "eb86fe8eb94ec33f8c0c055d2423b245e5898241"
                          )) else 3
         if args.auto_advance:
             ready = plan_v3_course_review(

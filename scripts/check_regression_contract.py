@@ -277,6 +277,14 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71V12RemotePublicMainReadOnlyAndPinned",
     "v71V12ImmutableDraftWithRestartRefusal",
     "v71V12NoPRPushMergeDeployOrScheduler",
+    "v71SignedV12SuccessDispatchesProtectedDraftV13InNormalWorker",
+    "v71V13ExactSourceSignedV9ToV12IntegrityAnd21PathScope",
+    "v71V13ImmutablePreCallBeforePublicGitWrites",
+    "v71V13RemoteBranchPushedOnlyOnPinnedPublicMain",
+    "v71V13ReconcileUncertainPushAndPrCreateWithoutReplay",
+    "v71V13NoDuplicateClosedNonDraftOrAlteredPublicPrAccepted",
+    "v71V13DraftPrOpenAndBaseMainUnchangedGenuineEvidence",
+    "v71V13NeverAutoMergeDeployOrRecreateRetiredScheduler",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

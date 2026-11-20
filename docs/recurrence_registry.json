@@ -7050,6 +7050,98 @@
         }
       ],
       "nextAction": "BSA233 VERIFIED RESOLVED: exact clean source 7ecfd3f53a5a71777150be187b2bc457d738ac30 hosted GitHub CI #44700183819 SUCCESS and genuine owner Yoga6 normal V1\u2013V12 sourcefree EXIT0; signed immutable V12 private nonmerging PR draft integrity 87f202bb850d8263c0ddd9e6e04bf92afd39019381c2d6986142a7943d6c6b7d derives from signed V11 7d2b389e055bee5c8abd729034338773becf1486d027a9ac5052201a2be40756, verifies private 21-path patch SHA 2548cc149463e6e706d741ea3bf0f032c6b9473cba575ad4511bf626ceae6bab, three routes 9.1,9.2,9.6, and read-only remote main pinned SHA. No public branch push, PR, merge, deploy or Windows Task Scheduler reinstallation. Historical owner decision 0043 remains authoritative. NEXT select authorized other workstream or explicitly gated review PR creation; C3 FAILED_LIMITED_CAMPAIGN unchanged."
+    },
+    {
+      "id": "BSA-20261121-234",
+      "class": "v12-private-nonmerging-pr-readiness-stop-despite-proven-historical-public-pr-creator",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261120-228",
+        "BSA-20261120-227",
+        "BSA-20261120-232",
+        "BSA-20261120-233",
+        "BSA-20261116-172"
+      ],
+      "differenceFromLinkedIncident": "BSA228 already corrected unconditional public gh pr merge and protected Chapter9. Public repo has 15 historical merged PRs; exact public main sha eb86fe8. Genuine Yoga6 V1\u2013V12 exit0 at 7ecfd3f signed private V12 87f202bb850d8263c0ddd9e6e04bf92afd39019381c2d6986142a7943d6c6b7d. But V12 label PUBLIC_NONMERGING_PR_AUTHORIZATION_OR_INDEPENDENT_OTHER_BOUNDARY did not trigger an executable branch/PR creator. Reuse existing GitHub branch + gh PR command patterns, force draft and no merge, pin full 21-path source patch, require pre-call source identity checkpoint, reconcile uncertain push/PR create by real GitHub state before replay, refuse duplicate/closed/non-draft/conflicting tree and changed main. Ensure normal sourcefree worker V12 success immediately dispatches V13 with signed private receipt and genuine branch/PR verification, no automatic publication or retired scheduler.",
+      "lastValidatedDate": "2026-11-21",
+      "applicableEnvironments": [
+        "Owner Yoga6 normal sourcefree V1-V13 GitHub-authenticated draft PR workflow",
+        "Public repository tlyoon/section-8-1-learning-app existing protected Chapter9",
+        "Deterministic branch based on SHA of exact signed 21-file 3-route release patch",
+        "Crash between push and PR create and uncertain GitHub response outcomes",
+        "Preserve public main, no automatic merge, no existing public route deployment",
+        "Owner decision0043 removed Yoga6 scheduled task; do not recreate"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_public_nonmerging_draft_pr.py",
+        "triggerMarker": "def dispatch_scoped_nonmerging_public_pr(",
+        "remedyMarker": "V13_DUPLICATE_PR_HISTORY_REQUIRES_RECONCILIATION",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_public_nonmerging_draft_pr import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_real_safe_draft_pr_created_and_not_merged_or_deployed"
+        },
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_restart_reconciles_remote_branch_and_pr_without_duplicate_write"
+        },
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_uncertain_push_is_reconciled_not_replayed"
+        },
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_uncertain_pr_create_is_reconciled_not_replayed"
+        },
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_altered_public_main_prevents_any_write"
+        },
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_existing_branch_wrong_tree_is_refused_without_pr"
+        },
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_existing_nondraft_pr_cannot_be_accepted"
+        },
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_duplicate_pr_list_cannot_be_treated_as_success"
+        },
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_forged_v12_receipt_refused_before_public_write"
+        },
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_draft_body_can_never_claim_automerge"
+        },
+        {
+          "path": "tests/test_v3_public_nonmerging_draft_pr.py",
+          "kind": "python",
+          "marker": "test_no_unscoped_git_or_gh_command_permitted"
+        }
+      ],
+      "nextAction": "BSA234 ACTIVE: 69 focused source-free tests PASS including ambiguous PR/push and no-automerge. V13 implementation integrated into normal source-free V12 handoff with protected public main and draft PR. Require strict recurrence contract, new-head hosted CI, genuine owner Yoga6 normal V1\u2013V13, branch diff and PR draft unmerged verification, immutable V13 receipt before RESOLVED. Historical C3 failure remains unchanged."
     }
   ]
 }
