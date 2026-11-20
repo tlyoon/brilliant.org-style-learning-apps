@@ -16,6 +16,7 @@ from unittest.mock import patch
 from app_generator.runtime import v3_five_stage_completion as v
 from app_generator.runtime import v3_versioned_readiness as readiness_mod
 from app_generator.runtime import v3_public_bundle_handoff as bundle_handoff
+from app_generator.runtime import v3_public_deployment_scope as scope
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -380,6 +381,14 @@ class FiveStageSyntheticTests(unittest.TestCase):
                     "realOriginalPublicBuilderInvocations":6,
                     "publicationAuthorized":False,"publicDeployExecuted":False,
                 }))
+            audit=stack.enter_context(patch.object(
+                scope,"verify_public_deployment_scope",
+                return_value={
+                    "status":"EXISTING_PUBLIC_SIX_SECTION_SCOPE_AND_PERMISSION_VERIFIED_NO_DEPLOY",
+                    "packagesRequiringUpdates":3,
+                    "individualChangedActivities":5,
+                    "publicDeployExecuted":False,
+                }))
             observed=[]
             stack.enter_context(patch.object(worker,"_print",
                                               side_effect=observed.append))
@@ -387,6 +396,7 @@ class FiveStageSyntheticTests(unittest.TestCase):
         self.assertEqual(status,0)
         self.assertEqual(five.call_count,1)
         self.assertEqual(release.call_count,1)
+        self.assertEqual(audit.call_count,1)
         self.assertEqual(observed[-1]["fiveStageAutonomousCompletion"],expected)
         self.assertEqual(observed[-1]["paidGeminiCalls"],0)
         self.assertFalse(observed[-1]["publicationAuthorized"])

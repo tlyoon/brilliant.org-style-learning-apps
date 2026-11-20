@@ -216,6 +216,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "publicationAuthorized":False}))
             from app_generator.runtime import v3_five_stage_completion
             from app_generator.runtime import v3_public_bundle_handoff
+            from app_generator.runtime import v3_public_deployment_scope as scope
             stack.enter_context(patch.object(
                 v3_five_stage_completion,
                 "advance_five_stage_on_pinned_browser",
@@ -234,12 +235,21 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "realOriginalPublicBuilderInvocations":6,
                     "publicationAuthorized":False,"publicDeployExecuted":False,
                 }))
+            audit=stack.enter_context(patch.object(
+                scope,"verify_public_deployment_scope",
+                return_value={
+                    "status":"EXISTING_PUBLIC_SIX_SECTION_SCOPE_AND_PERMISSION_VERIFIED_NO_DEPLOY",
+                    "packagesRequiringUpdates":3,
+                    "individualChangedActivities":5,
+                    "publicDeployExecuted":False,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))
             status=worker.main(["--source-free-advance"])
             self.assertEqual(verified.call_count,1)
             self.assertEqual(bundle.call_count,0 if failing else 1)
+            self.assertEqual(audit.call_count,0 if failing else 1)
             if failing:
                 self.assertEqual(status,3)
             else:

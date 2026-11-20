@@ -6519,6 +6519,103 @@
         }
       ],
       "nextAction": "BSA225 and BSA226 VERIFIED RESOLVED: owner Yoga6 ordinary --source-free-advance EXIT0 at clean exact head a296da3e894a9b2854eafd2f4886fe99c2bfca5b; GitHub Actions #44645502624 SUCCESS, real 108 reviewed activities/698 first browser, V1-V6 six genuine native HMAC technical checks, real second 698 browser and rollback, V7 six original release bundles PASS through exact per-package gate, private integrity receipt SHA 48a3c5599a166ed44068bb64b58d42be44558430bc3d2cb0cd1dc76264c4cd91. No paid Gemini, no PDF source replay, no public merge/deploy. Original 75/72 and finite C3 FAILED_LIMITED_CAMPAIGN preserved. Next independent boundary PUBLIC_DEPLOYMENT_SCOPE_AND_PERMISSION_CHECK (read-only) and separate C3 heldout generalization."
+    },
+    {
+      "id": "BSA-20261120-227",
+      "class": "private-v7-checkpoint-stops-before-authenticated-public-destination-scope",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261119-225",
+        "BSA-20261119-226"
+      ],
+      "differenceFromLinkedIncident": "Historical BSA225/BSA226 genuine Yoga6 V7 release package-builder passage and exact hosted CI are correct, but normal pipeline stops at the V7 nextEligibleMilestone without inspecting the live GitHub Pages destination or whether authenticated account may update it. Public publisher config points to a misleadingly titled section-8-1-learning-app repo, which actually contains all public section-9-1 through section-9-9 routes. Real independent read-only comparison against 20Nov main eb86fe8 finds source-bound Chapter9 six packages and only 5 activity differences: sections9-1 1,9-2 1,9-6 3; 9-3..9-5 identical. Existing other 9.7-9.9 must be protected. Repo is public Pages, connected account has push/admin. BSA227 version-binds this exact remote revision and baseline source SHA, adds normal V8 read-only authenticated scope verification and immutable receipt before any public deployment proposal. No actual push or merge.",
+      "lastValidatedDate": "2026-11-20",
+      "applicableEnvironments": [
+        "Owner Yoga6 public Pages authenticated read-only gh/git",
+        "Normal V7-signed 6-package release-builder handoff to V8",
+        "Immutable remote main and route digests; changes in three exact previously existing chapter9 sections only",
+        "Synthetic changed public package, wrong destination, removed activity, missing permission, tampered V7, missing other route and prohibited git push"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_public_deployment_scope.py",
+        "triggerMarker": "def verify_public_deployment_scope(",
+        "remedyMarker": "_compare_public(site,_candidate_dir(private,head,proposal),signed)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_public_deployment_scope import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_exact_six_scope_is_three_changed_five_activities"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_changed_unrelated_public_baseline_blocks"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_changes_in_unexpected_activity_block"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_activity_id_rewrite_refused"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_wrong_package_identity_refused"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_section_nine_unrelated_routes_must_remain"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_v7_roster_must_not_be_relabelled"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_config_destination_mismatch_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_no_public_write_commands_accepted"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_finite_synthetic_full_v8_proof_and_restart"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_altered_v7_receipt_rejected_without_remote_io"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_authenticated_github_push_denied_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_public_deployment_scope.py",
+          "kind": "python",
+          "marker": "test_public_head_moves_during_read_only_audit"
+        }
+      ],
+      "nextAction": "Initial public GitHub main read-only clone/route comparison and live gh owner permission verified, 88 focused fake-only tests PASS (1 Windows symlink unsupported skip). V8 normal worker, official recovery registry, exact new hosted CI and genuine Yoga6 restart are still required for closure. No public deployment, merge or model calls."
     }
   ]
 }

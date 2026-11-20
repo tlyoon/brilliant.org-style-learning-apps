@@ -845,6 +845,17 @@ def main(argv: list[str] | None = None) -> int:
                     result["realPublicBundleBuildHandoff"]=(
                         dispatch_private_public_bundle_build(
                             ROOT,private,ready,completed))
+                    # BSA227: continue past the genuine V7 checkpoint into
+                    # read-only authenticated public destination scope.
+                    # This only clones/compares and checks GitHub permissions,
+                    # and NEVER runs a push, PR merge, or public deploy.
+                    from app_generator.runtime.v3_public_deployment_scope import (
+                        verify_public_deployment_scope,
+                    )
+                    result["publicDeploymentScopeAudit"]=(
+                        verify_public_deployment_scope(
+                            ROOT,private,ready,
+                            result["realPublicBundleBuildHandoff"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -863,6 +874,15 @@ def main(argv: list[str] | None = None) -> int:
                             "SIX_REAL_PUBLIC_BUNDLE_BUILDS_VERIFIED_PRIVATE_NO_DEPLOY"
                             and result.get("realPublicBundleBuildHandoff",{}).get(
                                 "realOriginalPublicBuilderInvocations")==6
+                            and result.get("publicDeploymentScopeAudit",{}).get(
+                                "status")==
+                            "EXISTING_PUBLIC_SIX_SECTION_SCOPE_AND_PERMISSION_VERIFIED_NO_DEPLOY"
+                            and result.get("publicDeploymentScopeAudit",{}).get(
+                                "packagesRequiringUpdates")==3
+                            and result.get("publicDeploymentScopeAudit",{}).get(
+                                "individualChangedActivities")==5
+                            and result.get("publicDeploymentScopeAudit",{}).get(
+                                "publicDeployExecuted") is False
                          )) else 3
         if args.auto_advance:
             ready = plan_v3_course_review(

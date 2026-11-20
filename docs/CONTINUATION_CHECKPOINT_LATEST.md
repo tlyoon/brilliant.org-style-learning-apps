@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261119-226 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-227 | ACTIVE
+
+> **20 NOV 2026 BSA227 PUBLIC DESTINATION SCOPE AUDIT ACTIVE.** Real authenticated read-only public GitHub destination tlyoon/section-8-1-learning-app main eb86fe8eb94ec33f8c0c055d2423b245e5898241 is an existing Pages site with routes section-9-1..9, and owner has admin/push. Comparing genuine V7 six source-bound corrected packages to actual public packages found exactly five changed activities across sections 9.1 (1),9.2 (1),9.6 (3); sections 9.3,9.4,9.5 identical; all stable 18 IDs and status draft; 9.7-9.9 outside proposed update. New normal V8 read-only verified Git SHA+remote base and authenticated permission, frozen public package SHA, private exact signed V7 receipt, no public writes, and immutable integrity record. 86 focused fake-only tests pass (one Windows symlink skip). Exact new-head CI and genuine Yoga6 worker V8 receipt remain pending. Next milestone pinned non-destructive release proposal, not implicit publication. Historical C3 FAILED_LIMITED_CAMPAIGN unchanged.
+
 
 > **20 NOV 2026 BSA225/BSA226 VERIFIED RESOLVED.** On genuine clean Yoga6 code head a296da3e894a9b2854eafd2f4886fe99c2bfca5b with exact GitHub Actions #44645502624 SUCCESS, the ordinary normal --source-free-advance completed real 108/698 scientific Chrome, persisted V1-V6 original native HMAC checks, genuine second 698 browser and fault-injected rollback, and automatically ran V7 original production bundle builder SIX times with signed per-package exact release gates. Worker EXIT0, signed private V7 receipt 48a3c5599a166ed44068bb64b58d42be44558430bc3d2cb0cd1dc76264c4cd91. No paid Gemini/PDF, Git merge or public deploy; original frozen75/72 and finite heldout C3 FAILED_LIMITED_CAMPAIGN unaffected. NEXT: separate read-only public deployment scope/permission check and C3 independent heldout generalization; do not report public release or full project completion. A metadata-only closure commit still requires its own hosted CI.
 

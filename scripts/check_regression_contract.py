@@ -228,6 +228,15 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "ciPendingToGreenNormalPathUsesCanonicalSavedReadiness",
     "ciPollingProvenanceIsReportedSeparatelyAndBounded",
     "ciPollingMalformedSuccessCannotBypassV3StrictReleaseGate",
+    "v71V7CheckpointDispatchesAuthenticatedPublicScopeReadOnly",
+    "v71PublicDestinationMustMatchExistingNineChapter9Routes",
+    "v71SixNativePackagesMustRetainExistingIdentities",
+    "v71PublicChangesPinnedToThreeSectionsFiveActivities",
+    "v71PublicMainRevisionAndPerPackageDigestsPinned",
+    "v71PublicGitHubPushAdminPermissionVerifiedWithoutWrites",
+    "v71UnexpectedPublicRevisionOrV7TamperFailsClosed",
+    "v71PublicScopeCheckCannotMergePushOrDeploy",
+    "v71PublicScopeRestartReceiptsImmutableAndVerifiable",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
