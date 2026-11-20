@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-227 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-227 | RESOLVED
+
+> **20 NOV 2026 BSA227 VERIFIED RESOLVED.** Genuine normal Yoga6 --source-free-advance EXIT0 on commit f6ad79d54e0b72964ed2dd8276fefee15142c5df, exact hosted GitHub Actions #44650903461 SUCCESS; authentic 108/698 source science Chrome, V1-V6 six native V3 HMAC receipts and 698 private browser/rollback, V7 six original public release builder checks, V8 authenticated read-only public Pages scope/permission SHA 36f58e0befdfcc52cb98031ca1efe9c65dd3bb5ae907cdf1f5e650b175d80613. Destination public main eb86fe8eb94ec33f8c0c055d2423b245e5898241, existing 9.1-9.9, admin/push rights; exactly three corrected packages with five activity changes, three already byte identical. No public push/merge/deploy or paid model/PDF; finite C3 FAILED_LIMITED_CAMPAIGN unchanged. NEXT: revision-pinned non-destructive release proposal; legacy PublicPagesPublisher unconditional merge is unsafe until repaired. Closure metadata commit itself requires CI; do not claim site publication.
+
 
 > **20 NOV 2026 BSA227 PUBLIC DESTINATION SCOPE AUDIT ACTIVE.** Real authenticated read-only public GitHub destination tlyoon/section-8-1-learning-app main eb86fe8eb94ec33f8c0c055d2423b245e5898241 is an existing Pages site with routes section-9-1..9, and owner has admin/push. Comparing genuine V7 six source-bound corrected packages to actual public packages found exactly five changed activities across sections 9.1 (1),9.2 (1),9.6 (3); sections 9.3,9.4,9.5 identical; all stable 18 IDs and status draft; 9.7-9.9 outside proposed update. New normal V8 read-only verified Git SHA+remote base and authenticated permission, frozen public package SHA, private exact signed V7 receipt, no public writes, and immutable integrity record. 86 focused fake-only tests pass (one Windows symlink skip). Exact new-head CI and genuine Yoga6 worker V8 receipt remain pending. Next milestone pinned non-destructive release proposal, not implicit publication. Historical C3 FAILED_LIMITED_CAMPAIGN unchanged.
 

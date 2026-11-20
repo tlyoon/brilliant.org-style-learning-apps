@@ -6523,7 +6523,7 @@
     {
       "id": "BSA-20261120-227",
       "class": "private-v7-checkpoint-stops-before-authenticated-public-destination-scope",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261119-225",
@@ -6615,7 +6615,7 @@
           "marker": "test_public_head_moves_during_read_only_audit"
         }
       ],
-      "nextAction": "Initial public GitHub main read-only clone/route comparison and live gh owner permission verified, 88 focused fake-only tests PASS (1 Windows symlink unsupported skip). V8 normal worker, official recovery registry, exact new hosted CI and genuine Yoga6 restart are still required for closure. No public deployment, merge or model calls."
+      "nextAction": "BSA227 VERIFIED RESOLVED: true Yoga6 normal --source-free-advance EXIT0 on clean Git f6ad79d54e0b72964ed2dd8276fefee15142c5df with GitHub Actions #44650903461 SUCCESS; genuine 108/698 first browser, private V1-V6 authentic six native V3 HMAC receipts and second 698 browser/rollback, V7 six public release bundles, V8 authenticated existing public Pages scope/permission and 6 per-package SHA comparisons: 3 byte identical, 3 corrected, exactly 5 changed activities. Private V8 integrity receipt SHA 36f58e0befdfcc52cb98031ca1efe9c65dd3bb5ae907cdf1f5e650b175d80613. Actual public main pinned eb86fe8eb94ec33f8c0c055d2423b245e5898241, owner push/admin verified, other public routes 9.7..9.9 untouched. No new Gemini/PDF, no public Git push, merge, site deployment. Next separate release task: pinned non-destructive proposal; the older PublicPagesPublisher unconditionally gh pr merge and MUST NOT be used blindly. Historical C3 FAILED_LIMITED_CAMPAIGN unchanged."
     }
   ]
 }
