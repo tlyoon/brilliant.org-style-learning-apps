@@ -145,7 +145,10 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
     def test_normal_worker_stops_on_exhausted_ci_without_false_pass(self):
         self._run_worker(when_green=False)
 
-    def _run_worker(self,*,when_green:bool):
+    def test_invalid_green_poll_count_cannot_trigger_v6_or_v7(self):
+        self._run_worker(when_green=True,bad_poll=True)
+
+    def _run_worker(self,*,when_green:bool,bad_poll:bool=False):
         with ExitStack() as stack:
             stack.enter_context(patch.dict(os.environ,{
                 "LOCALAPPDATA":str(self.root)}))
@@ -174,10 +177,16 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
             original=stack.enter_context(patch.object(
                 actual,"evaluate_current_versioned_evidence",
                 return_value=self.pending))
-            recovered=self.success if when_green else {
+            # BSA226: real hosted CI initially pending, then succeeded.
+            # The coordinator's transient poll annotations MUST NOT enter
+            # the separately signed, immutable source-readiness object.
+            recovered=({**self.success,
+                        "ciRecoveryPolls":("invalid" if bad_poll else 4),
+                        "ciRecoveredInSameInvocation":True}
+                       if when_green else {
                 "status":"STOP_HOSTED_CI_BOUNDED_WAIT_EXHAUSTED",
                 "publicationAuthorized":False,"paidGeminiCalls":0,
-            }
+            })
             resumecall=stack.enter_context(patch.object(
                 ci,"await_exact_ci_and_resume",return_value=recovered))
             advance=stack.enter_context(patch.object(
@@ -189,25 +198,43 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "technicalV3ReleaseAttestationsVerified":True,
                     "privateNativeV3Attestations":6,
                 }))
-            release=stack.enter_context(patch.object(
-                bundle,"dispatch_private_public_bundle_build",
-                return_value={
+            def strict_genuine_v7(repo, private, exact, completed):
+                if ("ciRecoveryPolls" in exact or
+                        "ciRecoveredInSameInvocation" in exact):
+                    raise ValueError("V3_PUBLIC_BUILD_READINESS_NOT_SAVED")
+                return {
                     "status":"SIX_REAL_PUBLIC_BUNDLE_BUILDS_VERIFIED_PRIVATE_NO_DEPLOY",
                     "realOriginalPublicBuilderInvocations":6,
                     "publicationAuthorized":False,"publicDeployExecuted":False,
-                }))
+                }
+            release=stack.enter_context(patch.object(
+                bundle,"dispatch_private_public_bundle_build",
+                side_effect=strict_genuine_v7))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))
             rc=worker.main(["--source-free-advance"])
-        self.assertEqual(rc,0 if when_green else 3)
+        succeeded=when_green and not bad_poll
+        self.assertEqual(rc,0 if succeeded else 3)
         self.assertEqual(original.call_count,1)
         self.assertEqual(resumecall.call_count,1)
-        self.assertEqual(advance.call_count,1 if when_green else 0)
-        self.assertEqual(release.call_count,1 if when_green else 0)
-        self.assertEqual(output[-1]["paidGeminiCalls"],0)
+        self.assertEqual(advance.call_count,1 if succeeded else 0)
+        self.assertEqual(release.call_count,1 if succeeded else 0)
+        # The generic worker exception boundary deliberately does not
+        # invent a paid-call count; the source-free path makes no API calls.
+        if not bad_poll:
+            self.assertEqual(output[-1]["paidGeminiCalls"],0)
         self.assertFalse(output[-1]["publicationAuthorized"])
-        if not when_green:
+        if succeeded:
+            self.assertEqual(output[-1]["exactHostedCiRecovery"]["polls"],4)
+            self.assertNotIn("ciRecoveryPolls",
+                             output[-1]["versionedEvidenceReadiness"])
+            self.assertNotIn("ciRecoveredInSameInvocation",
+                             output[-1]["versionedEvidenceReadiness"])
+        elif bad_poll:
+            self.assertEqual(output[-1]["status"],"STOP_YOGA6_RECOVERY_WORKER")
+            self.assertNotIn("realPublicBundleBuildHandoff",output[-1])
+        else:
             self.assertEqual(output[-1]["automaticCiRecoveryBoundary"]["status"],
                 "STOP_HOSTED_CI_BOUNDED_WAIT_EXHAUSTED")
 

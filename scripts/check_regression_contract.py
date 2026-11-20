@@ -224,6 +224,10 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71PublicBundleBuildFailureCannotReturnFalseSuccess",
     "v71PublicBundleBuildIsPrivateOnlyWithoutMergeOrDeploy",
     "v71BuildHandoffTamperDirtyCiAndRestartRegressionProtected",
+    "ciPollingAnnotationsNeverModifyImmutableReadinessReceipt",
+    "ciPendingToGreenNormalPathUsesCanonicalSavedReadiness",
+    "ciPollingProvenanceIsReportedSeparatelyAndBounded",
+    "ciPollingMalformedSuccessCannotBypassV3StrictReleaseGate",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

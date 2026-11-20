@@ -796,7 +796,28 @@ def main(argv: list[str] | None = None) -> int:
                     from app_generator.runtime.v3_ci_resume import (
                         await_exact_ci_and_resume,
                     )
-                    ready=await_exact_ci_and_resume(ROOT,private,ready)
+                    recovered=await_exact_ci_and_resume(ROOT,private,ready)
+                    # BSA226: CI polling metadata describes an operation,
+                    # never part of the immutable source-bound readiness.
+                    # Preserve the genuine saved readiness byte-for-byte
+                    # for V1-V7's strict exact-evidence admission gates.
+                    marker={"ciRecoveryPolls","ciRecoveredInSameInvocation"}
+                    if (recovered.get("status")==
+                            "VERSIONED_SCIENCE_BROWSER_AND_CI_VERIFIED_UNADMITTED"
+                            and marker.intersection(recovered)):
+                        polls=recovered.get("ciRecoveryPolls")
+                        if (recovered.get("ciRecoveredInSameInvocation") is not True
+                                or type(polls) is not int
+                                or not 1<=polls<=25):
+                            raise ValueError("V3_CI_RECOVERY_UNSAFE_POLL_METADATA")
+                        result["exactHostedCiRecovery"]={
+                            "status":"EXACT_HEAD_CI_RECOVERED_IN_NORMAL_WORKER",
+                            "polls":polls,"paidGeminiCalls":0,
+                            "publicationAuthorized":False}
+                        ready={k:v for k,v in recovered.items()
+                               if k not in marker}
+                    else:
+                        ready=recovered
                     result["versionedEvidenceReadiness"]=ready
                 if (ready.get("status")!=
                         "VERSIONED_SCIENCE_BROWSER_AND_CI_VERIFIED_UNADMITTED"

@@ -127,7 +127,11 @@
     "v71SixOriginalPublicBundlesRequireExistingNativeV3HmacEvidence": true,
     "v71PublicBundleBuildFailureCannotReturnFalseSuccess": true,
     "v71PublicBundleBuildIsPrivateOnlyWithoutMergeOrDeploy": true,
-    "v71BuildHandoffTamperDirtyCiAndRestartRegressionProtected": true
+    "v71BuildHandoffTamperDirtyCiAndRestartRegressionProtected": true,
+    "ciPollingAnnotationsNeverModifyImmutableReadinessReceipt": true,
+    "ciPendingToGreenNormalPathUsesCanonicalSavedReadiness": true,
+    "ciPollingProvenanceIsReportedSeparatelyAndBounded": true,
+    "ciPollingMalformedSuccessCannotBypassV3StrictReleaseGate": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

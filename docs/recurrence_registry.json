@@ -6468,6 +6468,57 @@
         }
       ],
       "nextAction": "Focused ten synthetic tests passed; real Yoga6 stand-alone six native receipt public bundles build passed for genuine source SHA on previous exact head. New integrated BSA225 production branch requires exact committed GitHub hosted CI and ordinary Yoga6 --source-free-advance V7 proof before closure. Never call public publisher or reopen finite C3."
+    },
+    {
+      "id": "BSA-20261119-226",
+      "class": "ci-poll-recovery-transient-metadata-contaminates-native-v3-readiness",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261119-224",
+        "BSA-20261119-225"
+      ],
+      "differenceFromLinkedIncident": "BSA224 exact hosted CI wait was simulated with a green return but never live-tested against BSA225's new strict original per-package release build gate. In genuine owner Yoga6 run on 926edf49 CI first pending then successful; V1-V6 all genuine private receipts were saved, but normal worker returned ValueError exit3 before V7. The existing await_exact_ci_and_resume returns a new dict embedding ciRecoveryPolls and ciRecoveredInSameInvocation, which are transient operational fields absent from the immutable saved canonical source-bound readiness record. Genuine direct V7 on the saved canonical readiness passed six actual real release builds, and negative control of recovered-with-polling dict reproduced V3_PUBLIC_BUILD_READINESS_NOT_SAVED exactly. Targeted reusable fix: normal sourcefree worker separates bounded CI poll diagnostics into exactHostedCiRecovery and forwards only canonical verified readiness to V1-V7; rejects malformed green poll metadata. Historical BSA224 no-replay and strict V3 HMAC proof remain unchanged.",
+      "lastValidatedDate": "2026-11-19",
+      "applicableEnvironments": [
+        "Owner Yoga6 BSA224 queued/in_progress to green exact-head CI followed by V1-V7",
+        "BSA225 strict original V3 HMAC six-package public bundle build",
+        "Synthetic green CI with ciRecoveryPolls and ciRecoveredInSameInvocation; bounded timeout/failure branch"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/run_v3_yoga6_recovery_worker.py",
+        "triggerMarker": "if ready.get(\"status\")==(",
+        "remedyMarker": "result[\"exactHostedCiRecovery\"]={",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "result[\"exactHostedCiRecovery\"]={"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_normal_worker_immediately_continues_after_bounded_ci_green"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_normal_worker_stops_on_exhausted_ci_without_false_pass"
+        },
+        {
+          "path": "tests/test_v3_public_bundle_handoff.py",
+          "kind": "python",
+          "marker": "test_six_actual_release_builder_dispatches_and_durable_receipt"
+        },
+        {
+          "path": "tests/test_v3_public_bundle_handoff.py",
+          "kind": "python",
+          "marker": "test_wrong_head_or_dirty_source_cannot_build"
+        }
+      ],
+      "nextAction": "Owner Yoga6 926edf49 exact CI #44536308759 SUCCESS; genuine normal worker EXIT3, V1-V6 existed, V7 missing. Read-only direct canonical V7 six builds passed. Explicit pre-fix poll-enriched negative control raised V3_PUBLIC_BUILD_READINESS_NOT_SAVED; revised normal worker and focused 73 local tests PASS. Exact new-head hosted CI and genuine same-entrypoint delayed-CI or green-CI normal V7 dispatch required before resolved. No public deploy, model/PDF call or C3 reopening."
     }
   ]
 }

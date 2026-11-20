@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261119-225 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261119-226 | ACTIVE
+
+> **19 NOV 2026 BSA226 ACTIVE — delayed-CI metadata must not corrupt V7 private native release gate.** Genuine owner Yoga6 on 926edf49 exact hosted CI #44536308759 SUCCESS and normal sourcefree 108/698 Chrome + V1-V6 six genuine original native V3 HMAC checkpoints, then ValueError EXIT3 before V7. Original canonical V7 direct test successfully built six actual signed release bundles, but CI polling added transient ciRecoveryPolls/ciRecoveredInSameInvocation to verified readiness, which strict V7 rejected as V3_PUBLIC_BUILD_READINESS_NOT_SAVED. Reproduced exact root pre-fix. New normal worker strips only those recognized bounded diagnostics from canonical readiness, records polling separately, retains strict saved-source proof for all downstream V1-V7; fake delayed-CI negative control and 73 focused regression tests passed. Exact new-head CI and genuine full normal worker V7 acceptance pending. Prior BSA225 remains open until same-path V7 completes. C3 FAILED_LIMITED_CAMPAIGN remains terminal; zero new model/PDF/public deploy or merge.
+
 
 > **19 NOV 2026 BSA225 ACTIVE — v7.1 V6-to-real-public-builder continuation.** Exact 8adb951b GitHub CI #44518406974 SUCCESS and genuine normal sourcefree EXIT0 with six native V3 HMAC and two 698 Chrome receipts, but no production bundle build handoff. Next eligible authorized work is actual local release builder. Existing original builder already succeeded for all six exact genuine packages in a private Yoga6 scratch probe (six 8-file bundles, original HMAC gate, no model/PDF/merge/deploy). New normal BSA225 handoff, ten synthetic tamper/CI/restart controls and no-false-success exit require exact new CI plus real normal Yoga6 restart. Historic C3 FAILED_LIMITED_CAMPAIGN remains closed; no public deploy permission claimed.
 
