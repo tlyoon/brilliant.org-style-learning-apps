@@ -257,6 +257,11 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71V10SourceAndManifestDriftCannotBypassBrowser",
     "v71V10NoPublicPRPushMergeOrDeploy",
     "v71V10SignedBrowserRestartReceiptImmutable",
+    "v71HistoricalBSA128LocaleReadyGuardReusedInAllV3OriginalBrowserSites",
+    "v71V3OriginalBrowserWaitsEnabledLocaleAndRenderedQuestion",
+    "v71DisabledOptionCannotCauseUncheckedSelectOrFalseSuccess",
+    "v71MissingQuestionCannotCausePrematureLocaleSelection",
+    "v71BrowserLocaleTimeoutFailsClosedWithoutPaidReplay",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

@@ -6837,6 +6837,64 @@
         }
       ],
       "nextAction": "BSA230 ACTIVE: first actual Yoga6 browser smoke all 3 production bundles rendered 7-button learner UI and all actual package/app/renderer assets HTTP 200. First scratch acceptance EXIT1 only due two benign exact 127.0.0.1/favicon.ico 404 logs, no app JS errors; remedy now integrated into normal V9\u2192V10 worker, 68 focused tests pass. Need recurrence contract, exact new-head CI, actual owner Yoga6 full normal --source-free-advance V1\u2013V10 EXIT0, signed V10 receipt and restart idempotence before resolution. No public PR, push, merge or deployment."
+    },
+    {
+      "id": "BSA-20261120-231",
+      "class": "original-v3-chapter9-browser-reuses-disabled-locale-selenium-race-despite-historical-bsa128-fix",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261107-128",
+        "BSA-20261119-219",
+        "BSA-20261120-230"
+      ],
+      "differenceFromLinkedIncident": "Real owner Yoga6 normal sourcefree V1\u2013V10 on f3a6985 exited 3 before V10, returning genuine STOP_ACTUAL_CHAPTER9_BROWSER_QA childErrorClass NotImplementedError and no signed V10 receipt. Hosted CI #44669663186 SUCCESS. Historical BSA128 established Selenium 4.47 Select._set_selected raises NotImplementedError on a disabled option while app.js asynchronously fetches a package with #locale disabled; audit_full_learner_browser.py already implements real-question AND enabled-selector wait. Newer original scripts/check_v3_real_chapter9_browser.py still used three unguarded direct locale-select calls. Reuse exact BSA128 guarded predicate and bounded WebDriverWait across all locale selection call sites, preserve academic/browser QA, failure exit and source identities. No blind per-PDF retries or weakening of acceptance. Registered five synthetic readiness/disabled-selector negatives and positive checks; 31 focused local tests pass. Require new clean-head hosted CI and genuine sourcefree browser rerun to close.",
+      "lastValidatedDate": "2026-11-20",
+      "applicableEnvironments": [
+        "Owner Yoga6 pinned Selenium 4.47 live Chapter9 candidate original-browser child",
+        "Actual #locale disabled while asynchronous package load",
+        "Inherited BSA-20261107-128 enabled-locale and genuine rendered-question predicate",
+        "Normal scripts/run_v3_yoga6_recovery_worker.py sourcefree child dispatch after exact clean-head hosted CI"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "scripts/check_v3_real_chapter9_browser.py",
+        "triggerMarker": "def _select_loaded_locale(",
+        "remedyMarker": "WebDriverWait(driver,10).until(_locale_loaded_and_enabled)",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_acceptance.py",
+            "marker": "def run("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_browser_locale_ready_reuse.py",
+          "kind": "python",
+          "marker": "test_disabled_selector_refused_even_if_question_exists"
+        },
+        {
+          "path": "tests/test_v3_browser_locale_ready_reuse.py",
+          "kind": "python",
+          "marker": "test_missing_question_refused_even_if_selector_enabled"
+        },
+        {
+          "path": "tests/test_v3_browser_locale_ready_reuse.py",
+          "kind": "python",
+          "marker": "test_ready_requires_both_before_selecting"
+        },
+        {
+          "path": "tests/test_v3_browser_locale_ready_reuse.py",
+          "kind": "python",
+          "marker": "test_never_ready_fails_without_select"
+        },
+        {
+          "path": "tests/test_v3_browser_locale_ready_reuse.py",
+          "kind": "python",
+          "marker": "test_source_candidate_browser_reuses_single_shared_guard"
+        }
+      ],
+      "nextAction": "BSA231 ACTIVE: historical remedy BSA128 reused in all three locale selection sites of genuine V3 Chapter9 source-bound browser. 31 local focused regressions PASS, tests cover never enabled/without rendered question/slow enabled and absence of unsafe direct call. Need strict regression contract, exact new-head GitHub CI, real owner Yoga6 normal V1\u2013V10 acceptance, immutable private V10 receipt and restart idempotence. BSA230 remains active until genuine V10 browser result; no public Git write, PR, merge or deploy."
     }
   ]
 }

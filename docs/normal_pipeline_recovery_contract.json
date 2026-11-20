@@ -160,7 +160,12 @@
     "v71V10MissingAppAssetsOrJavascriptErrorStillFails": true,
     "v71V10SourceAndManifestDriftCannotBypassBrowser": true,
     "v71V10NoPublicPRPushMergeOrDeploy": true,
-    "v71V10SignedBrowserRestartReceiptImmutable": true
+    "v71V10SignedBrowserRestartReceiptImmutable": true,
+    "v71HistoricalBSA128LocaleReadyGuardReusedInAllV3OriginalBrowserSites": true,
+    "v71V3OriginalBrowserWaitsEnabledLocaleAndRenderedQuestion": true,
+    "v71DisabledOptionCannotCauseUncheckedSelectOrFalseSuccess": true,
+    "v71MissingQuestionCannotCausePrematureLocaleSelection": true,
+    "v71BrowserLocaleTimeoutFailsClosedWithoutPaidReplay": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-230 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-231 | ACTIVE
+
+> **20 NOV 2026 BSA231 — REUSE HISTORICAL LOCALE LOAD GUARD.** Source-free normal Yoga6 V1–V10 on clean f3a6985539d42b32cb5142d0e045424db06f5adf EXIT3 from original chapter9 browser child `NotImplementedError` before V10; hosted CI #44669663186 passed. Historical BSA20261107-128 already localized Selenium 4.47 Select._set_selected error to disabled locale during async package load, and `audit_full_learner_browser.py` already waits for enabled locale plus real question. Reused remedy at all three locale selection call sites in original `scripts/check_v3_real_chapter9_browser.py`; five positive/fault tests and 31 focused local regressions PASS. Pending exact-head CI and genuine original Yoga6 full normal V1–V10 rerun; preserve BSA230 ACTIVE until signed V10. No public PR/merge/deploy, historical C3 FAILED_LIMITED_CAMPAIGN unchanged.
+
 
 > **20 NOV 2026 BSA230 REAL RELEASE BUNDLE BROWSER SMOKE.** Genuine V9 three private eight-file release bundles signed receipt 7d1852ecc8a6aa5f595e589b0125424dd7d09dae0f5aeb1a78e8b2eea01ba743, source 3ac86d0 hosted CI SUCCESS and normal V9 worker EXIT0. Actual owner Yoga6 Selenium 4.47 loopback browser loaded every index/script/style/package HTTP 200 and produced real UI with 7 buttons for each route 9.1/9.2/9.6. Initial scratch acceptance EXIT1 only on two expected 127.0.0.1/favicon.ico 404 SEVERE messages in section 9.1; no app runtime errors. New V10 stage baked into same sourcefree normal worker, verifies actual V9 receipt+24 file SHA, real Chrome three routes, and filters ONLY exact localhost favicon404 while still blocking missing app assets/JS exceptions. 68 focused tests PASS; new exact-head CI and genuine full worker V10 acceptance pending. No public Git writes and C3 FAILED_LIMITED_CAMPAIGN unchanged. NEXT: CI, genuine V10, independent pinned PR preparation.
 

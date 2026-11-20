@@ -163,6 +163,24 @@ def _normalized(value: str) -> str:
     return " ".join(value.split())
 
 
+def _locale_loaded_and_enabled(driver) -> bool:
+    """BSA231: reuse BSA-20261107-128's exact asynchronous locale guard."""
+    from selenium.webdriver.common.by import By
+    return (driver.find_element(By.ID,"locale").is_enabled()
+            and bool(driver.find_elements(
+                By.CSS_SELECTOR,"#app h1.question")))
+
+
+def _select_loaded_locale(driver,language:str) -> None:
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import Select, WebDriverWait
+    # Rendering a prompt alone is not evidence that app.js has finished
+    # re-enabling the selector. Selenium Select._set_selected throws
+    # NotImplementedError when asked to select an option still disabled.
+    WebDriverWait(driver,10).until(_locale_loaded_and_enabled)
+    Select(driver.find_element(By.ID,"locale")).select_by_value(language)
+
+
 def _exercise(site: Path, packages: list[tuple[int,bytes,list]]) -> dict:
     from selenium import webdriver
     from selenium.webdriver.common.by import By
@@ -197,8 +215,7 @@ def _exercise(site: Path, packages: list[tuple[int,bytes,list]]) -> dict:
                             By.CSS_SELECTOR,"#app h1.question").text))
                     observations+=1
                     for language in ("ms","zh","en"):
-                        Select(driver.find_element(By.ID,"locale")
-                               ).select_by_value(language)
+                        _select_loaded_locale(driver,language)
                         WebDriverWait(driver,10).until(lambda d:
                             _normalized(items[0]["prompt"][language]) in
                             _normalized(d.find_element(
@@ -244,15 +261,13 @@ def _exercise(site: Path, packages: list[tuple[int,bytes,list]]) -> dict:
                     Select(driver.find_element(By.ID,"course-select")
                            ).select_by_value(str(section_number))
                     for activity_index,authored in enumerate(section_items):
-                        Select(driver.find_element(By.ID,"locale")
-                               ).select_by_value("en")
+                        _select_loaded_locale(driver,"en")
                         WebDriverWait(driver,10).until(lambda d:
                             _normalized(authored["prompt"]["en"]) in
                             _normalized(d.find_element(
                                 By.CSS_SELECTOR,"#app h1.question").text))
                         for language in ("en","ms","zh"):
-                            Select(driver.find_element(By.ID,"locale")
-                                   ).select_by_value(language)
+                            _select_loaded_locale(driver,language)
                             WebDriverWait(driver,10).until(lambda d:
                                 _normalized(authored["prompt"][language]) in
                                 _normalized(d.find_element(
