@@ -237,6 +237,11 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71UnexpectedPublicRevisionOrV7TamperFailsClosed",
     "v71PublicScopeCheckCannotMergePushOrDeploy",
     "v71PublicScopeRestartReceiptsImmutableAndVerifiable",
+    "v71PublisherHonorsExplicitNoAutoMerge",
+    "v71PublicPagesMissingMergeFlagDefaultsSafe",
+    "v71Chapter9ProtectedScopeBlocksUnpinnedDirectMerge",
+    "v71PublisherRoutesOnlyNumericDottedSections",
+    "v71PublisherExistingNativeV3ReleaseGateNotBypassed",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

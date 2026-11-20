@@ -140,7 +140,12 @@
     "v71PublicGitHubPushAdminPermissionVerifiedWithoutWrites": true,
     "v71UnexpectedPublicRevisionOrV7TamperFailsClosed": true,
     "v71PublicScopeCheckCannotMergePushOrDeploy": true,
-    "v71PublicScopeRestartReceiptsImmutableAndVerifiable": true
+    "v71PublicScopeRestartReceiptsImmutableAndVerifiable": true,
+    "v71PublisherHonorsExplicitNoAutoMerge": true,
+    "v71PublicPagesMissingMergeFlagDefaultsSafe": true,
+    "v71Chapter9ProtectedScopeBlocksUnpinnedDirectMerge": true,
+    "v71PublisherRoutesOnlyNumericDottedSections": true,
+    "v71PublisherExistingNativeV3ReleaseGateNotBypassed": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

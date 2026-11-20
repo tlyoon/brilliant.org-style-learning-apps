@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import tempfile
@@ -42,10 +43,9 @@ class PublicPagesPublisher:
         return hashlib.sha256(package_path.read_bytes()).hexdigest()
 
     def route_for(self, subchapter_id: str) -> str:
-        route = f"section-{subchapter_id.replace('.', '-')}/"
-        if not route.startswith("section-") or ".." in Path(route).parts:
-            raise GitPublishError(f"Unsafe public release route: {route}")
-        return route
+        if not isinstance(subchapter_id, str) or not re.fullmatch(r"[0-9]+(?:\.[0-9]+)+", subchapter_id):
+            raise GitPublishError("Public release route requires a numeric dotted section ID")
+        return f"section-{subchapter_id.replace('.', '-')}/"
 
     def branch_for(self, subchapter_id: str, digest: str) -> str:
         return f"{self.config.public_deploy_branch_prefix}/section-{subchapter_id.replace('.', '-')}-{digest[:12]}"
@@ -83,6 +83,16 @@ class PublicPagesPublisher:
         subchapter_id: str,
         ensure_lease: Callable[[], None],
     ) -> PublicDeployResult:
+        # This direct entrypoint cannot bypass the immutable, existing
+        # Chapter9 public-scope boundary (BSA227). An auto-merge here would
+        # overwrite already public content without a pinned V9 handoff.
+        # Refuse before even querying/pushing public GitHub.
+        if (getattr(self.config,"public_deploy_repository",None)==
+                "tlyoon/section-8-1-learning-app"
+                and subchapter_id in {f"9.{number}" for number in range(1,7)}
+                and bool(getattr(self.config,"public_deploy_auto_merge",False))):
+            raise GitPublishError(
+                "Protected Chapter9 public auto-merge requires a pinned non-destructive release proposal")
         # This is a separate callable entry point (used by auto recovery
         # as well as run_generation). Guard it independently so the caller
         # cannot skip academic verification by avoiding the orchestrator.
@@ -161,6 +171,11 @@ class PublicPagesPublisher:
             self._run(["gh", "pr", "reopen", pr_url, "--repo", self.config.public_deploy_repository])
             existing = self._pr_for_branch(branch) or existing
             pr_url = str(existing.get("url", pr_url))
+        # BSA228: prepared public PR is a valid non-destructive handoff.
+        # The old publisher ignored public_deploy_auto_merge=False and
+        # always merged; preserve that flag as a genuine safety control.
+        if not bool(getattr(self.config,"public_deploy_auto_merge",False)):
+            return PublicDeployResult(branch,pr_url,digest,public_url,False)
         self._run(["gh", "pr", "merge", pr_url, "--merge", "--repo", self.config.public_deploy_repository])
         info = self._pr_for_branch(branch)
         if not info or not self._merged(info):
