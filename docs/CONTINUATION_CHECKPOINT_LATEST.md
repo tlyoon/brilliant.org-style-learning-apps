@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-228 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-228 | RESOLVED
+
+> **20 NOV 2026 BSA228 VERIFIED RESOLVED.** Git bd3802dffd7029e199b5d429985908ea421cb620 hosted CI #44653287879 SUCCESS. On clean Yoga6 actual direct PublicPagesPublisher configured for existing public Chapter9 with auto-merge enabled refused the protected 9.1 route BEFORE lease or Git I/O, expected negative test EXIT0. Code now respects public_deploy_auto_merge=False, missing flag safe by default, and numeric dotted routes only. 42 related tests pass (one Windows symlink skip), recovery registry checks pass. Existing real V8 public destination and 3-package 5-activity update scope remains unchanged. No public PR/push/merge/deploy or new paid Gemini/PDF. NEXT: BSA229 pinned non-destructive 3-route proposal workflow; original C3 FAILED_LIMITED_CAMPAIGN unchanged.
+
 
 > **20 NOV 2026 BSA228 — EXISTING PUBLIC PUBLISHER MERGE SAFETY.** After authentic BSA227 V8 scope and rights passed, historical publisher was confirmed to ignore public_deploy_auto_merge=False and call gh pr merge unconditionally, while current public destination already contains sections9.1..9.9. New early direct publisher guard prevents auto-merging 9.1–9.6 on the actual destination without a pinned non-destructive release proposal, before lease/Git I/O; PR handoff with explicit/missing false auto-merge now returns merged=False; route IDs numeric dotted only. Real Yoga6 protected 9.1 direct-entrypoint EXIT0 safe refusal, no remote operations. Six synthetic PR/route regressions PASS. Hosted exact-head CI and contract closure pending. No public push/merge/deploy. Next stage local 3-route deterministic release proposal; historical C3 FAILED_LIMITED_CAMPAIGN unchanged.
 

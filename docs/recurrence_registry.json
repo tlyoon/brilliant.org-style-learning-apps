@@ -6620,7 +6620,7 @@
     {
       "id": "BSA-20261120-228",
       "class": "legacy-public-pages-publisher-ignored-automerge-false-and-unpinned-chapter9-overwrite",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261120-227",
@@ -6676,7 +6676,7 @@
           "marker": "test_unset_auto_merge_mode_fails_safe"
         }
       ],
-      "nextAction": "Owner Yoga6 actual direct protected 9.1 publishing entrypoint stopped before lease/Git with explicit legacy public_deploy_auto_merge true, EXIT0 expected refusal. Six synthetic PR-mode/route controls passed; one broader legacy local suite import needed unavailable jsonschema, hosted CI must independently cover complete suite. Exact committed-head GitHub CI plus recovery contract and public destination unchanged verification pending; no public PR, push, merge or deploy. Next separate stage local revision-pinned 3-route release proposal."
+      "nextAction": "BSA228 VERIFIED RESOLVED: committed Git bd3802dffd7029e199b5d429985908ea421cb620 hosted CI #44653287879 SUCCESS; on clean Yoga6 direct production PublicPagesPublisher protected 9.1 route with actual public repository and configured autoMerge=true safely refused before lease, academic gate, Git push or merge; EXIT0 on the expected negative test. Six fake-only PR/route controls pass; related focused 42 tests PASS (one unsupported Windows symlink skip), executable recovery contract passed. Explicit public_deploy_auto_merge=False returns nonmerged PR handoff, missing flag defaults safe, protected 9.1-9.6 cannot bypass frozen V8. No public PR, branch push, merge or deployment. Next distinct boundary BSA229: pinned local full runtime proposal and safe constrained public PR workflow. C3 FAILED_LIMITED_CAMPAIGN unchanged."
     }
   ]
 }
