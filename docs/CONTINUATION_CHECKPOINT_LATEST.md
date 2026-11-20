@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-235 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-235 | RESOLVED
+
+> **20 NOV 2026 — BSA235 GENUINE PUBLIC PR V14 VERIFIED.** Exact clean Yoga6 source f94d20105e81d9723cff76674675f5fe2a35b1cd, hosted CI #44718808843 SUCCESS and genuine ordinary V1–V14 worker EXIT0. Signed V14 ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1 validates actual GitHub PR #16 branch Chrome all nine Chapter9 routes, all 21 GitHub diff files restricted to 9.1/9.2/9.6, remote commit tree, pinned original public main parent and draft unmerged PR state. Historical BSA230/231 Chrome/fav remedies are in the ordinary executable V13→V14 path; restart and forged signed evidence fail closed. NEXT independent security/release acceptance and separately authorized publication; unmerged draft PR remains open. C3 FAILED_LIMITED_CAMPAIGN preserved. Owner-retired Yoga6 scheduled task not reinstalled.
+
 
 > **20 NOV 2026 — BSA235 V14 AUTOMATIC PUBLIC-PR BRANCH QA.** BSA234 genuinely resolved with real 21-file draft PR #16 and signed V13 b898f0c34105bc0c136832a1eebe1677db562c129c4514a1a2b888777803a1b3; separate owner Yoga6 direct Chrome test passed all nine exact PR routes, signed 961d31322a6c77000470f07b0248f59c98895b2a7606c82a0e6c9bedf43b45c6, but ordinary worker had no executable V13→V14 handoff. Reused historical BSA230/231 favicon/Chrome and signed V13/PR diff checks in new source-bound V14, now automatically invoked immediately after V13; refuses changed PR draft, base, branch, GitHub commit/tree, any outside-route edits, severe Chrome errors or forged checkpoint. 77 focused source-free tests PASS. NEXT strict registry contract, new exact head hosted CI, genuine normal V1–V14 and immutable V14 receipt. No public merge/deploy or retired scheduler; C3 FAILED_LIMITED_CAMPAIGN unchanged.
 

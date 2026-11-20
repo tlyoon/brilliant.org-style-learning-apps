@@ -7146,7 +7146,7 @@
     {
       "id": "BSA-20261120-235",
       "class": "real-public-PR-nine-route-Chrome-QA-was-one-off-not-executable-handoff",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261120-230",
@@ -7262,7 +7262,7 @@
           "marker": "test_benign_historical_favicon_handling_reused"
         }
       ],
-      "nextAction": "BSA235 ACTIVE: inherited real one-off 9-route PR#16 Chrome proof. V14 read-only PR source/tree/diff/Chrome integrated into real normal worker after V13. 77 focused tests PASS including 17 adverse acceptance cases. Require strict recurrence contract, exact new-head CI, genuine owner Yoga6 V1\u2013V14 exit0 and signed real V14 receipt; no merge/deploy and C3 FAILED_LIMITED_CAMPAIGN preserved."
+      "nextAction": "BSA235 VERIFIED RESOLVED on owner Yoga6. Normal source-free V1\u2013V14 exact clean source f94d20105e81d9723cff76674675f5fe2a35b1cd EXIT0, GitHub Actions #44718808843 SUCCESS, authentic signed V9\u2192V14 chain, V14 integrity ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1, independent genuine Chrome 9/9 all public PR branch routes, real GitHub PR 16 OPEN DRAFT unmerged, 21 exact paths 9.1/9.2/9.6, remote branch commit tree and pinned public main parent verified. No public merge/deploy/scheduler/new paid calls. NEXT separate read-only independent PR release checks/security and gated publication; C3 FAILED_LIMITED_CAMPAIGN unchanged. Historical BSA230 locale/fav browser checks reused within ordinary source-free workflow."
     }
   ]
 }
