@@ -925,6 +925,21 @@ def main(argv: list[str] | None = None) -> int:
                             result["privatePinnedPublicPatch"],
                             result["privateNonmergingPrReadiness"],
                             result["scopedPublicDraftPr"]))
+                    # BSA236: v7.1 global roadmap starts *actual* eligible
+                    # independent read-only tasks after signed public PR V14.
+                    # Per-task PRE_CALL and RESULT are persistent, bounded,
+                    # allowlisted; errors do not strand unrelated tasks.
+                    from app_generator.runtime.v3_global_post_pr_readonly_roadmap import (
+                        run_global_readonly_roadmap,
+                    )
+                    result["globalReadonlyRoadmapHandoff"]=(
+                        run_global_readonly_roadmap(
+                            ROOT,private,ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["scopedPublicDraftPr"],
+                            result["independentPublicPrBrowserAcceptance"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1006,6 +1021,19 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("independentPublicPrBrowserAcceptance",{}).get(
                                 "publicMergeExecuted") is False
                             and result.get("independentPublicPrBrowserAcceptance",{}).get(
+                                "publicDeployExecuted") is False
+                            and result.get("globalReadonlyRoadmapHandoff",{}).get(
+                                "status")==
+                                "POST_PR_GLOBAL_READONLY_TASKS_EXECUTED_NO_RELEASE"
+                            and result.get("globalReadonlyRoadmapHandoff",{}).get(
+                                "taskDispatchCount")==3
+                            and result.get("globalReadonlyRoadmapHandoff",{}).get(
+                                "nextTaskDispatchActuallyExecuted") is True
+                            and result.get("globalReadonlyRoadmapHandoff",{}).get(
+                                "quarantinedTaskIds")==[]
+                            and result.get("globalReadonlyRoadmapHandoff",{}).get(
+                                "publicMergeExecuted") is False
+                            and result.get("globalReadonlyRoadmapHandoff",{}).get(
                                 "publicDeployExecuted") is False
                          )) else 3
         if args.auto_advance:

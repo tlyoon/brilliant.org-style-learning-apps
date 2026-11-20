@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-235 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-236 | ACTIVE
+
+> **20 NOV 2026 — BSA236 BOUNDED GLOBAL POST-PR ROADMAP DISPATCH.** BSA235 passed genuine Yoga6 V1–V14 sourcefree EXIT0 at f94d201 and signed V14 ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1 with all 9 actual public PR routes real Chrome; closure on e49da57. But normal worker still returned after V14 without executing any independent global task. New allowlisted V15 controller is integrated immediately after V14: live GitHub PR/base/21-path reconciliation; native GitHub check/review audit (currently absent; NOT approval); historical FAILED_LIMITED_CAMPAIGN and global recurrence scan. Each eligible task writes signed PRE_CALL/RESULT; isolated read-only failures quarantine and independent task still dispatches. 58 focused tests PASS. NEXT strict registry/CI and genuine V1–V15. No merge/deploy or paid call, no owner-retired scheduler and no imaginary cross-session supervisor.
+
 
 > **20 NOV 2026 — BSA235 GENUINE PUBLIC PR V14 VERIFIED.** Exact clean Yoga6 source f94d20105e81d9723cff76674675f5fe2a35b1cd, hosted CI #44718808843 SUCCESS and genuine ordinary V1–V14 worker EXIT0. Signed V14 ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1 validates actual GitHub PR #16 branch Chrome all nine Chapter9 routes, all 21 GitHub diff files restricted to 9.1/9.2/9.6, remote commit tree, pinned original public main parent and draft unmerged PR state. Historical BSA230/231 Chrome/fav remedies are in the ordinary executable V13→V14 path; restart and forged signed evidence fail closed. NEXT independent security/release acceptance and separately authorized publication; unmerged draft PR remains open. C3 FAILED_LIMITED_CAMPAIGN preserved. Owner-retired Yoga6 scheduled task not reinstalled.
 

@@ -488,3 +488,5 @@ Owner Yoga6 normal sourcefree V1–V13 EXIT0 at 430cd0846e3f3240a6eaec824c0595c8
 ## 20 Nov 2026 — BSA235 actual ordinary V14 closure
 
 Real Yoga6 normal V1–V14 sourcefree EXIT0 at f94d20105e81d9723cff76674675f5fe2a35b1cd, hosted CI #44718808843 SUCCESS. Independent signed V14 ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1 verified all nine actual PR#16 branch Chrome routes, 21 strict GitHub diff files, commit tree and public base parent; remote PR remains OPEN/DRAFT/unmerged and public main unchanged. BSA235 RESOLVED. No merge, deploy or retired scheduled task.
+
+| BSA-20261120-236 | Genuine V14 checkpoint succeeded but next eligible independently safe PR audits were only named rather than dispatched. | Integrate bounded, allowlisted global read-only task controller into normal worker after signed V14, with per-task PRE_CALL/RESULT, GitHub PR/status/review, cross-registry C3 scan, independent quarantine and restart. | 58 focused tests PASS; strict CI, original Yoga6 V1–V15 genuine execution and source-bound signed V15 receipt pending. |

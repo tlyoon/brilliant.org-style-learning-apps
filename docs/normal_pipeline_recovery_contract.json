@@ -196,7 +196,16 @@
     "v71V14NineRoutesRealChromePackageButtonsAndConsoleChecked": true,
     "v71V14HistoricalFavicon404IsBenignButOtherSevereErrorsBlock": true,
     "v71V14ImmutableSourceBoundReceiptAndNoPublicGitWrites": true,
-    "v71V14NoMergeDeployGeminiOrRetiredScheduler": true
+    "v71V14NoMergeDeployGeminiOrRetiredScheduler": true,
+    "v71V14SuccessAutomaticallyDispatchesV15GlobalReadonlyController": true,
+    "v71V15SignedExactHeadV14AndProtectedPrBaseRequired": true,
+    "v71V15ThreeAllowlistedGlobalTasksDispatchedSameInvocation": true,
+    "v71V15PreCallAndResultPerTaskDurableSourceBound": true,
+    "v71V15QuarantineFailedAuditAndContinueIndependentTask": true,
+    "v71V15RestartRevalidatesSignedTaskEvidence": true,
+    "v71V15MissingNativePublicPRChecksNotFalselyAccepted": true,
+    "v71V15NoUnregisteredWritesMergeDeployPaidOrScheduler": true,
+    "v71V15NoImaginaryPersistentCrossSessionRunnerClaim": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

@@ -7263,6 +7263,88 @@
         }
       ],
       "nextAction": "BSA235 VERIFIED RESOLVED on owner Yoga6. Normal source-free V1\u2013V14 exact clean source f94d20105e81d9723cff76674675f5fe2a35b1cd EXIT0, GitHub Actions #44718808843 SUCCESS, authentic signed V9\u2192V14 chain, V14 integrity ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1, independent genuine Chrome 9/9 all public PR branch routes, real GitHub PR 16 OPEN DRAFT unmerged, 21 exact paths 9.1/9.2/9.6, remote branch commit tree and pinned public main parent verified. No public merge/deploy/scheduler/new paid calls. NEXT separate read-only independent PR release checks/security and gated publication; C3 FAILED_LIMITED_CAMPAIGN unchanged. Historical BSA230 locale/fav browser checks reused within ordinary source-free workflow."
+    },
+    {
+      "id": "BSA-20261120-236",
+      "class": "post-v14-worker-stops-before-global-eligible-independent-task-dispatch",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261120-229",
+        "BSA-20261120-232",
+        "BSA-20261120-233",
+        "BSA-20261120-234",
+        "BSA-20261120-235",
+        "BSA-20261116-172"
+      ],
+      "differenceFromLinkedIncident": "Owner Yoga6 V1\u2013V14 normal sourcefree real Chrome and exact 21-file public PR #16 succeeded, signed V14 ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1. Yet the normal worker returned without executing any global roadmap work after V14. This repeats the task-identified-without-dispatch root cause despite v7.1. New bounded allowlisted post-PR controller dispatches 3 safe independent tasks during same normal invocation: authenticated PR/base/diff read-only reconciliation; native GitHub CI/status/review inventory with NO fabricated approvals; active recurrence registry and immutable historical C3 failure scan. Writes durable per-task PRE_CALL, RESULT and signed V15; an isolated failure quarantines just its task while other tasks run. Explicitly never merges, deploys, submits paid API, or recreates retired Yoga6 scheduler; no unsupported cross-session runner claim.",
+      "lastValidatedDate": "2026-11-20",
+      "applicableEnvironments": [
+        "Owner Yoga6 real V14\u2192V15 sourcefree normal worker",
+        "Public GitHub PR #16 draft / main pinned SHA read-only",
+        "Global recurrence registry with old C3 FAILED_LIMITED_CAMPAIGN",
+        "Restart after per-task PRE_CALL/RESULT with uncertain external reads",
+        "No automatic merging, public deploy, scheduled task or persisted background runner"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_global_post_pr_readonly_roadmap.py",
+        "triggerMarker": "def run_global_readonly_roadmap(",
+        "remedyMarker": "V15_UNREGISTERED_TASK_DISPATCH_REFUSED",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_global_post_pr_readonly_roadmap import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_global_post_pr_readonly_roadmap.py",
+          "kind": "python",
+          "marker": "test_real_dispatch_of_all_three_tasks_in_one_call"
+        },
+        {
+          "path": "tests/test_v3_global_post_pr_readonly_roadmap.py",
+          "kind": "python",
+          "marker": "test_repeated_restart_reconciles_without_new_remote_write"
+        },
+        {
+          "path": "tests/test_v3_global_post_pr_readonly_roadmap.py",
+          "kind": "python",
+          "marker": "test_failed_github_checks_task_quarantined_but_global_scan_runs"
+        },
+        {
+          "path": "tests/test_v3_global_post_pr_readonly_roadmap.py",
+          "kind": "python",
+          "marker": "test_moved_branch_prevents_readonly_dispatch"
+        },
+        {
+          "path": "tests/test_v3_global_post_pr_readonly_roadmap.py",
+          "kind": "python",
+          "marker": "test_forged_v14_receipt_prevents_dispatch"
+        },
+        {
+          "path": "tests/test_v3_global_post_pr_readonly_roadmap.py",
+          "kind": "python",
+          "marker": "test_changed_historical_c3_evidence_quarantines_only_its_task"
+        },
+        {
+          "path": "tests/test_v3_global_post_pr_readonly_roadmap.py",
+          "kind": "python",
+          "marker": "test_tampered_result_at_restart_refused"
+        },
+        {
+          "path": "tests/test_v3_global_post_pr_readonly_roadmap.py",
+          "kind": "python",
+          "marker": "test_no_unregistered_task_execution_allowed"
+        },
+        {
+          "path": "tests/test_v3_global_post_pr_readonly_roadmap.py",
+          "kind": "python",
+          "marker": "test_bad_active_incident_id_cannot_be_reported_as_valid"
+        }
+      ],
+      "nextAction": "BSA236 ACTIVE: structural after-V14 global read-only task dispatcher implemented. 58 focused tests PASS, including exact normal-worker V14\u2192V15 and quarantine-after-middle-task. Require strict recurrence contract, exact-head CI, genuine owner Yoga6 V1\u2013V15 exit0 and signed V15 per-task PRE_CALL/RESULT receipts before closure. Original C3 failure and no-scheduler decision preserved."
     }
   ]
 }

@@ -293,6 +293,15 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71V14HistoricalFavicon404IsBenignButOtherSevereErrorsBlock",
     "v71V14ImmutableSourceBoundReceiptAndNoPublicGitWrites",
     "v71V14NoMergeDeployGeminiOrRetiredScheduler",
+    "v71V14SuccessAutomaticallyDispatchesV15GlobalReadonlyController",
+    "v71V15SignedExactHeadV14AndProtectedPrBaseRequired",
+    "v71V15ThreeAllowlistedGlobalTasksDispatchedSameInvocation",
+    "v71V15PreCallAndResultPerTaskDurableSourceBound",
+    "v71V15QuarantineFailedAuditAndContinueIndependentTask",
+    "v71V15RestartRevalidatesSignedTaskEvidence",
+    "v71V15MissingNativePublicPRChecksNotFalselyAccepted",
+    "v71V15NoUnregisteredWritesMergeDeployPaidOrScheduler",
+    "v71V15NoImaginaryPersistentCrossSessionRunnerClaim",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
