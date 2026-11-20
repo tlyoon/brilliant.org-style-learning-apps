@@ -1,6 +1,9 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-232 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261120-232 | RESOLVED
+
+> **20 NOV 2026 — BSA232 VERIFIED RESOLVED.** Exact clean code f3a7deac9d0c8c025eeb1be88cddfa34654c043b, hosted CI #44692645543 SUCCESS and genuine Yoga6 normal V1–V11 EXIT0. Historical BSA128 locale recovery and V10 3/3 Chrome production route acceptance reused, V9 24 private file SHA locked. V11 pinned public main eb86fe8eb94ec33f8c0c055d2423b245e5898241, exact 21 paths only 9.1/9.2/9.6, independent read-only clone and git apply --check, private signed patch integrity 67420d2f4e8305f0d5d8baf4a6282175944678b25e1c1a5794105df99a7bf98f. No public PR/push/merge/deploy. NEXT BSA233 safe nonmerging PR readiness, plus v7.1 persistent supervisor requirement; historical C3 FAILED_LIMITED_CAMPAIGN unchanged.
+
 
 > **20 NOV 2026 BSA232 REAL PRIVATE PATCH REHEARSAL.** Genuine V1-V10 normal worker EXIT0 and source-bound signed Chrome V10 a409e58bb29bf71ada3bda1f7101bfdc130c59c44015c5431c609423c21feab6; BSA230/BSA231 resolved. First scratch Git clone at deep per-head SHA path failed (Windows legacy max path); short private LOCALAPPDATA temp clone recovered. Actual owner Yoga6 read-only Git clone pinned public main eb86fe8eb94ec33f8c0c055d2423b245e5898241, 21 Git paths (7 each in 9.1/9.2/9.6) into private 756429 byte SHA 2548cc149463e6e706d741ea3bf0f032c6b9473cba575ad4511bf626ceae6bab patch; independent second-clone git apply --check PASS. V11 added to normal worker as automatic successor to V10, enforces signed V9/V10, all 24 source file hashes, immutable local patch, exact new-head CI and no public writes. 69 related tests PASS. NEXT: exact-head new CI, authentic V1-V11, signed V11 receipt and isolated non-merging proposal path. C3 FAILED_LIMITED_CAMPAIGN unaffected.
 

@@ -6899,7 +6899,7 @@
     {
       "id": "BSA-20261120-232",
       "class": "accepted-v10-wrote-next-public-patch-boundary-but-no-normal-private-git-rehearsal",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261120-230",
@@ -6969,7 +6969,7 @@
           "marker": "test_unrecognized_remote_git_action_not_permitted"
         }
       ],
-      "nextAction": "BSA232 ACTIVE: real Yoga6 local patch SHA 2548cc149463e6e706d741ea3bf0f032c6b9473cba575ad4511bf626ceae6bab 756429 bytes, git apply --check on independent clean pinned main PASS, 21 changed paths only sections9.1/9.2/9.6. All 69 related sourcefree V11 and original browser tests pass, V11 normal worker wiring installed. Need strict recurrence contract, clean new-head hosted CI, genuine Yoga6 normal V1\u2013V11 full run and signed immutable V11 receipt, patch restart check before resolved. No public PR/push/merge/deploy."
+      "nextAction": "BSA232 VERIFIED RESOLVED: genuine Yoga6 normal source-free V1\u2013V11 EXIT0 and exact GitHub Actions #44692645543 SUCCESS at clean f3a7deac9d0c8c025eeb1be88cddfa34654c043b; original V10 signed Chrome 3-route genuine acceptance, pinned V9 24-file manifest, actual V11 local git apply --check on independent public main clone, 21 paths only Sections 9.1/9.2/9.6 and 756429 immutable private patch bytes signed integrity 67420d2f4e8305f0d5d8baf4a6282175944678b25e1c1a5794105df99a7bf98f; no public PR/branch push/merge/deploy. Next BSA233 independent non-merging PR readiness/automatic supervisor. C3 FAILED_LIMITED_CAMPAIGN unchanged."
     }
   ]
 }
