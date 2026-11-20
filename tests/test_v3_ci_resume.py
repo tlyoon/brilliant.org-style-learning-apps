@@ -17,6 +17,7 @@ from app_generator.runtime import v3_public_bundle_handoff as bundle
 from app_generator.runtime import v3_public_deployment_scope as scope
 from app_generator.runtime import v3_pinned_public_release_proposal as proposal
 from app_generator.runtime import v3_public_release_browser_acceptance as browser_stage
+from app_generator.runtime import v3_private_public_patch_rehearsal as v11_stage
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -235,6 +236,12 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "realHeadlessChromeRoutesPassed":3,
                     "publicDeployExecuted":False,
                 }))
+            v11_mock=stack.enter_context(patch.object(
+                v11_stage,"stage_exact_private_public_patch",
+                return_value={
+                    "status":"PINNED_THREE_SECTION_PRIVATE_PUBLIC_PATCH_REHEARSED_NO_PUBLIC_WRITE",
+                    "changedFileCount":21,"publicDeployExecuted":False,
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))
@@ -248,6 +255,7 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
         self.assertEqual(audit.call_count,1 if succeeded else 0)
         self.assertEqual(proposal_mock.call_count,1 if succeeded else 0)
         self.assertEqual(browser_mock.call_count,1 if succeeded else 0)
+        self.assertEqual(v11_mock.call_count,1 if succeeded else 0)
         # The generic worker exception boundary deliberately does not
         # invent a paid-call count; the source-free path makes no API calls.
         if not bad_poll:

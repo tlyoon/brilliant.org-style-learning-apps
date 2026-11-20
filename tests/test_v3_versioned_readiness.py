@@ -219,6 +219,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             from app_generator.runtime import v3_public_deployment_scope as scope
             from app_generator.runtime import v3_pinned_public_release_proposal as proposal
             from app_generator.runtime import v3_public_release_browser_acceptance as browser_stage
+            from app_generator.runtime import v3_private_public_patch_rehearsal as v11_stage
             stack.enter_context(patch.object(
                 v3_five_stage_completion,
                 "advance_five_stage_on_pinned_browser",
@@ -259,6 +260,12 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "realHeadlessChromeRoutesPassed":3,
                     "publicDeployExecuted":False,
                 }))
+            v11_mock=stack.enter_context(patch.object(
+                v11_stage,"stage_exact_private_public_patch",
+                return_value={
+                    "status":"PINNED_THREE_SECTION_PRIVATE_PUBLIC_PATCH_REHEARSED_NO_PUBLIC_WRITE",
+                    "changedFileCount":21,"publicDeployExecuted":False,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))
@@ -268,6 +275,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             self.assertEqual(audit.call_count,0 if failing else 1)
             self.assertEqual(proposal_mock.call_count,0 if failing else 1)
             self.assertEqual(browser_mock.call_count,0 if failing else 1)
+            self.assertEqual(v11_mock.call_count,0 if failing else 1)
             if failing:
                 self.assertEqual(status,3)
             else:

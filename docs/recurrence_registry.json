@@ -6749,7 +6749,7 @@
     {
       "id": "BSA-20261120-230",
       "class": "real-private-production-release-browser-smoke-falsely-rejects-expected-localhost-favicon404",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261120-229",
@@ -6836,12 +6836,12 @@
           "marker": "test_missing_source_ci_refused_before_chrome"
         }
       ],
-      "nextAction": "BSA230 ACTIVE: first actual Yoga6 browser smoke all 3 production bundles rendered 7-button learner UI and all actual package/app/renderer assets HTTP 200. First scratch acceptance EXIT1 only due two benign exact 127.0.0.1/favicon.ico 404 logs, no app JS errors; remedy now integrated into normal V9\u2192V10 worker, 68 focused tests pass. Need recurrence contract, exact new-head CI, actual owner Yoga6 full normal --source-free-advance V1\u2013V10 EXIT0, signed V10 receipt and restart idempotence before resolution. No public PR, push, merge or deployment."
+      "nextAction": "BSA-20261120-230 VERIFIED RESOLVED: clean source e78ac52a7ee683c006aaffb996ea32e85a7d5a4e hosted GitHub Actions #44688669609 SUCCESS; original Yoga6 normal V1-V10 source-free worker EXIT0 after genuine Chapter9 browser check and original V3 native six-bundle release. Exact 3/3 private V10 release bundle Selenium Chrome routes and 24-file SHA manifest PASS, source V9 integrity 9b6cc6e3fadd412b6eb6468e37ac016c7783d0c26500836b4ce5c06de902bd76 and V10 integrity a409e58bb29bf71ada3bda1f7101bfdc130c59c44015c5431c609423c21feab6. Prior BSA-20261107-128 async disabled locale remedy reused in original browser and proven by this live run. No public push, PR, merge or deploy. Next distinct BSA232: pinned private patch integration with read-only public main; historical C3 FAILED_LIMITED_CAMPAIGN unchanged."
     },
     {
       "id": "BSA-20261120-231",
       "class": "original-v3-chapter9-browser-reuses-disabled-locale-selenium-race-despite-historical-bsa128-fix",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261107-128",
@@ -6863,7 +6863,7 @@
         "normalEntryPoints": [
           {
             "path": "scripts/run_v3_yoga6_acceptance.py",
-            "marker": "def run("
+            "marker": "str(root/\"scripts\"/\"check_v3_real_chapter9_browser.py\")"
           }
         ]
       },
@@ -6894,7 +6894,82 @@
           "marker": "test_source_candidate_browser_reuses_single_shared_guard"
         }
       ],
-      "nextAction": "BSA231 ACTIVE: historical remedy BSA128 reused in all three locale selection sites of genuine V3 Chapter9 source-bound browser. 31 local focused regressions PASS, tests cover never enabled/without rendered question/slow enabled and absence of unsafe direct call. Need strict regression contract, exact new-head GitHub CI, real owner Yoga6 normal V1\u2013V10 acceptance, immutable private V10 receipt and restart idempotence. BSA230 remains active until genuine V10 browser result; no public Git write, PR, merge or deploy."
+      "nextAction": "BSA-20261120-231 VERIFIED RESOLVED: clean source e78ac52a7ee683c006aaffb996ea32e85a7d5a4e hosted GitHub Actions #44688669609 SUCCESS; original Yoga6 normal V1-V10 source-free worker EXIT0 after genuine Chapter9 browser check and original V3 native six-bundle release. Exact 3/3 private V10 release bundle Selenium Chrome routes and 24-file SHA manifest PASS, source V9 integrity 9b6cc6e3fadd412b6eb6468e37ac016c7783d0c26500836b4ce5c06de902bd76 and V10 integrity a409e58bb29bf71ada3bda1f7101bfdc130c59c44015c5431c609423c21feab6. Prior BSA-20261107-128 async disabled locale remedy reused in original browser and proven by this live run. No public push, PR, merge or deploy. Next distinct BSA232: pinned private patch integration with read-only public main; historical C3 FAILED_LIMITED_CAMPAIGN unchanged."
+    },
+    {
+      "id": "BSA-20261120-232",
+      "class": "accepted-v10-wrote-next-public-patch-boundary-but-no-normal-private-git-rehearsal",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261120-230",
+        "BSA-20261120-231",
+        "BSA-20261120-229",
+        "BSA-20261120-228"
+      ],
+      "differenceFromLinkedIncident": "Genuine owner Yoga6 normal V1\u2013V10 EXIT0 at e78ac52 with exact CI #44688669609 and signed 3-release-Chrome receipt a409e58b; BSA230/BSA231 resolved. V10 only wrote a nextEligibleMilestone, not executable private Git integration. First actual owner Yoga6 private Git clone failed in deep per-source SHA Windows evidence directory; second private clone under short LOCALAPPDATA succeeded, with actual independent git apply --check on pinned public main eb86fe..., exactly 21 paths in sections9.1/9.2/9.6, 756429 patch bytes SHA 2548cc..., no external writes. New V11 code integrates that read-only+temporary-Git staging automatically after V10 in normal sourcefree worker, with strict signed V9/V10, 24-file SHA and exact hosted CI provenance, immutable private patch and receipt. Never merge, push, PR or deploy from this stage. Historical C3 FAILED_LIMITED_CAMPAIGN unchanged.",
+      "lastValidatedDate": "2026-11-20",
+      "applicableEnvironments": [
+        "Owner Yoga6 authorized source-free normal worker with genuine V1-V10 private 3-route Chrome evidence",
+        "Windows legacy MAX_PATH risk: clone only in short private LOCALAPPDATA folder, source evidence unchanged",
+        "Pinned existing public GitHub Pages main revision eb86fe8eb94ec33f8c0c055d2423b245e5898241",
+        "Read-only remote Git and staged local-only diff/apply with exact 21 paths in three routes",
+        "Reruns after V11 checkpoint and public HEAD race must reject changed bytes"
+      ],
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_private_public_patch_rehearsal.py",
+        "triggerMarker": "def stage_exact_private_public_patch(",
+        "remedyMarker": "V11_CHANGED_PATH_SCOPE_NOT_EXACT",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_private_public_patch_rehearsal import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_private_public_patch_rehearsal.py",
+          "kind": "python",
+          "marker": "test_three_route_private_patch_and_no_public_action"
+        },
+        {
+          "path": "tests/test_v3_private_public_patch_rehearsal.py",
+          "kind": "python",
+          "marker": "test_idempotent_restart_with_identical_patch_and_receipt"
+        },
+        {
+          "path": "tests/test_v3_private_public_patch_rehearsal.py",
+          "kind": "python",
+          "marker": "test_existing_private_patch_tamper_fails"
+        },
+        {
+          "path": "tests/test_v3_private_public_patch_rehearsal.py",
+          "kind": "python",
+          "marker": "test_public_remote_revision_drift_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_private_public_patch_rehearsal.py",
+          "kind": "python",
+          "marker": "test_extra_section_97_in_diff_is_refused"
+        },
+        {
+          "path": "tests/test_v3_private_public_patch_rehearsal.py",
+          "kind": "python",
+          "marker": "test_missing_public_route_refused"
+        },
+        {
+          "path": "tests/test_v3_private_public_patch_rehearsal.py",
+          "kind": "python",
+          "marker": "test_forged_v10_receipt_is_refused_before_remote_git"
+        },
+        {
+          "path": "tests/test_v3_private_public_patch_rehearsal.py",
+          "kind": "python",
+          "marker": "test_unrecognized_remote_git_action_not_permitted"
+        }
+      ],
+      "nextAction": "BSA232 ACTIVE: real Yoga6 local patch SHA 2548cc149463e6e706d741ea3bf0f032c6b9473cba575ad4511bf626ceae6bab 756429 bytes, git apply --check on independent clean pinned main PASS, 21 changed paths only sections9.1/9.2/9.6. All 69 related sourcefree V11 and original browser tests pass, V11 normal worker wiring installed. Need strict recurrence contract, clean new-head hosted CI, genuine Yoga6 normal V1\u2013V11 full run and signed immutable V11 receipt, patch restart check before resolved. No public PR/push/merge/deploy."
     }
   ]
 }

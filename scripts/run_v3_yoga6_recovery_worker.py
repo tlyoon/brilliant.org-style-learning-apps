@@ -876,6 +876,17 @@ def main(argv: list[str] | None = None) -> int:
                         run_private_release_browser_acceptance(
                             ROOT,private,ready,
                             result["pinnedPrivateReleaseProposal"]))
+                    # BSA232: auto-dispatch V10 success into a read-only
+                    # pinned GitHub Pages patch rehearsal. Only a local
+                    # 3-route Git diff and immutable receipt are written.
+                    from app_generator.runtime.v3_private_public_patch_rehearsal import (
+                        stage_exact_private_public_patch,
+                    )
+                    result["privatePinnedPublicPatch"]=(
+                        stage_exact_private_public_patch(
+                            ROOT,private,ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privateReleaseBrowserAcceptance"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -916,6 +927,13 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("privateReleaseBrowserAcceptance",{}).get(
                                 "realHeadlessChromeRoutesPassed")==3
                             and result.get("privateReleaseBrowserAcceptance",{}).get(
+                                "publicDeployExecuted") is False
+                            and result.get("privatePinnedPublicPatch",{}).get(
+                                "status")==
+                            "PINNED_THREE_SECTION_PRIVATE_PUBLIC_PATCH_REHEARSED_NO_PUBLIC_WRITE"
+                            and result.get("privatePinnedPublicPatch",{}).get(
+                                "changedFileCount")==21
+                            and result.get("privatePinnedPublicPatch",{}).get(
                                 "publicDeployExecuted") is False
                          )) else 3
         if args.auto_advance:

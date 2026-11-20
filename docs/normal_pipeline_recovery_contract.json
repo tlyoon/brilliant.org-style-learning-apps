@@ -165,7 +165,15 @@
     "v71V3OriginalBrowserWaitsEnabledLocaleAndRenderedQuestion": true,
     "v71DisabledOptionCannotCauseUncheckedSelectOrFalseSuccess": true,
     "v71MissingQuestionCannotCausePrematureLocaleSelection": true,
-    "v71BrowserLocaleTimeoutFailsClosedWithoutPaidReplay": true
+    "v71BrowserLocaleTimeoutFailsClosedWithoutPaidReplay": true,
+    "v71V10SuccessAutomaticallyDispatchesV11SameSourceFreeWorker": true,
+    "v71V11SourceBoundV9V10SignaturesAnd24FileManifestChecked": true,
+    "v71V11OnlyThreeModifiedRoutesAnd21PathsAccepted": true,
+    "v71V11PinnedPublicMainAndIndependentGitApplyCheck": true,
+    "v71V11LongPathRecoveryUsesShortPrivateTempGitClone": true,
+    "v71V11UnsignedPatchOrRemoteMainDriftFailsClosed": true,
+    "v71V11RestartRefusesDifferentPrivatePatchBytes": true,
+    "v71V11NoPublicGitPushMergePRCreateOrDeploy": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

@@ -262,6 +262,14 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71DisabledOptionCannotCauseUncheckedSelectOrFalseSuccess",
     "v71MissingQuestionCannotCausePrematureLocaleSelection",
     "v71BrowserLocaleTimeoutFailsClosedWithoutPaidReplay",
+    "v71V10SuccessAutomaticallyDispatchesV11SameSourceFreeWorker",
+    "v71V11SourceBoundV9V10SignaturesAnd24FileManifestChecked",
+    "v71V11OnlyThreeModifiedRoutesAnd21PathsAccepted",
+    "v71V11PinnedPublicMainAndIndependentGitApplyCheck",
+    "v71V11LongPathRecoveryUsesShortPrivateTempGitClone",
+    "v71V11UnsignedPatchOrRemoteMainDriftFailsClosed",
+    "v71V11RestartRefusesDifferentPrivatePatchBytes",
+    "v71V11NoPublicGitPushMergePRCreateOrDeploy",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
