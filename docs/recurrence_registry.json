@@ -7603,7 +7603,7 @@
     {
       "id": "BSA-20261122-243",
       "class": "historical-three-pdf-c3-campaign-improperly-promoted-to-bosla-production-source-dependency",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261121-241",
@@ -7625,7 +7625,7 @@
           },
           {
             "path": "app_generator/sources/google_drive.py",
-            "marker": "legacy_historical_multiple_pdf: bool = False"
+            "marker": "from app_generator.sources.production_source_policy import one_configured_textbook_source"
           },
           {
             "path": "app_generator/sources/manifest.py",
@@ -7662,7 +7662,7 @@
         "Old 3-topic C3 evaluator historical/read-only only; no PDF/model replay or release"
       ],
       "lastValidatedDate": "2026-11-22",
-      "nextAction": "Production code and bindings changed to use only selected topic PDF: Drive corpus default one, auto job identities no sibling, local config already one, manifest now rejects multi; versioned docs override old three-PDF release notion. Focused 36 tests+5 subtests PASS, including missing/disabled/duplicate sibling and old frozen legacy behavior. NEXT require recurrence/documentation/lint, full CI exact Git HEAD, genuine owner Yoga6 normal V1-V17 sourcefree worker and independent read-only verification of no multi-PDF production before RESOLVED. No model calls, outside PDF fetching, historic provider replay, merge or public deployment."
+      "nextAction": "BSA243 RESOLVED source-policy engineering milestone on genuine owner Yoga6 source commit 33b6eef77dcb2da7d4f78c33939e10b45b811255 with GitHub hosted exact HEAD CI #44926459238 SUCCESS and owner normal source-free worker V1-V17 EXIT0. Genuine independently verified signed V16 21e368e40f472460ff39e4f4b36f5e965a067dd7ac8b0d8752d41fc58bf233d9 and V17 434513c818c3bcf15a5fec85316dc3776a49e9e55a5d543c8770fba0f7fe9a13 preserved original C3 FAILED_LIMITED_CAMPAIGN and actual two V17 historical read-only tasks, zero paid model calls, zero source PDF downloads/reads, no publication. New BOSLA source authority enforces ONE configured PDF per topic under one textbook per course; production Google Drive discovery, downloader, coordinator job hash and manifest exclude other PDFs; existing local config already rejects >1. Fault tests cover duplicate/absent/disabled selected sources, unrelated sibling PDF invariance and immutable historical legacy inspector. Old three-PDF bounded C3 schema remains historical only. Private BSA242 outside-source preflight marked non-required; mistaken Dell isolated MicroGen_AI_Web edits reverted and never committed/pushed. No public merge/deployment or scheduler. NEXT eligible project work remains source-bound independent scientific proof on the instructor-selected textbook and non-merging release readiness, not three outside PDFs."
     }
   ]
 }
