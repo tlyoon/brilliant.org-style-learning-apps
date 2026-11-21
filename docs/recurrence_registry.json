@@ -7663,6 +7663,63 @@
       ],
       "lastValidatedDate": "2026-11-22",
       "nextAction": "BSA243 RESOLVED source-policy engineering milestone on genuine owner Yoga6 source commit 33b6eef77dcb2da7d4f78c33939e10b45b811255 with GitHub hosted exact HEAD CI #44926459238 SUCCESS and owner normal source-free worker V1-V17 EXIT0. Genuine independently verified signed V16 21e368e40f472460ff39e4f4b36f5e965a067dd7ac8b0d8752d41fc58bf233d9 and V17 434513c818c3bcf15a5fec85316dc3776a49e9e55a5d543c8770fba0f7fe9a13 preserved original C3 FAILED_LIMITED_CAMPAIGN and actual two V17 historical read-only tasks, zero paid model calls, zero source PDF downloads/reads, no publication. New BOSLA source authority enforces ONE configured PDF per topic under one textbook per course; production Google Drive discovery, downloader, coordinator job hash and manifest exclude other PDFs; existing local config already rejects >1. Fault tests cover duplicate/absent/disabled selected sources, unrelated sibling PDF invariance and immutable historical legacy inspector. Old three-PDF bounded C3 schema remains historical only. Private BSA242 outside-source preflight marked non-required; mistaken Dell isolated MicroGen_AI_Web edits reverted and never committed/pushed. No public merge/deployment or scheduler. NEXT eligible project work remains source-bound independent scientific proof on the instructor-selected textbook and non-merging release readiness, not three outside PDFs."
+    },
+    {
+      "id": "BSA-20261122-244",
+      "class": "V17_checkpoint_completed_without_independent_single_textbook_original_pdf_science_evidence_dispatch",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261122-243",
+        "BSA-20261121-241"
+      ],
+      "differenceFromLinkedIncident": "BSA243 closed the user-identified erroneous three external PDFs requirement in BOSLA on genuine Yoga6. BSA241 V17 already verifies frozen C3 history and identifies missing independent proof slots but does not read and verify the instructor-selected textbook original. BSA243 real production preflight pinned existing Serway 9.1 SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50 but never dispatched its actual 18-activity source-bound scientific audit. Historical tests already provide exact source passage verification, academic QA gap inventory, immutability and no paid request replay. BSA244 reconnects them in a genuine signed V17->V18 execution after exact-HEAD CI: read only the already selected source.pdf, prove 18 physical-page matching passage locations, six exact rational momentum identities, five bounded correct-key English answer patterns, then ACTUALLY dispatch the independent academic_coverage_gate identifying 90 not-yet-proven semantic, answer, physics, visual and translation slots. Passage existence and formula examples cannot create academic PASS. Source PDF text is not sent to providers, bundled or published; no C3 replay.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_selected_textbook_scientific_provenance.py",
+        "triggerMarker": "def run_post_v17_selected_textbook(",
+        "remedyMarker": "def _selected_textbook_academic_gap_audit(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_selected_textbook_scientific_provenance import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_selected_textbook_scientific_provenance.py",
+          "kind": "python",
+          "marker": "test_source_hash_and_passages_have_real_scope_and_no_passage_leak"
+        },
+        {
+          "path": "tests/test_v3_selected_textbook_scientific_provenance.py",
+          "kind": "python",
+          "marker": "test_activity_correct_choice_tampering_rejected"
+        },
+        {
+          "path": "tests/test_v3_selected_textbook_scientific_provenance.py",
+          "kind": "python",
+          "marker": "test_forged_independent_math_witness_rejected"
+        },
+        {
+          "path": "tests/test_v3_selected_textbook_scientific_provenance.py",
+          "kind": "python",
+          "marker": "test_gap_audit_fault_cannot_erase_prior_signed_source_result"
+        },
+        {
+          "path": "tests/test_v3_selected_textbook_scientific_provenance.py",
+          "kind": "python",
+          "marker": "test_unsigned_v17_does_not_read_original_pdf"
+        }
+      ],
+      "applicableEnvironments": [
+        "Owner Yoga6 existing Serway 9.1 source.pdf only, exact source manifest SHA",
+        "Normal source-free worker after independently signed V17 and exact GitHub CI",
+        "Private versioned V18 source location, mathematics, 90-gate academic gap results",
+        "No third-party PDF download/provider request, public merge/deploy or scheduler"
+      ],
+      "lastValidatedDate": "2026-11-22",
+      "nextAction": "ACTIVE pending hosted exact commit CI and genuine owner Yoga6 ordinary V1-V18 worker. Real standalone Yoga6 current original Serway source 9.1 SHA cdbea066... matched repo manifest, 18/18 page-localized text passages, 6 exact arithmetic momentum relationships and 5 bounded MCQ English-key patterns. The real academic_coverage_gate reports 90 still unverified independent science/visual/translation proof requirements. Synthetic fault injections test wrong source hash, wrong PDF topic, injected multiple PDF source, false physics result, wrong MCQ answer, private binding tamper, forged V17 and gap-task failure; no model/PDF upload, public release or old provider replay. NEXT exact CI, real normal V18 and signed receipt independent verification before this incident may become RESOLVED."
     }
   ]
 }

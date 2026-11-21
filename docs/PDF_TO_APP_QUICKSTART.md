@@ -16,7 +16,7 @@ Generation does **not** mean that content is approved, publishable, merged, or p
 
 ## 1. Supported source layout
 
-The generator processes one topic corpus per subchapter. Each subchapter has a primary `source.pdf`; any sibling PDFs are supplementary sources and are attached in the same fresh Gem conversation. A supported Google Drive tree looks like:
+**Single-textbook production contract (22 November 2026):** The generator processes only the one selected textbook and exactly the designated `source.pdf` for each topic/subchapter. Sibling PDFs are NOT automatically supplementary, are not downloaded or attached, and cannot change job identity. The old exactly-three-PDF C3 experiment is historical only, not a requirement for any new course. See [BOSLA single-textbook source contract](BOSLA_SINGLE_TEXTBOOK_SOURCE_CONTRACT_v1.md). A supported Google Drive tree looks like:
 
 Before reusing this workflow for a textbook from a **different discipline**, read `docs/DOMAIN_PROFILES.md`. Stage 0 now automatically classifies representative PDFs from the complete Source Root and binds the source inventory to a compatible installed profile before any generation job is claimed. A chemistry, mathematics, biology, history, or other textbook with no compatible active profile stops safely with `DOMAIN_PROFILE_REQUIRED`; onboard/activate that domain before generation. The selected profile then governs the subject-specific generation instructions. New packages record its ID/version, and validation/public release use that recorded identity; older packages without it retain default-profile compatibility.
 
@@ -33,26 +33,24 @@ Textbook-or-source-root/
 
 ### Source corpus discovery and manifest identity
 
-For an explicitly selected topic, the generator now locates the controlled
-source.pdf anchor and all sibling PDFs in a **single bounded metadata walk**
-of the configured Source Root. The optional separate textbook-domain inventory
-scan and coordinated queue scan still perform their own legitimate discovery.
-No source PDF is downloaded during metadata discovery itself.
+For an explicitly selected topic, the generator locates only the controlled
+`source.pdf` anchor in a bounded metadata walk of the configured Source Root.
+Other PDFs in the same folder are ignored, not downloaded, and not attached.
+The optional textbook-domain inventory and coordinator scan still operate
+within this same selected textbook. Metadata discovery downloads nothing.
 
-Sibling filenames are checked case-insensitively before any download, and
-ambiguous topic folder matches fail closed rather than selecting whichever
-folder happens to appear first. When validating an existing source manifest,
-the CLI doctor and normal generation path select the configured primary
-source.pdf by name, **not** the alphabetically first sibling PDF. Multi-PDF
-corpora without exactly one primary cannot be installed or reused as if the
-first supplementary PDF were primary.
+Ambiguous matching primary source files or matching topic folders fail closed.
+A missing or unavailable primary PDF is not replaced by an unrelated source.
+A generated source manifest must contain exactly one primary and no supplementary
+PDFs. Auto-mode job identity depends only on that primary PDF's file ID/version,
+so changing a sibling PDF does not trigger a regeneration.
 
-The ordering of attached source files and the existing topic-corpus
-coordinator job key remain unchanged. This prevents unnecessary requeueing of
-already completed/claimed jobs solely because of this software correction.
-All verification of the new behaviour uses synthetic metadata; this update
-does not authorize new Gemini requests, source-download retries, public release
-or re-opening a terminal campaign.
+The Yoga 6 BSA243 and BSA244 checks use the real existing Serway 9.1 `source.pdf`
+as the selected textbook: it is checksum-matched to the installed 9.1 manifest
+and supports a private passage/mathematical audit. No outside textbook PDF,
+new Gemini submission, academic final acceptance or public release is implied.
+The historical multi-PDF C3 evaluator remains available only for frozen trial
+evidence, not production.
 
 The immediate parent folder must look like `8.5`; the controlled filename is normally `source.pdf`.
 

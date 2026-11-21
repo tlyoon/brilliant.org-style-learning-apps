@@ -328,6 +328,20 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "historicalC3":"FAILED_LIMITED_CAMPAIGN",
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_selected_textbook_scientific_provenance as v18_stage,
+            )
+            v18_mock=stack.enter_context(patch.object(
+                v18_stage,"run_post_v17_selected_textbook",
+                return_value={
+                    "status":"V18_SINGLE_TEXTBOOK_REAL_PDF_EVIDENCE_VERIFIED_SCIENCE_STILL_PARTIAL",
+                    "realSingleTextbookPdfOpened":True,
+                    "nextTaskDispatchActuallyExecuted":True,
+                    "academicGapAuditReceiptSha256":"a"*64,
+                    "additionalExternalPdfsRequired":False,
+                    "newModelCalls":0,
+                    "publicationAuthorized":False,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))
@@ -344,6 +358,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             self.assertEqual(v15_mock.call_count,0 if failing else 1)
             self.assertEqual(v16_mock.call_count,0 if failing else 1)
             self.assertEqual(v17_mock.call_count,0 if failing else 1)
+            self.assertEqual(v18_mock.call_count,0 if failing else 1)
             if failing:
                 self.assertEqual(status,3)
             else:

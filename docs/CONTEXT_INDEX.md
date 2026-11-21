@@ -1,5 +1,11 @@
 # Context index
 
+## 22 November 2026 — BSA244 source-bound scientific evidence on selected textbook
+
+BSA243 superseded historical three-outside-PDF C3 requirements for BOSLA production. Next genuine Yoga 6 V18 stage operates against existing configured Serway Chapter 9.1 source.pdf only, exact source SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50. Real local preflight: 18/18 physical-page source passage anchors, six exact momentum mathematical witnesses and five bounded MCQ correct-answer patterns. Existing academic coverage gate separately reports 90 still outstanding independent proofs (18 × five gates), zero formal academic PASS. V18 signs PRE_CALL/RESULT and actually dispatches the gap task after signed V17, never fetching external PDFs, new Gemini calls, public merge/deployment. No full science/visual/multilingual/release acceptance claimed; docs/BOSLA_V18_REAL_SELECTED_TEXTBOOK_SCIENCE_PROVENANCE.md. CI and normal Yoga 6 V1–V18 pending.
+
+
+
 ## 18 November 2026 ? BSA213/214 exact GitHub CI and genuine new 108 roster accepted (source-free)
 
 Owner-authorized four new original Section9.2 index14?17 each genuine two-Gemini consensus PASS, eight role COMPLETE and eight paid calls consumed, original frozen 75/72 unchanged. Versioned sourcefree roster now reuses four genuine 9.2 + prior ten 9.6 unchanged supplemental results (14), 86 reusable unchanged source PASSES and separately corrected 9.2 index13/9.6 indices5+9 each genuine previous two-Gemini PASS. NEW unadmitted proposal SHA8afd6869... actual exact Git HEADd7d5273 108/698 Chrome PASS receipt238592b6..., GitHub hosted CI44303437538 SUCCESS, all fake SHA Linux negative controls and two-role source pins preserved. BSA213/214 RESOLVED; 19 content positions still unreviewed after supplemental, old uncertain roles no replay, no additional paid authorization, no merge/release.

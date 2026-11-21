@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261122-243 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261122-244 | ACTIVE
+
+> **22 NOV 2026 — BSA244 ACTIVE: REAL SELECTED SERWAY SOURCE SCIENCE.** Genuine Yoga6 real 9.1 source.pdf SHA cdbea066... matches single-source Git manifest; independent local on-device PDF text re-extraction found 18/18 page-specific source passages, six exact rational physics identities and five bounded MCQ key patterns. The real academic coverage gate STILL reports 90 unverified independent semantic, answer, physics, visual and multilingual proof slots; zero formal academic PASS. New V18 normal signed V17->V18 execution includes real next-task dispatch to academic gap checker, no new other PDF, no Gemini call, no release, no earlier source/provider replay. CI, normal Yoga6 V18 and independent signed receipt still pending.
 
 > **22 NOV 2026 — BSA243 SINGLE TEXTBOOK PRODUCTION SOURCE POLICY VERIFIED RESOLVED.** Exact BOSLA Yoga6 source 33b6eef77dcb2da7d4f78c33939e10b45b811255, hosted CI #44926459238 SUCCESS, actual sourcefree normal V1-V17 EXIT0, independent final V17 integrity 434513c818c3bcf15a5fec85316dc3776a49e9e55a5d543c8770fba0f7fe9a13. BOSLA production now accepts only the one configured textbook PDF per topic and never downloads or attaches unrelated three-PDF holdout corpora; related PDFs cannot alter coordinator identity. The historical C3 FAILED_LIMITED_CAMPAIGN was not reopened or reclassified. BSA242 OpenStax preflight files are still private, unadmitted and no longer required; Dell MicroGen_AI_Web was not changed. No paid calls, public merge or deployment, scientific certification or scheduler.
 

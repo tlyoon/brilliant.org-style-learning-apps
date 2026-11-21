@@ -26,6 +26,10 @@ heldout_generalization_gate.py, bounded_cross_topic_acceptance.py and bounded_ac
 
 The private BSA242 OpenStax three-PDF preflight from 22 November was exploratory only, never admitted for generation or commercial publication; it is **quarantined as non-required** for BOSLA production. It does not form part of the selected textbook, the upcoming source manifest, or a launch dependency. Do not mistake those private staging files or their licensing notes for production permission.
 
+## Next active source-science stage (BSA244, 22 November 2026)
+
+The ordinary Yoga 6 BOSLA V17-to-V18 recovery handoff must **actually** reopen the one already selected Serway 9.1 source.pdf locally, verify the installed source manifest and all 18 activity source-location anchors, run bounded exact momentum mathematical and answer-pattern witnesses, and then dispatch the real existing academic proof-gap audit within the same invocation. The source, page excerpts and generated materials must never be uploaded to another textbook provider. The initial BSA244 owner Yoga 6 standalone real proof located all 18 original source passages and passed six rational mathematical checks/five bounded answer patterns. The independent gate still has 90 unmet source/answer/physics/visual/multilingual proof slots; V18 must **not** claim full academic or commercial publication PASS. See [V18 genuine source-evidence execution](BOSLA_V18_REAL_SELECTED_TEXTBOOK_SCIENCE_PROVENANCE.md).
+
 ## Acceptance tests
 
 Source-free executable tests prove that selected source.pdf alone is chosen even when an extra question bank, duplicate sibling filename, disabled extra PDF, or outside source is present. Replacing an extra PDF never changes the production coordinator job SHA. Missing/ambiguous target fails closed; one source produces a single-source manifest; a multi-source manifest request is rejected. Hosted exact-HEAD CI and actual Yoga 6 normal worker must verify integration before declaring this correction fully closed.

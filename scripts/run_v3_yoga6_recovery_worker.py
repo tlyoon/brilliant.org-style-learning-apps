@@ -970,6 +970,22 @@ def main(argv: list[str] | None = None) -> int:
                             result["privatePinnedPublicPatch"],
                             result["privateNonmergingPrReadiness"],
                             result["publicPrSecurityAccessibilityPreflight"]))
+                    # BSA244 V18: real, private, exactly ONE selected textbook
+                    # source.pdf on Yoga6. Bind original physical-page passages
+                    # to the genuine installed 9.1 activities, test bounded
+                    # momentum mathematics, and preserve all unverified
+                    # multilingual/visual and independent science QA gates.
+                    # Never acquire/upload external PDFs or call a model.
+                    from app_generator.runtime.v3_selected_textbook_scientific_provenance import (
+                        run_post_v17_selected_textbook,
+                    )
+                    result["selectedTextbookSourceScientificProvenance"] = (
+                        run_post_v17_selected_textbook(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["scienceC3PostV16IndependentDispatch"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1088,6 +1104,22 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("scienceC3PostV16IndependentDispatch",{}).get(
                                 "historicalC3")=="FAILED_LIMITED_CAMPAIGN"
                             and result.get("scienceC3PostV16IndependentDispatch",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("selectedTextbookSourceScientificProvenance",{}).get(
+                                "status")==
+                                "V18_SINGLE_TEXTBOOK_REAL_PDF_EVIDENCE_VERIFIED_SCIENCE_STILL_PARTIAL"
+                            and result.get("selectedTextbookSourceScientificProvenance",{}).get(
+                                "realSingleTextbookPdfOpened") is True
+                            and result.get("selectedTextbookSourceScientificProvenance",{}).get(
+                                "nextTaskDispatchActuallyExecuted") is True
+                            and isinstance(result.get(
+                                "selectedTextbookSourceScientificProvenance",{}).get(
+                                "academicGapAuditReceiptSha256"),str)
+                            and result.get("selectedTextbookSourceScientificProvenance",{}).get(
+                                "additionalExternalPdfsRequired") is False
+                            and result.get("selectedTextbookSourceScientificProvenance",{}).get(
+                                "newModelCalls")==0
+                            and result.get("selectedTextbookSourceScientificProvenance",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:
