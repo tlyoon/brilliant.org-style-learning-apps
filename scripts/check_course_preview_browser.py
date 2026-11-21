@@ -221,6 +221,9 @@ def run() -> None:
                         "EXTERNAL_SELECTION_MUST_START_AS_IDLE_NOT_ERROR"
                     )
                     Select(driver.find_element(By.ID, "locale")).select_by_value(lang)
+                    assert driver.execute_script(
+                        "return document.documentElement.lang"
+                    ) == lang, "BSA239_BROWSER_DOCUMENT_LANGUAGE_MISMATCH"
                     Select(driver.find_element(By.ID, "course-select")).select_by_value("1")
                     try:
                         WebDriverWait(driver, 10).until(

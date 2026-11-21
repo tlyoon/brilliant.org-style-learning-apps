@@ -98,6 +98,7 @@ const context = {
   console,
   globalThis: null,
   document: {
+    documentElement: { lang: "en" },
     createElement: (tagName) => new FakeElement(tagName),
     querySelector: (selector) => selector === "#app" ? app : locale,
   },
@@ -135,14 +136,19 @@ setImmediate(() => {
   assert.equal(descendants(app).some((node) => node.tagName === "SVG"), false);
   assert.equal(context.__packageCodeExecuted, false);
   locale.listeners.change({ target: { value: "ms" } });
+  assert.equal(context.document.documentElement.lang, "ms");
   assert.equal(find(app, (node) => node.className === "reasoning-title").textContent,
                "Mengapa jawapan ini betul");
   assert.equal(find(app, (node) => node.className === "reasoning-text").textContent,
                "Penjelasan selepas jawapan betul.");
   locale.listeners.change({ target: { value: "zh" } });
+  assert.equal(context.document.documentElement.lang, "zh");
   assert.equal(find(app, (node) => node.className === "reasoning-text").textContent,
                "\u6b63\u786e\u4f5c\u7b54\u540e\u7684\u89e3\u91ca\u3002");
   locale.listeners.change({ target: { value: "en" } });
+  assert.equal(context.document.documentElement.lang, "en");
+  locale.listeners.change({ target: { value: "not-an-allowed-locale" } });
+  assert.equal(context.document.documentElement.lang, "en");
 
   find(app, (node) => node.id === "check").click();
   assert.equal(find(app, (node) => node.className === "eyebrow").textContent, malicious.subchapter);

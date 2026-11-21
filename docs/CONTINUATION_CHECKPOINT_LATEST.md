@@ -1,10 +1,14 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261121-238 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261121-239 | ACTIVE
+
+> **21 NOV 2026 — BSA239 REAL LOCALE ACCESSIBILITY DEFECT AND CANDIDATE FIX.** BSA237/BSA238 now VERIFIED RESOLVED after exact-head GitHub CI #44869348929 SUCCESS and authentic normal Yoga6 V1–V16 EXIT0 on 77f75f7b96206ea50359881d6c4a8eedafd4bf06; independent V15/V16 signed checks passed, draft public PR #16 remains unmerged/unpublished. New authentic Selenium browser test on existing pinned public PR found 6/9 language-tag mismatches for Malay/Chinese. Shared learner app.js fix and new normal Chrome/JS/V16 regressions implemented. Real Chrome retest with candidate-only overlay on unchanged public PR HEAD passed 9/9. NEXT exact-new-head CI and normal V1–V16 acceptance, new safe nonmerging public bundle/PR if admissible. No academic/WCAG certification, publication, paid calls or scheduler.
+
+> PREVIOUS RECOVERY CHECKPOINT: BSA-20261121-238 | RESOLVED
 
 > **21 NOV 2026 — BSA238 HISTORICAL CI QUERY RECOVERY.** Owner Yoga6 real normal V1–V16 source-free worker exited 3 after genuine 108-activity/698 Chrome QA because local feature alias yielded zero GitHub CI runs despite successful exact-source GitHub Actions #44868147691. Reuses BSA224 bounded CI-recovery contract, now queries the REQUIRED validation workflow by exact immutable commit SHA instead of local branch alias. 29 focused tests PASS; real GitHub exact-commit query proved green. **New-head CI and genuine V16 signed receipt are still pending.** No Gemini request, release, merge or scheduler; BSA237 remains active until true V16 acceptance.
 
-> PREVIOUS RECOVERY CHECKPOINT: BSA-20261121-237 | ACTIVE
+> PREVIOUS RECOVERY CHECKPOINT: BSA-20261121-237 | RESOLVED
 
 > **21 NOV 2026 — BSA237 V16 IMPLEMENTATION PENDING AUTHENTIC INTEGRATION ACCEPTANCE.** Source-free V16 signed public PR security/accessibility module integrated after V15 in normal worker, checks immutable V15 and current GitHub draft PR/base/21 paths and source-pinned clone. Real read-only standalone PR16 audit passed 54 activities across 9.1/9.2/9.6; 71 focused tests passed including mocked normal worker transition. DO NOT call this a full security/WCAG or scientific PASS. Hosted CI and genuine V1-V16 worker still needed; no merge/deploy, provider replay or scheduled task.
 

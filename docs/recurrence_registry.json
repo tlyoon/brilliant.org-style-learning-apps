@@ -7349,7 +7349,7 @@
     {
       "id": "BSA-20261121-237",
       "class": "signed-v15-checkpoint-had-no-executable-public-pr-security-accessibility-handoff",
-      "status": "active",
+      "status": "resolved",
       "regressions": [
         {
           "path": "tests/test_v3_public_pr_security_accessibility.py",
@@ -7369,10 +7369,10 @@
         {
           "path": "tests/test_v3_ci_resume.py",
           "kind": "python",
-          "marker": "self.assertEqual(v16_mock.call_count,1 if succeeded else 0)"
+          "marker": "test_normal_worker_immediately_continues_after_bounded_ci_green"
         }
       ],
-      "nextAction": "Source-pinned V16 static technical gate and normal-worker hook implemented; real PR16 exact SHA public read-only audit PASS on Yoga6, 71 focused tests PASS. Await strict repository CI and genuine new-head V1-V16 normal-worker execution before resolving incident; full security/WCAG/scientific/release gates remain unresolved, no merge, deploy or scheduler.",
+      "nextAction": "VERIFIED RESOLVED: Genuine owner Yoga6 normal V1-V16 source-free worker EXIT0 on exact clean code 77f75f7b96206ea50359881d6c4a8eedafd4bf06 and hosted Actions #44869348929 SUCCESS. Independently verified signed V15 d557bf66ef72204c23a1d536fc05829ab76c61fabdf8f0ffeb3a12742d13170e and signed V16 06561c53c238745827a022ae73597b55eaddda9e476bfd93911570454f0cbc2e for draft PR16 exact 21 paths / 54 activities, no merge/deploy, no paid Gemini calls. Next independent a11y BSA239 now active; all scientific/WCAG/release gates remain unapproved. No scheduler or verified persistent supervisor was created.",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261120-235",
@@ -7407,7 +7407,7 @@
         "BSA-20261121-237"
       ],
       "differenceFromLinkedIncident": "BSA224 repaired a legitimate GitHub CI-in-progress race with bounded polling, but the GH list query remained filtered by the LOCAL Git branch name, which can be a disposable feature alias distinct from the remote development PR branch containing the exact same commit. BSA237 ordinary production V1-V16 exited 3 with STOP_HOSTED_CI_BOUNDED_WAIT_EXHAUSTED after 16 polls despite GitHub Actions #44868147691 succeeding at source db483e4. Historical recovery did not enforce a commit-scoped, workflow-specific GitHub query. This repair queries the authenticated required CI by exact HEAD and workflow, preserving SHA, clean-tree, failure/no-replay and release gates.",
-      "status": "active",
+      "status": "resolved",
       "automaticRemedy": {
         "runtimePath": "app_generator/runtime/v3_versioned_readiness.py",
         "triggerMarker": "def _hosted_runs(",
@@ -7415,7 +7415,7 @@
         "normalEntryPoints": [
           {
             "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "from app_generator.runtime.v3_ci_resume import ("
+            "marker": "from app_generator.runtime.v3_versioned_readiness import ("
           }
         ]
       },
@@ -7447,7 +7447,59 @@
         "No paid Gemini calls, public merge, deploy, or retired scheduler"
       ],
       "lastValidatedDate": "2026-11-21",
-      "nextAction": "BSA238 code remedy and 29 focused unit tests PASS. Real gh run list --commit db483e4 -w validate.yml sees successful run #44868147691 while branch-filtered query returned []. Require exact-new-head hosted CI and actual Yoga6 V1-V16 EXIT0 with signed V16 receipt before resolving BSA238/BSA237. No release authority."
+      "nextAction": "VERIFIED RESOLVED: Genuine owner Yoga6 normal V1-V16 source-free worker EXIT0 on exact clean code 77f75f7b96206ea50359881d6c4a8eedafd4bf06 and hosted Actions #44869348929 SUCCESS. Independently verified signed V15 d557bf66ef72204c23a1d536fc05829ab76c61fabdf8f0ffeb3a12742d13170e and signed V16 06561c53c238745827a022ae73597b55eaddda9e476bfd93911570454f0cbc2e for draft PR16 exact 21 paths / 54 activities, no merge/deploy, no paid Gemini calls. Next independent a11y BSA239 now active; all scientific/WCAG/release gates remain unapproved. No scheduler or verified persistent supervisor was created."
+    },
+    {
+      "id": "BSA-20261121-239",
+      "class": "public-review-locale-switch-does-not-synchronize-html-lang",
+      "status": "active",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": [
+        "BSA-20261105-116",
+        "BSA-20261110-135",
+        "BSA-20261121-237"
+      ],
+      "differenceFromLinkedIncident": "Past learner browser/keyboard focus checks and BSA237 structural language-selector, CSS and trilingual text coverage did not verify document.documentElement.lang after a learner changes locale. Independent pinned real Chrome of public PR16 on sections 9.1, 9.2, 9.6 showed 6/9 mismatches for Malay/Chinese: the app rendered translations but retained HTML lang=en. This is separate from old focus-restoration and disabled-selector races. New shared app.js updates the HTML lang only for allowlisted en/ms/zh, and ordinary source-free real Chrome CI and V16 public release preflight reject recurrence, without modifying the public PR.",
+      "automaticRemedy": {
+        "runtimePath": "app/app.js",
+        "triggerMarker": "localeSelector.addEventListener(\"change\", (event) => {",
+        "remedyMarker": "document.documentElement.lang = requestedLocale;",
+        "normalEntryPoints": [
+          {
+            "path": "app/index.html",
+            "marker": "src=\"app.js\""
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_app_rendering.js",
+          "kind": "javascript",
+          "marker": "assert.equal(context.document.documentElement.lang, \"ms\")"
+        },
+        {
+          "path": "tests/test_app_rendering.js",
+          "kind": "javascript",
+          "marker": "assert.equal(context.document.documentElement.lang, \"zh\")"
+        },
+        {
+          "path": "tests/test_v3_public_pr_security_accessibility.py",
+          "kind": "python",
+          "marker": "test_missing_dynamic_document_language_update_is_rejected"
+        },
+        {
+          "path": "scripts/check_course_preview_browser.py",
+          "kind": "python",
+          "marker": "BSA239_BROWSER_DOCUMENT_LANGUAGE_MISMATCH"
+        }
+      ],
+      "applicableEnvironments": [
+        "Owner Yoga6 real Selenium 4.47 exact public PR #16 read-only fixture",
+        "Normal app/app.js and hosted Chrome synthetic learner preview",
+        "V16 source-pinned nonmerging public draft PR security and a11y technical gate"
+      ],
+      "lastValidatedDate": "2026-11-21",
+      "nextAction": "Real public PR16 baseline 6/9 locale tag mismatches (en on MS/ZH); candidate single-handler overlay on exact public commit 72073e1883c4ab823ca8b6491a0724c1c677dd58 achieved 9/9 real Chrome checks, with zero mismatches. Core JS, source-free real Chrome preview and 30 focused Python tests pass. NEXT exact new-head GitHub CI, real build and normal worker acceptance; do not claim public PR16 updated or semantic WCAG/science/release approval."
     }
   ]
 }

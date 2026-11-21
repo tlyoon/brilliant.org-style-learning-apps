@@ -717,7 +717,12 @@ if (typeof window !== "undefined" && window.addEventListener) {
 }
 
 localeSelector.addEventListener("change", (event) => {
-  state.locale = event.target.value;
+  const requestedLocale = event.target.value;
+  if (!["en", "ms", "zh"].includes(requestedLocale)) return;
+  state.locale = requestedLocale;
+  // BSA239: assistive technology must receive the selected language,
+  // not the static English document language from the initial HTML.
+  if (document.documentElement) document.documentElement.lang = requestedLocale;
   if (!state.loading && state.package) render();
 });
 loadPackage();

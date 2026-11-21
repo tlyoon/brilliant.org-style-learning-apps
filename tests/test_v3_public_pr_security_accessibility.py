@@ -73,7 +73,8 @@ class PublicSecurityA11yUnitTests(unittest.TestCase):
                 elif name.endswith("package.json"):
                     text = json.dumps({"status": "draft", "activities": activities})
                 elif name == "app/app.js":
-                    text = "const response = await fetch(packageUrl);\n"
+                    text = ("const response = await fetch(packageUrl);\n"
+                            "document.documentElement.lang = requestedLocale;\n")
                 elif name.endswith(".css"):
                     text = ":focus-visible {outline: 2px solid black}\n@media(prefers-reduced-motion:reduce) {}"
                 else:
@@ -108,6 +109,17 @@ class PublicSecurityA11yUnitTests(unittest.TestCase):
             target.write_text("x.innerHTML = y; fetch(packageUrl);", encoding="utf-8")
             paths = [f"{s}/{f}" for s in m._SECTIONS for f in m._FILES]
             with self.assertRaisesRegex(ValueError, "UNSAFE"):
+                m.audit_public_checkout(root, paths)
+
+    def test_missing_dynamic_document_language_update_is_rejected(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._fixture(root)
+            target = root / "section-9-2" / "app" / "app.js"
+            target.write_text("const response = await fetch(packageUrl);\n",
+                              encoding="utf-8")
+            paths = [f"{s}/{f}" for s in m._SECTIONS for f in m._FILES]
+            with self.assertRaisesRegex(ValueError, "LANGUAGE_NOT_SYNCHRONIZED"):
                 m.audit_public_checkout(root, paths)
 
     def test_no_release_side_effect_in_technical_audit(self):

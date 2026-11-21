@@ -125,6 +125,10 @@ def audit_public_checkout(checkout: Path, expected_paths: list[str]) -> dict:
                 raise ValueError("V16_POTENTIALLY_UNSAFE_DYNAMIC_JS_SINK")
         if "fetch(packageUrl)" not in parts["app/app.js"]:
             raise ValueError("V16_LOCAL_PACKAGE_FETCH_NOT_CONFIRMED")
+        # BSA239: a locale control is not accessible when translations
+        # render but the HTML document continues advertising English.
+        if "document.documentElement.lang = requestedLocale" not in parts["app/app.js"]:
+            raise ValueError("V16_TRANSLATED_DOCUMENT_LANGUAGE_NOT_SYNCHRONIZED")
         css = parts["app/styles.css"] + parts["app/domain-styles.css"]
         if ":focus-visible" not in css:
             raise ValueError("V16_KEYBOARD_FOCUS_STYLE_MISSING")
