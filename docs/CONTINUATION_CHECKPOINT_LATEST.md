@@ -1,6 +1,10 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261121-240 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261121-241 | ACTIVE
+
+> **21 NOV 2026 — BSA241 GENUINE POST-V16 SCIENCE/C3 READONLY TASK DISPATCH.** BSA240 technical automatic real AX names/roles VERIFIED RESOLVED on Yoga6 exact HEAD 86998ed790cd4fa0537715daf605fefba8733dfd, hosted CI #44886049899 SUCCESS and normal V1–V16 worker EXIT0; signed V16 00f799aa5dc8df294bdbe1dea4158c3085c251c8427ed732077c2f4afafd3294 independently verified. Historical frozen C3 reevaluated from actual manifest/results: FAILED_LIMITED_CAMPAIGN, 0 three-topic five-stage complete, two 18-activity real prior drafts and waves failure. Two old actual drafts independently passed 6 genuine Chrome AX trilingual compatibility checks; existing academic proof gate showed 36 activities x 5 = 180 missing independently source-bound proofs, 0 genuine academic PASS. New normal V16->V17 executable signed PRE_CALL/RESULT read-only dispatch and immutable original no-replay required; exact-new-head hosted CI and real Yoga6 run pending. The old unknown Gemini statuses and finite failed campaign remain unchanged. Not WCAG, science certification or publication; no merge, deploy, paid model, source PDF or retired scheduler.
+
+> PREVIOUS RECOVERY CHECKPOINT: BSA-20261121-240 | RESOLVED
 
 > **21 NOV 2026 — BSA240 ACTUAL CHROME AX NAMES/ROLES CI/V16 INTEGRATION.** Historical BSA237 structural checks and BSA239 locale correction left real Chrome AX accessible-name verification out of CI and the normal signed V16. Preliminary actual public draft PR17 AX real Chrome passed 9/9 EN/MS/ZH checks, eight named controls per view (no release verdict), private evidence digest 70781e739c50e2c1a42fde7c3c3dcc2467158743f24e6ead333d6cd8127d1648. Now integrate source-free Chrome and real fault injection into hosted CI and exact public review V16, with tests and registry; new exact-head hosted CI and actual owner Yoga6 signed V16 remain pending. Historical C3 FAILED_LIMITED_CAMPAIGN, ambiguous Gemini and independent scientific review remain unapproved. Do not merge, deploy or recreate task.
 

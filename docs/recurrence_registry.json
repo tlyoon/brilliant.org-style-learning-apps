@@ -7499,7 +7499,7 @@
     {
       "id": "BSA-20261121-240",
       "class": "real-chrome-public-review-accessibility-tree-control-name-gate-missing-from-normal-ci-and-v16",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "learner-browser",
       "relatedIncidentIds": [
         "BSA-20261110-135",
@@ -7545,7 +7545,60 @@
         "No reader-assistive human claims, no model requests, no merge/deploy/scheduler"
       ],
       "lastValidatedDate": "2026-11-21",
-      "nextAction": "Initial 21 focused tests/3 subtests PASS plus genuine source-free Chrome 9/9 multilingual AX checks; injected document-lang handler regression was rejected by real browser. Preliminary actual GitHub PR17 read-only Chrome AX 9/9 and 8 named controls per view, no unnamed controls; source-pinned evidence SHA 70781e739c50e2c1a42fde7c3c3dcc2467158743f24e6ead333d6cd8127d1648. Now integrate executable guard and assert in normal V16, verify actual PR via same new module, hosted exact-head CI, normal Yoga6 V1-V16 EXIT0 and signed receipt before resolution. Historical scientific and C3 generalization cases unchanged. No release authority."
+      "nextAction": "BSA240 genuinely RESOLVED: exact clean code 86998ed790cd4fa0537715daf605fefba8733dfd GitHub hosted Actions #44886049899 SUCCESS including source-free real Chrome 9/9 AX names/roles and fault-injected language regression rejection. Owner Yoga6 genuine normal V1\u2013V16 worker EXIT0; independent signed V15 39f08c29a6ccaacc868a122e3cc353d83b1b573d258335a9b7e8e9ec5a443472 and V16 00f799aa5dc8df294bdbe1dea4158c3085c251c8427ed732077c2f4afafd3294 hash-chain verified, source-pinned actual draft public PR17 21 files 54 activities, 9 multilingual real accessibility tree checks, no unnamed controls. Separate real GitHub PR17 BSA240 Chrome negative control in disposable clone detected the missing accessible name. Next BSA241 source-free scientific proof/C3 generalization evaluation. No WCAG certification, independent academic release, public merge, deployment, old Gemini replay or scheduled task."
+    },
+    {
+      "id": "BSA-20261121-241",
+      "class": "validated-public-pr-v16-did-not-automatically-dispatch-frozen-C3-real-evidence-and-science-gap-audits",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261118-202",
+        "BSA-20261120-236",
+        "BSA-20261121-240"
+      ],
+      "differenceFromLinkedIncident": "BSA240 real technical AX gate closed; V15 global task only searched old C3 keyword/checkpoint and V16 returned before any genuine source-bound independent unseen-PDF and academic gap re-evaluation. Historical 2026-11-04 C3 campaign remains FAILED_LIMITED_CAMPAIGN (2 authentic draft packages validated, traveling waves repairing ordering activity RESPONSE_CONTRACT_ERROR, 0/3 five-stage complete). Two archived genuine packages each 18 activities are intact and hash-match original source-bound C3 finished receipts. Generic repair diagnostics, cross-topic evaluator and academic coverage are ALREADY implemented, so no repeat development or model calls are needed to dispatch a real read-only follow-up. New V17 after signed V16 executes 2 allowlisted tasks: direct frozen manifest reevaluation + 6 actual Chrome AX locale checks on old real drafts, then 36 genuine activities x five independent academic gates missing-proof inventory, with signed PRE_CALL/RESULT/quarantine and immutable V17. Old 2-round campaign never reopened; source PDFs and unknown old provider roles never re-sent.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_science_c3_independent_dispatch.py",
+        "triggerMarker": "def run_post_v16_science_c3(",
+        "remedyMarker": "V17_REAL_SCIENCE_C3_GAP_AUDITS_EXECUTED_NO_RELEASE",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_science_c3_independent_dispatch import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_science_c3_independent_dispatch.py",
+          "kind": "python",
+          "marker": "test_true_signed_v16_required"
+        },
+        {
+          "path": "tests/test_v3_science_c3_independent_dispatch.py",
+          "kind": "python",
+          "marker": "test_forged_v16_blocks_all_actual_tasks"
+        },
+        {
+          "path": "tests/test_v3_science_c3_independent_dispatch.py",
+          "kind": "python",
+          "marker": "test_normal_dispatch_writes_real_signed_pre_and_result_receipts"
+        },
+        {
+          "path": "tests/test_v3_science_c3_independent_dispatch.py",
+          "kind": "python",
+          "marker": "test_one_task_error_quarantines_but_dispatches_other"
+        }
+      ],
+      "applicableEnvironments": [
+        "Yoga6 normal source-free V1-V17 after exact hosted CI",
+        "Frozen C3 2026-11-04 original manifest/results and archived 92_1/92_2 packages",
+        "Read-only live Chrome locale AX, exact 36-activity academic gap validator",
+        "No original PDF, paid Gemini call, frozen campaign replay, public merge/deploy or scheduler"
+      ],
+      "lastValidatedDate": "2026-11-21",
+      "nextAction": "V17 read-only task handlers preflight authentic frozen C3 and two original package hashes; 0/3 five-stage original cases PASS and two archived packages real Chrome 6/6, plus 180 independently unverified academic proof instances for 36 activities, 0 formal PASS. 19 focused V17+V16 tests/4 subtests pass. Require new exact GitHub CI, owner Yoga6 normal V1-V17 EXIT0, actual signed V17 PRE_CALL+RESULT for both and preserved C3 failed status before closing. Then select genuinely distinct rights-cleared unseen future sources and independently source-bound scientific checks, never third replay of original frozen two-round campaign."
     }
   ]
 }

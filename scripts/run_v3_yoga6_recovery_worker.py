@@ -955,6 +955,21 @@ def main(argv: list[str] | None = None) -> int:
                             result["scopedPublicDraftPr"],
                             result["independentPublicPrBrowserAcceptance"],
                             result["globalReadonlyRoadmapHandoff"]))
+                    # BSA241/V17: genuine V16 receipt dispatches two separate,
+                    # source-free READONLY tasks on frozen C3 historical evidence:
+                    # actual replay-safe manifest gate and real archived-draft
+                    # Chrome+academic proof-gap audit. Never redo original PDF,
+                    # paid provider, failed campaign or release operations.
+                    from app_generator.runtime.v3_science_c3_independent_dispatch import (
+                        run_post_v16_science_c3,
+                    )
+                    result["scienceC3PostV16IndependentDispatch"] = (
+                        run_post_v16_science_c3(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["publicPrSecurityAccessibilityPreflight"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1063,6 +1078,17 @@ def main(argv: list[str] | None = None) -> int:
                                 "publicMergeExecuted") is False
                             and result.get("publicPrSecurityAccessibilityPreflight",{}).get(
                                 "publicDeployExecuted") is False
+                            and result.get("scienceC3PostV16IndependentDispatch",{}).get(
+                                "status")==
+                                "V17_REAL_SCIENCE_C3_GAP_AUDITS_EXECUTED_NO_RELEASE"
+                            and result.get("scienceC3PostV16IndependentDispatch",{}).get(
+                                "taskDispatchActuallyExecuted") is True
+                            and result.get("scienceC3PostV16IndependentDispatch",{}).get(
+                                "quarantinedTaskIds")==[]
+                            and result.get("scienceC3PostV16IndependentDispatch",{}).get(
+                                "historicalC3")=="FAILED_LIMITED_CAMPAIGN"
+                            and result.get("scienceC3PostV16IndependentDispatch",{}).get(
+                                "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:
             ready = plan_v3_course_review(
