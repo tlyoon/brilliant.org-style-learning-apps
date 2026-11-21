@@ -26,6 +26,58 @@ from app_generator.runtime import v3_public_pr_security_accessibility as v16_sta
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
+class ExactCommitHostedCiQueryTests(unittest.TestCase):
+    """BSA238: CI on a differently named GitHub branch remains discoverable."""
+
+    def setUp(self):
+        self.head="a"*40
+        self.local="feature/local-audit-alias"
+        self.green={"headSha":self.head,"status":"completed",
+                    "conclusion":"success","databaseId":71}
+
+    def test_alias_branch_queries_exact_commit_required_workflow(self):
+        from subprocess import CompletedProcess
+        import json
+        with patch.object(actual,"_git_info",return_value=(
+                 self.head,self.local)),patch.object(
+                 actual.subprocess,"run",return_value=CompletedProcess(
+                 [],0,stdout=json.dumps([self.green]))) as gh:
+            runs=actual._hosted_runs(Path("."),self.local)
+        argv=gh.call_args.args[0]
+        self.assertIn("-c",argv)
+        self.assertEqual(argv[argv.index("-c")+1],self.head)
+        self.assertEqual(argv[argv.index("-w")+1],"validate.yml")
+        self.assertNotIn("-b",argv)
+        self.assertTrue(actual._exact_ci_success(runs,self.head))
+
+    def test_branch_identity_mismatch_prevents_remote_read(self):
+        with patch.object(actual,"_git_info",return_value=(
+             self.head,self.local)),patch.object(
+             actual.subprocess,"run") as gh:
+            self.assertEqual(actual._hosted_runs(
+                Path("."),"feature/unknown-other"),[])
+        gh.assert_not_called()
+
+    def test_wrong_sha_success_cannot_admit_CI(self):
+        from subprocess import CompletedProcess
+        import json
+        fake={**self.green,"headSha":"f"*40}
+        with patch.object(actual,"_git_info",return_value=(
+             self.head,self.local)),patch.object(
+             actual.subprocess,"run",return_value=CompletedProcess(
+             [],0,stdout=json.dumps([fake]))):
+            runs=actual._hosted_runs(Path("."),self.local)
+        self.assertFalse(actual._exact_ci_success(runs,self.head))
+
+    def test_failed_GitHub_query_fails_closed(self):
+        from subprocess import CompletedProcess
+        with patch.object(actual,"_git_info",return_value=(
+             self.head,self.local)),patch.object(
+             actual.subprocess,"run",return_value=CompletedProcess(
+             [],1,stdout="")):
+            self.assertEqual(actual._hosted_runs(Path("."),self.local),[])
+
+
 class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
     def setUp(self):
         folder=TemporaryDirectory()

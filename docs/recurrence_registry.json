@@ -7396,6 +7396,58 @@
         "Source-pinned GitHub draft PR16 21-file review branch",
         "No merge, deploy, paid model calls or scheduler"
       ]
+    },
+    {
+      "id": "BSA-20261121-238",
+      "class": "exact-head-hosted-ci-false-wait-from-local-branch-alias",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261119-224",
+        "BSA-20261120-236",
+        "BSA-20261121-237"
+      ],
+      "differenceFromLinkedIncident": "BSA224 repaired a legitimate GitHub CI-in-progress race with bounded polling, but the GH list query remained filtered by the LOCAL Git branch name, which can be a disposable feature alias distinct from the remote development PR branch containing the exact same commit. BSA237 ordinary production V1-V16 exited 3 with STOP_HOSTED_CI_BOUNDED_WAIT_EXHAUSTED after 16 polls despite GitHub Actions #44868147691 succeeding at source db483e4. Historical recovery did not enforce a commit-scoped, workflow-specific GitHub query. This repair queries the authenticated required CI by exact HEAD and workflow, preserving SHA, clean-tree, failure/no-replay and release gates.",
+      "status": "active",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_versioned_readiness.py",
+        "triggerMarker": "def _hosted_runs(",
+        "remedyMarker": "-w\",\"validate.yml",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_ci_resume import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_alias_branch_queries_exact_commit_required_workflow"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_branch_identity_mismatch_prevents_remote_read"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_wrong_sha_success_cannot_admit_CI"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "test_failed_GitHub_query_fails_closed"
+        }
+      ],
+      "applicableEnvironments": [
+        "Yoga6 authorized normal source-free worker with local feature alias",
+        "GitHub authenticated exact-commit Validate repository workflow",
+        "No paid Gemini calls, public merge, deploy, or retired scheduler"
+      ],
+      "lastValidatedDate": "2026-11-21",
+      "nextAction": "BSA238 code remedy and 29 focused unit tests PASS. Real gh run list --commit db483e4 -w validate.yml sees successful run #44868147691 while branch-filtered query returned []. Require exact-new-head hosted CI and actual Yoga6 V1-V16 EXIT0 with signed V16 receipt before resolving BSA238/BSA237. No release authority."
     }
   ]
 }

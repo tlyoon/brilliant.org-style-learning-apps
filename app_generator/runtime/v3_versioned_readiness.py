@@ -46,17 +46,26 @@ def _git_clean(repo:Path)->bool:
 
 
 def _hosted_runs(repo:Path,branch:str)->list[dict]:
-    # A missing/failed hosted query is an explicit CI boundary, not a PASS.
+    # BSA238: querying CI by a local feature alias misses the genuine push
+    # workflow on an identical commit published to a different review branch.
+    # Use the *exact local commit* and the REQUIRED validation workflow, then
+    # _exact_ci_success independently checks SHA, conclusion and run identity.
+    # No CI result, HTTP error or missing workflow may be interpreted as PASS.
     try:
+        head,local_branch=_git_info(repo)
+        if branch!=local_branch:
+            return []
         proc=subprocess.run(
-            ["gh","run","list","-R",_REPO,"-b",branch,
-             "-L","10","--json","headSha,status,conclusion,databaseId,url"],
+            ["gh","run","list","-R",_REPO,"-c",head,
+             "-w","validate.yml","-L","10","--json",
+             "headSha,status,conclusion,databaseId,url"],
             cwd=repo,capture_output=True,text=True,timeout=30,check=False)
         if proc.returncode!=0:
             return []
         data=json.loads(proc.stdout)
         return data if isinstance(data,list) else []
-    except (OSError,ValueError,subprocess.TimeoutExpired):
+    except (OSError,ValueError,subprocess.TimeoutExpired,
+            subprocess.CalledProcessError):
         return []
 
 

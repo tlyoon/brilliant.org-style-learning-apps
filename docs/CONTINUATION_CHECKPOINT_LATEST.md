@@ -1,6 +1,10 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261121-237 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261121-238 | ACTIVE
+
+> **21 NOV 2026 — BSA238 HISTORICAL CI QUERY RECOVERY.** Owner Yoga6 real normal V1–V16 source-free worker exited 3 after genuine 108-activity/698 Chrome QA because local feature alias yielded zero GitHub CI runs despite successful exact-source GitHub Actions #44868147691. Reuses BSA224 bounded CI-recovery contract, now queries the REQUIRED validation workflow by exact immutable commit SHA instead of local branch alias. 29 focused tests PASS; real GitHub exact-commit query proved green. **New-head CI and genuine V16 signed receipt are still pending.** No Gemini request, release, merge or scheduler; BSA237 remains active until true V16 acceptance.
+
+> PREVIOUS RECOVERY CHECKPOINT: BSA-20261121-237 | ACTIVE
 
 > **21 NOV 2026 — BSA237 V16 IMPLEMENTATION PENDING AUTHENTIC INTEGRATION ACCEPTANCE.** Source-free V16 signed public PR security/accessibility module integrated after V15 in normal worker, checks immutable V15 and current GitHub draft PR/base/21 paths and source-pinned clone. Real read-only standalone PR16 audit passed 54 activities across 9.1/9.2/9.6; 71 focused tests passed including mocked normal worker transition. DO NOT call this a full security/WCAG or scientific PASS. Hosted CI and genuine V1-V16 worker still needed; no merge/deploy, provider replay or scheduled task.
 
