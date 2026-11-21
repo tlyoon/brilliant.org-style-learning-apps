@@ -7495,6 +7495,57 @@
       ],
       "lastValidatedDate": "2026-11-21",
       "nextAction": "BSA239 VERIFIED RESOLVED: source-bound development commit 3e5e75799b2d831603e2694524a22aa6b1cfa8a1 passed GitHub Actions #44870773376 (full unit and real browser CI), owner Yoga6 genuine ordinary V1-V16 EXIT0, signed V15 6a1d3431db3058c7ee18c397b912afb4c892d47645bd6de4ba2284249ae065a1 and V16 08545511758631953818962444fb8fde79441e675c072c04c7711246ce3752c2 independently verified. New draft public PR17 remains open/unmerged, unchanged base and review branch head 1ee0ddc29c163c9434e40585e79731befc9b3269 for exactly 21 paths and 54 activities. Independent *actual PR17* Chrome switched EN/MS/ZH on sections 9.1/9.2/9.6 with 9/9 document language matches; 6/9 baseline mismatches on old PR16 were independently reproduced. Structural JS/Chrome and V16 fail-closed checks now integrated in executable normal pipeline. Next independently eligible accessibility and academic release evidence work; historical C3 FAILED_LIMITED_CAMPAIGN and old provider/no-replay scientific blocks preserved. No public merge, deployment, paid request, retired scheduler or cross-session supervisor."
+    },
+    {
+      "id": "BSA-20261121-240",
+      "class": "real-chrome-public-review-accessibility-tree-control-name-gate-missing-from-normal-ci-and-v16",
+      "status": "active",
+      "rootCauseFamily": "learner-browser",
+      "relatedIncidentIds": [
+        "BSA-20261110-135",
+        "BSA-20261121-237",
+        "BSA-20261121-239"
+      ],
+      "differenceFromLinkedIncident": "BSA237 static V16 checked HTML landmarks, ARIA locale label and CSS but not actual Chrome Accessibility.getFullAXTree names/roles. BSA239 fixed document.lang after MS/ZH switches but did not require that every interactive control has a nonempty exposed accessible name, or that missing names and real language regression are fault-rejected in normal hosted CI and V16. Independent read-only pinned actual PR17 Chrome AX preliminary preflight had 3 routes x 3 locales, 8 named controls per view, no unnamed controls; separate source-free CI integration is still mandatory.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_public_pr_accessibility_tree.py",
+        "triggerMarker": "def audit_real_chrome_accessibility_tree(",
+        "remedyMarker": "BSA240_UNNAMED_ACCESSIBLE_CONTROL",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/check_accessibility_tree_browser.py",
+            "marker": "from app_generator.runtime.v3_public_pr_accessibility_tree import ("
+          },
+          {
+            "path": "app_generator/runtime/v3_public_pr_security_accessibility.py",
+            "marker": "from app_generator.runtime.v3_public_pr_accessibility_tree import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_public_pr_accessibility_tree.py",
+          "kind": "python",
+          "marker": "test_missing_select_label_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_public_pr_accessibility_tree.py",
+          "kind": "python",
+          "marker": "test_empty_button_name_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_public_pr_accessibility_tree.py",
+          "kind": "python",
+          "marker": "test_symlink_and_path_escape_forbidden_before_any_browser"
+        }
+      ],
+      "applicableEnvironments": [
+        "Normal hosted validate.yml CI source-free synthetic actual Chrome with negative control",
+        "Owner Yoga6 normal V15\u2192V16 draft PR17 exact pinned source-dependent AX",
+        "No reader-assistive human claims, no model requests, no merge/deploy/scheduler"
+      ],
+      "lastValidatedDate": "2026-11-21",
+      "nextAction": "Initial 21 focused tests/3 subtests PASS plus genuine source-free Chrome 9/9 multilingual AX checks; injected document-lang handler regression was rejected by real browser. Preliminary actual GitHub PR17 read-only Chrome AX 9/9 and 8 named controls per view, no unnamed controls; source-pinned evidence SHA 70781e739c50e2c1a42fde7c3c3dcc2467158743f24e6ead333d6cd8127d1648. Now integrate executable guard and assert in normal V16, verify actual PR via same new module, hosted exact-head CI, normal Yoga6 V1-V16 EXIT0 and signed receipt before resolution. Historical scientific and C3 generalization cases unchanged. No release authority."
     }
   ]
 }

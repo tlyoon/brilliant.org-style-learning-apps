@@ -1,6 +1,10 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261121-239 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261121-240 | ACTIVE
+
+> **21 NOV 2026 — BSA240 ACTUAL CHROME AX NAMES/ROLES CI/V16 INTEGRATION.** Historical BSA237 structural checks and BSA239 locale correction left real Chrome AX accessible-name verification out of CI and the normal signed V16. Preliminary actual public draft PR17 AX real Chrome passed 9/9 EN/MS/ZH checks, eight named controls per view (no release verdict), private evidence digest 70781e739c50e2c1a42fde7c3c3dcc2467158743f24e6ead333d6cd8127d1648. Now integrate source-free Chrome and real fault injection into hosted CI and exact public review V16, with tests and registry; new exact-head hosted CI and actual owner Yoga6 signed V16 remain pending. Historical C3 FAILED_LIMITED_CAMPAIGN, ambiguous Gemini and independent scientific review remain unapproved. Do not merge, deploy or recreate task.
+
+> PREVIOUS RECOVERY CHECKPOINT: BSA-20261121-239 | RESOLVED
 
 > **21 NOV 2026 — BSA239 GENUINE END-TO-END ACCESSIBILITY REPAIR ACCEPTED.** Exact clean source 3e5e75799b2d831603e2694524a22aa6b1cfa8a1 passed hosted Actions #44870773376 SUCCESS and authentic owner Yoga6 normal source-free V1–V16 EXIT0. Signed V15 6a1d3431db3058c7ee18c397b912afb4c892d47645bd6de4ba2284249ae065a1 and V16 08545511758631953818962444fb8fde79441e675c072c04c7711246ce3752c2 verified by separate hash-chain checker, now pointing to new OPEN/DRAFT/unmerged PR #17, exact 21 source-bound paths/54 activities, public head 1ee0ddc29c163c9434e40585e79731befc9b3269. Independent actual GitHub PR17 Selenium browser tested 9/9 EN/MS/ZH locale switches across changed sections 9.1, 9.2, 9.6 with zero HTML lang mismatches (old PR16 had 6 mismatches). Never merged/deployed, no new paid calls, old PR16 preserved. This technical accessibility milestone is not full WCAG, independent scientific semantics, learner pilot or release admission. Next independently eligible accessibility/academic evidence; historical C3 and provider no-replay blocks remain authoritative.
 

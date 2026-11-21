@@ -26,6 +26,9 @@ from app_generator.runtime.v3_public_pr_independent_browser_acceptance import (
 from app_generator.runtime.v3_global_post_pr_readonly_roadmap import (
     _V15, _STATUS as _V15_STATUS,
 )
+from app_generator.runtime.v3_public_pr_accessibility_tree import (
+    audit_real_chrome_accessibility_tree,
+)
 
 _V16 = "V16_PR_SECURITY_ACCESSIBILITY_PREFLIGHT.json"
 _STATUS = "SOURCE_PINNED_PR_SECURITY_A11Y_TECHNICAL_PREFLIGHT_NO_RELEASE"
@@ -194,6 +197,19 @@ def run_public_pr_security_accessibility(
         if sha != v13["publicReviewBranchSha"]:
             raise ValueError("V16_PUBLIC_CLONE_HEAD_CHANGED")
         audit = audit_public_checkout(checkout, paths)
+        # BSA240: source-bound independent AX tree of the ACTUAL review
+        # bundle, beyond V16's earlier lexical selector/ARIA checks.
+        ax_pages = tuple((f"{s}/index.html", "") for s in _SECTIONS)
+        ax = audit_real_chrome_accessibility_tree(checkout, ax_pages)
+        if (ax.get("pagesAudited") != 3
+                or ax.get("localeAccessibilityTreeChecks") != 9
+                or ax.get("unnamedControls") != 0
+                or ax.get("documentLanguageMatches") != 9
+                or ax.get("minimumNamedControls", 0) < 2
+                or ax.get("fullScreenReaderWCAGCertification") is not False
+                or ax.get("publicationAuthorized") is not False):
+            raise ValueError("V16_BSA240_REAL_AX_TREE_INCOMPLETE_OR_UNNAMED")
+        audit["realChromeAccessibilityTree"] = ax
     payload = {
         "contract": "BOSLA_V16_SOURCE_PINNED_PR_SECURITY_A11Y_PREFLIGHT",
         "status": _STATUS,

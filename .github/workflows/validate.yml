@@ -74,6 +74,8 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Source-free real Chrome instructor preview smoke
         run: python scripts/check_course_preview_browser.py
+      - name: BSA240 source-free real Chrome accessibility-tree and fault-injection gate
+        run: python scripts/check_accessibility_tree_browser.py
       - name: Independent RC1 source-free routing Chrome smoke
         run: python scripts/check_rc1_routing_browser.py
       - name: RC1 actual player event and provisional Chapter 9 route smoke
