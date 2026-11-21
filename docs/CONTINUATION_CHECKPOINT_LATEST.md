@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261122-244 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261122-244 | RESOLVED
+
+> **22 NOV 2026 — BSA244 VERIFIED REAL SINGLE TEXTBOOK V18 RESOLVED.** On owner Yoga6 b91a2268e2a29a4d9066505139eb542b80550160 hosted CI #44962279010 SUCCESS, normal V1-V18 EXIT0, signed V18 b0b4f7447ffa221e1ce8a5c67be1f531e2cbbbce0f3e9b9fb62f54f3f57fc953. The sole existing Serway 9.1 source.pdf and 18 activities were truly locally audited: 18 unique passage locations, six exact momentum arithmetic identities and five bounded MCQ English key patterns. In the same execution, real academic gate independently reported 90 still-unproven gate instances/0 formal academic PASS. Old C3 failure and incomplete independent science/visual/translation acceptance preserved. No extra PDFs, provider calls, merge, deployment or scheduler.
 
 > **22 NOV 2026 — BSA244 ACTIVE: REAL SELECTED SERWAY SOURCE SCIENCE.** Genuine Yoga6 real 9.1 source.pdf SHA cdbea066... matches single-source Git manifest; independent local on-device PDF text re-extraction found 18/18 page-specific source passages, six exact rational physics identities and five bounded MCQ key patterns. The real academic coverage gate STILL reports 90 unverified independent semantic, answer, physics, visual and multilingual proof slots; zero formal academic PASS. New V18 normal signed V17->V18 execution includes real next-task dispatch to academic gap checker, no new other PDF, no Gemini call, no release, no earlier source/provider replay. CI, normal Yoga6 V18 and independent signed receipt still pending.
 

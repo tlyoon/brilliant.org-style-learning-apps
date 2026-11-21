@@ -7667,7 +7667,7 @@
     {
       "id": "BSA-20261122-244",
       "class": "V17_checkpoint_completed_without_independent_single_textbook_original_pdf_science_evidence_dispatch",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261122-243",
@@ -7719,7 +7719,7 @@
         "No third-party PDF download/provider request, public merge/deploy or scheduler"
       ],
       "lastValidatedDate": "2026-11-22",
-      "nextAction": "ACTIVE pending hosted exact commit CI and genuine owner Yoga6 ordinary V1-V18 worker. Real standalone Yoga6 current original Serway source 9.1 SHA cdbea066... matched repo manifest, 18/18 page-localized text passages, 6 exact arithmetic momentum relationships and 5 bounded MCQ English-key patterns. The real academic_coverage_gate reports 90 still unverified independent science/visual/translation proof requirements. Synthetic fault injections test wrong source hash, wrong PDF topic, injected multiple PDF source, false physics result, wrong MCQ answer, private binding tamper, forged V17 and gap-task failure; no model/PDF upload, public release or old provider replay. NEXT exact CI, real normal V18 and signed receipt independent verification before this incident may become RESOLVED."
+      "nextAction": "BSA244 RESOLVED on exact owner Yoga6 BOSLA source b91a2268e2a29a4d9066505139eb542b80550160 hosted CI #44962279010 SUCCESS, normal V1-V18 exit0 and independently verified signed V18 b0b4f7447ffa221e1ce8a5c67be1f531e2cbbbce0f3e9b9fb62f54f3f57fc953 chained to genuine V17 041ecde13e69c9bff25942ed15c35f6d2a3fa57b153c65b721ed984318b7ee94. Existing selected Serway 9.1 source.pdf SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50 alone verified 18 physical-page original passage locators, six exact rational momentum identities and five bounded English MCQ correct-answer patterns. Real same-run separately dispatched the existing independent academic_coverage_gate: 90 still-unverified science, answer, source, visuals and multilingual proof instances for the original 18 activities, zero formal academic PASS. Source text presence does not prove scientific interpretation. Original C3 FAILED_LIMITED_CAMPAIGN remains immutable; no extra external PDFs, new model calls, uncertain claim replay, public merge/deployment, or scheduler. NEXT independent scientific semantic, visual and trilingual verification on selected textbook with claim reconciliation and legitimate source permission."
     }
   ]
 }

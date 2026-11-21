@@ -90,7 +90,7 @@ class SourceFixture(TestCase):
                 {}, {}, {}, self.v17)
 
 
-class OneSelectedTextbookProofTests(SourceFixture):
+class OneSelectedTextbookProofTests(SourceFixture, TestCase):
     def test_source_hash_and_passages_have_real_scope_and_no_passage_leak(self):
         result = self.verify()
         self.assertEqual(result["pageSpecificSourceLocationsVerified"],18)
