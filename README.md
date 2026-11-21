@@ -2,6 +2,8 @@
 
 A reusable foundation for interactive, concept-first learning packages generated from instructor-provided source material.
 
+**BOSLA production source authority (22 Nov 2026):** one instructor-selected textbook per course, with exactly one selected PDF input for each topic. The generator MUST NOT acquire three external PDFs or combine sibling PDFs to supplement source material. See docs/BOSLA_SINGLE_TEXTBOOK_SOURCE_CONTRACT_v1.md. BOSLA runs on Yoga 6; MicroGen_AI_Web is a separate project.
+
 ## Pilot
 
 The first pilot uses undergraduate physics source material, but the generator/runtime are intended to be reusable across subjects and textbook projects. Under the current learning-app contract, each complete subchapter contains 18 calculator-free activities:

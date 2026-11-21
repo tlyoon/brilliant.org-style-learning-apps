@@ -2,6 +2,10 @@
 
 **Repository:** `tlyoon/brilliant.org-style-learning-apps`, consolidated draft [PR #223](https://github.com/tlyoon/brilliant.org-style-learning-apps/pull/223).
 
+## Historical-only scope (22 November 2026 amendment)
+
+This bounded exactly-three-case format belongs **only to the frozen 5 November 2026 C3 evidence campaign**. It is NOT a current BOSLA production prerequisite or an automatic requirement for any future textbook. Future BOSLA generation uses exactly one selected textbook PDF per topic. Three external PDFs must not be downloaded or required to advance production or release. Keep historical receipts and this finite evaluator immutable; see docs/BOSLA_SINGLE_TEXTBOOK_SOURCE_CONTRACT_v1.md.
+
 ## Goal and finite stopping condition
 
 Connect the existing source-free learner-coverage and academic-coverage gates in **one one-shot three-topic evidence audit** that reports exactly what was observed and what is missing. No PDF replay, no Gemini/ChatGPT call, no online browser automation, no new held-out C3 campaign, no per-PDF corrections, no merge and no publication.

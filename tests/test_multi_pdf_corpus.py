@@ -14,6 +14,7 @@ from app_generator.sources.google_drive import (
     topic_corpus_job_key,
 )
 from app_generator.sources.local_sources import inspect_sources
+from app_generator.sources.production_source_policy import one_configured_textbook_source
 from app_generator.sources.manifest import (
     build_manifest, load_existing_manifest, select_primary_source,
 )
@@ -46,13 +47,14 @@ class FakeDrive:
 
 
 class MultiPdfCorpusTests(unittest.TestCase):
-    def test_topic_corpus_includes_all_sibling_pdfs(self):
+    def test_frozen_legacy_corpus_can_be_inspected_without_becoming_production(self):
         corpus = discover_topic_corpus(
             FakeDrive(),
             sourcepath="root123456789",
             pdf_subchapter_path="8.2",
             target_filename="source.pdf",
             max_folders=20,
+            legacy_historical_multiple_pdf=True,
         )
         self.assertEqual(
             ["question-bank.pdf", "source.pdf"],
@@ -61,7 +63,7 @@ class MultiPdfCorpusTests(unittest.TestCase):
         self.assertEqual(corpus[0].subchapter_id, "8.2")
         self.assertNotEqual(topic_corpus_job_key(corpus), topic_corpus_job_key(corpus[:1]))
 
-    def test_supplementary_pdf_change_changes_auto_corpus_identity(self):
+    def test_supplementary_pdf_change_does_not_change_production_identity(self):
         before = discover_topic_corpus(
             FakeDrive("bbb"), sourcepath="root123456789", pdf_subchapter_path="8.2",
             target_filename="source.pdf", max_folders=20,
@@ -70,7 +72,8 @@ class MultiPdfCorpusTests(unittest.TestCase):
             FakeDrive("ccc"), sourcepath="root123456789", pdf_subchapter_path="8.2",
             target_filename="source.pdf", max_folders=20,
         )
-        self.assertNotEqual(topic_corpus_job_key(before), topic_corpus_job_key(after))
+        self.assertEqual(topic_corpus_job_key(before), topic_corpus_job_key(after),
+                         "A sibling PDF must not alter production topic identity")
 
     def test_auto_inventory_binds_full_corpus_key_in_one_source_discovery(self):
         inventory = discover_drive_sources_with_corpus_keys(
@@ -81,7 +84,11 @@ class MultiPdfCorpusTests(unittest.TestCase):
             target_filename="source.pdf", max_folders=20,
         )
         self.assertEqual(1, len(inventory))
-        self.assertEqual(topic_corpus_job_key(corpus), inventory[0].job_key)
+        self.assertEqual(
+            topic_corpus_job_key(one_configured_textbook_source(corpus, target_filename="source.pdf")),
+            inventory[0].job_key,
+            "Production identity must exclude unrelated sibling PDFs",
+        )
 
     def test_targeted_corpus_uses_one_root_traversal_and_same_auto_key(self):
         class CountedDrive(FakeDrive):
@@ -110,7 +117,7 @@ class MultiPdfCorpusTests(unittest.TestCase):
         )
         self.assertEqual(1, client.root_calls)
         expected = hashlib.sha256(
-            b"bankfile12345:bbb\nprimaryfile123:aaa"
+            b"primaryfile123:aaa"
         ).hexdigest()
         self.assertEqual(expected, topic_corpus_job_key(corpus),
                          "Existing coordinator/lease job keys must be unchanged")
@@ -142,13 +149,14 @@ class MultiPdfCorpusTests(unittest.TestCase):
                       pdf_subchapter_path="8.2", target_filename="source.pdf",
                       max_folders=20)
         with self.assertRaisesRegex(SourceAmbiguous, "case-insensitively"):
-            discover_topic_corpus(client, **kwargs)
-        with self.assertRaisesRegex(SourceAmbiguous, "case-insensitively"):
-            discover_drive_sources_with_corpus_keys(
-                client, sourcepath=kwargs["sourcepath"],
-                target_filename=kwargs["target_filename"],
-                max_folders=kwargs["max_folders"],
-            )
+            discover_topic_corpus(client, **kwargs, legacy_historical_multiple_pdf=True)
+        inventory = discover_drive_sources_with_corpus_keys(
+            client, sourcepath=kwargs["sourcepath"],
+            target_filename=kwargs["target_filename"],
+            max_folders=kwargs["max_folders"],
+        )
+        self.assertEqual([item.filename for item in inventory], ["source.pdf"],
+                         "Legacy sibling alias must not block the single-textbook production source")
 
     def test_disabled_supplementary_pdf_and_missing_anchor_fail_closed(self):
         client = FakeDrive()
@@ -157,11 +165,20 @@ class MultiPdfCorpusTests(unittest.TestCase):
             DriveItem("blockedbank123", "question-bank.pdf", PDF_MIME,
                       can_download=False),
         )
+        # Production must ignore an unavailable unrelated sibling.
+        self.assertEqual(
+            [x.filename for x in discover_topic_corpus(
+                client, sourcepath="root123456789",
+                pdf_subchapter_path="8.2", target_filename="source.pdf",
+                max_folders=20,
+            )], ["source.pdf"],
+        )
+        # Frozen legacy experiment still reports its original limitation.
         with self.assertRaises(SourceDownloadError):
             discover_topic_corpus(
                 client, sourcepath="root123456789",
                 pdf_subchapter_path="8.2", target_filename="source.pdf",
-                max_folders=20,
+                max_folders=20, legacy_historical_multiple_pdf=True,
             )
         with self.assertRaises(SourceNotFound):
             discover_topic_corpus(
@@ -195,7 +212,9 @@ class MultiPdfCorpusTests(unittest.TestCase):
                 learning_boundary="bounded", reviewer="pending",
                 rights_note="synthetic", drive_file_id=None,
             )
-            manifest = build_manifest(config, sources)
+            with self.assertRaisesRegex(RepositoryCompatibilityError, "EXACTLY_ONE_SELECTED_PDF"):
+                build_manifest(config, sources)
+            manifest = build_manifest(config, (selected,))
             path = root / "source-manifest.json"
             import json
             path.write_text(json.dumps(manifest), encoding="utf-8")
@@ -219,7 +238,7 @@ class MultiPdfCorpusTests(unittest.TestCase):
                 select_primary_source(sources, "source.pdf")
             config = SimpleNamespace(target_filename="source.pdf")
             with self.assertRaisesRegex(
-                RepositoryCompatibilityError, "no controlled primary"
+                RepositoryCompatibilityError, "EXACTLY_ONE_SELECTED_PDF"
             ):
                 build_manifest(config, sources)
             self.assertEqual(
@@ -249,14 +268,14 @@ class MultiPdfCorpusTests(unittest.TestCase):
                 learning_boundary="controlled corpus", reviewer="pending",
                 rights_note="test", drive_file_id=None,
             )
-            manifest = build_manifest(
-                config, sources, drive_file_ids=("bank123", "primary123")
-            )
+            with self.assertRaisesRegex(RepositoryCompatibilityError, "EXACTLY_ONE_SELECTED_PDF"):
+                build_manifest(config, sources, drive_file_ids=("bank123", "primary123"))
+            selected = select_primary_source(sources, "source.pdf")
+            manifest = build_manifest(config, (selected,), drive_file_ids=("primary123",))
             self.assertEqual(manifest["manifestVersion"], "1.1")
-            self.assertEqual(len(manifest["sources"]), 2)
-            roles = {entry["controlledFilename"]: entry["role"] for entry in manifest["sources"]}
-            self.assertEqual(roles["source.pdf"], "primary")
-            self.assertEqual(roles["question-bank.pdf"], "supplementary")
+            self.assertEqual(len(manifest["sources"]), 1)
+            self.assertEqual(manifest["sources"][0]["role"], "primary")
+            self.assertEqual(manifest["sources"][0]["controlledFilename"], "source.pdf")
             self.assertEqual(len(manifest["corpusSha256"]), 64)
 
 

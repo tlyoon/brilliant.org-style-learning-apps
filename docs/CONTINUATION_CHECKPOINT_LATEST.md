@@ -1,6 +1,11 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261121-241 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261122-243 | ACTIVE
+
+> **22 NOV 2026 — BOSLA SINGLE-TEXTBOOK PRODUCTION CONTRACT CORRECTION.** User explicitly clarified BOSLA belongs on Yoga6, separate from MicroGen_AI_Web. Historical C3 3-topic/3-PDF bounded test was incorrectly carried forward as an external source prerequisite; docs/10_STAGE_BLUEPRINT still prescribed all sibling PDFs in one topic. Existing local BOSLA config already rejects >1 source_files, but Google Drive topic discovery and coordinator hashes still included sibling PDFs. New binding contract docs/BOSLA_SINGLE_TEXTBOOK_SOURCE_CONTRACT_v1.md supersedes prior multi-PDF production reading: one selected textbook per course, one configured authoritative PDF per topic, no outside 3-PDF download or fallback. CLI/orchestrator production selects only one, Drive discovery defaults to primary and anchors job identity to primary, new source manifests reject >1; frozen old C3 experiments retained read-only. Initial source-free regression 36 tests+5 subtests PASS; exact CI, recovery registry checks and authentic Yoga6 worker required before closure. No MicroGen_AI_Web modifications committed or pushed; Dell isolated mistake reverted. BSA242 new external PDFs remain private, unadmitted and no longer a dependency. Do not merge/deploy/replay or recreate schedule.
+
+
+> PREVIOUS RECOVERY CHECKPOINT: BSA-20261121-241 | RESOLVED
 
 > **21 NOV 2026 — BSA241 V17 REAL TASK DISPATCH COMPLETED.** BSA240 signed AX gate preserved; exact hosted CI #44887810812 SUCCESS on d86e23f001d0196e914edd604857a1a284d103b5, actual owner Yoga6 normal V1–V17 EXIT0, independent V17 signed integrity 0055c3ef49b3e9c07cdcf2bf425ffa136f734cee7f0671f00f36e4ec101b5a98, signed V16 7d641c334d021f3a50d8a6a85ea3642a423303d3598000352f01cf8980f9f0a1. Both real V17 C3 source-free tasks have signed PRE_CALL and RESULT, no quarantine: original FAILED_LIMITED_CAMPAIGN preserved with 0/3 five-stage cases. 36 genuine old draft activities and 180 independently unverified science proof instances, 6 fresh Chrome AX locale checks; additional independent archived waves candidate brings 54 actual candidate activities, 324 real Chrome checks and 270 outstanding academic proof instances. No repeat paid provider requests or original PDFs, no public release or old C3 replay. Independent scientific evidence and fresh rights-cleared three-topic unseen corpus remain the next substantive external/source-bound gate.
 

@@ -7599,6 +7599,70 @@
       ],
       "lastValidatedDate": "2026-11-21",
       "nextAction": "BSA241 verified RESOLVED engineering boundary: authenticated source d86e23f001d0196e914edd604857a1a284d103b5 passed exact hosted CI #44887810812 including prior CI mock contract repair; genuine Yoga6 ordinary V1-V17 EXIT0 and signed V17 0055c3ef49b3e9c07cdcf2bf425ffa136f734cee7f0671f00f36e4ec101b5a98 linked to signed V16 7d641c334d021f3a50d8a6a85ea3642a423303d3598000352f01cf8980f9f0a1. Exactly TWO actual read-only PRE_CALL/RESULT tasks executed against original frozen C3, preserving FAILED_LIMITED_CAMPAIGN and 0 original 3-topic five-stage passes. Authenticated 2 old source-bound 18-activity draft hashes, 6 genuine Chrome AX locale checks and 180 independent academic missing proof instances. Private additional actual browser audit verified 216 checks on two old drafts and 108 on uninstalled waves candidate; total 324 real Chrome checks across 54 archived activities and 270 unverified independent academic proof instances including the failed waves candidate. No paid/model request, original PDF read, old campaign replay, independent scientific acceptance, merge, deployment or scheduler. NEXT: genuinely distinct rights-cleared unseen new sources and independent source-grounded scientific proof; historic unknown old provider request outcomes remain immutable."
+    },
+    {
+      "id": "BSA-20261122-243",
+      "class": "historical-three-pdf-c3-campaign-improperly-promoted-to-bosla-production-source-dependency",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261121-241",
+        "BSA-20261121-240"
+      ],
+      "differenceFromLinkedIncident": "BSA241 genuinely closed the signed V17 read-only original C3 evidence but its last NEXT phrase and the 22 Nov private BSA242 preflight wrongly treated a new three-outside-PDF cohort as a requirement to advance BOSLA. Historical C3 heldout_generalization_gate and 5 Nov bounded acquisition/acceptance each require 3 only because their immutable finite OLD campaign schema did. Separately docs/10_STAGE_BLUEPRINT planned synthesizing all sibling PDFs, and live Google Drive discovery used their complete corpus for download and coordinator job hashes, although local config already forbade two source_files. User clarified BOSLA is the Yoga6 project, wholly distinct from MicroGen_AI_Web. The mistaken Dell isolated MicroGen_AI_Web checkout changes were reverted; no commit, push or production mutation there. Correct BOSLA contract: exactly ONE selected textbook per course and one explicitly configured PDF per topic, no automatic external PDF acquisition, no multi-source model attachment, no three-PDF production or release requirement. Historical three-PDF C3 receipts remain immutable and FAILED_LIMITED_CAMPAIGN.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/sources/production_source_policy.py",
+        "triggerMarker": "def one_configured_textbook_source(",
+        "remedyMarker": "BOSLA_SINGLE_TEXTBOOK_EXACTLY_ONE_SELECTED_PDF_NOT_THREE",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/orchestrator.py",
+            "marker": "from app_generator.sources.production_source_policy import ("
+          },
+          {
+            "path": "app_generator/cli.py",
+            "marker": "from app_generator.sources.production_source_policy import ("
+          },
+          {
+            "path": "app_generator/sources/google_drive.py",
+            "marker": "legacy_historical_multiple_pdf: bool = False"
+          },
+          {
+            "path": "app_generator/sources/manifest.py",
+            "marker": "from app_generator.sources.production_source_policy import reject_multiple_authoritative_sources"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_bsa243_production_one_textbook.py",
+          "kind": "python",
+          "marker": "test_auto_job_key_does_not_depend_on_question_bank_pdf"
+        },
+        {
+          "path": "tests/test_bsa243_production_one_textbook.py",
+          "kind": "python",
+          "marker": "test_missing_target_never_substitutes_sibling_pdf"
+        },
+        {
+          "path": "tests/test_bsa243_production_one_textbook.py",
+          "kind": "python",
+          "marker": "test_no_new_manifest_with_more_than_one_textbook"
+        },
+        {
+          "path": "tests/test_multi_pdf_corpus.py",
+          "kind": "python",
+          "marker": "test_frozen_legacy_corpus_can_be_inspected_without_becoming_production"
+        }
+      ],
+      "applicableEnvironments": [
+        "Yoga6 BOSLA source root one configured topic PDF",
+        "Drive auto and targeted source discovery + download/manifest",
+        "All BOSLA production, unrelated from MicroGen_AI_Web",
+        "Old 3-topic C3 evaluator historical/read-only only; no PDF/model replay or release"
+      ],
+      "lastValidatedDate": "2026-11-22",
+      "nextAction": "Production code and bindings changed to use only selected topic PDF: Drive corpus default one, auto job identities no sibling, local config already one, manifest now rejects multi; versioned docs override old three-PDF release notion. Focused 36 tests+5 subtests PASS, including missing/disabled/duplicate sibling and old frozen legacy behavior. NEXT require recurrence/documentation/lint, full CI exact Git HEAD, genuine owner Yoga6 normal V1-V17 sourcefree worker and independent read-only verification of no multi-PDF production before RESOLVED. No model calls, outside PDF fetching, historic provider replay, merge or public deployment."
     }
   ]
 }

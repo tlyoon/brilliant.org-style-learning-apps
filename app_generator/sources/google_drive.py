@@ -14,6 +14,7 @@ from typing import Any, Callable, Iterable
 from urllib.parse import parse_qs, urlparse
 
 from app_generator.errors import DriveAccessError, SourceAmbiguous, SourceDownloadError, SourceNotFound
+from app_generator.sources.production_source_policy import one_configured_textbook_source
 
 LOGGER = logging.getLogger("app_generator.sources.google_drive")
 DRIVE_FILES_URL = "https://www.googleapis.com/drive/v3/files"
@@ -317,7 +318,11 @@ def discover_drive_sources_with_corpus_keys(
     target_filename: str,
     max_folders: int,
 ) -> tuple[ResolvedDriveSource, ...]:
-    """Discover anchors and full sibling-PDF corpus identities in one Drive traversal."""
+    """Discover only the configured textbook PDF per topic.
+
+    Unrelated sibling PDFs are never sources and must not alter coordinator
+    job identity or trigger new content generation.
+    """
 
     root_id = extract_drive_folder_id(sourcepath)
     root = client.get_item(root_id)
@@ -341,8 +346,13 @@ def discover_drive_sources_with_corpus_keys(
                 queue.append((child.file_id, relative_folder + (child.name,)))
         if not relative_folder or not SUBCHAPTER_ID.fullmatch(relative_folder[-1]):
             continue
-        pdfs = [child for child in children if child.mime_type == PDF_MIME]
-        anchors = [child for child in pdfs if child.name.casefold() == target_filename.casefold()]
+        # Filter *before* constructing job keys or inspecting download flags.
+        # The source tree can contain old slides, question banks and other
+        # PDFs, but production must not use them as a textbook corpus.
+        pdfs = [child for child in children
+                if child.mime_type == PDF_MIME
+                and child.name.casefold() == target_filename.casefold()]
+        anchors = list(pdfs)
         if not anchors:
             continue
         names = [child.name.casefold() for child in pdfs]
@@ -396,13 +406,13 @@ def discover_topic_corpus(
     pdf_subchapter_path: str,
     target_filename: str,
     max_folders: int,
+    legacy_historical_multiple_pdf: bool = False,
 ) -> tuple[ResolvedDriveSource, ...]:
-    """Resolve an anchored multi-PDF topic in exactly one Drive tree walk.
+    """Resolve one designated textbook PDF in one Drive walk by default.
 
-    The old implementation traversed the complete Source Root to resolve
-    the anchor, then traversed it again to collect sibling PDFs. Keep the
-    exact anchor/selector and ordered corpus semantics while eliminating
-    the second remote inventory pass. No PDFs are downloaded here.
+    Other sibling PDFs are excluded from production. An explicit historical
+    only switch preserves examination of frozen old multi-PDF behavior; no
+    production worker passes that switch. This function downloads nothing.
     """
     root_id = extract_drive_folder_id(sourcepath)
     root = client.get_item(root_id)
@@ -453,6 +463,10 @@ def discover_topic_corpus(
                 "Google Drive reports that downloading is disabled for "
                 + "/".join(relative_folder + (anchors[0].name,))
             )
+        if not legacy_historical_multiple_pdf:
+            # Default: no extra PDF ingestion, no forbidden download checks
+            # on unrelated sibling files, no multi-PDF source manifest.
+            pdfs = anchors
         folded_names = [child.name.casefold() for child in pdfs]
         if len(set(folded_names)) != len(folded_names):
             raise SourceAmbiguous(
@@ -507,12 +521,14 @@ def bind_corpus_job_keys(
     sources: tuple[ResolvedDriveSource, ...],
     *, sourcepath: str, target_filename: str, max_folders: int,
 ) -> tuple[ResolvedDriveSource, ...]:
-    """Bind each anchor to the full sibling-PDF corpus identity used by auto mode."""
+    """Bind a job solely to its selected textbook PDF identity."""
     return tuple(
-        source.with_corpus_job_key(topic_corpus_job_key(discover_topic_corpus(
-            client, sourcepath=sourcepath, pdf_subchapter_path=source.subchapter_id,
-            target_filename=target_filename, max_folders=max_folders,
-        )))
+        source.with_corpus_job_key(topic_corpus_job_key(
+            (one_configured_textbook_source(discover_topic_corpus(
+                client, sourcepath=sourcepath, pdf_subchapter_path=source.subchapter_id,
+                target_filename=target_filename, max_folders=max_folders,
+            ), target_filename=target_filename))
+        ))
         for source in sources
     )
 

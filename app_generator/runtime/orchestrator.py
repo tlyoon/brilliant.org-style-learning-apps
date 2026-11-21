@@ -45,6 +45,9 @@ from app_generator.sources.google_drive import (
 )
 from app_generator.sources.google_drive_auth import DriveAuthorization, authorize_google_drive
 from app_generator.sources.local_sources import inspect_sources
+from app_generator.sources.production_source_policy import (
+    one_configured_textbook_source, reject_multiple_authoritative_sources,
+)
 from app_generator.sources.manifest import (
     build_manifest, load_existing_manifest, select_primary_source,
 )
@@ -399,6 +402,12 @@ def run_generation(
                     target_filename=config.target_filename,
                     max_folders=config.max_drive_folders,
                 )
+                # Production source is the selected textbook PDF alone.
+                # Ignore optional sibling PDFs and historical three-PDF C3
+                # experiments BEFORE any downloading/model submission.
+                drive_corpus = one_configured_textbook_source(
+                    drive_corpus, target_filename=active_config.target_filename,
+                )
                 store.transition(
                     RunPhase.SOURCE_RESOLVED,
                     source_locator={
@@ -442,6 +451,7 @@ def run_generation(
                     sources = inspect_sources(active_config.source_files)
                     job_key = _local_job_key(active_config, sources[0].path)
 
+                sources = reject_multiple_authoritative_sources(sources)
                 current_source_metadata = [source.metadata() for source in sources]
                 if resume_run_id and original_source_metadata and current_source_metadata != original_source_metadata:
                     raise SourceSetMismatch("The source bytes or metadata changed since the failed run; resume stopped safely")

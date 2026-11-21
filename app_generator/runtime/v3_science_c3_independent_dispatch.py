@@ -244,6 +244,6 @@ def run_post_v16_science_c3(
         "newPaidModelCalls":0,
         "newOriginalPdfReads":0,
         "schedulerReinstalled":False,
-        "nextEligibleMilestone":"SELECT_GENUINELY_NEW_RIGHTS_CLEARED_UNSEEN_SOURCES_AND_FRESH_INDEPENDENT_ACADEMIC_PROOFS",
+        "nextEligibleMilestone":"ONE_SELECTED_TEXTBOOK_PER_TOPIC_SOURCE_BOUND_SCIENTIFIC_PROOFS_NO_THREE_PDF_REQUIREMENT",
     }
     return _v6_checkpoint(folder/_V17,payload)

@@ -1,6 +1,8 @@
 # Generic bounded private source acquisition recovery
 
-**Scope:** finite deterministic preparation of three previously precommitted PDF sources for a *separately authorized* campaign. This reusable source module does **not** generate learning apps, call Gemini/ChatGPT, authenticate scientific content, request external permissions, merge Git branches, or publish.
+**Historical-only scope (22 November 2026 amendment):** finite deterministic preparation of three previously precommitted PDF sources for the frozen, separately authorized C3 campaign. This three-PDF acquisition format is NOT part of normal BOSLA generation or a future release requirement; see docs/BOSLA_SINGLE_TEXTBOOK_SOURCE_CONTRACT_v1.md.
+
+**Original frozen campaign scope:** finite deterministic preparation of three previously precommitted PDF sources for a *separately authorized* campaign. This reusable source module does **not** generate learning apps, call Gemini/ChatGPT, authenticate scientific content, request external permissions, merge Git branches, or publish.
 
 ## What it prevents
 
