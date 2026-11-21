@@ -7372,7 +7372,7 @@
           "marker": "self.assertEqual(v16_mock.call_count,1 if succeeded else 0)"
         }
       ],
-      "nextAction": "Source-pinned V16 static technical gate and normal-worker hook implemented; real PR16 exact SHA public read-only audit PASS on Yoga6, 70 focused tests PASS. Await strict repository CI and genuine new-head V1-V16 normal-worker execution before resolving incident; full security/WCAG/scientific/release gates remain unresolved, no merge, deploy or scheduler.",
+      "nextAction": "Source-pinned V16 static technical gate and normal-worker hook implemented; real PR16 exact SHA public read-only audit PASS on Yoga6, 71 focused tests PASS. Await strict repository CI and genuine new-head V1-V16 normal-worker execution before resolving incident; full security/WCAG/scientific/release gates remain unresolved, no merge, deploy or scheduler.",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261120-235",

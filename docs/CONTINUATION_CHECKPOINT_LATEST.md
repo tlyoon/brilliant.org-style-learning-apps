@@ -2,9 +2,9 @@
 
 > CURRENT RECOVERY CHECKPOINT: BSA-20261121-237 | ACTIVE
 
-> **21 NOV 2026 — BSA237 V16 IMPLEMENTATION PENDING AUTHENTIC INTEGRATION ACCEPTANCE.** Source-free V16 signed public PR security/accessibility module integrated after V15 in normal worker, checks immutable V15 and current GitHub draft PR/base/21 paths and source-pinned clone. Real read-only standalone PR16 audit passed 54 activities across 9.1/9.2/9.6; 70 focused tests passed including mocked normal worker transition. DO NOT call this a full security/WCAG or scientific PASS. Hosted CI and genuine V1-V16 worker still needed; no merge/deploy, provider replay or scheduled task.
+> **21 NOV 2026 — BSA237 V16 IMPLEMENTATION PENDING AUTHENTIC INTEGRATION ACCEPTANCE.** Source-free V16 signed public PR security/accessibility module integrated after V15 in normal worker, checks immutable V15 and current GitHub draft PR/base/21 paths and source-pinned clone. Real read-only standalone PR16 audit passed 54 activities across 9.1/9.2/9.6; 71 focused tests passed including mocked normal worker transition. DO NOT call this a full security/WCAG or scientific PASS. Hosted CI and genuine V1-V16 worker still needed; no merge/deploy, provider replay or scheduled task.
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261120-236 | RESOLVED
+> PREVIOUS RECOVERY CHECKPOINT: BSA-20261120-236 | RESOLVED
 
 > **20 NOV 2026 — BSA236 GENUINE SAME-INVOCATION GLOBAL READONLY TASK DISPATCH.** Exact clean source 28e49e3a1ea1b53b764aa40ec8490619b65a947c, hosted CI #44721290201 SUCCESS, genuine owner Yoga6 V1–V15 normal worker EXIT0. Signed V15 fa9d9acfb4a7a6ab4e36322c65ae134e0367cf701ab86c8f6bb3f050db10006a contains three distinct durable PRE_CALL and RESULT handoffs after signed V14; external draft PR #16 still open/unmerged, public main unchanged. GitHub native check/status counts both 0 and no review approval are reported as **missing**, not accepted. Active historical provider BSA183/BSA196 and revised science BSA202 remain blocked by no-replay/authorization and old C3 FAILED_LIMITED_CAMPAIGN is untouched. Bounded controller never merges/deploys, never creates scheduler and explicitly does not claim cross-session persistent supervisor. NEXT safe independent PR content security/accessibility evidence; actual publication requires an authorized release gate.
 
