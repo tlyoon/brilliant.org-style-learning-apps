@@ -940,6 +940,21 @@ def main(argv: list[str] | None = None) -> int:
                             result["privateNonmergingPrReadiness"],
                             result["scopedPublicDraftPr"],
                             result["independentPublicPrBrowserAcceptance"]))
+                    # BSA237: V15 must cause an actual V16 technical PR
+                    # security/accessibility check on the pinned public branch.
+                    # This is read-only and CANNOT grant release approval.
+                    from app_generator.runtime.v3_public_pr_security_accessibility import (
+                        run_public_pr_security_accessibility,
+                    )
+                    result["publicPrSecurityAccessibilityPreflight"]=(
+                        run_public_pr_security_accessibility(
+                            ROOT,private,ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["scopedPublicDraftPr"],
+                            result["independentPublicPrBrowserAcceptance"],
+                            result["globalReadonlyRoadmapHandoff"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1034,6 +1049,19 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("globalReadonlyRoadmapHandoff",{}).get(
                                 "publicMergeExecuted") is False
                             and result.get("globalReadonlyRoadmapHandoff",{}).get(
+                                "publicDeployExecuted") is False
+                            and result.get("publicPrSecurityAccessibilityPreflight",{}).get(
+                                "status")==
+                                "SOURCE_PINNED_PR_SECURITY_A11Y_TECHNICAL_PREFLIGHT_NO_RELEASE"
+                            and result.get("publicPrSecurityAccessibilityPreflight",{}).get(
+                                "technicalEvidence",{}).get("changedFileCount")==21
+                            and result.get("publicPrSecurityAccessibilityPreflight",{}).get(
+                                "technicalEvidence",{}).get("totalActivities")==54
+                            and result.get("publicPrSecurityAccessibilityPreflight",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("publicPrSecurityAccessibilityPreflight",{}).get(
+                                "publicMergeExecuted") is False
+                            and result.get("publicPrSecurityAccessibilityPreflight",{}).get(
                                 "publicDeployExecuted") is False
                          )) else 3
         if args.auto_advance:

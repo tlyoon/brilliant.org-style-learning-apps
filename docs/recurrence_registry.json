@@ -7345,6 +7345,57 @@
         }
       ],
       "nextAction": "BSA236 VERIFIED RESOLVED: genuine owner Yoga6 ordinary V1\u2013V15 EXIT0 on exact clean head 28e49e3a1ea1b53b764aa40ec8490619b65a947c with GitHub Actions #44721290201 SUCCESS, source-bound signed V15 fa9d9acfb4a7a6ab4e36322c65ae134e0367cf701ab86c8f6bb3f050db10006a. Same normal invocation after V14 dispatched 3 allowlisted independent read-only tasks with persistent PRE_CALL/RESULT; actual PR #16 remains DRAFT OPEN unmerged, GitHub native checks 0 and status checks 0 are correctly reported as missing, not fake PASS; historical C3 FAILED_LIMITED_CAMPAIGN and provider no-replay incidents preserved. No release, paid calls, scheduler or imaginary persistent supervisor. NEXT independent content release/accessibility/security evaluation, or separately authorized deployment."
+    },
+    {
+      "id": "BSA-20261121-237",
+      "class": "signed-v15-checkpoint-had-no-executable-public-pr-security-accessibility-handoff",
+      "status": "active",
+      "regressions": [
+        {
+          "path": "tests/test_v3_public_pr_security_accessibility.py",
+          "kind": "python",
+          "marker": "test_actual_checkout_shape"
+        },
+        {
+          "path": "tests/test_v3_public_pr_security_accessibility.py",
+          "kind": "python",
+          "marker": "test_injected_dynamic_sink_fails"
+        },
+        {
+          "path": "tests/test_v3_public_pr_security_accessibility.py",
+          "kind": "python",
+          "marker": "test_missing_keyboard_label_fails"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "self.assertEqual(v16_mock.call_count,1 if succeeded else 0)"
+        }
+      ],
+      "nextAction": "Source-pinned V16 static technical gate and normal-worker hook implemented; real PR16 exact SHA public read-only audit PASS on Yoga6, 70 focused tests PASS. Await strict repository CI and genuine new-head V1-V16 normal-worker execution before resolving incident; full security/WCAG/scientific/release gates remain unresolved, no merge, deploy or scheduler.",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261120-235",
+        "BSA-20261120-236"
+      ],
+      "differenceFromLinkedIncident": "The real V14->V15 remedy already dispatched three independent read-only tasks, but all were snapshot/status/recurrence checks; no executable security or accessibility evidence gate was invoked. A standalone BSA237 audit existed but the normal worker stopped after V15. V16 adds actual source-pinned draft PR clone/21-path verification, trilingual accessibility checks and bounded static security checks in the ordinary worker, without claiming a release verdict.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_public_pr_security_accessibility.py",
+        "triggerMarker": "def run_public_pr_security_accessibility(",
+        "remedyMarker": "V16_GENUINE_SIGNED_V15_REQUIRED",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_public_pr_security_accessibility import ("
+          }
+        ]
+      },
+      "lastValidatedDate": "2026-11-21",
+      "applicableEnvironments": [
+        "Yoga6 normal source-free V1-V16 worker",
+        "Source-pinned GitHub draft PR16 21-file review branch",
+        "No merge, deploy, paid model calls or scheduler"
+      ]
     }
   ]
 }

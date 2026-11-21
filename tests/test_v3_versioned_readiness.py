@@ -224,6 +224,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             from app_generator.runtime import v3_public_nonmerging_draft_pr as v13_stage
             from app_generator.runtime import v3_public_pr_independent_browser_acceptance as v14_stage
             from app_generator.runtime import v3_global_post_pr_readonly_roadmap as v15_stage
+            from app_generator.runtime import v3_public_pr_security_accessibility as v16_stage
             stack.enter_context(patch.object(
                 v3_five_stage_completion,
                 "advance_five_stage_on_pinned_browser",
@@ -306,6 +307,15 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "publicMergeExecuted":False,
                     "publicDeployExecuted":False,
                 }))
+            v16_mock=stack.enter_context(patch.object(
+                v16_stage,"run_public_pr_security_accessibility",
+                return_value={
+                    "status":"SOURCE_PINNED_PR_SECURITY_A11Y_TECHNICAL_PREFLIGHT_NO_RELEASE",
+                    "technicalEvidence":{"changedFileCount":21,"totalActivities":54},
+                    "publicationAuthorized":False,
+                    "publicMergeExecuted":False,
+                    "publicDeployExecuted":False,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))
@@ -320,6 +330,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             self.assertEqual(v13_mock.call_count,0 if failing else 1)
             self.assertEqual(v14_mock.call_count,0 if failing else 1)
             self.assertEqual(v15_mock.call_count,0 if failing else 1)
+            self.assertEqual(v16_mock.call_count,0 if failing else 1)
             if failing:
                 self.assertEqual(status,3)
             else:

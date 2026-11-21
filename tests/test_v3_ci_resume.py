@@ -22,6 +22,7 @@ from app_generator.runtime import v3_private_nonmerging_pr_readiness as v12_stag
 from app_generator.runtime import v3_public_nonmerging_draft_pr as v13_stage
 from app_generator.runtime import v3_public_pr_independent_browser_acceptance as v14_stage
 from app_generator.runtime import v3_global_post_pr_readonly_roadmap as v15_stage
+from app_generator.runtime import v3_public_pr_security_accessibility as v16_stage
 from scripts import run_v3_yoga6_recovery_worker as worker
 
 
@@ -282,6 +283,15 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "publicMergeExecuted":False,
                     "publicDeployExecuted":False,
                 }))
+            v16_mock=stack.enter_context(patch.object(
+                v16_stage,"run_public_pr_security_accessibility",
+                return_value={
+                    "status":"SOURCE_PINNED_PR_SECURITY_A11Y_TECHNICAL_PREFLIGHT_NO_RELEASE",
+                    "technicalEvidence":{"changedFileCount":21,"totalActivities":54},
+                    "publicationAuthorized":False,
+                    "publicMergeExecuted":False,
+                    "publicDeployExecuted":False,
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))
@@ -300,6 +310,7 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
         self.assertEqual(v13_mock.call_count,1 if succeeded else 0)
         self.assertEqual(v14_mock.call_count,1 if succeeded else 0)
         self.assertEqual(v15_mock.call_count,1 if succeeded else 0)
+        self.assertEqual(v16_mock.call_count,1 if succeeded else 0)
         # The generic worker exception boundary deliberately does not
         # invent a paid-call count; the source-free path makes no API calls.
         if not bad_poll:
