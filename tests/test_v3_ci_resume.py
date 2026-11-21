@@ -344,6 +344,18 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "publicMergeExecuted":False,
                     "publicDeployExecuted":False,
                 }))
+            from app_generator.runtime import (
+                v3_science_c3_independent_dispatch as v17_stage,
+            )
+            v17_mock=stack.enter_context(patch.object(
+                v17_stage,"run_post_v16_science_c3",
+                return_value={
+                    "status":"V17_REAL_SCIENCE_C3_GAP_AUDITS_EXECUTED_NO_RELEASE",
+                    "taskDispatchActuallyExecuted":True,
+                    "quarantinedTaskIds":[],
+                    "historicalC3":"FAILED_LIMITED_CAMPAIGN",
+                    "publicationAuthorized":False,
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))
@@ -363,6 +375,7 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
         self.assertEqual(v14_mock.call_count,1 if succeeded else 0)
         self.assertEqual(v15_mock.call_count,1 if succeeded else 0)
         self.assertEqual(v16_mock.call_count,1 if succeeded else 0)
+        self.assertEqual(v17_mock.call_count,1 if succeeded else 0)
         # The generic worker exception boundary deliberately does not
         # invent a paid-call count; the source-free path makes no API calls.
         if not bad_poll:

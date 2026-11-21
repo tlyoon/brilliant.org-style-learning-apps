@@ -316,6 +316,18 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "publicMergeExecuted":False,
                     "publicDeployExecuted":False,
                 }))
+            from app_generator.runtime import (
+                v3_science_c3_independent_dispatch as v17_stage,
+            )
+            v17_mock=stack.enter_context(patch.object(
+                v17_stage,"run_post_v16_science_c3",
+                return_value={
+                    "status":"V17_REAL_SCIENCE_C3_GAP_AUDITS_EXECUTED_NO_RELEASE",
+                    "taskDispatchActuallyExecuted":True,
+                    "quarantinedTaskIds":[],
+                    "historicalC3":"FAILED_LIMITED_CAMPAIGN",
+                    "publicationAuthorized":False,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))
@@ -331,6 +343,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             self.assertEqual(v14_mock.call_count,0 if failing else 1)
             self.assertEqual(v15_mock.call_count,0 if failing else 1)
             self.assertEqual(v16_mock.call_count,0 if failing else 1)
+            self.assertEqual(v17_mock.call_count,0 if failing else 1)
             if failing:
                 self.assertEqual(status,3)
             else:
