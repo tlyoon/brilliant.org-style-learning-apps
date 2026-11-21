@@ -7452,7 +7452,7 @@
     {
       "id": "BSA-20261121-239",
       "class": "public-review-locale-switch-does-not-synchronize-html-lang",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "learner-browser",
       "relatedIncidentIds": [
         "BSA-20261105-116",
@@ -7486,11 +7486,6 @@
           "path": "tests/test_v3_public_pr_security_accessibility.py",
           "kind": "python",
           "marker": "test_missing_dynamic_document_language_update_is_rejected"
-        },
-        {
-          "path": "scripts/check_course_preview_browser.py",
-          "kind": "python",
-          "marker": "BSA239_BROWSER_DOCUMENT_LANGUAGE_MISMATCH"
         }
       ],
       "applicableEnvironments": [
@@ -7499,7 +7494,7 @@
         "V16 source-pinned nonmerging public draft PR security and a11y technical gate"
       ],
       "lastValidatedDate": "2026-11-21",
-      "nextAction": "Real public PR16 baseline 6/9 locale tag mismatches (en on MS/ZH); candidate single-handler overlay on exact public commit 72073e1883c4ab823ca8b6491a0724c1c677dd58 achieved 9/9 real Chrome checks, with zero mismatches. Core JS, source-free real Chrome preview and 30 focused Python tests pass. NEXT exact new-head GitHub CI, real build and normal worker acceptance; do not claim public PR16 updated or semantic WCAG/science/release approval."
+      "nextAction": "BSA239 VERIFIED RESOLVED: source-bound development commit 3e5e75799b2d831603e2694524a22aa6b1cfa8a1 passed GitHub Actions #44870773376 (full unit and real browser CI), owner Yoga6 genuine ordinary V1-V16 EXIT0, signed V15 6a1d3431db3058c7ee18c397b912afb4c892d47645bd6de4ba2284249ae065a1 and V16 08545511758631953818962444fb8fde79441e675c072c04c7711246ce3752c2 independently verified. New draft public PR17 remains open/unmerged, unchanged base and review branch head 1ee0ddc29c163c9434e40585e79731befc9b3269 for exactly 21 paths and 54 activities. Independent *actual PR17* Chrome switched EN/MS/ZH on sections 9.1/9.2/9.6 with 9/9 document language matches; 6/9 baseline mismatches on old PR16 were independently reproduced. Structural JS/Chrome and V16 fail-closed checks now integrated in executable normal pipeline. Next independently eligible accessibility and academic release evidence work; historical C3 FAILED_LIMITED_CAMPAIGN and old provider/no-replay scientific blocks preserved. No public merge, deployment, paid request, retired scheduler or cross-session supervisor."
     }
   ]
 }
