@@ -8215,7 +8215,7 @@
     {
       "id": "BSA-20261123-251",
       "class": "normal_academic_pipeline_disconnected_historical_recovery_proof_actions_and_fixed_point",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261122-244",
@@ -8301,7 +8301,7 @@
         "All 90 academically unproved slots remain explicit, no false PASS or public release"
       ],
       "lastValidatedDate": "2026-11-23",
-      "nextAction": "ACTIVE pending real Yoga6 selected textbook original/revised 18-activity dual-loop pilot, successful full hosted exact-commit CI, normal source-free V1-V24 real integrated run, independent signed checkpoint verification, and closure. Scientific, visual, answer and EN/MS/ZH full proof automation remains a distinct future substantive milestone: this architecture must never claim that source location, AI votes, or absence of defects establishes a scientific proof."
+      "nextAction": "BSA251 VERIFIED RESOLVED for the normal-worker autonomous academic evidence/repair dispatch architecture. Exact code HEAD b20be08493c05f72bf1b624a8c31f43c35360520 hosted full GitHub CI #45044039662 SUCCESS incl. full tests, real Chrome, recurrence contract and lint. Owner Yoga6 actual normal V1–V24 source-free worker EXIT0, receipt V24 1f8738335d0602b4d1614c54c5e20045605bf6cdd6723bf6c61a1c0f72529494, result receipt 6eff40fb3a979a54eb04b9a6f1ae71af67f33e9714f5bb9c679ec569f3571e0b. Five separate signed metadata-only SHA- and original-PDF-bound academic evidence queues created under existing safe 12000-byte per-receipt cap, 18 tasks per gate, 90 unique tasks, 2 independent identical source-bound audit rounds, 6 actual approved existing source-free historical handlers, 18 real source passages per round, 6 exact physics witnesses, 5 MCQ key checks and 162 numeric locale fields without mismatch. Separate actual owner Yoga6 read-only witness 8e36b4b755fcafc98213729f17914b6ffbd3bf28aabd4beaf0d0f125a5eaf724 rechecked all 5 saved queue signatures, real current original selected PDF SHA, candidate package and 90 exact activity/gate digests, model-review prior 13 unchanged + 4 revised advisory only and original uncertain index0 quarantined; no new model calls or outside PDFs. Repeated known historical remedies are now normal-worker executable, version-bound and regression-controlled. IMPORTANT: the 90 tasks are genuine unproved scientific source interpretation, full answer/distractor, physics, rendered-visual and EN-MS-ZH semantic proofs; none is an established new software defect. 0 academic PASS, 0 deterministic FAIL, 90 REVIEW_REQUIRED. NEXT substantive work: build true independent, textbook-derived per-gate proof producers/adapters and test them, not merely rerun Gemini or promote source-page/advisory evidence to academic PASS. PR #223 remains draft, unmerged and no deployment/scheduler authorized."
     }
   ]
 }
