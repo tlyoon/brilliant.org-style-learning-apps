@@ -488,6 +488,21 @@ class FiveStageSyntheticTests(unittest.TestCase):
                     "newModelCalls":0,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_original_reviewer_evidence_reuse as v19_stage,
+            )
+            v19_mock=stack.enter_context(patch.object(
+                v19_stage,"run_post_v18_original_review_reuse",
+                return_value={
+                    "status":"V19_17_EXISTING_REVIEW_PAIRS_RECONCILED_ACADEMIC_PROOFS_STILL_OPEN",
+                    "nextTaskDispatchActuallyExecuted":True,
+                    "reusedIndependentTwoRolePairs":17,
+                    "oldUncertainRoleReplayed":False,
+                    "independentAcademicProofsStillOpen":90,
+                    "independentScientificAcceptanceComplete":False,
+                    "newModelCalls":0,
+                    "publicationAuthorized":False,
+                }))
             observed=[]
             stack.enter_context(patch.object(worker,"_print",
                                               side_effect=observed.append))
