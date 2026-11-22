@@ -7724,7 +7724,7 @@
     {
       "id": "BSA-20261122-245",
       "class": "review_claims_reconciled_only_by_manual_script_not_normal_worker_after_v18",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261122-244"
@@ -7786,7 +7786,88 @@
         "No additional textbook PDF, remote Gemini I/O or public release"
       ],
       "lastValidatedDate": "2026-11-22",
-      "nextAction": "ACTIVE: execute complete focused fault/regression suites, exact current commit hosted CI and genuine owner Yoga6 normal V1-V19. Verify signed PRE_CALL/RESULT/V19 SHA chain and 17 old original role pairs retained with index0 immutable, 90 still-unverified academic proof slots. Close only after current direct evidence; independent science/visual/EN-MS-ZH review remains a separate gate."
+      "nextAction": "BSA245 VERIFIED RESOLVED exact owner Yoga6 source 8decb728e633536ee7517690c3df3ee3852c8316 hosted Validate repository CI #44978384675 SUCCESS and ordinary owner Yoga6 V1-V19 worker EXIT0. Independent actual signed V19 490b381d7e367977ee70a3d15e9a0cfb17c33c22dca7de1a4547b85747730e8b chained to real signed V18 7a52113aafe58bc1ab2d6f47b1912f66bdf531d360b745cc5a31e562fe66728c confirmed 17 pre-existing original source-pinned two-reviewer PASS pairs (indexes1..17) reused with zero paid Gemini call, no new PDF and original index0 AI_UNCERTAIN never replayed. V19 receipts preserve 90 still-open independent source, answer, physics, visual and EN-MS-ZH proof slots, 0/18 formal academic PASS; no release, auto merge, deployment or scheduler. NEXT genuine independent academic semantic, visual, multilingual verification on selected textbook and safely scoped revised academic remediation."
+    },
+    {
+      "id": "BSA-20261122-246",
+      "class": "normal_source_free_worker_wrong_global_python_lacked_selenium",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261122-245"
+      ],
+      "differenceFromLinkedIncident": "BSA245 signed reviewer reconciliation is VERIFIED and closed. However an actual owner Yoga6 call invoking unpinned global Miniforge python completed real V1-V9 then failed late at V10 with ModuleNotFoundError because global Python lacked Selenium. Existing local .venv/Scripts/python.exe already has Selenium, and the identical clean HEAD and exact-green CI completed authentic Yoga6 V1-V19 with that interpreter; signed V19 independently verified. This is interpreter routing drift, not provider failure or a reason to replay model requests. BSA246 adds a pure pre-stage Windows source-free interpreter selector and a fail-closed one-time automatic handoff in the actual worker __main__ entrypoint, before any coordinator/browser/model state is modified. No pip, download, fallback to paid provider, credential transfer, scheduler or release.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_native_browser_python.py",
+        "triggerMarker": "def select_source_free_browser_interpreter(",
+        "remedyMarker": "REEXEC_PINNED_BROWSER_PYTHON",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "def _run_native_browser_entrypoint("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_native_browser_python.py",
+          "kind": "python",
+          "marker": "test_missing_global_selenium_selects_exact_project_venv"
+        },
+        {
+          "path": "tests/test_v3_native_browser_python.py",
+          "kind": "python",
+          "marker": "test_installed_selenium_does_not_create_new_process"
+        },
+        {
+          "path": "tests/test_v3_native_browser_python.py",
+          "kind": "python",
+          "marker": "test_other_platform_or_authorization_modes_unchanged"
+        },
+        {
+          "path": "tests/test_v3_native_browser_python.py",
+          "kind": "python",
+          "marker": "test_missing_or_symlink_venv_stops_before_browser"
+        },
+        {
+          "path": "tests/test_v3_native_browser_python.py",
+          "kind": "python",
+          "marker": "test_invalid_current_venv_without_selenium_stops_no_recursion"
+        },
+        {
+          "path": "tests/test_v3_native_browser_python.py",
+          "kind": "python",
+          "marker": "test_normal_worker_reexecs_before_main_no_provider_or_install"
+        },
+        {
+          "path": "tests/test_v3_native_browser_python.py",
+          "kind": "python",
+          "marker": "test_failing_probe_does_not_run_browser_or_replay_provider"
+        },
+        {
+          "path": "tests/test_v3_native_browser_python.py",
+          "kind": "python",
+          "marker": "test_absent_venv_stops_before_any_stateful_work"
+        },
+        {
+          "path": "tests/test_v3_native_browser_python.py",
+          "kind": "python",
+          "marker": "test_existing_venv_or_other_mode_uses_original_controller"
+        },
+        {
+          "path": "tests/test_v3_native_browser_python.py",
+          "kind": "python",
+          "marker": "test_worker_exposes_actual_integrated_bootstrap"
+        }
+      ],
+      "applicableEnvironments": [
+        "BOSLA Yoga6 Windows source-free normal worker",
+        "Current Python lacks Selenium but pinned repo venv has Selenium",
+        "No change to paid-model CLI mode, untrusted machines, or publication",
+        "Fail before any stateful run if pinned executable is absent or defective"
+      ],
+      "lastValidatedDate": "2026-11-22",
+      "nextAction": "BSA246 ACTIVE: 10 focused interpreter fault-injection tests plus earlier 62 V19/worker regressions pass locally; register and run full recurrence lint, commit/push to existing nonmerging BOSLA draft PR #223, require exact hosted CI green, run the actual owner Yoga6 worker from global python to verify it selects the pinned venv automatically, requires 0 new Gemini calls and no external PDFs, signed V1-V19 actual output and no replay of old index0. Independently validate V19 after the new commit, then resolve with evidence; preserve 90 unverified academic proof slots. No public merge/deploy."
     }
   ]
 }

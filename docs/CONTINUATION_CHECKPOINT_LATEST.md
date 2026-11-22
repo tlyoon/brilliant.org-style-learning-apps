@@ -1,6 +1,10 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261122-245 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261122-246 | ACTIVE
+
+> **22 NOV 2026 — BSA246 ACTIVE: FAIL-EARLY NATIVE CHROME PYTHON SELECTION.** Authentic Yoga6 first invoked global Miniforge Python, which lacks Selenium and reached signed V1-V9 before stopping at V10 ModuleNotFoundError. Selecting the already-installed Bosla .venv recovered the SAME HEAD and completed actual V1-V19 EXIT0, signed V19 independently verified with 17 safe old reviewer pairs and 90 independent academic gates still open. To make this automatic, BSA246 adds Windows source-free entrypoint selection of verified pinned venv or fail-closed preflight, with 10 new hostile input/runtime regression tests. Exact-new-head hosted CI and actual normal global-python auto-handoff remain required before closing. No model calls, outside PDFs or public release.
+
+> **22 NOV 2026 — BSA245 VERIFIED V19 NORMAL RECOVERY RESOLVED.** Yoga6 exact source 8decb728e633536ee7517690c3df3ee3852c8316 hosted CI #44978384675 SUCCESS, ordinary real source-free recovery V1-V19 EXIT0, independently audited signed V19 490b381d7e367977ee70a3d15e9a0cfb17c33c22dca7de1a4547b85747730e8b chained to genuine V18. Reused 17 preexisting independent two-reviewer original Section9.1 pairs (indexes1..17) without paid call or replay of original ambiguous index0; no outside PDF. This is historic model-claim reuse, NOT independent science, visual or EN/MS/ZH proof. All 90 independent academic proof slots remain unverified and 0/18 formal academic PASS. No public merge, deployment or scheduler.
 
 > **22 NOV 2026 — BSA245 ACTIVE: REUSE ORIGINAL REVIEW EVIDENCE IN NORMAL V19.** Genuine Yoga6 historical claim inventory checked 17 original Section9.1 indexes 1..17, two independent saved roles each, as potentially reusable but NOT formal academic PASS. Original index0 AI_UNCERTAIN is permanently no-replay. A new signed V18->V19 normal worker dispatch now rechecks exact saved claims and the one original source identity with no new PDF/provider calls; 90 independent academic proof slots remain open. Focused tests, hosted CI and real V1-V19 still required before BSA245 resolution. No release or merge.
 

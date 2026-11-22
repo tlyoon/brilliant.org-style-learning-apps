@@ -1338,5 +1338,60 @@ def main(argv: list[str] | None = None) -> int:
         return 3
 
 
+def _run_native_browser_entrypoint(
+    argv: list[str] | None = None, *, is_windows: bool | None = None,
+    selenium_available: bool | None = None,
+) -> int:
+    """BSA246: relaunch Windows source-free work BEFORE any stateful stage.
+
+    A second invocation under a valid Selenium venv reaches main() normally.
+    Other modes retain their existing authorization and safety checks.
+    """
+    args = list(sys.argv[1:] if argv is None else argv)
+    windows = (os.name == "nt") if is_windows is None else is_windows
+    if not windows or "--source-free-advance" not in args:
+        return main(args)
+    import importlib.util
+    import subprocess
+    from app_generator.runtime.v3_native_browser_python import (
+        select_source_free_browser_interpreter,
+    )
+    available = (
+        importlib.util.find_spec("selenium") is not None
+        if selenium_available is None else selenium_available
+    )
+    status, candidate = select_source_free_browser_interpreter(
+        repo=ROOT,
+        current=Path(sys.executable),
+        windows=windows,
+        source_free=True,
+        selenium_available=available,
+    )
+    if status == "USE_CURRENT_PYTHON":
+        return main(args)
+    if status != "REEXEC_PINNED_BROWSER_PYTHON" or candidate is None:
+        _print({"status":"STOP_PINNED_BROWSER_RUNTIME_MISSING",
+                "publicationAuthorized":False})
+        return 3
+    # Probe only the exact pinned interpreter, without a download, pip
+    # installation, provider request, or any project checkpoint mutation.
+    try:
+        probe=subprocess.run(
+            [str(candidate),"-c","import selenium"],
+            check=False,capture_output=True,text=True,timeout=20,
+        )
+        if probe.returncode != 0:
+            raise RuntimeError("PINNED_BROWSER_IMPORT_UNAVAILABLE")
+        result=subprocess.run(
+            [str(candidate),str(Path(__file__).resolve()),*args],
+            check=False,timeout=1200,
+        )
+        return result.returncode
+    except (OSError,RuntimeError,subprocess.TimeoutExpired):
+        _print({"status":"STOP_PINNED_BROWSER_RUNTIME_RELAUNCH_FAILED",
+                "publicationAuthorized":False})
+        return 3
+
+
 if __name__=="__main__":
-    raise SystemExit(main())
+    raise SystemExit(_run_native_browser_entrypoint())
