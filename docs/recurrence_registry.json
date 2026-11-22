@@ -7720,6 +7720,73 @@
       ],
       "lastValidatedDate": "2026-11-22",
       "nextAction": "BSA244 RESOLVED on exact owner Yoga6 BOSLA source b91a2268e2a29a4d9066505139eb542b80550160 hosted CI #44962279010 SUCCESS, normal V1-V18 exit0 and independently verified signed V18 b0b4f7447ffa221e1ce8a5c67be1f531e2cbbbce0f3e9b9fb62f54f3f57fc953 chained to genuine V17 041ecde13e69c9bff25942ed15c35f6d2a3fa57b153c65b721ed984318b7ee94. Existing selected Serway 9.1 source.pdf SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50 alone verified 18 physical-page original passage locators, six exact rational momentum identities and five bounded English MCQ correct-answer patterns. Real same-run separately dispatched the existing independent academic_coverage_gate: 90 still-unverified science, answer, source, visuals and multilingual proof instances for the original 18 activities, zero formal academic PASS. Source text presence does not prove scientific interpretation. Original C3 FAILED_LIMITED_CAMPAIGN remains immutable; no extra external PDFs, new model calls, uncertain claim replay, public merge/deployment, or scheduler. NEXT independent scientific semantic, visual and trilingual verification on selected textbook with claim reconciliation and legitimate source permission."
+    },
+    {
+      "id": "BSA-20261122-245",
+      "class": "review_claims_reconciled_only_by_manual_script_not_normal_worker_after_v18",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261122-244"
+      ],
+      "differenceFromLinkedIncident": "BSA244 built exact textbook 9.1 source and 90-gap evidence in normal V18, but stopped there; historical BSA217 independently saved two model roles for original indexes 1..17, while original index 0 remained ambiguous and immutable. An external BSA245 one-off script on Yoga6 verified 17 potentially reusable two-reviewer original claims, without academic PASS. Recurring manual next-step dispatch violates the recovery contract. V19 reuses historical read_prior_two_role_science and section91 evidence behind the genuine signed V18 source/gap chain, then records signed PRE_CALL/RESULT/V19 in the ordinary worker. It preserves 90 independent semantic/answer/physics/visual/translation proof requirements; no new Gemini call, PDF, old request replay, release, merge or scheduler.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_original_reviewer_evidence_reuse.py",
+        "triggerMarker": "def run_post_v18_original_review_reuse(",
+        "remedyMarker": "verified_section91_standing_passes(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_original_reviewer_evidence_reuse import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_original_reviewer_evidence_reuse.py",
+          "kind": "python",
+          "marker": "test_normal_v18_v19_dispatch_real_reuse_and_idempotent"
+        },
+        {
+          "path": "tests/test_v3_original_reviewer_evidence_reuse.py",
+          "kind": "python",
+          "marker": "test_forged_v18_never_dispatches"
+        },
+        {
+          "path": "tests/test_v3_original_reviewer_evidence_reuse.py",
+          "kind": "python",
+          "marker": "test_tampered_v18_stored_gap_receipt_blocks_dispatch"
+        },
+        {
+          "path": "tests/test_v3_original_reviewer_evidence_reuse.py",
+          "kind": "python",
+          "marker": "test_original_uncertain_index_cannot_be_replayed"
+        },
+        {
+          "path": "tests/test_v3_original_reviewer_evidence_reuse.py",
+          "kind": "python",
+          "marker": "test_original_activity_or_review_digest_swap_fails"
+        },
+        {
+          "path": "tests/test_v3_original_reviewer_evidence_reuse.py",
+          "kind": "python",
+          "marker": "test_source_package_mismatch_fails"
+        },
+        {
+          "path": "tests/test_v3_original_reviewer_evidence_reuse.py",
+          "kind": "python",
+          "marker": "test_normal_worker_dispatch_and_exit_guard_required"
+        }
+      ],
+      "applicableEnvironments": [
+        "BOSLA owner Yoga6 genuine single existing selected Serway 9.1",
+        "Only after signed verified V18 and its independent gap receipt",
+        "17 immutable previously saved genuine two-reviewer original role pairs",
+        "Index0 original ambiguous claim immutable, never replay",
+        "No additional textbook PDF, remote Gemini I/O or public release"
+      ],
+      "lastValidatedDate": "2026-11-22",
+      "nextAction": "ACTIVE: execute complete focused fault/regression suites, exact current commit hosted CI and genuine owner Yoga6 normal V1-V19. Verify signed PRE_CALL/RESULT/V19 SHA chain and 17 old original role pairs retained with index0 immutable, 90 still-unverified academic proof slots. Close only after current direct evidence; independent science/visual/EN-MS-ZH review remains a separate gate."
     }
   ]
 }

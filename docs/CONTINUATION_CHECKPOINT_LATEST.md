@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261122-244 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261122-245 | ACTIVE
+
+> **22 NOV 2026 — BSA245 ACTIVE: REUSE ORIGINAL REVIEW EVIDENCE IN NORMAL V19.** Genuine Yoga6 historical claim inventory checked 17 original Section9.1 indexes 1..17, two independent saved roles each, as potentially reusable but NOT formal academic PASS. Original index0 AI_UNCERTAIN is permanently no-replay. A new signed V18->V19 normal worker dispatch now rechecks exact saved claims and the one original source identity with no new PDF/provider calls; 90 independent academic proof slots remain open. Focused tests, hosted CI and real V1-V19 still required before BSA245 resolution. No release or merge.
 
 > **22 NOV 2026 — BSA244 VERIFIED REAL SINGLE TEXTBOOK V18 RESOLVED.** On owner Yoga6 b91a2268e2a29a4d9066505139eb542b80550160 hosted CI #44962279010 SUCCESS, normal V1-V18 EXIT0, signed V18 b0b4f7447ffa221e1ce8a5c67be1f531e2cbbbce0f3e9b9fb62f54f3f57fc953. The sole existing Serway 9.1 source.pdf and 18 activities were truly locally audited: 18 unique passage locations, six exact momentum arithmetic identities and five bounded MCQ English key patterns. In the same execution, real academic gate independently reported 90 still-unproven gate instances/0 formal academic PASS. Old C3 failure and incomplete independent science/visual/translation acceptance preserved. No extra PDFs, provider calls, merge, deployment or scheduler.
 

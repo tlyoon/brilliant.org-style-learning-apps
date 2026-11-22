@@ -986,6 +986,19 @@ def main(argv: list[str] | None = None) -> int:
                             result["privatePinnedPublicPatch"],
                             result["privateNonmergingPrReadiness"],
                             result["scienceC3PostV16IndependentDispatch"]))
+                    # BSA245/V19: automatically reuse exact, genuinely saved
+                    # two-reviewer original claims after signed single-source
+                    # V18. This is only evidence inventory, never academic PASS.
+                    from app_generator.runtime.v3_original_reviewer_evidence_reuse import (
+                        run_post_v18_original_review_reuse,
+                    )
+                    result["existingOriginalReviewerEvidenceReuse"] = (
+                        run_post_v18_original_review_reuse(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["selectedTextbookSourceScientificProvenance"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1120,6 +1133,23 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("selectedTextbookSourceScientificProvenance",{}).get(
                                 "newModelCalls")==0
                             and result.get("selectedTextbookSourceScientificProvenance",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("existingOriginalReviewerEvidenceReuse",{}).get(
+                                "status")==
+                                "V19_17_EXISTING_REVIEW_PAIRS_RECONCILED_ACADEMIC_PROOFS_STILL_OPEN"
+                            and result.get("existingOriginalReviewerEvidenceReuse",{}).get(
+                                "nextTaskDispatchActuallyExecuted") is True
+                            and result.get("existingOriginalReviewerEvidenceReuse",{}).get(
+                                "reusedIndependentTwoRolePairs")==17
+                            and result.get("existingOriginalReviewerEvidenceReuse",{}).get(
+                                "oldUncertainRoleReplayed") is False
+                            and result.get("existingOriginalReviewerEvidenceReuse",{}).get(
+                                "independentAcademicProofsStillOpen")==90
+                            and result.get("existingOriginalReviewerEvidenceReuse",{}).get(
+                                "independentScientificAcceptanceComplete") is False
+                            and result.get("existingOriginalReviewerEvidenceReuse",{}).get(
+                                "newModelCalls")==0
+                            and result.get("existingOriginalReviewerEvidenceReuse",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:
