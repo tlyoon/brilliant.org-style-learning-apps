@@ -21,7 +21,6 @@ from app_generator.runtime.v3_selected_textbook_scientific_provenance import (
     _V18, _STATUS, _PACKAGE, _SOURCE_BINDING, _source_candidates,
 )
 from app_generator.validation.academic_acceptance_matrix import audit_activity_matrix
-from app_generator.validation.academic_coverage_gate import _canonical_activity_sha
 from app_generator.validation.academic_qa import REQUIRED
 from app_generator.validation.reviewer_source_packets import verified_source_packet
 from app_generator.validation.source_passages import _normalized, check_anchor, extract_pages
@@ -58,7 +57,7 @@ def _rehydrate_exact_source_packets(
     packets = {}
     for aid, activity in by_id.items():
         saved = by_anchor[aid]
-        if (saved.get("activitySha256") != _canonical_activity_sha(activity)
+        if (saved.get("activitySha256") != _hash(activity)
                 or saved.get("uniquePagePassageLocated") is not True
                 or saved.get("scientificMeaningVerified") is not False):
             raise ValueError("V20_STALE_OR_FALSELY_APPROVED_SOURCE_ANCHOR")
@@ -173,6 +172,18 @@ def run_post_v19_historical_academic_audit(
             or any(set(row.get("gates", {})) != set(REQUIRED) for row in rows)
             or report.get("counts", {}).get("PASS") != 0):
         raise ValueError("V20_HISTORICAL_VERIFIER_IDENTITY_OR_GATE_CONTRACT_FAILED")
+    # BSA247: recover the *known* negative-only Malay terminology failure
+    # using the prior Section9.4 remedy. Keep a NEW versioned private draft;
+    # old source/reviewer evidence does not authorize its academic PASS.
+    from app_generator.runtime.v3_malay_auto_revision import (
+        auto_repair_known_malay_science_defects,
+    )
+    repair = auto_repair_known_malay_science_defects(
+        repo=repo, folder=folder, original_package=package,
+        original_package_sha=audit["packageSha256"],
+        source_pdf=source_path, source_sha=source_sha,
+        original_audit=report, identity=identity,
+    )
     # No prose, PDF quote, prompt, option label or human identity is persisted.
     issues = [{
         "activityId": row["activityId"],
@@ -202,9 +213,12 @@ def run_post_v19_historical_academic_audit(
         "gateOrder": list(REQUIRED),
         "gateProofsStillOutstanding": missing,
         "deterministicFailActivities": report["counts"]["FAIL"],
+        "automaticKnownMalayRepairStatus": repair["status"],
+        "automaticRepairedActivityCount": repair["repairedActivityCount"],
         "formalAcademicPASS": 0,
         "reviewerClaimsReused": 17,
         "historicalUncertainReviewerReplayed": False,
+        "automaticHistoricalMalayRepair": repair,
         "nextActionQueue": issues,
         "academicQA": report["academicQA"],
         "newModelCalls": 0, "externalPdfDownloads": 0,
@@ -219,6 +233,8 @@ def run_post_v19_historical_academic_audit(
         "verifiedActivityGateEvaluations": 90,
         "independentAcademicProofSlotsStillOpen": missing,
         "deterministicFailActivities": report["counts"]["FAIL"],
+        "automaticKnownMalayRepairStatus": repair["status"],
+        "automaticRepairedActivityCount": repair["repairedActivityCount"],
         "formalAcademicPASS": 0,
         "historicalUncertainReviewerReplayed": False,
         "newModelCalls": 0, "additionalExternalPdfsRequired": False,

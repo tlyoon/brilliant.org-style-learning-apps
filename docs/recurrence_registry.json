@@ -7928,6 +7928,31 @@
           "path": "tests/test_v3_historical_academic_audit.py",
           "kind": "python",
           "marker": "test_worker_invokes_actual_reused_historical_verifier"
+        },
+        {
+          "path": "tests/test_v3_malay_auto_revision.py",
+          "kind": "python",
+          "marker": "test_actual_four_detected_negative_fails_repaired_by_historical_engine"
+        },
+        {
+          "path": "tests/test_v3_malay_auto_revision.py",
+          "kind": "python",
+          "marker": "test_non_malay_fail_is_queued_not_overwritten"
+        },
+        {
+          "path": "tests/test_v3_malay_auto_revision.py",
+          "kind": "python",
+          "marker": "test_candidate_tamper_refuses_resume"
+        },
+        {
+          "path": "tests/test_v3_malay_auto_revision.py",
+          "kind": "python",
+          "marker": "test_forged_recheck_positive_academic_pass_rejected"
+        },
+        {
+          "path": "tests/test_v3_malay_auto_revision.py",
+          "kind": "python",
+          "marker": "test_normal_recovery_integrated_malay_repair_invocation"
         }
       ],
       "applicableEnvironments": [
@@ -7937,7 +7962,7 @@
         "No mandatory human signoff, no new Gemini calls, no outside PDFs or public release"
       ],
       "lastValidatedDate": "2026-11-22",
-      "nextAction": "Run full exact-head CI and real owner Yoga6 normal worker V1-V20. Preserve all independently unproved scientific, answer, visual and multilingual gate statuses. Do not falsely grant formal academic PASS."
+      "nextAction": "Read-only genuine Yoga6 single-textbook 9.1 original full 18-activity academic checker verified 18 re-extracted source passage receipts and detected four genuine deterministic Malay conservation terminology FAILs, all language only; 14 remaining REVIEW_REQUIRED and 0/18 full academic PASS. Historical Section9.4 vocabulary auto-repair was reused on exact original content: 10 term instances across 8 Malay fields, four original activities; scoped copy-on-write private revised candidate only, then execute existing 18-item academic checker AGAIN on revised source without borrowing stale original source packets or model verdicts. 67 focused regression tests passed incl. tampered candidate, forged positive PASS, no other-locale changes and non-Malay defect quarantine. Hosted exact CI #44985266594 green for previous registry fixed commit 199a8bf before targeted revision. Revalidate new updated exact HEAD CI, owner Yoga6 normal V1-V20 with signed receipts, then mark BSA247 resolved. No new PDF, model API, uncertain replay, public release/merge/deploy."
     }
   ]
 }

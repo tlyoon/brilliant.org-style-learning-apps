@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from app_generator.runtime.v3_native_release_adapter import _v6_checkpoint
+from app_generator.runtime.v3_five_stage_completion import _hash as _v18_activity_sha
 from app_generator.runtime import v3_historical_academic_audit as m
 from app_generator.validation.academic_coverage_gate import _canonical_activity_sha
 from app_generator.validation.academic_qa import REQUIRED
@@ -62,7 +63,7 @@ class HistoricalAcademicAuditTests(unittest.TestCase):
         digest = sha256(_normalized(self.anchor_text).encode("utf8")).hexdigest()
         self.anchors = [
             {"activityId": a["id"],
-             "activitySha256": _canonical_activity_sha(a),
+             "activitySha256": _v18_activity_sha(a),
              "physicalPage": 1, "passageSha256": digest,
              "uniquePagePassageLocated": True,
              "scientificMeaningVerified": False}
