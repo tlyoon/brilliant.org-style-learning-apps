@@ -7963,6 +7963,90 @@
       ],
       "lastValidatedDate": "2026-11-22",
       "nextAction": "Read-only genuine Yoga6 single-textbook 9.1 original full 18-activity academic checker verified 18 re-extracted source passage receipts and detected four genuine deterministic Malay conservation terminology FAILs, all language only; 14 remaining REVIEW_REQUIRED and 0/18 full academic PASS. Historical Section9.4 vocabulary auto-repair was reused on exact original content: 10 term instances across 8 Malay fields, four original activities; scoped copy-on-write private revised candidate only, then execute existing 18-item academic checker AGAIN on revised source without borrowing stale original source packets or model verdicts. 67 focused regression tests passed incl. tampered candidate, forged positive PASS, no other-locale changes and non-Malay defect quarantine. BSA247 VERIFIED RESOLVED on exact owner Yoga6 source 86ecf0c4796260bc1b697067de5ab7474cdbe46d hosted full CI #44985775930 SUCCESS, genuine ordinary Yoga6 V1-V20 worker EXIT0, signed V20 0102ca7cc373dd88f4664312cf50f9ac6ec695164a492611327c694c75904ba1 and independent signed source+candidate witness SHA 95d958fe1ed189a65ea064ea89c2660caf1254f5a0d0978ae31c43e44794adc7. Independent source-bound audit 18/18 original passage locations, 90 original gates evaluated, 4 only-Malay terminology failures; historical automatic remedy fixed 10 terms across 8 Malay fields in 4 activities in immutable PRIVATE candidate SHA 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38. Fresh revised candidate scan 0 negative FAIL/18 REVIEW_REQUIRED/0 formal academic PASS. Original untouched, 17 old model pairs not transferred to changed candidate, no new model API calls, external PDFs, uncertain replay, merge, release or deployment. NEXT independent source-bound scientific/answer/diagram/EN-MS-ZH semantic proofs; 90 proof instances remain unresolved and negative check PASS cannot certify academic correctness."
+    },
+    {
+      "id": "BSA-20261122-248",
+      "class": "revised_private_91_activity_missing_exact_source_rebind_after_v20_malay_repair",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261103-101",
+        "BSA-20261104-109",
+        "BSA-20261122-244",
+        "BSA-20261122-247"
+      ],
+      "differenceFromLinkedIncident": "The BSA247 original full five-gate source-bound academic checker and real known Malay correction run successfully in Yoga6 V20, but the newly versioned private repaired package did not inherit legitimate version-specific original PDF passage verification: the private candidate was intentionally audited with source_packets=None, so all 18 sourceLocationVerified flags remained false. An old saved citation/source location or 17 two-model reviewer claims on the old version must never be treated as new-source semantic evidence or scientific acceptance. Historical Section9.4 source_anchor_migration.py already defined exact-PDF re-extraction and revision-bound no-review-transfer requirements. BSA248 reuses that contract with the exact V18 SHA-only original anchor reconstruction, genuine V20 signed private revision, and full independent 18-activity passage re-extraction on the revised candidate. Re-executes the existing full academic five-gate checker with authenticated revised source packets, re-evaluates six exact momentum arithmetic witnesses and five bounded correct English MCQ key patterns, retains all semantic, distractor, diagram and EN/MS/ZH proof REVIEW_REQUIRED statuses. All actual PDF content stays private, original package remains untouched, and no old or uncertain model reviewer is replayed.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_revised_source_proof_rebinding.py",
+        "triggerMarker": "def run_post_v20_revised_source_rebind(",
+        "remedyMarker": "independently_rebind_revision(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_revised_source_proof_rebinding import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_revised_source_proof_rebinding.py",
+          "kind": "python",
+          "marker": "test_reverify_real_pdf_locator_not_old_model_claim"
+        },
+        {
+          "path": "tests/test_v3_revised_source_proof_rebinding.py",
+          "kind": "python",
+          "marker": "test_original_pdf_changed_rejected_before_any_source_promotion"
+        },
+        {
+          "path": "tests/test_v3_revised_source_proof_rebinding.py",
+          "kind": "python",
+          "marker": "test_new_answer_key_change_cannot_borrow_source_alignment"
+        },
+        {
+          "path": "tests/test_v3_revised_source_proof_rebinding.py",
+          "kind": "python",
+          "marker": "test_extra_malay_edit_on_fifth_activity_disallowed"
+        },
+        {
+          "path": "tests/test_v3_revised_source_proof_rebinding.py",
+          "kind": "python",
+          "marker": "test_previous_passage_digest_tamper_cannot_be_reused"
+        },
+        {
+          "path": "tests/test_v3_revised_source_proof_rebinding.py",
+          "kind": "python",
+          "marker": "test_normal_signed_v21_private_version_chain_idempotent"
+        },
+        {
+          "path": "tests/test_v3_revised_source_proof_rebinding.py",
+          "kind": "python",
+          "marker": "test_tampered_signatures_from_v20_stopped_before_pre_call"
+        },
+        {
+          "path": "tests/test_v3_revised_source_proof_rebinding.py",
+          "kind": "python",
+          "marker": "test_changed_candidate_bytes_refused_before_source_check"
+        },
+        {
+          "path": "tests/test_v3_revised_source_proof_rebinding.py",
+          "kind": "python",
+          "marker": "test_forged_full_academic_pass_cannot_be_accepted"
+        },
+        {
+          "path": "tests/test_v3_revised_source_proof_rebinding.py",
+          "kind": "python",
+          "marker": "test_stage_normal_worker_integration_required"
+        }
+      ],
+      "applicableEnvironments": [
+        "BOSLA owner Yoga6 original Serway 9.1 source.pdf and genuine V18-V20",
+        "Only the previously vetted four-activity locale-only private candidate",
+        "Exact SHA-bound real 18-activity source passage re-extraction and unchanged science witness recheck",
+        "No new Gemini API, ambiguous source replay, extra PDF, public merge or deployment"
+      ],
+      "lastValidatedDate": "2026-11-22",
+      "nextAction": "BSA248 active until hosted exact-head CI plus genuine owner Yoga6 V1-V21 normal worker and independent signed source-rebinding witness. Actual owner Yoga6 bounded source read-only probe has reverified 18/18 candidate passages, four revised activity digests, six exact physical-arithmetic checks and five bounded MCQ key English patterns with zero negative academic failures. Still 90 independent full five-gate scientific/answer/visual/EN-MS-ZH proof instances REVIEW_REQUIRED, zero formal academic PASS; the next substantive milestone is new candidate-specific independent semantic review with genuine bounded model and deterministic proofs, not replayed old review claims."
     }
   ]
 }

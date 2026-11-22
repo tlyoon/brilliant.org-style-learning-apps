@@ -518,6 +518,21 @@ class FiveStageSyntheticTests(unittest.TestCase):
                     "newModelCalls":0,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_revised_source_proof_rebinding as v21_stage,
+            )
+            v21_mock=stack.enter_context(patch.object(
+                v21_stage,"run_post_v20_revised_source_rebind",
+                return_value={
+                    "status":"V21_REVISED_18_SOURCE_LOCATIONS_REVERIFIED_SEMANTIC_PROOFS_OPEN",
+                    "candidateSourceLocationsActuallyReverified":18,
+                    "changedActivitiesReverified":4,
+                    "priorModelReviewerClaimsTransferred":0,
+                    "candidateFormalAcademicPASS":0,
+                    "candidateDeterministicFAIL":0,
+                    "newGeminiCalls":0,
+                    "publicationAuthorized":False,
+                }))
             observed=[]
             stack.enter_context(patch.object(worker,"_print",
                                               side_effect=observed.append))

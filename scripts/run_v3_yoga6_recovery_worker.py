@@ -1013,6 +1013,21 @@ def main(argv: list[str] | None = None) -> int:
                             result["privateNonmergingPrReadiness"],
                             result["selectedTextbookSourceScientificProvenance"],
                             result["existingOriginalReviewerEvidenceReuse"]))
+                    # BSA248/V21: replay-free independent PDF source
+                    # reanchoring for the *revised* locale-only private
+                    # candidate, keeping all five academic gates unapproved.
+                    from app_generator.runtime.v3_revised_source_proof_rebinding import (
+                        run_post_v20_revised_source_rebind,
+                    )
+                    result["revisedSourceProofRebinding"] = (
+                        run_post_v20_revised_source_rebind(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["selectedTextbookSourceScientificProvenance"],
+                            result["existingOriginalReviewerEvidenceReuse"],
+                            result["historicalAcademicFiveGateAudit"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1181,6 +1196,23 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("historicalAcademicFiveGateAudit",{}).get(
                                 "newModelCalls")==0
                             and result.get("historicalAcademicFiveGateAudit",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("revisedSourceProofRebinding",{}).get(
+                                "status")==
+                                "V21_REVISED_18_SOURCE_LOCATIONS_REVERIFIED_SEMANTIC_PROOFS_OPEN"
+                            and result.get("revisedSourceProofRebinding",{}).get(
+                                "candidateSourceLocationsActuallyReverified")==18
+                            and result.get("revisedSourceProofRebinding",{}).get(
+                                "changedActivitiesReverified")==4
+                            and result.get("revisedSourceProofRebinding",{}).get(
+                                "priorModelReviewerClaimsTransferred")==0
+                            and result.get("revisedSourceProofRebinding",{}).get(
+                                "candidateFormalAcademicPASS")==0
+                            and result.get("revisedSourceProofRebinding",{}).get(
+                                "candidateDeterministicFAIL")==0
+                            and result.get("revisedSourceProofRebinding",{}).get(
+                                "newGeminiCalls")==0
+                            and result.get("revisedSourceProofRebinding",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:
