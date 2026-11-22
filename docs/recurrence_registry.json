@@ -8047,6 +8047,86 @@
       ],
       "lastValidatedDate": "2026-11-22",
       "nextAction": "BSA248 VERIFIED RESOLVED: exact source commit 79e28a6421c75ef9c5f9317fd3cbaf2851b60613 hosted Validate repository CI #44992596112 SUCCESS (full tests, real Chrome, recurrence, lint). Actual owner Yoga6 ordinary source-free V1-V21 worker EXIT0: signed V21 receipt 188d218ae93963e1a486c5931a56a95956624371b4b78792f250b8426f662c2a chained to original signed V20 1b67fbc262105125b4249c9aeeeba5f62cf05278afa63327aa2a25566b542406; signed V21 result d0333d24ffb17da1e03b0bf458d210ccccc6c3933411c448363a06410f91eb22. Separate genuine source/PDF independent verification witness 9c94024e233f2cfcd34a64f6931bc7a886bfcfb96c794dba496f0288e148cbaa confirmed revised private package 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38, 18 actual original PDF source passage anchors rebound to exact revised activity digests, four strictly Malay-only edits, six bounded independent rational momentum witnesses, five bounded original English MCQ answer-key patterns, 0 candidate deterministic FAIL, 18 REVIEW_REQUIRED, 0 full academic PASS, 90 semantic/physics/distractor/visual/EN-MS-ZH academic proof requirements still unproved. Prior model claim pairs transferred 0, no Gemini API call, no outside PDFs, public merge/deploy or scheduler. NEXT substantive milestone: safe genuinely new revised-content independent model + deterministic semantics review under standing owner consent, preserving immutable frozen review history and old source-bearing campaign stop."
+    },
+    {
+      "id": "BSA-20261122-249",
+      "class": "revised_private_91_reviewer_evidence_repeated_without_exact_activity_digest_reconciliation",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261122-245",
+        "BSA-20261122-247",
+        "BSA-20261122-248",
+        "BSA-20261119-217"
+      ],
+      "differenceFromLinkedIncident": "V19 already reconciled 17 genuine existing original Section9.1 two-role Gemini reviewer results, and V21 independently source-rebound the four-activity Malay-corrected new private package. But the normal worker did not reconcile which original reviewer claims remain applicable to activities whose exact canonical content is unchanged in the new candidate. The naive alternatives either rerun 17 prior Gemini requests, transfer old verdicts across changed text, or treat an original uncertain index0 as a safe new request. The historical BSA245 and BSA217 remedies already establish genuine two-role receipt checking, SHA-bound no-replay, and bounded owner consent. BSA249 V22 automatically re-verifies all 17 actual earlier two-role results; 13 original activity SHA digests match revised content exactly and can be retained only as advisory review evidence; four changed Malay activities cannot borrow their old claims, so four private SHA-bound brand-new activity review inputs are staged without submitting provider requests; unchanged original index0 remains permanently quarantined. Reviewer consensus never implies independent academic scientific, visual or translation PASS and cannot authorize merge or publication.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_exact_revised_review_reconciliation.py",
+        "triggerMarker": "def run_post_v21_exact_revised_history_reconciliation(",
+        "remedyMarker": "plan_exact_revised_history(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_exact_revised_review_reconciliation import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_exact_revised_review_reconciliation.py",
+          "kind": "python",
+          "marker": "test_genuine_shape_13_unchanged_4_changed_one_uncertain"
+        },
+        {
+          "path": "tests/test_v3_exact_revised_review_reconciliation.py",
+          "kind": "python",
+          "marker": "test_different_old_model_activity_sha_not_admitted"
+        },
+        {
+          "path": "tests/test_v3_exact_revised_review_reconciliation.py",
+          "kind": "python",
+          "marker": "test_old_uncertain_index_not_replayable_as_new"
+        },
+        {
+          "path": "tests/test_v3_exact_revised_review_reconciliation.py",
+          "kind": "python",
+          "marker": "test_unrelated_fifth_activity_change_fails"
+        },
+        {
+          "path": "tests/test_v3_exact_revised_review_reconciliation.py",
+          "kind": "python",
+          "marker": "test_answer_key_mutation_even_in_one_changed_item_fails"
+        },
+        {
+          "path": "tests/test_v3_exact_revised_review_reconciliation.py",
+          "kind": "python",
+          "marker": "test_chinese_or_visual_modification_rejected"
+        },
+        {
+          "path": "tests/test_v3_exact_revised_review_reconciliation.py",
+          "kind": "python",
+          "marker": "test_new_review_inputs_exactly_four_private_and_idempotent"
+        },
+        {
+          "path": "tests/test_v3_exact_revised_review_reconciliation.py",
+          "kind": "python",
+          "marker": "test_tampered_staged_private_input_not_silently_reused"
+        },
+        {
+          "path": "tests/test_v3_exact_revised_review_reconciliation.py",
+          "kind": "python",
+          "marker": "test_worker_normal_v22_dispatch_must_exist"
+        }
+      ],
+      "applicableEnvironments": [
+        "Only exact Yoga6 Serway 9.1 signed real V19 and V21 evidence",
+        "Only unchanged exact 13 of 17 genuine original two-role model claims",
+        "Exactly four genuine Malay-corrected activities require new review",
+        "Original ambiguous index0 never replayed, old charter never reset, no model call in V22",
+        "All academic acceptance and release flags remain false"
+      ],
+      "lastValidatedDate": "2026-11-22",
+      "nextAction": "Active until exact-source HEAD GitHub CI and real owner Yoga6 normal V1-V22 with independent witness. Real read-only owner Yoga6 historical review pilot found 13 exact unchanged genuine two-role original activities, 4 changed prior role pairs disallowed, original index0 still uncertain and no model calls. Targeted 77 tests pass. NEXT separately authorize only genuinely new four revised-content source-bound semantic review inputs using existing standing paid consent if allowed by exact-version source and historical immutable campaign controls; never replay old roles or treat prior model consensus as independent academic proof. The 90 academic meaning, answer, diagram and EN/MS/ZH instances remain open."
     }
   ]
 }

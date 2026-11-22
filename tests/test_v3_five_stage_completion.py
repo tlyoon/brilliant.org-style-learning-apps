@@ -533,6 +533,22 @@ class FiveStageSyntheticTests(unittest.TestCase):
                     "newGeminiCalls":0,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_exact_revised_review_reconciliation as v22_stage,
+            )
+            v22_mock=stack.enter_context(patch.object(
+                v22_stage,"run_post_v21_exact_revised_history_reconciliation",
+                return_value={
+                    "status":"V22_13_UNCHANGED_REVIEW_PAIRS_VERIFIED_4_NEW_SCOPED_NOT_SUBMITTED",
+                    "unchangedReviewerPairsReusedAsAdvisoryEvidence":13,
+                    "revisedReviewerPairsThatRequireFreshAssessment":4,
+                    "oldUncertainRoleReplayed":False,
+                    "fourPrivateReviewInputsStaged":True,
+                    "remainingIndependentAcademicProofSlots":90,
+                    "formalAcademicPASS":0,
+                    "newGeminiCalls":0,
+                    "publicationAuthorized":False,
+                }))
             observed=[]
             stack.enter_context(patch.object(worker,"_print",
                                               side_effect=observed.append))

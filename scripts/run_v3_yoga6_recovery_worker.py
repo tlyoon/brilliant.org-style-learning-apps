@@ -1028,6 +1028,21 @@ def main(argv: list[str] | None = None) -> int:
                             result["selectedTextbookSourceScientificProvenance"],
                             result["existingOriginalReviewerEvidenceReuse"],
                             result["historicalAcademicFiveGateAudit"]))
+                    # BSA249/V22: roll-forward only exact unchanged
+                    # historical two-role reviews as advisory provenance.
+                    # Stage changed source-bound items for NEW independent
+                    # checks without Gemini, retry or publication.
+                    from app_generator.runtime.v3_exact_revised_review_reconciliation import (
+                        run_post_v21_exact_revised_history_reconciliation,
+                    )
+                    result["exactRevisedReviewReconciliation"] = (
+                        run_post_v21_exact_revised_history_reconciliation(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["existingOriginalReviewerEvidenceReuse"],
+                            result["revisedSourceProofRebinding"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1213,6 +1228,25 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("revisedSourceProofRebinding",{}).get(
                                 "newGeminiCalls")==0
                             and result.get("revisedSourceProofRebinding",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("exactRevisedReviewReconciliation",{}).get(
+                                "status")==
+                                "V22_13_UNCHANGED_REVIEW_PAIRS_VERIFIED_4_NEW_SCOPED_NOT_SUBMITTED"
+                            and result.get("exactRevisedReviewReconciliation",{}).get(
+                                "unchangedReviewerPairsReusedAsAdvisoryEvidence")==13
+                            and result.get("exactRevisedReviewReconciliation",{}).get(
+                                "revisedReviewerPairsThatRequireFreshAssessment")==4
+                            and result.get("exactRevisedReviewReconciliation",{}).get(
+                                "oldUncertainRoleReplayed") is False
+                            and result.get("exactRevisedReviewReconciliation",{}).get(
+                                "fourPrivateReviewInputsStaged") is True
+                            and result.get("exactRevisedReviewReconciliation",{}).get(
+                                "remainingIndependentAcademicProofSlots")==90
+                            and result.get("exactRevisedReviewReconciliation",{}).get(
+                                "formalAcademicPASS")==0
+                            and result.get("exactRevisedReviewReconciliation",{}).get(
+                                "newGeminiCalls")==0
+                            and result.get("exactRevisedReviewReconciliation",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:
