@@ -7872,12 +7872,11 @@
     {
       "id": "BSA-20261122-247",
       "class": "historical_source_bound_five_gate_academic_verifier_not_dispatched_after_v19",
-      "status": "pending_real_exact_head_verification",
+      "status": "active",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
-        "BSA-20261024-007",
-        "BSA-20261026-017",
         "BSA-20261103-101",
+        "BSA-20261104-109",
         "BSA-20261122-244",
         "BSA-20261122-245",
         "BSA-20261122-246"

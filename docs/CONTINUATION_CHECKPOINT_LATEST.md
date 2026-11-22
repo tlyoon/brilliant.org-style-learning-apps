@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261122-246 | RESOLVED
+> CURRENT RECOVERY CHECKPOINT: BSA-20261122-247 | ACTIVE
+
+> **22 NOV 2026 — BSA247 HISTORICAL FIVE-GATE VERIFIER WIRED TO NORMAL V20; VERIFICATION ACTIVE.** Source-bound Section 9.4 academic checker is now dispatched automatically after original 9.1 V18 source verification and V19 historical 17-pair reviewer reconciliation. The proposed V20 reopens exactly the single instructor-selected textbook source.pdf, verifies exact source passage digests, runs answer/interaction, domain-science, visual-contract and EN/MS/ZH surface checks for all 18 original activities and saves a private signed per-activity no-release follow-up queue. First 61 focused tests and local lint passed; initial hosted CI rejected only a new recovery registry status/link/checkpoint mismatch, now corrected. Exact-head hosted CI, owner Yoga6 real V1-V20 and actual signed result must pass before marking BSA247 resolved. No simulated academic semantic PASS, new Gemini calls, outside PDFs, old uncertain claim replay, merge or release.
 
 > **22 NOV 2026 — BSA246 VERIFIED NATIVE PYTHON RECOVERY RESOLVED.** BOSLA exact head beb8106e2bd1c24d2c9bc25ec13cd2f07628c043 hosted CI #44979600268 fully passed. An actual Yoga6 command using global Miniforge Python with missing Selenium automatically selected the already-installed project venv, reran ordinary source-free recovery V1-V19 EXIT0, and persisted SHA-bound private handoff witness e03d5c5ebc4acf9baf66f9668b73402e787fed90318e9ab7e295fc681d7dc22d with independently checked signed V19 8cb77ed3e5e9da43885cc4e7575b714f768c3f39cef52dd4d5d0d29d8a38cd3e. Historical original 17 reviewer pairs were reused without original index0 replay; no provider or outside-PDF calls; all 90 independent academic proof slots still open. No release or scheduler.
 
