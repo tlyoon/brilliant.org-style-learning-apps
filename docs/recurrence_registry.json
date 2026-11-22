@@ -8131,7 +8131,7 @@
     {
       "id": "BSA-20261122-250",
       "class": "revised_91_standing_gemini_reviews_missing_exact_new_version_transport_and_pinned_sdk",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261114-164",
@@ -8147,7 +8147,7 @@
         "normalEntryPoints": [
           {
             "path": "scripts/run_v3_revised91_fresh_model_reviews.py",
-            "marker": "advance_bounded_revised91("
+            "marker": "from app_generator.runtime.v3_revised91_fresh_model_reviews import ("
           },
           {
             "path": "app_generator/runtime/native_sdk_environment.py",
@@ -8210,7 +8210,7 @@
         "No unattended schedule, false academic PASS, merge or public release"
       ],
       "lastValidatedDate": "2026-11-22",
-      "nextAction": "Active until exact code HEAD hosted full CI, native Yoga6 real revised four input dry-run, authenticated one-shot live model review of a genuinely new eligible exact slice or genuine provider stop with immutable pre-call evidence, then independent saved two-role role-claim verification; never replay any uncertain role. Actual SDK repair via pinned local pip exit0 verified google-genai 2.25.0 HttpRetryOptions present, follow-up source-free Gemini models.get HTTP200 READY_SOURCE_FREE_ONLY, four real current input prompts separately packaged under four SHA identities and 35 focused tests PASS. 90 full independent academic proof slots remain open and no model voting alone can close academic source correctness. Maintain nonmerging draft PR #223."
+      "nextAction": "BSA250 VERIFIED RESOLVED: exact implementation HEAD 91c035e41d7772289de934645cfe9f50fa71dafb hosted full GitHub CI #45023978009 SUCCESS, including Python tests, Chrome, recurrence and lint. Genuine owner Yoga6 local pinned google-genai 2.25.0 SDK repair and HttpRetryOptions guard verified, source-free Gemini metadata GET HTTP200 READY_SOURCE_FREE_ONLY. Real bounded V23 generated-text-only Gemini API academic review of exactly four new Malay-corrected Section9.1 activity-version SHA identities EXIT0. All four genuine independent two-role Gemini assessments have modelConsensusPass=true, modelRepairRequired=false, modelUncertain=false, and zero reused old model claims, no original index0 replay, no source PDF upload. Separate read-only witness SHA 56e1cb0dae9b28c2a29d233ded03467cc1fb853a2da5d5598ef12d44be04383e independently reopened all four exact immutable package aggregate receipts and eight original role-claim files and verified all four genuine COMPLETE_MODEL_CONSENSUS; original 17 reviewer pairs and old uncertain index0 unchanged. Actual authorized Yoga6 second invocation EXIT0 reused all four complete records without sending any new Gemini requests (four preexistingCompleteReviewReused=true, newModelCalls=0), proving real restart safety. V23 reviewer consensus is AI advisory evidence, not independent textbook/science/answer/visual/trilingual academic PASS: still 18 REVIEW_REQUIRED and 90 independent complete academic proof slots. No merge/deployment/publication or autonomous scheduler. NEXT genuine source-PDF-bound independent semantic/distractor/diagram/EN-MS-ZH mathematical verification rather than recycling or falsely certifying model consensus."
     }
   ]
 }
