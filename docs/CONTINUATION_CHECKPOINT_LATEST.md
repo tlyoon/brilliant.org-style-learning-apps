@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261122-246 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261122-246 | RESOLVED
+
+> **22 NOV 2026 — BSA246 VERIFIED NATIVE PYTHON RECOVERY RESOLVED.** BOSLA exact head beb8106e2bd1c24d2c9bc25ec13cd2f07628c043 hosted CI #44979600268 fully passed. An actual Yoga6 command using global Miniforge Python with missing Selenium automatically selected the already-installed project venv, reran ordinary source-free recovery V1-V19 EXIT0, and persisted SHA-bound private handoff witness e03d5c5ebc4acf9baf66f9668b73402e787fed90318e9ab7e295fc681d7dc22d with independently checked signed V19 8cb77ed3e5e9da43885cc4e7575b714f768c3f39cef52dd4d5d0d29d8a38cd3e. Historical original 17 reviewer pairs were reused without original index0 replay; no provider or outside-PDF calls; all 90 independent academic proof slots still open. No release or scheduler.
 
 > **22 NOV 2026 — BSA246 ACTIVE: FAIL-EARLY NATIVE CHROME PYTHON SELECTION.** Authentic Yoga6 first invoked global Miniforge Python, which lacks Selenium and reached signed V1-V9 before stopping at V10 ModuleNotFoundError. Selecting the already-installed Bosla .venv recovered the SAME HEAD and completed actual V1-V19 EXIT0, signed V19 independently verified with 17 safe old reviewer pairs and 90 independent academic gates still open. To make this automatic, BSA246 adds Windows source-free entrypoint selection of verified pinned venv or fail-closed preflight, with 10 new hostile input/runtime regression tests. Exact-new-head hosted CI and actual normal global-python auto-handoff remain required before closing. No model calls, outside PDFs or public release.
 

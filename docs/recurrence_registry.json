@@ -7791,7 +7791,7 @@
     {
       "id": "BSA-20261122-246",
       "class": "normal_source_free_worker_wrong_global_python_lacked_selenium",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261122-245"
@@ -7804,7 +7804,7 @@
         "normalEntryPoints": [
           {
             "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "def _run_native_browser_entrypoint("
+            "marker": "from app_generator.runtime.v3_native_browser_python import ("
           }
         ]
       },
@@ -7867,7 +7867,7 @@
         "Fail before any stateful run if pinned executable is absent or defective"
       ],
       "lastValidatedDate": "2026-11-22",
-      "nextAction": "BSA246 ACTIVE: 10 focused interpreter fault-injection tests plus earlier 62 V19/worker regressions pass locally; register and run full recurrence lint, commit/push to existing nonmerging BOSLA draft PR #223, require exact hosted CI green, run the actual owner Yoga6 worker from global python to verify it selects the pinned venv automatically, requires 0 new Gemini calls and no external PDFs, signed V1-V19 actual output and no replay of old index0. Independently validate V19 after the new commit, then resolve with evidence; preserve 90 unverified academic proof slots. No public merge/deploy."
+      "nextAction": "BSA246 VERIFIED RESOLVED on BOSLA owner Yoga6 source beb8106e2bd1c24d2c9bc25ec13cd2f07628c043, exact hosted full tests+Chrome CI #44979600268 SUCCESS, real ordinary GLOBAL MINIFORGE source-free entrypoint AUTOMATICALLY handed off to installed pinned project VENV, returned EXIT0 completing authentic signed V1-V19. Private auto-handoff witness SHA e03d5c5ebc4acf9baf66f9668b73402e787fed90318e9ab7e295fc681d7dc22d and independent V19 receipt SHA 8cb77ed3e5e9da43885cc4e7575b714f768c3f39cef52dd4d5d0d29d8a38cd3e confirm 17 historical original 9.1 model review pairs safely reused, original index0 never replayed, zero Gemini calls, zero outside PDFs and 90 independent academic gate instances still open/0 formal academic PASS. Next actual source-based independent answer, physics, visual and EN-MS-ZH semantic review; no public merge, deployment, scheduler or unsupported release."
     }
   ]
 }
