@@ -7872,7 +7872,7 @@
     {
       "id": "BSA-20261122-247",
       "class": "historical_source_bound_five_gate_academic_verifier_not_dispatched_after_v19",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261103-101",
@@ -7962,7 +7962,7 @@
         "No mandatory human signoff, no new Gemini calls, no outside PDFs or public release"
       ],
       "lastValidatedDate": "2026-11-22",
-      "nextAction": "Read-only genuine Yoga6 single-textbook 9.1 original full 18-activity academic checker verified 18 re-extracted source passage receipts and detected four genuine deterministic Malay conservation terminology FAILs, all language only; 14 remaining REVIEW_REQUIRED and 0/18 full academic PASS. Historical Section9.4 vocabulary auto-repair was reused on exact original content: 10 term instances across 8 Malay fields, four original activities; scoped copy-on-write private revised candidate only, then execute existing 18-item academic checker AGAIN on revised source without borrowing stale original source packets or model verdicts. 67 focused regression tests passed incl. tampered candidate, forged positive PASS, no other-locale changes and non-Malay defect quarantine. Hosted exact CI #44985266594 green for previous registry fixed commit 199a8bf before targeted revision. Revalidate new updated exact HEAD CI, owner Yoga6 normal V1-V20 with signed receipts, then mark BSA247 resolved. No new PDF, model API, uncertain replay, public release/merge/deploy."
+      "nextAction": "Read-only genuine Yoga6 single-textbook 9.1 original full 18-activity academic checker verified 18 re-extracted source passage receipts and detected four genuine deterministic Malay conservation terminology FAILs, all language only; 14 remaining REVIEW_REQUIRED and 0/18 full academic PASS. Historical Section9.4 vocabulary auto-repair was reused on exact original content: 10 term instances across 8 Malay fields, four original activities; scoped copy-on-write private revised candidate only, then execute existing 18-item academic checker AGAIN on revised source without borrowing stale original source packets or model verdicts. 67 focused regression tests passed incl. tampered candidate, forged positive PASS, no other-locale changes and non-Malay defect quarantine. BSA247 VERIFIED RESOLVED on exact owner Yoga6 source 86ecf0c4796260bc1b697067de5ab7474cdbe46d hosted full CI #44985775930 SUCCESS, genuine ordinary Yoga6 V1-V20 worker EXIT0, signed V20 0102ca7cc373dd88f4664312cf50f9ac6ec695164a492611327c694c75904ba1 and independent signed source+candidate witness SHA 95d958fe1ed189a65ea064ea89c2660caf1254f5a0d0978ae31c43e44794adc7. Independent source-bound audit 18/18 original passage locations, 90 original gates evaluated, 4 only-Malay terminology failures; historical automatic remedy fixed 10 terms across 8 Malay fields in 4 activities in immutable PRIVATE candidate SHA 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38. Fresh revised candidate scan 0 negative FAIL/18 REVIEW_REQUIRED/0 formal academic PASS. Original untouched, 17 old model pairs not transferred to changed candidate, no new model API calls, external PDFs, uncertain replay, merge, release or deployment. NEXT independent source-bound scientific/answer/diagram/EN-MS-ZH semantic proofs; 90 proof instances remain unresolved and negative check PASS cannot certify academic correctness."
     }
   ]
 }
