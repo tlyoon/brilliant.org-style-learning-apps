@@ -999,6 +999,20 @@ def main(argv: list[str] | None = None) -> int:
                             result["privatePinnedPublicPatch"],
                             result["privateNonmergingPrReadiness"],
                             result["selectedTextbookSourceScientificProvenance"]))
+                    # BSA247/V20: execute the historical five-gate academic
+                    # checker against the same original textbook and 18 items.
+                    # No role replay, no false semantic/visual/translation PASS.
+                    from app_generator.runtime.v3_historical_academic_audit import (
+                        run_post_v19_historical_academic_audit,
+                    )
+                    result["historicalAcademicFiveGateAudit"] = (
+                        run_post_v19_historical_academic_audit(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["selectedTextbookSourceScientificProvenance"],
+                            result["existingOriginalReviewerEvidenceReuse"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1150,6 +1164,23 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("existingOriginalReviewerEvidenceReuse",{}).get(
                                 "newModelCalls")==0
                             and result.get("existingOriginalReviewerEvidenceReuse",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("historicalAcademicFiveGateAudit",{}).get(
+                                "status")==
+                                "V20_REAL_ORIGINAL_FIVE_GATE_ACADEMIC_AUDIT_EXECUTED_NO_RELEASE"
+                            and result.get("historicalAcademicFiveGateAudit",{}).get(
+                                "historicFiveGateVerifierActuallyExecuted") is True
+                            and result.get("historicalAcademicFiveGateAudit",{}).get(
+                                "verifiedOriginalSourceLocations")==18
+                            and result.get("historicalAcademicFiveGateAudit",{}).get(
+                                "verifiedActivityGateEvaluations")==90
+                            and result.get("historicalAcademicFiveGateAudit",{}).get(
+                                "formalAcademicPASS")==0
+                            and result.get("historicalAcademicFiveGateAudit",{}).get(
+                                "historicalUncertainReviewerReplayed") is False
+                            and result.get("historicalAcademicFiveGateAudit",{}).get(
+                                "newModelCalls")==0
+                            and result.get("historicalAcademicFiveGateAudit",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:

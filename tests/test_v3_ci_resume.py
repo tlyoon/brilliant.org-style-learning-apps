@@ -385,6 +385,21 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "newModelCalls":0,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_historical_academic_audit as v20_stage,
+            )
+            v20_mock=stack.enter_context(patch.object(
+                v20_stage,"run_post_v19_historical_academic_audit",
+                return_value={
+                    "status":"V20_REAL_ORIGINAL_FIVE_GATE_ACADEMIC_AUDIT_EXECUTED_NO_RELEASE",
+                    "historicFiveGateVerifierActuallyExecuted":True,
+                    "verifiedOriginalSourceLocations":18,
+                    "verifiedActivityGateEvaluations":90,
+                    "formalAcademicPASS":0,
+                    "historicalUncertainReviewerReplayed":False,
+                    "newModelCalls":0,
+                    "publicationAuthorized":False,
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))

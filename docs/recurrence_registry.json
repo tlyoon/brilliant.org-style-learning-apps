@@ -7868,6 +7868,77 @@
       ],
       "lastValidatedDate": "2026-11-22",
       "nextAction": "BSA246 VERIFIED RESOLVED on BOSLA owner Yoga6 source beb8106e2bd1c24d2c9bc25ec13cd2f07628c043, exact hosted full tests+Chrome CI #44979600268 SUCCESS, real ordinary GLOBAL MINIFORGE source-free entrypoint AUTOMATICALLY handed off to installed pinned project VENV, returned EXIT0 completing authentic signed V1-V19. Private auto-handoff witness SHA e03d5c5ebc4acf9baf66f9668b73402e787fed90318e9ab7e295fc681d7dc22d and independent V19 receipt SHA 8cb77ed3e5e9da43885cc4e7575b714f768c3f39cef52dd4d5d0d29d8a38cd3e confirm 17 historical original 9.1 model review pairs safely reused, original index0 never replayed, zero Gemini calls, zero outside PDFs and 90 independent academic gate instances still open/0 formal academic PASS. Next actual source-based independent answer, physics, visual and EN-MS-ZH semantic review; no public merge, deployment, scheduler or unsupported release."
+    },
+    {
+      "id": "BSA-20261122-247",
+      "class": "historical_source_bound_five_gate_academic_verifier_not_dispatched_after_v19",
+      "status": "pending_real_exact_head_verification",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261024-007",
+        "BSA-20261026-017",
+        "BSA-20261103-101",
+        "BSA-20261122-244",
+        "BSA-20261122-245",
+        "BSA-20261122-246"
+      ],
+      "differenceFromLinkedIncident": "Historical Section 9.4 original-PDF five-gate academic acceptance and multilingual, answer/interaction and domain-science negative checkers were already implemented and used privately. BSA244/V18 only performed physical passage and bounded mathematics plus source-free 90-gap inventory, BSA245/V19 only reconciled 17 prior reviewer pairs. The normal source-free worker never invoked the old exact-source full five-gate acceptance checker on the genuine original Section 9.1 activities. Reconnect it after V19 using exact immutable signed receipts and newly re-extracted existing selected Serway source.pdf passages, not a new PDF or API submission. Metadata-only signed V20 stores per-item gate triage and automatic targeted-repair / semantic follow-up queue; never label source location, valid structures or Gemini consensus as independent academic semantic PASS. Initial Yoga6 academic checker import uncovered declared-but-not-installed jsonschema==4.26.0, restored from pinned project requirements in existing project venv; never fallback to paid models.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_historical_academic_audit.py",
+        "triggerMarker": "def run_post_v19_historical_academic_audit(",
+        "remedyMarker": "audit_activity_matrix(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_historical_academic_audit import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_historical_academic_audit.py",
+          "kind": "python",
+          "marker": "test_exact_historical_verifier_dispatch_is_persistent_idempotent"
+        },
+        {
+          "path": "tests/test_v3_historical_academic_audit.py",
+          "kind": "python",
+          "marker": "test_tampered_v19_in_memory_does_not_dispatch"
+        },
+        {
+          "path": "tests/test_v3_historical_academic_audit.py",
+          "kind": "python",
+          "marker": "test_actual_pdf_hash_change_fails_closed"
+        },
+        {
+          "path": "tests/test_v3_historical_academic_audit.py",
+          "kind": "python",
+          "marker": "test_forged_formal_academic_pass_report_rejected"
+        },
+        {
+          "path": "tests/test_v3_historical_academic_audit.py",
+          "kind": "python",
+          "marker": "test_historical_source_passages_are_reextracted_not_just_trusted"
+        },
+        {
+          "path": "tests/test_v3_historical_academic_audit.py",
+          "kind": "python",
+          "marker": "test_changed_saved_source_digest_blocks_rehydration"
+        },
+        {
+          "path": "tests/test_v3_historical_academic_audit.py",
+          "kind": "python",
+          "marker": "test_worker_invokes_actual_reused_historical_verifier"
+        }
+      ],
+      "applicableEnvironments": [
+        "Owner Yoga6 selected original Serway 9.1 source.pdf only",
+        "Existing 18 original source-bound activities, 17 old no-replay reviewer pairs",
+        "Signed V18 and V19, exact source manifest and private PDF hash",
+        "No mandatory human signoff, no new Gemini calls, no outside PDFs or public release"
+      ],
+      "lastValidatedDate": "2026-11-22",
+      "nextAction": "Run full exact-head CI and real owner Yoga6 normal worker V1-V20. Preserve all independently unproved scientific, answer, visual and multilingual gate statuses. Do not falsely grant formal academic PASS."
     }
   ]
 }
