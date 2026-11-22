@@ -8051,7 +8051,7 @@
     {
       "id": "BSA-20261122-249",
       "class": "revised_private_91_reviewer_evidence_repeated_without_exact_activity_digest_reconciliation",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261122-245",
@@ -8126,7 +8126,91 @@
         "All academic acceptance and release flags remain false"
       ],
       "lastValidatedDate": "2026-11-22",
-      "nextAction": "Active until exact-source HEAD GitHub CI and real owner Yoga6 normal V1-V22 with independent witness. Real read-only owner Yoga6 historical review pilot found 13 exact unchanged genuine two-role original activities, 4 changed prior role pairs disallowed, original index0 still uncertain and no model calls. Targeted 77 tests pass. NEXT separately authorize only genuinely new four revised-content source-bound semantic review inputs using existing standing paid consent if allowed by exact-version source and historical immutable campaign controls; never replay old roles or treat prior model consensus as independent academic proof. The 90 academic meaning, answer, diagram and EN/MS/ZH instances remain open."
+      "nextAction": "BSA249 VERIFIED RESOLVED on exact source code HEAD 4cbd2003ee491ba607f81c0bfb25fc69a9e9d91b. Hosted CI #45022222023 SUCCESS full tests, real Chrome, docs, recurrence lint. Owner Yoga6 genuine normal source-free V1-V22 worker EXIT0 and signed V22 f782cf70a1c9c465c02178d36a845bda8414e445e4b330f866f08879ea169d34, signed V22 result 2527e05bab223b9a5339e34625e8013fba5991064eec460b2654cfa2cee661b0. Independent actual private version/reviewer SHA witness 78aae74abc2dacc96a1ab1d7967c21ae7bf431f210f072f7bafccbd281c870c7 verifies 17 genuine historical original reviewer pairs, exact 13 unchanged activity SHA pairs reused only as advisory evidence, four changed SHA reviewer pairs never transferred, four private new revised activity inputs staged with exact SHA and source binding, original index0 uncertain remains quarantined; zero Gemini paid calls, outside PDF, publish or merge. 77 focused regressions PASS including tamper/falsified reviewer/answer or Chinese mutation. 0 academic PASS and all 90 substantive academic proof slots still REVIEW_REQUIRED. NEXT new genuinely independent four-content reviewer assessment under exact new version and existing owner standing consent, with source-free provider SDK health and BSA164 historical pinned-SDK recovery; do not replay original or ever claim model agreement independently proves textbook meaning."
+    },
+    {
+      "id": "BSA-20261122-250",
+      "class": "revised_91_standing_gemini_reviews_missing_exact_new_version_transport_and_pinned_sdk",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261114-164",
+        "BSA-20261119-217",
+        "BSA-20261122-248",
+        "BSA-20261122-249"
+      ],
+      "differenceFromLinkedIncident": "After real V22 source-revised source and 13 exact unchanged historical reviewer-pair reuse, exactly four genuinely new Malay-corrected Section9.1 activity SHA identities remain for independent two-Gemini technical QA. The historic original Section9.1 campaign is frozen and cannot be replayed. The existing V3 standing owner consent was limited to finite generated-text-only NEW activities but the normal frozen Section9.1 runner cannot route corrected private package identities. Owner Yoga6 local project venv also lacked declared pinned google-genai SDK and initially produced source-free STOP_UNCLASSIFIED_PROVIDER_ERROR errorClass AuthenticationRequired; this is the historically resolved BSA164 SDK bootstrap failure, not proven provider quota failure. Restored pinned google-genai==2.25.0 using repository native_sdk_environment's zero-retry bounded local-pinned dependency installation on the same approved venv; source-free metadata GET then returned HTTP200 READY_SOURCE_FREE_ONLY (not proof of paid generation quota). Added separate exact SHA-bound V23 generated-text-only one-activity V3 two-role reviewer transport under standing 4 activities/8 calls/900sec consent; all old ambiguous claims remain quarantined, old frozen charter unchanged, model roles durable with no ambiguous retries, no source PDF upload and no academic/publication promotion.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_revised91_fresh_model_reviews.py",
+        "triggerMarker": "def advance_bounded_revised91(",
+        "remedyMarker": "fresh_revised91_inputs(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_revised91_fresh_model_reviews.py",
+            "marker": "advance_bounded_revised91("
+          },
+          {
+            "path": "app_generator/runtime/native_sdk_environment.py",
+            "marker": "run_v3_revised91_fresh_model_reviews.py"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_revised91_fresh_model_reviews.py",
+          "kind": "python",
+          "marker": "test_real_four_immutable_revised_version_inputs_preflight"
+        },
+        {
+          "path": "tests/test_v3_revised91_fresh_model_reviews.py",
+          "kind": "python",
+          "marker": "test_source_pdf_modification_blocks_all_new_roles"
+        },
+        {
+          "path": "tests/test_v3_revised91_fresh_model_reviews.py",
+          "kind": "python",
+          "marker": "test_modified_candidate_bytes_block_all_new_roles"
+        },
+        {
+          "path": "tests/test_v3_revised91_fresh_model_reviews.py",
+          "kind": "python",
+          "marker": "test_tampered_signed_v22_result_denied"
+        },
+        {
+          "path": "tests/test_v3_revised91_fresh_model_reviews.py",
+          "kind": "python",
+          "marker": "test_tampered_private_role_input_denied"
+        },
+        {
+          "path": "tests/test_v3_revised91_fresh_model_reviews.py",
+          "kind": "python",
+          "marker": "test_original_frozen_index0_not_new_scope"
+        },
+        {
+          "path": "tests/test_v3_revised91_fresh_model_reviews.py",
+          "kind": "python",
+          "marker": "test_old_unknown_run_is_never_resubmitted"
+        },
+        {
+          "path": "tests/test_v3_revised91_fresh_model_reviews.py",
+          "kind": "python",
+          "marker": "test_new_review_failure_does_not_fabricate_evidence"
+        },
+        {
+          "path": "tests/test_v3_revised91_fresh_model_reviews.py",
+          "kind": "python",
+          "marker": "test_normal_authorized_entrypoint_is_separate_from_frozen_campaign"
+        }
+      ],
+      "applicableEnvironments": [
+        "Owner Yoga6 only, signed V22 actual latest source-head and single original Serway 9.1 PDF",
+        "Exactly four new corrected private activity SHA identities, old original uncertain index0 never replayed",
+        "Standing owner paid Gemini consent max four new activity pairs, eight calls and 900 seconds per invocation",
+        "Pinned google-genai local venv bootstrap and source-free metadata GET, no PDF upload or old role retries",
+        "No unattended schedule, false academic PASS, merge or public release"
+      ],
+      "lastValidatedDate": "2026-11-22",
+      "nextAction": "Active until exact code HEAD hosted full CI, native Yoga6 real revised four input dry-run, authenticated one-shot live model review of a genuinely new eligible exact slice or genuine provider stop with immutable pre-call evidence, then independent saved two-role role-claim verification; never replay any uncertain role. Actual SDK repair via pinned local pip exit0 verified google-genai 2.25.0 HttpRetryOptions present, follow-up source-free Gemini models.get HTTP200 READY_SOURCE_FREE_ONLY, four real current input prompts separately packaged under four SHA identities and 35 focused tests PASS. 90 full independent academic proof slots remain open and no model voting alone can close academic source correctness. Maintain nonmerging draft PR #223."
     }
   ]
 }

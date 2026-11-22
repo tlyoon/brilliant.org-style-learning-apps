@@ -76,6 +76,9 @@ def delegate_to_supported_sdk(
     allowed = {
         (scripts / "run_v3_native_gemini_review.py").resolve(),
         (scripts / "run_v3_yoga6_recovery_worker.py").resolve(),
+        # BSA250: only this separately authorized exact-revision reviewer
+        # can bootstrap the same pinned local SDK before any PRE_CALL role.
+        (scripts / "run_v3_revised91_fresh_model_reviews.py").resolve(),
     }
     selected = (entrypoint if entrypoint is not None else
                 scripts / "run_v3_native_gemini_review.py").resolve()
