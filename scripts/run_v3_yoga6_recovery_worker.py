@@ -1043,6 +1043,21 @@ def main(argv: list[str] | None = None) -> int:
                             result["privateNonmergingPrReadiness"],
                             result["existingOriginalReviewerEvidenceReuse"],
                             result["revisedSourceProofRebinding"]))
+                    # BSA251/V24 architectural fix: normal pipeline
+                    # automatically reuses historical verified handlers,
+                    # rechecks actual single textbook and versioned content,
+                    # then persists per-gate missing proofs or real defects.
+                    # Two bounded rounds converge without model replay.
+                    from app_generator.runtime.v3_autonomous_academic_recovery import (
+                        run_post_v22_autonomous_academic_recovery,
+                    )
+                    result["autonomousAcademicRecovery"] = (
+                        run_post_v22_autonomous_academic_recovery(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["exactRevisedReviewReconciliation"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1247,6 +1262,25 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("exactRevisedReviewReconciliation",{}).get(
                                 "newGeminiCalls")==0
                             and result.get("exactRevisedReviewReconciliation",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("autonomousAcademicRecovery",{}).get(
+                                "status")==
+                                "V24_BOUNDED_HISTORY_FIRST_ACADEMIC_DISPATCH_EXECUTED_PROOFS_OPEN"
+                            and result.get("autonomousAcademicRecovery",{}).get(
+                                "historicalRemedyHandlersActuallyExecuted")==6
+                            and result.get("autonomousAcademicRecovery",{}).get(
+                                "genuineTextbookPageRechecks")==18
+                            and result.get("autonomousAcademicRecovery",{}).get(
+                                "completeAcademicProofGapsStillOpen")==90
+                            and result.get("autonomousAcademicRecovery",{}).get(
+                                "autoRecoveryRounds")==2
+                            and result.get("autonomousAcademicRecovery",{}).get(
+                                "academicFixedPointReached") is True
+                            and result.get("autonomousAcademicRecovery",{}).get(
+                                "externalGeminiCalls")==0
+                            and result.get("autonomousAcademicRecovery",{}).get(
+                                "academicPASS")==0
+                            and result.get("autonomousAcademicRecovery",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:

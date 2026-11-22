@@ -8211,6 +8211,97 @@
       ],
       "lastValidatedDate": "2026-11-22",
       "nextAction": "BSA250 VERIFIED RESOLVED: exact implementation HEAD 91c035e41d7772289de934645cfe9f50fa71dafb hosted full GitHub CI #45023978009 SUCCESS, including Python tests, Chrome, recurrence and lint. Genuine owner Yoga6 local pinned google-genai 2.25.0 SDK repair and HttpRetryOptions guard verified, source-free Gemini metadata GET HTTP200 READY_SOURCE_FREE_ONLY. Real bounded V23 generated-text-only Gemini API academic review of exactly four new Malay-corrected Section9.1 activity-version SHA identities EXIT0. All four genuine independent two-role Gemini assessments have modelConsensusPass=true, modelRepairRequired=false, modelUncertain=false, and zero reused old model claims, no original index0 replay, no source PDF upload. Separate read-only witness SHA 56e1cb0dae9b28c2a29d233ded03467cc1fb853a2da5d5598ef12d44be04383e independently reopened all four exact immutable package aggregate receipts and eight original role-claim files and verified all four genuine COMPLETE_MODEL_CONSENSUS; original 17 reviewer pairs and old uncertain index0 unchanged. Actual authorized Yoga6 second invocation EXIT0 reused all four complete records without sending any new Gemini requests (four preexistingCompleteReviewReused=true, newModelCalls=0), proving real restart safety. V23 reviewer consensus is AI advisory evidence, not independent textbook/science/answer/visual/trilingual academic PASS: still 18 REVIEW_REQUIRED and 90 independent complete academic proof slots. No merge/deployment/publication or autonomous scheduler. NEXT genuine source-PDF-bound independent semantic/distractor/diagram/EN-MS-ZH mathematical verification rather than recycling or falsely certifying model consensus."
+    },
+    {
+      "id": "BSA-20261123-251",
+      "class": "normal_academic_pipeline_disconnected_historical_recovery_proof_actions_and_fixed_point",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261122-244",
+        "BSA-20261122-247",
+        "BSA-20261122-248",
+        "BSA-20261122-249",
+        "BSA-20261122-250"
+      ],
+      "differenceFromLinkedIncident": "The owner repeatedly saw already-fixed historical failures because Bosla's normal worker had a statically appended sequence of recovery stages V18-V22 but no executable post-review academic proof dispatcher or convergence feedback. A successful source-free worker EXIT0 did not mean the 18 generated Section 9.1 activities passed any of the 90 independent academic proof checks. BSA251 first reuses the existing BSA244 original source and bounded math checks, BSA247 actual academic five-gate checker, BSA248 real revised source rebind and multilingual numeric triage, BSA249 exact 13 historical advisory two-role pairs, and BSA250 four new genuine model consensus receipts. The new V24 normal-worker stage builds a precise per-activity x per-gate evidence task queue. It statically validates that each historical remedy is resolved/registered and has the approved runtime source; never evals registry data or imports arbitrary handlers. It actually executes all source-free verifier classes on the original selected textbook and exact private revised candidate, repeats two bounded independent audit rounds, verifies a stable evidence digest, and persists signed metadata-only restart-safe PRE/RESULT/FINAL receipts. Distinguishes 90 missing independent semantic source/answer/physics/visual/EN-MS-ZH proofs from zero deterministic defects; model consensus, source location or absence of negative findings cannot become complete academic PASS. New deterministic failures without a proven exact-version repair stop explicitly, not via speculative LLM rewrite. No provider calls, no outside PDFs, no old uncertain role replay, no public release.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_recovery.py",
+        "triggerMarker": "def run_post_v22_autonomous_academic_recovery(",
+        "remedyMarker": "execute_academic_evidence_cycle(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_autonomous_academic_recovery import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_full_ninety_proof_gaps_are_actions_not_software_errors"
+        },
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_known_deterministic_failure_stops_without_fabricated_repair"
+        },
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_actual_registered_history_is_resolved_and_static"
+        },
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_retired_remedy_rejected_before_any_proof_claim"
+        },
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_missing_or_tampered_source_never_reuses_prior_proof"
+        },
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_model_consensus_cannot_promote_any_complete_gate"
+        },
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_forged_gate_activity_identity_cannot_enter_workqueue"
+        },
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_proof_gap_queue_is_deterministic_on_restart"
+        },
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_absent_new_model_role_does_not_trigger_paid_or_replay"
+        },
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_unknown_prior_inflight_role_remains_stop_not_retry"
+        },
+        {
+          "path": "tests/test_v3_autonomous_academic_recovery.py",
+          "kind": "python",
+          "marker": "test_worker_normal_execution_includes_v24"
+        }
+      ],
+      "applicableEnvironments": [
+        "Owner Yoga6 latest exact commit and CI signed BSA249 V22 plus original Serway 9.1 PDF",
+        "Single selected textbook only, exact original and revised private content SHA",
+        "History-first fixed reviewed handlers; no unrestricted code execution from registry metadata",
+        "Bounded two-round deterministic evidence and immutable no-replay model proof inventory",
+        "All 90 academically unproved slots remain explicit, no false PASS or public release"
+      ],
+      "lastValidatedDate": "2026-11-23",
+      "nextAction": "ACTIVE pending real Yoga6 selected textbook original/revised 18-activity dual-loop pilot, successful full hosted exact-commit CI, normal source-free V1-V24 real integrated run, independent signed checkpoint verification, and closure. Scientific, visual, answer and EN/MS/ZH full proof automation remains a distinct future substantive milestone: this architecture must never claim that source location, AI votes, or absence of defects establishes a scientific proof."
     }
   ]
 }

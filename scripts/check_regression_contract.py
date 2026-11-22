@@ -302,6 +302,12 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v71V15MissingNativePublicPRChecksNotFalselyAccepted",
     "v71V15NoUnregisteredWritesMergeDeployPaidOrScheduler",
     "v71V15NoImaginaryPersistentCrossSessionRunnerClaim",
+    # Owner 23 Nov V24: architectural closure, not repeated one-off fixes.
+    "v24HistoryFirstStaticAcademicRemediesNormalWorkerDispatch",
+    "v24TwoActualSourcePdfAcademicProofAuditRoundsAndFixedPoint",
+    "v24EachActivityEachGateVersionBoundPrivateActionQueue",
+    "v24ModelConsensusAndSourceLocationCannotCountAsAcademicProof",
+    "v24UnresolvedIndependentProofMustStopWithoutFalseRelease",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

@@ -431,6 +431,22 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "newGeminiCalls":0,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_autonomous_academic_recovery as v24_stage,
+            )
+            v24_mock=stack.enter_context(patch.object(
+                v24_stage,"run_post_v22_autonomous_academic_recovery",
+                return_value={
+                    "status":"V24_BOUNDED_HISTORY_FIRST_ACADEMIC_DISPATCH_EXECUTED_PROOFS_OPEN",
+                    "historicalRemedyHandlersActuallyExecuted":6,
+                    "genuineTextbookPageRechecks":18,
+                    "completeAcademicProofGapsStillOpen":90,
+                    "autoRecoveryRounds":2,
+                    "academicFixedPointReached":True,
+                    "externalGeminiCalls":0,
+                    "academicPASS":0,
+                    "publicationAuthorized":False,
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))
