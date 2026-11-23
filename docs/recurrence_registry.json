@@ -8565,7 +8565,7 @@
     {
       "id": "BSA-20261123-254",
       "class": "sourcefree_worker_had_no_early_cross_session_single_flight_lock_despite_existing_os_lock",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "integration-readiness",
       "relatedIncidentIds": [
         "BSA-20261116-172",
@@ -8651,7 +8651,7 @@
         "No scheduler, extra source PDF, old uncertain request replay or public merge/deploy"
       ],
       "lastValidatedDate": "2026-11-23",
-      "nextAction": "BSA254 ACTIVE. Exact GitHub c5ca70e passed full hosted CI 45189566453, but genuine Yoga6 sourcefree worker stopped with RuntimeError before V26 because the original source-free forward stage already takes the historic NONREENTRANT coordinator_lock(private). Outer session acquired that SAME lock and self-deadlocked. Root cause classified via real run and existing v3_source_free_forward. Reuse historical OS lock algorithm but give whole-session source-free guard a DISTINCT fixed private subdirectory .source-free-singleflight, keeping the original per-stage lock untouched and NONREENTRANT. Ten targeted tests include genuine second process denial, stage-level lock nesting, release/restart. Fresh CI and real full Yoga6 V1-V26 plus independent signed witnesses required. 90 full independent academic proof gates and 26 meaning review flags still OPEN; no publication."
+      "nextAction": "BSA254 VERIFIED RESOLVED for cross-session source-free OS single-flight and strict nested per-stage original coordinator. Exact HEAD 34b7221184c731a5b2a261f6ac1d0190f1960906 hosted full CI #45191418424 SUCCESS; real Yoga6 normal V1-V26 source-free worker EXIT0 and independent SHA-bound source/receipt readback EXIT0 witness 51eec606c3910151d2688ac85236446c53f541a87f4a27b14a08274470d826b2. A second genuine Python process was denied before work with exit3, signed witness 5c595c1d91ecfe0655ffe6f791c9d988a29ac94d8bca5d1a1cd7882dc517dba0. Distinct whole-session OS scope coexists with original non-reentrant per-stage recovery. 90 full academic proof gates, 26 semantic review items, and missing visual specs in Chapter9 remain separate substantive work; zero paid calls, external PDFs, old uncertain role replay or release."
     }
   ]
 }
