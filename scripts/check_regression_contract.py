@@ -308,6 +308,11 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v24EachActivityEachGateVersionBoundPrivateActionQueue",
     "v24ModelConsensusAndSourceLocationCannotCountAsAcademicProof",
     "v24UnresolvedIndependentProofMustStopWithoutFalseRelease",
+    "v25OneOriginalSelectedTextbookAndExactRevisionOnly",
+    "v25NineSourceAxiomsAnd68IndependentlyComputedAnswers",
+    "v25EighteenWrongKeyFaultInjectionCoverage",
+    "v25NormalWorkerSignedNoProviderAndNoFalseAcademicPASS",
+    "v25NewVersionsCannotBorrowOlderModelAcceptance",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

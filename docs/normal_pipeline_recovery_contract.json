@@ -210,7 +210,12 @@
     "v24TwoActualSourcePdfAcademicProofAuditRoundsAndFixedPoint": true,
     "v24EachActivityEachGateVersionBoundPrivateActionQueue": true,
     "v24ModelConsensusAndSourceLocationCannotCountAsAcademicProof": true,
-    "v24UnresolvedIndependentProofMustStopWithoutFalseRelease": true
+    "v24UnresolvedIndependentProofMustStopWithoutFalseRelease": true,
+    "v25OneOriginalSelectedTextbookAndExactRevisionOnly": true,
+    "v25NineSourceAxiomsAnd68IndependentlyComputedAnswers": true,
+    "v25EighteenWrongKeyFaultInjectionCoverage": true,
+    "v25NormalWorkerSignedNoProviderAndNoFalseAcademicPASS": true,
+    "v25NewVersionsCannotBorrowOlderModelAcceptance": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

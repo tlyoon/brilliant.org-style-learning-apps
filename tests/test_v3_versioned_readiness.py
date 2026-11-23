@@ -419,6 +419,22 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "academicPASS":0,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_section91_formal_academic_dispatch as v25_stage,
+            )
+            v25_mock=stack.enter_context(patch.object(
+                v25_stage,"run_post_v24_formal_science",
+                return_value={
+                    "status":"V25_ALL_18_REAL_SOURCE_BOUND_FORMAL_ANSWER_MODELS_VERIFIED_PARTIAL_ACADEMIC",
+                    "independentlyReextractedTextbookPhysicsPremises":9,
+                    "boundedFormalAnswerItemWitnesses":68,
+                    "formalModelledActivities":18,
+                    "academicProofGatesStillOpen":90,
+                    "formalAcademicPASS":0,
+                    "newGeminiCalls":0,
+                    "externalPdfAcquisition":False,
+                    "publicationAuthorized":False,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))

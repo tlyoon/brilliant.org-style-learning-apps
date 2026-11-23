@@ -1058,6 +1058,20 @@ def main(argv: list[str] | None = None) -> int:
                             result["privatePinnedPublicPatch"],
                             result["privateNonmergingPrReadiness"],
                             result["exactRevisedReviewReconciliation"]))
+                    # BSA252 V25: actual independent Fraction-valued
+                    # MCQ/distractor and interactive answer witnesses for
+                    # ALL 18 activities, grounded in one exact textbook PDF.
+                    # These bounded models do NOT certify full academic PASS.
+                    from app_generator.runtime.v3_section91_formal_academic_dispatch import (
+                        run_post_v24_formal_science,
+                    )
+                    result["formalSection91Physics"] = (
+                        run_post_v24_formal_science(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["autonomousAcademicRecovery"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1281,6 +1295,25 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("autonomousAcademicRecovery",{}).get(
                                 "academicPASS")==0
                             and result.get("autonomousAcademicRecovery",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("formalSection91Physics",{}).get(
+                                "status")==
+                                "V25_ALL_18_REAL_SOURCE_BOUND_FORMAL_ANSWER_MODELS_VERIFIED_PARTIAL_ACADEMIC"
+                            and result.get("formalSection91Physics",{}).get(
+                                "independentlyReextractedTextbookPhysicsPremises")==9
+                            and result.get("formalSection91Physics",{}).get(
+                                "boundedFormalAnswerItemWitnesses")==68
+                            and result.get("formalSection91Physics",{}).get(
+                                "formalModelledActivities")==18
+                            and result.get("formalSection91Physics",{}).get(
+                                "academicProofGatesStillOpen")==90
+                            and result.get("formalSection91Physics",{}).get(
+                                "formalAcademicPASS")==0
+                            and result.get("formalSection91Physics",{}).get(
+                                "newGeminiCalls")==0
+                            and result.get("formalSection91Physics",{}).get(
+                                "externalPdfAcquisition") is False
+                            and result.get("formalSection91Physics",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:

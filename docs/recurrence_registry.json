@@ -8302,6 +8302,82 @@
       ],
       "lastValidatedDate": "2026-11-23",
       "nextAction": "BSA251 VERIFIED RESOLVED for the normal-worker autonomous academic evidence/repair dispatch architecture. Exact code HEAD b20be08493c05f72bf1b624a8c31f43c35360520 hosted full GitHub CI #45044039662 SUCCESS incl. full tests, real Chrome, recurrence contract and lint. Owner Yoga6 actual normal V1–V24 source-free worker EXIT0, receipt V24 1f8738335d0602b4d1614c54c5e20045605bf6cdd6723bf6c61a1c0f72529494, result receipt 6eff40fb3a979a54eb04b9a6f1ae71af67f33e9714f5bb9c679ec569f3571e0b. Five separate signed metadata-only SHA- and original-PDF-bound academic evidence queues created under existing safe 12000-byte per-receipt cap, 18 tasks per gate, 90 unique tasks, 2 independent identical source-bound audit rounds, 6 actual approved existing source-free historical handlers, 18 real source passages per round, 6 exact physics witnesses, 5 MCQ key checks and 162 numeric locale fields without mismatch. Separate actual owner Yoga6 read-only witness 8e36b4b755fcafc98213729f17914b6ffbd3bf28aabd4beaf0d0f125a5eaf724 rechecked all 5 saved queue signatures, real current original selected PDF SHA, candidate package and 90 exact activity/gate digests, model-review prior 13 unchanged + 4 revised advisory only and original uncertain index0 quarantined; no new model calls or outside PDFs. Repeated known historical remedies are now normal-worker executable, version-bound and regression-controlled. IMPORTANT: the 90 tasks are genuine unproved scientific source interpretation, full answer/distractor, physics, rendered-visual and EN-MS-ZH semantic proofs; none is an established new software defect. 0 academic PASS, 0 deterministic FAIL, 90 REVIEW_REQUIRED. NEXT substantive work: build true independent, textbook-derived per-gate proof producers/adapters and test them, not merely rerun Gemini or promote source-page/advisory evidence to academic PASS. PR #223 remains draft, unmerged and no deployment/scheduler authorized."
+    },
+    {
+      "id": "BSA-20261123-252",
+      "class": "v24_ninety_academic_proof_tasks_lacked_executable_independent_answer_math_witnesses",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261105-114",
+        "BSA-20261122-244",
+        "BSA-20261122-247",
+        "BSA-20261122-248",
+        "BSA-20261123-251"
+      ],
+      "differenceFromLinkedIncident": "V24 rechecked real selected Serway9.1 source and identified 90 proof gaps but its bounded math handler covered only six identities and five correct MCQ labels, without independently deriving the nine complete MCQ choices or nine interactive answer keys. V25 reuses original selected textbook PDF SHA, approved private revised package SHA, source re-extraction and immutable signed V24 proof queue. A domain-scoped formal checker independently computes the 9 MCQ single-correct alternatives, 9 classification/matching/ordering/selection solutions from exact Fractions, physical dimensions, vector momentum, isolated-system action-reaction and kinetic/momentum relationships. Every one of the 18 generated activities and 68 solution option/item witnesses is content-version-bound, and every one of the nine MCQ and nine interactive answer mutations is a negative regression. It exposes only bounded mathematical evidence, NEVER full scientific, source interpretation, diagram or EN/MS/ZH meaning PASS. The new normal worker V25 stage writes private signed PRE_CALL, RESULT and FINAL receipts without provider calls, new PDFs, role replay or public deployment; an exact revision mutation requires independent new validation.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_section91_formal_academic_dispatch.py",
+        "triggerMarker": "def run_post_v24_formal_science(",
+        "remedyMarker": "bounded_section91_science_audit(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_section91_formal_academic_dispatch import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_section91_formal_physics.py",
+          "kind": "python",
+          "marker": "test_independent_proof_models_cover_all_18_and_68_answer_items"
+        },
+        {
+          "path": "tests/test_section91_formal_physics.py",
+          "kind": "python",
+          "marker": "test_mutated_each_of_nine_mcq_keys_independently_detected"
+        },
+        {
+          "path": "tests/test_section91_formal_physics.py",
+          "kind": "python",
+          "marker": "test_mutated_each_of_nine_interactive_solutions_detected"
+        },
+        {
+          "path": "tests/test_section91_formal_physics.py",
+          "kind": "python",
+          "marker": "test_source_missing_independent_textbook_premises_rejected"
+        },
+        {
+          "path": "tests/test_section91_formal_physics.py",
+          "kind": "python",
+          "marker": "test_edited_activity_or_locale_byte_content_is_not_approved"
+        },
+        {
+          "path": "tests/test_section91_formal_physics.py",
+          "kind": "python",
+          "marker": "test_science_result_cannot_claim_full_academic_pass"
+        },
+        {
+          "path": "tests/test_section91_formal_physics.py",
+          "kind": "python",
+          "marker": "test_real_worker_must_dispatch_v25_and_validate_evidence"
+        },
+        {
+          "path": "tests/test_section91_formal_physics.py",
+          "kind": "python",
+          "marker": "test_v25_integration_does_not_bypass_genuine_v24_signature"
+        }
+      ],
+      "applicableEnvironments": [
+        "Authorized owner Yoga6 only, existing single selected original Section9.1 textbook source.pdf",
+        "Exact approved Section9.1 source and revised private candidate SHA, V24 signed evidence queue",
+        "Domain-scoped 18 answer-key models: no implicit carryover to other chapters or Thomas Calculus",
+        "Source-free signed PRE/RESULT/FINAL, 9 textbook premises and 68 bounded rational/dimensional witnesses",
+        "No automatic academic PASS, old uncertain role replay, provider calls, external PDF, merge or publication"
+      ],
+      "lastValidatedDate": "2026-11-23",
+      "nextAction": "ACTIVE. Real original Serway9.1 Yoga6 source-bound local V25 pilot EXIT0 with 9 textbook physical premises, all 18 activities and 68 bounded MCQ+interactive answer witnesses. 67 targeted negative and normal-worker mock regressions PASS. Need recurrence+lint, exact GitHub commit CI, real ordinary Yoga6 V1-V25 signed dispatch and independent source/version/receipt witness then close. All 90 complete independent academic source/answer/physics/visual/trilingual gates still unproved. The next substantive boundary is full EN/MS/ZH scientific meaning, visual geometry and diverse textbook subject verifiers; no false claim of exhaustive proof from finite cases."
     }
   ]
 }
