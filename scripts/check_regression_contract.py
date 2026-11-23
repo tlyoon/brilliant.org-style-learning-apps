@@ -315,6 +315,11 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v25NewVersionsCannotBorrowOlderModelAcceptance",
     "v25LargeProofRosterSplitIntoRestartSafeSignedPartitions",
     "v25TamperedSavedPartitionRejectedWithoutModelReplay",
+    "v26EveryExplanationAndDistractorAssignedExactProofTask",
+    "v26All222ENMSZHScientificSurfacesScannedWithoutFalseAcademicPASS",
+    "v26SourceBoundIncorrectFormulaAndAnswerReferencesFailClosed",
+    "v26NoDiagramIn91StillRequiresSourceCoverageProof",
+    "v26RestartSafePerNineActivitySignedEvidencePartitions",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",

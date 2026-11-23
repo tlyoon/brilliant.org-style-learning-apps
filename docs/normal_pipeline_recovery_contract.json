@@ -217,7 +217,12 @@
     "v25NormalWorkerSignedNoProviderAndNoFalseAcademicPASS": true,
     "v25NewVersionsCannotBorrowOlderModelAcceptance": true,
     "v25LargeProofRosterSplitIntoRestartSafeSignedPartitions": true,
-    "v25TamperedSavedPartitionRejectedWithoutModelReplay": true
+    "v25TamperedSavedPartitionRejectedWithoutModelReplay": true,
+    "v26EveryExplanationAndDistractorAssignedExactProofTask": true,
+    "v26All222ENMSZHScientificSurfacesScannedWithoutFalseAcademicPASS": true,
+    "v26SourceBoundIncorrectFormulaAndAnswerReferencesFailClosed": true,
+    "v26NoDiagramIn91StillRequiresSourceCoverageProof": true,
+    "v26RestartSafePerNineActivitySignedEvidencePartitions": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

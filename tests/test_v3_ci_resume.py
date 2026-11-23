@@ -463,6 +463,37 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "externalPdfAcquisition":False,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_source_semantic_triage as v26_stage,
+            )
+            v26_mock=stack.enter_context(patch.object(
+                v26_stage,"run_post_v25_source_scientific_semantic_triage",
+                return_value={
+                    "status":"V26_SOURCE_BOUND_EXPLANATION_AND_TRILINGUAL_CUE_TRIAGE_COMPLETE_NO_RELEASE",
+                    "activitiesChecked":18,
+                    "scientificLocalizedFieldsChecked":222,
+                    "unresolvedTriLocaleSemanticReviewItems":26,
+                    "deterministicScienceDefects":0,
+                    "renderedDiagramSemanticsVerified":False,
+                    "academicProofGatesStillOpen":90,
+                    "formalAcademicPASS":0,
+                    "newGeminiCalls":0,
+                    "publicationAuthorized":False,
+                }))
+            from app_generator.runtime import (
+                v3_full_semantic_proof_dispatch as v26_queue_stage,
+            )
+            v26_queue_mock=stack.enter_context(patch.object(
+                v26_queue_stage,"run_post_v25_full_semantic_queue",
+                return_value={
+                    "status":"V26_FULL_EXPLANATION_DISTRACTOR_DIAGRAM_TRILINGUAL_TASKS_QUEUED",
+                    "activityCount":18,
+                    "completeAcademicGateSlotsStillOpen":90,
+                    "independentSemanticPASS":0,
+                    "newProviderCalls":0,
+                    "externalPdfAcquisition":False,
+                    "publicationAuthorized":False,
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))

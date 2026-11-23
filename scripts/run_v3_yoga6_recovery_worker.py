@@ -1072,6 +1072,33 @@ def main(argv: list[str] | None = None) -> int:
                             result["privatePinnedPublicPatch"],
                             result["privateNonmergingPrReadiness"],
                             result["autonomousAcademicRecovery"]))
+                    # BSA253/V26 typed language and scientific claim
+                    # analysis, all explanation and distractor surfaces.
+                    # Preserve source-version and academic nonrelease gates.
+                    from app_generator.runtime.v3_source_semantic_triage import (
+                        run_post_v25_source_scientific_semantic_triage,
+                    )
+                    result["sourceScientificSemanticTriage"] = (
+                        run_post_v25_source_scientific_semantic_triage(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["formalSection91Physics"]))
+                    # BSA253 V26: always queue full explanation, distractor,
+                    # rendered visual, and EN/MS/ZH meaning proofs next.
+                    # Generic planner binds each task to actual source and
+                    # revised content; queue never promotes academic PASS.
+                    from app_generator.runtime.v3_full_semantic_proof_dispatch import (
+                        run_post_v25_full_semantic_queue,
+                    )
+                    result["fullSemanticProofQueue"] = (
+                        run_post_v25_full_semantic_queue(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["formalSection91Physics"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1314,6 +1341,40 @@ def main(argv: list[str] | None = None) -> int:
                             and result.get("formalSection91Physics",{}).get(
                                 "externalPdfAcquisition") is False
                             and result.get("formalSection91Physics",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("sourceScientificSemanticTriage",{}).get(
+                                "status")==
+                                "V26_SOURCE_BOUND_EXPLANATION_AND_TRILINGUAL_CUE_TRIAGE_COMPLETE_NO_RELEASE"
+                            and result.get("sourceScientificSemanticTriage",{}).get(
+                                "activitiesChecked")==18
+                            and result.get("sourceScientificSemanticTriage",{}).get(
+                                "scientificLocalizedFieldsChecked")==222
+                            and result.get("sourceScientificSemanticTriage",{}).get(
+                                "deterministicScienceDefects")==0
+                            and result.get("sourceScientificSemanticTriage",{}).get(
+                                "renderedDiagramSemanticsVerified") is False
+                            and result.get("sourceScientificSemanticTriage",{}).get(
+                                "academicProofGatesStillOpen")==90
+                            and result.get("sourceScientificSemanticTriage",{}).get(
+                                "formalAcademicPASS")==0
+                            and result.get("sourceScientificSemanticTriage",{}).get(
+                                "newGeminiCalls")==0
+                            and result.get("sourceScientificSemanticTriage",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("fullSemanticProofQueue",{}).get(
+                                "status") ==
+                                "V26_FULL_EXPLANATION_DISTRACTOR_DIAGRAM_TRILINGUAL_TASKS_QUEUED"
+                            and result.get("fullSemanticProofQueue",{}).get(
+                                "activityCount")==18
+                            and result.get("fullSemanticProofQueue",{}).get(
+                                "completeAcademicGateSlotsStillOpen")==90
+                            and result.get("fullSemanticProofQueue",{}).get(
+                                "independentSemanticPASS")==0
+                            and result.get("fullSemanticProofQueue",{}).get(
+                                "newProviderCalls")==0
+                            and result.get("fullSemanticProofQueue",{}).get(
+                                "externalPdfAcquisition") is False
+                            and result.get("fullSemanticProofQueue",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:

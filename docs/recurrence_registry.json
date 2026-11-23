@@ -2301,7 +2301,7 @@
         "BSA-20261112-151",
         "BSA-20261112-152"
       ],
-      "differenceFromLinkedIncident": "Previous 9.1\u20139.6 RC1 owner scope and synthetic six-section demonstrations did not guarantee a read-only whole-course V3 progress checker. The chapter-9 content directory actually contains nine sections (9.1\u20139.9), not just the six frozen V3 candidates. The new course test failed before the shared section-discovery fix, revealing synthetic section-1 versus real section-9-1 names and the wider nine-section inventory. Rather than silently scanning or truncating it, the canonical V3 status CLI now accepts an explicit section-number roster; an ambiguous nine-package directory with expected six fails closed, while explicitly selecting 1,2,3,4,5,6 validates six actual unchanged packages and 108 activities. Generic read-only helper reuses existing package_identity/assessment_progress and exact package SHA-bound off-repository checkpoint convention. It refuses duplicates, stale/forged private aggregates, unsafe paths and mismatched section counts, never reads PDFs or transmits content, and never turns draft/synthetic status into model or publication evidence. Missing live two-context reviews remain 0/108.",
+      "differenceFromLinkedIncident": "Previous 9.1–9.6 RC1 owner scope and synthetic six-section demonstrations did not guarantee a read-only whole-course V3 progress checker. The chapter-9 content directory actually contains nine sections (9.1–9.9), not just the six frozen V3 candidates. The new course test failed before the shared section-discovery fix, revealing synthetic section-1 versus real section-9-1 names and the wider nine-section inventory. Rather than silently scanning or truncating it, the canonical V3 status CLI now accepts an explicit section-number roster; an ambiguous nine-package directory with expected six fails closed, while explicitly selecting 1,2,3,4,5,6 validates six actual unchanged packages and 108 activities. Generic read-only helper reuses existing package_identity/assessment_progress and exact package SHA-bound off-repository checkpoint convention. It refuses duplicates, stale/forged private aggregates, unsafe paths and mismatched section counts, never reads PDFs or transmits content, and never turns draft/synthetic status into model or publication evidence. Missing live two-context reviews remain 0/108.",
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/v3_course_readiness.py",
         "triggerMarker": "def course_readiness(",
@@ -6755,7 +6755,7 @@
         "BSA-20261120-229",
         "BSA-20261120-227"
       ],
-      "differenceFromLinkedIncident": "BSA229 authentic V9 signed source+three private 8-file release bundles passed CI and normal worker, but V9 checkpoint only recorded next private browser integration. First real Yoga6 Selenium 4.47 loopback smoke loaded all genuine 3 routes, scripts/style/JSON HTTP200, rendered 7 buttons each, zero application errors. Chrome reported two SEVERE 127.0.0.1:ephemeral/favicon.ico HTTP404 requests on first route; scratch probe wrongly blocked whole browser acceptance. Historical search found broad browser runtime error checking but no exact favicon exception. New BSA230 normal V9\u2192V10 automatically dispatches real headless Chrome on all three local production bundles, verifies exact 24 file manifest and 3 package digests, filters only exact local favicon 404, blocks JS/asset/other SEVERE failures, source or V9 tamper, and persists immutable V10 receipt with no public Git writes or Gemini/PDF calls.",
+      "differenceFromLinkedIncident": "BSA229 authentic V9 signed source+three private 8-file release bundles passed CI and normal worker, but V9 checkpoint only recorded next private browser integration. First real Yoga6 Selenium 4.47 loopback smoke loaded all genuine 3 routes, scripts/style/JSON HTTP200, rendered 7 buttons each, zero application errors. Chrome reported two SEVERE 127.0.0.1:ephemeral/favicon.ico HTTP404 requests on first route; scratch probe wrongly blocked whole browser acceptance. Historical search found broad browser runtime error checking but no exact favicon exception. New BSA230 normal V9→V10 automatically dispatches real headless Chrome on all three local production bundles, verifies exact 24 file manifest and 3 package digests, filters only exact local favicon 404, blocks JS/asset/other SEVERE failures, source or V9 tamper, and persists immutable V10 receipt with no public Git writes or Gemini/PDF calls.",
       "lastValidatedDate": "2026-11-20",
       "applicableEnvironments": [
         "Owner Yoga6 pinned Selenium 4.47 and local Chrome, private V9 production bundles",
@@ -6848,7 +6848,7 @@
         "BSA-20261119-219",
         "BSA-20261120-230"
       ],
-      "differenceFromLinkedIncident": "Real owner Yoga6 normal sourcefree V1\u2013V10 on f3a6985 exited 3 before V10, returning genuine STOP_ACTUAL_CHAPTER9_BROWSER_QA childErrorClass NotImplementedError and no signed V10 receipt. Hosted CI #44669663186 SUCCESS. Historical BSA128 established Selenium 4.47 Select._set_selected raises NotImplementedError on a disabled option while app.js asynchronously fetches a package with #locale disabled; audit_full_learner_browser.py already implements real-question AND enabled-selector wait. Newer original scripts/check_v3_real_chapter9_browser.py still used three unguarded direct locale-select calls. Reuse exact BSA128 guarded predicate and bounded WebDriverWait across all locale selection call sites, preserve academic/browser QA, failure exit and source identities. No blind per-PDF retries or weakening of acceptance. Registered five synthetic readiness/disabled-selector negatives and positive checks; 31 focused local tests pass. Require new clean-head hosted CI and genuine sourcefree browser rerun to close.",
+      "differenceFromLinkedIncident": "Real owner Yoga6 normal sourcefree V1–V10 on f3a6985 exited 3 before V10, returning genuine STOP_ACTUAL_CHAPTER9_BROWSER_QA childErrorClass NotImplementedError and no signed V10 receipt. Hosted CI #44669663186 SUCCESS. Historical BSA128 established Selenium 4.47 Select._set_selected raises NotImplementedError on a disabled option while app.js asynchronously fetches a package with #locale disabled; audit_full_learner_browser.py already implements real-question AND enabled-selector wait. Newer original scripts/check_v3_real_chapter9_browser.py still used three unguarded direct locale-select calls. Reuse exact BSA128 guarded predicate and bounded WebDriverWait across all locale selection call sites, preserve academic/browser QA, failure exit and source identities. No blind per-PDF retries or weakening of acceptance. Registered five synthetic readiness/disabled-selector negatives and positive checks; 31 focused local tests pass. Require new clean-head hosted CI and genuine sourcefree browser rerun to close.",
       "lastValidatedDate": "2026-11-20",
       "applicableEnvironments": [
         "Owner Yoga6 pinned Selenium 4.47 live Chapter9 candidate original-browser child",
@@ -6907,7 +6907,7 @@
         "BSA-20261120-229",
         "BSA-20261120-228"
       ],
-      "differenceFromLinkedIncident": "Genuine owner Yoga6 normal V1\u2013V10 EXIT0 at e78ac52 with exact CI #44688669609 and signed 3-release-Chrome receipt a409e58b; BSA230/BSA231 resolved. V10 only wrote a nextEligibleMilestone, not executable private Git integration. First actual owner Yoga6 private Git clone failed in deep per-source SHA Windows evidence directory; second private clone under short LOCALAPPDATA succeeded, with actual independent git apply --check on pinned public main eb86fe..., exactly 21 paths in sections9.1/9.2/9.6, 756429 patch bytes SHA 2548cc..., no external writes. New V11 code integrates that read-only+temporary-Git staging automatically after V10 in normal sourcefree worker, with strict signed V9/V10, 24-file SHA and exact hosted CI provenance, immutable private patch and receipt. Never merge, push, PR or deploy from this stage. Historical C3 FAILED_LIMITED_CAMPAIGN unchanged.",
+      "differenceFromLinkedIncident": "Genuine owner Yoga6 normal V1–V10 EXIT0 at e78ac52 with exact CI #44688669609 and signed 3-release-Chrome receipt a409e58b; BSA230/BSA231 resolved. V10 only wrote a nextEligibleMilestone, not executable private Git integration. First actual owner Yoga6 private Git clone failed in deep per-source SHA Windows evidence directory; second private clone under short LOCALAPPDATA succeeded, with actual independent git apply --check on pinned public main eb86fe..., exactly 21 paths in sections9.1/9.2/9.6, 756429 patch bytes SHA 2548cc..., no external writes. New V11 code integrates that read-only+temporary-Git staging automatically after V10 in normal sourcefree worker, with strict signed V9/V10, 24-file SHA and exact hosted CI provenance, immutable private patch and receipt. Never merge, push, PR or deploy from this stage. Historical C3 FAILED_LIMITED_CAMPAIGN unchanged.",
       "lastValidatedDate": "2026-11-20",
       "applicableEnvironments": [
         "Owner Yoga6 authorized source-free normal worker with genuine V1-V10 private 3-route Chrome evidence",
@@ -6969,7 +6969,7 @@
           "marker": "test_unrecognized_remote_git_action_not_permitted"
         }
       ],
-      "nextAction": "BSA232 VERIFIED RESOLVED: genuine Yoga6 normal source-free V1\u2013V11 EXIT0 and exact GitHub Actions #44692645543 SUCCESS at clean f3a7deac9d0c8c025eeb1be88cddfa34654c043b; original V10 signed Chrome 3-route genuine acceptance, pinned V9 24-file manifest, actual V11 local git apply --check on independent public main clone, 21 paths only Sections 9.1/9.2/9.6 and 756429 immutable private patch bytes signed integrity 67420d2f4e8305f0d5d8baf4a6282175944678b25e1c1a5794105df99a7bf98f; no public PR/branch push/merge/deploy. Next BSA233 independent non-merging PR readiness/automatic supervisor. C3 FAILED_LIMITED_CAMPAIGN unchanged."
+      "nextAction": "BSA232 VERIFIED RESOLVED: genuine Yoga6 normal source-free V1–V11 EXIT0 and exact GitHub Actions #44692645543 SUCCESS at clean f3a7deac9d0c8c025eeb1be88cddfa34654c043b; original V10 signed Chrome 3-route genuine acceptance, pinned V9 24-file manifest, actual V11 local git apply --check on independent public main clone, 21 paths only Sections 9.1/9.2/9.6 and 756429 immutable private patch bytes signed integrity 67420d2f4e8305f0d5d8baf4a6282175944678b25e1c1a5794105df99a7bf98f; no public PR/branch push/merge/deploy. Next BSA233 independent non-merging PR readiness/automatic supervisor. C3 FAILED_LIMITED_CAMPAIGN unchanged."
     },
     {
       "id": "BSA-20261120-233",
@@ -6982,10 +6982,10 @@
         "BSA-20261120-229",
         "BSA-20261116-172"
       ],
-      "differenceFromLinkedIncident": "Owner Yoga6 genuine V1\u2013V11 sourcefree exit0 on f3a7dea at exact hosted CI #44692645543 accepted private 3-route git patch against pinned main but did not dispatch its nextEligibleMilestone SCOPED_NONMERGING_PUBLIC_PR_PREPARATION before returning. BSA233 restores v7.1 checkpoint-to-action by automatically dispatching immutable PRIVATE V12 review-only PR draft from the normal V11 success branch, after verifying signed V9 source clean exact-head CI, V11 integrity and 21 Git diff headers, and read-only remote pinned public main. No public Git writes, Gemini calls, learner pilot claims or scheduler. Historical Decision 0043 explicitly requires Yoga6 owner-retired scheduled task stay absent.",
+      "differenceFromLinkedIncident": "Owner Yoga6 genuine V1–V11 sourcefree exit0 on f3a7dea at exact hosted CI #44692645543 accepted private 3-route git patch against pinned main but did not dispatch its nextEligibleMilestone SCOPED_NONMERGING_PUBLIC_PR_PREPARATION before returning. BSA233 restores v7.1 checkpoint-to-action by automatically dispatching immutable PRIVATE V12 review-only PR draft from the normal V11 success branch, after verifying signed V9 source clean exact-head CI, V11 integrity and 21 Git diff headers, and read-only remote pinned public main. No public Git writes, Gemini calls, learner pilot claims or scheduler. Historical Decision 0043 explicitly requires Yoga6 owner-retired scheduled task stay absent.",
       "lastValidatedDate": "2026-11-20",
       "applicableEnvironments": [
-        "Owner Yoga6 sourcefree V1\u2013V12 normal worker with genuine Chapter9 private release",
+        "Owner Yoga6 sourcefree V1–V12 normal worker with genuine Chapter9 private release",
         "Existing public GitHub Pages main pinned eb86fe8eb94ec33f8c0c055d2423b245e5898241",
         "Source-bound immutable V9 V10 V11 private receipts and 21-path binary diff",
         "No Windows Task Scheduler reinstall after owner decision 0043",
@@ -7049,7 +7049,7 @@
           "marker": "test_staged_identity_not_stolen_from_another_head"
         }
       ],
-      "nextAction": "BSA233 VERIFIED RESOLVED: exact clean source 7ecfd3f53a5a71777150be187b2bc457d738ac30 hosted GitHub CI #44700183819 SUCCESS and genuine owner Yoga6 normal V1\u2013V12 sourcefree EXIT0; signed immutable V12 private nonmerging PR draft integrity 87f202bb850d8263c0ddd9e6e04bf92afd39019381c2d6986142a7943d6c6b7d derives from signed V11 7d2b389e055bee5c8abd729034338773becf1486d027a9ac5052201a2be40756, verifies private 21-path patch SHA 2548cc149463e6e706d741ea3bf0f032c6b9473cba575ad4511bf626ceae6bab, three routes 9.1,9.2,9.6, and read-only remote main pinned SHA. No public branch push, PR, merge, deploy or Windows Task Scheduler reinstallation. Historical owner decision 0043 remains authoritative. NEXT select authorized other workstream or explicitly gated review PR creation; C3 FAILED_LIMITED_CAMPAIGN unchanged."
+      "nextAction": "BSA233 VERIFIED RESOLVED: exact clean source 7ecfd3f53a5a71777150be187b2bc457d738ac30 hosted GitHub CI #44700183819 SUCCESS and genuine owner Yoga6 normal V1–V12 sourcefree EXIT0; signed immutable V12 private nonmerging PR draft integrity 87f202bb850d8263c0ddd9e6e04bf92afd39019381c2d6986142a7943d6c6b7d derives from signed V11 7d2b389e055bee5c8abd729034338773becf1486d027a9ac5052201a2be40756, verifies private 21-path patch SHA 2548cc149463e6e706d741ea3bf0f032c6b9473cba575ad4511bf626ceae6bab, three routes 9.1,9.2,9.6, and read-only remote main pinned SHA. No public branch push, PR, merge, deploy or Windows Task Scheduler reinstallation. Historical owner decision 0043 remains authoritative. NEXT select authorized other workstream or explicitly gated review PR creation; C3 FAILED_LIMITED_CAMPAIGN unchanged."
     },
     {
       "id": "BSA-20261120-234",
@@ -7063,7 +7063,7 @@
         "BSA-20261120-233",
         "BSA-20261116-172"
       ],
-      "differenceFromLinkedIncident": "BSA228 already corrected unconditional public gh pr merge and protected Chapter9. Public repo has 15 historical merged PRs; exact public main sha eb86fe8. Genuine Yoga6 V1\u2013V12 exit0 at 7ecfd3f signed private V12 87f202bb850d8263c0ddd9e6e04bf92afd39019381c2d6986142a7943d6c6b7d. But V12 label PUBLIC_NONMERGING_PR_AUTHORIZATION_OR_INDEPENDENT_OTHER_BOUNDARY did not trigger an executable branch/PR creator. Reuse existing GitHub branch + gh PR command patterns, force draft and no merge, pin full 21-path source patch, require pre-call source identity checkpoint, reconcile uncertain push/PR create by real GitHub state before replay, refuse duplicate/closed/non-draft/conflicting tree and changed main. Ensure normal sourcefree worker V12 success immediately dispatches V13 with signed private receipt and genuine branch/PR verification, no automatic publication or retired scheduler.",
+      "differenceFromLinkedIncident": "BSA228 already corrected unconditional public gh pr merge and protected Chapter9. Public repo has 15 historical merged PRs; exact public main sha eb86fe8. Genuine Yoga6 V1–V12 exit0 at 7ecfd3f signed private V12 87f202bb850d8263c0ddd9e6e04bf92afd39019381c2d6986142a7943d6c6b7d. But V12 label PUBLIC_NONMERGING_PR_AUTHORIZATION_OR_INDEPENDENT_OTHER_BOUNDARY did not trigger an executable branch/PR creator. Reuse existing GitHub branch + gh PR command patterns, force draft and no merge, pin full 21-path source patch, require pre-call source identity checkpoint, reconcile uncertain push/PR create by real GitHub state before replay, refuse duplicate/closed/non-draft/conflicting tree and changed main. Ensure normal sourcefree worker V12 success immediately dispatches V13 with signed private receipt and genuine branch/PR verification, no automatic publication or retired scheduler.",
       "lastValidatedDate": "2026-11-20",
       "applicableEnvironments": [
         "Owner Yoga6 normal sourcefree V1-V13 GitHub-authenticated draft PR workflow",
@@ -7141,7 +7141,7 @@
           "marker": "test_no_unscoped_git_or_gh_command_permitted"
         }
       ],
-      "nextAction": "BSA234 VERIFIED RESOLVED: owner Yoga6 normal sourcefree V1\u2013V13 EXIT0 on clean exact source 430cd0846e3f3240a6eaec824c0595c82730714f and hosted GitHub Actions #44708064566 SUCCESS. Authenticated real public draft PR https://github.com/tlyoon/section-8-1-learning-app/pull/16 exists, state open, draft true, merged null; public base main eb86fe8eb94ec33f8c0c055d2423b245e5898241 unchanged, 21 exactly scoped GitHub changed paths 9.1/9.2/9.6, real remote Git tree and one pinned public-base parent checked. Signed immutable V13 b898f0c34105bc0c136832a1eebe1677db562c129c4514a1a2b888777803a1b3 derives from genuine V9\u2013V12 predecessor receipts. No merge, public deploy or retired Yoga6 scheduled task. NEXT: independent public review PR checks and separate release readiness; original C3 FAILED_LIMITED_CAMPAIGN preserved."
+      "nextAction": "BSA234 VERIFIED RESOLVED: owner Yoga6 normal sourcefree V1–V13 EXIT0 on clean exact source 430cd0846e3f3240a6eaec824c0595c82730714f and hosted GitHub Actions #44708064566 SUCCESS. Authenticated real public draft PR https://github.com/tlyoon/section-8-1-learning-app/pull/16 exists, state open, draft true, merged null; public base main eb86fe8eb94ec33f8c0c055d2423b245e5898241 unchanged, 21 exactly scoped GitHub changed paths 9.1/9.2/9.6, real remote Git tree and one pinned public-base parent checked. Signed immutable V13 b898f0c34105bc0c136832a1eebe1677db562c129c4514a1a2b888777803a1b3 derives from genuine V9–V12 predecessor receipts. No merge, public deploy or retired Yoga6 scheduled task. NEXT: independent public review PR checks and separate release readiness; original C3 FAILED_LIMITED_CAMPAIGN preserved."
     },
     {
       "id": "BSA-20261120-235",
@@ -7158,9 +7158,9 @@
       "differenceFromLinkedIncident": "BSA234 owner Yoga6 authenticated public draft PR #16 genuinely created from signed V9-V13 receipts, 21 GitHub file differences and immutable pinned main eb86fe8. Separate owner Yoga6 one-off V14 Chrome probe on real PR branch passed all nine Chapter9 routes and saved signed 961d31322a6c77000470f07b0248f59c98895b2a7606c82a0e6c9bedf43b45c6. However normal source-free worker stopped after V13 and never dispatched independent PUBLIC branch QA. Historical BSA230 favicon/Chrome remedies and BSA232 signed patch/PR checks should be reused. Add V14 actual GitHub read-only PR state, tree, 21-diff scope, pinned parent and nine real Chrome routes to ordinary worker immediately after V13, with signed immutable private V14 receipt, no public merge/deploy or retired scheduler.",
       "lastValidatedDate": "2026-11-20",
       "applicableEnvironments": [
-        "Owner Yoga6 genuine source-free normal V1\u2013V14 worker with nine Chrome routes",
+        "Owner Yoga6 genuine source-free normal V1–V14 worker with nine Chrome routes",
         "Actual public GitHub Pages pull request draft and existing protected main",
-        "Exact signed V9\u2013V13 receipts and 21-file scope",
+        "Exact signed V9–V13 receipts and 21-file scope",
         "Restart after V13 with changed remote draft/branch/main or forged receipt",
         "No public merge, public deployment, model call or owner-retired scheduled task"
       ],
@@ -7262,7 +7262,7 @@
           "marker": "test_benign_historical_favicon_handling_reused"
         }
       ],
-      "nextAction": "BSA235 VERIFIED RESOLVED on owner Yoga6. Normal source-free V1\u2013V14 exact clean source f94d20105e81d9723cff76674675f5fe2a35b1cd EXIT0, GitHub Actions #44718808843 SUCCESS, authentic signed V9\u2192V14 chain, V14 integrity ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1, independent genuine Chrome 9/9 all public PR branch routes, real GitHub PR 16 OPEN DRAFT unmerged, 21 exact paths 9.1/9.2/9.6, remote branch commit tree and pinned public main parent verified. No public merge/deploy/scheduler/new paid calls. NEXT separate read-only independent PR release checks/security and gated publication; C3 FAILED_LIMITED_CAMPAIGN unchanged. Historical BSA230 locale/fav browser checks reused within ordinary source-free workflow."
+      "nextAction": "BSA235 VERIFIED RESOLVED on owner Yoga6. Normal source-free V1–V14 exact clean source f94d20105e81d9723cff76674675f5fe2a35b1cd EXIT0, GitHub Actions #44718808843 SUCCESS, authentic signed V9→V14 chain, V14 integrity ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1, independent genuine Chrome 9/9 all public PR branch routes, real GitHub PR 16 OPEN DRAFT unmerged, 21 exact paths 9.1/9.2/9.6, remote branch commit tree and pinned public main parent verified. No public merge/deploy/scheduler/new paid calls. NEXT separate read-only independent PR release checks/security and gated publication; C3 FAILED_LIMITED_CAMPAIGN unchanged. Historical BSA230 locale/fav browser checks reused within ordinary source-free workflow."
     },
     {
       "id": "BSA-20261120-236",
@@ -7277,10 +7277,10 @@
         "BSA-20261120-235",
         "BSA-20261116-172"
       ],
-      "differenceFromLinkedIncident": "Owner Yoga6 V1\u2013V14 normal sourcefree real Chrome and exact 21-file public PR #16 succeeded, signed V14 ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1. Yet the normal worker returned without executing any global roadmap work after V14. This repeats the task-identified-without-dispatch root cause despite v7.1. New bounded allowlisted post-PR controller dispatches 3 safe independent tasks during same normal invocation: authenticated PR/base/diff read-only reconciliation; native GitHub CI/status/review inventory with NO fabricated approvals; active recurrence registry and immutable historical C3 failure scan. Writes durable per-task PRE_CALL, RESULT and signed V15; an isolated failure quarantines just its task while other tasks run. Explicitly never merges, deploys, submits paid API, or recreates retired Yoga6 scheduler; no unsupported cross-session runner claim.",
+      "differenceFromLinkedIncident": "Owner Yoga6 V1–V14 normal sourcefree real Chrome and exact 21-file public PR #16 succeeded, signed V14 ee873780e3a5e2110ad3bd01ee654fb2fe8a4afd311a7598a32706fc14952ea1. Yet the normal worker returned without executing any global roadmap work after V14. This repeats the task-identified-without-dispatch root cause despite v7.1. New bounded allowlisted post-PR controller dispatches 3 safe independent tasks during same normal invocation: authenticated PR/base/diff read-only reconciliation; native GitHub CI/status/review inventory with NO fabricated approvals; active recurrence registry and immutable historical C3 failure scan. Writes durable per-task PRE_CALL, RESULT and signed V15; an isolated failure quarantines just its task while other tasks run. Explicitly never merges, deploys, submits paid API, or recreates retired Yoga6 scheduler; no unsupported cross-session runner claim.",
       "lastValidatedDate": "2026-11-20",
       "applicableEnvironments": [
-        "Owner Yoga6 real V14\u2192V15 sourcefree normal worker",
+        "Owner Yoga6 real V14→V15 sourcefree normal worker",
         "Public GitHub PR #16 draft / main pinned SHA read-only",
         "Global recurrence registry with old C3 FAILED_LIMITED_CAMPAIGN",
         "Restart after per-task PRE_CALL/RESULT with uncertain external reads",
@@ -7344,7 +7344,7 @@
           "marker": "test_bad_active_incident_id_cannot_be_reported_as_valid"
         }
       ],
-      "nextAction": "BSA236 VERIFIED RESOLVED: genuine owner Yoga6 ordinary V1\u2013V15 EXIT0 on exact clean head 28e49e3a1ea1b53b764aa40ec8490619b65a947c with GitHub Actions #44721290201 SUCCESS, source-bound signed V15 fa9d9acfb4a7a6ab4e36322c65ae134e0367cf701ab86c8f6bb3f050db10006a. Same normal invocation after V14 dispatched 3 allowlisted independent read-only tasks with persistent PRE_CALL/RESULT; actual PR #16 remains DRAFT OPEN unmerged, GitHub native checks 0 and status checks 0 are correctly reported as missing, not fake PASS; historical C3 FAILED_LIMITED_CAMPAIGN and provider no-replay incidents preserved. No release, paid calls, scheduler or imaginary persistent supervisor. NEXT independent content release/accessibility/security evaluation, or separately authorized deployment."
+      "nextAction": "BSA236 VERIFIED RESOLVED: genuine owner Yoga6 ordinary V1–V15 EXIT0 on exact clean head 28e49e3a1ea1b53b764aa40ec8490619b65a947c with GitHub Actions #44721290201 SUCCESS, source-bound signed V15 fa9d9acfb4a7a6ab4e36322c65ae134e0367cf701ab86c8f6bb3f050db10006a. Same normal invocation after V14 dispatched 3 allowlisted independent read-only tasks with persistent PRE_CALL/RESULT; actual PR #16 remains DRAFT OPEN unmerged, GitHub native checks 0 and status checks 0 are correctly reported as missing, not fake PASS; historical C3 FAILED_LIMITED_CAMPAIGN and provider no-replay incidents preserved. No release, paid calls, scheduler or imaginary persistent supervisor. NEXT independent content release/accessibility/security evaluation, or separately authorized deployment."
     },
     {
       "id": "BSA-20261121-237",
@@ -7541,11 +7541,11 @@
       ],
       "applicableEnvironments": [
         "Normal hosted validate.yml CI source-free synthetic actual Chrome with negative control",
-        "Owner Yoga6 normal V15\u2192V16 draft PR17 exact pinned source-dependent AX",
+        "Owner Yoga6 normal V15→V16 draft PR17 exact pinned source-dependent AX",
         "No reader-assistive human claims, no model requests, no merge/deploy/scheduler"
       ],
       "lastValidatedDate": "2026-11-21",
-      "nextAction": "BSA240 genuinely RESOLVED: exact clean code 86998ed790cd4fa0537715daf605fefba8733dfd GitHub hosted Actions #44886049899 SUCCESS including source-free real Chrome 9/9 AX names/roles and fault-injected language regression rejection. Owner Yoga6 genuine normal V1\u2013V16 worker EXIT0; independent signed V15 39f08c29a6ccaacc868a122e3cc353d83b1b573d258335a9b7e8e9ec5a443472 and V16 00f799aa5dc8df294bdbe1dea4158c3085c251c8427ed732077c2f4afafd3294 hash-chain verified, source-pinned actual draft public PR17 21 files 54 activities, 9 multilingual real accessibility tree checks, no unnamed controls. Separate real GitHub PR17 BSA240 Chrome negative control in disposable clone detected the missing accessible name. Next BSA241 source-free scientific proof/C3 generalization evaluation. No WCAG certification, independent academic release, public merge, deployment, old Gemini replay or scheduled task."
+      "nextAction": "BSA240 genuinely RESOLVED: exact clean code 86998ed790cd4fa0537715daf605fefba8733dfd GitHub hosted Actions #44886049899 SUCCESS including source-free real Chrome 9/9 AX names/roles and fault-injected language regression rejection. Owner Yoga6 genuine normal V1–V16 worker EXIT0; independent signed V15 39f08c29a6ccaacc868a122e3cc353d83b1b573d258335a9b7e8e9ec5a443472 and V16 00f799aa5dc8df294bdbe1dea4158c3085c251c8427ed732077c2f4afafd3294 hash-chain verified, source-pinned actual draft public PR17 21 files 54 activities, 9 multilingual real accessibility tree checks, no unnamed controls. Separate real GitHub PR17 BSA240 Chrome negative control in disposable clone detected the missing accessible name. Next BSA241 source-free scientific proof/C3 generalization evaluation. No WCAG certification, independent academic release, public merge, deployment, old Gemini replay or scheduled task."
     },
     {
       "id": "BSA-20261121-241",
@@ -8393,6 +8393,174 @@
       ],
       "lastValidatedDate": "2026-11-23",
       "nextAction": "ACTIVE. Real original Serway9.1 Yoga6 source-bound V25 pilot EXIT0 with nine textbook physical premises, all 18 activities and 68 independently computed bounded answer witnesses; initial GitHub head b2ef7447e78ebeb0d456438029bad67715af8683 hosted CI #45120928469 SUCCESS. Genuine full Yoga6 normal V1–V25 source-free worker EXIT0; a separate independent read-back witness correctly rejected V25's original 12648-byte monolithic signed result, above historical BSA251 V24's protected 12000-byte restart read limit. Rather than relax the protection, reused the exact BSA251 split-receipt remedy: nine MCQ and nine interactive physics-proof rows in separate signed <=12000-byte receipts, SHA-backed compact aggregate, 70 focused tests PASS including corrupted partition and replay test. BSA252 VERIFIED RESOLVED engineering boundary: fixed exact head 652e2cf2fd6fe4df1093860915d918e951eb63b5 GitHub hosted CI #45122952409 SUCCESS, real owner Yoga6 ordinary V1–V25 source-free worker EXIT0 and full separate independently recomputed signed witness EXIT0. Genuine V25 nine-MCQ proof receipt is 6365 bytes, nine-interactive proof receipt 6471 bytes, SHA-bound compact aggregate 1829 bytes, all below 12000-byte historical V24 reader cap; 18 original activities, 9 selected original Serway textbook scientific premises and 68 bounded answer-item/physics checks independently recomputed. Witness integrity SHA 391b97568824dfa1b641c3809a1bf09399bea806d35d77b9b45f523b2c57a2e5, V25 final signed receipt SHA 931a3a59d85efff71ded4ac896177f6a3e7d3a42d10d68a0b14582c5bd6fd8e1, source textbook SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50 and private revised candidate SHA 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38. 70 local focused fault-injection/restart tests PASS incl. every wrong MCQ and interactive key; zero new Gemini requests, outside PDFs, publication or old uncertain replay. Full independent textbook/science/answer/visual/EN-MS-ZH semantic acceptance NOT demonstrated: 90 full academic gates REVIEW_REQUIRED and 0 formal academic PASS. NEXT separate academic meaning, visual geometry and diverse-textbook generalization verification; do not inherit Section 9.1 bounded proofs across different textbooks. The next substantive boundary is full EN/MS/ZH scientific meaning, visual geometry and diverse textbook subject verifiers; no false claim of exhaustive proof from finite cases."
+    },
+    {
+      "id": "BSA-20261123-253",
+      "class": "independent_full_semantics_not_covered_by_bounded_physics_or_model_consensus",
+      "status": "active",
+      "regressions": [
+        {
+          "path": "tests/test_full_semantic_proof_queue.py",
+          "kind": "python",
+          "marker": "test_complete_science_distractor_visual_and_trilingual_queue"
+        },
+        {
+          "path": "tests/test_full_semantic_proof_queue.py",
+          "kind": "python",
+          "marker": "test_changed_explanation_invalidates_saved_exact_version_queue"
+        },
+        {
+          "path": "tests/test_full_semantic_proof_queue.py",
+          "kind": "python",
+          "marker": "test_changed_distractor_or_correct_key_invalidates_queue"
+        },
+        {
+          "path": "tests/test_full_semantic_proof_queue.py",
+          "kind": "python",
+          "marker": "test_diagram_or_source_change_invalidates_saved_queue"
+        },
+        {
+          "path": "tests/test_full_semantic_proof_queue.py",
+          "kind": "python",
+          "marker": "test_no_academic_pass_accepted_by_queue_verifier"
+        },
+        {
+          "path": "tests/test_full_semantic_proof_queue.py",
+          "kind": "python",
+          "marker": "test_no_missing_translations_or_activities_silently_dropped"
+        },
+        {
+          "path": "tests/test_full_semantic_proof_queue.py",
+          "kind": "python",
+          "marker": "test_generalizes_to_unseen_course_with_different_activity_roster"
+        },
+        {
+          "path": "tests/test_v26_semantic_dispatch.py",
+          "kind": "python",
+          "marker": "test_actual_eighteen_activity_package_all_semantic_tasks_covered"
+        },
+        {
+          "path": "tests/test_v26_semantic_dispatch.py",
+          "kind": "python",
+          "marker": "test_compact_real_roster_under_historical_12000_byte_restart_cap"
+        },
+        {
+          "path": "tests/test_v26_semantic_dispatch.py",
+          "kind": "python",
+          "marker": "test_missing_or_forged_v25_cannot_enter_next_dispatch"
+        },
+        {
+          "path": "tests/test_v26_semantic_dispatch.py",
+          "kind": "python",
+          "marker": "test_v26_after_signed_v25_not_optional_in_normal_source_free_worker"
+        },
+        {
+          "path": "tests/test_v26_semantic_dispatch.py",
+          "kind": "python",
+          "marker": "test_queue_task_ids_change_on_text_or_source_mutation"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_generic_reusable_18_activity_three_language_inventory"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_unambiguous_false_momentum_law_detected_in_explanation"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_wrong_correct_option_affirmed_in_one_language"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_cross_language_vector_scalar_cue_change_stays_unproved"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_v26_immutable_receipt_splits_two_nines_under_12k"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_mocked_prior_v25_wrong_status_stops_before_source"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_equation_followed_by_prose_is_not_falsely_equation_tail"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_unambiguous_force_equals_momentum_law_detected"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_false_distractor_equation_not_silently_used_as_correct_law"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_missing_locale_is_deterministic_invalid_source"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_duplicate_activity_identity_rejected"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_no_visual_in_exact_91_cannot_be_false_diagram_pass"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_source_bound_adapter_rejects_new_package_version_without_proof"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_source_bound_adapter_does_not_promote_generic_flags"
+        },
+        {
+          "path": "tests/test_v3_source_semantic_triage.py",
+          "kind": "python",
+          "marker": "test_worker_dispatch_is_in_main_source_free_path"
+        }
+      ],
+      "applicableEnvironments": [
+        "Generic Bosla planner for any instructor-selected single textbook, no outside PDF",
+        "Owner Yoga6 exact Serway9.1 private V25 signed evidence and revised candidate for V26",
+        "Complete source/explanation/distractor/visual coverage/trilingual proof tasks, no academic PASS",
+        "SHA-bound task roster; bounded signed checkpoint reuses V25 historical 12000-byte safeguard",
+        "No new Gemini calls, ambiguous replay, public merge/deploy or scheduled task"
+      ],
+      "lastValidatedDate": "2026-11-23",
+      "nextAction": "ACTIVE: genuine owner Yoga6 exact selected Serway9.1 original textbook/private revised 18-activity BSA253 read-only pilot EXIT0, 429 SHA-bound pending semantic proof tasks (144 full explanations, 27 MCQ distractors, 18 source fidelity, 222 trilingual meaning and 18 visual-necessity cases). Separate reusable scientific-alignment implementation examined 222 localized fields (32 mathematical), found 0 unambiguous science contradictions and 26 additional non-authorized semantic-review items. All 90 full academic gate slots remain REVIEW_REQUIRED; full independent semantic PASS remains 0. 28 registered source-free fault/worker regression tests plus two unregistered planner controls pass; exact-head CI, actual V1-V26 normal-worker restart and separately signed independent receipt readback still required. Next build independently verifiable full scientific/visual/language semantic proof producers; no model request, extra textbook, old Gemini role replay, merge or publication.",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261123-251",
+        "BSA-20261123-252"
+      ],
+      "differenceFromLinkedIncident": "BSA251 dispatches 90 full five-gate proof slots; BSA252 proves 68 bounded mathematical answer item results. New BSA253 V26 has two complementary normal-worker checks after signed V25: one statically enumerates every original-source, 144 complete scientific-meaning, 27 distractor, 222 EN/MS/ZH translation and 18 absent-diagram necessity tasks with SHA-linked immutable IDs (429 total for actual Section 9.1); the other reopens the selected original Serway PDF, recomputes nine premise plus 68 exact math witnesses, inspects all 222 localized surfaces using content-independent structured physics equation/quantity/reasoning cues, and leaves 26 lexical/notational differences REVIEW_REQUIRED rather than fabricating translation errors. It independently refuses unambiguous wrong p=mv^2 or F=p positive explanatory claims, wrong declared MCQ correct option, mutated locale/distractor/source SHA, and changed signed receipts. Section 9.1 has zero visualSpec objects; it cannot be used to claim rendered diagram semantics were independently checked. Both checks preserve no-provider, <12 KB per signed receipt, no old ambiguous replay, no public merge/deploy; full academic semantic PASS still zero.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_full_semantic_proof_dispatch.py",
+        "triggerMarker": "exact = _signed(folder, _V25, ready)",
+        "remedyMarker": "queue = plan_full_semantic_proofs(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_full_semantic_proof_dispatch import ("
+          }
+        ]
+      }
     }
   ]
 }
