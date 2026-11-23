@@ -8561,6 +8561,86 @@
           }
         ]
       }
+    },
+    {
+      "id": "BSA-20261123-254",
+      "class": "sourcefree_worker_had_no_early_cross_session_single_flight_lock_despite_existing_os_lock",
+      "status": "active",
+      "rootCauseFamily": "integration-readiness",
+      "relatedIncidentIds": [
+        "BSA-20261116-172",
+        "BSA-20261116-177",
+        "BSA-20261122-246"
+      ],
+      "differenceFromLinkedIncident": "Prior V3 normal worker used the existing OS coordinator only for provider metadata/paid work near the end of main(). The source-free V1-V26 branch ran before that lock and multiple ChatGPT sessions could start duplicate expensive PDF/browser work despite all previous execution and restart guards passing.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/run_v3_yoga6_recovery_worker.py",
+        "triggerMarker": "if \"--source-free-advance\" not in args:",
+        "remedyMarker": "with coordinator_lock(lock_root):",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "return main(args)"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v3_source_free_singleflight.py",
+          "kind": "python",
+          "marker": "test_original_historical_os_lock_blocks_before_any_worker_stage"
+        },
+        {
+          "path": "tests/test_v3_source_free_singleflight.py",
+          "kind": "python",
+          "marker": "test_released_lock_allows_automatic_resume_without_manual_cleanup"
+        },
+        {
+          "path": "tests/test_v3_source_free_singleflight.py",
+          "kind": "python",
+          "marker": "test_alternate_private_root_cannot_bypass_global_lock"
+        },
+        {
+          "path": "tests/test_v3_source_free_singleflight.py",
+          "kind": "python",
+          "marker": "test_invalid_root_is_rejected_before_work_or_provider"
+        },
+        {
+          "path": "tests/test_v3_source_free_singleflight.py",
+          "kind": "python",
+          "marker": "test_diagnose_and_existing_paid_mode_not_changed"
+        },
+        {
+          "path": "tests/test_v3_source_free_singleflight.py",
+          "kind": "python",
+          "marker": "test_source_free_main_uses_same_lock_when_reentered"
+        },
+        {
+          "path": "tests/test_v3_source_free_singleflight.py",
+          "kind": "python",
+          "marker": "test_existing_child_launcher_preserves_native_main_dispatch"
+        },
+        {
+          "path": "tests/test_v3_source_free_singleflight.py",
+          "kind": "python",
+          "marker": "test_real_second_python_process_lock_is_denied_and_released"
+        },
+        {
+          "path": "tests/test_v3_source_free_singleflight.py",
+          "kind": "python",
+          "marker": "test_no_malicious_private_text_in_contended_lock_response"
+        }
+      ],
+      "applicableEnvironments": [
+        "Owner-authorized Yoga6 Bosla V3 source-free normal worker, not MicroGen_AI_Web",
+        "OS-released historical coordinator_lock shared between all normal session invocations",
+        "Pinned-Selenium single relaunch then lock before any PDF, Chrome, source or checkpoint",
+        "Alternative valid --private-root cannot weaken the global per-owner single-flight identity",
+        "Second simultaneous process fails nonzero with source-free status only, no model calls",
+        "No scheduler, extra source PDF, old uncertain request replay or public merge/deploy"
+      ],
+      "lastValidatedDate": "2026-11-23",
+      "nextAction": "ACTIVE. Nine Windows Yoga6 tests passed including genuine second-process OS lock, no-stage duplicate rejection, alternate-root prevention, crash release and automatic restart; inherited worker regression groups passed. Exact-HEAD CI, genuine normal Yoga6 V1-V26 restart and independent single-flight witness still required before engineering closure. Full 90 academic proof gates and 26 semantic meaning issues remain independent unresolved work."
     }
   ]
 }
