@@ -316,6 +316,52 @@ def _advance_unchanged_frozen_tail(args, private: Path,
     ) else 3)
 
 
+def main(argv: list[str] | None = None) -> int:
+    """BSA254: serialize the ENTIRE source-free worker across ChatGPT sessions.
+
+    Reuse the historically tested BSA Yoga6 OS-released coordinator lock.
+    Hold it before ANY source-free activity, PDF, Chrome or signed checkpoint.
+    The lock path is invariant even if an alternate valid private root is
+    supplied; the pinned-Selenium launcher re-execs BEFORE calling main().
+    """
+    args = list(sys.argv[1:] if argv is None else argv)
+    if "--source-free-advance" not in args:
+        return _main_unlocked(args)
+    local = os.environ.get("LOCALAPPDATA")
+    if not local:
+        return _main_unlocked(args)
+    parse = argparse.ArgumentParser(add_help=False)
+    parse.add_argument("--private-root", type=Path)
+    try:
+        options, _ = parse.parse_known_args(args)
+    except SystemExit:
+        return _main_unlocked(args)
+    try:
+        if options.private_root is not None:
+            checked_private_root(options.private_root, localappdata=Path(local))
+        # All source-free runs on this owner PC contend for ONE native
+        # coordinator; never derive the lock from a changeable --private-root.
+        lock_root = checked_private_root(
+            Path(local) / "Microvid" / "BoslaV3ReviewYoga6",
+            localappdata=Path(local))
+        with coordinator_lock(lock_root):
+            return _main_unlocked(args)
+    except RuntimeError as exc:
+        if str(exc) == "V3_WORKER_ALREADY_RUNNING":
+            _print({"status":"STOP_YOGA6_SOURCE_FREE_ALREADY_RUNNING",
+                    "publicationAuthorized":False})
+            return 3
+        _print({"status":"STOP_YOGA6_SOURCE_FREE_LOCK_ERROR",
+                "reasonClass":type(exc).__name__,
+                "publicationAuthorized":False})
+        return 3
+    except (ValueError, OSError) as exc:
+        _print({"status":"STOP_YOGA6_SOURCE_FREE_LOCK_ERROR",
+                "reasonClass":type(exc).__name__,
+                "publicationAuthorized":False})
+        return 3
+
+
 def _main_unlocked(argv: list[str] | None = None) -> int:
     """Original worker stages; entrypoint owns source-free single-flight."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -1561,52 +1607,6 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
         # No provider text, API secrets, user data or filenames from errors.
         _print({"status":"STOP_YOGA6_RECOVERY_WORKER",
                 "reasonClass":type(exc).__name__,"publicationAuthorized":False})
-        return 3
-
-
-def main(argv: list[str] | None = None) -> int:
-    """BSA254: serialize the ENTIRE source-free worker across ChatGPT sessions.
-
-    Reuse the historically tested BSA Yoga6 OS-released coordinator lock.
-    Hold it before ANY source-free activity, PDF, Chrome or signed checkpoint.
-    The lock path is invariant even if an alternate valid private root is
-    supplied; the pinned-Selenium launcher re-execs BEFORE calling main().
-    """
-    args = list(sys.argv[1:] if argv is None else argv)
-    if "--source-free-advance" not in args:
-        return _main_unlocked(args)
-    local = os.environ.get("LOCALAPPDATA")
-    if not local:
-        return _main_unlocked(args)
-    parse = argparse.ArgumentParser(add_help=False)
-    parse.add_argument("--private-root", type=Path)
-    try:
-        options, _ = parse.parse_known_args(args)
-    except SystemExit:
-        return _main_unlocked(args)
-    try:
-        if options.private_root is not None:
-            checked_private_root(options.private_root, localappdata=Path(local))
-        # All source-free runs on this owner PC contend for ONE native
-        # coordinator; never derive the lock from a changeable --private-root.
-        lock_root = checked_private_root(
-            Path(local) / "Microvid" / "BoslaV3ReviewYoga6",
-            localappdata=Path(local))
-        with coordinator_lock(lock_root):
-            return _main_unlocked(args)
-    except RuntimeError as exc:
-        if str(exc) == "V3_WORKER_ALREADY_RUNNING":
-            _print({"status":"STOP_YOGA6_SOURCE_FREE_ALREADY_RUNNING",
-                    "publicationAuthorized":False})
-            return 3
-        _print({"status":"STOP_YOGA6_SOURCE_FREE_LOCK_ERROR",
-                "reasonClass":type(exc).__name__,
-                "publicationAuthorized":False})
-        return 3
-    except (ValueError, OSError) as exc:
-        _print({"status":"STOP_YOGA6_SOURCE_FREE_LOCK_ERROR",
-                "reasonClass":type(exc).__name__,
-                "publicationAuthorized":False})
         return 3
 
 

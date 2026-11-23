@@ -8629,6 +8629,11 @@
           "path": "tests/test_v3_source_free_singleflight.py",
           "kind": "python",
           "marker": "test_no_malicious_private_text_in_contended_lock_response"
+        },
+        {
+          "path": "tests/test_v3_recovery_policy_v6.py",
+          "kind": "python",
+          "marker": "test_v6_normal_entrypoint_wires_registry_not_oneoff_repair"
         }
       ],
       "applicableEnvironments": [
@@ -8640,7 +8645,7 @@
         "No scheduler, extra source PDF, old uncertain request replay or public merge/deploy"
       ],
       "lastValidatedDate": "2026-11-23",
-      "nextAction": "ACTIVE. Nine Windows Yoga6 tests passed including genuine second-process OS lock, no-stage duplicate rejection, alternate-root prevention, crash release and automatic restart; inherited worker regression groups passed. Exact-HEAD CI, genuine normal Yoga6 V1-V26 restart and independent single-flight witness still required before engineering closure. Full 90 academic proof gates and 26 semantic meaning issues remain independent unresolved work."
+      "nextAction": "ACTIVE: real Yoga6 source-free global OS lock and nine isolated tests PASS. First hosted exact-head CI 45188127978 found one historical source-introspection test expecting the original recovery dispatcher inside inspect.getsource(main); the wrapper had moved the executable body into _main_unlocked. Reused earlier worker-fixture compatibility remedy: test both entrypoint OS lock and original registry dispatch separately, preserving rather than weakening both assertions. Original 16 and new 9 focused tests PASS; 69 other worker/CI tests PASS. Fresh exact-head hosted CI, genuine normal Yoga6 V1-V26 and independently verified single-flight proof are still required. 90 full academic proof gates and 26 meaning flags remain OPEN and publication prohibited."
     }
   ]
 }

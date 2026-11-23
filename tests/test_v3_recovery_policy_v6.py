@@ -217,7 +217,14 @@ class RegistryRecoveryV6Tests(unittest.TestCase):
     def test_v6_normal_entrypoint_wires_registry_not_oneoff_repair(self):
         from scripts import run_v3_yoga6_recovery_worker as worker
         import inspect
-        source = inspect.getsource(worker.main)
+        # BSA254: the source-free public entry now takes the historic OS
+        # coordinator BEFORE entering the original V3 recovery dispatcher.
+        # Verify BOTH executable functions rather than requiring the entire
+        # long worker body to remain inside one inspect.getsource() span.
+        entry = inspect.getsource(worker.main)
+        self.assertIn("with coordinator_lock(lock_root):", entry)
+        self.assertIn("return _main_unlocked(args)", entry)
+        source = inspect.getsource(worker._main_unlocked)
         self.assertIn("apply_registered_recovery(", source)
         self.assertIn("--auto-advance", source)
         self.assertIn("operation_authorized=args.execute", source)
