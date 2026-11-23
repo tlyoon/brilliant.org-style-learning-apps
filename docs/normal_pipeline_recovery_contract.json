@@ -215,7 +215,9 @@
     "v25NineSourceAxiomsAnd68IndependentlyComputedAnswers": true,
     "v25EighteenWrongKeyFaultInjectionCoverage": true,
     "v25NormalWorkerSignedNoProviderAndNoFalseAcademicPASS": true,
-    "v25NewVersionsCannotBorrowOlderModelAcceptance": true
+    "v25NewVersionsCannotBorrowOlderModelAcceptance": true,
+    "v25LargeProofRosterSplitIntoRestartSafeSignedPartitions": true,
+    "v25TamperedSavedPartitionRejectedWithoutModelReplay": true
   },
   "terminalExternalStatuses": [
     "BLOCKED_EXTERNAL",

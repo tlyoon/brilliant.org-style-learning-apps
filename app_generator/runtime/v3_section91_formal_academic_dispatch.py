@@ -30,9 +30,55 @@ from app_generator.validation.section91_formal_physics import (
 _V25_PRE = "V25_EXACT_SOURCE_FORMAL_PHYSICS_PRE_CALL.json"
 _V25_RESULT = "V25_18_BOUNDED_FORMAL_ANSWER_WITNESSES.json"
 _V25 = "V25_SOURCE_BOUND_FORMAL_SCIENCE_DISPATCH_NO_RELEASE.json"
+_V25_MCQ_PROOFS = "V25_NINE_MCQ_FORMAL_PHYSICS_PROOFS.json"
+_V25_INTERACTIVE_PROOFS = "V25_NINE_INTERACTIVE_FORMAL_PHYSICS_PROOFS.json"
 _STATUS25="V25_ALL_18_REAL_SOURCE_BOUND_FORMAL_ANSWER_MODELS_VERIFIED_PARTIAL_ACADEMIC"
 _EXPECTED_WITNESSES=68
 _EXPECTED_SOURCE_PREMISES=9
+
+
+def _persist_split_formal_witnesses(
+    folder:Path,identity:dict,science:dict,
+)->list[dict[str,Any]]:
+    """Reuse BSA251's V24 signed small-receipt checkpoint recovery.
+
+    The genuine first BSA252 live attempt produced a 12648-byte aggregate
+    proof receipt, which cannot be replay-read by the original 12000-byte
+    safe checkpoint parser. Never loosen that size limit: split exact nine
+    MCQ and nine interactive rows into two SHA-pinned safe receipts.
+    """
+    rows=science.get("activityProofs")
+    if (not isinstance(rows,list) or len(rows)!=18
+            or len({q.get("activityId") for q in rows})!=18
+            or sum(q.get("exactRationalAndDimensionalWitnesses",0)
+                   for q in rows)!=68):
+        raise ValueError("BSA252_EIGHTEEN_FORMAL_PROOFS_REQUIRED")
+    manifest=[]
+    for kind, name, subset in (
+        ("MCQ",_V25_MCQ_PROOFS,rows[:9]),
+        ("INTERACTIVE",_V25_INTERACTIVE_PROOFS,rows[9:]),
+    ):
+        if (len(subset)!=9 or any(q.get("sourceModelFamily")!=(
+            "MCQ_FORMAL_PROPOSITION" if kind=="MCQ"
+            else "INTERACTIVE_FORMAL_SOLUTION") for q in subset)):
+            raise ValueError("BSA252_WRONG_FORMAL_PROOF_PARTITION")
+        record=_v6_checkpoint(folder/name,{
+            **identity,
+            "status":"V25_IMMUTABLE_EXACT_PHYSICS_PROOF_PARTITION",
+            "sourcePdfSha256":science["sourcePdfSha256"],
+            "revisedCandidateSha256":science["revisedCandidateSha256"],
+            "formalModelFamily":kind,
+            "proofRows":subset,
+            "publicationAuthorized":False,
+        })
+        if (folder/name).stat().st_size>=12000:
+            raise ValueError("BSA252_SIGNED_PROOF_EXCEEDS_HISTORICAL_RESTART_LIMIT")
+        manifest.append({
+            "formalModelFamily":kind,
+            "proofCount":len(subset),
+            "savedSha256":record["integritySha256"],
+        })
+    return manifest
 
 
 def run_post_v24_formal_science(
@@ -109,15 +155,24 @@ def run_post_v24_formal_science(
                    or row.get("allEnglishStatementAndTranslatedSemanticsVerified") is not False
                    for row in science["activityProofs"])):
         raise ValueError("BSA252_BOUNDED_PROOF_NOT_FULL_ACCEPTANCE")
+    # BSA251 historical repair is mandatory: old 12 KB reader limit
+    # remains intact; V25's full 18-row proof list MUST be split safely.
+    partitions=_persist_split_formal_witnesses(folder,identity,science)
+    bounded={key:value for key,value in science.items()
+             if key!="activityProofs"}
     result=_v6_checkpoint(folder/_V25_RESULT,{
         **identity,
-        **science,
+        **bounded,
         "status":"V25_REAL_18_ACTIVITY_BOUNDED_FORMAL_PROOFS_EXECUTED_NO_RELEASE",
+        "splitImmutableProofReceipts":partitions,
+        "completeFormalProofRosterSha256":_hash(science["activityProofs"]),
         "sourcePdfNotUploaded":True,
         "oldReviewClaimsNotReplayed":True,
         "academicProofGatesStillOpen":90,
         "publicationAuthorized":False,
     })
+    if (folder/_V25_RESULT).stat().st_size>=12000:
+        raise ValueError("BSA252_RESTART_SAFE_AGGREGATE_SIZE_FAILED")
     return _v6_checkpoint(folder/_V25,{
         **identity,
         "status":_STATUS25,

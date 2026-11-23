@@ -8367,6 +8367,21 @@
           "path": "tests/test_section91_formal_physics.py",
           "kind": "python",
           "marker": "test_v25_integration_does_not_bypass_genuine_v24_signature"
+        },
+        {
+          "path": "tests/test_v25_small_signed_receipts.py",
+          "kind": "python",
+          "marker": "test_real_eighteen_proof_rows_split_below_historical_12000_cap"
+        },
+        {
+          "path": "tests/test_v25_small_signed_receipts.py",
+          "kind": "python",
+          "marker": "test_altered_saved_solution_digest_refused_on_restart"
+        },
+        {
+          "path": "tests/test_v25_small_signed_receipts.py",
+          "kind": "python",
+          "marker": "test_formal_scope_mismatch_cannot_drop_or_swap_an_activity"
         }
       ],
       "applicableEnvironments": [
@@ -8377,7 +8392,7 @@
         "No automatic academic PASS, old uncertain role replay, provider calls, external PDF, merge or publication"
       ],
       "lastValidatedDate": "2026-11-23",
-      "nextAction": "ACTIVE. Real original Serway9.1 Yoga6 source-bound local V25 pilot EXIT0 with 9 textbook physical premises, all 18 activities and 68 bounded MCQ+interactive answer witnesses. 67 targeted negative and normal-worker mock regressions PASS. Need recurrence+lint, exact GitHub commit CI, real ordinary Yoga6 V1-V25 signed dispatch and independent source/version/receipt witness then close. All 90 complete independent academic source/answer/physics/visual/trilingual gates still unproved. The next substantive boundary is full EN/MS/ZH scientific meaning, visual geometry and diverse textbook subject verifiers; no false claim of exhaustive proof from finite cases."
+      "nextAction": "ACTIVE. Real original Serway9.1 Yoga6 source-bound V25 pilot EXIT0 with nine textbook physical premises, all 18 activities and 68 independently computed bounded answer witnesses; initial GitHub head b2ef7447e78ebeb0d456438029bad67715af8683 hosted CI #45120928469 SUCCESS. Genuine full Yoga6 normal V1–V25 source-free worker EXIT0; a separate independent read-back witness correctly rejected V25's original 12648-byte monolithic signed result, above historical BSA251 V24's protected 12000-byte restart read limit. Rather than relax the protection, reused the exact BSA251 split-receipt remedy: nine MCQ and nine interactive physics-proof rows in separate signed <=12000-byte receipts, SHA-backed compact aggregate, 70 focused tests PASS including corrupted partition and replay test. Need exact revised-code CI, real owner Yoga6 full normal V1–V25 and separate signed partition witness before closing. All 90 complete independent academic source/answer/physics/visual/trilingual gates still unproved. The next substantive boundary is full EN/MS/ZH scientific meaning, visual geometry and diverse textbook subject verifiers; no false claim of exhaustive proof from finite cases."
     }
   ]
 }

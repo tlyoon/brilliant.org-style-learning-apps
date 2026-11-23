@@ -313,6 +313,8 @@ NORMAL_RECOVERY_REQUIREMENTS = (
     "v25EighteenWrongKeyFaultInjectionCoverage",
     "v25NormalWorkerSignedNoProviderAndNoFalseAcademicPASS",
     "v25NewVersionsCannotBorrowOlderModelAcceptance",
+    "v25LargeProofRosterSplitIntoRestartSafeSignedPartitions",
+    "v25TamperedSavedPartitionRejectedWithoutModelReplay",
 )
 NORMAL_RECOVERY_TERMINAL = (
     "BLOCKED_EXTERNAL", "BLOCKED_EXTERNAL_REVIEW_TRANSPORT",
