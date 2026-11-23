@@ -28,6 +28,7 @@ class SourceFreeSingleFlightTests(unittest.TestCase):
         self.addCleanup(t.cleanup)
         self.local = Path(t.name)
         self.root = self.local / "Microvid" / "BoslaV3ReviewYoga6"
+        self.session_root = self.root / ".source-free-singleflight"
 
     def run_worker(self, *extra):
         out = io.StringIO()
@@ -37,7 +38,7 @@ class SourceFreeSingleFlightTests(unittest.TestCase):
         return result, out.getvalue()
 
     def test_original_historical_os_lock_blocks_before_any_worker_stage(self):
-        with coordinator_lock(self.root), \
+        with coordinator_lock(self.session_root), \
              patch.object(worker, "_main_unlocked") as stages:
             code, output = self.run_worker()
         self.assertEqual(code, 3)
@@ -56,9 +57,25 @@ class SourceFreeSingleFlightTests(unittest.TestCase):
             self.assertEqual(stages.call_count, 2)
             stages.assert_any_call(["--source-free-advance"])
 
+    def test_real_inner_stage_coordinator_does_not_deadlock_outer_session(self):
+        # The preexisting source-free forward stage itself takes the OLD
+        # non-reentrant coordinator lock. Both scopes must coexist, while
+        # duplicate attempts on the old lock remain rejected as before.
+        def native_stage(_args):
+            with coordinator_lock(self.root):
+                with self.assertRaisesRegex(
+                        RuntimeError, "V3_WORKER_ALREADY_RUNNING"):
+                    with coordinator_lock(self.root):
+                        pass
+            return 0
+        with patch.object(worker, "_main_unlocked", side_effect=native_stage):
+            code, output = self.run_worker()
+        self.assertEqual(code, 0)
+        self.assertEqual(output, "")
+
     def test_alternate_private_root_cannot_bypass_global_lock(self):
         other = self.local / "Microvid" / "other-valid-private-root"
-        with coordinator_lock(self.root), \
+        with coordinator_lock(self.session_root), \
              patch.object(worker, "_main_unlocked") as stages:
             code, output = self.run_worker("--private-root", str(other))
         self.assertEqual(code, 3)
@@ -107,7 +124,7 @@ class SourceFreeSingleFlightTests(unittest.TestCase):
             "import os,time\n"
             "from pathlib import Path\n"
             "from app_generator.runtime.v3_yoga6_recovery import coordinator_lock\n"
-            "p=Path(os.environ['LOCALAPPDATA'])/'Microvid'/'BoslaV3ReviewYoga6'\n"
+            "p=Path(os.environ['LOCALAPPDATA'])/'Microvid'/'BoslaV3ReviewYoga6'/'.source-free-singleflight'\n"
             "with coordinator_lock(p):\n"
             " print('HELD', flush=True)\n"
             " time.sleep(15)\n"
@@ -139,7 +156,7 @@ class SourceFreeSingleFlightTests(unittest.TestCase):
         stages.assert_called_once()
 
     def test_no_malicious_private_text_in_contended_lock_response(self):
-        with coordinator_lock(self.root), \
+        with coordinator_lock(self.session_root), \
              patch.object(worker, "_main_unlocked") as stages:
             _, report = self.run_worker("--private-root",
                 str(self.local / "Microvid" / "SECRET_PRINT_ME"))

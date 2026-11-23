@@ -341,8 +341,14 @@ def main(argv: list[str] | None = None) -> int:
             checked_private_root(options.private_root, localappdata=Path(local))
         # All source-free runs on this owner PC contend for ONE native
         # coordinator; never derive the lock from a changeable --private-root.
+        # BSA254 real Yoga6 regression: the V3 source-free forward stage
+        # ALSO takes the existing non-reentrant coordinator_lock(private).
+        # Reusing that exact lock at the outer boundary deadlocks itself.
+        # Preserve its immutable inner ownership and use a DIFFERENT,
+        # fixed OS-backed whole-session lock scope for all source-free runs.
         lock_root = checked_private_root(
-            Path(local) / "Microvid" / "BoslaV3ReviewYoga6",
+            Path(local) / "Microvid" / "BoslaV3ReviewYoga6"
+            / ".source-free-singleflight",
             localappdata=Path(local))
         with coordinator_lock(lock_root):
             return _main_unlocked(args)
