@@ -8725,7 +8725,7 @@
     {
       "id": "BSA-20261124-256",
       "class": "academic_429_tasks_queued_but_five_independent_source_scoped_proof_producers_not_dispatched",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261123-252",
@@ -8798,17 +8798,17 @@
         {
           "path": "tests/test_v3_ci_resume.py",
           "kind": "python",
-          "marker": "v28_mock.call_count"
+          "marker": "test_normal_worker_immediately_continues_after_bounded_ci_green"
         },
         {
           "path": "tests/test_v3_five_stage_completion.py",
           "kind": "python",
-          "marker": "v28_mock.call_count"
+          "marker": "test_real_normal_sourcefree_worker_dispatches_all_five_without_model"
         },
         {
           "path": "tests/test_v3_versioned_readiness.py",
           "kind": "python",
-          "marker": "v28_mock.call_count"
+          "marker": "test_authenticated_browser_completion_auto_dispatches_next_stage"
         }
       ],
       "applicableEnvironments": [
@@ -8822,7 +8822,7 @@
         "No new outside PDFs, provider calls, old ambiguous retries, draft PR merge or publication"
       ],
       "lastValidatedDate": "2026-11-24",
-      "nextAction": "ACTIVE: BSA256 code and 74 focused source-free tests integrated locally; real Yoga6 one-source bounded pilot generated exact 18 source anchors, 68 mathematics, 27 false MCQ options, 222 trilingual numeric, and zero available rendered diagrams. Full V1-V28 normal worker, exact-head GitHub CI, independent signed readback and restart fault probes are required before engineering closure. Full 90 gates and 429 microproofs not passed."
+      "nextAction": "BSA256 BOUNDED FIVE-CHANNEL ENGINEERING RESOLVED. Exact owner Yoga6 code a8e5db55c5f849f00eb76e1a234c3aee2124fa45 full hosted GitHub CI #45321993889 SUCCESS (real Chrome/AX, full unit and recurrence); normal single-source V1-V28 Yoga6 source-free worker EXIT0. Signed V28 result 6a88a40e4aa111a9ce4fc411270d1207a066c84bf7caab0da7be6893e00b370b and final 36df8c79db21e163c4ab0a9e14c30da0f734ab1e2bd972ade9529fb0f661ddf3. Original PDF, exact revised candidate, signed predecessor V27 and two independently recomputed 9-activity proof partitions verified EXIT0 with witness SHA 2fe70314a63f283092e91647f178f486d4754e3866a11213674c124c339f80b1. Nine source premises, 18 exact physical passage locations, 68 bounded formal physics/answer models, 27 false MCQ proposition countermodels, 222 EN/MS/ZH literal numeric surfaces and five exact symbolic matches verified; zero declared visualSpec in selected Chapter9, 18 visual necessity tasks. All 90 full academic proof gate slots and 429 full meaning microproof tasks REMAIN UNACCEPTED. Semantics of entire explanations, rendered diagram geometry and three-language meaning were NOT proven. No new paid/model requests, external PDFs, uncertain historical replay, PR merge, deploy or scheduler. Next distinct substantive development: independent complete source/translation natural-language proof execution, real source-grounded interactive diagrams and rendered-pixel model-vs-figure verification."
     }
   ]
 }
