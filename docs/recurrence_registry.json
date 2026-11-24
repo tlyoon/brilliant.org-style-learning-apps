@@ -8656,7 +8656,7 @@
     {
       "id": "BSA-20261124-255",
       "class": "formula_parser_absorbed_prose_linkers_and_misclassified_cross_locale_symbolic_equivalence",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261123-253",
@@ -8671,7 +8671,7 @@
         "normalEntryPoints": [
           {
             "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "run_post_v26_bounded_symbolic_recovery("
+            "marker": "from app_generator.runtime.v3_post_v26_bounded_symbolic_recovery import ("
           }
         ]
       },
@@ -8720,7 +8720,7 @@
         "No new model calls, unknown old-request replay, second PDF, public release or false academic PASS"
       ],
       "lastValidatedDate": "2026-11-24",
-      "nextAction": "ACTIVE: code, 11 targeted fault tests and normal worker integration are present locally. Exact-head hosted CI, original Yoga6 full V1-V27 genuine run, and independent SHA-bound signed V27 readback must pass before declaring resolved. All 90 complete academic gates and 429 semantic microproofs remain unverified."
+      "nextAction": "BSA255 VERIFIED RESOLVED on actual owner Yoga6 code HEAD 2597f15a4cf492e63075316953cbaa5b387fe9ad. Hosted exact-head GitHub full CI #45315279009 SUCCESS (unit tests, recurrence, real Chrome/a11y), 64 focused worker/recovery tests PASS; genuine normal source-free V1-V27 worker EXIT0; signed V27 final SHA 8edd9c40e72d1350db28a1643172836cc16750b98ce9e5ab3713527327d23d1d, V27 result SHA bef8b7475e8c36c0a4b2162a12e76d6c62683a322a094742c17174cea8ca0611. Independent real Yoga6 original one-Serway-PDF/source-candidate/V26/V27 SHA witness EXIT0 integrity 792ab280a40696a8b8da8c999a2e2985162a6f944756215501630f1e8ed5affa. Five parser-induced symbolic false positives reconciled, three remain REVIEW_REQUIRED; 21 other technical review flags and ALL 90 complete independent academic gates/429 semantic microproofs remain open. No provider calls, extra PDFs, replay, publication or public PR merge. Next substantive boundary: actual independent single-textbook source scientific/trilingual/distractor/visual proof producers."
     }
   ]
 }
