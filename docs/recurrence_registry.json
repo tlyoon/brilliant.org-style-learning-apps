@@ -9165,7 +9165,7 @@
     {
       "id": "BSA-20261124-261",
       "class": "one_failed_scientific_successor_could_terminate_unrelated_eligible_source_free_development_lanes",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261124-257",
@@ -9179,12 +9179,8 @@
         "remedyMarker": "QUARANTINED_DEPENDENCY",
         "normalEntryPoints": [
           {
-            "path": "scripts/run_v3_yoga6_recovery_worker.py",
-            "marker": "run_independent_lanes=True"
-          },
-          {
             "path": "app_generator/runtime/v3_auto_development_handoff.py",
-            "marker": "run_safe_isolated_development_lanes("
+            "marker": "from app_generator.runtime.v3_blocker_isolated_development import ("
           }
         ]
       },
@@ -9250,7 +9246,7 @@
         "github-ci"
       ],
       "lastValidatedDate": "2026-11-24",
-      "nextAction": "ACTIVE pending full exact-head hosted GitHub CI, genuine Yoga6 owner normal V1-V32 plus separate three-lane BSA261 proof/receipt RUN and fault-injection production execution. Synthetic 85 affected tests PASS. Actual independent source PDF and prior V32 exact-head readback EXIT0. No academic/public PASS: 90 complete gates/429 microproof tasks OPEN. Next eligible workstream independently verifies other 9 interactive scientific explanations and model answers while high-stakes source-scientific approval remains gated."
+      "nextAction": "ENGINEERING RESOLVED at executable Bosla head 10801d736eaa38348dee1f900c87e4856c8e3c0c; complete GitHub hosted CI #45418872014 SUCCESS, including all unit tests, permanent incident regression contracts and real Chrome checks. Original Yoga6 normal --source-free-advance source-free V1?V33 worker EXIT0 at same HEAD (22:56:43?23:07:07 MYT), all four V29?V32 academic source-bound successor stages executed in one worker, and all three new isolated development workstreams VERIFIED independent PASS: historical-regression contract, 16 package structure checks and independent source-pinned V32 receipt plus real EN/MS/ZH PNG pixel readback. Saved exact private V33 immutable receipt V33_ISOLATED_DEVELOPMENT_LANES_597f34d96a8fdd036fbe7752.json under signed owner-head evidence folder. Separate new Python proof reopened the unchanged original Serway ?9.1 textbook PDF SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50, the immutable revised candidate SHA 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38, original V33 signed identity, and reran full independent V32/PDF/PNG witness EXIT0. Independent BSA261 owner receipt SHA 0e7853c355eff00f1800c64e63a94a649b02498081aac0902377a460aa0a1f34. Authentic earlier failure demonstrated recovery contract lane quarantined due nonexistent historical incident ID while other two real lanes continued; historical lookup fixed BSA-20261123-254 link and subsequent real owner 3-lane rerun PASS, both earlier failure and corrected results preserved in distinct signed receipts. No paid Gemini, external PDFs, ambiguous replay, public merge or deployment, no false scientific PASS. All 90 complete academic acceptance gates and 429 comprehensive source/trilingual/visual semantic proof tasks remain OPEN. Next eligible work: other nine interactive tasks, independent full explanation semantic verification and source-scoped visuals, using the same fault-isolated automatic development execution pattern."
     }
   ]
 }
