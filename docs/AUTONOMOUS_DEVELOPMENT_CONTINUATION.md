@@ -69,3 +69,7 @@ momentum answer, and compares actual SVG geometry across EN/MS/ZH. The
 released candidate and source PDF are unchanged. Full rendered screenshot
 scientific meaning, natural-language explanation truth, and remaining
 academic proof gates are next; a private draft is **not** the finished app.
+
+## Windows stale-owner diagnosis (BSA257)
+
+The Yoga6 OS byte-range single-flight lock is mandatory. If Windows refuses a new worker, query the local process tree and (if needed) Windows Restart Manager to identify the exact holder. A terminated old process may still retain a kernel file handle; a process with `HasExited=True` is not proof that the lock has been released. If the lock file cannot be locked or safely renamed, do **not** bypass it by changing lock paths, clear claims, or start concurrent workers. Persist the exact owner PID/command and stop reason. Retry the normal source-free worker only after its original OS lock can actually be acquired. A controlled PC restart is a last resort and must not interrupt other ongoing Yoga6 work. CI and separate read-only pilot checks may progress meanwhile; they do not establish full normal worker acceptance.
