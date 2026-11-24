@@ -18,7 +18,7 @@ remedy -> checkpoint -> **automatically restart and advance**.
 Implemented handoff: `scripts/run_v3_yoga6_recovery_worker.py --source-free-advance`
 calls `app_generator.runtime.v3_auto_development_handoff` after signed V28.
 The dispatcher has a bounded, explicit allowlist of real source-free successor
-stages, currently V29, and continues through additional registered successors
+stages, currently V29, V30 and V31, and continues through additional registered successors
 without further prompting. Add further stages to `_TRANSITIONS`, with actual
 fixtures and signed receipts, not standalone prose or manual instructions.
 A normal worker exit code 0 is allowed only after all registered eligible
@@ -73,3 +73,11 @@ academic proof gates are next; a private draft is **not** the finished app.
 ## Windows stale-owner diagnosis (BSA257)
 
 The Yoga6 OS byte-range single-flight lock is mandatory. If Windows refuses a new worker, query the local process tree and (if needed) Windows Restart Manager to identify the exact holder. A terminated old process may still retain a kernel file handle; a process with `HasExited=True` is not proof that the lock has been released. If the lock file cannot be locked or safely renamed, do **not** bypass it by changing lock paths, clear claims, or start concurrent workers. Persist the exact owner PID/command and stop reason. Retry the normal source-free worker only after its original OS lock can actually be acquired. A controlled PC restart is a last resort and must not interrupt other ongoing Yoga6 work. CI and separate read-only pilot checks may progress meanwhile; they do not establish full normal worker acceptance.
+
+## Next executable milestones ? BSA258/BSA259
+
+**V30:** after independently signed V29, Selenium must render the genuine private one-source diagram using the production domain renderer and CSS in real headless Chrome. It writes exactly three private PNGs (EN/MS/ZH) and verifies screenshot pixel colors, arrow orientation/extent, source-bound DOM labels and geometry. Exact PNG SHA256 is included in signed small metadata receipts. Bad/missing raster, wrong-colored arrow, missing source/provenance, visual mismatch, browser failure, or forged academic PASS fails closed; no outside network/model calls. These pixels establish only the actual private pedagogical figure, not textbook reproduction or all lesson visuals.
+
+**V31:** after signed V30, reopen the single original Serway section PDF and frozen revised package, require exact source SHA and inspect the first four-choice MCQ in EN/MS/ZH. Verify exact rational source physics and three false distractors plus bounded positive/negative localized semantic cues. Commit only signed narrow evidence; never silently convert these bounded checks into a full independent meaning/translation/scientific acceptance. Other 17 activities remain for subsequent per-gate semantic producers.
+
+**Continuous worker:** register the three stages in _TRANSITIONS so the normal --source-free-advance chain executes V28?V29?V30?V31 without another user instruction. The worker must not report success unless actual V30 screenshots and V31 source-proven MCQ witness are present. Full-source review still has 90 acceptance gates and 429 semantic microproofs outstanding.

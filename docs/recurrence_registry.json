@@ -8939,6 +8939,147 @@
       ],
       "lastValidatedDate": "2026-11-24",
       "nextAction": "BSA257 ENGINEERING RESOLVED after safe 24-Nov 17:31 MYT owner Yoga6 restart released abandoned OS PID27304 source-free single-flight handle; OS lock independently acquired and released. EXACT original owner Yoga6 HEAD 692571fd9df537ba198a766d7c4a8e19fdf0d83d real NORMAL source-free V1-V29 worker EXIT0, one registered V29 next-stage dispatched automatically directly after signed V28; signed V29 final e413007524cdefd294aadfeb9303bb71d70a21efdb861f7510deff0a0c27f188, V29 private source-grounded visual draft ac8eff99ae57b3c5c54c2eeaa09d8cd097b957564cdf15cd23f0679cc5d3089a, actual 3-language 6-arrow SVG DOM witness 1f490c514b821962ca7406da31e6dc3483fb88ad47824b427e790283ba6323b9. INDEPENDENT original Serway Section9.1 PDF source+private unchanged candidate SHA+all signed V28/V29 receipts independently re-extracted and PASS EXIT0 with witness integrity 4862f618e23af227e4b5fad89545c3e8b361a37941ac74d1fa07919838da93fd. Original selected PDF source SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50; exact original revised candidate SHA 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38. Full V1-V29 hosted CI on original exact code HEAD passed run #45330823077; previous full exact-head CI #45329932389 passed. No new API/model request, no additional outside PDF, no publication, PR merge or scheduler install. Engineering V29 COMPLETE, not independent full textbook/science/translation/rendered-pixel academic acceptance: 90 five-gate slots and 429 complete semantic microproofs remain REVIEW_REQUIRED. NEXT separately: implement real browser pixel evidence and source-bound independent diagram-geometry semantics plus full scientific-explanation/false-distractor/EN-MS-ZH meaning checks; new source-free eligible stages should auto-dispatch in same worker through v3_auto_development_handoff, not stop for conversation."
+    },
+    {
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-24",
+      "id": "BSA-20261124-258",
+      "class": "real_source_grounded_svg_dom_geometry_without_real_browser_screenshot_pixel_evidence",
+      "relatedIncidentIds": [
+        "BSA-20261124-256",
+        "BSA-20261124-257"
+      ],
+      "differenceFromLinkedIncident": "V29 instantiated the production renderer only in a fake DOM; no real raster pixel or screenshot evidence existed. V30 uses real headless Chrome, production CSS and screenshot pixel readback in EN/MS/ZH with signed private PNGs, not full textbook visual semantics.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_auto_development_handoff.py",
+        "triggerMarker": "_STATUS29:(_STATUS30",
+        "remedyMarker": "run_post_v29_real_browser_pixels",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_auto_development_handoff import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_actual_screenshot_pixel_verifier_positive"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_wrong_direction_color_patches_are_denied"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_blank_or_transparent_real_screenshot_rejected"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_wrong_actual_screenshot_size_fails"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_pixels_equal_background_fails"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_v30_mandates_real_signed_v29"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_same_worker_executes_three_successors_without_handoff"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_worker_requires_both_new_pilots_to_exit_zero"
+        }
+      ],
+      "nextAction": "ACTIVE pending new-head hosted CI, real owner Yoga6 exact-head NORMAL V1-V31 source-free worker EXIT0 and independent receipt+3 real PNG SHA/pixel readback. Prior actual pilot passed real Chrome 3 locales/6 arrows under historic V29 immutable source, no external PDF/model/public writes."
+    },
+    {
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-24",
+      "id": "BSA-20261124-259",
+      "class": "rendered_visual_recovery_unaccompanied_by_independent_source_bound_mcq_distractor_and_trilingual_semantic_role_proofs",
+      "relatedIncidentIds": [
+        "BSA-20261124-255",
+        "BSA-20261124-256",
+        "BSA-20261124-258"
+      ],
+      "differenceFromLinkedIncident": "V28 bounded formal MCQ models and V29/30 private vector visual did not independently re-open source to test the exact first corrected MCQ four-choice semantics and EN/MS/ZH role polarity. V31 checks original source, rational wrong-answer counterexamples, all 12 trilingual options and 18 localized prompt/explanation/answer roles; no full academic PASS.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_auto_development_handoff.py",
+        "triggerMarker": "_STATUS30:(_STATUS31",
+        "remedyMarker": "run_post_v30_independent_mcq_semantics",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_auto_development_handoff import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_four_choice_rational_truth_and_three_language_roles"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_wrong_correct_answer_rejected"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_false_choice_translation_polarity_drift_rejected"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_source_grounded_explanation_meaning_negation_rejected"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_v31_mandates_real_signed_v30"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_same_worker_executes_three_successors_without_handoff"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_new_stage_must_not_forge_academic_pass"
+        },
+        {
+          "path": "tests/test_v30_v31_source_visual_pixels.py",
+          "kind": "python",
+          "marker": "test_worker_requires_both_new_pilots_to_exit_zero"
+        }
+      ],
+      "nextAction": "ACTIVE pending exact-head GitHub CI, genuine Yoga6 complete NORMAL V1-V31 worker EXIT0, signed original source V30 and V31 readback. Only bounded first MCQ localized lexical roles proven; 90 complete gates/429 general semantic microproofs remain OPEN."
     }
   ]
 }

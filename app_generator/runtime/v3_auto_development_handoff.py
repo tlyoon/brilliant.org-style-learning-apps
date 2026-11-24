@@ -13,12 +13,22 @@ from app_generator.runtime.v3_post_v27_five_proof_producers import _STATUS28
 from app_generator.runtime.v3_post_v28_source_visual_pilot import (
     _STATUS29,run_post_v28_private_visual_pilot,
 )
+from app_generator.runtime.v3_post_v29_real_browser_pixels import (
+    _STATUS30,run_post_v29_real_browser_pixels,
+)
+from app_generator.runtime.v3_post_v30_bounded_mcq_semantics import (
+    _STATUS31,run_post_v30_independent_mcq_semantics,
+)
 
 # Exact source-free stage statuses, not user-facing milestone names. Bounded
 # length limits a buggy new successor from causing a runaway loop.
 _TRANSITIONS={
     _STATUS28:(_STATUS29,"privateSourceVisualPilot",
                run_post_v28_private_visual_pilot),
+    _STATUS29:(_STATUS30,"privateBrowserPixelPilot",
+               run_post_v29_real_browser_pixels),
+    _STATUS30:(_STATUS31,"privateMcqSemanticsPilot",
+               run_post_v30_independent_mcq_semantics),
 }
 _MAX_NEW_STAGES_PER_INVOCATION=4
 

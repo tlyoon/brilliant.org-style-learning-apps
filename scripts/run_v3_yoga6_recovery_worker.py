@@ -1539,6 +1539,34 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             and result.get("autonomousDevelopmentContinuation",{}).get(
                                 "privateSourceVisualPilot",{}).get(
                                 "publicationAuthorized") is False
+                            # BSA258/BSA259: the source-free worker must not exit
+                            # success without genuinely executing BOTH new
+                            # real-browser pixels and bounded MCQ semantics.
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "stagesExecutedThisRun")>=3
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateBrowserPixelPilot",{}).get("status")==
+                                "V30_REAL_BROWSER_SOURCE_BOUND_THREE_LOCALE_PIXELS_PRIVATE_NO_RELEASE"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateBrowserPixelPilot",{}).get(
+                                "realChromeScreenshotPixelEvidenceCount")==3
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateBrowserPixelPilot",{}).get(
+                                "realChromeScreenshotVelocityArrowsVerified")==6
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateMcqSemanticsPilot",{}).get("status")==
+                                "V31_BOUNDED_SOURCE_THREE_LOCALE_MCQ_SEMANTIC_WITNESS_PRIVATE"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateMcqSemanticsPilot",{}).get(
+                                "sourceBoundVerifiedMcqOptionLocalePairs")==12
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateMcqSemanticsPilot",{}).get(
+                                "sourceBoundCounterexampledFalseChoices")==3
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateMcqSemanticsPilot",{}).get("fullAcademicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateMcqSemanticsPilot",{}).get(
+                                "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:
             ready = plan_v3_course_review(

@@ -170,7 +170,7 @@ class V29AutonomousVisualTests(unittest.TestCase):
             # The registered callback was captured at registry construction.
             transition=(advance._STATUS29,"privateSourceVisualPilot",fn)
             with patch.dict(advance._TRANSITIONS,
-                            {advance._STATUS28:transition}):
+                            {advance._STATUS28:transition},clear=True):
                 fn.return_value=self._good_next()
                 result=advance.advance_eligible_verified_development_stages(
                     repo=ROOT,private=ROOT,ready={},
@@ -185,7 +185,7 @@ class V29AutonomousVisualTests(unittest.TestCase):
         with patch.object(advance,"run_post_v28_private_visual_pilot") as fn:
             transition=(advance._STATUS29,"privateSourceVisualPilot",fn)
             with patch.dict(advance._TRANSITIONS,
-                            {advance._STATUS28:transition}):
+                            {advance._STATUS28:transition},clear=True):
                 fn.return_value={**self._good_next(),"fullAcademicPASS":1}
                 with self.assertRaisesRegex(ValueError,"NOT_REALLY_ACCEPTED"):
                     advance.advance_eligible_verified_development_stages(
@@ -197,7 +197,7 @@ class V29AutonomousVisualTests(unittest.TestCase):
             fn.return_value=self._good_next()
             with patch.dict(advance._TRANSITIONS,{
                 advance._STATUS28:(advance._STATUS29,"draft",fn),
-                advance._STATUS29:(advance._STATUS28,"cycle",fn)}):
+                advance._STATUS29:(advance._STATUS28,"cycle",fn)},clear=True):
                 with self.assertRaisesRegex(ValueError,"CYCLE"):
                     advance.advance_eligible_verified_development_stages(
                         repo=ROOT,private=ROOT,ready={},
