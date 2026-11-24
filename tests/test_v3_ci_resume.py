@@ -528,6 +528,25 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "newProviderCalls":0,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_auto_development_handoff as v29_auto,
+            )
+            v29_mock=stack.enter_context(patch.object(
+                v29_auto,"advance_eligible_verified_development_stages",
+                return_value={
+                    "status":"AUTONOMOUSLY_ADVANCED_ALL_REGISTERED_SAFE_STAGES_TO_CURRENT_BOUNDARY",
+                    "stagesExecutedThisRun":1,
+                    "academicPASS":0,
+                    "publicationAuthorized":False,
+                    "newModelCalls":0,
+                    "privateSourceVisualPilot":{
+                        "status":"V29_ACTUAL_SOURCE_BOUND_PRIVATE_VECTOR_RENDERER_RECHECKED_NO_PUBLICATION",
+                        "actualSourceGroundedDraftCount":1,
+                        "actualRenderedSvgArrowsVerified":6,
+                        "fullAcademicPASS":0,
+                        "publicationAuthorized":False,
+                    },
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))
@@ -551,6 +570,7 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
         self.assertEqual(v18_mock.call_count,1 if succeeded else 0)
         self.assertEqual(v27_mock.call_count,1 if succeeded else 0)
         self.assertEqual(v28_mock.call_count,1 if succeeded else 0)
+        self.assertEqual(v29_mock.call_count,1 if succeeded else 0)
         # The generic worker exception boundary deliberately does not
         # invent a paid-call count; the source-free path makes no API calls.
         if not bad_poll:

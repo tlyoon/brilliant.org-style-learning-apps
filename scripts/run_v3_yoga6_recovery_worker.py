@@ -1181,6 +1181,20 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             result["privatePinnedPublicPatch"],
                             result["privateNonmergingPrReadiness"],
                             result["boundedSymbolicRecovery"]))
+                    # BSA257: proceed through *every registered and executable*
+                    # source-free successor on the SAME normal worker run.
+                    # Add later successors to the bounded dispatch registry;
+                    # no further user approval to perform safe local work.
+                    from app_generator.runtime.v3_auto_development_handoff import (
+                        advance_eligible_verified_development_stages,
+                    )
+                    result["autonomousDevelopmentContinuation"] = (
+                        advance_eligible_verified_development_stages(
+                            repo=ROOT, private=private, ready=ready,
+                            v9=result["pinnedPrivateReleaseProposal"],
+                            v11=result["privatePinnedPublicPatch"],
+                            v12=result["privateNonmergingPrReadiness"],
+                            prior_stage=result["fiveChannelProofProducers"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1499,6 +1513,31 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             and result.get("fiveChannelProofProducers",{}).get(
                                 "newProviderCalls")==0
                             and result.get("fiveChannelProofProducers",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "status")==
+                                "AUTONOMOUSLY_ADVANCED_ALL_REGISTERED_SAFE_STAGES_TO_CURRENT_BOUNDARY"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "stagesExecutedThisRun")>=1
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "academicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "newModelCalls")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSourceVisualPilot",{}).get("status")==
+                                "V29_ACTUAL_SOURCE_BOUND_PRIVATE_VECTOR_RENDERER_RECHECKED_NO_PUBLICATION"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSourceVisualPilot",{}).get(
+                                "actualSourceGroundedDraftCount")==1
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSourceVisualPilot",{}).get(
+                                "actualRenderedSvgArrowsVerified")==6
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSourceVisualPilot",{}).get("fullAcademicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSourceVisualPilot",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:

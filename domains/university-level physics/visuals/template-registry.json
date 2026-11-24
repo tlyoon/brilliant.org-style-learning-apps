@@ -18,6 +18,15 @@
       "rendererVersion": "1.0.0"
     },
     {
+      "id": "mechanics.opposite_velocity_pair_1d",
+      "mode": "vector_diagram",
+      "semanticParameters": ["mass_relation", "speed_relation", "track_orientation"],
+      "renderStrategies": ["deterministic_semantic"],
+      "implementationStatus": "available",
+      "rendererId": "opposing-velocity-v1",
+      "rendererVersion": "1.0.0"
+    },
+    {
       "id": "mechanics.free_body_2d",
       "mode": "vector_diagram",
       "semanticParameters": [

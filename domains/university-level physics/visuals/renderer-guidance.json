@@ -24,6 +24,19 @@
         }
       ]
     },
+    "mechanics.opposite_velocity_pair_1d": {
+      "requiredEntities": {
+        "kind": "body", "min": 2, "max": 2, "allSameKind": true
+      },
+      "rules": [
+        "Private Section 9.1 draft only: two same-mass symbolic bodies, not pictorial drone likeness",
+        "semanticParameters mass_relation and speed_relation must equal equal, track_orientation horizontal",
+        "Entity IDs drone-a/drone-b, properties.relativeMass equal",
+        "Exactly two velocity arrows velocity-a(left) and velocity-b(right) with equal positive relativeMagnitude",
+        "Never render momentum arrows, final answer, or unspecified measured masses",
+        "All text localized en/ms/zh; visible geometry and scientific meaning must be independently verified before public release"
+      ]
+    },
     "mechanics.free_body_2d": {
       "requiredEntities": {
         "kind": "body",

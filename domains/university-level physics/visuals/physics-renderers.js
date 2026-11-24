@@ -8,6 +8,7 @@
 
   const TEMPLATE_RENDERERS = Object.freeze({
     "mechanics.cart_collision_1d": renderCartCollision,
+    "mechanics.opposite_velocity_pair_1d": renderOppositeVelocityPair,
     "mechanics.free_body_2d": renderFreeBody,
     "graph.cartesian_qualitative": renderQualitativeGraph,
     "state.energy_bar": renderEnergyBars,
@@ -173,6 +174,70 @@
     stage.append(svg);
     figure.append(stage);
     return { documentRef, figure, svg };
+  }
+
+  // BSA257: a source-bound 1-D equal-speed *velocity* comparison.
+  // This must not render momentum arrows or reveal the MCQ answer.
+  // Geometry is deterministic and independently testable from SVG coordinates.
+  function renderOppositeVelocityPair(spec, options) {
+    const entities = spec.entities, vectors = spec.vectors;
+    if (!Array.isArray(entities) || entities.length !== 2 ||
+        !Array.isArray(vectors) || vectors.length !== 2 ||
+        spec.semanticParameters?.mass_relation !== "equal" ||
+        spec.semanticParameters?.speed_relation !== "equal" ||
+        spec.semanticParameters?.track_orientation !== "horizontal") {
+      throw new Error("BSA257_SOURCE_VISUAL_SCENARIO_DRIFT");
+    }
+    const ids = ["drone-a", "drone-b"];
+    const arrows = ["velocity-a", "velocity-b"];
+    const directions = ["left", "right"];
+    for (let i = 0; i < 2; i++) {
+      const entity = entities[i], vector = vectors[i];
+      if (!entity || entity.id !== ids[i] || entity.kind !== "body" ||
+          entity.properties?.relativeMass !== "equal" ||
+          !vector || vector.id !== arrows[i] ||
+          vector.entityId !== entity.id ||
+          vector.quantity !== "velocity" ||
+          vector.direction !== directions[i] ||
+          typeof vector.relativeMagnitude !== "number" ||
+          !Number.isFinite(vector.relativeMagnitude) ||
+          !(vector.relativeMagnitude > 0 && vector.relativeMagnitude <= 1)) {
+        throw new Error("BSA257_SOURCE_VISUAL_ARROW_OR_MASS_DRIFT");
+      }
+    }
+    if (vectors[0].relativeMagnitude !== vectors[1].relativeMagnitude) {
+      throw new Error("BSA257_UNEQUAL_SPEED_VISUAL_CONTRADICTION");
+    }
+    const { documentRef, figure, svg } = makeSurface(spec, options);
+    const prefix = `pv-${++renderSequence}`;
+    addMarkerDefinitions(svg, documentRef, prefix);
+    svg.append(createSvgElement(documentRef, "line", {
+      x1: 58, y1: 214, x2: 582, y2: 214,
+      class: "physics-visual__reference-axis",
+    }));
+    const centers = [[205, 191], [435, 191]];
+    entities.forEach((entity, index) => {
+      const [x, y] = centers[index];
+      const node = createSvgElement(documentRef, "g", {
+        "data-semantic-id": entity.id,
+        class: "physics-visual__body",
+      });
+      node.append(createSvgElement(documentRef, "circle", {
+        cx: x, cy: y, r: 17,
+        class: "physics-visual__body-shape",
+      }));
+      svg.append(node);
+      addSvgText(svg, documentRef, x, 268,
+        semanticLabel(entity, options.locale, entity.id),
+        "physics-visual__entity-label");
+      // Velocity arrows are deliberately separated and point outwards.
+      // Their endpoints must be consistent with declared directions.
+      drawVector(svg, documentRef, vectors[index], [x, y], prefix,
+        options.locale ?? "en", index, {
+          x, y: 102, maxUnits: 22,
+        });
+    });
+    return figure;
   }
 
   function renderCartCollision(spec, options) {

@@ -500,6 +500,25 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "newProviderCalls":0,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_auto_development_handoff as v29_auto,
+            )
+            v29_mock=stack.enter_context(patch.object(
+                v29_auto,"advance_eligible_verified_development_stages",
+                return_value={
+                    "status":"AUTONOMOUSLY_ADVANCED_ALL_REGISTERED_SAFE_STAGES_TO_CURRENT_BOUNDARY",
+                    "stagesExecutedThisRun":1,
+                    "academicPASS":0,
+                    "publicationAuthorized":False,
+                    "newModelCalls":0,
+                    "privateSourceVisualPilot":{
+                        "status":"V29_ACTUAL_SOURCE_BOUND_PRIVATE_VECTOR_RENDERER_RECHECKED_NO_PUBLICATION",
+                        "actualSourceGroundedDraftCount":1,
+                        "actualRenderedSvgArrowsVerified":6,
+                        "fullAcademicPASS":0,
+                        "publicationAuthorized":False,
+                    },
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))
@@ -519,6 +538,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             self.assertEqual(v18_mock.call_count,0 if failing else 1)
             self.assertEqual(v27_mock.call_count,0 if failing else 1)
             self.assertEqual(v28_mock.call_count,0 if failing else 1)
+            self.assertEqual(v29_mock.call_count,0 if failing else 1)
             if failing:
                 self.assertEqual(status,3)
             else:

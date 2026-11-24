@@ -40,6 +40,7 @@ assert.ok(visuals);
 assert.equal(visuals.rendererVersion, "1.0.0");
 assert.deepEqual(Array.from(visuals.supportedTemplates), [
   "mechanics.cart_collision_1d",
+  "mechanics.opposite_velocity_pair_1d",
   "mechanics.free_body_2d",
   "graph.cartesian_qualitative",
   "state.energy_bar",
@@ -53,6 +54,66 @@ const common = (mode, template, description) => ({
   fallback: { mode: "structured_interaction", reason: "Fallback" },
   validation: { answerRelevantIds: ["subject"], forbidAnswerLeakage: true },
 });
+
+// BSA257 source-free positive/negative tests for the real 1-D velocity
+// comparison renderer. The private source-bound creator supplies the actual
+// Serway-page/activity attachment; this fixture never needs the textbook.
+const pairSpec = {
+  ...common("vector_diagram", "mechanics.opposite_velocity_pair_1d",
+    "Two identical bodies have equal speeds in opposite directions."),
+  semanticParameters: {
+    mass_relation: "equal", speed_relation: "equal",
+    track_orientation: "horizontal",
+  },
+  entities: [
+    { id: "drone-a", kind: "body", label: {en:"Drone A", ms:"Dron A", zh:"无人机 A"},
+      properties: {relativeMass:"equal"} },
+    { id: "drone-b", kind: "body", label: {en:"Drone B", ms:"Dron B", zh:"无人机 B"},
+      properties: {relativeMass:"equal"} },
+  ],
+  vectors: [
+    { id:"velocity-a", entityId:"drone-a", quantity:"velocity",
+      direction:"left", relativeMagnitude:0.8, label:{en:"vA",ms:"vA",zh:"vA"} },
+    { id:"velocity-b", entityId:"drone-b", quantity:"velocity",
+      direction:"right", relativeMagnitude:0.8, label:{en:"vB",ms:"vB",zh:"vB"} },
+  ],
+};
+for (const locale of ["en", "ms", "zh"]) {
+  const figure = visuals.renderVisualSpec(pairSpec,{locale,document});
+  assert.equal(figure.tagName,"FIGURE");
+  assert.equal(figure.attributes["data-template"],
+    "mechanics.opposite_velocity_pair_1d");
+  assert.ok(bySemantic(figure,"drone-a"));
+  assert.ok(bySemantic(figure,"drone-b"));
+  const left = bySemantic(figure,"velocity-a");
+  const right = bySemantic(figure,"velocity-b");
+  assert.ok(left && right, "both independently rendered arrows required");
+  assert.ok(+left.attributes.x2 < +left.attributes.x1,
+    "drone A's velocity must point left");
+  assert.ok(+right.attributes.x2 > +right.attributes.x1,
+    "drone B's velocity must point right");
+  assert.ok(Math.abs((+left.attributes.x1-+left.attributes.x2)
+    - (+right.attributes.x2-+right.attributes.x1)) < 1e-9,
+    "equal speeds must render equal length velocity vectors");
+  assert.ok(texts(figure).includes(pairSpec.entities[0].label[locale]));
+  assert.ok(texts(figure).includes(pairSpec.entities[1].label[locale]));
+  assert.equal(descendants(figure).filter(n => n.attributes["data-semantic-id"] === "momentum-a").length,0,
+    "do not reveal momentum MCQ answers in a velocity-only visual");
+}
+for (const mutate of [
+  p => {p.vectors[1].direction="left";},
+  p => {p.vectors[1].relativeMagnitude=0.4;},
+  p => {p.entities[1].properties.relativeMass="different";},
+  p => {p.semanticParameters.speed_relation="unequal";},
+  p => {p.vectors[0].quantity="momentum";},
+  p => {p.vectors.pop();},
+]) {
+  const bad=JSON.parse(JSON.stringify(pairSpec));
+  mutate(bad);
+  const figure=visuals.renderVisualSpec(bad,{locale:"en",document});
+  assert.equal(bySemantic(figure,"velocity-a"),undefined,
+    "invalid physics must fail closed, not display misleading velocity vectors");
+}
 
 const cartSpec = {
   ...common("scene_diagram", "mechanics.cart_collision_1d", "Two carts moving toward each other."),
