@@ -1194,7 +1194,8 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             v9=result["pinnedPrivateReleaseProposal"],
                             v11=result["privatePinnedPublicPatch"],
                             v12=result["privateNonmergingPrReadiness"],
-                            prior_stage=result["fiveChannelProofProducers"]))
+                            prior_stage=result["fiveChannelProofProducers"],
+                            run_independent_lanes=True))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1584,6 +1585,23 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                                 "privateOtherMcqWitnessPilot",{}).get("fullAcademicPASS")==0
                             and result.get("autonomousDevelopmentContinuation",{}).get(
                                 "privateOtherMcqWitnessPilot",{}).get(
+                                "publicationAuthorized") is False
+                            # BSA261: unrelated content/regression/readback
+                            # work must execute even when one eligible lane
+                            # fails. Never turn a quarantined lane into exit0.
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "isolatedDevelopmentLanes",{}).get("status")==
+                                "INDEPENDENT_SAFE_LANES_ALL_VERIFIED"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "isolatedDevelopmentLanes",{}).get(
+                                "independentlyVerifiedLanes")==3
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "isolatedDevelopmentLanes",{}).get(
+                                "quarantinedLaneCount")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "isolatedDevelopmentLanes",{}).get("fullAcademicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "isolatedDevelopmentLanes",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:

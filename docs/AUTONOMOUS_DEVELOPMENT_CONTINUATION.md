@@ -18,7 +18,7 @@ remedy -> checkpoint -> **automatically restart and advance**.
 Implemented handoff: `scripts/run_v3_yoga6_recovery_worker.py --source-free-advance`
 calls `app_generator.runtime.v3_auto_development_handoff` after signed V28.
 The dispatcher has a bounded, explicit allowlist of real source-free successor
-stages, currently V29, V30 and V31, and continues through additional registered successors
+stages, currently V29, V30, V31 and V32, and continues through additional registered successors
 without further prompting. Add further stages to `_TRANSITIONS`, with actual
 fixtures and signed receipts, not standalone prose or manual instructions.
 A normal worker exit code 0 is allowed only after all registered eligible
@@ -89,3 +89,11 @@ On 24-Nov-2026 owner Yoga6 source-free NORMAL V1?V31 EXIT0 at code `87945e47ce7e
 ## V32 next-source stage ? remaining eight MCQs
 
 Source-bound BSA260 V32 adds a fourth automatically dispatched executable stage to the same normal owner Yoga6 V28?V29?V30?V31?V32 chain; no user handoff or model request is required once CI and exact immutable source are available. Original selected Serway Section9.1 PDF plus frozen candidate SHA must match; re-use proven nine-MCQ rational models to check exactly eight more corrected MCQs, with source-content-tailored polarity/direction lexical cues across EN/MS/ZH. Sign two small immutable four-activity SHA-receipts, not oversized JSON. The signed V32 final receipt must retain 108 localized MCQ-option cues and 27 counterexampled wrong answers across all nine (including V31), but *not* claim full semantic translation approval, source-figure equivalence or any of 90 full academic PASS gates. Remaining nine interactive activities and full explanation/trilingual/diagram meaning proofs are the next safe automatic development priority.
+
+## Standing rule: isolate the blocker, continue all independent eligible work
+
+**Mandatory from BSA261 onward:** for every blocked step, reuse historical recovery evidence where possible, repair, run a real owner-machine test, perform fault-injection/regression, integrate the executable remedy, and immediately advance all other source-free, authorized, dependency-eligible workstreams. **Stop only the failing operation and its real dependent descendants; do not terminate independent safe development.** A blocked gate must never be represented as accepted, re-run an ambiguous paid-provider response, bypass the single-flight source-free OS lock, change textbook provenance, or publish/merge without approval.
+
+Implementation: app_generator/runtime/v3_blocker_isolated_development.py runs an allowlisted, dependency-scoped, read-only three-lane controller: (1) historical-recovery regression-contract check, (2) content package schema/visual validation, (3) independent exact original textbook, V29?V32 signed evidence and actual Chrome screenshot PNG readback *only after signed V32*. An academic failure quarantines source-dependent proof but immediately executes unrelated (1) and (2). A failure in any individual lane cannot cancel other ready lanes. Signed small content-addressed owner-private receipts persist failure and later repair as separate immutable facts. Exception class can be logged, but never private paths, source text, provider content or secret values.
+
+The normal --source-free-advance worker automatically invokes this controller once it reaches the registered successor chain; standard worker exit0 requires all three independently verified lanes and the full academic successor chain, not partial progress. A failed chain or isolated lane yields a nonzero stop on that operation **after** other eligible work is attempted. Remaining 90 full five-gate academic acceptances and 429 complete semantic microproofs remain review-required until independently proven. This rule is project-specific to Bosla on Yoga6, not MicroGen AI Web.

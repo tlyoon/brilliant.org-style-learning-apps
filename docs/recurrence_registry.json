@@ -9084,7 +9084,7 @@
     {
       "id": "BSA-20261124-260",
       "class": "per_mcq_source_bound_semantic_witness_only_covered_one_of_nine_mcqs_other_eight_lacked_localized_direction_and_false_answer_proofs",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261124-259",
@@ -9160,7 +9160,97 @@
         "github-ci"
       ],
       "lastValidatedDate": "2026-11-24",
-      "nextAction": "ACTIVE pending new exact-head full GitHub CI, real owner Yoga6 NORMAL V1-V32 worker EXIT0, 4 registered source-free stages auto-dispatched in same worker, independent original PDF/candidate+all signed V29-V32 SHA chain and 3 PNG pixel readback. Pilot on original real source PASSED 8 other MCQs/96 localized options/24 false alternatives, 88 focused tests PASS. All 90 complete academic acceptance gates/429 full meaning microproofs remain OPEN."
+      "nextAction": "ENGINEERING RESOLVED: genuine owner Yoga6 exact source-head 2c18113ff9c93bc47f7930172d45aaff627f2f20 normal V1-V32 --source-free-advance EXIT0; hosted GitHub CI #45388784083 SUCCESS; automatic four consecutive V29-V32 successor execution in one worker; immutable exact original Serway9.1 PDF and revised candidate remained unchanged. Signed V32 dfb234e38fc43f7d2b35afd4639d0e463cd1b16ee7f3bf90d4e0910c0b2a4e47 and two signed bounded receipts 389392f03dd8dbac183982fcc700532a152e5010a3989d7ec9ee4922d9f0bc7a and 0cad2612ea327a52697b81bb8f196fa47d4c4065f68d1d164e2142db93113149. Independent Yoga6 source+signed V29-V32 and all three true PNG pixel readback scripts/verify_v32_private_owner_readback.py EXIT0 at same HEAD, independently recomputed 8 other MCQ proof-hashes, all 108 localized option roles across 9 MCQs and 27 counterexampled false alternatives. Zero new provider calls, extra PDFs, publishing, PR merge. 90 full academic acceptance gates, 429 comprehensive scientific explanation, interactive, visual and trilingual meaning microproofs remain OPEN."
+    },
+    {
+      "id": "BSA-20261124-261",
+      "class": "one_failed_scientific_successor_could_terminate_unrelated_eligible_source_free_development_lanes",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261124-257",
+        "BSA-20261124-260",
+        "BSA-20261123-254"
+      ],
+      "differenceFromLinkedIncident": "BSA257 auto-dispatched a strictly dependent source-proven stage chain but a failure inside one scientific successor terminated the full worker before unrelated safe recurring development tasks (regression contract, package schema validation or signed independent proof readback) could execute. BSA261 adds a disjoint allowlisted source-free lane controller: inspect exact dependency declarations, quarantine only the broken task and true descendants, run every other safe lane, record original error CLASS without secrets, persist independent content-addressed signed receipts for restart, never turn a partial run into worker, academic or release PASS. Existing trusted whole-worker OS single-flight and source identity checks remain unchanged.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_blocker_isolated_development.py",
+        "triggerMarker": "def run_safe_isolated_development_lanes(",
+        "remedyMarker": "QUARANTINED_DEPENDENCY",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "run_independent_lanes=True"
+          },
+          {
+            "path": "app_generator/runtime/v3_auto_development_handoff.py",
+            "marker": "run_safe_isolated_development_lanes("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_missing_academic_dependency_does_not_block_recovery_and_content"
+        },
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_one_lane_exception_does_not_strand_other_eligible_lanes"
+        },
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_academic_claim_from_side_lane_is_rejected_not_accepted"
+        },
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_invalid_workstream_can_not_assert_publication"
+        },
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_failed_then_repaired_lane_never_overwrites_failed_receipt"
+        },
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_identical_restart_receipt_is_idempotent"
+        },
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_unpinned_source_or_untrusted_dependencies_rejected"
+        },
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_dependent_readback_does_not_run_on_quarantined_science"
+        },
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_after_academic_failure_safe_others_execute_before_reraise"
+        },
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_complete_main_chain_requires_all_isolated_lanes"
+        },
+        {
+          "path": "tests/test_v33_blocker_isolated_development.py",
+          "kind": "python",
+          "marker": "test_real_normal_worker_requires_lane_isolation_success"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-24",
+      "nextAction": "ACTIVE pending full exact-head hosted GitHub CI, genuine Yoga6 owner normal V1-V32 plus separate three-lane BSA261 proof/receipt RUN and fault-injection production execution. Synthetic 85 affected tests PASS. Actual independent source PDF and prior V32 exact-head readback EXIT0. No academic/public PASS: 90 complete gates/429 microproof tasks OPEN. Next eligible workstream independently verifies other 9 interactive scientific explanations and model answers while high-stakes source-scientific approval remains gated."
     }
   ]
 }

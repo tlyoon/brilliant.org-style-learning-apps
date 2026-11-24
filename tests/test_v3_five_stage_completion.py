@@ -685,6 +685,13 @@ class FiveStageSyntheticTests(unittest.TestCase):
                         "fullAcademicPASS":0,
                         "publicationAuthorized":False,
                     },
+                    "isolatedDevelopmentLanes":{
+                        "status":"INDEPENDENT_SAFE_LANES_ALL_VERIFIED",
+                        "independentlyVerifiedLanes":3,
+                        "quarantinedLaneCount":0,
+                        "fullAcademicPASS":0,
+                        "publicationAuthorized":False,
+                    },
                 }))
             observed=[]
             stack.enter_context(patch.object(worker,"_print",
