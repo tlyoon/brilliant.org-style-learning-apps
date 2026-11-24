@@ -1167,6 +1167,20 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             result["privateNonmergingPrReadiness"],
                             result["sourceScientificSemanticTriage"],
                             result["fullSemanticProofQueue"]))
+                    # BSA256 V28: independent five-channel bounded proof
+                    # producers MUST run after source-signed genuine V27.
+                    # Claim only independently established limited facts;
+                    # all complete academic/visual meaning gates stay open.
+                    from app_generator.runtime.v3_post_v27_five_proof_producers import (
+                        run_post_v27_five_proof_producers,
+                    )
+                    result["fiveChannelProofProducers"] = (
+                        run_post_v27_five_proof_producers(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["boundedSymbolicRecovery"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1462,6 +1476,29 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             and result.get("boundedSymbolicRecovery",{}).get(
                                 "outsideSourcePdfsRequired") is False
                             and result.get("boundedSymbolicRecovery",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("fiveChannelProofProducers",{}).get(
+                                "status")==
+                                "V28_FIVE_BOUNDED_PROOF_PRODUCERS_REAL_EXECUTION_NOT_FULL_ACADEMIC_PASS"
+                            and result.get("fiveChannelProofProducers",{}).get(
+                                "realSourcePageAnchors")==18
+                            and result.get("fiveChannelProofProducers",{}).get(
+                                "boundedScientificAnswerWitnesses")==68
+                            and result.get("fiveChannelProofProducers",{}).get(
+                                "falseMcqOptionsProvenAgainstFormalModels")==27
+                            and result.get("fiveChannelProofProducers",{}).get(
+                                "trilingualSurfacesNumericLiteralChecked")==222
+                            and result.get("fiveChannelProofProducers",{}).get(
+                                "actualDiagramsAbsent")==18
+                            and result.get("fiveChannelProofProducers",{}).get(
+                                "independentMeaningMicroproofsPending")==429
+                            and result.get("fiveChannelProofProducers",{}).get(
+                                "completeAcademicProofGatesStillOpen")==90
+                            and result.get("fiveChannelProofProducers",{}).get(
+                                "formalAcademicPASS")==0
+                            and result.get("fiveChannelProofProducers",{}).get(
+                                "newProviderCalls")==0
+                            and result.get("fiveChannelProofProducers",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:

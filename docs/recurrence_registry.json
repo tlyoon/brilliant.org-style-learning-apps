@@ -8721,6 +8721,108 @@
       ],
       "lastValidatedDate": "2026-11-24",
       "nextAction": "BSA255 VERIFIED RESOLVED on actual owner Yoga6 code HEAD 2597f15a4cf492e63075316953cbaa5b387fe9ad. Hosted exact-head GitHub full CI #45315279009 SUCCESS (unit tests, recurrence, real Chrome/a11y), 64 focused worker/recovery tests PASS; genuine normal source-free V1-V27 worker EXIT0; signed V27 final SHA 8edd9c40e72d1350db28a1643172836cc16750b98ce9e5ab3713527327d23d1d, V27 result SHA bef8b7475e8c36c0a4b2162a12e76d6c62683a322a094742c17174cea8ca0611. Independent real Yoga6 original one-Serway-PDF/source-candidate/V26/V27 SHA witness EXIT0 integrity 792ab280a40696a8b8da8c999a2e2985162a6f944756215501630f1e8ed5affa. Five parser-induced symbolic false positives reconciled, three remain REVIEW_REQUIRED; 21 other technical review flags and ALL 90 complete independent academic gates/429 semantic microproofs remain open. No provider calls, extra PDFs, replay, publication or public PR merge. Next substantive boundary: actual independent single-textbook source scientific/trilingual/distractor/visual proof producers."
+    },
+    {
+      "id": "BSA-20261124-256",
+      "class": "academic_429_tasks_queued_but_five_independent_source_scoped_proof_producers_not_dispatched",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261123-252",
+        "BSA-20261123-253",
+        "BSA-20261124-255"
+      ],
+      "differenceFromLinkedIncident": "Earlier source and formal-science stages were reusable standalone checks, V26 only queued 429 detailed semantics tasks and V27 only repaired formula tokenization. Neither produced five-channel actual per-activity SHA-bound source, math, wrong-MCQ, trilingual and visual model evidence inside the normal worker.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_post_v27_five_proof_producers.py",
+        "triggerMarker": "signed_v27=_signed(folder,_V27,ready)",
+        "remedyMarker": "evidence=audit_five_proof_channels(",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "from app_generator.runtime.v3_post_v27_five_proof_producers import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v28_five_proof_producers.py",
+          "kind": "python",
+          "marker": "test_bounded_real_renderable_cart_diagram_vector_physics"
+        },
+        {
+          "path": "tests/test_v28_five_proof_producers.py",
+          "kind": "python",
+          "marker": "test_diagram_wrong_arrow_and_phase_fail_closed"
+        },
+        {
+          "path": "tests/test_v28_five_proof_producers.py",
+          "kind": "python",
+          "marker": "test_chinese_numeric_source_section_reference_is_not_silently_dropped"
+        },
+        {
+          "path": "tests/test_v28_five_proof_producers.py",
+          "kind": "python",
+          "marker": "test_nine_real_mcq_model_truth_sets_are_independently_computed"
+        },
+        {
+          "path": "tests/test_v28_five_proof_producers.py",
+          "kind": "python",
+          "marker": "test_explicit_numeric_wrong_answer_is_detected_by_model"
+        },
+        {
+          "path": "tests/test_v28_five_proof_producers.py",
+          "kind": "python",
+          "marker": "test_private_source_is_sha_bound_before_any_expensive_check"
+        },
+        {
+          "path": "tests/test_v28_five_proof_producers.py",
+          "kind": "python",
+          "marker": "test_partial_scientific_evidence_cannot_claim_full_academic_approval"
+        },
+        {
+          "path": "tests/test_v28_five_proof_producers.py",
+          "kind": "python",
+          "marker": "test_wrong_v27_receipt_fails_before_opening_textbook"
+        },
+        {
+          "path": "tests/test_v28_five_proof_producers.py",
+          "kind": "python",
+          "marker": "test_small_signed_checkpoint_restart_rejects_tampering"
+        },
+        {
+          "path": "tests/test_v28_five_proof_producers.py",
+          "kind": "python",
+          "marker": "test_normal_worker_v28_is_not_skipped"
+        },
+        {
+          "path": "tests/test_v3_ci_resume.py",
+          "kind": "python",
+          "marker": "v28_mock.call_count"
+        },
+        {
+          "path": "tests/test_v3_five_stage_completion.py",
+          "kind": "python",
+          "marker": "v28_mock.call_count"
+        },
+        {
+          "path": "tests/test_v3_versioned_readiness.py",
+          "kind": "python",
+          "marker": "v28_mock.call_count"
+        }
+      ],
+      "applicableEnvironments": [
+        "Bosla owner Yoga6 Section9.1 selected single Serway PDF, never MicroGen_AI_Web",
+        "Execute five evidence types after original signed V27 using exact original/revised source hashes",
+        "18 unique page anchors, 68 exact bounded physics answer witnesses and 27 falsified MCQ alternatives",
+        "222 EN/MS/ZH numeric surfaces, five matched literal formula fields and three ambiguous symbolic fields",
+        "Generic diagram cart-vector model with real positive/negative fixture, but pilot has zero visualSpec and cannot certify rendered pixels",
+        "Split 18 exact activity proof task rows into signed nine-MCQ/nine-interactive receipts below 12 KB",
+        "Never elevate 90 full academic gates or 429 complete semantic tasks without independent full semantic/rendered proofs",
+        "No new outside PDFs, provider calls, old ambiguous retries, draft PR merge or publication"
+      ],
+      "lastValidatedDate": "2026-11-24",
+      "nextAction": "ACTIVE: BSA256 code and 74 focused source-free tests integrated locally; real Yoga6 one-source bounded pilot generated exact 18 source anchors, 68 mathematics, 27 false MCQ options, 222 trilingual numeric, and zero available rendered diagrams. Full V1-V28 normal worker, exact-head GitHub CI, independent signed readback and restart fault probes are required before engineering closure. Full 90 gates and 429 microproofs not passed."
     }
   ]
 }
