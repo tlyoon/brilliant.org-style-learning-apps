@@ -1567,6 +1567,24 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             and result.get("autonomousDevelopmentContinuation",{}).get(
                                 "privateMcqSemanticsPilot",{}).get(
                                 "publicationAuthorized") is False
+                            # BSA260: the other eight MCQ science/locale roles
+                            # must be proven and signed in the SAME normal run.
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "stagesExecutedThisRun")>=4
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateOtherMcqWitnessPilot",{}).get("status")==
+                                "V32_OTHER_EIGHT_MCQS_SOURCE_BOUND_96_LOCALE_OPTION_CUES_PRIVATE"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateOtherMcqWitnessPilot",{}).get(
+                                "allNineMcqLocalizedOptionRolesChecked")==108
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateOtherMcqWitnessPilot",{}).get(
+                                "allNineMcqFormalFalseAlternativeCounterexamples")==27
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateOtherMcqWitnessPilot",{}).get("fullAcademicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateOtherMcqWitnessPilot",{}).get(
+                                "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:
             ready = plan_v3_course_review(

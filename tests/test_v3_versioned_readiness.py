@@ -507,7 +507,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                 v29_auto,"advance_eligible_verified_development_stages",
                 return_value={
                     "status":"AUTONOMOUSLY_ADVANCED_ALL_REGISTERED_SAFE_STAGES_TO_CURRENT_BOUNDARY",
-                    "stagesExecutedThisRun":3,
+                    "stagesExecutedThisRun":4,
                     "academicPASS":0,
                     "publicationAuthorized":False,
                     "newModelCalls":0,
@@ -529,6 +529,13 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                         "status":"V31_BOUNDED_SOURCE_THREE_LOCALE_MCQ_SEMANTIC_WITNESS_PRIVATE",
                         "sourceBoundVerifiedMcqOptionLocalePairs":12,
                         "sourceBoundCounterexampledFalseChoices":3,
+                        "fullAcademicPASS":0,
+                        "publicationAuthorized":False,
+                    },
+                    "privateOtherMcqWitnessPilot":{
+                        "status":"V32_OTHER_EIGHT_MCQS_SOURCE_BOUND_96_LOCALE_OPTION_CUES_PRIVATE",
+                        "allNineMcqLocalizedOptionRolesChecked":108,
+                        "allNineMcqFormalFalseAlternativeCounterexamples":27,
                         "fullAcademicPASS":0,
                         "publicationAuthorized":False,
                     },

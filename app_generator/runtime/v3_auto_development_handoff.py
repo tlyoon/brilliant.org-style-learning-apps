@@ -19,6 +19,9 @@ from app_generator.runtime.v3_post_v29_real_browser_pixels import (
 from app_generator.runtime.v3_post_v30_bounded_mcq_semantics import (
     _STATUS31,run_post_v30_independent_mcq_semantics,
 )
+from app_generator.runtime.v3_post_v31_other_mcq_locale_roles import (
+    _STATUS32,run_post_v31_other_eight_mcq_localized_proofs,
+)
 
 # Exact source-free stage statuses, not user-facing milestone names. Bounded
 # length limits a buggy new successor from causing a runaway loop.
@@ -29,6 +32,8 @@ _TRANSITIONS={
                run_post_v29_real_browser_pixels),
     _STATUS30:(_STATUS31,"privateMcqSemanticsPilot",
                run_post_v30_independent_mcq_semantics),
+    _STATUS31:(_STATUS32,"privateOtherMcqWitnessPilot",
+               run_post_v31_other_eight_mcq_localized_proofs),
 }
 _MAX_NEW_STAGES_PER_INVOCATION=4
 
