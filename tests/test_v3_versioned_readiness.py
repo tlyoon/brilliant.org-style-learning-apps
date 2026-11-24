@@ -466,6 +466,22 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "externalPdfAcquisition":False,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_post_v26_bounded_symbolic_recovery as v27_stage,
+            )
+            v27_mock=stack.enter_context(patch.object(
+                v27_stage,"run_post_v26_bounded_symbolic_recovery",
+                return_value={
+                    "status":"V27_FIVE_FALSE_POSITIVE_SYMBOLIC_FLAGS_BOUNDED_NO_ACADEMIC_PASS",
+                    "boundedParserFalsePositivesResolved":5,
+                    "remainingAmbiguousSymbolicFields":3,
+                    "remainingTechnicalReviewFlags":21,
+                    "completeIndependentAcademicProofSlotsStillOpen":90,
+                    "fullAcademicPASS":0,
+                    "newGeminiCalls":0,
+                    "outsideSourcePdfsRequired":False,
+                    "publicationAuthorized":False,
+                }))
             out=[]
             stack.enter_context(patch.object(worker,"_print",
                                              side_effect=out.append))
@@ -483,6 +499,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
             self.assertEqual(v16_mock.call_count,0 if failing else 1)
             self.assertEqual(v17_mock.call_count,0 if failing else 1)
             self.assertEqual(v18_mock.call_count,0 if failing else 1)
+            self.assertEqual(v27_mock.call_count,0 if failing else 1)
             if failing:
                 self.assertEqual(status,3)
             else:

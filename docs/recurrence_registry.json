@@ -8652,6 +8652,75 @@
       ],
       "lastValidatedDate": "2026-11-23",
       "nextAction": "BSA254 VERIFIED RESOLVED for cross-session source-free OS single-flight and strict nested per-stage original coordinator. Exact HEAD 34b7221184c731a5b2a261f6ac1d0190f1960906 hosted full CI #45191418424 SUCCESS; real Yoga6 normal V1-V26 source-free worker EXIT0 and independent SHA-bound source/receipt readback EXIT0 witness 51eec606c3910151d2688ac85236446c53f541a87f4a27b14a08274470d826b2. A second genuine Python process was denied before work with exit3, signed witness 5c595c1d91ecfe0655ffe6f791c9d988a29ac94d8bca5d1a1cd7882dc517dba0. Distinct whole-session OS scope coexists with original non-reentrant per-stage recovery. 90 full academic proof gates, 26 semantic review items, and missing visual specs in Chapter9 remain separate substantive work; zero paid calls, external PDFs, old uncertain role replay or release."
+    },
+    {
+      "id": "BSA-20261124-255",
+      "class": "formula_parser_absorbed_prose_linkers_and_misclassified_cross_locale_symbolic_equivalence",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261123-253",
+        "BSA-20261123-251",
+        "BSA-20261123-254"
+      ],
+      "differenceFromLinkedIncident": "V26 source-bound triage correctly withheld academic PASS but counted eight symbolic notation differences. Five were false positives caused by parsing prose after formulas; earlier science and 90-gate review contracts must not be weakened.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_post_v26_bounded_symbolic_recovery.py",
+        "triggerMarker": "source=_signed(folder,_V26_LANGUAGE,ready)",
+        "remedyMarker": "checked=audit_bounded_symbolic_recovery(payload[\"activities\"])",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "run_post_v26_bounded_symbolic_recovery("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v27_bounded_symbolic_qa.py",
+          "kind": "python",
+          "marker": "test_contextual_prose_not_swallowed_as_equation_variable"
+        },
+        {
+          "path": "tests/test_v27_bounded_symbolic_qa.py",
+          "kind": "python",
+          "marker": "test_actual_eighteen_explanation_surface_symbolic_inventory"
+        },
+        {
+          "path": "tests/test_v27_bounded_symbolic_qa.py",
+          "kind": "python",
+          "marker": "test_academic_truth_must_not_be_promoted_from_literal_equivalence"
+        },
+        {
+          "path": "tests/test_v27_bounded_symbolic_qa.py",
+          "kind": "python",
+          "marker": "test_changing_localized_content_changes_evidence_identity"
+        },
+        {
+          "path": "tests/test_v27_bounded_symbolic_qa.py",
+          "kind": "python",
+          "marker": "test_unverified_v26_source_or_queue_cannot_reach_pdf"
+        },
+        {
+          "path": "tests/test_v27_bounded_symbolic_qa.py",
+          "kind": "python",
+          "marker": "test_small_signed_restart_receipt_and_tamper"
+        },
+        {
+          "path": "tests/test_v27_bounded_symbolic_qa.py",
+          "kind": "python",
+          "marker": "test_real_worker_must_dispatch_exact_v27_and_preserve_stop"
+        }
+      ],
+      "applicableEnvironments": [
+        "BOSLA Yoga6 normal source-free V26-to-V27 handoff; 18 exact original Serway 9.1 candidate activities",
+        "Pure generic formula tokenizer handles English/Malay/Chinese literals, preserving real science/translation/visual review",
+        "Read both exact signed V26 source and full semantic queue under original one-PDF source SHA",
+        "Persist under 12000-byte signed source-version-bound immutable receipts and verify on restart",
+        "No new model calls, unknown old-request replay, second PDF, public release or false academic PASS"
+      ],
+      "lastValidatedDate": "2026-11-24",
+      "nextAction": "ACTIVE: code, 11 targeted fault tests and normal worker integration are present locally. Exact-head hosted CI, original Yoga6 full V1-V27 genuine run, and independent SHA-bound signed V27 readback must pass before declaring resolved. All 90 complete academic gates and 429 semantic microproofs remain unverified."
     }
   ]
 }

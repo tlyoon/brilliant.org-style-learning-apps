@@ -494,6 +494,22 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                     "externalPdfAcquisition":False,
                     "publicationAuthorized":False,
                 }))
+            from app_generator.runtime import (
+                v3_post_v26_bounded_symbolic_recovery as v27_stage,
+            )
+            v27_mock=stack.enter_context(patch.object(
+                v27_stage,"run_post_v26_bounded_symbolic_recovery",
+                return_value={
+                    "status":"V27_FIVE_FALSE_POSITIVE_SYMBOLIC_FLAGS_BOUNDED_NO_ACADEMIC_PASS",
+                    "boundedParserFalsePositivesResolved":5,
+                    "remainingAmbiguousSymbolicFields":3,
+                    "remainingTechnicalReviewFlags":21,
+                    "completeIndependentAcademicProofSlotsStillOpen":90,
+                    "fullAcademicPASS":0,
+                    "newGeminiCalls":0,
+                    "outsideSourcePdfsRequired":False,
+                    "publicationAuthorized":False,
+                }))
             output=[]
             stack.enter_context(patch.object(
                 worker,"_print",side_effect=output.append))
@@ -515,6 +531,7 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
         self.assertEqual(v16_mock.call_count,1 if succeeded else 0)
         self.assertEqual(v17_mock.call_count,1 if succeeded else 0)
         self.assertEqual(v18_mock.call_count,1 if succeeded else 0)
+        self.assertEqual(v27_mock.call_count,1 if succeeded else 0)
         # The generic worker exception boundary deliberately does not
         # invent a paid-call count; the source-free path makes no API calls.
         if not bad_poll:

@@ -1152,6 +1152,21 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             result["privatePinnedPublicPatch"],
                             result["privateNonmergingPrReadiness"],
                             result["formalSection91Physics"]))
+                    # BSA255/V27 historical false symbolic-drift recovery:
+                    # reparse only the disputed formula tokens under the
+                    # exact two V26 source-version-bound signed receipts.
+                    # Matching literal math NEVER grants academic PASS.
+                    from app_generator.runtime.v3_post_v26_bounded_symbolic_recovery import (
+                        run_post_v26_bounded_symbolic_recovery,
+                    )
+                    result["boundedSymbolicRecovery"] = (
+                        run_post_v26_bounded_symbolic_recovery(
+                            ROOT, private, ready,
+                            result["pinnedPrivateReleaseProposal"],
+                            result["privatePinnedPublicPatch"],
+                            result["privateNonmergingPrReadiness"],
+                            result["sourceScientificSemanticTriage"],
+                            result["fullSemanticProofQueue"]))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1428,6 +1443,25 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             and result.get("fullSemanticProofQueue",{}).get(
                                 "externalPdfAcquisition") is False
                             and result.get("fullSemanticProofQueue",{}).get(
+                                "publicationAuthorized") is False
+                            and result.get("boundedSymbolicRecovery",{}).get(
+                                "status")==
+                                "V27_FIVE_FALSE_POSITIVE_SYMBOLIC_FLAGS_BOUNDED_NO_ACADEMIC_PASS"
+                            and result.get("boundedSymbolicRecovery",{}).get(
+                                "boundedParserFalsePositivesResolved")==5
+                            and result.get("boundedSymbolicRecovery",{}).get(
+                                "remainingAmbiguousSymbolicFields")==3
+                            and result.get("boundedSymbolicRecovery",{}).get(
+                                "remainingTechnicalReviewFlags")==21
+                            and result.get("boundedSymbolicRecovery",{}).get(
+                                "completeIndependentAcademicProofSlotsStillOpen")==90
+                            and result.get("boundedSymbolicRecovery",{}).get(
+                                "fullAcademicPASS")==0
+                            and result.get("boundedSymbolicRecovery",{}).get(
+                                "newGeminiCalls")==0
+                            and result.get("boundedSymbolicRecovery",{}).get(
+                                "outsideSourcePdfsRequired") is False
+                            and result.get("boundedSymbolicRecovery",{}).get(
                                 "publicationAuthorized") is False
                          )) else 3
         if args.auto_advance:
