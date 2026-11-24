@@ -8827,7 +8827,7 @@
     {
       "id": "BSA-20261124-257",
       "class": "successful_verified_stage_returns_instead_of_autonomously_dispatching_next_source_free_development_stage",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261123-254",
@@ -8836,17 +8836,13 @@
       ],
       "differenceFromLinkedIncident": "Previous recovery stages repaired known faults and produced V28 real five-channel bounded evidence but the normal worker returned without advancing the independently known private source-visual pilot. The code lacked a bounded executable successor registry.",
       "automaticRemedy": {
-        "runtimePath": "app_generator/runtime/v3_post_v28_source_visual_pilot.py",
-        "triggerMarker": "prior=_signed(folder,_V28,ready)",
-        "remedyMarker": "draft=make_opposite_velocity_private_visual(",
+        "runtimePath": "app_generator/runtime/v3_auto_development_handoff.py",
+        "triggerMarker": "_TRANSITIONS={",
+        "remedyMarker": "new=handler(",
         "normalEntryPoints": [
           {
             "path": "scripts/run_v3_yoga6_recovery_worker.py",
             "marker": "from app_generator.runtime.v3_auto_development_handoff import ("
-          },
-          {
-            "path": "app_generator/runtime/v3_auto_development_handoff.py",
-            "marker": "from app_generator.runtime.v3_post_v28_source_visual_pilot import ("
           }
         ]
       },
@@ -8942,7 +8938,7 @@
         "No additional textbook PDFs, paid/model calls, ambiguous replay, merged PR or public release"
       ],
       "lastValidatedDate": "2026-11-24",
-      "nextAction": "BSA257 source-free V29 autonomous success->successor code integrated and exact-head CI #45329932389 SUCCESS at code HEAD 1fd55ff5fc34c63692b405de346f88a86171ec48 (after auto-repair of missing domain trusted renderer and stale catalog expected set; 2040 repository tests and Chrome checks). Standalone actual owner Yoga6 original Serway section9.1 source PDF and immutable private candidate V29 pilot independently recomputed PASS: source SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50, candidate SHA 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38, visual draft SHA 6dc17d6bd709473c24880557be1657794e147e068be067965a406797696af16e, real SVG 3-language geometry SHA 073fd92c5d06fe951fbe0247caedcf351eff9757710ec7561a3ee1ace7cca7c9; six validated opposite velocity arrows and no answer leakage. REAL OWNER NORMAL V1-V29 INTEGRATION STILL NOT CONFIRMED: Windows OS single-flight lock held by exact previously failed-head Python PID 27304. Windows Restart Manager RmGetList returned ONLY PID27304, app Python; process Get-Process HasExited=True but file remains byte locked, RmShutdown directed at exact owner returned 351. Fresh worker correctly refused with exit3 STOP_YOGA6_SOURCE_FREE_ALREADY_RUNNING. No bypass, alternate lock scope, ambiguous replay, unsafe OS restart, provider call, outside PDF, PR merge or public release. NEXT: after OS safely releases this process kernel handle, normal Yoga6 V1-V29 worker should be retried; it now auto-dispatches V29 immediately after V28, then independently verify exact-head signed V29 source and SVG receipts. Do not certify BSA257 resolved until then. 90 full academic proof gates and 429 semantic microproofs still unaccepted."
+      "nextAction": "BSA257 ENGINEERING RESOLVED after safe 24-Nov 17:31 MYT owner Yoga6 restart released abandoned OS PID27304 source-free single-flight handle; OS lock independently acquired and released. EXACT original owner Yoga6 HEAD 692571fd9df537ba198a766d7c4a8e19fdf0d83d real NORMAL source-free V1-V29 worker EXIT0, one registered V29 next-stage dispatched automatically directly after signed V28; signed V29 final e413007524cdefd294aadfeb9303bb71d70a21efdb861f7510deff0a0c27f188, V29 private source-grounded visual draft ac8eff99ae57b3c5c54c2eeaa09d8cd097b957564cdf15cd23f0679cc5d3089a, actual 3-language 6-arrow SVG DOM witness 1f490c514b821962ca7406da31e6dc3483fb88ad47824b427e790283ba6323b9. INDEPENDENT original Serway Section9.1 PDF source+private unchanged candidate SHA+all signed V28/V29 receipts independently re-extracted and PASS EXIT0 with witness integrity 4862f618e23af227e4b5fad89545c3e8b361a37941ac74d1fa07919838da93fd. Original selected PDF source SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50; exact original revised candidate SHA 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38. Full V1-V29 hosted CI on original exact code HEAD passed run #45330823077; previous full exact-head CI #45329932389 passed. No new API/model request, no additional outside PDF, no publication, PR merge or scheduler install. Engineering V29 COMPLETE, not independent full textbook/science/translation/rendered-pixel academic acceptance: 90 five-gate slots and 429 complete semantic microproofs remain REVIEW_REQUIRED. NEXT separately: implement real browser pixel evidence and source-bound independent diagram-geometry semantics plus full scientific-explanation/false-distractor/EN-MS-ZH meaning checks; new source-free eligible stages should auto-dispatch in same worker through v3_auto_development_handoff, not stop for conversation."
     }
   ]
 }
