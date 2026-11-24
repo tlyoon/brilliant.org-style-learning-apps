@@ -34,6 +34,35 @@ def visual_spec_errors(spec: dict[str, Any], label: str) -> list[str]:
         if orientation is not None and orientation != "horizontal":
             errors.append(f"{label}.semanticParameters.track_orientation: cart-collision v1 supports horizontal only")
 
+    elif template == "mechanics.opposite_velocity_pair_1d":
+        expected_ids=("drone-a","drone-b")
+        expected_vec_ids=("velocity-a","velocity-b")
+        expected_dirs=("left","right")
+        if (len(entities)!=2 or
+                any(not isinstance(e,dict)
+                    or e.get("id")!=expected_ids[i]
+                    or e.get("kind")!="body"
+                    or e.get("properties",{}).get("relativeMass")!="equal"
+                    for i,e in enumerate(entities))):
+            errors.append(f"{label}.entities: opposing-velocity pilot requires two identical labelled abstract bodies")
+        if (parameters.get("mass_relation")!="equal"
+                or parameters.get("speed_relation")!="equal"
+                or parameters.get("track_orientation")!="horizontal"):
+            errors.append(f"{label}.semanticParameters: equal masses and speeds, horizontal only")
+        if (len(vectors)!=2 or
+                any(not isinstance(v,dict)
+                    or v.get("id")!=expected_vec_ids[i]
+                    or v.get("entityId")!=expected_ids[i]
+                    or v.get("quantity")!="velocity"
+                    or v.get("direction")!=expected_dirs[i]
+                    or type(v.get("relativeMagnitude")) not in (int,float)
+                    or not math.isfinite(v["relativeMagnitude"])
+                    or not 0<v["relativeMagnitude"]<=1
+                    for i,v in enumerate(vectors))):
+            errors.append(f"{label}.vectors: two bounded left/right equal-speed velocity arrows required")
+        elif vectors[0]["relativeMagnitude"]!=vectors[1]["relativeMagnitude"]:
+            errors.append(f"{label}.vectors: unequal velocity magnitudes violate equal speed scenario")
+
     elif template == "mechanics.free_body_2d":
         bodies = [entity for entity in entities if isinstance(entity, dict) and entity.get("kind") == "body"]
         if len(entities) != 1 or len(bodies) != 1:

@@ -8915,6 +8915,16 @@
           "path": "tests/test_v3_versioned_readiness.py",
           "kind": "python",
           "marker": "test_authenticated_browser_completion_auto_dispatches_next_stage"
+        },
+        {
+          "path": "tests/test_v29_autonomous_visual_handoff.py",
+          "kind": "python",
+          "marker": "test_domain_visual_contract_rejects_malformed_source_scene"
+        },
+        {
+          "path": "tests/test_visual_contracts.py",
+          "kind": "python",
+          "marker": "test_available_visual_templates_bind_exact_trusted_renderers"
         }
       ],
       "applicableEnvironments": [
@@ -8927,7 +8937,7 @@
         "No additional textbook PDFs, paid/model calls, ambiguous replay, merged PR or public release"
       ],
       "lastValidatedDate": "2026-11-24",
-      "nextAction": "ACTIVE: V29 source-bound private diagram built and Yoga6 isolated actual pdf/answer verified; 73 focused history/worker tests and JS renderer tests passed. Need exact-head GitHub CI, real owner Yoga6 source-free normal V1-V29 worker, independent signed readback, fault injection, and then close this engineering incident. Academic 90 full proof gates and 429 natural-language semantic microproofs stay pending."
+      "nextAction": "ACTIVE: first hosted exact-head CI #45328240403 detected trusted renderer registration omission before tests; reused existing domain.visual_registry_errors contract, added mechanics.opposite_velocity_pair_1d identity to authoritative domains/university-level physics/domain.json and strict malformed-source-scene domain validator tests. Local content validator PASS (16 packages); 41 visual/domain tests PASS; real Yoga6 original Serway PDF private pilot succeeded. Need new exact-head CI and full V1-V29 source-free owner Yoga6 run and signed readback before resolved. Keep 90 complete academic gates and all 429 complete semantic proof tasks unaccepted."
     }
   ]
 }

@@ -179,6 +179,7 @@ class VisualContractTests(unittest.TestCase):
         self.assertEqual(
             {
                 "mechanics.cart_collision_1d": ("cart-collision-v1", "1.0.0"),
+                "mechanics.opposite_velocity_pair_1d": ("opposing-velocity-v1", "1.0.0"),
                 "mechanics.free_body_2d": ("free-body-v1", "1.0.0"),
                 "graph.cartesian_qualitative": ("qualitative-graph-v1", "1.0.0"),
                 "state.energy_bar": ("energy-bar-v1", "1.0.0"),

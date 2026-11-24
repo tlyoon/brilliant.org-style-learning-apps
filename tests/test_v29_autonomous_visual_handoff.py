@@ -100,6 +100,29 @@ class V29AutonomousVisualTests(unittest.TestCase):
         self.assertFalse(result["sourceFigureExactMatchProven"])
         self.assertFalse(result["publicationAuthorized"])
 
+    def test_domain_visual_contract_rejects_malformed_source_scene(self):
+        from app_generator.domains.registry import resolve_domain
+        domain=resolve_domain(ROOT)
+        validator=domain.load_module("validation","visualValidatorModule")
+        with tempfile.TemporaryDirectory() as td:
+            spec=self._mock_visual(td)["spec"]
+        self.assertEqual(validator.visual_spec_errors(spec,"visualSpec"),[])
+        for change in ("wrong_direction","wrong_mass","unequal_speed",
+                       "missing_arrow","revealed_momentum"):
+            wrong=deepcopy(spec)
+            if change=="wrong_direction":
+                wrong["vectors"][0]["direction"]="right"
+            elif change=="wrong_mass":
+                wrong["entities"][1]["properties"]["relativeMass"]="different"
+            elif change=="unequal_speed":
+                wrong["vectors"][1]["relativeMagnitude"]=0.2
+            elif change=="missing_arrow":
+                wrong["vectors"].pop()
+            else:
+                wrong["vectors"][1]["quantity"]="momentum"
+            with self.subTest(change=change):
+                self.assertTrue(validator.visual_spec_errors(wrong,"visualSpec"))
+
     def test_wrong_geometry_refuses_forged_vectors(self):
         with tempfile.TemporaryDirectory() as td:
             draft=self._mock_visual(td)

@@ -38,6 +38,10 @@
       "cart-collision-v1",
       "1.0.0"
     ],
+    "mechanics.opposite_velocity_pair_1d": [
+      "opposing-velocity-v1",
+      "1.0.0"
+    ],
     "mechanics.free_body_2d": [
       "free-body-v1",
       "1.0.0"
