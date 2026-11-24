@@ -64,6 +64,7 @@ class VisualGenerationStageTests(unittest.TestCase):
         self.assertEqual(
             {
                 "mechanics.cart_collision_1d",
+                "mechanics.opposite_velocity_pair_1d",
                 "mechanics.free_body_2d",
                 "graph.cartesian_qualitative",
                 "state.energy_bar",

@@ -8925,6 +8925,11 @@
           "path": "tests/test_visual_contracts.py",
           "kind": "python",
           "marker": "test_available_visual_templates_bind_exact_trusted_renderers"
+        },
+        {
+          "path": "tests/test_visual_generation_stage.py",
+          "kind": "python",
+          "marker": "test_catalog_exposes_only_available_trusted_templates"
         }
       ],
       "applicableEnvironments": [
@@ -8937,7 +8942,7 @@
         "No additional textbook PDFs, paid/model calls, ambiguous replay, merged PR or public release"
       ],
       "lastValidatedDate": "2026-11-24",
-      "nextAction": "ACTIVE: first hosted exact-head CI #45328240403 detected trusted renderer registration omission before tests; reused existing domain.visual_registry_errors contract, added mechanics.opposite_velocity_pair_1d identity to authoritative domains/university-level physics/domain.json and strict malformed-source-scene domain validator tests. Local content validator PASS (16 packages); 41 visual/domain tests PASS; real Yoga6 original Serway PDF private pilot succeeded. Need new exact-head CI and full V1-V29 source-free owner Yoga6 run and signed readback before resolved. Keep 90 complete academic gates and all 429 complete semantic proof tasks unaccepted."
+      "nextAction": "ACTIVE: After trustedRenderer domain config repair, full hosted CI #45329121496 ran 2040 tests and exposed one stale exact-catalog fixture in test_visual_generation_stage; repaired by registering the actual new renderer in catalog expected set; test guard persisted. Need new exact-head CI PASS and real Yoga6 V1-V29 run. A previously terminated failed-head source-free worker is still holding Windows single-flight byte lock (zombie PID 27304; HasExited True but file remains locked). BSA254 safety refuses overlap; no force or rotation of live locked file. Need authorized safe OS lock owner closure, not disable single-flight. Full 90 academic gates and 429 semantic proof tasks still unaccepted."
     }
   ]
 }
