@@ -44,7 +44,7 @@ def verify(*,audit_only:bool=False)->dict:
     proof=audit_interactive_source_role_cues(
         source_pdf=source,package_file=folder/_CANDIDATE)
     signed=_signed(folder,_V35,{"gitHead":head,"proposalSha256":folder.name})
-    expected=[[(r["promptSha256"],r["itemLabelSha256"],r["explanationSha256"])
+    expected=[[[r["promptSha256"],r["itemLabelSha256"],r["explanationSha256"]]
                for r in row["localeWitnesses"]]
               for row in proof["activityWitnesses"]]
     if (signed.get("status")!=_STATUS35

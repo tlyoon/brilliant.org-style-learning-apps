@@ -61,7 +61,7 @@ def run_post_v34_interactive_source_roles(
         "trilingualFirstItemRoleCuesChecked":27,
         "localizedExplanationsBoundByDigest":27,
         "activityLocaleWitnessHashes":[
-            [(x["promptSha256"],x["itemLabelSha256"],x["explanationSha256"])
+            [[x["promptSha256"],x["itemLabelSha256"],x["explanationSha256"]]
              for x in row["localeWitnesses"]]
             for row in witness["activityWitnesses"]],
         "fullTrilingualMeaningEquivalenceProven":False,
