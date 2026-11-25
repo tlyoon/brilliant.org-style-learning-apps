@@ -59,6 +59,7 @@ _MAX_NEW_STAGES_PER_INVOCATION=7
 def advance_eligible_verified_development_stages(
     *,repo,private,ready,v9,v11,v12,prior_stage:dict[str,Any],
     run_independent_lanes:bool=False,
+    persist_long_horizon:bool=False,
 )->dict[str,Any]:
     """Continue all *presently executable* local stages; no planning-only PASS."""
     if (not isinstance(prior_stage,dict)
@@ -123,13 +124,29 @@ def advance_eligible_verified_development_stages(
                 else set()))
     independent_ok=(not run_independent_lanes or
                     isolation.get("status")=="INDEPENDENT_SAFE_LANES_ALL_VERIFIED")
+    # BSA268: V36 is the last ENGINEERING-ONLY semantic-inventory milestone.
+    # An eighth 0-acceptance stage would recreate the historical defect cycle.
+    # Substantive academic proof producers belong in a separate independently
+    # verified acceptance lane; no other safe repair lane is disabled.
+    if _STATUS36 in _TRANSITIONS:
+        raise ValueError("BSA268_ZERO_PROOF_SCAFFOLDING_CYCLE_FORBIDDEN")
+    if current.get("fullAcademicProofTasksAccepted",0)!=0:
+        raise ValueError("BSA268_SOURCE_FREE_CANNOT_CLAIM_ACADEMIC_PROOF")
+    if current.get("completeAcademicProofGatesStillOpen",90)!=90:
+        raise ValueError("BSA268_SOURCE_FREE_CANNOT_CLOSE_ACADEMIC_GATE")
     # This is a *verified implementation frontier*, not academic acceptance.
-    return {
+    handoff={
         "status":("AUTONOMOUSLY_ADVANCED_ALL_REGISTERED_SAFE_STAGES_TO_CURRENT_BOUNDARY"
                   if independent_ok else
                   "AUTONOMOUSLY_ADVANCED_ELIGIBLE_LANES_WITH_QUARANTINE"),
         "stagesExecutedThisRun":len(executed),
         "sourceFreeStagesExecuted":executed,
+        "developmentOutcomeClass":"ENGINEERING_VERIFIED_NOT_ACADEMIC_ACCEPTANCE",
+        "academicProofTasksAcceptedThisRun":0,
+        "academicAcceptanceAdvanced":False,
+        "academicProofProducerRequired":current["status"]==_STATUS36,
+        "academicEvidenceNextStep":"BUILD_SEPARATE_INDEPENDENT_SOURCE_BOUND_PROOF_PRODUCER",
+        "engineeringOnlyFrontierTerminal":current["status"]==_STATUS36,
         "nextEligibleMilestone":current.get("nextEligibleMilestone"),
         "academicPASS":0,
         "publicationAuthorized":False,
@@ -137,3 +154,10 @@ def advance_eligible_verified_development_stages(
         **({"isolatedDevelopmentLanes":isolation} if run_independent_lanes else {}),
         **output,
     }
+    if persist_long_horizon:
+        from app_generator.runtime.v3_long_horizon_development import (
+            persist_long_horizon_development,
+        )
+        handoff["longHorizonDevelopment"]=persist_long_horizon_development(
+            private=private,ready=ready,development=handoff)
+    return handoff

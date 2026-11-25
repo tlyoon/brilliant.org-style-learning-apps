@@ -3,6 +3,111 @@
 Authoritative execution identity: **Bosla**, the Brilliant.org-style learning app, on
 the authorized owner **Yoga 6**. This is not MicroGen_AI_Web.
 
+## Anti-cycle acceptance policy — mandatory for the academic frontier
+
+The definitive outcome is **independently accepted academic proof tasks and
+five-gate activity acceptances**, not the number of commits, verified stages,
+signed inventory receipts, or source-quote/word-cue checks. Report engineering
+readiness separately from academic acceptance, with the counts for both.
+
+After signed V36, **no additional source-free zero-proof semantic-inventory
+successor is eligible**. The source-free dispatcher explicitly rejects an
+eighth such stage. Its terminal result reports ENGINEERING_VERIFIED_NOT_ACADEMIC_ACCEPTANCE,
+zero accepted proof tasks and the missing independent academic producer.
+Do not reinterpret worker exit 0 as closure of the remaining 429 proof tasks.
+
+The next substantive development must implement **a separate academic
+proof-production and admission lane**, not another task queue. For each claim
+of substantive academic advance require all of the following before counting
+one ACCEPTED task: original-textbook source version, exact candidate/activity
+and task IDs, independent examiner/model or formal-verifier evidence for that
+task type, independently rerun positive and adversarial negative tests, a
+signed immutable receipt and independent readback. Merely storing a model
+verdict or passing a schema is not proof. Count accepted task IDs from
+reverified receipts and count activity gate closure only after all its
+required proof classes pass. A legitimate new model call or accepted proof
+must never be routed through the source-free controller, which prohibits
+both by design. Use separately authorized, bounded, idempotent admission.
+
+**No-progress escalation:** a development run that accepts zero new
+independent proof tasks is ENGINEERING_ONLY or BLOCKED_PROOF_PRODUCER, never
+ACADEMIC_MILESTONE_CLOSED. On a repeated identical academic blocker, classify
+the common architectural cause and implement its missing verifier rather
+than adding a new evidence-inventory layer. Where no authorized reviewer or
+genuine proof exists, quarantine precisely that task; continue independent
+eligible work; never invent an academic PASS or replay an ambiguous request.
+Recovery fixes can still proceed but must identify the exact proof-production
+operation they unblock. Do not demand an academic acceptance count from the
+source-free worker or forbid legitimate independent repairs.
+
+## BSA269: Persistent long-horizon development across sessions and revisions
+
+**Invariant objective:** complete Bosla academic acceptance against ONE selected
+textbook, not merely seven source-free engineering stages. For the current
+frozen Serway Section 9.1 candidate the independently accepted full semantic
+proof count begins at 0/429 and five-gate activity acceptance at 0/90.
+Those numbers may change only after an independently reverified source-bound
+academic proof event in a separate, explicitly authorized producer. CI passes,
+commits, indexed task lists, source-quote matches, translated-word cues, model
+output without independent verification and private diagram raster checks
+MUST NOT increment academic acceptance.
+
+**Machine-resident durable state:** at the end of the ordinary
+`scripts/run_v3_yoga6_recovery_worker.py --source-free-advance`, after exact
+hosted-CI, signed V36 and independent recovery-lane verification, the worker
+must save `%LOCALAPPDATA%/Microvid/BoslaV3ReviewYoga6/long-horizon-development/BOSLA_HORIZON_STATE.json`.
+Each code HEAD/proposal also gets its own immutable signed/checksummed
+`BOSLA_EXACT_HEAD_LONG_HORIZON_EVENT.json` under the same private directory.
+These are owner-private operational state, not textbook or student content.
+The pointer is replaced atomically; previous events are never overwritten.
+Exact same-HEAD resume is idempotent; a new code HEAD carries the missing
+academic producer and zero-proof-streak counter forward. Missing, altered,
+out-of-version or rolled-back records must stop that operation, without
+making independent work disappear. Git-tracked instructions and tests survive
+code revisions; owner-private state survives local worker restart and
+conversation disconnection but not loss of the Yoga6 filesystem.
+
+**Every new development-session preflight** must open this repository
+contract and run `python -m scripts.show_bosla_long_horizon` on Yoga6.
+Do not infer the next step from the latest chat or final commit alone.
+Read the signed continuation frontier, historical failure-to-fix ledger,
+recurrence registry and exact CI state; then take the next already
+implemented source-free eligible step without asking for permission.
+For a missing verifier, the next code-development target remains
+`IMPLEMENT_SEPARATE_INDEPENDENT_SOURCE_BOUND_ACADEMIC_PROOF_PRODUCER`
+until it exists, has real positive/negative evidence and is integrated.
+Do not replace that target with another zero-proof inventory milestone.
+If multiple independent eligible tasks exist, continue them while the
+ineligible task is precisely quarantined. Do not retry ambiguous external
+requests.
+
+**Two separate horizons:** (A) the existing bounded Yoga6 worker
+automatically executes **already implemented and authorized** safe stages,
+recovers from registered historical failures and persists receipts;
+(B) a development agent/session must **write, test, integrate and certify**
+any missing code before that operation can join the allowlisted runtime.
+The local worker cannot autonomously invent or implement a missing
+semantic proof algorithm. This contract does not itself install a continuous
+coding agent, create an OS recurrence or schedule unbounded Gemini work.
+Never claim programming continues between chats without a genuinely
+configured authorized development agent/task. The paid-review contract
+continues to protect historical Section 9.1 model requests; no external
+PDF, unauthorized provider call, release or PR merge follows from this state.
+
+**Proof of long-horizon persistence required by CI:** regression tests must
+show cross-invocation restart with unchanged HEAD does not count progress
+twice; a later code HEAD retains identical unresolved obligations and
+increments the no-progress-head counter; corrupt state, wrong original
+source, forged accepted academic proof, or unsigned V36 cannot be admitted;
+the ordinary worker persists the checkpoint on its own normal path.
+A passing engineering run must explicitly report
+`ENGINEERING_VERIFIED_NOT_ACADEMIC_ACCEPTANCE`, including the exact
+unimplemented next proof-production action. The zero-proof guard BSA268
+must still forbid an eighth source-free inventory-only stage while leaving
+independent safe recovery lanes functional.
+
+---
+
 ## No avoidable handoff stops
 
 Once any verified step finishes, the normal worker must **immediately execute

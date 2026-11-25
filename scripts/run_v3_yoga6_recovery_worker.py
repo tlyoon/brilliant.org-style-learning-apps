@@ -1195,7 +1195,8 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             v11=result["privatePinnedPublicPatch"],
                             v12=result["privateNonmergingPrReadiness"],
                             prior_stage=result["fiveChannelProofProducers"],
-                            run_independent_lanes=True))
+                            run_independent_lanes=True,
+                            persist_long_horizon=True))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check

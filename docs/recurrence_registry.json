@@ -9500,6 +9500,63 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-25",
       "nextAction":"ENGINEERING RESOLVED on exact Bosla code head 9a57297ee7287fa8bb10c01b83981f40c529f12f: complete hosted GitHub CI #45566022932 SUCCESS, real original Yoga6 normal --source-free-advance V1-V36 worker EXIT0 (790.51s), all seven registered successors and three independent safe lanes verified with no quarantines. Independent owner original selected Serway 9.1 PDF/frozen candidate, 18 independently re-computed formal source-bound answer models, and all 18 signed V36 activity partition receipts covering 429 bounded proof dispositions re-read with EXIT0, root receipt SHA 3dbf55e59a30d452ef1b9483c6ab70edda96039400624c505a1cf4b36b9851ef. Source-signed V26=20 technical review flags, V27 0 new matches/2 ambiguous, V28 independently reconciled from source; no hard-coded historic count needed. Full scientific/trilingual meaning/diagram acceptance remains OPEN: 90 gates and 429 comprehensive proof tasks, academicPASS 0. No provider/model calls, extra PDF, ambiguous retry, merge or publication. Next substantive development is genuinely independent source-backed clause meaning, explanation and interactive visual science proof handlers using the existing task executor, without fabricating semantic acceptance."
+    },
+    {
+      "id":"BSA-20261125-268",
+      "class":"repeat_zero_academic_acceptance_stages_misreported_as_development_progress",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "relatedIncidentIds":["BSA-20261125-267","BSA-20261125-264","BSA-20261125-263"],
+      "differenceFromLinkedIncident":"BSA264 genuinely dispatched 429 source-bound task dispositions, and BSA265-267 fixed genuine parser, source and signed recovery defects. Nonetheless all seven verified engineering successor stages still hardcode zero independently accepted semantic tasks and 90 full academic gates OPEN. Repeatedly adding an eighth queue/lexical source-free successor could keep obtaining engineer-pass and CI-success without reducing the academic backlog. This new defect concerns outcome classification and termination of zero-proof scaffolding, not provider retry or the prior source-count mismatch.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_auto_development_handoff.py",
+        "triggerMarker":"def advance_eligible_verified_development_stages(",
+        "remedyMarker":"BSA268_ZERO_PROOF_SCAFFOLDING_CYCLE_FORBIDDEN",
+        "normalEntryPoints":[
+          {"path":"scripts/run_v3_yoga6_recovery_worker.py",
+           "marker":"from app_generator.runtime.v3_auto_development_handoff import ("}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v40_no_academic_progress_cycles.py","kind":"python","marker":"test_successful_engineering_handoff_explicitly_reports_no_academic_proof"},
+        {"path":"tests/test_v40_no_academic_progress_cycles.py","kind":"python","marker":"test_eighth_zero_proof_scaffolding_stage_is_rejected"},
+        {"path":"tests/test_v40_no_academic_progress_cycles.py","kind":"python","marker":"test_forged_academic_progress_in_source_free_lane_is_rejected"},
+        {"path":"tests/test_v40_no_academic_progress_cycles.py","kind":"python","marker":"test_forged_complete_acceptance_gate_is_rejected"},
+        {"path":"tests/test_v40_no_academic_progress_cycles.py","kind":"python","marker":"test_independent_source_free_recovery_lanes_remain_available"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-25",
+      "nextAction":"Verify the exact source-free V1-V36 owner Yoga6 normal worker outputs engineering-only outcome, zero accepted academic proofs, explicitly missing independent academic proof producer and refuses further zero-proof source-free successor registration. Run hosted exact commit CI, negative tests, original source/readback. Then build a separately authorized independent academic proof producer which can genuinely accept or reject one exact source-bound semantic task. Do not count this governance fix as academic proof progress; 90 full gates and 429 comprehensive tasks remain open."
+    },
+    {
+      "id":"BSA-20261125-269",
+      "class":"cross_session_long_horizon_objective_and_next_development_action_not_persisted_in_executable_state",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "relatedIncidentIds":["BSA-20261125-268","BSA-20261125-267","BSA-20261125-264"],
+      "differenceFromLinkedIncident":"BSA268 forbids another zero-proof source-free inventory stage and explicitly distinguishes engineering from academic acceptance. Yet the prior normal Yoga6 worker persisted only its own exact-head V36 signed receipts; it did not carry the unchanged final academic completion objective, repeated zero-proof-head streak, and unavailable independent proof-producer action forward into a stable private cross-head/cross-session state. The user could get another development success without the subsequent session being forced to confront the same unfinished academic goal. BSA269 adds atomic restart-safe linked immutable horizon receipts and an explicit CLI to read the real pending action; it cannot pretend to run an unconfigured perpetual code-writing agent.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_long_horizon_development.py",
+        "triggerMarker":"def persist_long_horizon_development(",
+        "remedyMarker":"BSA269_FALSE_ACADEMIC_PROGRESS_MUST_NOT_PERSIST",
+        "normalEntryPoints":[
+          {"path":"app_generator/runtime/v3_auto_development_handoff.py",
+           "marker":"from app_generator.runtime.v3_long_horizon_development import ("},
+          {"path":"scripts/run_v3_yoga6_recovery_worker.py",
+           "marker":"advance_eligible_verified_development_stages("}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v41_long_horizon_continuation.py","kind":"python","marker":"test_cross_session_repeat_exact_head_does_not_reset_or_inflate"},
+        {"path":"tests/test_v41_long_horizon_continuation.py","kind":"python","marker":"test_new_code_head_carries_same_blocker_forward_and_escalates"},
+        {"path":"tests/test_v41_long_horizon_continuation.py","kind":"python","marker":"test_forged_academic_acceptance_cannot_be_persisted"},
+        {"path":"tests/test_v41_long_horizon_continuation.py","kind":"python","marker":"test_unsigned_or_foreign_v36_cannot_set_horizon"},
+        {"path":"tests/test_v41_long_horizon_continuation.py","kind":"python","marker":"test_corrupt_latest_pointer_is_not_silently_recreated"},
+        {"path":"tests/test_v41_long_horizon_continuation.py","kind":"python","marker":"test_normal_worker_automatically_persists_long_horizon"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-25",
+      "nextAction":"Run exact-head GitHub CI, normal owner Yoga6 --source-free-advance, verify the long-horizon private state and immutable code-head event from a separate command after worker restart; confirm academic tasks remain 0 accepted/429 open, 90 full gates open, nextAction NOT_IMPLEMENTED_NOT_AUTOMATICALLY_EXECUTABLE and no unbounded coding agent claimed. Then develop actual source-grounded independent academic proof handlers in a separate authorized production lane, without creating further zero-acceptance source-free milestones."
     }
   ]
 }
