@@ -233,4 +233,4 @@ class GenuineFirstAcademicTask(TestCase):
         lane=(ROOT/"scripts"/"run_bosla_first_academic_proof.py").read_text(
             encoding="utf8")
         self.assertIn("admit_first_independent_distractor",lane)
-        self.assertIn("verify_first_academic_frontier",lane)
+        self.assertIn("verify_academic_across_git_heads",lane)

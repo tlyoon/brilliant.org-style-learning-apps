@@ -9559,7 +9559,7 @@
     {
       "id":"BSA-20261125-270",
       "class":"semantic_proof_tasks_remained_unaccepted_because_only_source_free_queue_was_dispatched",
-      "status":"active",
+      "status":"resolved",
       "rootCauseFamily":"academic-evidence",
       "relatedIncidentIds":["BSA-20261125-269","BSA-20261125-268","BSA-20261125-264"],
       "differenceFromLinkedIncident":"BSA264 dispatched bounded source/answer evidence for 429 tasks without independent semantic academic PASS, BSA268 prevented endless zero-proof scaffolding, and BSA269 persisted the missing proof producer across sessions. However none could independently accept even one complete MCQ distractor science statement. BSA270 implements a separately authorized exact-original-PDF candidate-bound finite-semantic-grammar handler for the complete English, Malay and Chinese first activity opt-c, computes two exact rational counterexamples to zero individual momentum under constant nonzero speed and independently rechecks signed immutable V36 task partitions and separate academic proof receipts. It does not grant any other translation or activity gate PASS.",
@@ -9587,12 +9587,12 @@
       ],
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-25",
-      "nextAction":"BSA270 code and negative tests implemented on owner Yoga6. Run full source-free and hosted exact-head CI, then separately admit one immutable academic proof from the real one-textbook PDF/frozen activity and exact signed V36 predecessor with python -m scripts.run_bosla_first_academic_proof --admit. Independently rerun --verify and python -m scripts.show_bosla_long_horizon to authenticate 1 accepted/428 open academic tasks, 90 complete gates still open, no provider request or publication. Do not mark RESOLVED until those genuine owner results exist and are regression checked. Then extend the academic producer to the remaining 26 MCQ distractors without inventing new inventory-only milestones."
+      "nextAction":"ENGINEERING AND ONE ACADEMIC TASK RESOLVED: On clean Bosla revision ba5229dc1e0bf344dc56de1a7cec253401d676f2 full GitHub hosted CI #874 SUCCESS, genuine Yoga6 normal V1-V36 owner source-free worker EXIT0 (600.99s), 7 successors/3 safe lanes verified. Independent original Serway PDF/candidate and 18 signed V36 partitions/429 task IDs readback EXIT0 root SHA 96bb0a50bfb92912dd6a2d7028f07780b80a66b81e909df9a1be7fa2065e2d40. Separate academic --admit and --verify both EXIT0; exact finite-EN/MS/ZH science task ce320185009e7c529840a5cf96c75a1f469ad2a5961b3cbbca2ac4f07d9f9d60 ACCEPTED from source and two exact rational p=mv counterexamples, immutable proof receipt SHA 853d20dffd126d20c773b06f119f238844cd137f2b40797947e2b846674ce3ed. Independent signed horizon readback EXIT0: 1/429 academic tasks accepted, 428 pending; 90 complete academic gates still OPEN; no provider requests, extra PDF, PR merge or publication. Next: extend genuine independent proof producers to remaining 26 MCQ distractors and preserve this accepted proof across future code revisions."
     },
     {
       "id":"BSA-20261125-271",
       "class":"first_academic_proof_signed_partition_reader_was_called_with_wrong_argument_shape",
-      "status":"active",
+      "status":"resolved",
       "rootCauseFamily":"academic-evidence",
       "relatedIncidentIds":["BSA-20261125-270","BSA-20261125-269","BSA-20261125-264"],
       "differenceFromLinkedIncident":"BSA270 introduced a legitimate bounded finite-grammar proof producer and standalone academic admission after the signed owner source-free V36 run, with 11 semantic mutation tests. The first real academic production run exposed a TypeError at the independent V36 first-partition _signed reader: the new caller supplied (file, ready) instead of the historically proven (folder, name, ready) interface. The test suite had mocked that binding and missed a real integration contract. BSA271 changes the actual normal academic entrypoint to call the signed reader with its existing three-argument interface and adds a source-free regression that exercises the genuine _bound_inputs call graph and the signatures of both V36 and its first partition.",
@@ -9612,7 +9612,38 @@
       ],
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-25",
-      "nextAction":"Read-only real Yoga6 signed V36 and first partition binding PASS after three-argument repair; 12 adversarial tests PASS. Repeat exact-head hosted GitHub CI and clean owner Yoga6 normal V1-V36 worker on repaired HEAD, then invoke separate academic --admit and --verify with original source and current signed receipt. Do not count academic acceptance or close BSA270/271 until the genuine immutable proof receipt is independently reverified and persistent horizon reads 1 accepted/428 pending, 90 full gates still open."
+      "nextAction":"ENGINEERING RESOLVED at code ba5229dc1e0bf344dc56de1a7cec253401d676f2: exact GitHub CI #874 SUCCESS and authentic owner Yoga6 normal V1-V36 EXIT0 (600.99s), source-bound 18 signed V36 partitions independent readback EXIT0 SHA 96bb0a50bfb92912dd6a2d7028f07780b80a66b81e909df9a1be7fa2065e2d40. Separate academic proof signed receipt SHA 853d20dffd126d20c773b06f119f238844cd137f2b40797947e2b846674ce3ed verified by owner --admit, independent --verify and long-horizon reader EXIT0. The historic two-argument signed reader failure is permanently repaired with actual three-argument production call graph and 12 targeted tests; 1 task accepted, 428 open, all 90 full academic gates open, no external provider or release."
+    },
+    {
+      "id":"BSA-20261125-272",
+      "class":"accepted_original_source_science_proof_was_not_carried_over_to_future_code_heads",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "relatedIncidentIds":["BSA-20261125-271","BSA-20261125-270","BSA-20261125-269"],
+      "differenceFromLinkedIncident":"BSA270 genuinely admitted the first complete original-Serway-source MCQ distractor science task, BSA271 repaired the production signed-partition-reader integration TypeError, and BSA269 persisted a source-free code-head development checkpoint. But when that checkpoint advances to a future HEAD it again reports 0 accepted academic tasks and the old proof frontier is incorrectly rejected as a foreign code revision. The structural new issue is accepted-science-evidence portability across code revisions sharing the identical verified original source, frozen candidate and task ID, not initial proof generation or a missing source-free stage.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_academic_cross_head_continuity.py",
+        "triggerMarker":"def verify_academic_across_git_heads(",
+        "remedyMarker":"BSA272_NEW_HEAD_PROOF_NOT_SAME_SOURCE_BOUND_TASK",
+        "normalEntryPoints":[
+          {"path":"scripts/show_bosla_long_horizon.py",
+           "marker":"from app_generator.runtime.v3_academic_cross_head_continuity import ("},
+          {"path":"scripts/run_bosla_first_academic_proof.py",
+           "marker":"from app_generator.runtime.v3_academic_cross_head_continuity import ("}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v43_cross_head_academic_continuity.py","kind":"python","marker":"test_same_source_cross_git_head_preserves_single_accepted_task"},
+        {"path":"tests/test_v43_cross_head_academic_continuity.py","kind":"python","marker":"test_changed_textbook_in_current_revision_blocks_reuse"},
+        {"path":"tests/test_v43_cross_head_academic_continuity.py","kind":"python","marker":"test_changed_frozen_candidate_blocks_reuse"},
+        {"path":"tests/test_v43_cross_head_academic_continuity.py","kind":"python","marker":"test_old_receipt_must_recompute_to_exact_new_task"},
+        {"path":"tests/test_v43_cross_head_academic_continuity.py","kind":"python","marker":"test_historical_signed_v36_receipt_required"},
+        {"path":"tests/test_v43_cross_head_academic_continuity.py","kind":"python","marker":"test_historical_receipt_forbidden_without_explicit_reverification"},
+        {"path":"tests/test_v43_cross_head_academic_continuity.py","kind":"python","marker":"test_frontier_reader_is_wired_to_cross_head_reverification"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-25",
+      "nextAction":"First academic task genuinely accepted at exact code ba5229dc1e0bf344dc56de1a7cec253401d676f2, hosted CI #874 SUCCESS, real Yoga6 V1-V36 owner EXIT0 and separate --admit, --verify and horizon readback EXIT0; proof SHA 853d20dffd126d20c773b06f119f238844cd137f2b40797947e2b846674ce3ed, accepted 1/429 with 90 full gates open. BSA272 cross-Git-head verification code and seven regressions implemented and tested locally; still require hosted exact-new-head CI, real new-code-head owner Yoga6 normal V1-V36 and independent cross-head --verify and horizon readback to certify accepted task count stays exactly 1/429. Do not mark this incident RESOLVED or fabricate a science advance from a code change without those evidences."
     }
   ]
 }

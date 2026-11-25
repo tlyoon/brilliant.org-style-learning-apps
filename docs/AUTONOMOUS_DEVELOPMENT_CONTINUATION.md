@@ -155,6 +155,42 @@ the first academic acceptance before reporting 1/429 as achieved.
 
 ---
 
+## BSA272: Restart-safe academic acceptance across code revisions
+
+The already-accepted BSA270 finite-grammar MCQ science task is durable only
+for the exact original Serway source SHA, frozen candidate SHA and task ID,
+NOT merely for the original code HEAD. The source-free worker continues
+to sign its independent zero-academic-PASS V36 engineering evidence on each
+new accepted code HEAD; this immutable source-free evidence MUST NOT reset
+or override an earlier independently accepted source-bound academic proof.
+
+**On every future development/session readback**, first verify the current
+signed source-free horizon HEAD and source/candidate, then the old original
+immutable academic proof receipt, the historical code HEAD's immutable V36
+source-free event and first activity task partition, the current code HEAD's
+V36 source-free receipt and first activity task partition, and re-execute the
+same finite-language original-source science proof in the latest code. Only
+when the scientific proposition, exact task identity, source/candidate
+fingerprints and independent rational counterexample recomputation all
+match can the existing academic task remain ACCEPTED. An old science PASS
+must NEVER simply be copied into a new source or content revision, nor
+accepted from the academic frontier's count alone. A next-code-version
+admission repeats readback, but does not replay the old model request,
+issue a duplicate accepted proof or inflate the task total.
+
+Implemented independent reader:
+`app_generator.runtime.v3_academic_cross_head_continuity`.
+The owner CLI `python -m scripts.show_bosla_long_horizon` and standalone
+`python -m scripts.run_bosla_first_academic_proof --verify` use this
+cross-HEAD evidence verifier. New content or changed textbook fails
+closed; independent eligible engineering work continues.
+
+Even after this narrow improvement, 428 other semantic tasks and all
+90 five-gate academic activity acceptances remain OPEN. The next
+substantive progress must extend real academic evidence to additional
+MCQ distractors, not another zero-proof inventory stage, while keeping
+signed source PDF/candidate/semantic evidence immutable.
+
 ## No avoidable handoff stops
 
 Once any verified step finishes, the normal worker must **immediately execute

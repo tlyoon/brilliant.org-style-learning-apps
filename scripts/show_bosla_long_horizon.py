@@ -57,16 +57,13 @@ def main() -> int:
     # count beyond the immutable zero-proof source-free baseline. Never trust
     # a bare latest pointer without rechecking original PDF, frozen candidate,
     # signed V36 partition, rational countermodel and immutable proof receipt.
-    from app_generator.runtime.v3_first_academic_proof_admission import (
-        _FRONTIER,verify_first_academic_frontier,
+    from app_generator.runtime.v3_first_academic_proof_admission import _FRONTIER
+    from app_generator.runtime.v3_academic_cross_head_continuity import (
+        verify_academic_across_git_heads,
     )
     if (private/"long-horizon-development"/_FRONTIER).exists():
         try:
-            academic=verify_first_academic_frontier(
-                private=private,ready={
-                    "gitHead":checkpoint["gitHead"],
-                    "proposalSha256":checkpoint["proposalSha256"],
-                })
+            academic=verify_academic_across_git_heads(private=private)
         except (OSError,ValueError,KeyError,TypeError) as exc:
             print(json.dumps({
                 "status":"BOSLA_ACADEMIC_PROOF_FRONTIER_UNTRUSTED",
@@ -86,6 +83,8 @@ def main() -> int:
             "verifiedAcademicProofTaskId":academic["taskId"],
             "academicProofReceiptSha256":academic["proofReceiptSha256"],
             "academicActivityPASS":academic["fullAcademicActivityPASS"],
+            "academicProofOriginGitHead":academic["academicProofOriginGitHead"],
+            "acceptedProofCarriedAcrossGitHead":academic["carriedAcrossGitHead"],
         })
     print(json.dumps(outcome,sort_keys=True))
     return 0

@@ -18,7 +18,10 @@ from app_generator.runtime.v3_versioned_readiness import (
     _git_info,_git_clean,_hosted_runs,_exact_ci_success,
 )
 from app_generator.runtime.v3_first_academic_proof_admission import (
-    admit_first_independent_distractor,verify_first_academic_frontier,
+    admit_first_independent_distractor,_FRONTIER,
+)
+from app_generator.runtime.v3_academic_cross_head_continuity import (
+    verify_academic_across_git_heads,
 )
 from app_generator.runtime.v3_long_horizon_development import (
     read_long_horizon_development,
@@ -48,11 +51,13 @@ def main(argv:list[str]|None=None)->int:
             raise ValueError("BSA270_EXACT_CLEAN_CODE_HEAD_CI_REQUIRED")
         ready={"gitHead":horizon["gitHead"],
                "proposalSha256":horizon["proposalSha256"]}
+        # After an accepted task, a new source-free HEAD must independently
+        # reverify and carry it forward, NOT issue a duplicate proof receipt.
+        already=(private/"long-horizon-development"/_FRONTIER).exists()
         outcome=(admit_first_independent_distractor(
                     private=private,ready=ready)
-                 if arg.admit else
-                 verify_first_academic_frontier(
-                    private=private,ready=ready))
+                 if arg.admit and not already else
+                 verify_academic_across_git_heads(private=private))
         print(json.dumps(outcome,sort_keys=True))
         return 0
     except (OSError,ValueError,KeyError,TypeError) as error:

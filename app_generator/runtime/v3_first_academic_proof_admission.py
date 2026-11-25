@@ -22,7 +22,7 @@ from app_generator.runtime.v3_exact_revised_review_reconciliation import _CANDID
 from app_generator.runtime.v3_selected_textbook_scientific_provenance import _SOURCE_BINDING
 from app_generator.runtime.v3_public_bundle_handoff import _trusted_json
 from app_generator.runtime.v3_long_horizon_development import (
-    read_long_horizon_development,_write_latest,_read_signed,
+    read_long_horizon_development,_write_latest,_read_signed,_EVENT,
 )
 from app_generator.validation.section91_formal_physics import (
     _SOURCE_SHA,_CANDIDATE_SHA,
@@ -38,13 +38,19 @@ _CLAIM="BSA270_ONE_FINITE_SEMANTIC_MCQ_DISTRACTOR_SCIENCE_ACCEPTED"
 _ID="ce320185009e7c529840a5cf96c75a1f469ad2a5961b3cbbca2ac4f07d9f9d60"
 
 
-def _bound_inputs(private:Path,ready:dict[str,Any]):
+def _bound_inputs(private:Path,ready:dict[str,Any],*,allow_historical:bool=False):
     head=ready.get("gitHead")
     proposal=ready.get("proposalSha256")
     if (not isinstance(head,str) or len(head)!=40
         or not isinstance(proposal,str) or len(proposal)!=64):
         raise ValueError("BSA270_UNTRUSTED_HEAD_AND_PROPOSAL")
-    prior=read_long_horizon_development(private)
+    latest=read_long_horizon_development(private)
+    historical=(latest.get("gitHead")!=head or
+                latest.get("proposalSha256")!=proposal)
+    if historical and not allow_historical:
+        raise ValueError("BSA272_PRIOR_ACADEMIC_RECEIPT_REQUIRES_EXPLICIT_RECHECK")
+    prior=(_read_signed(private/"long-horizon-development"/head/proposal/_EVENT)
+           if historical else latest)
     if (prior.get("gitHead")!=head or prior.get("proposalSha256")!=proposal
         or prior.get("sourceSha256")!=_SOURCE_SHA
         or prior.get("candidateSha256")!=_CANDIDATE_SHA
@@ -63,6 +69,8 @@ def _bound_inputs(private:Path,ready:dict[str,Any]):
         or v36.get("completeAcademicProofGatesStillOpen")!=90
         or v36.get("publicationAuthorized") is not False):
         raise ValueError("BSA270_SIGNED_V36_IS_NOT_THE_FROZEN_BACKLOG")
+    if historical and prior.get("signedV36ReceiptSha256")!=v36["integritySha256"]:
+        raise ValueError("BSA272_HISTORICAL_SOURCE_FREE_RECEIPT_MISMATCH")
     partition=_signed(folder,f"{_PREFIX}01.json",ready)
     idx=v36.get("signedPartitionHashes",[])
     if (not idx or idx[0].get("activityId")!="act-mcq-01-vector-nature"
@@ -150,9 +158,11 @@ def admit_first_independent_distractor(
 
 
 def verify_single_academic_receipt(
-    *,private:Path,ready:dict[str,Any],expected_receipt:dict|None=None
+    *,private:Path,ready:dict[str,Any],expected_receipt:dict|None=None,
+    allow_historical:bool=False,
 )->dict[str,Any]:
-    folder,v36,partition,pdf,candidate=_bound_inputs(private,ready)
+    folder,v36,partition,pdf,candidate=_bound_inputs(
+        private,ready,allow_historical=allow_historical)
     receipt=_signed(folder,_RECEIPT,ready)
     if expected_receipt is not None and receipt!=expected_receipt:
         raise ValueError("BSA270_ACADEMIC_RECEIPT_REPLACED")
@@ -198,8 +208,10 @@ def verify_single_academic_receipt(
 def verify_first_academic_frontier(
     *,private:Path,ready:dict[str,Any],
     expected_frontier:dict|None=None,
+    allow_historical:bool=False,
 )->dict[str,Any]:
-    receipt=verify_single_academic_receipt(private=private,ready=ready)
+    receipt=verify_single_academic_receipt(
+        private=private,ready=ready,allow_historical=allow_historical)
     frontier=_read_signed(private/"long-horizon-development"/_FRONTIER)
     if expected_frontier is not None and frontier!=expected_frontier:
         raise ValueError("BSA270_FRONTIER_CHANGED_AFTER_ADMISSION")
