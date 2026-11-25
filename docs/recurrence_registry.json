@@ -9617,7 +9617,7 @@
     {
       "id":"BSA-20261125-272",
       "class":"accepted_original_source_science_proof_was_not_carried_over_to_future_code_heads",
-      "status":"active",
+      "status":"resolved",
       "rootCauseFamily":"academic-evidence",
       "relatedIncidentIds":["BSA-20261125-271","BSA-20261125-270","BSA-20261125-269"],
       "differenceFromLinkedIncident":"BSA270 genuinely admitted the first complete original-Serway-source MCQ distractor science task, BSA271 repaired the production signed-partition-reader integration TypeError, and BSA269 persisted a source-free code-head development checkpoint. But when that checkpoint advances to a future HEAD it again reports 0 accepted academic tasks and the old proof frontier is incorrectly rejected as a foreign code revision. The structural new issue is accepted-science-evidence portability across code revisions sharing the identical verified original source, frozen candidate and task ID, not initial proof generation or a missing source-free stage.",
@@ -9643,7 +9643,7 @@
       ],
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-25",
-      "nextAction":"First academic task genuinely accepted at exact code ba5229dc1e0bf344dc56de1a7cec253401d676f2, hosted CI #874 SUCCESS, real Yoga6 V1-V36 owner EXIT0 and separate --admit, --verify and horizon readback EXIT0; proof SHA 853d20dffd126d20c773b06f119f238844cd137f2b40797947e2b846674ce3ed, accepted 1/429 with 90 full gates open. BSA272 cross-Git-head verification code and seven regressions implemented and tested locally; still require hosted exact-new-head CI, real new-code-head owner Yoga6 normal V1-V36 and independent cross-head --verify and horizon readback to certify accepted task count stays exactly 1/429. Do not mark this incident RESOLVED or fabricate a science advance from a code change without those evidences."
+      "nextAction":"RESOLVED: genuine code 0574ad02bb51643a086d35dec48530832a8075c1 passed full hosted GitHub CI #876 SUCCESS, then owner Yoga6 real source-free V1-V36 normal worker EXIT0 in 674.90s, seven eligible stages and three independent safe lanes, with source SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50 and frozen candidate SHA 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38 unchanged. All 18 new V36 signed source-task partitions and 429 task identities independently reread EXIT0, new V36 root SHA 081fe7eacaf827b1d62f806fb56796c487f285fc837e8fbea0e38243b8a07717. The original independently accepted exact science task and immutable proof SHA 853d20dffd126d20c773b06f119f238844cd137f2b40797947e2b846674ce3ed, first admitted under prior HEAD ba5229d, independently reverified against BOTH signed old/new source-free V36 task ledgers. Owner academic --verify, repeat --admit and long-horizon status readback all EXIT0, carriedAcrossGitHead true, exactly 1 academic task ACCEPTED and 428 open, all 90 five-gate academic activity acceptances OPEN, no duplicate task, new provider calls, external PDF, merge or publication. Seven cross-head positive/negative mutation tests and historical original proof tests in normal CI. Next substantive work is expanding independently accepted MCQ distractor-science tasks from 1/27 to remaining 26, then scientific explanations, trilingual meaning and interactive visuals; source-free engineering counter does not override separate academic accepted ledger."
     }
   ]
 }
