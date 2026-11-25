@@ -9504,7 +9504,7 @@
     {
       "id":"BSA-20261125-268",
       "class":"repeat_zero_academic_acceptance_stages_misreported_as_development_progress",
-      "status":"active",
+      "status":"resolved",
       "rootCauseFamily":"academic-evidence",
       "relatedIncidentIds":["BSA-20261125-267","BSA-20261125-264","BSA-20261125-263"],
       "differenceFromLinkedIncident":"BSA264 genuinely dispatched 429 source-bound task dispositions, and BSA265-267 fixed genuine parser, source and signed recovery defects. Nonetheless all seven verified engineering successor stages still hardcode zero independently accepted semantic tasks and 90 full academic gates OPEN. Repeatedly adding an eighth queue/lexical source-free successor could keep obtaining engineer-pass and CI-success without reducing the academic backlog. This new defect concerns outcome classification and termination of zero-proof scaffolding, not provider retry or the prior source-count mismatch.",
@@ -9526,12 +9526,12 @@
       ],
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-25",
-      "nextAction":"Verify the exact source-free V1-V36 owner Yoga6 normal worker outputs engineering-only outcome, zero accepted academic proofs, explicitly missing independent academic proof producer and refuses further zero-proof source-free successor registration. Run hosted exact commit CI, negative tests, original source/readback. Then build a separately authorized independent academic proof producer which can genuinely accept or reject one exact source-bound semantic task. Do not count this governance fix as academic proof progress; 90 full gates and 429 comprehensive tasks remain open."
+      "nextAction":"ENGINEERING RESOLVED at Bosla code HEAD 255cefade05990a19bc5dc038a02c3882c154517, full hosted CI #45617901001 SUCCESS, genuine owner Yoga6 source-free V1–V36 worker EXIT0 (645.16 seconds), seven registered successor stages and three independent recovery lanes PASS, and separate original Serway PDF/frozen candidate/signed V36 18-partition 429-task evidence readback EXIT0 (receipt SHA 1fad218f85533917709df96c485517f83ff884aa1c612535aae72ee13dcadaa4). The normal worker reports engineering-only progress and refuses an eighth 0-proof source-free semantic inventory stage. All 90 full academic gates and 429 comprehensive proof tasks remain OPEN. Next genuine work is a separately authorized source-bound independent proof producer; no automatic code-writing daemon, provider call, publication, or merge has been created."
     },
     {
       "id":"BSA-20261125-269",
       "class":"cross_session_long_horizon_objective_and_next_development_action_not_persisted_in_executable_state",
-      "status":"active",
+      "status":"resolved",
       "rootCauseFamily":"academic-evidence",
       "relatedIncidentIds":["BSA-20261125-268","BSA-20261125-267","BSA-20261125-264"],
       "differenceFromLinkedIncident":"BSA268 forbids another zero-proof source-free inventory stage and explicitly distinguishes engineering from academic acceptance. Yet the prior normal Yoga6 worker persisted only its own exact-head V36 signed receipts; it did not carry the unchanged final academic completion objective, repeated zero-proof-head streak, and unavailable independent proof-producer action forward into a stable private cross-head/cross-session state. The user could get another development success without the subsequent session being forced to confront the same unfinished academic goal. BSA269 adds atomic restart-safe linked immutable horizon receipts and an explicit CLI to read the real pending action; it cannot pretend to run an unconfigured perpetual code-writing agent.",
@@ -9556,7 +9556,7 @@
       ],
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-25",
-      "nextAction":"Run exact-head GitHub CI, normal owner Yoga6 --source-free-advance, verify the long-horizon private state and immutable code-head event from a separate command after worker restart; confirm academic tasks remain 0 accepted/429 open, 90 full gates open, nextAction NOT_IMPLEMENTED_NOT_AUTOMATICALLY_EXECUTABLE and no unbounded coding agent claimed. Then develop actual source-grounded independent academic proof handlers in a separate authorized production lane, without creating further zero-acceptance source-free milestones."
+      "nextAction":"ENGINEERING RESOLVED at Bosla code HEAD 255cefade05990a19bc5dc038a02c3882c154517, hosted CI #45617901001 SUCCESS, normal owner Yoga6 V1–V36 worker EXIT0 (645.16s), all seven successors and three independent safe lanes PASS. Independent exact original Serway textbook/candidate V36 signed receipt source and all 18/429 task partitions readback EXIT0, root SHA 1fad218f85533917709df96c485517f83ff884aa1c612535aae72ee13dcadaa4. Separately verified owner-private long-horizon LATEST.json and immutable per-HEAD event using `python -m scripts.show_bosla_long_horizon` EXIT0, HEAD 255cefa, accepted academic 0, open 429 tasks and 90 gates, no-progress-code-head streak 1, next action IMPLEMENT_SEPARATE_INDEPENDENT_SOURCE_BOUND_ACADEMIC_PROOF_PRODUCER, marked NOT_IMPLEMENTED_NOT_AUTOMATICALLY_EXECUTABLE; no unbounded coding agent installed, provider request, extra source PDF, merge or release. Current project contract and tests require future sessions to read this state and continue all other authorized eligible stages without another user prompt. This does NOT constitute full academic proof acceptance or unattended autonomous code authoring."
     }
   ]
 }
