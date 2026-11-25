@@ -507,7 +507,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                 v29_auto,"advance_eligible_verified_development_stages",
                 return_value={
                     "status":"AUTONOMOUSLY_ADVANCED_ALL_REGISTERED_SAFE_STAGES_TO_CURRENT_BOUNDARY",
-                    "stagesExecutedThisRun":5,
+                    "stagesExecutedThisRun":6,
                     "academicPASS":0,
                     "publicationAuthorized":False,
                     "newModelCalls":0,
@@ -542,6 +542,13 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                     "privateInteractiveMutationPilot":{
                         "status":"V34_NINE_SOURCE_BOUND_INTERACTIVE_MUTANTS_REJECTED_PRIVATE_NO_RELEASE",
                         "independentlyRejectedWrongAnswerMutants":9,
+                        "fullAcademicPASS":0,
+                        "publicationAuthorized":False,
+                    },
+                    "privateInteractiveSourceRolesPilot":{
+                        "status":"V35_REAL_NINE_INTERACTIVE_TRILINGUAL_SOURCE_ROLE_CUES_PRIVATE",
+                        "trilingualPromptRoleCuesChecked":27,
+                        "trilingualFirstItemRoleCuesChecked":27,
                         "fullAcademicPASS":0,
                         "publicationAuthorized":False,
                     },

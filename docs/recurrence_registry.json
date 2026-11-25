@@ -9310,6 +9310,74 @@
       "applicableEnvironments": ["yoga6", "github-ci"],
       "lastValidatedDate": "2026-11-25",
       "nextAction": "ENGINEERING RESOLVED at exact Bosla commit c40932649489ea27f415f0b8666bcc8c31ef22ab: hosted GitHub CI #45531353096 completed SUCCESS, normal original Yoga6 --source-free-advance V1-V34 worker EXIT0 (runtime 607.76 seconds), all five V29-V34 source-bound successor stages and all three independent safe lanes PASS with zero quarantines, no model calls or publication. Owner signed V34 receipt SHA b2f13bbf438d041fcb0cfc1a43f2c7624aa56a786f035a83e1eed5d962f5a406; separate Yoga6 independent original Serway PDF/candidate and signed V34 answer proof readback EXIT0 reverified nine wrong-answer mutants and 96 trilingual item labels. V34 is bounded formal engineering evidence only. 90 full academic gates and 429 comprehensive semantic microproofs remain OPEN. Next stage: source-grounded interactive label polarity, explanation meaning and actual rendered visual semantics; preserve source, privacy, no replay, no merge/publication."
+    },
+    {
+      "id": "BSA-20261125-263",
+      "class": "interactive_translated_scientific_role_cues_not_bound_to_source_model_in_automatic_worker",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261125-262",
+        "BSA-20261124-260",
+        "BSA-20261124-261"
+      ],
+      "differenceFromLinkedIncident": "V34 independently proved answer models for nine interactive tasks and required localized fields to be present, but a concept-reversed localized learner prompt or answer-item label could still pass provided it was nonempty. V35 adds curated source-bound prompt and learner-item semantic-role markers for all nine interactions in each of EN/MS/ZH, while independently rechecking every formal solution. Markers are deliberately limited lexical evidence: they do not prove the full translations, explanation meaning or diagram science.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_post_v34_interactive_source_roles.py",
+        "triggerMarker": "def run_post_v34_interactive_source_roles(",
+        "remedyMarker": "BSA263_SOURCE_ROLE_PROOF_INCOMPLETE_OR_FORGED",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_auto_development_handoff.py",
+            "marker": "from app_generator.runtime.v3_post_v34_interactive_source_roles import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v35_interactive_source_roles.py",
+          "kind": "python",
+          "marker": "test_all_nine_27_language_prompt_and_item_role_witnesses"
+        },
+        {
+          "path": "tests/test_v35_interactive_source_roles.py",
+          "kind": "python",
+          "marker": "test_malay_wrong_vector_to_scalar_prompt_is_blocked"
+        },
+        {
+          "path": "tests/test_v35_interactive_source_roles.py",
+          "kind": "python",
+          "marker": "test_chinese_wrong_direction_label_is_blocked"
+        },
+        {
+          "path": "tests/test_v35_interactive_source_roles.py",
+          "kind": "python",
+          "marker": "test_correct_looking_role_does_not_override_wrong_answer_key"
+        },
+        {
+          "path": "tests/test_v35_interactive_source_roles.py",
+          "kind": "python",
+          "marker": "test_changed_source_or_candidate_never_accepted"
+        },
+        {
+          "path": "tests/test_v35_interactive_source_roles.py",
+          "kind": "python",
+          "marker": "test_v35_requires_signed_exact_v34_predecessor"
+        },
+        {
+          "path": "tests/test_v35_interactive_source_roles.py",
+          "kind": "python",
+          "marker": "test_worker_automatically_advances_all_six_stages"
+        },
+        {
+          "path": "tests/test_v35_interactive_source_roles.py",
+          "kind": "python",
+          "marker": "test_real_normal_worker_requires_v35_for_exit_zero"
+        }
+      ],
+      "applicableEnvironments": ["yoga6", "github-ci"],
+      "lastValidatedDate": "2026-11-25",
+      "nextAction": "Complete exact-head GitHub CI and genuine owner Yoga6 V1-V35 worker, independently reread exact original Serway PDF and immutable frozen candidate with signed V35 receipt. Keep 90 full academic gates, 429 meaning microproofs open; continue science/explanation/diagram semantics in a future bounded successor."
     }
   ]
 }

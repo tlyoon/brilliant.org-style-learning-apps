@@ -1601,6 +1601,23 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                                 "privateInteractiveMutationPilot",{}).get("fullAcademicPASS")==0
                             and result.get("autonomousDevelopmentContinuation",{}).get(
                                 "privateInteractiveMutationPilot",{}).get("publicationAuthorized") is False
+                            # BSA263: the new source-pinned V35 trilingual
+                            # interactive science-role proof must also execute.
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "stagesExecutedThisRun")>=6
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveSourceRolesPilot",{}).get("status")==
+                                "V35_REAL_NINE_INTERACTIVE_TRILINGUAL_SOURCE_ROLE_CUES_PRIVATE"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveSourceRolesPilot",{}).get(
+                                "trilingualPromptRoleCuesChecked")==27
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveSourceRolesPilot",{}).get(
+                                "trilingualFirstItemRoleCuesChecked")==27
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveSourceRolesPilot",{}).get("fullAcademicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveSourceRolesPilot",{}).get("publicationAuthorized") is False
                             # BSA261: unrelated content/regression/readback
                             # work must execute even when one eligible lane
                             # fails. Never turn a quarantined lane into exit0.
