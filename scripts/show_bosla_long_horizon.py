@@ -32,7 +32,7 @@ def main() -> int:
             "autonomousCodeWritingConfigured":False,
         },sort_keys=True))
         return 2
-    print(json.dumps({
+    outcome={
         "status":"BOSLA_LONG_HORIZON_VERIFIED_CROSS_SESSION_FRONTIER",
         "gitHead":checkpoint["gitHead"],
         "sourceSha256":checkpoint["sourceSha256"],
@@ -51,7 +51,43 @@ def main() -> int:
         "autonomousCodeWritingConfigured":checkpoint[
             "unboundedCodeWritingAgentConfiguredHere"],
         "publicationAuthorized":checkpoint["publicationAuthorized"],
-    },sort_keys=True))
+        "academicAcceptancesSource":"SIGNED_SOURCE_FREE_BASELINE_ONLY",
+    }
+    # A separate, independently reverified academic proof may advance the
+    # count beyond the immutable zero-proof source-free baseline. Never trust
+    # a bare latest pointer without rechecking original PDF, frozen candidate,
+    # signed V36 partition, rational countermodel and immutable proof receipt.
+    from app_generator.runtime.v3_first_academic_proof_admission import (
+        _FRONTIER,verify_first_academic_frontier,
+    )
+    if (private/"long-horizon-development"/_FRONTIER).exists():
+        try:
+            academic=verify_first_academic_frontier(
+                private=private,ready={
+                    "gitHead":checkpoint["gitHead"],
+                    "proposalSha256":checkpoint["proposalSha256"],
+                })
+        except (OSError,ValueError,KeyError,TypeError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_ACADEMIC_PROOF_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_AND_FIRST_ACADEMIC_PROOF_INDEPENDENTLY_VERIFIED",
+            "academicAcceptancesSource":"SEPARATE_SIGNED_RECOMPUTED_ACADEMIC_LANE",
+            "academicProofTasksAccepted":academic["independentlyAcceptedAcademicTasks"],
+            "fullAcademicProofTasksStillOpen":academic["otherFullAcademicTasksStillOpen"],
+            "completeAcademicProofGatesStillOpen":academic["completeAcademicProofGatesStillOpen"],
+            "nextUnfinishedDevelopmentAction":"EXTEND_INDEPENDENT_MC_Q_DISTRACTOR_PROOFS_TO_REMAINING_26",
+            "nextActionStatus":"NEW_PROOF_HANDLERS_STILL_REQUIRED",
+            "verifiedAcademicProofTaskId":academic["taskId"],
+            "academicProofReceiptSha256":academic["proofReceiptSha256"],
+            "academicActivityPASS":academic["fullAcademicActivityPASS"],
+        })
+    print(json.dumps(outcome,sort_keys=True))
     return 0
 
 

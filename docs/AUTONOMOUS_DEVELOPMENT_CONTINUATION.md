@@ -108,6 +108,53 @@ independent safe recovery lanes functional.
 
 ---
 
+## BSA270: First genuinely admitted academic proof in a separate lane
+
+The next academic development milestone is to **admit one source-bound
+MCQ_DISTRACTOR_SCIENCE task** with evidence, not add V37 to the source-free
+engineering succession. The selected finite-language Serway 9.1 case is
+`act-mcq-01-vector-nature` / `opt-c`, task ID
+`ce320185009e7c529840a5cf96c75a1f469ad2a5961b3cbbca2ac4f07d9f9d60`.
+The exact controlled-language EN/MS/ZH prompt and *entire* distractor are
+mapped to typed physical propositions by a fail-closed finite grammar.
+The independent original one-source PDF re-extraction must confirm
+p=m·v and vector direction, then **two independent exact rational nonzero
+mass/speed countermodels** must falsify the complete option: constant
+speed does not make an individual's momentum vanish. The admitted task
+is ONE distractor-science statement, not a full trilingual translation QA
+pass, all other option/scientific proof tasks, visual necessity review, or
+an activity-level five-gate acceptance.
+
+**Separate academic entry point**, after exact-head hosted CI and genuine
+Yoga6 source-free V1–V36 owner run:
+`python -m scripts.run_bosla_first_academic_proof --admit`.
+**Independent verification**, safe to rerun:
+`python -m scripts.run_bosla_first_academic_proof --verify`.
+The source-free worker retains zero academic proof claims and does not call
+the admission function. The academic entry point verifies the signed exact
+V36 source and first activity partition, the private one-textbook source,
+the original frozen candidate, mathematical evidence and a stored immutable
+per-head proof receipt. Before any acceptance is counted, a second execution
+independently recomputes the mathematical values and authenticates the
+source, task ID, candidate and receipt. A separate private signed academic
+frontier must be opened and reverified before
+`scripts.show_bosla_long_horizon` may display the academic count 1/429;
+the signed zero-proof source-free engineering baseline remains immutable.
+
+**Fail closed** for altered options, changed EN/MS/ZH physical meaning,
+unparsed extra clauses, mismatched prompt premises, wrong key/source,
+forged signed predecessor or counterexample, missing original PDF,
+changed candidate, corrupt/changed academic receipt, or unverified CI.
+Quarantine only that task if its proof cannot be established. No fresh
+Section9.1 Gemini reviewer call or ambiguous provider replay is authorized.
+No new outside PDF or public course merge/deploy is permitted.
+Follow-up academic milestones must extend **actual per-task acceptance**
+to the other 26 distractors and other proof classes, rather than invent
+another scaffold. Genuine owner and hosted CI must independently confirm
+the first academic acceptance before reporting 1/429 as achieved.
+
+---
+
 ## No avoidable handoff stops
 
 Once any verified step finishes, the normal worker must **immediately execute
