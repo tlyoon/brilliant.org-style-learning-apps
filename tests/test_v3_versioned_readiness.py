@@ -507,7 +507,7 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                 v29_auto,"advance_eligible_verified_development_stages",
                 return_value={
                     "status":"AUTONOMOUSLY_ADVANCED_ALL_REGISTERED_SAFE_STAGES_TO_CURRENT_BOUNDARY",
-                    "stagesExecutedThisRun":6,
+                    "stagesExecutedThisRun":7,
                     "academicPASS":0,
                     "publicationAuthorized":False,
                     "newModelCalls":0,
@@ -549,6 +549,13 @@ class NormalReadinessDispatchTests(unittest.TestCase):
                         "status":"V35_REAL_NINE_INTERACTIVE_TRILINGUAL_SOURCE_ROLE_CUES_PRIVATE",
                         "trilingualPromptRoleCuesChecked":27,
                         "trilingualFirstItemRoleCuesChecked":27,
+                        "fullAcademicPASS":0,
+                        "publicationAuthorized":False,
+                    },
+                    "privateSemanticTaskDispatch":{
+                        "status":"V36_ALL_429_SEMANTIC_TASKS_BOUNDED_ATTEMPTED_PRIVATE",
+                        "semanticTasksAutomaticallyDispatched":429,
+                        "activitySignedPartitionCount":18,
                         "fullAcademicPASS":0,
                         "publicationAuthorized":False,
                     },

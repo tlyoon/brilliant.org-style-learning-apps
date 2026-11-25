@@ -28,6 +28,9 @@ from app_generator.runtime.v3_post_v32_interactive_mutation_proofs import (
 from app_generator.runtime.v3_post_v34_interactive_source_roles import (
     _STATUS35,run_post_v34_interactive_source_roles,
 )
+from app_generator.runtime.v3_post_v35_semantic_task_dispatch import (
+    _STATUS36,run_post_v35_semantic_task_dispatch,
+)
 from app_generator.runtime.v3_blocker_isolated_development import (
     run_safe_isolated_development_lanes,
 )
@@ -47,8 +50,10 @@ _TRANSITIONS={
                run_post_v32_interactive_mutation_proofs),
     _STATUS34:(_STATUS35,"privateInteractiveSourceRolesPilot",
                run_post_v34_interactive_source_roles),
+    _STATUS35:(_STATUS36,"privateSemanticTaskDispatch",
+               run_post_v35_semantic_task_dispatch),
 }
-_MAX_NEW_STAGES_PER_INVOCATION=6
+_MAX_NEW_STAGES_PER_INVOCATION=7
 
 
 def advance_eligible_verified_development_stages(
@@ -101,7 +106,7 @@ def advance_eligible_verified_development_stages(
                 run_safe_isolated_development_lanes(
                     repo=repo,private=private,ready=ready,
                     completed_dependencies=(
-                        {"v32_source_chain"} if current["status"] in {_STATUS32, _STATUS34, _STATUS35}
+                        {"v32_source_chain"} if current["status"] in {_STATUS32, _STATUS34, _STATUS35, _STATUS36}
                         else set()),
                     blocked_operation="source_bound_academic_successor_chain")
             except Exception:
@@ -114,7 +119,7 @@ def advance_eligible_verified_development_stages(
         isolation=run_safe_isolated_development_lanes(
             repo=repo,private=private,ready=ready,
             completed_dependencies=(
-                {"v32_source_chain"} if current["status"] in {_STATUS32, _STATUS34, _STATUS35}
+                {"v32_source_chain"} if current["status"] in {_STATUS32, _STATUS34, _STATUS35, _STATUS36}
                 else set()))
     independent_ok=(not run_independent_lanes or
                     isolation.get("status")=="INDEPENDENT_SAFE_LANES_ALL_VERIFIED")

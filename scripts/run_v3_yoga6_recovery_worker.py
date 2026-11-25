@@ -1618,6 +1618,23 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                                 "privateInteractiveSourceRolesPilot",{}).get("fullAcademicPASS")==0
                             and result.get("autonomousDevelopmentContinuation",{}).get(
                                 "privateInteractiveSourceRolesPilot",{}).get("publicationAuthorized") is False
+                            # BSA264: auto-dispatch every independently source-pinned
+                            # semantic task without fabricating full academic PASS.
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "stagesExecutedThisRun")>=7
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSemanticTaskDispatch",{}).get("status")==
+                                "V36_ALL_429_SEMANTIC_TASKS_BOUNDED_ATTEMPTED_PRIVATE"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSemanticTaskDispatch",{}).get(
+                                "semanticTasksAutomaticallyDispatched")==429
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSemanticTaskDispatch",{}).get(
+                                "activitySignedPartitionCount")==18
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSemanticTaskDispatch",{}).get("fullAcademicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSemanticTaskDispatch",{}).get("publicationAuthorized") is False
                             # BSA261: unrelated content/regression/readback
                             # work must execute even when one eligible lane
                             # fails. Never turn a quarantined lane into exit0.

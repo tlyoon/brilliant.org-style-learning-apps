@@ -9378,6 +9378,41 @@
       "applicableEnvironments": ["yoga6", "github-ci"],
       "lastValidatedDate": "2026-11-25",
       "nextAction": "ENGINEERING RESOLVED at exact Bosla code head d73960eb43d60d99b8ac35a33e9cc77a6d9b5205: GitHub hosted CI run #45551785028 SUCCESS, genuine owner Yoga6 ordinary V1-V35 source-free worker EXIT0 (651.73 seconds), six consecutive source-bound successors V29/V30/V31/V32/V34/V35 executed, all three independent BSA261 recovery lanes VERIFIED and zero quarantined. Signed V35 receipt SHA 2b2116f5ea4b78d4b40f9fba72f49626e5ce9807b98d2b405aa4a3e1c9e843d5; separate original Serway PDF plus frozen candidate and exact signed V35 trilingual cues readback EXIT0, 9 interactions/54 bounded concept cues/27 explanations bound by SHA. Original signed independent safe-lane receipt SHA ee08efff26d37647e9eef7f7469345e69392ec7406001a33a55d9eec8113013b. No additional PDF, paid Gemini calls, provider replay, merge or publication. Complete scientific, translation and visual interpretation remains unproven: 90 academic gates and 429 comprehensive semantic microproofs OPEN. Next eligible development: fuller source-bound interactive explanation meaning and genuine visual semantics using same safe automatic recovery."
+    },
+    {
+      "id": "BSA-20261125-264",
+      "class": "semantic_backlog_429_queued_but_without_per_task_autonomous_executable_disposition",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261125-263",
+        "BSA-20261125-262",
+        "BSA-20261124-261"
+      ],
+      "differenceFromLinkedIncident": "V34 and V35 generated independent bounded formal and trilingual concept evidence but the original 429 full semantic tasks remained only a pending aggregate queue. The new runtime dispatches all 429 exact original-source versioned tasks across 18 activities into 18 separate signed, immutable, reproducible task-level evidence partitions. Each kind identifies what formal support exists and which full independent meaning or visual verification remains necessary. Fault-isolated test execution demonstrates one broken activity does not strand 17 independent activities. No bounded formal model, source passage or numeric lexical match can count as complete academic acceptance.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_post_v35_semantic_task_dispatch.py",
+        "triggerMarker": "def run_post_v35_semantic_task_dispatch(",
+        "remedyMarker": "BSA264_429_TASK_EXECUTION_PROOF_NOT_ACCEPTED",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_auto_development_handoff.py",
+            "marker": "from app_generator.runtime.v3_post_v35_semantic_task_dispatch import ("
+          }
+        ]
+      },
+      "regressions": [
+        {"path":"tests/test_v36_semantic_task_dispatch.py","kind":"python","marker":"test_all_429_tasks_receive_independent_evidence_disposition"},
+        {"path":"tests/test_v36_semantic_task_dispatch.py","kind":"python","marker":"test_one_broken_activity_quarantined_without_stranding_17"},
+        {"path":"tests/test_v36_semantic_task_dispatch.py","kind":"python","marker":"test_wrong_formal_answer_not_promoted_to_proof"},
+        {"path":"tests/test_v36_semantic_task_dispatch.py","kind":"python","marker":"test_bad_single_source_denied"},
+        {"path":"tests/test_v36_semantic_task_dispatch.py","kind":"python","marker":"test_signed_predecessor_refusal"},
+        {"path":"tests/test_v36_semantic_task_dispatch.py","kind":"python","marker":"test_real_dispatcher_requires_seven_stages"},
+        {"path":"tests/test_v36_semantic_task_dispatch.py","kind":"python","marker":"test_normal_worker_exit_gate_requires_real_task_dispatch"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-25",
+      "nextAction":"Run exact-head GitHub CI, real owner Yoga6 normal V1-V36, and independently recompute and reread all eighteen private signed task-evidence partitions. Then implement genuine independent original-textbook explanation/translated-meaning and rendered-visual proof handlers, so that verified microproofs can actually close without false academic PASS."
     }
   ]
 }
