@@ -9588,6 +9588,31 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-25",
       "nextAction":"BSA270 code and negative tests implemented on owner Yoga6. Run full source-free and hosted exact-head CI, then separately admit one immutable academic proof from the real one-textbook PDF/frozen activity and exact signed V36 predecessor with python -m scripts.run_bosla_first_academic_proof --admit. Independently rerun --verify and python -m scripts.show_bosla_long_horizon to authenticate 1 accepted/428 open academic tasks, 90 complete gates still open, no provider request or publication. Do not mark RESOLVED until those genuine owner results exist and are regression checked. Then extend the academic producer to the remaining 26 MCQ distractors without inventing new inventory-only milestones."
+    },
+    {
+      "id":"BSA-20261125-271",
+      "class":"first_academic_proof_signed_partition_reader_was_called_with_wrong_argument_shape",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "relatedIncidentIds":["BSA-20261125-270","BSA-20261125-269","BSA-20261125-264"],
+      "differenceFromLinkedIncident":"BSA270 introduced a legitimate bounded finite-grammar proof producer and standalone academic admission after the signed owner source-free V36 run, with 11 semantic mutation tests. The first real academic production run exposed a TypeError at the independent V36 first-partition _signed reader: the new caller supplied (file, ready) instead of the historically proven (folder, name, ready) interface. The test suite had mocked that binding and missed a real integration contract. BSA271 changes the actual normal academic entrypoint to call the signed reader with its existing three-argument interface and adds a source-free regression that exercises the genuine _bound_inputs call graph and the signatures of both V36 and its first partition.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_first_academic_proof_admission.py",
+        "triggerMarker":"def _bound_inputs(",
+        "remedyMarker":"partition=_signed(folder,f",
+        "normalEntryPoints":[
+          {"path":"scripts/run_bosla_first_academic_proof.py",
+           "marker":"from app_generator.runtime.v3_first_academic_proof_admission import ("}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v42_first_genuine_academic_proof.py","kind":"python","marker":"test_authentic_v36_partition_binding_uses_three_arg_signed_reader"},
+        {"path":"tests/test_v42_first_genuine_academic_proof.py","kind":"python","marker":"test_second_independent_verifier_rejects_forged_rational"},
+        {"path":"tests/test_v42_first_genuine_academic_proof.py","kind":"python","marker":"test_source_free_worker_never_publishes_our_academic_receipt"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-25",
+      "nextAction":"Read-only real Yoga6 signed V36 and first partition binding PASS after three-argument repair; 12 adversarial tests PASS. Repeat exact-head hosted GitHub CI and clean owner Yoga6 normal V1-V36 worker on repaired HEAD, then invoke separate academic --admit and --verify with original source and current signed receipt. Do not count academic acceptance or close BSA270/271 until the genuine immutable proof receipt is independently reverified and persistent horizon reads 1 accepted/428 pending, 90 full gates still open."
     }
   ]
 }

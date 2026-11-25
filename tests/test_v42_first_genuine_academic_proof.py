@@ -172,6 +172,59 @@ class GenuineFirstAcademicTask(TestCase):
                 admission.verify_single_academic_receipt(
                     private=ROOT,ready=ready)
 
+    def test_authentic_v36_partition_binding_uses_three_arg_signed_reader(self):
+        # Historical BSA270 production failure: calling _signed(file, ready)
+        # instead of _signed(folder, name, ready) passed CI unit tests but
+        # crashed on real Yoga6. Exercise the REAL _bound_inputs call graph.
+        ready={"gitHead":"a"*40,"proposalSha256":"b"*64}
+        prior={
+            **ready,
+            "sourceSha256":admission._SOURCE_SHA,
+            "candidateSha256":admission._CANDIDATE_SHA,
+            "academicAcceptedProofTaskCount":0,
+            "fullSemanticProofTasksStillOpen":429,
+            "completeAcademicProofGatesStillOpen":90,
+        }
+        signed_v36={
+            "status":admission._STATUS36,
+            "sourceSha256":admission._SOURCE_SHA,
+            "revisedCandidateSha256":admission._CANDIDATE_SHA,
+            "semanticTasksAutomaticallyDispatched":429,
+            "activitySignedPartitionCount":18,
+            "fullAcademicProofTasksAccepted":0,
+            "completeAcademicProofGatesStillOpen":90,
+            "publicationAuthorized":False,
+            "integritySha256":"c"*64,
+            "signedPartitionHashes":[{
+                "activityId":"act-mcq-01-vector-nature",
+                "signedEvidenceSha256":"d"*64,
+            }],
+        }
+        signed_first={
+            "sourceSha256":admission._SOURCE_SHA,
+            "candidateSha256":admission._CANDIDATE_SHA,
+            "integritySha256":"d"*64,
+            "activity":{"evidenceRows":[{
+                "taskId":admission._ID,
+                "kind":"MCQ_DISTRACTOR_SCIENCE",
+                "status":"BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED",
+            }]},
+        }
+        calls=[]
+        def signed(folder,name,incoming):
+            self.assertEqual(incoming,ready)
+            calls.append(name)
+            return {admission._V36:signed_v36,
+                    "V36_PARTITION_01.json":signed_first}[name]
+        with (patch.object(admission,"read_long_horizon_development",
+                           return_value=prior),
+              patch.object(admission,"_signed",side_effect=signed),
+              patch.object(admission,"_trusted_json",
+                           return_value={"sourcePdf":"C:/selected-original.pdf"})):
+            folder,_,_,_,_=admission._bound_inputs(ROOT,ready)
+        self.assertEqual(calls,[admission._V36,"V36_PARTITION_01.json"])
+        self.assertEqual(folder.name,ready["proposalSha256"])
+
     def test_source_free_worker_never_publishes_our_academic_receipt(self):
         src=(ROOT/"scripts"/"run_v3_yoga6_recovery_worker.py").read_text(
             encoding="utf8")

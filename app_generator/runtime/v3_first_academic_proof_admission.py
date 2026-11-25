@@ -63,7 +63,7 @@ def _bound_inputs(private:Path,ready:dict[str,Any]):
         or v36.get("completeAcademicProofGatesStillOpen")!=90
         or v36.get("publicationAuthorized") is not False):
         raise ValueError("BSA270_SIGNED_V36_IS_NOT_THE_FROZEN_BACKLOG")
-    partition=_signed(folder/f"{_PREFIX}01.json",ready)
+    partition=_signed(folder,f"{_PREFIX}01.json",ready)
     idx=v36.get("signedPartitionHashes",[])
     if (not idx or idx[0].get("activityId")!="act-mcq-01-vector-nature"
         or idx[0].get("signedEvidenceSha256")!=partition.get("integritySha256")
