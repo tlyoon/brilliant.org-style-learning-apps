@@ -535,7 +535,7 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                 v29_auto,"advance_eligible_verified_development_stages",
                 return_value={
                     "status":"AUTONOMOUSLY_ADVANCED_ALL_REGISTERED_SAFE_STAGES_TO_CURRENT_BOUNDARY",
-                    "stagesExecutedThisRun":4,
+                    "stagesExecutedThisRun":5,
                     "academicPASS":0,
                     "publicationAuthorized":False,
                     "newModelCalls":0,
@@ -564,6 +564,12 @@ class ExactHeadCIBoundedRecoveryTests(unittest.TestCase):
                         "status":"V32_OTHER_EIGHT_MCQS_SOURCE_BOUND_96_LOCALE_OPTION_CUES_PRIVATE",
                         "allNineMcqLocalizedOptionRolesChecked":108,
                         "allNineMcqFormalFalseAlternativeCounterexamples":27,
+                        "fullAcademicPASS":0,
+                        "publicationAuthorized":False,
+                    },
+                    "privateInteractiveMutationPilot":{
+                        "status":"V34_NINE_SOURCE_BOUND_INTERACTIVE_MUTANTS_REJECTED_PRIVATE_NO_RELEASE",
+                        "independentlyRejectedWrongAnswerMutants":9,
                         "fullAcademicPASS":0,
                         "publicationAuthorized":False,
                     },
