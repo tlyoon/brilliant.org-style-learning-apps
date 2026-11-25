@@ -1476,12 +1476,27 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             and result.get("boundedSymbolicRecovery",{}).get(
                                 "status")==
                                 "V27_FIVE_FALSE_POSITIVE_SYMBOLIC_FLAGS_BOUNDED_NO_ACADEMIC_PASS"
-                            and result.get("boundedSymbolicRecovery",{}).get(
-                                "boundedParserFalsePositivesResolved")==0
-                            and result.get("boundedSymbolicRecovery",{}).get(
-                                "remainingAmbiguousSymbolicFields")==2
-                            and result.get("boundedSymbolicRecovery",{}).get(
-                                "remainingTechnicalReviewFlags")==20
+                            # BSA267: downstream counts derive from the
+                            # source-signed V26/V27 evidence, not historical
+                            # snapshots. Genuine errors still fail closed.
+                            and all(type(result.get("boundedSymbolicRecovery",{}).get(k)) is int
+                                    for k in ("boundedParserFalsePositivesResolved",
+                                              "remainingAmbiguousSymbolicFields",
+                                              "remainingTechnicalReviewFlags"))
+                            and all(result["boundedSymbolicRecovery"][k]>=0
+                                    for k in ("boundedParserFalsePositivesResolved",
+                                              "remainingAmbiguousSymbolicFields",
+                                              "remainingTechnicalReviewFlags"))
+                            and result["boundedSymbolicRecovery"][
+                                "boundedParserFalsePositivesResolved"]+
+                                result["boundedSymbolicRecovery"][
+                                "remainingTechnicalReviewFlags"]==
+                                result["sourceScientificSemanticTriage"].get(
+                                "unresolvedTriLocaleSemanticReviewItems")
+                            and result["boundedSymbolicRecovery"][
+                                "remainingAmbiguousSymbolicFields"]<=
+                                result["boundedSymbolicRecovery"][
+                                "remainingTechnicalReviewFlags"]
                             and result.get("boundedSymbolicRecovery",{}).get(
                                 "completeIndependentAcademicProofSlotsStillOpen")==90
                             and result.get("boundedSymbolicRecovery",{}).get(

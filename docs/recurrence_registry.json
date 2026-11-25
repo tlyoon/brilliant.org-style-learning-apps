@@ -9471,6 +9471,35 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-25",
       "nextAction":"Verify exact original Serway source and immutable package through V26/V27/V28 scientific routines, all historical/fault-injection tests, full hosted CI and normal owner Yoga6 V1-V36 EXIT0 with independent signed V36 readback. Preserve 90 full academic gates and 429 complete science/translation/diagram tasks as pending. Automatically continue other unaffected development without new provider requests, external PDFs, merge or publication."
+    },
+    {
+      "id":"BSA-20261125-267",
+      "class":"source_bound_parser_recovery_counts_were_manual_magic_numbers_in_signed_v26_v27_v28_workflow",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "relatedIncidentIds":["BSA-20261125-266","BSA-20261125-265","BSA-20261125-264"],
+      "differenceFromLinkedIncident":"BSA266 reconciled old snapshot values from 26/8/5/3/21 to the actual signed same-source 20/2/0/2/20 case. However another source or genuine future parser correction would require yet another manual search across workers and tests. BSA267 makes V27 original-textbook-bound source-vs-recomputed count reconciliation algebraic and V28 independently recomputes exactly the same math from the original immutable candidate against the signed V27 restricted receipt, instead of accepting historical count literals. The normal worker validates the signed V26/V27 relationship and refuses forged or negative evidence. An evidence-count change does not upgrade scientific, multilingual or visual meaning to PASS.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_post_v26_bounded_symbolic_recovery.py",
+        "triggerMarker":"def run_post_v26_bounded_symbolic_recovery(",
+        "remedyMarker":"BSA267_SIGNED_SOURCE_V26_AND_RECOMPUTED_V27_COUNTS_DIFFER",
+        "normalEntryPoints":[
+          {"path":"scripts/run_v3_yoga6_recovery_worker.py",
+           "marker":"from app_generator.runtime.v3_post_v26_bounded_symbolic_recovery import ("},
+          {"path":"app_generator/runtime/v3_post_v27_five_proof_producers.py",
+           "marker":"from app_generator.runtime.v3_post_v26_bounded_symbolic_recovery import ("}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v39_adaptive_source_evidence_counts.py","kind":"python","marker":"test_counts_derive_from_same_source_roster_not_prior_fixed_numbers"},
+        {"path":"tests/test_v39_adaptive_source_evidence_counts.py","kind":"python","marker":"test_future_internally_consistent_counts_not_bound_to_old_constants"},
+        {"path":"tests/test_v39_adaptive_source_evidence_counts.py","kind":"python","marker":"test_forged_mismatch_remains_denied"},
+        {"path":"tests/test_v39_adaptive_source_evidence_counts.py","kind":"python","marker":"test_forged_complete_science_remains_denied"},
+        {"path":"tests/test_v39_adaptive_source_evidence_counts.py","kind":"python","marker":"test_signed_v27_v28_math_crosscheck_is_executable"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-25",
+      "nextAction":"Verify exact original Serway PDF and frozen candidate against V27/V28 changed parser counts, validate 5 new adaptive negative tests and all earlier predecessor integrations, then certify exact GitHub SHA in hosted CI and original Yoga6 V1-V36 worker. Only then mark engineering resolved. Academic full semantic tasks 429 and 90 complete science/translation/visual proof gates stay open."
     }
   ]
 }

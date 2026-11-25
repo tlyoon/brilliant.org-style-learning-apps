@@ -16,7 +16,7 @@ from app_generator.runtime.v3_public_bundle_handoff import _trusted_json
 from app_generator.runtime.v3_public_nonmerging_draft_pr import _preflight
 from app_generator.runtime.v3_revised_source_proof_rebinding import _signed
 from app_generator.runtime.v3_post_v26_bounded_symbolic_recovery import (
-    _V27, _STATUS27,
+    _V27, _V27_RESULT, _STATUS27,
 )
 from app_generator.runtime.v3_selected_textbook_scientific_provenance import (
     _SOURCE_BINDING,
@@ -51,8 +51,12 @@ def _assert_bounded_receipt(evidence:dict[str,Any])->None:
             or evidence.get("englishMalayChinese",{}).get("localizedSurfacesInspected")!=222
             or evidence.get("englishMalayChinese",{}).get("matchingNumericLiteralSurfaces")!=222
             or evidence.get("englishMalayChinese",{}).get("numericLiteralReviewNeeded")!=0
-            or evidence.get("englishMalayChinese",{}).get("strictFormulaLiteralMatches")!=0
-            or evidence.get("englishMalayChinese",{}).get("unresolvedSymbolicFields")!=2
+            or type(evidence.get("englishMalayChinese",{}).get("strictFormulaLiteralMatches")) is not int
+            or evidence["englishMalayChinese"]["strictFormulaLiteralMatches"]<0
+            or type(evidence.get("englishMalayChinese",{}).get("unresolvedSymbolicFields")) is not int
+            or evidence["englishMalayChinese"]["unresolvedSymbolicFields"]<0
+            or (evidence["englishMalayChinese"]["strictFormulaLiteralMatches"]+
+                evidence["englishMalayChinese"]["unresolvedSymbolicFields"])>222
             or evidence.get("interactiveDiagrams",{}).get("declaredDiagramsFound")!=0
             or evidence.get("interactiveDiagrams",{}).get("sourceGroundedVisualNecessityTasksOpen")!=18
             or evidence.get("interactiveDiagrams",{}).get("sourceSectionMentionsFigure91") is not True
@@ -78,10 +82,16 @@ def run_post_v27_five_proof_producers(
 )->dict[str,Any]:
     folder,_,_,_,_=_preflight(repo,private,ready,v9,v11,v12)
     signed_v27=_signed(folder,_V27,ready)
+    signed_v27_evidence=_signed(folder,_V27_RESULT,ready)
     if (v27_result!=signed_v27
             or signed_v27.get("status")!=_STATUS27
-            or signed_v27.get("boundedParserFalsePositivesResolved")!=0
-            or signed_v27.get("remainingAmbiguousSymbolicFields")!=2
+            or type(signed_v27.get("boundedParserFalsePositivesResolved")) is not int
+            or type(signed_v27.get("remainingAmbiguousSymbolicFields")) is not int
+            or signed_v27["boundedParserFalsePositivesResolved"]<0
+            or signed_v27["remainingAmbiguousSymbolicFields"]<0
+            or signed_v27.get("resultSha256")!=signed_v27_evidence.get("integritySha256")
+            or signed_v27["boundedParserFalsePositivesResolved"]!=signed_v27_evidence.get("strictLiteralFormulaMatches")
+            or signed_v27["remainingAmbiguousSymbolicFields"]!=signed_v27_evidence.get("unresolvedSymbolicReviewFields")
             or signed_v27.get("completeIndependentAcademicProofSlotsStillOpen")!=90
             or signed_v27.get("fullAcademicPASS")!=0
             or signed_v27.get("newGeminiCalls")!=0
@@ -123,6 +133,11 @@ def run_post_v27_five_proof_producers(
     evidence=audit_five_proof_channels(
         source_pdf=pdf,source_sha=_SOURCE_SHA,candidate_path=candidate)
     _assert_bounded_receipt(evidence)
+    if (evidence["englishMalayChinese"]["strictFormulaLiteralMatches"]!=
+            signed_v27["boundedParserFalsePositivesResolved"] or
+            evidence["englishMalayChinese"]["unresolvedSymbolicFields"]!=
+            signed_v27["remainingAmbiguousSymbolicFields"]):
+        raise ValueError("BSA267_SIGNED_V27_AND_INDEPENDENT_V28_MATH_COUNTS_DISAGREE")
     rows=evidence.pop("perActivityBoundedProofRows")
     if (len(rows)!=18 or len({x["activityId"] for x in rows})!=18
             or _hash(rows)!=evidence["perActivityBoundedProofRowsSha256"]
