@@ -32,7 +32,12 @@ from app_generator.sources.google_drive import (
 )
 from app_generator.sources.google_drive_auth import authorize_google_drive
 from app_generator.sources.local_sources import inspect_sources
-from app_generator.sources.manifest import build_manifest, load_existing_manifest
+from app_generator.sources.production_source_policy import (
+    one_configured_textbook_source, reject_multiple_authoritative_sources,
+)
+from app_generator.sources.manifest import (
+    build_manifest, load_existing_manifest, select_primary_source,
+)
 from app_generator.validation.schema_validation import validate_manifest
 
 
@@ -151,11 +156,18 @@ def _load(args: argparse.Namespace) -> GeneratorConfig:
 
 
 def _preflight_llm(config: GeneratorConfig) -> None:
-    """Validate API authentication before auto workers are allowed to claim jobs."""
+    """Check local Gemini SDK/client configuration without a live model request."""
 
     if getattr(config, "llm_backend", "gemini_browser") == "gemini_api":
-        build_gemini_sdk_client(config)
-        print("Gemini API authentication: ready")
+        # Doctor checks local configuration without sending model requests.
+        # Generation uses the same factory with source-free fallback enabled.
+        client = build_gemini_sdk_client(config, probe_keys=False)
+        try:
+            print("Gemini API client: configured; live access not verified (doctor is source-free)")
+        finally:
+            close = getattr(client, "close", None)
+            if callable(close):
+                close()
 
 
 def doctor(
@@ -251,6 +263,11 @@ def doctor(
                 target_filename=config.target_filename,
                 max_folders=config.max_drive_folders,
             )
+            # BOSLA production authority: never download/attach sibling PDFs
+            # or inherit an unrelated three-PDF C3 holdout campaign.
+            drive_corpus = one_configured_textbook_source(
+                drive_corpus, target_filename=config.target_filename,
+            )
             local_paths = tuple(
                 drive_client.download_file(item, Path(directory) / item.filename)
                 for item in drive_corpus
@@ -264,8 +281,13 @@ def doctor(
         else:
             effective_config = config.for_subchapter(config.pdf_subchapter_path.split("/")[-1])
             sources = inspect_sources(config.source_files)
+        sources = reject_multiple_authoritative_sources(sources)
         manifest = (
-            load_existing_manifest(effective_config.existing_source_manifest, sources[0], effective_config)
+            load_existing_manifest(
+                effective_config.existing_source_manifest,
+                select_primary_source(sources, effective_config.target_filename),
+                effective_config,
+            )
             if effective_config.existing_source_manifest
             else build_manifest(
                 effective_config,

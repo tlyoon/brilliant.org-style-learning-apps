@@ -227,7 +227,7 @@ class DomainPipelineTests(unittest.TestCase):
             package_path.write_text(json.dumps(package, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
             output = Path(directory) / "release"
-            build(output, package_path, source_root=temp_root)
+            build(output, package_path, source_root=temp_root, local_preview=True)
             self.assertIn("ALTERNATE-DOMAIN-RENDERER", (output / "app" / "domain-renderers.js").read_text(encoding="utf-8"))
             self.assertIn("ALTERNATE-DOMAIN-STYLE", (output / "app" / "domain-styles.css").read_text(encoding="utf-8"))
 

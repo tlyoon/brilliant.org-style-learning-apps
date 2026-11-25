@@ -29,6 +29,8 @@ from app_generator.publishing.git import GitPublisher
 from app_generator.publishing.public import PublicPagesPublisher
 from app_generator.deployments import has_current_public_deployment
 from app_generator.domains import DomainProfile, ensure_drive_domain, resolve_domain
+from app_generator.runtime.academic_release import enforce_academic_release_gate, public_release_requested
+from app_generator.runtime.academic_generation_stage import run_academic_stage
 from app_generator.runtime.run_context import RunContext
 from app_generator.runtime.state import RunPhase
 from app_generator.runtime.targeting import restrict_auto_inventory
@@ -43,7 +45,12 @@ from app_generator.sources.google_drive import (
 )
 from app_generator.sources.google_drive_auth import DriveAuthorization, authorize_google_drive
 from app_generator.sources.local_sources import inspect_sources
-from app_generator.sources.manifest import build_manifest, load_existing_manifest
+from app_generator.sources.production_source_policy import (
+    one_configured_textbook_source, reject_multiple_authoritative_sources,
+)
+from app_generator.sources.manifest import (
+    build_manifest, load_existing_manifest, select_primary_source,
+)
 from app_generator.validation.repository_checks import run_repository_validator, validate_candidate
 from app_generator.validation.schema_validation import validate_manifest, validate_schemas
 
@@ -395,6 +402,12 @@ def run_generation(
                     target_filename=config.target_filename,
                     max_folders=config.max_drive_folders,
                 )
+                # Production source is the selected textbook PDF alone.
+                # Ignore optional sibling PDFs and historical three-PDF C3
+                # experiments BEFORE any downloading/model submission.
+                drive_corpus = one_configured_textbook_source(
+                    drive_corpus, target_filename=active_config.target_filename,
+                )
                 store.transition(
                     RunPhase.SOURCE_RESOLVED,
                     source_locator={
@@ -438,6 +451,7 @@ def run_generation(
                     sources = inspect_sources(active_config.source_files)
                     job_key = _local_job_key(active_config, sources[0].path)
 
+                sources = reject_multiple_authoritative_sources(sources)
                 current_source_metadata = [source.metadata() for source in sources]
                 if resume_run_id and original_source_metadata and current_source_metadata != original_source_metadata:
                     raise SourceSetMismatch("The source bytes or metadata changed since the failed run; resume stopped safely")
@@ -588,7 +602,11 @@ def run_generation(
                 active_config = materialize_source_metadata(active_config, analysis)
                 package = apply_source_metadata(package, active_config)
                 manifest = (
-                    load_existing_manifest(active_config.existing_source_manifest, sources[0], active_config)
+                    load_existing_manifest(
+                        active_config.existing_source_manifest,
+                        select_primary_source(sources, active_config.target_filename),
+                        active_config,
+                    )
                     if active_config.existing_source_manifest
                     else build_manifest(
                         active_config,
@@ -656,6 +674,23 @@ def run_generation(
                 json.loads(active_config.package_path.read_text(encoding="utf-8"))
                 run_repository_validator(active_config.repo_root)
                 store.transition(RunPhase.FINAL_PACKAGE_REVERIFIED)
+                # AI-only academic QA is not a manual approval gate.
+                # Missing review evidence becomes an automatic followup queue.
+                academic_queue = run_academic_stage(
+                    active_config,context,active_config.package_path,
+                    sources[0].path if len(sources)==1 else None,
+                )
+                LOGGER.info("Academic QA pending tasks: %d",len(academic_queue["queue"]))
+
+                # Draft review PRs may be created with pending academic QA.
+                # Automatic protected-branch merge and public deployment
+                # require independently supported academic PASS for these
+                # exact installed package bytes. Never treat Gemini's own
+                # semantic audit or a green repository test as that PASS.
+                if public_release_requested(active_config):
+                    enforce_academic_release_gate(
+                        active_config.repo_root, active_config.package_path, context.validation
+                    )
 
                 if publisher is not None:
                     ensure_lease = lease_guard.ensure_owned if lease_guard is not None else (lambda: None)

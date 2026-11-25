@@ -6,6 +6,7 @@
 
 [project]
 project_name = "BrilliantContentGenerator"
+native_gemini_review_host = "YOGA6" # Bosla V3 reviewer execution; change only in project review
 
 [placeholders]
 # SINGLE SOURCE ROOT PRINCIPLE: sourcepath is the one project-level source-root

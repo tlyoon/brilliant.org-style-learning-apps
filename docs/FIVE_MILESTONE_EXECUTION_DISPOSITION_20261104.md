@@ -1,0 +1,36 @@
+# Five-milestone execution disposition — 4 November 2026
+
+**Project:** Brilliant-style learning apps (`tlyoon/brilliant.org-style-learning-apps`).
+**Scope:** User-requested autonomous execution of the five recommended next steps, following the finite Decision 0029 closeout. This report adds read-only verification and truthful blockers; it does **not** change the final `BLOCKED_EXTERNAL` status of the already consumed two-round PDF campaign.
+
+## Verified integration evidence
+
+- PR [#223](https://github.com/tlyoon/brilliant.org-style-learning-apps/pull/223) is the single consolidated candidate, open/draft/unmerged and mergeable; its head at this inspection was `b674f1ba33baa5404783ea2ca452d849047c545e`, base `aad23b3d27cfabde94950221159a413e6c8cf9cf`. GitHub compare: **217 commits ahead, 0 behind; 278 changed files**, with no `.pdf` changed paths reported. This filename inspection is not an exhaustive private-data audit.
+- [GitHub Actions #436](https://github.com/tlyoon/brilliant.org-style-learning-apps/actions/runs/41798921506) completed **SUCCESS** on that exact code head. Full Python test discovery: **962 tests, OK, one skipped**; ordinary workflow also includes lint, content validation, documentation impact, permanent regression contract and JS learner/renderer checks. These are code and synthetic/saved-fixture checks, not live original-source scientific or independent browser review.
+- GitHub GraphQL reported **zero submitted PR reviews and zero inline review threads**. Mergeability and CI are not independent approval.
+- Authorized workstation visibility: Yoga 6, HP, Dell-115 and Zenbook were online through Desktop Commander. Only Yoga 6 exposed explicit allowed directories `G:\My Drive` and `C:\Users\User\AppData\Local\Microvid`; the other three returned empty `allowedDirectories`. No scope was enlarged; cross-PC credential or generator execution **was not verified**.
+- Current code discovers `%LOCALAPPDATA%\Microvid\.env` keys and, before source attachment, tests distinct candidates once; 401/402/403/503/504 allow next-key probing, 429 and ambiguous errors stop. Source-bearing requests are not automatically replayed. The new source-free fallback has unit-test coverage but no newly successful real account response.
+
+## Five requested milestones — independent statuses
+
+| Milestone | Verified work and evidence | Disposition |
+|---|---|---|
+| **1. Gemini API readiness** | Yoga 6 online and previously found local credential *names*; earlier authenticated source-free test was explicitly blocked by execution safety controls **before it ran**. Last legitimate project Gemini observation: round-2 HTTP 402. A public status check does not attest this account's quota or billing. Do not reword/reroute/retry the denied operation. | **BLOCKED_EXTERNAL — access not verified** |
+| **2. Consolidated integration** | PR #223 is mergeable, ahead-only, exact-head CI #436 SUCCESS, 962 Python tests passed (1 skipped), protected regression registry updated for key-fallback behavior. No submitted independent PR review; main has not changed. | **TECHNICAL CANDIDATE VERIFIED; INTEGRATION / APPROVAL PENDING** |
+| **3. Frozen-source reconciliation** | Original round-2 witnesses and SHA256 digests are recorded in `FINITE_GLOBAL_CODEBASE_DISPOSITION_20261104.md`. All three requests failed source-free preflight, before any PDF upload; 0/3 drafts. No new runs were made during this five-milestone assessment. The present code head includes changes **after** frozen round-2 engine `7a7b146e16d719576ef7bceea6719fa4153b4a1c`; it cannot silently be relabeled as a run under that frozen revision. Preserve the exact three selected sources and prior receipts. | **NOT_RUN / BLOCKED_EXTERNAL; no third campaign** |
+| **4. Independent C4 verification** | CI and offline/synthetic learner tests are green, but no new completed package exists for actual source-to-learner browser, keyboard, responsive, EN/MS/ZH, source-rights, provenance, or independent academic-semantic acceptance. Historical Section 9.4 remains 0/18 formal PASS. | **NOT_VERIFIED; no PASS fabricated** |
+| **5. Package/release closeout** | Final finite campaign disposition and this evidence report are recorded, with residual blockers and reproducibility references. PR remains draft/unmerged; no public deploy or release. The tracked `config/configure_project.toml` intentionally contains `git_publish=true`, `git_auto_merge=true`, `public_deploy=true` and `public_deploy_auto_merge=true`; these are **not safe evaluation settings**. Prior real private round-2 configs explicitly used false overrides. The template must not be run for reconciliation without an independently inspected effective configuration enforcing all release flags false. | **BLOCKED_EXTERNAL release disposition; candidate not authorized for production** |
+
+## Strict continuation boundary
+
+1. **Access prerequisite:** Obtain genuinely permitted authenticated account readiness evidence (working API model, funded/authorized project and selected key) through a provider/remote execution route that has not been explicitly denied. Do not bypass the previously recorded Remote Desktop execution-control denial or equate HTTP 402 with general Gemini downtime. Do not log keys or protected materials.
+2. **No-replay and frozen-code prerequisite:** Independently reconcile the three original round-2 private preflight receipts, immutable selected-source witness, package/source SHA256 provenance and exact `7a7b146...` engine binding. The new multi-key implementation is later than the frozen round-2 engine: a future plan must explicitly resolve that exact-revision incompatibility before any model submission. This report grants neither a reset of the two-campaign limit nor a third run. The user requested conditional continuation of the five steps, but that alone cannot override evidence or permissions.
+3. **Safe configuration prerequisite:** For any private checking, inspect the *effective per-PC runtime config*, not merely source-template defaults, and require `git_publish=false`, `git_auto_merge=false`, `public_deploy=false` and `public_deploy_auto_merge=false`. Keep source PDF and all provider/model receipts in already authorized private storage.
+4. **Completion evidence prerequisite:** Three genuine distinct-topic cases, unchanged accepted source provenance, draft package identities, real learner interaction and EN/MS/ZH rendering, independent scientific/rights/visual verification. Accept only real stage-specific evidence; source-free tests are not a substitute.
+5. **Release prerequisite:** Independent code review and explicit approved release change after C3/C4 genuinely pass. No automatic merge or publication from this report.
+
+## Final result
+
+**No newly verified Gemini access, no renewed PDF execution, no academic PASS, no merge, no deployment.** Reusable integration candidate: **CI-VALIDATED**. Finite global completion: **BLOCKED_EXTERNAL**, with the external execution denial, prior provider HTTP 402, frozen-version reconciliation, independent browser/science evidence and release safety as named blockers.
+
+This record is additive. The authoritative closed historical two-round result remains `docs/FINITE_GLOBAL_CODEBASE_DISPOSITION_20261104.md` under Decision 0029.

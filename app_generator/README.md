@@ -59,6 +59,56 @@ where the immediate parent looks like `8.1`. Jobs are ordered numerically by cha
 
 Source-manifest version 1.1 records primary/supplementary PDFs and corpus provenance. Drive generation discovers sibling PDFs beneath the selected topic; direct local `source_files` configuration still accepts only one PDF.
 
+## Finite cross-topic acceptance orchestration (5 November 2026)
+
+Use `scripts/run_bounded_cross_topic_acceptance.py` only with already available, explicitly authorized private **source-free** candidate/learner/academic evidence. It pins three distinct topic families and an exact Git revision, invokes the two offline coverage gates **once per case**, and writes a non-replayable terminal report. It cannot generate activities, open PDFs, run Gemini/Selenium, issue academic acceptance or publish. Even internally complete metadata remains unverified, not PASS. See `docs/BOUNDED_CROSS_TOPIC_ACCEPTANCE_20261105.md`.
+
+## Offline global correctness gates (5 November 2026)
+
+Activity repair retains three attempts, reporting only categorized contract failures in run-local diagnostic JSON; it never installs a failed replacement. A visual QA with zero exercised visual activities fails before Chrome. Separate offline CLIs (`scripts/audit_learner_coverage.py` and `scripts/audit_academic_coverage.py`) check activity/locale/viewport or source/package/gate coverage from existing metadata, without reading PDFs or calling Gemini. These are **coverage and readiness checks**, not independent browser/physics/translation PASS or permission to publish. See `docs/GLOBAL_PIPELINE_HARDENING_20261105.md`.
+
+## Gemini API key failover without PDF replay
+
+**Execution boundary:** A remote host/connector denial is not a Gemini HTTP
+403 and never triggers key fallback. The common `ExternalExecutionDenied`
+type is propagated rather than silently reclassified. The nonexecuting
+`scripts/triage_gemini_execution_boundary.py` classifies structured
+metadata only; it does not remove an upstream safety restriction or run an
+API request. See `docs/GEMINI_EXECUTION_DENIAL_INTEGRATION_20261104.md`.
+
+
+On every authorized Windows PC, the API backend discovers
+`GEMINI_API_KEY_1`, `GEMINI_API_KEY_2`, additional numbered keys and
+`GEMINI_API_KEY`/`GOOGLE_API_KEY` from the default
+`%LOCALAPPDATA%\Microvid\.env`. Explicit process credentials take precedence,
+duplicate keys are ignored, and at most eight distinct keys are considered.
+Every production Gemini API client creation automatically makes a minimal
+**source-free** model request on the first candidate without requiring callers
+to enable a fallback flag, before attaching any controlled PDF; if it returns 401 (invalid key), 402 (unfunded project),
+403 (no model permission), or 503/504 (provider capacity), the next configured
+key is probed automatically, once per key. HTTP 429 (quota/rate limit),
+malformed requests and ambiguous transport failures stop selection; no quota
+bypass is attempted. Even one configured key is preflighted before generation.
+Provider credit may be shared among keys, so a 402 can affect every key.
+
+**No source-bearing automatic replay:** Once a controlled PDF request enters the Gemini SDK, the client makes one model request only. The SDK has retry attempts fixed at one for both API-key and OAuth/Vertex clients. An HTTP 408/409/5xx response, timeout, reset, empty response or interrupt leaves the request unresolved and the same client rejects another `ask()` until a separately authorized reconciliation. Successful requests may continue into the next genuine stage. Legacy `gemini_api_max_attempts` and `gemini_api_retry_backoff_seconds` configuration values do not override this source-bearing one-shot rule.
+
+For `gemini-3.8-flash`, the source-free preflight uses only a small
+output budget and no deprecated `temperature`, `top_p`, `top_k` or
+`candidate_count` settings. It records only the configured key-variable label
+and numeric HTTP status when a candidate fails; it never logs the key value or
+provider exception text. A previous HTTP 402 may refer to the billing account
+linked to the selected project even if another account has available credit.
+This diagnosis does not establish live account connectivity. See
+`docs/GEMINI_ACCESS_DIAGNOSIS_20261104.md`.
+
+The `doctor` command does not generate or perform preflight requests. A failed
+**already-submitted PDF** is never replayed through another key automatically:
+reconcile its previous receipt and separately authorize a new attempt. No
+credential value is printed, persisted to Git or copied between PCs. This
+does not reopen the closed Decision 0029 held-out PDF campaign. See
+`docs/HELDOUT_GENERALIZATION_CAMPAIGN.md`.
+
 ## Stage-0 textbook domain gate
 
 Every Google Drive run resolves a textbook-level subject domain before content generation. The gate always inventories the complete configured Source Root first; an explicit target such as `--chapter 9` or `--pdf-subchapter-path 9.2` is applied only after the textbook domain is verified. The inventory fingerprint covers all topic corpora, and each topic corpus key covers every sibling PDF in that topic folder.
@@ -218,8 +268,330 @@ python scripts\check_documentation_impact.py
 
 `doctor` exercises configuration/Drive/provenance and coordinated queue inspection where relevant. When no current Source-Root/domain binding exists, doctor may upload only the bounded representative textbook PDFs required for Stage-0 domain discovery to the configured Gemini API; it does **not** start activity/content generation or claim an auto content job.
 
+Visual-plan and visual-spec generation is schema-gated. Specification prompts
+embed the exact repository visual-spec schema. For specification-only validation
+errors, the generator reuses the valid planning checkpoint and makes one bounded
+specification retry with the deterministic findings. A failed pilot can be
+resumed using --resume RUN_ID in specific mode only when Git publication is
+disabled; check the preserved run/candidate and unchanged source identity
+before resuming. Do not delete saved stage responses or overwrite the
+previously installed package to bypass a failed visual gate.
+
 ## Failure handling
 
 Drive ambiguity, wrong accounts, bad downloads, domain-profile absence/ambiguity, dirty/diverged Git, invalid generated content, lease loss, coordinator health failure, or unsafe publication stop the affected operation. Auto mode preserves recoverable state/checkpoints where possible and does not claim global success when terminal failures remain.
 
 Network-facing Git synchronization/publication operations use bounded retries for recognized transient transport failures such as connection resets, temporary DNS/connectivity failures, timeouts, selected HTTP 502/503/504 responses, and common curl/TLS transport errors. Retry backoff is 2, 5, then 10 seconds after the initial attempt. Deterministic failures such as authentication errors, dirty worktrees, non-fast-forward updates, invalid refs, or merge conflicts still fail immediately. Read-only GitHub CLI checks may use the same transient retry path; non-idempotent PR actions retain their existing explicit reconciliation behavior rather than being blindly retried.
+
+Visual-spec generation also reads physics renderer guidance in the active domain profile, retains individually validated specifications, and retries failed activity IDs only. The two-attempt visual batch cap remains. The original package is not replaced until all repository checks pass.
+
+### Offline visual pilot audit
+
+Run `python scripts/audit_visual_run.py --run-root PATH_TO_SAVED_RUN` to inspect saved plans and visual specifications without invoking Gemini or changing files. For a COMPLETE run, it verifies the installed package recorded by the run state, independently reconstructing and comparing visual fields against current renderer contracts. An offline `contract_pass` is NOT proof of source accuracy, visual pixel quality, browser accessibility, or publication readiness. Non-complete or inconsistent runs exit with a failure status and diagnostics.
+
+### Semantic visual-render smoke test
+
+Run `node scripts/audit_visual_rendering.js --package PATH` to instantiate every visual in en/ms/zh through the trusted JavaScript renderer without modifying the package. The test checks semantic SVG/figure output, accessible descriptions, expected template identities and finite geometry attributes. It deliberately does **not** verify actual browser pixels, academic correctness, device layout or WCAG compliance. Use real browser, source-grounding, and accessibility review before release.
+
+### Visual pilot technical gate
+
+Run `python scripts/visual_pilot_gate.py --run-root PATH_TO_SAVED_RUN` to combine the read-only installed-package audit with semantic renderer tests. Output `technicalEvidenceReady=true` means only deterministic contract and synthetic DOM checks passed, not that the app is release-ready. The report *always* leaves actual browser/pixel, classroom accessibility, source-grounded academic review, and learner review as pending; publication is never authorized by this tool.
+
+### Isolated browser-level visual smoke test
+
+For a complete local teaching package, run `python scripts/audit_browser_visual.py --package PATH`. The tool copies only needed static assets to a temporary local directory, launches a private-profile headless Chrome, serves content on 127.0.0.1, and tests every visual in en/ms/zh at desktop/mobile viewport sizes. It checks SVG nodes, aria descriptions, response controls and visual horizontal overflow, then destroys its temporary browser/profile and server. A browser DOM smoke pass is not proof of final pixel quality, WCAG screenreader compliance or academic correctness, and cannot authorize publication. Selenium and a compatible Chrome driver are needed only for this optional QA tool.
+
+### Visual review evidence capture
+
+Pass `--evidence-root NEW_PRIVATE_DIRECTORY` to `scripts/audit_browser_visual.py` to capture element-level PNGs for all real-browser locale/viewport checks. Evidence files are stored outside the repository and original production package; the manifest retains package SHA-256, individual PNG SHA-256, and explicit `unreviewed` status. This is evidence for later academic/pixel/accessibility inspection, **not** an automated pass of those review gates. The directory must not already exist and the tool refuses evidence paths inside the source repository or installed package folder.
+
+### Keyboard focus continuity
+
+MCQ button activation regenerates the activity card; the player now restores keyboard focus to the selected replacement button. The headless Chrome visual pilot checks Enter-key selection, `aria-pressed`, check-answer enablement, and focus continuity for every visual MCQ in three locales at two viewport widths. This is a bounded keyboard smoke check, not a full screen-reader/WCAG audit.
+
+### Interactive answer-button focus after rerender
+
+For classification, matching and multi-selection activities, the player records stable item/target IDs on answer buttons and restores focus to the corresponding control after updating the activity card. This complements the MCQ focus repair. Test coverage checks actual re-rendered focus, not just answer correctness; keyboard and screenreader validation in a real browser remains a separate acceptance gate.
+
+### Keyboard focus after ordering moves
+
+Moving an item up or down replaces its entire ordering row. The player now maintains semantic item/direction identifiers and focuses the new enabled direction control for that item. When the original move direction becomes disabled at a list boundary, the opposite enabled move button receives focus. DOM tests exercise repeated reorders, focus continuity and this boundary fallback without changing ordering answer scoring.
+
+### Current owner V3 autonomous technical completion (Decision 0036)
+
+**Current policy:** `docs/autonomous_completion_v3.json` and
+`app_generator/validation/autonomous_completion.py` replace mandatory
+independent academic/visual verification, approved real-student pilot evidence
+and explicit human release authorization with **two-context LLM review of all
+activities**, exact artifact identity, source-free browser/privacy checks and
+verified exact-head CI. No minimum decorative-visual quota exists; text-first
+may pass with a reasoned model assessment. Both adversarial model contexts must
+return valid, complete, unanimous PASS across physics/answers, EN/MS/ZH
+equivalence, representation value and accessible learner experience. Model
+FAIL, UNCERTAIN, incomplete responses or absent provider access are pending
+or automatic-repair work, not release PASS. The normal publisher and standalone
+bundle builder both require a private V3 release receipt, which has local
+tamper attestation, and derive release eligibility **without manual sign-off**.
+No original source PDF, copied third-party figures or real student records
+may be sent for this generated-content model assessment. A green structural
+test alone never establishes LLM review. Run
+`python scripts/check_final_acceptance_closure.py` for the active V3 state;
+use `--historical-v2` for the former Chapter 9 frozen evidence archive.
+The original Chapter 9 campaigns are not restarted.
+
+### Historical V2 academic QA decision policy (archived, not a V3 release prerequisite)
+
+Academic verification gates use PASS, FAIL, or REVIEW_REQUIRED. PASS requires explicit independent deterministic or source-verified evidence, never only the original generation model report. Missing evidence remains REVIEW_REQUIRED; a verified failure takes precedence. This evaluation never marks human review as performed or authorizes publication. See app_generator/validation/academic_qa.py.
+
+### Independent academic QA triage (Section 9.4 pilot)
+
+Run `python scripts/audit_academic_qa.py --package PATH_TO_INSTALLED_PACKAGE`. An optional `--source-pdf PRIVATE_CONTROLLED_PDF_PATH` permits read-only SHA-256 identity checking; it does NOT upload or publish the PDF. The tool checks source-file identity, structural answer integrity, numerical collision witness availability, multilingual completeness and visual renderer contracts. PASS requires independently verified evidence for every academic gate; incomplete evidence is REVIEW_REQUIRED. A verified contradiction is FAIL. The report explicitly preserves humanReviewed=false and publicationAuthorized=false. It does not claim that syntactic validation, file hashes or model-based semantic reviews establish textbook accuracy. Next development work must provide trusted source-bound crosschecks and independent scientific/translation verification before academic PASS can be claimed.
+
+
+### Historical V2 academic public-release documentation (superseded by V3)
+
+Normal generation, local installation and draft GitHub review remain possible
+while independent academic evidence is REVIEW_REQUIRED. Automatic Git merge
+and public deployment now invoke the academic release guard only after
+the installed package has been revalidated. It recomputes the academic report
+for the exact installed package SHA-256, saves a durable
+validation/academic-release-gate.json record and fails closed unless every
+academic gate has trusted independent PASS evidence. This supersedes the
+older assumption that Gemini semantic review and green structural checks
+alone warrant public release. A false/ambiguous QA result never grants
+publication permission. See the continuation checkpoint and failure ledger.
+
+
+### Direct public publisher V3 release safety
+
+The public Pages publisher is also called from auto-recovery, not only the
+normal generator. Its publish entrypoint now requires the current V3
+**full-activity, two-context model-consensus and deterministic software**
+attestation for the exact installed package, not a human academic PASS.
+A private SHA-bound academic validation receipt is saved in the configured
+state directory. A missing state directory or unresolved result blocks public
+merge *before* remote Git operations. Test-only fake publisher/recovery
+fixtures may mock independently validated academic evidence to isolate Git
+idempotency, but production may never substitute such fixtures for proof.
+
+
+### Academic gate for source-branch handoff recovery
+
+An interrupted distributed run can leave a committed source job branch without
+a completed publish phase. Automatic Git merge is now gated at the common
+PR-finalization path, not just at the normal generator or Pages publisher. Both
+the candidate branch's package and source-manifest Git blobs must match local
+files before independent academic QA is consulted. Unresolved or mismatched
+source handoffs cannot be auto-merged. Draft review branches remain available.
+Blocked recovery must not blindly regenerate an ambiguous Gemini request.
+
+## Autonomous academic AI review after package generation
+
+The generator now runs source-bound academic review after final package
+verification and before protected release. It reads the private
+academic-review-source-packets.json in the owned validation run directory.
+The source packet must match the generated package SHA and controlled local
+PDF SHA. Literal page evidence is independently re-extracted from the PDF.
+
+When pre-provisioned dedicated controlled Gemini reviewer profiles exist
+for the physics and semantics roles, the stage uses independent browser
+sessions with version-bound claims. The authoring browser and Gem are not
+reused, and source passages and credentials never go into Git.
+
+When evidence or independent reviewer authentication is unavailable, the
+stage writes autonomous-academic-queue.json to the private validation
+directory with AUTO_SOURCE_CHECK or AUTO_RETRY instructions. Missing
+learner-facing activities produce a PACKAGE follow-up rather than
+breaking legacy local generation. No manual academic reviewer approval is
+required.
+
+This stage is not an academic PASS or public-release authorization.
+Unresolved evidence stays REVIEW_REQUIRED; protected publication and
+merge permissions remain unchanged. See docs/AUTONOMOUS_AI_ACADEMIC_QA.md
+and docs/decisions/0024-autonomous-ai-academic-review.md.
+## Automatic private academic repair
+
+After independent reviewers identify a concrete contradiction, the runtime
+may dispatch a limited AI repair in a dedicated controlled browser context.
+The correction is restricted to existing three-language learner-facing text
+and answer explanations. It cannot alter grading keys, visual structure,
+other activities, or the installed package. Attempts are checkpointed prior
+to submitting the model request. The successful result is a private candidate
+requiring fresh independent verification, never academic PASS.
+A missing reviewer or repair profile creates a recoverable automatic task
+without requiring manual academic sign-off. Publication remains separately
+disabled unless authorized.
+
+
+### Complete per-activity academic acceptance audit
+
+The standalone private script scripts/audit_activity_acceptance_matrix.py
+examines the exact source PDF and candidate package, covering MCQ and
+interactive answer references, English/Malay/Chinese text presence and
+declarative visual schemas. It creates an immutable private report with
+one record and automated follow-up action per activity. Source passages
+must be independently re-located on the controlled PDF. This report
+distinguishes mechanical checks from full scientific/semantic review;
+no human academic sign-off is required and no incomplete evidence
+automatically becomes academic PASS or release permission.
+See docs/AUTONOMOUS_ACTIVITY_ACCEPTANCE.md.
+## Full original-PDF source packet migration
+
+Use scripts/migrate_review_source_anchors.py to combine private prior proof
+receipts with the exact prior package, current target package, and
+SHA256-matched original PDF. Every passage is independently re-located on
+its physical PDF page before generating a NEW private packet compatible
+with academic-review-source-packets.json in the run validation directory.
+Duplicate, missing, wrong-version or wrong-page receipts fail closed.
+
+The output records which activities changed since the prior package. A
+reverified source passage provides location/provenance evidence only; it
+does not approve changed question wording, correct choices, translations,
+diagrams, or publication. Keep all private source excerpts and output
+packets outside Git. Follow the automatic QA stage with independent math
+and multilingual/visual meaning checks. No human academic sign-off is
+required.
+
+
+## Section 9.4 exact-content bounded physics verification
+
+The private script scripts/reverify_section94_bounded_physics.py recomputes
+the independent rational-math witnesses against the original controlled
+PDF and old version-bound proof receipts. Only activities whose COMPLETE
+canonical text and answer structures remain unchanged may carry forward
+those bounded proofs. Exactly changed v3 impulse content must instead pass
+its separately independently reconstructed original-PDF counterexample and
+five-option review. The new private candidate, old content, receipts and
+original source are all SHA bound.
+
+It produces a new private mathematical evidence report, NOT full academic
+PASS. Literal source locations, true finite arithmetic and correct IDs
+cannot establish all EN/MS/ZH translations, all distractor nuances,
+rendered scientific visuals or permission for public release. No manual
+academic signoff is required; unresolved meaning must remain in the
+autonomous follow-up queue.
+
+
+### Automatic original-textbook source packet provisioning
+
+After generating a validated package, the normal academic QA stage looks
+for a source-specific private provenance registry at:
+  state_dir/academic-review-provenance/<PDF SHA256>.json
+The private registry must be JSON with exactly four keys:
+  version = 1, sourceSha256, priorPackage, proofReceipts.
+The priorPackage value is an absolute path to the READ-ONLY original
+generated package; proofReceipts is a list of exactly two absolute paths
+to separate source-bound MCQ and interaction physics witness JSON files.
+The registry and private proof receipts must remain outside the public
+repository. No original learning materials are modified.
+
+The generator verifies PDF SHA256, the prior package canonical hash, every
+source receipt and all activity IDs. It re-extracts all cited text from
+the controlled original PDF, creates a new exact-version source packet in
+the private run's validation directory, then rechecks it immediately
+before any independent Gemini AI review. It extracts PDF text just once
+for all review activity page checks. An existing run packet is never
+overwritten without independent matching-version verification.
+
+No registry for an unrelated chapter can be reused: registry lookup is
+indexed by the actual PDF SHA. Invalid evidence or unavailable independent
+Gemini reviewer profiles produces machine-actionable source-check or retry
+tasks, not a mandatory human academic review. Scientific meaning,
+distractor validity, translation equivalence and rendered visual semantics
+are NOT established by original-PDF literal passage presence.
+
+Real Section 9.4 Yoga6 v3 integration: 18/18 source locations ready and
+18 automatic Gemini reviewer retries, because both independent
+browser profiles are not yet authenticated/provisioned. There was no
+live model review and nothing was published.
+
+## Finite generalization milestone and technical completion (Decision 0029)
+
+The development contract now separates completion of the reusable generator from academic acceptance of each generated textbook section. Do not repeatedly patch generic generator code for a specific source SHA, Section 9.4 activity ID, or isolated explanation. Reusable defects require a general correction and cross-PDF regression; content defects remain private, versioned source-specific corrections without platform-code churn.
+
+The authoritative finite C1–C4 exit criteria are in docs/decisions/0029-finite-generalization-completion.md; the operator-facing held-out campaign guide is docs/HELDOUT_GENERALIZATION_CAMPAIGN.md. C3 requires three genuinely **unseen**, independently precommitted, rights-cleared PDFs representing three different physics topic families, all processed on one frozen commit without per-PDF code edits. Domain binding, source ingestion, draft validation, real interactive learner behavior and EN/MS/ZH rendering require honest evidence for each case. One cross-PDF general-code fix and one new three-PDF campaign may follow an initial failure; no indefinite repetition.
+
+The optional offline metadata-only assessor is invoked as:
+
+    python scripts/assess_heldout_generalization.py --manifest <PRIVATE_MANIFEST.json> --results <PRIVATE_RECEIPTS.json> --out <NEW_PRIVATE_REPORT.json>
+
+This command does **not** open or process a PDF, call a model, verify raw receipt provenance, grant academic PASS or publish. READY_FOR_TRUSTED_PROVENANCE_AUDIT means the bounded metadata is internally complete, not that C3 or C4 passed. Keep original sources, reviewer output, manifests, model credentials and student files outside the repository and outside unauthorized tool scopes. Exact Section 9.4 v11 remains 0/18 formal academic PASS until independently evidenced.
+
+## Native V3 Gemini SDK readiness and genuine pilot (2026-11-14)
+
+The V3 standalone `scripts/run_v3_native_gemini_review.py` now runs
+`app_generator.runtime.native_sdk_environment.delegate_to_supported_sdk`
+inside the **normal executable path** only after immutable-scope planning
+and explicit generated-text-transfer consent. On an older global
+`google-genai` installation lacking `types.HttpRetryOptions`, it
+reuses a compatible ignored project `.venv`, or creates that venv and
+performs one bounded installation of the pre-existing pinned project
+dependencies. Failure is terminal for that invocation before any model
+request. The delegated child is marked to prevent recursive bootstraps;
+no system Python installation is changed. The shared SDK constructor
+also rejects unsupported retry controls before key lookup.
+
+The independent real Google API one-activity review on HP completed on
+frozen commit `9b570101`, before this recovery code was introduced.
+Two distinct `gemini_api` reviewer claims were both `COMPLETE`, with
+one `AI_CONSENSUS_PASS` aggregate for Section 9.1 activity 1, no
+uncertain claims, and no release receipt. See
+`docs/V3_NATIVE_GEMINI_LIVE_PILOT_20261114.md`. This is genuine
+model-transport evidence, not independent academic certification and
+not a claim that the rest of Chapter 9 has passed.
+
+## Gemini V3 server-capacity recovery and section quarantine (Decision 0040)
+
+Normal native `scripts/run_v3_native_gemini_review.py` sets
+`continue_independent=True` when planning and dispatching. Only a distinct
+approved frozen section whose aggregate and role claims remain clean can be
+selected after another section recorded an uncertain Google `ServerError`.
+The affected section remains quarantined, its original `AMBIGUOUS` claim
+and `AI_UNCERTAIN` aggregate stay immutable, and no extra review PASS,
+release receipt or re-submission can be inferred. A cross-section active
+run lock prevents overlapping live reviewer attempts.
+
+`app_generator/validation/v3_server_error_recovery.py` reads only
+package-bound role-claim metadata to impose a 30-minute capacity cooldown
+on new independent work, or a rolling-hour two-fault circuit. It never
+contacts Google, rotates keys, reads source PDFs, edits checkpoints or
+proves provider request delivery. If the provider is still unavailable,
+the normal runner stops with a truthful status rather than looping.
+The generic `plan_v3_course_review` remains strict unless its caller
+explicitly selects independent section continuation; the normal native
+entrypoint selects it automatically. See
+`docs/decisions/0040-v3-server-error-quarantine.md` and the permanent
+BSA-20261114-165 regressions. The one genuinely completed Section 9.1
+activity remains independent of any synthetic validation or later
+Section 9.2 attempt.
+
+## Yoga 6 native V3 ownership and Gemini ServerError fast-stop (2026-11-15)
+
+The owner-designated Bosla native-review workstation is Yoga 6, not
+Dell-115 or HP. The current project authority records
+`native_gemini_review_host="YOGA6"`. The ordinary native Gemini CLI
+checks this expected OS hostname before entering SDK setup, credentials,
+role-claim creation or model transport; wrong-host execution stops
+closed. This setting is project-specific and must be reviewed on
+legitimate workstation reassignment. Dry-run source-free planning does
+not depend on host authorization.
+
+A real, isolated Yoga 6 execution (source revision `089681b`) returned
+Gemini `ServerError` for both first-activity reviewer contexts. A
+source-free DNS and unauthenticated HTTPS check confirmed basic endpoint
+reachability, not provider model readiness. The true Yoga 6 checkpoint
+records `AI_UNCERTAIN` and an open capacity circuit; neither role may
+be resubmitted. Earlier HP results cannot replace this Yoga 6 evidence.
+
+The revised V3 engine uses a shared capacity-error classifier:
+if a physics reviewer receives recognized `ServerError` before a
+usable response, the second role is permanently `SKIPPED_UNSENT`
+(`requestSubmitted=false`) rather than causing a second avoidable
+provider request. The standard checkpoint and progress counters preserve
+the distinction. After the cooldown, a **new** frozen activity may
+deterministically use another already-configured key based on the count
+of distinct historical capacity-failed activities. A submitted role
+never changes credentials, retries or receives synthetic PASS. Neither
+software proof nor a later successful review certifies the original
+uncertain activity or authorizes publication. See Decision 0041 and
+`docs/V3_GEMINI_YOGA6_SERVERERROR_20261115.md`.

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "contractId": "BOSLA_V3_OWNER_AUTHORIZED_REVISED_SECTION96_SCIENCE_20261118",
+  "authorizedBy": "OWNER_EXPLICIT_CHAT_PROCEED_2026-11-18",
+  "scope": "TWO_NEW_VERSIONED_SECTION96_ONE_ACTIVITY_GEMINI_SCIENCE_REVIEWS",
+  "authorizedHost": "Yoga 6",
+  "provider": "gemini_api",
+  "historicalCharter": "docs/acceptance_closure_chapter9.json",
+  "historicalCharterRemainsFrozen": true,
+  "previousPaidCharter": "docs/v3_paid_gemini_review_authorization_20261117.json",
+  "previousPaidCharterRemainsFrozen": true,
+  "reviewInputs": [
+    {
+      "index": 5,
+      "activityId": "mcq-mod-bat-cut-mass-comparison",
+      "parentPackageSha256": "bf9c5553f435b53a8822e1a907811d61d0fcc286d22e85e3473ce38d59ffb49d",
+      "reviewSliceSha256": "738292dc2b94d011cb3c2d2da811f837d3326d9e30dc8d991977314d829014b7"
+    },
+    {
+      "index": 9,
+      "activityId": "int-easy-line-of-action-motion",
+      "parentPackageSha256": "65e35a3727090119031411422a2728e1fefb2cb0c0ae71dd3307937eec2871dd",
+      "reviewSliceSha256": "45d6ba0cf52b952bbc9267bb94893d3642aa2b1fa3322fd49a0e4b4dd9b169d6"
+    }
+  ],
+  "maxActivitiesPerInvocation": 2,
+  "maxIndependentGeminiCallsPerActivity": 2,
+  "maxTotalGeminiCalls": 4,
+  "maxElapsedSecondsPerInvocation": 900,
+  "paidGeminiApiGenerationAuthorized": true,
+  "generatedLearningTextTransferAuthorized": true,
+  "noReplayOfOriginalOrRevisedSubmittedRoles": true,
+  "useImmutableRoleClaims": true,
+  "allowSourcePDFUpload": false,
+  "allowBatchJobCreation": false,
+  "allowAutomatedScheduler": false,
+  "allowUnboundedRecurrence": false,
+  "versionedCourseAdmissionAuthorized": false,
+  "publicationAuthorized": false,
+  "releaseApprovalRequiredSeparately": true
+}

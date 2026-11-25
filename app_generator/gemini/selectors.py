@@ -118,6 +118,8 @@ RESPONSE_COMPLETE = (
     ("css selector", 'model-response response-footer'),
 )
 MODEL_SELECTOR = (
+    # Updated Gemini mode picker can be visible as "Open mode picker, currently ...".
+    ("css selector", 'button[aria-label^="Open mode picker"]'),
     ("css selector", 'button[aria-label*="model"]'),
     ("css selector", '[role="button"][aria-haspopup="menu"][aria-label*="Model"]'),
 )

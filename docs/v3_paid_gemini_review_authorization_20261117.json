@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "contractId": "BOSLA_V3_OWNER_AUTHORIZED_PAID_GEMINI_REVIEW_20261117",
+  "authorizedBy": "OWNER_EXPLICIT_CHAT_APPROVAL_2026-11-17",
+  "scope": "NEW_VERSIONED_CHAPTER9_GEMINI_EVIDENCE_CAMPAIGN",
+  "historicalCharter": "docs/acceptance_closure_chapter9.json",
+  "historicalCharterRemainsFrozen": true,
+  "paidGeminiApiGenerationAuthorized": true,
+  "generatedLearningTextTransferAuthorized": true,
+  "authorizedHost": "Yoga 6",
+  "provider": "gemini_api",
+  "allowedWorkflows": [
+    "FROZEN_ORIGINAL_ELIGIBLE_NEW_ACTIVITY",
+    "ISOLATED_CORRECTED_SECTION_9_2_ACTIVITY"
+  ],
+  "allowedSectionsForOriginalReviews": [
+    "section-9-3",
+    "section-9-4",
+    "section-9-5",
+    "section-9-6"
+  ],
+  "correctedActivityId": "act-int-iso-05",
+  "correctedCandidateSha256": "49a7f18c7cc2b7c00e0b6b23838cca1ed7fe52262384e0c26bbc8360fa3e9174",
+  "maxActivitiesPerInvocation": 4,
+  "maxElapsedSecondsPerInvocation": 900,
+  "maxIndependentGeminiCallsPerActivity": 2,
+  "noRetryOfAmbiguousProviderRequest": true,
+  "protectedHistoricalSection": "section-9-1",
+  "useImmutableRoleClaims": true,
+  "allowBatchJobCreation": false,
+  "allowAutomatedScheduler": false,
+  "allowUnboundedRecurrence": false,
+  "allowSourcePDFUpload": false,
+  "versionedCourseAdmissionAuthorized": false,
+  "publicationAuthorized": false,
+  "releaseApprovalRequiredSeparately": true
+}

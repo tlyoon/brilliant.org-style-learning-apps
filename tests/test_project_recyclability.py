@@ -63,6 +63,11 @@ class ProjectRecyclabilityTests(unittest.TestCase):
         self.assertNotEqual(alpha.gem_url, beta.gem_url)
         self.assertNotEqual(alpha.oauth_login, beta.oauth_login)
         self.assertNotEqual(alpha.login_name, beta.login_name)
+        for recycled in (alpha, beta):
+            self.assertFalse(recycled.git_publish, "new project cannot inherit old Git publishing")
+            self.assertFalse(recycled.git_auto_merge, "new project cannot inherit old auto-merge")
+            self.assertFalse(recycled.public_deploy, "new project cannot inherit old public deployment")
+            self.assertFalse(recycled.public_deploy_auto_merge, "new project cannot auto-merge deployed pages")
         self.assertEqual("alpha-physics-section-15-1", alpha.for_subchapter("15.1").source_id)
         self.assertEqual("beta-mechanics-section-15-1", beta.for_subchapter("15.1").source_id)
 

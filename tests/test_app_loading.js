@@ -56,6 +56,7 @@ function packageNamed(name) {
   return {
     subchapter: name,
     activities: [{
+      id: "activity-" + name,
       difficulty: "easy",
       prompt: localized("prompt"),
       answerKey: { correct: "a", options: [{ id: "a", label: localized("option") }] },
@@ -88,7 +89,9 @@ function flush() {
   assert.equal(locale.disabled, true);
   assert.doesNotThrow(() => locale.listeners.change({ target: { value: "ms" } }));
   assert.doesNotThrow(() => locale.listeners.change({ target: { value: "zh" } }));
-  assert.equal(app.children.length, 0);
+  assert.match(app.textContent, /Loading selected learning package/,
+    "initial standalone load must show an inert pending state");
+  assert.equal(descendants(app).some((node) => node.tagName === "H1"), false);
 
   vm.runInContext('loadPackage("older.json")', context);
   vm.runInContext('loadPackage("newer.json")', context);
@@ -108,7 +111,52 @@ function flush() {
   const finalHeading = descendants(app).find((node) => node.tagName === "H1");
   assert.equal(finalHeading.textContent, "newer zh prompt");
   assert.equal(locale.disabled, false);
-  console.log("Locale changes and out-of-order package loads are race-safe.");
+
+  // A loaded package is a trust boundary: duplicate IDs alias the same
+  // anonymous completion/misconception counters across two activities.
+  const duplicate = packageNamed("duplicate");
+  duplicate.activities.push({ ...duplicate.activities[0] });
+  vm.runInContext('loadPackage("duplicate.json")', context);
+  requests.get("duplicate.json")({ ok: true, json: async () => duplicate });
+  await flush();
+  await flush();
+  assert.match(app.textContent, /Invalid learning package activity identifiers/, "duplicate activity IDs must fail closed before any learner activity renders");
+  assert.equal(vm.runInContext("state.package === null", context), true);
+  assert.equal(vm.runInContext("Object.keys(state.sessionMetrics).length", context), 0);
+
+  const missing = packageNamed("missing");
+  delete missing.activities[0].id;
+  vm.runInContext('loadPackage("missing.json")', context);
+  requests.get("missing.json")({ ok: true, json: async () => missing });
+  await flush();
+  await flush();
+  assert.match(app.textContent, /Invalid learning package activity identifiers/, "missing activity IDs must fail closed, not share the undefined evidence key");
+
+  const recovered = packageNamed("recovered");
+  vm.runInContext('loadPackage("recovered.json")', context);
+  requests.get("recovered.json")({ ok: true, json: async () => recovered });
+  await flush();
+  await flush();
+  assert.equal(descendants(app).find((node) => node.tagName === "H1").textContent,
+    "recovered zh prompt", "a valid fresh package should recover after invalid input");
+
+  // Direct loadPackage() is a supported host API as well as the instructor
+  // preview path. A pending replacement must not expose stale answer controls
+  // or old session mastery while the new package fetch is unresolved.
+  vm.runInContext("state.sessionMetrics['activity-recovered'] = {checks:1,wrong:1}", context);
+  vm.runInContext('loadPackage("pending.json")', context);
+  assert.equal(vm.runInContext("state.package === null", context), true, "pending direct package replacement must invalidate the previous package immediately");
+  assert.equal(vm.runInContext("Object.keys(state.sessionMetrics).length", context), 0,
+    "pending direct package replacement must clear prior anonymous evidence");
+  assert.equal(descendants(app).some((node) => node.tagName === "H1"), false, "pending direct package replacement must hide stale learner questions");
+  assert.match(app.textContent, /Loading selected learning package/,
+    "direct package replacement should render an inert pending placeholder");
+  requests.get("pending.json")({ ok: true, json: async () => packageNamed("pending") });
+  await flush();
+  await flush();
+  assert.equal(descendants(app).find((node) => node.tagName === "H1").textContent,
+    "pending zh prompt", "fresh package must become usable after load completes");
+  console.log("Locale, race ordering and fail-closed package session boundaries passed.");
 })().catch((error) => {
   console.error(error);
   process.exitCode = 1;

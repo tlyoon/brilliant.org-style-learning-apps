@@ -6,7 +6,7 @@ Public deployments are tracked in:
 config/deployments.json
 ```
 
-The registry is the repository-owned record of public app routes. Publication eligibility is determined by automated repository validation and configured deployment checks; package status remains metadata.
+The registry is the repository-owned record of public app routes. Publication eligibility additionally requires exact-package, independently supported academic PASS and valid visual-value/product contracts through the shared academic release gate, as well as configured deployment controls; green repository CI alone is insufficient. Package status remains metadata.
 
 ## List deployments
 
@@ -52,7 +52,7 @@ New automatic review deployments also record optional `packageSha256`, the SHA-2
 
 ## Automatic public deployment
 
-This project's enabled policy uses `tlyoon/section-8-1-learning-app` and routes a section as `section-{section_slug}/` (for example, `9.1` is `section-9-1/`). Workers build only the minimal static bundle, open/reuse a deterministic package-digest branch and PR in that public repository, and merge it automatically. Source PDFs, Drive marker data, run state, raw model responses, credentials, and source manifests never enter that repository. Automated validation and configured deployment checks are the publication gate; manual review is optional.
+This project's enabled policy uses `tlyoon/section-8-1-learning-app` and routes a section as `section-{section_slug}/` (for example, `9.1` is `section-9-1/`). Workers build only the minimal static bundle, open/reuse a deterministic package-digest branch and PR in that public repository, and merge it automatically. Source PDFs, Drive marker data, run state, raw model responses, credentials, and source manifests never enter that repository. The publisher enforces source-grounded academic evidence and visual/product gate checks for the exact package bytes before any public repository mutation, in addition to configured deployment controls. Manual academic review is optional; independent evidence and explicit publication authorization are not.
 
 ### Direct links to activities
 

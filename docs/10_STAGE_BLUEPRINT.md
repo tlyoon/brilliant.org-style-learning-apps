@@ -19,7 +19,7 @@ The intended high-level evolution is:
 ```text
 Stage 0  Validated single-source-root PDF-to-learning-package baseline
    ↓
-Stage 1  Multi-source topic and course knowledge/pedagogy model
+Stage 1  Single-textbook topic and course knowledge/pedagogy model
    ↓
 Stage 2  Visual-interactive activity framework
    ↓
@@ -98,13 +98,13 @@ SOURCE ROOT
 └── 14/
 ```
 
-A topic folder may contain one, two, three, or any number of PDF files. All eligible PDFs within a topic folder collectively form that topic's authoritative source corpus for generation. `source.pdf` remains valid for backward compatibility but must not permanently define the only eligible source filename.
+**Amended 22 November 2026 (BSA243):** BOSLA uses exactly ONE instructor-selected textbook as the authoritative source for each generated course. For each topic/subchapter, only its explicitly configured primary textbook PDF (normally source.pdf) may enter generation. Other PDFs that happen to be stored in the folder are not automatically part of its corpus, and no external textbook is fetched to supplement it. Historical three-PDF generalization experiments are NOT production, source, or release dependencies. This statement supersedes the older multi-PDF topic-corpus design; see docs/BOSLA_SINGLE_TEXTBOOK_SOURCE_CONTRACT_v1.md.
 
 The exact filenames and directory naming convention may be configurable, but the architectural rules are stable:
 
 > **There is one Source Root for the project.**
 >
-> **The primary pedagogical generation unit is the topic; PDFs are source documents belonging to that topic.**
+> **The primary pedagogical generation unit is the topic; its one selected textbook PDF is the sole authoritative source for that topic.**
 
 The target end-state pipeline is therefore:
 
@@ -113,9 +113,9 @@ ONE CONFIGURED SOURCE ROOT
             ↓
 Discover course/chapter/topic structure
             ↓
-For each topic, discover all eligible source PDFs
+For each topic, resolve ONLY the configured textbook PDF
             ↓
-Synthesize the topic source corpus
+Extract and ground the topic in that one textbook source
             ↓
 Generate a Topic Learning Model
             ↓
@@ -130,7 +130,7 @@ Generate / update the Course Learning Model
 Present one coherent course-level learning environment
 ```
 
-The system must not treat overlapping explanations in different PDFs as unrelated duplicate concepts. Multiple source documents should be synthesized into one topic model while retaining provenance back to the supporting source documents.
+The system must preserve topic and course continuity across subchapters of the same selected textbook, without introducing material from unrelated books or other PDF files. Every generated activity retains provenance to its selected textbook source. External multi-PDF stress testing is optional historical QA, never an input prerequisite.
 
 The system should also support incremental generation. Unchanged topic corpora should be skippable, while a topic whose source set changes can be regenerated without unnecessarily rebuilding every other topic. Source manifests, content hashes, versioning, or equivalent mechanisms should make this behavior reliable and auditable.
 

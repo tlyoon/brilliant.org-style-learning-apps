@@ -27,6 +27,16 @@ EDITABLE_VALUES = {
     ("compatibility", "legacy_environment_prefix"): "legacy_environment_prefix",
 }
 
+# Project recycling must not inherit enabled publication to the old course's
+# repository or deployment. Keep the existing site's controls untouched when
+# only editing the same project identity.
+RESET_ON_NEW_PROJECT = (
+    ("git", "git_publish"),
+    ("git", "git_auto_merge"),
+    ("automation", "public_deploy"),
+    ("automation", "public_deploy_auto_merge"),
+)
+
 
 class ProjectConfigurationError(RuntimeError):
     """The requested project initialization cannot be applied safely."""
@@ -83,6 +93,20 @@ def render_project_configuration(text: str, values: Mapping[str, str]) -> str:
         raise ProjectConfigurationError(f"Existing project configuration is invalid TOML: {exc}") from exc
     if not isinstance(payload.get("project"), Mapping):
         raise ProjectConfigurationError("Existing configuration must contain a [project] table")
+    previous_name = payload["project"].get("project_name")
+    if not isinstance(previous_name, str):
+        raise ProjectConfigurationError("Existing project name must be a string")
+    recycling = previous_name != requested["project_name"]
+    if recycling:
+        # Fail before constructing an output if this version's tracked config
+        # cannot prove that every external publication switch is explicitly
+        # disabled. The current authority contains all four switches.
+        for table, key in RESET_ON_NEW_PROJECT:
+            table_data = payload.get(table)
+            if not isinstance(table_data, Mapping) or type(table_data.get(key)) is not bool:
+                raise ProjectConfigurationError(
+                    f"Project recycling requires boolean release control: {table}.{key}"
+                )
 
     section = ""
     replaced: set[tuple[str, str]] = set()
@@ -106,6 +130,13 @@ def render_project_configuration(text: str, values: Mapping[str, str]) -> str:
                 raise ProjectConfigurationError(f"Duplicate configuration key: {section}.{key}")
             line = f"{key} = {_toml_string(requested[value_name])}"
             replaced.add(marker)
+        elif recycling:
+            for table, key in RESET_ON_NEW_PROJECT:
+                if section == table and stripped.startswith(f"{key} ="):
+                    # An identity change establishes a new project, never a
+                    # continuation of the old project's release authority.
+                    line = f"{key} = false"
+                    break
         output.append(line)
     missing = set(EDITABLE_VALUES) - replaced
     if missing:
@@ -113,9 +144,15 @@ def render_project_configuration(text: str, values: Mapping[str, str]) -> str:
         raise ProjectConfigurationError(f"Project configuration is missing editable key(s): {names}")
     rendered = "\n".join(output).rstrip() + "\n"
     try:
-        tomllib.loads(rendered)
+        result = tomllib.loads(rendered)
     except tomllib.TOMLDecodeError as exc:
         raise ProjectConfigurationError(f"Rendered project configuration is invalid TOML: {exc}") from exc
+    if recycling:
+        for table, key in RESET_ON_NEW_PROJECT:
+            if result[table][key] is not False:
+                raise ProjectConfigurationError(
+                    f"New project retained unsafe publication setting: {table}.{key}"
+                )
     return rendered
 
 

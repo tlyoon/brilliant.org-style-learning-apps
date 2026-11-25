@@ -9,7 +9,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
-from app_generator.filesystem.outputs import write_json_atomic, write_text_atomic
+from app_generator.filesystem.outputs import write_json_atomic, write_text_atomic, _write_bytes_atomic
 from app_generator.runtime.state import StateStore
 
 SAFE_STAGE = re.compile(r"^[a-z0-9-]+$")
@@ -80,7 +80,9 @@ class RunContext:
     def save_raw_response(self, name: str, raw_response: str) -> None:
         if not SAFE_STAGE.fullmatch(name):
             raise ValueError(f"Unsafe stage name: {name}")
-        write_text_atomic(self.batches / f"{name}.response.txt", raw_response)
+        # Preserve exact UTF-8 bytes for local SHA-bound recovery.
+        _write_bytes_atomic(
+            self.batches / f"{name}.response.txt", raw_response.encode("utf8"))
 
     def load_stage(self, name: str) -> object | None:
         path = self.batches / f"{name}.json"

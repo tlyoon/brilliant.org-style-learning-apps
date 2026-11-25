@@ -21,6 +21,24 @@ class ChromeSessionTests(unittest.TestCase):
             gem_edit_url="https://gemini.google.com/gems/edit/demo",
         )
 
+    def test_missing_selenium_fails_without_launch_or_profile_mutation(self):
+        import builtins
+        original_import = builtins.__import__
+
+        def fail_selenium(name, *args, **kwargs):
+            if name == "selenium" or name.startswith("selenium."):
+                raise ImportError("synthetic missing Selenium")
+            return original_import(name, *args, **kwargs)
+
+        with tempfile.TemporaryDirectory() as root, \
+             patch("builtins.__import__", side_effect=fail_selenium), \
+             patch("app_generator.browser.chrome.subprocess.Popen") as launch:
+            session = ChromeSession(self.config(root))
+            with self.assertRaisesRegex(BrowserError, "Selenium is not installed"):
+                session.start()
+            launch.assert_not_called()
+            self.assertFalse((Path(root) / "gemini-browser").exists())
+
     def test_controlled_opens_regular_gemini_window_before_driver_connection(self):
         with tempfile.TemporaryDirectory() as root:
             config = self.config(root)
@@ -46,6 +64,33 @@ class ChromeSessionTests(unittest.TestCase):
                 session.close()
                 driver.execute_cdp_cmd.assert_called_once_with("Browser.close", {})
                 driver.quit.assert_called_once_with()
+
+    def test_owned_automation_process_cleanup_even_after_partial_driver_failure(self):
+        process=Mock()
+        process.poll.return_value=None
+        with tempfile.TemporaryDirectory() as root:
+            session=ChromeSession(self.config(root), _automation_process=process)
+            session.close()
+            process.terminate.assert_called_once()
+            process.wait.assert_called_once_with(timeout=5)
+            session.close()
+            process.terminate.assert_called_once()
+
+    def test_completed_owned_process_is_not_terminated(self):
+        process=Mock()
+        process.poll.return_value=0
+        with tempfile.TemporaryDirectory() as root:
+            session=ChromeSession(self.config(root), _automation_process=process)
+            session.close()
+            process.terminate.assert_not_called()
+
+    def test_attach_mode_does_not_terminate_unrelated_process(self):
+        process=Mock()
+        process.poll.return_value=None
+        with tempfile.TemporaryDirectory() as root:
+            session=ChromeSession(self.config(root,"attach"),_automation_process=process)
+            session.close()
+            process.terminate.assert_not_called()
 
     def test_manual_sign_in_window_has_no_debugging_before_automation_relaunch(self):
         manual_process = Mock()

@@ -336,8 +336,10 @@ def _landing_page() -> str:
 """
 
 
-def build(output: Path) -> None:
-    """Create an empty-directory release bundle containing only public runtime files."""
+def build(output: Path, *, local_preview: bool = False) -> None:
+    """Build only an explicitly marked local draft comparison preview."""
+    if not local_preview:
+        raise ValueError("Historical multi-section drafts are not approved for public release; use --local-preview")
 
     if output.exists() and any(output.iterdir()):
         raise ValueError(f"Output directory must be empty: {output}")
@@ -365,7 +367,16 @@ def build(output: Path) -> None:
         Path("section-8-5/index.html"): _section_eight_five_page().encode("utf-8"),
         **packages,
     }
+    # Every generated page must state draft status visibly; no release
+    # pathway exists here for the six historic unapproved package variants.
+    notice = (
+        b'<p class="prototype-notice" role="note">'
+        b'LOCAL DRAFT PREVIEW - NOT APPROVED FOR PUBLICATION'
+        b'</p>'
+    )
     for relative, payload in files.items():
+        if relative.suffix == ".html":
+            payload = payload.replace(b'<main class="shell">', b'<main class="shell">\n' + notice, 1)
         target = output / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(payload)
@@ -386,10 +397,12 @@ def build(output: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("output", type=Path, help="Empty directory for the public release bundle")
+    parser.add_argument("output", type=Path, help="New or empty local preview directory")
+    parser.add_argument("--local-preview", action="store_true",
+                        help="Explicit unapproved local-only comparison preview")
     args = parser.parse_args()
     try:
-        build(args.output.resolve())
+        build(args.output.resolve(), local_preview=args.local_preview)
     except (subprocess.CalledProcessError, ValueError) as error:
         parser.error(str(error))
 

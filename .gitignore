@@ -43,3 +43,5 @@ generator*.local.toml
 generator*.local*.toml
 project.local*.toml
 generator-runs/
+# Private, machine-local instructor pilot roster (never publish)
+local-pilot/

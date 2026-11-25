@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "scopeId": "bosla-rc1-sourcefree-course-routing-20261111",
+  "kind": "INDEPENDENT_SOURCEFREE_ENGINEERING_SCOPE",
+  "baselineGitSha": "a6bc4dac35b6fb0a157ac0261bfe3474b2b1a78b",
+  "mode": "ORIGINAL_SYNTHETIC_CONCEPTS_ONLY",
+  "gatesSource": "docs/acceptance_closure_chapter9.json",
+  "originalChapter9CampaignsReopened": false,
+  "textbookEditionOrRightsGateRequired": false,
+  "externalModelCallsAllowed": false,
+  "sourcePdfReadsAllowed": false,
+  "realLearnerRecordsAllowed": false,
+  "publicPublicationAllowed": false,
+  "gitAutoMergeAllowed": false,
+  "reviewBudget": {
+    "maxSyntheticBrowserSmokes": 1,
+    "maxSourceCampaigns": 0,
+    "maxAcademicExternalReviews": 0
+  },
+  "sections": [
+    {
+      "id": "concept-vectors",
+      "title": "Vector reasoning",
+      "prerequisites": []
+    },
+    {
+      "id": "concept-motion",
+      "title": "Motion representations",
+      "prerequisites": [
+        "concept-vectors"
+      ]
+    },
+    {
+      "id": "concept-forces",
+      "title": "Force diagrams",
+      "prerequisites": [
+        "concept-vectors"
+      ]
+    },
+    {
+      "id": "concept-energy",
+      "title": "Energy representations",
+      "prerequisites": [
+        "concept-motion"
+      ]
+    },
+    {
+      "id": "concept-systems",
+      "title": "System boundaries",
+      "prerequisites": [
+        "concept-forces"
+      ]
+    },
+    {
+      "id": "concept-connections",
+      "title": "Connecting concepts",
+      "prerequisites": [
+        "concept-energy",
+        "concept-systems"
+      ]
+    }
+  ]
+}

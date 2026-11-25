@@ -51,6 +51,27 @@ class GoogleAccountVerifierTests(unittest.TestCase):
         with self.assertRaises(WrongAccountError):
             self.verify([element])
 
+    def test_noninteractive_existing_login_is_accepted_without_prompt(self):
+        driver = Mock()
+        driver.find_elements.side_effect=lambda by,selector: (
+            [self.element(self.expected)] if (by,selector)==ACCOUNT_CONTROLS[0] else []
+        )
+        GoogleAccountVerifier(driver,self.expected,0).verify_noninteractive()
+
+    def test_noninteractive_signed_out_fails_fast_without_requesting_login(self):
+        driver = Mock()
+        driver.find_elements.return_value=[]
+        with self.assertRaises(AuthenticationRequired):
+            GoogleAccountVerifier(driver,self.expected,0).verify_noninteractive()
+
+    def test_noninteractive_wrong_login_cannot_authenticate(self):
+        driver = Mock()
+        driver.find_elements.side_effect=lambda by,selector: (
+            [self.element("other@example.org")] if (by,selector)==ACCOUNT_CONTROLS[0] else []
+        )
+        with self.assertRaises(WrongAccountError):
+            GoogleAccountVerifier(driver,self.expected,0).verify_noninteractive()
+
     def test_generic_email_buttons_are_not_active_account_controls(self):
         self.assertNotIn(("css selector", 'button[aria-label*="@"]'), ACCOUNT_CONTROLS)
 

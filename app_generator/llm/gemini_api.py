@@ -11,7 +11,12 @@ from pathlib import Path
 from typing import Any, Callable
 
 from app_generator.config import GeneratorConfig
-from app_generator.errors import AuthenticationRequired, GeminiApiError, ResponseContractError, TransientGeminiError
+from app_generator.errors import (
+    AuthenticationRequired, ExternalExecutionDenied, GeminiApiError,
+    ResponseContractError, TransientGeminiError,
+)
+from app_generator.llm.gemini_key_failover import (build_keyed_gemini_client, find_gemini_keys)
+
 
 VERTEX_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
 
@@ -50,8 +55,79 @@ def _client_project_id(client_file: Path) -> str:
     return ""
 
 
-def build_gemini_sdk_client(config: GeneratorConfig) -> Any:
-    """Create a Gemini Developer API-key client or OAuth Vertex AI client."""
+def build_v3_native_text_sdk_components(config: Any, *, candidate_offset: int = 0) -> tuple[Callable[[str], Any], Any]:
+    """Make two SDK clients with the shared Gemini gateway's credential rules.
+
+    This path is ONLY for the exact V3 generated-text-only assessment: never
+    attaches a PDF, opens a browser or issues a model probe outside the V3
+    per-role IN_FLIGHT checkpoint. No SDK automatic retries or key fallback
+    after a possibly submitted request. Distinct clients share one authorized
+    Google API key but no conversation histories.
+    """
+    try:
+        from google import genai
+        from google.genai import types
+    except ImportError as exc:
+        raise AuthenticationRequired(
+            "google-genai is required for the native V3 Gemini reviewer"
+        ) from exc
+    # Required SDK retry control must be checked before any client or model
+    # claim. Older global SDK installations cannot silently retry V3 calls.
+    if not callable(getattr(types, "HttpRetryOptions", None)):
+        raise AuthenticationRequired(
+            "V3_NATIVE_GEMINI_SDK_RETRY_GUARD_UNAVAILABLE: "
+            "use the pinned project SDK in its isolated .venv"
+        )
+    candidates = find_gemini_keys()
+    if not candidates:
+        raise AuthenticationRequired(
+            "V3_NATIVE_GEMINI_KEY_UNAVAILABLE; configure a Google API key "
+            "outside the repository"
+        )
+    if type(candidate_offset) is not int or candidate_offset < 0:
+        raise ValueError("V3_NATIVE_INVALID_CREDENTIAL_CANDIDATE")
+    # One fixed configured key for both roles of this NEW activity.
+    # No model probe, no fallback after submit, no credential value in logs.
+    secret = candidates[candidate_offset % len(candidates)].secret
+
+    def create_client(role: str) -> Any:
+        if role not in ("physics", "semantics"):
+            raise ValueError("V3_NATIVE_REVIEWER_ROLE_UNKNOWN")
+        return genai.Client(
+            api_key=secret,
+            http_options=types.HttpOptions(
+                timeout=config.gemini_api_timeout_seconds * 1000,
+                retry_options=types.HttpRetryOptions(attempts=1),
+            ),
+        )
+
+    return create_client, types
+
+
+def send_v3_native_text_once(
+    client: Any, sdk_types: Any, model: str, prompt: str,
+) -> Any:
+    """Shared-Gemini-gateway call, exactly one generated-text-only request.
+
+    The role-bound V3 native conversation MUST latch and the normal private
+    checkpoint MUST record IN_FLIGHT before calling this function. Never
+    retry, rotate keys or submit an uncheckpointed availability prompt here.
+    """
+    generation_config = sdk_types.GenerateContentConfig(
+        response_mime_type="application/json",
+        max_output_tokens=4096,
+    )
+    return client.models.generate_content(
+        model=model, contents=prompt, config=generation_config,
+    )
+
+
+def build_gemini_sdk_client(config: GeneratorConfig, *, probe_keys: bool = True) -> Any:
+    """Create a Gemini client; automatically select a working API key before source use.
+
+    A caller that is *provably non-generating*, such as doctor, may explicitly
+    pass probe_keys=False. PDF generation always uses the default preflight.
+    """
 
     try:
         from google import genai
@@ -62,12 +138,9 @@ def build_gemini_sdk_client(config: GeneratorConfig) -> Any:
         ) from exc
 
     timeout_ms = config.gemini_api_timeout_seconds * 1000
-    api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
-    if api_key:
-        return genai.Client(
-            api_key=api_key,
-            http_options=types.HttpOptions(timeout=timeout_ms),
-        )
+    keyed_client = build_keyed_gemini_client(genai, types, config, probe_keys=probe_keys)
+    if keyed_client is not None:
+        return keyed_client
 
     if not config.drive_oauth_client_file.is_file():
         raise AuthenticationRequired(
@@ -120,7 +193,10 @@ def build_gemini_sdk_client(config: GeneratorConfig) -> Any:
         project=project_id,
         location=config.gemini_api_location,
         credentials=credentials,
-        http_options=types.HttpOptions(api_version="v1", timeout=timeout_ms),
+        http_options=types.HttpOptions(
+            api_version="v1", timeout=timeout_ms,
+            retry_options=types.HttpRetryOptions(attempts=1),
+        ),
     )
 
 
@@ -301,13 +377,22 @@ class GeminiApiClient:
         source_paths: tuple[Path, ...],
         *,
         sdk_client: Any | None = None,
+        sdk_types: Any | None = None,
         sleep: Callable[[float], None] = time.sleep,
     ) -> None:
         self.config = config
         self.source_paths = tuple(Path(path) for path in source_paths)
         self.sdk_client = sdk_client
-        self.sleep = sleep
+        # Fake SDK callers may supply lightweight type factories so deterministic
+        # unit tests never import the heavyweight/network-capable provider package.
+        # Production callers use the actual provider SDK unchanged.
+        self.sdk_types = sdk_types
+        self.sleep = sleep  # Kept for constructor compatibility; source calls never retry.
         self.source_documents: list[bytes] = []
+        # A source-bearing request may have reached Gemini even when its
+        # response is lost. Block subsequent ask() calls on this client until
+        # a separate authorized reconciliation creates a fresh client.
+        self._source_request_blocked = False
         self.master_prompt = (config.repo_root / "config" / "gem_instructions.md").read_text(encoding="utf-8").strip()
         self.prompt_sha256 = hashlib.sha256(self.master_prompt.encode("utf-8")).hexdigest()
 
@@ -317,6 +402,8 @@ class GeminiApiClient:
 
     def _client(self) -> Any:
         if self.sdk_client is None:
+            # Shared factory performs source-free key fallback by default.
+            # This path is used for every production Gemini API generation.
             self.sdk_client = build_gemini_sdk_client(self.config)
         return self.sdk_client
 
@@ -332,15 +419,18 @@ class GeminiApiClient:
                 raise ResponseContractError(f"Gemini API source does not have a PDF signature: {path}")
             documents.append(data)
         self.source_documents = documents
-        self._client()  # Fail authentication/API setup before local temporary PDFs are removed.
+        self._client()  # Automatic source-free key selection; no PDF submitted.
 
     def ask(self, prompt: str, *, stage: str | None = None) -> str:
         if not self.source_documents:
             raise ResponseContractError("Gemini API source files were not prepared before generation")
-        try:
-            from google.genai import types
-        except ImportError as exc:
-            raise AuthenticationRequired("google-genai is not installed") from exc
+        if self.sdk_types is not None:
+            types = self.sdk_types
+        else:
+            try:
+                from google.genai import types
+            except ImportError as exc:
+                raise AuthenticationRequired("google-genai is not installed") from exc
 
         schema = response_schema_for_stage(stage or "")
         contents: list[Any] = [
@@ -367,39 +457,71 @@ class GeminiApiClient:
             )
         generation_config = types.GenerateContentConfig(**config_kwargs)
 
-        last_error: BaseException | None = None
-        for attempt in range(1, self.config.gemini_api_max_attempts + 1):
-            try:
-                response = self._client().models.generate_content(
-                    model=self.actual_model,
-                    contents=contents,
-                    config=generation_config,
+        if self._source_request_blocked:
+            raise TransientGeminiError(
+                "Previous Gemini source-bearing request is unresolved; "
+                "this client will not replay it without external reconciliation"
+            )
+
+        # The SDK's HTTP retries are disabled at client construction. A
+        # source-bearing request is deliberately sent at most once here.
+        # Only a successful, nonempty response clears the ambiguity latch.
+        client = self._client()
+        self._source_request_blocked = True
+        try:
+            response = client.models.generate_content(
+                model=self.actual_model,
+                contents=contents,
+                config=generation_config,
+            )
+            text = str(getattr(response, "text", "") or "").strip()
+            if not text:
+                raise ResponseContractError(
+                    "Gemini API returned no text output; request not replayed"
                 )
-                text = str(getattr(response, "text", "") or "").strip()
-                if not text:
-                    raise ResponseContractError("Gemini API returned no text output")
-                if "BEGIN_JSON" in text and "END_JSON" in text:
-                    return text
-                try:
-                    parsed = json.loads(text)
-                except json.JSONDecodeError:
-                    return text
-                return "BEGIN_JSON\n" + json.dumps(parsed, ensure_ascii=False) + "\nEND_JSON"
-            except ResponseContractError:
-                raise
-            except Exception as exc:
-                if not _retryable(exc):
-                    code = _status_code(exc)
-                    if code in {401, 403}:
-                        raise AuthenticationRequired(
-                            f"Gemini API authentication/authorization failed ({code}): {exc}"
-                        ) from exc
-                    status = f" (HTTP {code})" if code is not None else ""
-                    raise GeminiApiError(f"Gemini API request failed{status}: {exc}") from exc
-                last_error = exc
-                if attempt >= self.config.gemini_api_max_attempts:
-                    break
-                self.sleep(self.config.gemini_api_retry_backoff_seconds * (2 ** (attempt - 1)))
-        raise TransientGeminiError(
-            f"Gemini API request failed after {self.config.gemini_api_max_attempts} attempt(s): {last_error}"
-        ) from last_error
+            if "BEGIN_JSON" in text and "END_JSON" in text:
+                self._source_request_blocked = False
+                return text
+            try:
+                parsed = json.loads(text)
+            except json.JSONDecodeError:
+                self._source_request_blocked = False
+                return text
+            self._source_request_blocked = False
+            return "BEGIN_JSON\n" + json.dumps(parsed, ensure_ascii=False) + "\nEND_JSON"
+        except ResponseContractError:
+            # The model may already have processed the PDF.
+            raise
+        except ExternalExecutionDenied:
+            # Preserve the upstream boundary; do not present a wrapper's 403
+            # as Gemini authorization failure or retry an already-started call.
+            raise
+        except Exception as exc:
+            code = _status_code(exc)
+            if code in {401, 403}:
+                raise AuthenticationRequired(
+                    f"Gemini API authentication/authorization failed (HTTP {code}); "
+                    "source-bearing request not replayed"
+                ) from exc
+            if code == 402:
+                raise GeminiApiError(
+                    "Gemini API HTTP 402 billing/payment restriction; "
+                    "source-bearing request not replayed"
+                ) from exc
+            if code == 429:
+                raise TransientGeminiError(
+                    "Gemini API HTTP 429 quota/rate limit; "
+                    "no key rotation or source-bearing request replay"
+                ) from exc
+            if _retryable(exc):
+                status = f"HTTP {code}" if code is not None else type(exc).__name__
+                raise TransientGeminiError(
+                    f"Gemini API {status}; source-bearing request outcome "
+                    "may be ambiguous. No automatic retry or key rotation"
+                ) from exc
+            status = f"HTTP {code}" if code is not None else type(exc).__name__
+            raise GeminiApiError(
+                f"Gemini API request failed ({status}); "
+                "source-bearing request not replayed"
+            ) from exc
+        # KeyboardInterrupt/SystemExit propagate, leaving the ambiguity latch set.

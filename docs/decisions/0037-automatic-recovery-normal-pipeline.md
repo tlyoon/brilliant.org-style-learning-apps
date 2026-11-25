@@ -1,0 +1,110 @@
+# 0037 — Automatic recovery belongs to normal pipeline execution
+
+**Status:** Owner-approved binding BOSLA development contract, 13 November 2026.
+Extends Decisions 0027, 0028, 0032, and the current V3 Decision 0036;
+the more restrictive authentication, privacy, no-replay, and publication
+boundaries remain in force.
+
+> automatic recovery must be part of normal pipeline execution, not depend on you repeatedly asking me to fix the next blocker.
+
+## Mandatory behavior for every future development milestone
+
+1. **Reuse before repair.** On encountering a failure, the normal executor
+   checks the existing failure ledger, recurrence registry, package/run identity,
+   in-flight request claims, and current environment. Prefer the registered
+   common remedy for the same root-cause family, never another ad hoc script.
+2. **Detect and recover in the normal path.** Fixes must implement automatic
+   detection, an owned-state preflight, a bounded recovery/stop action and
+   continuation in the existing production workflow. A helper run manually by
+   an assistant, a test-only adapter, or a new wrapper that is never dispatched
+   by normal execution does **not** close the blocker.
+3. **Stop safely and continue independently.** Reconcile potentially sent
+   requests read-only; never replay an ambiguous response. External security
+   denial, absent authorization or unavailable reviewer transport are
+   non-retryable by the repository. Record the real blocker and automatically
+   advance other independently authorized work, without repeatedly asking the
+   owner to perform routine troubleshooting. If the critical path genuinely
+   depends on the denied operation, report it **blocked**, not resolved.
+4. **Fail closed with real evidence.** An accepted resolution needs an
+   adversarial pre-fix negative control, a same-path end-to-end dispatch
+   regression, a separate-input/cross-entrypoint proof where relevant,
+   exact-head CI and a truthful real-task execution receipt. Source-free
+   synthetic tests prove software behavior, not real model assessment,
+   scientific correctness, account entitlement, or release completion.
+5. **Permanent governance.** Every new resolved BSA incident must declare
+   `automaticRemedy` in `docs/recurrence_registry.json`, with its actual
+   runtime trigger, recovery or stop marker and normal dispatch entrypoint.
+   Keep the owner-approved machine-readable rule in
+   `docs/normal_pipeline_recovery_contract.json`; the existing ordinary
+   `scripts/check_regression_contract.py` CI gate must reject missing or
+   weakened requirements. No per-incident manual re-approval is requested for
+   otherwise authorized, safe, routine development.
+6. **Finite unattended execution.** Within a live authorized run, advance
+   eligible milestones until success, a finite stop budget, a real evidence
+   conflict, or an external authorization boundary. Do not promise ongoing
+   background execution when no worker or scheduled service is active.
+
+## Current Section 9.1 external blocker
+
+The existing V3 dispatcher chooses approved Section 9.1 and has already
+integrated safe batch/checkpoint/role failure recovery (BSA-148–156).
+Its two authentic provider sessions are **not available** in this
+environment. The previously denied authenticated browser runner remains
+terminal under Decision 0028 unless independently reauthorized by the
+platform. Neither this contract nor green CI creates account access or a
+valid two-model receipt. Preserve `BLOCKED_EXTERNAL_REVIEW_TRANSPORT`,
+`PENDING_AUTOMATED_ASSESSMENT` and 0/108 genuine reviews until new
+verified authorized execution evidence exists. Do not add a substitute
+fake provider or re-enter frozen source-PDF campaigns.
+
+## 17 November 2026 — Decision 0045: architecture-first recovery development
+
+The owner explicitly directed that future codebase development **must correct
+repeated failure architecture before resuming mass paid content assessment**.
+This is binding and executable in the new true-valued requirements of
+`docs/normal_pipeline_recovery_contract.json` and
+`scripts/check_regression_contract.py`. Detailed decision:
+`docs/decisions/0045-architecture-first-recovery-contract.md`.
+
+The normal reviewer must durably record returned source-free model text BEFORE
+JSON/rubric parsing and separately distinguish uncaptured provider uncertainty
+from captured local parse/rubric error. Only hash-verified captured response bytes
+can be locally reparsed without another model request. A bad local response may
+remain AI_UNCERTAIN while an unrelated activity proceeds under the normal finite
+authorization; scientific/model FAIL and old uncaptured ambiguous provider calls
+remain quarantined. A STOP that preserves safety is not proof of a REPAIR.
+
+An incident is not resolved merely because its registry entry, checkpoint and
+unit tests exist. Every recovered family requires realistic same-path response,
+failure, restart, negative control and forward-continuation evidence plus exact-
+head hosted CI before more paid model work. If any requirement is absent, do not
+resume mass generation or bypass no-replay, frozen scope or release gates.
+
+## 17 Nov 2026 — Decision 0046: activity-level original-tail recovery
+
+The normal V3 paid Gemini auto-advance worker now automatically selects **unchanged, NEVER REVIEWED frozen original Section9.6 activities** (indices6–17) when a previous original index5 review is AMBIGUOUS. Each untouched original receives a separately SHA-bound single-activity private review slice, fsynced PRE_CALL_NO_REPLAY marker and independent standard two-Gemini assessment. Every paid call still requires `--execute --allow-generated-text-transfer`, the original frozen-activity paid contract, authorized Yoga6 host, source-free provider capacity and original 4-activity/900s limits. A historical uncertain request is never retried or renamed. Only immutable original-activity exact-content PASS results can be linked into a new **unadmitted and unpublished** corrected 108-activity proposal. This is BSA-185, and does **not** claim BSA-183 (old uncertain role) is solved. Source-free normal-entrypoint fake SDK tests, crash/restart/no-replay and local malformed response continuation are mandatory; no scheduler or automatic release. **Historical provider-wide unclassified-failure/denial gating remains global**: unknown Section9.6 ValueError with no attributable response requires `STOP_UNCLASSIFIED_PROVIDER_REVIEW`, before credentials/SDK/meta and any new sibling review; a green CI cannot waive this safety boundary. See `docs/decisions/0046-independent-frozen-original-tail-recovery.md` and three new CI-checked requirements in `docs/normal_pipeline_recovery_contract.json`.
+
+## 23 November 2026 — BSA251 V24 architecture-first academic continuation
+
+The owner renewed the instruction to **make academic recovery an executable ordinary-worker loop**, not a succession of fixes requested manually. The following are permanent execution properties of Bosla, enforced through the machine-readable contract and Python CI recurrence guard:
+
+- The ordinary Yoga6 source-free worker automatically dispatches the history-first academic evidence loop after its existing signed Section9.1 revision and historical-review stages. A helper that exists only in tests or an ad hoc ChatGPT command is insufficient.
+- Historical remedies must be selected from explicit static reviewed Python handlers. Registry entries are evidence metadata and **must never be evaluated/imported as executable instructions**. Disabled or changed historical remedies stop before claiming source or model proof.
+- Each exact source-PDF and candidate-content SHA defines an independent proof ledger with **18 learning activities × five academic gates**. The loop executes original-PDF source re-extraction, bounded mathematics, negative academic/visual checks, numeric-locale analysis, and saved old/new reviewer receipts; it persists private source-free PRE_CALL, RESULT and FINAL signed receipts.
+- Two independently recomputed bounded rounds must converge to an identical evidence ledger, or the stage fails closed. The scheduler and hosted CI may not be misrepresented as an always-running background process; only a live authorized normal run advances.
+- **Three states remain distinct:** proven deterministic defect (repair only if exact registered remedy and mandatory regression evidence); missing independent proof (queue and continue eligible work, not a software bug); and proven verification (requires trusted, independent source/math/answer/visual/language evidence). Source-page identity, AI reviewer consensus, lexical checks and absence of detected defects cannot by themselves certify academic PASS or allow deployment.
+- Existing historical uncertain provider requests are never retried; saved one-activity/two-role model responses are read-only advisory evidence. No extra PDF, paid requests, public merge, deployment or retired scheduler is implied or authorized by this milestone.
+
+**Remaining independent boundary:** implement and test trusted per-gate scientific proposition, distractor/key, rendered-visual and multilingual-equivalence verifiers where evidence can legitimately be constructed from the original selected textbook. A fixed-point queue with 90 unproved gates is an accurate engineering result, **not Bosla content completion**.
+
+## 23 November 2026 — BSA252 V25 independent bounded answer-science witness engine
+
+Owner consent covers continuation from BSA251 to genuine scientific/answer checking. The normal Yoga6 V25 worker automatically invokes a controlled physics-specific adapter after signed V24, not a standalone manual helper. Its actual mathematical checks must be independently derived from the original selected textbook and exact content-version SHA. Both all nine 4-option MCQ outcomes and all nine interactive solutions must be checked against exact-rational/vector/dimensional physical models. Every wrong MCQ key and altered interactive key must be rejected in normal CI. Only source-verified **bounded** physics and answer evidence is produced: it is deliberately forbidden to claim full independent English, Malay or Chinese meaning, figure correctness or complete formal academic PASS merely because 68 finite cases pass. Any future content revision, different section or different textbook requires a new independently checked adapter and original textbook source identity, rather than transferring the old V25 verification. Continue without asking the owner to approve routine testing; respect historical immutable ambiguous Gemini role claims and no public release.
+
+### BSA252 history-reuse amendment — 23 November 2026
+
+The original genuine owner Yoga6 V25 full normal worker completed source-free EXIT0 but its single detailed 18-row science result had 12,648 bytes. An **independent read-back test immediately detected** that the historical BSA251 12,000-byte checkpoint safety cap would prevent future V25 receipt revalidation. The controller MUST NOT enlarge or bypass the cap or count the initial exit as restart-verified. Apply the same historical BSA251 V24 signed small-partition recovery: store nine MCQ and nine interactive proof rows in separately SHA-attested files, bind their signed SHAs and the complete 18-row roster SHA in a small aggregate receipt, run corruption and repeat-invocation tests, and only close BSA252 after genuine Yoga6 normal-worker replay plus an independent exact-source PDF and content-SHA witness. Preserve the old oversized private receipt as historical evidence; do not overwrite it or replay any provider action.
+
+## 23 November 2026 — BSA253 V26 dual scientific-semantic dispatch
+
+The original single-textbook Serway 9.1 private source and exact corrected 18-activity package were reopened, not inferred from historical summaries. The genuine package has zero `visualSpec` fields, so diagram correctness cannot legitimately be proved in this test set. Reuse BSA251/V24 and BSA252/V25 receipts to extend the **ordinary** Yoga6 worker with two complementary modules: (a) exact-activity-and-localized-surface SHA-indexed full proof task enumeration, including 18 explicit visual-coverage inquiries even without illustrations; and (b) real source-scoped deterministic explanation, option-reasoning, algebra, and EN/MS/ZH terminology triage that rejects incontrovertible formula/answer-logic defects but conservatively queues lexical or culturally adapted notation differences. Compare every learner-facing field across languages but NEVER infer full language semantic equivalence from symbol or dictionary agreement. The real initial pilot saw 222 localized surfaces, 32 math-bearing fields, 123 math expressions, and 26 unresolved review items; no independent full scientific/visual/trilingual PASS. Every successful source-free run must store immutable compact SHA-bound result/partitions below the existing 12KB restart checkpoint limit, with negative controls for altered formula, incorrect MCQ reference, missing locale, changed candidate, stale source, missing diagram, forged signer. No outside PDF, source transfer, paid API, old ambiguous request replay, public merge/deploy or background scheduled task. Later activities from other source-identified textbooks require their own source-grounded expert adapter, not section9.1 hardcoded proofs.

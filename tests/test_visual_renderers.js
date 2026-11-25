@@ -40,6 +40,7 @@ assert.ok(visuals);
 assert.equal(visuals.rendererVersion, "1.0.0");
 assert.deepEqual(Array.from(visuals.supportedTemplates), [
   "mechanics.cart_collision_1d",
+  "mechanics.opposite_velocity_pair_1d",
   "mechanics.free_body_2d",
   "graph.cartesian_qualitative",
   "state.energy_bar",
@@ -53,6 +54,66 @@ const common = (mode, template, description) => ({
   fallback: { mode: "structured_interaction", reason: "Fallback" },
   validation: { answerRelevantIds: ["subject"], forbidAnswerLeakage: true },
 });
+
+// BSA257 source-free positive/negative tests for the real 1-D velocity
+// comparison renderer. The private source-bound creator supplies the actual
+// Serway-page/activity attachment; this fixture never needs the textbook.
+const pairSpec = {
+  ...common("vector_diagram", "mechanics.opposite_velocity_pair_1d",
+    "Two identical bodies have equal speeds in opposite directions."),
+  semanticParameters: {
+    mass_relation: "equal", speed_relation: "equal",
+    track_orientation: "horizontal",
+  },
+  entities: [
+    { id: "drone-a", kind: "body", label: {en:"Drone A", ms:"Dron A", zh:"无人机 A"},
+      properties: {relativeMass:"equal"} },
+    { id: "drone-b", kind: "body", label: {en:"Drone B", ms:"Dron B", zh:"无人机 B"},
+      properties: {relativeMass:"equal"} },
+  ],
+  vectors: [
+    { id:"velocity-a", entityId:"drone-a", quantity:"velocity",
+      direction:"left", relativeMagnitude:0.8, label:{en:"vA",ms:"vA",zh:"vA"} },
+    { id:"velocity-b", entityId:"drone-b", quantity:"velocity",
+      direction:"right", relativeMagnitude:0.8, label:{en:"vB",ms:"vB",zh:"vB"} },
+  ],
+};
+for (const locale of ["en", "ms", "zh"]) {
+  const figure = visuals.renderVisualSpec(pairSpec,{locale,document});
+  assert.equal(figure.tagName,"FIGURE");
+  assert.equal(figure.attributes["data-template"],
+    "mechanics.opposite_velocity_pair_1d");
+  assert.ok(bySemantic(figure,"drone-a"));
+  assert.ok(bySemantic(figure,"drone-b"));
+  const left = bySemantic(figure,"velocity-a");
+  const right = bySemantic(figure,"velocity-b");
+  assert.ok(left && right, "both independently rendered arrows required");
+  assert.ok(+left.attributes.x2 < +left.attributes.x1,
+    "drone A's velocity must point left");
+  assert.ok(+right.attributes.x2 > +right.attributes.x1,
+    "drone B's velocity must point right");
+  assert.ok(Math.abs((+left.attributes.x1-+left.attributes.x2)
+    - (+right.attributes.x2-+right.attributes.x1)) < 1e-9,
+    "equal speeds must render equal length velocity vectors");
+  assert.ok(texts(figure).includes(pairSpec.entities[0].label[locale]));
+  assert.ok(texts(figure).includes(pairSpec.entities[1].label[locale]));
+  assert.equal(descendants(figure).filter(n => n.attributes["data-semantic-id"] === "momentum-a").length,0,
+    "do not reveal momentum MCQ answers in a velocity-only visual");
+}
+for (const mutate of [
+  p => {p.vectors[1].direction="left";},
+  p => {p.vectors[1].relativeMagnitude=0.4;},
+  p => {p.entities[1].properties.relativeMass="different";},
+  p => {p.semanticParameters.speed_relation="unequal";},
+  p => {p.vectors[0].quantity="momentum";},
+  p => {p.vectors.pop();},
+]) {
+  const bad=JSON.parse(JSON.stringify(pairSpec));
+  mutate(bad);
+  const figure=visuals.renderVisualSpec(bad,{locale:"en",document});
+  assert.equal(bySemantic(figure,"velocity-a"),undefined,
+    "invalid physics must fail closed, not display misleading velocity vectors");
+}
 
 const cartSpec = {
   ...common("scene_diagram", "mechanics.cart_collision_1d", "Two carts moving toward each other."),
@@ -73,7 +134,77 @@ assert.ok(bySemantic(cart, "cart-a"));
 assert.ok(bySemantic(cart, "cart-b"));
 assert.ok(bySemantic(cart, "velocity-a"));
 assert.ok(texts(cart).includes("Cart A"));
+
+// A section's phase is learner-facing text: never leave it English-only
+// when the student explicitly selected Malay or Chinese.
+for (const [locale, expected] of [
+  ["en", "Before"], ["ms", "Sebelum pelanggaran"],
+  ["zh", "\u78b0\u649e\u524d"],
+]) {
+  const figure = visuals.renderVisualSpec(cartSpec, { locale, document });
+  const phase = descendants(figure).find((n) =>
+    n.tagName === "TEXT" && n.attributes.class === "physics-visual__phase");
+  assert.equal(phase.textContent, expected, "phase must be localized");
+}
+for (const [phaseName, expected] of [
+  ["after", "Selepas pelanggaran"], ["during", "Semasa pelanggaran"],
+]) {
+  const figure = visuals.renderVisualSpec({
+    ...cartSpec, semanticParameters: {...cartSpec.semanticParameters, phase:phaseName},
+  }, { locale:"ms", document });
+  const caption = descendants(figure).find((n) =>
+    n.tagName === "TEXT" && n.attributes.class === "physics-visual__phase");
+  assert.equal(caption.textContent, expected);
+}
 assert.ok(texts(cart).includes("vA"));
+
+// Regression: opposing arrows must not place long labels at converging tips.
+const longLabels = {
+  en: ["Initial velocity v1i", "Initial velocity v2i"],
+  ms: ["Halaju permulaan v1i", "Halaju permulaan v2i"],
+  zh: ["\u521d\u59cb\u901f\u5ea6\u65b9\u5411v1i", "\u521d\u59cb\u901f\u5ea6\u65b9\u5411v2i"],
+};
+const weightedUnits = (txt) => Array.from(txt).reduce(
+  (sum, c) => sum + (c.codePointAt(0) >= 0x2e80 ? 2 : 1), 0);
+for (const locale of ["en", "ms", "zh"]) {
+  const labelSpec = {
+    ...cartSpec,
+    vectors: cartSpec.vectors.map((v, i) => ({
+      ...v, label: { en: longLabels.en[i], ms: longLabels.ms[i], zh: longLabels.zh[i] },
+    })),
+  };
+  const figure = visuals.renderVisualSpec(labelSpec, { locale, document });
+  const labels = descendants(figure).filter((n) => n.tagName === "TEXT"
+    && n.attributes["data-vector-label-for"]);
+  assert.equal(labels.length, 2);
+  assert.deepEqual(labels.map((n) => Number(n.attributes.x)), [150, 490]);
+  assert.ok(labels.every((n) => Number(n.attributes.y) === 108));
+  assert.ok(labels.every((n) => n.children.every(
+    (line) => weightedUnits(line.textContent) <= 27)));
+  assert.deepEqual(labels.map((n) => n.textContent), longLabels[locale]);
+  assert.ok(Number(labels[1].attributes.x) - Number(labels[0].attributes.x) >= 27 * 8);
+}
+const fourCartSpec = {
+  ...cartSpec,
+  entities: [0, 1, 2, 3].map((i) => ({
+    id: "cart-" + i, kind: "cart", label: localized("Cart " + i),
+  })),
+  vectors: [0, 1, 2, 3].map((i) => ({
+    id: "speed-" + i, entityId: "cart-" + i, quantity: "velocity",
+    direction: i % 2 === 0 ? "right" : "left",
+    relativeMagnitude: 0.7,
+    label: localized("A deliberately long approach velocity label"),
+  })),
+};
+const fourFigure = visuals.renderVisualSpec(fourCartSpec, { locale: "en", document });
+const fourLabels = descendants(fourFigure).filter((n) => n.tagName === "TEXT"
+  && n.attributes["data-vector-label-for"]);
+assert.equal(fourLabels.length, 4);
+assert.deepEqual(fourLabels.map((n) => Number(n.attributes.y)), [65, 110, 65, 110]);
+assert.ok(fourLabels.every((n) => n.children.every(
+  (line) => weightedUnits(line.textContent) <= 20)));
+assert.ok(fourLabels.every((n) => n.textContent ===
+  "A deliberately long approach velocity label"));
 
 const freeBodySpec = {
   ...common("vector_diagram", "mechanics.free_body_2d", "A body with force vectors."),
@@ -120,6 +251,33 @@ const kinetic = bySemantic(energy, "kinetic");
 const potential = bySemantic(energy, "potential");
 assert.ok(Number(kinetic.attributes.height) > Number(potential.attributes.height));
 assert.ok(texts(energy).includes("Kinetic"));
+
+// The original spring-energy screenshot lacked complete English/Malay labels
+// because the capture was viewport-cropped; full capture exposed the actual
+// overlap. Assert source label identity and bounded wrapped lines in all 3.
+const energyWords = {
+  en: ["Kinetic energy", "Elastic potential energy"],
+  ms: ["Tenaga kinetik", "Tenaga keupayaan kenyal"],
+  zh: ["\u52a8\u80fd", "\u5f39\u6027\u52bf\u80fd"],
+};
+for (const locale of ["en", "ms", "zh"]) {
+  const spec = {...energySpec,
+    entities: energySpec.entities.map((e, i) => ({
+      ...e, label:{en:energyWords.en[i],ms:energyWords.ms[i],zh:energyWords.zh[i]},
+    })),
+  };
+  const rendered = visuals.renderVisualSpec(spec, {locale,document});
+  const labels = descendants(rendered).filter(n =>
+    n.tagName === "TEXT" && n.className === "physics-visual__energy-label");
+  assert.equal(labels.length,2);
+  assert.deepEqual(labels.map(n => n.attributes["data-full-label"]),energyWords[locale]);
+  assert.ok(labels.every(n => n.children.length <= 3));
+  assert.ok(labels.every(n => n.children.every(
+    line => weightedUnits(line.textContent) <= 10)));
+  assert.ok(labels.every(n => Number(n.attributes.y) === 318));
+  assert.ok(labels.every(n => n.children.reduce(
+    (height, item) => height + Number(item.attributes.dy), 318) <= 350));
+}
 
 const contextArtwork = new FakeElement("img");
 const hybrid = visuals.renderDeterministicOverlay(cartSpec, { locale: "en", document, baseLayer: contextArtwork });

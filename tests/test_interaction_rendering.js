@@ -22,6 +22,7 @@ class FakeElement {
   replaceChildren(...children) { this._text = ""; this.children = [...children]; }
   setAttribute(name, value) { this.attributes[name] = String(value); if (name === "id") this.id = String(value); }
   addEventListener(name, listener) { this.listeners[name] = listener; }
+  focus() { this.wasFocused = true; }
   click() { if (!this.disabled) this.listeners.click?.({ target: this }); }
 }
 
@@ -68,6 +69,12 @@ const packageData = {
       items: [item("keep-one"), item("leave"), item("keep-two")],
       correctSelections: ["keep-one", "keep-two"],
     }),
+    // The reverse of the authored list is a valid answer for this fixture.
+    // The player must not hand out an independently correct prefilled answer.
+    base("ordering-reverse-is-answer", "ordering", {
+      items: [item("a"), item("b"), item("c")],
+      correctOrder: ["c", "b", "a"],
+    }),
   ],
 };
 
@@ -86,12 +93,20 @@ function choosePlacements(app, targetLabels) {
   assert.equal(groups.length, targetLabels.length);
   groups.forEach((group, index) => {
     find(group, (node) => node.tagName === "BUTTON" && node.textContent === targetLabels[index]).click();
+    assert.ok(
+      findAll(app, (node) => node.className === "choice target-choice").some((node) => node.wasFocused),
+      "classification/matching focus must survive rerender",
+    );
   });
 }
 function moveDown(app, itemLabel) {
   const row = find(app, (node) => node.className === "order-row" && node.textContent.includes(itemLabel));
   const controls = find(row, (node) => node.className === "order-controls");
   controls.children[1].click();
+  assert.ok(
+    findAll(app, (node) => node.className === "secondary order-control").some((node) => node.wasFocused),
+    "ordering move must restore focus to a valid control on the new row",
+  );
 }
 
 const app = new FakeElement("section");
@@ -102,6 +117,12 @@ const context = {
   document: {
     createElement: (tagName) => new FakeElement(tagName),
     querySelector: (selector) => selector === "#app" ? app : locale,
+    querySelectorAll: (selector) => {
+      if (selector === "#app .target-choice") return findAll(app, (node) => node.className === "choice target-choice");
+      if (selector === "#app .choices button") return findAll(app, (node) => node.className === "choice");
+      if (selector === "#app .order-control") return findAll(app, (node) => node.className === "secondary order-control");
+      return [];
+    },
   },
   fetch: async () => ({ ok: true, json: async () => packageData }),
 };
@@ -114,15 +135,41 @@ setImmediate(() => {
   choosePlacements(app, ["R", "G", "B"]);
   checkAndAdvance(app);
 
+  const ordinaryPrefillCorrect = vm.runInContext(
+    "responseCorrect(state.package.activities[state.activityIndex])", context
+  );
+  assert.equal(ordinaryPrefillCorrect, false, "ordinary authored-order answer must also start unsolved");
   moveDown(app, "C");
   moveDown(app, "C");
+  const cRow = find(app, (node) => node.className === "order-row" && node.dataset?.itemId === "c");
+  const focusedAtBoundary = find(cRow, (node) => node.wasFocused === true);
+  assert.equal(focusedAtBoundary.dataset.delta, "-1", "last item must focus enabled reverse-direction control");
   moveDown(app, "B");
   checkAndAdvance(app);
 
   find(app, (node) => node.tagName === "BUTTON" && node.textContent === "KEEP-ONE").click();
+  assert.equal(find(app, (node) => node.dataset?.value === "keep-one").wasFocused, true);
   find(app, (node) => node.tagName === "BUTTON" && node.textContent === "KEEP-TWO").click();
+  assert.equal(find(app, (node) => node.dataset?.value === "keep-two").wasFocused, true);
+  checkAndAdvance(app);
+
+  const prefilledOrderCorrect = vm.runInContext(
+    "responseCorrect(state.package.activities[state.activityIndex])", context
+  );
+  assert.equal(prefilledOrderCorrect, false, "initial ordering arrangement must never already be the correct answer");
+  assert.equal(
+    vm.runInContext("masteryEvidence().independent", context), 4,
+    "initial ordering must not gain unearned independent mastery",
+  );
+  moveDown(app, "A");
+  moveDown(app, "A");
+  moveDown(app, "B");
   checkAndAdvance(app);
 
   assert.equal(find(app, (node) => node.tagName === "H1").textContent, "Journey complete");
+  const completionEvidence = vm.runInContext(
+    "state.sessionMetrics['ordering-reverse-is-answer'].completionEvidence", context
+  );
+  assert.equal(completionEvidence, "independent", "manually constructed correct ordering must still earn first-attempt credit");
   console.log("All interaction modes render, accept keyboard-native button input, and score correctly.");
 });

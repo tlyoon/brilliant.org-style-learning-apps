@@ -145,6 +145,12 @@ def validate_package(data: Any, source: str = "package") -> list[str]:
     errors.extend(package_domain_errors(DOMAIN_ROOT, data, source))
     errors.extend(visual_contract_errors(DOMAIN_ROOT, data, source))
 
+    # Binding owner V3/Decision 0036: publishable status no longer demands
+    # visualPlan objects or an independently approved meaningful-visual quota.
+    # The existing visual_contract_errors above still rejects malformed
+    # optional visuals; complete model review now assesses whether a
+    # text-first representation is pedagogically appropriate.
+
     if data["status"] in {"review", "publishable"}:
         required_review_fields = (
             "prerequisites", "misconceptionCatalogue", "evidencePolicy", "reviewRecord",

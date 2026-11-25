@@ -5,13 +5,21 @@ from __future__ import annotations
 from collections import Counter
 from collections.abc import Callable
 from copy import deepcopy
+import json
 import re
 from typing import Any, Protocol
+
+from jsonschema import Draft202012Validator
 
 from app_generator.domains import DomainProfile, compose_domain_prompt
 from app_generator.generation.assembler import assemble_package, validate_activity_batch, validate_plan
 from app_generator.generation.extraction import parse_json_response
 from app_generator.errors import ResponseContractError, ValidationFailure
+from app_generator.filesystem.outputs import write_json_atomic
+from app_generator.generation.repair_diagnostics import (
+    StableRepairContractError, InteractionSolutionError, classify_repair_failure,
+)
+from app_generator.runtime.run_context import SAFE_STAGE
 from app_generator.prompts import (
     activity_batch_prompt,
     activity_plan_prompt,
@@ -25,6 +33,7 @@ from app_generator.prompts import (
 from app_generator.runtime.run_context import RunContext
 from app_generator.visuals.generation import (
     attach_visual_documents,
+    partition_visual_specs,
     selected_visual_activity_ids,
     visual_generation_catalog,
 )
@@ -158,22 +167,20 @@ class GenerationProtocol:
     def _assert_stable_activity_contract(original: dict[str, Any], replacement: dict[str, Any]) -> None:
         for field in ("id", "type", "difficulty", "objective", "interactionMode"):
             if original.get(field) != replacement.get(field):
-                raise ValueError(f"Repair attempted to change stable activity field {field} for {original.get('id')}")
+                raise StableRepairContractError("STABLE_FIELD", field)
         if set(original.get("misconceptions", [])) != set(replacement.get("misconceptions", [])):
-            raise ValueError(f"Repair attempted to change stable misconceptions for {original.get('id')}")
+            raise StableRepairContractError("STABLE_MISCONCEPTIONS", "misconceptions")
         original_recovery = original.get("prerequisiteRecovery", {}).get("prerequisiteId")
         replacement_recovery = replacement.get("prerequisiteRecovery", {}).get("prerequisiteId")
         if original_recovery and original_recovery != replacement_recovery:
-            raise ValueError(f"Repair attempted to change the prerequisite for {original.get('id')}")
+            raise StableRepairContractError("STABLE_PREREQUISITE", "prerequisite")
         for path in (("answerKey", "options"), ("interaction", "items"), ("interaction", "targets")):
             old_items = original.get(path[0], {}).get(path[1], [])
             new_items = replacement.get(path[0], {}).get(path[1], [])
             old_ids = {item.get("id") for item in old_items if isinstance(item, dict) and item.get("id")}
             new_ids = {item.get("id") for item in new_items if isinstance(item, dict) and item.get("id")}
             if old_ids and not old_ids.issubset(new_ids):
-                raise ValueError(
-                    f"Repair attempted to remove or rename stable {path[1]} IDs for {original.get('id')}"
-                )
+                raise StableRepairContractError("STABLE_INTERNAL_IDS", path[1])
 
     @staticmethod
     def _assert_complete_interaction_solution(activity: dict[str, Any]) -> None:
@@ -183,22 +190,22 @@ class GenerationProtocol:
         item_ids = [item.get("id") for item in interaction.get("items", [])]
         mode = activity.get("interactionMode")
         if mode == "ordering" and Counter(interaction.get("correctOrder", [])) != Counter(item_ids):
-            raise ResponseContractError("Ordering repair must order every item ID exactly once")
+            raise InteractionSolutionError("Ordering repair must order every item ID exactly once")
         if mode in {"classification", "matching"}:
             placements = interaction.get("placements", [])
             placed_items = [placement.get("itemId") for placement in placements]
             target_ids = [target.get("id") for target in interaction.get("targets", [])]
             placed_targets = [placement.get("targetId") for placement in placements]
             if Counter(placed_items) != Counter(item_ids):
-                raise ResponseContractError("Placement repair must place every item ID exactly once")
+                raise InteractionSolutionError("Placement repair must place every item ID exactly once")
             if any(target not in target_ids for target in placed_targets):
-                raise ResponseContractError("Placement repair references an unknown target ID")
+                raise InteractionSolutionError("Placement repair references an unknown target ID")
             if mode == "matching" and set(placed_targets) != set(target_ids):
-                raise ResponseContractError("Matching repair must use every target ID")
+                raise InteractionSolutionError("Matching repair must use every target ID")
         if mode == "selection":
             selections = interaction.get("correctSelections", [])
             if any(item not in item_ids for item in selections) or len(selections) >= len(item_ids):
-                raise ResponseContractError("Selection repair must select declared items and leave one unselected")
+                raise InteractionSolutionError("Selection repair must select declared items and leave one unselected")
 
     def _repair_stage(
         self,
@@ -206,6 +213,15 @@ class GenerationProtocol:
         original: dict[str, Any],
         prompt_factory: Callable[[], str],
     ) -> dict[str, Any]:
+        if not SAFE_STAGE.fullmatch(name):
+            raise ValueError("invalid repair-stage identifier")
+        diagnostic_path = self.context.diagnostics / f"{name}-repair-attempts.json"
+        attempts: list[dict[str, Any]] = []
+        activity_id = original.get("id")
+        safe_activity_id = (
+            activity_id if isinstance(activity_id, str)
+            and SAFE_STAGE.fullmatch(activity_id) else "unverified"
+        )
         for attempt in range(3):
             try:
                 replacement = self._stage(name, prompt_factory)
@@ -225,12 +241,25 @@ class GenerationProtocol:
                 validate_activity_batch({"activities": [replacement]}, [plan])
                 self._assert_complete_interaction_solution(replacement)
                 return replacement
-            except (ResponseContractError, ValueError):
+            except (ResponseContractError, ValueError) as exc:
+                record = classify_repair_failure(exc)
+                attempts.append({"attempt": attempt + 1, **record})
+                # Store only deterministic enums and identifiers: never raw
+                # model errors, response text, prompts or source PDF data.
+                write_json_atomic(diagnostic_path, {
+                    "status": "FAILED_CONTRACT_ATTEMPTS",
+                    "stage": name, "activityId": safe_activity_id,
+                    "attemptLimit": 3, "attempts": attempts,
+                    "sourceTextStored": False,
+                    "publicationAuthorized": False,
+                })
                 self.context.discard_stage(name)
                 if attempt == 2:
+                    categories = ",".join(row["category"] for row in attempts)
                     raise ResponseContractError(
-                        f"Activity repair for {original.get('id')} did not preserve its stable contract"
-                    )
+                        f"Activity repair for {safe_activity_id} did not preserve its stable contract "
+                        f"(categories={categories})"
+                    ) from None
         raise AssertionError("unreachable")
 
     def _audit_stage(self, name: str, prompt_factory: Callable[[], str]) -> dict[str, Any]:
@@ -324,9 +353,19 @@ class GenerationProtocol:
         if not isinstance(analysis, dict):
             raise ResponseContractError("Visual generation requires a valid source-analysis checkpoint")
         catalog = visual_generation_catalog(self.domain_profile)
+        plan_schema_path = self.domain_profile.repo_root / "content" / "schema" / "visual-plan.schema.json"
+        visual_plan_schema = json.loads(plan_schema_path.read_text(encoding="utf-8"))
+        visual_plan_validator = Draft202012Validator(visual_plan_schema)
+        schema_path = self.domain_profile.repo_root / "content" / "schema" / "visual-spec.schema.json"
+        visual_spec_schema = json.loads(schema_path.read_text(encoding="utf-8"))
         correction_errors: list[str] = []
+        validated_records: dict[str, dict[str, Any]] = {}
 
         for attempt in range(2):
+            plans = None
+            specs = None
+            selected_ids: list[str] = []
+            current_stage = "visual-specs"
             try:
                 plans = self._stage(
                     "visual-plans",
@@ -334,36 +373,98 @@ class GenerationProtocol:
                         package,
                         analysis,
                         catalog,
+                        visual_plan_schema=visual_plan_schema,
                         correction_errors=correction_errors,
                     ),
                 )
                 selected_ids = selected_visual_activity_ids(package, plans)
-                if selected_ids:
-                    specs = self._stage(
-                        "visual-specs",
-                        lambda: visual_specs_prompt(
-                            package,
-                            plans,
-                            catalog,
-                            correction_errors=correction_errors,
-                        ),
+                # Fail before requesting expensive specs. This is a general
+                # schema check, never a PDF-specific property-name repair.
+                for record in plans["activities"]:
+                    failures = sorted(
+                        visual_plan_validator.iter_errors(record["visualPlan"]),
+                        key=lambda error: tuple(map(str, error.absolute_path)),
                     )
+                    if failures:
+                        first = failures[0]
+                        field_path = ".".join(map(str, first.absolute_path)) or "<root>"
+                        raise ResponseContractError(
+                            f"visual-plans {record['activityId']} schema mismatch at "
+                            f"{field_path} ({first.validator}); use exact authoritative schema keys"
+                        )
+                if not validated_records:
+                    cached = self.context.load_stage("visual-specs-validated")
+                    if isinstance(cached, dict) and isinstance(cached.get("activities"), list):
+                        # Never blindly trust a checkpoint: verify its items
+                        # against the present plans, package, and domain renderer.
+                        validated_records, _ = partition_visual_specs(
+                            self.domain_profile.repo_root, package, plans, cached
+                        )
+                if selected_ids:
+                    # Keep already validated individual specifications, and
+                    # request only the remaining set on the bounded retry.
+                    remaining = set(selected_ids) - set(validated_records)
+                    if remaining:
+                        current_stage = "visual-specs-repair" if validated_records else "visual-specs"
+                        reply = self._stage(
+                            current_stage,
+                            lambda: visual_specs_prompt(
+                                package,
+                                plans,
+                                catalog,
+                                visual_spec_schema=visual_spec_schema,
+                                target_activity_ids=remaining if validated_records else None,
+                                correction_errors=correction_errors,
+                            ),
+                        )
+                        if validated_records:
+                            if not isinstance(reply, dict) or not isinstance(reply.get("activities"), list):
+                                raise ResponseContractError("Targeted visual-spec reply must contain activities")
+                            ids = [record.get("activityId") for record in reply["activities"] if isinstance(record, dict)]
+                            if len(ids) != len(remaining) or len(ids) != len(set(ids)) or set(ids) != remaining:
+                                raise ResponseContractError("Targeted visual-spec reply must cover only the failed IDs")
+                            specs = {"activities": list(validated_records.values()) + reply["activities"]}
+                        else:
+                            specs = reply
+                    else:
+                        specs = {"activities": list(validated_records.values())}
                 else:
                     specs = {"activities": []}
                     self.context.save_stage("visual-specs", specs)
-                return attach_visual_documents(
-                    self.domain_profile.repo_root,
-                    package,
-                    plans,
-                    specs,
-                )
+                result = attach_visual_documents(self.domain_profile.repo_root, package, plans, specs)
+                self.context.discard_stage("visual-specs-validated")
+                return result
             except ResponseContractError as exc:
-                correction_errors = [str(exc)]
-                self.context.discard_stage("visual-plans")
-                self.context.discard_stage("visual-specs")
+                finding = str(exc)
+                correction_errors = [finding]
+                spec_only = (
+                    finding.startswith("Generated visual contract failed:")
+                    and ".visualSpec" in finding
+                    and ".visualPlan" not in finding
+                ) or finding.startswith(("visual-specs ", "Targeted visual-spec "))
+                if spec_only and isinstance(plans, dict) and isinstance(specs, dict):
+                    try:
+                        accepted, failures = partition_visual_specs(
+                            self.domain_profile.repo_root, package, plans, specs,
+                        )
+                    except ResponseContractError:
+                        accepted, failures = {}, []
+                    if accepted and len(accepted) < len(selected_ids):
+                        validated_records = accepted
+                        self.context.save_stage(
+                            "visual-specs-validated",
+                            {"activities": list(accepted.values())},
+                        )
+                    correction_errors = failures[:12] or correction_errors
+                if not spec_only:
+                    self.context.discard_stage("visual-plans")
+                    self.context.discard_stage("visual-specs-validated")
+                    validated_records = {}
+                self.context.discard_stage(current_stage)
                 if attempt == 1:
                     raise ResponseContractError(
-                        "Visual generation did not converge within two validated batch attempts"
+                        "Visual generation did not converge within two validated batch attempts. "
+                        f"Last deterministic finding: {finding[:1200]}"
                     ) from exc
         raise AssertionError("unreachable")
 

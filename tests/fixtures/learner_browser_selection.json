@@ -1,0 +1,56 @@
+{
+  "subchapter": "Synthetic keyboard selection test",
+  "activities": [
+    {
+      "id": "synthetic-select",
+      "type": "interactive",
+      "difficulty": "easy",
+      "interactionMode": "selection",
+      "prompt": {
+        "en": "Select the true statement",
+        "ms": "Pilih pernyataan yang benar",
+        "zh": "选择正确的陈述"
+      },
+      "hints": [
+        {
+          "en": "Select one option.",
+          "ms": "Pilih satu pilihan.",
+          "zh": "选择一个选项。"
+        }
+      ],
+      "feedback": {
+        "en": "Feedback.",
+        "ms": "Maklum balas.",
+        "zh": "反馈。"
+      },
+      "explanation": {
+        "en": "Synthetic only.",
+        "ms": "Sintetik sahaja.",
+        "zh": "仅供测试。"
+      },
+      "interaction": {
+        "items": [
+          {
+            "id": "correct-item",
+            "label": {
+              "en": "True",
+              "ms": "Benar",
+              "zh": "正确"
+            }
+          },
+          {
+            "id": "wrong-item",
+            "label": {
+              "en": "False",
+              "ms": "Salah",
+              "zh": "错误"
+            }
+          }
+        ],
+        "correctSelections": [
+          "correct-item"
+        ]
+      }
+    }
+  ]
+}

@@ -27,7 +27,8 @@
     "modelsModule": "simulations/models.py"
   },
   "validation": {
-    "visualValidatorModule": "validators/visual_validation.py"
+    "visualValidatorModule": "validators/visual_validation.py",
+    "academicValidatorModule": "validators/academic_validation.py"
   },
   "verification": {
     "policy": "verification/verification-policy.json"
@@ -35,6 +36,10 @@
   "trustedRenderers": {
     "mechanics.cart_collision_1d": [
       "cart-collision-v1",
+      "1.0.0"
+    ],
+    "mechanics.opposite_velocity_pair_1d": [
+      "opposing-velocity-v1",
       "1.0.0"
     ],
     "mechanics.free_body_2d": [

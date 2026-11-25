@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import tempfile
@@ -12,6 +13,7 @@ from pathlib import Path
 from typing import Callable
 
 from app_generator.errors import GitPublishError
+from app_generator.runtime.academic_release import enforce_academic_release_gate
 from scripts.build_public_release import build
 
 
@@ -41,10 +43,9 @@ class PublicPagesPublisher:
         return hashlib.sha256(package_path.read_bytes()).hexdigest()
 
     def route_for(self, subchapter_id: str) -> str:
-        route = f"section-{subchapter_id.replace('.', '-')}/"
-        if not route.startswith("section-") or ".." in Path(route).parts:
-            raise GitPublishError(f"Unsafe public release route: {route}")
-        return route
+        if not isinstance(subchapter_id, str) or not re.fullmatch(r"[0-9]+(?:\.[0-9]+)+", subchapter_id):
+            raise GitPublishError("Public release route requires a numeric dotted section ID")
+        return f"section-{subchapter_id.replace('.', '-')}/"
 
     def branch_for(self, subchapter_id: str, digest: str) -> str:
         return f"{self.config.public_deploy_branch_prefix}/section-{subchapter_id.replace('.', '-')}-{digest[:12]}"
@@ -82,7 +83,28 @@ class PublicPagesPublisher:
         subchapter_id: str,
         ensure_lease: Callable[[], None],
     ) -> PublicDeployResult:
+        # This direct entrypoint cannot bypass the immutable, existing
+        # Chapter9 public-scope boundary (BSA227). An auto-merge here would
+        # overwrite already public content without a pinned V9 handoff.
+        # Refuse before even querying/pushing public GitHub.
+        if (getattr(self.config,"public_deploy_repository",None)==
+                "tlyoon/section-8-1-learning-app"
+                and subchapter_id in {f"9.{number}" for number in range(1,7)}
+                and bool(getattr(self.config,"public_deploy_auto_merge",False))):
+            raise GitPublishError(
+                "Protected Chapter9 public auto-merge requires a pinned non-destructive release proposal")
+        # This is a separate callable entry point (used by auto recovery
+        # as well as run_generation). Guard it independently so the caller
+        # cannot skip academic verification by avoiding the orchestrator.
+        ensure_lease()
+        state_dir = getattr(self.config, "state_dir", None)
+        if not isinstance(state_dir, Path):
+            raise GitPublishError("Public release requires a local state_dir for academic QA receipts")
         digest = self.package_digest(package_path)
+        evidence_dir = state_dir / "academic-publication-gates" / digest
+        enforce_academic_release_gate(
+            Path(self.config.repo_root), package_path, evidence_dir,
+        )
         branch = self.branch_for(subchapter_id, digest)
         public_url = self.public_url_for(subchapter_id)
         existing = self._pr_for_branch(branch)
@@ -112,7 +134,10 @@ class PublicPagesPublisher:
             if route.exists():
                 shutil.rmtree(route)
             bundle = Path(directory) / "bundle"
-            build(bundle, package_path, source_root=self.config.repo_root)
+            build(
+                bundle, package_path, source_root=self.config.repo_root,
+                validation_dir=evidence_dir,
+            )
             shutil.copytree(bundle, route)
             self._run(["git", "add", "--", self.route_for(subchapter_id)], cwd=checkout)
             self._run(["git", "diff", "--cached", "--check"], cwd=checkout)
@@ -146,6 +171,11 @@ class PublicPagesPublisher:
             self._run(["gh", "pr", "reopen", pr_url, "--repo", self.config.public_deploy_repository])
             existing = self._pr_for_branch(branch) or existing
             pr_url = str(existing.get("url", pr_url))
+        # BSA228: prepared public PR is a valid non-destructive handoff.
+        # The old publisher ignored public_deploy_auto_merge=False and
+        # always merged; preserve that flag as a genuine safety control.
+        if not bool(getattr(self.config,"public_deploy_auto_merge",False)):
+            return PublicDeployResult(branch,pr_url,digest,public_url,False)
         self._run(["gh", "pr", "merge", pr_url, "--merge", "--repo", self.config.public_deploy_repository])
         info = self._pr_for_branch(branch)
         if not info or not self._merged(info):

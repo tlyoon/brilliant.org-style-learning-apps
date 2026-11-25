@@ -203,3 +203,69 @@ If the project is already bootstrapped, do not bootstrap again on every PC.
 Change `project_name` and other project-dependent values through `config/configure_project.toml` on a reviewed branch. The new project automatically receives its own `%LOCALAPPDATA%\<project_name>` state root, OAuth/token paths, Chrome profile paths, run state, environment namespace, and managed-coordinator project identity. Controlled browser launches open independent regular Chrome directly on Gemini using the separate `gemini-browser` child of `chrome_profile_dir`; legacy and personal profiles are not reused or cleared. The separate profile starts signed out on first use and can retain a manually verified Gemini login for later launches. A Chrome-assigned loopback debug port avoids dependence on an old debug session. Explicit `attach` mode requires an already-open browser and leaves its login unchanged.
 
 See `docs/GENERIC_PROJECT_SETUP.md` for the full recycling procedure.
+
+## Project-bound native Gemini reviewer workstation
+
+For the BOSLA V3 generated-text review, the owner has designated
+the Windows **Yoga 6** machine. Its current project-specific authority,
+`config/configure_project.toml`, includes
+`[project].native_gemini_review_host = "YOGA6"`.
+This is an accepted nonsecret configuration key in the strict workstation
+synchronizer and is preserved when generating local project settings.
+It does not alter machine ownership for generic generators or
+managed coordinator workers in other projects.
+
+The separate native V3 reviewer CLI validates the OS hostname from that
+authority before preparing the Gemini SDK, reading credentials or writing
+review claims. Direct native review on HP or Dell-115 fails closed.
+Read-only evidence planning remains portable. Legitimate reassignment
+requires reviewing the project-specific hostname value with the code
+and its tests; do not bypass the mismatch by renaming the host or
+copying private review claims. See Decision 0041 and
+`docs/V3_GEMINI_YOGA6_SERVERERROR_20261115.md` for the observed
+Yoga 6 provider failure and source-free recovery checks.
+
+## BOSLA Yoga 6 scheduled Gemini recovery worker (Decision 0042)
+
+The owner-approved V3 recovery worker lives in
+`scripts/run_v3_yoga6_recovery_worker.py`. It is **read-only by default**,
+and, when invoked with `--diagnose-only`, performs at most two bounded
+source-free `models.get` SDK metadata checks (no activity text submitted).
+The production task uses
+`--execute --allow-generated-text-transfer`, but the normal frozen-course
+planner, 30-minute/one-hour capacity circuit, Yoga 6 hostname, OS-owned
+single-instance coordinator lock, exact package role claims, and two failed
+activity campaign budget remain mandatory. Each eligible invocation may
+review at most ONE new activity. Only an authenticated model return from
+the preexisting V3 engine creates a model decision.
+
+To inspect the task without creating one (Yoga 6 PowerShell):
+
+```powershell
+powershell -NoProfile -File .\scripts\install_yoga6_v3_recovery.ps1
+```
+
+To install/verify one Windows Scheduled Task using the **currently logged-in
+Yoga 6 account** (never run on HP/Dell):
+
+```powershell
+powershell -NoProfile -File .\scripts\install_yoga6_v3_recovery.ps1 -Install
+```
+
+The task is named `BoslaYoga6V3Recovery`, scheduled at 30-minute
+intervals, ignores overlapping instances and runs with the user's
+**interactive logon**. It cannot run while that Windows user is logged out
+and is not a cloud background service. A 60-minute execution time limit
+is used to avoid terminating a potentially accepted two-role SDK call
+mid-flight. The install script refuses a conflicting pre-existing task.
+Remove only this owned task with `-Uninstall`; do not clear model
+checkpoints or operator credentials when uninstalling.
+
+The recovery receipt is a small sanitized
+`%LOCALAPPDATA%\Microvid\BoslaV3ReviewYoga6\yoga6-recovery-status.json`.
+The checkpoint and receipt are **outside Git/Drive**. Never copy private
+source, role claims, credentials or raw model responses into this document
+or into PR comments. The scheduler must remain safely stoppable on
+provider denial, ambiguous request, circuit stop, and changed frozen
+scope. Source-free metadata HTTP 200 means only that the model metadata
+can be accessed; it is not a successful Gemini generation.

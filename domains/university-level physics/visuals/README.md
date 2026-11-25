@@ -17,3 +17,9 @@ Provider names and model versions do not belong in generated activity content. R
 `implementationStatus` distinguishes a contract that merely exists from a template that the learner runtime can actually render. `available` entries bind to an exact repository renderer ID and version. `planned` entries are not selectable for publishable generated content.
 
 The current deterministic runtime (`physics-renderers.js`, renderer version `1.0.0`) implements cart/collision, free-body/vector, qualitative Cartesian graph, and energy-bar templates. The motion-slider simulation is available as `mechanics.motion_1d_slider` with the trusted `kinematics.motion_1d` model.
+
+## Renderer-specific generation guidance
+
+renderer-guidance.json documents exact entity types, counts and parameter constraints for the five trusted physics renderers. Its constraints mirror validators/visual_validation.py and must be updated together with the validator and renderer. The validator remains authoritative; unsafe or scientifically inconsistent output always fails closed.
+
+The entity-properties JSON schema now accepts camelCase semantic keys while preserving strict entity-ID validation. For energy bars, the manifest explicitly requires case-sensitive properties.relativeAmount (not relative_amount), with numeric values in the inclusive range 0..1. The physics validator reports aliases as failures; correcting model instructions is preferred over silently rewriting untrusted semantic specifications.
