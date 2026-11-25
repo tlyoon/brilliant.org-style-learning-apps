@@ -22,6 +22,9 @@ from app_generator.runtime.v3_post_v30_bounded_mcq_semantics import (
 from app_generator.runtime.v3_post_v31_other_mcq_locale_roles import (
     _STATUS32,run_post_v31_other_eight_mcq_localized_proofs,
 )
+from app_generator.runtime.v3_post_v32_interactive_mutation_proofs import (
+    _STATUS34, run_post_v32_interactive_mutation_proofs,
+)
 from app_generator.runtime.v3_blocker_isolated_development import (
     run_safe_isolated_development_lanes,
 )
@@ -37,8 +40,10 @@ _TRANSITIONS={
                run_post_v30_independent_mcq_semantics),
     _STATUS31:(_STATUS32,"privateOtherMcqWitnessPilot",
                run_post_v31_other_eight_mcq_localized_proofs),
+    _STATUS32:(_STATUS34,"privateInteractiveMutationPilot",
+               run_post_v32_interactive_mutation_proofs),
 }
-_MAX_NEW_STAGES_PER_INVOCATION=4
+_MAX_NEW_STAGES_PER_INVOCATION=5
 
 
 def advance_eligible_verified_development_stages(
@@ -91,7 +96,7 @@ def advance_eligible_verified_development_stages(
                 run_safe_isolated_development_lanes(
                     repo=repo,private=private,ready=ready,
                     completed_dependencies=(
-                        {"v32_source_chain"} if current["status"]==_STATUS32
+                        {"v32_source_chain"} if current["status"] in {_STATUS32, _STATUS34}
                         else set()),
                     blocked_operation="source_bound_academic_successor_chain")
             except Exception:
@@ -104,7 +109,7 @@ def advance_eligible_verified_development_stages(
         isolation=run_safe_isolated_development_lanes(
             repo=repo,private=private,ready=ready,
             completed_dependencies=(
-                {"v32_source_chain"} if current["status"]==_STATUS32
+                {"v32_source_chain"} if current["status"] in {_STATUS32, _STATUS34}
                 else set()))
     independent_ok=(not run_independent_lanes or
                     isolation.get("status")=="INDEPENDENT_SAFE_LANES_ALL_VERIFIED")

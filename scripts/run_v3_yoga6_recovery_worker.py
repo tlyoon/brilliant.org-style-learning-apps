@@ -1586,6 +1586,21 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             and result.get("autonomousDevelopmentContinuation",{}).get(
                                 "privateOtherMcqWitnessPilot",{}).get(
                                 "publicationAuthorized") is False
+                            # BSA262: V34 checks every interactive answer model,
+                            # rejects deliberately wrong solutions and binds three
+                            # localized item/prompt/explanation surfaces to source.
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "stagesExecutedThisRun")>=5
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveMutationPilot",{}).get("status")==
+                                "V34_NINE_SOURCE_BOUND_INTERACTIVE_MUTANTS_REJECTED_PRIVATE_NO_RELEASE"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveMutationPilot",{}).get(
+                                "independentlyRejectedWrongAnswerMutants")==9
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveMutationPilot",{}).get("fullAcademicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveMutationPilot",{}).get("publicationAuthorized") is False
                             # BSA261: unrelated content/regression/readback
                             # work must execute even when one eligible lane
                             # fails. Never turn a quarantined lane into exit0.

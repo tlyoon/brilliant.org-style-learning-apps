@@ -9247,6 +9247,73 @@
       ],
       "lastValidatedDate": "2026-11-24",
       "nextAction": "ENGINEERING RESOLVED at executable Bosla head 10801d736eaa38348dee1f900c87e4856c8e3c0c; complete GitHub hosted CI #45418872014 SUCCESS, including all unit tests, permanent incident regression contracts and real Chrome checks. Original Yoga6 normal --source-free-advance source-free V1?V33 worker EXIT0 at same HEAD (22:56:43?23:07:07 MYT), all four V29?V32 academic source-bound successor stages executed in one worker, and all three new isolated development workstreams VERIFIED independent PASS: historical-regression contract, 16 package structure checks and independent source-pinned V32 receipt plus real EN/MS/ZH PNG pixel readback. Saved exact private V33 immutable receipt V33_ISOLATED_DEVELOPMENT_LANES_597f34d96a8fdd036fbe7752.json under signed owner-head evidence folder. Separate new Python proof reopened the unchanged original Serway ?9.1 textbook PDF SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50, the immutable revised candidate SHA 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38, original V33 signed identity, and reran full independent V32/PDF/PNG witness EXIT0. Independent BSA261 owner receipt SHA 0e7853c355eff00f1800c64e63a94a649b02498081aac0902377a460aa0a1f34. Authentic earlier failure demonstrated recovery contract lane quarantined due nonexistent historical incident ID while other two real lanes continued; historical lookup fixed BSA-20261123-254 link and subsequent real owner 3-lane rerun PASS, both earlier failure and corrected results preserved in distinct signed receipts. No paid Gemini, external PDFs, ambiguous replay, public merge or deployment, no false scientific PASS. All 90 complete academic acceptance gates and 429 comprehensive source/trilingual/visual semantic proof tasks remain OPEN. Next eligible work: other nine interactive tasks, independent full explanation semantic verification and source-scoped visuals, using the same fault-isolated automatic development execution pattern."
+    },
+    {
+      "id": "BSA-20261125-262",
+      "class": "interactive_answers_had_formal_model_checks_but_no_automatic_wrong_answer_mutation_witness_lane",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261124-260",
+        "BSA-20261124-261",
+        "BSA-20261123-254"
+      ],
+      "differenceFromLinkedIncident": "V32 covered MCQ answer options; the nine distinct matching, classification, selection, and ordering interactions had formal solutions but no independently executed, signed negative-answer mutation proof stage in the ordinary owner worker. The new stage requires the exact original single textbook PDF, the frozen revised candidate, existing source-derived formal mechanics models, one deliberately incorrect answer for every interaction, and all EN/MS/ZH prompt, explanation and item label fields. It expressly does not establish unrestricted scientific or translation semantics.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_post_v32_interactive_mutation_proofs.py",
+        "triggerMarker": "def run_post_v32_interactive_mutation_proofs(",
+        "remedyMarker": "BSA262_REAL_INTERACTIVE_MUTANT_EVIDENCE_NOT_ACCEPTED",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_auto_development_handoff.py",
+            "marker": "run_post_v32_interactive_mutation_proofs"
+          },
+          {
+            "path": "scripts/run_v3_yoga6_recovery_worker.py",
+            "marker": "privateInteractiveMutationPilot"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v34_interactive_mutation_witness.py",
+          "kind": "python",
+          "marker": "test_real_section91_nine_interactive_answer_mutations_rejected"
+        },
+        {
+          "path": "tests/test_v34_interactive_mutation_witness.py",
+          "kind": "python",
+          "marker": "test_missing_chinese_item_is_denied"
+        },
+        {
+          "path": "tests/test_v34_interactive_mutation_witness.py",
+          "kind": "python",
+          "marker": "test_wrong_interactive_key_is_denied"
+        },
+        {
+          "path": "tests/test_v34_interactive_mutation_witness.py",
+          "kind": "python",
+          "marker": "test_changed_pdf_is_denied"
+        },
+        {
+          "path": "tests/test_v34_interactive_mutation_witness.py",
+          "kind": "python",
+          "marker": "test_v34_must_have_signed_v32"
+        },
+        {
+          "path": "tests/test_v34_interactive_mutation_witness.py",
+          "kind": "python",
+          "marker": "test_normal_worker_auto_advances_five_stages"
+        },
+        {
+          "path": "tests/test_v34_interactive_mutation_witness.py",
+          "kind": "python",
+          "marker": "test_worker_exit_gate_requires_real_v34"
+        }
+      ],
+      "applicableEnvironments": ["yoga6", "github-ci"],
+      "lastValidatedDate": "2026-11-25",
+      "nextAction": "Run exact-head CI, then original Yoga6 normal source-free V1-V34 owner worker, independently read back original selected Serway source PDF, candidate, signed V34 and nine mutated-answer proofs. Preserve 90 academic gates and 429 semantic proof tasks as open."
     }
   ]
 }
