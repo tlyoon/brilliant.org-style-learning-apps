@@ -1477,11 +1477,11 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                                 "status")==
                                 "V27_FIVE_FALSE_POSITIVE_SYMBOLIC_FLAGS_BOUNDED_NO_ACADEMIC_PASS"
                             and result.get("boundedSymbolicRecovery",{}).get(
-                                "boundedParserFalsePositivesResolved")==5
+                                "boundedParserFalsePositivesResolved")==0
                             and result.get("boundedSymbolicRecovery",{}).get(
-                                "remainingAmbiguousSymbolicFields")==3
+                                "remainingAmbiguousSymbolicFields")==2
                             and result.get("boundedSymbolicRecovery",{}).get(
-                                "remainingTechnicalReviewFlags")==21
+                                "remainingTechnicalReviewFlags")==20
                             and result.get("boundedSymbolicRecovery",{}).get(
                                 "completeIndependentAcademicProofSlotsStillOpen")==90
                             and result.get("boundedSymbolicRecovery",{}).get(

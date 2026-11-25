@@ -42,20 +42,20 @@ def _compact(result:dict[str,Any])->dict[str,Any]:
             or result.get("providerCalls")!=0
             or len({(r.get("activityId"),r.get("field")) for r in rows})!=len(rows)
             or result["activityCount"]!=18
-            or result["priorAmbiguousSymbolicFields"]!=8
-            or result["boundedParserFalsePositivesResolved"]!=5
-            or result["remainingAmbiguousSymbolicFields"]!=3
-            or result["independentRemainingPriorReviewFlags"]!=21
-            or len(rows)!=8
+            or result["priorAmbiguousSymbolicFields"]!=2
+            or result["boundedParserFalsePositivesResolved"]!=0
+            or result["remainingAmbiguousSymbolicFields"]!=2
+            or result["independentRemainingPriorReviewFlags"]!=20
+            or len(rows)!=2
             or any(r["remainingSemanticStatus"]!="REVIEW_REQUIRED"
                    or r["fullScientificOrTrilingualMeaningProven"] is not False
                    for r in rows)):
         raise ValueError("BSA255_FALSE_SYMBOLIC_DIAGNOSTIC_NOT_INDEPENDENTLY_JUSTIFIED")
     return {
-        "symbolicReviewFields":8,
-        "strictLiteralFormulaMatches":5,
-        "unresolvedSymbolicReviewFields":3,
-        "remainingTechnicalReviewFlags":21,
+        "symbolicReviewFields":2,
+        "strictLiteralFormulaMatches":0,
+        "unresolvedSymbolicReviewFields":2,
+        "remainingTechnicalReviewFlags":20,
         "rowsSha256":_hash(rows),
         "rowsByActivity":[{
             "activityId":row["activityId"],"activitySha256":row["activitySha256"],
@@ -82,7 +82,7 @@ def run_post_v26_bounded_symbolic_recovery(
             or queue.get("status")!=_STATUS_QUEUE
             or source.get("activitiesChecked")!=18
             or source.get("scientificLocalizedFieldsChecked")!=222
-            or source.get("unresolvedTriLocaleSemanticReviewItems")!=26
+            or source.get("unresolvedTriLocaleSemanticReviewItems")!=20
             or source.get("academicProofGatesStillOpen")!=90
             or source.get("formalAcademicPASS")!=0
             or queue.get("activityCount")!=18
@@ -136,9 +136,9 @@ def run_post_v26_bounded_symbolic_recovery(
     return _v6_checkpoint(folder/_V27,{
         **identity,"status":_STATUS27,
         "resultSha256":result["integritySha256"],
-        "boundedParserFalsePositivesResolved":5,
-        "remainingAmbiguousSymbolicFields":3,
-        "remainingTechnicalReviewFlags":21,
+        "boundedParserFalsePositivesResolved":0,
+        "remainingAmbiguousSymbolicFields":2,
+        "remainingTechnicalReviewFlags":20,
         "completeIndependentAcademicProofSlotsStillOpen":90,
         "fullAcademicPASS":0,
         "newGeminiCalls":0,

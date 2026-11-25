@@ -51,8 +51,8 @@ def _assert_bounded_receipt(evidence:dict[str,Any])->None:
             or evidence.get("englishMalayChinese",{}).get("localizedSurfacesInspected")!=222
             or evidence.get("englishMalayChinese",{}).get("matchingNumericLiteralSurfaces")!=222
             or evidence.get("englishMalayChinese",{}).get("numericLiteralReviewNeeded")!=0
-            or evidence.get("englishMalayChinese",{}).get("strictFormulaLiteralMatches")!=5
-            or evidence.get("englishMalayChinese",{}).get("unresolvedSymbolicFields")!=3
+            or evidence.get("englishMalayChinese",{}).get("strictFormulaLiteralMatches")!=0
+            or evidence.get("englishMalayChinese",{}).get("unresolvedSymbolicFields")!=2
             or evidence.get("interactiveDiagrams",{}).get("declaredDiagramsFound")!=0
             or evidence.get("interactiveDiagrams",{}).get("sourceGroundedVisualNecessityTasksOpen")!=18
             or evidence.get("interactiveDiagrams",{}).get("sourceSectionMentionsFigure91") is not True
@@ -80,8 +80,8 @@ def run_post_v27_five_proof_producers(
     signed_v27=_signed(folder,_V27,ready)
     if (v27_result!=signed_v27
             or signed_v27.get("status")!=_STATUS27
-            or signed_v27.get("boundedParserFalsePositivesResolved")!=5
-            or signed_v27.get("remainingAmbiguousSymbolicFields")!=3
+            or signed_v27.get("boundedParserFalsePositivesResolved")!=0
+            or signed_v27.get("remainingAmbiguousSymbolicFields")!=2
             or signed_v27.get("completeIndependentAcademicProofSlotsStillOpen")!=90
             or signed_v27.get("fullAcademicPASS")!=0
             or signed_v27.get("newGeminiCalls")!=0

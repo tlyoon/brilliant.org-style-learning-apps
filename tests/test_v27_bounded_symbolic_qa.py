@@ -41,10 +41,10 @@ class V27BoundedSymbolicTests(unittest.TestCase):
     def test_actual_eighteen_explanation_surface_symbolic_inventory(self):
         result=audit_bounded_symbolic_recovery(self.package["activities"])
         self.assertEqual(result["activityCount"],18)
-        self.assertEqual(result["priorAmbiguousSymbolicFields"],8)
-        self.assertEqual(result["boundedParserFalsePositivesResolved"],5)
-        self.assertEqual(result["remainingAmbiguousSymbolicFields"],3)
-        self.assertEqual(result["independentRemainingPriorReviewFlags"],21)
+        self.assertEqual(result["priorAmbiguousSymbolicFields"],2)
+        self.assertEqual(result["boundedParserFalsePositivesResolved"],0)
+        self.assertEqual(result["remainingAmbiguousSymbolicFields"],2)
+        self.assertEqual(result["independentRemainingPriorReviewFlags"],20)
         self.assertTrue(all(row["remainingSemanticStatus"]=="REVIEW_REQUIRED"
                             for row in result["rows"]))
         self.assertTrue(all(not row["fullScientificOrTrilingualMeaningProven"]

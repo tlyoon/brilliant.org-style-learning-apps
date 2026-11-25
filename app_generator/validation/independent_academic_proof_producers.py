@@ -168,8 +168,8 @@ def audit_five_proof_channels(
             else:
                 numeric_ambiguous+=1
     symbols=audit_bounded_symbolic_recovery(acts)
-    if (localized!=222 or symbols["boundedParserFalsePositivesResolved"]!=5
-            or symbols["remainingAmbiguousSymbolicFields"]!=3):
+    if (localized!=222 or symbols["boundedParserFalsePositivesResolved"]!=0
+            or symbols["remainingAmbiguousSymbolicFields"]!=2):
         raise ValueError("BSA256_TRILINGUAL_OR_SYMBOLIC_PROOFS_CHANGED")
     # Producer 5: perform actual model checks for every declared diagram, or
     # report a verifiable *absence* (never claim pixels or diagrams proven).
@@ -242,8 +242,8 @@ def audit_five_proof_channels(
         "englishMalayChinese":{"localizedSurfacesInspected":localized,
             "matchingNumericLiteralSurfaces":numeric_same,
             "numericLiteralReviewNeeded":numeric_ambiguous,
-            "strictFormulaLiteralMatches":5,
-            "unresolvedSymbolicFields":3,
+            "strictFormulaLiteralMatches":0,
+            "unresolvedSymbolicFields":2,
             "fullTrilingualMeaningProven":False},
         "interactiveDiagrams":{"declaredDiagramsFound":0,
             "boundedDiagramModelsExecuted":0,

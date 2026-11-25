@@ -9443,6 +9443,34 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-25",
       "nextAction":"Run exact-head repository tests/CI, original Yoga6 private Serway source and candidate triage; verify false review flags 26 to 20 and zero new deterministic math drift. Integrate into ordinary recurring scientific triage, signed source-free V36 owner worker and independent bounded readback. Do not erase remaining 20 review flags, 90 full gates or 429 full semantic obligations, or merge/publish."
+    },
+    {
+      "id":"BSA-20261125-266",
+      "class":"fixed_equation_parser_was_blocked_by_hardcoded_downstream_historical_v26_v27_v28_worker_counts",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "relatedIncidentIds":["BSA-20261125-265","BSA-20261125-264","BSA-20261125-263"],
+      "differenceFromLinkedIncident":"BSA265 independently corrected false math/prose segmentation and reduced 26 original-source trilingual review flags to 20, leaving two genuine symbolic questions. BSA266 fixes the V27 and V28 hard-coded 26/8/5/3/21 old parser assumptions, which made full GitHub CI #45561998242 fail on three old V27 tests despite valid BSA265 source repair. It reconciles the V26 signed source, V27 restricted formula triage and V28 independent five-channel proof producer to the actual exact frozen-source result: 20 V26 review issues, 2 V27 symbolic fields, 0 newly resolved literal matches, 2 still ambiguous, 20 review flags and 90 complete academic gates OPEN. The ordinary worker must enforce these exact independently checked values instead of accepting forged science PASS.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_post_v26_bounded_symbolic_recovery.py",
+        "triggerMarker":"def run_post_v26_bounded_symbolic_recovery(",
+        "remedyMarker":"BSA255_FALSE_SYMBOLIC_DIAGNOSTIC_NOT_INDEPENDENTLY_JUSTIFIED",
+        "normalEntryPoints":[
+          {"path":"scripts/run_v3_yoga6_recovery_worker.py","marker":"from app_generator.runtime.v3_post_v26_bounded_symbolic_recovery import ("}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v38_parser_recovery_cascade.py","kind":"python","marker":"test_exact_source_roster_and_counts_reconcile_across_v26_v27"},
+        {"path":"tests/test_v38_parser_recovery_cascade.py","kind":"python","marker":"test_forged_resolved_symbolic_issue_is_rejected"},
+        {"path":"tests/test_v38_parser_recovery_cascade.py","kind":"python","marker":"test_old_26_issue_count_is_rejected"},
+        {"path":"tests/test_v38_parser_recovery_cascade.py","kind":"python","marker":"test_real_source_adapter_has_no_promoted_science_pass"},
+        {"path":"tests/test_v38_parser_recovery_cascade.py","kind":"python","marker":"test_worker_rechecks_v27_and_v28_exact_reconciled_counts"},
+        {"path":"tests/test_v27_bounded_symbolic_qa.py","kind":"python","marker":"test_actual_eighteen_explanation_surface_symbolic_inventory"},
+        {"path":"tests/test_v28_five_proof_producers.py","kind":"python","marker":"test_partial_scientific_evidence_cannot_claim_full_academic_approval"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-25",
+      "nextAction":"Verify exact original Serway source and immutable package through V26/V27/V28 scientific routines, all historical/fault-injection tests, full hosted CI and normal owner Yoga6 V1-V36 EXIT0 with independent signed V36 readback. Preserve 90 full academic gates and 429 complete science/translation/diagram tasks as pending. Automatically continue other unaffected development without new provider requests, external PDFs, merge or publication."
     }
   ]
 }
