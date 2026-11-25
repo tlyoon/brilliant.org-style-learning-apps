@@ -9541,9 +9541,7 @@
         "remedyMarker":"BSA269_FALSE_ACADEMIC_PROGRESS_MUST_NOT_PERSIST",
         "normalEntryPoints":[
           {"path":"app_generator/runtime/v3_auto_development_handoff.py",
-           "marker":"from app_generator.runtime.v3_long_horizon_development import ("},
-          {"path":"scripts/run_v3_yoga6_recovery_worker.py",
-           "marker":"advance_eligible_verified_development_stages("}
+           "marker":"from app_generator.runtime.v3_long_horizon_development import ("}
         ]
       },
       "regressions":[
