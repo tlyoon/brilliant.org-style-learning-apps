@@ -118,6 +118,43 @@ def main() -> int:
             "secondProofCarriedAcrossGitHead":second["secondProofCarriedAcrossGitHead"],
             "acceptedProofCarriedAcrossGitHead":second["firstProofCarriedAcrossGitHead"],
         })
+    # BSA274: when a versioned academic proof REGISTRY audit exists, it
+    # must be independently read back. The audit does NOT award new academic
+    # passes: it verifies both older signed A1/A2 and 25 unresolved tasks.
+    # On a future HEAD without a new registry audit, legacy academic proofs
+    # are still independently checked above, never silently revoked.
+    from app_generator.runtime.v3_academic_proof_registry_receipt import (
+        _RECEIPT as _REGISTRY_RECEIPT,
+        verify_registry_audit,
+    )
+    audit_path=(private/"owner-five-stage-completion"/checkpoint["gitHead"]/
+                checkpoint["proposalSha256"]/_REGISTRY_RECEIPT)
+    if audit_path.exists() or audit_path.is_symlink():
+        try:
+            audit=verify_registry_audit(private=private)
+            if (outcome["academicProofTasksAccepted"]!=2
+                or outcome["verifiedAcademicProofTaskIds"]!=audit["acceptedAcademicTaskIds"]
+                or outcome["academicProofReceiptSha256s"]!=audit["academicProofReceiptSha256s"]):
+                raise ValueError("BSA274_REGISTRY_AND_LEGACY_ADMISSIONS_DIVERGE")
+        except (OSError,ValueError,KeyError,TypeError,IndexError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_ACADEMIC_PROOF_REGISTRY_READBACK_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_SOURCE_BOUND_ACADEMIC_REGISTRY_REVERIFIED",
+            "academicAcceptancesSource":"SIGNED_A1_A2_PLUS_INDEPENDENT_REGISTRY_READBACK",
+            "academicProofTasksAccepted":audit["independentlyAcceptedAcademicTasks"],
+            "fullAcademicProofTasksStillOpen":audit["fullAcademicTasksStillOpen"],
+            "completeAcademicProofGatesStillOpen":audit["completeAcademicProofGatesStillOpen"],
+            "pendingMcqDistractorScienceTasks":audit["pendingMcqDistractorScienceTasks"],
+            "registeredAcademicRegistryReceiptSha256":audit["registryReceiptSha256"],
+            "nextUnfinishedDevelopmentAction":"BSA275_INDEPENDENT_BATCH_PROOF_RULES_FOR_25_PENDING_MC_Q_DISTRACTORS",
+            "nextActionStatus":"REUSABLE_REGISTRY_IMPLEMENTED_NEW_PROOF_HANDLERS_REQUIRED",
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 

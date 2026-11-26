@@ -9704,6 +9704,66 @@
       ],
       "lastValidatedDate": "2026-11-26",
       "nextAction": "RESOLVED at clean source HEAD 39c62b69ebfdb8c0e7a9740f2577e0b568bf65ca: both exact hosted GitHub CI #45728796013 and #45728789226 SUCCESS; genuine Yoga6 normal V1-V36 source-free owner worker EXIT0 (609.70s), authentic original Serway source/frozen candidate, original signed V36 task and Chrome verified. Separate academic second-task --admit EXIT0, independent --verify EXIT0 and durable horizon readback EXIT0, new A2 proof receipt SHA a576cd0b4dcce58d1a10c170eb74335710e2ca443ed35c320ac858f10c92ea30, original A1 immutable proof receipt SHA 853d20dffd126d20c773b06f119f238844cd137f2b40797947e2b846674ce3ed preserved cross revision. Exactly 2/429 academic tasks genuinely accepted, 427 pending, all 90 complete academic gates OPEN. 15 targeted adversarial tests PASS. No additional Gemini calls, outside PDF, public PR merge or publication. Next architectural priority: reusable independently verified batch-proof registry for remaining 25 MCQ distractors rather than one bespoke proof file per option."
+    },
+    {
+      "id": "BSA-20261126-274",
+      "class": "bespoke_per_distractor_academic_handlers_lacked_generic_signed_batch_registry",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261126-273",
+        "BSA-20261125-272",
+        "BSA-20261125-269"
+      ],
+      "differenceFromLinkedIncident": "A1/A2 independently proven academic tasks each required bespoke admission and long-horizon code branches. Remaining 25 of 27 MCQ distractors have no independent signed acceptance. BSA274 introduces registered reviewed formal-proof family adapters over all nine signed V36 MCQ partitions, source/candidate-pinned 27-item task identities, independent historic A1/A2 rechecks, and one immutable owner-private registry audit. This audit accepts NO new task and does not replace genuine independent science or EN/MS/ZH reviewer evidence.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_academic_proof_registry_receipt.py",
+        "triggerMarker": "def verify_registry_audit(",
+        "remedyMarker": "BSA274_SIGNED_PROOF_REGISTRY_READBACK_DIVERGED",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/audit_bosla_academic_proof_registry.py",
+            "marker": "from app_generator.runtime.v3_academic_proof_registry_receipt import ("
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "from app_generator.runtime.v3_academic_proof_registry_receipt import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v46_generic_academic_proof_registry.py",
+          "kind": "python",
+          "marker": "test_exact_27_original_mcq_tasks_with_two_distinct_acceptances"
+        },
+        {
+          "path": "tests/test_v46_generic_academic_proof_registry.py",
+          "kind": "python",
+          "marker": "test_new_genuine_evaluator_can_register_without_changing_dispatcher"
+        },
+        {
+          "path": "tests/test_v46_generic_academic_proof_registry.py",
+          "kind": "python",
+          "marker": "test_producer_claiming_pass_without_valid_receipt_fails"
+        },
+        {
+          "path": "tests/test_v46_generic_academic_proof_registry.py",
+          "kind": "python",
+          "marker": "test_signed_partition_digest_or_row_tampering_rejected"
+        },
+        {
+          "path": "tests/test_v46_generic_academic_proof_registry.py",
+          "kind": "python",
+          "marker": "test_signed_registry_receipt_is_immutable_and_independently_recomputed"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-26",
+      "nextAction": "ACTIVE: genuine Yoga6 source-bound registry --preview EXIT0: two existing independent A1/A2 academic receipts preserved, 27 original signed MCQ distractor task IDs recovered, 25 remain REVIEW_REQUIRED, 427/429 academic tasks pending and 90 full gates OPEN. 12 focused synthetic tamper/registration tests PASS. Must complete exact new HEAD GitHub CI, real Yoga6 normal V1-V36, separate owner --admit signed registry audit, --verify and horizon readback before declaring BSA274 resolved. Do not create new scientific PASS, external PDF, provider calls, public merge or publication."
     }
   ]
 }
