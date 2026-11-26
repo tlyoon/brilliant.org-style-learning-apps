@@ -123,6 +123,23 @@ class BoundedScienceBatch(TestCase):
         self.assertEqual(r["academicTasksAcceptedByBatch"],0)
         self.assertFalse(r["publicationAuthorized"])
 
+    def test_prior_independent_batch_admission_is_excluded_on_restart(self):
+        report=signed_report()
+        already=report["pendingMcqTasks"][0]["taskId"]
+        future=batch.plan_next_science_batch(
+            audit=report,cursor=0,maximum=4,
+            independently_admitted_new_task_ids=(already,))
+        self.assertEqual(future["acceptedAcademicTasksBeforeBatch"],3)
+        self.assertEqual(future["remainingAfterBatch"],20)
+        self.assertEqual(future["taskCount"],4)
+        self.assertNotIn(already,future["taskIds"])
+        self.assertEqual(future["academicTasksAcceptedByBatch"],0)
+        for extras in ((already,already),(FIRST,),("f"*64,)):
+            with self.subTest(extras=extras),self.assertRaisesRegex(
+                ValueError,"UNVERIFIED_NEW_ACADEMIC_FRONTIER_IDS"):
+                batch.plan_next_science_batch(
+                    audit=report,independently_admitted_new_task_ids=extras)
+
     def test_fake_witness_never_becomes_accepted(self):
         plan=batch.plan_next_science_batch(audit=signed_report())
         task=plan["tasks"][0]

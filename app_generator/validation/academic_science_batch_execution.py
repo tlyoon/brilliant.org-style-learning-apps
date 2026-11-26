@@ -39,7 +39,8 @@ class ScienceBatchRule:
 
 
 def plan_next_science_batch(*, audit: dict[str,Any],
-                            cursor: int=0, maximum: int=4)->dict[str,Any]:
+                            cursor: int=0, maximum: int=4,
+                            independently_admitted_new_task_ids:tuple[str,...]=())->dict[str,Any]:
     """Use an independently recomputed registry audit, never a bare task list.
 
     The claimed audit is inspected strictly; actual owner binding still
@@ -80,9 +81,22 @@ def plan_next_science_batch(*, audit: dict[str,Any],
             or not task["activityId"]
             or task["taskId"] in accepted):
             raise ValueError("BSA275_FAKED_ACADEMIC_TASK_ACCEPTANCE")
-    if cursor>len(pending):
+    # Newly admitted task IDs may be supplied ONLY from independently
+    # reverified signed BSA275 academic frontier by the owner entrypoint.
+    # The original immutable BSA274 audit remains exactly 2/27; new proof
+    # admissions are a separately signed overlay, never a rewritten audit.
+    if (not isinstance(independently_admitted_new_task_ids,tuple)
+        or len(independently_admitted_new_task_ids)>6
+        or len(independently_admitted_new_task_ids)!=len(set(independently_admitted_new_task_ids))
+        or any(not _valid_sha(t) for t in independently_admitted_new_task_ids)
+        or not set(independently_admitted_new_task_ids).issubset(
+            {t["taskId"] for t in pending})):
+        raise ValueError("BSA275_UNVERIFIED_NEW_ACADEMIC_FRONTIER_IDS")
+    new_accepted=set(independently_admitted_new_task_ids)
+    eligible=[t for t in pending if t["taskId"] not in new_accepted]
+    if cursor>len(eligible):
         raise ValueError("BSA275_BATCH_CURSOR_OUT_OF_RANGE")
-    selected=pending[cursor:cursor+maximum]
+    selected=eligible[cursor:cursor+maximum]
     next_cursor=cursor+len(selected)
     return {
         "contract":_BATCH_CONTRACT,
@@ -96,10 +110,11 @@ def plan_next_science_batch(*, audit: dict[str,Any],
         "taskCount":len(selected),
         "cursor":cursor,
         "nextCursor":next_cursor,
-        "remainingAfterBatch":len(pending)-next_cursor,
+        "remainingAfterBatch":len(eligible)-next_cursor,
         "taskIds":[x["taskId"] for x in selected],
         "tasks":selected,
-        "acceptedAcademicTasksBeforeBatch":2,
+        "independentlyPreviouslyAdmittedNewTaskIds":sorted(new_accepted),
+        "acceptedAcademicTasksBeforeBatch":2+len(new_accepted),
         "academicTasksAcceptedByBatch":0,
         "completeAcademicProofGatesStillOpen":90,
         "newProviderCalls":0,
