@@ -1,0 +1,126 @@
+"""BSA276 executable non-stopping academic source-bound advancement loop.
+
+Unlike a written reminder, this function follows all ALREADY ELIGIBLE
+source-free and separately proof-admitting actions in ONE invocation. It
+does not delegate autonomous source rewriting to an untrusted model, repeat
+ambiguous provider requests, or keep retrying an ineligible task.
+
+Historical signed evidence, clean exact Git HEAD and two hosted CI successes
+remain mandatory. Missing new *scientific* proof families block only those
+tasks; all currently verified academic work proceeds. Owner Yoga6 only.
+"""
+from __future__ import annotations
+from pathlib import Path
+import subprocess
+import sys
+from typing import Any
+
+from app_generator.runtime.v3_versioned_readiness import (
+    _git_info,_git_clean,_hosted_runs,_exact_ci_success,
+)
+from app_generator.runtime.v3_long_horizon_development import (
+    read_long_horizon_development,
+)
+from app_generator.runtime.v3_academic_proof_registry_receipt import (
+    _RECEIPT as _AUDIT_RECEIPT, sign_registry_audit,verify_registry_audit,
+)
+from app_generator.runtime.v3_academic_science_batch_admission import (
+    _FRONTIER as _A3_FRONTIER,
+    admit_new_scientific_batch,verify_academic_batch_across_git_heads,
+)
+from app_generator.runtime.v3_si_units_academic_batch_admission import (
+    _FRONTIER as _SI_FRONTIER,
+    admit_si_unit_science_batch,verify_si_unit_batch_across_git_heads,
+)
+
+
+def _owner_advance_worker(repo:Path)->None:
+    """Existing bounded, idempotent *source-free* V1–V36 normal worker only."""
+    result=subprocess.run(
+        [sys.executable,"scripts/run_v3_yoga6_recovery_worker.py",
+         "--source-free-advance"],
+        cwd=repo,check=False,timeout=1800,
+    )
+    if result.returncode!=0:
+        raise ValueError("BSA276_NORMAL_OWNER_V36_WORKER_NOT_SUCCESSFUL")
+
+
+def advance_all_eligible_academic_actions(
+    *,repo:Path,private:Path,max_steps:int=8,
+)->dict[str,Any]:
+    if type(max_steps) is not int or not 1<=max_steps<=12:
+        raise ValueError("BSA276_INVALID_BOUNDED_AUTONOMOUS_STEP_LIMIT")
+    if not isinstance(repo,Path) or not isinstance(private,Path):
+        raise ValueError("BSA276_OWNER_PATHS_REQUIRED")
+    head,branch=_git_info(repo)
+    if not _git_clean(repo):
+        raise ValueError("BSA276_DIRTY_CODE_MUST_NOT_ADMIT_SOURCE_PROOFS")
+    if not _exact_ci_success(_hosted_runs(repo,branch),head):
+        raise ValueError("BSA276_EXACT_HEAD_HOSTED_CI_INCOMPLETE_OR_FAILED")
+    journal=[]
+    for step in range(max_steps):
+        checkpoint=read_long_horizon_development(private)
+        if checkpoint["gitHead"]!=head:
+            _owner_advance_worker(repo)
+            newly=read_long_horizon_development(private)
+            if newly["gitHead"]!=head:
+                raise ValueError("BSA276_WORKER_DID_NOT_ESTABLISH_EXACT_HEAD")
+            journal.append("CURRENT_EXACT_HEAD_NORMAL_V36_RESTORED")
+            continue
+        here=private/"owner-five-stage-completion"/(
+            checkpoint["gitHead"])/checkpoint["proposalSha256"]
+        audit_file=here/_AUDIT_RECEIPT
+        if not audit_file.exists() and not audit_file.is_symlink():
+            audit=sign_registry_audit(private=private)
+            if (audit["independentlyAcceptedAcademicTasks"]!=2
+                or audit["pendingMcqDistractorScienceTasks"]!=25):
+                raise ValueError("BSA276_SOURCE_BOUND_REGISTRY_AUDIT_INVALID")
+            journal.append("CURRENT_HEAD_SIGNED_BSA274_REGISTRY_AUDIT")
+            continue
+        audit=verify_registry_audit(private=private)
+        if (audit["independentlyAcceptedAcademicTasks"]!=2
+            or audit["pendingMcqDistractorScienceTasks"]!=25):
+            raise ValueError("BSA276_PREVIOUS_A1_A2_SIGNATURES_UNTRUSTED")
+        a3=private/"long-horizon-development"/_A3_FRONTIER
+        if not a3.exists() and not a3.is_symlink():
+            a=admit_new_scientific_batch(private=private)
+            if a["independentlyAcceptedAcademicTasks"]!=3:
+                raise ValueError("BSA276_A3_ADMISSION_WITHOUT_PROOF")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A3_SCIENCE_TASK")
+            continue
+        prior=verify_academic_batch_across_git_heads(private=private)
+        if (prior["independentlyAcceptedAcademicTasks"]!=3
+            or prior["fullAcademicTasksStillOpen"]!=426):
+            raise ValueError("BSA276_A3_HISTORICAL_PROOF_NO_LONGER_VALID")
+        si=private/"long-horizon-development"/_SI_FRONTIER
+        if not si.exists() and not si.is_symlink():
+            admitted=admit_si_unit_science_batch(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=6
+                or admitted["pendingMcqDistractorScienceTasks"]!=21):
+                raise ValueError("BSA276_THREE_NEW_SI_PROOFS_NOT_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A4_A6_SCIENCE_TASKS")
+            continue
+        latest=verify_si_unit_batch_across_git_heads(private=private)
+        if (latest["independentlyAcceptedAcademicTasks"]!=6
+            or latest["fullAcademicTasksStillOpen"]!=423
+            or latest["completeAcademicProofGatesStillOpen"]!=90
+            or latest["fullAcademicActivityPASS"]!=0
+            or latest["publicationAuthorized"] is not False):
+            raise ValueError("BSA276_A1_A6_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        return {
+            "status":"BSA276_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "currentGitHead":head,
+            "actionsExecuted":journal,
+            "academicProofTasksAccepted":6,
+            "fullAcademicProofTasksStillOpen":423,
+            "pendingMcqDistractorScienceTasks":21,
+            "completeAcademicProofGatesStillOpen":90,
+            "academicActivityPASS":0,
+            "nextSafeDevelopmentFrontier":
+                "INDEPENDENT_SOURCE_BOUND_NEW_SCIENCE_EXPLANATION_MULTILINGUAL_AND_DIAGRAM_PROOF_HANDLERS",
+            "nextFrontierRequiresNewReviewedExecutableScienceProducers":True,
+            "newProviderCalls":0,
+            "newOutsideSourcePdfs":0,
+            "publicationAuthorized":False,
+        }
+    raise ValueError("BSA276_BOUNDED_ADVANCE_LIMIT_REACHED_WITH_ELIGIBLE_ACTIONS")

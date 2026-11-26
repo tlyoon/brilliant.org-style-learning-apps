@@ -10090,7 +10090,7 @@
     {
       "id": "BSA-20261126-275",
       "class": "proof_registry_missing_bounded_science_batches_and_independent_new_task_admission",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261126-274",
@@ -10150,7 +10150,72 @@
         "github-ci"
       ],
       "lastValidatedDate": "2026-11-26",
-      "nextAction": "ACTIVE: isolated branch code f3e6c1b hosted CI #45752539124 SUCCESS; 33 targeted tests PASS; genuine original Serway source four-task read-only batch EXIT0, new opt-d task 7ac21032ea48b7f27fad782d44b615982eff47ea93a52f1c02ff334e91f937d5 independently verified a physics countermodel but NOT academically admitted, other 3 tasks pending. Integrated in main Yoga6 as e85241a/d876202. Require new exact integrated GitHub CI, real owner V1-V36, separate BSA274 registry audit on same HEAD, BSA275 A3 academic --admit/--verify and horizon readback before claiming 3/429; until then 2/429, 427 pending, all 90 gates OPEN. No provider, outside PDF, publication."
+      "nextAction": "RESOLVED owner Yoga6 at exact source Git revision 24849e041f6774872b7b91a46b421b91b52e8bc6, hosted CI #45805813819/#45805806088 both SUCCESS, actual signed V1-V36, original single Serway source and frozen candidate. Current source-bound registry --admit/--verify EXIT0 receipt 051c63c93a02dade0d3918dbefabd94a16078b101932a10f66509f33ae8d0566, A3 separate academic --admit/--verify EXIT0 receipt c4bbcd731409a35c0be86c9996424142540e8910db2b2ee77f71aad91bcd07f6, independent horizon EXIT0. Exactly 3/429 academic tasks independently accepted; 426 remain, 24 MCQ false-choice science tasks pending, all 90 complete five-gate activities OPEN, no full activity PASS. PowerShell JSON-array CI polling error classified and bypassed after both exact CI results independently checked SUCCESS, no CI/source waiver. No paid calls, extra PDF, public merge or deploy."
+    },
+    {
+      "id": "BSA-20261126-276",
+      "class": "source_bound_si_unit_proofs_and_automatic_no_unnecessary_pauses_academic_continuation",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261126-275",
+        "BSA-20261126-274",
+        "BSA-20261125-272"
+      ],
+      "differenceFromLinkedIncident": "BSA275 admitted A3 but could only prove one new distractor at a time; next steps had to be manually issued even when safe. BSA276 creates original Serway source-bound EN/MS/ZH SI dimensional and vector misconception proofs for three independently signed MCQ02 distractors, separately chained immutable A4-A6 academic acceptance, and an executable bounded on-demand advancement loop that automatically follows approved owner normal V36, audited A1-A2, A3, A4-A6 and independent readback stages.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker": "def advance_all_eligible_academic_actions(",
+        "remedyMarker": "BSA276_EXACT_HEAD_HOSTED_CI_INCOMPLETE_OR_FAILED",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/auto_advance_bosla_academic_frontier.py",
+            "marker": "from app_generator.runtime.v3_autonomous_academic_advancement import ("
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "from app_generator.runtime.v3_si_units_academic_batch_admission import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v49_si_unit_science_batch.py",
+          "kind": "python",
+          "marker": "test_each_si_dimension_and_vector_claim_independently_rederived"
+        },
+        {
+          "path": "tests/test_v49_si_unit_science_batch.py",
+          "kind": "python",
+          "marker": "test_forged_dimensions_are_rejected_even_with_rehashed_digest"
+        },
+        {
+          "path": "tests/test_v49_si_unit_science_batch.py",
+          "kind": "python",
+          "marker": "test_three_independent_science_tasks_immutable_admission"
+        },
+        {
+          "path": "tests/test_v50_bosla_autonomous_academic_advance.py",
+          "kind": "python",
+          "marker": "test_all_four_missing_boundaries_automatically_advance_in_one_run"
+        },
+        {
+          "path": "tests/test_v50_bosla_autonomous_academic_advance.py",
+          "kind": "python",
+          "marker": "test_idempotent_restart_does_not_reissue_old_proofs"
+        },
+        {
+          "path": "tests/test_v50_bosla_autonomous_academic_advance.py",
+          "kind": "python",
+          "marker": "test_failed_exact_head_ci_stops_unsafe_admission"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-26",
+      "nextAction": "ACTIVE: real Yoga6 original single Serway source plus frozen EN/MS/ZH MCQ02 opt-b/c/d science witnesses PASS, but not yet admitted. Bounded on-demand academic advancement and 18 adversarial/restart tests PASS. Need clean new exact Git HEAD and hosted CI, genuine owner V1-V36, current signed original source registry audit, A3 and A4-A6 independent academic batch admission/readback before 6/429 count. Until then 3/429, 426 academic tasks open, all 90 complete activity gates OPEN. No paid provider replay, external PDF, unscheduled background loop, merge or release."
     }
   ]
 }

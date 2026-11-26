@@ -3,7 +3,13 @@
 Authoritative execution identity: **Bosla**, the Brilliant.org-style learning app, on
 the authorized owner **Yoga 6**. This is not MicroGen_AI_Web.
 
-## BSA275 finite source-grounded scientific batches and new academic admission -- ACTIVE
+## BSA276 executable auto-advance source-bound academic contract -- ACTIVE
+
+BSA275's third source-bound academic proof genuinely passed separate --admit, --verify and independent horizon at exact hosted-CI source revision 24849e: 3/429 tasks accepted, 426 pending and all 90 full activity gates OPEN. BSA276 adds three original Serway 9.1 SI-unit scientific distractor proof families, each requiring full EN/MS/ZH finite statement parsing, source p=m*v vector axiom and dimensions ML/T, exact rational and dimensional counterexamples, then a separately signed immutable A4-A6 receipt. Witness results do NOT count as admissions until new exact hosted CI, genuine owner source-free V36 and independent source-bound A4-A6 readback.
+
+The mandatory on-demand executable scripts/auto_advance_bosla_academic_frontier.py must complete ALL already eligible stages without waiting for separate user prompts: clean exact Git HEAD and hosted CI -> true owner V1-V36 if the code revision changes -> original-textbook BSA274 registry audit -> independently accepted A3 -> new A4-A6 SI science -> independent horizon. The controller is bounded, restart-aware, rejects corrupt/changed science, and keeps previously signed receipts immutable. Never stop merely because a prior milestone just succeeded when another approved source-bound stage is eligible; only isolate genuine unsupported proof tasks. It must not infer academic PASS from source-free inventory, substitute outside PDFs, replay uncertain model requests, start a background scheduler, merge or deploy.
+
+## BSA275 finite source-grounded scientific batches and new academic admission -- RESOLVED
 
 BSA274 was genuinely verified on 91256ef through exact hosted CI, real owner normal V1-V36, signed registry --admit/--verify and horizon readback. Two old scientific academic proofs are preserved; BSA275 adds bounded science task batches, tested scientific semantics for the next opt-d false momentum perpendicular assertion, a NEW immutable A3 academic batch admission and independent cross-revision rechecks. A science countermodel from a read-only batch is NOT yet an academic task: the A3 owner admission needs clean exact hosted CI, real current-head V36, signed current-head BSA274 audit, original selected Serway textbook source, complete EN/MS/ZH meaning and independently rechecked rational vector arithmetic. Old A1/A2 never overwritten. The accepted count is 2/429 until separately signed A3 admits and reader verifies a third. All 90 complete activity gates OPEN; no outside PDF, model replay, scheduler, public merge/release.
 

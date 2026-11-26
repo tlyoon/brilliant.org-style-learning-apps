@@ -200,6 +200,50 @@ def main() -> int:
                 "BSA275_CONTINUE_BOUNDED_INDEPENDENT_SOURCE_BOUND_MC_Q_PROOF_BATCHES",
             "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_HANDLERS_STILL_REQUIRED",
         })
+    # BSA276: independently source-verified SI-unit A4–A6 are a *separate*
+    # chained immutable academic receipt; no new PASS without the real
+    # original single textbook, signed V36 #2 and previously admitted A1–A3.
+    from app_generator.runtime.v3_si_units_academic_batch_admission import (
+        _FRONTIER as _SI_FRONTIER, verify_si_unit_batch_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_SI_FRONTIER).exists():
+        try:
+            si=verify_si_unit_batch_across_git_heads(private=private)
+            if (si["acceptedAcademicTaskIds"][:3] != outcome.get(
+                    "verifiedAcademicProofTaskIds")
+                or si["independentlyAcceptedAcademicTasks"]!=6
+                or si["pendingMcqDistractorScienceTasks"]!=21
+                or si["completeAcademicProofGatesStillOpen"]!=90
+                or si["publicationAuthorized"] is not False):
+                raise ValueError("BSA276_A4_A6_CANNOT_BYPASS_A1_A3")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,
+                ArithmeticError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_SI_UNIT_ACADEMIC_CHAIN_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_SI_SCIENCE_CHAIN_INDEPENDENTLY_REVERIFIED",
+            "academicAcceptancesSource":
+                "SIX_ORIGINAL_TEXTBOOK_INDEPENDENT_SIGNED_SCIENCE_TASKS",
+            "academicProofTasksAccepted":si["independentlyAcceptedAcademicTasks"],
+            "fullAcademicProofTasksStillOpen":si["fullAcademicTasksStillOpen"],
+            "pendingMcqDistractorScienceTasks":
+                si["pendingMcqDistractorScienceTasks"],
+            "completeAcademicProofGatesStillOpen":
+                si["completeAcademicProofGatesStillOpen"],
+            "verifiedAcademicProofTaskIds":si["acceptedAcademicTaskIds"],
+            "academicSIUnitBatchReceiptSha256":si["siUnitBatchReceiptSha256"],
+            "siUnitBatchCarriedAcrossGitHead":si["carriedAcrossGitHead"],
+            "academicActivityPASS":si["fullAcademicActivityPASS"],
+            "nextUnfinishedDevelopmentAction":
+                "BSA277_INDEPENDENT_SOURCE_BOUND_SCIENTIFIC_EXPLANATIONS_AND_REMAINING_MC_Q",
+            "nextActionStatus":"NEW_INDEPENDENT_PROOF_FAMILY_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 
