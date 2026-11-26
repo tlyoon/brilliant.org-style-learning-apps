@@ -3,6 +3,10 @@
 Authoritative execution identity: **Bosla**, the Brilliant.org-style learning app, on
 the authorized owner **Yoga 6**. This is not MicroGen_AI_Web.
 
+## BSA273 second independently source-grounded academic proof — active
+
+A second distinct original Serway Section9.1 opt-b momentum-direction misconception now has full EN/MS/ZH finite-language and exact rational vector countermodels. Only the original single textbook and unchanged course candidate are inputs. On exact clean hosted-CI-green HEAD with fresh owner V36, run the separate owner academic command scripts.run_bosla_second_academic_proof --admit, then --verify and durable horizon readback. This creates a second immutable A2 signed receipt; first BSA270/272 proof must survive cross-head and is reverified rather than overwritten. Until independently admitted, count only 1/429, 428 pending, 90 full activity gates open. No paid calls, new PDF, scheduler, PR merge or public deployment.
+
 ## Anti-cycle acceptance policy — mandatory for the academic frontier
 
 The definitive outcome is **independently accepted academic proof tasks and

@@ -9644,6 +9644,66 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-25",
       "nextAction":"RESOLVED: genuine code 0574ad02bb51643a086d35dec48530832a8075c1 passed full hosted GitHub CI #876 SUCCESS, then owner Yoga6 real source-free V1-V36 normal worker EXIT0 in 674.90s, seven eligible stages and three independent safe lanes, with source SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50 and frozen candidate SHA 454715ec1a3e23ce19099d4f1ed56babb1de3c8561473b9072c6e01ffbae9c38 unchanged. All 18 new V36 signed source-task partitions and 429 task identities independently reread EXIT0, new V36 root SHA 081fe7eacaf827b1d62f806fb56796c487f285fc837e8fbea0e38243b8a07717. The original independently accepted exact science task and immutable proof SHA 853d20dffd126d20c773b06f119f238844cd137f2b40797947e2b846674ce3ed, first admitted under prior HEAD ba5229d, independently reverified against BOTH signed old/new source-free V36 task ledgers. Owner academic --verify, repeat --admit and long-horizon status readback all EXIT0, carriedAcrossGitHead true, exactly 1 academic task ACCEPTED and 428 open, all 90 five-gate academic activity acceptances OPEN, no duplicate task, new provider calls, external PDF, merge or publication. Seven cross-head positive/negative mutation tests and historical original proof tests in normal CI. Next substantive work is expanding independently accepted MCQ distractor-science tasks from 1/27 to remaining 26, then scientific explanations, trilingual meaning and interactive visuals; source-free engineering counter does not override separate academic accepted ledger."
+    },
+    {
+      "id": "BSA-20261126-273",
+      "class": "second_original_source_mcq_distractor_academic_proof_missing",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261125-272",
+        "BSA-20261125-271",
+        "BSA-20261125-270"
+      ],
+      "differenceFromLinkedIncident": "The first opt-c exact Serway science proof was admitted and carried across HEADs, but next opt-b claim of identical momentum vectors at opposite velocities lacked its own full EN/MS/ZH interpretation and immutable admission. The first real trial revealed signed V36 task rows omit surfacePath; repaired that real integration contract to verify task ID and surface SHA rather than a nonexistent field.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_second_academic_proof_admission.py",
+        "triggerMarker": "def _check_task_and_source(",
+        "remedyMarker": "BSA273_SECOND_SIGNED_V36_TASK_NOT_PENDING_OR_VERIFIABLE",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_bosla_second_academic_proof.py",
+            "marker": "from app_generator.runtime.v3_second_academic_proof_admission import ("
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "verify_second_academic_across_git_heads"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v44_second_mcq_distractor_science.py",
+          "kind": "python",
+          "marker": "test_real_second_option_semantics_and_two_exact_counterexamples"
+        },
+        {
+          "path": "tests/test_v44_second_mcq_distractor_science.py",
+          "kind": "python",
+          "marker": "test_chinese_negation_reversal_refused"
+        },
+        {
+          "path": "tests/test_v45_second_academic_admission.py",
+          "kind": "python",
+          "marker": "test_original_signed_row_without_surface_path_is_accepted"
+        },
+        {
+          "path": "tests/test_v45_second_academic_admission.py",
+          "kind": "python",
+          "marker": "test_independent_receipt_reader_rejects_forged_vectors_and_counts"
+        },
+        {
+          "path": "tests/test_v45_second_academic_admission.py",
+          "kind": "python",
+          "marker": "test_no_second_acceptance_without_the_first"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-26",
+      "nextAction": "ACTIVE: second opt-b task independently verified with original source PDF/frozen candidate, exact signed V36 first task partition and two rational countermodels; 15 targeted tests PASS. Full exact new Git HEAD CI, fresh owner Yoga6 V1-V36 source-free run and separate A2 --admit/--verify/horizon remain required. Until then 1 accepted/429, 428 remain, 90 complete academic gates OPEN. No Gemini, external PDF, public merge or deployment."
     }
   ]
 }

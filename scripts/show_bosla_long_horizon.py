@@ -86,6 +86,38 @@ def main() -> int:
             "academicProofOriginGitHead":academic["academicProofOriginGitHead"],
             "acceptedProofCarriedAcrossGitHead":academic["carriedAcrossGitHead"],
         })
+    # BSA273: a second independently signed academic task may extend the
+    # accepted set, but cannot replace or bypass the original BSA270 proof.
+    # Reopen BOTH original task receipts and current signed V36 before ever
+    # reporting 2/429. A missing/invalid receipt fails closed.
+    from app_generator.runtime.v3_second_academic_proof_admission import (
+        _FRONTIER as _SECOND_FRONTIER,
+        verify_second_academic_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_SECOND_FRONTIER).exists():
+        try:
+            second=verify_second_academic_across_git_heads(private=private)
+        except (OSError,ValueError,KeyError,TypeError,IndexError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_SECOND_ACADEMIC_PROOF_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_TWO_ACADEMIC_PROOFS_REVERIFIED",
+            "academicProofTasksAccepted":second["independentlyAcceptedAcademicTasks"],
+            "fullAcademicProofTasksStillOpen":second["fullAcademicTasksStillOpen"],
+            "completeAcademicProofGatesStillOpen":second["completeAcademicProofGatesStillOpen"],
+            "nextUnfinishedDevelopmentAction":"EXTEND_INDEPENDENT_MC_Q_DISTRACTOR_PROOFS_TO_REMAINING_25",
+            "nextActionStatus":"NEW_PROOF_HANDLERS_STILL_REQUIRED",
+            "verifiedAcademicProofTaskIds":second["acceptedAcademicTaskIds"],
+            "academicProofReceiptSha256s":second["academicProofReceiptSha256s"],
+            "academicActivityPASS":second["fullAcademicActivityPASS"],
+            "secondProofCarriedAcrossGitHead":second["secondProofCarriedAcrossGitHead"],
+            "acceptedProofCarriedAcrossGitHead":second["firstProofCarriedAcrossGitHead"],
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 
