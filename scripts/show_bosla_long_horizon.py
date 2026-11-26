@@ -287,6 +287,50 @@ def main() -> int:
             "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
             "publicationAuthorized":False,
         })
+    # BSA278: source-grounded opposite-glider momentum/energy proofs A10-A12
+    # are admissible ONLY via their immutable separately signed owner receipt.
+    from app_generator.runtime.v3_paired_glider_academic_batch_admission import (
+        _FRONTIER as _GLIDER_FRONTIER,
+        verify_paired_glider_batch_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_GLIDER_FRONTIER).exists():
+        try:
+            glider=verify_paired_glider_batch_across_git_heads(private=private)
+            if (glider["acceptedAcademicTaskIds"][:9]!=outcome.get(
+                    "verifiedAcademicProofTaskIds")
+                or glider["independentlyAcceptedAcademicTasks"]!=12
+                or glider["pendingMcqDistractorScienceTasks"]!=15
+                or glider["completeAcademicProofGatesStillOpen"]!=90
+                or glider["publicationAuthorized"] is not False):
+                raise ValueError("BSA278_A10_A12_CANNOT_BYPASS_A1_A9")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,
+                ArithmeticError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_PAIRED_GLIDER_SCIENCE_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_PAIRED_GLIDER_SCIENCE_BATCH_REVERIFIED",
+            "academicAcceptancesSource":
+                "TWELVE_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":glider["independentlyAcceptedAcademicTasks"],
+            "fullAcademicProofTasksStillOpen":glider["fullAcademicTasksStillOpen"],
+            "pendingMcqDistractorScienceTasks":
+                glider["pendingMcqDistractorScienceTasks"],
+            "completeAcademicProofGatesStillOpen":
+                glider["completeAcademicProofGatesStillOpen"],
+            "verifiedAcademicProofTaskIds":glider["acceptedAcademicTaskIds"],
+            "academicGliderBatchReceiptSha256":glider["gliderBatchReceiptSha256"],
+            "gliderBatchCarriedAcrossGitHead":glider["carriedAcrossGitHead"],
+            "academicActivityPASS":0,
+            "nextUnfinishedDevelopmentAction":
+                "BSA279_INDEPENDENT_NEXT_SCIENTIFIC_EXPLANATION_MC_Q_TRILINGUAL_DIAGRAM_PROOFS",
+            "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 

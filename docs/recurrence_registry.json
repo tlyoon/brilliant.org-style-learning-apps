@@ -10272,6 +10272,71 @@
       ],
       "lastValidatedDate": "2026-11-26",
       "nextAction": "ACTIVE: BSA276 owner source-bound A4-A6 now independently verified, 6/429 academic tasks accepted, 423 remaining, 21/27 incorrect MCQ science still pending, 90 complete gates OPEN. BSA277 original Serway MCQ03 opt-b/c/d Newton F=dp/dt force-momentum rational/EN-MS-ZH witnesses genuine Yoga6 EXIT0; 30 focused source-free tests PASS and isolated branch CI #45845170188 SUCCESS. Now integrated clean main development checkout code HEAD 40b1cdb69ba930a24b56aa3e5673eea7421aa788. Next: commit active/closed source evidence update, new exact HEAD hosted CI, genuine Yoga6 owner V1-V36 source-free, current-head signed original-source registry, then A7-A9 academic --admit, independent --verify/horizon; only after this may count 9/429. No unsafe provider replay, external PDF, fake academic activity PASS, public merge or deployment."
+    },
+    {
+      "id": "BSA-20261126-278",
+      "class": "paired_opposite_glider_vector_momentum_scalar_kinetic_energy_trilingual_science_batch",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "relatedIncidentIds": [
+        "BSA-20261126-277",
+        "BSA-20261126-276",
+        "BSA-20261125-272"
+      ],
+      "differenceFromLinkedIncident": "BSA277 independently source-proved Newton momentum-rate false MCQ03 alternatives, but MCQ04 glider paired opposite-momentum versus kinetic energy tasks still require separate original-source science: signed total vector momenta cancel but scalar kinetic energies add. BSA278 introduces reviewed original Serway PDF/frozen candidate EN/MS/ZH MCQ04 opt-b/c/d rational countermodels, immutable separate A10-A12 academic receipt chained to historic A1-A9, signed fourth V36 task partition, original registry and exact old/current science proof, with automatic normal horizon continuation and fault injection.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_paired_glider_academic_batch_admission.py",
+        "triggerMarker": "def verify_paired_glider_batch_across_git_heads(",
+        "remedyMarker": "BSA278_GLIDER_SCIENCE_CHANGED_ACROSS_CODE_HEADS",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/run_bosla_paired_glider_batch_admission.py",
+            "marker": "from app_generator.runtime.v3_paired_glider_academic_batch_admission import ("
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "from app_generator.runtime.v3_paired_glider_academic_batch_admission import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v52_paired_glider_source_science.py",
+          "kind": "python",
+          "marker": "test_all_three_distinct_wrong_paired_momentum_energy_claims"
+        },
+        {
+          "path": "tests/test_v52_paired_glider_source_science.py",
+          "kind": "python",
+          "marker": "test_rehashed_false_vector_model_still_fails"
+        },
+        {
+          "path": "tests/test_v52_paired_glider_source_science.py",
+          "kind": "python",
+          "marker": "test_english_malay_chinese_exact_sentence_negations_fail_closed"
+        },
+        {
+          "path": "tests/test_v53_paired_glider_signed_admission.py",
+          "kind": "python",
+          "marker": "test_three_distinct_glider_tasks_immutable_signed_and_restart_safe"
+        },
+        {
+          "path": "tests/test_v53_paired_glider_signed_admission.py",
+          "kind": "python",
+          "marker": "test_corrupt_signed_receipt_blocked"
+        },
+        {
+          "path": "tests/test_v50_bosla_autonomous_academic_advance.py",
+          "kind": "python",
+          "marker": "test_all_four_missing_boundaries_automatically_advance_in_one_run"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-26",
+      "nextAction": "ACTIVE: original selected one-textbook Serway MCQ04 EN/MS/ZH paired glider opt-b/c/d genuinely independently source-tested on authorized Yoga6 EXIT0, each exact rational vector momentum = 0 and scalar kinetic energy >0; 12 targeted dimension/negative and immutable receipt tests PASS. BSA278 in isolated worktree pending BSA277 owner accepted A7-A9; new A10-A12 academic acceptance requires exact hosted Git HEAD, genuine owner V1-V36, current original-source registry audit, immutable A1-A9 receipts, signed source V36 MCQ04 partition, A10-A12 --admit/--verify and independent horizon. All 90 complete activity gates remain OPEN; no outside source PDFs, paid Gemini replay or public merge/deploy."
     }
   ]
 }

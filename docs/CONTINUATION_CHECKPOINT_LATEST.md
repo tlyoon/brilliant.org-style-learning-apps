@@ -1,6 +1,10 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261126-277 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261126-278 | ACTIVE
+
+> 26 NOV 2026 -- BSA278 PAIRED GLIDER ORIGINAL SOURCE SCIENCE WITNESSES + A10-A12 ADMISSION CODE DEVELOPED IN ISOLATED YOGA6 WORKTREE. BSA276 A1-A6 genuinely owner-verified and BSA277 A7-A9 source-bound integration currently undergoing exact original-source normal owner acceptance; do not claim unadmitted task as PASS. BSA278 uses ONLY same selected Serway 9.1 original PDF and frozen 18-activity candidate, full EN/MS/ZH fourth MCQ false choices and independent rational p1=-p2 and positive scalar K1+K2; real owner original-source source-producer verification for opt-b/c/d EXIT0 (three new distinct task identities). Synthetic corrupt-vector/false-energy/negation tests passed. Separate original-source signed V36 partition #4 A10-A12 immutable batch admission chained after verified A1-A9 and owner current signed registry; normal on-demand controller automatically follows verified A7-A9 into A10-A12 and long-horizon reread, no unnecessary stop between accepted steps. No source-free engineering queue falsely increases academic count, no outside PDF, Gemini replay, scheduler or release.
+
+
 
 > BSA276 GENUINELY CLOSED: exact clean original Serway owner source HEAD 16baa0923a2c338ec827b0c6a76da70619c5c105, both hosted CI #45843385059/#45843376491 SUCCESS, genuine V1-V36 EXIT0, autonomous controller restored source/CI and admitted independently rechecked SI-unit A4-A6 tasks. Signed immutable receipt SHA e51f8d8d962d037d0f2b7dea5b896a78d6d8ded7d4047caa21d87841172d908b; independent normal long-horizon readback EXIT0: 6/429 academic science tasks accepted, 423 pending, 21 MCQ false choices pending, all 90 complete activity proof gates OPEN, zero academic activity PASS. The separate BSA277 Newton MCQ03 code and three actual-source scientific witnesses passed, isolated CI #45845170188 SUCCESS and BSA277 is now integrated into primary Bosla feature checkout. Its new A7-A9 remain UNADMITTED until exact main code-hosted CI and owner V36/A7-A9 receipt/readback. No provider replay, external PDF or public merge/release.
 
