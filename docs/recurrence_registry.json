@@ -10155,7 +10155,7 @@
     {
       "id": "BSA-20261126-276",
       "class": "source_bound_si_unit_proofs_and_automatic_no_unnecessary_pauses_academic_continuation",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261126-275",
@@ -10171,10 +10171,6 @@
           {
             "path": "scripts/auto_advance_bosla_academic_frontier.py",
             "marker": "from app_generator.runtime.v3_autonomous_academic_advancement import ("
-          },
-          {
-            "path": "scripts/show_bosla_long_horizon.py",
-            "marker": "from app_generator.runtime.v3_si_units_academic_batch_admission import ("
           }
         ]
       },
@@ -10215,7 +10211,7 @@
         "github-ci"
       ],
       "lastValidatedDate": "2026-11-26",
-      "nextAction": "ACTIVE: real Yoga6 original single Serway source plus frozen EN/MS/ZH MCQ02 opt-b/c/d science witnesses PASS, but not yet admitted. Bounded on-demand academic advancement and 18 adversarial/restart tests PASS. Need clean new exact Git HEAD and hosted CI, genuine owner V1-V36, current signed original source registry audit, A3 and A4-A6 independent academic batch admission/readback before 6/429 count. Until then 3/429, 426 academic tasks open, all 90 complete activity gates OPEN. No paid provider replay, external PDF, unscheduled background loop, merge or release."
+      "nextAction": "RESOLVED original selected Serway 9.1 source on authorized Yoga6, code HEAD 16baa0923a2c338ec827b0c6a76da70619c5c105; exact hosted GitHub CI #45843385059 and #45843376491 both SUCCESS. Genuine owner normal V1-V36 and bounded automatic advancement controller completed EXIT0; signed current BSA274 original-source registry, admitted A4-A6 SI science tasks, independently read back all A1-A6; separate show_bosla_long_horizon EXIT0, signed immutable A4-A6 receipt SHA e51f8d8d962d037d0f2b7dea5b896a78d6d8ded7d4047caa21d87841172d908b. Exactly 6/429 original-source scientific academic tasks accepted; 423 pending; 21/27 MCQ distractor science pending, all 90 complete academic activity gates OPEN and zero full activity PASS. No Gemini calls, outside source PDFs, background schedule or public deployment. Next BSA277 new reviewed Newton F=dp/dt false choice proof batch."
     },
     {
       "id": "BSA-20261126-277",
@@ -10275,7 +10271,7 @@
         "github-ci"
       ],
       "lastValidatedDate": "2026-11-26",
-      "nextAction": "ACTIVE isolated Yoga6 BSA277 development at previous BSA276 source HEAD, without disturbing clean owner certification. Genuine original selected Serway MCQ03 opt-b/c/d three new exact physics witnesses EXIT0, 18 focused new/updated regression tests PASS; NONE newly admitted. Requires BSA276 A4-A6 owner proof closure, then integrate isolated BSA277, new exact-hosted CI, genuine owner V1-V36 and separate A7-A9 academic --admit/--verify plus horizon before claiming 9/429. All 90 full activity gates OPEN; no extra source PDF/model/public release."
+      "nextAction": "ACTIVE: BSA276 owner source-bound A4-A6 now independently verified, 6/429 academic tasks accepted, 423 remaining, 21/27 incorrect MCQ science still pending, 90 complete gates OPEN. BSA277 original Serway MCQ03 opt-b/c/d Newton F=dp/dt force-momentum rational/EN-MS-ZH witnesses genuine Yoga6 EXIT0; 30 focused source-free tests PASS and isolated branch CI #45845170188 SUCCESS. Now integrated clean main development checkout code HEAD 40b1cdb69ba930a24b56aa3e5673eea7421aa788. Next: commit active/closed source evidence update, new exact HEAD hosted CI, genuine Yoga6 owner V1-V36 source-free, current-head signed original-source registry, then A7-A9 academic --admit, independent --verify/horizon; only after this may count 9/429. No unsafe provider replay, external PDF, fake academic activity PASS, public merge or deployment."
     }
   ]
 }
