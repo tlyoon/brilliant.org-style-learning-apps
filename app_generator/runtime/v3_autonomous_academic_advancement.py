@@ -32,6 +32,10 @@ from app_generator.runtime.v3_si_units_academic_batch_admission import (
     _FRONTIER as _SI_FRONTIER,
     admit_si_unit_science_batch,verify_si_unit_batch_across_git_heads,
 )
+from app_generator.runtime.v3_newton_force_academic_batch_admission import (
+    _FRONTIER as _NEWTON_FRONTIER,
+    admit_newton_source_bound_batch, verify_newton_batch_across_git_heads,
+)
 
 
 def _owner_advance_worker(repo:Path)->None:
@@ -107,13 +111,28 @@ def advance_all_eligible_academic_actions(
             or latest["fullAcademicActivityPASS"]!=0
             or latest["publicationAuthorized"] is not False):
             raise ValueError("BSA276_A1_A6_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        force=private/"long-horizon-development"/_NEWTON_FRONTIER
+        if not force.exists() and not force.is_symlink():
+            admitted=admit_newton_source_bound_batch(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=9
+                or admitted["pendingMcqDistractorScienceTasks"]!=18):
+                raise ValueError("BSA277_NEWTON_BATCH_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A7_A9_NEWTON_SCIENCE_TASKS")
+            continue
+        force_accepted=verify_newton_batch_across_git_heads(private=private)
+        if (force_accepted["independentlyAcceptedAcademicTasks"]!=9
+            or force_accepted["fullAcademicTasksStillOpen"]!=420
+            or force_accepted["completeAcademicProofGatesStillOpen"]!=90
+            or force_accepted["fullAcademicActivityPASS"]!=0
+            or force_accepted["publicationAuthorized"] is not False):
+            raise ValueError("BSA277_A1_A9_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA276_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA277_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":6,
-            "fullAcademicProofTasksStillOpen":423,
-            "pendingMcqDistractorScienceTasks":21,
+            "academicProofTasksAccepted":9,
+            "fullAcademicProofTasksStillOpen":420,
+            "pendingMcqDistractorScienceTasks":18,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,
             "nextSafeDevelopmentFrontier":
