@@ -3,7 +3,11 @@
 Authoritative execution identity: **Bosla**, the Brilliant.org-style learning app, on
 the authorized owner **Yoga 6**. This is not MicroGen_AI_Web.
 
-## BSA274 reusable source-bound proof registry -- ACTIVE
+## BSA275 finite source-grounded scientific batches and new academic admission -- ACTIVE
+
+BSA274 was genuinely verified on 91256ef through exact hosted CI, real owner normal V1-V36, signed registry --admit/--verify and horizon readback. Two old scientific academic proofs are preserved; BSA275 adds bounded science task batches, tested scientific semantics for the next opt-d false momentum perpendicular assertion, a NEW immutable A3 academic batch admission and independent cross-revision rechecks. A science countermodel from a read-only batch is NOT yet an academic task: the A3 owner admission needs clean exact hosted CI, real current-head V36, signed current-head BSA274 audit, original selected Serway textbook source, complete EN/MS/ZH meaning and independently rechecked rational vector arithmetic. Old A1/A2 never overwritten. The accepted count is 2/429 until separately signed A3 admits and reader verifies a third. All 90 complete activity gates OPEN; no outside PDF, model replay, scheduler, public merge/release.
+
+## BSA274 reusable source-bound proof registry -- RESOLVED
 
 Replace bespoke A1/A2-only academic evidence readback with reviewed proof-family registration. A rule must independently read original source, full semantic proposition, genuine signed V36 identity and its immutable science receipt; its name or stored status alone is NEVER proof. Current original Serway 9.1 has 27 MCQ false-choice tasks, exactly two independently accepted A1/A2 and 25 still REVIEW_REQUIRED. The BSA274 signed audit records the already accepted count; it never approves a third. New owner entrypoint is scripts.audit_bosla_academic_proof_registry --admit after clean hosted exact-HEAD CI and same-HEAD owner V1-V36, followed by --verify and long-horizon readback. BSA275 should extend independently proven source-specific science families with fault-isolated batch processing. No outside PDF, model replay, scheduler, merge or public release.
 
