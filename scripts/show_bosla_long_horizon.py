@@ -155,6 +155,51 @@ def main() -> int:
             "nextUnfinishedDevelopmentAction":"BSA275_INDEPENDENT_BATCH_PROOF_RULES_FOR_25_PENDING_MC_Q_DISTRACTORS",
             "nextActionStatus":"REUSABLE_REGISTRY_IMPLEMENTED_NEW_PROOF_HANDLERS_REQUIRED",
         })
+    # BSA275: separately accepted new formal science batch is additional
+    # source-bound academic evidence, NEVER a source-free or registry-only PASS.
+    # Reverify immutable original A1/A2, signed first-V36 partition and every
+    # independently admitted batch proof against historic + latest source.
+    from app_generator.runtime.v3_academic_science_batch_admission import (
+        _FRONTIER as _SCIENCE_BATCH_FRONTIER,
+        verify_academic_batch_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_SCIENCE_BATCH_FRONTIER).exists():
+        try:
+            new=verify_academic_batch_across_git_heads(private=private)
+            if (new["acceptedAcademicTaskIds"][:2]!=outcome.get(
+                    "verifiedAcademicProofTaskIds")
+                or new["independentlyAcceptedAcademicTasks"]<=2
+                or new["fullAcademicActivityPASS"]!=0
+                or new["publicationAuthorized"] is not False):
+                raise ValueError("BSA275_NEW_BATCH_MUST_PRESERVE_A1_A2")
+        except (OSError,ValueError,TypeError,KeyError,IndexError,
+                ArithmeticError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_ACADEMIC_BATCH_SCIENCE_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_ADDITIONAL_SCIENCE_BATCH_REVERIFIED",
+            "academicAcceptancesSource":
+                "SIGNED_INDEPENDENT_A1_A2_AND_ADDITIONAL_SOURCE_BOUND_SCIENCE_BATCH",
+            "academicProofTasksAccepted":new["independentlyAcceptedAcademicTasks"],
+            "fullAcademicProofTasksStillOpen":new["fullAcademicTasksStillOpen"],
+            "completeAcademicProofGatesStillOpen":
+                new["completeAcademicProofGatesStillOpen"],
+            "pendingMcqDistractorScienceTasks":
+                27-new["independentlyAcceptedAcademicTasks"],
+            "verifiedAcademicProofTaskIds":new["acceptedAcademicTaskIds"],
+            "academicScienceBatchReceiptSha256":new["batchReceiptSha256"],
+            "scienceBatchCarriedAcrossGitHead":
+                new["batchProofCarriedAcrossGitHead"],
+            "academicActivityPASS":0,
+            "nextUnfinishedDevelopmentAction":
+                "BSA275_CONTINUE_BOUNDED_INDEPENDENT_SOURCE_BOUND_MC_Q_PROOF_BATCHES",
+            "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_HANDLERS_STILL_REQUIRED",
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 

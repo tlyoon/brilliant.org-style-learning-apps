@@ -45,8 +45,18 @@ def main(argv:list[str]|None=None)->int:
     private=Path(home)/"Microvid"/"BoslaV3ReviewYoga6"
     try:
         audit=audit_source_bound_academic_registry(private=private)
+        from app_generator.runtime.v3_academic_science_batch_admission import (
+            _FRONTIER as _BATCH_FRONTIER,
+            verify_academic_batch_across_git_heads,
+        )
+        overlay=private/"long-horizon-development"/_BATCH_FRONTIER
+        newly_admitted=()
+        if overlay.exists() or overlay.is_symlink():
+            verified=verify_academic_batch_across_git_heads(private=private)
+            newly_admitted=tuple(verified["acceptedAcademicTaskIds"][2:])
         batch=plan_next_science_batch(
-            audit=audit,cursor=args.cursor,maximum=args.batch_size)
+            audit=audit,cursor=args.cursor,maximum=args.batch_size,
+            independently_admitted_new_task_ids=newly_admitted)
         ready=read_long_horizon_development(private)
         _,_,_,source,candidate=_bound_inputs(private,{
             "gitHead":ready["gitHead"],"proposalSha256":ready["proposalSha256"]})
@@ -90,8 +100,8 @@ def main(argv:list[str]|None=None)->int:
             "independentlyVerifiedNewScienceWitnessesNotAdmitted":
                 dispatched["verifiedWitnessCount"],
             "quarantinedTaskCount":dispatched["quarantinedCount"],
-            "remainingMcqProofTasksBeforeAdmission":25,
-            "academicProofTasksAcceptedBeforeBatch":2,
+            "remainingMcqProofTasksBeforeAdmission":25-len(newly_admitted),
+            "academicProofTasksAcceptedBeforeBatch":2+len(newly_admitted),
             "academicProofTasksAcceptedByBatch":0,
             "completeAcademicProofGatesStillOpen":90,
             "taskResults":[{"taskId":r["taskId"],"status":r["status"]}
