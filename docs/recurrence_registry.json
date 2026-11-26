@@ -9648,7 +9648,7 @@
     {
       "id": "BSA-20261126-273",
       "class": "second_original_source_mcq_distractor_academic_proof_missing",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261125-272",
@@ -9667,7 +9667,7 @@
           },
           {
             "path": "scripts/show_bosla_long_horizon.py",
-            "marker": "verify_second_academic_across_git_heads"
+            "marker": "from app_generator.runtime.v3_second_academic_proof_admission import ("
           }
         ]
       },
@@ -9703,7 +9703,7 @@
         "github-ci"
       ],
       "lastValidatedDate": "2026-11-26",
-      "nextAction": "ACTIVE: second opt-b task independently verified with original source PDF/frozen candidate, exact signed V36 first task partition and two rational countermodels; 15 targeted tests PASS. Full exact new Git HEAD CI, fresh owner Yoga6 V1-V36 source-free run and separate A2 --admit/--verify/horizon remain required. Until then 1 accepted/429, 428 remain, 90 complete academic gates OPEN. No Gemini, external PDF, public merge or deployment."
+      "nextAction": "RESOLVED at clean source HEAD 39c62b69ebfdb8c0e7a9740f2577e0b568bf65ca: both exact hosted GitHub CI #45728796013 and #45728789226 SUCCESS; genuine Yoga6 normal V1-V36 source-free owner worker EXIT0 (609.70s), authentic original Serway source/frozen candidate, original signed V36 task and Chrome verified. Separate academic second-task --admit EXIT0, independent --verify EXIT0 and durable horizon readback EXIT0, new A2 proof receipt SHA a576cd0b4dcce58d1a10c170eb74335710e2ca443ed35c320ac858f10c92ea30, original A1 immutable proof receipt SHA 853d20dffd126d20c773b06f119f238844cd137f2b40797947e2b846674ce3ed preserved cross revision. Exactly 2/429 academic tasks genuinely accepted, 427 pending, all 90 complete academic gates OPEN. 15 targeted adversarial tests PASS. No additional Gemini calls, outside PDF, public PR merge or publication. Next architectural priority: reusable independently verified batch-proof registry for remaining 25 MCQ distractors rather than one bespoke proof file per option."
     }
   ]
 }
