@@ -244,6 +244,49 @@ def main() -> int:
             "nextActionStatus":"NEW_INDEPENDENT_PROOF_FAMILY_REQUIRED",
             "publicationAuthorized":False,
         })
+    # BSA277: individually original-source-verified Newton A7–A9 tasks
+    # extend the immutable A1–A6 chain ONLY after separate signed admission.
+    from app_generator.runtime.v3_newton_force_academic_batch_admission import (
+        _FRONTIER as _NEWTON_FRONTIER, verify_newton_batch_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_NEWTON_FRONTIER).exists():
+        try:
+            newton=verify_newton_batch_across_git_heads(private=private)
+            if (newton["acceptedAcademicTaskIds"][:6]!=outcome.get(
+                    "verifiedAcademicProofTaskIds")
+                or newton["independentlyAcceptedAcademicTasks"]!=9
+                or newton["pendingMcqDistractorScienceTasks"]!=18
+                or newton["completeAcademicProofGatesStillOpen"]!=90
+                or newton["publicationAuthorized"] is not False):
+                raise ValueError("BSA277_A7_A9_CANNOT_BYPASS_SIX_PRIOR_PROOFS")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,
+                ArithmeticError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_NEWTON_SCIENCE_BATCH_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_NEWTON_SCIENCE_BATCH_REVERIFIED",
+            "academicAcceptancesSource":
+                "NINE_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_RECEIPTS",
+            "academicProofTasksAccepted":newton["independentlyAcceptedAcademicTasks"],
+            "fullAcademicProofTasksStillOpen":newton["fullAcademicTasksStillOpen"],
+            "pendingMcqDistractorScienceTasks":
+                newton["pendingMcqDistractorScienceTasks"],
+            "completeAcademicProofGatesStillOpen":
+                newton["completeAcademicProofGatesStillOpen"],
+            "verifiedAcademicProofTaskIds":newton["acceptedAcademicTaskIds"],
+            "academicNewtonBatchReceiptSha256":newton["newtonBatchReceiptSha256"],
+            "newtonBatchCarriedAcrossGitHead":newton["carriedAcrossGitHead"],
+            "academicActivityPASS":0,
+            "nextUnfinishedDevelopmentAction":
+                "BSA278_INDEPENDENT_NEXT_SCIENTIFIC_EXPLANATION_MC_Q_AND_DIAGRAM_PROOF_HANDLERS",
+            "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 
