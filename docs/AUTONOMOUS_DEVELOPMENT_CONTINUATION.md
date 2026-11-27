@@ -1,3 +1,7 @@
+## BSA289 MCQ07 equal-energy source-bound proof and admission -- ACTIVE
+
+The next three genuinely new MCQ07 distractor-science tasks now have an executable exact-rational proof producer: two independent positive mass/speed pairs hold kinetic energy equal while deriving a strict heavier-body momentum advantage. Complete frozen EN/MS/ZH candidate sentences, original selected Serway source digest, seventh V36 partition and canonical task IDs are required. The owner-only immutable A19-A21 admission chains after independently reopened A1-A18 and the horizon independently rechecks origin and current Git heads. The private PDF is deliberately absent from this coding snapshot. No new academic acceptance is claimed here: the last confirmed signed frontier remains 15/429, 414 pending, all 90 full activity gates OPEN. Host exact CI, original source run and signed owner readback are required before any count changes. No outside PDF or paid model request.
+
 # Bosla autonomous development continuation contract — v1.0
 
 Authoritative execution identity: **Bosla**, the Brilliant.org-style learning app, on

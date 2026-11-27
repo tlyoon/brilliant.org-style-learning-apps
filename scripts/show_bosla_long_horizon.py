@@ -420,6 +420,46 @@ def main() -> int:
             "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_equal_energy_academic_batch_admission import (
+        _FRONTIER as _EQUAL_ENERGY_FRONTIER,
+        verify_equal_energy_batch_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_EQUAL_ENERGY_FRONTIER).exists():
+        try:
+            energy=verify_equal_energy_batch_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=18
+                or energy["acceptedAcademicTaskIds"][:18]!=outcome.get(
+                    "verifiedAcademicProofTaskIds")
+                or energy["independentlyAcceptedAcademicTasks"]!=21
+                or energy["fullAcademicTasksStillOpen"]!=408
+                or energy["pendingMcqDistractorScienceTasks"]!=6
+                or energy["completeAcademicProofGatesStillOpen"]!=90
+                or energy["fullAcademicActivityPASS"]!=0
+                or energy["publicationAuthorized"] is not False):
+                raise ValueError("BSA289_A19_A21_CANNOT_BYPASS_A1_A18")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,
+                ArithmeticError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_EQUAL_ENERGY_SCIENCE_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_EQUAL_ENERGY_SCIENCE_BATCH_REVERIFIED",
+            "academicAcceptancesSource":
+                "TWENTY_ONE_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":21,
+            "fullAcademicProofTasksStillOpen":408,
+            "pendingMcqDistractorScienceTasks":6,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":energy["acceptedAcademicTaskIds"],
+            "academicEqualEnergyBatchReceiptSha256":energy["equalEnergyBatchReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 
