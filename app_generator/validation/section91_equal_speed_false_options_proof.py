@@ -76,6 +76,14 @@ def independently_check_equal_speed_witness(proof: dict) -> None:
             or proof.get("promptLocaleSha256") != _PROMPT or proof.get("optionLocaleSha256") != _OPTIONS[option]
             or proof.get("sourceSha256") != _SOURCE_SHA or proof.get("candidateSha256") != _CANDIDATE_SHA
             or proof.get("models") != _models() or proof.get("academicTaskAccepted") is not False
+            or not isinstance(proof.get("surfaceSha256"), str)
+            or len(proof["surfaceSha256"]) != 64
+            or type(proof.get("sourcePageIndex")) is not int
+            or proof["sourcePageIndex"] < 1
+            or not isinstance(proof.get("sourcePassageSha256"), str)
+            or len(proof["sourcePassageSha256"]) != 64
+            or not isinstance(proof.get("sourcePhysicsPremisesSha256"), str)
+            or len(proof["sourcePhysicsPremisesSha256"]) != 64
             or proof.get("completeAcademicProofGatesStillOpen") != 90
             or proof.get("newProviderCalls") != 0 or proof.get("publicationAuthorized") is not False):
         raise ValueError("BSA284_UNTRUSTED_EQUAL_SPEED_WITNESS")
@@ -122,6 +130,7 @@ def independently_prove_equal_speed_false_option(*, source_pdf: Path, candidate_
         raise ValueError("BSA284_CANONICAL_MC_Q06_TASK_NOT_REDERIVED")
     body = {"taskId": tasks[0]["taskId"], "optionId": option_id, "falseClaim": _CLAIMS[option_id],
             "sourceSha256": _SOURCE_SHA, "candidateSha256": _CANDIDATE_SHA,
+            "surfaceSha256": tasks[0]["surfaceSha256"],
             "sourcePageIndex": anchor["physicalPage"], "sourcePassageSha256": anchor["passageSha256"],
             "sourcePhysicsPremisesSha256": _digest(sorted(axioms.items())),
             "promptLocaleSha256": prompt, "optionLocaleSha256": locale, "models": _models(),

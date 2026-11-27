@@ -10766,6 +10766,33 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-27",
       "nextAction":"ACTIVE until full source branch tests, exact-hosted-CI, safe live-owner integration and a restarted original textbook verification prove that the 20-second secondary timeout and orphaned nested worker cannot recur. The existing 15/429 signed academic frontier remains untouched; A16 requires a distinct original-source proof and signed independent horizon admission."
+    },
+    {
+      "id":"BSA-20261127-287",
+      "class":"mcq06_source_bound_science_producer_lacks_signed_academic_admission",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "noveltyExplanation":"The BSA284 MCQ06 source-bound vector countermodels had no signed A16-A18 admission, independent historical readback or ordinary owner continuation. A source-free witness alone cannot advance academic acceptance.",
+      "relatedIncidentIds":["BSA-20261127-284","BSA-20261127-281"],
+      "differenceFromLinkedIncident":"This stage binds the three MCQ06 proof witnesses to the sixth signed V36 source partition, rechecks the original one-textbook source and frozen EN/MS/ZH candidate, chains after all signed A1-A15 tasks, signs a separate immutable A16-A18 receipt, and independently reopens both historical and current-head proofs. The original PDF is absent from the disposable coding snapshot, so owner acceptance remains pending.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker":"admit_equal_speed_batch(private=private)",
+        "remedyMarker":"BSA287_A1_A18_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
+        "normalEntryPoints":[
+          {"path":"app_generator/runtime/v3_equal_speed_academic_batch_admission.py","marker":"def admit_equal_speed_batch"},
+          {"path":"app_generator/runtime/v3_equal_speed_academic_batch_admission.py","marker":"def verify_equal_speed_batch_across_git_heads"},
+          {"path":"scripts/show_bosla_long_horizon.py","marker":"BOSLA_LONG_HORIZON_EQUAL_SPEED_SCIENCE_BATCH_REVERIFIED"}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v68_equal_speed_academic_admission.py","kind":"python","marker":"test_partition_task_and_science_are_independently_rechecked"},
+        {"path":"tests/test_v64_equal_speed_source_science.py","kind":"python","marker":"test_source_bound_producer_exercises_original_check_and_task_derivation"},
+        {"path":"tests/test_v50_bosla_autonomous_academic_advance.py","kind":"python","marker":"test_all_four_missing_boundaries_automatically_advance_in_one_run"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-27",
+      "nextAction":"Run exact-head hosted CI and genuine Yoga6 original Serway source admission; only a signed A16-A18 owner receipt plus independent horizon readback may increase 15/429 to 18/429. All 90 full activity gates remain open."
     }
   ]
 }
