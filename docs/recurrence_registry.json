@@ -10480,6 +10480,80 @@
       ],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "ACTIVE BSA280: A1-A12 source-bound original Serway signed owner science independently PASS on db89376 (12/429; 417 pending; 15 false-MCQ science tasks and all 90 complete activities still OPEN). Owner Windows persistent scheduler running, but two genuine Codex zero-write attempts in Git-linked Windows sandbox. New owner failure classifier, safe Git-less model coding snapshot and host SHA256 patch adoption isolated and under tests. Need real Codex writing in snapshot, full recurrence tests, hosted exact Git CI, integrate new owner scheduler runtime and observe a nonempty new code development task. Never alter signed proofs, replay paid Gemini, fetch outside PDFs or deploy."
+    },
+    {
+      "id": "BSA-20261127-281",
+      "class": "academic_original_source_progress_stuck_after_twelve_proven_tasks",
+      "status": "active",
+      "rootCauseFamily": "genuinely-new-root-cause",
+      "noveltyExplanation": "Bosla BSA280 genuinely restored automatic model code writing, owner academic repair and schedule persistence, but the *actual* original Serway academic controller and independent horizon still hardcoded the BSA278 A1-A12 science frontier. Repeated 12/429 polling could never admit MCQ05 individual momentum and Newton third-law counterexample science A13-A15, even after Codex had identified that exact family. The missing normal-controller dispatch and independent source-grounded proof handlers are separate from historic sandbox and CI blockers.",
+      "relatedIncidentIds": [
+        "BSA-20261127-280",
+        "BSA-20261127-279",
+        "BSA-20261126-278"
+      ],
+      "differenceFromLinkedIncident": "BSA278 proved three opposite glider momentum/energy misconceptions on MCQ04. BSA281 independently checks a DIFFERENT MCQ05 Newton third-law family: false individual momentum conservation, false zero acceleration under nonzero mutual forces, and false requirement of equal mass and velocity. This implements two nontrivial exact Fraction-valued mutual force/impulse/momentum/acceleration models, reopens owner Serway original source SHA and frozen genuine EN/MS/ZH candidate, matches all three source-specific MCQ05 signed V36 review-row task digests, and creates new individually independently signed A13-A15 admission and restart-safe cross-revision re-verification. The normal academic controller, CLI and long-horizon report are wired to adopt the signed 15 only when real owner original-source admission succeeds. No general translation or complete-activity PASS is inherited.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker": "admit_third_law_batch(private=private)",
+        "remedyMarker": "BSA281_A1_A15_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/auto_advance_bosla_academic_frontier.py",
+            "marker": "verify_third_law_batch_across_git_heads(private=private)"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "BOSLA_LONG_HORIZON_THIRD_LAW_SCIENCE_BATCH_REVERIFIED"
+          },
+          {
+            "path": "app_generator/runtime/v3_third_law_academic_batch_admission.py",
+            "marker": "def admit_third_law_batch"
+          },
+          {
+            "path": "app_generator/validation/section91_third_law_false_options_proof.py",
+            "marker": "def independently_prove_third_law_false_option"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v58_third_law_source_science.py",
+          "kind": "python",
+          "marker": "test_three_distinct_false_choices_independently_countermodelled"
+        },
+        {
+          "path": "tests/test_v58_third_law_source_science.py",
+          "kind": "python",
+          "marker": "test_science_tampering_cannot_pass_even_with_fresh_fake_hash"
+        },
+        {
+          "path": "tests/test_v58_third_law_source_science.py",
+          "kind": "python",
+          "marker": "test_all_complete_three_language_literals_pinned_to_real_package"
+        },
+        {
+          "path": "tests/test_v59_third_law_signed_admission.py",
+          "kind": "python",
+          "marker": "test_live_admission_rejects_duplicate_task_ids_without_signature"
+        },
+        {
+          "path": "tests/test_v59_third_law_signed_admission.py",
+          "kind": "python",
+          "marker": "test_cross_head_verifier_rejects_nonzero_activity_pass"
+        },
+        {
+          "path": "tests/test_v50_bosla_autonomous_academic_advance.py",
+          "kind": "python",
+          "marker": "test_all_four_missing_boundaries_automatically_advance_in_one_run"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "ACTIVE until authentic Yoga6 source-specific A13-A15 signed private owner readback after exact current-head two hosted CI success. Owner-host-only original Serway source and 18-activity frozen candidate were just reopened and all three true separate MCQ05 false options actually passed independent exact rational models in isolation, with no new provider requests. Need full tests, exact hosted CI, integrate independently into main live Yoga6 scheduled owner flow and verify total 15/429 with receipt. Until then last confirmed count remains 12/429, 417 open; all 90 activities OPEN. After genuine 15/429, advance other 414 tasks automatically, no manual prompt."
     }
   ]
 }

@@ -19,6 +19,9 @@ from app_generator.runtime.v3_autonomous_academic_advancement import (
 from app_generator.runtime.v3_paired_glider_academic_batch_admission import (
     verify_paired_glider_batch_across_git_heads,
 )
+from app_generator.runtime.v3_third_law_academic_batch_admission import (
+    verify_third_law_batch_across_git_heads,
+)
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -41,7 +44,7 @@ def main(argv:list[str]|None=None)->int:
             read_long_horizon_development,
         )
         state=read_long_horizon_development(private)
-        verified=verify_paired_glider_batch_across_git_heads(private=private)
+        verified=verify_third_law_batch_across_git_heads(private=private)
         if (state["gitHead"]!=result["currentGitHead"]
             or verified["independentlyAcceptedAcademicTasks"]!=
                result["academicProofTasksAccepted"]

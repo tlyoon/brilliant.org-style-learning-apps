@@ -40,6 +40,10 @@ from app_generator.runtime.v3_paired_glider_academic_batch_admission import (
     _FRONTIER as _GLIDER_FRONTIER,
     admit_paired_glider_batch, verify_paired_glider_batch_across_git_heads,
 )
+from app_generator.runtime.v3_third_law_academic_batch_admission import (
+    _FRONTIER as _THIRD_LAW_FRONTIER,
+    admit_third_law_batch, verify_third_law_batch_across_git_heads,
+)
 
 
 def _owner_advance_worker(repo:Path)->None:
@@ -145,13 +149,30 @@ def advance_all_eligible_academic_actions(
             or glider_verified["fullAcademicActivityPASS"]!=0
             or glider_verified["publicationAuthorized"] is not False):
             raise ValueError("BSA278_A1_A12_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        third_law=private/"long-horizon-development"/_THIRD_LAW_FRONTIER
+        if not third_law.exists() and not third_law.is_symlink():
+            admitted=admit_third_law_batch(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=15
+                or admitted["pendingMcqDistractorScienceTasks"]!=12
+                or admitted["fullAcademicTasksStillOpen"]!=414):
+                raise ValueError("BSA281_THIRD_LAW_BATCH_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A13_A15_THIRD_LAW_SCIENCE_TASKS")
+            continue
+        third_verified=verify_third_law_batch_across_git_heads(private=private)
+        if (third_verified["independentlyAcceptedAcademicTasks"]!=15
+            or third_verified["fullAcademicTasksStillOpen"]!=414
+            or third_verified["pendingMcqDistractorScienceTasks"]!=12
+            or third_verified["completeAcademicProofGatesStillOpen"]!=90
+            or third_verified["fullAcademicActivityPASS"]!=0
+            or third_verified["publicationAuthorized"] is not False):
+            raise ValueError("BSA281_A1_A15_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA278_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA281_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":12,
-            "fullAcademicProofTasksStillOpen":417,
-            "pendingMcqDistractorScienceTasks":15,
+            "academicProofTasksAccepted":15,
+            "fullAcademicProofTasksStillOpen":414,
+            "pendingMcqDistractorScienceTasks":12,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,
             "nextSafeDevelopmentFrontier":

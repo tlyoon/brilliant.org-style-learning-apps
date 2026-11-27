@@ -67,6 +67,14 @@ class AutonomousAcademicFlow(TestCase):
                 frontier.write_text("{}")
                 return {"independentlyAcceptedAcademicTasks":12,
                         "pendingMcqDistractorScienceTasks":15}
+            def third_law_admit(private):
+                calls.append("a13_a15")
+                frontier=private/"long-horizon-development"/auto._THIRD_LAW_FRONTIER
+                frontier.parent.mkdir(exist_ok=True)
+                frontier.write_text("{}")
+                return {"independentlyAcceptedAcademicTasks":15,
+                        "pendingMcqDistractorScienceTasks":12,
+                        "fullAcademicTasksStillOpen":414}
             with (patch.object(auto,"_git_info",return_value=(HEAD,"feature")),
                   patch.object(auto,"_git_clean",return_value=True),
                   patch.object(auto,"_hosted_runs",return_value=[]),
@@ -107,6 +115,15 @@ class AutonomousAcademicFlow(TestCase):
                                   "fullAcademicTasksStillOpen":417,
                                   "completeAcademicProofGatesStillOpen":90,
                                   "fullAcademicActivityPASS":0,
+                                  "publicationAuthorized":False}),
+                  patch.object(auto,"admit_third_law_batch",
+                               side_effect=third_law_admit),
+                  patch.object(auto,"verify_third_law_batch_across_git_heads",
+                    return_value={"independentlyAcceptedAcademicTasks":15,
+                                  "fullAcademicTasksStillOpen":414,
+                                  "pendingMcqDistractorScienceTasks":12,
+                                  "completeAcademicProofGatesStillOpen":90,
+                                  "fullAcademicActivityPASS":0,
                                   "publicationAuthorized":False})):
                 if auto_run is None:
                     result=auto.advance_all_eligible_academic_actions(
@@ -123,19 +140,19 @@ class AutonomousAcademicFlow(TestCase):
 
     def test_all_four_missing_boundaries_automatically_advance_in_one_run(self):
         result,actions=self.case(previous_head=True)
-        self.assertEqual(actions,["owner","audit","a3","a4_a6","a7_a9","a10_a12"])
-        self.assertEqual(result["academicProofTasksAccepted"],12)
-        self.assertEqual(result["fullAcademicProofTasksStillOpen"],417)
+        self.assertEqual(actions,["owner","audit","a3","a4_a6","a7_a9","a10_a12","a13_a15"])
+        self.assertEqual(result["academicProofTasksAccepted"],15)
+        self.assertEqual(result["fullAcademicProofTasksStillOpen"],414)
         self.assertEqual(result["completeAcademicProofGatesStillOpen"],90)
         self.assertEqual(result["academicActivityPASS"],0)
         self.assertFalse(result["publicationAuthorized"])
 
     def test_idempotent_restart_does_not_reissue_old_proofs(self):
         result,actions=self.case(auto_run="twice")
-        self.assertEqual(actions,["audit","a3","a4_a6","a7_a9","a10_a12"])
+        self.assertEqual(actions,["audit","a3","a4_a6","a7_a9","a10_a12","a13_a15"])
         first,second=result
-        self.assertEqual(first["academicProofTasksAccepted"],12)
-        self.assertEqual(second["academicProofTasksAccepted"],12)
+        self.assertEqual(first["academicProofTasksAccepted"],15)
+        self.assertEqual(second["academicProofTasksAccepted"],15)
         self.assertEqual(second["actionsExecuted"],[])
 
     def test_failed_exact_head_ci_stops_unsafe_admission(self):
