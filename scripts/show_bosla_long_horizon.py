@@ -460,6 +460,46 @@ def main() -> int:
             "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_isolated_pair_academic_batch_admission import (
+        _FRONTIER as _ISOLATED_PAIR_FRONTIER,
+        verify_isolated_pair_batch_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_ISOLATED_PAIR_FRONTIER).exists():
+        try:
+            pair=verify_isolated_pair_batch_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=21
+                or pair["acceptedAcademicTaskIds"][:21]!=outcome.get(
+                    "verifiedAcademicProofTaskIds")
+                or pair["independentlyAcceptedAcademicTasks"]!=24
+                or pair["fullAcademicTasksStillOpen"]!=405
+                or pair["pendingMcqDistractorScienceTasks"]!=3
+                or pair["completeAcademicProofGatesStillOpen"]!=90
+                or pair["fullAcademicActivityPASS"]!=0
+                or pair["publicationAuthorized"] is not False):
+                raise ValueError("BSA290_A22_A24_CANNOT_BYPASS_A1_A21")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,
+                ArithmeticError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_ISOLATED_PAIR_SCIENCE_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_ISOLATED_PAIR_SCIENCE_BATCH_REVERIFIED",
+            "academicAcceptancesSource":
+                "TWENTY_FOUR_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":24,
+            "fullAcademicProofTasksStillOpen":405,
+            "pendingMcqDistractorScienceTasks":3,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":pair["acceptedAcademicTaskIds"],
+            "academicIsolatedPairBatchReceiptSha256":pair["isolatedPairBatchReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 
