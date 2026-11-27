@@ -331,6 +331,53 @@ def main() -> int:
             "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
             "publicationAuthorized":False,
         })
+    # BSA281 genuinely new, independently countermodelled MCQ05 third-law
+    # false options A13-A15; only signed owner receipts can extend A1-A12.
+    from app_generator.runtime.v3_third_law_academic_batch_admission import (
+        _FRONTIER as _THIRD_LAW_FRONTIER,
+        verify_third_law_batch_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_THIRD_LAW_FRONTIER).exists():
+        try:
+            third=verify_third_law_batch_across_git_heads(private=private)
+            if (third["acceptedAcademicTaskIds"][:12]!=outcome.get(
+                    "verifiedAcademicProofTaskIds")
+                or third["independentlyAcceptedAcademicTasks"]!=15
+                or third["pendingMcqDistractorScienceTasks"]!=12
+                or third["fullAcademicTasksStillOpen"]!=414
+                or third["completeAcademicProofGatesStillOpen"]!=90
+                or third["fullAcademicActivityPASS"]!=0
+                or third["publicationAuthorized"] is not False):
+                raise ValueError("BSA281_A13_A15_CANNOT_BYPASS_A1_A12")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,
+                ArithmeticError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_THIRD_LAW_SCIENCE_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_THIRD_LAW_SCIENCE_BATCH_REVERIFIED",
+            "academicAcceptancesSource":
+                "FIFTEEN_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":third["independentlyAcceptedAcademicTasks"],
+            "fullAcademicProofTasksStillOpen":third["fullAcademicTasksStillOpen"],
+            "pendingMcqDistractorScienceTasks":
+                third["pendingMcqDistractorScienceTasks"],
+            "completeAcademicProofGatesStillOpen":
+                third["completeAcademicProofGatesStillOpen"],
+            "verifiedAcademicProofTaskIds":third["acceptedAcademicTaskIds"],
+            "academicThirdLawBatchReceiptSha256":
+                third["thirdLawBatchReceiptSha256"],
+            "thirdLawBatchCarriedAcrossGitHead":third["carriedAcrossGitHead"],
+            "academicActivityPASS":0,
+            "nextUnfinishedDevelopmentAction":
+                "BSA282_NEXT_INDEPENDENT_SCIENTIFIC_EXPLANATION_TRILINGUAL_DIAGRAM_PROOF_HANDLERS",
+            "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 
