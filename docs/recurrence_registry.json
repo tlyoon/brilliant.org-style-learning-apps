@@ -10554,6 +10554,71 @@
       ],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "ACTIVE until authentic Yoga6 source-specific A13-A15 signed private owner readback after exact current-head two hosted CI success. Owner-host-only original Serway source and 18-activity frozen candidate were just reopened and all three true separate MCQ05 false options actually passed independent exact rational models in isolation, with no new provider requests. Need full tests, exact hosted CI, integrate independently into main live Yoga6 scheduled owner flow and verify total 15/429 with receipt. Until then last confirmed count remains 12/429, 417 open; all 90 activities OPEN. After genuine 15/429, advance other 414 tasks automatically, no manual prompt."
+    },
+    {
+      "id": "BSA-20261127-282",
+      "class": "repeated_git_staged_blank_eof_and_stale_worktree_source_revision",
+      "status": "active",
+      "rootCauseFamily": "genuinely-new-root-cause",
+      "noveltyExplanation": "On real Yoga6 27-Nov cycle 9 and cycle 10, Codex generated code but the normal runner returned BSA279_CODEX_PATCH_WHITESPACE_FAILURE from Git identifying one new blank line at EOF in science unit test. A future model run repeated the same error. In addition the saved worktree was based on prior HEAD 6745051 whereas new original Serway science A13-A15 had already been accepted in main 777b926; blind integration would risk overwriting more recent accepted code. This defect differs from BSA280's Git-linked sandbox write denial.",
+      "relatedIncidentIds": [
+        "BSA-20261127-281",
+        "BSA-20261127-280",
+        "BSA-20261127-279"
+      ],
+      "differenceFromLinkedIncident": "BSA282 first auto-repairs only safe Git-reported new empty terminal lines, with byte digests and strict Git recheck, never spending another Codex invocation on known deterministic error. Mixed trailing spaces, secret paths, symlinks and semantic changes fail closed. The normal scheduler also detects outdated worktree heads, preserves old staged patches in private quarantine, and opens a fresh model worktree on current verified main HEAD rather than trying to integrate stale code over source-bound accepted science. The Codex prompt is updated to avoid regenerating the previously admitted A13-A15 proof.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/bosla_persistent_development.py",
+        "triggerMarker": "repair_staged_blank_eof(worktree)",
+        "remedyMarker": "BSA282_KNOWN_EOF_BLANK_LINES_AUTO_REPAIRED",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "BSA282_RESUMED_SAVED_PATCH_NO_MODEL_CALL"
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "BSA282_STALE_PATCH_QUARANTINED_NEW_HEAD_RETRY"
+          },
+          {
+            "path": "app_generator/runtime/v3_staged_patch_autorepair.py",
+            "marker": "def repair_staged_blank_eof"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v60_staged_patch_autorepair.py",
+          "kind": "python",
+          "marker": "test_repair_real_git_extra_blank_line_then_exact_gate"
+        },
+        {
+          "path": "tests/test_v60_staged_patch_autorepair.py",
+          "kind": "python",
+          "marker": "test_mixed_critical_error_and_eof_blank_not_autofixed"
+        },
+        {
+          "path": "tests/test_v60_staged_patch_autorepair.py",
+          "kind": "python",
+          "marker": "test_refuse_invalid_dir_even_with_matching_error"
+        },
+        {
+          "path": "tests/test_v61_stale_code_reconciliation.py",
+          "kind": "python",
+          "marker": "test_old_branch_changes_quarantined_and_new_head_is_next"
+        },
+        {
+          "path": "tests/test_v61_stale_code_reconciliation.py",
+          "kind": "python",
+          "marker": "test_previous_same_head_whitespace_repaired_without_model"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "ACTIVE until all on-device tests and hosted exact Git CI pass, safe owner integration and normal scheduler restart occur, and next current-head coding attempt has genuine progress. Current private source-bound signed BSA281 frontier has 15/429 science tasks accepted, 414 pending, all 90 complete academic activity gates open. Old retained Codex patch is based on 6745051; main is 777b926. Deterministic whitespace repair and staleness quarantine must run before more irrelevant model calls. Never replay uncertain provider requests or fabricate academic PASS."
     }
   ]
 }

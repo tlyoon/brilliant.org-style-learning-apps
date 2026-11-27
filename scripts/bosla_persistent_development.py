@@ -39,6 +39,9 @@ from app_generator.runtime.v3_persistent_academic_failure_recovery import (
 from app_generator.runtime.v3_isolated_codegen_workspace import (
     build_isolated_coding_snapshot,apply_isolated_patch,
 )
+from app_generator.runtime.v3_staged_patch_autorepair import (
+    repair_staged_blank_eof,
+)
 
 ROOT=Path(__file__).resolve().parents[1]
 PRIVATE=Path(os.environ.get("LOCALAPPDATA", str(Path.home()/"AppData"/"Local")))/"Microvid"/"BoslaPersistentDevelopment"
@@ -404,7 +407,140 @@ def _codex_prompt()->str:
     )
 
 
+
+def _finalize_staged_patch(
+    state:dict[str,Any],*,branch:str,worktree:Path,
+)->bool:
+    """Host-only source-safe gates after model patch or deterministic repair."""
+    # Stage first, then scope-review before any commit; never trust a model's
+    # claim of passing independent science or grant PASS from CI.
+    _ok(["git","add","--all"],cwd=worktree)
+    files=_ok(["git","diff","--cached","--name-only"],cwd=worktree).splitlines()
+    if (not files or any(
+            not (f.startswith(ALLOWED_PREFIXES) or f in ALLOWED_FILES)
+            or any(bit in f.lower() for bit in FORBIDDEN_PATH_BITS)
+            for f in files)):
+        _update(state,"BSA279_CODEX_UNAPPROVED_PATCH_QUARANTINED",
+                devBranch=branch,changedPaths=files)
+        return False
+    if not any(f.startswith(("app_generator/","scripts/"))
+               and f.endswith((".py",".js",".ts",".tsx"))
+               for f in files):
+        _update(state,"BSA279_CODEX_DOCS_ONLY_NOT_DEVELOPMENT",
+                devBranch=branch,changedPaths=files,
+                codexRepairRequired=True)
+        return False
+    # BSA282 deterministic historical repair: only Git-reported terminal
+    # empty lines of *approved staged source files*, no physics or metadata.
+    # No new model request, no removal of actual code, no false academic PASS.
+    staged_gate=_run(["git","diff","--cached","--check"],cwd=worktree)
+    if staged_gate.returncode:
+        decision=repair_staged_blank_eof(worktree)
+        if decision["status"]=="REPAIRED_EXACT_BLANK_LINES_AT_EOF":
+            _update(state,"BSA282_KNOWN_EOF_BLANK_LINES_AUTO_REPAIRED",
+                    devBranch=branch,
+                    autoRepairPaths=decision["fixedFiles"],
+                    autoRepairDigests=decision["beforeAfterSha256"],
+                    codexRepairRequired=True)
+        if _run(["git","diff","--cached","--check"],cwd=worktree).returncode:
+            _update(state,"BSA282_UNRESOLVED_NONTRIVIAL_PATCH_WHITESPACE",
+                    devBranch=branch,codexRepairRequired=True,
+                    autoRepairClass=decision["status"])
+            return False
+    # Regression contract and original content integrity are mandatory.
+    for label,cmd in (
+        ("CONTRACT",[sys.executable,"scripts/check_regression_contract.py"]),
+        ("CONTENT",[sys.executable,"scripts/validate_content.py"]),
+        ("ACADEMIC_TESTS",[sys.executable,"-m","unittest",
+           "tests.test_v46_generic_academic_proof_registry",
+           "tests.test_v49_si_unit_science_batch",
+           "tests.test_v50_bosla_autonomous_academic_advance",
+           "tests.test_v51_newton_force_science_batch",
+           "tests.test_v52_paired_glider_source_science",
+           "tests.test_v53_paired_glider_signed_admission","-q"]),
+    ):
+        # Existing tests from repository branch may be extended by Codex.
+        code=_log_process(state,"CODEX_"+label,cmd,
+                          cwd=worktree,timeout=300)
+        if code:
+            _update(state,"BSA279_CODEX_TESTS_FAIL_KEEP_PATCH",
+                    failedTest=label,devBranch=branch,
+                    codexRepairRequired=True)
+            return False
+    _ok(["git","commit","-m","Bosla autonomous science proof development: "+
+         datetime.now().strftime("%Y-%m-%d")],cwd=worktree,timeout=80)
+    tip=_head(worktree)
+    if _run(["git","push","--set-upstream","origin",branch],
+            cwd=worktree,timeout=120).returncode:
+        _update(state,"BSA279_CODEX_REMOTE_CI_HANDOFF_UNVERIFIED",
+                devBranch=branch,devHead=tip)
+        return False
+    state["pendingBranch"]=branch
+    _update(state,"BSA279_NEW_SOURCE_CODE_COMMITTED_CI_DISPATCHED",
+            pendingHead=tip,devBranch=branch,
+            codexRepairRequired=False)
+    return True
+
+
 def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
+    # BSA282 prevents an infinite Codex loop on an *old* Git commit.
+    # Preserve the complete existing staged patch and its history without
+    # rebasing/overwriting the newer, independently admitted academic code.
+    # A new owner-head worktree is created automatically in the SAME cycle.
+    if state.get("codexRepairRequired") is True:
+        old_branch=state.get("devBranch")
+        old_location=state.get("devWorktree")
+        if (isinstance(old_branch,str)
+            and isinstance(old_location,str)
+            and Path(old_location).is_dir()
+            and _branch(Path(old_location))==old_branch):
+            prior=Path(old_location)
+            original_head=_head(prior)
+            latest_head=_head()
+            if original_head!=latest_head:
+                # No patch content is deleted or imported across a scientific
+                # revision. A subsequent model works from latest verified
+                # HEAD; older changes remain available for targeted review.
+                diverged=_run([
+                    "git","merge-base","--is-ancestor",
+                    original_head,latest_head],cwd=prior)
+                if diverged.returncode:
+                    _update(state,"BSA282_DIVERGED_OLD_PATCH_QUARANTINED",
+                            oldRepairBranch=old_branch,
+                            oldRepairHead=original_head,
+                            currentHead=latest_head,
+                            codexRepairRequired=False)
+                else:
+                    staged=_ok(["git","diff","--cached","--name-only"],
+                               cwd=prior).splitlines()
+                    state.setdefault("quarantinedStalePatches",[]).append({
+                        "branch":old_branch,"head":original_head,
+                        "worktree":old_location,"changedPaths":staged,
+                        "reason":"NEWER_OWNER_ACADEMIC_HEAD_ALREADY_INTEGRATED",
+                    })
+                    state["codexRepairRequired"]=False
+                    state.pop("devBranch",None)
+                    state.pop("devWorktree",None)
+                    _update(state,"BSA282_STALE_PATCH_QUARANTINED_NEW_HEAD_RETRY",
+                            currentHead=latest_head,
+                            staleCodePreserved=True,
+                            oldRepairHead=original_head,
+                            oldRepairBranch=old_branch)
+            elif state.get("status") in (
+                "BSA279_CODEX_PATCH_WHITESPACE_FAILURE",
+                "BSA282_UNRESOLVED_NONTRIVIAL_PATCH_WHITESPACE",
+            ):
+                # Repair and finish the saved candidate WITHOUT a fresh
+                # model call or spending a bounded Codex request.
+                decision=repair_staged_blank_eof(prior)
+                if decision["status"]=="REPAIRED_EXACT_BLANK_LINES_AT_EOF":
+                    _update(state,"BSA282_RESUMED_SAVED_PATCH_NO_MODEL_CALL",
+                            devBranch=old_branch,
+                            autoRepairPaths=decision["fixedFiles"],
+                            autoRepairDigests=decision["beforeAfterSha256"],
+                            codexRepairRequired=True)
+                    return _finalize_staged_patch(
+                        state,branch=old_branch,worktree=prior)
     if state.get("pendingBranch") and not repair:
         _update(state,"BSA279_WAITING_FOR_PENDING_BRANCH_CI")
         return False
@@ -480,9 +616,12 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
         "into the authenticated Git worktree, run tests and then commit. "
         " Do not expect git commands to work here. The original textbook "
         "PDF is private and deliberately absent; do not fabricate source "
-        "passages or academic acceptance. Implement the MCQ05 third-law "
-        "scientific distractor proof mechanism or another verifiable "
-        "proof-producer target, with actual negative tests. "
+        "passages or academic acceptance. MCQ05 A13-A15 already have signed "
+        "source-bound science receipts; choose genuinely NEW remaining "
+        "academic proof tasks on the CURRENT Git head, not previously "
+        "accepted tasks or source-free metadata. Write real proof producer "
+        "code with adversarial negative tests and never claim science PASS "
+        "from model output or CI alone. "
     )
     out=PRIVATE/"codex-last-message.txt"
     args=[str(executable),"exec","--sandbox","workspace-write",
@@ -528,61 +667,7 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
         _update(state,"BSA280_SNAPSHOT_IMPORTED_NO_GIT_DELTA",
                 devBranch=branch,codexRepairRequired=False)
         return False
-    # Stage first, then scope-review before any commit; never trust a model's
-    # claim of passing independent science or grant PASS from CI.
-    _ok(["git","add","--all"],cwd=worktree)
-    files=_ok(["git","diff","--cached","--name-only"],cwd=worktree).splitlines()
-    if (not files or any(
-            not (f.startswith(ALLOWED_PREFIXES) or f in ALLOWED_FILES)
-            or any(bit in f.lower() for bit in FORBIDDEN_PATH_BITS)
-            for f in files)):
-        _update(state,"BSA279_CODEX_UNAPPROVED_PATCH_QUARANTINED",
-                devBranch=branch,changedPaths=files)
-        return False
-    if not any(f.startswith(("app_generator/","scripts/"))
-               and f.endswith((".py",".js",".ts",".tsx"))
-               for f in files):
-        _update(state,"BSA279_CODEX_DOCS_ONLY_NOT_DEVELOPMENT",
-                devBranch=branch,changedPaths=files,
-                codexRepairRequired=True)
-        return False
-    if _run(["git","diff","--cached","--check"],cwd=worktree).returncode:
-        _update(state,"BSA279_CODEX_PATCH_WHITESPACE_FAILURE",
-                devBranch=branch,codexRepairRequired=True)
-        return False
-    # Regression contract and original content integrity are mandatory.
-    for label,cmd in (
-        ("CONTRACT",[sys.executable,"scripts/check_regression_contract.py"]),
-        ("CONTENT",[sys.executable,"scripts/validate_content.py"]),
-        ("ACADEMIC_TESTS",[sys.executable,"-m","unittest",
-           "tests.test_v46_generic_academic_proof_registry",
-           "tests.test_v49_si_unit_science_batch",
-           "tests.test_v50_bosla_autonomous_academic_advance",
-           "tests.test_v51_newton_force_science_batch",
-           "tests.test_v52_paired_glider_source_science",
-           "tests.test_v53_paired_glider_signed_admission","-q"]),
-    ):
-        # Existing tests from repository branch may be extended by Codex.
-        code=_log_process(state,"CODEX_"+label,cmd,
-                          cwd=worktree,timeout=300)
-        if code:
-            _update(state,"BSA279_CODEX_TESTS_FAIL_KEEP_PATCH",
-                    failedTest=label,devBranch=branch,
-                    codexRepairRequired=True)
-            return False
-    _ok(["git","commit","-m","Bosla autonomous science proof development: "+
-         datetime.now().strftime("%Y-%m-%d")],cwd=worktree,timeout=80)
-    tip=_head(worktree)
-    if _run(["git","push","--set-upstream","origin",branch],
-            cwd=worktree,timeout=120).returncode:
-        _update(state,"BSA279_CODEX_REMOTE_CI_HANDOFF_UNVERIFIED",
-                devBranch=branch,devHead=tip)
-        return False
-    state["pendingBranch"]=branch
-    _update(state,"BSA279_NEW_SOURCE_CODE_COMMITTED_CI_DISPATCHED",
-            pendingHead=tip,devBranch=branch,
-            codexRepairRequired=False)
-    return True
+    return _finalize_staged_patch(state,branch=branch,worktree=worktree)
 
 
 def cycle(*,codegen:bool=True)->dict[str,Any]:

@@ -3,6 +3,14 @@
 Authoritative execution identity: **Bosla**, the Brilliant.org-style learning app, on
 the authorized owner **Yoga 6**. This is not MicroGen_AI_Web.
 
+## BSA282 normal automatic patch recovery and stale-HEAD repair -- ACTIVE
+
+Actual Yoga6 cycles 9 and 10 generated code yet both stopped at Git staged check due to one new blank line at EOF in a science unit test. The owner main HEAD had already advanced to 777b926 with independently source-accepted A13-A15, while the older saved model branch remained based on 6745051. More Codex sessions on the unchanged old branch repeated the failure, not academic development.
+
+The normal executable persistent runner now invokes a deterministic host-only Git repair for exactly classified new blank lines at EOF. Every repaired file must be already staged and allowed by source scope, must be a small regular nonsecret nonsymlink file. The host removes only trailing empty lines and records byte SHA256 before/after, stages the file and reruns exact Git diff --cached --check. All other errors remain unaccepted. Corrected same-HEAD staged patches are sent directly through full contract/content/academic tests and hosted CI, avoiding an extra model call.
+
+Before any old model patch is used, the normal runner compares exact Git HEADs. It preserves older staged source changes in private quarantine instead of merging them over newer original academic acceptance. It opens a new verified current-HEAD worktree and continues next eligible source-specific code development without user intervention. The old proof task MCQ05 A13-A15 is excluded from the next coding prompt because it is already signed. All scientific acceptance and full-activity gate checks remain independent.
+
 ## BSA281 substantive original source academic proof progress A13-A15 -- ACTIVE
 
 The exact previous owner-signed source-bound count was 12/429: A1-A12 original Serway source-bound physics task receipts were admitted and independently reverified, but all 90 full academic activity gates remain OPEN. The persistent Yoga6 scheduler had reached substantive model codegen under BSA280. BSA281 closes the next *science family*, not merely a scheduler state. It is MCQ05 Newton's third law for an isolated two-particle system. Three separately frozen EN/MS/ZH false alternative propositions claim that each particle's momentum stays fixed, each particle has zero acceleration under mutual forces, or Newton's third law requires identical particle mass and velocity. All three are refuted using two separate exact Fraction-valued nonzero impulse and equal-opposite internal force countermodels, with momentum conservation for the complete system and nonzero individual accelerations.
