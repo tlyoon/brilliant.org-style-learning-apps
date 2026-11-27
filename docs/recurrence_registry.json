@@ -11067,6 +11067,34 @@
       "applicableEnvironments": ["yoga6", "github-ci"],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Host exact-head CI and genuine selected Serway source run, independently reopen A1-A21, sign A22-A24 and verify historical/current Git head receipts. Until then confirmed signed count is 15/429 and all 90 full activity gates remain OPEN."
+    },
+    {
+      "id": "BSA-20261127-291",
+      "class": "mcq09_spring_buffer_false_options_lack_source_bound_producer_and_owner_admission",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "After MCQ08 code, MCQ09's three false energy and momentum transfer alternatives had no independently recomputed exact spring-and-rail countermodel or signed A25-A27 admission.",
+      "relatedIncidentIds": ["BSA-20261127-290", "BSA-20261127-285"],
+      "differenceFromLinkedIncident": "Two distinct exact rational pod spring compression models derive kinetic-to-elastic energy transfer, nonzero rail impulse, zero thermal conversion, and distinct momentum/energy dimensions. Full EN/MS/ZH propositions, exact one-source digest, ninth signed V36 partition and immutable A1-A24 receipts remain required. The private original PDF is absent in this snapshot; no academic count changes from code alone.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker": "admit_spring_buffer_batch(private=private)",
+        "remedyMarker": "BSA291_A1_A27_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
+        "normalEntryPoints": [
+          {"path": "app_generator/validation/section91_spring_buffer_false_options_proof.py", "marker": "def independently_prove_spring_buffer_false_option"},
+          {"path": "app_generator/runtime/v3_spring_buffer_academic_batch_admission.py", "marker": "def admit_spring_buffer_batch"},
+          {"path": "app_generator/runtime/v3_spring_buffer_academic_batch_admission.py", "marker": "def verify_spring_buffer_batch_across_git_heads"},
+          {"path": "scripts/show_bosla_long_horizon.py", "marker": "BOSLA_LONG_HORIZON_SPRING_BUFFER_SCIENCE_BATCH_REVERIFIED"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v74_spring_buffer_source_science.py", "kind": "python", "marker": "test_original_gate_queue_and_restart_recomputation"},
+        {"path": "tests/test_v75_spring_buffer_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
+        {"path": "tests/test_v75_spring_buffer_academic_admission.py", "kind": "python", "marker": "test_cross_head_readback_rejects_changed_science_and_task_duplication"}
+      ],
+      "applicableEnvironments": ["yoga6", "github-ci"],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "Host exact-head CI and genuine selected Serway original source run; independently reopen A1-A24, sign A25-A27, verify historical/current Git head receipts. Signed count remains 15/429 until owner readback; all 90 complete academic activity gates remain OPEN."
     }
   ]
 }

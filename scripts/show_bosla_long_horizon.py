@@ -500,6 +500,46 @@ def main() -> int:
             "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_spring_buffer_academic_batch_admission import (
+        _FRONTIER as _SPRING_BUFFER_FRONTIER,
+        verify_spring_buffer_batch_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_SPRING_BUFFER_FRONTIER).exists():
+        try:
+            spring=verify_spring_buffer_batch_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=24
+                or spring["acceptedAcademicTaskIds"][:24]!=outcome.get(
+                    "verifiedAcademicProofTaskIds")
+                or spring["independentlyAcceptedAcademicTasks"]!=27
+                or spring["fullAcademicTasksStillOpen"]!=402
+                or spring["pendingMcqDistractorScienceTasks"]!=0
+                or spring["completeAcademicProofGatesStillOpen"]!=90
+                or spring["fullAcademicActivityPASS"]!=0
+                or spring["publicationAuthorized"] is not False):
+                raise ValueError("BSA291_A25_A27_CANNOT_BYPASS_A1_A24")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,
+                ArithmeticError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_SPRING_BUFFER_SCIENCE_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_SPRING_BUFFER_SCIENCE_BATCH_REVERIFIED",
+            "academicAcceptancesSource":
+                "TWENTY_SEVEN_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":27,
+            "fullAcademicProofTasksStillOpen":402,
+            "pendingMcqDistractorScienceTasks":0,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":spring["acceptedAcademicTaskIds"],
+            "academicSpringBufferBatchReceiptSha256":spring["springBufferBatchReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"SOURCE_BOUND_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 

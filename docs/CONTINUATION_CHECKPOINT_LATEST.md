@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-290 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261127-291 | ACTIVE
+
+> 27 NOV BSA291 MCQ09 spring-buffer science producer and A25-A27 owner admission code: two exact rational pod, spring-energy and rail-impulse models refute three false momentum/energy propositions. Frozen full EN/MS/ZH option hashes, original Serway source SHA, ninth signed V36 partition and all previous A1-A24 signed receipts are mandatory. Independent horizon readback recomputes historical/current Git-head proof. The private PDF is absent from this disposable snapshot; confirmed signed acceptance remains 15/429, 414 pending and all 90 full activity gates OPEN.
 
 > 27 NOV BSA290 MCQ08 isolated-pair science: two exact rational impulse models independently derive changing individual momentum, force as its time derivative and third-law forces on different bodies. Three frozen full EN/MS/ZH false claims, selected source SHA, canonical task IDs and eighth signed V36 partition are owner admission requirements. A22-A24 receipt chains after independently reopened A1-A21 and the horizon checks original/current Git heads. The private PDF is absent from this snapshot, so no new academic acceptance is claimed: confirmed signed 15/429, 414 pending, all 90 complete activity gates OPEN.
 
