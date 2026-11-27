@@ -11180,6 +11180,31 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-27",
       "nextAction":"Finish local original Serway and negative-control tests; check executable recurrence and full CI. Promote this isolated repair only after exact-head source CI passes and original owner is idle/safe. Rerun owner signed A16-A18 admission and independent horizon readback; only then increase accepted 15/429. Current Codex cycle 37 may run independently to its bounded timeout; avoid overwriting its unreviewed work."
+    },
+    {
+      "id": "BSA-20261127-295",
+      "class": "private_mcq07_canonical_task_ids_mismatch_tracked_sample",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "BSA289 MCQ07 pinned BSA253 task hashes calculated from a tracked sample; the owner private revised candidate can have different whole-package and activity hashes, as the genuine MCQ06 failure established.",
+      "relatedIncidentIds": ["BSA-20261127-294", "BSA-20261127-289"],
+      "differenceFromLinkedIncident": "MCQ07 now derives each canonical ID from the pinned private candidate and independently compares its science proof to the signed seventh V36 partition. The original PDF, candidate, signed academic receipts and acceptance count are untouched.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_equal_energy_academic_batch_admission.py",
+        "triggerMarker": "_original_equal_energy_proofs",
+        "remedyMarker": "task_id=proof[\"taskId\"]",
+        "normalEntryPoints": [
+          {"path": "app_generator/runtime/v3_equal_energy_academic_batch_admission.py", "marker": "def _original_equal_energy_proofs"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v70_equal_energy_source_science.py", "kind": "python", "marker": "test_sample_task_ids_are_not_authoritative_owner_ids"},
+        {"path": "tests/test_v71_equal_energy_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
+        {"path": "tests/test_v81_owner_mcq07_canonical_ids.py", "kind": "python", "marker": "test_real_source_and_signed_seventh_partition_rederive_all_three"}
+      ],
+      "applicableEnvironments": ["yoga6", "github-ci"],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "Host exact-head CI, run the private original-source MCQ07 test and owner A16-A21 admission in order, then independently reread the signed horizon. Confirmed count stays 15/429 until that readback."
     }
   ]
 }

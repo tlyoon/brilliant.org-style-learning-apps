@@ -30,7 +30,7 @@ from app_generator.validation.section91_formal_physics import (
 from app_generator.validation.section91_equal_energy_false_options_proof import (
     independently_prove_equal_energy_false_option,
     independently_check_equal_energy_witness,
-    _TASKS,
+    _OPTIONS_ORDER,
 )
 
 _RECEIPT="BOSLA_ACADEMIC_EQUAL_ENERGY_BATCH_A19_A21_V1.json"
@@ -81,10 +81,13 @@ def _original_equal_energy_proofs(
         raise ValueError("BSA289_SEVENTH_SIGNED_ORIGINAL_V36_PARTITION_CHANGED")
     rows=part["activity"].get("evidenceRows",[])
     proofs=[]
-    for option_id,task_id in _TASKS.items():
+    # BSA289_CANONICAL_MCQ07_TASK_NOT_REDERIVED: each proof rederives its ID
+    # from the pinned private candidate; the signed row is a second check.
+    for option_id in _OPTIONS_ORDER:
         proof=independently_prove_equal_energy_false_option(
             source_pdf=source,candidate_path=candidate,option_id=option_id)
         independently_check_equal_energy_witness(proof)
+        task_id=proof["taskId"]
         hits=[row for row in rows if row.get("taskId")==task_id]
         if (len(hits)!=1 or hits[0].get("kind")!="MCQ_DISTRACTOR_SCIENCE"
             or hits[0].get("status")!="BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED"

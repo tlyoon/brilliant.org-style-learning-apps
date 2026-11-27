@@ -18,11 +18,11 @@ from app_generator.validation.source_passages import extract_pages
 from app_generator.runtime.v3_selected_textbook_scientific_provenance import _source_activity_anchors
 
 _ACTIVITY = "act-mcq-07-equal-ke-momentum-relation"
-_TASKS = {
-    "opt-equal-momentum": "8cb6994c42718811193176941383b511d2df18d41ab3c3727086ef7047a630ac",
-    "opt-scout-greater": "d22a0c0eb9707439805abc7a299a9db990c1ee720c36a665fbb6903ef111fe23",
-    "opt-cannot-determine": "1a4832e40df126b433b7d9e4bde98ed3b8e461762dad7316efa286c7411d39fe",
-}
+# BSA294: BSA253 task IDs include the digest of the *whole* candidate.
+# The tracked sample differs from the private revised candidate. Derive IDs
+# from that SHA-pinned candidate and compare them to signed V36 rows at
+# admission; sample-derived constants would reject genuine owner science.
+_OPTIONS_ORDER = ("opt-equal-momentum", "opt-scout-greater", "opt-cannot-determine")
 _PROMPT = {"en":"8ddd8b8f9df0de8465bd510ee59c09f5526835a0e031e05349066dbf922e3fdf",
            "ms":"6cb146f86eeac8a988059fd331f060120cc34289483b25bb7e025e06f670d0cb",
            "zh":"60bcdefbe2ea5bd0159af064ddc204200191704b0b952dc4685eeb1122e8ca43"}
@@ -72,7 +72,9 @@ def _models()->list[dict]:
 
 def independently_check_equal_energy_witness(proof:dict)->None:
     option=proof.get("optionId") if isinstance(proof,dict) else None
-    if option not in _TASKS or (proof.get("taskId")!=_TASKS[option]
+    task_id=proof.get("taskId") if isinstance(proof,dict) else None
+    if option not in _OPTIONS_ORDER or (not isinstance(task_id,str) or len(task_id)!=64
+        or any(c not in "0123456789abcdef" for c in task_id)
         or proof.get("falseClaim")!=_CLAIMS[option]
         or proof.get("sourceSha256")!=_SOURCE_SHA
         or proof.get("candidateSha256")!=_CANDIDATE_SHA
@@ -95,7 +97,7 @@ def independently_check_equal_energy_witness(proof:dict)->None:
 
 
 def independently_prove_equal_energy_false_option(*,source_pdf:Path,candidate_path:Path,option_id:str)->dict:
-    if option_id not in _TASKS:
+    if option_id not in _OPTIONS_ORDER:
         raise ValueError("BSA289_UNREGISTERED_EQUAL_ENERGY_OPTION")
     if (source_pdf.is_symlink() or candidate_path.is_symlink() or not source_pdf.is_file()
         or not candidate_path.is_file() or sha256(source_pdf.read_bytes()).hexdigest()!=_SOURCE_SHA
@@ -114,7 +116,7 @@ def independently_prove_equal_energy_false_option(*,source_pdf:Path,candidate_pa
     prompt=_locale_hashes(activity.get("prompt"),_PROMPT)
     key=activity.get("answerKey",{})
     options=key.get("options",[])
-    expected=["opt-transport-greater",*_TASKS]
+    expected=["opt-transport-greater",*_OPTIONS_ORDER]
     if key.get("correct")!=expected[0] or [x.get("id") for x in options]!=expected:
         raise ValueError("BSA289_FROZEN_MCQ07_ANSWER_KEY_CHANGED")
     position=expected.index(option_id)
@@ -127,7 +129,7 @@ def independently_prove_equal_energy_false_option(*,source_pdf:Path,candidate_pa
     tasks=[t for t in queue["tasks"] if t["activityId"]==_ACTIVITY and
            t["kind"]=="MCQ_DISTRACTOR_SCIENCE" and
            t["surfacePath"]==f"answerKey/options/{position}/label"]
-    if (queue["taskCount"]!=429 or len(tasks)!=1 or tasks[0]["taskId"]!=_TASKS[option_id]
+    if (queue["taskCount"]!=429 or len(tasks)!=1
         or tasks[0]["surfaceSha256"]!=_digest(options[position]["label"])):
         raise ValueError("BSA289_CANONICAL_MCQ07_TASK_NOT_REDERIVED")
     body={"taskId":tasks[0]["taskId"],"optionId":option_id,"falseClaim":_CLAIMS[option_id],

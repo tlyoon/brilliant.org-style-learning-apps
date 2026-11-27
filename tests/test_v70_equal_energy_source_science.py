@@ -17,7 +17,7 @@ _PACKAGE=Path("content/chapter-9/section-9-1/package.json")
 
 class EqualEnergyScience(TestCase):
     def test_exact_two_countermodels_and_falsification(self):
-        self.assertEqual(len(set(p._TASKS.values())),3)
+        self.assertEqual(len(set(p._OPTIONS_ORDER)),3)
         for row in p._models():
             mh,vh,ml,vl=(F(row[k]) for k in
                          ("heavyMass","heavySpeed","lightMass","lightSpeed"))
@@ -52,7 +52,7 @@ class EqualEnergyScience(TestCase):
                   patch.object(p,"_source_activity_anchors",return_value=anchors),
                   patch.object(p,"plan_full_semantic_proofs",side_effect=lambda **kw:
                       plan_full_semantic_proofs(package=kw["package"],source_sha256=_REAL_SOURCE_SHA))):
-                for option in p._TASKS:
+                for option in p._OPTIONS_ORDER:
                     proof=p.independently_prove_equal_energy_false_option(
                         source_pdf=source,candidate_path=candidate,option_id=option)
                     p.independently_check_equal_energy_witness(proof)
@@ -67,6 +67,17 @@ class EqualEnergyScience(TestCase):
                 with self.assertRaisesRegex(ValueError,"AUTHENTIC_ONE_SERWAY"):
                     p.independently_prove_equal_energy_false_option(
                         source_pdf=source,candidate_path=candidate,option_id="opt-equal-momentum")
+
+    def test_sample_task_ids_are_not_authoritative_owner_ids(self):
+        sample=json.loads(_PACKAGE.read_text(encoding="utf8"))
+        queue=plan_full_semantic_proofs(package=sample,source_sha256=_REAL_SOURCE_SHA)
+        sample_ids=[t["taskId"] for t in queue["tasks"] if
+                    t["activityId"]==p._ACTIVITY and t["kind"]=="MCQ_DISTRACTOR_SCIENCE"]
+        self.assertEqual(len(sample_ids),3)
+        self.assertEqual(len(set(sample_ids)),3)
+        # The proof module may enumerate option identities, never pin these
+        # sample package hashes as the private revised candidate's task IDs.
+        self.assertFalse(hasattr(p,"_TASKS"))
 
     def test_all_localized_sentences_are_pinned(self):
         activity=json.loads(_PACKAGE.read_text(encoding="utf8"))["activities"][6]
