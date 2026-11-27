@@ -10216,7 +10216,7 @@
     {
       "id": "BSA-20261126-277",
       "class": "newton_force_momentum_rate_mcq_three_new_source_bound_proofs_and_autonomous_chain",
-      "status": "active",
+      "status": "resolved",
       "rootCauseFamily": "academic-evidence",
       "relatedIncidentIds": [
         "BSA-20261126-276",
@@ -10230,7 +10230,7 @@
         "remedyMarker": "BSA277_NEWTON_SCIENCE_CHANGED_ACROSS_CODE_HEADS",
         "normalEntryPoints": [
           {
-            "path": "scripts/auto_advance_bosla_academic_frontier.py",
+            "path": "scripts/run_bosla_newton_batch_admission.py",
             "marker": "from app_generator.runtime.v3_newton_force_academic_batch_admission import ("
           },
           {
@@ -10271,7 +10271,7 @@
         "github-ci"
       ],
       "lastValidatedDate": "2026-11-26",
-      "nextAction": "ACTIVE: BSA276 owner source-bound A4-A6 now independently verified, 6/429 academic tasks accepted, 423 remaining, 21/27 incorrect MCQ science still pending, 90 complete gates OPEN. BSA277 original Serway MCQ03 opt-b/c/d Newton F=dp/dt force-momentum rational/EN-MS-ZH witnesses genuine Yoga6 EXIT0; 30 focused source-free tests PASS and isolated branch CI #45845170188 SUCCESS. Now integrated clean main development checkout code HEAD 40b1cdb69ba930a24b56aa3e5673eea7421aa788. Next: commit active/closed source evidence update, new exact HEAD hosted CI, genuine Yoga6 owner V1-V36 source-free, current-head signed original-source registry, then A7-A9 academic --admit, independent --verify/horizon; only after this may count 9/429. No unsafe provider replay, external PDF, fake academic activity PASS, public merge or deployment."
+      "nextAction": "RESOLVED with original Serway Yoga6 source-bound A7-A9 science receipt a16509940f2049ac39f0477326b8147de32b711f2c6abff1a2e5fd6bac5a296a, clean original Git HEAD 34969426b0b7b6f77f69d11db8d4b0d838decff2 two hosted CI #45848623885/#45848609017 SUCCESS, original V1-V36, independent Newton academic --verify and long-horizon readback EXIT0 on 27 Nov 2026. Nine of 429 signed original-source scientific tasks accepted, 420 remaining, all 90 full activity gates OPEN, zero full activity PASS. No paid Gemini replay, outside PDF or public release."
     },
     {
       "id": "BSA-20261126-278",
@@ -10336,7 +10336,69 @@
         "github-ci"
       ],
       "lastValidatedDate": "2026-11-26",
-      "nextAction": "ACTIVE: original selected one-textbook Serway MCQ04 EN/MS/ZH paired glider opt-b/c/d genuinely independently source-tested on authorized Yoga6 EXIT0, each exact rational vector momentum = 0 and scalar kinetic energy >0; 12 targeted dimension/negative and immutable receipt tests PASS. BSA278 in isolated worktree pending BSA277 owner accepted A7-A9; new A10-A12 academic acceptance requires exact hosted Git HEAD, genuine owner V1-V36, current original-source registry audit, immutable A1-A9 receipts, signed source V36 MCQ04 partition, A10-A12 --admit/--verify and independent horizon. All 90 complete activity gates remain OPEN; no outside source PDFs, paid Gemini replay or public merge/deploy."
+      "nextAction": "ACTIVE source-bound one-textbook glider MCQ04 A10-A12 code and real original Yoga6 science witnesses pass; isolated Git HEAD b14edbb, hosted CI #45851050143 SUCCESS; cherry-picked into NONPUBLIC Bosla development feature as c3cefae2f2e7053775db171b4ed4ce5809fee7a4. Next requires exact new main branch hosted CI, original Yoga6 owner V1-V36, separate signed A10-A12 admission and independent horizon. Only earlier nine of 429 task acceptances established, all 90 full activity gates OPEN. New BSA279 persistent development task should automatically dispatch this next eligible owner step."
+    },
+    {
+      "id": "BSA-20261127-279",
+      "class": "owner_explicit_persistent_yoga6_unattended_code_development",
+      "status": "active",
+      "rootCauseFamily": "genuinely-new-root-cause",
+      "relatedIncidentIds": [
+        "BSA-20261126-278",
+        "BSA-20261126-276",
+        "BSA-20261126-275"
+      ],
+      "differenceFromLinkedIncident": "Prior on-demand academic owner controllers safely executed known eligible stages but exited after each ChatGPT turn; NO Windows scheduler or autonomous code-writing service persisted. The old BoslaYoga6V3Recovery 30-minute task was intentionally retired 16 Nov and must remain absent. The owner EXPLICITLY authorized on 27 Nov 2026 a DIFFERENT narrowly scoped continuous development task. The new on-device runner executes CI-gated candidate promotion into nonpublic feature, genuine source-bound A1-A12 owner science, and bounded authenticated Codex CLI workspace-write code development in separate local git worktrees with fault-injection, executable registry tests and hosted CI handoff. New named Windows Task Scheduler repeat/logon triggers, OS singleflight, persistent private state and crash recovery are required. Neither codegen nor CI can self-admit academic tasks or close 90 full gates.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/bosla_persistent_development.py",
+        "triggerMarker": "def cycle(",
+        "remedyMarker": "BSA279_CLASSIFIED_RETRYABLE_OR_SAFETY_BOUNDARY",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "def main("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v54_persistent_bosla_development.py",
+          "kind": "python",
+          "marker": "test_scheduler_is_new_name_and_never_retired_legacy"
+        },
+        {
+          "path": "tests/test_v54_persistent_bosla_development.py",
+          "kind": "python",
+          "marker": "test_singleflight_denies_overlap_and_releases_after_exit"
+        },
+        {
+          "path": "tests/test_v54_persistent_bosla_development.py",
+          "kind": "python",
+          "marker": "test_cycle_automatically_runs_next_eligible_developer_stage"
+        },
+        {
+          "path": "tests/test_v54_persistent_bosla_development.py",
+          "kind": "python",
+          "marker": "test_no_model_call_after_unverified_owner_or_new_ci_promotion"
+        },
+        {
+          "path": "tests/test_v54_persistent_bosla_development.py",
+          "kind": "python",
+          "marker": "test_hosted_ci_requires_exact_sha_and_every_success"
+        },
+        {
+          "path": "tests/test_v54_persistent_bosla_development.py",
+          "kind": "python",
+          "marker": "test_real_bounded_child_writes_local_private_log"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "ACTIVE new owner-authorized persistent Yoga6 developer dispatcher and separate Task Scheduler installer source implemented; retired old task must stay absent. Bounded 15-minute/logon triggers, OS-owned single-flight lock, private crash-safe journals, exact-head GitHub CI, real source-bound V1-V36 A1-A12 signed academic owner, isolated substantive Codex CLI model code writing, adversarial tests, no public merge. Pending exact hosted CI, actual task install/live-run, restart/fault injection and CI-reviewed model code change before RESOLVED. Max 12 Codex sessions/day and 45 min/session; no paid Gemini API replay, extra PDFs, public deploy or science PASS without original evidence. Task cannot run while Yoga6 turned off or signed out.",
+      "noveltyExplanation": "The historical recurrence registry had many proof/CI/worker blockers but NO prior owner-approved, restart-on-logon Windows scheduled development service that invokes an actual authenticated code-writing agent from a separate worktree, verifies generated code and automatically hands that code to hosted CI and the original textbook owner admission. The old 30-minute task was explicitly retired, so previous no-scheduler tests intentionally prevented exactly this newly owner-authorized class."
     }
   ]
 }

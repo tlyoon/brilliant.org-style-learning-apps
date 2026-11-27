@@ -1,0 +1,540 @@
+"""Bosla Yoga6 persistent, restart-safe autonomous development dispatcher.
+
+Invoked by two owner-approved *new* Windows triggers (logon and 15-minute
+recovery tick). Both call the SAME single-flight bounded --once worker.
+Unlike source-free status polling, each invocation executes actual eligible
+development: exact CI-gated feature-branch promotion, genuine Yoga6 owner
+scientific acceptance, or a bounded Codex workspace-write CODE-DEVELOPMENT
+session with independent tests and hosted CI handoff. New scientific academic
+PASS is only the output of pre-existing independent source-bound owner
+verifiers; a Codex patch, unittest or GitHub CI never self-admits scientific
+correctness. No outside PDF or automatic public merge/deployment.
+
+The old BoslaYoga6V3Recovery scheduler is retired and is NEVER recreated.
+Do not run on Dell-115 / MicroGen_AI_Web. Status/journal are local-only.
+"""
+from __future__ import annotations
+
+import argparse
+from datetime import datetime, timezone
+import json
+try:
+    import msvcrt  # Windows only; hosted CI imports for pure unit tests
+except ImportError:
+    msvcrt = None
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import time
+import traceback
+from typing import Any
+
+ROOT=Path(__file__).resolve().parents[1]
+PRIVATE=Path(os.environ.get("LOCALAPPDATA", str(Path.home()/"AppData"/"Local")))/"Microvid"/"BoslaPersistentDevelopment"
+STATE=PRIVATE/"state.json"
+LOCK=PRIVATE/"single-flight.lock"
+JOURNAL=PRIVATE/"events.jsonl"
+MAIN_BRANCH="feature/bsa237-v16-pr-security-a11y"
+LEGACY_TASK="BoslaYoga6V3Recovery"
+PERSISTENT_TASKS=("BoslaPersistentDevelopment-15min","BoslaPersistentDevelopment-Logon")
+FIXED_READY_BRANCH="feature/bsa278-paired-momentum-science"
+MAX_CODEX_PER_DAY=12
+MAX_CODEX_SECONDS=2700
+MAX_OWNER_SECONDS=3600
+ALLOWED_PREFIXES=("app_generator/","scripts/","tests/","docs/")
+ALLOWED_FILES={"AGENTS.md","README.md"}
+FORBIDDEN_PATH_BITS=(".env","secret","credential","token","keyfile","private_source","source.pdf")
+
+
+def _utc()->str:
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+
+def _atomic_json(path:Path,value:dict[str,Any])->None:
+    path.parent.mkdir(parents=True,exist_ok=True)
+    temp=path.with_name(path.name+".new")
+    temp.write_text(json.dumps(value,indent=2,ensure_ascii=True)+"\n",encoding="utf8")
+    temp.replace(path)
+
+
+def _read_state()->dict[str,Any]:
+    if not STATE.exists():
+        return {"schemaVersion":1,"createdAt":_utc(),"cycle":0,
+                "integratedBranches":[],"codexDay":"","codexCount":0}
+    value=json.loads(STATE.read_text(encoding="utf8"))
+    if not isinstance(value,dict) or value.get("schemaVersion")!=1:
+        raise ValueError("BSA279_PERSISTED_STATE_SCHEMA_UNTRUSTED")
+    return value
+
+
+def _update(state:dict[str,Any],status:str,**fields:Any)->None:
+    state.update(fields)
+    state["status"]=status
+    state["heartbeatAt"]=_utc()
+    _atomic_json(STATE,state)
+    JOURNAL.parent.mkdir(parents=True,exist_ok=True)
+    with JOURNAL.open("a",encoding="utf8") as out:
+        out.write(json.dumps({
+            "time":_utc(),"status":status,"cycle":state.get("cycle"),
+            "gitHead":state.get("currentHead"),
+            "pendingBranch":state.get("pendingBranch"),
+        },sort_keys=True)+"\n")
+
+
+class SingleFlight:
+    """OS-owned Windows byte-range lock releases automatically after crash."""
+    def __enter__(self):
+        PRIVATE.mkdir(parents=True,exist_ok=True)
+        self.file=LOCK.open("a+b")
+        # Windows byte-range locks can reject a *read* on an already
+        # locked byte before LK_NBLCK is reached. Inspect file size via
+        # seek, never read the locked byte, and close on every denial.
+        try:
+            self.file.seek(0,2)
+            if self.file.tell()==0:
+                self.file.write(b"0")
+                self.file.flush()
+            self.file.seek(0)
+            if msvcrt is None:
+                raise OSError("Windows OS byte lock unavailable")
+            msvcrt.locking(self.file.fileno(),msvcrt.LK_NBLCK,1)
+        except OSError as exc:
+            self.file.close()
+            raise ValueError(
+                "BSA279_ANOTHER_PERSISTENT_WORKER_IS_ACTIVE"
+            ) from exc
+        return self
+
+    def __exit__(self,*_):
+        self.file.seek(0)
+        msvcrt.locking(self.file.fileno(),msvcrt.LK_UNLCK,1)
+        self.file.close()
+
+
+def _run(args:list[str],*,cwd:Path=ROOT,timeout:int=40)->subprocess.CompletedProcess:
+    return subprocess.run(args,cwd=cwd,text=True,encoding="utf8",
+                          errors="replace",capture_output=True,
+                          timeout=timeout,check=False)
+
+
+def _ok(args:list[str],*,cwd:Path=ROOT,timeout:int=40)->str:
+    p=_run(args,cwd=cwd,timeout=timeout)
+    if p.returncode:
+        raise ValueError("BSA279_COMMAND_FAILED:"+args[0]+":"+
+                         str(p.returncode)+":"+p.stderr[-400:])
+    return p.stdout.strip()
+
+
+def _head(repo:Path=ROOT)->str:
+    v=_ok(["git","rev-parse","HEAD"],cwd=repo)
+    if not re.fullmatch(r"[0-9a-f]{40}",v):
+        raise ValueError("BSA279_INVALID_GIT_SHA")
+    return v
+
+
+def _branch(repo:Path=ROOT)->str:
+    return _ok(["git","branch","--show-current"],cwd=repo)
+
+
+def _clean(repo:Path=ROOT)->bool:
+    return not _ok(["git","status","--porcelain"],cwd=repo)
+
+
+def _hosted_ci(head:str,branch:str,*,min_runs:int)->str:
+    """CI gate is verified from the GitHub CLI *exact* commit, not a label."""
+    result=_run(["gh","run","list","--repo",
+                 "tlyoon/brilliant.org-style-learning-apps",
+                 "--branch",branch,"--limit","20",
+                 "--json","headSha,status,conclusion,databaseId"],
+                timeout=80)
+    if result.returncode:
+        return "GH_UNAVAILABLE"
+    try:
+        matches=[v for v in json.loads(result.stdout)
+                 if v.get("headSha")==head]
+    except (ValueError,TypeError):
+        return "CI_UNREADABLE"
+    if len(matches)<min_runs:
+        return "CI_AWAITING"
+    if any(x.get("status")!="completed" for x in matches):
+        return "CI_AWAITING"
+    if any(x.get("conclusion")!="success" for x in matches):
+        return "CI_FAILED"
+    return "CI_SUCCESS"
+
+
+def _approved_diff(base:str,tip:str)->bool:
+    raw=_ok(["git","diff","--name-only",base+".."+tip],timeout=60)
+    names=[x.strip().replace("\\","/") for x in raw.splitlines() if x.strip()]
+    if not names:
+        return False
+    for name in names:
+        norm=name.lower()
+        if (not (name.startswith(ALLOWED_PREFIXES) or name in ALLOWED_FILES)
+            or any(bit in norm for bit in FORBIDDEN_PATH_BITS)
+            or norm.startswith("docs/owner-five-stage-completion")):
+            return False
+    return True
+
+
+def _log_process(state:dict[str,Any],label:str,args:list[str],*,
+                 cwd:Path,timeout:int)->int:
+    """Continuous checkpoint heartbeat while child runs (no shell redirects)."""
+    logdir=PRIVATE/"logs"
+    logdir.mkdir(parents=True,exist_ok=True)
+    stamp=datetime.now().strftime("%Y%m%d_%H%M%S")
+    logfile=logdir/(label+"_"+stamp+".log")
+    _update(state,"BSA279_"+label+"_RUNNING",currentLog=str(logfile))
+    with logfile.open("wb") as output:
+        p=subprocess.Popen(args,cwd=cwd,stdout=output,
+                           stderr=subprocess.STDOUT,stdin=subprocess.DEVNULL)
+        start=time.monotonic()
+        last=0.
+        try:
+            while p.poll() is None:
+                elapsed=time.monotonic()-start
+                if elapsed>timeout:
+                    subprocess.run(["taskkill","/T","/F","/PID",str(p.pid)],
+                                   stdout=subprocess.DEVNULL,
+                                   stderr=subprocess.DEVNULL,timeout=15)
+                    _update(state,"BSA279_"+label+"_TIMED_OUT",
+                            failedPid=p.pid,elapsedSeconds=int(elapsed))
+                    return 124
+                if elapsed-last>=20:
+                    _update(state,"BSA279_"+label+"_RUNNING",
+                            elapsedSeconds=int(elapsed),childPid=p.pid)
+                    last=elapsed
+                time.sleep(2)
+        finally:
+            p.wait(timeout=20)
+    _update(state,"BSA279_"+label+"_ENDED",
+            exitCode=p.returncode,elapsedSeconds=int(time.monotonic()-start))
+    return int(p.returncode)
+
+
+def _promote_candidate(state:dict[str,Any],branch:str)->bool:
+    if branch in state.get("integratedBranches",[]):
+        return False
+    remote=_run(["git","rev-parse","refs/heads/"+branch],timeout=25)
+    if remote.returncode:
+        return False
+    source_head=remote.stdout.strip()
+    main_head=_head()
+    # The main feature branch may already contain a pre-certified candidate
+    # (for example BSA278 integrated before this persistent runner existed).
+    # Don't mistake this ordinary already-promoted state for a divergence,
+    # and never replay its cherry-pick.
+    cherry=_run(["git","cherry",main_head,branch],timeout=60)
+    patch_equivalent=(cherry.returncode==0
+        and bool(cherry.stdout.strip())
+        and all(line.startswith("- ") for line in cherry.stdout.splitlines()))
+    if (source_head==main_head or patch_equivalent
+        or _run(["git","merge-base","--is-ancestor",
+                 source_head,main_head]).returncode==0):
+        state.setdefault("integratedBranches",[]).append(branch)
+        _update(state,"BSA279_ALREADY_INTEGRATED_NO_DUPLICATE",
+                lastIntegratedBranch=branch)
+        return False
+    if _branch()!=MAIN_BRANCH or not _clean():
+        _update(state,"BSA279_MAIN_UNSAFE_FOR_CODE_PROMOTION")
+        return False
+    if _run(["git","merge-base","--is-ancestor",main_head,source_head]).returncode:
+        _update(state,"BSA279_CANDIDATE_DIVERGED_REQUIRES_RECOVERY",
+                rejectedBranch=branch)
+        return False
+    if not _approved_diff(main_head,source_head):
+        _update(state,"BSA279_CANDIDATE_UNAPPROVED_FILE_SCOPE",
+                rejectedBranch=branch)
+        return False
+    ci=_hosted_ci(source_head,branch,min_runs=1)
+    if ci!="CI_SUCCESS":
+        _update(state,"BSA279_CANDIDATE_"+ci,candidateHead=source_head)
+        return False
+    # Actual verified change on a development branch, NOT public main/deploy.
+    commits=_ok(["git","rev-list","--reverse",main_head+".."+source_head]).splitlines()
+    for revision in commits:
+        if _run(["git","cherry-pick",revision],timeout=120).returncode:
+            # Never automatically reset/discard genuine owner data on conflict.
+            _update(state,"BSA279_CHERRY_PICK_CONFLICT_NEEDS_HISTORICAL_REPAIR",
+                    failedRevision=revision)
+            return False
+    if _run(["git","push","origin",
+             "HEAD:refs/heads/"+MAIN_BRANCH],timeout=90).returncode:
+        _update(state,"BSA279_MAIN_PUSH_UNCERTAIN_VERIFY_BEFORE_RETRY")
+        return False
+    state.setdefault("integratedBranches",[]).append(branch)
+    state.pop("pendingBranch",None)
+    _update(state,"BSA279_VERIFIED_DEVELOPMENT_INTEGRATED",
+            currentHead=_head(),lastIntegratedBranch=branch,
+            lastIntegratedSourceHead=source_head)
+    return True
+
+
+def _promote_known(state:dict[str,Any])->bool:
+    # Any approved pending Codex change goes before the prebuilt BSA278 batch.
+    pending=state.get("pendingBranch")
+    if pending:
+        return _promote_candidate(state,pending)
+    return _promote_candidate(state,FIXED_READY_BRANCH)
+
+
+def _owner_stage(state:dict[str,Any])->bool:
+    """Actual original-source V36 -> A1..A12 signed independent chain."""
+    current=_head()
+    state["currentHead"]=current
+    if state.get("lastOwnerHead")==current:
+        return True
+    if _branch()!=MAIN_BRANCH or not _clean():
+        _update(state,"BSA279_DIRTY_MAIN_OWNER_NOT_RUN")
+        return False
+    ci=_hosted_ci(current,MAIN_BRANCH,min_runs=2)
+    if ci!="CI_SUCCESS":
+        _update(state,"BSA279_MAIN_"+ci,currentHead=current)
+        return False
+    rc=_log_process(state,"OWNER_REAL_SOURCE_ADMISSION",
+                    [sys.executable,"-m",
+                     "scripts.auto_advance_bosla_academic_frontier",
+                     "--max-steps","8"],cwd=ROOT,timeout=MAX_OWNER_SECONDS)
+    if rc!=0:
+        _update(state,"BSA279_OWNER_RETRYABLE_BOUNDARY",
+                currentHead=current,ownerExitCode=rc)
+        return False
+    rc=_log_process(state,"OWNER_INDEPENDENT_HORIZON",
+                    [sys.executable,"-m",
+                     "scripts.show_bosla_long_horizon"],cwd=ROOT,timeout=1300)
+    if rc!=0:
+        _update(state,"BSA279_OWNER_HORIZON_INCOMPLETE",
+                currentHead=current,ownerExitCode=rc)
+        return False
+    state["lastOwnerHead"]=current
+    _update(state,"BSA279_ORIGINAL_TEXTBOOK_OWNER_SIGNED_ACCEPTANCE_VERIFIED",
+            currentHead=current)
+    return True
+
+
+def _daily_budget(state:dict[str,Any])->bool:
+    day=datetime.now().strftime("%Y-%m-%d")
+    if state.get("codexDay")!=day:
+        state["codexDay"]=day
+        state["codexCount"]=0
+    return int(state.get("codexCount",0))<MAX_CODEX_PER_DAY
+
+
+def _dev_worktree(state:dict[str,Any])->tuple[str,Path]:
+    stamp=datetime.now().strftime("%Y%m%d-%H%M%S")
+    branch="feature/bosla-auto-"+stamp
+    dest=PRIVATE/"worktrees"/("bosla-"+stamp)
+    dest.parent.mkdir(parents=True,exist_ok=True)
+    _ok(["git","worktree","add","-b",branch,str(dest),"HEAD"],timeout=90)
+    return branch,dest
+
+
+def _codex_prompt()->str:
+    return (
+        "You are the bounded engineering worker for BOSLA, the brilliant.org-"
+        "style learning app on Yoga6, NOT MicroGen_AI_Web. Authorized goal: "
+        "AUTONOMOUS SUBSTANTIVE CODE DEVELOPMENT using original instructor "
+        "selected Serway textbook only. Begin by reading AGENTS.md, "
+        "docs/CONTEXT_INDEX.md, docs/AUTONOMOUS_DEVELOPMENT_CONTINUATION.md, "
+        "docs/recurrence_registry.json and relevant past failure fixes. "
+        "Identify the next missing SOURCE-BOUND INDEPENDENT SCIENTIFIC "
+        "EXPLANATION, TRILINGUAL MEANING, MCQ DISTRACTOR, or INTERACTIVE "
+        "DIAGRAM proof mechanism. Implement a *genuine working proof "
+        "producer* and its acceptance, not another no-op scheduler, metadata "
+        "report or source-quote inventory. Advance all obvious safe steps. "
+        "For each blocker use historical failure review -> targeted fix -> "
+        "actual source-bound test -> adversarial/fault-injection regression -> "
+        "executable recovery-registry integration -> normal continuation. "
+        "Keep original Serway PDF private; NEVER download or upload another "
+        "PDF or expose full textbook in Git. Do not initiate paid Gemini "
+        "requests, replay uncertain model calls or alter historical signed "
+        "A1-A12 evidence. No public PR merge, public deploy, new scheduled "
+        "task, git commit/push/checkout/reset, or changes outside this "
+        "sandboxed worktree; the host coordinator performs Git and CI. "
+        "Never waive exact-source, scientific, trilingual, figure or release "
+        "gates or falsely claim that all 90 activities pass. Make actual "
+        "verified code and tests, update recurrence registry/ledger/checkpoint "
+        "consistently, run focused tests. On unresolved proof isolate the "
+        "specific task and work on other eligible mechanisms. Do not stop "
+        "merely to ask the user for an obvious next step. Limit this run to "
+        "one coherent, testable integrated development change; exit cleanly "
+        "with evidence of files changed and tests run. "
+    )
+
+
+def _codex_stage(state:dict[str,Any])->bool:
+    if state.get("pendingBranch"):
+        _update(state,"BSA279_WAITING_FOR_PENDING_BRANCH_CI")
+        return False
+    if not _daily_budget(state):
+        _update(state,"BSA279_BOUNDED_DAILY_MODEL_BUDGET_REACHED")
+        return False
+    executable=shutil.which("codex.cmd") or shutil.which("codex")
+    if not executable:
+        _update(state,"BSA279_CODE_DEVELOPMENT_AGENT_UNAVAILABLE")
+        return False
+    if not _clean() or _branch()!=MAIN_BRANCH:
+        _update(state,"BSA279_OWNER_CODE_NOT_STABLE_FOR_CODEX")
+        return False
+    branch,worktree=_dev_worktree(state)
+    state["codexCount"]=int(state.get("codexCount",0))+1
+    _update(state,"BSA279_BOUNDED_CODE_GENERATION_STARTED",
+            devBranch=branch,devWorktree=str(worktree),
+            codexCount=state["codexCount"])
+    out=PRIVATE/"codex-last-message.txt"
+    args=[str(executable),"exec","--sandbox","workspace-write",
+          "--cd",str(worktree),"--skip-git-repo-check",
+          "-c","approval_policy=\"never\"",
+          "--output-last-message",str(out),_codex_prompt()]
+    rc=_log_process(state,"CODEX_ACTUAL_CODE_DEVELOPMENT",args,
+                    cwd=worktree,timeout=MAX_CODEX_SECONDS)
+    if rc!=0:
+        _update(state,"BSA279_CODEX_FAILURE_QUARANTINED_NO_BLIND_REPLAY",
+                devBranch=branch,modelExitCode=rc)
+        return False
+    changed=_ok(["git","status","--porcelain"],cwd=worktree)
+    if not changed:
+        _update(state,"BSA279_CODEX_NO_CODE_CHANGE_NOT_MILESTONE",
+                devBranch=branch)
+        return False
+    # Stage first, then scope-review before any commit; never trust a model's
+    # claim of passing independent science or grant PASS from CI.
+    _ok(["git","add","--all"],cwd=worktree)
+    files=_ok(["git","diff","--cached","--name-only"],cwd=worktree).splitlines()
+    if (not files or any(
+            not (f.startswith(ALLOWED_PREFIXES) or f in ALLOWED_FILES)
+            or any(bit in f.lower() for bit in FORBIDDEN_PATH_BITS)
+            for f in files)):
+        _update(state,"BSA279_CODEX_UNAPPROVED_PATCH_QUARANTINED",
+                devBranch=branch,changedPaths=files)
+        return False
+    if not any(f.startswith(("app_generator/","scripts/"))
+               and f.endswith((".py",".js",".ts",".tsx"))
+               for f in files):
+        _update(state,"BSA279_CODEX_DOCS_ONLY_NOT_DEVELOPMENT",
+                devBranch=branch,changedPaths=files)
+        return False
+    if _run(["git","diff","--cached","--check"],cwd=worktree).returncode:
+        _update(state,"BSA279_CODEX_PATCH_WHITESPACE_FAILURE",
+                devBranch=branch)
+        return False
+    # Regression contract and original content integrity are mandatory.
+    for label,cmd in (
+        ("CONTRACT",[sys.executable,"scripts/check_regression_contract.py"]),
+        ("CONTENT",[sys.executable,"scripts/validate_content.py"]),
+        ("ACADEMIC_TESTS",[sys.executable,"-m","unittest",
+           "tests.test_v46_generic_academic_proof_registry",
+           "tests.test_v49_si_unit_science_batch",
+           "tests.test_v50_bosla_autonomous_academic_advance",
+           "tests.test_v51_newton_force_science_batch",
+           "tests.test_v52_paired_glider_source_science",
+           "tests.test_v53_paired_glider_signed_admission","-q"]),
+    ):
+        # Existing tests from repository branch may be extended by Codex.
+        code=_log_process(state,"CODEX_"+label,cmd,
+                          cwd=worktree,timeout=300)
+        if code:
+            _update(state,"BSA279_CODEX_TESTS_FAIL_KEEP_PATCH",
+                    failedTest=label,devBranch=branch)
+            return False
+    _ok(["git","commit","-m","Bosla autonomous science proof development: "+
+         datetime.now().strftime("%Y-%m-%d")],cwd=worktree,timeout=80)
+    tip=_head(worktree)
+    if _run(["git","push","--set-upstream","origin",branch],
+            cwd=worktree,timeout=120).returncode:
+        _update(state,"BSA279_CODEX_REMOTE_CI_HANDOFF_UNVERIFIED",
+                devBranch=branch,devHead=tip)
+        return False
+    state["pendingBranch"]=branch
+    _update(state,"BSA279_NEW_SOURCE_CODE_COMMITTED_CI_DISPATCHED",
+            pendingHead=tip,devBranch=branch)
+    return True
+
+
+def cycle(*,codegen:bool=True)->dict[str,Any]:
+    if os.environ.get("COMPUTERNAME","").upper()!="YOGA6":
+        raise ValueError("BSA279_BOSLA_OWNER_YOGA6_ONLY")
+    with SingleFlight():
+        state=_read_state()
+        state["cycle"]=int(state.get("cycle",0))+1
+        state["currentHead"]=_head()
+        _update(state,"BSA279_PERSISTENT_DEVELOPMENT_CYCLE_STARTED",
+                cycleStartedAt=_utc())
+        try:
+            if _branch()!=MAIN_BRANCH:
+                _update(state,"BSA279_WRONG_BOSLA_FEATURE_BRANCH")
+                return state
+            promoted=_promote_known(state)
+            state["currentHead"]=_head()
+            if promoted:
+                # The same cycle cannot sign science before new exact CI.
+                _update(state,"BSA279_NEW_CODE_PROMOTED_WAIT_HOSTED_CI")
+                return state
+            # A CI-pending generated branch is *not* bypassed for more
+            # speculative code creation: finish its hosted review first.
+            if state.get("pendingBranch"):
+                _update(state,"BSA279_CANDIDATE_PENDING_EXACT_CI",
+                        pendingBranch=state["pendingBranch"])
+                return state
+            owner_ok=_owner_stage(state)
+            if not owner_ok:
+                # Failed current-head owner science must NOT be bypassed by
+                # source-free metadata or treated as automatic PASS.
+                return state
+            if codegen:
+                _codex_stage(state)
+            else:
+                _update(state,"BSA279_PERSISTENCE_SELFTEST_OWNER_OK",
+                        lastOwnerHead=state.get("lastOwnerHead"))
+            return state
+        except (ValueError,OSError,subprocess.TimeoutExpired) as exc:
+            _update(state,"BSA279_CLASSIFIED_RETRYABLE_OR_SAFETY_BOUNDARY",
+                    lastErrorCode=str(exc)[:450],
+                    lastErrorClass=type(exc).__name__)
+            return state
+
+
+def main(argv:list[str]|None=None)->int:
+    parser=argparse.ArgumentParser(description=__doc__)
+    group=parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--once",action="store_true")
+    group.add_argument("--status",action="store_true")
+    group.add_argument("--lock-probe",action="store_true")
+    parser.add_argument("--skip-codegen",action="store_true")
+    args=parser.parse_args(argv)
+    if args.status:
+        print(json.dumps({"taskNames":PERSISTENT_TASKS,
+                          "state":_read_state()},sort_keys=True))
+        return 0
+    if args.lock_probe:
+        try:
+            with SingleFlight():
+                print(json.dumps({"status":"BSA279_SINGLE_FLIGHT_ACQUIRED"}))
+            return 0
+        except ValueError as exc:
+            print(json.dumps({"status":"BSA279_SINGLE_FLIGHT_REJECTED",
+                              "code":str(exc)}))
+            return 2
+    try:
+        outcome=cycle(codegen=not args.skip_codegen)
+        print(json.dumps({"status":outcome.get("status"),
+                          "cycle":outcome.get("cycle"),
+                          "gitHead":outcome.get("currentHead"),
+                          "pendingBranch":outcome.get("pendingBranch"),
+                          "lastOwnerHead":outcome.get("lastOwnerHead"),
+                          "heartbeatAt":outcome.get("heartbeatAt")},sort_keys=True))
+        # A retryable owner/CI block should not be silently reported as
+        # scientific success. Task Scheduler will safely re-enter next tick.
+        return 0 if outcome.get("status","").startswith("BSA279_") else 2
+    except (ValueError,OSError,subprocess.TimeoutExpired) as exc:
+        print(json.dumps({"status":"BSA279_PERSISTENCE_LAUNCH_FAILURE",
+                          "errorCode":str(exc)[:400],
+                          "errorClass":type(exc).__name__},sort_keys=True))
+        return 2
+
+
+if __name__=="__main__":
+    sys.exit(main())
