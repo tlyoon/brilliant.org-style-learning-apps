@@ -19,7 +19,7 @@ PROPOSAL="b"*64
 
 class AutonomousAcademicFlow(TestCase):
     def case(self,previous_head=False,failed_ci=False,
-             auto_run=None,max_steps=10,raise_a3=False):
+             auto_run=None,max_steps=12,raise_a3=False):
         with TemporaryDirectory() as temp:
             private=Path(temp)
             root=Path(temp)/"fake-root"
@@ -101,6 +101,25 @@ class AutonomousAcademicFlow(TestCase):
             energy_verify_patch.start()
             self.addCleanup(energy_admit_patch.stop)
             self.addCleanup(energy_verify_patch.stop)
+            def isolated_pair_admit(private):
+                calls.append("a22_a24")
+                frontier=private/"long-horizon-development"/auto._ISOLATED_PAIR_FRONTIER
+                frontier.parent.mkdir(exist_ok=True)
+                frontier.write_text("{}")
+                return {"independentlyAcceptedAcademicTasks":24,
+                        "pendingMcqDistractorScienceTasks":3}
+            pair_admit_patch=patch.object(auto,"admit_isolated_pair_batch",side_effect=isolated_pair_admit)
+            pair_verify_patch=patch.object(auto,"verify_isolated_pair_batch_across_git_heads",
+                return_value={"independentlyAcceptedAcademicTasks":24,
+                              "fullAcademicTasksStillOpen":405,
+                              "pendingMcqDistractorScienceTasks":3,
+                              "completeAcademicProofGatesStillOpen":90,
+                              "fullAcademicActivityPASS":0,
+                              "publicationAuthorized":False})
+            pair_admit_patch.start()
+            pair_verify_patch.start()
+            self.addCleanup(pair_admit_patch.stop)
+            self.addCleanup(pair_verify_patch.stop)
             with (patch.object(auto,"_git_info",return_value=(HEAD,"feature")),
                   patch.object(auto,"_git_clean",return_value=True),
                   patch.object(auto,"_hosted_runs",return_value=[]),
@@ -175,19 +194,19 @@ class AutonomousAcademicFlow(TestCase):
 
     def test_all_four_missing_boundaries_automatically_advance_in_one_run(self):
         result,actions=self.case(previous_head=True)
-        self.assertEqual(actions,["owner","audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21"])
-        self.assertEqual(result["academicProofTasksAccepted"],21)
-        self.assertEqual(result["fullAcademicProofTasksStillOpen"],408)
+        self.assertEqual(actions,["owner","audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21","a22_a24"])
+        self.assertEqual(result["academicProofTasksAccepted"],24)
+        self.assertEqual(result["fullAcademicProofTasksStillOpen"],405)
         self.assertEqual(result["completeAcademicProofGatesStillOpen"],90)
         self.assertEqual(result["academicActivityPASS"],0)
         self.assertFalse(result["publicationAuthorized"])
 
     def test_idempotent_restart_does_not_reissue_old_proofs(self):
         result,actions=self.case(auto_run="twice")
-        self.assertEqual(actions,["audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21"])
+        self.assertEqual(actions,["audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21","a22_a24"])
         first,second=result
-        self.assertEqual(first["academicProofTasksAccepted"],21)
-        self.assertEqual(second["academicProofTasksAccepted"],21)
+        self.assertEqual(first["academicProofTasksAccepted"],24)
+        self.assertEqual(second["academicProofTasksAccepted"],24)
         self.assertEqual(second["actionsExecuted"],[])
 
     def test_failed_exact_head_ci_stops_unsafe_admission(self):

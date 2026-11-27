@@ -52,6 +52,10 @@ from app_generator.runtime.v3_equal_energy_academic_batch_admission import (
     _FRONTIER as _EQUAL_ENERGY_FRONTIER,
     admit_equal_energy_batch, verify_equal_energy_batch_across_git_heads,
 )
+from app_generator.runtime.v3_isolated_pair_academic_batch_admission import (
+    _FRONTIER as _ISOLATED_PAIR_FRONTIER,
+    admit_isolated_pair_batch, verify_isolated_pair_batch_across_git_heads,
+)
 
 
 def _owner_advance_worker(repo:Path)->None:
@@ -215,13 +219,29 @@ def advance_all_eligible_academic_actions(
             or energy_verified["fullAcademicActivityPASS"]!=0
             or energy_verified["publicationAuthorized"] is not False):
             raise ValueError("BSA289_A1_A21_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        isolated_pair=private/"long-horizon-development"/_ISOLATED_PAIR_FRONTIER
+        if not isolated_pair.exists() and not isolated_pair.is_symlink():
+            admitted=admit_isolated_pair_batch(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=24
+                or admitted["pendingMcqDistractorScienceTasks"]!=3):
+                raise ValueError("BSA290_ISOLATED_PAIR_BATCH_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A22_A24_ISOLATED_PAIR_SCIENCE_TASKS")
+            continue
+        pair_verified=verify_isolated_pair_batch_across_git_heads(private=private)
+        if (pair_verified["independentlyAcceptedAcademicTasks"]!=24
+            or pair_verified["fullAcademicTasksStillOpen"]!=405
+            or pair_verified["pendingMcqDistractorScienceTasks"]!=3
+            or pair_verified["completeAcademicProofGatesStillOpen"]!=90
+            or pair_verified["fullAcademicActivityPASS"]!=0
+            or pair_verified["publicationAuthorized"] is not False):
+            raise ValueError("BSA290_A1_A24_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA289_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA290_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":21,
-            "fullAcademicProofTasksStillOpen":408,
-            "pendingMcqDistractorScienceTasks":6,
+            "academicProofTasksAccepted":24,
+            "fullAcademicProofTasksStillOpen":405,
+            "pendingMcqDistractorScienceTasks":3,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,
             "nextSafeDevelopmentFrontier":

@@ -1,5 +1,9 @@
 # Context index
 
+## 27 November 2026 — BSA290 MCQ08 isolated-pair source-bound proof code
+
+The next unaccepted MCQ08 opt-b/c/d science tasks have executable two-body Fraction impulse, force, momentum and acceleration countermodels. Full frozen EN/MS/ZH candidate surfaces, canonical task IDs, original selected Serway source digest and eighth signed V36 partition gate owner A22–A24 admission. The normal academic controller, CLI and independent horizon now require the signed prior A1–A21 chain and independently reopen original/current head science. This Git-less coding snapshot has no private original PDF, so host exact CI and genuine Yoga6 source run remain pending. Only 15/429 source tasks are confirmed signed, 414 pending, and all 90 complete academic activity gates remain OPEN. See BSA-20261127-290 in the recurrence registry and failure ledger.
+
 ## 22 November 2026 — BSA244 source-bound scientific evidence on selected textbook
 
 BSA243 superseded historical three-outside-PDF C3 requirements for BOSLA production. Next genuine Yoga 6 V18 stage operates against existing configured Serway Chapter 9.1 source.pdf only, exact source SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50. Real local preflight: 18/18 physical-page source passage anchors, six exact momentum mathematical witnesses and five bounded MCQ correct-answer patterns. Existing academic coverage gate separately reports 90 still outstanding independent proofs (18 × five gates), zero formal academic PASS. V18 signs PRE_CALL/RESULT and actually dispatches the gap task after signed V17, never fetching external PDFs, new Gemini calls, public merge/deployment. No full science/visual/multilingual/release acceptance claimed; docs/BOSLA_V18_REAL_SELECTED_TEXTBOOK_SCIENCE_PROVENANCE.md. CI and normal Yoga 6 V1–V18 pending.
