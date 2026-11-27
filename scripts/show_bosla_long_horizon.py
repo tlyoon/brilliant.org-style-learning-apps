@@ -378,6 +378,48 @@ def main() -> int:
             "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
             "publicationAuthorized":False,
         })
+    # A16-A18 count only after a separate original-source signed admission
+    # and a fresh independent readback of the sixth V36 partition.
+    from app_generator.runtime.v3_equal_speed_academic_batch_admission import (
+        _FRONTIER as _EQUAL_SPEED_FRONTIER,
+        verify_equal_speed_batch_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_EQUAL_SPEED_FRONTIER).exists():
+        try:
+            equal=verify_equal_speed_batch_across_git_heads(private=private)
+            if (equal["acceptedAcademicTaskIds"][:15]!=outcome.get(
+                    "verifiedAcademicProofTaskIds")
+                or equal["independentlyAcceptedAcademicTasks"]!=18
+                or equal["fullAcademicTasksStillOpen"]!=411
+                or equal["pendingMcqDistractorScienceTasks"]!=9
+                or equal["completeAcademicProofGatesStillOpen"]!=90
+                or equal["fullAcademicActivityPASS"]!=0
+                or equal["publicationAuthorized"] is not False):
+                raise ValueError("BSA287_A16_A18_CANNOT_BYPASS_A1_A15")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,
+                ArithmeticError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_EQUAL_SPEED_SCIENCE_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_EQUAL_SPEED_SCIENCE_BATCH_REVERIFIED",
+            "academicAcceptancesSource":
+                "EIGHTEEN_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":18,
+            "fullAcademicProofTasksStillOpen":411,
+            "pendingMcqDistractorScienceTasks":9,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":equal["acceptedAcademicTaskIds"],
+            "academicEqualSpeedBatchReceiptSha256":
+                equal["equalSpeedBatchReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"NEW_SOURCE_SPECIFIC_PROOF_PRODUCER_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 

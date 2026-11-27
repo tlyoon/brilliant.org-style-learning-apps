@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-286 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261127-287 | ACTIVE
+
+> 27 NOV BSA287 A16-A18 MCQ06 signed admission code: new owner-only receipt binds three exact rational vector countermodels to original selected Serway PDF, complete frozen EN/MS/ZH false options and sixth signed V36 task partition. Normal academic controller and independent horizon reader now recheck the A1-A15 chain before reporting 18/429. The private source PDF is absent from this coding snapshot; only signed 15/429 remains confirmed, 414 pending and all 90 full activity gates OPEN. Host exact CI and genuine owner admission remain pending.
 
 > 27 NOV BSA284 MCQ06 equal-speed science producer: two independent exact rational perpendicular vector models and three pinned full EN/MS/ZH false-option clauses now have an executable witness producer and readback. Focused synthetic source and adversarial tests pass. Original selected Serway source.pdf is absent from this disposable snapshot, so actual owner source run, signed A16-A18 admission, independent horizon and hosted CI are pending. Signed count remains 15/429, 414 pending, all 90 full activity gates OPEN.
 

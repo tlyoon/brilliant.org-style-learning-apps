@@ -44,6 +44,10 @@ from app_generator.runtime.v3_third_law_academic_batch_admission import (
     _FRONTIER as _THIRD_LAW_FRONTIER,
     admit_third_law_batch, verify_third_law_batch_across_git_heads,
 )
+from app_generator.runtime.v3_equal_speed_academic_batch_admission import (
+    _FRONTIER as _EQUAL_SPEED_FRONTIER,
+    admit_equal_speed_batch, verify_equal_speed_batch_across_git_heads,
+)
 
 
 def _owner_advance_worker(repo:Path)->None:
@@ -58,7 +62,7 @@ def _owner_advance_worker(repo:Path)->None:
 
 
 def advance_all_eligible_academic_actions(
-    *,repo:Path,private:Path,max_steps:int=8,
+    *,repo:Path,private:Path,max_steps:int=10,
 )->dict[str,Any]:
     if type(max_steps) is not int or not 1<=max_steps<=12:
         raise ValueError("BSA276_INVALID_BOUNDED_AUTONOMOUS_STEP_LIMIT")
@@ -175,13 +179,29 @@ def advance_all_eligible_academic_actions(
             or third_verified["fullAcademicActivityPASS"]!=0
             or third_verified["publicationAuthorized"] is not False):
             raise ValueError("BSA281_A1_A15_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        equal_speed=private/"long-horizon-development"/_EQUAL_SPEED_FRONTIER
+        if not equal_speed.exists() and not equal_speed.is_symlink():
+            admitted=admit_equal_speed_batch(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=18
+                or admitted["pendingMcqDistractorScienceTasks"]!=9):
+                raise ValueError("BSA287_EQUAL_SPEED_BATCH_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A16_A18_EQUAL_SPEED_SCIENCE_TASKS")
+            continue
+        equal_verified=verify_equal_speed_batch_across_git_heads(private=private)
+        if (equal_verified["independentlyAcceptedAcademicTasks"]!=18
+            or equal_verified["fullAcademicTasksStillOpen"]!=411
+            or equal_verified["pendingMcqDistractorScienceTasks"]!=9
+            or equal_verified["completeAcademicProofGatesStillOpen"]!=90
+            or equal_verified["fullAcademicActivityPASS"]!=0
+            or equal_verified["publicationAuthorized"] is not False):
+            raise ValueError("BSA287_A1_A18_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA281_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA287_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":15,
-            "fullAcademicProofTasksStillOpen":414,
-            "pendingMcqDistractorScienceTasks":12,
+            "academicProofTasksAccepted":18,
+            "fullAcademicProofTasksStillOpen":411,
+            "pendingMcqDistractorScienceTasks":9,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,
             "nextSafeDevelopmentFrontier":

@@ -17,8 +17,12 @@ _REAL_SOURCE_SHA = p._SOURCE_SHA
 
 
 def witness(option: str) -> dict:
+    activity = json.loads(Path("content/chapter-9/section-9-1/package.json").read_text(encoding="utf8"))["activities"][5]
+    label = next(row["label"] for row in activity["answerKey"]["options"] if row["id"] == option)
     body = {"taskId": p._TASKS[option], "optionId": option, "falseClaim": p._CLAIMS[option],
             "sourceSha256": p._SOURCE_SHA, "candidateSha256": p._CANDIDATE_SHA,
+            "surfaceSha256": p._digest(label), "sourcePageIndex": 1,
+            "sourcePassageSha256": "a"*64, "sourcePhysicsPremisesSha256": "b"*64,
             "promptLocaleSha256": p._PROMPT, "optionLocaleSha256": p._OPTIONS[option],
             "models": p._models(), "academicTaskAccepted": False,
             "completeAcademicProofGatesStillOpen": 90, "newProviderCalls": 0,

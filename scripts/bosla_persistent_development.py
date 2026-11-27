@@ -409,7 +409,7 @@ def _owner_stage(state:dict[str,Any])->bool:
     rc=_log_process(state,"OWNER_REAL_SOURCE_ADMISSION",
                     [sys.executable,"-u","-m",
                      "scripts.auto_advance_bosla_academic_frontier",
-                     "--max-steps","8"],cwd=ROOT,timeout=MAX_OWNER_SECONDS,
+                     "--max-steps","10"],cwd=ROOT,timeout=MAX_OWNER_SECONDS,
                     idle_timeout=1200)
     if rc!=0:
         _failed_owner_decision(state,head=current,exit_code=rc)
