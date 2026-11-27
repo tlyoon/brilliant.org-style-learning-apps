@@ -7,6 +7,8 @@ This module produces bounded decisions and NEVER academic PASS.
 """
 from __future__ import annotations
 from hashlib import sha256
+import json
+import re
 from typing import Any
 
 SAFETY_CODES=(
@@ -42,6 +44,38 @@ CODEX_ENVIRONMENT_CODES=(
     "MCP TOOL CALL REQUIRES APPROVAL",
     "SANDBOX WRITE DENIED",
 )
+
+def exact_owner_failure_code(log_excerpt:str)->str|None:
+    """Extract only a real bounded owner failure JSON marker, never private text.
+
+    BSA294: the old 20KB diagnostic tail erased the BSA284 failure beneath
+    a large source-free summary, leaving only MISSING_SCIENCE_PRODUCER.
+    A specific signed/source-safe repair worker needs the actual fault code.
+    Do not trust arbitrary generated code quotes as a failure event.
+    """
+    if not isinstance(log_excerpt,str):
+        return None
+    marker=None
+    for line in log_excerpt[-1_000_000:].splitlines():
+        line=line.strip()
+        if (not line.startswith("{") or len(line)>3000
+            or '"errorCode"' not in line):
+            continue
+        try:
+            event=json.loads(line)
+        except (ValueError,TypeError):
+            continue
+        if (not isinstance(event,dict)
+            or event.get("status")!=
+               "BSA276_ELIGIBLE_ACADEMIC_STEP_UNVERIFIED"
+            or event.get("errorClass")!="ValueError"):
+            continue
+        code=event.get("errorCode")
+        if isinstance(code,str) and re.fullmatch(
+            r"(?:BSA|V)[0-9]{3}_[A-Z0-9_]{5,95}",code):
+            marker=code
+    return marker
+
 
 def _matches(text:str,codes:tuple[str,...])->bool:
     upper=text.upper()

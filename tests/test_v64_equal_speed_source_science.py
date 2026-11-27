@@ -111,11 +111,17 @@ class EqualSpeedScience(TestCase):
                   patch.object(p, "_source_activity_anchors", return_value=anchors),
                   patch.object(p, "plan_full_semantic_proofs", side_effect=lambda **kw:
                       plan_full_semantic_proofs(package=kw["package"], source_sha256=_REAL_SOURCE_SHA))):
+                # BSA289 regression: the repository sample is NOT the
+                # signed, Malay-revised private owner candidate. Earlier
+                # tests treated its deterministic task IDs as real A16-A18.
+                # A positive synthetic source must never substitute its
+                # different task identities for the signed V36 queue.
                 for option in p._TASKS:
-                    proof = p.independently_prove_equal_speed_false_option(
-                        source_pdf=source, candidate_path=candidate, option_id=option)
-                    p.independently_check_equal_speed_witness(proof)
-                    self.assertFalse(proof["academicTaskAccepted"])
+                    with self.subTest(option=option), self.assertRaisesRegex(
+                            ValueError,"CANONICAL_MC_Q06_TASK_NOT_REDERIVED"):
+                        p.independently_prove_equal_speed_false_option(
+                            source_pdf=source, candidate_path=candidate,
+                            option_id=option)
                 source.write_bytes(b"%PDF-changed")
                 with self.assertRaisesRegex(ValueError, "AUTHENTIC_ONE_SERWAY"):
                     p.independently_prove_equal_speed_false_option(
