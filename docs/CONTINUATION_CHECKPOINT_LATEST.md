@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-288 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261127-289 | ACTIVE
+
+> 27 NOV BSA289 MCQ07 source-bound equal-energy science and A19-A21 admission code: two independent exact rational mass/speed models disprove three false momentum rankings under equal kinetic energy. Full frozen EN/MS/ZH options, original source SHA and seventh signed V36 task partition are required. Owner-only signed receipt chains after independently reverified A1-A18 and horizon reopens original/current code-head evidence. The original Serway PDF is absent from this snapshot; no new admission is claimed. Signed 15/429 remains confirmed, 414 pending and all 90 full activity gates OPEN.
 
 > 27 NOV BSA287 A16-A18 MCQ06 signed admission code: new owner-only receipt binds three exact rational vector countermodels to original selected Serway PDF, complete frozen EN/MS/ZH false options and sixth signed V36 task partition. Normal academic controller and independent horizon reader now recheck the A1-A15 chain before reporting 18/429. The private source PDF is absent from this coding snapshot; only signed 15/429 remains confirmed, 414 pending and all 90 full activity gates OPEN. Host exact CI and genuine owner admission remain pending.
 

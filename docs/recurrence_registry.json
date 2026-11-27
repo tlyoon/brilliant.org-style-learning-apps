@@ -10690,23 +10690,48 @@
       "status": "active",
       "rootCauseFamily": "academic-evidence",
       "noveltyExplanation": "After signed MCQ05 A13-A15, MCQ06 opt-b/c/d still lack source-bound individual false-choice science witnesses. Existing source-free formal answer models establish the correct key but cannot independently accept complete distractor claims. The private original PDF is deliberately absent from the coding snapshot.",
-      "relatedIncidentIds": ["BSA-20261126-278", "BSA-20261127-281", "BSA-20261127-283"],
+      "relatedIncidentIds": [
+        "BSA-20261126-278",
+        "BSA-20261127-281",
+        "BSA-20261127-283"
+      ],
       "differenceFromLinkedIncident": "This MCQ06 producer uses two new exact rational perpendicular vector models, three entire frozen EN/MS/ZH false-option clauses and task IDs, exact one-source digest, original source physics premises and page anchor. No prior MCQ05 signed receipt is modified. Independent witness readback recomputes the physics; the owner admission gate remains pending original PDF, signed V36 and exact CI.",
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/section91_equal_speed_false_options_proof.py",
         "triggerMarker": "BSA284_AUTHENTIC_ONE_SERWAY_SOURCE_AND_CANDIDATE_REQUIRED",
         "remedyMarker": "BSA284_CANONICAL_MC_Q06_TASK_NOT_REDERIVED",
         "normalEntryPoints": [
-          {"path": "app_generator/validation/section91_equal_speed_false_options_proof.py", "marker": "def independently_prove_equal_speed_false_option"},
-          {"path": "app_generator/validation/section91_equal_speed_false_options_proof.py", "marker": "def independently_check_equal_speed_witness"}
+          {
+            "path": "app_generator/validation/section91_equal_speed_false_options_proof.py",
+            "marker": "def independently_prove_equal_speed_false_option"
+          },
+          {
+            "path": "app_generator/validation/section91_equal_speed_false_options_proof.py",
+            "marker": "def independently_check_equal_speed_witness"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v64_equal_speed_source_science.py", "kind": "python", "marker": "test_three_new_tasks_and_two_distinct_exact_vector_models"},
-        {"path": "tests/test_v64_equal_speed_source_science.py", "kind": "python", "marker": "test_rehashed_science_and_status_tampering_is_rejected"},
-        {"path": "tests/test_v64_equal_speed_source_science.py", "kind": "python", "marker": "test_source_bound_producer_exercises_original_check_and_task_derivation"}
+        {
+          "path": "tests/test_v64_equal_speed_source_science.py",
+          "kind": "python",
+          "marker": "test_three_new_tasks_and_two_distinct_exact_vector_models"
+        },
+        {
+          "path": "tests/test_v64_equal_speed_source_science.py",
+          "kind": "python",
+          "marker": "test_rehashed_science_and_status_tampering_is_rejected"
+        },
+        {
+          "path": "tests/test_v64_equal_speed_source_science.py",
+          "kind": "python",
+          "marker": "test_source_bound_producer_exercises_original_check_and_task_derivation"
+        }
       ],
-      "applicableEnvironments": ["yoga6", "github-ci"],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Run genuine MCQ06 opt-b/c/d source-bound proof on the private original selected Serway PDF and frozen candidate; then add separate exact-head signed A16-A18 admission and independent horizon readback. Until that owner event, accepted count remains signed 15/429, 414 pending and all 90 full activity gates OPEN. Synthetic fixture tests are engineering evidence only."
     },
@@ -10716,113 +10741,304 @@
       "status": "active",
       "rootCauseFamily": "genuinely-new-root-cause",
       "noveltyExplanation": "The BSA283 owner heartbeat and log-byte watchdog correctly detects a silent subprocess, but a busy development process can generate megabytes of model patch logs, pass hosted CI, and repeatedly launch new Git heads without ANY increase beyond 15/429 independently accepted source-bound academic tasks. On 27 Nov BSA284 authored a real MCQ06 proof producer yet initially stranded on an invalid rootCauseFamily registry value; the historical recovery loop kept the patch but did not automatically repair the known family or distinguish engineering throughput from accepted proof throughput.",
-      "relatedIncidentIds": ["BSA-20261127-283", "BSA-20261127-284", "BSA-20261127-281"],
+      "relatedIncidentIds": [
+        "BSA-20261127-283",
+        "BSA-20261127-284",
+        "BSA-20261127-281"
+      ],
       "differenceFromLinkedIncident": "A new independent SCIENTIFIC acceptance detector reads only the exact-head source-verified signed horizon report after EXIT0, tracks SHA provenance, durable verified count and elapsed time since a real increment; repeated logs or repeated same-head checks do not count as progress. After two distinct verified heads with no increase OR 60 minutes spanning at least one completed scheduler cycle, the existing scheduled workflow classifies the delay, records a durable stall alarm, and biases the next authorized code-development task toward the missing original-source proof AND signed admission/independent readback. A real verified increment clears the alarm; any count rollback, forged report, mismatched head or unsigned data fails closed. Does not claim new academic PASS or create a new scheduled task.",
       "automaticRemedy": {
         "runtimePath": "scripts/bosla_persistent_development.py",
         "triggerMarker": "investigate_zero_academic_gain(",
         "remedyMarker": "BSA285_INDEPENDENT_SCIENCE_STALL_INVESTIGATION",
         "normalEntryPoints": [
-          {"path":"app_generator/runtime/v3_scientific_acceptance_watchdog.py","marker":"def observe_signed_horizon"},
-          {"path":"app_generator/runtime/v3_scientific_acceptance_watchdog.py","marker":"def investigate_zero_academic_gain"},
-          {"path":"scripts/bosla_persistent_development.py","marker":"BSA285 INDEPENDENT SCIENTIFIC ACCEPTANCE STALL"}
+          {
+            "path": "app_generator/runtime/v3_scientific_acceptance_watchdog.py",
+            "marker": "def observe_signed_horizon"
+          },
+          {
+            "path": "app_generator/runtime/v3_scientific_acceptance_watchdog.py",
+            "marker": "def investigate_zero_academic_gain"
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "BSA285 INDEPENDENT SCIENTIFIC ACCEPTANCE STALL"
+          }
         ]
       },
       "regressions": [
-        {"path":"tests/test_v65_scientific_acceptance_watchdog.py","kind":"python","marker":"test_zero_gain_two_distinct_verified_heads_triggers_root_cause_diagnosis"},
-        {"path":"tests/test_v65_scientific_acceptance_watchdog.py","kind":"python","marker":"test_real_16_clears_alert_and_automatic_next_task_can_be_selected"},
-        {"path":"tests/test_v65_scientific_acceptance_watchdog.py","kind":"python","marker":"test_normal_owner_acceptance_requires_true_independent_receipt"},
-        {"path":"tests/test_v65_scientific_acceptance_watchdog.py","kind":"python","marker":"test_normal_owner_rejects_independent_log_without_proof"}
+        {
+          "path": "tests/test_v65_scientific_acceptance_watchdog.py",
+          "kind": "python",
+          "marker": "test_zero_gain_two_distinct_verified_heads_triggers_root_cause_diagnosis"
+        },
+        {
+          "path": "tests/test_v65_scientific_acceptance_watchdog.py",
+          "kind": "python",
+          "marker": "test_real_16_clears_alert_and_automatic_next_task_can_be_selected"
+        },
+        {
+          "path": "tests/test_v65_scientific_acceptance_watchdog.py",
+          "kind": "python",
+          "marker": "test_normal_owner_acceptance_requires_true_independent_receipt"
+        },
+        {
+          "path": "tests/test_v65_scientific_acceptance_watchdog.py",
+          "kind": "python",
+          "marker": "test_normal_owner_rejects_independent_log_without_proof"
+        }
       ],
-      "applicableEnvironments":["yoga6","github-ci"],
-      "lastValidatedDate":"2026-11-27",
-      "nextAction":"ACTIVE: test actual original-source signed horizon extraction, full regression, exact source-commit hosted CI, owner safe integration, and normal scheduler restart. The current independently signed count remains 15/429; BSA284 is producer only and cannot admit A16-A18 without a separately signed exact-head owner acceptance. Keep the next task selected automatically and never count CI/model/log output as science proof."
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "ACTIVE: test actual original-source signed horizon extraction, full regression, exact source-commit hosted CI, owner safe integration, and normal scheduler restart. The current independently signed count remains 15/429; BSA284 is producer only and cannot admit A16-A18 without a separately signed exact-head owner acceptance. Keep the next task selected automatically and never count CI/model/log output as science proof."
     },
     {
-      "id":"BSA-20261127-286",
-      "class":"owner_supervisor_secondary_timeout_leaves_nested_academic_processes_orphaned",
-      "status":"active",
-      "rootCauseFamily":"genuinely-new-root-cause",
-      "noveltyExplanation":"The genuine Yoga6 cycle 19 original Serway source child spawned PID14596, wrapper PID15468, descendant PID22492 and further source-only descendants. The parent aborted at 16:46:13 with an exception masked by subprocess.wait(timeout=20) in unconditional finally. The active child tree survived with the old log frozen at 116 bytes, while the Windows scheduled task returned Ready. On 27 Nov the exact original PID14596 was verified by Win32_Process creation time, executable path and original 8-step academic command, then taskkill /T /F terminated only this tree; the remaining PIDs were confirmed absent. BSA283 cannot remediate a parent monitor exception that occurs before its 20-minute child-output watchdog fires.",
-      "relatedIncidentIds":["BSA-20261127-283","BSA-20261127-285","BSA-20261127-282"],
-      "differenceFromLinkedIncident":"BSA286 supervises the exact owned nested child on every monitor and filesystem exception and never waits on an un-terminated process. A bounded forced termination is issued before wait, an additional bounded cleanup is attempted if OS reaping stalls, and secondary timeout is explicitly classified as unsafe instead of hiding the original fault. It persists child PID, start time and operation label; at every normal scheduled start under the original singleflight lock a Win32 creation-date, executable, command, owner-cycle and logged PID match must succeed before any orphan tree may be killed. Mismatched or reused PID is stopped safely. Real Yoga6 nested descendant fault injection verifies silence termination while an unrelated sibling survives, without touching paid-provider requests or private academic receipts.",
-      "automaticRemedy":{
-        "runtimePath":"scripts/bosla_persistent_development.py",
-        "triggerMarker":"recover_previous_owner_tree(",
-        "remedyMarker":"BSA286_AUTHENTIC_STALE_OWNER_TREE_REAPED",
-        "normalEntryPoints":[
-          {"path":"app_generator/runtime/v3_owner_child_tree_recovery.py","marker":"def exact_owner_identity"},
-          {"path":"app_generator/runtime/v3_owner_child_tree_recovery.py","marker":"def recover_previous_owner_tree"},
-          {"path":"scripts/bosla_persistent_development.py","marker":"BSA286_OWNER_ORPHAN_IDENTITY_SAFETY_STOP"},
-          {"path":"scripts/bosla_persistent_development.py","marker":"windows_kill_tree(p.pid)"}
+      "id": "BSA-20261127-286",
+      "class": "owner_supervisor_secondary_timeout_leaves_nested_academic_processes_orphaned",
+      "status": "active",
+      "rootCauseFamily": "genuinely-new-root-cause",
+      "noveltyExplanation": "The genuine Yoga6 cycle 19 original Serway source child spawned PID14596, wrapper PID15468, descendant PID22492 and further source-only descendants. The parent aborted at 16:46:13 with an exception masked by subprocess.wait(timeout=20) in unconditional finally. The active child tree survived with the old log frozen at 116 bytes, while the Windows scheduled task returned Ready. On 27 Nov the exact original PID14596 was verified by Win32_Process creation time, executable path and original 8-step academic command, then taskkill /T /F terminated only this tree; the remaining PIDs were confirmed absent. BSA283 cannot remediate a parent monitor exception that occurs before its 20-minute child-output watchdog fires.",
+      "relatedIncidentIds": [
+        "BSA-20261127-283",
+        "BSA-20261127-285",
+        "BSA-20261127-282"
+      ],
+      "differenceFromLinkedIncident": "BSA286 supervises the exact owned nested child on every monitor and filesystem exception and never waits on an un-terminated process. A bounded forced termination is issued before wait, an additional bounded cleanup is attempted if OS reaping stalls, and secondary timeout is explicitly classified as unsafe instead of hiding the original fault. It persists child PID, start time and operation label; at every normal scheduled start under the original singleflight lock a Win32 creation-date, executable, command, owner-cycle and logged PID match must succeed before any orphan tree may be killed. Mismatched or reused PID is stopped safely. Real Yoga6 nested descendant fault injection verifies silence termination while an unrelated sibling survives, without touching paid-provider requests or private academic receipts.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/bosla_persistent_development.py",
+        "triggerMarker": "recover_previous_owner_tree(",
+        "remedyMarker": "BSA286_AUTHENTIC_STALE_OWNER_TREE_REAPED",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_owner_child_tree_recovery.py",
+            "marker": "def exact_owner_identity"
+          },
+          {
+            "path": "app_generator/runtime/v3_owner_child_tree_recovery.py",
+            "marker": "def recover_previous_owner_tree"
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "BSA286_OWNER_ORPHAN_IDENTITY_SAFETY_STOP"
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "windows_kill_tree(p.pid)"
+          }
         ]
       },
-      "regressions":[
-        {"path":"tests/test_v66_owner_tree_supervision.py","kind":"python","marker":"test_exception_during_20_second_heartbeat_kills_owned_tree"},
-        {"path":"tests/test_v66_owner_tree_supervision.py","kind":"python","marker":"test_exact_saved_tree_reaped_then_same_restart_idempotent"},
-        {"path":"tests/test_v66_owner_tree_supervision.py","kind":"python","marker":"test_untrusted_pid_is_quarantined_not_killed"},
-        {"path":"tests/test_v67_windows_real_owner_tree.py","kind":"python","marker":"test_real_nested_child_idle_kills_all_descendants_without_touching_sibling"}
+      "regressions": [
+        {
+          "path": "tests/test_v66_owner_tree_supervision.py",
+          "kind": "python",
+          "marker": "test_exception_during_20_second_heartbeat_kills_owned_tree"
+        },
+        {
+          "path": "tests/test_v66_owner_tree_supervision.py",
+          "kind": "python",
+          "marker": "test_exact_saved_tree_reaped_then_same_restart_idempotent"
+        },
+        {
+          "path": "tests/test_v66_owner_tree_supervision.py",
+          "kind": "python",
+          "marker": "test_untrusted_pid_is_quarantined_not_killed"
+        },
+        {
+          "path": "tests/test_v67_windows_real_owner_tree.py",
+          "kind": "python",
+          "marker": "test_real_nested_child_idle_kills_all_descendants_without_touching_sibling"
+        }
       ],
-      "applicableEnvironments":["yoga6","github-ci"],
-      "lastValidatedDate":"2026-11-27",
-      "nextAction":"ACTIVE until full source branch tests, exact-hosted-CI, safe live-owner integration and a restarted original textbook verification prove that the 20-second secondary timeout and orphaned nested worker cannot recur. The existing 15/429 signed academic frontier remains untouched; A16 requires a distinct original-source proof and signed independent horizon admission."
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "ACTIVE until full source branch tests, exact-hosted-CI, safe live-owner integration and a restarted original textbook verification prove that the 20-second secondary timeout and orphaned nested worker cannot recur. The existing 15/429 signed academic frontier remains untouched; A16 requires a distinct original-source proof and signed independent horizon admission."
     },
     {
-      "id":"BSA-20261127-287",
-      "class":"mcq06_source_bound_science_producer_lacks_signed_academic_admission",
-      "status":"active",
-      "rootCauseFamily":"academic-evidence",
-      "noveltyExplanation":"The BSA284 MCQ06 source-bound vector countermodels had no signed A16-A18 admission, independent historical readback or ordinary owner continuation. A source-free witness alone cannot advance academic acceptance.",
-      "relatedIncidentIds":["BSA-20261127-284","BSA-20261127-281"],
-      "differenceFromLinkedIncident":"This stage binds the three MCQ06 proof witnesses to the sixth signed V36 source partition, rechecks the original one-textbook source and frozen EN/MS/ZH candidate, chains after all signed A1-A15 tasks, signs a separate immutable A16-A18 receipt, and independently reopens both historical and current-head proofs. The original PDF is absent from the disposable coding snapshot, so owner acceptance remains pending.",
-      "automaticRemedy":{
-        "runtimePath":"app_generator/runtime/v3_autonomous_academic_advancement.py",
-        "triggerMarker":"admit_equal_speed_batch(private=private)",
-        "remedyMarker":"BSA287_A1_A18_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
-        "normalEntryPoints":[
-          {"path":"app_generator/runtime/v3_equal_speed_academic_batch_admission.py","marker":"def admit_equal_speed_batch"},
-          {"path":"app_generator/runtime/v3_equal_speed_academic_batch_admission.py","marker":"def verify_equal_speed_batch_across_git_heads"},
-          {"path":"scripts/show_bosla_long_horizon.py","marker":"BOSLA_LONG_HORIZON_EQUAL_SPEED_SCIENCE_BATCH_REVERIFIED"}
+      "id": "BSA-20261127-287",
+      "class": "mcq06_source_bound_science_producer_lacks_signed_academic_admission",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "The BSA284 MCQ06 source-bound vector countermodels had no signed A16-A18 admission, independent historical readback or ordinary owner continuation. A source-free witness alone cannot advance academic acceptance.",
+      "relatedIncidentIds": [
+        "BSA-20261127-284",
+        "BSA-20261127-281"
+      ],
+      "differenceFromLinkedIncident": "This stage binds the three MCQ06 proof witnesses to the sixth signed V36 source partition, rechecks the original one-textbook source and frozen EN/MS/ZH candidate, chains after all signed A1-A15 tasks, signs a separate immutable A16-A18 receipt, and independently reopens both historical and current-head proofs. The original PDF is absent from the disposable coding snapshot, so owner acceptance remains pending.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker": "admit_equal_speed_batch(private=private)",
+        "remedyMarker": "BSA287_A1_A18_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_equal_speed_academic_batch_admission.py",
+            "marker": "def admit_equal_speed_batch"
+          },
+          {
+            "path": "app_generator/runtime/v3_equal_speed_academic_batch_admission.py",
+            "marker": "def verify_equal_speed_batch_across_git_heads"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "BOSLA_LONG_HORIZON_EQUAL_SPEED_SCIENCE_BATCH_REVERIFIED"
+          }
         ]
       },
-      "regressions":[
-        {"path":"tests/test_v68_equal_speed_academic_admission.py","kind":"python","marker":"test_partition_task_and_science_are_independently_rechecked"},
-        {"path":"tests/test_v64_equal_speed_source_science.py","kind":"python","marker":"test_source_bound_producer_exercises_original_check_and_task_derivation"},
-        {"path":"tests/test_v50_bosla_autonomous_academic_advance.py","kind":"python","marker":"test_all_four_missing_boundaries_automatically_advance_in_one_run"}
+      "regressions": [
+        {
+          "path": "tests/test_v68_equal_speed_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v64_equal_speed_source_science.py",
+          "kind": "python",
+          "marker": "test_source_bound_producer_exercises_original_check_and_task_derivation"
+        },
+        {
+          "path": "tests/test_v50_bosla_autonomous_academic_advance.py",
+          "kind": "python",
+          "marker": "test_all_four_missing_boundaries_automatically_advance_in_one_run"
+        }
       ],
-      "applicableEnvironments":["yoga6","github-ci"],
-      "lastValidatedDate":"2026-11-27",
-      "nextAction":"Run exact-head hosted CI and genuine Yoga6 original Serway source admission; only a signed A16-A18 owner receipt plus independent horizon readback may increase 15/429 to 18/429. All 90 full activity gates remain open."
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "Run exact-head hosted CI and genuine Yoga6 original Serway source admission; only a signed A16-A18 owner receipt plus independent horizon readback may increase 15/429 to 18/429. All 90 full activity gates remain open."
     },
     {
-      "id":"BSA-20261127-288",
-      "class":"local_12_codex_per_day_limit_stops_autonomous_science_repair_despite_valid_provider_and_available_own_resources",
-      "status":"active",
-      "rootCauseFamily":"genuinely-new-root-cause",
-      "noveltyExplanation":"Cycle 24 on Yoga6 at 17:59 MYT was classified BSA279_BOUNDED_DAILY_MODEL_BUDGET_REACHED solely because MAX_CODEX_PER_DAY=12 and codexCount=12. This was a user-unauthorized hard software count, not a reported ChatGPT/Codex capacity or billing limit. The original Serway owner still had an independent MISSING_SCIENCE_PRODUCER at HEAD 18ed49f, so the cutoff stranded a valid targeted repair path. It had no dollar or token accounting and did not distinguish HTTP429 from local transient code failure.",
-      "relatedIncidentIds":["BSA-20261127-286","BSA-20261127-287","BSA-20261127-285"],
-      "differenceFromLinkedIncident":"This is capacity admission for the authorized Codex CLI, not relaxation of science source gates. Fixed 12-per-day gate is removed. The existing attempt count remains a day-scoped audit metric and can exceed 12. Real unsuccessful Codex provider output is classified into quota/billing, auth, HTTP429, transient and unknown classes and given persisted exponential retry delay respecting Retry-After. Successful CLI response resets provider backoff; no Codex provider preflight, uncertain request replay, paid Gemini calls, source substitution, publication bypass or unlimited per-request execution is introduced. Codex CLI terminal tokens-used footer is recorded as tokens only, never billed USD. If a user explicitly configures a daily USD cap but Codex gives no official cost, admission fails closed rather than fabricate an invoice. OS singleflight, 45-minute per-attempt bound, CI gating, original textbook verification and 15/429 independent signed academic receipt remain untouched.",
-      "automaticRemedy":{
-        "runtimePath":"scripts/bosla_persistent_development.py",
-        "triggerMarker":"_adaptive_model_admission(state)",
-        "remedyMarker":"BSA288_REAL_CODEX_PROVIDER_OUTCOME_RECORDED",
-        "normalEntryPoints":[
-          {"path":"app_generator/runtime/v3_adaptive_codex_admission.py","marker":"def admission_decision"},
-          {"path":"app_generator/runtime/v3_adaptive_codex_admission.py","marker":"def record_invocation_start"},
-          {"path":"app_generator/runtime/v3_adaptive_codex_admission.py","marker":"def record_invocation_outcome"},
-          {"path":"scripts/bosla_persistent_development.py","marker":"BSA288_REAL_CODEX_PROVIDER_OUTCOME_RECORDED"}
+      "id": "BSA-20261127-288",
+      "class": "local_12_codex_per_day_limit_stops_autonomous_science_repair_despite_valid_provider_and_available_own_resources",
+      "status": "active",
+      "rootCauseFamily": "genuinely-new-root-cause",
+      "noveltyExplanation": "Cycle 24 on Yoga6 at 17:59 MYT was classified BSA279_BOUNDED_DAILY_MODEL_BUDGET_REACHED solely because MAX_CODEX_PER_DAY=12 and codexCount=12. This was a user-unauthorized hard software count, not a reported ChatGPT/Codex capacity or billing limit. The original Serway owner still had an independent MISSING_SCIENCE_PRODUCER at HEAD 18ed49f, so the cutoff stranded a valid targeted repair path. It had no dollar or token accounting and did not distinguish HTTP429 from local transient code failure.",
+      "relatedIncidentIds": [
+        "BSA-20261127-286",
+        "BSA-20261127-287",
+        "BSA-20261127-285"
+      ],
+      "differenceFromLinkedIncident": "This is capacity admission for the authorized Codex CLI, not relaxation of science source gates. Fixed 12-per-day gate is removed. The existing attempt count remains a day-scoped audit metric and can exceed 12. Real unsuccessful Codex provider output is classified into quota/billing, auth, HTTP429, transient and unknown classes and given persisted exponential retry delay respecting Retry-After. Successful CLI response resets provider backoff; no Codex provider preflight, uncertain request replay, paid Gemini calls, source substitution, publication bypass or unlimited per-request execution is introduced. Codex CLI terminal tokens-used footer is recorded as tokens only, never billed USD. If a user explicitly configures a daily USD cap but Codex gives no official cost, admission fails closed rather than fabricate an invoice. OS singleflight, 45-minute per-attempt bound, CI gating, original textbook verification and 15/429 independent signed academic receipt remain untouched.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/bosla_persistent_development.py",
+        "triggerMarker": "_adaptive_model_admission(state)",
+        "remedyMarker": "BSA288_REAL_CODEX_PROVIDER_OUTCOME_RECORDED",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_adaptive_codex_admission.py",
+            "marker": "def admission_decision"
+          },
+          {
+            "path": "app_generator/runtime/v3_adaptive_codex_admission.py",
+            "marker": "def record_invocation_start"
+          },
+          {
+            "path": "app_generator/runtime/v3_adaptive_codex_admission.py",
+            "marker": "def record_invocation_outcome"
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "BSA288_REAL_CODEX_PROVIDER_OUTCOME_RECORDED"
+          }
         ]
       },
-      "regressions":[
-        {"path":"tests/test_v69_adaptive_codex_admission.py","kind":"python","marker":"test_host_legacy_count_12_starts_model_and_records_real_provider_result"},
-        {"path":"tests/test_v69_adaptive_codex_admission.py","kind":"python","marker":"test_actual_provider_rate_limit_backs_off_across_restart"},
-        {"path":"tests/test_v69_adaptive_codex_admission.py","kind":"python","marker":"test_inflight_unknown_request_does_not_replay"},
-        {"path":"tests/test_v69_adaptive_codex_admission.py","kind":"python","marker":"test_unknown_cost_cap_fails_closed_instead_of_fabricating_price"},
-        {"path":"tests/test_v54_persistent_bosla_development.py","kind":"python","marker":"test_legacy_twelve_per_day_count_is_telemetry_not_an_artificial_limit"}
+      "regressions": [
+        {
+          "path": "tests/test_v69_adaptive_codex_admission.py",
+          "kind": "python",
+          "marker": "test_host_legacy_count_12_starts_model_and_records_real_provider_result"
+        },
+        {
+          "path": "tests/test_v69_adaptive_codex_admission.py",
+          "kind": "python",
+          "marker": "test_actual_provider_rate_limit_backs_off_across_restart"
+        },
+        {
+          "path": "tests/test_v69_adaptive_codex_admission.py",
+          "kind": "python",
+          "marker": "test_inflight_unknown_request_does_not_replay"
+        },
+        {
+          "path": "tests/test_v69_adaptive_codex_admission.py",
+          "kind": "python",
+          "marker": "test_unknown_cost_cap_fails_closed_instead_of_fabricating_price"
+        },
+        {
+          "path": "tests/test_v54_persistent_bosla_development.py",
+          "kind": "python",
+          "marker": "test_legacy_twelve_per_day_count_is_telemetry_not_an_artificial_limit"
+        }
       ],
-      "applicableEnvironments":["yoga6","github-ci"],
-      "lastValidatedDate":"2026-11-27",
-      "nextAction":"Complete historical failure review, 30 targeted test and regression gate, exact HEAD hosted CI, integrate into Yoga6 owner, restart existing authorized task and prove codexCount may advance from 12 to 13 without new human input. Keep the academic 15/429 science frontier unchanged until a new independently signed original textbook academic receipt verifies A16-A18."
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "Complete historical failure review, 30 targeted test and regression gate, exact HEAD hosted CI, integrate into Yoga6 owner, restart existing authorized task and prove codexCount may advance from 12 to 13 without new human input. Keep the academic 15/429 science frontier unchanged until a new independently signed original textbook academic receipt verifies A16-A18."
+    },
+    {
+      "id": "BSA-20261127-289",
+      "class": "mcq07_equal_kinetic_energy_science_lacks_independent_producer_and_signed_admission",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "After MCQ06 A16-A18 code, the next three MCQ07 false options had no original-source exact kinetic-energy countermodel producer or signed A19-A21 owner admission. Existing source-free roles cannot grant semantic acceptance.",
+      "relatedIncidentIds": [
+        "BSA-20261127-287",
+        "BSA-20261127-285"
+      ],
+      "differenceFromLinkedIncident": "Two independent positive rational equal-energy models derive the heavy mass momentum ordering; all three full EN/MS/ZH candidate sentences and exact source, canonical task identities and seventh V36 partition are pinned. Owner-only admission chains after separately verified A1-A18, signs immutable A19-A21 and reopens historical/current source on cross-head readback. Original private PDF absent here; no academic count advanced.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker": "admit_equal_energy_batch(private=private)",
+        "remedyMarker": "BSA289_A1_A21_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/validation/section91_equal_energy_false_options_proof.py",
+            "marker": "def independently_prove_equal_energy_false_option"
+          },
+          {
+            "path": "app_generator/runtime/v3_equal_energy_academic_batch_admission.py",
+            "marker": "def admit_equal_energy_batch"
+          },
+          {
+            "path": "app_generator/runtime/v3_equal_energy_academic_batch_admission.py",
+            "marker": "def verify_equal_energy_batch_across_git_heads"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "BOSLA_LONG_HORIZON_EQUAL_ENERGY_SCIENCE_BATCH_REVERIFIED"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v70_equal_energy_source_science.py",
+          "kind": "python",
+          "marker": "test_original_gate_queue_and_restart_recomputation"
+        },
+        {
+          "path": "tests/test_v71_equal_energy_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v71_equal_energy_academic_admission.py",
+          "kind": "python",
+          "marker": "test_cross_head_readback_rejects_changed_science_and_task_duplication"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "Host exact-head CI and genuine original Serway owner source run, signed A16-A18 prerequisite, A19-A21 admission and independent cross-head horizon readback. Until then signed 15/429 remains confirmed, 414 pending and all 90 full activity gates open."
     }
   ]
 }
