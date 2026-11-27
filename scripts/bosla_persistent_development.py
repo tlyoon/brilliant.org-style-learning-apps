@@ -192,8 +192,13 @@ def _approved_diff(base:str,tip:str)->bool:
 
 
 def _log_process(state:dict[str,Any],label:str,args:list[str],*,
-                 cwd:Path,timeout:int)->int:
-    """Continuous checkpoint heartbeat while child runs (no shell redirects)."""
+                 cwd:Path,timeout:int,idle_timeout:int|None=None)->int:
+    """Actual child output advances watchdog; parent heartbeat alone does not.
+
+    A silent child is not considered successful, no source-proof PASS is
+    inferred, and its *specific process tree* is terminated after bounded
+    inactivity so the next eligible code-development step can execute.
+    """
     logdir=PRIVATE/"logs"
     logdir.mkdir(parents=True,exist_ok=True)
     stamp=datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -203,26 +208,44 @@ def _log_process(state:dict[str,Any],label:str,args:list[str],*,
         p=subprocess.Popen(args,cwd=cwd,stdout=output,
                            stderr=subprocess.STDOUT,stdin=subprocess.DEVNULL)
         start=time.monotonic()
-        last=0.
+        last=start
+        last_progress=start
+        last_length=0
         try:
             while p.poll() is None:
-                elapsed=time.monotonic()-start
-                if elapsed>timeout:
+                now=time.monotonic()
+                elapsed=now-start
+                length=logfile.stat().st_size
+                if length>last_length:
+                    last_length=length
+                    last_progress=now
+                if elapsed>timeout or (
+                        idle_timeout is not None and
+                        now-last_progress>idle_timeout):
+                    stall=elapsed<=timeout
                     subprocess.run(["taskkill","/T","/F","/PID",str(p.pid)],
                                    stdout=subprocess.DEVNULL,
                                    stderr=subprocess.DEVNULL,timeout=15)
-                    _update(state,"BSA279_"+label+"_TIMED_OUT",
-                            failedPid=p.pid,elapsedSeconds=int(elapsed))
-                    return 124
-                if elapsed-last>=20:
+                    _update(state,
+                        ("BSA283_"+label+"_NO_VERIFIABLE_PROGRESS"
+                         if stall else "BSA279_"+label+"_TIMED_OUT"),
+                        failedPid=p.pid,elapsedSeconds=int(elapsed),
+                        idleSeconds=int(now-last_progress),
+                        lastLogBytes=last_length,childPid=p.pid)
+                    return 125 if stall else 124
+                if now-last>=20:
                     _update(state,"BSA279_"+label+"_RUNNING",
-                            elapsedSeconds=int(elapsed),childPid=p.pid)
-                    last=elapsed
+                            elapsedSeconds=int(elapsed),childPid=p.pid,
+                            lastLogBytes=last_length,
+                            idleSeconds=int(now-last_progress),
+                            childProgressObserved=last_length>0)
+                    last=now
                 time.sleep(2)
         finally:
             p.wait(timeout=20)
     _update(state,"BSA279_"+label+"_ENDED",
-            exitCode=p.returncode,elapsedSeconds=int(time.monotonic()-start))
+            exitCode=p.returncode,elapsedSeconds=int(time.monotonic()-start),
+            lastLogBytes=last_length)
     return int(p.returncode)
 
 
@@ -338,15 +361,17 @@ def _owner_stage(state:dict[str,Any])->bool:
         _update(state,"BSA279_MAIN_"+ci,currentHead=current)
         return False
     rc=_log_process(state,"OWNER_REAL_SOURCE_ADMISSION",
-                    [sys.executable,"-m",
+                    [sys.executable,"-u","-m",
                      "scripts.auto_advance_bosla_academic_frontier",
-                     "--max-steps","8"],cwd=ROOT,timeout=MAX_OWNER_SECONDS)
+                     "--max-steps","8"],cwd=ROOT,timeout=MAX_OWNER_SECONDS,
+                    idle_timeout=1200)
     if rc!=0:
         _failed_owner_decision(state,head=current,exit_code=rc)
         return False
     rc=_log_process(state,"OWNER_INDEPENDENT_HORIZON",
-                    [sys.executable,"-m",
-                     "scripts.show_bosla_long_horizon"],cwd=ROOT,timeout=1300)
+                    [sys.executable,"-u","-m",
+                     "scripts.show_bosla_long_horizon"],cwd=ROOT,timeout=1300,
+                    idle_timeout=900)
     if rc!=0:
         _failed_owner_decision(state,head=current,exit_code=rc)
         return False

@@ -6,6 +6,7 @@ that a mathematical conclusion or translation is correct.
 from __future__ import annotations
 
 import hashlib
+from functools import lru_cache
 import re
 import subprocess
 import unicodedata
@@ -17,22 +18,48 @@ def _normalized(value: str) -> str:
     return re.sub(r"\s+", " ", unicodedata.normalize("NFKC", value)).strip().casefold()
 
 
-def extract_pages(source_pdf: Path, *, tool: str = "pdftotext") -> tuple[str, ...]:
-    if not source_pdf.is_file() or source_pdf.stat().st_size > 50_000_000:
-        raise ValueError("private source PDF missing or unexpectedly large")
-    with source_pdf.open("rb") as stream:
-        if stream.read(5) != b"%PDF-":
-            raise ValueError("controlled source is not a PDF")
+@lru_cache(maxsize=4)
+def _extract_pages_verified_once(
+    resolved_source: str, source_sha256: str, tool: str,
+) -> tuple[str, ...]:
+    """One extraction for unchanged textbook bytes within this process.
+
+    Never trust filename/mtime alone: compare the actual SHA-256 before and
+    after the subprocess. This is NOT semantic proof or a second source.
+    """
+    source = Path(resolved_source)
+    if hashlib.sha256(source.read_bytes()).hexdigest() != source_sha256:
+        raise ValueError("BSA283_ORIGINAL_TEXTBOOK_BYTES_CHANGED")
     run = subprocess.run(
-        [tool, "-layout", "-enc", "UTF-8", str(source_pdf), "-"],
+        [tool, "-layout", "-enc", "UTF-8", resolved_source, "-"],
         capture_output=True, timeout=90, check=False,
     )
     if run.returncode != 0:
         raise ValueError("source PDF text extraction failed")
-    pages = tuple(part for part in run.stdout.decode("utf-8", errors="replace").split("\f") if part.strip())
+    if hashlib.sha256(source.read_bytes()).hexdigest() != source_sha256:
+        raise ValueError("BSA283_SOURCE_CHANGED_DURING_TEXT_EXTRACTION")
+    pages = tuple(
+        part for part in run.stdout.decode("utf-8", errors="replace").split("\f")
+        if part.strip()
+    )
     if not pages:
         raise ValueError("controlled PDF yielded no usable text")
     return pages
+
+
+def extract_pages(source_pdf: Path, *, tool: str = "pdftotext") -> tuple[str, ...]:
+    """Extract one original textbook, not LaTeX compilation or outside PDFs.
+
+    Reopen the selected PDF on EVERY proof invocation, check header and full
+    source digest, then safely reuse text within the process if unchanged.
+    """
+    if not source_pdf.is_file() or source_pdf.stat().st_size > 50_000_000:
+        raise ValueError("private source PDF missing or unexpectedly large")
+    original = source_pdf.read_bytes()
+    if not original.startswith(b"%PDF-"):
+        raise ValueError("controlled source is not a PDF")
+    digest = hashlib.sha256(original).hexdigest()
+    return _extract_pages_verified_once(str(source_pdf.resolve()), digest, tool)
 
 
 def check_anchor(pages: tuple[str, ...], anchor: dict[str, Any]) -> dict[str, Any]:

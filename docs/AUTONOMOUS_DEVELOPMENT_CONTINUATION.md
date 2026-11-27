@@ -3,6 +3,12 @@
 Authoritative execution identity: **Bosla**, the Brilliant.org-style learning app, on
 the authorized owner **Yoga 6**. This is not MicroGen_AI_Web.
 
+## BSA283 single textbook PDF audit and no-progress watchdog -- ACTIVE
+
+User-requested PDF LaTeX verification: no pdflatex or LaTeX-to-PDF production tool is invoked. Live real child is pdftotext extracting the existing selected original Serway textbook PDF. This is consistent with the one-textbook production source contract, not the retired three-external-PDF historical campaign. The Bosla generation prompt forbids LaTeX in JSON.
+
+Observed live academic run generated source-head V36 and signed registry evidence at 15:10, then produced no new child bytes for >35m, despite parent RUNNING heartbeat every 20s and repeated pdftotext processes for the same 331KB source.pdf. New original-source exact SHA256 keyed in-process page cache opens and hashes original bytes each call, and verifies the same SHA before/after pdftotext. Any changed source causes re-extraction, never false original text admission. Unbuffered owner Python and flushed academic step progress make child evidence visible. A 20m idle child-output timeout kills only the hung subprocess tree, not scheduler; classifies exit125 as a local engineering fault. It preserves already signed source science, then the normal dispatcher can continue code repair and other eligible work. All 90 full academic activity proof gates remain OPEN and 15/429 source tasks signed.
+
 ## BSA282 normal automatic patch recovery and stale-HEAD repair -- ACTIVE
 
 Actual Yoga6 cycles 9 and 10 generated code yet both stopped at Git staged check due to one new blank line at EOF in a science unit test. The owner main HEAD had already advanced to 777b926 with independently source-accepted A13-A15, while the older saved model branch remained based on 6745051. More Codex sessions on the unchanged old branch repeated the failure, not academic development.
