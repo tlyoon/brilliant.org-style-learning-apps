@@ -8,6 +8,10 @@ The next three genuinely new MCQ07 distractor-science tasks now have an executab
 
 # Bosla autonomous development continuation contract — v1.0
 
+## BSA298 MCQ04 paired-glider explanation proof — ACTIVE
+
+After the A30 MCQ03 explanation code, the next unaccepted complete scientific meaning task is the MCQ04 paired-glider explanation. The new source-specific producer checks frozen EN/MS/ZH prompt and explanation, exact original selected Serway source and candidate SHA, derives the canonical explanation task, and computes two exact Fraction models with zero total vector momentum and positive total scalar kinetic energy. Owner A31 admission requires the fourth signed V36 partition and independently reverified A1-A30 receipts; the normal controller and long-horizon reader reprove across original/current Git heads. This snapshot has no private PDF or hosted CI. Confirmed signed acceptance remains 15/429, 414 pending, and all 90 complete academic activity gates OPEN.
+
 Authoritative execution identity: **Bosla**, the Brilliant.org-style learning app, on
 the authorized owner **Yoga 6**. This is not MicroGen_AI_Web.
 

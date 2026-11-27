@@ -644,6 +644,39 @@ def main() -> int:
             "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_glider_explanation_academic_admission import (
+        _FRONTIER as _GLIDER_EXPLANATION_FRONTIER,
+        verify_glider_explanation_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_GLIDER_EXPLANATION_FRONTIER).exists():
+        try:
+            glider=verify_glider_explanation_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=30
+                or glider["acceptedAcademicTaskIds"][:30]!=outcome.get("verifiedAcademicProofTaskIds")
+                or glider["independentlyAcceptedAcademicTasks"]!=31
+                or glider["fullAcademicTasksStillOpen"]!=398
+                or glider["completeAcademicProofGatesStillOpen"]!=90
+                or glider["fullAcademicActivityPASS"]!=0
+                or glider["publicationAuthorized"] is not False):
+                raise ValueError("BSA298_A31_CANNOT_BYPASS_A1_A30")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,ArithmeticError) as exc:
+            print(json.dumps({"status":"BOSLA_GLIDER_EXPLANATION_SCIENCE_FRONTIER_UNTRUSTED",
+                              "errorClass":type(exc).__name__,
+                              "academicProofAcceptanceEstablished":False,
+                              "publicationAuthorized":False},sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_GLIDER_EXPLANATION_SCIENCE_REVERIFIED",
+            "academicAcceptancesSource":"THIRTY_ONE_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":31,
+            "fullAcademicProofTasksStillOpen":398,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":glider["acceptedAcademicTaskIds"],
+            "academicGliderExplanationReceiptSha256":glider["gliderExplanationReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 
