@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-294 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261127-295 | ACTIVE
+
+> 27 NOV BSA295 MCQ07 identity repair: BSA253 canonical task IDs are now rederived from the SHA-pinned private revised candidate at proof time and checked against the signed seventh V36 partition during owner admission. The tracked sample cannot supply owner task IDs. Private source and signed admissions are absent in this snapshot; confirmed acceptance remains 15/429, 414 pending, with all 90 full activity gates OPEN.
 
 > 27 NOV BSA293 MCQ02 SI explanation producer and owner A29 admission code: two exact rational two-dimensional models derive p = mv, ML/T, kg m/s and vector direction. Frozen EN/MS/ZH explanation, original selected Serway source and second signed V36 partition are required. Owner admission follows independently reopened A1-A28 and historical/current-head readback. Private PDF is absent here; confirmed signed count stays 15/429, 414 pending and all 90 activity gates OPEN.
 
