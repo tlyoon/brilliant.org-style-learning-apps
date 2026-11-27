@@ -3,6 +3,14 @@
 Authoritative execution identity: **Bosla**, the Brilliant.org-style learning app, on
 the authorized owner **Yoga 6**. This is not MicroGen_AI_Web.
 
+## BSA280 persistent academic failed-boundary repair and safe Codex writing -- ACTIVE
+
+Genuine BSA279 owner Yoga6 scheduled academic readback has now certified original Serway A10-A12 (12/429 accepted, 417 still open, all 90 activities OPEN). Yet the next two actual unattended Codex code-producing runs changed zero files. Windows elevated sandbox local execution and patch writing failed inside GIT-LINKED worktree, although a previous standalone non-Git probe wrote real code. Previously any failed owner original-source admission merely returned without dispatching the next missing academic verifier or engineering fix.
+
+BSA280 adds an executable failure classifier with per-exact-Git-HEAD SHA256 fingerprints: source/receipt integrity violations quarantine academic acceptance; first known transient gets a single bounded retry; repeated transient, missing verified proof producers and local implementation failures dispatch independent model code-repair work instead of rerunning unchanged V1-V36. No failed academic case is signed as PASS, and original text is not put into error records.
+
+Codex code-writing now uses a disposable Git-less tracked-only repository snapshot under private local Yoga6 storage, with no original textbook PDFs, .git, provider secret or external inputs. Host compares immutable baseline digests to every model-created or edited path, blocks symlinks, deletions, tampered originals, unsafe paths and docs-only fake progress; accepted code is copied into a separate Git development branch and must pass normal real tests and GitHub hosted exact CI, then true original-source independent academic admission and horizon. Sandboxed workspace-write remains mandatory, never danger-full-access or fabricated PASS. Repeated sandbox denial is circuit-bounded; the old retired scheduler stays absent. Next independent eligible proof family is MCQ05 Newton third law; actual original source verification still mandatory.
+
 ## BSA279 persistent non-stopping owner development -- ACTIVE
 
 The previous long-horizon V1-V36 academic controller automatically accepted legitimate A1-A9 tasks but exited at the end of each ChatGPT invocation. The owner EXPLICITLY authorized unattended continuing development on Yoga6 on 27 November 2026. This exception supersedes the old no-scheduler decision for a different NEW named and bounded task only; never recreate the 16 November retired 30-minute task or enable a paid Gemini scheduler.

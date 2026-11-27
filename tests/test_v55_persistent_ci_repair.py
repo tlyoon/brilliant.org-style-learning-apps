@@ -75,10 +75,14 @@ class ScheduledModelRepairTests(TestCase):
                   patch.object(worker,"STATE",private/"state.json"),
                   patch.object(worker,"JOURNAL",private/"events.jsonl"),
                   patch.object(worker,"_branch",side_effect=branch),
+                  patch.object(worker,"_head",return_value="a"*40),
                   patch.object(worker,"_clean",return_value=True),
                   patch.object(worker.shutil,"which",return_value="codex.cmd"),
                   patch.object(worker,"_dev_worktree") as new_branch,
                   patch.object(worker,"_log_process",return_value=0) as call,
+                  patch.object(worker,"build_isolated_coding_snapshot",
+                               return_value={"AGENTS.md":"hash"}),
+                  patch.object(worker,"apply_isolated_patch",return_value=[]),
                   patch.object(worker,"_ok",return_value="")):
                 self.assertFalse(worker._codex_stage(state))
                 new_branch.assert_not_called()

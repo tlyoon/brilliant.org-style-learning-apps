@@ -10414,6 +10414,72 @@
       "lastValidatedDate": "2026-11-27",
       "nextAction": "ACTIVE new owner-authorized persistent Yoga6 developer dispatcher and separate Task Scheduler installer source implemented; retired old task must stay absent. Bounded 15-minute/logon triggers, OS-owned single-flight lock, private crash-safe journals, exact-head GitHub CI, real source-bound V1-V36 A1-A12 signed academic owner, isolated substantive Codex CLI model code writing, adversarial tests, no public merge. Verified Windows Task Scheduler has 2 native triggers and real recurring cycles 1 and 2, lock/heartbeat checkpoints, Codex authenticated sandbox write of executable original physics functions with independently rerun 3 unittests, and 18 focused persistence/fault-injection tests. Same-branch hosted CI failure now dispatches bounded targeted Codex repair instead of indefinite status polling, with original worktree reused across local test failures. Pending exact new hosted CI, real owner V36 A10-A12 and further restart/fault injection and CI-reviewed model code change before RESOLVED. Max 12 Codex sessions/day and 45 min/session; no paid Gemini API replay, extra PDFs, public deploy or science PASS without original evidence. Task cannot run while Yoga6 turned off or signed out. Real Windows process kill fault-injection PASSED: first independent Python owner held OS lock, second concurrent process was denied exit2, taskkill /T /F terminated lock owner, third independent process reacquired automatically exit0. ",
       "noveltyExplanation": "The historical recurrence registry had many proof/CI/worker blockers but NO prior owner-approved, restart-on-logon Windows scheduled development service that invokes an actual authenticated code-writing agent from a separate worktree, verifies generated code and automatically hands that code to hosted CI and the original textbook owner admission. The old 30-minute task was explicitly retired, so previous no-scheduler tests intentionally prevented exactly this newly owner-authorized class."
+    },
+    {
+      "id": "BSA-20261127-280",
+      "class": "repeated_academic_boundary_and_codex_git_worktree_write_denial",
+      "status": "active",
+      "rootCauseFamily": "genuinely-new-root-cause",
+      "noveltyExplanation": "Previous BSA279 owner Yoga6 scheduler genuinely advanced academic A1-A12 but future real Codex CLI attempts in GIT-LINKED Windows worktrees failed to start local commands or write any file, despite a prior standalone Codex write PASS. There was also no runtime academic owner-failure-to-code repair handoff, allowing repeated full V1-V36 without scientific progress. This new combined Windows sandbox/worktree path and recovery classification was not covered by old hosted CI or source-free recurrence tests.",
+      "relatedIncidentIds": [
+        "BSA-20261127-279",
+        "BSA-20261126-278",
+        "BSA-20261126-276"
+      ],
+      "differenceFromLinkedIncident": "BSA279 certified the scheduler and a different temporary standalone Codex probe but not model writing in its actual Git-linked worktrees. It also returned immediately after any failed original academic owner acceptance. BSA280 now classifies source/signature integrity failure, transient dependency, missing science producer and local implementation fault, avoids repeated unchanged source-bound owner work and dispatches independent source-safe code repair. It copies tracked safe files to a disposable Git-less sandbox that previously worked with Codex, then strictly applies SHA256 checked allowed changed files into a separate Git development branch for true tests, hosted CI and original science.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/bosla_persistent_development.py",
+        "triggerMarker": "owner_recovery_plan(",
+        "remedyMarker": "BSA280_ACADEMIC_FAILURE_ISOLATED_CODE_REPAIR_DISPATCH",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "from app_generator.runtime.v3_persistent_academic_failure_recovery import ("
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "from app_generator.runtime.v3_isolated_codegen_workspace import ("
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v56_persistent_academic_failure_recovery.py",
+          "kind": "python",
+          "marker": "test_normal_cycle_automatically_repairs_owner_failure"
+        },
+        {
+          "path": "tests/test_v56_persistent_academic_failure_recovery.py",
+          "kind": "python",
+          "marker": "test_source_untrusted_does_not_launch_codex"
+        },
+        {
+          "path": "tests/test_v56_persistent_academic_failure_recovery.py",
+          "kind": "python",
+          "marker": "test_first_transient_retries_once_then_escalates"
+        },
+        {
+          "path": "tests/test_v57_isolated_codegen_workspace.py",
+          "kind": "python",
+          "marker": "test_patch_import_verified_without_git_or_academic_pass"
+        },
+        {
+          "path": "tests/test_v57_isolated_codegen_workspace.py",
+          "kind": "python",
+          "marker": "test_unapproved_paths_and_secrets_quarantined"
+        },
+        {
+          "path": "tests/test_v57_isolated_codegen_workspace.py",
+          "kind": "python",
+          "marker": "test_preexisting_file_mutation_between_snapshot_and_import"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "ACTIVE BSA280: A1-A12 source-bound original Serway signed owner science independently PASS on db89376 (12/429; 417 pending; 15 false-MCQ science tasks and all 90 complete activities still OPEN). Owner Windows persistent scheduler running, but two genuine Codex zero-write attempts in Git-linked Windows sandbox. New owner failure classifier, safe Git-less model coding snapshot and host SHA256 patch adoption isolated and under tests. Need real Codex writing in snapshot, full recurrence tests, hosted exact Git CI, integrate new owner scheduler runtime and observe a nonempty new code development task. Never alter signed proofs, replay paid Gemini, fetch outside PDFs or deploy."
     }
   ]
 }

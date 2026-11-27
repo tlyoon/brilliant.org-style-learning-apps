@@ -32,6 +32,14 @@ import time
 import traceback
 from typing import Any
 
+from app_generator.runtime.v3_persistent_academic_failure_recovery import (
+    owner_recovery_plan,should_skip_unchanged_owner,
+    classify_codegen_failure,
+)
+from app_generator.runtime.v3_isolated_codegen_workspace import (
+    build_isolated_coding_snapshot,apply_isolated_patch,
+)
+
 ROOT=Path(__file__).resolve().parents[1]
 PRIVATE=Path(os.environ.get("LOCALAPPDATA", str(Path.home()/"AppData"/"Local")))/"Microvid"/"BoslaPersistentDevelopment"
 STATE=PRIVATE/"state.json"
@@ -281,12 +289,44 @@ def _promote_known(state:dict[str,Any])->bool:
     return _promote_candidate(state,FIXED_READY_BRANCH)
 
 
+def _safe_last_log(state:dict[str,Any])->str:
+    """Read only a bounded private diagnostic tail; never persist source text."""
+    raw=state.get("currentLog")
+    if not isinstance(raw,str):
+        return ""
+    path=Path(raw)
+    try:
+        if not path.resolve().is_relative_to((PRIVATE/"logs").resolve()):
+            return ""
+        with path.open("rb") as f:
+            f.seek(0,2)
+            f.seek(max(0,f.tell()-20000))
+            return f.read(20000).decode("utf8",errors="replace")
+    except (OSError,ValueError):
+        return ""
+
+
+def _failed_owner_decision(
+    state:dict[str,Any],*,head:str,exit_code:int,
+)->dict[str,Any]:
+    plan=owner_recovery_plan(
+        state=state,head=head,exit_code=exit_code,
+        log_excerpt=_safe_last_log(state))
+    _update(state,"BSA280_OWNER_"+plan["mode"],
+            currentHead=head,ownerExitCode=exit_code,
+            academicFailure=plan)
+    return plan
+
+
 def _owner_stage(state:dict[str,Any])->bool:
     """Actual original-source V36 -> A1..A12 signed independent chain."""
     current=_head()
     state["currentHead"]=current
     if state.get("lastOwnerHead")==current:
         return True
+    if should_skip_unchanged_owner(state,current):
+        _update(state,"BSA280_UNCHANGED_FAILED_OWNER_NOT_REPLAYED")
+        return False
     if _branch()!=MAIN_BRANCH or not _clean():
         _update(state,"BSA279_DIRTY_MAIN_OWNER_NOT_RUN")
         return False
@@ -299,16 +339,15 @@ def _owner_stage(state:dict[str,Any])->bool:
                      "scripts.auto_advance_bosla_academic_frontier",
                      "--max-steps","8"],cwd=ROOT,timeout=MAX_OWNER_SECONDS)
     if rc!=0:
-        _update(state,"BSA279_OWNER_RETRYABLE_BOUNDARY",
-                currentHead=current,ownerExitCode=rc)
+        _failed_owner_decision(state,head=current,exit_code=rc)
         return False
     rc=_log_process(state,"OWNER_INDEPENDENT_HORIZON",
                     [sys.executable,"-m",
                      "scripts.show_bosla_long_horizon"],cwd=ROOT,timeout=1300)
     if rc!=0:
-        _update(state,"BSA279_OWNER_HORIZON_INCOMPLETE",
-                currentHead=current,ownerExitCode=rc)
+        _failed_owner_decision(state,head=current,exit_code=rc)
         return False
+    state.pop("academicFailure",None)
     state["lastOwnerHead"]=current
     _update(state,"BSA279_ORIGINAL_TEXTBOOK_OWNER_SIGNED_ACCEPTANCE_VERIFIED",
             currentHead=current)
@@ -372,6 +411,9 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
     if not _daily_budget(state):
         _update(state,"BSA279_BOUNDED_DAILY_MODEL_BUDGET_REACHED")
         return False
+    if time.time()<float(state.get("codexQuarantinedUntilEpoch",0)):
+        _update(state,"BSA280_REPEATED_CODEX_ENV_FAILURE_IN_COOLDOWN")
+        return False
     executable=shutil.which("codex.cmd") or shutil.which("codex")
     if not executable:
         _update(state,"BSA279_CODE_DEVELOPMENT_AGENT_UNAVAILABLE")
@@ -396,6 +438,18 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
         branch,worktree=_dev_worktree(state)
     state["codexCount"]=int(state.get("codexCount",0))+1
     prompt=_codex_prompt()
+    if isinstance(state.get("academicFailure"),dict):
+        issue=state["academicFailure"]
+        if issue.get("mode")=="DISPATCH_INDEPENDENT_SOURCE_SAFE_CODE_REPAIR":
+            prompt+=(
+                " OWNER ACADEMIC FAILURE RECOVERY: classification "
+                +str(issue.get("classification"))+
+                ". The prior owner source-bound admission did NOT PASS. "
+                " Implement and test the missing code/verification handler "
+                " without altering or re-signing ANY academic evidence. "
+                " The owner will rerun authentic CI and science on the "
+                " next committed head. "
+            )
     if reuse:
         prompt+=(
             " INCIDENT REPAIR, NOT A NEW UNRELATED TASK: inspect the "
@@ -406,31 +460,73 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
             "recovery registry. Do not replay an uncertain Gemini "
             "request or assume the prior failed model output succeeded."
         )
-    _update(state,"BSA279_BOUNDED_CODE_REPAIR_STARTED" if reuse else
-            "BSA279_BOUNDED_CODE_GENERATION_STARTED",
+    # The Windows elevated workspace-write helper previously failed in
+    # Git-linked LOCALAPPDATA worktrees. Use an *unlinked*, source-tracked
+    # 10MB snapshot, exactly as the earlier standalone Codex write test did.
+    # The owner host checks and adopts only an allowlisted delta into Git.
+    stamp=datetime.now().strftime("%Y%m%d-%H%M%S")
+    snapshot=PRIVATE/"coding-snapshots"/("safe-"+stamp+"-"+
+                                       branch.rsplit("/",1)[-1])
+    baseline=build_isolated_coding_snapshot(
+        repo=worktree,snapshot=snapshot)
+    _update(state,"BSA280_ISOLATED_GITLESS_CODE_WORKSPACE_READY",
             devBranch=branch,devWorktree=str(worktree),
+            codexSnapshot=str(snapshot),copiedSourceFiles=len(baseline),
             codexCount=state["codexCount"],codexRepairRequired=reuse)
+    prompt+=(
+        " You are editing a disposable, Git-less copy of the Bosla "
+        "tracked repository. The host will compare files against a "
+        "read-only hash manifest, apply only approved source changes "
+        "into the authenticated Git worktree, run tests and then commit. "
+        " Do not expect git commands to work here. The original textbook "
+        "PDF is private and deliberately absent; do not fabricate source "
+        "passages or academic acceptance. Implement the MCQ05 third-law "
+        "scientific distractor proof mechanism or another verifiable "
+        "proof-producer target, with actual negative tests. "
+    )
     out=PRIVATE/"codex-last-message.txt"
     args=[str(executable),"exec","--sandbox","workspace-write",
-          "--cd",str(worktree),"--skip-git-repo-check",
+          "--cd",str(snapshot),"--skip-git-repo-check",
           "-c","approval_policy=\"never\"",
           "--output-last-message",str(out),prompt]
     rc=_log_process(state,"CODEX_TARGETED_REPAIR" if reuse
                     else "CODEX_ACTUAL_CODE_DEVELOPMENT",args,
-                    cwd=worktree,timeout=MAX_CODEX_SECONDS)
-    if rc!=0:
-        # Never rerun the exact unknown model request. A future bounded
-        # repair can inspect existing partial *local code* if and only if
-        # this isolated worktree actually contains changed files.
-        modified=bool(_ok(["git","status","--porcelain"],cwd=worktree))
-        _update(state,"BSA279_CODEX_FAILURE_QUARANTINED_NO_BLIND_REPLAY",
-                devBranch=branch,modelExitCode=rc,
-                codexRepairRequired=modified)
+                    cwd=snapshot,timeout=MAX_CODEX_SECONDS)
+    try:
+        adopted=apply_isolated_patch(
+            repo=worktree,snapshot=snapshot,baseline=baseline)
+    except (OSError,ValueError) as exc:
+        _update(state,"BSA280_UNSAFE_SNAPSHOT_QUARANTINED",
+                devBranch=branch,patchErrorCode=str(exc),
+                codexRepairRequired=False)
         return False
+    if rc!=0 or not adopted:
+        classification=classify_codegen_failure(
+            exit_code=rc,log_excerpt=_safe_last_log(state),
+            changed_files=bool(adopted))
+        prior=state.get("codexFailure",{})
+        attempts=(int(prior.get("count",0))+1
+                  if isinstance(prior,dict)
+                  and prior.get("classification")==classification else 1)
+        state["codexFailure"]={
+            "classification":classification,"count":attempts,
+            "head":_head(),"academicPASS":False}
+        if attempts>=2 and classification in (
+                "CODEX_LOCAL_SANDBOX_WRITE_OR_EXEC_FAILURE",
+                "CODEX_NO_CHANGE_NOT_ACADEMIC_PROGRESS"):
+            # Retry only after a bounded cooldown or environment revision,
+            # rather than spend twelve model sessions on the same denial.
+            state["codexQuarantinedUntilEpoch"]=time.time()+3600
+        _update(state,"BSA280_"+classification,
+                devBranch=branch,modelExitCode=rc,
+                codexRepairRequired=bool(adopted))
+        return False
+    state.pop("codexFailure",None)
+    state.pop("codexQuarantinedUntilEpoch",None)
     changed=_ok(["git","status","--porcelain"],cwd=worktree)
     if not changed:
-        _update(state,"BSA279_CODEX_NO_CODE_CHANGE_NOT_MILESTONE",
-                devBranch=branch)
+        _update(state,"BSA280_SNAPSHOT_IMPORTED_NO_GIT_DELTA",
+                devBranch=branch,codexRepairRequired=False)
         return False
     # Stage first, then scope-review before any commit; never trust a model's
     # claim of passing independent science or grant PASS from CI.
@@ -527,8 +623,18 @@ def cycle(*,codegen:bool=True)->dict[str,Any]:
                 return state
             owner_ok=_owner_stage(state)
             if not owner_ok:
-                # Failed current-head owner science must NOT be bypassed by
-                # source-free metadata or treated as automatic PASS.
+                # Never fabricate PASS from a failed original source.
+                # A genuinely defective or missing engineering proof
+                # handler must nonetheless be repaired INDEPENDENTLY.
+                issue=state.get("academicFailure")
+                if (codegen and isinstance(issue,dict)
+                    and issue.get("head")==state.get("currentHead")
+                    and issue.get("mode")==
+                       "DISPATCH_INDEPENDENT_SOURCE_SAFE_CODE_REPAIR"):
+                    _update(state,
+                        "BSA280_ACADEMIC_FAILURE_ISOLATED_CODE_REPAIR_DISPATCH",
+                        academicFailure=issue)
+                    _codex_stage(state)
                 return state
             if codegen:
                 _codex_stage(state)
