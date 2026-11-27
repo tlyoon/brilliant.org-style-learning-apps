@@ -42,12 +42,25 @@ def _safe_patch_path(name:str)->bool:
 
 
 def _tracked(repo:Path)->list[str]:
-    proc=subprocess.run(
-        ["git","ls-files","--cached","--others","--exclude-standard","-z"],
+    """Only tracked source, plus safe already-produced untracked repair code."""
+    tracked=subprocess.run(
+        ["git","ls-files","--cached","-z"],
         cwd=repo,capture_output=True,check=False,timeout=45)
-    if proc.returncode!=0:
+    untracked=subprocess.run(
+        ["git","ls-files","--others","--exclude-standard","-z"],
+        cwd=repo,capture_output=True,check=False,timeout=45)
+    if tracked.returncode or untracked.returncode:
         raise ValueError("BSA280_SOURCE_WORKTREE_LIST_UNAVAILABLE")
-    paths=[x.decode("utf8") for x in proc.stdout.split(b"\0") if x]
+    main=[x.decode("utf8") for x in tracked.stdout.split(b"\0") if x]
+    # A prior interrupted model may have written legitimate new *.py tests
+    # not yet added to Git. Only include those explicitly safe code scopes;
+    # never absorb an unrelated untracked original textbook or user file.
+    new=[x.decode("utf8") for x in untracked.stdout.split(b"\0") if x]
+    allowed_new=[n for n in new
+                 if _safe_patch_path(n)
+                 and n.lower().endswith(
+                     (".py",".js",".ts",".tsx",".json",".md"))]
+    paths=main+allowed_new
     if len(paths)!=len(set(paths)):
         raise ValueError("BSA280_DUPLICATED_SOURCE_PATH")
     return paths
