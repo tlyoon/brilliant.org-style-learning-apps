@@ -45,12 +45,15 @@ class StaleDevelopmentTests(TestCase):
                     subprocess.CompletedProcess([],0,"","")),
                   patch.object(worker,"_ok",return_value="tests/preserved.py"),
                   patch.object(worker,"_update",side_effect=fake_update),
-                  patch.object(worker,"_daily_budget",return_value=False),
+                  patch.object(worker,"_adaptive_model_admission",
+                               side_effect=lambda st:(
+                                   fake_update(st,"BSA288_OBSERVED_PROVIDER_BACKOFF")
+                                   or False)),
                   patch.object(worker,"_log_process") as model):
                 self.assertFalse(worker._codex_stage(state))
                 model.assert_not_called()
             self.assertEqual(state["status"],
-                "BSA279_BOUNDED_DAILY_MODEL_BUDGET_REACHED")
+                "BSA288_OBSERVED_PROVIDER_BACKOFF")
             self.assertEqual(len(state["quarantinedStalePatches"]),1)
             self.assertEqual(state["quarantinedStalePatches"][0]["head"],OLD)
             self.assertEqual(state["quarantinedStalePatches"][0]["branch"],BRANCH)

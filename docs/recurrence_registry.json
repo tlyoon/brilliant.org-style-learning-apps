@@ -10793,6 +10793,36 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-27",
       "nextAction":"Run exact-head hosted CI and genuine Yoga6 original Serway source admission; only a signed A16-A18 owner receipt plus independent horizon readback may increase 15/429 to 18/429. All 90 full activity gates remain open."
+    },
+    {
+      "id":"BSA-20261127-288",
+      "class":"local_12_codex_per_day_limit_stops_autonomous_science_repair_despite_valid_provider_and_available_own_resources",
+      "status":"active",
+      "rootCauseFamily":"genuinely-new-root-cause",
+      "noveltyExplanation":"Cycle 24 on Yoga6 at 17:59 MYT was classified BSA279_BOUNDED_DAILY_MODEL_BUDGET_REACHED solely because MAX_CODEX_PER_DAY=12 and codexCount=12. This was a user-unauthorized hard software count, not a reported ChatGPT/Codex capacity or billing limit. The original Serway owner still had an independent MISSING_SCIENCE_PRODUCER at HEAD 18ed49f, so the cutoff stranded a valid targeted repair path. It had no dollar or token accounting and did not distinguish HTTP429 from local transient code failure.",
+      "relatedIncidentIds":["BSA-20261127-286","BSA-20261127-287","BSA-20261127-285"],
+      "differenceFromLinkedIncident":"This is capacity admission for the authorized Codex CLI, not relaxation of science source gates. Fixed 12-per-day gate is removed. The existing attempt count remains a day-scoped audit metric and can exceed 12. Real unsuccessful Codex provider output is classified into quota/billing, auth, HTTP429, transient and unknown classes and given persisted exponential retry delay respecting Retry-After. Successful CLI response resets provider backoff; no Codex provider preflight, uncertain request replay, paid Gemini calls, source substitution, publication bypass or unlimited per-request execution is introduced. Codex CLI terminal tokens-used footer is recorded as tokens only, never billed USD. If a user explicitly configures a daily USD cap but Codex gives no official cost, admission fails closed rather than fabricate an invoice. OS singleflight, 45-minute per-attempt bound, CI gating, original textbook verification and 15/429 independent signed academic receipt remain untouched.",
+      "automaticRemedy":{
+        "runtimePath":"scripts/bosla_persistent_development.py",
+        "triggerMarker":"_adaptive_model_admission(state)",
+        "remedyMarker":"BSA288_REAL_CODEX_PROVIDER_OUTCOME_RECORDED",
+        "normalEntryPoints":[
+          {"path":"app_generator/runtime/v3_adaptive_codex_admission.py","marker":"def admission_decision"},
+          {"path":"app_generator/runtime/v3_adaptive_codex_admission.py","marker":"def record_invocation_start"},
+          {"path":"app_generator/runtime/v3_adaptive_codex_admission.py","marker":"def record_invocation_outcome"},
+          {"path":"scripts/bosla_persistent_development.py","marker":"BSA288_REAL_CODEX_PROVIDER_OUTCOME_RECORDED"}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v69_adaptive_codex_admission.py","kind":"python","marker":"test_host_legacy_count_12_starts_model_and_records_real_provider_result"},
+        {"path":"tests/test_v69_adaptive_codex_admission.py","kind":"python","marker":"test_actual_provider_rate_limit_backs_off_across_restart"},
+        {"path":"tests/test_v69_adaptive_codex_admission.py","kind":"python","marker":"test_inflight_unknown_request_does_not_replay"},
+        {"path":"tests/test_v69_adaptive_codex_admission.py","kind":"python","marker":"test_unknown_cost_cap_fails_closed_instead_of_fabricating_price"},
+        {"path":"tests/test_v54_persistent_bosla_development.py","kind":"python","marker":"test_legacy_twelve_per_day_count_is_telemetry_not_an_artificial_limit"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-27",
+      "nextAction":"Complete historical failure review, 30 targeted test and regression gate, exact HEAD hosted CI, integrate into Yoga6 owner, restart existing authorized task and prove codexCount may advance from 12 to 13 without new human input. Keep the academic 15/429 science frontier unchanged until a new independently signed original textbook academic receipt verifies A16-A18."
     }
   ]
 }

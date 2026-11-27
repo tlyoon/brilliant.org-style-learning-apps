@@ -162,11 +162,15 @@ class PersistentBoslaTests(TestCase):
                         worker.cycle()
                         codex.assert_not_called()
 
-    def test_daily_model_invocations_are_bounded_without_bypass(self):
-        state={"codexDay":"","codexCount":0}
-        self.assertTrue(worker._daily_budget(state))
-        state["codexCount"]=worker.MAX_CODEX_PER_DAY
-        self.assertFalse(worker._daily_budget(state))
+    def test_legacy_twelve_per_day_count_is_telemetry_not_an_artificial_limit(self):
+        state={"codexDay":"","codexCount":12}
+        with (patch.object(worker.time,"time",return_value=1795798800.0),
+              patch.dict(os.environ,{"BOSLA_CODEX_MAX_USD_PER_DAY":""})):
+            # Host-local date is allowed to roll over; neither 12 nor 200
+            # can unconditionally block an otherwise eligible request.
+            self.assertTrue(worker._adaptive_model_admission(state))
+            state["codexCount"]=200
+            self.assertTrue(worker._adaptive_model_admission(state))
 
     def test_real_bounded_child_writes_local_private_log(self):
         with TemporaryDirectory() as t:
