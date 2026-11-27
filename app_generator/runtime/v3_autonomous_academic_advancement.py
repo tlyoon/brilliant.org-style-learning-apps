@@ -71,9 +71,18 @@ def advance_all_eligible_academic_actions(
         raise ValueError("BSA276_EXACT_HEAD_HOSTED_CI_INCOMPLETE_OR_FAILED")
     journal=[]
     for step in range(max_steps):
+        # Progress is meaningful only at real source-bound phase boundaries.
+        # Emit on stderr with flush; keep CLI stdout a single machine JSON.
+        print("BSA283_VERIFIABLE_ACADEMIC_STEP_ENTER "+
+              str(step+1)+"/"+str(max_steps)+
+              " head="+head[:12],file=sys.stderr,flush=True)
         checkpoint=read_long_horizon_development(private)
         if checkpoint["gitHead"]!=head:
+            print("BSA283_OWNER_SIGNED_HEAD_REBUILD_STARTED "+
+                  head[:12],file=sys.stderr,flush=True)
             _owner_advance_worker(repo)
+            print("BSA283_OWNER_SIGNED_HEAD_REBUILD_FINISHED "+
+                  head[:12],file=sys.stderr,flush=True)
             newly=read_long_horizon_development(private)
             if newly["gitHead"]!=head:
                 raise ValueError("BSA276_WORKER_DID_NOT_ESTABLISH_EXACT_HEAD")

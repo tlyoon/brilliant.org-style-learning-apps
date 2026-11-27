@@ -10619,6 +10619,70 @@
       ],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "ACTIVE until all on-device tests and hosted exact Git CI pass, safe owner integration and normal scheduler restart occur, and next current-head coding attempt has genuine progress. Current private source-bound signed BSA281 frontier has 15/429 science tasks accepted, 414 pending, all 90 complete academic activity gates open. Old retained Codex patch is based on 6745051; main is 777b926. Deterministic whitespace repair and staleness quarantine must run before more irrelevant model calls. Never replay uncertain provider requests or fabricate academic PASS."
+    },
+    {
+      "id": "BSA-20261127-283",
+      "class": "one_selected_source_pdf_repeated_extraction_and_false_heartbeat",
+      "status": "active",
+      "rootCauseFamily": "genuinely-new-root-cause",
+      "noveltyExplanation": "On 27 Nov Yoga6 real owner child repeatedly invoked pdftotext on the SAME SHA-pinned instructor-selected Serway 9.1 source.pdf. The child completed source-head V36 and registry receipts by 15:10 but generated no new log bytes for over 35 minutes. Parent repeated RUNNING heartbeats every 20 seconds despite no new verifiable child progress, blocking next development until the global 3600-second timeout. User suspected erroneous PDF LaTeX: actual code search and live OS process table found no pdflatex, xelatex, lualatex or latexmk; only pdftotext reading legitimate selected original textbook. Historical three outside PDF requirement already withdrawn from production.",
+      "relatedIncidentIds": [
+        "BSA-20261127-282",
+        "BSA-20261127-280",
+        "BSA-20261127-281"
+      ],
+      "differenceFromLinkedIncident": "This is original source PDF repeated extraction and false parent heartbeat, not prior Git whitespace or sandbox denial. Every source passage check reopens the one original source PDF and calculates full SHA256. In-process page cache uses only same exact SHA256, with digest recheck before and after actual pdftotext. Changed source or failed extraction never cached. Owner CLI uses unbuffered Python; source-bound phase entries flush to stderr. The parent monitors actual child log byte changes rather than its own heartbeat and after 20 min of no output kills only the affected child tree. Exit125 is classified a local implementation fault, previous signed science stays intact, eligible code repairs continue. No outside PDF, LaTeX compiler or academic shortcut.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/bosla_persistent_development.py",
+        "triggerMarker": "BSA283_",
+        "remedyMarker": "NO_VERIFIABLE_PROGRESS",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/validation/source_passages.py",
+            "marker": "def _extract_pages_verified_once"
+          },
+          {
+            "path": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+            "marker": "BSA283_VERIFIABLE_ACADEMIC_STEP_ENTER"
+          },
+          {
+            "path": "app_generator/runtime/v3_persistent_academic_failure_recovery.py",
+            "marker": "if exit_code==125:"
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "idle_timeout=1200"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v62_single_textbook_pdf_cache.py",
+          "kind": "python",
+          "marker": "test_identical_original_is_reused_without_another_pdftotext_process"
+        },
+        {
+          "path": "tests/test_v62_single_textbook_pdf_cache.py",
+          "kind": "python",
+          "marker": "test_change_during_extraction_is_rejected_not_cached"
+        },
+        {
+          "path": "tests/test_v63_owner_progress_watchdog.py",
+          "kind": "python",
+          "marker": "test_child_no_output_fails_closed_and_kills_only_its_tree"
+        },
+        {
+          "path": "tests/test_v63_owner_progress_watchdog.py",
+          "kind": "python",
+          "marker": "test_silent_exit_125_classified_as_local_owner_fault"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "ACTIVE until all tests exact GitHub CI and on-device owner adoption. Do not remove pdftotext: it correctly reads the single authorized Serway textbook. Avoid unnecessary repeated extraction and false parent progress. Original signed 15/429, 414 pending, all 90 full academic activity gates OPEN; no new academic PASS from cache."
     }
   ]
 }

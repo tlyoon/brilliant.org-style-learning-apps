@@ -56,6 +56,10 @@ def classify_owner_failure(*,exit_code:int,log_excerpt:str)->str:
     excerpt=log_excerpt[-20000:]
     if _matches(excerpt,SAFETY_CODES):
         return "SOURCE_OR_SIGNATURE_UNTRUSTED"
+    if exit_code==125:
+        # BSA283: parent heartbeat without child output is not progress.
+        # This is an implementation/performance fault; never infer PASS.
+        return "LOCAL_OWNER_IMPLEMENTATION_DEFECT"
     if _matches(excerpt,PROOF_CODES):
         return "MISSING_SCIENCE_PRODUCER"
     if _matches(excerpt,LOCAL_DEFECT_CODES):

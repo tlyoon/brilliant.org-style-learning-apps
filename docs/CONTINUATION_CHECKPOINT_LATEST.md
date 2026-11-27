@@ -1,6 +1,10 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-282 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261127-283 | ACTIVE
+
+> 27 NOV BSA283 PDF-LaTeX audit: NO real Bosla pdflatex or LaTeX compiler invocation. Live Yoga6 only invoked pdftotext to read the one original selected Serway 9.1 textbook source.pdf. The owner task reached original source V36 and registry audit at 15:10 but showed no fresh child log for >35m while parent heartbeat repeatedly said RUNNING. Repeated original PDF extraction is now cached in process ONLY after real full PDF SHA256 verification on each invocation; original bytes also verified around extraction. New unbuffered original academic controller emits discrete flushed step events; parent detects verified child log-byte growth and kills only a silent child after 20min, preserves all signed academic receipts, classifies local failure and continues eligible development. New regression tests pass; CI/owner deployment still required. Signed 15/429, 414 pending, all 90 full gates OPEN. No new outside PDF, publication, or scientific PASS.
+
+
 
 > 27 NOV 2026 BSA282. Real Bosla Yoga6 scheduled cycle 9 and cycle 10 repeatedly rejected a generated science-test patch because Git reported precisely one extra blank line at EOF. Existing saved model worktree was based on previous main HEAD 6745051 while genuine BSA281 original Serway A13-A15 science was admitted on 777b926. New executable normal worker now detects and repairs ONLY terminal empty Git-staged lines with owner host SHA256 before/after and exact Git recheck, no additional model call. It also preserves and quarantines an old-head staged patch and starts new source-specific coding from current main revision in the same cycle, rather than overwrite already accepted academic work. Current signed 15/429 source tasks, 414 pending, all 90 complete activity gates OPEN. Isolated 47 local persistence tests passed; hosted CI and live installation remain pending. No academic PASS from patch tests, no public release, no uncertain provider replay or external PDF.
 
