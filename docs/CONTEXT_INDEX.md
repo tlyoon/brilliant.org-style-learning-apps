@@ -1,5 +1,9 @@
 # Context index
 
+## 27 November 2026 — BSA293 MCQ02 SI explanation science
+
+The MCQ02 full scientific explanation has a new exact-dimensional and vector proof producer, canonical A29 task binding and owner-only signed admission after A1-A28. Normal advancement and long-horizon readback independently reprove original and current code heads. The selected private Serway PDF and hosted CI are absent from this coding snapshot; signed acceptance remains 15/429 with all 90 complete activity gates OPEN. See BSA-20261127-293.
+
 ## 27 November 2026 — BSA292 first complete scientific explanation producer
 
 MCQ01's complete EN/MS/ZH explanation now has a separate original Serway source-bound exact vector proof producer and owner-only A28 admission after the A1-A27 chain. Two distinct rational models derive equal/opposite momentum and zero vector sum; original source, frozen candidate, first signed V36 partition and cross-head reproof remain mandatory. This Git-less snapshot lacks the private PDF and hosted CI, so only 15/429 remains confirmed signed and all 90 full activity gates remain OPEN. See BSA-20261127-292 in the recurrence registry and ledger.

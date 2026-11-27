@@ -578,6 +578,39 @@ def main() -> int:
             "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_si_explanation_academic_admission import (
+        _FRONTIER as _SI_EXPLANATION_FRONTIER,
+        verify_si_explanation_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_SI_EXPLANATION_FRONTIER).exists():
+        try:
+            si_explanation=verify_si_explanation_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=28
+                or si_explanation["acceptedAcademicTaskIds"][:28]!=outcome.get("verifiedAcademicProofTaskIds")
+                or si_explanation["independentlyAcceptedAcademicTasks"]!=29
+                or si_explanation["fullAcademicTasksStillOpen"]!=400
+                or si_explanation["completeAcademicProofGatesStillOpen"]!=90
+                or si_explanation["fullAcademicActivityPASS"]!=0
+                or si_explanation["publicationAuthorized"] is not False):
+                raise ValueError("BSA293_A29_CANNOT_BYPASS_A1_A28")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,ArithmeticError) as exc:
+            print(json.dumps({"status":"BOSLA_SI_EXPLANATION_SCIENCE_FRONTIER_UNTRUSTED",
+                              "errorClass":type(exc).__name__,
+                              "academicProofAcceptanceEstablished":False,
+                              "publicationAuthorized":False},sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_SI_EXPLANATION_SCIENCE_REVERIFIED",
+            "academicAcceptancesSource":"TWENTY_NINE_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":29,
+            "fullAcademicProofTasksStillOpen":400,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":si_explanation["acceptedAcademicTaskIds"],
+            "academicSiExplanationReceiptSha256":si_explanation["siExplanationReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 

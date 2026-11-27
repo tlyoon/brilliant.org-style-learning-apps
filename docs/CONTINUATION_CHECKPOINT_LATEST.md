@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-292 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261127-293 | ACTIVE
+
+> 27 NOV BSA293 MCQ02 SI explanation producer and owner A29 admission code: two exact rational two-dimensional models derive p = mv, ML/T, kg m/s and vector direction. Frozen EN/MS/ZH explanation, original selected Serway source and second signed V36 partition are required. Owner admission follows independently reopened A1-A28 and historical/current-head readback. Private PDF is absent here; confirmed signed count stays 15/429, 414 pending and all 90 activity gates OPEN.
 
 > 27 NOV BSA292 MCQ01 complete scientific explanation: two exact rational vector models establish the frozen physical proposition against the selected Serway source, full EN/MS/ZH explanation, canonical explanation task and first signed V36 partition. Owner-only A28 receipt follows A1-A27 and independent horizon reopens original/current head. Private PDF is absent in this snapshot; confirmed signed acceptance remains 15/429, 414 pending and all 90 full activity gates OPEN.
 
