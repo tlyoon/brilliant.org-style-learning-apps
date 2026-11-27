@@ -611,6 +611,39 @@ def main() -> int:
             "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_newton_explanation_academic_admission import (
+        _FRONTIER as _NEWTON_EXPLANATION_FRONTIER,
+        verify_newton_explanation_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_NEWTON_EXPLANATION_FRONTIER).exists():
+        try:
+            newton=verify_newton_explanation_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=29
+                or newton["acceptedAcademicTaskIds"][:29]!=outcome.get("verifiedAcademicProofTaskIds")
+                or newton["independentlyAcceptedAcademicTasks"]!=30
+                or newton["fullAcademicTasksStillOpen"]!=399
+                or newton["completeAcademicProofGatesStillOpen"]!=90
+                or newton["fullAcademicActivityPASS"]!=0
+                or newton["publicationAuthorized"] is not False):
+                raise ValueError("BSA297_A30_CANNOT_BYPASS_A1_A29")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,ArithmeticError) as exc:
+            print(json.dumps({"status":"BOSLA_NEWTON_EXPLANATION_SCIENCE_FRONTIER_UNTRUSTED",
+                              "errorClass":type(exc).__name__,
+                              "academicProofAcceptanceEstablished":False,
+                              "publicationAuthorized":False},sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_NEWTON_EXPLANATION_SCIENCE_REVERIFIED",
+            "academicAcceptancesSource":"THIRTY_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":30,
+            "fullAcademicProofTasksStillOpen":399,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":newton["acceptedAcademicTaskIds"],
+            "academicNewtonExplanationReceiptSha256":newton["newtonExplanationReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 

@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-296 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-297 | ACTIVE
+
+> 28 NOV BSA297 MCQ03 complete Newton explanation: exact rational momentum-rate models and frozen EN/MS/ZH surfaces now feed a separate A30 owner admission. The canonical task is derived from the SHA-pinned candidate, checked against signed third V36 partition, and reopened on historical/current Git heads. Local falsification and restart tests pass. Private original Serway execution, hosted CI and signed horizon remain pending. Confirmed acceptance stays 15/429, 414 pending and all 90 full activity gates OPEN.
 
 > 28 NOV BSA296 exact owner MCQ08 blocker: sample-derived task IDs caused BSA290_CANONICAL_MCQ08_TASK_NOT_REDERIVED. The producer now derives each ID from the SHA-pinned candidate and the admission compares it with signed eighth V36 evidence. Local synthetic falsification and restart tests do not replace private original Serway execution. Confirmed acceptance stays 15/429, 414 pending and all 90 full activity gates OPEN until host CI, owner source admission and independent cross-head readback.
 

@@ -31,8 +31,8 @@ from app_generator.runtime.v3_equal_energy_academic_batch_admission import (
 from app_generator.runtime.v3_isolated_pair_academic_batch_admission import (
     verify_isolated_pair_batch_across_git_heads,
 )
-from app_generator.runtime.v3_spring_buffer_academic_batch_admission import (
-    verify_spring_buffer_batch_across_git_heads,
+from app_generator.runtime.v3_newton_explanation_academic_admission import (
+    verify_newton_explanation_across_git_heads,
 )
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -40,7 +40,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main(argv:list[str]|None=None)->int:
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--max-steps",type=int,default=15)
+    parser.add_argument("--max-steps",type=int,default=20)
     args=parser.parse_args(argv)
     home=os.environ.get("LOCALAPPDATA")
     if not home:
@@ -56,12 +56,12 @@ def main(argv:list[str]|None=None)->int:
             read_long_horizon_development,
         )
         state=read_long_horizon_development(private)
-        verified=verify_spring_buffer_batch_across_git_heads(private=private)
+        verified=verify_newton_explanation_across_git_heads(private=private)
         if (state["gitHead"]!=result["currentGitHead"]
             or verified["independentlyAcceptedAcademicTasks"]!=
                result["academicProofTasksAccepted"]
-            or verified["pendingMcqDistractorScienceTasks"]!=
-               result["pendingMcqDistractorScienceTasks"]):
+            or verified["fullAcademicTasksStillOpen"]!=
+               result["fullAcademicProofTasksStillOpen"]):
             raise ValueError("BSA276_AUTONOMOUS_FRONTIER_CANNOT_SELF_ATTEST")
         print(json.dumps(result,sort_keys=True))
         return 0

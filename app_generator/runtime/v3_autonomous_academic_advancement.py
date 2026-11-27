@@ -68,6 +68,10 @@ from app_generator.runtime.v3_si_explanation_academic_admission import (
     _FRONTIER as _SI_EXPLANATION_FRONTIER,
     admit_si_explanation, verify_si_explanation_across_git_heads,
 )
+from app_generator.runtime.v3_newton_explanation_academic_admission import (
+    _FRONTIER as _NEWTON_EXPLANATION_FRONTIER,
+    admit_newton_explanation, verify_newton_explanation_across_git_heads,
+)
 
 
 def _owner_advance_worker(repo:Path)->None:
@@ -82,9 +86,9 @@ def _owner_advance_worker(repo:Path)->None:
 
 
 def advance_all_eligible_academic_actions(
-    *,repo:Path,private:Path,max_steps:int=15,
+    *,repo:Path,private:Path,max_steps:int=20,
 )->dict[str,Any]:
-    if type(max_steps) is not int or not 1<=max_steps<=15:
+    if type(max_steps) is not int or not 1<=max_steps<=20:
         raise ValueError("BSA276_INVALID_BOUNDED_AUTONOMOUS_STEP_LIMIT")
     if not isinstance(repo,Path) or not isinstance(private,Path):
         raise ValueError("BSA276_OWNER_PATHS_REQUIRED")
@@ -293,12 +297,27 @@ def advance_all_eligible_academic_actions(
             or si_verified["fullAcademicActivityPASS"]!=0
             or si_verified["publicationAuthorized"] is not False):
             raise ValueError("BSA293_A1_A29_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        newton_explanation=private/"long-horizon-development"/_NEWTON_EXPLANATION_FRONTIER
+        if not newton_explanation.exists() and not newton_explanation.is_symlink():
+            admitted=admit_newton_explanation(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=30
+                or admitted["fullAcademicTasksStillOpen"]!=399):
+                raise ValueError("BSA297_NEWTON_EXPLANATION_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A30_NEWTON_EXPLANATION_SCIENCE_TASK")
+            continue
+        newton_verified=verify_newton_explanation_across_git_heads(private=private)
+        if (newton_verified["independentlyAcceptedAcademicTasks"]!=30
+            or newton_verified["fullAcademicTasksStillOpen"]!=399
+            or newton_verified["completeAcademicProofGatesStillOpen"]!=90
+            or newton_verified["fullAcademicActivityPASS"]!=0
+            or newton_verified["publicationAuthorized"] is not False):
+            raise ValueError("BSA297_A1_A30_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA293_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA297_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":29,
-            "fullAcademicProofTasksStillOpen":400,
+            "academicProofTasksAccepted":30,
+            "fullAcademicProofTasksStillOpen":399,
             "pendingMcqDistractorScienceTasks":0,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,
