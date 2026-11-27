@@ -1,5 +1,9 @@
 # Context index
 
+## 28 November 2026 — BSA298 MCQ04 paired-glider explanation science
+
+The next complete scientific explanation has an exact two-model momentum and kinetic-energy proof producer, canonical task binding and separate A31 owner admission after independently reverified A1-A30. Normal advancement and long-horizon readback check the original and current code heads. Private Serway PDF and hosted CI are unavailable in this coding snapshot, so confirmed signed acceptance remains 15/429 with all 90 full activity gates OPEN. See BSA-20261128-298.
+
 ## 27 November 2026 — BSA293 MCQ02 SI explanation science
 
 The MCQ02 full scientific explanation has a new exact-dimensional and vector proof producer, canonical A29 task binding and owner-only signed admission after A1-A28. Normal advancement and long-horizon readback independently reprove original and current code heads. The selected private Serway PDF and hosted CI are absent from this coding snapshot; signed acceptance remains 15/429 with all 90 complete activity gates OPEN. See BSA-20261127-293.

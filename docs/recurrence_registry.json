@@ -11290,6 +11290,64 @@
       ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Host exact-head CI and original private Serway source run, then owner signed A16-A30 admission and independent historical/current-head horizon. Confirmed count remains 15/429 and all 90 full activity gates OPEN until actual owner readback."
+    },
+{
+      "id": "BSA-20261128-298",
+      "class": "missing_source_bound_mcq04_glider_explanation_producer_and_a31_owner_admission",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "After BSA297, the MCQ04 complete scientific explanation had no independent proof producer or signed owner admission. The academic horizon could only stop after A30.",
+      "relatedIncidentIds": [
+        "BSA-20261128-297",
+        "BSA-20261126-278"
+      ],
+      "differenceFromLinkedIncident": "Produce two exact rational paired-glider vector momentum and scalar energy models for frozen MCQ04 EN/MS/ZH explanation; rederive canonical explanation task and fourth signed V36 partition; admit only after signed A1-A30 and independently reprove on historical/current heads.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker": "admit_glider_explanation(private=private)",
+        "remedyMarker": "BSA298_A1_A31_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/validation/section91_glider_explanation_proof.py",
+            "marker": "def independently_prove_glider_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_glider_explanation_academic_admission.py",
+            "marker": "def admit_glider_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_glider_explanation_academic_admission.py",
+            "marker": "def verify_glider_explanation_across_git_heads"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "BOSLA_LONG_HORIZON_GLIDER_EXPLANATION_SCIENCE_REVERIFIED"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v85_glider_explanation_source_science.py",
+          "kind": "python",
+          "marker": "test_source_candidate_restart_and_forged_witness"
+        },
+        {
+          "path": "tests/test_v86_glider_explanation_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v86_glider_explanation_academic_admission.py",
+          "kind": "python",
+          "marker": "test_cross_head_readback_rejects_changed_science_and_duplicate"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-28",
+      "nextAction": "Host exact-head CI and original private Serway source run, then owner signed A16-A31 admission and independent historical/current-head horizon. Confirmed count remains 15/429 and all 90 full activity gates OPEN until actual owner readback."
     }
   ]
 }
