@@ -48,6 +48,11 @@ class AutoRepairGitWhitespaceTests(TestCase):
     def test_crlf_multiple_blank_lines_retains_science_content(self):
         with TemporaryDirectory() as t:
             repo=self.repo(Path(t))
+            # Git's default CRLF policy differs by host OS. Pin the
+            # actual Git core.whitespace interpretation for this fixture;
+            # production still requires Git's exact real-time report.
+            self.assertEqual(
+                git(repo,"config","core.whitespace","cr-at-eol").returncode,0)
             correct=b"from fractions import Fraction\r\nx = Fraction(1, 3)\r\n"
             (repo/"app_generator/physics.py").write_bytes(correct+b"\r\n\r\n")
             git(repo,"add","--all")
