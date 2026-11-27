@@ -11151,6 +11151,35 @@
       "applicableEnvironments": ["yoga6", "github-ci"],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Host exact-head CI and genuine original selected Serway source run; independently reopen A1-A28, sign A29, verify historical/current-head horizon. Confirmed signed count remains 15/429 and all 90 full activity gates OPEN until owner readback."
+    },
+    {
+      "id":"BSA-20261127-294",
+      "class":"synthetic_malay_unrevised_candidate_ids_pinned_into_owner_mcq06_science_gates_and_precise_exception_lost_by_short_log_tail",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "noveltyExplanation":"On 27 November at 22:40-22:47 MYT, genuine Serway owner revision e2ac186 repeatedly stopped at BSA284_CANONICAL_MC_Q06_TASK_NOT_REDERIVED while model code-generation kept passing source-free tests and integrating unrelated tasks. The frozen owner candidate's BSA253 MCQ06 distractor IDs did not equal the three task hashes pinned in source code. Direct hash-verified private candidate rederivation and signed sixth V36 partition independently agreed on three other IDs. The earlier test mistakenly used the tracked, non-revised public sample as a positive source. The owner's 20KB trailing log excerpt removed the precise early exception beneath a large source-free report; the Codex repair prompt received only the generic MISSING_SCIENCE_PRODUCER family and targeted unrelated science code.",
+      "relatedIncidentIds":["BSA-20261127-284","BSA-20261127-287","BSA-20261127-285","BSA-20261127-293"],
+      "differenceFromLinkedIncident":"Correct only the three source-bound code constants to IDs recomputed from the authentic private frozen candidate and matching immutable V36_PARTITION_06.json. Never rewrite the textbook, private candidate, or signed partition to fit incorrect hashes. Add source-safe real-Yoga6 acceptance regression checking original textbook physics, frozen EN/MS/ZH, exact queue hashes, signed partition and negative tampering. Change synthetic test to reject old tracked-package IDs rather than fake proof admission. Add strict bounded owner JSON errorCode extraction from the full private diagnostic log, persist only a safe uppercase error marker, and include that exact marker in the next normal coding-repair prompt. No academic acceptance is self-attested and no unknown paid provider request is replayed.",
+      "automaticRemedy":{
+        "runtimePath":"scripts/bosla_persistent_development.py",
+        "triggerMarker":"_safe_owner_exception_code(state)",
+        "remedyMarker":"BSA294 EXACT OWNER SOURCE FAILURE",
+        "normalEntryPoints":[
+          {"path":"app_generator/runtime/v3_persistent_academic_failure_recovery.py","marker":"def exact_owner_failure_code"},
+          {"path":"app_generator/validation/section91_equal_speed_false_options_proof.py","marker":"BSA284_CANONICAL_MC_Q06_TASK_NOT_REDERIVED"},
+          {"path":"scripts/bosla_persistent_development.py","marker":"plan[\"exactFailureCode\"]=precise"},
+          {"path":"scripts/bosla_persistent_development.py","marker":"BSA294 EXACT OWNER SOURCE FAILURE"}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v80_owner_mq06_canonical_ids.py","kind":"python","marker":"test_real_original_source_matches_signed_v36_for_every_option"},
+        {"path":"tests/test_v80_owner_mq06_canonical_ids.py","kind":"python","marker":"test_precise_root_cause_survives_larger_success_summary"},
+        {"path":"tests/test_v80_owner_mq06_canonical_ids.py","kind":"python","marker":"test_untrusted_raw_text_and_injection_cannot_become_repair_command"},
+        {"path":"tests/test_v64_equal_speed_source_science.py","kind":"python","marker":"test_source_bound_producer_exercises_original_check_and_task_derivation"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-27",
+      "nextAction":"Finish local original Serway and negative-control tests; check executable recurrence and full CI. Promote this isolated repair only after exact-head source CI passes and original owner is idle/safe. Rerun owner signed A16-A18 admission and independent horizon readback; only then increase accepted 15/429. Current Codex cycle 37 may run independently to its bounded timeout; avoid overwriting its unreviewed work."
     }
   ]
 }

@@ -18,10 +18,14 @@ from app_generator.validation.source_passages import extract_pages
 from app_generator.runtime.v3_selected_textbook_scientific_provenance import _source_activity_anchors
 
 _ACTIVITY = "act-mcq-06-equal-speed-comparison"
+# BSA294: these are the *actual* canonical BSA253 task IDs rederived
+# from the exact private frozen candidate and separately verified against
+# the signed sixth V36 partition on Yoga6 (27 Nov 2026).
+# Do not substitute a synthetic fixture's task IDs, even when tests pass.
 _TASKS = {
-    "opt-b": "e729b89c172882ce15ca2e54af1e620ad1596412ba3cbc7ec311259c659acf2f",
-    "opt-c": "1469bceacdc52d6d5344964cd3da7bd28ba0829a07207f123782d9702750850e",
-    "opt-d": "9bc676d041da69bf98fd6ab11879d24066df18a50ff5679fd55c0d559a27e1ef",
+    "opt-b": "7cfccca6e317c3f2be03d49c7d6fb21eeee28b16142e0bd44ef0ee7eaa1b3b75",
+    "opt-c": "936f1bb84a4e41f87424786747655d6059299cd65515dc11a50749a8cc8f8397",
+    "opt-d": "d8e2d44cac8de1e7940ef6c966c78fe7df8c60b10261053423b3b4327b687950",
 }
 _PROMPT = {
     "en": "2b258a986462e33f1a520ef706b9299c8e8594b32cdd3748ff7d003d051431ef",

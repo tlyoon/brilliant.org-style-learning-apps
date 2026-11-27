@@ -34,7 +34,7 @@ from typing import Any
 
 from app_generator.runtime.v3_persistent_academic_failure_recovery import (
     owner_recovery_plan,should_skip_unchanged_owner,
-    classify_codegen_failure,
+    classify_codegen_failure, exact_owner_failure_code,
 )
 from app_generator.runtime.v3_isolated_codegen_workspace import (
     build_isolated_coding_snapshot,apply_isolated_patch,
@@ -382,12 +382,34 @@ def _safe_last_log(state:dict[str,Any])->str:
         return ""
 
 
+def _safe_owner_exception_code(state:dict[str,Any])->str|None:
+    """Read owner log without persisting private Serway text or model output."""
+    raw=state.get("currentLog")
+    if not isinstance(raw,str):
+        return None
+    path=Path(raw)
+    try:
+        if (not path.resolve().is_relative_to((PRIVATE/"logs").resolve())
+            or path.is_symlink() or not path.is_file()):
+            return None
+        with path.open("rb") as inp:
+            inp.seek(0,2)
+            inp.seek(max(0,inp.tell()-1_000_000))
+            excerpt=inp.read(1_000_000).decode("utf8",errors="replace")
+    except (OSError,ValueError):
+        return None
+    return exact_owner_failure_code(excerpt)
+
+
 def _failed_owner_decision(
     state:dict[str,Any],*,head:str,exit_code:int,
 )->dict[str,Any]:
     plan=owner_recovery_plan(
         state=state,head=head,exit_code=exit_code,
         log_excerpt=_safe_last_log(state))
+    precise=_safe_owner_exception_code(state)
+    if precise is not None:
+        plan["exactFailureCode"]=precise
     _update(state,"BSA280_OWNER_"+plan["mode"],
             currentHead=head,ownerExitCode=exit_code,
             academicFailure=plan)
@@ -680,6 +702,18 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
                 " The owner will rerun authentic CI and science on the "
                 " next committed head. "
             )
+            exact=issue.get("exactFailureCode")
+            if isinstance(exact,str) and re.fullmatch(
+                    r"(?:BSA|V)[0-9]{3}_[A-Z0-9_]{5,95}",exact):
+                prompt+=(
+                    " BSA294 EXACT OWNER SOURCE FAILURE: "+exact+
+                    ". Resolve this exact preceding failed scientific "
+                    "operation FIRST using the signed original task roster, "
+                    "not a synthetic test package or an unrelated new "
+                    "proof producer. Recheck the authentic source and "
+                    "negative mutations. Never modify signed source "
+                    "evidence or claim academic PASS from local tests. "
+                )
     science_stall=state.get("scienceStall")
     if isinstance(science_stall,dict) and science_stall.get("triggered"):
         prompt+=(
