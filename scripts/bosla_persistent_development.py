@@ -48,6 +48,9 @@ from app_generator.runtime.v3_scientific_acceptance_watchdog import (
 from app_generator.runtime.v3_owner_child_tree_recovery import (
     windows_kill_tree, recover_previous_owner_tree,
 )
+from app_generator.runtime.v3_adaptive_codex_admission import (
+    admission_decision, record_invocation_start, record_invocation_outcome,
+)
 
 ROOT=Path(__file__).resolve().parents[1]
 PRIVATE=Path(os.environ.get("LOCALAPPDATA", str(Path.home()/"AppData"/"Local")))/"Microvid"/"BoslaPersistentDevelopment"
@@ -58,7 +61,8 @@ MAIN_BRANCH="feature/bsa237-v16-pr-security-a11y"
 LEGACY_TASK="BoslaYoga6V3Recovery"
 PERSISTENT_TASKS=("BoslaPersistentDevelopment-Yoga6",)
 FIXED_READY_BRANCH="feature/bsa278-paired-momentum-science"
-MAX_CODEX_PER_DAY=12
+# BSA288: no artificial per-day model-call cutoff; retain a per-call
+# bounded duration, singleflight, provider backoff, and optional USD guard.
 MAX_CODEX_SECONDS=2700
 MAX_OWNER_SECONDS=3600
 ALLOWED_PREFIXES=("app_generator/","scripts/","tests/","docs/")
@@ -442,12 +446,18 @@ def _owner_stage(state:dict[str,Any])->bool:
     return True
 
 
-def _daily_budget(state:dict[str,Any])->bool:
-    day=datetime.now().strftime("%Y-%m-%d")
-    if state.get("codexDay")!=day:
-        state["codexDay"]=day
-        state["codexCount"]=0
-    return int(state.get("codexCount",0))<MAX_CODEX_PER_DAY
+def _adaptive_model_admission(state:dict[str,Any])->bool:
+    # Codex CLI use is already authorized for Bosla; paid Gemini calls
+    # remain prohibited. A local historical counter is telemetry, not quota.
+    # Optional user-defined USD caps fail closed if CLI provides no priced
+    # usage. Source-bound science/CI/singleflight safeguards remain intact.
+    decision=admission_decision(
+        state,now_epoch=time.time(),
+        explicit_max_usd_per_day=os.environ.get("BOSLA_CODEX_MAX_USD_PER_DAY"))
+    if not decision["allowed"]:
+        _update(state,decision["status"],modelAdmission=decision)
+        return False
+    return True
 
 
 def _dev_worktree(state:dict[str,Any])->tuple[str,Path]:
@@ -629,8 +639,7 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
     if state.get("pendingBranch") and not repair:
         _update(state,"BSA279_WAITING_FOR_PENDING_BRANCH_CI")
         return False
-    if not _daily_budget(state):
-        _update(state,"BSA279_BOUNDED_DAILY_MODEL_BUDGET_REACHED")
+    if not _adaptive_model_admission(state):
         return False
     if time.time()<float(state.get("codexQuarantinedUntilEpoch",0)):
         _update(state,"BSA280_REPEATED_CODEX_ENV_FAILURE_IN_COOLDOWN")
@@ -657,7 +666,7 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
         worktree=Path(location)
     else:
         branch,worktree=_dev_worktree(state)
-    state["codexCount"]=int(state.get("codexCount",0))+1
+    record_invocation_start(state,now_epoch=time.time())
     prompt=_codex_prompt()
     if isinstance(state.get("academicFailure"),dict):
         issue=state["academicFailure"]
@@ -731,6 +740,11 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
     rc=_log_process(state,"CODEX_TARGETED_REPAIR" if reuse
                     else "CODEX_ACTUAL_CODE_DEVELOPMENT",args,
                     cwd=snapshot,timeout=MAX_CODEX_SECONDS)
+    observed=record_invocation_outcome(
+        state,now_epoch=time.time(),exit_code=rc,
+        log_excerpt=_safe_last_log(state))
+    _update(state,"BSA288_REAL_CODEX_PROVIDER_OUTCOME_RECORDED",
+            codexProviderOutcome=observed)
     try:
         adopted=apply_isolated_patch(
             repo=worktree,snapshot=snapshot,baseline=baseline)

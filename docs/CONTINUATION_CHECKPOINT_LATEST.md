@@ -1,6 +1,6 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-287 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261127-288 | ACTIVE
 
 > 27 NOV BSA287 A16-A18 MCQ06 signed admission code: new owner-only receipt binds three exact rational vector countermodels to original selected Serway PDF, complete frozen EN/MS/ZH false options and sixth signed V36 task partition. Normal academic controller and independent horizon reader now recheck the A1-A15 chain before reporting 18/429. The private source PDF is absent from this coding snapshot; only signed 15/429 remains confirmed, 414 pending and all 90 full activity gates OPEN. Host exact CI and genuine owner admission remain pending.
 
@@ -1192,3 +1192,7 @@ At Yoga6 development cycle 17, original Serway Section 9.1 source-bound academic
 ### BSA286 source QA supervisor fault recovery (27 November 2026; verified in isolated worktree)
 
 At Yoga6 16:46 owner cycle 19 returned a retryable safety status from an unconditional process wait timeout after its original-source child launched. This was a true subprocess leak, not a new science acceptance: the 14596/15468/22492 tree remained alive after parent exit until its identity was independently verified and exact tree safely reaped. BSA286 adds launch-identity persistence, exception-safe bounded process tree termination, strict PID-reuse safeguards, normal restart orphan reconciliation, and real nested Windows subprocess tests. Original independently signed frontier **15/429**, 414 pending, 90 complete academic gates open. BSA284 source proof code exists but A16 is not signed. BSA286 is NOT academic success: independent current-head CI and live scheduled verification are still required.
+
+### BSA288 adaptive Codex admission (27 Nov 2026)
+
+Root cause: a local fixed 12-invocation limit stopped source-safe engineering repair even though no provider quota/billing failure was observed. On Yoga6 owner revision 18ed49f, codexCount reached 12 and scheduler reported BSA279_BOUNDED_DAILY_MODEL_BUDGET_REACHED; independently verified academic count still **15/429**, 414 unfinished, 90 full gates open, with an authentic A16–A18 MISSING_SCIENCE_PRODUCER fault classified for targeted repair. BSA288 removes the 12/day eligibility cutoff, uses actual Codex provider failures with persisted exponential Retry-After backoff, records actual terminal token usage without claiming USD charges, enforces exact singleflight and per-call timeout, quarantines unknown inflight request outcomes, and preserves existing no-paid-Gemini and original textbook privacy rules. This coding branch still requires hosted CI and owner integration; do not claim 16/429 without independent signed source receipt.
