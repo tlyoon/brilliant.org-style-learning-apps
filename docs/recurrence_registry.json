@@ -11123,6 +11123,34 @@
       "applicableEnvironments": ["yoga6", "github-ci"],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Host exact-head CI and genuine original selected Serway source run; independently reopen A1-A27, sign A28, then verify historical/current-head horizon. Confirmed signed acceptance remains 15/429 and all 90 full activity gates OPEN until owner readback."
+    },
+    {
+      "id": "BSA-20261127-293",
+      "class": "mcq02_si_explanation_lacks_source_bound_producer_and_owner_admission",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "The MCQ02 complete SI-dimensional explanation is a distinct unaccepted scientific meaning task after A28; an answer-key match or stored trilingual prose cannot prove its physical claims.",
+      "relatedIncidentIds": ["BSA-20261127-292", "BSA-20261127-285"],
+      "differenceFromLinkedIncident": "Two independent exact rational two-dimensional momentum models derive ML/T, kg m/s and vector direction. Full frozen EN/MS/ZH explanation, original selected source premises and second V36 partition bind A29 after A1-A28. The private PDF is absent, so code creates no academic acceptance.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker": "admit_si_explanation(private=private)",
+        "remedyMarker": "BSA293_A1_A29_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
+        "normalEntryPoints": [
+          {"path": "app_generator/validation/section91_si_explanation_proof.py", "marker": "def independently_prove_si_explanation"},
+          {"path": "app_generator/runtime/v3_si_explanation_academic_admission.py", "marker": "def admit_si_explanation"},
+          {"path": "app_generator/runtime/v3_si_explanation_academic_admission.py", "marker": "def verify_si_explanation_across_git_heads"},
+          {"path": "scripts/show_bosla_long_horizon.py", "marker": "BOSLA_LONG_HORIZON_SI_EXPLANATION_SCIENCE_REVERIFIED"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v78_si_explanation_source_science.py", "kind": "python", "marker": "test_original_gate_restart_and_fault_injection"},
+        {"path": "tests/test_v79_si_explanation_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
+        {"path": "tests/test_v79_si_explanation_academic_admission.py", "kind": "python", "marker": "test_cross_head_readback_rejects_changed_science_and_duplicate"}
+      ],
+      "applicableEnvironments": ["yoga6", "github-ci"],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "Host exact-head CI and genuine original selected Serway source run; independently reopen A1-A28, sign A29, verify historical/current-head horizon. Confirmed signed count remains 15/429 and all 90 full activity gates OPEN until owner readback."
     }
   ]
 }

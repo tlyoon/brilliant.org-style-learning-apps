@@ -1,0 +1,178 @@
+"""Owner-only original Serway MCQ02 SI explanation admission, A29.
+
+An exact source, candidate, V36 partition and prior A1-A27 chain are
+recomputed on admission and on historical/current-head readback.
+"""
+from __future__ import annotations
+
+from pathlib import Path
+
+from app_generator.runtime.v3_first_academic_proof_admission import _bound_inputs
+from app_generator.runtime.v3_long_horizon_development import read_long_horizon_development, _write_latest, _read_signed
+from app_generator.runtime.v3_native_release_adapter import _v6_checkpoint
+from app_generator.runtime.v3_revised_source_proof_rebinding import _signed
+from app_generator.runtime.v3_vector_explanation_academic_admission import verify_vector_explanation_across_git_heads
+from app_generator.runtime.v3_academic_proof_registry_receipt import verify_registry_audit, _RECEIPT as _REGISTRY_RECEIPT
+from app_generator.validation.section91_formal_physics import _SOURCE_SHA, _CANDIDATE_SHA
+from app_generator.validation.section91_si_explanation_proof import (
+    _TASK, independently_prove_si_explanation,
+    independently_check_si_explanation_witness,
+)
+
+_RECEIPT = "BOSLA_ACADEMIC_SI_EXPLANATION_A29_V1.json"
+_FRONTIER = "BOSLA_ACADEMIC_SI_EXPLANATION_FRONTIER_V1.json"
+_STATUS = "BSA293_INDEPENDENT_MCQ02_SI_EXPLANATION_SCIENCE_TASK_ADMITTED"
+_FRONTIER_STATUS = "BSA293_PRIVATE_SI_EXPLANATION_SCIENCE_TASK_ACCEPTED"
+
+
+def _folder(private: Path, ready: dict) -> Path:
+    return private / "owner-five-stage-completion" / ready["gitHead"] / ready["proposalSha256"]
+
+
+def _prior(private: Path) -> dict:
+    old = verify_vector_explanation_across_git_heads(private=private)
+    if (old.get("independentlyAcceptedAcademicTasks") != 28 or
+        old.get("fullAcademicTasksStillOpen") != 401 or
+        len(set(old.get("acceptedAcademicTaskIds", []))) != 28 or
+        old.get("completeAcademicProofGatesStillOpen") != 90 or
+        old.get("fullAcademicActivityPASS") != 0 or
+        old.get("publicationAuthorized") is not False):
+        raise ValueError("BSA293_SIGNED_A1_A28_CHAIN_REQUIRED")
+    return old
+
+
+def _original_proof(*, private: Path, ready: dict, historical: bool) -> tuple[dict, dict, dict]:
+    _, v36, _, source, candidate = _bound_inputs(private, ready, allow_historical=historical)
+    signed = v36.get("signedPartitionHashes", [])
+    if (len(signed) != 18 or v36.get("semanticTasksAutomaticallyDispatched") != 429 or
+        v36.get("fullAcademicProofTasksAccepted") != 0 or
+        v36.get("completeAcademicProofGatesStillOpen") != 90 or
+        v36.get("sourceSha256") != _SOURCE_SHA or
+        v36.get("publicationAuthorized") is not False):
+        raise ValueError("BSA293_EXACT_ORIGINAL_SOURCE_V36_REQUIRED")
+    part = _signed(_folder(private, ready), "V36_PARTITION_02.json", ready)
+    if (signed[1].get("activityId") != "act-mcq-02-si-units" or
+        signed[1].get("signedEvidenceSha256") != part.get("integritySha256") or
+        part.get("activity", {}).get("activityId") != "act-mcq-02-si-units" or
+        part.get("sourceSha256") != _SOURCE_SHA or
+        part.get("candidateSha256") != _CANDIDATE_SHA or
+        part.get("academicPASS") != 0 or
+        part.get("publicationAuthorized") is not False):
+        raise ValueError("BSA293_SECOND_SIGNED_ORIGINAL_V36_PARTITION_CHANGED")
+    proof = independently_prove_si_explanation(source_pdf=source, candidate_path=candidate)
+    independently_check_si_explanation_witness(proof)
+    rows = part["activity"].get("evidenceRows", [])
+    hits = [row for row in rows if row.get("taskId") == _TASK]
+    if (len(hits) != 1 or hits[0].get("kind") != "COMPLETE_SCIENTIFIC_MEANING" or
+        hits[0].get("surfacePath") != "explanation" or
+        hits[0].get("status") != "BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED" or
+        hits[0].get("surfaceSha256") != proof["surfaceSha256"] or
+        proof.get("newProviderCalls") != 0 or proof.get("publicationAuthorized") is not False):
+        raise ValueError("BSA293_EXPLANATION_SCIENCE_NOT_REPROVEN")
+    return v36, part, proof
+
+
+def _verify_receipt(*, private: Path, ready: dict, historical: bool) -> tuple[dict, dict]:
+    v36, part, proof = _original_proof(private=private, ready=ready, historical=historical)
+    old = _prior(private)
+    receipt = _signed(_folder(private, ready), _RECEIPT, ready)
+    audit = _signed(_folder(private, ready), _REGISTRY_RECEIPT, ready)
+    if (audit.get("sourceBoundRegistryAudit", {}).get("acceptedMcqDistractorTaskCount") != 2 or
+        audit.get("independentlyPreviouslyAcceptedAcademicTasks") != 2 or
+        receipt.get("signedRegistryAuditSha256") != audit["integritySha256"] or
+        receipt.get("status") != _STATUS or receipt.get("sourceSha256") != _SOURCE_SHA or
+        receipt.get("candidateSha256") != _CANDIDATE_SHA or
+        receipt.get("signedV36Sha256") != v36["integritySha256"] or
+        receipt.get("secondSignedV36PartitionSha256") != part["integritySha256"] or
+        receipt.get("previousAcademicTaskIds") != old["acceptedAcademicTaskIds"] or
+        receipt.get("previousVectorExplanationReceiptSha256") != old["vectorExplanationReceiptSha256"] or
+        receipt.get("newScientificProof") != proof or
+        receipt.get("newIndependentlyAdmittedAcademicTasks") != 1 or
+        receipt.get("totalAcademicTaskAcceptances") != 29 or
+        receipt.get("fullAcademicTasksStillOpen") != 400 or
+        receipt.get("completeAcademicProofGatesStillOpen") != 90 or
+        receipt.get("fullAcademicActivityPASS") != 0 or
+        receipt.get("newProviderCalls") != 0 or
+        receipt.get("publicationAuthorized") is not False):
+        raise ValueError("BSA293_ORIGINAL_EXPLANATION_IMMUTABLE_RECEIPT_CHANGED")
+    return receipt, proof
+
+
+def admit_si_explanation(*, private: Path) -> dict:
+    frontier = private / "long-horizon-development" / _FRONTIER
+    if frontier.exists() or frontier.is_symlink():
+        return verify_si_explanation_across_git_heads(private=private)
+    prev = _prior(private)
+    latest = read_long_horizon_development(private)
+    now = {"gitHead": latest["gitHead"], "proposalSha256": latest["proposalSha256"]}
+    audit = verify_registry_audit(private=private)
+    v36, part, proof = _original_proof(private=private, ready=now, historical=False)
+    if (audit.get("gitHead") != now["gitHead"] or
+        audit.get("signedV36Sha256") != v36["integritySha256"] or
+        audit.get("independentlyAcceptedAcademicTasks") != 2 or
+        _TASK in prev["acceptedAcademicTaskIds"]):
+        raise ValueError("BSA293_A1_A28_CHAIN_OR_TASK_DUPLICATE")
+    receipt = _v6_checkpoint(_folder(private, now) / _RECEIPT, {
+        **now, "status": _STATUS, "sourceSha256": _SOURCE_SHA,
+        "candidateSha256": _CANDIDATE_SHA,
+        "signedV36Sha256": v36["integritySha256"],
+        "secondSignedV36PartitionSha256": part["integritySha256"],
+        "signedRegistryAuditSha256": audit["registryReceiptSha256"],
+        "previousAcademicTaskIds": prev["acceptedAcademicTaskIds"],
+        "previousVectorExplanationReceiptSha256": prev["vectorExplanationReceiptSha256"],
+        "newScientificProof": proof, "newIndependentlyAdmittedAcademicTasks": 1,
+        "totalAcademicTaskAcceptances": 29, "fullAcademicTasksStillOpen": 400,
+        "completeAcademicProofGatesStillOpen": 90, "fullAcademicActivityPASS": 0,
+        "newProviderCalls": 0, "publicationAuthorized": False,
+    })
+    checked, checked_proof = _verify_receipt(private=private, ready=now, historical=False)
+    if checked != receipt or checked_proof != proof:
+        raise ValueError("BSA293_EXPLANATION_CHANGED_BEFORE_ADMISSION")
+    _write_latest(frontier, {
+        **now, "status": _FRONTIER_STATUS, "sourceSha256": _SOURCE_SHA,
+        "candidateSha256": _CANDIDATE_SHA,
+        "newScientificReceiptSha256": receipt["integritySha256"],
+        "previousAcademicTaskIds": prev["acceptedAcademicTaskIds"],
+        "newAcceptedTaskId": _TASK, "cumulativeAcademicTasksAccepted": 29,
+        "fullAcademicTasksStillOpen": 400, "completeAcademicProofGatesStillOpen": 90,
+        "fullAcademicActivityPASS": 0, "publicationAuthorized": False,
+    })
+    return verify_si_explanation_across_git_heads(private=private)
+
+
+def verify_si_explanation_across_git_heads(*, private: Path) -> dict:
+    frontier = _read_signed(private / "long-horizon-development" / _FRONTIER)
+    now_ck = read_long_horizon_development(private)
+    origin = {"gitHead": frontier.get("gitHead"), "proposalSha256": frontier.get("proposalSha256")}
+    now = {"gitHead": now_ck["gitHead"], "proposalSha256": now_ck["proposalSha256"]}
+    if (frontier.get("status") != _FRONTIER_STATUS or
+        frontier.get("sourceSha256") != _SOURCE_SHA or
+        frontier.get("candidateSha256") != _CANDIDATE_SHA or
+        now_ck.get("sourceSha256") != _SOURCE_SHA or
+        now_ck.get("candidateSha256") != _CANDIDATE_SHA or
+        frontier.get("cumulativeAcademicTasksAccepted") != 29 or
+        frontier.get("fullAcademicTasksStillOpen") != 400 or
+        frontier.get("completeAcademicProofGatesStillOpen") != 90 or
+        frontier.get("fullAcademicActivityPASS") != 0 or
+        frontier.get("publicationAuthorized") is not False):
+        raise ValueError("BSA293_HISTORICAL_EXPLANATION_FRONTIER_UNVERIFIED")
+    receipt, proof = _verify_receipt(private=private, ready=origin, historical=origin != now)
+    _, _, recomputed = _original_proof(private=private, ready=now, historical=False)
+    prior = _prior(private)
+    if (proof != recomputed or
+        receipt["integritySha256"] != frontier.get("newScientificReceiptSha256") or
+        receipt["previousVectorExplanationReceiptSha256"] != prior["vectorExplanationReceiptSha256"] or
+        frontier.get("previousAcademicTaskIds") != prior["acceptedAcademicTaskIds"] or
+        frontier.get("newAcceptedTaskId") != _TASK or
+        _TASK in prior["acceptedAcademicTaskIds"]):
+        raise ValueError("BSA293_EXPLANATION_SCIENCE_CHANGED_ACROSS_CODE_HEADS")
+    return {"status": "BSA293_SI_EXPLANATION_SCIENCE_TASK_GENUINELY_REVERIFIED",
+            "currentGitHead": now["gitHead"], "batchProofOriginGitHead": origin["gitHead"],
+            "carriedAcrossGitHead": origin != now,
+            "acceptedAcademicTaskIds": [*prior["acceptedAcademicTaskIds"], _TASK],
+            "siExplanationReceiptSha256": receipt["integritySha256"],
+            "independentlyAcceptedAcademicTasks": 29,
+            "fullAcademicTasksStillOpen": 400,
+            "completeAcademicProofGatesStillOpen": 90,
+            "fullAcademicActivityPASS": 0, "newProviderCalls": 0,
+            "publicationAuthorized": False}

@@ -40,7 +40,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main(argv:list[str]|None=None)->int:
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--max-steps",type=int,default=14)
+    parser.add_argument("--max-steps",type=int,default=15)
     args=parser.parse_args(argv)
     home=os.environ.get("LOCALAPPDATA")
     if not home:

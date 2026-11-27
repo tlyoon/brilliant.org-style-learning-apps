@@ -19,7 +19,7 @@ PROPOSAL="b"*64
 
 class AutonomousAcademicFlow(TestCase):
     def case(self,previous_head=False,failed_ci=False,
-             auto_run=None,max_steps=14,raise_a3=False):
+             auto_run=None,max_steps=15,raise_a3=False):
         with TemporaryDirectory() as temp:
             private=Path(temp)
             root=Path(temp)/"fake-root"
@@ -157,6 +157,24 @@ class AutonomousAcademicFlow(TestCase):
             explanation_verify_patch.start()
             self.addCleanup(explanation_admit_patch.stop)
             self.addCleanup(explanation_verify_patch.stop)
+            def si_explanation_admit(private):
+                calls.append("a29")
+                frontier=private/"long-horizon-development"/auto._SI_EXPLANATION_FRONTIER
+                frontier.parent.mkdir(exist_ok=True)
+                frontier.write_text("{}")
+                return {"independentlyAcceptedAcademicTasks":29,
+                        "fullAcademicTasksStillOpen":400}
+            si_explanation_admit_patch=patch.object(auto,"admit_si_explanation",side_effect=si_explanation_admit)
+            si_explanation_verify_patch=patch.object(auto,"verify_si_explanation_across_git_heads",
+                return_value={"independentlyAcceptedAcademicTasks":29,
+                              "fullAcademicTasksStillOpen":400,
+                              "completeAcademicProofGatesStillOpen":90,
+                              "fullAcademicActivityPASS":0,
+                              "publicationAuthorized":False})
+            si_explanation_admit_patch.start()
+            si_explanation_verify_patch.start()
+            self.addCleanup(si_explanation_admit_patch.stop)
+            self.addCleanup(si_explanation_verify_patch.stop)
             with (patch.object(auto,"_git_info",return_value=(HEAD,"feature")),
                   patch.object(auto,"_git_clean",return_value=True),
                   patch.object(auto,"_hosted_runs",return_value=[]),
@@ -231,19 +249,19 @@ class AutonomousAcademicFlow(TestCase):
 
     def test_all_four_missing_boundaries_automatically_advance_in_one_run(self):
         result,actions=self.case(previous_head=True)
-        self.assertEqual(actions,["owner","audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21","a22_a24","a25_a27","a28"])
-        self.assertEqual(result["academicProofTasksAccepted"],28)
-        self.assertEqual(result["fullAcademicProofTasksStillOpen"],401)
+        self.assertEqual(actions,["owner","audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21","a22_a24","a25_a27","a28","a29"])
+        self.assertEqual(result["academicProofTasksAccepted"],29)
+        self.assertEqual(result["fullAcademicProofTasksStillOpen"],400)
         self.assertEqual(result["completeAcademicProofGatesStillOpen"],90)
         self.assertEqual(result["academicActivityPASS"],0)
         self.assertFalse(result["publicationAuthorized"])
 
     def test_idempotent_restart_does_not_reissue_old_proofs(self):
         result,actions=self.case(auto_run="twice")
-        self.assertEqual(actions,["audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21","a22_a24","a25_a27","a28"])
+        self.assertEqual(actions,["audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21","a22_a24","a25_a27","a28","a29"])
         first,second=result
-        self.assertEqual(first["academicProofTasksAccepted"],28)
-        self.assertEqual(second["academicProofTasksAccepted"],28)
+        self.assertEqual(first["academicProofTasksAccepted"],29)
+        self.assertEqual(second["academicProofTasksAccepted"],29)
         self.assertEqual(second["actionsExecuted"],[])
 
     def test_failed_exact_head_ci_stops_unsafe_admission(self):
@@ -259,7 +277,7 @@ class AutonomousAcademicFlow(TestCase):
             self.case(previous_head=True,max_steps=2)
 
     def test_bad_batch_length_and_bool_rejected(self):
-        for limit in (0,15,True,-2):
+        for limit in (0,16,True,-2):
             with self.subTest(limit=limit),self.assertRaisesRegex(
                 ValueError,"INVALID_BOUNDED"):
                 self.case(max_steps=limit)
