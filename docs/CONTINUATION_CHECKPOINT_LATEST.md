@@ -1,6 +1,6 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-285 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261127-286 | ACTIVE
 
 > 27 NOV BSA284 MCQ06 equal-speed science producer: two independent exact rational perpendicular vector models and three pinned full EN/MS/ZH false-option clauses now have an executable witness producer and readback. Focused synthetic source and adversarial tests pass. Original selected Serway source.pdf is absent from this disposable snapshot, so actual owner source run, signed A16-A18 admission, independent horizon and hosted CI are pending. Signed count remains 15/429, 414 pending, all 90 full activity gates OPEN.
 
@@ -1186,3 +1186,7 @@ PR217 (2 Nov 2026): Independent source-bound private v11 learner Chrome audit ve
 ### BSA285 independent scientific progress (27 November 2026; code pending CI)
 
 At Yoga6 development cycle 17, original Serway Section 9.1 source-bound academic frontier was still **15/429 independently signed tasks**, 414 outstanding and all 90 complete academic gates open. BSA284 MCQ06 proof-producer patch was retained after a known registry-family contract failure; host repaired its metadata without replaying the model and integrated it after exact candidate GitHub CI. No A16 signed admission yet exists. BSA283 monitors real process output, not growth of accepted science. BSA285 adds a separate signed-horizon accepted-task-count observer and 60-minute/two-head no-gain trigger to the normal existing owner scheduler, with strict false-acceptance, rollback and same-head fault injection. On excessive delay, its next coding task explicitly targets independent original-source proof admission, not further noise. Pending BSA285 own CI and live adoption; zero new academic acceptances claimed.
+
+### BSA286 source QA supervisor fault recovery (27 November 2026; verified in isolated worktree)
+
+At Yoga6 16:46 owner cycle 19 returned a retryable safety status from an unconditional process wait timeout after its original-source child launched. This was a true subprocess leak, not a new science acceptance: the 14596/15468/22492 tree remained alive after parent exit until its identity was independently verified and exact tree safely reaped. BSA286 adds launch-identity persistence, exception-safe bounded process tree termination, strict PID-reuse safeguards, normal restart orphan reconciliation, and real nested Windows subprocess tests. Original independently signed frontier **15/429**, 414 pending, 90 complete academic gates open. BSA284 source proof code exists but A16 is not signed. BSA286 is NOT academic success: independent current-head CI and live scheduled verification are still required.

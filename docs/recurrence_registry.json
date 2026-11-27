@@ -10737,6 +10737,35 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-27",
       "nextAction":"ACTIVE: test actual original-source signed horizon extraction, full regression, exact source-commit hosted CI, owner safe integration, and normal scheduler restart. The current independently signed count remains 15/429; BSA284 is producer only and cannot admit A16-A18 without a separately signed exact-head owner acceptance. Keep the next task selected automatically and never count CI/model/log output as science proof."
+    },
+    {
+      "id":"BSA-20261127-286",
+      "class":"owner_supervisor_secondary_timeout_leaves_nested_academic_processes_orphaned",
+      "status":"active",
+      "rootCauseFamily":"genuinely-new-root-cause",
+      "noveltyExplanation":"The genuine Yoga6 cycle 19 original Serway source child spawned PID14596, wrapper PID15468, descendant PID22492 and further source-only descendants. The parent aborted at 16:46:13 with an exception masked by subprocess.wait(timeout=20) in unconditional finally. The active child tree survived with the old log frozen at 116 bytes, while the Windows scheduled task returned Ready. On 27 Nov the exact original PID14596 was verified by Win32_Process creation time, executable path and original 8-step academic command, then taskkill /T /F terminated only this tree; the remaining PIDs were confirmed absent. BSA283 cannot remediate a parent monitor exception that occurs before its 20-minute child-output watchdog fires.",
+      "relatedIncidentIds":["BSA-20261127-283","BSA-20261127-285","BSA-20261127-282"],
+      "differenceFromLinkedIncident":"BSA286 supervises the exact owned nested child on every monitor and filesystem exception and never waits on an un-terminated process. A bounded forced termination is issued before wait, an additional bounded cleanup is attempted if OS reaping stalls, and secondary timeout is explicitly classified as unsafe instead of hiding the original fault. It persists child PID, start time and operation label; at every normal scheduled start under the original singleflight lock a Win32 creation-date, executable, command, owner-cycle and logged PID match must succeed before any orphan tree may be killed. Mismatched or reused PID is stopped safely. Real Yoga6 nested descendant fault injection verifies silence termination while an unrelated sibling survives, without touching paid-provider requests or private academic receipts.",
+      "automaticRemedy":{
+        "runtimePath":"scripts/bosla_persistent_development.py",
+        "triggerMarker":"recover_previous_owner_tree(",
+        "remedyMarker":"BSA286_AUTHENTIC_STALE_OWNER_TREE_REAPED",
+        "normalEntryPoints":[
+          {"path":"app_generator/runtime/v3_owner_child_tree_recovery.py","marker":"def exact_owner_identity"},
+          {"path":"app_generator/runtime/v3_owner_child_tree_recovery.py","marker":"def recover_previous_owner_tree"},
+          {"path":"scripts/bosla_persistent_development.py","marker":"BSA286_OWNER_ORPHAN_IDENTITY_SAFETY_STOP"},
+          {"path":"scripts/bosla_persistent_development.py","marker":"windows_kill_tree(p.pid)"}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v66_owner_tree_supervision.py","kind":"python","marker":"test_exception_during_20_second_heartbeat_kills_owned_tree"},
+        {"path":"tests/test_v66_owner_tree_supervision.py","kind":"python","marker":"test_exact_saved_tree_reaped_then_same_restart_idempotent"},
+        {"path":"tests/test_v66_owner_tree_supervision.py","kind":"python","marker":"test_untrusted_pid_is_quarantined_not_killed"},
+        {"path":"tests/test_v67_windows_real_owner_tree.py","kind":"python","marker":"test_real_nested_child_idle_kills_all_descendants_without_touching_sibling"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-27",
+      "nextAction":"ACTIVE until full source branch tests, exact-hosted-CI, safe live-owner integration and a restarted original textbook verification prove that the 20-second secondary timeout and orphaned nested worker cannot recur. The existing 15/429 signed academic frontier remains untouched; A16 requires a distinct original-source proof and signed independent horizon admission."
     }
   ]
 }
