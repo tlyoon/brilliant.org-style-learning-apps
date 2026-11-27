@@ -11095,6 +11095,34 @@
       "applicableEnvironments": ["yoga6", "github-ci"],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Host exact-head CI and genuine selected Serway original source run; independently reopen A1-A24, sign A25-A27, verify historical/current Git head receipts. Signed count remains 15/429 until owner readback; all 90 complete academic activity gates remain OPEN."
+    },
+    {
+      "id": "BSA-20261127-292",
+      "class": "mcq01_complete_scientific_explanation_lacks_source_bound_proof_and_admission",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "The 27 MCQ false-choice science tasks have executable producers, but the first complete scientific explanation remains a distinct unaccepted task. Stored three-language prose and a source-free answer model cannot prove all of its physical claims.",
+      "relatedIncidentIds": ["BSA-20261127-291", "BSA-20261127-285"],
+      "differenceFromLinkedIncident": "MCQ01 explanation A28 has two exact rational opposite-direction momentum models, pinned full EN/MS/ZH explanation and prompt, original selected textbook axioms and page anchor, canonical COMPLETE_SCIENTIFIC_MEANING task, first signed V36 partition, immutable owner admission after A1-A27, and historical/current-head source reproof. No trilingual-equivalence or full-activity PASS is inferred.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker": "admit_vector_explanation(private=private)",
+        "remedyMarker": "BSA292_A1_A28_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
+        "normalEntryPoints": [
+          {"path": "app_generator/validation/section91_vector_explanation_proof.py", "marker": "def independently_prove_vector_explanation"},
+          {"path": "app_generator/runtime/v3_vector_explanation_academic_admission.py", "marker": "def admit_vector_explanation"},
+          {"path": "app_generator/runtime/v3_vector_explanation_academic_admission.py", "marker": "def verify_vector_explanation_across_git_heads"},
+          {"path": "scripts/show_bosla_long_horizon.py", "marker": "BOSLA_LONG_HORIZON_VECTOR_EXPLANATION_SCIENCE_REVERIFIED"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v76_vector_explanation_source_science.py", "kind": "python", "marker": "test_original_gate_and_restart_recomputation"},
+        {"path": "tests/test_v77_vector_explanation_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
+        {"path": "tests/test_v77_vector_explanation_academic_admission.py", "kind": "python", "marker": "test_cross_head_readback_rejects_changed_science_and_duplicate"}
+      ],
+      "applicableEnvironments": ["yoga6", "github-ci"],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "Host exact-head CI and genuine original selected Serway source run; independently reopen A1-A27, sign A28, then verify historical/current-head horizon. Confirmed signed acceptance remains 15/429 and all 90 full activity gates OPEN until owner readback."
     }
   ]
 }
