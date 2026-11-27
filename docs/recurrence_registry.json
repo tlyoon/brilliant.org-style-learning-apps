@@ -11231,6 +11231,65 @@
       "applicableEnvironments": ["yoga6", "github-ci"],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Host exact-head CI and owner-only original Serway MCQ08 source/partition test, then run normal A16-A24 admission and independent historical/current-head horizon readback. This sandbox cannot claim new acceptance; last confirmed 15/429, 414 pending, 90 full activity gates OPEN."
+    },
+{
+      "id": "BSA-20261128-297",
+      "class": "missing_source_bound_mcq03_newton_explanation_producer_and_a30_owner_admission",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "After the distractor family and MCQ01/02 explanation code, MCQ03 complete scientific meaning remained unproved. The previous frontier stopped at A29 and the normal CLI still checked an A27 receipt, so later legitimate acceptance could not be independently reported.",
+      "relatedIncidentIds": [
+        "BSA-20261128-296",
+        "BSA-20261127-293",
+        "BSA-20261126-277"
+      ],
+      "differenceFromLinkedIncident": "Produce a fresh exact rational F=dp/dt explanation witness for frozen MCQ03 EN/MS/ZH, bind its canonical task to the SHA-pinned owner candidate and third signed V36 partition, and admit only after signed A1-A29 with historical/current Git-head recomputation. Preserve private Serway source and all old receipts.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker": "admit_newton_explanation(private=private)",
+        "remedyMarker": "BSA297_A1_A30_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/validation/section91_newton_explanation_proof.py",
+            "marker": "def independently_prove_newton_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_newton_explanation_academic_admission.py",
+            "marker": "def admit_newton_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_newton_explanation_academic_admission.py",
+            "marker": "def verify_newton_explanation_across_git_heads"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "BOSLA_LONG_HORIZON_NEWTON_EXPLANATION_SCIENCE_REVERIFIED"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v83_newton_explanation_source_science.py",
+          "kind": "python",
+          "marker": "test_source_candidate_restart_and_forged_witness"
+        },
+        {
+          "path": "tests/test_v84_newton_explanation_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v84_newton_explanation_academic_admission.py",
+          "kind": "python",
+          "marker": "test_cross_head_readback_rejects_changed_science_and_duplicate"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-28",
+      "nextAction": "Host exact-head CI and original private Serway source run, then owner signed A16-A30 admission and independent historical/current-head horizon. Confirmed count remains 15/429 and all 90 full activity gates OPEN until actual owner readback."
     }
   ]
 }
