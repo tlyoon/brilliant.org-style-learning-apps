@@ -56,6 +56,10 @@ from app_generator.runtime.v3_isolated_pair_academic_batch_admission import (
     _FRONTIER as _ISOLATED_PAIR_FRONTIER,
     admit_isolated_pair_batch, verify_isolated_pair_batch_across_git_heads,
 )
+from app_generator.runtime.v3_spring_buffer_academic_batch_admission import (
+    _FRONTIER as _SPRING_BUFFER_FRONTIER,
+    admit_spring_buffer_batch, verify_spring_buffer_batch_across_git_heads,
+)
 
 
 def _owner_advance_worker(repo:Path)->None:
@@ -70,7 +74,7 @@ def _owner_advance_worker(repo:Path)->None:
 
 
 def advance_all_eligible_academic_actions(
-    *,repo:Path,private:Path,max_steps:int=10,
+    *,repo:Path,private:Path,max_steps:int=12,
 )->dict[str,Any]:
     if type(max_steps) is not int or not 1<=max_steps<=12:
         raise ValueError("BSA276_INVALID_BOUNDED_AUTONOMOUS_STEP_LIMIT")
@@ -235,13 +239,29 @@ def advance_all_eligible_academic_actions(
             or pair_verified["fullAcademicActivityPASS"]!=0
             or pair_verified["publicationAuthorized"] is not False):
             raise ValueError("BSA290_A1_A24_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        spring=private/"long-horizon-development"/_SPRING_BUFFER_FRONTIER
+        if not spring.exists() and not spring.is_symlink():
+            admitted=admit_spring_buffer_batch(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=27
+                or admitted["pendingMcqDistractorScienceTasks"]!=0):
+                raise ValueError("BSA291_SPRING_BUFFER_BATCH_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A25_A27_SPRING_BUFFER_SCIENCE_TASKS")
+            continue
+        spring_verified=verify_spring_buffer_batch_across_git_heads(private=private)
+        if (spring_verified["independentlyAcceptedAcademicTasks"]!=27
+            or spring_verified["fullAcademicTasksStillOpen"]!=402
+            or spring_verified["pendingMcqDistractorScienceTasks"]!=0
+            or spring_verified["completeAcademicProofGatesStillOpen"]!=90
+            or spring_verified["fullAcademicActivityPASS"]!=0
+            or spring_verified["publicationAuthorized"] is not False):
+            raise ValueError("BSA291_A1_A27_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA290_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA291_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":24,
-            "fullAcademicProofTasksStillOpen":405,
-            "pendingMcqDistractorScienceTasks":3,
+            "academicProofTasksAccepted":27,
+            "fullAcademicProofTasksStillOpen":402,
+            "pendingMcqDistractorScienceTasks":0,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,
             "nextSafeDevelopmentFrontier":
