@@ -43,9 +43,11 @@ if ($Install) {
     $action=New-ScheduledTaskAction -Execute $python -Argument ('-B "'+$worker+'" --once') -WorkingDirectory $repo
     $identity=[Security.Principal.WindowsIdentity]::GetCurrent().Name
     $logon=New-ScheduledTaskTrigger -AtLogOn -User $identity
-    $daily=New-ScheduledTaskTrigger -Daily -At '00:05'
-    $daily.Repetition.Interval=(New-TimeSpan -Minutes 15)
-    $daily.Repetition.Duration=(New-TimeSpan -Days 1)
+    # ScheduledTasks -Daily has no mutable Repetition property on Yoga6.
+    # Use the supported -Once repetition parameter set; an additional
+    # logon trigger guarantees resume at sign-in. The ten-year repeat
+    # horizon is bounded, not an unverified indefinite CIM mutation.
+    $daily=New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(2) -RepetitionInterval (New-TimeSpan -Minutes 15) -RepetitionDuration (New-TimeSpan -Days 3650)
     $settings=New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -StartWhenAvailable -ExecutionTimeLimit ([TimeSpan]::Zero) -RestartInterval (New-TimeSpan -Minutes 5) -RestartCount 3 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
     $principal=New-ScheduledTaskPrincipal -UserId $identity -LogonType Interactive -RunLevel Limited
     $registered=Register-ScheduledTask -TaskName $taskName -Action $action -Trigger @($logon,$daily) -Settings $settings -Principal $principal -Force
