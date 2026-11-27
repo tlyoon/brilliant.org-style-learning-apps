@@ -3,6 +3,10 @@
 Authoritative execution identity: **Bosla**, the Brilliant.org-style learning app, on
 the authorized owner **Yoga 6**. This is not MicroGen_AI_Web.
 
+## BSA284 MCQ06 independent equal-speed vector counterproofs -- ACTIVE
+
+After signed A13-A15, MCQ06 opt-b/c/d remain unaccepted. The new source-specific producer pins the complete three-language prompt and alternatives, reopens the exact single original Serway source and frozen candidate, checks the original vector/mass-times-velocity premises and page anchor, derives the three canonical task IDs, and evaluates two distinct exact rational north/east momentum models. Independent readback rejects altered physics and acceptance flags even when the witness digest is recalculated. Synthetic source fault tests pass in the Git-less snapshot; actual private original PDF is absent here. The normal owner continuation must run genuine source-bound producer, integrate separately signed A16-A18 admission with exact hosted CI and independently reopen the receipt before any count changes. Current signed 15/429, 414 pending and all 90 full activity gates OPEN.
+
 ## BSA283 single textbook PDF audit and no-progress watchdog -- ACTIVE
 
 User-requested PDF LaTeX verification: no pdflatex or LaTeX-to-PDF production tool is invoked. Live real child is pdftotext extracting the existing selected original Serway textbook PDF. This is consistent with the one-textbook production source contract, not the retired three-external-PDF historical campaign. The Bosla generation prompt forbids LaTeX in JSON.

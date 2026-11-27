@@ -10683,6 +10683,32 @@
       ],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "ACTIVE until all tests exact GitHub CI and on-device owner adoption. Do not remove pdftotext: it correctly reads the single authorized Serway textbook. Avoid unnecessary repeated extraction and false parent progress. Original signed 15/429, 414 pending, all 90 full academic activity gates OPEN; no new academic PASS from cache."
+    },
+    {
+      "id": "BSA-20261127-284",
+      "class": "mcq06_equal_speed_independent_vector_science_proof_missing",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "After signed MCQ05 A13-A15, MCQ06 opt-b/c/d still lack source-bound individual false-choice science witnesses. Existing source-free formal answer models establish the correct key but cannot independently accept complete distractor claims. The private original PDF is deliberately absent from the coding snapshot.",
+      "relatedIncidentIds": ["BSA-20261126-278", "BSA-20261127-281", "BSA-20261127-283"],
+      "differenceFromLinkedIncident": "This MCQ06 producer uses two new exact rational perpendicular vector models, three entire frozen EN/MS/ZH false-option clauses and task IDs, exact one-source digest, original source physics premises and page anchor. No prior MCQ05 signed receipt is modified. Independent witness readback recomputes the physics; the owner admission gate remains pending original PDF, signed V36 and exact CI.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/section91_equal_speed_false_options_proof.py",
+        "triggerMarker": "BSA284_AUTHENTIC_ONE_SERWAY_SOURCE_AND_CANDIDATE_REQUIRED",
+        "remedyMarker": "BSA284_CANONICAL_MC_Q06_TASK_NOT_REDERIVED",
+        "normalEntryPoints": [
+          {"path": "app_generator/validation/section91_equal_speed_false_options_proof.py", "marker": "def independently_prove_equal_speed_false_option"},
+          {"path": "app_generator/validation/section91_equal_speed_false_options_proof.py", "marker": "def independently_check_equal_speed_witness"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v64_equal_speed_source_science.py", "kind": "python", "marker": "test_three_new_tasks_and_two_distinct_exact_vector_models"},
+        {"path": "tests/test_v64_equal_speed_source_science.py", "kind": "python", "marker": "test_rehashed_science_and_status_tampering_is_rejected"},
+        {"path": "tests/test_v64_equal_speed_source_science.py", "kind": "python", "marker": "test_source_bound_producer_exercises_original_check_and_task_derivation"}
+      ],
+      "applicableEnvironments": ["yoga6", "github-ci"],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "Run genuine MCQ06 opt-b/c/d source-bound proof on the private original selected Serway PDF and frozen candidate; then add separate exact-head signed A16-A18 admission and independent horizon readback. Until that owner event, accepted count remains signed 15/429, 414 pending and all 90 full activity gates OPEN. Synthetic fixture tests are engineering evidence only."
     }
   ]
 }
