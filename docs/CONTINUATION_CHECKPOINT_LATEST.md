@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-283 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261127-284 | ACTIVE
+
+> 27 NOV BSA284 MCQ06 equal-speed science producer: two independent exact rational perpendicular vector models and three pinned full EN/MS/ZH false-option clauses now have an executable witness producer and readback. Focused synthetic source and adversarial tests pass. Original selected Serway source.pdf is absent from this disposable snapshot, so actual owner source run, signed A16-A18 admission, independent horizon and hosted CI are pending. Signed count remains 15/429, 414 pending, all 90 full activity gates OPEN.
 
 > 27 NOV BSA283 PDF-LaTeX audit: NO real Bosla pdflatex or LaTeX compiler invocation. Live Yoga6 only invoked pdftotext to read the one original selected Serway 9.1 textbook source.pdf. The owner task reached original source V36 and registry audit at 15:10 but showed no fresh child log for >35m while parent heartbeat repeatedly said RUNNING. Repeated original PDF extraction is now cached in process ONLY after real full PDF SHA256 verification on each invocation; original bytes also verified around extraction. New unbuffered original academic controller emits discrete flushed step events; parent detects verified child log-byte growth and kills only a silent child after 20min, preserves all signed academic receipts, classifies local failure and continues eligible development. New regression tests pass; CI/owner deployment still required. Signed 15/429, 414 pending, all 90 full gates OPEN. No new outside PDF, publication, or scientific PASS.
 
