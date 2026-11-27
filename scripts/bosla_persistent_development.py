@@ -42,6 +42,9 @@ from app_generator.runtime.v3_isolated_codegen_workspace import (
 from app_generator.runtime.v3_staged_patch_autorepair import (
     repair_staged_blank_eof,
 )
+from app_generator.runtime.v3_scientific_acceptance_watchdog import (
+    observe_signed_horizon, investigate_zero_academic_gain,
+)
 
 ROOT=Path(__file__).resolve().parents[1]
 PRIVATE=Path(os.environ.get("LOCALAPPDATA", str(Path.home()/"AppData"/"Local")))/"Microvid"/"BoslaPersistentDevelopment"
@@ -375,6 +378,20 @@ def _owner_stage(state:dict[str,Any])->bool:
     if rc!=0:
         _failed_owner_decision(state,head=current,exit_code=rc)
         return False
+    # BSA285: a successful independently signed source-bound verifier is
+    # different from CI success, watchdog heartbeat, or growing log bytes.
+    # Failure to parse the independent receipt fails closed, never adds PASS.
+    try:
+        science=observe_signed_horizon(
+            state,_safe_last_log(state),head=current,now=_utc(),
+            cycle=int(state["cycle"]))
+    except (ValueError,KeyError,TypeError) as exc:
+        _update(state,"BSA285_INDEPENDENT_SCIENCE_READBACK_UNTRUSTED",
+                scienceVerificationError=str(exc)[:250],
+                currentHead=current)
+        return False
+    _update(state,"BSA285_INDEPENDENT_SIGNED_SCIENCE_COUNT_OBSERVED",
+            scienceAcceptance=science)
     state.pop("academicFailure",None)
     state["lastOwnerHead"]=current
     _update(state,"BSA279_ORIGINAL_TEXTBOOK_OWNER_SIGNED_ACCEPTANCE_VERIFIED",
@@ -611,6 +628,21 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
                 " The owner will rerun authentic CI and science on the "
                 " next committed head. "
             )
+    science_stall=state.get("scienceStall")
+    if isinstance(science_stall,dict) and science_stall.get("triggered"):
+        prompt+=(
+            " BSA285 INDEPENDENT SCIENTIFIC ACCEPTANCE STALL: a separately "
+            "verified original Serway horizon receipt has not increased "
+            "the academically accepted 429-task count. This is NOT normal "
+            "progress merely because logs, CI or source-free tests pass. "
+            "Review earlier source-proof and admission implementations; "
+            "finish the specific missing real-source scientific proof "
+            "producer AND its signed owner admission + independent "
+            "cross-Git-head readback. Add falsification and restart tests, "
+            "integrate the remedy, and advance to the next genuinely "
+            "unaccepted task. Never fabricate the next accepted count or "
+            "turn a generated witness into an academic PASS. "
+        )
     if reuse:
         prompt+=(
             " INCIDENT REPAIR, NOT A NEW UNRELATED TASK: inspect the "
@@ -704,6 +736,15 @@ def cycle(*,codegen:bool=True)->dict[str,Any]:
         state["currentHead"]=_head()
         _update(state,"BSA279_PERSISTENT_DEVELOPMENT_CYCLE_STARTED",
                 cycleStartedAt=_utc())
+        # BSA285: independent scholarly throughput is not log throughput.
+        # Inspect the previously independently verified signed baseline on
+        # every normal scheduler entry, including CI and code-repair cycles.
+        diagnostic=investigate_zero_academic_gain(
+            state,now=_utc(),cycle=int(state["cycle"]))
+        if diagnostic.get("triggered"):
+            state["scienceStall"]=diagnostic
+            _update(state,"BSA285_INDEPENDENT_SCIENCE_STALL_INVESTIGATION",
+                    scienceStall=diagnostic)
         try:
             if _branch()!=MAIN_BRANCH:
                 _update(state,"BSA279_WRONG_BOSLA_FEATURE_BRANCH")
