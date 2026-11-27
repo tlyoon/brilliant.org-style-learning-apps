@@ -11205,6 +11205,32 @@
       "applicableEnvironments": ["yoga6", "github-ci"],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Host exact-head CI, run the private original-source MCQ07 test and owner A16-A21 admission in order, then independently reread the signed horizon. Confirmed count stays 15/429 until that readback."
+    },
+    {
+      "id": "BSA-20261128-296",
+      "class": "private_mcq08_canonical_task_ids_mismatch_tracked_sample",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "The exact owner BSA290_CANONICAL_MCQ08_TASK_NOT_REDERIVED failure shows MCQ08 retained three BSA253 IDs from the tracked sample. BSA253 hashes the entire candidate, so these IDs cannot identify the private revised owner task even when local science and trilingual surfaces match.",
+      "relatedIncidentIds": ["BSA-20261127-294", "BSA-20261127-295", "BSA-20261127-290"],
+      "differenceFromLinkedIncident": "MCQ08 now derives each task ID from the SHA-pinned candidate at proof time and independently compares that proof with the signed eighth V36 partition during admission and cross-head readback. No private source, signed evidence or acceptance count is changed.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_isolated_pair_academic_batch_admission.py",
+        "triggerMarker": "_original_isolated_pair_proofs",
+        "remedyMarker": "task_id=proof[\"taskId\"]",
+        "normalEntryPoints": [
+          {"path": "app_generator/validation/section91_isolated_pair_false_options_proof.py", "marker": "BSA290_CANONICAL_MCQ08_TASK_NOT_REDERIVED"},
+          {"path": "app_generator/runtime/v3_isolated_pair_academic_batch_admission.py", "marker": "task_id=proof[\"taskId\"]"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v72_isolated_pair_source_science.py", "kind": "python", "marker": "test_sample_task_ids_cannot_be_pinned_as_owner_ids"},
+        {"path": "tests/test_v73_isolated_pair_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
+        {"path": "tests/test_v82_owner_mcq08_canonical_ids.py", "kind": "python", "marker": "test_real_source_and_signed_eighth_partition_rederive_all_three"}
+      ],
+      "applicableEnvironments": ["yoga6", "github-ci"],
+      "lastValidatedDate": "2026-11-28",
+      "nextAction": "Host exact-head CI and owner-only original Serway MCQ08 source/partition test, then run normal A16-A24 admission and independent historical/current-head horizon readback. This sandbox cannot claim new acceptance; last confirmed 15/429, 414 pending, 90 full activity gates OPEN."
     }
   ]
 }

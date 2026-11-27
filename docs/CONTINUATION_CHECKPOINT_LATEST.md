@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-295 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-296 | ACTIVE
+
+> 28 NOV BSA296 exact owner MCQ08 blocker: sample-derived task IDs caused BSA290_CANONICAL_MCQ08_TASK_NOT_REDERIVED. The producer now derives each ID from the SHA-pinned candidate and the admission compares it with signed eighth V36 evidence. Local synthetic falsification and restart tests do not replace private original Serway execution. Confirmed acceptance stays 15/429, 414 pending and all 90 full activity gates OPEN until host CI, owner source admission and independent cross-head readback.
 
 > 27 NOV BSA295 MCQ07 identity repair: BSA253 canonical task IDs are now rederived from the SHA-pinned private revised candidate at proof time and checked against the signed seventh V36 partition during owner admission. The tracked sample cannot supply owner task IDs. Private source and signed admissions are absent in this snapshot; confirmed acceptance remains 15/429, 414 pending, with all 90 full activity gates OPEN.
 
