@@ -10390,6 +10390,21 @@
           "path": "tests/test_v54_persistent_bosla_development.py",
           "kind": "python",
           "marker": "test_real_bounded_child_writes_local_private_log"
+        },
+        {
+          "path": "tests/test_v55_persistent_ci_repair.py",
+          "kind": "python",
+          "marker": "test_failed_hosted_ci_dispatches_same_worktree_repair"
+        },
+        {
+          "path": "tests/test_v55_persistent_ci_repair.py",
+          "kind": "python",
+          "marker": "test_local_test_failure_reuses_its_actual_worktree"
+        },
+        {
+          "path": "tests/test_v55_persistent_ci_repair.py",
+          "kind": "python",
+          "marker": "test_missing_repair_worktree_cannot_generate_fake_success"
         }
       ],
       "applicableEnvironments": [
@@ -10397,7 +10412,7 @@
         "github-ci"
       ],
       "lastValidatedDate": "2026-11-27",
-      "nextAction": "ACTIVE new owner-authorized persistent Yoga6 developer dispatcher and separate Task Scheduler installer source implemented; retired old task must stay absent. Bounded 15-minute/logon triggers, OS-owned single-flight lock, private crash-safe journals, exact-head GitHub CI, real source-bound V1-V36 A1-A12 signed academic owner, isolated substantive Codex CLI model code writing, adversarial tests, no public merge. Pending exact hosted CI, actual task install/live-run, restart/fault injection and CI-reviewed model code change before RESOLVED. Max 12 Codex sessions/day and 45 min/session; no paid Gemini API replay, extra PDFs, public deploy or science PASS without original evidence. Task cannot run while Yoga6 turned off or signed out.",
+      "nextAction": "ACTIVE new owner-authorized persistent Yoga6 developer dispatcher and separate Task Scheduler installer source implemented; retired old task must stay absent. Bounded 15-minute/logon triggers, OS-owned single-flight lock, private crash-safe journals, exact-head GitHub CI, real source-bound V1-V36 A1-A12 signed academic owner, isolated substantive Codex CLI model code writing, adversarial tests, no public merge. Verified Windows Task Scheduler has 2 native triggers and real recurring cycles 1 and 2, lock/heartbeat checkpoints, Codex authenticated sandbox write of executable original physics functions with independently rerun 3 unittests, and 18 focused persistence/fault-injection tests. Same-branch hosted CI failure now dispatches bounded targeted Codex repair instead of indefinite status polling, with original worktree reused across local test failures. Pending exact new hosted CI, real owner V36 A10-A12 and further restart/fault injection and CI-reviewed model code change before RESOLVED. Max 12 Codex sessions/day and 45 min/session; no paid Gemini API replay, extra PDFs, public deploy or science PASS without original evidence. Task cannot run while Yoga6 turned off or signed out. Real Windows process kill fault-injection PASSED: first independent Python owner held OS lock, second concurrent process was denied exit2, taskkill /T /F terminated lock owner, third independent process reacquired automatically exit0. ",
       "noveltyExplanation": "The historical recurrence registry had many proof/CI/worker blockers but NO prior owner-approved, restart-on-logon Windows scheduled development service that invokes an actual authenticated code-writing agent from a separate worktree, verifies generated code and automatically hands that code to hosted CI and the original textbook owner admission. The old 30-minute task was explicitly retired, so previous no-scheduler tests intentionally prevented exactly this newly owner-authorized class."
     }
   ]

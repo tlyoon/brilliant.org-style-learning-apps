@@ -39,7 +39,7 @@ LOCK=PRIVATE/"single-flight.lock"
 JOURNAL=PRIVATE/"events.jsonl"
 MAIN_BRANCH="feature/bsa237-v16-pr-security-a11y"
 LEGACY_TASK="BoslaYoga6V3Recovery"
-PERSISTENT_TASKS=("BoslaPersistentDevelopment-15min","BoslaPersistentDevelopment-Logon")
+PERSISTENT_TASKS=("BoslaPersistentDevelopment-Yoga6",)
 FIXED_READY_BRANCH="feature/bsa278-paired-momentum-science"
 MAX_CODEX_PER_DAY=12
 MAX_CODEX_SECONDS=2700
@@ -365,8 +365,8 @@ def _codex_prompt()->str:
     )
 
 
-def _codex_stage(state:dict[str,Any])->bool:
-    if state.get("pendingBranch"):
+def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
+    if state.get("pendingBranch") and not repair:
         _update(state,"BSA279_WAITING_FOR_PENDING_BRANCH_CI")
         return False
     if not _daily_budget(state):
@@ -379,21 +379,53 @@ def _codex_stage(state:dict[str,Any])->bool:
     if not _clean() or _branch()!=MAIN_BRANCH:
         _update(state,"BSA279_OWNER_CODE_NOT_STABLE_FOR_CODEX")
         return False
-    branch,worktree=_dev_worktree(state)
+    # Preserve and repair the SAME isolated code change after a CI or
+    # deterministic local-test failure. Never drop unfinished code and
+    # blindly generate another unrelated branch on the next scheduled tick.
+    reuse=repair or state.get("codexRepairRequired") is True
+    if reuse:
+        branch=state.get("pendingBranch") or state.get("devBranch")
+        location=state.get("devWorktree")
+        if (not isinstance(branch,str) or not isinstance(location,str)
+            or not Path(location).is_dir()
+            or _branch(Path(location))!=branch):
+            _update(state,"BSA279_REPAIR_WORKTREE_NOT_AUTHENTIC")
+            return False
+        worktree=Path(location)
+    else:
+        branch,worktree=_dev_worktree(state)
     state["codexCount"]=int(state.get("codexCount",0))+1
-    _update(state,"BSA279_BOUNDED_CODE_GENERATION_STARTED",
+    prompt=_codex_prompt()
+    if reuse:
+        prompt+=(
+            " INCIDENT REPAIR, NOT A NEW UNRELATED TASK: inspect the "
+            "existing modified files and prior exact-hosted-CI/test "
+            "failure on this same branch. Look up historical fixes, "
+            "produce the targeted correction, run actual tests, add "
+            "fault-injection and integrate the fix into the executable "
+            "recovery registry. Do not replay an uncertain Gemini "
+            "request or assume the prior failed model output succeeded."
+        )
+    _update(state,"BSA279_BOUNDED_CODE_REPAIR_STARTED" if reuse else
+            "BSA279_BOUNDED_CODE_GENERATION_STARTED",
             devBranch=branch,devWorktree=str(worktree),
-            codexCount=state["codexCount"])
+            codexCount=state["codexCount"],codexRepairRequired=reuse)
     out=PRIVATE/"codex-last-message.txt"
     args=[str(executable),"exec","--sandbox","workspace-write",
           "--cd",str(worktree),"--skip-git-repo-check",
           "-c","approval_policy=\"never\"",
-          "--output-last-message",str(out),_codex_prompt()]
-    rc=_log_process(state,"CODEX_ACTUAL_CODE_DEVELOPMENT",args,
+          "--output-last-message",str(out),prompt]
+    rc=_log_process(state,"CODEX_TARGETED_REPAIR" if reuse
+                    else "CODEX_ACTUAL_CODE_DEVELOPMENT",args,
                     cwd=worktree,timeout=MAX_CODEX_SECONDS)
     if rc!=0:
+        # Never rerun the exact unknown model request. A future bounded
+        # repair can inspect existing partial *local code* if and only if
+        # this isolated worktree actually contains changed files.
+        modified=bool(_ok(["git","status","--porcelain"],cwd=worktree))
         _update(state,"BSA279_CODEX_FAILURE_QUARANTINED_NO_BLIND_REPLAY",
-                devBranch=branch,modelExitCode=rc)
+                devBranch=branch,modelExitCode=rc,
+                codexRepairRequired=modified)
         return False
     changed=_ok(["git","status","--porcelain"],cwd=worktree)
     if not changed:
@@ -415,11 +447,12 @@ def _codex_stage(state:dict[str,Any])->bool:
                and f.endswith((".py",".js",".ts",".tsx"))
                for f in files):
         _update(state,"BSA279_CODEX_DOCS_ONLY_NOT_DEVELOPMENT",
-                devBranch=branch,changedPaths=files)
+                devBranch=branch,changedPaths=files,
+                codexRepairRequired=True)
         return False
     if _run(["git","diff","--cached","--check"],cwd=worktree).returncode:
         _update(state,"BSA279_CODEX_PATCH_WHITESPACE_FAILURE",
-                devBranch=branch)
+                devBranch=branch,codexRepairRequired=True)
         return False
     # Regression contract and original content integrity are mandatory.
     for label,cmd in (
@@ -438,7 +471,8 @@ def _codex_stage(state:dict[str,Any])->bool:
                           cwd=worktree,timeout=300)
         if code:
             _update(state,"BSA279_CODEX_TESTS_FAIL_KEEP_PATCH",
-                    failedTest=label,devBranch=branch)
+                    failedTest=label,devBranch=branch,
+                    codexRepairRequired=True)
             return False
     _ok(["git","commit","-m","Bosla autonomous science proof development: "+
          datetime.now().strftime("%Y-%m-%d")],cwd=worktree,timeout=80)
@@ -450,7 +484,8 @@ def _codex_stage(state:dict[str,Any])->bool:
         return False
     state["pendingBranch"]=branch
     _update(state,"BSA279_NEW_SOURCE_CODE_COMMITTED_CI_DISPATCHED",
-            pendingHead=tip,devBranch=branch)
+            pendingHead=tip,devBranch=branch,
+            codexRepairRequired=False)
     return True
 
 
@@ -476,8 +511,19 @@ def cycle(*,codegen:bool=True)->dict[str,Any]:
             # A CI-pending generated branch is *not* bypassed for more
             # speculative code creation: finish its hosted review first.
             if state.get("pendingBranch"):
-                _update(state,"BSA279_CANDIDATE_PENDING_EXACT_CI",
-                        pendingBranch=state["pendingBranch"])
+                branch=state["pendingBranch"]
+                candidate=_head(Path(state["devWorktree"])) if (
+                    isinstance(state.get("devWorktree"),str)
+                    and Path(state["devWorktree"]).is_dir()
+                ) else state.get("pendingHead","")
+                ci=_hosted_ci(candidate,branch,min_runs=1)
+                if ci=="CI_FAILED" and codegen:
+                    _update(state,"BSA279_FAILED_CI_TARGETED_REPAIR_DISPATCHED",
+                            pendingBranch=branch,failedCandidateHead=candidate)
+                    _codex_stage(state,repair=True)
+                else:
+                    _update(state,"BSA279_CANDIDATE_"+ci,
+                            pendingBranch=branch)
                 return state
             owner_ok=_owner_stage(state)
             if not owner_ok:

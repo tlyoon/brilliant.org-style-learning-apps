@@ -11,3 +11,11 @@ Each normal owner run verifies historic failure remediations and exact branch st
 
 ## Acceptance and controls
 Code commit and CI do NOT close any academic tasks; immutable original textbook evidence, exact signed task identities, genuine independent re-review and horizon readback are mandatory. No public merge/deploy. Check scheduled task with PowerShell scripts/install_bosla_persistent_development.ps1 -Status; inspect latest private state with python scripts/bosla_persistent_development.py --status. Stop only the new task with -Remove; leave retired old task uninstalled. Test crash singleflight, restart, CI failure, malicious-patch quarantine and real Codex code-writing before marking BSA279 RESOLVED.
+
+## Tested CI repair follow-through
+
+Regression V55 confirms a failed exact-commit hosted CI on a pending development branch dispatches SAME-branch targeted bounded Codex repair instead of returning the same failed status indefinitely. If an original local patch failed deterministic tests, the next scheduled cycle reopens the original isolated worktree, reuses historical evidence and creates a targeted fix; it never silently discards the patch or treats it as academic proof. CI network outage causes safe periodic retry without calling Gemini or pretending that hosted CI passed. Real owner Yoga6 Codex sandbox write probe independently produced paired_momentum.py and test_paired_momentum.py, three tests PASS. The probe is deliberately isolated and is NOT a new academic acceptance.
+
+## Real Yoga6 scheduler and crash evidence
+
+On 27 Nov the new named Windows task was registered as Ready with 2 triggers under account User; it was launched through Task Scheduler, produced private cycle 1 and automatically re-entered as cycle 2 on the 15-minute trigger. LastTaskResult was 0 with the next trigger scheduled, while original Git hosted CI correctly remained AWAITING. The old retired task was absent. Separately, a genuine Windows subprocess fault injection held the OS lock, correctly denied a concurrent process exit 2, was forcibly killed using taskkill /T /F, and a new independent process reacquired the same lock with exit 0. An authenticated Codex CLI sandbox wrote real tested Python paired-momentum code, with three independent unittests PASS; this probe is isolated and cannot count as original Serway science admission.
