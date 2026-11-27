@@ -45,6 +45,9 @@ from app_generator.runtime.v3_staged_patch_autorepair import (
 from app_generator.runtime.v3_scientific_acceptance_watchdog import (
     observe_signed_horizon, investigate_zero_academic_gain,
 )
+from app_generator.runtime.v3_owner_child_tree_recovery import (
+    windows_kill_tree, recover_previous_owner_tree,
+)
 
 ROOT=Path(__file__).resolve().parents[1]
 PRIVATE=Path(os.environ.get("LOCALAPPDATA", str(Path.home()/"AppData"/"Local")))/"Microvid"/"BoslaPersistentDevelopment"
@@ -196,11 +199,12 @@ def _approved_diff(base:str,tip:str)->bool:
 
 def _log_process(state:dict[str,Any],label:str,args:list[str],*,
                  cwd:Path,timeout:int,idle_timeout:int|None=None)->int:
-    """Actual child output advances watchdog; parent heartbeat alone does not.
+    """BSA286: supervise the entire owned child tree on every exit path.
 
-    A silent child is not considered successful, no source-proof PASS is
-    inferred, and its *specific process tree* is terminated after bounded
-    inactivity so the next eligible code-development step can execute.
+    The owner process *never* waits indefinitely for a live subprocess in
+    finally. Ordinary exceptions trigger tree cleanup before returning to
+    the scheduler; crash/power-loss orphans are recovered under singleflight
+    on the next cycle with exact PID, command and creation-time checks.
     """
     logdir=PRIVATE/"logs"
     logdir.mkdir(parents=True,exist_ok=True)
@@ -214,8 +218,21 @@ def _log_process(state:dict[str,Any],label:str,args:list[str],*,
         last=start
         last_progress=start
         last_length=0
+        completed=False
+        kill_requested=False
+        state["childPid"]=p.pid
+        state["ownerChildStartedAt"]=_utc()
+        state["ownerChildLabel"]=label
+        state["ownerChildLifecycle"]="RUNNING"
         try:
-            while p.poll() is None:
+            _update(state,"BSA286_"+label+"_TREE_OWNED",
+                    childPid=p.pid,ownerChildStartedAt=state["ownerChildStartedAt"],
+                    ownerChildLabel=label,ownerChildLifecycle="RUNNING")
+            while True:
+                result=p.poll()
+                if result is not None:
+                    completed=True
+                    break
                 now=time.monotonic()
                 elapsed=now-start
                 length=logfile.stat().st_size
@@ -226,9 +243,12 @@ def _log_process(state:dict[str,Any],label:str,args:list[str],*,
                         idle_timeout is not None and
                         now-last_progress>idle_timeout):
                     stall=elapsed<=timeout
-                    subprocess.run(["taskkill","/T","/F","/PID",str(p.pid)],
-                                   stdout=subprocess.DEVNULL,
-                                   stderr=subprocess.DEVNULL,timeout=15)
+                    try:
+                        windows_kill_tree(p.pid)
+                        kill_requested=True
+                    except ValueError as exc:
+                        state["ownerChildCleanupFault"]=str(exc)[:160]
+                    state["ownerChildLifecycle"]="STOP_REQUESTED"
                     _update(state,
                         ("BSA283_"+label+"_NO_VERIFIABLE_PROGRESS"
                          if stall else "BSA279_"+label+"_TIMED_OUT"),
@@ -245,10 +265,33 @@ def _log_process(state:dict[str,Any],label:str,args:list[str],*,
                     last=now
                 time.sleep(2)
         finally:
-            p.wait(timeout=20)
+            # This also runs if the owner heartbeat or filesystem fails.
+            # Never issue an unbounded wait on a still-live source subprocess:
+            # it can own an entire nested source-free or Chrome worker tree.
+            if not completed and not kill_requested:
+                try:
+                    windows_kill_tree(p.pid)
+                    kill_requested=True
+                except ValueError as exc:
+                    state["ownerChildCleanupFault"]=str(exc)[:160]
+            try:
+                p.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                # taskkill can race a still-shutting-down Python wrapper.
+                try:
+                    windows_kill_tree(p.pid)
+                except ValueError as exc:
+                    state["ownerChildCleanupFault"]=str(exc)[:160]
+                try:
+                    p.wait(timeout=4)
+                except subprocess.TimeoutExpired as exc:
+                    state["ownerChildLifecycle"]="CLEANUP_UNVERIFIED"
+                    raise ValueError(
+                        "BSA286_OWNER_CHILD_TREE_TERMINATION_UNVERIFIED") from exc
+            state["ownerChildLifecycle"]="EXITED"
     _update(state,"BSA279_"+label+"_ENDED",
             exitCode=p.returncode,elapsedSeconds=int(time.monotonic()-start),
-            lastLogBytes=last_length)
+            lastLogBytes=last_length,ownerChildLifecycle="EXITED")
     return int(p.returncode)
 
 
@@ -732,6 +775,22 @@ def cycle(*,codegen:bool=True)->dict[str,Any]:
         raise ValueError("BSA279_BOSLA_OWNER_YOGA6_ONLY")
     with SingleFlight():
         state=_read_state()
+        # BSA286: a stopped coordinator may have left a nested academic
+        # worker alive. Clear ONLY exact saved process identity first.
+        try:
+            old_child=recover_previous_owner_tree(
+                state,expected_python=ROOT/".venv"/"Scripts"/"python.exe")
+        except (OSError,ValueError,subprocess.TimeoutExpired) as exc:
+            _update(state,"BSA286_ORPHAN_IDENTITY_PROBE_SAFETY_STOP",
+                    lastErrorClass=type(exc).__name__,lastErrorCode=str(exc)[:250])
+            return state
+        if not old_child["safe"]:
+            _update(state,"BSA286_OWNER_ORPHAN_IDENTITY_SAFETY_STOP",
+                    orphanRecovery=old_child)
+            return state
+        if old_child["status"]=="BSA286_STALE_OWNER_TREE_REAPED":
+            _update(state,"BSA286_AUTHENTIC_STALE_OWNER_TREE_REAPED",
+                    orphanRecovery=old_child)
         state["cycle"]=int(state.get("cycle",0))+1
         state["currentHead"]=_head()
         _update(state,"BSA279_PERSISTENT_DEVELOPMENT_CYCLE_STARTED",
