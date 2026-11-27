@@ -39,10 +39,11 @@ class IsolatedPairAdmission(TestCase):
         v36["signedPartitionHashes"][7] = {
             "activityId": "act-mcq-08-isolated-subsystem-fallacy",
             "signedEvidenceSha256": "signed-eighth"}
+        task_ids = {option: format(i+1,"064x") for i,option in enumerate(a._OPTIONS_ORDER)}
         rows = [{"taskId": task, "kind": "MCQ_DISTRACTOR_SCIENCE",
                  "status": "BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED",
                  "surfaceSha256": "surface-"+option}
-                for option, task in a._TASKS.items()]
+                for option, task in task_ids.items()]
         partition = {"integritySha256": "signed-eighth",
                      "activity": {"activityId": "act-mcq-08-isolated-subsystem-fallacy",
                                   "evidenceRows": rows},
@@ -51,7 +52,7 @@ class IsolatedPairAdmission(TestCase):
                      "academicPASS": 0,
                      "publicationAuthorized": False}
         def producer(*, source_pdf, candidate_path, option_id):
-            return {"taskId": a._TASKS[option_id], "optionId": option_id,
+            return {"taskId": task_ids[option_id], "optionId": option_id,
                     "surfaceSha256": "surface-"+option_id,
                     "sourceSha256": a._SOURCE_SHA,
                     "candidateSha256": a._CANDIDATE_SHA,
@@ -63,7 +64,7 @@ class IsolatedPairAdmission(TestCase):
                   patch.object(a, "independently_check_isolated_pair_witness")):
                 return a._original_isolated_pair_proofs(private=Path("."), ready=ready, historical=False)
         _, _, proofs = run(partition)
-        self.assertEqual([p["taskId"] for p in proofs], list(a._TASKS.values()))
+        self.assertEqual([p["taskId"] for p in proofs], list(task_ids.values()))
         for changed in ("taskId", "surfaceSha256", "status"):
             altered = {**partition, "activity": {**partition["activity"],
                 "evidenceRows": [dict(row) for row in rows]}}
@@ -78,7 +79,7 @@ class IsolatedPairAdmission(TestCase):
     def test_cross_head_readback_rejects_changed_science_and_task_duplication(self):
         prior={"acceptedAcademicTaskIds":[str(i) for i in range(21)],
                "equalEnergyBatchReceiptSha256":"prior"}
-        proofs=[{"taskId":task} for task in a._TASKS.values()]
+        proofs=[{"taskId":format(i+1,"064x")} for i in range(3)]
         frontier={"gitHead":"a"*40,"proposalSha256":"b"*64,
                   "status":a._FRONTIER_STATUS,"sourceSha256":a._SOURCE_SHA,
                   "candidateSha256":a._CANDIDATE_SHA,

@@ -19,11 +19,13 @@ from app_generator.validation.source_passages import extract_pages
 from app_generator.runtime.v3_selected_textbook_scientific_provenance import _source_activity_anchors
 
 _ACTIVITY = "act-mcq-08-isolated-subsystem-fallacy"
-_TASKS = {
-    "opt-single-particle-conserved": "a65d34052e0033cd2cc6e7acd99918a30248c6df8ce5d191c2c1333aaa581e45",
-    "opt-force-equals-momentum": "4b69fcc5fcfe0ed5e832fabafeb09effdc7a9b64564b695e5cb2d17d944c43c8",
-    "opt-forces-cancel-on-body": "3d275501690934ce80226ba789c9d4b4f1ffd82b67d0e7768b26d70faf4ee669",
-}
+# BSA296: BSA253 includes the entire candidate in each task identity. The
+# public sample is not the SHA-pinned private owner candidate. Derive the ID
+# from that candidate, then compare it with the signed eighth V36 partition.
+_OPTIONS_ORDER = (
+    "opt-single-particle-conserved", "opt-force-equals-momentum",
+    "opt-forces-cancel-on-body",
+)
 _PROMPT = {"en":"b3f7144c4d1c84c5fed4102458af50a75fd021705caf65a1ae53262deb50ec30", "ms":"cfdd4605fbde2b75b808d6df8e1e439ed6207f28f5e2a3e6b1ee69b534dc5807", "zh":"1cf5beeaec2bbbdbb667e685252dc45784a1d5f56433b5d441fefcbd2e4a73a4"}
 _OPTIONS = {
     "opt-single-particle-conserved": {"en":"6e82bcf06747c9eafab61372a932de4ce4858187fef698b290ea70eeb3262622", "ms":"5bc04e850c61d65b06686b8fe46bd9a64cb71cb1984cc6bdeb25ba135896d82b", "zh":"c221f09745a649c8fc073b69a02f82c7b2069da5db5010efd672bcbe6f328383"},
@@ -84,7 +86,9 @@ def _models()->list[dict]:
 
 def independently_check_isolated_pair_witness(proof:dict)->None:
     option=proof.get("optionId") if isinstance(proof,dict) else None
-    if option not in _TASKS or (proof.get("taskId")!=_TASKS[option]
+    task_id=proof.get("taskId") if isinstance(proof,dict) else None
+    if option not in _OPTIONS_ORDER or (not isinstance(task_id,str) or len(task_id)!=64
+        or any(c not in "0123456789abcdef" for c in task_id)
         or proof.get("falseClaim")!=_CLAIMS[option]
         or proof.get("sourceSha256")!=_SOURCE_SHA
         or proof.get("candidateSha256")!=_CANDIDATE_SHA
@@ -107,7 +111,7 @@ def independently_check_isolated_pair_witness(proof:dict)->None:
 
 
 def independently_prove_isolated_pair_false_option(*,source_pdf:Path,candidate_path:Path,option_id:str)->dict:
-    if option_id not in _TASKS:
+    if option_id not in _OPTIONS_ORDER:
         raise ValueError("BSA290_UNREGISTERED_ISOLATED_PAIR_OPTION")
     candidate_bytes=candidate_path.read_bytes() if candidate_path.is_file() and not candidate_path.is_symlink() else b""
     if (source_pdf.is_symlink() or candidate_path.is_symlink() or not source_pdf.is_file()
@@ -127,7 +131,7 @@ def independently_prove_isolated_pair_false_option(*,source_pdf:Path,candidate_p
     prompt=_locales(activity.get("prompt"),_PROMPT)
     key=activity.get("answerKey",{})
     options=key.get("options",[])
-    expected=["opt-nadia-momentum-changes",*_TASKS]
+    expected=["opt-nadia-momentum-changes",*_OPTIONS_ORDER]
     if key.get("correct")!=expected[0] or [x.get("id") for x in options]!=expected:
         raise ValueError("BSA290_FROZEN_MCQ08_ANSWER_KEY_CHANGED")
     position=expected.index(option_id)
@@ -140,7 +144,7 @@ def independently_prove_isolated_pair_false_option(*,source_pdf:Path,candidate_p
     tasks=[t for t in queue["tasks"] if t["activityId"]==_ACTIVITY and
            t["kind"]=="MCQ_DISTRACTOR_SCIENCE" and
            t["surfacePath"]==f"answerKey/options/{position}/label"]
-    if (queue["taskCount"]!=429 or len(tasks)!=1 or tasks[0]["taskId"]!=_TASKS[option_id]
+    if (queue["taskCount"]!=429 or len(tasks)!=1
         or tasks[0]["surfaceSha256"]!=_digest(options[position]["label"])):
         raise ValueError("BSA290_CANONICAL_MCQ08_TASK_NOT_REDERIVED")
     body={"taskId":tasks[0]["taskId"],"optionId":option_id,"falseClaim":_CLAIMS[option_id],
