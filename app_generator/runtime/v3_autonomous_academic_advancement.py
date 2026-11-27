@@ -60,6 +60,10 @@ from app_generator.runtime.v3_spring_buffer_academic_batch_admission import (
     _FRONTIER as _SPRING_BUFFER_FRONTIER,
     admit_spring_buffer_batch, verify_spring_buffer_batch_across_git_heads,
 )
+from app_generator.runtime.v3_vector_explanation_academic_admission import (
+    _FRONTIER as _VECTOR_EXPLANATION_FRONTIER,
+    admit_vector_explanation, verify_vector_explanation_across_git_heads,
+)
 
 
 def _owner_advance_worker(repo:Path)->None:
@@ -74,9 +78,9 @@ def _owner_advance_worker(repo:Path)->None:
 
 
 def advance_all_eligible_academic_actions(
-    *,repo:Path,private:Path,max_steps:int=12,
+    *,repo:Path,private:Path,max_steps:int=14,
 )->dict[str,Any]:
-    if type(max_steps) is not int or not 1<=max_steps<=12:
+    if type(max_steps) is not int or not 1<=max_steps<=14:
         raise ValueError("BSA276_INVALID_BOUNDED_AUTONOMOUS_STEP_LIMIT")
     if not isinstance(repo,Path) or not isinstance(private,Path):
         raise ValueError("BSA276_OWNER_PATHS_REQUIRED")
@@ -255,12 +259,27 @@ def advance_all_eligible_academic_actions(
             or spring_verified["fullAcademicActivityPASS"]!=0
             or spring_verified["publicationAuthorized"] is not False):
             raise ValueError("BSA291_A1_A27_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        explanation=private/"long-horizon-development"/_VECTOR_EXPLANATION_FRONTIER
+        if not explanation.exists() and not explanation.is_symlink():
+            admitted=admit_vector_explanation(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=28
+                or admitted["fullAcademicTasksStillOpen"]!=401):
+                raise ValueError("BSA292_VECTOR_EXPLANATION_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A28_EXPLANATION_SCIENCE_TASK")
+            continue
+        explanation_verified=verify_vector_explanation_across_git_heads(private=private)
+        if (explanation_verified["independentlyAcceptedAcademicTasks"]!=28
+            or explanation_verified["fullAcademicTasksStillOpen"]!=401
+            or explanation_verified["completeAcademicProofGatesStillOpen"]!=90
+            or explanation_verified["fullAcademicActivityPASS"]!=0
+            or explanation_verified["publicationAuthorized"] is not False):
+            raise ValueError("BSA292_A1_A28_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA291_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA292_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":27,
-            "fullAcademicProofTasksStillOpen":402,
+            "academicProofTasksAccepted":28,
+            "fullAcademicProofTasksStillOpen":401,
             "pendingMcqDistractorScienceTasks":0,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,

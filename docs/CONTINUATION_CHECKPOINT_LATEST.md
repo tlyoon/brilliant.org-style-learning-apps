@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261127-291 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261127-292 | ACTIVE
+
+> 27 NOV BSA292 MCQ01 complete scientific explanation: two exact rational vector models establish the frozen physical proposition against the selected Serway source, full EN/MS/ZH explanation, canonical explanation task and first signed V36 partition. Owner-only A28 receipt follows A1-A27 and independent horizon reopens original/current head. Private PDF is absent in this snapshot; confirmed signed acceptance remains 15/429, 414 pending and all 90 full activity gates OPEN.
 
 > 27 NOV BSA291 MCQ09 spring-buffer science producer and A25-A27 owner admission code: two exact rational pod, spring-energy and rail-impulse models refute three false momentum/energy propositions. Frozen full EN/MS/ZH option hashes, original Serway source SHA, ninth signed V36 partition and all previous A1-A24 signed receipts are mandatory. Independent horizon readback recomputes historical/current Git-head proof. The private PDF is absent from this disposable snapshot; confirmed signed acceptance remains 15/429, 414 pending and all 90 full activity gates OPEN.
 

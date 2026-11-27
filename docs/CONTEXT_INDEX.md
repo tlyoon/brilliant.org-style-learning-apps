@@ -1,5 +1,9 @@
 # Context index
 
+## 27 November 2026 — BSA292 first complete scientific explanation producer
+
+MCQ01's complete EN/MS/ZH explanation now has a separate original Serway source-bound exact vector proof producer and owner-only A28 admission after the A1-A27 chain. Two distinct rational models derive equal/opposite momentum and zero vector sum; original source, frozen candidate, first signed V36 partition and cross-head reproof remain mandatory. This Git-less snapshot lacks the private PDF and hosted CI, so only 15/429 remains confirmed signed and all 90 full activity gates remain OPEN. See BSA-20261127-292 in the recurrence registry and ledger.
+
 ## 27 November 2026 — BSA290 MCQ08 isolated-pair source-bound proof code
 
 The next unaccepted MCQ08 opt-b/c/d science tasks have executable two-body Fraction impulse, force, momentum and acceleration countermodels. Full frozen EN/MS/ZH candidate surfaces, canonical task IDs, original selected Serway source digest and eighth signed V36 partition gate owner A22–A24 admission. The normal academic controller, CLI and independent horizon now require the signed prior A1–A21 chain and independently reopen original/current head science. This Git-less coding snapshot has no private original PDF, so host exact CI and genuine Yoga6 source run remain pending. Only 15/429 source tasks are confirmed signed, 414 pending, and all 90 complete academic activity gates remain OPEN. See BSA-20261127-290 in the recurrence registry and failure ledger.

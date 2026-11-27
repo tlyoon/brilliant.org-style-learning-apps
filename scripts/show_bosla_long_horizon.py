@@ -540,6 +540,44 @@ def main() -> int:
             "nextActionStatus":"SOURCE_BOUND_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_vector_explanation_academic_admission import (
+        _FRONTIER as _VECTOR_EXPLANATION_FRONTIER,
+        verify_vector_explanation_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_VECTOR_EXPLANATION_FRONTIER).exists():
+        try:
+            explanation=verify_vector_explanation_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=27
+                or explanation["acceptedAcademicTaskIds"][:27]!=outcome.get(
+                    "verifiedAcademicProofTaskIds")
+                or explanation["independentlyAcceptedAcademicTasks"]!=28
+                or explanation["fullAcademicTasksStillOpen"]!=401
+                or explanation["completeAcademicProofGatesStillOpen"]!=90
+                or explanation["fullAcademicActivityPASS"]!=0
+                or explanation["publicationAuthorized"] is not False):
+                raise ValueError("BSA292_A28_CANNOT_BYPASS_A1_A27")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,
+                ArithmeticError) as exc:
+            print(json.dumps({
+                "status":"BOSLA_VECTOR_EXPLANATION_SCIENCE_FRONTIER_UNTRUSTED",
+                "errorClass":type(exc).__name__,
+                "academicProofAcceptanceEstablished":False,
+                "publicationAuthorized":False,
+            },sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_VECTOR_EXPLANATION_SCIENCE_REVERIFIED",
+            "academicAcceptancesSource":
+                "TWENTY_EIGHT_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":28,
+            "fullAcademicProofTasksStillOpen":401,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":explanation["acceptedAcademicTaskIds"],
+            "academicVectorExplanationReceiptSha256":explanation["vectorExplanationReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 
