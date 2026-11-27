@@ -43,6 +43,25 @@ class IsolatedCodegenWorkspaceTests(TestCase):
             self.assertFalse((snap/".git").exists())
             self.assertFalse((snap/"source.pdf").exists())
 
+    def test_untracked_private_source_not_sent_to_model(self):
+        with TemporaryDirectory() as t:
+            base=Path(t)
+            repo=self.fixture(base)
+            # Untracked code may be a pending repair; unrelated local
+            # private source cannot enter the disposable model snapshot.
+            (repo/"content"/"original_transcript.txt").write_text(
+                "NEVER SEND PRIVATE ORIGINAL SOURCE")
+            (repo/"app_generator"/"pending_proof.py").write_text(
+                "def source_safe_rule(): return True\n")
+            snap=base/"safe"
+            baseline=build_isolated_coding_snapshot(
+                repo=repo,snapshot=snap)
+            self.assertFalse(
+                (snap/"content/original_transcript.txt").exists())
+            self.assertTrue(
+                (snap/"app_generator/pending_proof.py").exists())
+            self.assertNotIn("content/original_transcript.txt",baseline)
+
     def test_patch_import_verified_without_git_or_academic_pass(self):
         with TemporaryDirectory() as t:
             base=Path(t)
