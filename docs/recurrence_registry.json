@@ -11458,6 +11458,35 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-28",
       "nextAction":"Host exact-head CI, rerun original private Serway A22-A24 independent source and signature readback, then normal A25-A27 admission and independent horizon. Do not count any new accepted task before owner signed verification."
+    },
+    {
+      "id":"BSA-20261128-310",
+      "class":"science_worker_heavy_cpu_verification_mistaken_for_silent_stall_and_no_persisted_stage_progress",
+      "status":"active",
+      "rootCauseFamily":"runtime-preflight",
+      "noveltyExplanation":"Owner Yoga6 cycle 83 spent sustained CPU cycles inside original Serway A25-A27 verification while the log remained unchanged for 13+ minutes. The legacy 20-minute log-idle watchdog could kill a legitimate scientific computation before its next signed stage, while a 20-second scheduler heartbeat falsely suggested academic progress. The owner hard 60-minute total bound must remain in force and a CPU-spinning loop must never count as physics evidence.",
+      "relatedIncidentIds":["BSA-20261128-307","BSA-20261128-309"],
+      "differenceFromLinkedIncident":"Add stage-completion markers only after normal signed admission and readback steps; read bounded head-matching phase markers separately from academic acceptance. Sample exact PID-and-creation-time Windows child-process-tree CPU via system APIs every 20 seconds without third-party libraries. Allow active computation to survive log silence but enforce the existing immutable 3600-second wall cap and 1200-second truly idle cap. Persist last entered/completed stage, CPU delta, log inactivity and last stage transition as scienceExecution diagnostics while academic progress still requires separate independent source-bound cross-head signed receipt re-verification. Never count generated markers or CPU as PASS, replay ambiguous provider requests, or bypass original textbook QA.",
+      "automaticRemedy":{
+        "runtimePath":"scripts/bosla_persistent_development.py",
+        "triggerMarker":"ownerScienceLivenessDecision",
+        "remedyMarker":"BSA308_COMPUTATION_ACTIVE_NO_NEW_SIGNED_PROOF",
+        "normalEntryPoints":[
+          {"path":"app_generator/runtime/v3_owner_science_stage_liveness.py","marker":"def windows_owner_tree_cpu"},
+          {"path":"scripts/bosla_persistent_development.py","marker":"scienceExecution"},
+          {"path":"app_generator/runtime/v3_autonomous_academic_advancement.py","marker":"class _SignedStageTelemetry"}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_bsa308_science_stage_liveness.py","kind":"python","marker":"test_real_windows_process_tree_cpu_snapshot_tracks_child_work"},
+        {"path":"tests/test_bsa308_science_stage_liveness.py","kind":"python","marker":"test_log_silent_cpu_busy_process_continues_without_science_pass"},
+        {"path":"tests/test_bsa308_science_stage_liveness.py","kind":"python","marker":"test_hard_cap_still_kills_cpu_busy_owned_tree"},
+        {"path":"tests/test_bsa308_science_stage_liveness.py","kind":"python","marker":"test_well_formed_same_head_stage_markers_are_progress_only"},
+        {"path":"tests/test_bsa308_science_stage_liveness.py","kind":"python","marker":"test_quiet_cpu_active_is_not_treated_as_deadlock"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-28",
+      "nextAction":"Check isolated Yoga6 original worker process CPU and exact stage regression, unchanged recurrence contract, then exact-commit hosted CI. Guarded integration into idle owner only; do not interrupt active scientific verification. Keep 24/429 authoritative until independently reverified A25-A27 signed cross-head proof advances to 27/429. Preserve 90 open full academic activity gates."
     }
   ]
 }
