@@ -77,6 +77,10 @@ from app_generator.runtime.v3_glider_explanation_academic_admission import (
     _FRONTIER as _GLIDER_EXPLANATION_FRONTIER,
     admit_glider_explanation, verify_glider_explanation_across_git_heads,
 )
+from app_generator.runtime.v3_third_law_explanation_academic_admission import (
+    _FRONTIER as _THIRD_LAW_EXPLANATION_FRONTIER,
+    admit_third_law_explanation, verify_third_law_explanation_across_git_heads,
+)
 from app_generator.runtime.v3_outcome_driven_science_preflight import (
     preflight_next_a28_before_rebuild,
 )
@@ -371,12 +375,27 @@ def advance_all_eligible_academic_actions(
             or glider_verified["fullAcademicActivityPASS"]!=0
             or glider_verified["publicationAuthorized"] is not False):
             raise ValueError("BSA298_A1_A31_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        third_explanation=private/"long-horizon-development"/_THIRD_LAW_EXPLANATION_FRONTIER
+        if not third_explanation.exists() and not third_explanation.is_symlink():
+            admitted=admit_third_law_explanation(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=32
+                or admitted["fullAcademicTasksStillOpen"]!=397):
+                raise ValueError("BSA316_THIRD_LAW_EXPLANATION_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A32_THIRD_LAW_EXPLANATION_SCIENCE_TASK")
+            continue
+        third_verified=verify_third_law_explanation_across_git_heads(private=private)
+        if (third_verified["independentlyAcceptedAcademicTasks"]!=32
+            or third_verified["fullAcademicTasksStillOpen"]!=397
+            or third_verified["completeAcademicProofGatesStillOpen"]!=90
+            or third_verified["fullAcademicActivityPASS"]!=0
+            or third_verified["publicationAuthorized"] is not False):
+            raise ValueError("BSA316_A1_A32_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA298_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA316_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":31,
-            "fullAcademicProofTasksStillOpen":398,
+            "academicProofTasksAccepted":32,
+            "fullAcademicProofTasksStillOpen":397,
             "pendingMcqDistractorScienceTasks":0,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,

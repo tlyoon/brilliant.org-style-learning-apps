@@ -1,5 +1,9 @@
 # Context index
 
+## 28 November 2026 — BSA316 MCQ05 complete explanation science
+
+The fifth activity now has a separate exact isolated-pair explanation proof producer and owner-only A32 admission after independently reverified A1-A31. It binds the complete EN/MS/ZH explanation, original Serway source, canonical task and fifth signed V36 partition; restart readback recomputes original and current code heads. This Git-less snapshot lacks the private PDF and owner CI, so confirmed academic acceptance remains 27/429 and all 90 full activity gates OPEN. See BSA-20261128-316.
+
 ## 28 November 2026 — BSA298 MCQ04 paired-glider explanation science
 
 The next complete scientific explanation has an exact two-model momentum and kinetic-energy proof producer, canonical task binding and separate A31 owner admission after independently reverified A1-A30. Normal advancement and long-horizon readback check the original and current code heads. Private Serway PDF and hosted CI are unavailable in this coding snapshot, so confirmed signed acceptance remains 15/429 with all 90 full activity gates OPEN. See BSA-20261128-298.
