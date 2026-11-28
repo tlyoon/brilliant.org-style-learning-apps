@@ -11458,6 +11458,32 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-28",
       "nextAction":"Host exact-head CI, rerun original private Serway A22-A24 independent source and signature readback, then normal A25-A27 admission and independent horizon. Do not count any new accepted task before owner signed verification."
+    },
+    {
+      "id":"BSA-20261128-310",
+      "class":"owner_mcq01_canonical_explanation_task_not_rederived_from_private_candidate",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "noveltyExplanation":"The exact owner BSA292_CANONICAL_EXPLANATION_TASK_NOT_REDERIVED occurs because the A28 vector explanation producer pinned a BSA253 task ID from a tracked sample. BSA253 includes the entire candidate package digest, so the private SHA-pinned owner candidate has a distinct canonical ID even when MCQ01's complete explanation is unchanged.",
+      "relatedIncidentIds":["BSA-20261127-292","BSA-20261127-294","BSA-20261128-308"],
+      "differenceFromLinkedIncident":"Derive the MCQ01 COMPLETE_SCIENTIFIC_MEANING ID from the exact SHA-pinned candidate at proof time and require its signed first V36 partition row during owner admission and cross-head readback. Retain original Serway source, full EN/MS/ZH surface hashes, exact Fraction models, prior A1-A27 receipts and immutable academic evidence. An unrelated candidate edit demonstrably changes the ID; a changed explanation or source still fails closed.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_vector_explanation_academic_admission.py",
+        "triggerMarker":"_original_proof(",
+        "remedyMarker":"proof[\"taskId\"]",
+        "normalEntryPoints":[
+          {"path":"app_generator/runtime/v3_vector_explanation_academic_admission.py","marker":"proof[\"taskId\"]"},
+          {"path":"app_generator/runtime/v3_autonomous_academic_advancement.py","marker":"from app_generator.runtime.v3_vector_explanation_academic_admission import ("}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v76_vector_explanation_source_science.py","kind":"python","marker":"test_canonical_id_comes_from_pinned_candidate_not_tracked_sample"},
+        {"path":"tests/test_v77_vector_explanation_academic_admission.py","kind":"python","marker":"test_partition_task_and_science_are_independently_rechecked"},
+        {"path":"tests/test_v77_vector_explanation_academic_admission.py","kind":"python","marker":"test_cross_head_readback_rejects_changed_science_and_duplicate"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-28",
+      "nextAction":"Host exact-head CI, run the private original Serway source and signed first V36 partition checks, then normal A28 owner admission and independent historical/current-head readback. No new accepted task or full activity PASS is claimed from this snapshot."
     }
   ]
 }

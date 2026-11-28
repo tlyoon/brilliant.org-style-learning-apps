@@ -7,6 +7,8 @@ from app_generator.runtime import v3_vector_explanation_academic_admission as a
 
 
 class VectorExplanationAdmission(TestCase):
+    _TASK_ID = "b" * 64  # Stand-in for the ID derived from the private candidate.
+
     def test_prior_signed_twenty_seven_is_mandatory(self):
         good = {"independentlyAcceptedAcademicTasks": 27, "fullAcademicTasksStillOpen": 402,
                 "pendingMcqDistractorScienceTasks": 0,
@@ -30,14 +32,14 @@ class VectorExplanationAdmission(TestCase):
                "publicationAuthorized":False}
         v36["signedPartitionHashes"][0] = {"activityId":"act-mcq-01-vector-nature",
                                               "signedEvidenceSha256":"signed-first"}
-        row = {"taskId":a._TASK, "kind":"COMPLETE_SCIENTIFIC_MEANING",
+        row = {"taskId":self._TASK_ID, "kind":"COMPLETE_SCIENTIFIC_MEANING",
                "surfacePath":"explanation", "status":"BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED",
                "surfaceSha256":"surface"}
         partition = {"integritySha256":"signed-first",
                      "activity":{"activityId":"act-mcq-01-vector-nature", "evidenceRows":[row]},
                      "sourceSha256":a._SOURCE_SHA,"candidateSha256":a._CANDIDATE_SHA,
                      "academicPASS":0,"publicationAuthorized":False}
-        proof = {"surfaceSha256":"surface", "newProviderCalls":0,"publicationAuthorized":False}
+        proof = {"taskId":self._TASK_ID, "surfaceSha256":"surface", "newProviderCalls":0,"publicationAuthorized":False}
         def run(part):
             with (patch.object(a,"_bound_inputs",return_value=(None,v36,None,"source","candidate")),
                   patch.object(a,"_signed",return_value=part),
@@ -55,7 +57,7 @@ class VectorExplanationAdmission(TestCase):
     def test_cross_head_readback_rejects_changed_science_and_duplicate(self):
         prior = {"acceptedAcademicTaskIds":[str(i) for i in range(27)],
                  "springBufferBatchReceiptSha256":"prior"}
-        proof = {"taskId":a._TASK,"models":[{"mass":"2"}]}
+        proof = {"taskId":self._TASK_ID,"models":[{"mass":"2"}]}
         frontier = {"gitHead":"a"*40,"proposalSha256":"b"*64,
                     "status":a._FRONTIER_STATUS,"sourceSha256":a._SOURCE_SHA,
                     "candidateSha256":a._CANDIDATE_SHA,"cumulativeAcademicTasksAccepted":28,
@@ -63,7 +65,7 @@ class VectorExplanationAdmission(TestCase):
                     "fullAcademicActivityPASS":0,"publicationAuthorized":False,
                     "newScientificReceiptSha256":"signed",
                     "previousAcademicTaskIds":prior["acceptedAcademicTaskIds"],
-                    "newAcceptedTaskId":a._TASK}
+                    "newAcceptedTaskId":self._TASK_ID}
         now = {"gitHead":"c"*40,"proposalSha256":"d"*64,
                "sourceSha256":a._SOURCE_SHA,"candidateSha256":a._CANDIDATE_SHA}
         receipt = {"integritySha256":"signed","previousSpringBufferBatchReceiptSha256":"prior"}
@@ -76,7 +78,7 @@ class VectorExplanationAdmission(TestCase):
                 return a.verify_vector_explanation_across_git_heads(private=Path("."))
         self.assertTrue(check(proof)["carriedAcrossGitHead"])
         with self.assertRaisesRegex(ValueError,"SCIENCE_CHANGED_ACROSS_CODE_HEADS"):
-            check({"taskId":a._TASK,"models":[{"mass":"3"}]})
-        duplicate = {**prior,"acceptedAcademicTaskIds":[*prior["acceptedAcademicTaskIds"][:-1],a._TASK]}
+            check({"taskId":self._TASK_ID,"models":[{"mass":"3"}]})
+        duplicate = {**prior,"acceptedAcademicTaskIds":[*prior["acceptedAcademicTaskIds"][:-1],self._TASK_ID]}
         with self.assertRaisesRegex(ValueError,"SCIENCE_CHANGED_ACROSS_CODE_HEADS"):
             check(proof,old=duplicate)

@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-309 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-310 | ACTIVE
+
+> 28 NOV BSA310 exact owner BSA292 canonical explanation failure: A28 now derives the MCQ01 task ID from the SHA-pinned candidate and checks that ID against the signed first V36 partition. An unrelated candidate revision changes the canonical ID while preserving the MCQ01 explanation; changed source or explanation remains rejected. This snapshot has no original private PDF, so hosted CI and owner source-bound admission remain pending. No new academic acceptance or full activity PASS is claimed.
 
 > 28 NOV BSA309 exact owner A25 readback failure: A22-A24's independent source-bound verifier now exports the signed isolated-pair receipt hash under the key consumed by A25-A27 and the horizon, while retaining its historical alias. The original Serway source is absent in this snapshot; owner source-bound admission and accepted-count change require host CI, original PDF, signed receipt and independent horizon readback. All 90 full activity gates remain OPEN.
 

@@ -70,3 +70,38 @@ class VectorExplanationScience(TestCase):
         changed["zh"] += "!"
         with self.assertRaises(ValueError):
             p._locale_hashes(changed, p._EXPLANATION)
+
+    def test_canonical_id_comes_from_pinned_candidate_not_tracked_sample(self):
+        sample = json.loads(_PACKAGE.read_text(encoding="utf8"))
+        revised = deepcopy(sample)
+        revised["activities"][-1]["prompt"]["en"] += " "
+        original_tasks = plan_full_semantic_proofs(package=sample, source_sha256=_REAL_SOURCE_SHA)["tasks"]
+        revised_tasks = plan_full_semantic_proofs(package=revised, source_sha256=_REAL_SOURCE_SHA)["tasks"]
+        select = lambda rows: next(t for t in rows if t["activityId"] == p._ACTIVITY and
+                                   t["kind"] == "COMPLETE_SCIENTIFIC_MEANING" and
+                                   t["surfacePath"] == "explanation")
+        self.assertEqual(select(original_tasks)["surfaceSha256"], select(revised_tasks)["surfaceSha256"])
+        self.assertNotEqual(select(original_tasks)["taskId"], select(revised_tasks)["taskId"])
+        with TemporaryDirectory() as folder:
+            source = Path(folder) / "source.pdf"
+            candidate = Path(folder) / "candidate.json"
+            source.write_bytes(b"%PDF-synthetic")
+            candidate.write_text(json.dumps(revised, ensure_ascii=False), encoding="utf8")
+            anchors = [{"activityId":p._ACTIVITY, "uniquePagePassageLocated":True,
+                        "physicalPage":1, "passageSha256":"a"*64}]
+            with (patch.object(p, "_SOURCE_SHA", sha256(source.read_bytes()).hexdigest()),
+                  patch.object(p, "_CANDIDATE_SHA", sha256(candidate.read_bytes()).hexdigest()),
+                  patch.object(p, "_source_axioms", return_value={
+                      "linear momentum is a vector":1,
+                      "defined to be the product of the mass and velocity":1}),
+                  patch.object(p, "extract_pages", return_value=["synthetic"]),
+                  patch.object(p, "_source_activity_anchors", return_value=anchors),
+                  patch.object(p, "plan_full_semantic_proofs", side_effect=lambda **kw:
+                      plan_full_semantic_proofs(package=kw["package"], source_sha256=_REAL_SOURCE_SHA))):
+                proof = p.independently_prove_vector_explanation(source_pdf=source, candidate_path=candidate)
+                self.assertEqual(proof["taskId"], select(revised_tasks)["taskId"])
+                changed = deepcopy(revised)
+                changed["activities"][0]["explanation"]["zh"] += "!"
+                candidate.write_text(json.dumps(changed, ensure_ascii=False), encoding="utf8")
+                with self.assertRaisesRegex(ValueError, "AUTHENTIC_ONE_SERWAY"):
+                    p.independently_prove_vector_explanation(source_pdf=source, candidate_path=candidate)
