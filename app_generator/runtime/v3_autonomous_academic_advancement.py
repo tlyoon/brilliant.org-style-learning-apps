@@ -13,6 +13,7 @@ from __future__ import annotations
 from pathlib import Path
 import subprocess
 import sys
+import time
 from typing import Any
 
 from app_generator.runtime.v3_versioned_readiness import (
@@ -89,6 +90,33 @@ def _owner_advance_worker(repo:Path)->None:
         raise ValueError("BSA276_NORMAL_OWNER_V36_WORKER_NOT_SUCCESSFUL")
 
 
+class _SignedStageTelemetry(list[str]):
+    """Log completed owner steps, not academic PASS, with no extra side effects.
+
+    Append is called only *after* the normal source-bound step successfully
+    returns. The associated signed receipt still needs independent reread.
+    """
+    def __init__(self,head:str,max_steps:int):
+        super().__init__()
+        self.head=head
+        self.max_steps=max_steps
+        self.current_step=0
+        self.current_step_started=None
+
+    def append(self,action:str)->None:
+        super().append(action)
+        print("BSA308_SIGNED_STAGE_STEP_COMPLETED "+
+              str(self.current_step)+"/"+str(self.max_steps)+
+              " head="+self.head[:12]+" action="+action,
+              file=sys.stderr,flush=True)
+        if self.current_step_started is not None:
+            elapsed=int(time.monotonic()-self.current_step_started)
+            print("BSA308_STAGE_DURATION_SECONDS "+
+                  str(self.current_step)+"/"+str(self.max_steps)+
+                  " head="+self.head[:12]+" seconds="+str(max(0,elapsed)),
+                  file=sys.stderr,flush=True)
+
+
 def advance_all_eligible_academic_actions(
     *,repo:Path,private:Path,max_steps:int=20,
 )->dict[str,Any]:
@@ -101,8 +129,10 @@ def advance_all_eligible_academic_actions(
         raise ValueError("BSA276_DIRTY_CODE_MUST_NOT_ADMIT_SOURCE_PROOFS")
     if not _exact_ci_success(_hosted_runs(repo,branch),head):
         raise ValueError("BSA276_EXACT_HEAD_HOSTED_CI_INCOMPLETE_OR_FAILED")
-    journal=[]
+    journal=_SignedStageTelemetry(head,max_steps)
     for step in range(max_steps):
+        journal.current_step=step+1
+        journal.current_step_started=time.monotonic()
         # Progress is meaningful only at real source-bound phase boundaries.
         # Emit on stderr with flush; keep CLI stdout a single machine JSON.
         print("BSA283_VERIFIABLE_ACADEMIC_STEP_ENTER "+

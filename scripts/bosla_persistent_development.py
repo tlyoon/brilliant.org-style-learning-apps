@@ -60,6 +60,10 @@ from app_generator.runtime.v3_scientific_acceptance_watchdog import (
 from app_generator.runtime.v3_incremental_signed_science_progress import (
     reconcile_independent_science,
 )
+from app_generator.runtime.v3_owner_science_stage_liveness import (
+    stage_log_observation,windows_owner_tree_cpu,cpu_time_gain,
+    liveness_decision,
+)
 from app_generator.runtime.v3_owner_child_tree_recovery import (
     windows_kill_tree, recover_previous_owner_tree,
 )
@@ -245,7 +249,21 @@ def _log_process(state:dict[str,Any],label:str,args:list[str],*,
         start=time.monotonic()
         last=start
         last_progress=start
+        last_cpu_activity=start
+        last_cpu_probe=start
         last_length=0
+        science_owner=label=="OWNER_REAL_SOURCE_ADMISSION"
+        cpu_before=windows_owner_tree_cpu(p.pid) if science_owner else None
+        cpu_available=cpu_before is not None
+        total_computation_gain=0.0
+        stage_entered=0
+        stage_completed=0
+        stage_action=None
+        stage_head=state.get("currentHead") if science_owner else None
+        if not isinstance(stage_head,str) or not re.fullmatch(
+                r"[0-9a-f]{40}",stage_head):
+            stage_head=None
+        last_stage_transition_at=None
         completed=False
         kill_requested=False
         state["childPid"]=p.pid
@@ -267,9 +285,41 @@ def _log_process(state:dict[str,Any],label:str,args:list[str],*,
                 if length>last_length:
                     last_length=length
                     last_progress=now
+                # BSA308: a quiet log is not equivalent to an idle original-
+                # textbook CPU worker. Sample the *owned* process tree on
+                # 20-second ticks. A busy loop still hits the hard wall cap.
+                if science_owner and now-last_cpu_probe>=20:
+                    cpu_now=windows_owner_tree_cpu(p.pid)
+                    cpu_gain=cpu_time_gain(cpu_before,cpu_now)
+                    if cpu_now is not None:
+                        cpu_available=True
+                        if cpu_gain>=0.05:
+                            last_cpu_activity=now
+                            total_computation_gain+=cpu_gain
+                        cpu_before=cpu_now
+                    else:
+                        cpu_available=False
+                        cpu_before=None
+                    last_cpu_probe=now
+                    observed=(stage_log_observation(logfile,head=stage_head)
+                              if stage_head else {"stageEntered":0,
+                                 "stageCompleted":0,"lastCompletedAction":None})
+                    if observed["stageEntered"]>stage_entered or (
+                            observed["stageCompleted"]>stage_completed):
+                        last_stage_transition_at=_utc()
+                    stage_entered=max(stage_entered,observed["stageEntered"])
+                    stage_completed=max(stage_completed,observed["stageCompleted"])
+                    if observed["lastCompletedAction"]:
+                        stage_action=observed["lastCompletedAction"]
+                decision=liveness_decision(
+                    elapsed=elapsed,idle_log=now-last_progress,
+                    idle_cpu=now-last_cpu_activity,hard_cap=timeout,
+                    idle_cap=idle_timeout or timeout,
+                    cpu_available=cpu_available,stage_started=stage_entered,
+                    last_completed=stage_completed)
                 if elapsed>timeout or (
                         idle_timeout is not None and
-                        now-last_progress>idle_timeout):
+                        decision=="BSA308_QUIET_SOURCE_WORKER_STALL"):
                     stall=elapsed<=timeout
                     try:
                         windows_kill_tree(p.pid)
@@ -282,14 +332,38 @@ def _log_process(state:dict[str,Any],label:str,args:list[str],*,
                          if stall else "BSA279_"+label+"_TIMED_OUT"),
                         failedPid=p.pid,elapsedSeconds=int(elapsed),
                         idleSeconds=int(now-last_progress),
-                        lastLogBytes=last_length,childPid=p.pid)
+                        lastLogBytes=last_length,childPid=p.pid,
+                        ownerScienceLivenessDecision=decision,
+                        scienceExecution=state.get("scienceExecution"))
                     return 125 if stall else 124
                 if now-last>=20:
+                    if science_owner:
+                        state["scienceExecution"]={
+                            "gitHead":stage_head,
+                            "lastStageEntered":stage_entered,
+                            "lastStageCompleted":stage_completed,
+                            "lastCompletedAction":stage_action,
+                            "lastStageTransitionAt":last_stage_transition_at,
+                            "logBytes":last_length,
+                            "logQuietSeconds":int(now-last_progress),
+                            "ownedProcessTreeCpuSecondsObserved":
+                                round(total_computation_gain,2),
+                            "cpuActivityWithinIdleWindow":(
+                                cpu_available and
+                                now-last_cpu_activity<=(idle_timeout or timeout)),
+                            "cpuObservationAvailable":cpu_available,
+                            "stageMarkersAreAcademicProof":False,
+                            "cpuUsageIsAcademicProof":False,
+                            "independentSignedProofStillRequired":True,
+                            "hardOwnerWallCapSeconds":timeout,
+                            "scientificAcceptanceUpdated":False,
+                        }
                     _update(state,"BSA279_"+label+"_RUNNING",
                             elapsedSeconds=int(elapsed),childPid=p.pid,
                             lastLogBytes=last_length,
                             idleSeconds=int(now-last_progress),
-                            childProgressObserved=last_length>0)
+                            childProgressObserved=last_length>0,
+                            ownerScienceLivenessDecision=decision)
                     last=now
                 time.sleep(2)
         finally:
