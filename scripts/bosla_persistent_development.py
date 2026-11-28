@@ -1,7 +1,9 @@
 """Bosla Yoga6 persistent, restart-safe autonomous development dispatcher.
 
 Invoked by two owner-approved *new* Windows triggers (logon and 15-minute
-recovery tick). Both call the SAME single-flight bounded --once worker.
+recovery tick). Both call the SAME single-flight bounded --long-horizon worker.
+The scheduler advances through hosted-CI and code-acceptance handoffs inside
+its bounded execution horizon rather than stopping after one obvious step.
 Unlike source-free status polling, each invocation executes actual eligible
 development: exact CI-gated feature-branch promotion, genuine Yoga6 owner
 scientific acceptance, or a bounded Codex workspace-write CODE-DEVELOPMENT
@@ -67,6 +69,9 @@ from app_generator.runtime.v3_owner_science_stage_liveness import (
 from app_generator.runtime.v3_owner_child_tree_recovery import (
     windows_kill_tree, recover_previous_owner_tree,
 )
+from app_generator.runtime.v3_long_horizon_ci_continuation import (
+    ci_gate,decide_next,
+)
 from app_generator.runtime.v3_adaptive_codex_admission import (
     admission_decision, record_invocation_start, record_invocation_outcome,
 )
@@ -76,6 +81,11 @@ PRIVATE=Path(os.environ.get("LOCALAPPDATA", str(Path.home()/"AppData"/"Local")))
 STATE=PRIVATE/"state.json"
 LOCK=PRIVATE/"single-flight.lock"
 JOURNAL=PRIVATE/"events.jsonl"
+HORIZON_LEDGER=PRIVATE/"long-horizon-execution.json"
+HORIZON_LOCK=PRIVATE/"long-horizon-active.lock"
+HORIZON_WALL_SECONDS=4*3600
+HORIZON_ACTION_LIMIT=12
+HORIZON_CI_POLL_SECONDS=35
 MAIN_BRANCH="feature/bsa237-v16-pr-security-a11y"
 LEGACY_TASK="BoslaYoga6V3Recovery"
 PERSISTENT_TASKS=("BoslaPersistentDevelopment-Yoga6",)
@@ -137,7 +147,9 @@ class SingleFlight:
     """OS-owned Windows byte-range lock releases automatically after crash."""
     def __enter__(self):
         PRIVATE.mkdir(parents=True,exist_ok=True)
-        self.file=LOCK.open("a+b")
+        path=getattr(self,"lock_path",LOCK)
+        path.parent.mkdir(parents=True,exist_ok=True)
+        self.file=path.open("a+b")
         # Windows byte-range locks can reject a *read* on an already
         # locked byte before LK_NBLCK is reached. Inspect file size via
         # seek, never read the locked byte, and close on every denial.
@@ -161,6 +173,14 @@ class SingleFlight:
         self.file.seek(0)
         msvcrt.locking(self.file.fileno(),msvcrt.LK_UNLCK,1)
         self.file.close()
+
+
+class LongHorizonFlight(SingleFlight):
+    """Independent OS lock across CI sleeps; per-step owner lock remains."""
+
+    def __enter__(self):
+        self.lock_path=HORIZON_LOCK
+        return super().__enter__()
 
 
 def _run(args:list[str],*,cwd:Path=ROOT,timeout:int=40)->subprocess.CompletedProcess:
@@ -1084,10 +1104,131 @@ def cycle(*,codegen:bool=True)->dict[str,Any]:
             return state
 
 
+def _long_horizon_checkpoint(*,phase:str,actions:int,ci_polls:int,
+                             state:dict[str,Any],reason:str)->dict[str,Any]:
+    """Durable coordination checkpoint; no synthesized scientific PASS."""
+    result={
+        "schemaVersion":1,"status":phase,"lastDevelopmentOutcome":reason,
+        "cycle":state.get("cycle"),"developmentActionsAttempted":actions,
+        "ciReadinessPolls":ci_polls,"ownerHead":state.get("currentHead"),
+        "pendingBranch":state.get("pendingBranch"),
+        "independentlyAcceptedAcademicTasks":state.get(
+            "scienceAcceptance",{}).get("acceptedCount"),
+        "publicationAuthorized":False,"academicAcceptanceGranted":False,
+        "recordedAt":_utc(),
+    }
+    _atomic_json(HORIZON_LEDGER,result)
+    return result
+
+
+def run_long_horizon(*,codegen:bool=True,
+                     max_seconds:int=HORIZON_WALL_SECONDS,
+                     max_actions:int=HORIZON_ACTION_LIMIT,
+                     poll_seconds:int=HORIZON_CI_POLL_SECONDS,
+                     clock=None,pause=None,step=None,probe=None)->dict[str,Any]:
+    """BSA311: execute obvious CI -> owner QA -> repair handoffs in one run.
+
+    The scheduled task's 15-minute trigger is a *restart fallback*, not the
+    mechanism that selects each next step. Original signed source admission,
+    hosted exact Git-SHA CI and provider safeguards remain inside cycle().
+    A single owner operation may finish after the horizon boundary; it is
+    never interrupted merely because this coordinator reached that time.
+    """
+    if os.environ.get("COMPUTERNAME","").upper()!="YOGA6":
+        raise ValueError("BSA311_LONG_HORIZON_YOGA6_ONLY")
+    if not (60<=max_seconds<=4*3600 and 1<=max_actions<=24
+            and 1<=poll_seconds<=300):
+        raise ValueError("BSA311_UNBOUNDED_CONTINUATION_REFUSED")
+    clock=clock or time.monotonic
+    pause=pause or time.sleep
+    step=step or cycle
+    probe=probe or _hosted_ci
+    actions=0
+    polls=0
+    unavailable=0
+    same_outcome=0
+    last_fingerprint=None
+    started=clock()
+    with LongHorizonFlight():
+        while (clock()-started<max_seconds and actions<max_actions):
+            state=_read_state()
+            try:
+                target=ci_gate(state,main_branch=MAIN_BRANCH)
+                if target is not None:
+                    head_or_path,branch,required=target
+                    if required==1:
+                        path=Path(head_or_path)
+                        if (_branch(path)!=branch or not _clean(path)):
+                            raise ValueError("BSA311_CANDIDATE_CODE_NOT_CLEAN")
+                        head=_head(path)
+                    else:
+                        head=head_or_path
+                        if (_head()!=head or _branch()!=MAIN_BRANCH):
+                            raise ValueError("BSA311_OWNER_HEAD_CHANGED")
+                    ci=probe(head,branch,min_runs=required)
+                    polls+=1
+                    if ci in ("CI_AWAITING","GH_UNAVAILABLE","CI_UNREADABLE"):
+                        unavailable=(unavailable+1 if ci!="CI_AWAITING" else 0)
+                        if unavailable>=5:
+                            return _long_horizon_checkpoint(
+                                phase="BSA311_CI_UNAVAILABLE_SAFETY_BACKOFF",
+                                actions=actions,ci_polls=polls,state=state,
+                                reason=ci)
+                        _long_horizon_checkpoint(
+                            phase="BSA311_WAIT_EXACT_GIT_COMMIT_CI",
+                            actions=actions,ci_polls=polls,state=state,
+                            reason=ci)
+                        pause(poll_seconds)
+                        continue
+                    if ci not in ("CI_SUCCESS","CI_FAILED"):
+                        raise ValueError("BSA311_UNTRUSTED_GITHUB_CI_STATE")
+                    # On CI_FAILED, the ordinary next cycle dispatches its
+                    # verified targeted repair, never promotes a failed head.
+            except (ValueError,OSError,subprocess.TimeoutExpired) as exc:
+                return _long_horizon_checkpoint(
+                    phase="BSA311_CI_OR_OWNER_SAFETY_STOP",
+                    actions=actions,ci_polls=polls,state=state,
+                    reason=type(exc).__name__)
+            result=step(codegen=codegen)
+            actions+=1
+            if not isinstance(result,dict):
+                raise ValueError("BSA311_CYCLE_RETURN_UNTRUSTED")
+            status=result.get("status")
+            fingerprint=(status,result.get("currentHead"),
+                         result.get("pendingBranch"),
+                         result.get("scienceAcceptance",{}).get("acceptedCount"))
+            same_outcome=(same_outcome+1 if fingerprint==last_fingerprint
+                          else 0)
+            last_fingerprint=fingerprint
+            action=decide_next(
+                status,pending_branch=result.get("pendingBranch"),
+                recovery_attempts=same_outcome)
+            if same_outcome>=2:
+                action="BSA311_STOP_REPEATED_UNCHANGED_OWNER_OUTCOME"
+            if action in (
+                "BSA311_WAIT_EXACT_GIT_COMMIT_CI",
+                "BSA311_DISPATCH_EXISTING_TARGETED_RECOVERY",
+            ):
+                _long_horizon_checkpoint(
+                    phase=action,actions=actions,ci_polls=polls,
+                    state=result,reason=str(status))
+                # Yield between genuine actions; no busy spin, no CI bypass.
+                pause(1)
+                continue
+            return _long_horizon_checkpoint(
+                phase=action,actions=actions,ci_polls=polls,
+                state=result,reason=str(status))
+        return _long_horizon_checkpoint(
+            phase="BSA311_BOUNDED_HORIZON_CHECKPOINTED_FOR_NEXT_TRIGGER",
+            actions=actions,ci_polls=polls,
+            state=_read_state(),reason="wall_or_action_limit_reached")
+
+
 def main(argv:list[str]|None=None)->int:
     parser=argparse.ArgumentParser(description=__doc__)
     group=parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--once",action="store_true")
+    group.add_argument("--long-horizon",action="store_true")
     group.add_argument("--status",action="store_true")
     group.add_argument("--lock-probe",action="store_true")
     parser.add_argument("--skip-codegen",action="store_true")
@@ -1106,6 +1247,12 @@ def main(argv:list[str]|None=None)->int:
                               "code":str(exc)}))
             return 2
     try:
+        if args.long_horizon:
+            result=run_long_horizon(codegen=not args.skip_codegen)
+            print(json.dumps(result,sort_keys=True))
+            return (0 if result["status"]==
+                    "BSA311_BOUNDED_HORIZON_CHECKPOINTED_FOR_NEXT_TRIGGER"
+                    else 2)
         outcome=cycle(codegen=not args.skip_codegen)
         print(json.dumps({"status":outcome.get("status"),
                           "cycle":outcome.get("cycle"),
