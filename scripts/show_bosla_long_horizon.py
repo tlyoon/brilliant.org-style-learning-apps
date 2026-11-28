@@ -710,6 +710,39 @@ def main() -> int:
             "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_equal_speed_explanation_academic_admission import (
+        _FRONTIER as _EQUAL_SPEED_EXPLANATION_FRONTIER,
+        verify_equal_speed_explanation_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_EQUAL_SPEED_EXPLANATION_FRONTIER).exists():
+        try:
+            speed=verify_equal_speed_explanation_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=32
+                or speed["acceptedAcademicTaskIds"][:32]!=outcome.get("verifiedAcademicProofTaskIds")
+                or speed["independentlyAcceptedAcademicTasks"]!=33
+                or speed["fullAcademicTasksStillOpen"]!=396
+                or speed["completeAcademicProofGatesStillOpen"]!=90
+                or speed["fullAcademicActivityPASS"]!=0
+                or speed["publicationAuthorized"] is not False):
+                raise ValueError("BSA317_A33_CANNOT_BYPASS_A1_A32")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,ArithmeticError) as exc:
+            print(json.dumps({"status":"BOSLA_EQUAL_SPEED_EXPLANATION_SCIENCE_FRONTIER_UNTRUSTED",
+                              "errorClass":type(exc).__name__,
+                              "academicProofAcceptanceEstablished":False,
+                              "publicationAuthorized":False},sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_EQUAL_SPEED_EXPLANATION_SCIENCE_REVERIFIED",
+            "academicAcceptancesSource":"THIRTY_THREE_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":33,
+            "fullAcademicProofTasksStillOpen":396,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":speed["acceptedAcademicTaskIds"],
+            "academicEqualSpeedExplanationReceiptSha256":speed["equalSpeedExplanationReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 

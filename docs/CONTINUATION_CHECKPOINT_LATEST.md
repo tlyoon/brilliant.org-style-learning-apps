@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-316 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-317 | ACTIVE
+
+> 28 NOV BSA317 MCQ06 complete explanation: exact vector momentum and scalar energy producer, frozen trilingual explanation, sixth signed V36 row A33 admission, and cross-head readback are integrated. Local falsification and restart tests pass with a test-only import stub for the missing declared jsonschema dependency. The original private Serway source and owner CI are absent, so this snapshot establishes no new academic PASS; all 90 full activity gates remain OPEN.
 
 > 28 NOV BSA316 MCQ05 complete explanation: new source-bound exact isolated-pair producer, canonical trilingual task, signed fifth V36 row A32 admission and cross-head readback are integrated. Synthetic falsification and restart checks pass. Private Serway and owner CI are absent; confirmed academic count stays 27/429 and all 90 full activity gates OPEN.
 

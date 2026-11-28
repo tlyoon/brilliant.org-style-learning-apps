@@ -16,6 +16,10 @@ The next three genuinely new MCQ07 distractor-science tasks now have an executab
 
 # Bosla autonomous development continuation contract — v1.0
 
+## BSA317 MCQ06 complete explanation proof — ACTIVE
+
+The next separate complete scientific meaning task is the MCQ06 equal-speed explanation. A new source-specific producer recomputes two exact rational east/north momentum vectors for unequal masses at equal speed, and separately derives positive scalar kinetic energy. It binds complete frozen EN/MS/ZH prompt and explanation, the original instructor-selected Serway source, the canonical task and sixth signed V36 partition. Owner A33 admission requires independently reverified A1-A32; the normal controller and horizon reprove origin and current code heads. This snapshot lacks the private PDF and hosted CI, so code tests do not change the owner accepted count or close any of 90 full activity gates.
+
 ## BSA298 MCQ04 paired-glider explanation proof — ACTIVE
 
 After the A30 MCQ03 explanation code, the next unaccepted complete scientific meaning task is the MCQ04 paired-glider explanation. The new source-specific producer checks frozen EN/MS/ZH prompt and explanation, exact original selected Serway source and candidate SHA, derives the canonical explanation task, and computes two exact Fraction models with zero total vector momentum and positive total scalar kinetic energy. Owner A31 admission requires the fourth signed V36 partition and independently reverified A1-A30 receipts; the normal controller and long-horizon reader reprove across original/current Git heads. This snapshot has no private PDF or hosted CI. Confirmed signed acceptance remains 15/429, 414 pending, and all 90 complete academic activity gates OPEN.
