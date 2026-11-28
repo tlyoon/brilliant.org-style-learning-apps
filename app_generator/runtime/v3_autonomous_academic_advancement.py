@@ -93,6 +93,10 @@ from app_generator.runtime.v3_isolated_pair_explanation_academic_admission impor
     _FRONTIER as _ISOLATED_PAIR_EXPLANATION_FRONTIER,
     admit_isolated_pair_explanation, verify_isolated_pair_explanation_across_git_heads,
 )
+from app_generator.runtime.v3_spring_buffer_explanation_academic_admission import (
+    _FRONTIER as _SPRING_BUFFER_EXPLANATION_FRONTIER,
+    admit_spring_buffer_explanation, verify_spring_buffer_explanation_across_git_heads,
+)
 from app_generator.runtime.v3_outcome_driven_science_preflight import (
     preflight_next_a28_before_rebuild,
 )
@@ -137,9 +141,9 @@ class _SignedStageTelemetry(list[str]):
 
 
 def advance_all_eligible_academic_actions(
-    *,repo:Path,private:Path,max_steps:int=20,
+    *,repo:Path,private:Path,max_steps:int=24,
 )->dict[str,Any]:
-    if type(max_steps) is not int or not 1<=max_steps<=20:
+    if type(max_steps) is not int or not 1<=max_steps<=24:
         raise ValueError("BSA276_INVALID_BOUNDED_AUTONOMOUS_STEP_LIMIT")
     if not isinstance(repo,Path) or not isinstance(private,Path):
         raise ValueError("BSA276_OWNER_PATHS_REQUIRED")
@@ -449,12 +453,28 @@ def advance_all_eligible_academic_actions(
             or pair_verified["fullAcademicActivityPASS"]!=0
             or pair_verified["publicationAuthorized"] is not False):
             raise ValueError("BSA319_A1_A35_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        spring_explanation=private/"long-horizon-development"/_SPRING_BUFFER_EXPLANATION_FRONTIER
+        if not spring_explanation.exists() and not spring_explanation.is_symlink():
+            admitted=admit_spring_buffer_explanation(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=36
+                or admitted["fullAcademicTasksStillOpen"]!=393):
+                raise ValueError("BSA320_SPRING_EXPLANATION_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A36_SPRING_EXPLANATION_SCIENCE_TASK")
+            continue
+        spring_verified=verify_spring_buffer_explanation_across_git_heads(private=private)
+        if (spring_verified["independentlyAcceptedAcademicTasks"]!=36
+            or spring_verified["fullAcademicTasksStillOpen"]!=393
+            or spring_verified["acceptedAcademicTaskIds"][:35]!=pair_verified["acceptedAcademicTaskIds"]
+            or spring_verified["completeAcademicProofGatesStillOpen"]!=90
+            or spring_verified["fullAcademicActivityPASS"]!=0
+            or spring_verified["publicationAuthorized"] is not False):
+            raise ValueError("BSA320_A1_A36_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA319_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA320_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":35,
-            "fullAcademicProofTasksStillOpen":394,
+            "academicProofTasksAccepted":36,
+            "fullAcademicProofTasksStillOpen":393,
             "pendingMcqDistractorScienceTasks":0,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,

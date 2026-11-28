@@ -38,11 +38,11 @@ def stage_log_observation(log:Path,*,head:str)->dict:
     expected=head[:12].encode("ascii")
     for match in _STAGE_BEGIN.finditer(tail):
         step,total,git=match.groups()
-        if git==expected and int(total)<=20 and 1<=int(step)<=int(total):
+        if git==expected and int(total)<=24 and 1<=int(step)<=int(total):
             latest["stageEntered"]=max(latest["stageEntered"],int(step))
     for match in _STAGE_END.finditer(tail):
         step,total,git,action=match.groups()
-        if git==expected and int(total)<=20 and 1<=int(step)<=int(total):
+        if git==expected and int(total)<=24 and 1<=int(step)<=int(total):
             if int(step)>=latest["stageCompleted"]:
                 latest["stageCompleted"]=int(step)
                 latest["lastCompletedAction"]=action.decode("ascii")
