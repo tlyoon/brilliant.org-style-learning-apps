@@ -134,7 +134,8 @@ class AdaptiveModelAdmissionTests(TestCase):
     def test_host_legacy_count_12_starts_model_and_records_real_provider_result(self):
         with TemporaryDirectory() as td:
             p=Path(td);dev=p/"dev";dev.mkdir()
-            s={"codexDay":"2026-11-27","codexCount":12,"cycle":24,
+            s={"codexDay":datetime.fromtimestamp(self.NOW).strftime("%Y-%m-%d"),
+               "codexCount":12,"cycle":24,
                "academicFailure":{"head":"a"*40,
                                   "mode":"DISPATCH_INDEPENDENT_SOURCE_SAFE_CODE_REPAIR",
                                   "classification":"MISSING_SCIENCE_PRODUCER"}}
@@ -150,6 +151,9 @@ class AdaptiveModelAdmissionTests(TestCase):
                   patch.object(owner,"_dev_worktree",return_value=("feature/test",dev)),
                   patch.object(owner,"build_isolated_coding_snapshot",return_value={}),
                   patch.object(owner,"_log_process",return_value=0) as real_call,
+                  # BSA306: keep this legacy-day migration test deterministic
+                  # across the UTC/local midnight boundary in hosted CI.
+                  patch.object(owner.time,"time",return_value=self.NOW),
                   patch.object(owner,"_safe_last_log",return_value="tokens used\n250\n"),
                   patch.object(owner,"apply_isolated_patch",return_value=[]),
                   patch.dict(os.environ,{"BOSLA_CODEX_MAX_USD_PER_DAY":""})):
