@@ -8,6 +8,10 @@ The next three genuinely new MCQ07 distractor-science tasks now have an executab
 
 # Bosla autonomous development continuation contract — v1.0
 
+## BSA299 MCQ05 Newton third-law explanation ? ACTIVE
+
+The next missing complete explanation proof is now produced from two independent exact rational two-particle interactions. Equal and opposite forces yield equal and opposite impulses, nonzero changes to each particle momentum, and unchanged total system momentum. The frozen full EN/MS/ZH explanation, source PDF and candidate hashes, canonical explanation task, fifth signed V36 partition, A1-A31 chain and cross-head reproof gate A32 owner admission. Local tests establish code behavior only; confirmed signed count remains 15/429 with all 90 complete activity gates OPEN until owner CI, original Serway run and independent horizon readback.
+
 ## BSA298 MCQ04 paired-glider explanation proof — ACTIVE
 
 After the A30 MCQ03 explanation code, the next unaccepted complete scientific meaning task is the MCQ04 paired-glider explanation. The new source-specific producer checks frozen EN/MS/ZH prompt and explanation, exact original selected Serway source and candidate SHA, derives the canonical explanation task, and computes two exact Fraction models with zero total vector momentum and positive total scalar kinetic energy. Owner A31 admission requires the fourth signed V36 partition and independently reverified A1-A30 receipts; the normal controller and long-horizon reader reprove across original/current Git heads. This snapshot has no private PDF or hosted CI. Confirmed signed acceptance remains 15/429, 414 pending, and all 90 complete academic activity gates OPEN.

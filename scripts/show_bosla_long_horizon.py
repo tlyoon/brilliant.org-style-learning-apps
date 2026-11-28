@@ -677,6 +677,39 @@ def main() -> int:
             "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_third_law_explanation_academic_admission import (
+        _FRONTIER as _THIRD_LAW_EXPLANATION_FRONTIER,
+        verify_third_law_explanation_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_THIRD_LAW_EXPLANATION_FRONTIER).exists():
+        try:
+            third=verify_third_law_explanation_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=31
+                or third["acceptedAcademicTaskIds"][:31]!=outcome.get("verifiedAcademicProofTaskIds")
+                or third["independentlyAcceptedAcademicTasks"]!=32
+                or third["fullAcademicTasksStillOpen"]!=397
+                or third["completeAcademicProofGatesStillOpen"]!=90
+                or third["fullAcademicActivityPASS"]!=0
+                or third["publicationAuthorized"] is not False):
+                raise ValueError("BSA299_A32_CANNOT_BYPASS_A1_A31")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,ArithmeticError) as exc:
+            print(json.dumps({"status":"BOSLA_THIRD_LAW_EXPLANATION_SCIENCE_FRONTIER_UNTRUSTED",
+                              "errorClass":type(exc).__name__,
+                              "academicProofAcceptanceEstablished":False,
+                              "publicationAuthorized":False},sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_THIRD_LAW_EXPLANATION_SCIENCE_REVERIFIED",
+            "academicAcceptancesSource":"THIRTY_TWO_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":32,
+            "fullAcademicProofTasksStillOpen":397,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":third["acceptedAcademicTaskIds"],
+            "academicThirdLawExplanationReceiptSha256":third["thirdLawExplanationReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 

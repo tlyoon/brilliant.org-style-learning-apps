@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-298 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-299 | ACTIVE
+
+> 28 NOV BSA299 MCQ05 explanation: exact rational equal-opposite interaction forces and impulses derive changing individual momenta and conserved system momentum. Frozen full EN/MS/ZH, original Serway, canonical task and fifth signed V36 partition gate owner A32 admission after A1-A31. Local tests are engineering evidence only. Confirmed signed acceptance remains 15/429, 414 pending and all 90 full activity gates OPEN.
 
 > 28 NOV BSA298 MCQ04 paired-glider explanation: exact vector momentum cancellation and positive scalar kinetic-energy sum now feed a separate A31 owner admission. Frozen complete EN/MS/ZH surfaces, original selected Serway source, canonical explanation task and fourth signed V36 partition are mandatory. Local falsification/restart tests are engineering evidence only; private source, hosted CI and owner signed readback remain pending. Confirmed acceptance remains 15/429, 414 pending and all 90 full activity gates OPEN.
 

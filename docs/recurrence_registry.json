@@ -11046,25 +11046,55 @@
       "status": "active",
       "rootCauseFamily": "academic-evidence",
       "noveltyExplanation": "After MCQ07 code, MCQ08's three false individual-momentum and mutual-force claims had no independently recomputed source-bound dynamics proof or signed owner A22-A24 admission.",
-      "relatedIncidentIds": ["BSA-20261127-289", "BSA-20261127-285"],
+      "relatedIncidentIds": [
+        "BSA-20261127-289",
+        "BSA-20261127-285"
+      ],
       "differenceFromLinkedIncident": "Two distinct exact rational isolated-pair impulse models show changing individual momentum, force as its time rate, and third-law forces acting on different bodies. Frozen complete EN/MS/ZH sentences, original source and eighth V36 partition are required. The private PDF is absent from this snapshot; no count changes from code alone.",
       "automaticRemedy": {
         "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
         "triggerMarker": "admit_isolated_pair_batch(private=private)",
         "remedyMarker": "BSA290_A1_A24_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
         "normalEntryPoints": [
-          {"path": "app_generator/validation/section91_isolated_pair_false_options_proof.py", "marker": "def independently_prove_isolated_pair_false_option"},
-          {"path": "app_generator/runtime/v3_isolated_pair_academic_batch_admission.py", "marker": "def admit_isolated_pair_batch"},
-          {"path": "app_generator/runtime/v3_isolated_pair_academic_batch_admission.py", "marker": "def verify_isolated_pair_batch_across_git_heads"},
-          {"path": "scripts/show_bosla_long_horizon.py", "marker": "BOSLA_LONG_HORIZON_ISOLATED_PAIR_SCIENCE_BATCH_REVERIFIED"}
+          {
+            "path": "app_generator/validation/section91_isolated_pair_false_options_proof.py",
+            "marker": "def independently_prove_isolated_pair_false_option"
+          },
+          {
+            "path": "app_generator/runtime/v3_isolated_pair_academic_batch_admission.py",
+            "marker": "def admit_isolated_pair_batch"
+          },
+          {
+            "path": "app_generator/runtime/v3_isolated_pair_academic_batch_admission.py",
+            "marker": "def verify_isolated_pair_batch_across_git_heads"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "BOSLA_LONG_HORIZON_ISOLATED_PAIR_SCIENCE_BATCH_REVERIFIED"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v72_isolated_pair_source_science.py", "kind": "python", "marker": "test_original_gate_queue_and_restart_recomputation"},
-        {"path": "tests/test_v73_isolated_pair_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
-        {"path": "tests/test_v73_isolated_pair_academic_admission.py", "kind": "python", "marker": "test_cross_head_readback_rejects_changed_science_and_task_duplication"}
+        {
+          "path": "tests/test_v72_isolated_pair_source_science.py",
+          "kind": "python",
+          "marker": "test_original_gate_queue_and_restart_recomputation"
+        },
+        {
+          "path": "tests/test_v73_isolated_pair_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v73_isolated_pair_academic_admission.py",
+          "kind": "python",
+          "marker": "test_cross_head_readback_rejects_changed_science_and_task_duplication"
+        }
       ],
-      "applicableEnvironments": ["yoga6", "github-ci"],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Host exact-head CI and genuine selected Serway source run, independently reopen A1-A21, sign A22-A24 and verify historical/current Git head receipts. Until then confirmed signed count is 15/429 and all 90 full activity gates remain OPEN."
     },
@@ -11074,25 +11104,55 @@
       "status": "active",
       "rootCauseFamily": "academic-evidence",
       "noveltyExplanation": "After MCQ08 code, MCQ09's three false energy and momentum transfer alternatives had no independently recomputed exact spring-and-rail countermodel or signed A25-A27 admission.",
-      "relatedIncidentIds": ["BSA-20261127-290", "BSA-20261127-285"],
+      "relatedIncidentIds": [
+        "BSA-20261127-290",
+        "BSA-20261127-285"
+      ],
       "differenceFromLinkedIncident": "Two distinct exact rational pod spring compression models derive kinetic-to-elastic energy transfer, nonzero rail impulse, zero thermal conversion, and distinct momentum/energy dimensions. Full EN/MS/ZH propositions, exact one-source digest, ninth signed V36 partition and immutable A1-A24 receipts remain required. The private original PDF is absent in this snapshot; no academic count changes from code alone.",
       "automaticRemedy": {
         "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
         "triggerMarker": "admit_spring_buffer_batch(private=private)",
         "remedyMarker": "BSA291_A1_A27_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
         "normalEntryPoints": [
-          {"path": "app_generator/validation/section91_spring_buffer_false_options_proof.py", "marker": "def independently_prove_spring_buffer_false_option"},
-          {"path": "app_generator/runtime/v3_spring_buffer_academic_batch_admission.py", "marker": "def admit_spring_buffer_batch"},
-          {"path": "app_generator/runtime/v3_spring_buffer_academic_batch_admission.py", "marker": "def verify_spring_buffer_batch_across_git_heads"},
-          {"path": "scripts/show_bosla_long_horizon.py", "marker": "BOSLA_LONG_HORIZON_SPRING_BUFFER_SCIENCE_BATCH_REVERIFIED"}
+          {
+            "path": "app_generator/validation/section91_spring_buffer_false_options_proof.py",
+            "marker": "def independently_prove_spring_buffer_false_option"
+          },
+          {
+            "path": "app_generator/runtime/v3_spring_buffer_academic_batch_admission.py",
+            "marker": "def admit_spring_buffer_batch"
+          },
+          {
+            "path": "app_generator/runtime/v3_spring_buffer_academic_batch_admission.py",
+            "marker": "def verify_spring_buffer_batch_across_git_heads"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "BOSLA_LONG_HORIZON_SPRING_BUFFER_SCIENCE_BATCH_REVERIFIED"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v74_spring_buffer_source_science.py", "kind": "python", "marker": "test_original_gate_queue_and_restart_recomputation"},
-        {"path": "tests/test_v75_spring_buffer_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
-        {"path": "tests/test_v75_spring_buffer_academic_admission.py", "kind": "python", "marker": "test_cross_head_readback_rejects_changed_science_and_task_duplication"}
+        {
+          "path": "tests/test_v74_spring_buffer_source_science.py",
+          "kind": "python",
+          "marker": "test_original_gate_queue_and_restart_recomputation"
+        },
+        {
+          "path": "tests/test_v75_spring_buffer_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v75_spring_buffer_academic_admission.py",
+          "kind": "python",
+          "marker": "test_cross_head_readback_rejects_changed_science_and_task_duplication"
+        }
       ],
-      "applicableEnvironments": ["yoga6", "github-ci"],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Host exact-head CI and genuine selected Serway original source run; independently reopen A1-A24, sign A25-A27, verify historical/current Git head receipts. Signed count remains 15/429 until owner readback; all 90 complete academic activity gates remain OPEN."
     },
@@ -11102,25 +11162,55 @@
       "status": "active",
       "rootCauseFamily": "academic-evidence",
       "noveltyExplanation": "The 27 MCQ false-choice science tasks have executable producers, but the first complete scientific explanation remains a distinct unaccepted task. Stored three-language prose and a source-free answer model cannot prove all of its physical claims.",
-      "relatedIncidentIds": ["BSA-20261127-291", "BSA-20261127-285"],
+      "relatedIncidentIds": [
+        "BSA-20261127-291",
+        "BSA-20261127-285"
+      ],
       "differenceFromLinkedIncident": "MCQ01 explanation A28 has two exact rational opposite-direction momentum models, pinned full EN/MS/ZH explanation and prompt, original selected textbook axioms and page anchor, canonical COMPLETE_SCIENTIFIC_MEANING task, first signed V36 partition, immutable owner admission after A1-A27, and historical/current-head source reproof. No trilingual-equivalence or full-activity PASS is inferred.",
       "automaticRemedy": {
         "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
         "triggerMarker": "admit_vector_explanation(private=private)",
         "remedyMarker": "BSA292_A1_A28_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
         "normalEntryPoints": [
-          {"path": "app_generator/validation/section91_vector_explanation_proof.py", "marker": "def independently_prove_vector_explanation"},
-          {"path": "app_generator/runtime/v3_vector_explanation_academic_admission.py", "marker": "def admit_vector_explanation"},
-          {"path": "app_generator/runtime/v3_vector_explanation_academic_admission.py", "marker": "def verify_vector_explanation_across_git_heads"},
-          {"path": "scripts/show_bosla_long_horizon.py", "marker": "BOSLA_LONG_HORIZON_VECTOR_EXPLANATION_SCIENCE_REVERIFIED"}
+          {
+            "path": "app_generator/validation/section91_vector_explanation_proof.py",
+            "marker": "def independently_prove_vector_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_vector_explanation_academic_admission.py",
+            "marker": "def admit_vector_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_vector_explanation_academic_admission.py",
+            "marker": "def verify_vector_explanation_across_git_heads"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "BOSLA_LONG_HORIZON_VECTOR_EXPLANATION_SCIENCE_REVERIFIED"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v76_vector_explanation_source_science.py", "kind": "python", "marker": "test_original_gate_and_restart_recomputation"},
-        {"path": "tests/test_v77_vector_explanation_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
-        {"path": "tests/test_v77_vector_explanation_academic_admission.py", "kind": "python", "marker": "test_cross_head_readback_rejects_changed_science_and_duplicate"}
+        {
+          "path": "tests/test_v76_vector_explanation_source_science.py",
+          "kind": "python",
+          "marker": "test_original_gate_and_restart_recomputation"
+        },
+        {
+          "path": "tests/test_v77_vector_explanation_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v77_vector_explanation_academic_admission.py",
+          "kind": "python",
+          "marker": "test_cross_head_readback_rejects_changed_science_and_duplicate"
+        }
       ],
-      "applicableEnvironments": ["yoga6", "github-ci"],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Host exact-head CI and genuine original selected Serway source run; independently reopen A1-A27, sign A28, then verify historical/current-head horizon. Confirmed signed acceptance remains 15/429 and all 90 full activity gates OPEN until owner readback."
     },
@@ -11130,56 +11220,122 @@
       "status": "active",
       "rootCauseFamily": "academic-evidence",
       "noveltyExplanation": "The MCQ02 complete SI-dimensional explanation is a distinct unaccepted scientific meaning task after A28; an answer-key match or stored trilingual prose cannot prove its physical claims.",
-      "relatedIncidentIds": ["BSA-20261127-292", "BSA-20261127-285"],
+      "relatedIncidentIds": [
+        "BSA-20261127-292",
+        "BSA-20261127-285"
+      ],
       "differenceFromLinkedIncident": "Two independent exact rational two-dimensional momentum models derive ML/T, kg m/s and vector direction. Full frozen EN/MS/ZH explanation, original selected source premises and second V36 partition bind A29 after A1-A28. The private PDF is absent, so code creates no academic acceptance.",
       "automaticRemedy": {
         "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
         "triggerMarker": "admit_si_explanation(private=private)",
         "remedyMarker": "BSA293_A1_A29_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
         "normalEntryPoints": [
-          {"path": "app_generator/validation/section91_si_explanation_proof.py", "marker": "def independently_prove_si_explanation"},
-          {"path": "app_generator/runtime/v3_si_explanation_academic_admission.py", "marker": "def admit_si_explanation"},
-          {"path": "app_generator/runtime/v3_si_explanation_academic_admission.py", "marker": "def verify_si_explanation_across_git_heads"},
-          {"path": "scripts/show_bosla_long_horizon.py", "marker": "BOSLA_LONG_HORIZON_SI_EXPLANATION_SCIENCE_REVERIFIED"}
+          {
+            "path": "app_generator/validation/section91_si_explanation_proof.py",
+            "marker": "def independently_prove_si_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_si_explanation_academic_admission.py",
+            "marker": "def admit_si_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_si_explanation_academic_admission.py",
+            "marker": "def verify_si_explanation_across_git_heads"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "BOSLA_LONG_HORIZON_SI_EXPLANATION_SCIENCE_REVERIFIED"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v78_si_explanation_source_science.py", "kind": "python", "marker": "test_original_gate_restart_and_fault_injection"},
-        {"path": "tests/test_v79_si_explanation_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
-        {"path": "tests/test_v79_si_explanation_academic_admission.py", "kind": "python", "marker": "test_cross_head_readback_rejects_changed_science_and_duplicate"}
+        {
+          "path": "tests/test_v78_si_explanation_source_science.py",
+          "kind": "python",
+          "marker": "test_original_gate_restart_and_fault_injection"
+        },
+        {
+          "path": "tests/test_v79_si_explanation_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v79_si_explanation_academic_admission.py",
+          "kind": "python",
+          "marker": "test_cross_head_readback_rejects_changed_science_and_duplicate"
+        }
       ],
-      "applicableEnvironments": ["yoga6", "github-ci"],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Host exact-head CI and genuine original selected Serway source run; independently reopen A1-A28, sign A29, verify historical/current-head horizon. Confirmed signed count remains 15/429 and all 90 full activity gates OPEN until owner readback."
     },
     {
-      "id":"BSA-20261127-294",
-      "class":"synthetic_malay_unrevised_candidate_ids_pinned_into_owner_mcq06_science_gates_and_precise_exception_lost_by_short_log_tail",
-      "status":"active",
-      "rootCauseFamily":"academic-evidence",
-      "noveltyExplanation":"On 27 November at 22:40-22:47 MYT, genuine Serway owner revision e2ac186 repeatedly stopped at BSA284_CANONICAL_MC_Q06_TASK_NOT_REDERIVED while model code-generation kept passing source-free tests and integrating unrelated tasks. The frozen owner candidate's BSA253 MCQ06 distractor IDs did not equal the three task hashes pinned in source code. Direct hash-verified private candidate rederivation and signed sixth V36 partition independently agreed on three other IDs. The earlier test mistakenly used the tracked, non-revised public sample as a positive source. The owner's 20KB trailing log excerpt removed the precise early exception beneath a large source-free report; the Codex repair prompt received only the generic MISSING_SCIENCE_PRODUCER family and targeted unrelated science code.",
-      "relatedIncidentIds":["BSA-20261127-284","BSA-20261127-287","BSA-20261127-285","BSA-20261127-293"],
-      "differenceFromLinkedIncident":"Correct only the three source-bound code constants to IDs recomputed from the authentic private frozen candidate and matching immutable V36_PARTITION_06.json. Never rewrite the textbook, private candidate, or signed partition to fit incorrect hashes. Add source-safe real-Yoga6 acceptance regression checking original textbook physics, frozen EN/MS/ZH, exact queue hashes, signed partition and negative tampering. Change synthetic test to reject old tracked-package IDs rather than fake proof admission. Add strict bounded owner JSON errorCode extraction from the full private diagnostic log, persist only a safe uppercase error marker, and include that exact marker in the next normal coding-repair prompt. No academic acceptance is self-attested and no unknown paid provider request is replayed.",
-      "automaticRemedy":{
-        "runtimePath":"scripts/bosla_persistent_development.py",
-        "triggerMarker":"_safe_owner_exception_code(state)",
-        "remedyMarker":"BSA294 EXACT OWNER SOURCE FAILURE",
-        "normalEntryPoints":[
-          {"path":"app_generator/runtime/v3_persistent_academic_failure_recovery.py","marker":"def exact_owner_failure_code"},
-          {"path":"app_generator/validation/section91_equal_speed_false_options_proof.py","marker":"BSA284_CANONICAL_MC_Q06_TASK_NOT_REDERIVED"},
-          {"path":"scripts/bosla_persistent_development.py","marker":"plan[\"exactFailureCode\"]=precise"},
-          {"path":"scripts/bosla_persistent_development.py","marker":"BSA294 EXACT OWNER SOURCE FAILURE"}
+      "id": "BSA-20261127-294",
+      "class": "synthetic_malay_unrevised_candidate_ids_pinned_into_owner_mcq06_science_gates_and_precise_exception_lost_by_short_log_tail",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "On 27 November at 22:40-22:47 MYT, genuine Serway owner revision e2ac186 repeatedly stopped at BSA284_CANONICAL_MC_Q06_TASK_NOT_REDERIVED while model code-generation kept passing source-free tests and integrating unrelated tasks. The frozen owner candidate's BSA253 MCQ06 distractor IDs did not equal the three task hashes pinned in source code. Direct hash-verified private candidate rederivation and signed sixth V36 partition independently agreed on three other IDs. The earlier test mistakenly used the tracked, non-revised public sample as a positive source. The owner's 20KB trailing log excerpt removed the precise early exception beneath a large source-free report; the Codex repair prompt received only the generic MISSING_SCIENCE_PRODUCER family and targeted unrelated science code.",
+      "relatedIncidentIds": [
+        "BSA-20261127-284",
+        "BSA-20261127-287",
+        "BSA-20261127-285",
+        "BSA-20261127-293"
+      ],
+      "differenceFromLinkedIncident": "Correct only the three source-bound code constants to IDs recomputed from the authentic private frozen candidate and matching immutable V36_PARTITION_06.json. Never rewrite the textbook, private candidate, or signed partition to fit incorrect hashes. Add source-safe real-Yoga6 acceptance regression checking original textbook physics, frozen EN/MS/ZH, exact queue hashes, signed partition and negative tampering. Change synthetic test to reject old tracked-package IDs rather than fake proof admission. Add strict bounded owner JSON errorCode extraction from the full private diagnostic log, persist only a safe uppercase error marker, and include that exact marker in the next normal coding-repair prompt. No academic acceptance is self-attested and no unknown paid provider request is replayed.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/bosla_persistent_development.py",
+        "triggerMarker": "_safe_owner_exception_code(state)",
+        "remedyMarker": "BSA294 EXACT OWNER SOURCE FAILURE",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_persistent_academic_failure_recovery.py",
+            "marker": "def exact_owner_failure_code"
+          },
+          {
+            "path": "app_generator/validation/section91_equal_speed_false_options_proof.py",
+            "marker": "BSA284_CANONICAL_MC_Q06_TASK_NOT_REDERIVED"
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "plan[\"exactFailureCode\"]=precise"
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "BSA294 EXACT OWNER SOURCE FAILURE"
+          }
         ]
       },
-      "regressions":[
-        {"path":"tests/test_v80_owner_mq06_canonical_ids.py","kind":"python","marker":"test_real_original_source_matches_signed_v36_for_every_option"},
-        {"path":"tests/test_v80_owner_mq06_canonical_ids.py","kind":"python","marker":"test_precise_root_cause_survives_larger_success_summary"},
-        {"path":"tests/test_v80_owner_mq06_canonical_ids.py","kind":"python","marker":"test_untrusted_raw_text_and_injection_cannot_become_repair_command"},
-        {"path":"tests/test_v64_equal_speed_source_science.py","kind":"python","marker":"test_source_bound_producer_exercises_original_check_and_task_derivation"}
+      "regressions": [
+        {
+          "path": "tests/test_v80_owner_mq06_canonical_ids.py",
+          "kind": "python",
+          "marker": "test_real_original_source_matches_signed_v36_for_every_option"
+        },
+        {
+          "path": "tests/test_v80_owner_mq06_canonical_ids.py",
+          "kind": "python",
+          "marker": "test_precise_root_cause_survives_larger_success_summary"
+        },
+        {
+          "path": "tests/test_v80_owner_mq06_canonical_ids.py",
+          "kind": "python",
+          "marker": "test_untrusted_raw_text_and_injection_cannot_become_repair_command"
+        },
+        {
+          "path": "tests/test_v64_equal_speed_source_science.py",
+          "kind": "python",
+          "marker": "test_source_bound_producer_exercises_original_check_and_task_derivation"
+        }
       ],
-      "applicableEnvironments":["yoga6","github-ci"],
-      "lastValidatedDate":"2026-11-27",
-      "nextAction":"Finish local original Serway and negative-control tests; check executable recurrence and full CI. Promote this isolated repair only after exact-head source CI passes and original owner is idle/safe. Rerun owner signed A16-A18 admission and independent horizon readback; only then increase accepted 15/429. Current Codex cycle 37 may run independently to its bounded timeout; avoid overwriting its unreviewed work."
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-27",
+      "nextAction": "Finish local original Serway and negative-control tests; check executable recurrence and full CI. Promote this isolated repair only after exact-head source CI passes and original owner is idle/safe. Rerun owner signed A16-A18 admission and independent horizon readback; only then increase accepted 15/429. Current Codex cycle 37 may run independently to its bounded timeout; avoid overwriting its unreviewed work."
     },
     {
       "id": "BSA-20261127-295",
@@ -11187,22 +11343,43 @@
       "status": "active",
       "rootCauseFamily": "academic-evidence",
       "noveltyExplanation": "BSA289 MCQ07 pinned BSA253 task hashes calculated from a tracked sample; the owner private revised candidate can have different whole-package and activity hashes, as the genuine MCQ06 failure established.",
-      "relatedIncidentIds": ["BSA-20261127-294", "BSA-20261127-289"],
+      "relatedIncidentIds": [
+        "BSA-20261127-294",
+        "BSA-20261127-289"
+      ],
       "differenceFromLinkedIncident": "MCQ07 now derives each canonical ID from the pinned private candidate and independently compares its science proof to the signed seventh V36 partition. The original PDF, candidate, signed academic receipts and acceptance count are untouched.",
       "automaticRemedy": {
         "runtimePath": "app_generator/runtime/v3_equal_energy_academic_batch_admission.py",
         "triggerMarker": "_original_equal_energy_proofs",
         "remedyMarker": "task_id=proof[\"taskId\"]",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_equal_energy_academic_batch_admission.py", "marker": "def _original_equal_energy_proofs"}
+          {
+            "path": "app_generator/runtime/v3_equal_energy_academic_batch_admission.py",
+            "marker": "def _original_equal_energy_proofs"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v70_equal_energy_source_science.py", "kind": "python", "marker": "test_sample_task_ids_are_not_authoritative_owner_ids"},
-        {"path": "tests/test_v71_equal_energy_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
-        {"path": "tests/test_v81_owner_mcq07_canonical_ids.py", "kind": "python", "marker": "test_real_source_and_signed_seventh_partition_rederive_all_three"}
+        {
+          "path": "tests/test_v70_equal_energy_source_science.py",
+          "kind": "python",
+          "marker": "test_sample_task_ids_are_not_authoritative_owner_ids"
+        },
+        {
+          "path": "tests/test_v71_equal_energy_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v81_owner_mcq07_canonical_ids.py",
+          "kind": "python",
+          "marker": "test_real_source_and_signed_seventh_partition_rederive_all_three"
+        }
       ],
-      "applicableEnvironments": ["yoga6", "github-ci"],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
       "lastValidatedDate": "2026-11-27",
       "nextAction": "Host exact-head CI, run the private original-source MCQ07 test and owner A16-A21 admission in order, then independently reread the signed horizon. Confirmed count stays 15/429 until that readback."
     },
@@ -11212,27 +11389,52 @@
       "status": "active",
       "rootCauseFamily": "academic-evidence",
       "noveltyExplanation": "The exact owner BSA290_CANONICAL_MCQ08_TASK_NOT_REDERIVED failure shows MCQ08 retained three BSA253 IDs from the tracked sample. BSA253 hashes the entire candidate, so these IDs cannot identify the private revised owner task even when local science and trilingual surfaces match.",
-      "relatedIncidentIds": ["BSA-20261127-294", "BSA-20261127-295", "BSA-20261127-290"],
+      "relatedIncidentIds": [
+        "BSA-20261127-294",
+        "BSA-20261127-295",
+        "BSA-20261127-290"
+      ],
       "differenceFromLinkedIncident": "MCQ08 now derives each task ID from the SHA-pinned candidate at proof time and independently compares that proof with the signed eighth V36 partition during admission and cross-head readback. No private source, signed evidence or acceptance count is changed.",
       "automaticRemedy": {
         "runtimePath": "app_generator/runtime/v3_isolated_pair_academic_batch_admission.py",
         "triggerMarker": "_original_isolated_pair_proofs",
         "remedyMarker": "task_id=proof[\"taskId\"]",
         "normalEntryPoints": [
-          {"path": "app_generator/validation/section91_isolated_pair_false_options_proof.py", "marker": "BSA290_CANONICAL_MCQ08_TASK_NOT_REDERIVED"},
-          {"path": "app_generator/runtime/v3_isolated_pair_academic_batch_admission.py", "marker": "task_id=proof[\"taskId\"]"}
+          {
+            "path": "app_generator/validation/section91_isolated_pair_false_options_proof.py",
+            "marker": "BSA290_CANONICAL_MCQ08_TASK_NOT_REDERIVED"
+          },
+          {
+            "path": "app_generator/runtime/v3_isolated_pair_academic_batch_admission.py",
+            "marker": "task_id=proof[\"taskId\"]"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v72_isolated_pair_source_science.py", "kind": "python", "marker": "test_sample_task_ids_cannot_be_pinned_as_owner_ids"},
-        {"path": "tests/test_v73_isolated_pair_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"},
-        {"path": "tests/test_v82_owner_mcq08_canonical_ids.py", "kind": "python", "marker": "test_real_source_and_signed_eighth_partition_rederive_all_three"}
+        {
+          "path": "tests/test_v72_isolated_pair_source_science.py",
+          "kind": "python",
+          "marker": "test_sample_task_ids_cannot_be_pinned_as_owner_ids"
+        },
+        {
+          "path": "tests/test_v73_isolated_pair_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v82_owner_mcq08_canonical_ids.py",
+          "kind": "python",
+          "marker": "test_real_source_and_signed_eighth_partition_rederive_all_three"
+        }
       ],
-      "applicableEnvironments": ["yoga6", "github-ci"],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Host exact-head CI and owner-only original Serway MCQ08 source/partition test, then run normal A16-A24 admission and independent historical/current-head horizon readback. This sandbox cannot claim new acceptance; last confirmed 15/429, 414 pending, 90 full activity gates OPEN."
     },
-{
+    {
       "id": "BSA-20261128-297",
       "class": "missing_source_bound_mcq03_newton_explanation_producer_and_a30_owner_admission",
       "status": "active",
@@ -11291,7 +11493,7 @@
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Host exact-head CI and original private Serway source run, then owner signed A16-A30 admission and independent historical/current-head horizon. Confirmed count remains 15/429 and all 90 full activity gates OPEN until actual owner readback."
     },
-{
+    {
       "id": "BSA-20261128-298",
       "class": "missing_source_bound_mcq04_glider_explanation_producer_and_a31_owner_admission",
       "status": "active",
@@ -11348,6 +11550,64 @@
       ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Host exact-head CI and original private Serway source run, then owner signed A16-A31 admission and independent historical/current-head horizon. Confirmed count remains 15/429 and all 90 full activity gates OPEN until actual owner readback."
+    },
+    {
+      "id": "BSA-20261128-299",
+      "class": "missing_source_bound_mcq05_third_law_explanation_producer_and_a32_owner_admission",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "After A31, MCQ05 complete scientific explanation lacked a separate proof producer and owner admission.",
+      "relatedIncidentIds": [
+        "BSA-20261128-298",
+        "BSA-20261127-281"
+      ],
+      "differenceFromLinkedIncident": "Derive two exact rational equal-opposite force and impulse models, changed individual momenta and conserved isolated-system momentum; bind frozen MCQ05 EN/MS/ZH explanation and fifth signed V36 partition; admit after A1-A31 with cross-head reproof.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+        "triggerMarker": "admit_third_law_explanation(private=private)",
+        "remedyMarker": "BSA299_A1_A32_CHAIN_NOT_INDEPENDENTLY_REVERIFIED",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/validation/section91_third_law_explanation_proof.py",
+            "marker": "def independently_prove_third_law_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_third_law_explanation_academic_admission.py",
+            "marker": "def admit_third_law_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_third_law_explanation_academic_admission.py",
+            "marker": "def verify_third_law_explanation_across_git_heads"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "BOSLA_LONG_HORIZON_THIRD_LAW_EXPLANATION_SCIENCE_REVERIFIED"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v87_third_law_explanation_source_science.py",
+          "kind": "python",
+          "marker": "test_source_candidate_restart_and_forged_witness"
+        },
+        {
+          "path": "tests/test_v88_third_law_explanation_academic_admission.py",
+          "kind": "python",
+          "marker": "test_partition_task_and_science_are_independently_rechecked"
+        },
+        {
+          "path": "tests/test_v88_third_law_explanation_academic_admission.py",
+          "kind": "python",
+          "marker": "test_cross_head_readback_rejects_changed_science_and_duplicate"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-28",
+      "nextAction": "Host exact-head CI and original private Serway source run, then owner signed A16-A32 admission and independent historical/current-head horizon. Confirmed count remains 15/429 and all 90 full activity gates OPEN until actual owner readback."
     }
   ]
 }

@@ -1,5 +1,9 @@
 # Context index
 
+## 28 November 2026 ? BSA299 MCQ05 Newton third-law explanation science
+
+MCQ05 now has a separate exact two-body force, impulse and system-momentum explanation proof producer and A32 owner admission after A1-A31. Frozen EN/MS/ZH explanation, original Serway source and fifth signed V36 partition are required. This snapshot lacks private Serway and hosted CI; confirmed signed acceptance remains 15/429, with all 90 full activity gates OPEN.
+
 ## 28 November 2026 — BSA298 MCQ04 paired-glider explanation science
 
 The next complete scientific explanation has an exact two-model momentum and kinetic-energy proof producer, canonical task binding and separate A31 owner admission after independently reverified A1-A30. Normal advancement and long-horizon readback check the original and current code heads. Private Serway PDF and hosted CI are unavailable in this coding snapshot, so confirmed signed acceptance remains 15/429 with all 90 full activity gates OPEN. See BSA-20261128-298.
