@@ -11380,6 +11380,32 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-28",
       "nextAction":"Run exact tests and source-grounded Yoga6 verification, hosted candidate CI, guarded integration, then immediate independent owner progress reconciliation to record at least 21/429. Repair the preserved staged candidate's two historical links without a new paid/model call, rerun contract and scientific tests, and resume owner verification toward 24/429. Quarantine any source- or evidence-invalid task without stopping independent eligible work."
+    },
+    {
+      "id":"BSA-20261128-307",
+      "class":"persistent_yoga6_scheduler_direct_python_file_entry_fails_import_scripts_after_new_progress_module",
+      "status":"active",
+      "rootCauseFamily":"runtime-preflight",
+      "noveltyExplanation":"The newly integrated BSA306 owner module imported v3_incremental_signed_science_progress -> v3_long_horizon_development -> v3_versioned_readiness -> scripts.run_v3_yoga6_acceptance. The existing Windows scheduled task launched python -B scripts/bosla_persistent_development.py --once, which did not add repository root to sys.path. That failed at import time with ModuleNotFoundError: No module named scripts, before cycle 77 could start, despite exact-head GitHub CI passing and signed scientific count 21/429 persisted.",
+      "relatedIncidentIds":["BSA-20261102-097","BSA-20261128-306"],
+      "differenceFromLinkedIncident":"Repair executable task launch rather than science content. Correct only the existing Yoga6 Task Scheduler action to python -B -m scripts.bosla_persistent_development --once with the verified repository working directory. Preserve both scheduled triggers, the owner user and single-flight lock. In the installer enforce the exact new action for every future installation; in the script add a guarded repository-root sys.path bootstrap so legacy .py-file direct entry is also safe. Test both invocation paths on Yoga6 with an isolated no-side-effect --status run, and in hosted CI under PYTHONPATH absent. Do not change textbook PDFs, source signatures, scientific acceptance gates, private candidate or unknown paid requests.",
+      "automaticRemedy":{
+        "runtimePath":"scripts/install_bosla_persistent_development.ps1",
+        "triggerMarker":"BSA307",
+        "remedyMarker":"-B -m scripts.bosla_persistent_development --once",
+        "normalEntryPoints":[
+          {"path":"scripts/install_bosla_persistent_development.ps1","marker":"BSA307"},
+          {"path":"scripts/bosla_persistent_development.py","marker":"# BSA307:"}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_bsa307_owner_scheduler_entrypoint.py","kind":"python","marker":"test_old_task_file_invocation_imports_nested_scripts_successfully"},
+        {"path":"tests/test_bsa307_owner_scheduler_entrypoint.py","kind":"python","marker":"test_new_module_task_invocation_is_source_read_only"},
+        {"path":"tests/test_bsa307_owner_scheduler_entrypoint.py","kind":"python","marker":"test_future_installation_preserves_two_triggers_and_exact_module_action"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-28",
+      "nextAction":"Exact host CI on isolated BSA307 fix, safe owner integration after existing science cycle completes; never overwrite current original Serway source acceptance. Yoga6 scheduled task has already been corrected in place, and cycle 77 has genuinely entered original-source admission. Verify count beyond signed 21/429 only after independent owner proof acceptance; 90 activity-level gates still open."
     }
   ]
 }

@@ -40,7 +40,10 @@ if ($Remove) {
     exit 0
 }
 if ($Install) {
-    $action=New-ScheduledTaskAction -Execute $python -Argument ('-B "'+$worker+'" --once') -WorkingDirectory $repo
+    # BSA307: module entry is stable even when new owner code imports
+    # app_generator -> scripts before cycle() begins. The previous absolute
+    # .py-file invocation failed with ModuleNotFoundError: scripts on Yoga6.
+    $action=New-ScheduledTaskAction -Execute $python -Argument '-B -m scripts.bosla_persistent_development --once' -WorkingDirectory $repo
     $identity=[Security.Principal.WindowsIdentity]::GetCurrent().Name
     $logon=New-ScheduledTaskTrigger -AtLogOn -User $identity
     # ScheduledTasks -Daily has no mutable Repetition property on Yoga6.
@@ -72,7 +75,8 @@ if ($Install -or $Status -or $RunNow) {
     }
     if ($task.Actions.Count -ne 1 -or
         $task.Actions[0].Execute -ine $python -or
-        $task.Actions[0].Arguments -notmatch 'bosla_persistent_development.py') {
+        $task.Actions[0].Arguments -cne '-B -m scripts.bosla_persistent_development --once' -or
+        $task.Actions[0].WorkingDirectory -ine $repo) {
         throw 'BSA279_SCHEDULED_ACTION_NOT_SOURCE_BOUND'
     }
     [pscustomobject]@{
