@@ -11,6 +11,8 @@ import argparse
 import json
 import os
 from pathlib import Path
+import re
+import traceback
 import sys
 
 from app_generator.runtime.v3_autonomous_academic_advancement import (
@@ -70,11 +72,32 @@ def main(argv:list[str]|None=None)->int:
         return 0
     except (OSError,ValueError,KeyError,TypeError,IndexError,
             ArithmeticError) as e:
+        # BSA303: the prior generic mask erased which missing field caused
+        # KeyError. Report only a strictly sanitized field token and code
+        # location; never expose textbook text or arbitrary dictionary data.
+        key=(e.args[0] if isinstance(e,KeyError) and
+             len(e.args)==1 and isinstance(e.args[0],str) else None)
+        key=(key if key is not None and re.fullmatch(
+             r"[A-Za-z][A-Za-z0-9_]{0,45}",key) else None)
+        error=("BSA303_KEY_ERROR_"+key.upper() if key else
+            "BSA303_KEY_ERROR_REDACTED") if isinstance(e,KeyError) else (
+            str(e) if isinstance(e,ValueError) else
+            "AUTHORITATIVE_SOURCE_OR_SIGNED_EVIDENCE_UNAVAILABLE")
+        site="UNKNOWN"
+        for frame in reversed(traceback.extract_tb(e.__traceback__)):
+            try:
+                rel=Path(frame.filename).resolve().relative_to(ROOT.resolve())
+            except ValueError:
+                continue
+            if all(re.fullmatch(r"[A-Za-z0-9_./-]+",part)
+                   for part in rel.parts):
+                site=str(rel).replace("\\","/")+":"+str(frame.lineno)
+                break
         print(json.dumps({
             "status":"BSA276_ELIGIBLE_ACADEMIC_STEP_UNVERIFIED",
             "errorClass":type(e).__name__,
-            "errorCode":str(e) if isinstance(e,ValueError)
-                else "AUTHORITATIVE_SOURCE_OR_SIGNED_EVIDENCE_UNAVAILABLE",
+            "errorCode":error,
+            "failureSite":site,
             "academicAcceptanceAdvanced":False,
             "publicationAuthorized":False,
         },sort_keys=True))
