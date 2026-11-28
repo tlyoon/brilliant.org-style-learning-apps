@@ -11602,6 +11602,75 @@
       ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Pass exact CI for BSA311 on a current-owner-base branch, safely promote executable continuation into owner code on Yoga6, update only the existing installed scheduled task from --once to --long-horizon retaining both triggers and original principal, launch immediately under the new distinct cooperative lock, verify it automatically moves from checked candidate to owner science and subsequent code without a human prompt. Preserve independently confirmed 27/429 science and 90 full activity-level gates OPEN."
+    },
+    {
+      "id": "BSA-20261128-314",
+      "class": "signed_science_no_gain_not_incremented_and_expensive_repeat_owner_rebuild",
+      "status": "active",
+      "rootCauseFamily": "runtime-preflight",
+      "noveltyExplanation": "At the live Yoga6 27/429 scientific frontier, BSA303 source-bound reconciler carried noGainOwnerHeads forward unchanged on consecutive *different* independently signed owner heads. The scheduler still detected elapsed time but could repeatedly rebuild current-head V36 for several minutes before testing known A28 explanation failures. An identical precise root cause after several fixes continued generating similar patches without an alternative independent proof lane.",
+      "relatedIncidentIds": [
+        "BSA-20261128-306",
+        "BSA-20261128-312",
+        "BSA-20261128-313"
+      ],
+      "differenceFromLinkedIncident": "Count exactly one signed zero-gain re-verification per distinct owner Git head, never per heartbeat or repeated same-head readback. Check the prior authenticated Serway source, frozen candidate, freshly derived A28 witness and signed first V36 partition in a read-only diagnostic *before* another new-head V36 rebuild. No preflight success counts science, signs a receipt or bypasses owner exact CI or full V36. On the third unchanged normalized science error, quarantine that specific failed task, preserve 27 previously signed acceptances, and dispatch an independent scientific meaning/diagram proof-production lane with adversarial tests rather than the same ineffective repair. Only owner original-source signed re-verification can advance the independent count.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_incremental_signed_science_progress.py",
+        "triggerMarker": "noGainOwnerHeads",
+        "remedyMarker": "new_head_without_gain",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_incremental_signed_science_progress.py",
+            "marker": "new_head_without_gain"
+          },
+          {
+            "path": "app_generator/runtime/v3_outcome_driven_science_preflight.py",
+            "marker": "def preflight_next_a28_before_rebuild"
+          },
+          {
+            "path": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+            "marker": "preflight_next_a28_before_rebuild"
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "QUARANTINE_EXACT_BLOCKER_AND_BUILD_PARALLEL_PROOF"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_bsa314_outcome_driven_recovery.py",
+          "kind": "python",
+          "marker": "test_distinct_verified_head_counts_once_but_repeated_heartbeat_does_not"
+        },
+        {
+          "path": "tests/test_bsa314_outcome_driven_recovery.py",
+          "kind": "python",
+          "marker": "test_reject_malicious_counter_and_signed_rollback"
+        },
+        {
+          "path": "tests/test_bsa314_outcome_driven_recovery.py",
+          "kind": "python",
+          "marker": "test_real_producer_and_signed_row_required_but_never_signs"
+        },
+        {
+          "path": "tests/test_bsa314_outcome_driven_recovery.py",
+          "kind": "python",
+          "marker": "test_preflight_failure_prevents_costly_rebuild_without_acceptance"
+        },
+        {
+          "path": "tests/test_bsa314_outcome_driven_recovery.py",
+          "kind": "python",
+          "marker": "test_third_same_exact_failure_quarantines_only_failed_task"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-28",
+      "nextAction": "Execute BSA314 six focused tests, full recurrence contract and content/academic regression, then exact-source original Serway read-only preflight on Yoga6. Push branch for hosted exact-SHA CI; integrate only against a matching clean owner HEAD with the existing SingleFlight and two owner CI passes. Never stop active owner scientific work, count preflight as academic acceptance, or change 90 open complete-activity gates."
     }
   ]
 }

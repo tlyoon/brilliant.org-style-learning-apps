@@ -211,6 +211,14 @@ class AutonomousAcademicFlow(TestCase):
             glider_verify_patch.start()
             self.addCleanup(glider_admit_patch.stop)
             self.addCleanup(glider_verify_patch.stop)
+            # Keep the existing synthetic flow test from touching owner-only
+            # Serway. Real BSA314 preflight and negative tests are separate.
+            preflight_patch=patch.object(
+                auto,"preflight_next_a28_before_rebuild",
+                return_value={"status":"SYNTHETIC_PREFLIGHT_NOT_ACADEMIC_PASS",
+                              "academicAcceptanceAdvanced":False})
+            preflight_patch.start()
+            self.addCleanup(preflight_patch.stop)
             with (patch.object(auto,"_git_info",return_value=(HEAD,"feature")),
                   patch.object(auto,"_git_clean",return_value=True),
                   patch.object(auto,"_hosted_runs",return_value=[]),
