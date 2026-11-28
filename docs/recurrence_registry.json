@@ -12183,23 +12183,48 @@
       "status": "active",
       "rootCauseFamily": "academic-evidence",
       "noveltyExplanation": "The MCQ06 A16-A18 false-option witnesses do not prove its distinct complete explanation task. Snapshot code and CI alone cannot increase the signed academic count.",
-      "relatedIncidentIds": ["BSA-20261128-316", "BSA-20261128-315", "BSA-20261127-284"],
+      "relatedIncidentIds": [
+        "BSA-20261128-316",
+        "BSA-20261128-315",
+        "BSA-20261127-284"
+      ],
       "differenceFromLinkedIncident": "Two independently recomputed Fraction models derive unequal orthogonal momentum vectors for unequal masses at equal speed, while kinetic energy remains positive and scalar. Exact complete EN/MS/ZH explanation, original Serway source, canonical task, sixth signed V36 row, prior A1-A32 chain and cross-head reproof gate A33.",
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/section91_equal_speed_explanation_proof.py",
         "triggerMarker": "BSA317_CANONICAL_EXPLANATION_TASK_NOT_REDERIVED",
         "remedyMarker": "independently_prove_equal_speed_explanation",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_autonomous_academic_advancement.py", "marker": "admit_equal_speed_explanation(private=private)"},
-          {"path": "scripts/show_bosla_long_horizon.py", "marker": "verify_equal_speed_explanation_across_git_heads"}
+          {
+            "path": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+            "marker": "admit_equal_speed_explanation(private=private)"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "verify_equal_speed_explanation_across_git_heads"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v88_equal_speed_explanation.py", "kind": "python", "marker": "test_frozen_three_language_explanation_and_source_restart"},
-        {"path": "tests/test_v88_equal_speed_explanation.py", "kind": "python", "marker": "test_signed_partition_requires_exact_row"},
-        {"path": "tests/test_v88_equal_speed_explanation.py", "kind": "python", "marker": "test_prior_chain_and_cross_head_restart"}
+        {
+          "path": "tests/test_v88_equal_speed_explanation.py",
+          "kind": "python",
+          "marker": "test_frozen_three_language_explanation_and_source_restart"
+        },
+        {
+          "path": "tests/test_v88_equal_speed_explanation.py",
+          "kind": "python",
+          "marker": "test_signed_partition_requires_exact_row"
+        },
+        {
+          "path": "tests/test_v88_equal_speed_explanation.py",
+          "kind": "python",
+          "marker": "test_prior_chain_and_cross_head_restart"
+        }
       ],
-      "applicableEnvironments": ["yoga6", "github-ci"],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Host runs declared dependencies and exact-head CI, then original Serway MCQ06 source test, owner signed A33 admission and independent cross-head readback. Snapshot tests confer no academic PASS."
     },
@@ -12209,26 +12234,115 @@
       "status": "active",
       "rootCauseFamily": "academic-evidence",
       "noveltyExplanation": "The MCQ07 A19-A21 false-option witnesses do not prove the separate complete equal-energy explanation. A33 also ends at MCQ06.",
-      "relatedIncidentIds": ["BSA-20261128-317", "BSA-20261127-289"],
+      "relatedIncidentIds": [
+        "BSA-20261128-317",
+        "BSA-20261127-289"
+      ],
       "differenceFromLinkedIncident": "The new producer binds complete EN/MS/ZH MCQ07 explanation and magnitude wording to the original Serway source and canonical task, checks two exact Fraction models and the general squared-momentum identity, and requires the signed seventh V36 row, A1-A33 chain and cross-head reproof for owner A34 admission.",
       "automaticRemedy": {
         "runtimePath": "app_generator/validation/section91_equal_energy_explanation_proof.py",
         "triggerMarker": "BSA318_CANONICAL_EXPLANATION_TASK_NOT_REDERIVED",
         "remedyMarker": "independently_prove_equal_energy_explanation",
         "normalEntryPoints": [
-          {"path": "app_generator/runtime/v3_autonomous_academic_advancement.py", "marker": "admit_equal_energy_explanation(private=private)"},
-          {"path": "scripts/show_bosla_long_horizon.py", "marker": "verify_equal_energy_explanation_across_git_heads"}
+          {
+            "path": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+            "marker": "admit_equal_energy_explanation(private=private)"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "verify_equal_energy_explanation_across_git_heads"
+          }
         ]
       },
       "regressions": [
-        {"path": "tests/test_v89_equal_energy_explanation.py", "kind": "python", "marker": "test_frozen_three_language_explanation_and_source_restart"},
-        {"path": "tests/test_v89_equal_energy_explanation.py", "kind": "python", "marker": "test_signed_partition_requires_exact_row"},
-        {"path": "tests/test_v89_equal_energy_explanation.py", "kind": "python", "marker": "test_prior_chain_and_cross_head_restart"},
-        {"path": "tests/test_v89_equal_energy_explanation.py", "kind": "python", "marker": "test_original_serway_explanation_and_signed_partition"}
+        {
+          "path": "tests/test_v89_equal_energy_explanation.py",
+          "kind": "python",
+          "marker": "test_frozen_three_language_explanation_and_source_restart"
+        },
+        {
+          "path": "tests/test_v89_equal_energy_explanation.py",
+          "kind": "python",
+          "marker": "test_signed_partition_requires_exact_row"
+        },
+        {
+          "path": "tests/test_v89_equal_energy_explanation.py",
+          "kind": "python",
+          "marker": "test_prior_chain_and_cross_head_restart"
+        },
+        {
+          "path": "tests/test_v89_equal_energy_explanation.py",
+          "kind": "python",
+          "marker": "test_original_serway_explanation_and_signed_partition"
+        }
       ],
-      "applicableEnvironments": ["yoga6", "github-ci"],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Host checks exact-head CI and genuine original Serway source, then owner-only A34 admission and independent readback. Snapshot tests do not grant academic PASS or close any of 90 activity gates."
+    },
+    {
+      "id": "BSA-20261128-319",
+      "class": "mcq08_complete_explanation_science_producer_missing",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "MCQ08 A22-A24 false-option proofs do not prove its separate complete explanation. A34 ends at MCQ07. The prior owner failure class is MISSING_SCIENCE_PRODUCER, so only this new task is eligible for repair.",
+      "relatedIncidentIds": [
+        "BSA-20261128-318",
+        "BSA-20261127-290",
+        "BSA-20261128-309"
+      ],
+      "differenceFromLinkedIncident": "The new MCQ08 producer proves the internal impulse law for arbitrary positive exact rational mass, impulse and duration, recomputes two distinct pair models, binds the frozen complete EN/MS/ZH explanation and canonical task to the original Serway source, and requires the signed eighth V36 partition and A1-A34 chain before owner-only A35 admission and cross-head readback.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/section91_isolated_pair_explanation_proof.py",
+        "triggerMarker": "BSA319_CANONICAL_EXPLANATION_TASK_NOT_REDERIVED",
+        "remedyMarker": "independently_prove_isolated_pair_explanation",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+            "marker": "admit_isolated_pair_explanation(private=private)"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "verify_isolated_pair_explanation_across_git_heads"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v90_isolated_pair_explanation.py",
+          "kind": "python",
+          "marker": "test_exact_pair_law_and_adversarial_models"
+        },
+        {
+          "path": "tests/test_v90_isolated_pair_explanation.py",
+          "kind": "python",
+          "marker": "test_frozen_trilingual_surface_and_source_restart"
+        },
+        {
+          "path": "tests/test_v90_isolated_pair_explanation.py",
+          "kind": "python",
+          "marker": "test_signed_eighth_partition_requires_exact_row"
+        },
+        {
+          "path": "tests/test_v90_isolated_pair_explanation.py",
+          "kind": "python",
+          "marker": "test_prior_chain_and_cross_head_restart"
+        },
+        {
+          "path": "tests/test_v90_isolated_pair_explanation.py",
+          "kind": "python",
+          "marker": "test_original_serway_explanation_and_signed_partition"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-28",
+      "nextAction": "Host checks exact-head CI and genuine original Serway source, then owner-only A35 admission and independent cross-head horizon readback. Snapshot tests are engineering evidence and grant no academic PASS."
     }
   ]
 }

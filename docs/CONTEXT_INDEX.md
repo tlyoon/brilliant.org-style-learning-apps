@@ -1,5 +1,9 @@
 # Context index
 
+## 28 November 2026 ? BSA319 MCQ08 complete explanation science
+
+MCQ08 has a distinct exact internal-impulse proof producer for its complete isolated-pair explanation. It binds full EN/MS/ZH explanation, original Serway source, canonical task and eighth signed V36 row to owner-only A35 admission after A1-A34. This snapshot has no private source or hosted CI, so it establishes no new academic acceptance; all 90 full activity gates remain OPEN.
+
 ## 28 November 2026 — BSA318 MCQ07 complete explanation science
 
 MCQ07 now has a separate exact equal-energy momentum-magnitude explanation proof producer. It derives the general |p|² = 2mK ranking with two rational models, binds the full EN/MS/ZH explanation and magnitude question to the original Serway source, canonical task and seventh signed V36 partition, and adds owner-only A34 admission after A1-A33. The Git-less snapshot has no private source or hosted CI, so it establishes no new academic acceptance and all 90 full activity gates remain OPEN.
