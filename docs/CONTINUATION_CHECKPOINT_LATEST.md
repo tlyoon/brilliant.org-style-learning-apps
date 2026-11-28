@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-307 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-308 | ACTIVE
+
+> 28 NOV BSA308 MCQ09 exact owner failure recovery: tracked-sample task IDs were pinned into the private revised candidate proof despite BSA253 hashing the entire candidate. Derive each ID from the SHA-pinned candidate and require the signed ninth V36 partition to agree. Local sample mutation and source-fixture negatives pass; original private source and owner admission remain unverified in this snapshot. No signed academic evidence changed; all 90 full activity gates OPEN.
 
 > 28 NOV BSA298 MCQ04 paired-glider explanation: exact vector momentum cancellation and positive scalar kinetic-energy sum now feed a separate A31 owner admission. Frozen complete EN/MS/ZH surfaces, original selected Serway source, canonical explanation task and fourth signed V36 partition are mandatory. Local falsification/restart tests are engineering evidence only; private source, hosted CI and owner signed readback remain pending. Confirmed acceptance remains 15/429, 414 pending and all 90 full activity gates OPEN.
 
