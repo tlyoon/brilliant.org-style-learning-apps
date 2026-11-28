@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-315 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-316 | ACTIVE
+
+> 28 NOV BSA316 MCQ05 complete explanation: new source-bound exact isolated-pair producer, canonical trilingual task, signed fifth V36 row A32 admission and cross-head readback are integrated. Synthetic falsification and restart checks pass. Private Serway and owner CI are absent; confirmed academic count stays 27/429 and all 90 full activity gates OPEN.
 
 > 28 NOV BSA315 exact BSA293 owner source failure repair: MCQ02 explanation science now derives its canonical BSA253 task ID from the SHA-pinned full candidate, and A29 compares that ID and surface digest to the signed second V36 partition. The path is checked in the regenerated canonical queue because signed V36 rows omit surfacePath. Focused local fault-injection tests pass with an import-only stub for the missing declared jsonschema dependency; owner original Serway PDF and signed partition are absent from this snapshot. No new academic PASS is claimed; the last independently confirmed count remains 27/429 and all 90 complete activity gates remain OPEN.
 
