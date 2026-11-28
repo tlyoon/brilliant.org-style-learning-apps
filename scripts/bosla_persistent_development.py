@@ -42,8 +42,14 @@ from app_generator.runtime.v3_isolated_codegen_workspace import (
 from app_generator.runtime.v3_staged_patch_autorepair import (
     repair_staged_blank_eof,
 )
+from app_generator.runtime.v3_staged_incident_link_repair import (
+    repair_staged_known_incident_links,
+)
 from app_generator.runtime.v3_scientific_acceptance_watchdog import (
     observe_signed_horizon, investigate_zero_academic_gain,
+)
+from app_generator.runtime.v3_incremental_signed_science_progress import (
+    reconcile_independent_science,
 )
 from app_generator.runtime.v3_owner_child_tree_recovery import (
     windows_kill_tree, recover_previous_owner_tree,
@@ -95,6 +101,15 @@ def _update(state:dict[str,Any],status:str,**fields:Any)->None:
     state.update(fields)
     state["status"]=status
     state["heartbeatAt"]=_utc()
+    # BSA303 distinct executable engineering telemetry (not academic PASS).
+    state["engineeringProgress"]={
+        "currentHead":state.get("currentHead"),
+        "cycle":state.get("cycle"),
+        "lastIntegratedBranch":state.get("lastIntegratedBranch"),
+        "lastEngineeringEvent":status,
+        "lastEventAt":state["heartbeatAt"],
+        "ciAndAcademicAcceptanceAreSeparate":True,
+    }
     _atomic_json(STATE,state)
     JOURNAL.parent.mkdir(parents=True,exist_ok=True)
     with JOURNAL.open("a",encoding="utf8") as out:
@@ -410,10 +425,60 @@ def _failed_owner_decision(
     precise=_safe_owner_exception_code(state)
     if precise is not None:
         plan["exactFailureCode"]=precise
+    previous=state.get("recoveryProgress",{})
+    repeated=(
+        isinstance(previous,dict)
+        and precise is not None
+        and previous.get("safeFailureCode")==precise
+        and previous.get("classification")==plan["classification"]
+    )
+    exact_attempts=(int(previous.get("attempts",0))+1
+                    if repeated else int(plan["count"]))
+    plan["rootCauseAttempts"]=exact_attempts
+    plan["repairStrategy"]=(
+        "DIFFERENTIAL_REAL_SOURCE_ROOT_CAUSE_DIAGNOSIS"
+        if exact_attempts>=2 and precise is not None
+        else "FIRST_TARGETED_REPAIR")
+    state["recoveryProgress"]={
+        "failedHead":head,"classification":plan["classification"],
+        "safeFailureCode":plan.get("exactFailureCode"),
+        "attempts":exact_attempts,
+        "strategy":plan["repairStrategy"],
+        "currentRemedy":plan["mode"],
+        "historicalReviewRequired":True,
+        "realSourceTestRequired":True,
+        "faultInjectionAndRegressionRequired":True,
+        "exactCIRequired":True,
+        "publicationAuthorized":False,
+    }
     _update(state,"BSA280_OWNER_"+plan["mode"],
             currentHead=head,ownerExitCode=exit_code,
             academicFailure=plan)
     return plan
+
+
+def _reconcile_signed_after_owner_failure(
+    state:dict[str,Any],head:str,
+)->None:
+    """BSA303: never lose a prior signed frontier to a later owner error.
+
+    This invokes ONLY independent verification/readback, never proof
+    admission or signed receipt generation. Failed source verification
+    leaves the old trusted count unchanged.
+    """
+    private=Path(os.environ["LOCALAPPDATA"])/"Microvid"/"BoslaV3ReviewYoga6"
+    try:
+        result=reconcile_independent_science(
+            private=private,state=state,head=head,now=_utc(),
+            cycle=int(state["cycle"]))
+    except (OSError,ValueError,KeyError,TypeError,IndexError) as exc:
+        _update(state,"BSA303_INDEPENDENT_SIGNED_FRONTIER_UNAVAILABLE",
+                progressReconciliationFailure=type(exc).__name__)
+        return
+    _update(state,result["status"],
+            scienceAcceptance=state.get("scienceAcceptance"),
+            scientificProgress=state.get("scientificProgress"),
+            progressReconciliation=result)
 
 
 def _owner_stage(state:dict[str,Any])->bool:
@@ -439,6 +504,7 @@ def _owner_stage(state:dict[str,Any])->bool:
                     idle_timeout=1200)
     if rc!=0:
         _failed_owner_decision(state,head=current,exit_code=rc)
+        _reconcile_signed_after_owner_failure(state,current)
         return False
     rc=_log_process(state,"OWNER_INDEPENDENT_HORIZON",
                     [sys.executable,"-u","-m",
@@ -446,6 +512,7 @@ def _owner_stage(state:dict[str,Any])->bool:
                     idle_timeout=900)
     if rc!=0:
         _failed_owner_decision(state,head=current,exit_code=rc)
+        _reconcile_signed_after_owner_failure(state,current)
         return False
     # BSA285: a successful independently signed source-bound verifier is
     # different from CI success, watchdog heartbeat, or growing log bytes.
@@ -564,6 +631,13 @@ def _finalize_staged_patch(
                     devBranch=branch,codexRepairRequired=True,
                     autoRepairClass=decision["status"])
             return False
+    # BSA306: exact known-invalid historical incident references can be
+    # repaired without another model call, never by weakening the contract.
+    repaired=repair_staged_known_incident_links(worktree)
+    if repaired["status"]=="BSA306_EXACT_HISTORICAL_LINKS_REPAIRED":
+        _update(state,repaired["status"],
+                fixedRegistryIncidents=repaired["fixed"],
+                codexRepairRequired=True)
     # Regression contract and original content integrity are mandatory.
     for label,cmd in (
         ("CONTRACT",[sys.executable,"scripts/check_regression_contract.py"]),
@@ -643,6 +717,14 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
                             staleCodePreserved=True,
                             oldRepairHead=original_head,
                             oldRepairBranch=old_branch)
+            elif state.get("failedTest")=="CONTRACT":
+                repaired=repair_staged_known_incident_links(prior)
+                if repaired["status"]=="BSA306_EXACT_HISTORICAL_LINKS_REPAIRED":
+                    _update(state,"BSA306_RESUME_SAVED_SCIENCE_PATCH_NO_MODEL_CALL",
+                            fixedRegistryIncidents=repaired["fixed"],
+                            devBranch=old_branch,codexRepairRequired=True)
+                    return _finalize_staged_patch(
+                        state,branch=old_branch,worktree=prior)
             elif state.get("status") in (
                 "BSA279_CODEX_PATCH_WHITESPACE_FAILURE",
                 "BSA282_UNRESOLVED_NONTRIVIAL_PATCH_WHITESPACE",
@@ -703,6 +785,18 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
                 " next committed head. "
             )
             exact=issue.get("exactFailureCode")
+            if issue.get("repairStrategy")==(
+                    "DIFFERENTIAL_REAL_SOURCE_ROOT_CAUSE_DIAGNOSIS"):
+                prompt+=(
+                    " BSA306 REPEATED EXACT ROOT CAUSE: at least two "
+                    "failed attempts against the same normalized source "
+                    "error. Do NOT repeat the same patch or generate "
+                    "unrelated proof families. Reproduce the first failure "
+                    "with exact source, compare prior and current patches, "
+                    "isolate why the previous repair was ineffective, "
+                    "test a different failure-specific remedy, and "
+                    "record negative tests before CI integration. "
+                )
             if isinstance(exact,str) and re.fullmatch(
                     r"(?:BSA|V)[0-9]{3}_[A-Z0-9_]{5,95}",exact):
                 prompt+=(

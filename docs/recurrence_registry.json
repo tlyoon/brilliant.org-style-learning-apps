@@ -11348,6 +11348,37 @@
       ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Host exact-head CI and original private Serway source run, then owner signed A16-A31 admission and independent historical/current-head horizon. Confirmed count remains 15/429 and all 90 full activity gates OPEN until actual owner readback."
+    },
+    {
+      "id":"BSA-20261128-306",
+      "class":"scientific_progress_not_persisted_on_later_owner_keyerror_and_staged_registry_links_300_302_wrong_day",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "noveltyExplanation":"Real original Serway cross-head verification independently reopened and confirmed 21/429 academic proof tasks, while scheduler reported 15/429 because later A22-A31 owner readback failed with generic masked KeyError and therefore never updated the checkpoint. The saved Codex candidate contract separately rejected references BSA-20261128-294 and BSA-20261128-289 that actually occurred on 20261127; repeated generic model repairs stalled without fixing those two links.",
+      "relatedIncidentIds":["BSA-20261128-298","BSA-20261127-294"],
+      "differenceFromLinkedIncident":"New source-only replay-safe verifier stages are defined separately from source-producing admission: exact original signed A1-A21 cross-head readbacks update a monotonic durable acceptance record even if a following task fails. Expose only a sanitized KeyError field and file/line, add independent engineering/scientific/recovery records, and repair only the two historically confirmed invalid staged registry links by first checking both true predecessor incident IDs and then re-running the unchanged recurrence contract. No private source, signed receipt, academic gate or provider request is rewritten.",
+      "automaticRemedy":{
+        "runtimePath":"scripts/bosla_persistent_development.py",
+        "triggerMarker":"_reconcile_signed_after_owner_failure(",
+        "remedyMarker":"BSA303_SIGNED_SCIENTIFIC_PROGRESS_RECONCILED",
+        "normalEntryPoints":[
+          {"path":"app_generator/runtime/v3_incremental_signed_science_progress.py","marker":"def reconcile_independent_science"},
+          {"path":"app_generator/runtime/v3_incremental_signed_science_progress.py","marker":"def apply_independent_progress"},
+          {"path":"app_generator/runtime/v3_staged_incident_link_repair.py","marker":"def repair_staged_known_incident_links"},
+          {"path":"scripts/bosla_persistent_development.py","marker":"BSA306_RESUME_SAVED_SCIENCE_PATCH_NO_MODEL_CALL"},
+          {"path":"scripts/auto_advance_bosla_academic_frontier.py","marker":"BSA303_KEY_ERROR_REDACTED"}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_bsa303_incremental_science_reliability.py","kind":"python","marker":"test_real_signed_original_serway_a21_reopened_no_new_receipt"},
+        {"path":"tests/test_bsa303_incremental_science_reliability.py","kind":"python","marker":"test_forged_ids_count_wrong_head_missing_source_and_false_pass_rejected"},
+        {"path":"tests/test_bsa303_incremental_science_reliability.py","kind":"python","marker":"test_precise_keyerror_field_and_unsafe_material_redacted"},
+        {"path":"tests/test_bsa306_registry_link_repair.py","kind":"python","marker":"test_missing_historical_incident_does_not_auto_forge"},
+        {"path":"tests/test_bsa306_registry_link_repair.py","kind":"python","marker":"test_repairs_two_known_wrong_dates_then_idempotently_passes"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-28",
+      "nextAction":"Run exact tests and source-grounded Yoga6 verification, hosted candidate CI, guarded integration, then immediate independent owner progress reconciliation to record at least 21/429. Repair the preserved staged candidate's two historical links without a new paid/model call, rerun contract and scientific tests, and resume owner verification toward 24/429. Quarantine any source- or evidence-invalid task without stopping independent eligible work."
     }
   ]
 }

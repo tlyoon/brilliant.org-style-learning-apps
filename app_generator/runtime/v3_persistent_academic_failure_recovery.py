@@ -68,9 +68,13 @@ def exact_owner_failure_code(log_excerpt:str)->str|None:
         if (not isinstance(event,dict)
             or event.get("status")!=
                "BSA276_ELIGIBLE_ACADEMIC_STEP_UNVERIFIED"
-            or event.get("errorClass")!="ValueError"):
+            or event.get("errorClass") not in ("ValueError","KeyError")):
             continue
         code=event.get("errorCode")
+        if (event.get("errorClass")=="KeyError"
+            and (not isinstance(code,str)
+                 or not code.startswith("BSA303_KEY_ERROR_"))):
+            continue
         if isinstance(code,str) and re.fullmatch(
             r"(?:BSA|V)[0-9]{3}_[A-Z0-9_]{5,95}",code):
             marker=code
