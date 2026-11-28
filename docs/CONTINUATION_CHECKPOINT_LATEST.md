@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-318 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-319 | ACTIVE
+
+> 28 NOV BSA319 MCQ08 complete isolated-pair explanation: exact internal impulse law and two rational models, frozen trilingual surface, eighth signed V36 row and owner-only A35 admission with cross-head readback are integrated. Four synthetic falsification tests pass. Private original Serway source and hosted CI are absent, so no new academic PASS is claimed and all 90 full activity gates stay OPEN.
 
 > 28 NOV BSA318 MCQ07 complete explanation: exact equal-energy momentum-magnitude producer, full pinned trilingual surface, seventh signed V36 row, owner-only A34 admission and cross-head readback are integrated. Focused synthetic falsification passes. Original private Serway source and hosted CI are absent, so there is no new owner academic acceptance and all 90 full activity gates remain OPEN.
 

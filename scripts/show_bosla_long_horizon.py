@@ -776,6 +776,39 @@ def main() -> int:
             "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_isolated_pair_explanation_academic_admission import (
+        _FRONTIER as _ISOLATED_PAIR_EXPLANATION_FRONTIER,
+        verify_isolated_pair_explanation_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_ISOLATED_PAIR_EXPLANATION_FRONTIER).exists():
+        try:
+            pair=verify_isolated_pair_explanation_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=34
+                or pair["acceptedAcademicTaskIds"][:34]!=outcome.get("verifiedAcademicProofTaskIds")
+                or pair["independentlyAcceptedAcademicTasks"]!=35
+                or pair["fullAcademicTasksStillOpen"]!=394
+                or pair["completeAcademicProofGatesStillOpen"]!=90
+                or pair["fullAcademicActivityPASS"]!=0
+                or pair["publicationAuthorized"] is not False):
+                raise ValueError("BSA319_A35_CANNOT_BYPASS_A1_A34")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,ArithmeticError) as exc:
+            print(json.dumps({"status":"BOSLA_ISOLATED_PAIR_EXPLANATION_SCIENCE_FRONTIER_UNTRUSTED",
+                              "errorClass":type(exc).__name__,
+                              "academicProofAcceptanceEstablished":False,
+                              "publicationAuthorized":False},sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_ISOLATED_PAIR_EXPLANATION_SCIENCE_REVERIFIED",
+            "academicAcceptancesSource":"THIRTY_FIVE_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":35,
+            "fullAcademicProofTasksStillOpen":394,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":pair["acceptedAcademicTaskIds"],
+            "academicIsolatedPairExplanationReceiptSha256":pair["isolatedPairExplanationReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 
