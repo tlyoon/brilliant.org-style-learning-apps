@@ -30,15 +30,16 @@ class SpringBufferAdmission(TestCase):
              "publicationAuthorized":False}
         v36["signedPartitionHashes"][8]={"activityId":"act-mcq-09-no-momentum-conversion",
                                           "signedEvidenceSha256":"signed-ninth"}
+        task_ids={option:format(i+1,"064x") for i,option in enumerate(a._OPTIONS_ORDER)}
         rows=[{"taskId":task,"kind":"MCQ_DISTRACTOR_SCIENCE",
                "status":"BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED",
-               "surfaceSha256":"surface-"+option} for option,task in a._TASKS.items()]
+               "surfaceSha256":"surface-"+option} for option,task in task_ids.items()]
         partition={"integritySha256":"signed-ninth",
                    "activity":{"activityId":"act-mcq-09-no-momentum-conversion","evidenceRows":rows},
                    "sourceSha256":a._SOURCE_SHA,"candidateSha256":a._CANDIDATE_SHA,
                    "academicPASS":0,"publicationAuthorized":False}
         def producer(*,source_pdf,candidate_path,option_id):
-            return {"taskId":a._TASKS[option_id],"optionId":option_id,
+            return {"taskId":task_ids[option_id],"optionId":option_id,
                     "surfaceSha256":"surface-"+option_id,"sourceSha256":a._SOURCE_SHA,
                     "candidateSha256":a._CANDIDATE_SHA,"newProviderCalls":0,
                     "publicationAuthorized":False}
@@ -61,7 +62,7 @@ class SpringBufferAdmission(TestCase):
     def test_cross_head_readback_rejects_changed_science_and_task_duplication(self):
         prior={"acceptedAcademicTaskIds":[str(i) for i in range(24)],
                "isolatedPairBatchReceiptSha256":"prior"}
-        proofs=[{"taskId":task} for task in a._TASKS.values()]
+        proofs=[{"taskId":format(i+1,"064x")} for i in range(3)]
         frontier={"gitHead":"a"*40,"proposalSha256":"b"*64,
                   "status":a._FRONTIER_STATUS,"sourceSha256":a._SOURCE_SHA,
                   "candidateSha256":a._CANDIDATE_SHA,"cumulativeAcademicTasksAccepted":27,

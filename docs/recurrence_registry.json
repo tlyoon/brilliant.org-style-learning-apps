@@ -11380,6 +11380,32 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-28",
       "nextAction":"Run exact tests and source-grounded Yoga6 verification, hosted candidate CI, guarded integration, then immediate independent owner progress reconciliation to record at least 21/429. Repair the preserved staged candidate's two historical links without a new paid/model call, rerun contract and scientific tests, and resume owner verification toward 24/429. Quarantine any source- or evidence-invalid task without stopping independent eligible work."
+    },
+    {
+      "id":"BSA-20261128-307",
+      "class":"private_mcq09_canonical_task_ids_mismatch_tracked_sample",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "noveltyExplanation":"The exact owner BSA291_CANONICAL_MCQ09_TASK_NOT_REDERIVED failure shows MCQ09 hardcoded three task IDs from the tracked sample. Canonical BSA253 task identities include the whole private revised candidate digest, so those sample IDs cannot identify signed owner tasks.",
+      "relatedIncidentIds":["BSA-20261127-291","BSA-20261128-296"],
+      "differenceFromLinkedIncident":"MCQ09 derives each ID from the SHA-pinned private candidate at proof time and compares it with the signed ninth V36 partition during owner admission and cross-head readback. Signed evidence and source remain untouched.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_spring_buffer_academic_batch_admission.py",
+        "triggerMarker":"_original_spring_buffer_proofs",
+        "remedyMarker":"task_id=proof[\"taskId\"]",
+        "normalEntryPoints":[
+          {"path":"app_generator/validation/section91_spring_buffer_false_options_proof.py","marker":"BSA291_CANONICAL_MCQ09_TASK_NOT_REDERIVED"},
+          {"path":"app_generator/runtime/v3_spring_buffer_academic_batch_admission.py","marker":"task_id=proof[\"taskId\"]"}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v74_spring_buffer_source_science.py","kind":"python","marker":"test_sample_ids_are_not_authoritative_and_queue_mutation_fails"},
+        {"path":"tests/test_v75_spring_buffer_academic_admission.py","kind":"python","marker":"test_partition_task_and_science_are_independently_rechecked"},
+        {"path":"tests/test_v87_owner_mcq09_canonical_ids.py","kind":"python","marker":"test_real_source_and_signed_ninth_partition_rederive_all_three"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-28",
+      "nextAction":"Host exact-head CI and owner-only original Serway MCQ09 source/partition test, then resume signed A25-A27 admission after A1-A24 and independent horizon readback. No local academic acceptance is claimed."
     }
   ]
 }

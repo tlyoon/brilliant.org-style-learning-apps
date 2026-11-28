@@ -17,7 +17,7 @@ _PACKAGE=Path("content/chapter-9/section-9-1/package.json")
 
 class SpringBufferScience(TestCase):
     def test_exact_countermodels_and_falsification(self):
-        self.assertEqual(len(set(p._TASKS.values())),3)
+        self.assertEqual(len(set(p._OPTIONS_ORDER)),3)
         for row in p._models():
             self.assertEqual(F(row["initialKineticEnergy"]),F(row["springPotentialEnergy"]))
             self.assertEqual(F(row["initialMomentum"]),F(row["railImpulse"]))
@@ -49,13 +49,16 @@ class SpringBufferScience(TestCase):
                       "isolated system":3,
                       "defined to be the product of the mass and velocity":1}),
                   patch.object(p,"extract_pages",return_value=["synthetic"]),
-                  patch.object(p,"_source_activity_anchors",return_value=anchors),
-                  patch.object(p,"plan_full_semantic_proofs",side_effect=lambda **kw:
-                      plan_full_semantic_proofs(package=kw["package"],source_sha256=_REAL_SOURCE_SHA))):
-                for option in p._TASKS:
+                  patch.object(p,"_source_activity_anchors",return_value=anchors)):
+                for option in p._OPTIONS_ORDER:
                     proof=p.independently_prove_spring_buffer_false_option(
                         source_pdf=source,candidate_path=candidate,option_id=option)
                     p.independently_check_spring_buffer_witness(proof)
+                    queue=plan_full_semantic_proofs(package=json.loads(candidate.read_text("utf8")),
+                                                     source_sha256=p._SOURCE_SHA)
+                    matches=[t for t in queue["tasks"] if t["taskId"]==proof["taskId"]]
+                    self.assertEqual(len(matches),1)
+                    self.assertEqual(matches[0]["kind"],"MCQ_DISTRACTOR_SCIENCE")
                     for changed in ("initialMomentum","springPotentialEnergy","railImpulse"):
                         forged=deepcopy(proof)
                         forged["models"][0][changed]="0"
@@ -66,10 +69,33 @@ class SpringBufferScience(TestCase):
                     false_pass["witnessSha256"]=p._digest({k:v for k,v in false_pass.items() if k!="witnessSha256"})
                     with self.assertRaisesRegex(ValueError,"UNTRUSTED_SPRING_BUFFER"):
                         p.independently_check_spring_buffer_witness(false_pass)
+                real_queue=p.plan_full_semantic_proofs
+                def forged_queue(**kwargs):
+                    queue=real_queue(**kwargs)
+                    queue["tasks"]=[dict(task) for task in queue["tasks"]]
+                    for task in queue["tasks"]:
+                        if (task["activityId"]==p._ACTIVITY and
+                            task["kind"]=="MCQ_DISTRACTOR_SCIENCE" and
+                            task["surfacePath"]=="answerKey/options/1/label"):
+                            task["surfaceSha256"]="0"*64
+                    return queue
+                with patch.object(p,"plan_full_semantic_proofs",side_effect=forged_queue):
+                    with self.assertRaisesRegex(ValueError,"CANONICAL_MCQ09_TASK_NOT_REDERIVED"):
+                        p.independently_prove_spring_buffer_false_option(
+                            source_pdf=source,candidate_path=candidate,
+                            option_id=p._OPTIONS_ORDER[0])
                 source.write_bytes(b"%PDF-mutated")
                 with self.assertRaisesRegex(ValueError,"AUTHENTIC_ONE_SERWAY"):
                     p.independently_prove_spring_buffer_false_option(
                         source_pdf=source,candidate_path=candidate,option_id="opt-both-turn-to-heat")
+
+    def test_sample_ids_are_not_authoritative_and_queue_mutation_fails(self):
+        sample=json.loads(_PACKAGE.read_text("utf8"))
+        queue=plan_full_semantic_proofs(package=sample,source_sha256=_REAL_SOURCE_SHA)
+        ids=[t["taskId"] for t in queue["tasks"] if t["activityId"]==p._ACTIVITY
+             and t["kind"]=="MCQ_DISTRACTOR_SCIENCE"]
+        self.assertEqual(len(set(ids)),3)
+        self.assertFalse(hasattr(p,"_TASKS"))
 
     def test_all_localized_sentences_are_pinned(self):
         activity=json.loads(_PACKAGE.read_text(encoding="utf8"))["activities"][8]

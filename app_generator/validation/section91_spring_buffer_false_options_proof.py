@@ -16,11 +16,12 @@ from app_generator.validation.source_passages import extract_pages
 from app_generator.runtime.v3_selected_textbook_scientific_provenance import _source_activity_anchors
 
 _ACTIVITY = "act-mcq-09-no-momentum-conversion"
-_TASKS = {
-    "opt-potential-momentum-stored": "3398c2d51d8c18f6b2fe4f0c3ece710bcecda7cd657d65d33f70a09af830bf48",
-    "opt-both-turn-to-heat": "a6e39702b005806f0f80197af06b02cf3b4b149fd43c3d929fd2ca2f283e674d",
-    "opt-momentum-conserved-internally": "04b7c5373ed4829993794d5f0cbb8694765b851c30f026d814795cbda0d094bb",
-}
+# BSA291 canonical identities include the complete private candidate digest.
+# Derive them from that candidate, then check the signed ninth V36 partition.
+_OPTIONS_ORDER = (
+    "opt-potential-momentum-stored", "opt-both-turn-to-heat",
+    "opt-momentum-conserved-internally",
+)
 _PROMPT = {"en":"7724e203aa4e2fa6c4cf9323cdc1582f2d483ffc2722c5c0bbf89e1e6d8dfe43", "ms":"bf4f734d13473b16d69c7bfaf95d91d0511eb755e788cee7e0a9345b4b54e90c", "zh":"4b42ff07b233f8524673c8f3a3f3b143081f2cdfef1cb11b833418aae5c5c692"}
 _OPTIONS = {
     "opt-potential-momentum-stored": {"en":"98de4f974840f6bcadf0fa5771fc3f45c879588ecce2825d2a9e9210881418a9", "ms":"0bf82b2ec9ce1b7a33eede5d7f32bee39250a04ddac4e02e617e532482a85f61", "zh":"22cded7f29a52cbcdd89e1db5be4be04a6ccd8709da8f4ecd4bac5ff193a9010"},
@@ -75,7 +76,9 @@ def _models()->list[dict]:
 
 def independently_check_spring_buffer_witness(proof:dict)->None:
     option=proof.get("optionId") if isinstance(proof,dict) else None
-    if option not in _TASKS or (proof.get("taskId")!=_TASKS[option]
+    task_id=proof.get("taskId") if isinstance(proof,dict) else None
+    if option not in _OPTIONS_ORDER or (not isinstance(task_id,str) or len(task_id)!=64
+        or any(c not in "0123456789abcdef" for c in task_id)
         or proof.get("falseClaim")!=_CLAIMS[option]
         or proof.get("sourceSha256")!=_SOURCE_SHA
         or proof.get("candidateSha256")!=_CANDIDATE_SHA
@@ -97,7 +100,7 @@ def independently_check_spring_buffer_witness(proof:dict)->None:
 
 
 def independently_prove_spring_buffer_false_option(*,source_pdf:Path,candidate_path:Path,option_id:str)->dict:
-    if option_id not in _TASKS:
+    if option_id not in _OPTIONS_ORDER:
         raise ValueError("BSA291_UNREGISTERED_SPRING_BUFFER_OPTION")
     candidate_bytes=candidate_path.read_bytes() if candidate_path.is_file() and not candidate_path.is_symlink() else b""
     if (source_pdf.is_symlink() or candidate_path.is_symlink() or not source_pdf.is_file()
@@ -118,7 +121,7 @@ def independently_prove_spring_buffer_false_option(*,source_pdf:Path,candidate_p
     prompt=_locales(activity.get("prompt"),_PROMPT)
     key=activity.get("answerKey",{})
     options=key.get("options",[])
-    expected=["opt-ke-transforms-momentum-transfers",*_TASKS]
+    expected=["opt-ke-transforms-momentum-transfers",*_OPTIONS_ORDER]
     if key.get("correct")!=expected[0] or [x.get("id") for x in options]!=expected:
         raise ValueError("BSA291_FROZEN_MCQ09_ANSWER_KEY_CHANGED")
     position=expected.index(option_id)
@@ -133,7 +136,7 @@ def independently_prove_spring_buffer_false_option(*,source_pdf:Path,candidate_p
     tasks=[t for t in queue["tasks"] if t["activityId"]==_ACTIVITY and
            t["kind"]=="MCQ_DISTRACTOR_SCIENCE" and
            t["surfacePath"]==f"answerKey/options/{position}/label"]
-    if (queue["taskCount"]!=429 or len(tasks)!=1 or tasks[0]["taskId"]!=_TASKS[option_id]
+    if (queue["taskCount"]!=429 or len(tasks)!=1
         or tasks[0]["surfaceSha256"]!=_digest(options[position]["label"])):
         raise ValueError("BSA291_CANONICAL_MCQ09_TASK_NOT_REDERIVED")
     body={"taskId":tasks[0]["taskId"],"optionId":option_id,"falseClaim":_CLAIMS[option_id],
