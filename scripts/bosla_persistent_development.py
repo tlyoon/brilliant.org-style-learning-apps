@@ -62,6 +62,9 @@ from app_generator.runtime.v3_scientific_acceptance_watchdog import (
 from app_generator.runtime.v3_incremental_signed_science_progress import (
     reconcile_independent_science,
 )
+from app_generator.runtime.v3_science_recovery_outcome import (
+    assess_signed_recovery_outcome,
+)
 from app_generator.runtime.v3_owner_science_stage_liveness import (
     stage_log_observation,windows_owner_tree_cpu,cpu_time_gain,
     liveness_decision,
@@ -967,6 +970,20 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
             "unaccepted task. Never fabricate the next accepted count or "
             "turn a generated witness into an academic PASS. "
         )
+    if (isinstance(state.get("scienceRecoveryOutcome"),dict) and
+        state["scienceRecoveryOutcome"].get("pivotRequired") is True):
+        prompt+=(
+            " BSA315 PERFORMANCE-CONSTRAINED SCIENCE DEVELOPMENT: at least "
+            "two distinct independently signed code heads showed ZERO "
+            "new scientific acceptance. Do not repeat the same expensive "
+            "verification or produce another trivial wrapper. Select a "
+            "different eligible original-source trilingual meaning or "
+            "interactive-science diagram proof family. Record measured "
+            "verifier hits, actual verifier duration, signed acceptance "
+            "gain, and restart behavior. Enforce an exact source/candidate "
+            "digest, signed evidence integrity, separate negative controls "
+            "and a CI-tested repair. No unverified count or release. "
+        )
     if reuse:
         prompt+=(
             " INCIDENT REPAIR, NOT A NEW UNRELATED TASK: inspect the "
@@ -1090,6 +1107,13 @@ def cycle(*,codegen:bool=True)->dict[str,Any]:
             state["scienceStall"]=diagnostic
             _update(state,"BSA285_INDEPENDENT_SCIENCE_STALL_INVESTIGATION",
                     scienceStall=diagnostic)
+        # BSA315: count only independently verified zero-gain code heads.
+        # CI, tests and heartbeats never trigger a claimed science gain.
+        recovery_outcome=assess_signed_recovery_outcome(state)
+        state["scienceRecoveryOutcome"]=recovery_outcome
+        if recovery_outcome.get("pivotRequired") is True:
+            _update(state,"BSA315_NO_VERIFIED_GAIN_PIVOT_PROOF_FAMILY",
+                    scienceRecoveryOutcome=recovery_outcome)
         try:
             if _branch()!=MAIN_BRANCH:
                 _update(state,"BSA279_WRONG_BOSLA_FEATURE_BRANCH")

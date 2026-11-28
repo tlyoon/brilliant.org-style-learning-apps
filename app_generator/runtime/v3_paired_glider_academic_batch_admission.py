@@ -11,6 +11,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from app_generator.runtime.v3_guarded_signed_science_reuse import verified_stage_reuse
 from app_generator.runtime.v3_first_academic_proof_admission import _bound_inputs
 from app_generator.runtime.v3_long_horizon_development import (
     read_long_horizon_development,_write_latest,_read_signed,
@@ -192,6 +193,7 @@ def admit_paired_glider_batch(*,private:Path)->dict[str,Any]:
     return verify_paired_glider_batch_across_git_heads(private=private)
 
 
+@verified_stage_reuse
 def verify_paired_glider_batch_across_git_heads(*,private:Path)->dict[str,Any]:
     frontier=_read_signed(private/"long-horizon-development"/_FRONTIER)
     current=read_long_horizon_development(private)

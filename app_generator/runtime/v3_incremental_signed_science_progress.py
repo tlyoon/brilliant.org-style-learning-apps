@@ -15,6 +15,7 @@ from pathlib import Path
 import re
 from typing import Any
 
+from app_generator.runtime.v3_guarded_signed_science_reuse import scoped_owner_verification
 from app_generator.runtime.v3_long_horizon_development import read_long_horizon_development
 
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
@@ -103,6 +104,7 @@ def apply_independent_progress(*,state:dict[str,Any],verified:dict[str,Any],
         state.pop("scienceStall",None)
     return recorded
 
+@scoped_owner_verification
 def reconcile_independent_science(*,private:Path,state:dict[str,Any],
                                  head:str,now:str,cycle:int)->dict[str,Any]:
     """Reopen latest eligible signed source-bound frontier; never sign it."""

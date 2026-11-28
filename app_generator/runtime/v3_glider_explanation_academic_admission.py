@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from app_generator.runtime.v3_guarded_signed_science_reuse import verified_stage_reuse
 from app_generator.runtime.v3_first_academic_proof_admission import _bound_inputs
 from app_generator.runtime.v3_long_horizon_development import read_long_horizon_development, _write_latest, _read_signed
 from app_generator.runtime.v3_native_release_adapter import _v6_checkpoint
@@ -140,6 +141,7 @@ def admit_glider_explanation(*, private: Path) -> dict:
     return verify_glider_explanation_across_git_heads(private=private)
 
 
+@verified_stage_reuse
 def verify_glider_explanation_across_git_heads(*, private: Path) -> dict:
     frontier = _read_signed(private / "long-horizon-development" / _FRONTIER)
     now_ck = read_long_horizon_development(private)

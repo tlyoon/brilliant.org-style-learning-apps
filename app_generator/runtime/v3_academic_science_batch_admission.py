@@ -15,6 +15,7 @@ from pathlib import Path
 import re
 from typing import Any, Callable
 
+from app_generator.runtime.v3_guarded_signed_science_reuse import verified_stage_reuse
 from app_generator.runtime.v3_native_release_adapter import _v6_checkpoint
 from app_generator.runtime.v3_revised_source_proof_rebinding import _signed
 from app_generator.runtime.v3_long_horizon_development import (
@@ -255,6 +256,7 @@ def admit_new_scientific_batch(
     return verified
 
 
+@verified_stage_reuse
 def verify_academic_batch_across_git_heads(
     *,private:Path,rules:ScienceAdmissionRegistry|None=None,
 )->dict[str,Any]:

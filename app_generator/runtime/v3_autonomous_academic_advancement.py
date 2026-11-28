@@ -16,6 +16,10 @@ import sys
 import time
 from typing import Any
 
+from app_generator.runtime.v3_guarded_signed_science_reuse import scoped_owner_verification
+from app_generator.runtime.v3_owner_science_step_checkpoint import (
+    record_completed_owner_step,read_completed_owner_step,
+)
 from app_generator.runtime.v3_versioned_readiness import (
     _git_info,_git_clean,_hosted_runs,_exact_ci_success,
 )
@@ -99,10 +103,11 @@ class _SignedStageTelemetry(list[str]):
     Append is called only *after* the normal source-bound step successfully
     returns. The associated signed receipt still needs independent reread.
     """
-    def __init__(self,head:str,max_steps:int):
+    def __init__(self,head:str,max_steps:int,private:Path|None=None):
         super().__init__()
         self.head=head
         self.max_steps=max_steps
+        self.private=private
         self.current_step=0
         self.current_step_started=None
 
@@ -112,14 +117,29 @@ class _SignedStageTelemetry(list[str]):
               str(self.current_step)+"/"+str(self.max_steps)+
               " head="+self.head[:12]+" action="+action,
               file=sys.stderr,flush=True)
-        if self.current_step_started is not None:
-            elapsed=int(time.monotonic()-self.current_step_started)
-            print("BSA308_STAGE_DURATION_SECONDS "+
-                  str(self.current_step)+"/"+str(self.max_steps)+
-                  " head="+self.head[:12]+" seconds="+str(max(0,elapsed)),
-                  file=sys.stderr,flush=True)
+        elapsed=(max(0,int(time.monotonic()-self.current_step_started))
+                 if self.current_step_started is not None else 0)
+        print("BSA308_STAGE_DURATION_SECONDS "+
+              str(self.current_step)+"/"+str(self.max_steps)+
+              " head="+self.head[:12]+" seconds="+str(elapsed),
+              file=sys.stderr,flush=True)
+        if self.private is not None:
+            # Durable restart hint only: NEVER skip signed re-verification.
+            # Telemetry failure does not revoke an independently signed step.
+            try:
+                cp=record_completed_owner_step(
+                    private=self.private,head=self.head,step=self.current_step,
+                    action=action,elapsed_seconds=elapsed)
+                print("BSA315_DURABLE_STAGE_RECORDED "+
+                      str(cp["lastCompletedStep"])+"/"+str(self.max_steps)+
+                      " academicAcceptanceAdvanced=false",
+                      file=sys.stderr,flush=True)
+            except (OSError,ValueError,TypeError,KeyError) as exc:
+                print("BSA315_STAGE_TELEMETRY_NOT_AUTHENTIC "+
+                      type(exc).__name__,file=sys.stderr,flush=True)
 
 
+@scoped_owner_verification
 def advance_all_eligible_academic_actions(
     *,repo:Path,private:Path,max_steps:int=20,
 )->dict[str,Any]:
@@ -132,7 +152,17 @@ def advance_all_eligible_academic_actions(
         raise ValueError("BSA276_DIRTY_CODE_MUST_NOT_ADMIT_SOURCE_PROOFS")
     if not _exact_ci_success(_hosted_runs(repo,branch),head):
         raise ValueError("BSA276_EXACT_HEAD_HOSTED_CI_INCOMPLETE_OR_FAILED")
-    journal=_SignedStageTelemetry(head,max_steps)
+    journal=_SignedStageTelemetry(head,max_steps,private=private)
+    # Read the durable hint to make restart behavior observable. It can never
+    # waive the normal signed-source work below, even if it says 'completed'.
+    try:
+        recovered=read_completed_owner_step(private=private,head=head)
+    except (OSError,ValueError,TypeError,KeyError):
+        recovered=None
+    if recovered is not None:
+        print("BSA315_RESTART_HINT_REQUIRES_REAL_SIGNED_RECHECK "+
+              str(recovered["lastCompletedStep"])+"/"+str(max_steps),
+              file=sys.stderr,flush=True)
     for step in range(max_steps):
         journal.current_step=step+1
         journal.current_step_started=time.monotonic()
