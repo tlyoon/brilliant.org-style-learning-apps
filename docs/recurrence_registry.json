@@ -11538,6 +11538,70 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-28",
       "nextAction":"Host exact-head CI, execute the owner-only original Serway A28 source and signed first-partition test, run normal A28 admission and independently reopen the signed A1-A28 chain. No academic PASS follows from snapshot tests."
+    },
+    {
+      "id": "BSA-20261128-313",
+      "class": "scheduled_owner_exits_after_each_obvious_ci_promotion_and_wastes_repeated_manual_proceed_prompts",
+      "status": "active",
+      "rootCauseFamily": "runtime-preflight",
+      "noveltyExplanation": "Owner Yoga6 single-flight scheduler previously invoked --once and returned immediately on newly submitted patch CI, CI-pending code promotion and owner SHA CI, despite the next eligible action being mechanically known. The 15-minute retry trigger and human update prompts created avoidable idle gaps. User requires a persistent executable long-horizon advance loop, not written instructions to proceed again.",
+      "relatedIncidentIds": [
+        "BSA-20261128-310",
+        "BSA-20261128-307"
+      ],
+      "differenceFromLinkedIncident": "Install the same authorized single Windows task with --long-horizon. Its bounded four-hour, 12-action cooperative loop retains a separate OS horizon lock plus the existing owner per-cycle single-flight. Poll only GitHub exact-SHA CI for the currently signed candidate or owner head, respect all verified CI successes and failures, promote via original tested _promote_candidate and then immediately dispatch the next original Serway scientific or independent safe code-repair stage. Persist each handoff in a private long-horizon-execution.json checkpoint; independently signed scientific acceptance remains authoritative, not CI telemetry. No new tasks, outside PDFs, public deployments, unsafe provider requests, signature bypass, partial academic gate acceptance, or unbounded retry are introduced. On actual unsafe paths quarantine only that operation, preserve the fallback 15-minute and login triggers, and restart from the owner state without manual consent.",
+      "automaticRemedy": {
+        "runtimePath": "scripts/bosla_persistent_development.py",
+        "triggerMarker": "def run_long_horizon",
+        "remedyMarker": "BSA311_WAIT_EXACT_GIT_COMMIT_CI",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_long_horizon_ci_continuation.py",
+            "marker": "def ci_gate"
+          },
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "group.add_argument(\"--long-horizon\""
+          },
+          {
+            "path": "scripts/install_bosla_persistent_development.ps1",
+            "marker": "--long-horizon"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_bsa311_autonomous_ci_to_next_stage.py",
+          "kind": "python",
+          "marker": "test_continues_code_ci_owner_ci_without_second_scheduler_tick"
+        },
+        {
+          "path": "tests/test_bsa311_autonomous_ci_to_next_stage.py",
+          "kind": "python",
+          "marker": "test_no_model_or_new_owner_action_during_unconfirmed_ci"
+        },
+        {
+          "path": "tests/test_bsa311_autonomous_ci_to_next_stage.py",
+          "kind": "python",
+          "marker": "test_failing_github_service_has_bounded_backoff_no_unverified_promotion"
+        },
+        {
+          "path": "tests/test_bsa311_autonomous_ci_to_next_stage.py",
+          "kind": "python",
+          "marker": "test_horizon_flight_and_per_cycle_locks_are_distinct_and_restart_safe"
+        },
+        {
+          "path": "tests/test_bsa311_autonomous_ci_to_next_stage.py",
+          "kind": "python",
+          "marker": "test_real_scheduled_entry_uses_long_horizon_and_keeps_backup_triggers"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-28",
+      "nextAction": "Pass exact CI for BSA311 on a current-owner-base branch, safely promote executable continuation into owner code on Yoga6, update only the existing installed scheduled task from --once to --long-horizon retaining both triggers and original principal, launch immediately under the new distinct cooperative lock, verify it automatically moves from checked candidate to owner science and subsequent code without a human prompt. Preserve independently confirmed 27/429 science and 90 full activity-level gates OPEN."
     }
   ]
 }
