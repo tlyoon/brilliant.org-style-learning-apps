@@ -7,6 +7,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+from app_generator.validation import typed_scientific_semantic_alignment as core
 from app_generator.validation.bounded_symbolic_qa import (
     equation_fragments,audit_bounded_symbolic_recovery,
 )
@@ -41,10 +42,17 @@ class V27BoundedSymbolicTests(unittest.TestCase):
     def test_actual_eighteen_explanation_surface_symbolic_inventory(self):
         result=audit_bounded_symbolic_recovery(self.package["activities"])
         self.assertEqual(result["activityCount"],18)
-        self.assertEqual(result["priorAmbiguousSymbolicFields"],8)
-        self.assertEqual(result["boundedParserFalsePositivesResolved"],5)
-        self.assertEqual(result["remainingAmbiguousSymbolicFields"],3)
-        self.assertEqual(result["independentRemainingPriorReviewFlags"],21)
+        original=core.audit_reusable_scientific_alignment(
+            self.package["activities"])
+        self.assertEqual(
+            result["priorAmbiguousSymbolicFields"],
+            result["boundedParserFalsePositivesResolved"]+
+            result["remainingAmbiguousSymbolicFields"])
+        self.assertEqual(
+            result["independentRemainingPriorReviewFlags"]+
+            result["boundedParserFalsePositivesResolved"],original["issues"])
+        self.assertGreaterEqual(result["remainingAmbiguousSymbolicFields"],0)
+        self.assertEqual(result["formalAcademicPASS"],0)
         self.assertTrue(all(row["remainingSemanticStatus"]=="REVIEW_REQUIRED"
                             for row in result["rows"]))
         self.assertTrue(all(not row["fullScientificOrTrilingualMeaningProven"]

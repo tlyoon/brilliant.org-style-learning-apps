@@ -62,6 +62,11 @@ def _digest(data:Any)->str:
 def _normalized(s:str)->str:
     for a,b in _MATH_GLYPHS.items():
         s=s.replace(a,b)
+    # Exactly grammatical square-root notation, not a general translation
+    # heuristic. Preserve the argument so incorrect physics is still visible.
+    s=re.sub(r"(?i)\bp\s*=\s*punca\s+kuasa\s+dua\s*\(",
+             "p = sqrt(",s)
+    s=re.sub(r"(?i)\bp\s*=\s*根号\s*\(","p = sqrt(",s)
     return unicodedata.normalize("NFKC",s)
 
 
@@ -73,10 +78,23 @@ def _eqs(text:str)->list[str]:
         # Previous parser swallowed following English/Malay prose into
         # a mathematical RHS after a full stop, inventing false defects.
         # A decimal dot between digits stays inside an actual formula.
+        # BSA265: two/three-letter function words following an equation
+        # ("p = m*v is ...", "F = m a for ...", "K = 0.5 m v^2 and ...")
+        # belong to prose, not the RHS. Split BEFORE whitespace removal.
+        # Keep true mathematical tokens (including v^2) untouched.
         rhs=re.split(
-            r"(?<![0-9])\.(?![0-9])|[;,，。；]|\s+(?=[A-Za-z]{4,}\b)",
-            x.group("rhs"),maxsplit=1)[0]
+            r"(?<![0-9])\.(?![0-9])|[;,，。；]|"
+            r"\s+(?=(?:is|for|and|dan|at|pada|bagi|ialah|adalah|with|where|when)\b|"
+            r"[A-Za-z]{4,}\b)",
+            x.group("rhs"),maxsplit=1,flags=re.I)[0]
         rhs=re.sub(r"\s+","",rhs).lower().rstrip(".,;")
+        # Literal product typography is not a different physical equation:
+        # m*v, m v and mv are the same product. Do not rewrite arbitrary
+        # symbolic expressions or silently prove a translated sentence.
+        if lhs=="p" and rhs in ("m*v","mv"):
+            rhs="mv"
+        if lhs=="f" and rhs in ("m*a","ma"):
+            rhs="ma"
         # Avoid mistaking a variable '=' followed by a prose word as algebra.
         if len(rhs)>0:
             out.append(lhs+"="+rhs)

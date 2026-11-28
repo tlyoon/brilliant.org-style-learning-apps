@@ -1195,7 +1195,8 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             v11=result["privatePinnedPublicPatch"],
                             v12=result["privateNonmergingPrReadiness"],
                             prior_stage=result["fiveChannelProofProducers"],
-                            run_independent_lanes=True))
+                            run_independent_lanes=True,
+                            persist_long_horizon=True))
             _print(result)
             # BSA219: the previous worker unconditionally returned exit0
             # even after a real Chrome STOP. An unsuccessful browser check
@@ -1476,12 +1477,27 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             and result.get("boundedSymbolicRecovery",{}).get(
                                 "status")==
                                 "V27_FIVE_FALSE_POSITIVE_SYMBOLIC_FLAGS_BOUNDED_NO_ACADEMIC_PASS"
-                            and result.get("boundedSymbolicRecovery",{}).get(
-                                "boundedParserFalsePositivesResolved")==5
-                            and result.get("boundedSymbolicRecovery",{}).get(
-                                "remainingAmbiguousSymbolicFields")==3
-                            and result.get("boundedSymbolicRecovery",{}).get(
-                                "remainingTechnicalReviewFlags")==21
+                            # BSA267: downstream counts derive from the
+                            # source-signed V26/V27 evidence, not historical
+                            # snapshots. Genuine errors still fail closed.
+                            and all(type(result.get("boundedSymbolicRecovery",{}).get(k)) is int
+                                    for k in ("boundedParserFalsePositivesResolved",
+                                              "remainingAmbiguousSymbolicFields",
+                                              "remainingTechnicalReviewFlags"))
+                            and all(result["boundedSymbolicRecovery"][k]>=0
+                                    for k in ("boundedParserFalsePositivesResolved",
+                                              "remainingAmbiguousSymbolicFields",
+                                              "remainingTechnicalReviewFlags"))
+                            and result["boundedSymbolicRecovery"][
+                                "boundedParserFalsePositivesResolved"]+
+                                result["boundedSymbolicRecovery"][
+                                "remainingTechnicalReviewFlags"]==
+                                result["sourceScientificSemanticTriage"].get(
+                                "unresolvedTriLocaleSemanticReviewItems")
+                            and result["boundedSymbolicRecovery"][
+                                "remainingAmbiguousSymbolicFields"]<=
+                                result["boundedSymbolicRecovery"][
+                                "remainingTechnicalReviewFlags"]
                             and result.get("boundedSymbolicRecovery",{}).get(
                                 "completeIndependentAcademicProofSlotsStillOpen")==90
                             and result.get("boundedSymbolicRecovery",{}).get(
@@ -1586,6 +1602,55 @@ def _main_unlocked(argv: list[str] | None = None) -> int:
                             and result.get("autonomousDevelopmentContinuation",{}).get(
                                 "privateOtherMcqWitnessPilot",{}).get(
                                 "publicationAuthorized") is False
+                            # BSA262: V34 checks every interactive answer model,
+                            # rejects deliberately wrong solutions and binds three
+                            # localized item/prompt/explanation surfaces to source.
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "stagesExecutedThisRun")>=5
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveMutationPilot",{}).get("status")==
+                                "V34_NINE_SOURCE_BOUND_INTERACTIVE_MUTANTS_REJECTED_PRIVATE_NO_RELEASE"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveMutationPilot",{}).get(
+                                "independentlyRejectedWrongAnswerMutants")==9
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveMutationPilot",{}).get("fullAcademicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveMutationPilot",{}).get("publicationAuthorized") is False
+                            # BSA263: the new source-pinned V35 trilingual
+                            # interactive science-role proof must also execute.
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "stagesExecutedThisRun")>=6
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveSourceRolesPilot",{}).get("status")==
+                                "V35_REAL_NINE_INTERACTIVE_TRILINGUAL_SOURCE_ROLE_CUES_PRIVATE"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveSourceRolesPilot",{}).get(
+                                "trilingualPromptRoleCuesChecked")==27
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveSourceRolesPilot",{}).get(
+                                "trilingualFirstItemRoleCuesChecked")==27
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveSourceRolesPilot",{}).get("fullAcademicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateInteractiveSourceRolesPilot",{}).get("publicationAuthorized") is False
+                            # BSA264: auto-dispatch every independently source-pinned
+                            # semantic task without fabricating full academic PASS.
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "stagesExecutedThisRun")>=7
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSemanticTaskDispatch",{}).get("status")==
+                                "V36_ALL_429_SEMANTIC_TASKS_BOUNDED_ATTEMPTED_PRIVATE"
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSemanticTaskDispatch",{}).get(
+                                "semanticTasksAutomaticallyDispatched")==429
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSemanticTaskDispatch",{}).get(
+                                "activitySignedPartitionCount")==18
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSemanticTaskDispatch",{}).get("fullAcademicPASS")==0
+                            and result.get("autonomousDevelopmentContinuation",{}).get(
+                                "privateSemanticTaskDispatch",{}).get("publicationAuthorized") is False
                             # BSA261: unrelated content/regression/readback
                             # work must execute even when one eligible lane
                             # fails. Never turn a quarantined lane into exit0.

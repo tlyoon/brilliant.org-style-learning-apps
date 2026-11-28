@@ -1,0 +1,11 @@
+# BSA276 — autonomous source-bound academic progression
+
+Bosla runs on the authorized Yoga 6 PC and uses exactly the original selected instructor Serway Section 9.1 textbook PDF. No additional PDFs are required. Previous source-bound A1, A2 and A3 MCQ science acceptances are immutable; BSA275 genuinely closed with 3/429 independently accepted academic tasks, 426 remaining and all 90 complete activity gates OPEN.
+
+The new original-source proof type in app_generator/validation/section91_si_unit_false_options_proof.py independently checks English, Malay and Chinese meaning for three MCQ02 incorrect options: momentum falsely treated as a scalar, energy rather than momentum SI dimensions, and inverse-velocity units plus perpendicular-direction claims. Original source p=m*v and ML/T are rechecked; independent exact rational momentum vectors and mass/length/time exponent algebra refute each option. All three real Yoga 6 source witnesses passed, but they remain unadmitted until separate source and receipt verification.
+
+The immutable chained batch in app_generator/runtime/v3_si_units_academic_batch_admission.py binds exact signed second V36 activity-partition identities, frozen source and candidate SHA, prior A1/A2/A3 accepted proofs, original registry audit, full finite-localized statements and arithmetic readback. scripts/run_bosla_si_units_batch_admission.py --admit/--verify requires clean exact hosted CI plus genuine owner V1-V36. Successful independent acceptance will raise the count to 6/429 with 21 incorrect-choice MCQ science tasks still pending, without closing any of the 90 complete activity gates.
+
+The on-demand executable scripts/auto_advance_bosla_academic_frontier.py automatically follows all already eligible safe steps, in order, in a bounded run: exact Git+hosted CI, normal owner V36 when needed, original-source signed audit, A3 admission, A4-A6 admission and independent readback. Bounded restart/idempotence, changed-source/receipt and wrong-proof negative tests must pass. No new background schedule, unverified Gemini replay, original PDF transfer, public PR merge or deployment.
+
+BSA276 remains ACTIVE until exact new Git revision hosted CI, real owner V1-V36, independent A4-A6 signed admission and long-horizon reader all pass.

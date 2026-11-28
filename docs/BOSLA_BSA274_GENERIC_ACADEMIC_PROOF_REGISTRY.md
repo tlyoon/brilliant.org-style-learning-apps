@@ -1,0 +1,11 @@
+# Bosla BSA274 -- Generic independently accepted academic proof registry
+
+The objective is a reusable source-grounded proof-family registry. Existing A1/A2 scientific proof receipts from the original Serway Section 9.1 selected textbook are immutable. The current frozen 18-activity candidate has nine MCQs, each three incorrect alternatives: 27 academic task IDs, two truly accepted, 25 pending.
+
+The core runtime module app_generator/runtime/v3_academic_proof_registry.py defines a closed-code proof-rule interface, validates every MCQ against original selected source SHA, candidate SHA, 429-item task queue and all nine signed original V36 MCQ partitions. Registered rules are reviewed Python callbacks that independently re-open source and original academic proof receipts. They are not untrusted JSON plugins or ungrounded science classifiers.
+
+The separately signed runtime v3_academic_proof_registry_receipt.py creates only an owner-private zero-new-PASS registry audit, with independent recomputation on every read. The normal audit command scripts.audit_bosla_academic_proof_registry --preview is read-only and has already passed genuine Yoga6 Serway source evaluation. Its --admit requires clean exact Git code HEAD, GitHub hosted CI success and a genuine same-HEAD normal V1-V36 owner run. Its --verify independently rereads signed audit, original PDF, candidate and A1/A2. The existing long-horizon reader automatically verifies a current-head registry audit if present.
+
+Extending a registry rule must not be treated as academic acceptance unless the new independent source-specific mathematical or semantic proof and exact signed evidence really exists and survives negative tests. The initial 12 adversarial CI tests include fake acceptance, signed task mutation, wrong original source, duplication and immutable audit corruption. Initial genuine Yoga6 --preview EXIT0: two admitted/27 science distractors, 25 remain REVIEW_REQUIRED; full 427/429 task obligations and all 90 complete academic gates still open.
+
+Next after exact-head certification is BSA275: independently prove and admit remaining false-MCQ propositions in bounded groups, retaining separate scientific explanations, trilingual meaning and scientific diagram evidence classes. No external source PDFs, provider replay, public merge or deployment.

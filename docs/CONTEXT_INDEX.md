@@ -1,5 +1,41 @@
 # Context index
 
+## 29 November 2026 — BSA320 MCQ09 complete explanation science
+
+MCQ09 now has a distinct exact spring-energy and rail-impulse proof producer. It binds the complete frozen EN/MS/ZH explanation, original Serway source, canonical task and ninth signed V36 row to owner-only A36 admission after A1-A35. The private PDF and hosted CI are absent from this snapshot, so no new academic acceptance or full activity gate closure is claimed.
+
+## 28 November 2026 ? BSA319 MCQ08 complete explanation science
+
+MCQ08 has a distinct exact internal-impulse proof producer for its complete isolated-pair explanation. It binds full EN/MS/ZH explanation, original Serway source, canonical task and eighth signed V36 row to owner-only A35 admission after A1-A34. This snapshot has no private source or hosted CI, so it establishes no new academic acceptance; all 90 full activity gates remain OPEN.
+
+## 28 November 2026 — BSA318 MCQ07 complete explanation science
+
+MCQ07 now has a separate exact equal-energy momentum-magnitude explanation proof producer. It derives the general |p|² = 2mK ranking with two rational models, binds the full EN/MS/ZH explanation and magnitude question to the original Serway source, canonical task and seventh signed V36 partition, and adds owner-only A34 admission after A1-A33. The Git-less snapshot has no private source or hosted CI, so it establishes no new academic acceptance and all 90 full activity gates remain OPEN.
+
+## 28 November 2026 — BSA317 MCQ06 complete explanation science
+
+The sixth activity now has a separate exact vector momentum and scalar kinetic-energy explanation proof producer and owner-only A33 admission after independently reverified A1-A32. It binds complete EN/MS/ZH explanation, original Serway source, canonical task and sixth signed V36 partition; restart readback recomputes origin and current code heads. This Git-less snapshot lacks the private PDF and owner CI, so no new academic acceptance is claimed and all 90 full activity gates remain OPEN. See BSA-20261128-317.
+
+## 28 November 2026 — BSA316 MCQ05 complete explanation science
+
+The fifth activity now has a separate exact isolated-pair explanation proof producer and owner-only A32 admission after independently reverified A1-A31. It binds the complete EN/MS/ZH explanation, original Serway source, canonical task and fifth signed V36 partition; restart readback recomputes original and current code heads. This Git-less snapshot lacks the private PDF and owner CI, so confirmed academic acceptance remains 27/429 and all 90 full activity gates OPEN. See BSA-20261128-316.
+
+## 28 November 2026 — BSA298 MCQ04 paired-glider explanation science
+
+The next complete scientific explanation has an exact two-model momentum and kinetic-energy proof producer, canonical task binding and separate A31 owner admission after independently reverified A1-A30. Normal advancement and long-horizon readback check the original and current code heads. Private Serway PDF and hosted CI are unavailable in this coding snapshot, so confirmed signed acceptance remains 15/429 with all 90 full activity gates OPEN. See BSA-20261128-298.
+
+## 27 November 2026 — BSA293 MCQ02 SI explanation science
+
+The MCQ02 full scientific explanation has a new exact-dimensional and vector proof producer, canonical A29 task binding and owner-only signed admission after A1-A28. Normal advancement and long-horizon readback independently reprove original and current code heads. The selected private Serway PDF and hosted CI are absent from this coding snapshot; signed acceptance remains 15/429 with all 90 complete activity gates OPEN. See BSA-20261127-293.
+
+## 27 November 2026 — BSA292 first complete scientific explanation producer
+
+MCQ01's complete EN/MS/ZH explanation now has a separate original Serway source-bound exact vector proof producer and owner-only A28 admission after the A1-A27 chain. Two distinct rational models derive equal/opposite momentum and zero vector sum; original source, frozen candidate, first signed V36 partition and cross-head reproof remain mandatory. This Git-less snapshot lacks the private PDF and hosted CI, so only 15/429 remains confirmed signed and all 90 full activity gates remain OPEN. See BSA-20261127-292 in the recurrence registry and ledger.
+
+## 27 November 2026 — BSA290 MCQ08 isolated-pair source-bound proof code
+
+The next unaccepted MCQ08 opt-b/c/d science tasks have executable two-body Fraction impulse, force, momentum and acceleration countermodels. Full frozen EN/MS/ZH candidate surfaces, canonical task IDs, original selected Serway source digest and eighth signed V36 partition gate owner A22–A24 admission. The normal academic controller, CLI and independent horizon now require the signed prior A1–A21 chain and independently reopen original/current head science. This Git-less coding snapshot has no private original PDF, so host exact CI and genuine Yoga6 source run remain pending. Only 15/429 source tasks are confirmed signed, 414 pending, and all 90 complete academic activity gates remain OPEN. See BSA-20261127-290 in the recurrence registry and failure ledger.
+
 ## 22 November 2026 — BSA244 source-bound scientific evidence on selected textbook
 
 BSA243 superseded historical three-outside-PDF C3 requirements for BOSLA production. Next genuine Yoga 6 V18 stage operates against existing configured Serway Chapter 9.1 source.pdf only, exact source SHA cdbea066436ace273b94aedc2eb1b22f94d0fd5b0b3f810d6bfc27469a5e7b50. Real local preflight: 18/18 physical-page source passage anchors, six exact momentum mathematical witnesses and five bounded MCQ correct-answer patterns. Existing academic coverage gate separately reports 90 still outstanding independent proofs (18 × five gates), zero formal academic PASS. V18 signs PRE_CALL/RESULT and actually dispatches the gap task after signed V17, never fetching external PDFs, new Gemini calls, public merge/deployment. No full science/visual/multilingual/release acceptance claimed; docs/BOSLA_V18_REAL_SELECTED_TEXTBOOK_SCIENCE_PROVENANCE.md. CI and normal Yoga 6 V1–V18 pending.

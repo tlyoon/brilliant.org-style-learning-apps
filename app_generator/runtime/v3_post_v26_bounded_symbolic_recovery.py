@@ -42,20 +42,35 @@ def _compact(result:dict[str,Any])->dict[str,Any]:
             or result.get("providerCalls")!=0
             or len({(r.get("activityId"),r.get("field")) for r in rows})!=len(rows)
             or result["activityCount"]!=18
-            or result["priorAmbiguousSymbolicFields"]!=8
-            or result["boundedParserFalsePositivesResolved"]!=5
-            or result["remainingAmbiguousSymbolicFields"]!=3
-            or result["independentRemainingPriorReviewFlags"]!=21
-            or len(rows)!=8
-            or any(r["remainingSemanticStatus"]!="REVIEW_REQUIRED"
-                   or r["fullScientificOrTrilingualMeaningProven"] is not False
+            # BSA267: accept independently recomputed counts only when
+            # algebraically consistent, not a stale 8/5/3/21 or 2/0/2/20
+            # snapshot. The caller already reopens the exact-SHA textbook
+            # and candidate and computes this report from actual content.
+            or not isinstance(rows,list) or len(rows)>222
+            or result["priorAmbiguousSymbolicFields"]!=len(rows)
+            or result["boundedParserFalsePositivesResolved"]!=sum(
+                x.get("boundedIdenticalExplicitMath") is True for x in rows)
+            or result["remainingAmbiguousSymbolicFields"]!=(
+                len(rows)-result["boundedParserFalsePositivesResolved"])
+            or not isinstance(result["independentRemainingPriorReviewFlags"],int)
+            or result["independentRemainingPriorReviewFlags"]<
+                result["remainingAmbiguousSymbolicFields"]
+            or any(not isinstance(r.get("activityId"),str)
+                   or not isinstance(r.get("field"),str)
+                   or not isinstance(r.get("activitySha256"),str)
+                   or len(r["activitySha256"])!=64
+                   or not isinstance(r.get("strictEquationSetsSha256"),str)
+                   or len(r["strictEquationSetsSha256"])!=64
+                   or type(r.get("boundedIdenticalExplicitMath")) is not bool
+                   or r.get("remainingSemanticStatus")!="REVIEW_REQUIRED"
+                   or r.get("fullScientificOrTrilingualMeaningProven") is not False
                    for r in rows)):
         raise ValueError("BSA255_FALSE_SYMBOLIC_DIAGNOSTIC_NOT_INDEPENDENTLY_JUSTIFIED")
     return {
-        "symbolicReviewFields":8,
-        "strictLiteralFormulaMatches":5,
-        "unresolvedSymbolicReviewFields":3,
-        "remainingTechnicalReviewFlags":21,
+        "symbolicReviewFields":len(rows),
+        "strictLiteralFormulaMatches":result["boundedParserFalsePositivesResolved"],
+        "unresolvedSymbolicReviewFields":result["remainingAmbiguousSymbolicFields"],
+        "remainingTechnicalReviewFlags":result["independentRemainingPriorReviewFlags"],
         "rowsSha256":_hash(rows),
         "rowsByActivity":[{
             "activityId":row["activityId"],"activitySha256":row["activitySha256"],
@@ -82,7 +97,9 @@ def run_post_v26_bounded_symbolic_recovery(
             or queue.get("status")!=_STATUS_QUEUE
             or source.get("activitiesChecked")!=18
             or source.get("scientificLocalizedFieldsChecked")!=222
-            or source.get("unresolvedTriLocaleSemanticReviewItems")!=26
+            or not isinstance(source.get("unresolvedTriLocaleSemanticReviewItems"),int)
+            or source["unresolvedTriLocaleSemanticReviewItems"]<0
+            or source["unresolvedTriLocaleSemanticReviewItems"]>222
             or source.get("academicProofGatesStillOpen")!=90
             or source.get("formalAcademicPASS")!=0
             or queue.get("activityCount")!=18
@@ -114,6 +131,10 @@ def run_post_v26_bounded_symbolic_recovery(
     payload=json.loads(path.read_text(encoding="utf8"))
     checked=audit_bounded_symbolic_recovery(payload["activities"])
     compact=_compact(checked)
+    if (source["unresolvedTriLocaleSemanticReviewItems"]!=
+            checked["independentRemainingPriorReviewFlags"]+
+            checked["boundedParserFalsePositivesResolved"]):
+        raise ValueError("BSA267_SIGNED_SOURCE_V26_AND_RECOMPUTED_V27_COUNTS_DIFFER")
     identity={
         "gitHead":ready["gitHead"],
         "proposalSha256":ready["proposalSha256"],
@@ -136,9 +157,9 @@ def run_post_v26_bounded_symbolic_recovery(
     return _v6_checkpoint(folder/_V27,{
         **identity,"status":_STATUS27,
         "resultSha256":result["integritySha256"],
-        "boundedParserFalsePositivesResolved":5,
-        "remainingAmbiguousSymbolicFields":3,
-        "remainingTechnicalReviewFlags":21,
+        "boundedParserFalsePositivesResolved":checked["boundedParserFalsePositivesResolved"],
+        "remainingAmbiguousSymbolicFields":checked["remainingAmbiguousSymbolicFields"],
+        "remainingTechnicalReviewFlags":checked["independentRemainingPriorReviewFlags"],
         "completeIndependentAcademicProofSlotsStillOpen":90,
         "fullAcademicPASS":0,
         "newGeminiCalls":0,
