@@ -17,7 +17,7 @@ _PACKAGE=Path("content/chapter-9/section-9-1/package.json")
 
 class SpringBufferScience(TestCase):
     def test_exact_countermodels_and_falsification(self):
-        self.assertEqual(len(set(p._TASKS.values())),3)
+        self.assertEqual(len(set(p._OPTIONS_ORDER)),3)
         for row in p._models():
             self.assertEqual(F(row["initialKineticEnergy"]),F(row["springPotentialEnergy"]))
             self.assertEqual(F(row["initialMomentum"]),F(row["railImpulse"]))
@@ -52,7 +52,7 @@ class SpringBufferScience(TestCase):
                   patch.object(p,"_source_activity_anchors",return_value=anchors),
                   patch.object(p,"plan_full_semantic_proofs",side_effect=lambda **kw:
                       plan_full_semantic_proofs(package=kw["package"],source_sha256=_REAL_SOURCE_SHA))):
-                for option in p._TASKS:
+                for option in p._OPTIONS_ORDER:
                     proof=p.independently_prove_spring_buffer_false_option(
                         source_pdf=source,candidate_path=candidate,option_id=option)
                     p.independently_check_spring_buffer_witness(proof)
@@ -80,3 +80,18 @@ class SpringBufferScience(TestCase):
             changed["ms"]+="!"
             with self.assertRaises(ValueError):
                 p._locales(changed,p._OPTIONS[option["id"]])
+
+    def test_sample_ids_are_not_owner_task_pins(self):
+        sample=json.loads(_PACKAGE.read_text(encoding="utf8"))
+        queue=plan_full_semantic_proofs(package=sample,source_sha256=_REAL_SOURCE_SHA)
+        ids=[t["taskId"] for t in queue["tasks"] if
+             t["activityId"]==p._ACTIVITY and t["kind"]=="MCQ_DISTRACTOR_SCIENCE"]
+        self.assertEqual(len(set(ids)),3)
+        self.assertFalse(hasattr(p,"_TASKS"))
+        revised=deepcopy(sample)
+        revised["activities"][0]["id"]+="-private-revision"
+        changed=plan_full_semantic_proofs(package=revised,source_sha256=_REAL_SOURCE_SHA)
+        changed_ids=[t["taskId"] for t in changed["tasks"] if
+                     t["activityId"]==p._ACTIVITY and t["kind"]=="MCQ_DISTRACTOR_SCIENCE"]
+        self.assertNotEqual(ids,changed_ids)
+        self.assertEqual(sample["activities"][8],revised["activities"][8])
