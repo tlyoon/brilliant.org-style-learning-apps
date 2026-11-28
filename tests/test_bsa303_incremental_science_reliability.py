@@ -160,3 +160,21 @@ class LongHorizonFailureEscalation(TestCase):
             self.assertEqual(state["recoveryProgress"]["attempts"],2)
             self.assertEqual(state["recoveryProgress"]["safeFailureCode"],
                              "BSA303_KEY_ERROR_MISSINGFIELD")
+
+
+class EqualEnergyReceiptInterfaceRegression(TestCase):
+    @skipUnless(os.name=="nt" and
+                os.environ.get("COMPUTERNAME","").upper()=="YOGA6",
+                "Exact source-bound A21 readback only on owner Yoga6")
+    def test_true_A21_signed_receipt_is_exported_under_A22_required_key(self):
+        from app_generator.runtime.v3_isolated_pair_academic_batch_admission import (
+            _prior_twenty_one,
+        )
+        private=Path(os.environ["LOCALAPPDATA"])/"Microvid"/"BoslaV3ReviewYoga6"
+        verified=_prior_twenty_one(private)
+        new_hash=verified["equalEnergyBatchReceiptSha256"]
+        self.assertEqual(len(new_hash),64)
+        self.assertTrue(all(c in "0123456789abcdef" for c in new_hash))
+        self.assertEqual(new_hash,verified["equalSpeedBatchReceiptSha256"])
+        self.assertEqual(verified["independentlyAcceptedAcademicTasks"],21)
+        self.assertEqual(verified["fullAcademicTasksStillOpen"],408)

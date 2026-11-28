@@ -243,6 +243,10 @@ def verify_equal_energy_batch_across_git_heads(*,private:Path)->dict[str,Any]:
         "carriedAcrossGitHead":origin!=now,
         "acceptedAcademicTaskIds":[*prior["acceptedAcademicTaskIds"],*ids],
         "previousEqualSpeedBatchReceiptSha256":prior["equalSpeedBatchReceiptSha256"],
+        # BSA306: A22 needs the NEW equal-energy receipt, not the
+        # predecessor's equal-speed field. Keep the older alias so already
+        # verified consumers do not change, but expose the correct name.
+        "equalEnergyBatchReceiptSha256":receipt["integritySha256"],
         "equalSpeedBatchReceiptSha256":receipt["integritySha256"],
         "newIndependentlyAcceptedAcademicTasks":3,
         "independentlyAcceptedAcademicTasks":21,

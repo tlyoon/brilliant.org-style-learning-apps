@@ -11356,7 +11356,7 @@
       "rootCauseFamily":"academic-evidence",
       "noveltyExplanation":"Real original Serway cross-head verification independently reopened and confirmed 21/429 academic proof tasks, while scheduler reported 15/429 because later A22-A31 owner readback failed with generic masked KeyError and therefore never updated the checkpoint. The saved Codex candidate contract separately rejected references BSA-20261128-294 and BSA-20261128-289 that actually occurred on 20261127; repeated generic model repairs stalled without fixing those two links.",
       "relatedIncidentIds":["BSA-20261128-298","BSA-20261127-294"],
-      "differenceFromLinkedIncident":"New source-only replay-safe verifier stages are defined separately from source-producing admission: exact original signed A1-A21 cross-head readbacks update a monotonic durable acceptance record even if a following task fails. Expose only a sanitized KeyError field and file/line, add independent engineering/scientific/recovery records, and repair only the two historically confirmed invalid staged registry links by first checking both true predecessor incident IDs and then re-running the unchanged recurrence contract. No private source, signed receipt, academic gate or provider request is rewritten.",
+      "differenceFromLinkedIncident":"New source-only replay-safe verifier stages are defined separately from source-producing admission: exact original signed A1-A21 cross-head readbacks update a monotonic durable acceptance record even if a following task fails. The precise owner A22 KeyError is an API mismatch: the A21 signed equal-energy receipt was exposed only under the misleading equalSpeedBatchReceiptSha256 alias while downstream A22 required equalEnergyBatchReceiptSha256. Export the correct alias alongside legacy output without rewriting any source or signed receipt. Expose sanitized KeyError field and file/line, add independent engineering/scientific/recovery records, and repair only the two historically confirmed invalid staged registry links by checking both true predecessor incident IDs and re-running the unchanged recurrence contract. No private source, signed receipt, academic gate or provider request is rewritten.",
       "automaticRemedy":{
         "runtimePath":"scripts/bosla_persistent_development.py",
         "triggerMarker":"_reconcile_signed_after_owner_failure(",
@@ -11366,7 +11366,8 @@
           {"path":"app_generator/runtime/v3_incremental_signed_science_progress.py","marker":"def apply_independent_progress"},
           {"path":"app_generator/runtime/v3_staged_incident_link_repair.py","marker":"def repair_staged_known_incident_links"},
           {"path":"scripts/bosla_persistent_development.py","marker":"BSA306_RESUME_SAVED_SCIENCE_PATCH_NO_MODEL_CALL"},
-          {"path":"scripts/auto_advance_bosla_academic_frontier.py","marker":"BSA303_KEY_ERROR_REDACTED"}
+          {"path":"scripts/auto_advance_bosla_academic_frontier.py","marker":"BSA303_KEY_ERROR_REDACTED"},
+          {"path":"app_generator/runtime/v3_equal_energy_academic_batch_admission.py","marker":"equalEnergyBatchReceiptSha256"}
         ]
       },
       "regressions":[
