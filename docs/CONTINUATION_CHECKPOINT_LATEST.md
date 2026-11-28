@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-311 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-312 | ACTIVE
+
+> 28 NOV BSA312 exact BSA292 owner admission failure repair: signed V36 task rows omit surfacePath by construction. The A28 admission now relies on the source-bound BSA253 proof producer to bind explanation path and requires its exact task ID, kind, surface digest and pending status in the signed first partition. Snapshot falsification and restart tests pass; private original Serway and signed owner state are absent, so no new academic PASS is claimed.
 
 > 28 NOV BSA311 exact BSA292 owner explanation failure repair: the pinned task ID came from the tracked sample while BSA253 derives identity from the entire private revised candidate. A changed unrelated activity reproduced the precise owner error before repair. The producer now rederives the ID from the pinned candidate and the owner admission checks it against the signed first V36 partition. Private Serway and signed owner state are absent in this snapshot; no new academic PASS or activity gate closure is claimed.
 

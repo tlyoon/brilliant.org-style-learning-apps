@@ -143,6 +143,12 @@ class OwnerVectorExplanationCanonicalTask(TestCase):
                   row.get("taskId") == proof["taskId"]]
         self.assertEqual(len(signed), 1)
         self.assertEqual(signed[0]["surfaceSha256"], proof["surfaceSha256"])
+        self.assertNotIn("surfacePath", signed[0])
+        from app_generator.runtime.v3_vector_explanation_academic_admission import _original_proof
+        _, checked_partition, checked_proof = _original_proof(
+            private=private, ready=ready, historical=False)
+        self.assertEqual(checked_partition, partition)
+        self.assertEqual(checked_proof, proof)
         with TemporaryDirectory() as folder:
             altered = Path(folder) / "candidate.json"
             altered.write_bytes(candidate.read_bytes() + b" ")
