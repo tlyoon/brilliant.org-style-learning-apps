@@ -11487,6 +11487,32 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-28",
       "nextAction":"Check isolated Yoga6 original worker process CPU and exact stage regression, unchanged recurrence contract, then exact-commit hosted CI. Guarded integration into idle owner only; do not interrupt active scientific verification. Keep 24/429 authoritative until independently reverified A25-A27 signed cross-head proof advances to 27/429. Preserve 90 open full academic activity gates."
+    },
+    {
+      "id":"BSA-20261128-311",
+      "class":"bsa292_explanation_task_pinned_to_tracked_sample_instead_of_signed_private_candidate",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "noveltyExplanation":"Repeated exact owner BSA292_CANONICAL_EXPLANATION_TASK_NOT_REDERIVED shares the BSA294 whole-candidate hash defect. The prior BSA292 source proof pinned the tracked sample's MCQ01 task ID, although BSA253 includes the entire private revised candidate digest. A source fixture that revises only a different activity reproduced the exact error before repair.",
+      "relatedIncidentIds":["BSA-20261127-292","BSA-20261127-294","BSA-20261128-308"],
+      "differenceFromLinkedIncident":"Remove the code-side sample task pin for this explanation. Derive the canonical ID from the exact SHA-pinned 18-activity candidate and require the signed first V36 partition to contain that same ID and surface digest. Recheck the original Serway source, all three frozen explanation locales, exact rational models, signed prior chain, immutable receipt and cross-head proof on owner. Reject altered candidate and mismatched partition; never alter signed evidence or grant PASS locally.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/validation/section91_vector_explanation_proof.py",
+        "triggerMarker":"BSA292_CANONICAL_EXPLANATION_TASK_NOT_REDERIVED",
+        "remedyMarker":"tasks[0][\"taskId\"]",
+        "normalEntryPoints":[
+          {"path":"app_generator/validation/section91_vector_explanation_proof.py","marker":"def independently_prove_vector_explanation"},
+          {"path":"app_generator/runtime/v3_vector_explanation_academic_admission.py","marker":"from app_generator.validation.section91_vector_explanation_proof import ("}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v76_vector_explanation_source_science.py","kind":"python","marker":"test_whole_candidate_revision_rederives_explanation_id"},
+        {"path":"tests/test_v76_vector_explanation_source_science.py","kind":"python","marker":"test_real_source_signed_first_partition_and_negative_candidate"},
+        {"path":"tests/test_v77_vector_explanation_academic_admission.py","kind":"python","marker":"test_partition_task_and_science_are_independently_rechecked"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-28",
+      "nextAction":"Run focused negative tests and recurrence check, then host exact-head CI and original selected Serway owner A28 admission with signed V36 partition and independent horizon readback. No academic PASS from this sandbox; all 90 activity gates remain OPEN."
     }
   ]
 }
