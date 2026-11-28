@@ -1,6 +1,10 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-319 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-320 | ACTIVE
+
+> 28 NOV BSA320 ISOLATED FIX (NOT OWNER-ACTIVE): The signed academic progress reconciler's stage inventory omitted A32-A35 while the owner admission controller already supported them. Added verifier-only newest-first entries and synthetic fault/rollback tests to preserve independently signed progress across later failures. A35 does not become PASS from this patch. Hosted CI, single-flight owner integration and real signed Serway cross-head verification remain required.
+
+> Previous recovery milestone: BSA-20261128-319 | source-bound A35 engineering evidence; owner admission pending
 
 > 28 NOV BSA319 MCQ08 complete isolated-pair explanation: exact internal impulse law and two rational models, frozen trilingual surface, eighth signed V36 row and owner-only A35 admission with cross-head readback are integrated. Four synthetic falsification tests pass. Private original Serway source and hosted CI are absent, so no new academic PASS is claimed and all 90 full activity gates stay OPEN.
 

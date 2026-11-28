@@ -12343,6 +12343,67 @@
       ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Host checks exact-head CI and genuine original Serway source, then owner-only A35 admission and independent cross-head horizon readback. Snapshot tests are engineering evidence and grant no academic PASS."
+    },
+    {
+      "id": "BSA-20261128-320",
+      "class": "late_signed_academic_stage_reconciliation_missing",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "The normal original-Serway owner science controller admits A32-A35, but BSA303 persistent reconciliation STAGES stops at 31. A later owner failure can hide already signed A32-A35 from durable progress despite a valid standalone academic receipt.",
+      "relatedIncidentIds": [
+        "BSA-20261128-306",
+        "BSA-20261128-319"
+      ],
+      "differenceFromLinkedIncident": "BSA303 added monotonic independent recovery only through A31; BSA320 extends that exact verifier-only evidence dispatch to A32-A35. No proof is created, guessed, replayed, signed or admitted by this fix.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_incremental_signed_science_progress.py",
+        "triggerMarker": "STAGES = (",
+        "remedyMarker": "v3_isolated_pair_explanation_academic_admission",
+        "normalEntryPoints": [
+          {
+            "path": "scripts/bosla_persistent_development.py",
+            "marker": "reconcile_independent_science"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_bsa320_late_academic_frontier_reconciliation.py",
+          "kind": "python",
+          "marker": "test_bsa320_new_signed_proof_stages_are_ordered_and_readonly"
+        },
+        {
+          "path": "tests/test_bsa320_late_academic_frontier_reconciliation.py",
+          "kind": "python",
+          "marker": "test_bsa320_signed_a35_survives_failed_later_owner_stage"
+        },
+        {
+          "path": "tests/test_bsa320_late_academic_frontier_reconciliation.py",
+          "kind": "python",
+          "marker": "test_bsa320_failed_top_proof_falls_back_to_authentic_previous_receipt"
+        },
+        {
+          "path": "tests/test_bsa320_late_academic_frontier_reconciliation.py",
+          "kind": "python",
+          "marker": "test_bsa320_tamper_cannot_roll_back_a_previously_verified_35"
+        },
+        {
+          "path": "tests/test_bsa320_late_academic_frontier_reconciliation.py",
+          "kind": "python",
+          "marker": "test_bsa320_no_new_receipt_no_academic_credit"
+        },
+        {
+          "path": "tests/test_bsa320_late_academic_frontier_reconciliation.py",
+          "kind": "python",
+          "marker": "test_bsa320_current_signed_head_must_match_exact_code_head"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-28",
+      "nextAction": "Verify regression contract and full hosted CI, integrate only under existing Yoga6 single-flight coordinator, then independently reread actual A32-A35 original-source signed evidence. No new academic PASS from tests."
     }
   ]
 }

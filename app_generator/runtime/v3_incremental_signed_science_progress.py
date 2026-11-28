@@ -22,6 +22,10 @@ _HEAD = re.compile(r"[0-9a-f]{40}\Z")
 TOTAL = 429
 # Descending: never replay/write proof producers here. Verifiers only.
 STAGES = (
+ (35,"app_generator.runtime.v3_isolated_pair_explanation_academic_admission","_FRONTIER","verify_isolated_pair_explanation_across_git_heads"),
+ (34,"app_generator.runtime.v3_equal_energy_explanation_academic_admission","_FRONTIER","verify_equal_energy_explanation_across_git_heads"),
+ (33,"app_generator.runtime.v3_equal_speed_explanation_academic_admission","_FRONTIER","verify_equal_speed_explanation_across_git_heads"),
+ (32,"app_generator.runtime.v3_third_law_explanation_academic_admission","_FRONTIER","verify_third_law_explanation_across_git_heads"),
  (31,"app_generator.runtime.v3_glider_explanation_academic_admission","_FRONTIER","verify_glider_explanation_across_git_heads"),
  (30,"app_generator.runtime.v3_newton_explanation_academic_admission","_FRONTIER","verify_newton_explanation_across_git_heads"),
  (29,"app_generator.runtime.v3_si_explanation_academic_admission","_FRONTIER","verify_si_explanation_across_git_heads"),
