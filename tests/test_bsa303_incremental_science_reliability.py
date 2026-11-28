@@ -85,8 +85,9 @@ class SignedScienceReliability(TestCase):
                         head=self.HEAD,expected_count=21)
 
     def test_precise_keyerror_field_and_unsafe_material_redacted(self):
-        with patch.object(cli,"advance_all_eligible_academic_actions",
-                          side_effect=KeyError("fullAcademicTasksStillOpen")):
+        with (patch.dict(os.environ,{"LOCALAPPDATA":str(Path.cwd())}),
+              patch.object(cli,"advance_all_eligible_academic_actions",
+                           side_effect=KeyError("fullAcademicTasksStillOpen"))):
             buf=StringIO()
             with redirect_stdout(buf):
                 rc=cli.main(["--max-steps","1"])
@@ -99,8 +100,9 @@ class SignedScienceReliability(TestCase):
                 exact_owner_failure_code(buf.getvalue()),
                 data["errorCode"])
             self.assertFalse(data["publicationAuthorized"])
-        with patch.object(cli,"advance_all_eligible_academic_actions",
-                          side_effect=KeyError("student private text!")):
+        with (patch.dict(os.environ,{"LOCALAPPDATA":str(Path.cwd())}),
+              patch.object(cli,"advance_all_eligible_academic_actions",
+                           side_effect=KeyError("student private text!"))):
             buf=StringIO()
             with redirect_stdout(buf):
                 cli.main([])
