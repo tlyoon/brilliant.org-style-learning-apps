@@ -81,6 +81,10 @@ from app_generator.runtime.v3_third_law_explanation_academic_admission import (
     _FRONTIER as _THIRD_LAW_EXPLANATION_FRONTIER,
     admit_third_law_explanation, verify_third_law_explanation_across_git_heads,
 )
+from app_generator.runtime.v3_equal_speed_explanation_academic_admission import (
+    _FRONTIER as _EQUAL_SPEED_EXPLANATION_FRONTIER,
+    admit_equal_speed_explanation, verify_equal_speed_explanation_across_git_heads,
+)
 from app_generator.runtime.v3_outcome_driven_science_preflight import (
     preflight_next_a28_before_rebuild,
 )
@@ -390,12 +394,27 @@ def advance_all_eligible_academic_actions(
             or third_verified["fullAcademicActivityPASS"]!=0
             or third_verified["publicationAuthorized"] is not False):
             raise ValueError("BSA316_A1_A32_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        speed_explanation=private/"long-horizon-development"/_EQUAL_SPEED_EXPLANATION_FRONTIER
+        if not speed_explanation.exists() and not speed_explanation.is_symlink():
+            admitted=admit_equal_speed_explanation(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=33
+                or admitted["fullAcademicTasksStillOpen"]!=396):
+                raise ValueError("BSA317_EQUAL_SPEED_EXPLANATION_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A33_EQUAL_SPEED_EXPLANATION_SCIENCE_TASK")
+            continue
+        speed_verified=verify_equal_speed_explanation_across_git_heads(private=private)
+        if (speed_verified["independentlyAcceptedAcademicTasks"]!=33
+            or speed_verified["fullAcademicTasksStillOpen"]!=396
+            or speed_verified["completeAcademicProofGatesStillOpen"]!=90
+            or speed_verified["fullAcademicActivityPASS"]!=0
+            or speed_verified["publicationAuthorized"] is not False):
+            raise ValueError("BSA317_A1_A33_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA316_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA317_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":32,
-            "fullAcademicProofTasksStillOpen":397,
+            "academicProofTasksAccepted":33,
+            "fullAcademicProofTasksStillOpen":396,
             "pendingMcqDistractorScienceTasks":0,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,

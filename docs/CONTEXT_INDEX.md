@@ -1,5 +1,9 @@
 # Context index
 
+## 28 November 2026 — BSA317 MCQ06 complete explanation science
+
+The sixth activity now has a separate exact vector momentum and scalar kinetic-energy explanation proof producer and owner-only A33 admission after independently reverified A1-A32. It binds complete EN/MS/ZH explanation, original Serway source, canonical task and sixth signed V36 partition; restart readback recomputes origin and current code heads. This Git-less snapshot lacks the private PDF and owner CI, so no new academic acceptance is claimed and all 90 full activity gates remain OPEN. See BSA-20261128-317.
+
 ## 28 November 2026 — BSA316 MCQ05 complete explanation science
 
 The fifth activity now has a separate exact isolated-pair explanation proof producer and owner-only A32 admission after independently reverified A1-A31. It binds the complete EN/MS/ZH explanation, original Serway source, canonical task and fifth signed V36 partition; restart readback recomputes original and current code heads. This Git-less snapshot lacks the private PDF and owner CI, so confirmed academic acceptance remains 27/429 and all 90 full activity gates OPEN. See BSA-20261128-316.
