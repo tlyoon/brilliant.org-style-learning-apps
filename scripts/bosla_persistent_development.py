@@ -32,6 +32,15 @@ import time
 import traceback
 from typing import Any
 
+# BSA307: Windows Task Scheduler can invoke this module either by its
+# historical absolute .py path or via -m. Resolve the repository root
+# *before* nested app_generator imports require the scripts package.
+# Never rely on a developer's PYTHONPATH or editable pip installation.
+if __name__=="__main__" and not __package__:
+    _repo_root=str(Path(__file__).resolve().parents[1])
+    if _repo_root not in sys.path:
+        sys.path.insert(0,_repo_root)
+
 from app_generator.runtime.v3_persistent_academic_failure_recovery import (
     owner_recovery_plan,should_skip_unchanged_owner,
     classify_codegen_failure, exact_owner_failure_code,
