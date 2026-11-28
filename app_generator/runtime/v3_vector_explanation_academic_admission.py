@@ -64,8 +64,10 @@ def _original_proof(*, private: Path, ready: dict, historical: bool) -> tuple[di
     independently_check_vector_explanation_witness(proof)
     rows = part["activity"].get("evidenceRows", [])
     hits = [row for row in rows if row.get("taskId") == proof["taskId"]]
+    # V36 signs task identity, kind and surface digest, but deliberately omits
+    # surfacePath from evidenceRows. The source-bound producer rederives that
+    # path in the canonical BSA253 queue before returning proof["taskId"].
     if (len(hits) != 1 or hits[0].get("kind") != "COMPLETE_SCIENTIFIC_MEANING" or
-        hits[0].get("surfacePath") != "explanation" or
         hits[0].get("status") != "BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED" or
         hits[0].get("surfaceSha256") != proof["surfaceSha256"] or
         proof.get("newProviderCalls") != 0 or proof.get("publicationAuthorized") is not False):

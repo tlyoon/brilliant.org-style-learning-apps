@@ -31,8 +31,10 @@ class VectorExplanationAdmission(TestCase):
                "publicationAuthorized":False}
         v36["signedPartitionHashes"][0] = {"activityId":"act-mcq-01-vector-nature",
                                               "signedEvidenceSha256":"signed-first"}
+        # Match the actual signed V36 executor row: it does not store surfacePath.
         row = {"taskId":_SAMPLE_TASK, "kind":"COMPLETE_SCIENTIFIC_MEANING",
-               "surfacePath":"explanation", "status":"BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED",
+               "evidenceClass":"SOURCE_DERIVED_FORMAL_ANSWER_MODEL_NOT_FULL_CLAUSE_TRUTH",
+               "status":"BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED",
                "surfaceSha256":"surface"}
         partition = {"integritySha256":"signed-first",
                      "activity":{"activityId":"act-mcq-01-vector-nature", "evidenceRows":[row]},
@@ -53,12 +55,16 @@ class VectorExplanationAdmission(TestCase):
              patch.object(a,"independently_check_vector_explanation_witness"), \
              self.assertRaisesRegex(ValueError,"SCIENCE_NOT_REPROVEN"):
             a._original_proof(private=Path("."),ready=ready,historical=False)
-        for field in ("taskId","surfaceSha256","status"):
+        for field in ("taskId","kind","surfaceSha256","status"):
             bad = {**partition,"activity":{**partition["activity"],"evidenceRows":[{**row,field:"forged"}]}}
             with self.subTest(field=field),self.assertRaisesRegex(ValueError,"SCIENCE_NOT_REPROVEN"):
                 run(bad)
         with self.assertRaisesRegex(ValueError,"PARTITION_CHANGED"):
             run({**partition,"integritySha256":"forged"})
+        duplicate = {**partition, "activity": {**partition["activity"],
+                     "evidenceRows": [row, dict(row)]}}
+        with self.assertRaisesRegex(ValueError, "SCIENCE_NOT_REPROVEN"):
+            run(duplicate)
 
     def test_cross_head_readback_rejects_changed_science_and_duplicate(self):
         prior = {"acceptedAcademicTaskIds":[str(i) for i in range(27)],

@@ -11513,6 +11513,31 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-28",
       "nextAction":"Run focused negative tests and recurrence check, then host exact-head CI and original selected Serway owner A28 admission with signed V36 partition and independent horizon readback. No academic PASS from this sandbox; all 90 activity gates remain OPEN."
+    },
+    {
+      "id":"BSA-20261128-312",
+      "class":"bsa292_explanation_admission_requires_field_absent_from_signed_v36_rows",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "noveltyExplanation":"Exact owner BSA292_EXPLANATION_SCIENCE_NOT_REPROVEN followed BSA311 canonical task rederivation. The V36 executor signs taskId, kind, surfaceSha256, status and evidenceClass, but never writes surfacePath into evidenceRows. A28 admission required that nonexistent field and rejected the genuine signed first partition even when its canonical explanation task identity matched.",
+      "relatedIncidentIds":["BSA-20261127-292","BSA-20261128-311"],
+      "differenceFromLinkedIncident":"Bind explanation path through the independently regenerated BSA253 canonical queue in the original-source proof producer; compare its task ID, kind, surface digest and pending status against exactly one signed V36 row. Remove only the impossible row field requirement. Preserve signed source, prior receipts and all academic gates.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_vector_explanation_academic_admission.py",
+        "triggerMarker":"BSA292_EXPLANATION_SCIENCE_NOT_REPROVEN",
+        "remedyMarker":"V36 signs task identity, kind and surface digest",
+        "normalEntryPoints":[
+          {"path":"app_generator/runtime/v3_vector_explanation_academic_admission.py","marker":"def _original_proof"},
+          {"path":"app_generator/runtime/v3_autonomous_academic_advancement.py","marker":"admit_vector_explanation"}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v77_vector_explanation_academic_admission.py","kind":"python","marker":"test_partition_task_and_science_are_independently_rechecked"},
+        {"path":"tests/test_v76_vector_explanation_source_science.py","kind":"python","marker":"test_real_source_signed_first_partition_and_negative_candidate"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-28",
+      "nextAction":"Host exact-head CI, execute the owner-only original Serway A28 source and signed first-partition test, run normal A28 admission and independently reopen the signed A1-A28 chain. No academic PASS follows from snapshot tests."
     }
   ]
 }
