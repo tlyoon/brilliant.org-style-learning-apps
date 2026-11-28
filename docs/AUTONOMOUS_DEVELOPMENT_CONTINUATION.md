@@ -1,3 +1,7 @@
+## BSA320 MCQ09 complete explanation proof ? ACTIVE
+
+The ninth MCQ explanation requires separate source-bound science beyond A25-A27 false-option proofs. Exact rational models derive kinetic-energy conversion to spring potential and possible heat, and transfer the pod's vector impulse to the rail. The full frozen EN/MS/ZH explanation, original selected Serway source, canonical task, ninth signed V36 row and independently reverified A1-A35 chain gate owner-only A36 admission and cross-head readback. Snapshot tests do not admit an academic task; original PDF and exact hosted CI remain owner-only requirements. All 90 full activity gates stay OPEN.
+
 ## BSA318 MCQ07 equal-energy explanation producer — ACTIVE
 
 The MCQ07 explanation now has a distinct source-bound mathematical proof producer. Two exact Fraction models and the general |p|² = 2mK identity establish that, at the same positive kinetic energy, the heavier object's momentum **magnitude** is greater; the complete frozen EN/MS/ZH question and explanation, original instructor-selected Serway PDF, canonical task and seventh signed V36 partition remain mandatory. Owner A34 admission follows independent A1-A33 verification, and the normal controller plus horizon reread original and current heads. The private source is absent from this snapshot. Code tests cannot claim academic PASS or close any of 90 full activity gates.

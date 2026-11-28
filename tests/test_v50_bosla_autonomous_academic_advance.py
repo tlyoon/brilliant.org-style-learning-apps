@@ -31,7 +31,7 @@ PROPOSAL="b"*64
 
 class AutonomousAcademicFlow(TestCase):
     def case(self,previous_head=False,failed_ci=False,
-             auto_run=None,max_steps=20,raise_a3=False):
+             auto_run=None,max_steps=24,raise_a3=False):
         with TemporaryDirectory() as temp:
             private=Path(temp)
             root=Path(temp)/"fake-root"
@@ -298,6 +298,25 @@ class AutonomousAcademicFlow(TestCase):
             pair_explanation_verify_patch.start()
             self.addCleanup(pair_explanation_admit_patch.stop)
             self.addCleanup(pair_explanation_verify_patch.stop)
+            def spring_explanation_admit(private):
+                calls.append("a36")
+                frontier=private/"long-horizon-development"/auto._SPRING_BUFFER_EXPLANATION_FRONTIER
+                frontier.parent.mkdir(exist_ok=True)
+                frontier.write_text("{}")
+                return {"independentlyAcceptedAcademicTasks":36,
+                        "fullAcademicTasksStillOpen":393}
+            spring_explanation_admit_patch=patch.object(auto,"admit_spring_buffer_explanation",side_effect=spring_explanation_admit)
+            spring_explanation_verify_patch=patch.object(auto,"verify_spring_buffer_explanation_across_git_heads",
+                return_value={"independentlyAcceptedAcademicTasks":36,
+                              "fullAcademicTasksStillOpen":393,
+                              "acceptedAcademicTaskIds":[str(i) for i in range(33)]+["new","new35","new36"],
+                              "completeAcademicProofGatesStillOpen":90,
+                              "fullAcademicActivityPASS":0,
+                              "publicationAuthorized":False})
+            spring_explanation_admit_patch.start()
+            spring_explanation_verify_patch.start()
+            self.addCleanup(spring_explanation_admit_patch.stop)
+            self.addCleanup(spring_explanation_verify_patch.stop)
             # Keep the existing synthetic flow test from touching owner-only
             # Serway. Real BSA314 preflight and negative tests are separate.
             preflight_patch=patch.object(
@@ -380,19 +399,19 @@ class AutonomousAcademicFlow(TestCase):
 
     def test_all_four_missing_boundaries_automatically_advance_in_one_run(self):
         result,actions=self.case(previous_head=True)
-        self.assertEqual(actions,["owner","audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21","a22_a24","a25_a27","a28","a29","a30","a31","a32","a33","a34","a35"])
-        self.assertEqual(result["academicProofTasksAccepted"],35)
-        self.assertEqual(result["fullAcademicProofTasksStillOpen"],394)
+        self.assertEqual(actions,["owner","audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21","a22_a24","a25_a27","a28","a29","a30","a31","a32","a33","a34","a35","a36"])
+        self.assertEqual(result["academicProofTasksAccepted"],36)
+        self.assertEqual(result["fullAcademicProofTasksStillOpen"],393)
         self.assertEqual(result["completeAcademicProofGatesStillOpen"],90)
         self.assertEqual(result["academicActivityPASS"],0)
         self.assertFalse(result["publicationAuthorized"])
 
     def test_idempotent_restart_does_not_reissue_old_proofs(self):
         result,actions=self.case(auto_run="twice")
-        self.assertEqual(actions,["audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21","a22_a24","a25_a27","a28","a29","a30","a31","a32","a33","a34","a35"])
+        self.assertEqual(actions,["audit","a3","a4_a6","a7_a9","a10_a12","a13_a15","a16_a18","a19_a21","a22_a24","a25_a27","a28","a29","a30","a31","a32","a33","a34","a35","a36"])
         first,second=result
-        self.assertEqual(first["academicProofTasksAccepted"],35)
-        self.assertEqual(second["academicProofTasksAccepted"],35)
+        self.assertEqual(first["academicProofTasksAccepted"],36)
+        self.assertEqual(second["academicProofTasksAccepted"],36)
         self.assertEqual(second["actionsExecuted"],[])
 
     def test_failed_exact_head_ci_stops_unsafe_admission(self):
@@ -408,7 +427,7 @@ class AutonomousAcademicFlow(TestCase):
             self.case(previous_head=True,max_steps=2)
 
     def test_bad_batch_length_and_bool_rejected(self):
-        for limit in (0,21,True,-2):
+        for limit in (0,25,True,-2):
             with self.subTest(limit=limit),self.assertRaisesRegex(
                 ValueError,"INVALID_BOUNDED"):
                 self.case(max_steps=limit)

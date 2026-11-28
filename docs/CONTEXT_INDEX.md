@@ -1,5 +1,9 @@
 # Context index
 
+## 29 November 2026 — BSA320 MCQ09 complete explanation science
+
+MCQ09 now has a distinct exact spring-energy and rail-impulse proof producer. It binds the complete frozen EN/MS/ZH explanation, original Serway source, canonical task and ninth signed V36 row to owner-only A36 admission after A1-A35. The private PDF and hosted CI are absent from this snapshot, so no new academic acceptance or full activity gate closure is claimed.
+
 ## 28 November 2026 ? BSA319 MCQ08 complete explanation science
 
 MCQ08 has a distinct exact internal-impulse proof producer for its complete isolated-pair explanation. It binds full EN/MS/ZH explanation, original Serway source, canonical task and eighth signed V36 row to owner-only A35 admission after A1-A34. This snapshot has no private source or hosted CI, so it establishes no new academic acceptance; all 90 full activity gates remain OPEN.

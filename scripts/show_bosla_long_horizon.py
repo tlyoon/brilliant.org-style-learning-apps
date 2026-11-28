@@ -809,6 +809,39 @@ def main() -> int:
             "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_spring_buffer_explanation_academic_admission import (
+        _FRONTIER as _SPRING_BUFFER_EXPLANATION_FRONTIER,
+        verify_spring_buffer_explanation_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_SPRING_BUFFER_EXPLANATION_FRONTIER).exists():
+        try:
+            spring=verify_spring_buffer_explanation_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=35
+                or spring["acceptedAcademicTaskIds"][:35]!=outcome.get("verifiedAcademicProofTaskIds")
+                or spring["independentlyAcceptedAcademicTasks"]!=36
+                or spring["fullAcademicTasksStillOpen"]!=393
+                or spring["completeAcademicProofGatesStillOpen"]!=90
+                or spring["fullAcademicActivityPASS"]!=0
+                or spring["publicationAuthorized"] is not False):
+                raise ValueError("BSA320_A36_CANNOT_BYPASS_A1_A35")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,ArithmeticError) as exc:
+            print(json.dumps({"status":"BOSLA_SPRING_EXPLANATION_SCIENCE_FRONTIER_UNTRUSTED",
+                              "errorClass":type(exc).__name__,
+                              "academicProofAcceptanceEstablished":False,
+                              "publicationAuthorized":False},sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_SPRING_EXPLANATION_SCIENCE_REVERIFIED",
+            "academicAcceptancesSource":"THIRTY_SIX_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":36,
+            "fullAcademicProofTasksStillOpen":393,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":spring["acceptedAcademicTaskIds"],
+            "academicSpringBufferExplanationReceiptSha256":spring["springBufferExplanationReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"SOURCE_BOUND_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 

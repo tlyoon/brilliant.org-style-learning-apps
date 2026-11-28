@@ -12343,6 +12343,62 @@
       ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Host checks exact-head CI and genuine original Serway source, then owner-only A35 admission and independent cross-head horizon readback. Snapshot tests are engineering evidence and grant no academic PASS."
+    },
+    {
+      "id": "BSA-20261129-320",
+      "class": "mcq09_complete_explanation_science_producer_missing",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "MCQ09 A25-A27 false-option countermodels and A35 MCQ08 explanation do not establish the distinct complete spring-buffer explanation. Owner failure class remains MISSING_SCIENCE_PRODUCER.",
+      "relatedIncidentIds": [
+        "BSA-20261128-319",
+        "BSA-20261127-291",
+        "BSA-20261128-308"
+      ],
+      "differenceFromLinkedIncident": "Exact rational spring-energy and rail-impulse producer covers both ideal and dissipative examples, full frozen EN/MS/ZH explanation, original single Serway source, canonical ninth explanation task, ninth signed V36 partition and owner-only A36 admission after independently reverified A1-A35 with cross-head readback.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/section91_spring_buffer_explanation_proof.py",
+        "triggerMarker": "BSA320_CANONICAL_EXPLANATION_TASK_NOT_REDERIVED",
+        "remedyMarker": "independently_prove_spring_buffer_explanation",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+            "marker": "admit_spring_buffer_explanation(private=private)"
+          },
+          {
+            "path": "scripts/show_bosla_long_horizon.py",
+            "marker": "verify_spring_buffer_explanation_across_git_heads"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_v91_spring_buffer_explanation.py",
+          "kind": "python",
+          "marker": "test_exact_conversion_and_falsification"
+        },
+        {
+          "path": "tests/test_v91_spring_buffer_explanation.py",
+          "kind": "python",
+          "marker": "test_frozen_trilingual_source_and_restart"
+        },
+        {
+          "path": "tests/test_v91_spring_buffer_explanation.py",
+          "kind": "python",
+          "marker": "test_signed_ninth_partition_and_cross_head_restart"
+        },
+        {
+          "path": "tests/test_v91_spring_buffer_explanation.py",
+          "kind": "python",
+          "marker": "test_original_serway_explanation_and_signed_partition"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-29",
+      "nextAction": "Host runs declared dependencies and exact-head CI, then original Serway MCQ09 source test, owner signed A36 admission and independent cross-head horizon readback. Snapshot tests confer no academic PASS and all 90 activity gates stay open."
     }
   ]
 }
