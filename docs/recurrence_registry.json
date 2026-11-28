@@ -12404,6 +12404,57 @@
       ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Verify regression contract and full hosted CI, integrate only under existing Yoga6 single-flight coordinator, then independently reread actual A32-A35 original-source signed evidence. No new academic PASS from tests."
+    },
+    {
+      "id": "BSA-20261128-321",
+      "class": "signed_v36_a30_a31_unsigned_surfacepath_mismatch",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "A30 and A31 owner admission incorrectly require surfacePath in independently signed original Serway V36 evidenceRows, although the V36 schema omits it. Reproduced two distinct failing synthetic admission fixtures before the repair. The source-bound Newton and glider producers already rederive exactly one canonical explanation task ID and surface digest from the frozen complete candidate.",
+      "relatedIncidentIds": [
+        "BSA-20261128-312",
+        "BSA-20261128-315",
+        "BSA-20261128-320"
+      ],
+      "differenceFromLinkedIncident": "BSA312/BSA315 repaired earlier A28/A29 row-shape mismatches. BSA321 repairs the separate downstream A30/A31 readback using the same proven exact-task binding; any explicit wrong surfacePath, wrong task ID, status, kind, digest or duplicate row remains rejected.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/runtime/v3_newton_explanation_academic_admission.py",
+        "triggerMarker": "BSA297_EXPLANATION_SCIENCE_NOT_REPROVEN",
+        "remedyMarker": "BSA321: V36 evidence rows omit surfacePath",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_glider_explanation_academic_admission.py",
+            "marker": "BSA321: V36 evidence rows omit surfacePath"
+          },
+          {
+            "path": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+            "marker": "admit_newton_explanation(private=private)"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_bsa321_v36_explanation_row_compatibility.py",
+          "kind": "python",
+          "marker": "test_bsa321_a30_a31_real_signed_row_shape_without_surfacepath"
+        },
+        {
+          "path": "tests/test_bsa321_v36_explanation_row_compatibility.py",
+          "kind": "python",
+          "marker": "test_bsa321_false_signed_kind_status_digest_and_identity_rejected"
+        },
+        {
+          "path": "tests/test_bsa321_v36_explanation_row_compatibility.py",
+          "kind": "python",
+          "marker": "test_bsa321_duplicate_signed_task_row_rejected"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-28",
+      "nextAction": "Require exact-head hosted CI and guarded owner Yoga6 integration after current singleflight owner run, then real original Serway A30/A31 admission and independent signed cross-head readback. Test-only acceptance never counts as academic PASS."
     }
   ]
 }

@@ -64,7 +64,10 @@ def _original_proof(*, private: Path, ready: dict, historical: bool) -> tuple[di
     rows = part["activity"].get("evidenceRows", [])
     hits = [row for row in rows if row.get("taskId") == proof["taskId"]]
     if (len(hits) != 1 or hits[0].get("kind") != "COMPLETE_SCIENTIFIC_MEANING" or
-        hits[0].get("surfacePath") != "explanation" or
+        # BSA321: V36 evidence rows omit surfacePath. The original-source
+        # producer already rederives exactly one canonical explanation task
+        # from the SHA-pinned candidate; reject any explicit wrong path.
+        hits[0].get("surfacePath", "explanation") != "explanation" or
         hits[0].get("status") != "BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED" or
         hits[0].get("surfaceSha256") != proof["surfaceSha256"] or
         proof.get("newProviderCalls") != 0 or proof.get("publicationAuthorized") is not False):

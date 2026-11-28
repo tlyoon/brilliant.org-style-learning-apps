@@ -1,6 +1,10 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-320 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-321 | ACTIVE
+
+> 28 NOV BSA321 ISOLATED SOURCE-BOUND ROW COMPATIBILITY (NOT OWNER-ACTIVE): Reproduced A30/A31 original Serway signed V36 row admission failure when the row omits surfacePath (as the V36 schema requires). Two previously failing positive fixtures now pass after admitting omitted unsigned surfacePath only where the independent source-bound proof producer already rederives canonical explanation task identity, surface digest and three-language evidence; forged explicit paths/task IDs/kinds/status/digests and duplicates remain rejected. Neither this nor CI grants academic PASS. Exact-head hosted CI and owner guarded source proof required.
+
+> Previous recovery milestone: BSA-20261128-320 | independent signed A32-A35 progress stage inventory implemented on isolated CI-green draft before BSA321 amendment
 
 > 28 NOV BSA320 ISOLATED FIX (NOT OWNER-ACTIVE): The signed academic progress reconciler's stage inventory omitted A32-A35 while the owner admission controller already supported them. Added verifier-only newest-first entries and synthetic fault/rollback tests to preserve independently signed progress across later failures. A35 does not become PASS from this patch. Hosted CI, single-flight owner integration and real signed Serway cross-head verification remain required.
 
