@@ -17,7 +17,7 @@ from app_generator.validation.section91_third_law_false_options_proof import _mo
 
 _ACTIVITY = "act-mcq-05-third-law-connection"
 _PROMPT = {"en":"cc2b326a5d0ccef11f8439bd68a09862fed7f46f5edf9270a38af27fafcde74b", "ms":"4d9186915e8e0b9cd51b0c056998d84a9d2419c48ff55d39dae7a229375ec26c", "zh":"966a6789b5e81a73fbf1b42a281bf9a3b02370b7e0ec4f57b5228c8fe4bb059a"}
-_EXPLANATION = {"en":"c6cc94ad0ae08cbb06aa6390cee07d06d7f94c713ff370763be8e49196944175", "ms":"7837bf92f35c1ba3b5ce5dd051da8fa86fbcce73675d1350dcd88537188935a1", "zh":"7370c5d7dda4dcbdc3fb38858df4eb8d51127779c6a849163615231b06635857"}
+_EXPLANATION = {"en":"c6cc94ad0ae08cbb06aa6390cee07d06d7f94c713ff370763be8e49196944175", "ms":"69950ede624cac633a0394309c9eed1b532d5d36fcab2acc4f115040915cae83", "zh":"7370c5d7dda4dcbdc3fb38858df4eb8d51127779c6a849163615231b06635857"}
 
 
 def _locales(surface: dict, expected: dict) -> dict:

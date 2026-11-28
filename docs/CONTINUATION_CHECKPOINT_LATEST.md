@@ -1,6 +1,18 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-319 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261129-322 | ACTIVE
+
+> 29 NOV BSA322 REAL ORIGINAL-SERWAY ROOT-CAUSE REPAIR (ISOLATED, NOT OWNER-ACTIVE): independent read-only Yoga6 original source/V36 proofs verified A30, A31, A33, A34 and A35, but A32 failed precisely BSA316_FROZEN_THIRD_LAW_EXPLANATION_CHANGED. Only MCQ05 Malay explanation hash differs from original sample because the immutable frozen V20 candidate already corrected its Malay conservation term from keabadian momentum to pemuliharaan momentum. Code now pins the actual V20 candidate's Malay explanation digest; original Serway, candidate bytes, 429-task identities and signed receipts remain immutable. The A32 genuine private original-source proof now PASS in read-only test, and all six A30-A35 proof producers independently passed. This does NOT sign academic admission, prove full language equivalence or close an activity gate; main scheduled owner worker still requires hosted exact-head CI and existing lock-safe promotion followed by genuine receipt admission.
+
+> Previous recovery milestone: BSA-20261128-321 | isolated source-bound V36 A30/A31 row-shape recovery completed; owner activation pending
+
+> 28 NOV BSA321 ISOLATED SOURCE-BOUND ROW COMPATIBILITY (NOT OWNER-ACTIVE): Reproduced A30/A31 original Serway signed V36 row admission failure when the row omits surfacePath (as the V36 schema requires). Two previously failing positive fixtures now pass after admitting omitted unsigned surfacePath only where the independent source-bound proof producer already rederives canonical explanation task identity, surface digest and three-language evidence; forged explicit paths/task IDs/kinds/status/digests and duplicates remain rejected. Neither this nor CI grants academic PASS. Exact-head hosted CI and owner guarded source proof required.
+
+> Previous recovery milestone: BSA-20261128-320 | independent signed A32-A35 progress stage inventory implemented on isolated CI-green draft before BSA321 amendment
+
+> 28 NOV BSA320 ISOLATED FIX (NOT OWNER-ACTIVE): The signed academic progress reconciler's stage inventory omitted A32-A35 while the owner admission controller already supported them. Added verifier-only newest-first entries and synthetic fault/rollback tests to preserve independently signed progress across later failures. A35 does not become PASS from this patch. Hosted CI, single-flight owner integration and real signed Serway cross-head verification remain required.
+
+> Previous recovery milestone: BSA-20261128-319 | source-bound A35 engineering evidence; owner admission pending
 
 > 28 NOV BSA319 MCQ08 complete isolated-pair explanation: exact internal impulse law and two rational models, frozen trilingual surface, eighth signed V36 row and owner-only A35 admission with cross-head readback are integrated. Four synthetic falsification tests pass. Private original Serway source and hosted CI are absent, so no new academic PASS is claimed and all 90 full activity gates stay OPEN.
 
