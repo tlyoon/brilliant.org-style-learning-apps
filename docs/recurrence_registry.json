@@ -11671,6 +11671,33 @@
       ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Execute BSA314 six focused tests, full recurrence contract and content/academic regression, then exact-source original Serway read-only preflight on Yoga6. Push branch for hosted exact-SHA CI; integrate only against a matching clean owner HEAD with the existing SingleFlight and two owner CI passes. Never stop active owner scientific work, count preflight as academic acceptance, or change 90 open complete-activity gates."
+    },
+    {
+      "id": "BSA-20261128-315",
+      "class": "bsa293_si_explanation_task_id_pinned_to_tracked_sample_and_unsigned_v36_path_expected",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "Exact owner BSA293_CANONICAL_EXPLANATION_TASK_NOT_REDERIVED: the MCQ02 producer compared the BSA253 full-candidate task identity with a literal from the tracked sample. The private revised candidate retains this explanation but has a different canonical ID. The A29 admission also expected surfacePath in a signed V36 evidence row, although V36 signs task identity, kind, status and surface digest instead.",
+      "relatedIncidentIds": ["BSA-20261128-311", "BSA-20261128-312", "BSA-20261127-293"],
+      "differenceFromLinkedIncident": "Apply the same source-bound canonical rederivation to the second activity and its separate signed partition. Require the SHA-pinned private candidate, original Serway source, exact frozen EN/MS/ZH explanation and prompt, independent rational dimensional models, canonical explanation path and one matching signed V36 row. Reject altered candidate bytes or wrong signed identity; keep all signed history immutable.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/section91_si_explanation_proof.py",
+        "triggerMarker": "BSA293_CANONICAL_EXPLANATION_TASK_NOT_REDERIVED",
+        "remedyMarker": "tasks[0][\"taskId\"]",
+        "normalEntryPoints": [
+          {"path": "app_generator/validation/section91_si_explanation_proof.py", "marker": "def independently_prove_si_explanation"},
+          {"path": "app_generator/runtime/v3_si_explanation_academic_admission.py", "marker": "def _original_proof"},
+          {"path": "app_generator/runtime/v3_autonomous_academic_advancement.py", "marker": "admit_si_explanation"}
+        ]
+      },
+      "regressions": [
+        {"path": "tests/test_v78_si_explanation_source_science.py", "kind": "python", "marker": "test_whole_candidate_revision_rederives_si_explanation_id"},
+        {"path": "tests/test_v78_si_explanation_source_science.py", "kind": "python", "marker": "test_real_source_signed_second_partition_and_negative_candidate"},
+        {"path": "tests/test_v79_si_explanation_academic_admission.py", "kind": "python", "marker": "test_partition_task_and_science_are_independently_rechecked"}
+      ],
+      "applicableEnvironments": ["yoga6", "github-ci"],
+      "lastValidatedDate": "2026-11-28",
+      "nextAction": "Host runs declared dependencies and exact-head CI, then the owner-only original Serway signed second-partition source test, genuine A29 admission and independent cross-head readback. No academic acceptance follows from snapshot tests."
     }
   ]
 }

@@ -15,7 +15,7 @@ from app_generator.runtime.v3_vector_explanation_academic_admission import verif
 from app_generator.runtime.v3_academic_proof_registry_receipt import verify_registry_audit, _RECEIPT as _REGISTRY_RECEIPT
 from app_generator.validation.section91_formal_physics import _SOURCE_SHA, _CANDIDATE_SHA
 from app_generator.validation.section91_si_explanation_proof import (
-    _TASK, independently_prove_si_explanation,
+    independently_prove_si_explanation,
     independently_check_si_explanation_witness,
 )
 
@@ -62,9 +62,10 @@ def _original_proof(*, private: Path, ready: dict, historical: bool) -> tuple[di
     proof = independently_prove_si_explanation(source_pdf=source, candidate_path=candidate)
     independently_check_si_explanation_witness(proof)
     rows = part["activity"].get("evidenceRows", [])
-    hits = [row for row in rows if row.get("taskId") == _TASK]
+    hits = [row for row in rows if row.get("taskId") == proof["taskId"]]
     if (len(hits) != 1 or hits[0].get("kind") != "COMPLETE_SCIENTIFIC_MEANING" or
-        hits[0].get("surfacePath") != "explanation" or
+        # V36 signs the canonical identity and surface digest, but not surfacePath.
+        # The source-bound producer checks that path in the regenerated queue.
         hits[0].get("status") != "BOUNDED_SUPPORT_ONLY_REVIEW_REQUIRED" or
         hits[0].get("surfaceSha256") != proof["surfaceSha256"] or
         proof.get("newProviderCalls") != 0 or proof.get("publicationAuthorized") is not False):
@@ -110,7 +111,7 @@ def admit_si_explanation(*, private: Path) -> dict:
     if (audit.get("gitHead") != now["gitHead"] or
         audit.get("signedV36Sha256") != v36["integritySha256"] or
         audit.get("independentlyAcceptedAcademicTasks") != 2 or
-        _TASK in prev["acceptedAcademicTaskIds"]):
+        proof["taskId"] in prev["acceptedAcademicTaskIds"]):
         raise ValueError("BSA293_A1_A28_CHAIN_OR_TASK_DUPLICATE")
     receipt = _v6_checkpoint(_folder(private, now) / _RECEIPT, {
         **now, "status": _STATUS, "sourceSha256": _SOURCE_SHA,
@@ -133,7 +134,7 @@ def admit_si_explanation(*, private: Path) -> dict:
         "candidateSha256": _CANDIDATE_SHA,
         "newScientificReceiptSha256": receipt["integritySha256"],
         "previousAcademicTaskIds": prev["acceptedAcademicTaskIds"],
-        "newAcceptedTaskId": _TASK, "cumulativeAcademicTasksAccepted": 29,
+        "newAcceptedTaskId": proof["taskId"], "cumulativeAcademicTasksAccepted": 29,
         "fullAcademicTasksStillOpen": 400, "completeAcademicProofGatesStillOpen": 90,
         "fullAcademicActivityPASS": 0, "publicationAuthorized": False,
     })
@@ -163,13 +164,13 @@ def verify_si_explanation_across_git_heads(*, private: Path) -> dict:
         receipt["integritySha256"] != frontier.get("newScientificReceiptSha256") or
         receipt["previousVectorExplanationReceiptSha256"] != prior["vectorExplanationReceiptSha256"] or
         frontier.get("previousAcademicTaskIds") != prior["acceptedAcademicTaskIds"] or
-        frontier.get("newAcceptedTaskId") != _TASK or
-        _TASK in prior["acceptedAcademicTaskIds"]):
+        frontier.get("newAcceptedTaskId") != proof["taskId"] or
+        proof["taskId"] in prior["acceptedAcademicTaskIds"]):
         raise ValueError("BSA293_EXPLANATION_SCIENCE_CHANGED_ACROSS_CODE_HEADS")
     return {"status": "BSA293_SI_EXPLANATION_SCIENCE_TASK_GENUINELY_REVERIFIED",
             "currentGitHead": now["gitHead"], "batchProofOriginGitHead": origin["gitHead"],
             "carriedAcrossGitHead": origin != now,
-            "acceptedAcademicTaskIds": [*prior["acceptedAcademicTaskIds"], _TASK],
+            "acceptedAcademicTaskIds": [*prior["acceptedAcademicTaskIds"], proof["taskId"]],
             "siExplanationReceiptSha256": receipt["integritySha256"],
             "independentlyAcceptedAcademicTasks": 29,
             "fullAcademicTasksStillOpen": 400,

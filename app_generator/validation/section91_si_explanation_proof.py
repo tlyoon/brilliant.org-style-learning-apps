@@ -16,7 +16,8 @@ from app_generator.validation.source_passages import extract_pages
 from app_generator.runtime.v3_selected_textbook_scientific_provenance import _source_activity_anchors
 
 _ACTIVITY = "act-mcq-02-si-units"
-_TASK = "c349dda5d8fd384626f776d721502215032f8e1c8004b174702854088a7cdba4"
+# BSA253 task IDs include the digest of the entire candidate. The private
+# signed candidate can retain this explanation while changing another activity.
 _PROMPT = {"en":"2b18710443e99f660cf88cb235a73eb23dd0d743f7077330c00188d686d8b8ef", "ms":"3c443c2e44c5b54ee7b52ca82637300a95151d7c41aa0e0dec1a8c00773cf582", "zh":"e09ffc7b71de3435a962ba6f45853f69f7712ef41c19061d8f84a272ba8a4e1a"}
 _EXPLANATION = {"en":"52618980f3749a272d10bd31fcce6e1e91cb51f577055f05fa6647448913a365", "ms":"8be65a10d76f58a133d04d108ea51073fcc08a6d08f0af407278816b45555492", "zh":"a293e60952109220072abfd514b3f0734ff8dfca8649ec66da699609c7d5030d"}
 _CASES = ((F(2), F(3), F(4)), (F(7, 3), F(-5, 2), F(1, 4)))
@@ -57,7 +58,9 @@ def _models() -> list[dict]:
 
 def independently_check_si_explanation_witness(proof: dict) -> None:
     if not isinstance(proof, dict) or (
-        proof.get("taskId") != _TASK or proof.get("sourceSha256") != _SOURCE_SHA or
+        not isinstance(proof.get("taskId"), str) or len(proof["taskId"]) != 64 or
+        any(c not in "0123456789abcdef" for c in proof["taskId"]) or
+        proof.get("sourceSha256") != _SOURCE_SHA or
         proof.get("candidateSha256") != _CANDIDATE_SHA or
         proof.get("promptLocaleSha256") != _PROMPT or
         proof.get("explanationLocaleSha256") != _EXPLANATION or
@@ -106,10 +109,10 @@ def independently_prove_si_explanation(*, source_pdf: Path, candidate_path: Path
     queue = plan_full_semantic_proofs(package=package, source_sha256=_SOURCE_SHA)
     tasks = [t for t in queue["tasks"] if t["activityId"] == _ACTIVITY and
              t["kind"] == "COMPLETE_SCIENTIFIC_MEANING" and t["surfacePath"] == "explanation"]
-    if (queue["taskCount"] != 429 or len(tasks) != 1 or tasks[0]["taskId"] != _TASK or
+    if (queue["taskCount"] != 429 or len(tasks) != 1 or
         tasks[0]["surfaceSha256"] != _digest(activity["explanation"])):
         raise ValueError("BSA293_CANONICAL_EXPLANATION_TASK_NOT_REDERIVED")
-    body = {"taskId": _TASK, "sourceSha256": _SOURCE_SHA, "candidateSha256": _CANDIDATE_SHA,
+    body = {"taskId": tasks[0]["taskId"], "sourceSha256": _SOURCE_SHA, "candidateSha256": _CANDIDATE_SHA,
             "surfaceSha256": tasks[0]["surfaceSha256"],
             "sourcePageIndex": anchor["physicalPage"], "sourcePassageSha256": anchor["passageSha256"],
             "sourcePhysicsPremisesSha256": _digest(sorted(axioms.items())),

@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-314 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-315 | ACTIVE
+
+> 28 NOV BSA315 exact BSA293 owner source failure repair: MCQ02 explanation science now derives its canonical BSA253 task ID from the SHA-pinned full candidate, and A29 compares that ID and surface digest to the signed second V36 partition. The path is checked in the regenerated canonical queue because signed V36 rows omit surfacePath. Focused local fault-injection tests pass with an import-only stub for the missing declared jsonschema dependency; owner original Serway PDF and signed partition are absent from this snapshot. No new academic PASS is claimed; the last independently confirmed count remains 27/429 and all 90 complete activity gates remain OPEN.
 
 > 28 NOV BSA314 outcome-driven original-source scientific recovery: distinct unchanged *independently verified* code heads now increase the no-gain counter exactly once, while unchanged-head polling never does. A read-only A28 original Serway and signed prior V36-row preflight runs before the next costly current-HEAD V36 rebuild, but cannot sign or grant academic PASS. The third identical source-bound failure switches to quarantining only the failed task and producing an independent trilingual/diagram proof mechanism, never repeating the same ineffective patch. Six targeted fault-injection tests and hosted CI remain required for admission; the last confirmed accepted count is 27/429, with 402 tasks and all 90 complete academic activity gates still open.
 
