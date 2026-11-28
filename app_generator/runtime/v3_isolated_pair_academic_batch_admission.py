@@ -241,6 +241,9 @@ def verify_isolated_pair_batch_across_git_heads(*,private:Path)->dict[str,Any]:
         "carriedAcrossGitHead":origin!=now,
         "acceptedAcademicTaskIds":[*prior["acceptedAcademicTaskIds"],*ids],
         "previousEqualEnergyBatchReceiptSha256":prior["equalEnergyBatchReceiptSha256"],
+        # The A25-A27 admission and horizon consume this verified A22-A24
+        # receipt. Keep the historical alias for existing readback callers.
+        "isolatedPairBatchReceiptSha256":receipt["integritySha256"],
         "equalEnergyBatchReceiptSha256":receipt["integritySha256"],
         "newIndependentlyAcceptedAcademicTasks":3,
         "independentlyAcceptedAcademicTasks":24,

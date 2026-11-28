@@ -1,6 +1,8 @@
 # Latest Continuation Checkpoint — Brilliant-style learning apps
 
-> CURRENT RECOVERY CHECKPOINT: BSA-20261128-308 | ACTIVE
+> CURRENT RECOVERY CHECKPOINT: BSA-20261128-309 | ACTIVE
+
+> 28 NOV BSA309 exact owner A25 readback failure: A22-A24's independent source-bound verifier now exports the signed isolated-pair receipt hash under the key consumed by A25-A27 and the horizon, while retaining its historical alias. The original Serway source is absent in this snapshot; owner source-bound admission and accepted-count change require host CI, original PDF, signed receipt and independent horizon readback. All 90 full activity gates remain OPEN.
 
 > 28 NOV BSA308 MCQ09 exact owner failure recovery: tracked-sample task IDs were pinned into the private revised candidate proof despite BSA253 hashing the entire candidate. Derive each ID from the SHA-pinned candidate and require the signed ninth V36 partition to agree. Local sample mutation and source-fixture negatives pass; original private source and owner admission remain unverified in this snapshot. No signed academic evidence changed; all 90 full activity gates OPEN.
 

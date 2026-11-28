@@ -102,7 +102,18 @@ class IsolatedPairAdmission(TestCase):
                   patch.object(a,"_original_isolated_pair_proofs",return_value=({}, {}, recomputed)),
                   patch.object(a,"_prior_twenty_one",return_value=old)):
                 return a.verify_isolated_pair_batch_across_git_heads(private=Path("."))
-        self.assertTrue(check(proofs)["carriedAcrossGitHead"])
+        verified=check(proofs)
+        self.assertTrue(verified["carriedAcrossGitHead"])
+        self.assertEqual(verified["isolatedPairBatchReceiptSha256"],"signed")
+        self.assertEqual(verified["equalEnergyBatchReceiptSha256"],"signed")
+        with self.assertRaisesRegex(ValueError,"SCIENCE_CHANGED_ACROSS_CODE_HEADS"):
+            with (patch.object(a,"_read_signed",return_value={**frontier,
+                      "newScientificBatchReceiptSha256":"forged"}),
+                  patch.object(a,"read_long_horizon_development",return_value=now),
+                  patch.object(a,"_verify_receipt",return_value=(receipt,proofs)),
+                  patch.object(a,"_original_isolated_pair_proofs",return_value=({}, {}, proofs)),
+                  patch.object(a,"_prior_twenty_one",return_value=prior)):
+                a.verify_isolated_pair_batch_across_git_heads(private=Path("."))
         with self.assertRaisesRegex(ValueError,"SCIENCE_CHANGED_ACROSS_CODE_HEADS"):
             check([{"taskId":"forged"},*proofs[1:]])
         duplicate={**prior,"acceptedAcademicTaskIds":[*prior["acceptedAcademicTaskIds"][:-1],

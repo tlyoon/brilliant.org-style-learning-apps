@@ -11433,6 +11433,31 @@
       "applicableEnvironments":["yoga6","github-ci"],
       "lastValidatedDate":"2026-11-28",
       "nextAction":"Host exact-head CI, run owner-only real Serway and signed ninth-partition tests, then normal A25-A27 admission and independent horizon readback. Local snapshot cannot claim owner source PASS or change the signed frontier; all 90 complete activity gates remain OPEN."
+    },
+    {
+      "id":"BSA-20261128-309",
+      "class":"isolated_pair_verified_receipt_hash_missing_from_cross_head_readback",
+      "status":"active",
+      "rootCauseFamily":"academic-evidence",
+      "noveltyExplanation":"The exact owner BSA303_KEY_ERROR_ISOLATEDPAIRBATCHRECEIPTSHA256 occurs after the signed original Serway A22-A24 receipt is independently reopened. Its verifier returned the new receipt under the predecessor equal-energy alias, while A25-A27 admission and the independent horizon require isolatedPairBatchReceiptSha256.",
+      "relatedIncidentIds":["BSA-20261128-306","BSA-20261128-308"],
+      "differenceFromLinkedIncident":"Expose the A22-A24 receipt's independently verified integrity SHA under its correct batch key, retaining the prior alias for readback compatibility. The value is produced only after source, signed partition, receipt, current-head proofs and previous chain all reverify. No signed source evidence or acceptance count is changed in this snapshot.",
+      "automaticRemedy":{
+        "runtimePath":"app_generator/runtime/v3_isolated_pair_academic_batch_admission.py",
+        "triggerMarker":"verify_isolated_pair_batch_across_git_heads",
+        "remedyMarker":"isolatedPairBatchReceiptSha256",
+        "normalEntryPoints":[
+          {"path":"app_generator/runtime/v3_spring_buffer_academic_batch_admission.py","marker":"previousIsolatedPairBatchReceiptSha256"},
+          {"path":"scripts/show_bosla_long_horizon.py","marker":"academicIsolatedPairBatchReceiptSha256"}
+        ]
+      },
+      "regressions":[
+        {"path":"tests/test_v73_isolated_pair_academic_admission.py","kind":"python","marker":"test_cross_head_readback_rejects_changed_science_and_task_duplication"},
+        {"path":"tests/test_v75_spring_buffer_academic_admission.py","kind":"python","marker":"test_cross_head_readback_rejects_changed_science_and_task_duplication"}
+      ],
+      "applicableEnvironments":["yoga6","github-ci"],
+      "lastValidatedDate":"2026-11-28",
+      "nextAction":"Host exact-head CI, rerun original private Serway A22-A24 independent source and signature readback, then normal A25-A27 admission and independent horizon. Do not count any new accepted task before owner signed verification."
     }
   ]
 }
