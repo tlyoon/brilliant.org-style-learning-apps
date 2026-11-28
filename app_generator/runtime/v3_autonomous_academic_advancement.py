@@ -77,6 +77,9 @@ from app_generator.runtime.v3_glider_explanation_academic_admission import (
     _FRONTIER as _GLIDER_EXPLANATION_FRONTIER,
     admit_glider_explanation, verify_glider_explanation_across_git_heads,
 )
+from app_generator.runtime.v3_outcome_driven_science_preflight import (
+    preflight_next_a28_before_rebuild,
+)
 
 
 def _owner_advance_worker(repo:Path)->None:
@@ -140,6 +143,13 @@ def advance_all_eligible_academic_actions(
               " head="+head[:12],file=sys.stderr,flush=True)
         checkpoint=read_long_horizon_development(private)
         if checkpoint["gitHead"]!=head:
+            # BSA314: check the next known blocked original-source A28 row
+            # *before* spending minutes rebuilding V36 for a new code HEAD.
+            # PASS is diagnostic only; full owner rebuild and all acceptance
+            # checks below remain required before counting scientific work.
+            preflight=preflight_next_a28_before_rebuild(
+                private=private,current_head=head)
+            print(preflight["status"],file=sys.stderr,flush=True)
             print("BSA283_OWNER_SIGNED_HEAD_REBUILD_STARTED "+
                   head[:12],file=sys.stderr,flush=True)
             _owner_advance_worker(repo)

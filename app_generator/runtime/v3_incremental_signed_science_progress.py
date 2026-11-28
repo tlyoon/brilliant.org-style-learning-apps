@@ -75,11 +75,22 @@ def apply_independent_progress(*,state:dict[str,Any],verified:dict[str,Any],
     if type(prior) is not int or count<prior:
         raise ValueError("BSA303_SIGNED_SCIENCE_COUNT_ROLLBACK")
     is_gain=count>prior
+    # BSA314: a successfully reverified source frontier at a *different*
+    # owner head with no new acceptance is genuine zero-gain evidence.
+    # A heartbeat or a reread of the same head must not add an attempt.
+    prior_head=old.get("lastVerifiedHead") if isinstance(old,dict) else None
+    previous_no_gain=old.get("noGainOwnerHeads",0) if isinstance(old,dict) else 0
+    if type(previous_no_gain) is not int or previous_no_gain<0:
+        raise ValueError("BSA314_INVALID_PREVIOUS_STALL_COUNTER")
+    new_head_without_gain=bool(
+        not is_gain and isinstance(prior_head,str)
+        and prior_head!=head)
+    no_gain=0 if is_gain else previous_no_gain+int(new_head_without_gain)
     recorded={**verified,"lastVerifiedAt":now,
         "lastIncreaseAt":now if is_gain else old.get("lastIncreaseAt",now),
         "lastVerifiedCycle":cycle,
         "independentReceiptSha256":verified["verifiedEvidenceSha256"],
-        "noGainOwnerHeads":0 if is_gain else old.get("noGainOwnerHeads",0),
+        "noGainOwnerHeads":no_gain,
         "advancedThisObservation":is_gain,
         "evidence":"BSA303_INDEPENDENT_SOURCE_BOUND_SIGNED_FRONTIER_REVERIFIED"}
     state["scienceAcceptance"]=recorded

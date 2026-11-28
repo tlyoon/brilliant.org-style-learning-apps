@@ -538,14 +538,35 @@ def _failed_owner_decision(
     exact_attempts=(int(previous.get("attempts",0))+1
                     if repeated else int(plan["count"]))
     plan["rootCauseAttempts"]=exact_attempts
+    # BSA314: identical signed-source failure after successive code revisions
+    # is evidence that the last repair did NOT resolve the root cause.
+    # The third unchanged outcome must switch to a different, independent
+    # proof-production lane without pretending the blocked task has passed.
     plan["repairStrategy"]=(
+        "QUARANTINE_EXACT_BLOCKER_AND_BUILD_PARALLEL_PROOF"
+        if exact_attempts>=3 and precise is not None else
         "DIFFERENTIAL_REAL_SOURCE_ROOT_CAUSE_DIAGNOSIS"
         if exact_attempts>=2 and precise is not None
         else "FIRST_TARGETED_REPAIR")
+    plan["repairOutcomeComparedToPrevious"]=(
+        "UNCHANGED_EXACT_SCIENCE_FAILURE" if repeated
+        else "NEW_OR_DISTINCT_SCIENCE_FAILURE")
+    if plan["repairStrategy"]=="QUARANTINE_EXACT_BLOCKER_AND_BUILD_PARALLEL_PROOF":
+        state["scienceRecoveryQuarantine"]={
+            "blockedFailureCode":precise,
+            "blockedTask":"A28_VECTOR_EXPLANATION" if
+                precise=="BSA292_EXPLANATION_SCIENCE_NOT_REPROVEN" else
+                "OWNER_SOURCE_BOUND_ACADEMIC_TASK",
+            "failedOwnerHead":head,
+            "failedAttempts":exact_attempts,
+            "alternativeWork":"INDEPENDENT_TRILINGUAL_OR_DIAGRAM_PROOF_PRODUCER",
+            "cannotSignOrCountBlockedTask":True,
+            "publicationAuthorized":False}
     state["recoveryProgress"]={
         "failedHead":head,"classification":plan["classification"],
         "safeFailureCode":plan.get("exactFailureCode"),
         "attempts":exact_attempts,
+        "outcomeComparedToPrevious":plan["repairOutcomeComparedToPrevious"],
         "strategy":plan["repairStrategy"],
         "currentRemedy":plan["mode"],
         "historicalReviewRequired":True,
@@ -889,6 +910,24 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
             )
             exact=issue.get("exactFailureCode")
             if issue.get("repairStrategy")==(
+                    "QUARANTINE_EXACT_BLOCKER_AND_BUILD_PARALLEL_PROOF"):
+                prompt+=(
+                    " BSA314 THIRD UNCHANGED SIGNED-SOURCE FAILURE: "
+                    "the prior targeted repairs have NOT improved the "
+                    "independent academic outcome. Preserve the blocked "
+                    "A28 proof and every signed prior acceptance. Do not "
+                    "repeat the same ineffective repair. Instead implement "
+                    "a new original-source-grounded independent trilingual "
+                    "meaning or interactive-science diagram proof producer "
+                    "for a different eligible semantic task, with a separate "
+                    "falsifying test and a non-publishing witness. This work "
+                    "may advance engineering without academic acceptance; "
+                    "the owner must independently verify and sign it later. "
+                    "Record the exact blocked task as quarantined and never "
+                    "rewrite the signed scientific acceptance count to "
+                    "simulate progress. "
+                )
+            elif issue.get("repairStrategy")==(
                     "DIFFERENTIAL_REAL_SOURCE_ROOT_CAUSE_DIAGNOSIS"):
                 prompt+=(
                     " BSA306 REPEATED EXACT ROOT CAUSE: at least two "
@@ -900,8 +939,10 @@ def _codex_stage(state:dict[str,Any],*,repair:bool=False)->bool:
                     "test a different failure-specific remedy, and "
                     "record negative tests before CI integration. "
                 )
-            if isinstance(exact,str) and re.fullmatch(
-                    r"(?:BSA|V)[0-9]{3}_[A-Z0-9_]{5,95}",exact):
+            if (issue.get("repairStrategy")!=
+                "QUARANTINE_EXACT_BLOCKER_AND_BUILD_PARALLEL_PROOF"
+                and isinstance(exact,str) and re.fullmatch(
+                    r"(?:BSA|V)[0-9]{3}_[A-Z0-9_]{5,95}",exact)):
                 prompt+=(
                     " BSA294 EXACT OWNER SOURCE FAILURE: "+exact+
                     ". Resolve this exact preceding failed scientific "
