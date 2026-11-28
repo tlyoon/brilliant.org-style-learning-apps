@@ -1,5 +1,9 @@
 # Context index
 
+## 28 November 2026 — BSA318 MCQ07 complete explanation science
+
+MCQ07 now has a separate exact equal-energy momentum-magnitude explanation proof producer. It derives the general |p|² = 2mK ranking with two rational models, binds the full EN/MS/ZH explanation and magnitude question to the original Serway source, canonical task and seventh signed V36 partition, and adds owner-only A34 admission after A1-A33. The Git-less snapshot has no private source or hosted CI, so it establishes no new academic acceptance and all 90 full activity gates remain OPEN.
+
 ## 28 November 2026 — BSA317 MCQ06 complete explanation science
 
 The sixth activity now has a separate exact vector momentum and scalar kinetic-energy explanation proof producer and owner-only A33 admission after independently reverified A1-A32. It binds complete EN/MS/ZH explanation, original Serway source, canonical task and sixth signed V36 partition; restart readback recomputes origin and current code heads. This Git-less snapshot lacks the private PDF and owner CI, so no new academic acceptance is claimed and all 90 full activity gates remain OPEN. See BSA-20261128-317.

@@ -743,6 +743,39 @@ def main() -> int:
             "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
             "publicationAuthorized":False,
         })
+    from app_generator.runtime.v3_equal_energy_explanation_academic_admission import (
+        _FRONTIER as _EQUAL_ENERGY_EXPLANATION_FRONTIER,
+        verify_equal_energy_explanation_across_git_heads,
+    )
+    if (private/"long-horizon-development"/_EQUAL_ENERGY_EXPLANATION_FRONTIER).exists():
+        try:
+            energy=verify_equal_energy_explanation_across_git_heads(private=private)
+            if (outcome.get("academicProofTasksAccepted")!=33
+                or energy["acceptedAcademicTaskIds"][:33]!=outcome.get("verifiedAcademicProofTaskIds")
+                or energy["independentlyAcceptedAcademicTasks"]!=34
+                or energy["fullAcademicTasksStillOpen"]!=395
+                or energy["completeAcademicProofGatesStillOpen"]!=90
+                or energy["fullAcademicActivityPASS"]!=0
+                or energy["publicationAuthorized"] is not False):
+                raise ValueError("BSA318_A34_CANNOT_BYPASS_A1_A33")
+        except (OSError,ValueError,KeyError,TypeError,IndexError,ArithmeticError) as exc:
+            print(json.dumps({"status":"BOSLA_EQUAL_ENERGY_EXPLANATION_SCIENCE_FRONTIER_UNTRUSTED",
+                              "errorClass":type(exc).__name__,
+                              "academicProofAcceptanceEstablished":False,
+                              "publicationAuthorized":False},sort_keys=True))
+            return 2
+        outcome.update({
+            "status":"BOSLA_LONG_HORIZON_EQUAL_ENERGY_EXPLANATION_SCIENCE_REVERIFIED",
+            "academicAcceptancesSource":"THIRTY_FOUR_SOURCE_BOUND_INDEPENDENT_ORIGINAL_SERWAY_SCIENCE_TASK_RECEIPTS",
+            "academicProofTasksAccepted":34,
+            "fullAcademicProofTasksStillOpen":395,
+            "completeAcademicProofGatesStillOpen":90,
+            "verifiedAcademicProofTaskIds":energy["acceptedAcademicTaskIds"],
+            "academicEqualEnergyExplanationReceiptSha256":energy["equalEnergyExplanationReceiptSha256"],
+            "academicActivityPASS":0,
+            "nextActionStatus":"SOURCE_BOUND_OTHER_EXPLANATION_TRILINGUAL_AND_VISUAL_PRODUCERS_REQUIRED",
+            "publicationAuthorized":False,
+        })
     print(json.dumps(outcome,sort_keys=True))
     return 0
 
