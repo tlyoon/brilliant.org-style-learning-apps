@@ -39,7 +39,7 @@ class PersistentBoslaTaskEntrypoint(TestCase):
     def test_future_installation_preserves_two_triggers_and_exact_module_action(self):
         script=INSTALLER.read_text(encoding="utf8")
         self.assertIn(
-            "-Argument '-B -m scripts.bosla_persistent_development --once'",
+            "-Argument '-B -m scripts.bosla_persistent_development --long-horizon'",
             script)
         self.assertIn("-WorkingDirectory $repo",script)
         self.assertIn("New-ScheduledTaskTrigger -AtLogOn",script)
