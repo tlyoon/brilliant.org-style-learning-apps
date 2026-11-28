@@ -85,6 +85,10 @@ from app_generator.runtime.v3_equal_speed_explanation_academic_admission import 
     _FRONTIER as _EQUAL_SPEED_EXPLANATION_FRONTIER,
     admit_equal_speed_explanation, verify_equal_speed_explanation_across_git_heads,
 )
+from app_generator.runtime.v3_equal_energy_explanation_academic_admission import (
+    _FRONTIER as _EQUAL_ENERGY_EXPLANATION_FRONTIER,
+    admit_equal_energy_explanation, verify_equal_energy_explanation_across_git_heads,
+)
 from app_generator.runtime.v3_outcome_driven_science_preflight import (
     preflight_next_a28_before_rebuild,
 )
@@ -409,12 +413,28 @@ def advance_all_eligible_academic_actions(
             or speed_verified["fullAcademicActivityPASS"]!=0
             or speed_verified["publicationAuthorized"] is not False):
             raise ValueError("BSA317_A1_A33_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
+        energy_explanation=private/"long-horizon-development"/_EQUAL_ENERGY_EXPLANATION_FRONTIER
+        if not energy_explanation.exists() and not energy_explanation.is_symlink():
+            admitted=admit_equal_energy_explanation(private=private)
+            if (admitted["independentlyAcceptedAcademicTasks"]!=34
+                or admitted["fullAcademicTasksStillOpen"]!=395):
+                raise ValueError("BSA318_EQUAL_ENERGY_EXPLANATION_NOT_INDEPENDENTLY_ADMITTED")
+            journal.append("SIGNED_AND_INDEPENDENTLY_READ_A34_EQUAL_ENERGY_EXPLANATION_SCIENCE_TASK")
+            continue
+        energy_verified=verify_equal_energy_explanation_across_git_heads(private=private)
+        if (energy_verified["independentlyAcceptedAcademicTasks"]!=34
+            or energy_verified["fullAcademicTasksStillOpen"]!=395
+            or energy_verified["acceptedAcademicTaskIds"][:33]!=speed_verified["acceptedAcademicTaskIds"]
+            or energy_verified["completeAcademicProofGatesStillOpen"]!=90
+            or energy_verified["fullAcademicActivityPASS"]!=0
+            or energy_verified["publicationAuthorized"] is not False):
+            raise ValueError("BSA318_A1_A34_CHAIN_NOT_INDEPENDENTLY_REVERIFIED")
         return {
-            "status":"BSA317_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
+            "status":"BSA318_ALL_CURRENTLY_ELIGIBLE_ACADEMIC_ACTIONS_EXECUTED",
             "currentGitHead":head,
             "actionsExecuted":journal,
-            "academicProofTasksAccepted":33,
-            "fullAcademicProofTasksStillOpen":396,
+            "academicProofTasksAccepted":34,
+            "fullAcademicProofTasksStillOpen":395,
             "pendingMcqDistractorScienceTasks":0,
             "completeAcademicProofGatesStillOpen":90,
             "academicActivityPASS":0,

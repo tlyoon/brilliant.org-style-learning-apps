@@ -1,3 +1,7 @@
+## BSA318 MCQ07 equal-energy explanation producer — ACTIVE
+
+The MCQ07 explanation now has a distinct source-bound mathematical proof producer. Two exact Fraction models and the general |p|² = 2mK identity establish that, at the same positive kinetic energy, the heavier object's momentum **magnitude** is greater; the complete frozen EN/MS/ZH question and explanation, original instructor-selected Serway PDF, canonical task and seventh signed V36 partition remain mandatory. Owner A34 admission follows independent A1-A33 verification, and the normal controller plus horizon reread original and current heads. The private source is absent from this snapshot. Code tests cannot claim academic PASS or close any of 90 full activity gates.
+
 ## BSA314 executable outcome-driven scientific recovery -- ACTIVE
 
 This contract is a mandatory rule of the normal Yoga6 Bosla owner pipeline, not a request for a human to say "proceed." The scheduler must distinguish engineering commits, heartbeat/CPU activity and *independently signed original-source scientific acceptance*. On each successfully reverified distinct Git head with unchanged acceptance, increment noGainOwnerHeads once; repeat reads on the same head must not increment it. Never count a test, model answer, unverified witness, V36 source-free output or CI result as academic PASS.
