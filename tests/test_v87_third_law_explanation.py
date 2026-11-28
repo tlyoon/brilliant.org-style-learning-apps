@@ -15,6 +15,22 @@ _PACKAGE = Path("content/chapter-9/section-9-1/package.json")
 _REAL_SOURCE_SHA = p._SOURCE_SHA
 
 
+def _approved_malay_v20_style_fixture():
+    """Model only the exact previously authorized Malay conservation repair.
+
+    The actual original-source candidate is owner-private, never copied into
+    Git. This fixture tests the same frozen MCQ05 explanation surface.
+    """
+    package = json.loads(_PACKAGE.read_text(encoding="utf8"))
+    text = package["activities"][4]["explanation"]["ms"]
+    assert text.count("keabadian momentum") == 1
+    assert text.count("Keabadian momentum") == 1
+    revised = (text.replace("keabadian momentum", "pemuliharaan momentum")
+                   .replace("Keabadian momentum", "Pemuliharaan momentum"))
+    package["activities"][4]["explanation"]["ms"] = revised
+    return package
+
+
 class ThirdLawExplanation(TestCase):
     def test_exact_models_and_mutation(self):
         for row in p._pair_models():
@@ -31,7 +47,7 @@ class ThirdLawExplanation(TestCase):
             source = Path(folder)/"source.pdf"
             candidate = Path(folder)/"candidate.json"
             source.write_bytes(b"%PDF-synthetic")
-            candidate.write_bytes(_PACKAGE.read_bytes())
+            candidate.write_text(json.dumps(_approved_malay_v20_style_fixture(), ensure_ascii=False), encoding="utf8")
             with patch.object(p, "extract_pages", side_effect=AssertionError("unpinned extraction")):
                 with self.assertRaisesRegex(ValueError, "AUTHENTIC_SERWAY"):
                     p.independently_prove_third_law_explanation(source_pdf=source, candidate_path=candidate)
@@ -59,7 +75,7 @@ class ThirdLawExplanation(TestCase):
                     p.independently_prove_third_law_explanation(source_pdf=source,candidate_path=candidate)
 
     def test_frozen_trilingual_surface(self):
-        activity=json.loads(_PACKAGE.read_text(encoding="utf8"))["activities"][4]
+        activity=_approved_malay_v20_style_fixture()["activities"][4]
         self.assertEqual(p._locales(activity["prompt"],p._PROMPT),p._PROMPT)
         self.assertEqual(p._locales(activity["explanation"],p._EXPLANATION),p._EXPLANATION)
         changed=dict(activity["explanation"])

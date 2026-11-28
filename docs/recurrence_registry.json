@@ -12455,6 +12455,67 @@
       ],
       "lastValidatedDate": "2026-11-28",
       "nextAction": "Require exact-head hosted CI and guarded owner Yoga6 integration after current singleflight owner run, then real original Serway A30/A31 admission and independent signed cross-head readback. Test-only acceptance never counts as academic PASS."
+    },
+    {
+      "id": "BSA-20261129-322",
+      "class": "source_bound_a32_approved_v20_malay_hash_stale",
+      "status": "active",
+      "rootCauseFamily": "academic-evidence",
+      "noveltyExplanation": "Real owner Yoga6 original Serway source proof for A32 failed BSA316_FROZEN_THIRD_LAW_EXPLANATION_CHANGED: the code had pinned MCQ05 Malay explanation from the original tracked sample (keabadian momentum) while the SHA-pinned immutable private V20 candidate correctly carries the previously approved pemuliharaan momentum correction. The English and Chinese explanation hashes, all three prompt hashes and candidate SHA remained unchanged.",
+      "relatedIncidentIds": [
+        "BSA-20261128-315",
+        "BSA-20261128-316",
+        "BSA-20261128-321"
+      ],
+      "differenceFromLinkedIncident": "Unlike A30/A31 unsigned V36 surfacePath mismatch, this was a stale exact hash from a pre-V20 sample. The remedy pins only the SHA-256 of the actual immutable candidate's approved Malay conservation term; no source, original candidate, model result, signed evidence or translation acceptance is altered.",
+      "automaticRemedy": {
+        "runtimePath": "app_generator/validation/section91_third_law_explanation_proof.py",
+        "triggerMarker": "BSA316_FROZEN_THIRD_LAW_EXPLANATION_CHANGED",
+        "remedyMarker": "69950ede624cac633a0394309c9eed1b532d5d36fcab2acc4f115040915cae83",
+        "normalEntryPoints": [
+          {
+            "path": "app_generator/runtime/v3_third_law_explanation_academic_admission.py",
+            "marker": "independently_prove_third_law_explanation"
+          },
+          {
+            "path": "app_generator/runtime/v3_autonomous_academic_advancement.py",
+            "marker": "admit_third_law_explanation(private=private)"
+          }
+        ]
+      },
+      "regressions": [
+        {
+          "path": "tests/test_bsa322_frozen_malay_source_admission.py",
+          "kind": "python",
+          "marker": "test_exact_previous_v20_malay_repair_is_expected"
+        },
+        {
+          "path": "tests/test_bsa322_frozen_malay_source_admission.py",
+          "kind": "python",
+          "marker": "test_old_sample_malay_frozen_hash_fails"
+        },
+        {
+          "path": "tests/test_bsa322_frozen_malay_source_admission.py",
+          "kind": "python",
+          "marker": "test_real_original_serway_and_fifth_signed_v36_row_a32"
+        },
+        {
+          "path": "tests/test_v87_third_law_explanation.py",
+          "kind": "python",
+          "marker": "test_source_bound_restart_falsification"
+        },
+        {
+          "path": "tests/test_v87_third_law_explanation.py",
+          "kind": "python",
+          "marker": "test_frozen_trilingual_surface"
+        }
+      ],
+      "applicableEnvironments": [
+        "yoga6",
+        "github-ci"
+      ],
+      "lastValidatedDate": "2026-11-29",
+      "nextAction": "Require exact-HEAD hosted CI, guarded nonpublic owner integration after singleflight release, real original-Serway signed A32 academic admission and independent cross-head reread. The read-only private source proof passed; no academic acceptance or multilingual meaning-equivalence gate was awarded by this repair."
     }
   ]
 }
